@@ -11,7 +11,7 @@
 # ----------------------------------------------------------------------  
 from SUAVE.Core import Units
 import matplotlib.pyplot as plt    
-from plot_vehicle import plot_propeller_geometry
+from .plot_vehicle import plot_propeller_geometry
 from SUAVE.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
 
 ## @ingroup Plots-Geometry
