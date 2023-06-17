@@ -1,4 +1,4 @@
-# RCAIDE/__init__.py
+# RCAIDE/Energy/Storages/__init__.py
 # Copyright RCAIDE Hall Trust
 
 """ RCAIDE Package Setup
@@ -8,4 +8,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Analysis import Analysis
+from . import Batteries
+from . import Fuel_Tanks
