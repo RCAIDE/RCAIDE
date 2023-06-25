@@ -10,8 +10,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Core import DataOrdered 
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Core import DataOrdered 
 
 # ------------------------------------------------------------
 #  AVL Case

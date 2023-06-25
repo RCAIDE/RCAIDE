@@ -13,7 +13,7 @@ from . import wing as wing
 from . import fuselage as fuselage
 import warnings
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # ----------------------------------------------------------------------
 #  Empty

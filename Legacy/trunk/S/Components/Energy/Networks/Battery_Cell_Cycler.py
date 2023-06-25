@@ -7,15 +7,15 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
 import numpy as np
 from .Network import Network   
-from SUAVE.Analyses.Mission.Segments.Conditions import Residuals
-from SUAVE.Core import Data
-from SUAVE.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
-from SUAVE.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
+from Legacy.trunk.S.Analyses.Mission.Segments.Conditions import Residuals
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
+from Legacy.trunk.S.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
 
 # ----------------------------------------------------------------------
 #  Network

@@ -10,21 +10,21 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE 
-from SUAVE.Core import Data , Units
+import Legacy.trunk.S as SUAVE 
+from Legacy.trunk.S.Core import Data , Units
 from .Noise     import Noise 
 
-from SUAVE.Components.Physical_Component import Container 
+from Legacy.trunk.S.Components.Physical_Component import Container 
 
 # noise imports 
-from SUAVE.Methods.Noise.Fidelity_One.Airframe.noise_airframe_Fink                   import noise_airframe_Fink
-from SUAVE.Methods.Noise.Fidelity_One.Engine.noise_SAE                               import noise_SAE  
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.noise_geometric                    import noise_geometric
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.decibel_arithmetic                 import SPL_arithmetic
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.generate_microphone_points         import generate_ground_microphone_points
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.compute_noise_evaluation_locations import compute_ground_noise_evaluation_locations
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.compute_noise_evaluation_locations import compute_building_noise_evaluation_locations
-from SUAVE.Methods.Noise.Fidelity_One.Propeller.propeller_mid_fidelity               import propeller_mid_fidelity 
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Airframe.noise_airframe_Fink                   import noise_airframe_Fink
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Engine.noise_SAE                               import noise_SAE  
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.noise_geometric                    import noise_geometric
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.decibel_arithmetic                 import SPL_arithmetic
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.generate_microphone_points         import generate_ground_microphone_points
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.compute_noise_evaluation_locations import compute_ground_noise_evaluation_locations
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.compute_noise_evaluation_locations import compute_building_noise_evaluation_locations
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Propeller.propeller_mid_fidelity               import propeller_mid_fidelity 
 
 # package imports
 import numpy as np

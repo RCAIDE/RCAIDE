@@ -10,7 +10,7 @@
 #  Imports
 # ---------------------------------------------------------------------- 
 import matplotlib.pyplot as plt   
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry \
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry \
      import import_airfoil_geometry 
 import os
 

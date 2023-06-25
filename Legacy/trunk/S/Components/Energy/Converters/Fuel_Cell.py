@@ -9,14 +9,14 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
-from SUAVE.Core import Units
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
-from SUAVE.Attributes.Gases import Air
-from SUAVE.Attributes.Propellants import Gaseous_H2
-from SUAVE.Methods.Power.Fuel_Cell.Discharge import zero_fidelity
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Attributes.Gases import Air
+from Legacy.trunk.S.Attributes.Propellants import Gaseous_H2
+from Legacy.trunk.S.Methods.Power.Fuel_Cell.Discharge import zero_fidelity
 
 # ----------------------------------------------------------------------
 #  Fuel_Cell Class

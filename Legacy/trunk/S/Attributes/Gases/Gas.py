@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # ----------------------------------------------------------------------
 #  Gas Data Class

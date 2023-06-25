@@ -7,8 +7,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 from .Propellant import Propellant
-from SUAVE.Attributes.Constants import Composition
-from SUAVE.Core import Data
+from Legacy.trunk.S.Attributes.Constants import Composition
+from Legacy.trunk.S.Core import Data
 # ----------------------------------------------------------------------
 #  Gaseous_H2 Propellant Class
 # ----------------------------------------------------------------------

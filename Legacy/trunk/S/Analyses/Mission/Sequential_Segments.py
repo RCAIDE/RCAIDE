@@ -9,8 +9,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Methods import Missions as Methods
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Methods import Missions as Methods
 from .Mission import Mission
 
 # ----------------------------------------------------------------------

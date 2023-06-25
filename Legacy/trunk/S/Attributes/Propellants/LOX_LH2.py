@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 from .Propellant import Propellant
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 # ----------------------------------------------------------------------
 #  Class

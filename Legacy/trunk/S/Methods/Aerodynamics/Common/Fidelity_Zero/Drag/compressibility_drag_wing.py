@@ -12,8 +12,8 @@
 # ----------------------------------------------------------------------
 
 # SUAVE imports
-from SUAVE.Core import Data
-from SUAVE.Components import Wings
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Components import Wings
 
 # package imports
 import numpy as np

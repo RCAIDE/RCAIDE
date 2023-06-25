@@ -7,11 +7,11 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------- 
-import SUAVE
-from SUAVE.Core   import Units , Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core   import Units , Data
 from .Lithium_Ion import Lithium_Ion 
-from SUAVE.Methods.Power.Battery.Cell_Cycle_Models.LiNiMnCoO2_cell_cycle_model import compute_NMC_cell_state_variables
-from SUAVE.Methods.Power.Battery.compute_net_generated_battery_heat            import compute_net_generated_battery_heat
+from Legacy.trunk.S.Methods.Power.Battery.Cell_Cycle_Models.LiNiMnCoO2_cell_cycle_model import compute_NMC_cell_state_variables
+from Legacy.trunk.S.Methods.Power.Battery.compute_net_generated_battery_heat            import compute_net_generated_battery_heat
 
 import numpy as np
 import os

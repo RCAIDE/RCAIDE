@@ -9,7 +9,7 @@
 #-------------------------------------------------------------------------------
 
 from .Solid import Solid
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 from scipy import interpolate
 from array import *
 import numpy as np

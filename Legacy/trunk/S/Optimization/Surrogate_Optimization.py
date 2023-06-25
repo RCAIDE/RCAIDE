@@ -8,12 +8,12 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Surrogate.svr_surrogate_functions import build_svr_models
-from SUAVE.Surrogate.kriging_surrogate_functions import build_kriging_models
-from SUAVE.Surrogate.scikit_surrogate_functions import build_scikit_models
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Surrogate.svr_surrogate_functions import build_svr_models
+from Legacy.trunk.S.Surrogate.kriging_surrogate_functions import build_kriging_models
+from Legacy.trunk.S.Surrogate.scikit_surrogate_functions import build_scikit_models
 
-from SUAVE.Optimization.Package_Setups.pyopt_surrogate_setup import pyopt_surrogate_setup
+from Legacy.trunk.S.Optimization.Package_Setups.pyopt_surrogate_setup import pyopt_surrogate_setup
 from .read_optimization_outputs import read_optimization_outputs
 import numpy as np
 import time

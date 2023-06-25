@@ -9,9 +9,9 @@
 #  Imports
 # ----------------------------------------------------------------------
 # SUAVE imports
-from SUAVE.Components.Energy.Networks.Lift_Cruise import Lift_Cruise
-from SUAVE.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
-from SUAVE.Core import Data
+from Legacy.trunk.S.Components.Energy.Networks.Lift_Cruise import Lift_Cruise
+from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
+from Legacy.trunk.S.Core import Data
 import numpy as np
 # ----------------------------------------------------------------------
 #  Computes the miscellaneous drag

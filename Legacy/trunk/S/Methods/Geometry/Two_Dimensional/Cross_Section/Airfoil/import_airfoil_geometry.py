@@ -15,7 +15,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------- 
-from SUAVE.Core import Data  
+from Legacy.trunk.S.Core import Data  
 import numpy as np
 from scipy import interpolate
 

@@ -12,8 +12,8 @@
 
 # SUAVE imports
 from .Wing import Wing
-from SUAVE.Core import ContainerOrdered
-from SUAVE.Components.Wings.Segment import Segment
+from Legacy.trunk.S.Core import ContainerOrdered
+from Legacy.trunk.S.Components.Wings.Segment import Segment
 
 import numpy as np
 

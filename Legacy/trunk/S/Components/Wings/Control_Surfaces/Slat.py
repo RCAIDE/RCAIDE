@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------
 
 # SUAVE imports 
-from SUAVE.Components.Wings.Control_Surfaces.Control_Surface import Control_Surface  
+from Legacy.trunk.S.Components.Wings.Control_Surfaces.Control_Surface import Control_Surface  
 
 # ----------------------------------------------------------------------
 #  Attribute

@@ -10,9 +10,9 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 from .Aerodynamics import Aerodynamics
-from SUAVE.Analyses import Process
+from Legacy.trunk.S.Analyses import Process
 
 
 # ----------------------------------------------------------------------

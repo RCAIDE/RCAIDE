@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 import numpy as np
 import numpy.polynomial.polynomial as P
 

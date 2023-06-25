@@ -7,8 +7,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Data
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 import numpy as np
 from scipy.interpolate import interp1d

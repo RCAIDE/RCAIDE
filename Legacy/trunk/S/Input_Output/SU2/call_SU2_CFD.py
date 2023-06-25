@@ -6,7 +6,7 @@
 #           Mar 2018, T. MacDonald
 
 import subprocess
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 import sys, os
 
 ## @ingroup Input_Output-SU2

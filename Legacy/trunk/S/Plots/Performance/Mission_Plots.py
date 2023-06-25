@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np

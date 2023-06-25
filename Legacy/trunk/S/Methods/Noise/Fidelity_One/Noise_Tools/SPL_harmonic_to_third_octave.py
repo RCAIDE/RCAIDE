@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import SPL_arithmetic
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import SPL_arithmetic
 # ----------------------------------------------------------------------
 #  dbA Noise
 # ----------------------------------------------------------------------

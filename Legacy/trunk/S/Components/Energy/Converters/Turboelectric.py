@@ -8,12 +8,12 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
-from SUAVE.Core import Units
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
-from SUAVE.Methods.Power.Turboelectric.Discharge import zero_fidelity
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Methods.Power.Turboelectric.Discharge import zero_fidelity
 
 # ----------------------------------------------------------------------
 #  Turboelectric Class

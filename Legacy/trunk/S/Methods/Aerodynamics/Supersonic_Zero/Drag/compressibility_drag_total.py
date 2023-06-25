@@ -11,13 +11,13 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 from .wave_drag_lift import wave_drag_lift
 from .wave_drag_volume_raymer import wave_drag_volume_raymer
 from .wave_drag_volume_sears_haack import wave_drag_volume_sears_haack
-from SUAVE.Methods.Utilities.Cubic_Spline_Blender import Cubic_Spline_Blender
-from SUAVE.Components.Wings import Main_Wing
+from Legacy.trunk.S.Methods.Utilities.Cubic_Spline_Blender import Cubic_Spline_Blender
+from Legacy.trunk.S.Components.Wings import Main_Wing
 
 import copy
 

@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
 
 

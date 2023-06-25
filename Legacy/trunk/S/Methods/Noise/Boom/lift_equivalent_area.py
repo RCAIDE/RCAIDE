@@ -10,7 +10,7 @@
 
 import numpy as np
 
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift import VLM
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift import VLM
 
 # ----------------------------------------------------------------------
 #   Equivalent Area from lift for Sonic Boom

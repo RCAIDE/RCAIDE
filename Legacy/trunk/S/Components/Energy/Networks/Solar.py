@@ -14,11 +14,11 @@
 # package imports
 import numpy as np
 from .Network import Network
-from SUAVE.Components.Physical_Component import Container
-from SUAVE.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
-from SUAVE.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
+from Legacy.trunk.S.Components.Physical_Component import Container
+from Legacy.trunk.S.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
+from Legacy.trunk.S.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
 
-from SUAVE.Core import Data , Units
+from Legacy.trunk.S.Core import Data , Units
 
 # ----------------------------------------------------------------------
 #  Network

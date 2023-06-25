@@ -9,12 +9,12 @@
 # ----------------------------------------------------------------------
 
 # SUAVE imports
-from SUAVE.Methods.Missions import Segments as Methods
+from Legacy.trunk.S.Methods.Missions import Segments as Methods
 
 from .Constant_Speed_Constant_Altitude import Constant_Speed_Constant_Altitude
 
 # Units
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 # ----------------------------------------------------------------------
 #  Segment

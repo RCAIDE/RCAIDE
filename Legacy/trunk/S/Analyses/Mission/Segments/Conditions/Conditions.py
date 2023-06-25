@@ -15,7 +15,7 @@
 import numpy as np
 
 # SUAVE imports
-from SUAVE.Core                    import Data
+from Legacy.trunk.S.Core                    import Data
 
 # ----------------------------------------------------------------------
 #  Conditions

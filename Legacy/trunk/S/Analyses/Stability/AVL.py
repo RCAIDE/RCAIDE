@@ -9,25 +9,25 @@
 # ----------------------------------------------------------------------
 
 # SUAVE imports
-import SUAVE
-from SUAVE.Core import Units, Data
-from SUAVE.Core import redirect
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
+from Legacy.trunk.S.Core import redirect
 
-from SUAVE.Analyses.Mission.Segments.Conditions.Aerodynamics import Aerodynamics
-from SUAVE.Analyses.Mission.Segments.Conditions.Conditions   import Conditions
+from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Aerodynamics import Aerodynamics
+from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Conditions   import Conditions
 
-from SUAVE.Methods.Aerodynamics.AVL.write_geometry           import write_geometry
-from SUAVE.Methods.Aerodynamics.AVL.write_mass_file          import write_mass_file
-from SUAVE.Methods.Aerodynamics.AVL.write_run_cases          import write_run_cases
-from SUAVE.Methods.Aerodynamics.AVL.write_input_deck         import write_input_deck
-from SUAVE.Methods.Aerodynamics.AVL.run_analysis             import run_analysis
-from SUAVE.Methods.Aerodynamics.AVL.translate_data           import translate_conditions_to_cases, translate_results_to_conditions
-from SUAVE.Methods.Aerodynamics.AVL.purge_files              import purge_files
-from SUAVE.Methods.Aerodynamics.AVL.Data.Settings            import Settings
-from SUAVE.Methods.Aerodynamics.AVL.Data.Cases               import Run_Case
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform.populate_control_sections import populate_control_sections  
-from SUAVE.Methods.Flight_Dynamics.Dynamic_Stability.compute_dynamic_flight_modes import  compute_dynamic_flight_modes
-from SUAVE.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.write_geometry           import write_geometry
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.write_mass_file          import write_mass_file
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.write_run_cases          import write_run_cases
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.write_input_deck         import write_input_deck
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.run_analysis             import run_analysis
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.translate_data           import translate_conditions_to_cases, translate_results_to_conditions
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files              import purge_files
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Settings            import Settings
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Cases               import Run_Case
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform.populate_control_sections import populate_control_sections  
+from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability.compute_dynamic_flight_modes import  compute_dynamic_flight_modes
+from Legacy.trunk.S.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
 
 # local imports 
 from .Stability import Stability

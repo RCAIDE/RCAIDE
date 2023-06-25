@@ -9,9 +9,9 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 import matplotlib.pyplot as plt
 import numpy as np

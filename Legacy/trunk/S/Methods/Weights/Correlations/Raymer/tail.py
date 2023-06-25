@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 ## @ingroup Methods-Weights-Correlations-Raymer
 def tail_vertical_Raymer(vehicle, wing):

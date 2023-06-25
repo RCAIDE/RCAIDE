@@ -5,8 +5,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Methods.Aerodynamics.AVL.purge_files       import purge_files
-from SUAVE.Methods.Aerodynamics.AVL.Data.Settings     import Settings
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files       import purge_files
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Settings     import Settings
 import numpy as np
 
 ## @ingroup Analyses-AVL

@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 import numpy as np
 
 # ----------------------------------------------------------------------
@@ -59,8 +59,8 @@ if __name__ == '__main__':
     import matplotlib
     matplotlib.interactive(True)
     import scipy as sp
-    import SUAVE
-    from SUAVE.Core import Units
+    import Legacy.trunk.S as SUAVE
+    from Legacy.trunk.S.Core import Units
 
     #define array of sweep and deflection
     sweep_vec = sp.linspace(-10,30,20) * Units.deg

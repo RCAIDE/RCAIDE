@@ -12,16 +12,16 @@
 # ----------------------------------------------------------------------
 
 # local imports
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Helper_Functions import compressible_mixed_flat_plate
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Helper_Functions import compressible_mixed_flat_plate
 
 # suave imports
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # package imports
 import numpy as np
 
-from SUAVE.Methods.Aerodynamics.Supersonic_Zero.Drag.Cubic_Spline_Blender import Cubic_Spline_Blender
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform.wing_segmented_planform import segment_properties
+from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.Cubic_Spline_Blender import Cubic_Spline_Blender
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform.wing_segmented_planform import segment_properties
 
 
 # ----------------------------------------------------------------------

@@ -11,7 +11,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Methods.Utilities.soft_max import soft_max
+from Legacy.trunk.S.Methods.Utilities.soft_max import soft_max
 # ----------------------------------------------------------------------
 #  Initialize from Energy and Power
 # ----------------------------------------------------------------------

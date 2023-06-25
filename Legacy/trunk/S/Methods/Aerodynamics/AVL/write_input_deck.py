@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 from .purge_files import purge_files
 
 ## @ingroup Methods-Aerodynamics-AVL

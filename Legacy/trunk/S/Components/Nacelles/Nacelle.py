@@ -6,9 +6,9 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------  
-from SUAVE.Core import Data, ContainerOrdered
-from SUAVE.Components import Physical_Component, Lofted_Body  
-from SUAVE.Components.Airfoils import Airfoil
+from Legacy.trunk.S.Core import Data, ContainerOrdered
+from Legacy.trunk.S.Components import Physical_Component, Lofted_Body  
+from Legacy.trunk.S.Components.Airfoils import Airfoil
 import scipy as sp
 import numpy as np
 

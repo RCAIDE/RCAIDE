@@ -7,9 +7,9 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 import numpy as np
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 ## @ingroup Methods-Weights-Correlations-FLOPS
 def fuselage_weight_FLOPS(vehicle):

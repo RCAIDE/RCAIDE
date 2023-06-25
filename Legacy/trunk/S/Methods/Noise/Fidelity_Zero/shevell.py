@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Core import Units, Data
+from Legacy.trunk.S.Core import Units, Data
 
 # ----------------------------------------------------------------------
 #   Shevell Method

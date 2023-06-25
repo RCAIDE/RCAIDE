@@ -9,7 +9,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 # package imports
 import numpy as np

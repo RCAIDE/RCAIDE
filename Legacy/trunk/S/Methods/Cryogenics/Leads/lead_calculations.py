@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
-from SUAVE.Attributes.Solids.Solid import Solid
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Attributes.Solids.Solid import Solid
 from scipy import integrate
 from scipy import interpolate
 from scipy.misc import derivative

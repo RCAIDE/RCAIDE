@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 
 from .Solid import Solid
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 #-------------------------------------------------------------------------------
 # Aluminum 6061-T6 Solid Class

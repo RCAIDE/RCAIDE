@@ -8,9 +8,9 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # ----------------------------------------------------------------------
 #   Sizing

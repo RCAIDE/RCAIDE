@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 ## @ingroup Methods-Weights-Correlations-FLOPS
 def tail_vertical_FLOPS(vehicle, wing):

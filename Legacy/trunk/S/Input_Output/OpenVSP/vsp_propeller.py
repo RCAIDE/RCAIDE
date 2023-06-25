@@ -7,12 +7,12 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units , Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units , Data
 import numpy as np
 import scipy as sp
 import string
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
      import import_airfoil_geometry
 try:
     import vsp as vsp

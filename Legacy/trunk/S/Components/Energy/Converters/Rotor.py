@@ -16,14 +16,14 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Data
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
-from SUAVE.Core import ContainerOrdered 
-from SUAVE.Analyses.Propulsion.Rotor_Wake_Fidelity_Zero import Rotor_Wake_Fidelity_Zero
-from SUAVE.Analyses.Propulsion.Rotor_Wake_Fidelity_One import Rotor_Wake_Fidelity_One
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.BET_calculations \
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Core import ContainerOrdered 
+from Legacy.trunk.S.Analyses.Propulsion.Rotor_Wake_Fidelity_Zero import Rotor_Wake_Fidelity_Zero
+from Legacy.trunk.S.Analyses.Propulsion.Rotor_Wake_Fidelity_One import Rotor_Wake_Fidelity_One
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.BET_calculations \
      import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss
-from SUAVE.Methods.Geometry.Three_Dimensional \
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional \
      import  orientation_product, orientation_transpose
 
 # package imports

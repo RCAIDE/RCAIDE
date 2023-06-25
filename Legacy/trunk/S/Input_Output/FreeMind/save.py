@@ -10,8 +10,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Input_Output import XML
-from SUAVE.Core import Data
+from Legacy.trunk.S.Input_Output import XML
+from Legacy.trunk.S.Core import Data
 import time
 
 # ----------------------------------------------------------------------

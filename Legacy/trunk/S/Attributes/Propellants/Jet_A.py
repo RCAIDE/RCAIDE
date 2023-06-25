@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 from .Propellant import Propellant
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # ----------------------------------------------------------------------
 #  Jet_A Propellant Class

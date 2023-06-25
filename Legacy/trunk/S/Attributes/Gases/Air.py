@@ -11,7 +11,7 @@
 # ----------------------------------------------------------------------
 
 from .Gas import Gas
-from SUAVE.Core import Data , Units
+from Legacy.trunk.S.Core import Data , Units
 import numpy as np
 from scipy import interpolate
 

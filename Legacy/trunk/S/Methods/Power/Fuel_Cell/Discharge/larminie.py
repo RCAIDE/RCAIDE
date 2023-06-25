@@ -10,7 +10,7 @@
 
 import numpy as np
 import scipy as sp
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 from .find_voltage_larminie import find_voltage_larminie
 from .find_power_diff_larminie import find_power_diff_larminie
 

@@ -13,13 +13,13 @@
 # ----------------------------------------------------------------------
 
 #SUAVE Imports
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Components import Wings
-from SUAVE.Core  import Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Components import Wings
+from Legacy.trunk.S.Core  import Data
 
-from SUAVE.Methods.Aerodynamics.Fidelity_Zero.Lift.compute_slat_lift import compute_slat_lift
-from SUAVE.Methods.Aerodynamics.Fidelity_Zero.Lift.compute_flap_lift import compute_flap_lift
+from Legacy.trunk.S.Methods.Aerodynamics.Fidelity_Zero.Lift.compute_slat_lift import compute_slat_lift
+from Legacy.trunk.S.Methods.Aerodynamics.Fidelity_Zero.Lift.compute_flap_lift import compute_flap_lift
 
 # ----------------------------------------------------------------------
 #  compute_max_lift_coeff

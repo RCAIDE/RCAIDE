@@ -8,8 +8,8 @@
 #  Imports
 # ------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Components import Physical_Component
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Components import Physical_Component
 
 # ----------------------------------------------------------------------
 #  Energy Component Class

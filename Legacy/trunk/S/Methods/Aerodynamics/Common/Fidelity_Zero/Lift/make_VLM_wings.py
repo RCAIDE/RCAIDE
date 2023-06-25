@@ -11,12 +11,12 @@
 import numpy as np
 from copy import deepcopy
 
-import SUAVE
-from SUAVE.Core import  Data
-from SUAVE.Components.Wings import All_Moving_Surface 
-from SUAVE.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform import populate_control_sections
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions import convert_sweep_segments
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import  Data
+from Legacy.trunk.S.Components.Wings import All_Moving_Surface 
+from Legacy.trunk.S.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform import populate_control_sections
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions import convert_sweep_segments
 
 # ------------------------------------------------------------------
 # make_VLM_wings()

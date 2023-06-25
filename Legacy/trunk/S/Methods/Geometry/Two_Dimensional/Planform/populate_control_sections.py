@@ -10,9 +10,9 @@
 # ----------------------------------------------------------------------
 #  Append Control Surfaces to Wing Segments
 # ----------------------------------------------------------------------  
-from SUAVE.Core import Data , Units 
+from Legacy.trunk.S.Core import Data , Units 
 import numpy as np 
-from SUAVE.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+from Legacy.trunk.S.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
 
 # ----------------------------------------------------------------------
 #  Methods

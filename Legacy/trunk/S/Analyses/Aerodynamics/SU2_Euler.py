@@ -10,20 +10,20 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data
 from .Markup import Markup
-from SUAVE.Analyses import Process
+from Legacy.trunk.S.Analyses import Process
 import numpy as np
 
-from SUAVE.Input_Output.OpenVSP.write_vsp_mesh import write_vsp_mesh
-from SUAVE.Input_Output.GMSH.write_geo_file import write_geo_file
-from SUAVE.Input_Output.GMSH.mesh_geo_file import mesh_geo_file
+from Legacy.trunk.S.Input_Output.OpenVSP.write_vsp_mesh import write_vsp_mesh
+from Legacy.trunk.S.Input_Output.GMSH.write_geo_file import write_geo_file
+from Legacy.trunk.S.Input_Output.GMSH.mesh_geo_file import mesh_geo_file
 
 # The aero methods
-from SUAVE.Methods.Aerodynamics.Common import Fidelity_Zero as Common
+from Legacy.trunk.S.Methods.Aerodynamics.Common import Fidelity_Zero as Common
 from .Process_Geometry import Process_Geometry
-from SUAVE.Analyses.Aerodynamics.SU2_inviscid import SU2_inviscid
+from Legacy.trunk.S.Analyses.Aerodynamics.SU2_inviscid import SU2_inviscid
 
 # ----------------------------------------------------------------------
 #  Analysis

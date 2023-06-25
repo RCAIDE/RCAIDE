@@ -12,8 +12,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-from SUAVE.Core import Units
-from SUAVE.Attributes.Solids import (
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Attributes.Solids import (
     Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Aluminum, Epoxy, Aluminum_Rib)
 import numpy as np
 import copy as cp

@@ -8,12 +8,12 @@
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
-from SUAVE.Attributes.Gases import Air
-from SUAVE.Attributes.Atmospheres import Atmosphere
-from SUAVE.Attributes.Planets import Earth
-from SUAVE.Core import Data
-from SUAVE.Core import Units
-from SUAVE.Attributes.Atmospheres import Atmosphere
+from Legacy.trunk.S.Attributes.Gases import Air
+from Legacy.trunk.S.Attributes.Atmospheres import Atmosphere
+from Legacy.trunk.S.Attributes.Planets import Earth
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Attributes.Atmospheres import Atmosphere
 
 # ----------------------------------------------------------------------
 #  Constant_Temperature Atmosphere

@@ -9,8 +9,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Methods import Missions as Methods
-from SUAVE.Analyses.Mission import All_At_Once
+from Legacy.trunk.S.Methods import Missions as Methods
+from Legacy.trunk.S.Analyses.Mission import All_At_Once
 
 # ----------------------------------------------------------------------
 #   Class

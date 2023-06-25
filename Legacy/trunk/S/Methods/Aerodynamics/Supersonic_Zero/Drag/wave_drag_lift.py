@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Components.Wings import Main_Wing
+from Legacy.trunk.S.Components.Wings import Main_Wing
 
 # ----------------------------------------------------------------------
 #   Wave Drag Lift

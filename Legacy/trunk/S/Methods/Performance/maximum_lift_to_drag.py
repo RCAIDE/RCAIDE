@@ -8,11 +8,11 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 import numpy as np
 import scipy as sp
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # ----------------------------------------------------------------------
 #  Propeller Range and Endurance Speeds

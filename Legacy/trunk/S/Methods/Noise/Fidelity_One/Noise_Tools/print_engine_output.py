@@ -7,7 +7,7 @@
 #   Imports
 # ----------------------------------------------------------------------     
 import numpy as np
-from SUAVE.Core            import Units  
+from Legacy.trunk.S.Core            import Units  
 
 ## @ingroup Methods-Noise-Fidelity_One-Noise_Tools
 def print_engine_output(SAE_Engine_Noise_Outputs):  

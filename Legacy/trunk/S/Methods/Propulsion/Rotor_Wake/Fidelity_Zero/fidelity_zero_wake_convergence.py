@@ -4,7 +4,7 @@
 # Created:  Feb 2022, R. Erhard
 # Modified: 
 
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.BET_calculations import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.BET_calculations import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss
 import numpy as np
 import scipy as sp
 

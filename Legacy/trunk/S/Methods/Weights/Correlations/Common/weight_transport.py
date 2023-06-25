@@ -7,37 +7,37 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Data
-from SUAVE.Methods.Weights.Correlations import Propulsion as Propulsion
-from SUAVE.Methods.Weights.Correlations.FLOPS.prop_system import total_prop_flops
-from SUAVE.Methods.Weights.Correlations.FLOPS.systems import systems_FLOPS
-from SUAVE.Methods.Weights.Correlations.FLOPS.operating_items import operating_items_FLOPS
-from SUAVE.Methods.Weights.Correlations.FLOPS.wing import wing_weight_FLOPS
-from SUAVE.Methods.Weights.Correlations.FLOPS.tail import tail_horizontal_FLOPS
-from SUAVE.Methods.Weights.Correlations.FLOPS.tail import tail_vertical_FLOPS
-from SUAVE.Methods.Weights.Correlations.FLOPS.fuselage import fuselage_weight_FLOPS
-from SUAVE.Methods.Weights.Correlations.FLOPS.landing_gear import landing_gear_FLOPS
-from SUAVE.Methods.Weights.Correlations.FLOPS.payload import payload_FLOPS
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Weights.Correlations import Propulsion as Propulsion
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.prop_system import total_prop_flops
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.systems import systems_FLOPS
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.operating_items import operating_items_FLOPS
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.wing import wing_weight_FLOPS
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.tail import tail_horizontal_FLOPS
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.tail import tail_vertical_FLOPS
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.fuselage import fuselage_weight_FLOPS
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.landing_gear import landing_gear_FLOPS
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.payload import payload_FLOPS
 
-from SUAVE.Methods.Weights.Correlations.Common.systems import systems
-from SUAVE.Methods.Weights.Correlations.Transport.tail_horizontal import tail_horizontal
-from SUAVE.Methods.Weights.Correlations.Transport.tail_vertical import tail_vertical
-from SUAVE.Methods.Weights.Correlations.Transport.operating_items import operating_items
-from SUAVE.Methods.Weights.Correlations.Transport.tube import tube
-from SUAVE.Methods.Weights.Correlations.Common import wing_main
-from SUAVE.Methods.Weights.Correlations.Common import landing_gear as landing_gear_weight
-from SUAVE.Methods.Weights.Correlations.Common import payload as payload_weight
+from Legacy.trunk.S.Methods.Weights.Correlations.Common.systems import systems
+from Legacy.trunk.S.Methods.Weights.Correlations.Transport.tail_horizontal import tail_horizontal
+from Legacy.trunk.S.Methods.Weights.Correlations.Transport.tail_vertical import tail_vertical
+from Legacy.trunk.S.Methods.Weights.Correlations.Transport.operating_items import operating_items
+from Legacy.trunk.S.Methods.Weights.Correlations.Transport.tube import tube
+from Legacy.trunk.S.Methods.Weights.Correlations.Common import wing_main
+from Legacy.trunk.S.Methods.Weights.Correlations.Common import landing_gear as landing_gear_weight
+from Legacy.trunk.S.Methods.Weights.Correlations.Common import payload as payload_weight
 
-from SUAVE.Methods.Weights.Correlations.Raymer import wing_main_raymer
-from SUAVE.Methods.Weights.Correlations.Raymer.tail import tail_horizontal_Raymer, tail_vertical_Raymer
-from SUAVE.Methods.Weights.Correlations.Raymer import fuselage_weight_Raymer
-from SUAVE.Methods.Weights.Correlations.Raymer import landing_gear_Raymer
-from SUAVE.Methods.Weights.Correlations.Raymer import systems_Raymer
-from SUAVE.Methods.Weights.Correlations.Raymer import total_prop_Raymer
+from Legacy.trunk.S.Methods.Weights.Correlations.Raymer import wing_main_raymer
+from Legacy.trunk.S.Methods.Weights.Correlations.Raymer.tail import tail_horizontal_Raymer, tail_vertical_Raymer
+from Legacy.trunk.S.Methods.Weights.Correlations.Raymer import fuselage_weight_Raymer
+from Legacy.trunk.S.Methods.Weights.Correlations.Raymer import landing_gear_Raymer
+from Legacy.trunk.S.Methods.Weights.Correlations.Raymer import systems_Raymer
+from Legacy.trunk.S.Methods.Weights.Correlations.Raymer import total_prop_Raymer
 
-from SUAVE.Attributes.Solids.Aluminum import Aluminum
+from Legacy.trunk.S.Attributes.Solids.Aluminum import Aluminum
 
 def empty_weight(vehicle, settings=None, method_type='New SUAVE'):
     """ Main function that estimates the zero-fuel weight of a transport aircraft:

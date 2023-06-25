@@ -11,8 +11,8 @@
 
 import scipy as sp
 import numpy as np
-from SUAVE.Core import Units
-from SUAVE.Methods.Power.Fuel_Cell.Discharge.find_power_larminie import find_power_larminie
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Power.Fuel_Cell.Discharge.find_power_larminie import find_power_larminie
 
 # ----------------------------------------------------------------------
 #  Initialize Larminie from Power

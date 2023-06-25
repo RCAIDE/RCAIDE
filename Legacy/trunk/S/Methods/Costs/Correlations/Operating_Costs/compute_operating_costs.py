@@ -4,7 +4,7 @@
 # Created:  
 
 # suave imports
-from SUAVE.Core import Units,Data
+from Legacy.trunk.S.Core import Units,Data
 
 # ----------------------------------------------------------------------
 #  Compute operating costs

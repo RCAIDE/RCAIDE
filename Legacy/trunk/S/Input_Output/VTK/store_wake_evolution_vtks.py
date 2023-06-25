@@ -7,10 +7,10 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Data
-from SUAVE.Input_Output.VTK.save_vehicle_vtk import save_vehicle_vtks
-from SUAVE.Input_Output.VTK.save_evaluation_points_vtk import save_evaluation_points_vtk
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Input_Output.VTK.save_vehicle_vtk import save_vehicle_vtks
+from Legacy.trunk.S.Input_Output.VTK.save_evaluation_points_vtk import save_evaluation_points_vtk
 
 import numpy as np
 

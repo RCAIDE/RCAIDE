@@ -11,7 +11,7 @@
 
 from .Solid import Solid
 from .Aluminum import Aluminum
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 #-------------------------------------------------------------------------------
 # Aluminim Component Material Property Data Class

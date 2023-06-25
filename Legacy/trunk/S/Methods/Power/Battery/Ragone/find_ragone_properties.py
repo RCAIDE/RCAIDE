@@ -9,7 +9,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Methods.Power.Battery.Sizing import initialize_from_energy_and_power
+from Legacy.trunk.S.Methods.Power.Battery.Sizing import initialize_from_energy_and_power
 from .find_specific_power import find_specific_power
 
 # ----------------------------------------------------------------------

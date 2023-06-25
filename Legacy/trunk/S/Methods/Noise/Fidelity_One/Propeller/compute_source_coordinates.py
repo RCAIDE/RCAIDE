@@ -8,7 +8,7 @@
 #  Imports
 # ---------------------------------------------------------------------
 import numpy as np 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 import scipy as sp
 # ----------------------------------------------------------------------
 #  Source Coordinates 

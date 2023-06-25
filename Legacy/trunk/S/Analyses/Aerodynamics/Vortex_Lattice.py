@@ -19,16 +19,16 @@
 # ----------------------------------------------------------------------
 
 # SUAVE imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Core import Data
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Core import Units
  
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.VLM import VLM
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.VLM import VLM
 
 # local imports
 from .Aerodynamics import Aerodynamics
-from SUAVE.Methods.Aerodynamics.Supersonic_Zero.Drag.Cubic_Spline_Blender import Cubic_Spline_Blender
+from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.Cubic_Spline_Blender import Cubic_Spline_Blender
 
 # package imports
 import numpy as np 

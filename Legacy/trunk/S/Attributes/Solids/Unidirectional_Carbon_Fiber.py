@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 
 from .Solid import Solid
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 #-------------------------------------------------------------------------------
 # Uni-Directional Carbon Fiber Solid Class

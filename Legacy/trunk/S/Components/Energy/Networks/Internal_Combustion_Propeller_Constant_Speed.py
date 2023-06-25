@@ -14,8 +14,8 @@
 # package imports
 import numpy as np
 from .Network import Network
-from SUAVE.Components.Physical_Component import Container
-from SUAVE.Core import Data, Units
+from Legacy.trunk.S.Components.Physical_Component import Container
+from Legacy.trunk.S.Core import Data, Units
 
 # ----------------------------------------------------------------------
 #  Network

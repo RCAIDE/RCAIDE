@@ -8,8 +8,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Analyses import Analysis
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Analyses import Analysis
 
 
 # ----------------------------------------------------------------------

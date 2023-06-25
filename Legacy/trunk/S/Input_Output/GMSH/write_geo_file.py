@@ -4,7 +4,7 @@
 # Created:  Oct 2016, T. MacDonald
 # Modified: Jan 2017, T. MacDonald
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 import numpy as np
 
 ## @ingroup Input_Output-GMSH

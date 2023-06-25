@@ -11,7 +11,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
+import Legacy.trunk.S as SUAVE
 try:
     import pyOpt
     import pyOpt.pySNOPT
@@ -20,8 +20,8 @@ except:
     pass
 import sklearn
 from sklearn import gaussian_process
-from SUAVE.Optimization import helper_functions as help_fun
-from SUAVE.Methods.Utilities.latin_hypercube_sampling import latin_hypercube_sampling
+from Legacy.trunk.S.Optimization import helper_functions as help_fun
+from Legacy.trunk.S.Methods.Utilities.latin_hypercube_sampling import latin_hypercube_sampling
 from scipy.stats import norm
 import os
 import sys

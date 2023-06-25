@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Components import Component
-from SUAVE.Core import Data
-from SUAVE.Methods.Costs.Correlations.Industrial_Costs import estimate_hourly_rates
+from Legacy.trunk.S.Components import Component
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Costs.Correlations.Industrial_Costs import estimate_hourly_rates
 
 # ----------------------------------------------------------------------
 # Operating Costs class

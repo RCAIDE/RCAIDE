@@ -12,8 +12,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Components import Physical_Component
-from SUAVE.Core import Data
+from Legacy.trunk.S.Components import Physical_Component
+from Legacy.trunk.S.Core import Data
 
 # ----------------------------------------------------------------------
 #  Network
@@ -79,28 +79,6 @@ class Container(Physical_Component.Container):
             N/A
     
     """
-    def get_children(self):
-        """ Returns the components that can go inside
-        
-        Assumptions:
-        None
-    
-        Source:
-        N/A
-    
-        Inputs:
-        None
-    
-        Outputs:
-        None
-    
-        Properties Used:
-        N/A
-        """
-        import SUAVE.Components.Energy.Networks as Nw
-                
-        return [Nw.Turbofan,Nw.Turbojet_Super]
-
                 
 
     

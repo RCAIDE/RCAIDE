@@ -18,9 +18,9 @@ from .Unknowns   import Unknowns
 from .Residuals  import Residuals
 from .Numerics   import Numerics
 
-import SUAVE
-from SUAVE.Core.Arrays import array_type
-from SUAVE.Core import DataOrdered
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core.Arrays import array_type
+from Legacy.trunk.S.Core import DataOrdered
 
 # ----------------------------------------------------------------------
 #  State

@@ -11,7 +11,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
-from SUAVE.Methods.Center_of_Gravity.compute_mission_center_of_gravity import compute_mission_center_of_gravity
+from Legacy.trunk.S.Methods.Center_of_Gravity.compute_mission_center_of_gravity import compute_mission_center_of_gravity
 
 # ----------------------------------------------------------------------
 #  Method
@@ -154,10 +154,10 @@ def taw_cmalpha(geometry,mach,conditions,configuration):
 # ----------------------------------------------------------------------
 # this will run from command line, put simple tests for your code here
 if __name__ == '__main__':
-    from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
-    from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_ac_x import trapezoid_ac_x
-    from SUAVE.Core import Units
-    from SUAVE.Core import (
+    from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
+    from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_ac_x import trapezoid_ac_x
+    from Legacy.trunk.S.Core import Units
+    from Legacy.trunk.S.Core import (
         Data, Container,
     )    
     

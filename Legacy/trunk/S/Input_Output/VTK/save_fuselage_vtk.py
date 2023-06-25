@@ -9,7 +9,7 @@
 # Imports
 #------------------------------
 
-from SUAVE.Input_Output.VTK.write_azimuthal_cell_values import write_azimuthal_cell_values
+from Legacy.trunk.S.Input_Output.VTK.write_azimuthal_cell_values import write_azimuthal_cell_values
 import numpy as np
 
 

@@ -1,4 +1,4 @@
-from SUAVE.Core import Units, Data
+from Legacy.trunk.S.Core import Units, Data
 ## @ingroup Methods-Weights-Correlations-Raymer
 # prop_system.py
 #
@@ -9,7 +9,7 @@ from SUAVE.Core import Units, Data
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
-from SUAVE.Methods.Weights.Correlations.FLOPS.prop_system import engine_FLOPS
+from Legacy.trunk.S.Methods.Weights.Correlations.FLOPS.prop_system import engine_FLOPS
 
 ## @ingroup Methods-Weights-Correlations-Raymer
 def total_prop_Raymer(vehicle,prop):

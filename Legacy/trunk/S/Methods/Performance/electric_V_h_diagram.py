@@ -8,10 +8,10 @@
 # Imports
 #------------------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
-from SUAVE.Methods.Performance.propeller_single_point import propeller_single_point
+from Legacy.trunk.S.Methods.Performance.propeller_single_point import propeller_single_point
 
 import numpy as np
 import matplotlib.pyplot as plt

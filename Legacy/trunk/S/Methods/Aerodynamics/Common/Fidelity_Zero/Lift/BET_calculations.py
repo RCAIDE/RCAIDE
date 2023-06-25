@@ -3,7 +3,7 @@
 # 
 # Created:  Jan 2022, R. Erhard
 # Modified:       
-from SUAVE.Core.Utilities import interp2d 
+from Legacy.trunk.S.Core.Utilities import interp2d 
 import numpy as np
 ## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts,Nr,Na,tc,use_2d_analysis):

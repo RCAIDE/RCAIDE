@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 # ----------------------------------------------------------------------
 #  Rocket Thrust Process

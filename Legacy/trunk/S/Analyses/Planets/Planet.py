@@ -8,8 +8,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Analyses import Analysis
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Analyses import Analysis
 
 # ----------------------------------------------------------------------
 #  Analysis
@@ -45,7 +45,7 @@ class Planet(Analysis):
         self.features = Data()
         self.settings = Data()
         
-        from SUAVE.Attributes.Planets.Earth import Earth
+        from Legacy.trunk.S.Attributes.Planets.Earth import Earth
         self.features = Earth()
         
         

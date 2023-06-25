@@ -11,15 +11,15 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data
 from .Markup import Markup
-from SUAVE.Analyses import Process
+from Legacy.trunk.S.Analyses import Process
 
 from .Vortex_Lattice import Vortex_Lattice
 from .Process_Geometry import Process_Geometry
-from SUAVE.Methods.Aerodynamics import Supersonic_Zero as Methods
-from SUAVE.Methods.Aerodynamics.Common import Fidelity_Zero as Common
+from Legacy.trunk.S.Methods.Aerodynamics import Supersonic_Zero as Methods
+from Legacy.trunk.S.Methods.Aerodynamics.Common import Fidelity_Zero as Common
 import numpy as np
 
 # ----------------------------------------------------------------------

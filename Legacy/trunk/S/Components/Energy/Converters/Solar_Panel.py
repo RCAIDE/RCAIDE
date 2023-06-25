@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 ## @ingroup Components-Energy-Converters
 # ----------------------------------------------------------------------
 #  Solar_Panel Class

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 from .Gas import Gas
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # modules
 from math import sqrt

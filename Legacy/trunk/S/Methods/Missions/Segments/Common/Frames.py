@@ -11,9 +11,9 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
-from SUAVE.Methods.Geometry.Three_Dimensional \
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional \
      import angles_to_dcms, orientation_product, orientation_transpose
 
 # ----------------------------------------------------------------------

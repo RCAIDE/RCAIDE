@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------
 #   Landing Gear
 # ----------------------------------------------------------------------
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 
 ## @ingroup Methods-Weights-Correlations-Common

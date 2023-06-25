@@ -14,10 +14,10 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Data, ContainerOrdered, Container
-from SUAVE.Components import Lofted_Body, Mass_Properties, Physical_Component
-from SUAVE.Components.Airfoils import Airfoil
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data, ContainerOrdered, Container
+from Legacy.trunk.S.Components import Lofted_Body, Mass_Properties, Physical_Component
+from Legacy.trunk.S.Components.Airfoils import Airfoil
 
 import numpy as np
 

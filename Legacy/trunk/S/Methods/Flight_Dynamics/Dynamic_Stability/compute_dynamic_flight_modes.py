@@ -10,10 +10,10 @@ import scipy
 import numpy as np 
 
 # SUAVE Imports
-from SUAVE.Core                                        import Data , Units  
-from SUAVE.Methods.Flight_Dynamics.Dynamic_Stability.Full_Linearized_Equations import Supporting_Functions as Supporting_Functions
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
-from SUAVE.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+from Legacy.trunk.S.Core                                        import Data , Units  
+from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability.Full_Linearized_Equations import Supporting_Functions as Supporting_Functions
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
+from Legacy.trunk.S.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
 
 ## @ingroup Analyses-AVL
 def compute_dynamic_flight_modes(results,aircraft,flight_conditions,cases): 

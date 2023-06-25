@@ -14,17 +14,17 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
 import numpy as np
 import copy
-from SUAVE.Core import Units, Data
+from Legacy.trunk.S.Core import Units, Data
 from .Network import Network
-from SUAVE.Analyses.Mission.Segments.Conditions import Residuals
-from SUAVE.Components.Physical_Component import Container 
-from SUAVE.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
-from SUAVE.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
+from Legacy.trunk.S.Analyses.Mission.Segments.Conditions import Residuals
+from Legacy.trunk.S.Components.Physical_Component import Container 
+from Legacy.trunk.S.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
+from Legacy.trunk.S.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
 
 # ----------------------------------------------------------------------
 #  Lift_Forward

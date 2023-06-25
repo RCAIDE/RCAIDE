@@ -8,8 +8,8 @@
 #-------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 import numpy as np
 
 # ----------------------------------------------------------------------

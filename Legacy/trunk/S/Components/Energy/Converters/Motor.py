@@ -11,12 +11,12 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
 import numpy as np
 import scipy as sp
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 # ----------------------------------------------------------------------
 #  Motor Class

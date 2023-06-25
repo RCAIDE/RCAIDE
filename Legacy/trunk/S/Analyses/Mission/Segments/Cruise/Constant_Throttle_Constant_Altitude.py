@@ -12,14 +12,14 @@
 # ----------------------------------------------------------------------
 
 # SUAVE imports
-from SUAVE.Core import Units
-from SUAVE.Analyses.Mission.Segments import Aerodynamic
-from SUAVE.Analyses.Mission.Segments import Conditions
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Analyses.Mission.Segments import Aerodynamic
+from Legacy.trunk.S.Analyses.Mission.Segments import Conditions
 
-from SUAVE.Methods.Missions import Segments as Methods
-from SUAVE.Methods.skip import skip
+from Legacy.trunk.S.Methods.Missions import Segments as Methods
+from Legacy.trunk.S.Methods.skip import skip
 
-from SUAVE.Analyses import Process
+from Legacy.trunk.S.Analyses import Process
 
 # ----------------------------------------------------------------------
 #  Segment

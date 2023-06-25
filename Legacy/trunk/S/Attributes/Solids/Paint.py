@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 
 from .Solid import Solid
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 #-------------------------------------------------------------------------------
 # Paint and/or Vinyl Surface Convering Solid Class

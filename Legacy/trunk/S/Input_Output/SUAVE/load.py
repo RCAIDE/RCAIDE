@@ -11,7 +11,7 @@
 # ----------------------------------------------------------------------
 
 import json
-from SUAVE.Core import Data, DataOrdered
+from Legacy.trunk.S.Core import Data, DataOrdered
 import numpy as np
 from collections import OrderedDict
 

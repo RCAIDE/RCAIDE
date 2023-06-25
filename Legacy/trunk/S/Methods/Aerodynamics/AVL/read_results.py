@@ -10,8 +10,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Methods.Aerodynamics.AVL.Data.Wing import Control_Surface_Data ,  Control_Surface_Results 
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Wing import Control_Surface_Data ,  Control_Surface_Results 
 import numpy as np 
 
 ## @ingroup Methods-Aerodynamics-AVL

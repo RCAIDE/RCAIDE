@@ -9,14 +9,14 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
-from SUAVE.Methods.Costs.Correlations.Industrial_Costs.compute_industrial_costs import compute_industrial_costs
-from SUAVE.Methods.Cryogenics.Leads.lead_calculations import Q_min
-from SUAVE.Methods.Cryogenics.Leads.lead_calculations import calc_current
-from SUAVE.Methods.Cryogenics.Leads.lead_calculations import LARatio
-from SUAVE.Attributes.Solids.Solid import Solid
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Methods.Costs.Correlations.Industrial_Costs.compute_industrial_costs import compute_industrial_costs
+from Legacy.trunk.S.Methods.Cryogenics.Leads.lead_calculations import Q_min
+from Legacy.trunk.S.Methods.Cryogenics.Leads.lead_calculations import calc_current
+from Legacy.trunk.S.Methods.Cryogenics.Leads.lead_calculations import LARatio
+from Legacy.trunk.S.Attributes.Solids.Solid import Solid
 from scipy import integrate
 from scipy import interpolate
 from scipy.misc import derivative

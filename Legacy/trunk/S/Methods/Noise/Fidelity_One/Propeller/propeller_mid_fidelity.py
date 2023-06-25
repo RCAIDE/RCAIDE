@@ -8,13 +8,13 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------- 
-from SUAVE.Core import  Data 
+from Legacy.trunk.S.Core import  Data 
 import numpy as np   
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.decibel_arithmetic           import SPL_spectra_arithmetic  
-from SUAVE.Methods.Noise.Fidelity_One.Propeller.compute_source_coordinates     import compute_point_source_coordinates
-from SUAVE.Methods.Noise.Fidelity_One.Propeller.compute_source_coordinates     import compute_blade_section_source_coordinates 
-from SUAVE.Methods.Noise.Fidelity_One.Propeller.compute_harmonic_noise         import compute_harmonic_noise
-from SUAVE.Methods.Noise.Fidelity_One.Propeller.compute_broadband_noise        import compute_broadband_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.decibel_arithmetic           import SPL_spectra_arithmetic  
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Propeller.compute_source_coordinates     import compute_point_source_coordinates
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Propeller.compute_source_coordinates     import compute_blade_section_source_coordinates 
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Propeller.compute_harmonic_noise         import compute_harmonic_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Propeller.compute_broadband_noise        import compute_broadband_noise
 
 # -------------------------------------------------------------------------------------
 #  Medium Fidelity Frequency Domain Methods for Acoustic Noise Prediction

@@ -8,8 +8,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core    import Diffed_Data
-from SUAVE.Vehicle import Vehicle
+from Legacy.trunk.S.Core    import Diffed_Data
+from Legacy.trunk.S.Vehicle import Vehicle
 
 # ----------------------------------------------------------------------
 #  Config

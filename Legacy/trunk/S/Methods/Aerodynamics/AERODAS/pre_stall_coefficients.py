@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # ----------------------------------------------------------------------
 #  Pre Stall Coefficients

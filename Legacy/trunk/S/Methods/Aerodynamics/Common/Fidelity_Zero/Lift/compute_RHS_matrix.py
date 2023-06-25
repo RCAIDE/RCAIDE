@@ -15,7 +15,7 @@
 
 # package imports
 import numpy as np
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 ## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_model):

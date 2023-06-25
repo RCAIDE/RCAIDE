@@ -10,8 +10,8 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Components.Wings import All_Moving_Surface
-from SUAVE.Core import Data
+from Legacy.trunk.S.Components.Wings import All_Moving_Surface
+from Legacy.trunk.S.Core import Data
 from .generate_VD_helpers import postprocess_VD
 
 # ----------------------------------------------------------------------

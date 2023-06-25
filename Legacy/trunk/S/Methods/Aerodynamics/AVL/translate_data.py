@@ -12,8 +12,8 @@
 
 import numpy as np
 
-import SUAVE
-from SUAVE.Core import Data, Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data, Units
 from .Data.Cases import Run_Case
 
 ## @ingroup Methods-Aerodynamics-AVL

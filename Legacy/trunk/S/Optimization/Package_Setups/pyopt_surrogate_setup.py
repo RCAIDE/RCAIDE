@@ -10,8 +10,8 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Core import Data
-from SUAVE.Optimization import helper_functions as helper_functions
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Optimization import helper_functions as helper_functions
 
 
 # ----------------------------------------------------------------------

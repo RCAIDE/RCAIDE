@@ -13,9 +13,9 @@
 # package imports
 import numpy as np
 from .Network import Network
-from SUAVE.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
+from Legacy.trunk.S.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
 
-from SUAVE.Core import Data , Units
+from Legacy.trunk.S.Core import Data , Units
 
 # ----------------------------------------------------------------------
 #  Network

@@ -9,11 +9,11 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
-from SUAVE.Core import Units
-from SUAVE.Components.Energy.Storages.Batteries  import Battery
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Components.Energy.Storages.Batteries  import Battery
 
 # ----------------------------------------------------------------------
 #  Aluminum_Air

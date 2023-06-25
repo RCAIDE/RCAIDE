@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 from .Network   import Network
-from SUAVE.Methods.Utilities.Cubic_Spline_Blender import Cubic_Spline_Blender
-from SUAVE.Methods.Geometry.Three_Dimensional     import  orientation_product, orientation_transpose
+from Legacy.trunk.S.Methods.Utilities.Cubic_Spline_Blender import Cubic_Spline_Blender
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional     import  orientation_product, orientation_transpose
 
 # package imports
 import numpy as np

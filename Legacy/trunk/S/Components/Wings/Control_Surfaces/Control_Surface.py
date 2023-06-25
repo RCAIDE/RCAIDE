@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------- 
-from SUAVE.Core       import Data , Units
-from SUAVE.Components import Physical_Component
-from SUAVE.Components import Lofted_Body
+from Legacy.trunk.S.Core       import Data , Units
+from Legacy.trunk.S.Components import Physical_Component
+from Legacy.trunk.S.Components import Lofted_Body
 import numpy as np 
     
 # ------------------------------------------------------------

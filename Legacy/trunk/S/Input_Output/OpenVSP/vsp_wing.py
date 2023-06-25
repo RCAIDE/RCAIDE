@@ -12,10 +12,10 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units , Data
-from SUAVE.Components.Airfoils.Airfoil import Airfoil
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform import wing_planform, wing_segmented_planform
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units , Data
+from Legacy.trunk.S.Components.Airfoils.Airfoil import Airfoil
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform import wing_planform, wing_segmented_planform
 import numpy as np
 import string
 try:

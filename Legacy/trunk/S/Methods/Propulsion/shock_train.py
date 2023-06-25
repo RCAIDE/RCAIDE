@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
-from SUAVE.Methods.Aerodynamics.Common.Gas_Dynamics.Oblique_Shock import theta_beta_mach,oblique_shock_relations
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Gas_Dynamics.Oblique_Shock import theta_beta_mach,oblique_shock_relations
 
 # ----------------------------------------------------------------------
 #  Shock Train Calculations

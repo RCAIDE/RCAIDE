@@ -10,14 +10,14 @@
 
 # suave imports
 from re import X
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
 import numpy as np
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 
-from SUAVE.Components.Energy.Networks.Network import Network
+from Legacy.trunk.S.Components.Energy.Networks.Network import Network
 
 # ----------------------------------------------------------------------
 #  Network

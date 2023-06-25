@@ -9,7 +9,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Components import Physical_Component
+from Legacy.trunk.S.Components import Physical_Component
 
 
 # ----------------------------------------------------------------------

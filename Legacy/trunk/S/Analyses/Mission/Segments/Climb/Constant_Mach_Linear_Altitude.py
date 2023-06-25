@@ -11,10 +11,10 @@
 
 # SUAVE imports  
 from .Unknown_Throttle import Unknown_Throttle 
-from SUAVE.Methods.Missions import Segments as Methods
+from Legacy.trunk.S.Methods.Missions import Segments as Methods
 
 # Units
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 # ----------------------------------------------------------------------
 #  Segment

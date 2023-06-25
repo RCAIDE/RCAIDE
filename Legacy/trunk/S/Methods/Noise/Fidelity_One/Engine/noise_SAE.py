@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------    
 
 import numpy as np
-from SUAVE.Core            import Units , Data 
+from Legacy.trunk.S.Core            import Units , Data 
 
 from .angle_of_attack_effect    import angle_of_attack_effect
 from .external_plug_effect      import external_plug_effect
@@ -21,14 +21,14 @@ from .noise_source_location     import noise_source_location
 from .primary_noise_component   import primary_noise_component
 from .secondary_noise_component import secondary_noise_component
 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import pnl_noise
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import noise_tone_correction
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import epnl_noise
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import atmospheric_attenuation 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import SPL_arithmetic
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import senel_noise
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import dbA_noise 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import print_engine_output
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import pnl_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import noise_tone_correction
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import epnl_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import atmospheric_attenuation 
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import SPL_arithmetic
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import senel_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import dbA_noise 
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import print_engine_output
 
 # ----------------------------------------------------------------------        
 #   Noise SAE

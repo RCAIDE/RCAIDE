@@ -9,16 +9,16 @@
 # Imports
 #----------------------------
 
-from SUAVE.Input_Output.VTK.save_wing_vtk import save_wing_vtk
-from SUAVE.Input_Output.VTK.save_prop_vtk import save_prop_vtk
-from SUAVE.Input_Output.VTK.save_prop_wake_vtk import save_prop_wake_vtk
-from SUAVE.Input_Output.VTK.save_fuselage_vtk import save_fuselage_vtk
-from SUAVE.Input_Output.VTK.save_nacelle_vtk import save_nacelle_vtk
-from SUAVE.Input_Output.VTK.save_vortex_distribution_vtk import save_vortex_distribution_vtk
+from Legacy.trunk.S.Input_Output.VTK.save_wing_vtk import save_wing_vtk
+from Legacy.trunk.S.Input_Output.VTK.save_prop_vtk import save_prop_vtk
+from Legacy.trunk.S.Input_Output.VTK.save_prop_wake_vtk import save_prop_wake_vtk
+from Legacy.trunk.S.Input_Output.VTK.save_fuselage_vtk import save_fuselage_vtk
+from Legacy.trunk.S.Input_Output.VTK.save_nacelle_vtk import save_nacelle_vtk
+from Legacy.trunk.S.Input_Output.VTK.save_vortex_distribution_vtk import save_vortex_distribution_vtk
 
-from SUAVE.Analyses.Aerodynamics import Vortex_Lattice
+from Legacy.trunk.S.Analyses.Aerodynamics import Vortex_Lattice
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 import numpy as np
 import os
 

@@ -9,12 +9,12 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Analyses.Aerodynamics.Markup import Markup
-from SUAVE.Core import Data, Units
-from SUAVE.Analyses import Process
-from SUAVE.Analyses.Aerodynamics.Process_Geometry import Process_Geometry
-from SUAVE.Methods.Aerodynamics import AERODAS as Methods
-from SUAVE.Methods.Aerodynamics.Common import Fidelity_Zero as Common
+from Legacy.trunk.S.Analyses.Aerodynamics.Markup import Markup
+from Legacy.trunk.S.Core import Data, Units
+from Legacy.trunk.S.Analyses import Process
+from Legacy.trunk.S.Analyses.Aerodynamics.Process_Geometry import Process_Geometry
+from Legacy.trunk.S.Methods.Aerodynamics import AERODAS as Methods
+from Legacy.trunk.S.Methods.Aerodynamics.Common import Fidelity_Zero as Common
 
 # ----------------------------------------------------------------------
 #  AERODAS

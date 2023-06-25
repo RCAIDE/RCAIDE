@@ -11,9 +11,9 @@
 # ----------------------------------------------------------------------
 
 # SUAVE Imports
-from SUAVE.Components import Wings
-from SUAVE.Core import Data, Units
-from SUAVE.Methods.Aerodynamics.Fidelity_Zero.Lift import compute_max_lift_coeff
+from Legacy.trunk.S.Components import Wings
+from Legacy.trunk.S.Core import Data, Units
+from Legacy.trunk.S.Methods.Aerodynamics.Fidelity_Zero.Lift import compute_max_lift_coeff
 
 # ----------------------------------------------------------------------
 #  Compute 2nd segment lift to drag ratio

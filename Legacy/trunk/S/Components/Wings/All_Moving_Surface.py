@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Components.Lofted_Body import Lofted_Body
+from Legacy.trunk.S.Components.Lofted_Body import Lofted_Body
 
 import numpy as np
 

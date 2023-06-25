@@ -12,9 +12,9 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE 
-from SUAVE.Core import Data, DataOrdered
-from SUAVE.Analyses import Process
+import Legacy.trunk.S as SUAVE 
+from Legacy.trunk.S.Core import Data, DataOrdered
+from Legacy.trunk.S.Analyses import Process
 from copy import deepcopy
 from . import helper_functions as help_fun
 import numpy as np

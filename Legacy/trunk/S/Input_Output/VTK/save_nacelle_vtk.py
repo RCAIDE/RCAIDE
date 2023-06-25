@@ -9,10 +9,10 @@
 # Imports
 #------------------------------
 
-from SUAVE.Input_Output.VTK.write_azimuthal_cell_values import write_azimuthal_cell_values
+from Legacy.trunk.S.Input_Output.VTK.write_azimuthal_cell_values import write_azimuthal_cell_values
 import numpy as np
 
-from SUAVE.Plots.Geometry.plot_vehicle import generate_nacelle_points
+from Legacy.trunk.S.Plots.Geometry.plot_vehicle import generate_nacelle_points
 
 
 #------------------------------

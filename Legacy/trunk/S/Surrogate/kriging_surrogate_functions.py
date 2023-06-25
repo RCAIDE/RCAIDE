@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 
 
-from SUAVE.Core import Units, Data
+from Legacy.trunk.S.Core import Units, Data
 try:
     from pyKriging.krige import kriging  
 except ImportError:

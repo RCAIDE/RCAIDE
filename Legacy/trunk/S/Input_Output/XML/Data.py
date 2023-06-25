@@ -10,7 +10,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data as Data_Base
+from Legacy.trunk.S.Core import Data as Data_Base
 
 # for enforcing attribute style access names
 import string

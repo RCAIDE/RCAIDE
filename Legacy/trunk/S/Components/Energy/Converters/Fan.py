@@ -10,14 +10,14 @@
 
 # SUAVE imports
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 # package imports
 import numpy as np
 
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 # ----------------------------------------------------------------------
 #  Fan Component

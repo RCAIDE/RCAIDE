@@ -11,7 +11,7 @@
 # ----------------------------------------------------------------------
 
 from .Data import Data as XML_Data
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 from warnings import warn
 

@@ -12,7 +12,7 @@
 
 from .Component          import Component
 from .Physical_Component import Physical_Component
-from SUAVE.Core         import DataOrdered
+from Legacy.trunk.S.Core         import DataOrdered
 
 
 # ------------------------------------------------------------

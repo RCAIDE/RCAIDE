@@ -10,10 +10,10 @@
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np 
-from SUAVE.Core.Utilities                                                       import interp2d
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.dbA_noise                     import A_weighting
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.SPL_harmonic_to_third_octave  import SPL_harmonic_to_third_octave  
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.decibel_arithmetic            import SPL_arithmetic
+from Legacy.trunk.S.Core.Utilities                                                       import interp2d
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.dbA_noise                     import A_weighting
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.SPL_harmonic_to_third_octave  import SPL_harmonic_to_third_octave  
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.decibel_arithmetic            import SPL_arithmetic
 from scipy.special                                                              import fresnel
  
 # ----------------------------------------------------------------------

@@ -14,10 +14,10 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Data, Container, ContainerOrdered
-from SUAVE.Components import Physical_Component, Lofted_Body
-from SUAVE.Components.Lofted_Body_Segment.Segment import Segment_Container
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data, Container, ContainerOrdered
+from Legacy.trunk.S.Components import Physical_Component, Lofted_Body
+from Legacy.trunk.S.Components.Lofted_Body_Segment.Segment import Segment_Container
 import numpy as np
 
 # ------------------------------------------------------------

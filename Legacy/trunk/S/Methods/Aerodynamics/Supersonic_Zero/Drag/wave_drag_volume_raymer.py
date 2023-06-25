@@ -8,10 +8,10 @@
 #           Feb 2021, T. MacDonald
 
 import numpy as np
-from SUAVE.Core import Units
-from SUAVE.Methods.Utilities.Cubic_Spline_Blender import Cubic_Spline_Blender
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.convert_sweep import convert_sweep
-from SUAVE.Components.Wings import Main_Wing
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Utilities.Cubic_Spline_Blender import Cubic_Spline_Blender
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.convert_sweep import convert_sweep
+from Legacy.trunk.S.Components.Wings import Main_Wing
 
 ## @ingroup Methods-Aerodynamics-Supersonic_Zero-Drag
 def wave_drag_volume_raymer(vehicle,mach,scaling_factor):

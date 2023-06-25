@@ -13,11 +13,11 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
-from SUAVE.Methods.Geometry.Three_Dimensional.compute_chord_length_from_span_location import compute_chord_length_from_span_location
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.convert_sweep import convert_sweep
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
-import SUAVE
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional.compute_chord_length_from_span_location import compute_chord_length_from_span_location
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.convert_sweep import convert_sweep
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
+import Legacy.trunk.S as SUAVE
 
 # ----------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity

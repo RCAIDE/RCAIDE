@@ -10,7 +10,7 @@
 
 from .Conditions import Conditions
 
-from SUAVE.Methods.Utilities.Chebyshev  import chebyshev_data
+from Legacy.trunk.S.Methods.Utilities.Chebyshev  import chebyshev_data
 
 import numpy as np
 

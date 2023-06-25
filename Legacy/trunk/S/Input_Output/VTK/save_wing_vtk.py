@@ -4,13 +4,13 @@
 # Created:    Jun 2021, R. Erhard
 # Modified:
 #
-import SUAVE
-from SUAVE.Core import Data
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_vortex_distribution import generate_vortex_distribution
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_vortex_distribution import generate_vortex_distribution
 from copy import deepcopy
 import numpy as np
 
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.extract_wing_VD import extract_wing_collocation_points
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.extract_wing_VD import extract_wing_collocation_points
 
 ## @ingroup Input_Output-VTK
 def save_wing_vtk(vehicle, wing_instance, settings, filename, Results,time_step,origin_offset):

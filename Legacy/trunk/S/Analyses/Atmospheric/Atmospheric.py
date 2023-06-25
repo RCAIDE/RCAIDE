@@ -9,8 +9,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Attributes.Atmospheres.Atmosphere import Atmosphere
-from SUAVE.Analyses import Analysis
+from Legacy.trunk.S.Attributes.Atmospheres.Atmosphere import Atmosphere
+from Legacy.trunk.S.Analyses import Analysis
 
 
 # ----------------------------------------------------------------------

@@ -14,9 +14,9 @@ import sys
 import time
 import subprocess
 import os
-from SUAVE.Methods.Aerodynamics.AVL.read_results import read_results
-from SUAVE.Methods.Aerodynamics.AVL.purge_files  import purge_files
-from SUAVE.Core                                  import redirect
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.read_results import read_results
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files  import purge_files
+from Legacy.trunk.S.Core                                  import redirect
 
 ## @ingroup Methods-Aerodynamics-AVL
 def run_analysis(avl_object,print_output):

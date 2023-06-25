@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------- 
-from SUAVE.Core.Utilities import interp2d
-from SUAVE.Core import Units 
+from Legacy.trunk.S.Core.Utilities import interp2d
+from Legacy.trunk.S.Core import Units 
 import numpy as np 
 import matplotlib.pyplot as plt  
 import matplotlib.cm as cm

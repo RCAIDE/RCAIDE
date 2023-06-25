@@ -7,16 +7,16 @@
 #-------------------------------------------------------------------------------
 # Imports
 #-------------------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 
-from SUAVE.Methods.Weights.Buildups.Common.fuselage import fuselage
-from SUAVE.Methods.Weights.Buildups.Common.prop import prop
-from SUAVE.Methods.Weights.Buildups.Common.wiring import wiring
-from SUAVE.Methods.Weights.Buildups.Common.wing import wing
-from SUAVE.Components.Energy.Converters import Propeller, Lift_Rotor
-from SUAVE.Components.Energy.Networks import Battery_Propeller
-from SUAVE.Components.Energy.Networks import Lift_Cruise
+from Legacy.trunk.S.Methods.Weights.Buildups.Common.fuselage import fuselage
+from Legacy.trunk.S.Methods.Weights.Buildups.Common.prop import prop
+from Legacy.trunk.S.Methods.Weights.Buildups.Common.wiring import wiring
+from Legacy.trunk.S.Methods.Weights.Buildups.Common.wing import wing
+from Legacy.trunk.S.Components.Energy.Converters import Propeller, Lift_Rotor
+from Legacy.trunk.S.Components.Energy.Networks import Battery_Propeller
+from Legacy.trunk.S.Components.Energy.Networks import Lift_Cruise
 
 import numpy as np
 

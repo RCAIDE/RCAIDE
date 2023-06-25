@@ -5,7 +5,7 @@
 # Modified: Jul 2020, M.Clarke
 #           Sep 2020, M. Clarke 
 
-from SUAVE.Core import Data   
+from Legacy.trunk.S.Core import Data   
 import numpy as np
 
 

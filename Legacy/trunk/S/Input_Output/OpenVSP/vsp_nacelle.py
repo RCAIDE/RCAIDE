@@ -7,8 +7,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units, Data 
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data 
 import numpy as np
 try:
     import vsp as vsp

@@ -4,7 +4,7 @@
 # Created:  Sep 2016, T. Orra
 
 # Suave imports
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # ----------------------------------------------------------------------
 #  Estimate hourly rates according to a trend line

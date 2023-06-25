@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------  
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 import matplotlib.pyplot as plt    
 from .plot_vehicle import plot_propeller_geometry
-from SUAVE.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
+from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
 
 ## @ingroup Plots-Geometry
 def plot_propeller(prop, face_color = 'red', edge_color = 'black' , save_figure = False, save_filename = "Propeller_Geometry", file_type = ".png"):

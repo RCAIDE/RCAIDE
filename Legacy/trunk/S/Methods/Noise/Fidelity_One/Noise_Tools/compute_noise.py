@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------
 
 import numpy as np  
-from SUAVE.Methods.Noise.Fidelity_One.Engine                         import noise_SAE  
-from SUAVE.Methods.Noise.Fidelity_One.Airframe.noise_airframe_Fink   import noise_airframe_Fink 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools                    import noise_geometric
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Engine                         import noise_SAE  
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Airframe.noise_airframe_Fink   import noise_airframe_Fink 
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools                    import noise_geometric
 
 # ----------------------------------------------------------------------        
 #   NOISE CALCULATION

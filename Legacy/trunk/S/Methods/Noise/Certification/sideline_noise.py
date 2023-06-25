@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.compute_noise import compute_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.compute_noise import compute_noise
 
 # ----------------------------------------------------------------------        
 #   Sideline noise

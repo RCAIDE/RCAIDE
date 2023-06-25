@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # general packages
 import numpy as np
@@ -112,7 +112,7 @@ def distribute_non_recurring_cost(costs):
 
 if __name__ == '__main__':
 
-    import SUAVE
+    import Legacy.trunk.S as SUAVE
 
     # unpack
     costs = Data()

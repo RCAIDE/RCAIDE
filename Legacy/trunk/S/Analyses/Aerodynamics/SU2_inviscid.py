@@ -10,13 +10,13 @@
 # ----------------------------------------------------------------------
 
 # SUAVE imports
-import SUAVE
-from SUAVE.Core import Data, Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data, Units
 
 # Local imports
 from .Aerodynamics import Aerodynamics
-from SUAVE.Input_Output.SU2.call_SU2_CFD import call_SU2_CFD
-from SUAVE.Input_Output.SU2.write_SU2_cfg import write_SU2_cfg
+from Legacy.trunk.S.Input_Output.SU2.call_SU2_CFD import call_SU2_CFD
+from Legacy.trunk.S.Input_Output.SU2.write_SU2_cfg import write_SU2_cfg
 from sklearn.gaussian_process.kernels import ExpSineSquared
 
 # Package imports

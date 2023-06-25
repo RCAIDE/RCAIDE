@@ -11,8 +11,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Methods.Aerodynamics.AVL.purge_files       import purge_files
-from SUAVE.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files       import purge_files
+from Legacy.trunk.S.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
 
 ## @ingroup Analyses-AVL
 def write_run_cases(avl_object,trim_aircraft):

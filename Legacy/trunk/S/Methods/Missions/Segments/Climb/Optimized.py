@@ -9,8 +9,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
-from SUAVE.Core import Units
-import SUAVE
+from Legacy.trunk.S.Core import Units
+import Legacy.trunk.S as SUAVE
 
 # ----------------------------------------------------------------------
 #  Unpack Unknowns

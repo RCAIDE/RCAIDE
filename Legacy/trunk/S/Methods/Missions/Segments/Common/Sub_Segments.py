@@ -12,9 +12,9 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Analyses import Process
-from SUAVE.Core import Data
-from SUAVE.Methods.skip import skip
+from Legacy.trunk.S.Analyses import Process
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.skip import skip
 
 # ----------------------------------------------------------------------
 #  Expand Sub Segments

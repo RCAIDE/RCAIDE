@@ -10,8 +10,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Container as ContainerBase
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Container as ContainerBase
 from . import Segments
 
 # ----------------------------------------------------------------------

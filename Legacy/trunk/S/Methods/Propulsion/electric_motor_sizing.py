@@ -9,12 +9,12 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
 import numpy as np
 from scipy.optimize import minimize 
-from SUAVE.Core import Units 
+from Legacy.trunk.S.Core import Units 
 # ----------------------------------------------------------------------
 #  size_from_kv
 # ----------------------------------------------------------------------

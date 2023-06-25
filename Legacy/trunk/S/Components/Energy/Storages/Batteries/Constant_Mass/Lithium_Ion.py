@@ -10,9 +10,9 @@
 # ----------------------------------------------------------------------
 
 # suave imports 
-from SUAVE.Core import Units, Data
-from SUAVE.Attributes.Gases import Air
-from SUAVE.Components.Energy.Storages.Batteries  import Battery  
+from Legacy.trunk.S.Core import Units, Data
+from Legacy.trunk.S.Attributes.Gases import Air
+from Legacy.trunk.S.Components.Energy.Storages.Batteries  import Battery  
 
 # package imports
 import numpy as np 

@@ -17,8 +17,8 @@ from sklearn import neighbors
 from sklearn import svm, linear_model
 
 # SUAVE imports
-from SUAVE.Core import Data, Units
-from SUAVE.Components.Energy.Networks import Propulsor_Surrogate
+from Legacy.trunk.S.Core import Data, Units
+from Legacy.trunk.S.Components.Energy.Networks import Propulsor_Surrogate
 
 # ----------------------------------------------------------------------
 #  Network

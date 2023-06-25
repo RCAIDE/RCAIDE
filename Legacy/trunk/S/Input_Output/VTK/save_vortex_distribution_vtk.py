@@ -4,7 +4,7 @@
 # Created:    Jun 2021, R. Erhard
 # Modified: 
 #           
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 import numpy as np
 
 def save_vortex_distribution_vtk(vehicle,conditions,VD,gamma,wing_instance,filename, time_step,separate_wing_and_wake_VD=True):

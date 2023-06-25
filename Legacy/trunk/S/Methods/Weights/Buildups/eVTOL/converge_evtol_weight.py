@@ -6,8 +6,8 @@
 #-------------------------------------------------------------------------------
 # Imports
 #------------------------------------------------------------------------------- 
-from SUAVE.Methods.Weights.Buildups.eVTOL.empty import empty
-from SUAVE.Core import Data
+from Legacy.trunk.S.Methods.Weights.Buildups.eVTOL.empty import empty
+from Legacy.trunk.S.Core import Data
 
 #-------------------------------------------------------------------------------
 # Empty

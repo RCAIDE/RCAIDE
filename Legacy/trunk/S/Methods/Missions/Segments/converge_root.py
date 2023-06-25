@@ -11,7 +11,7 @@
 import scipy.optimize
 import numpy as np
 
-from SUAVE.Core.Arrays import array_type
+from Legacy.trunk.S.Core.Arrays import array_type
 
 # ----------------------------------------------------------------------
 #  Converge Root

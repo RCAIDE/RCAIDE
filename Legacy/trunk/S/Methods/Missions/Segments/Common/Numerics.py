@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core.Arrays import atleast_2d_col 
+from Legacy.trunk.S.Core.Arrays import atleast_2d_col 
 
 # ----------------------------------------------------------------------
 #  Initialize Differentials

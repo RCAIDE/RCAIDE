@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 # suave imports 
-from SUAVE.Core import Units  
+from Legacy.trunk.S.Core import Units  
 from .Lithium_Ion import Lithium_Ion 
 
 # package imports 

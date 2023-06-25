@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Data, ContainerOrdered
-from SUAVE.Components import Component, Lofted_Body
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data, ContainerOrdered
+from Legacy.trunk.S.Components import Component, Lofted_Body
 import numpy as np
 
 # ------------------------------------------------------------ 

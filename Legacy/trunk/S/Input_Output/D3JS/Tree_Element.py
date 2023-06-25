@@ -9,7 +9,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import DataOrdered
+from Legacy.trunk.S.Core import DataOrdered
 
 #----------------------------------------------------------------------
 # Tree Element

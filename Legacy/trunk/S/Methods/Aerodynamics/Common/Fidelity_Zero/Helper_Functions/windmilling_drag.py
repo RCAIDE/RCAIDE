@@ -10,9 +10,9 @@
 # ----------------------------------------------------------------------
 
 # SUAVE Imports
-import SUAVE
-from SUAVE.Components import Wings
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Components import Wings
+from Legacy.trunk.S.Core import Units, Data
 
 # ----------------------------------------------------------------------
 #  Compute drag of turbofan in windmilling condition

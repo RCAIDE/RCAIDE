@@ -16,9 +16,9 @@
 # package imports
 import numpy as np
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 from .Network import Network
-from SUAVE.Analyses.Mission.Segments.Conditions import Conditions
+from Legacy.trunk.S.Analyses.Mission.Segments.Conditions import Conditions
 # ----------------------------------------------------------------------
 #  Turbofan Network
 # ----------------------------------------------------------------------

@@ -8,8 +8,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Core import Container as ContainerBase
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Core import Container as ContainerBase
 
 # ----------------------------------------------------------------------
 #  Analysis

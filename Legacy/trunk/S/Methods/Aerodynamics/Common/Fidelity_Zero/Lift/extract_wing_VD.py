@@ -10,11 +10,11 @@
 # ----------------------------------------------------------------------
 
 # package imports
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 import numpy as np
 
-from SUAVE.Analyses.Aerodynamics.Vortex_Lattice import Vortex_Lattice
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift import generate_vortex_distribution
+from Legacy.trunk.S.Analyses.Aerodynamics.Vortex_Lattice import Vortex_Lattice
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift import generate_vortex_distribution
 
 
 ## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift

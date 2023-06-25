@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Helper_Functions import wave_drag_lift
-from SUAVE.Methods.Aerodynamics.Supersonic_Zero.Drag.compressibility_drag_total import drag_div
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Helper_Functions import wave_drag_lift
+from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.compressibility_drag_total import drag_div
 from .wave_drag_volume import wave_drag_volume
 
 import copy

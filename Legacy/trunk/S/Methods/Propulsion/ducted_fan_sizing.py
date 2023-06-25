@@ -11,9 +11,9 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 ## @ingroup Methods-Propulsion
 def ducted_fan_sizing(ducted_fan,mach_number = None, altitude = None, delta_isa = 0, conditions = None):  

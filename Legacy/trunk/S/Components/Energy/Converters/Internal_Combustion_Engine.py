@@ -9,12 +9,12 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
-from SUAVE.Core import Data, Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data, Units
 
 # package imports
 import numpy as np
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 # ----------------------------------------------------------------------
 #  Internal Combustion Engine Class

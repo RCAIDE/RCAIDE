@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 import numpy as np
 import scipy as sp
-from SUAVE.Methods.Geometry.Three_Dimensional import  orientation_product, orientation_transpose
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional import  orientation_product, orientation_transpose
 
 
 def compute_propeller_nonuniform_freestream(prop, upstream_wake,conditions):

@@ -8,12 +8,12 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # package imports
 
-from SUAVE.Core import Data
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 # ----------------------------------------------------------------------
 #  Fuel Tank

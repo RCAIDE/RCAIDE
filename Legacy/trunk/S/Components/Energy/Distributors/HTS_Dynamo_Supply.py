@@ -9,11 +9,11 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
-from SUAVE.Methods.Cryogenics.Dynamo.dynamo_efficiency import efficiency_curve
+from Legacy.trunk.S.Methods.Cryogenics.Dynamo.dynamo_efficiency import efficiency_curve
 
 # ----------------------------------------------------------------------
 #  HTS Dynamo Supply Class

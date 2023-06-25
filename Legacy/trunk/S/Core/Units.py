@@ -13,8 +13,8 @@
 #   Imports
 # ------------------------------------------------------------
 
-from SUAVE.Plugins.pint import UnitRegistry
-from SUAVE.Plugins.pint.quantity import _Quantity
+from Legacy.trunk.S.Plugins.pint import UnitRegistry
+from Legacy.trunk.S.Plugins.pint.quantity import _Quantity
 
 Units = UnitRegistry()
 
@@ -101,7 +101,7 @@ Units.__doc__ = \
         Unit consistency is the responsibility of the user
     
     Usage:
-      from SUAVE.Core import Units
+      from Legacy.trunk.S.Core import Units
       a = 4. * Units.mm  # convert in to base unit
       b = a  / Units.mm  # convert out of base unit
       

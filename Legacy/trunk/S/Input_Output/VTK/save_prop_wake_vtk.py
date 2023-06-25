@@ -4,7 +4,7 @@
 # Created:    Jun 2021, R. Erhard
 # Modified:   Jul 2022, R. Erhard
 #     
-from SUAVE.Core import Data      
+from Legacy.trunk.S.Core import Data      
 import numpy as np
 
 ## @ingroup Input_Output-VTK

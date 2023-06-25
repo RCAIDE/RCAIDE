@@ -15,13 +15,13 @@
 import numpy as np 
 
 # SUAVE Imports
-from SUAVE.Core import  Units
+from Legacy.trunk.S.Core import  Units
 
 # SUAVE-AVL Imports 
 from .Data.Wing                                                          import Wing, Section, Control_Surface
 from .Data.Body                                                          import Body 
-from SUAVE.Components.Wings.Control_Surfaces                             import Aileron , Elevator , Slat , Flap , Rudder 
-from SUAVE.Methods.Aerodynamics.AVL.write_avl_airfoil_file               import write_avl_airfoil_file   
+from Legacy.trunk.S.Components.Wings.Control_Surfaces                             import Aileron , Elevator , Slat , Flap , Rudder 
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.write_avl_airfoil_file               import write_avl_airfoil_file   
 ## @ingroup Methods-Aerodynamics-AVL
 
 def translate_avl_wing(suave_wing):

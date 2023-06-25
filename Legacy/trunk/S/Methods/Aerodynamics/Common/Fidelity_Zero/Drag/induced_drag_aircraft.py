@@ -11,7 +11,7 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # package imports
 import numpy as np

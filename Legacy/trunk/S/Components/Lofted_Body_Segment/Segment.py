@@ -12,8 +12,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Components import Lofted_Body
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Components import Lofted_Body
 
 # ------------------------------------------------------------ 
 #  Fuselage Segments

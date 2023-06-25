@@ -9,13 +9,13 @@
 # ----------------------------------------------------------------------
 
 # SUave Imports
-import SUAVE
-from SUAVE.Core import Data
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Core import Units
 
-from SUAVE.Analyses.Mission.Segments.Conditions import Aerodynamics,Numerics
-from SUAVE.Methods.Aerodynamics.Fidelity_Zero.Lift import compute_max_lift_coeff
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations import datcom
+from Legacy.trunk.S.Analyses.Mission.Segments.Conditions import Aerodynamics,Numerics
+from Legacy.trunk.S.Methods.Aerodynamics.Fidelity_Zero.Lift import compute_max_lift_coeff
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations import datcom
 
 # package imports
 import numpy as np

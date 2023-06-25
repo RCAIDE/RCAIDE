@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Units,Data
+from Legacy.trunk.S.Core import Units,Data
 
 # Imports
 import time                     # importing library

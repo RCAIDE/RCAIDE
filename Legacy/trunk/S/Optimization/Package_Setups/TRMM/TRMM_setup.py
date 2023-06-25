@@ -8,8 +8,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Optimization.Package_Setups.TRMM import Trust_Region_Optimization as tro
-from SUAVE.Optimization.Package_Setups.TRMM.Trust_Region import Trust_Region
+from Legacy.trunk.S.Optimization.Package_Setups.TRMM import Trust_Region_Optimization as tro
+from Legacy.trunk.S.Optimization.Package_Setups.TRMM.Trust_Region import Trust_Region
 
 # ----------------------------------------------------------------------
 #  TRMM_Solve

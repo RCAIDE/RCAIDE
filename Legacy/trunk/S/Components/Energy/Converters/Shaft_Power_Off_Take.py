@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------
 
 # SUAVE imports
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 # package imports
 import numpy as np

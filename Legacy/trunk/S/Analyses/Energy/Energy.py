@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Analyses import Analysis
+from Legacy.trunk.S.Analyses import Analysis
 
 
 # ----------------------------------------------------------------------

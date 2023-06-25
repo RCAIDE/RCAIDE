@@ -11,21 +11,21 @@
 
 # SUAVE imports
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # local imports
 from .Stability import Stability
 
 
-# import SUAVE methods
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Tube_Wing.taw_cmalpha import taw_cmalpha
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Tube_Wing.taw_cnbeta import taw_cnbeta
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
-from SUAVE.Methods.Flight_Dynamics.Dynamic_Stability import Approximations as Approximations
-from SUAVE.Methods.Flight_Dynamics.Dynamic_Stability import Full_Linearized_Equations as Full_Linearized_Equations
-from SUAVE.Methods.Flight_Dynamics.Dynamic_Stability.Full_Linearized_Equations import Supporting_Functions as Supporting_Functions
+# import Legacy.trunk.S as SUAVE methods
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Tube_Wing.taw_cmalpha import taw_cmalpha
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Tube_Wing.taw_cnbeta import taw_cnbeta
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
+from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability import Approximations as Approximations
+from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability import Full_Linearized_Equations as Full_Linearized_Equations
+from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability.Full_Linearized_Equations import Supporting_Functions as Supporting_Functions
 
 # package imports
 import numpy as np

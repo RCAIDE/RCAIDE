@@ -10,10 +10,10 @@
 import copy
 import numpy as np
 import pylab as plt
-from SUAVE.Core import Data
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.VLM import VLM
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.compute_wing_induced_velocity import compute_wing_induced_velocity
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_wing_wake_grid import generate_wing_wake_grid
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.VLM import VLM
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.compute_wing_induced_velocity import compute_wing_induced_velocity
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_wing_wake_grid import generate_wing_wake_grid
 
 
 def compute_wing_wake(geometry, conditions, x, grid_settings, VLM_settings, evaluation_points=None,viscous_wake=True, plot_grid=False, plot_wake=False):

@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import ContainerOrdered, DataOrdered, Data
+from Legacy.trunk.S.Core import ContainerOrdered, DataOrdered, Data
 
 # ----------------------------------------------------------------------
 #  Process

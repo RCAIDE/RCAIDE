@@ -7,11 +7,11 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE 
-from SUAVE.Core import Data , Units
+import Legacy.trunk.S as SUAVE 
+from Legacy.trunk.S.Core import Data , Units
 from .Noise     import Noise  
 
-from SUAVE.Methods.Noise.Fidelity_Zero.shevell import shevell
+from Legacy.trunk.S.Methods.Noise.Fidelity_Zero.shevell import shevell
 
 # ----------------------------------------------------------------------
 #  Analysis

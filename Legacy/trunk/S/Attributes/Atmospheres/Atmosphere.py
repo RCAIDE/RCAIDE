@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------
 
 ## @ingroup Attributes-Atmospheres
-from SUAVE.Attributes.Constants import Constant #, Composition
-from SUAVE.Core import Data
+from Legacy.trunk.S.Attributes.Constants import Constant #, Composition
+from Legacy.trunk.S.Core import Data
 
 
 # ----------------------------------------------------------------------

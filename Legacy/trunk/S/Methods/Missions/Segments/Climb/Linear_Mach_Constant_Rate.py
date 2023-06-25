@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # ----------------------------------------------------------------------
 #  Initialize Conditions

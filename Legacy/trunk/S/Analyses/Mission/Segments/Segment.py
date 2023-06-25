@@ -11,7 +11,7 @@
 
 # SUAVE imports
 
-from SUAVE.Analyses import Analysis, Settings, Process
+from Legacy.trunk.S.Analyses import Analysis, Settings, Process
 from .Conditions import State
 import numpy as np
 from copy import deepcopy

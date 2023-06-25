@@ -9,21 +9,21 @@
 # ----------------------------------------------------------------------
 
 # SUAVE Imports
-from SUAVE.Core            import Data , Units
+from Legacy.trunk.S.Core            import Data , Units
 
 from .noise_clean_wing         import noise_clean_wing
 from .noise_landing_gear       import noise_landing_gear
 from .noise_leading_edge_slat  import noise_leading_edge_slat
 from .noise_trailing_edge_flap import noise_trailing_edge_flap
 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import pnl_noise
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import noise_tone_correction
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import epnl_noise
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import atmospheric_attenuation
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import dbA_noise 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import senel_noise
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import SPL_arithmetic
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools import print_airframe_output
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import pnl_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import noise_tone_correction
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import epnl_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import atmospheric_attenuation
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import dbA_noise 
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import senel_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import SPL_arithmetic
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools import print_airframe_output
 
 import numpy as np
 

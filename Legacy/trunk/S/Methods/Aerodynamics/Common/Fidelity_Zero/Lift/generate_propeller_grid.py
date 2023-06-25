@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 import numpy as np
 import pylab as plt
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 def generate_propeller_grid(prop, grid_settings, plot_grid=True):
     """ Generates new grid points at a propeller plane.

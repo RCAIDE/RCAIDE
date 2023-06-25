@@ -8,17 +8,17 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 from .cabin import cabin
 from .aft_centerbody import aft_centerbody
-from SUAVE.Methods.Weights.Correlations.Common.systems import systems
-from SUAVE.Methods.Weights.Correlations.Common import wing_main as wing_main
-from SUAVE.Methods.Weights.Correlations.Common import landing_gear as landing_gear_weight
-from SUAVE.Methods.Weights.Correlations.Common import payload as payload_weight
-from SUAVE.Methods.Weights.Correlations import Propulsion as Propulsion
-from SUAVE.Methods.Weights.Correlations.Transport.operating_items import operating_items
-from SUAVE.Attributes.Solids.Aluminum import Aluminum
+from Legacy.trunk.S.Methods.Weights.Correlations.Common.systems import systems
+from Legacy.trunk.S.Methods.Weights.Correlations.Common import wing_main as wing_main
+from Legacy.trunk.S.Methods.Weights.Correlations.Common import landing_gear as landing_gear_weight
+from Legacy.trunk.S.Methods.Weights.Correlations.Common import payload as payload_weight
+from Legacy.trunk.S.Methods.Weights.Correlations import Propulsion as Propulsion
+from Legacy.trunk.S.Methods.Weights.Correlations.Transport.operating_items import operating_items
+from Legacy.trunk.S.Attributes.Solids.Aluminum import Aluminum
 
 import warnings
 

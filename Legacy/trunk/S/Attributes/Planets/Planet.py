@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Attributes.Constants import Constant
+from Legacy.trunk.S.Attributes.Constants import Constant
 
 # ----------------------------------------------------------------------
 #  Planet Constant Class

@@ -7,7 +7,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 from .Network import Network
 
 # ----------------------------------------------------------------------

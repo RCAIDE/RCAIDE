@@ -7,8 +7,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import  Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import  Data
 import numpy as np
 from scipy.interpolate import interp1d 
 

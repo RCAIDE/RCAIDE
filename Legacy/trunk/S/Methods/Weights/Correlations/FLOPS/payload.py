@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Units, Data
+from Legacy.trunk.S.Core import Units, Data
 
 ## @ingroup Methods-Weights-Correlations-FLOPS
 def payload_FLOPS(vehicle, weight_per_passenger = 165. * Units.lb):

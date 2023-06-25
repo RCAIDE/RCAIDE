@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 from .find_voltage_larminie import find_voltage_larminie
 
 # ----------------------------------------------------------------------

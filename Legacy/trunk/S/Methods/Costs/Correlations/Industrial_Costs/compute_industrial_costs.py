@@ -7,8 +7,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from SUAVE.Core import Units,Data
-from SUAVE.Methods.Costs.Correlations.Industrial_Costs import ( estimate_escalation_factor, \
+from Legacy.trunk.S.Core import Units,Data
+from Legacy.trunk.S.Methods.Costs.Correlations.Industrial_Costs import ( estimate_escalation_factor, \
                                                                 estimate_hourly_rates, \
                                                                 distribute_non_recurring_cost )
 
@@ -327,7 +327,7 @@ def call_print(config):
 
 if __name__ == '__main__':
 
-    import SUAVE
+    import Legacy.trunk.S as SUAVE
 
 #==================================
     config = SUAVE.Vehicle()

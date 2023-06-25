@@ -10,7 +10,7 @@
 import numpy as np
 
 # Suave imports
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 # ----------------------------------------------------------------------
 #  Computes the pyloan parasite drag

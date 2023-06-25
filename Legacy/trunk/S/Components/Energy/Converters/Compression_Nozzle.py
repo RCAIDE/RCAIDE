@@ -11,7 +11,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 # python imports
 from warnings import warn
@@ -19,8 +19,8 @@ from warnings import warn
 # package imports
 import numpy as np
 
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
-from SUAVE.Methods.Propulsion.shock_train import shock_train
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
+from Legacy.trunk.S.Methods.Propulsion.shock_train import shock_train
 
 # ----------------------------------------------------------------------
 #  Compression Nozzle Component

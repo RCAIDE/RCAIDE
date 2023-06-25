@@ -11,7 +11,7 @@
 
 # suave imports
 import numpy as np
-from SUAVE.Optimization import helper_functions as help_fun
+from Legacy.trunk.S.Optimization import helper_functions as help_fun
 
 # ----------------------------------------------------------------------
 #  Pyopt_Solve

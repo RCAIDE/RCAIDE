@@ -12,8 +12,8 @@ import numpy as np
 from scipy.special import jv 
 import scipy as sp
 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.dbA_noise  import A_weighting  
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools            import SPL_harmonic_to_third_octave
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.dbA_noise  import A_weighting  
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools            import SPL_harmonic_to_third_octave
 
 # ----------------------------------------------------------------------
 # Harmonic Noise Domain Broadband Noise Computation

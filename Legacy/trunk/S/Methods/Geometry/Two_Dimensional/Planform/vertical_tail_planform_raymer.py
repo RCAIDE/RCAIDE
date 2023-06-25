@@ -9,7 +9,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform  import wing_planform
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform  import wing_planform
 
 # ----------------------------------------------------------------------
 #  Methods

@@ -8,8 +8,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from SUAVE.Core import Data
-from SUAVE.Attributes.Atmospheres import Earth
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Attributes.Atmospheres import Earth
 
 # ----------------------------------------------------------------------
 #  Airport Data Class

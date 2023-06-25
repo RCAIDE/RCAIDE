@@ -14,17 +14,17 @@
 
 from copy import deepcopy
 
-import SUAVE
-from SUAVE.Input_Output.OpenVSP.vsp_propeller        import read_vsp_propeller
-from SUAVE.Input_Output.OpenVSP.vsp_fuselage         import read_vsp_fuselage
-from SUAVE.Input_Output.OpenVSP.vsp_wing             import read_vsp_wing
-from SUAVE.Input_Output.OpenVSP.vsp_nacelle          import read_vsp_nacelle
-from SUAVE.Input_Output.OpenVSP.get_vsp_measurements import get_vsp_measurements
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Input_Output.OpenVSP.vsp_propeller        import read_vsp_propeller
+from Legacy.trunk.S.Input_Output.OpenVSP.vsp_fuselage         import read_vsp_fuselage
+from Legacy.trunk.S.Input_Output.OpenVSP.vsp_wing             import read_vsp_wing
+from Legacy.trunk.S.Input_Output.OpenVSP.vsp_nacelle          import read_vsp_nacelle
+from Legacy.trunk.S.Input_Output.OpenVSP.get_vsp_measurements import get_vsp_measurements
 
-from SUAVE.Components.Energy.Networks.Lift_Cruise              import Lift_Cruise
-from SUAVE.Components.Energy.Networks.Battery_Propeller        import Battery_Propeller
+from Legacy.trunk.S.Components.Energy.Networks.Lift_Cruise              import Lift_Cruise
+from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller        import Battery_Propeller
 
-from SUAVE.Core import Units, Data, Container
+from Legacy.trunk.S.Core import Units, Data, Container
 try:
     import vsp as vsp
 except ImportError:

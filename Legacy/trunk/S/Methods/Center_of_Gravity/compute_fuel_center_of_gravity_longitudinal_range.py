@@ -6,7 +6,7 @@
 #           Jan 2019, T. MacDonald
 #           Feb 2021, T. MacDonald
 
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 import numpy as np
 
 ## @ingroup Methods-Center_of_Gravity

@@ -12,17 +12,17 @@
 import numpy as np
 from warnings import warn
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Analyses.Atmospheric import Atmospheric
+from Legacy.trunk.S.Analyses.Atmospheric import Atmospheric
 
-from SUAVE.Attributes.Gases import Air
-from SUAVE.Attributes.Planets import Earth
+from Legacy.trunk.S.Attributes.Gases import Air
+from Legacy.trunk.S.Attributes.Planets import Earth
 
-from SUAVE.Analyses.Mission.Segments.Conditions import Conditions
+from Legacy.trunk.S.Analyses.Mission.Segments.Conditions import Conditions
 
-from SUAVE.Core import Units
-from SUAVE.Core.Arrays import atleast_2d_col
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core.Arrays import atleast_2d_col
 
 
 # ----------------------------------------------------------------------

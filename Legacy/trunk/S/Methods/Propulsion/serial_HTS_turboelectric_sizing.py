@@ -8,11 +8,11 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Data
-from SUAVE.Methods.Power.Turboelectric.Sizing.initialize_from_power import initialize_from_power
-from SUAVE.Methods.Cryogenics.Cryocooler.cryocooler_model import cryocooler_model
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Power.Turboelectric.Sizing.initialize_from_power import initialize_from_power
+from Legacy.trunk.S.Methods.Cryogenics.Cryocooler.cryocooler_model import cryocooler_model
 
 
 ## @ingroup Methods-Propulsion

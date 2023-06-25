@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 import numpy as np
 import pylab as plt
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 
 def generate_wing_wake_grid(geometry, H, L, hf, x_plane, Nzo=20, Nzf=35, Nyo=20, plot_grid=False):

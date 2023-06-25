@@ -14,9 +14,9 @@
 # suave imports
 import numpy as np
 import scipy as sp
-from SUAVE.Optimization.Package_Setups.particle_swarm_optimization import particle_swarm_optimization 
+from Legacy.trunk.S.Optimization.Package_Setups.particle_swarm_optimization import particle_swarm_optimization 
 from scipy.optimize import NonlinearConstraint
-from SUAVE.Optimization import helper_functions as help_fun
+from Legacy.trunk.S.Optimization import helper_functions as help_fun
 
 # ----------------------------------------------------------------------
 #  Something that should become a class at some point

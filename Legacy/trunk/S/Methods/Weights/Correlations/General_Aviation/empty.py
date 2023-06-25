@@ -7,8 +7,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data
 from .fuselage import fuselage
 from .landing_gear import landing_gear
 from .payload import payload
@@ -16,7 +16,7 @@ from .systems import systems
 from .tail_horizontal import tail_horizontal
 from .tail_vertical import tail_vertical
 from .wing_main import wing_main
-from SUAVE.Methods.Weights.Correlations import Propulsion as Propulsion
+from Legacy.trunk.S.Methods.Weights.Correlations import Propulsion as Propulsion
 import warnings
 
 # ----------------------------------------------------------------------

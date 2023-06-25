@@ -10,8 +10,8 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
-from SUAVE.Methods.Geometry.Three_Dimensional \
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional \
      import angles_to_dcms, orientation_product, orientation_transpose
 
 # ----------------------------------------------------------------------

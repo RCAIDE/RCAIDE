@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-from SUAVE.Core import Data, Units
+from Legacy.trunk.S.Core import Data, Units
 
 # ----------------------------------------------------------------------
 #   turbofan_emission_index

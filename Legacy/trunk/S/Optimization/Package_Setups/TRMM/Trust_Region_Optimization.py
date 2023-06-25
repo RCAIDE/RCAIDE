@@ -10,13 +10,13 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
+import Legacy.trunk.S as SUAVE
 try:
     import pyOpt
 except:
     pass
-from SUAVE.Core import Data
-from SUAVE.Optimization import helper_functions as help_fun
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Optimization import helper_functions as help_fun
 import os
 import sys
 from scipy.optimize import minimize

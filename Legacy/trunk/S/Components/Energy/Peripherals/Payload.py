@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------
 
 # suave imports
-import SUAVE
-from SUAVE.Components.Energy.Energy_Component import Energy_Component
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 # ----------------------------------------------------------------------
 #  Payload Class
