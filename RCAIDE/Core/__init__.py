@@ -1,3 +1,4 @@
+## @defgroup Core
 # RCAIDE/Core/__init__.py
 # Copyright RCAIDE Hall Trust
 

@@ -1,3 +1,4 @@
+## @defgroup Visualization
 # RCAIDE/Visualization/__init__.py
 # Copyright RCAIDE Hall Trust
 

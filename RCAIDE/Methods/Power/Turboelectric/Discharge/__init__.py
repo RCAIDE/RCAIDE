@@ -1,5 +1,5 @@
-## @defgroup Visualization-Performance Performance
-# RCAIDE/Visualization/Performance/__init__.py
+## @defgroup Methods-Power-Turboelectric-Discharge Discharge
+# RCAIDE/Methods/Power/Turboelectric/Discharge/__init__.py
 # Copyright RCAIDE Hall Trust
 
 """ RCAIDE Package Setup
@@ -8,8 +8,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Visualization
+# @ingroup Methods-Power-Turboelectric
 
-from Legacy.trunk.S.Plots.Performance.Airfoil_Plots   import *
-from Legacy.trunk.S.Plots.Performance.Mission_Plots   import *
-from Legacy.trunk.S.Plots.Performance.Propeller_Plots import *
+from Legacy.trunk.S.Methods.Power.Turboelectric.Discharge.zero_fidelity import zero_fidelity

@@ -1,5 +1,5 @@
-## @defgroup Visualization-Performance Performance
-# RCAIDE/Visualization/Performance/__init__.py
+## @defgroup Methods-Power-Fuel_Cell Fuel Cell
+# RCAIDE/Methods/Power/Fuel_Cell/__init__.py
 # Copyright RCAIDE Hall Trust
 
 """ RCAIDE Package Setup
@@ -8,8 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Visualization
+# @ingroup Methods-Power
 
-from Legacy.trunk.S.Plots.Performance.Airfoil_Plots   import *
-from Legacy.trunk.S.Plots.Performance.Mission_Plots   import *
-from Legacy.trunk.S.Plots.Performance.Propeller_Plots import *
+from . import Discharge
+from . import Sizing

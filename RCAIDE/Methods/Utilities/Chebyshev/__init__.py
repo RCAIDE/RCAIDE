@@ -1,5 +1,5 @@
-## @defgroup Visualization-Performance Performance
-# RCAIDE/Visualization/Performance/__init__.py
+## @defgroup Methods-Utilities-Chebyshev Chebyshev
+# RCAIDE/Methods/Utilities/Chebyshev/__init__.py
 # Copyright RCAIDE Hall Trust
 
 """ RCAIDE Package Setup
@@ -8,8 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Visualization
+# @ingroup Methods-Utilities
 
-from Legacy.trunk.S.Plots.Performance.Airfoil_Plots   import *
-from Legacy.trunk.S.Plots.Performance.Mission_Plots   import *
-from Legacy.trunk.S.Plots.Performance.Propeller_Plots import *
+from Legacy.trunk.S.Methods.Utilities.Chebyshev.chebyshev_data import chebyshev_data
+from Legacy.trunk.S.Methods.Utilities.Chebyshev.linear_data    import linear_data

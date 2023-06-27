@@ -1,3 +1,4 @@
+## @defgroup Methods-Energy Energy
 # RCAIDE/Energy/__init__.py
 # Copyright RCAIDE Hall Trust
 

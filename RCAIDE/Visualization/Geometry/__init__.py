@@ -1,3 +1,4 @@
+## @defgroup Visualization-Geometry Geometry
 # RCAIDE/Visualization/Geometry/__init__.py
 # Copyright RCAIDE Hall Trust
 
@@ -7,6 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+# @ingroup Visualization
 
 from Legacy.trunk.S.Plots.Geometry import plot_airfoil
 from Legacy.trunk.S.Plots.Geometry import plot_propeller

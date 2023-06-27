@@ -1,4 +1,5 @@
-# RCAIDE/__init__.py
+## @defgroup Methods
+# RCAIDE/Methods/__init__.py
 # Copyright RCAIDE Hall Trust
 
 """ RCAIDE Package Setup
