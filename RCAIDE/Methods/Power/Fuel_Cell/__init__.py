@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Fuel_Cell Fuel Cell
 # RCAIDE/Methods/Power/Fuel_Cell/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

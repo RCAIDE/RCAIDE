@@ -1,6 +1,6 @@
 ## @defgroup Methods-Geometry-Two_Dimensional/Cross_Section/Airfoil Airfoil
 # RCAIDE/Methods/Geometry/Two_Dimensional/Cross_Section/Airfoil/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

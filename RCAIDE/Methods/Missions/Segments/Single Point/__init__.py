@@ -1,6 +1,6 @@
 ## @defgroup Methods-Missions-Segments-Single_Point Single Point
 # RCAIDE/Methods/Mission/Segments/Single_Point/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

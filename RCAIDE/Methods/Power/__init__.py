@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power Power
 # RCAIDE/Methods/Power/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

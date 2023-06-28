@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Battery-Variable_Mass Variable Mass
 # RCAIDE/Methods/Power/Battery/Variable_Mass/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

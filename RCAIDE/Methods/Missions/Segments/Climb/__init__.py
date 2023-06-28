@@ -1,6 +1,6 @@
 ## @defgroup Methods-Missions-Segments-Climb Climb
 # RCAIDE/Methods/Mission/Segments/Climb/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

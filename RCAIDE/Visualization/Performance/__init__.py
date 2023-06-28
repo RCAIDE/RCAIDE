@@ -1,6 +1,6 @@
 ## @defgroup Visualization-Performance Performance
 # RCAIDE/Visualization/Performance/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

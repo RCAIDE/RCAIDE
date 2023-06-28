@@ -1,6 +1,6 @@
 ## @defgroup Methods-Geometry-Two_Dimensional/Planform Planform
 # RCAIDE/Methods/Geometry/Two_Dimensional/Planform/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

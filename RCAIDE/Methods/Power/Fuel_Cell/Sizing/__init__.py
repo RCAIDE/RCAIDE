@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Fuel_Cell-Sizing Sizing
 # RCAIDE/Methods/Power/Fuel_Cell/Sizing/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

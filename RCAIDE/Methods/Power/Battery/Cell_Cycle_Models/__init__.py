@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Battery-Cell_Cycle_Models Cell Cycle Models
 # RCAIDE/Methods/Power/Battery/Cell_Cycle_Models/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

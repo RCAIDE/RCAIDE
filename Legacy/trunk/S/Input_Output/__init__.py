@@ -5,7 +5,7 @@ from . import SUAVE as SUAVE
 from . import FreeMind
 from . import D3JS
 from . import Results
-
+from . import VTK
 from . import XML
 from . import SU2
 from . import OpenVSP

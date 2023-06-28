@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Turboelectric Turboelectric
 # RCAIDE/Methods/Power/Turboelectric/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

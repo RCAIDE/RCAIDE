@@ -1,6 +1,6 @@
 ## @defgroup Methods-Missions-Segments Segments
 # RCAIDE/Methods/Mission/Segments/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """

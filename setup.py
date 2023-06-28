@@ -1,5 +1,5 @@
 # setup.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
 # Created:  June 2023, E. Botero
 # Modified: 

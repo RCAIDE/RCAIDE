@@ -1,6 +1,6 @@
 ## @defgroup Methods-Missions-Segments-Hover Hover
 # RCAIDE/Methods/Mission/Segments/Hover/__init__.py
-# Copyright RCAIDE Hall Trust
+# (c) Copyright The Board of Trustees of RCAIDE
 
 """ RCAIDE Package Setup
 """
