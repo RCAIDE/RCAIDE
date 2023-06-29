@@ -1,6 +1,13 @@
-## @defgroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift Lift
-# Lift methods that are directly specified by analyses.
-# @ingroup Methods-Aerodynamics-Common-Fidelity_Zero
+## @defgroup Methods-Aerodynamics-Common-Lift Lift
+# RCAIDE/Methods/Aerodynamics/Common/Lift/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.aircraft_total                          import aircraft_total
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.compute_RHS_matrix                      import compute_RHS_matrix 

@@ -1,5 +1,13 @@
 ## @defgroup Methods-Aerodynamics-Airfoil_Panel_Method Airfoil_Panel_Method 
-# @ingroup Methods-Aerodynamics 
+# RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
  
 from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.aero_coeff                        import aero_coeff    
 from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis                  import airfoil_analysis 

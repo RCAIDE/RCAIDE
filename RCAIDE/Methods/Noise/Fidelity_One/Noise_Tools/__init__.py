@@ -1,6 +1,13 @@
-## @defgroup Methods-Noise-Fidelity_One-Noise_Tools Noise Tools
-# Various functions that are used to calculate noise using the fidelity one level
-# @ingroup Methods-Noise-Fidelity_One
+## @defgroup Methods-Noise-Fidelity_One-Noise_Tools Noise_Tools  
+# RCAIDE/Methods/Noise/Fidelity_One/Noise_Tools/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
  
 from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.pnl_noise	                            import pnl_noise
 from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.epnl_noise                            import epnl_noise

@@ -1,8 +1,13 @@
-## @defgroup Methods-Aerodynamics-AVL-Data Data
-# @ingroup Methods-Aerodynamics-AVL
+## @defgroup Methods-Aerodynamics-AVL-Data Data 
+# RCAIDE/Methods/Aerodynamics/AVL/Data/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
 
-""" AVL Data Package Setup
+""" RCAIDE Package Setup
 """
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Aircraft      import Aircraft
 from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Body          import Body

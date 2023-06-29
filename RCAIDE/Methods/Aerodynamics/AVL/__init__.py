@@ -1,9 +1,13 @@
-## @defgroup Methods-Aerodynamics-AVL AVL
-# Functions to AVL calculations
-# @ingroup Methods-Aerodynamics
+## @defgroup Methods-Aerodynamics-AVL AVL 
+# RCAIDE/Methods/Aerodynamics/AVL/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
 
-""" AVL Interface Package Setup
+""" RCAIDE Package Setup
 """
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 from Legacy.trunk.S.Methods.Aerodynamics.AVL.create_avl_datastructure import translate_avl_wing, translate_avl_body , populate_wing_sections, populate_body_sections
 from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files              import purge_files

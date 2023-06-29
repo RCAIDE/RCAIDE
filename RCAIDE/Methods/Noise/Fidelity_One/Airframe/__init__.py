@@ -1,6 +1,13 @@
-## @defgroup Methods-Noise-Fidelity_One-Airframe Airframe
-# Fidelity One level noise calculations for the airframe components
-# @ingroup Methods-Noise-Fidelity_One
+## @defgroup Methods-Noise-Fidelity_One-Airframe Airframe 
+# RCAIDE/Methods/Noise/Fidelity_One/Airframe/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 from Legacy.trunk.S.Methods.Noise.Fidelity_One.Airframe.noise_airframe_Fink      import noise_airframe_Fink
 from Legacy.trunk.S.Methods.Noise.Fidelity_One.Airframe.noise_clean_wing         import noise_clean_wing

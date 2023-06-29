@@ -1,6 +1,14 @@
-## @defgroup Methods-Cryogenics
-# This contains functions that can compute calculations associated with cryogenic components
-# @ingroup Methods
+## @defgroup Methods-Cryogenics Cryogenics 
+# RCAIDE/Methods/Cryogenics/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
 from . import Leads
 from . import Dynamo
 from . import Cryocooler

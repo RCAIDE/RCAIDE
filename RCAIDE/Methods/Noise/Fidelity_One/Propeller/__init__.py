@@ -1,6 +1,13 @@
-## @defgroup Methods-Noise-Fidelity Zero Fidelity Zero
-# Correlation type methods for calculating noise
-# @ingroup Methods-Noise
+## @defgroup Methods-Noise-Fidelity_One-Propeller Propeller  
+# RCAIDE/Methods/Noise/Fidelity_One/Propeller/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
   
 from Legacy.trunk.S.Methods.Noise.Fidelity_One.Propeller.propeller_mid_fidelity      import propeller_mid_fidelity 
 from Legacy.trunk.S.Methods.Noise.Fidelity_One.Propeller.compute_broadband_noise     import compute_broadband_noise

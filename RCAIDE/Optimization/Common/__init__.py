@@ -1,5 +1,14 @@
-## @defgroup Optimization-Common
-# The files that help you setup an optimization problem.
+## @defgroup Optimization-Common Common 
+# @ingroup Optimization 
+# RCAIDE/Optimization/Common/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 from . import Packages
 

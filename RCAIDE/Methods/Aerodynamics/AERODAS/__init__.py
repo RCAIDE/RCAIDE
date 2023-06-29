@@ -1,6 +1,13 @@
 ## @defgroup Methods-Aerodynamics-AERODAS AERODAS
-# Functions to perform calculations according to AERODAS models.
-# @ingroup Methods-Aerodynamics
+# RCAIDE/Methods/Aerodynamics/AERODAS/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS import AERODAS_setup
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS import finite_aspect_ratio

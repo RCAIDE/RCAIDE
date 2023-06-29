@@ -1,6 +1,14 @@
-## @defgroup Optimization-Packages Packages 
-# Individual package setups that help you interface with other codes
-# @ingroup Optimization-Packages
+## @defgroup Optimization-Packages Packages  
+# @ingroup Optimization
+# RCAIDE/Optimization/Packages/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 from . import additive 
 from . import ipopt 

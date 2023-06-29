@@ -1,6 +1,13 @@
-## @defgroup Methods-Aerodynamics Aerodynamics
-# Aerodynamic methods contain the functions for the aerodynamic analyses.
-# @ingroup Methods
+## @defgroup Methods-Aerodynamics Aerodynamics 
+# RCAIDE/Methods/Aerodynamics/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 from . import Airfoil_Panel_Method
 from . import AVL

@@ -1,6 +1,13 @@
-## @defgroup Methods-Aerodynamics-Common-Fidelity_Zero-Helper_Functions Helper_Functions
-# Functions that are needed by aerodynamics methods.
-# @ingroup Methods-Aerodynamics-Common-Fidelity_Zero
+## @defgroup Methods-Aerodynamics-Common-Helper_Functions Helper_Functions
+# RCAIDE/Methods/Aerodynamics/Common/Gas_Dymamics/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Lift.compressible_mixed_flat_plate     import compressible_mixed_flat_plate
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Lift.windmilling_drag                  import windmilling_drag

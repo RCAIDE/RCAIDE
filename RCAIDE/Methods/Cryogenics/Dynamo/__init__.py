@@ -1,4 +1,12 @@
-## @defgroup Methods-Cryogenics-Dynamo 
-# This contains functions that can compute the efficiency curve of a Dynamo
-# @ingroup Methods
+## @defgroup Methods-Cryogenics-Dynamo Dynamo 
+# RCAIDE/Methods/Cryogenics/Dynamo/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
 from Legacy.trunk.S.Methods.Cryogenics.Dynamo.dynamo_efficiency import efficiency_curve

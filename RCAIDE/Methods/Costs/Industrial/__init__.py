@@ -1,6 +1,13 @@
-## @defgroup Methods-Costs-Industrial_Costs Industrial Costs
-# These functions provide cost estimates for an aircraft program.
-# @ingroup Methods-Costs
+## @defgroup Methods-Costs-Industrial Industrial 
+# RCAIDE/Methods/Costs/Industrial/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 from Legacy.trunk.S.Methods.Costs.Industrial_Costs.estimate_hourly_rates          import estimate_hourly_rates
 from Legacy.trunk.S.Methods.Costs.Industrial_Costs.estimate_escalation_factor     import estimate_escalation_factor
