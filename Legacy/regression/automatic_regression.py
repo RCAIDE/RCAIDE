@@ -13,11 +13,9 @@
 
 import matplotlib.pyplot as plt
 import matplotlib
-matplotlib.use('Agg')
-
-import SUAVE
-from SUAVE.Core.DataOrdered import DataOrdered
+matplotlib.use('Agg') 
 import sys, os, traceback, time
+from Legacy.trunk.S.Core.DataOrdered import DataOrdered
 
 
 # ----------------------------------------------------------------------
