@@ -1,4 +1,5 @@
 ## @defgroup Methods-Costs Costs 
+# @ingroup Methods 
 # RCAIDE/Methods/Costs/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
@@ -9,5 +10,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import Industrial_Costs
-from . import Operating_Costs
+from . import Industrial 
+from . import Operating 

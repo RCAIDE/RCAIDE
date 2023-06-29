@@ -1,4 +1,5 @@
 ## @defgroup Methods-Cryogenics-Cryocooler Cryocooler 
+# @ingroup Methods-Cryogenics
 # RCAIDE/Methods/Cryogenics/Cryocooler/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 

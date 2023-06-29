@@ -1,4 +1,5 @@
 ## @defgroup Methods-Noise-Certification Certification 
+# @ingroup Methods-Noise
 # RCAIDE/Methods/Noise/Certification/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 

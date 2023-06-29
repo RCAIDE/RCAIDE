@@ -1,4 +1,4 @@
-## @defgroup Optimization
+## @defgroup Optimization 
 # RCAIDE/Optimization/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
@@ -10,4 +10,4 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from . import Common
-from . import Package_Setups
+from . import Packages

@@ -1,4 +1,5 @@
 ## @defgroup Methods-Noise-Boom Boom  
+# @ingroup Methods-Noise
 # RCAIDE/Methods/Noise/Boom/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 

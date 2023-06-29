@@ -23,7 +23,7 @@ import numpy as np
 import os
 
 ## @ingroup Input_Output-VTK
-def save_vehicle_vtks(vehicle, conditions=None, Results=Data(),
+def save_vehicle_vtk(vehicle, conditions=None, Results=Data(),
                       time_step=0,origin_offset=np.array([0.,0.,0.]),VLM_settings=None, aircraftReferenceFrame=True,
                       prop_filename="propeller.vtk", rot_filename="rotor.vtk",
                       wake_filename="prop_wake.vtk", wing_vlm_filename="wing_vlm_horseshoes.vtk",wing_filename="wing_vlm.vtk",

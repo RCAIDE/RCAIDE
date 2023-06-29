@@ -1,4 +1,5 @@
 ## @defgroup Methods-Cryogenics-Dynamo Dynamo 
+# @ingroup Methods-Cryogenics
 # RCAIDE/Methods/Cryogenics/Dynamo/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 

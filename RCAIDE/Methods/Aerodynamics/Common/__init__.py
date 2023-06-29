@@ -1,4 +1,5 @@
 ## @defgroup Methods-Aerodynamics-Common Common
+# @ingroup Methods-Aerodynamics
 # RCAIDE/Methods/Aerodynamics/Common/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 

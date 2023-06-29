@@ -1,4 +1,5 @@
 ## @defgroup Methods-Aerodynamics-AVL AVL 
+# @ingroup Methods-Aerodynamics
 # RCAIDE/Methods/Aerodynamics/AVL/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 

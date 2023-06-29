@@ -1,4 +1,5 @@
 ## @defgroup Methods-Noise-Fidelity_One-Noise_Tools Noise_Tools  
+# @ingroup Methods-Noise-Fidelity_One
 # RCAIDE/Methods/Noise/Fidelity_One/Noise_Tools/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
