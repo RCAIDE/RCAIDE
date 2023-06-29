@@ -11,20 +11,20 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
-from SUAVE.Components.Energy.Networks.Turboelectric_HTS_Ducted_Fan import Turboelectric_HTS_Ducted_Fan   
+from Legacy.trunk.S.Components.Energy.Networks.Turboelectric_HTS_Ducted_Fan import Turboelectric_HTS_Ducted_Fan   
 
-from SUAVE.Methods.Propulsion.ducted_fan_sizing import ducted_fan_sizing
+from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing import ducted_fan_sizing
 
-from SUAVE.Methods.Propulsion.serial_HTS_turboelectric_sizing import serial_HTS_turboelectric_sizing
+from Legacy.trunk.S.Methods.Propulsion.serial_HTS_turboelectric_sizing import serial_HTS_turboelectric_sizing
 
 from copy import deepcopy
 
-from SUAVE.Attributes.Solids.Copper import Copper
+from Legacy.trunk.S.Attributes.Solids.Copper import Copper
 
-from SUAVE.Attributes.Gases import Air
+from Legacy.trunk.S.Attributes.Gases import Air
 
 
 # ----------------------------------------------------------------------

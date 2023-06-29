@@ -12,15 +12,15 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Core import (
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core import (
     Data, Container,
 )
-from SUAVE.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_ac_x import trapezoid_ac_x
-from SUAVE.Methods.Propulsion import propeller_design
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_ac_x import trapezoid_ac_x
+from Legacy.trunk.S.Methods.Propulsion import propeller_design
 
 def vehicle_setup(): 
     # ------------------------------------------------------------------

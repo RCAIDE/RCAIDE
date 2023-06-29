@@ -8,21 +8,21 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Plots.Performance.Mission_Plots import *  
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import *  
 import matplotlib.pyplot as plt  
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container,
 )
 
 import numpy as np
 import copy, time
 
-from SUAVE.Components.Energy.Networks.Solar import Solar
-from SUAVE.Methods.Propulsion import propeller_design
-from SUAVE.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass
-from SUAVE.Plots.Geometry.plot_vehicle import plot_vehicle 
+from Legacy.trunk.S.Components.Energy.Networks.Solar import Solar
+from Legacy.trunk.S.Methods.Propulsion import propeller_design
+from Legacy.trunk.S.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass
+from Legacy.trunk.S.Plots.Geometry.plot_vehicle import plot_vehicle 
 import sys
 
 sys.path.append('../Vehicles')

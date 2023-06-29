@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units 
-from SUAVE.Plots.Performance.Mission_Plots import *  
-from SUAVE.Plots.Geometry.plot_vehicle import plot_vehicle 
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units 
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import *  
+from Legacy.trunk.S.Plots.Geometry.plot_vehicle import plot_vehicle 
 import numpy as np  
 import sys 
 

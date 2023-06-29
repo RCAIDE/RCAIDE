@@ -8,21 +8,21 @@
 #   Imports
 # ----------------------------------------------------------------------    
 
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 import numpy as np
 import copy
-from SUAVE.Analyses.Process import Process
-from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
-from SUAVE.Methods.Performance.estimate_stall_speed import estimate_stall_speed
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion.compute_turbofan_geometry import compute_turbofan_geometry
+from Legacy.trunk.S.Analyses.Process import Process
+from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+from Legacy.trunk.S.Methods.Performance.estimate_stall_speed import estimate_stall_speed
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion.compute_turbofan_geometry import compute_turbofan_geometry
 
 # noise imports  
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.noise_certification_limits import noise_certification_limits
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.noise_geometric            import noise_geometric 
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.compute_noise              import compute_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.noise_certification_limits import noise_certification_limits
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.noise_geometric            import noise_geometric 
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.compute_noise              import compute_noise
 #
-from SUAVE.Methods.Aerodynamics.Fidelity_Zero.Lift.compute_max_lift_coeff    import compute_max_lift_coeff
+from Legacy.trunk.S.Methods.Aerodynamics.Fidelity_Zero.Lift.compute_max_lift_coeff    import compute_max_lift_coeff
 # ----------------------------------------------------------------------        
 #   Setup
 # ----------------------------------------------------------------------   

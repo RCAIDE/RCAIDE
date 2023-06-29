@@ -6,16 +6,16 @@
 #----------------------------------------------------------------------
 #   Imports
 # ---------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 import copy
-from SUAVE.Components.Energy.Networks.Lift_Cruise                         import Lift_Cruise
-from SUAVE.Methods.Power.Battery.Sizing                                   import initialize_from_mass
-from SUAVE.Methods.Propulsion.electric_motor_sizing                       import size_from_mass , size_optimal_motor
-from SUAVE.Methods.Propulsion                                             import propeller_design
-from SUAVE.Methods.Weights.Buildups.eVTOL.empty                           import empty
-from SUAVE.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
+from Legacy.trunk.S.Components.Energy.Networks.Lift_Cruise                         import Lift_Cruise
+from Legacy.trunk.S.Methods.Power.Battery.Sizing                                   import initialize_from_mass
+from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing                       import size_from_mass , size_optimal_motor
+from Legacy.trunk.S.Methods.Propulsion                                             import propeller_design
+from Legacy.trunk.S.Methods.Weights.Buildups.eVTOL.empty                           import empty
+from Legacy.trunk.S.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
 
 
 import numpy as np

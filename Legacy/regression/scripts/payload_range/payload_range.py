@@ -12,15 +12,15 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
 import numpy as np
 import pylab as plt
 
 import copy, time
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container,
 )
 
@@ -29,7 +29,7 @@ from plot_mission import plot_mission
 
 from mission_Embraer_E190_constThr_payload_range import full_setup
 
-from SUAVE.Methods.Performance  import payload_range
+from Legacy.trunk.S.Methods.Performance  import payload_range
 
 # ----------------------------------------------------------------------
 #   Main

@@ -13,13 +13,13 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Plots.Performance.Mission_Plots import *  
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import *  
 import matplotlib.pyplot as plt  
 import numpy as np  
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 import sys
 
@@ -30,7 +30,7 @@ from Embraer_190 import vehicle_setup, configs_setup
 
 
 
-from SUAVE.Input_Output.Results import  print_parasite_drag,  \
+from Legacy.trunk.S.Input_Output.Results import  print_parasite_drag,  \
      print_compress_drag, \
      print_engine_data,   \
      print_mission_breakdown

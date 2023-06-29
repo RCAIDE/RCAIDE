@@ -7,14 +7,14 @@
 #----------------------------------------------------------------------
 #   Imports
 # ---------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core                                                           import Units, Data
-from SUAVE.Methods.Power.Battery.Sizing                                   import initialize_from_mass
-from SUAVE.Methods.Propulsion                                             import propeller_design
-from SUAVE.Methods.Weights.Buildups.eVTOL.empty                           import empty
-from SUAVE.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
-from SUAVE.Methods.Propulsion.electric_motor_sizing                       import size_optimal_motor
-from SUAVE.Methods.Weights.Correlations.Propulsion                        import nasa_motor, hts_motor , air_cooled_motor
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core                                                           import Units, Data
+from Legacy.trunk.S.Methods.Power.Battery.Sizing                                   import initialize_from_mass
+from Legacy.trunk.S.Methods.Propulsion                                             import propeller_design
+from Legacy.trunk.S.Methods.Weights.Buildups.eVTOL.empty                           import empty
+from Legacy.trunk.S.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
+from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing                       import size_optimal_motor
+from Legacy.trunk.S.Methods.Weights.Correlations.Propulsion                        import nasa_motor, hts_motor , air_cooled_motor
 import numpy as np
 from copy import deepcopy
 

@@ -9,15 +9,15 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units 
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units 
 import numpy as np    
-from SUAVE.Core import Data 
-from SUAVE.Plots.Performance.Mission_Plots import *   
-from SUAVE.Methods.Performance.estimate_stall_speed import estimate_stall_speed
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform import wing_planform
-from SUAVE.Methods.Noise.Certification import sideline_noise, flyover_noise, approach_noise
-from SUAVE.Methods.Noise.Fidelity_One.Noise_Tools.generate_microphone_points import generate_building_microphone_points 
+from Legacy.trunk.S.Core import Data 
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import *   
+from Legacy.trunk.S.Methods.Performance.estimate_stall_speed import estimate_stall_speed
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform import wing_planform
+from Legacy.trunk.S.Methods.Noise.Certification import sideline_noise, flyover_noise, approach_noise
+from Legacy.trunk.S.Methods.Noise.Fidelity_One.Noise_Tools.generate_microphone_points import generate_building_microphone_points 
 import matplotlib.pyplot as plt 
 
 import sys

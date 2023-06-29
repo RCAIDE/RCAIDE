@@ -7,15 +7,15 @@
 # ----------------------------------------------------------------------
 import sys
 sys.path.append('../trunk')
-import SUAVE  
-from SUAVE.Core import Units, Data 
-from SUAVE.Methods.Power.Battery.Sizing import initialize_from_mass  
-from SUAVE.Components.Energy.Storages.Batteries import Battery
-from SUAVE.Core import Units 
-from SUAVE.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass, initialize_from_circuit_configuration
-from SUAVE.Core import Data
-from SUAVE.Methods.Power.Battery.Ragone import find_ragone_properties, find_specific_power, find_ragone_optimum
-from SUAVE.Methods.Power.Battery.Variable_Mass import find_mass_gain_rate, find_total_mass_gain
+import Legacy.trunk.S as SUAVE  
+from Legacy.trunk.S.Core import Units, Data 
+from Legacy.trunk.S.Methods.Power.Battery.Sizing import initialize_from_mass  
+from Legacy.trunk.S.Components.Energy.Storages.Batteries import Battery
+from Legacy.trunk.S.Core import Units 
+from Legacy.trunk.S.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass, initialize_from_circuit_configuration
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Power.Battery.Ragone import find_ragone_properties, find_specific_power, find_ragone_optimum
+from Legacy.trunk.S.Methods.Power.Battery.Variable_Mass import find_mass_gain_rate, find_total_mass_gain
 import numpy as np
 import matplotlib.pyplot as plt
 

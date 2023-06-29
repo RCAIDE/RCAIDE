@@ -12,13 +12,13 @@
 """
 
 import numpy as np
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Core import Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core import Data
 
-from SUAVE.Methods.Propulsion.turbojet_sizing import turbojet_sizing
-from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
+from Legacy.trunk.S.Methods.Propulsion.turbojet_sizing import turbojet_sizing
+from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
 
 from copy import deepcopy
 

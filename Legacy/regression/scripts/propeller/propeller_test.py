@@ -8,18 +8,18 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Plots.Geometry import plot_propeller
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Plots.Geometry import plot_propeller
 import matplotlib.pyplot as plt  
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container,
 )
 
 import numpy as np
 import copy, time
-from SUAVE.Methods.Propulsion import propeller_design
-from SUAVE.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
+from Legacy.trunk.S.Methods.Propulsion import propeller_design
+from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
 
 def main():
     

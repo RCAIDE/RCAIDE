@@ -10,12 +10,12 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Core import Data, Container
-from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion import compute_turbofan_geometry
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core import Data, Container
+from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion import compute_turbofan_geometry
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
 
 from copy import deepcopy
 

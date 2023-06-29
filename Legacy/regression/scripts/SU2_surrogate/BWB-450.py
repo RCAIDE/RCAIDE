@@ -9,21 +9,21 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
 import numpy as np
 import pylab as plt
 
 import copy, time
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container
 )
 
 
-#from SUAVE.Input_Output.OpenVSP import write
-#from SUAVE.Input_Output.OpenVSP.get_vsp_areas import get_vsp_areas
+#from Legacy.trunk.S.Input_Output.OpenVSP import write
+#from Legacy.trunk.S.Input_Output.OpenVSP.get_vsp_areas import get_vsp_areas
 
 import sys
 

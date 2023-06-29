@@ -7,10 +7,10 @@
 # Imports
 #_______________________________________________________________________________
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Core import Units, Data
-from SUAVE.Methods.Performance.propeller_single_point import propeller_single_point
+from Legacy.trunk.S.Core import Units, Data
+from Legacy.trunk.S.Methods.Performance.propeller_single_point import propeller_single_point
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -20,7 +20,7 @@ sys.path.append('../Vehicles')
 
 from X57_Maxwell_Mod2 import vehicle_setup
 
-from SUAVE.Analyses.Propulsion.Rotor_Wake_Fidelity_One import Rotor_Wake_Fidelity_One
+from Legacy.trunk.S.Analyses.Propulsion.Rotor_Wake_Fidelity_One import Rotor_Wake_Fidelity_One
 
 #-------------------------------------------------------------------------------
 # Test Function

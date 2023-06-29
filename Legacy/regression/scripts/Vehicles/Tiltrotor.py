@@ -9,13 +9,13 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
-from SUAVE.Methods.Propulsion                           import propeller_design
-from SUAVE.Methods.Power.Battery.Sizing                 import initialize_from_mass
-from SUAVE.Methods.Propulsion.electric_motor_sizing     import size_optimal_motor
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform    import wing_segmented_planform
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
+from Legacy.trunk.S.Methods.Propulsion                           import propeller_design
+from Legacy.trunk.S.Methods.Power.Battery.Sizing                 import initialize_from_mass
+from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing     import size_optimal_motor
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform    import wing_segmented_planform
 
 import numpy as np 
 from copy import deepcopy

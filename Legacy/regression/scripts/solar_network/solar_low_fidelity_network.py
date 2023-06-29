@@ -8,16 +8,16 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 
 
 import numpy as np
 import time
 
-from SUAVE.Components.Energy.Networks.Solar_Low_Fidelity import Solar_Low_Fidelity
-from SUAVE.Methods.Power.Battery.Sizing import initialize_from_mass
-from SUAVE.Methods.Propulsion.electric_motor_sizing import size_from_kv
+from Legacy.trunk.S.Components.Energy.Networks.Solar_Low_Fidelity import Solar_Low_Fidelity
+from Legacy.trunk.S.Methods.Power.Battery.Sizing import initialize_from_mass
+from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing import size_from_kv
 
 def main():
    

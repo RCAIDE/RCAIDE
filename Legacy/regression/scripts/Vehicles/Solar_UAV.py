@@ -9,17 +9,17 @@
 #----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 
 import numpy as np
 import pylab as plt
 import time
 
-from SUAVE.Components.Energy.Networks.Solar import Solar
-from SUAVE.Methods.Propulsion import propeller_design
-from SUAVE.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass
-from SUAVE.Methods.Weights.Correlations.UAV.empty import empty
+from Legacy.trunk.S.Components.Energy.Networks.Solar import Solar
+from Legacy.trunk.S.Methods.Propulsion import propeller_design
+from Legacy.trunk.S.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass
+from Legacy.trunk.S.Methods.Weights.Correlations.UAV.empty import empty
 # ----------------------------------------------------------------------
 #   Build the Vehicle
 # ----------------------------------------------------------------------

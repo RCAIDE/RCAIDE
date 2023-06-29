@@ -7,10 +7,10 @@
 # Imports
 #_______________________________________________________________________________
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Core import Units, Data
-from SUAVE.Methods.Performance.electric_V_h_diagram import electric_V_h_diagram
+from Legacy.trunk.S.Core import Units, Data
+from Legacy.trunk.S.Methods.Performance.electric_V_h_diagram import electric_V_h_diagram
 
 import numpy as np
 import matplotlib.pyplot as plt

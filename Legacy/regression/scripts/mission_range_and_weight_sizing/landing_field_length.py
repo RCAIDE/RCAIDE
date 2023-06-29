@@ -9,11 +9,11 @@
 # ----------------------------------------------------------------------
 
 # SUave Imports
-import SUAVE
-from SUAVE.Core            import Data
-from SUAVE.Core import Units
-from SUAVE.Core import Units
-from SUAVE.Methods.Performance.estimate_landing_field_length import estimate_landing_field_length
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core            import Data
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Performance.estimate_landing_field_length import estimate_landing_field_length
 import sys
 sys.path.append('../Vehicles')
 

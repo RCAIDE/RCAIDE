@@ -5,12 +5,12 @@
 # APC 10x7 Thin Electric Propeller Geometry from UIUC Propeller Database.
 
 
-import SUAVE
-from SUAVE.Core import Data, Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data, Units
 import numpy as np
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
      import import_airfoil_geometry
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import (
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import (
     compute_airfoil_properties,
 )
 import os

@@ -1,13 +1,13 @@
 # test_Weights.py
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Units
-from SUAVE.Methods.Performance import V_n_diagram
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Performance import V_n_diagram
+from Legacy.trunk.S.Core import (
     Data, Container,
 )
-from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 
 import sys
 

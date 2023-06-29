@@ -7,11 +7,11 @@
 #   Imports
 # ----------------------------------------------------------------------    
 
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 import numpy as np
 import copy
-from SUAVE.Analyses.Process import Process
+from Legacy.trunk.S.Analyses.Process import Process
 
 
 # ----------------------------------------------------------------------        

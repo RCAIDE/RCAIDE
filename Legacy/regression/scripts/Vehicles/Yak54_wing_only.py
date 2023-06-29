@@ -13,9 +13,9 @@
 import numpy as np
 
 # SUAVE Imports
-import SUAVE
-from SUAVE.Core import Data, Units
-from SUAVE.Core import (
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data, Units
+from Legacy.trunk.S.Core import (
     Data, Container,
 )
 

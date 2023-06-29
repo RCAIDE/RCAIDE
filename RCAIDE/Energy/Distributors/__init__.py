@@ -1,3 +1,5 @@
+## @defgroup Methods-Energy-Distributors Distributors
+## @defgroup Energy-Distributors Distributors
 # RCAIDE/Energy/Distributors/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
@@ -7,6 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+
+## @ingroup Energy
 
 from Legacy.trunk.S.Components.Energy.Distributors import Cryogenic_Lead
 from Legacy.trunk.S.Components.Energy.Distributors import Electronic_Speed_Controller

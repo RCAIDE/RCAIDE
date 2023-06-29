@@ -6,12 +6,12 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Data
 
 import numpy as np
 
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform.fuselage_planform import fuselage_planform
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform.fuselage_planform import fuselage_planform
 
 # ---------------------------------------------------------------------- 
 #   Main

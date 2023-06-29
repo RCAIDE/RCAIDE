@@ -12,10 +12,10 @@
 import sys
 import numpy as np 
 
-import SUAVE
-from SUAVE.Core                                                     import Data, Units
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift           import VLM as VLM
-from SUAVE.Plots.Geometry.plot_vehicle_vlm_panelization             import plot_vehicle_vlm_panelization
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core                                                     import Data, Units
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift           import VLM as VLM
+from Legacy.trunk.S.Plots.Geometry.plot_vehicle_vlm_panelization             import plot_vehicle_vlm_panelization
 
 sys.path.append('../Vehicles')
 

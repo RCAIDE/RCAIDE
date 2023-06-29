@@ -11,13 +11,13 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 
 import numpy as np
 
-from SUAVE.Components.Energy.Networks.Ramjet import Ramjet
-from SUAVE.Methods.Propulsion.ramjet_sizing import ramjet_sizing
+from Legacy.trunk.S.Components.Energy.Networks.Ramjet import Ramjet
+from Legacy.trunk.S.Methods.Propulsion.ramjet_sizing import ramjet_sizing
 
 # ----------------------------------------------------------------------
 #   Main

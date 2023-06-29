@@ -16,14 +16,14 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Plots.Performance.Mission_Plots import *
-from SUAVE.Plots.Geometry import * 
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import *
+from Legacy.trunk.S.Plots.Geometry import * 
 import matplotlib.pyplot as plt  
 import numpy as np 
 
-from SUAVE.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
+from Legacy.trunk.S.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
 
 import sys
 
@@ -34,7 +34,7 @@ from Boeing_737 import vehicle_setup, configs_setup
 
 
 
-from SUAVE.Input_Output.Results import  print_parasite_drag,  \
+from Legacy.trunk.S.Input_Output.Results import  print_parasite_drag,  \
      print_compress_drag, \
      print_engine_data,   \
      print_mission_breakdown, \

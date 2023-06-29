@@ -12,13 +12,13 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 
 import numpy as np
 
-from SUAVE.Components.Energy.Networks.Liquid_Rocket import Liquid_Rocket
-from SUAVE.Methods.Propulsion.liquid_rocket_sizing  import liquid_rocket_sizing
+from Legacy.trunk.S.Components.Energy.Networks.Liquid_Rocket import Liquid_Rocket
+from Legacy.trunk.S.Methods.Propulsion.liquid_rocket_sizing  import liquid_rocket_sizing
 
 # ----------------------------------------------------------------------
 #   Main

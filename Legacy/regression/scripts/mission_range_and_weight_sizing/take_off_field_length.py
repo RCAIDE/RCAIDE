@@ -9,11 +9,11 @@
 # ----------------------------------------------------------------------
 
 # SUave Imports
-import SUAVE
-from SUAVE.Core            import Data
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core            import Data
+from Legacy.trunk.S.Core import Units
 
-from SUAVE.Methods.Performance.estimate_take_off_field_length import estimate_take_off_field_length
+from Legacy.trunk.S.Methods.Performance.estimate_take_off_field_length import estimate_take_off_field_length
 
 
 import sys

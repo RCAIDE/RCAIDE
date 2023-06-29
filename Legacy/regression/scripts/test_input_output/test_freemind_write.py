@@ -7,8 +7,8 @@
 #   Imports
 # ----------------------------------------------------------------------  
 
-import SUAVE.Input_Output as IO
-import SUAVE.Core.Data as Data
+import Legacy.trunk.S.Input_Output as IO
+import Legacy.trunk.S.Core.Data as Data
 
 
 # ----------------------------------------------------------------------        

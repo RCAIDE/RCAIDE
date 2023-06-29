@@ -6,17 +6,17 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container,
 )
 
 import numpy as np
 import copy, time
 
-#from SUAVE.Components.Energy.Processes import Solar_Radiation as Solar_Radiation
+#from Legacy.trunk.S.Components.Energy.Processes import Solar_Radiation as Solar_Radiation
 def main():
     
     # Setup and pack inputs, test several cases

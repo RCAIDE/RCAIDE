@@ -3,11 +3,11 @@
 # Modified: Feb 2017, M. Vegh
 # Reference: Aircraft Dynamics: from Modeling to Simulation, by M. R. Napolitano
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Units
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Tube_Wing.taw_cnbeta import taw_cnbeta
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Tube_Wing.taw_cnbeta import taw_cnbeta
+from Legacy.trunk.S.Core import (
     Data, Container,
 )
 

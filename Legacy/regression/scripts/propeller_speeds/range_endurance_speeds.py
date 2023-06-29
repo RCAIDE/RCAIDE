@@ -5,8 +5,8 @@
 # ----------------------------------------------------------------------
 
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
 import scipy as sp
 import numpy as np
@@ -17,7 +17,7 @@ import sys
 sys.path.append('../Vehicles')
 from Stopped_Rotor import vehicle_setup as vehicle_setup_SR 
 
-from SUAVE.Methods.Performance.propeller_range_endurance_speeds import propeller_range_endurance_speeds
+from Legacy.trunk.S.Methods.Performance.propeller_range_endurance_speeds import propeller_range_endurance_speeds
 
 # ----------------------------------------------------------------------
 #  Main

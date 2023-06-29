@@ -15,10 +15,10 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 # Units allow any units to be specificied with SUAVE then automatically converting them the standard
-from SUAVE.Core import Units
-from SUAVE.Plots.Performance.Mission_Plots import * 
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import * 
 
 # Numpy is use extensively throughout SUAVE
 import numpy as np
@@ -27,21 +27,21 @@ import numpy as np
 import pylab as plt
 
 # More basic SUAVE function
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
 import sys
 sys.path.append('../Vehicles')
 from Concorde import vehicle_setup, configs_setup
 
 # This is a sizing function to fill turbojet parameters
-from SUAVE.Methods.Center_of_Gravity.compute_fuel_center_of_gravity_longitudinal_range \
+from Legacy.trunk.S.Methods.Center_of_Gravity.compute_fuel_center_of_gravity_longitudinal_range \
      import compute_fuel_center_of_gravity_longitudinal_range
-from SUAVE.Methods.Center_of_Gravity.compute_fuel_center_of_gravity_longitudinal_range \
+from Legacy.trunk.S.Methods.Center_of_Gravity.compute_fuel_center_of_gravity_longitudinal_range \
      import plot_cg_map 
 
 
 # This imports lift equivalent area
-from SUAVE.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
+from Legacy.trunk.S.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
 
 # ----------------------------------------------------------------------
 #   Main
@@ -60,8 +60,8 @@ def main():
     analyses.finalize()
     
     ## Use these scripts to test OpenVSP functionality if desired
-    #from SUAVE.Input_Output.OpenVSP.vsp_write import write
-    #from SUAVE.Input_Output.OpenVSP.get_vsp_measurements import get_vsp_measurements
+    #from Legacy.trunk.S.Input_Output.OpenVSP.vsp_write import write
+    #from Legacy.trunk.S.Input_Output.OpenVSP.get_vsp_measurements import get_vsp_measurements
     #write(configs.base,'Concorde')
     #get_vsp_measurements(filename='Unnamed_CompGeom.csv', measurement_type='wetted_area')
     #get_vsp_measurements(filename='Unnamed_CompGeom.csv', measurement_type='wetted_volume')

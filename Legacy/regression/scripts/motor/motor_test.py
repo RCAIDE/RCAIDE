@@ -8,14 +8,14 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container,
 )
-from SUAVE.Methods.Propulsion.electric_motor_sizing import size_from_mass , size_optimal_motor
-from SUAVE.Methods.Propulsion                       import propeller_design
+from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing import size_from_mass , size_optimal_motor
+from Legacy.trunk.S.Methods.Propulsion                       import propeller_design
 import numpy as np
 import copy, time
 

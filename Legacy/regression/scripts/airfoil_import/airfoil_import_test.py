@@ -9,13 +9,13 @@
 #   Imports
 # ---------------------------------------------------------------------
 
-import SUAVE 
-from SUAVE.Core import Units, Data 
-from SUAVE.Plots.Geometry import plot_airfoil
+import Legacy.trunk.S as SUAVE 
+from Legacy.trunk.S.Core import Units, Data 
+from Legacy.trunk.S.Plots.Geometry import plot_airfoil
 import matplotlib.pyplot as plt  
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil\
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil\
      import import_airfoil_geometry, compute_airfoil_properties, convert_airfoil_to_meshgrid
-from SUAVE.Plots.Performance.Airfoil_Plots import *
+from Legacy.trunk.S.Plots.Performance.Airfoil_Plots import *
 import os
 import numpy as np
 

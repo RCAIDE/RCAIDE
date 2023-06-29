@@ -10,14 +10,14 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Core import Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core import Data
 
 import numpy as np
 
-from SUAVE.Methods.Power.Battery.Sizing import initialize_from_mass
-from SUAVE.Methods.Propulsion.ducted_fan_sizing import ducted_fan_sizing
+from Legacy.trunk.S.Methods.Power.Battery.Sizing import initialize_from_mass
+from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing import ducted_fan_sizing
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------

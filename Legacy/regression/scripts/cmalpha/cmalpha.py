@@ -5,9 +5,9 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Tube_Wing.taw_cmalpha import taw_cmalpha
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Tube_Wing.taw_cmalpha import taw_cmalpha
 
 import sys
 sys.path.append('../Vehicles')
@@ -16,8 +16,8 @@ sys.path.append('../Vehicles')
 
 
 
-from SUAVE.Core import Units
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core import (
     Data, Container,
 )
 def main():

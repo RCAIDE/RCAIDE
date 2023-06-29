@@ -3,10 +3,10 @@
 # Created:  Oct 2022, M. Clarke
 
 # Imports
-import SUAVE
-from SUAVE.Core import Units, Data  
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties  import compute_airfoil_properties
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry \
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data  
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties  import compute_airfoil_properties
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry \
      import import_airfoil_geometry    
 from scipy.interpolate import interp1d
 import os

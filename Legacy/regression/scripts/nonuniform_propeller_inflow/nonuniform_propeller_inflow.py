@@ -3,15 +3,15 @@
 # Created:   Mar 2021, R. Erhard
 # Modified:  Feb 2022, R. Erhard
 
-import SUAVE
-from SUAVE.Core import Units, Data
-from SUAVE.Methods.Propulsion import propeller_design
-from SUAVE.Plots.Performance.Propeller_Plots import *
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.compute_wing_wake import compute_wing_wake
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.compute_propeller_nonuniform_freestream import compute_propeller_nonuniform_freestream
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
+from Legacy.trunk.S.Methods.Propulsion import propeller_design
+from Legacy.trunk.S.Plots.Performance.Propeller_Plots import *
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.compute_wing_wake import compute_wing_wake
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.compute_propeller_nonuniform_freestream import compute_propeller_nonuniform_freestream
 
 
-from SUAVE.Analyses.Propulsion.Rotor_Wake_Fidelity_One import Rotor_Wake_Fidelity_One
+from Legacy.trunk.S.Analyses.Propulsion.Rotor_Wake_Fidelity_One import Rotor_Wake_Fidelity_One
 import numpy as np
 import pylab as plt
 

@@ -9,12 +9,12 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units 
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units 
 import numpy as np 
  
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container,
 )
 
@@ -24,7 +24,7 @@ sys.path.append('../Vehicles')
 # the analysis functions 
  
 from Cessna_172      import vehicle_setup  
-from SUAVE.Methods.Propulsion import propeller_design
+from Legacy.trunk.S.Methods.Propulsion import propeller_design
 
 # ----------------------------------------------------------------------
 #   Main

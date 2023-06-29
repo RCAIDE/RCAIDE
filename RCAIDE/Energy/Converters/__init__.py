@@ -1,3 +1,4 @@
+## @defgroup Energy-Converters Converters
 # RCAIDE/Energy/Converters/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
@@ -7,6 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+
+## @ingroup Energy
 
 from Legacy.trunk.S.Components.Energy.Converters import Combustor
 from Legacy.trunk.S.Components.Energy.Converters import Compression_Nozzle

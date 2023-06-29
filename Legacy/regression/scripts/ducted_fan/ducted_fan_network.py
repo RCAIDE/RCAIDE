@@ -9,21 +9,21 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
 import numpy as np
 import pylab as plt
 
 import copy, time
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container,
 )
 
-from SUAVE.Components import Component, Physical_Component, Lofted_Body
-from SUAVE.Components.Energy.Networks.Ducted_Fan import Ducted_Fan
-from SUAVE.Methods.Propulsion.ducted_fan_sizing import ducted_fan_sizing
+from Legacy.trunk.S.Components import Component, Physical_Component, Lofted_Body
+from Legacy.trunk.S.Components.Energy.Networks.Ducted_Fan import Ducted_Fan
+from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing import ducted_fan_sizing
 
 # ----------------------------------------------------------------------
 #   Main

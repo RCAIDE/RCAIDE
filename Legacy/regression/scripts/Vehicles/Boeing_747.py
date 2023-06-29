@@ -13,16 +13,16 @@ note that it does not include an engine; current values only used to test stabil
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Core import (
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core import (
     Data, Container,
 )
-from SUAVE.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_ac_x import trapezoid_ac_x
-from SUAVE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.extend_to_ref_area import extend_to_ref_area
-from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+from Legacy.trunk.S.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_ac_x import trapezoid_ac_x
+from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.extend_to_ref_area import extend_to_ref_area
+from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 from copy import deepcopy
 
 def vehicle_setup():

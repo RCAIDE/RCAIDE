@@ -1,10 +1,10 @@
 # DC_10_noise.py
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Units
-from SUAVE.Methods.Noise.Fidelity_Zero.shevell import shevell
-from SUAVE.Core import Data, Container 
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Noise.Fidelity_Zero.shevell import shevell
+from Legacy.trunk.S.Core import Data, Container 
 
 def main():
 

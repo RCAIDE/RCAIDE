@@ -2,20 +2,20 @@
 # Created:
 # Modified: Mar 2020, M. Clarke
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Units
-from SUAVE.Methods.Weights.Correlations import Propulsion as Propulsion
-from SUAVE.Methods.Weights.Correlations import Transport as Transport
-from SUAVE.Methods.Weights.Correlations import Common as Common
-from SUAVE.Methods.Weights.Correlations import General_Aviation as General_Aviation
-from SUAVE.Methods.Weights.Correlations import BWB as BWB
-from SUAVE.Methods.Weights.Correlations import Human_Powered as HP
-from SUAVE.Input_Output.SUAVE.load import load as load_results
-from SUAVE.Input_Output.SUAVE.archive import archive as save_results
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Weights.Correlations import Propulsion as Propulsion
+from Legacy.trunk.S.Methods.Weights.Correlations import Transport as Transport
+from Legacy.trunk.S.Methods.Weights.Correlations import Common as Common
+from Legacy.trunk.S.Methods.Weights.Correlations import General_Aviation as General_Aviation
+from Legacy.trunk.S.Methods.Weights.Correlations import BWB as BWB
+from Legacy.trunk.S.Methods.Weights.Correlations import Human_Powered as HP
+from Legacy.trunk.S.Input_Output.SUAVE.load import load as load_results
+from Legacy.trunk.S.Input_Output.SUAVE.archive import archive as save_results
 
-from SUAVE.Core import (Data, Container,)
-from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+from Legacy.trunk.S.Core import (Data, Container,)
+from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 
 import sys
 

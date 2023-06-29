@@ -9,21 +9,21 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
 import numpy as np
 
-from SUAVE.Components.Energy.Networks.Turboelectric_HTS_Dynamo_Ducted_Fan import Turboelectric_HTS_Dynamo_Ducted_Fan   
-from SUAVE.Methods.Propulsion.serial_HTS_dynamo_turboelectric_sizing import serial_HTS_dynamo_turboelectric_sizing
+from Legacy.trunk.S.Components.Energy.Networks.Turboelectric_HTS_Dynamo_Ducted_Fan import Turboelectric_HTS_Dynamo_Ducted_Fan   
+from Legacy.trunk.S.Methods.Propulsion.serial_HTS_dynamo_turboelectric_sizing import serial_HTS_dynamo_turboelectric_sizing
 
-from SUAVE.Methods.Weights.Dynamo_Supply.dynamo_supply_mass_estimation import dynamo_supply_mass_estimation
+from Legacy.trunk.S.Methods.Weights.Dynamo_Supply.dynamo_supply_mass_estimation import dynamo_supply_mass_estimation
 
-from SUAVE.Attributes.Gases import Air
+from Legacy.trunk.S.Attributes.Gases import Air
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Units,
 )
-from SUAVE.Methods.Propulsion.ducted_fan_sizing import ducted_fan_sizing
+from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing import ducted_fan_sizing
 
 ### @ingroup Regression-scripts-turboelectric_HTS_dynamo_ducted_fan_network
 def main():   

@@ -11,13 +11,13 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 
 import numpy as np
 
-from SUAVE.Components.Energy.Networks.Scramjet import Scramjet
-from SUAVE.Methods.Propulsion.scramjet_sizing import scramjet_sizing
+from Legacy.trunk.S.Components.Energy.Networks.Scramjet import Scramjet
+from Legacy.trunk.S.Methods.Propulsion.scramjet_sizing import scramjet_sizing
 
 # ----------------------------------------------------------------------
 #   Main

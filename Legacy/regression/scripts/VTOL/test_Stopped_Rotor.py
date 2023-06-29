@@ -7,11 +7,11 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units , Data
-from SUAVE.Plots.Performance.Mission_Plots import *
-from SUAVE.Methods.Performance.estimate_stall_speed import estimate_stall_speed
-from SUAVE.Plots.Geometry import *
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units , Data
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import *
+from Legacy.trunk.S.Methods.Performance.estimate_stall_speed import estimate_stall_speed
+from Legacy.trunk.S.Plots.Geometry import *
 import sys
 import numpy as np
 

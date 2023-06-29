@@ -15,10 +15,10 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
-from SUAVE.Methods.Geometry.Two_Dimensional.Planform import wing_planform, segment_properties
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform import wing_planform, segment_properties
 
 from copy import deepcopy
 

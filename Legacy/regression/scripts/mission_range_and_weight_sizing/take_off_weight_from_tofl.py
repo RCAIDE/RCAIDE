@@ -7,11 +7,11 @@
 # ----------------------------------------------------------------------
 
 # SUave Imports
-import SUAVE
-from SUAVE.Core            import Data
-from SUAVE.Core import Units
-from SUAVE.Core import Units
-from SUAVE.Methods.Performance.find_take_off_weight_given_tofl import find_take_off_weight_given_tofl
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core            import Data
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Performance.find_take_off_weight_given_tofl import find_take_off_weight_given_tofl
 import sys
 
 sys.path.append('../Vehicles')

@@ -1,11 +1,11 @@
 # test_dynamicstability.py
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 import numpy as np
-from SUAVE.Core import Units
-from SUAVE.Methods.Flight_Dynamics.Dynamic_Stability import Approximations as Approximations
-from SUAVE.Methods.Flight_Dynamics.Dynamic_Stability import Full_Linearized_Equations as Full_Linearized_Equations
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability import Approximations as Approximations
+from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability import Full_Linearized_Equations as Full_Linearized_Equations
+from Legacy.trunk.S.Core import (
     Data, Container,
 )
 

@@ -11,33 +11,33 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
 import numpy as np
 import pylab as plt
 
 import copy, time
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container,
 )
 
 # the analysis functions
 
-from SUAVE.Methods.Performance  import payload_range
+from Legacy.trunk.S.Methods.Performance  import payload_range
 
-#from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+#from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
 import sys
 
 sys.path.append('../Vehicles')
 # the analysis functions
 
 from Embraer_190 import vehicle_setup, configs_setup
-from SUAVE.Methods.Performance  import payload_range
+from Legacy.trunk.S.Methods.Performance  import payload_range
 
 
-from SUAVE.Input_Output.Results import  print_parasite_drag,  \
+from Legacy.trunk.S.Input_Output.Results import  print_parasite_drag,  \
      print_compress_drag, \
      print_engine_data,   \
      print_mission_breakdown

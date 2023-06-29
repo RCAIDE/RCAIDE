@@ -6,7 +6,7 @@
 import numpy as np
 import pylab as plt
 
-from SUAVE.Core import Units
+from Legacy.trunk.S.Core import Units
 
 def plot_mission(vehicle,mission,results,line_style='bo-'):
 

@@ -7,12 +7,12 @@
 # ----------------------------------------------------------------------
 import sys
 sys.path.append('../trunk')
-import SUAVE
-from SUAVE.Components.Energy.Storages.Batteries import Battery
-from SUAVE.Core import Units, Data
-from SUAVE.Core import Data
-from SUAVE.Methods.Power.Fuel_Cell.Discharge import larminie, setup_larminie, zero_fidelity
-from SUAVE.Methods.Power.Fuel_Cell.Sizing import initialize_from_power, initialize_larminie_from_power
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Components.Energy.Storages.Batteries import Battery
+from Legacy.trunk.S.Core import Units, Data
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Power.Fuel_Cell.Discharge import larminie, setup_larminie, zero_fidelity
+from Legacy.trunk.S.Methods.Power.Fuel_Cell.Sizing import initialize_from_power, initialize_larminie_from_power
 import numpy as np
 import matplotlib.pyplot as plt
 

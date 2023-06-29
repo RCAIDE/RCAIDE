@@ -9,13 +9,13 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units 
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units 
 import numpy as np
-from SUAVE.Plots.Performance.Mission_Plots import *
-from SUAVE.Core import Data
-from SUAVE.Methods.Weights.Buildups.eVTOL.empty import empty 
-from SUAVE.Methods.Power.Battery.Sizing         import initialize_from_mass
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import *
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.Weights.Buildups.eVTOL.empty import empty 
+from Legacy.trunk.S.Methods.Power.Battery.Sizing         import initialize_from_mass
 import sys
 
 sys.path.append('../Vehicles')

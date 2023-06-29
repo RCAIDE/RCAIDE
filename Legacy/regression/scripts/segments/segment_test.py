@@ -10,16 +10,16 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 
 import numpy as np
 import pylab as plt
 
 
-from SUAVE.Core import Data
+from Legacy.trunk.S.Core import Data
 
-from SUAVE.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
+from Legacy.trunk.S.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
 
 import sys
 

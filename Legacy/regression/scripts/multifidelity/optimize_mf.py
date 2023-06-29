@@ -7,16 +7,16 @@
 #   Imports
 # ----------------------------------------------------------------------    
 
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 import numpy as np
 import vehicle_mf
 import procedure_mf
 import matplotlib.pyplot as plt
-from SUAVE.Optimization import Nexus, carpet_plot
-from SUAVE.Optimization.Package_Setups.additive_setup import Additive_Solver
-import SUAVE.Optimization.Package_Setups.TRMM.Trust_Region_Optimization as tro
-from SUAVE.Optimization.Package_Setups.TRMM.Trust_Region import Trust_Region
+from Legacy.trunk.S.Optimization import Nexus, carpet_plot
+from Legacy.trunk.S.Optimization.Package_Setups.additive_setup import Additive_Solver
+import Legacy.trunk.S.Optimization.Package_Setups.TRMM.Trust_Region_Optimization as tro
+from Legacy.trunk.S.Optimization.Package_Setups.TRMM.Trust_Region import Trust_Region
 import os
 
 # ----------------------------------------------------------------------        

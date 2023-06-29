@@ -7,9 +7,9 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units
-from SUAVE.Plots.Performance.Mission_Plots import * 
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import * 
 import matplotlib.pyplot as plt  
 
 def main():

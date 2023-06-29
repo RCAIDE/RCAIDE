@@ -6,18 +6,18 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-import SUAVE
-from SUAVE.Core import Units
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units
 import numpy as np
 import pylab as plt
 import copy, time
 
-from SUAVE.Core import (
+from Legacy.trunk.S.Core import (
 Data, Container
 )
 
-from SUAVE.Methods.Propulsion.turbofan_sizing import turbofan_sizing
-from SUAVE.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion import compute_turbofan_geometry
+from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing import turbofan_sizing
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Propulsion import compute_turbofan_geometry
 # ----------------------------------------------------------------------
 #   Define the Vehicle
 # ----------------------------------------------------------------------

@@ -7,10 +7,10 @@
 # Imports
 #_______________________________________________________________________________
 
-import SUAVE
+import Legacy.trunk.S as SUAVE
 
-from SUAVE.Core import Units, Data
-from SUAVE.Methods.Performance.electric_payload_range import electric_payload_range
+from Legacy.trunk.S.Core import Units, Data
+from Legacy.trunk.S.Methods.Performance.electric_payload_range import electric_payload_range
 
 import numpy as np
 

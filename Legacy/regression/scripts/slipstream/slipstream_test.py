@@ -10,20 +10,20 @@
 #   Imports
 # ----------------------------------------------------------------------
 
-import SUAVE
-from SUAVE.Core import Units, Data
+import Legacy.trunk.S as SUAVE
+from Legacy.trunk.S.Core import Units, Data
 
 import numpy as np
 import pylab as plt
 import sys
 
-from SUAVE.Plots.Performance.Mission_Plots import *
-from SUAVE.Plots.Geometry.plot_vehicle import plot_vehicle
-from SUAVE.Plots.Geometry.plot_vehicle_vlm_panelization  import plot_vehicle_vlm_panelization
+from Legacy.trunk.S.Plots.Performance.Mission_Plots import *
+from Legacy.trunk.S.Plots.Geometry.plot_vehicle import plot_vehicle
+from Legacy.trunk.S.Plots.Geometry.plot_vehicle_vlm_panelization  import plot_vehicle_vlm_panelization
 
-from SUAVE.Analyses.Propulsion.Rotor_Wake_Fidelity_One import Rotor_Wake_Fidelity_One
-from SUAVE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.VLM import  VLM  
-from SUAVE.Analyses.Aerodynamics import Vortex_Lattice
+from Legacy.trunk.S.Analyses.Propulsion.Rotor_Wake_Fidelity_One import Rotor_Wake_Fidelity_One
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.VLM import  VLM  
+from Legacy.trunk.S.Analyses.Aerodynamics import Vortex_Lattice
 
 
 sys.path.append('../Vehicles')
