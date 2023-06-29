@@ -11,4 +11,4 @@
 # @ingroup Methods-Geometry
 
 from . import Cross_Section
-from . import Planfom
+from . import Planform
