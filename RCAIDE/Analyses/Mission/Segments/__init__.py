@@ -9,8 +9,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.DIRECTORY        import OBJECT
-
 from Legacy.trunk.S.Analyses.Mission.Segments.Segment     import Segment
 from Legacy.trunk.S.Analyses.Mission.Segments.Simple      import Simple
 from Legacy.trunk.S.Analyses.Mission.Segments.Aerodynamic import Aerodynamic

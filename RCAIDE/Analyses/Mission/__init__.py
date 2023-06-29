@@ -9,8 +9,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.DIRECTORY        import OBJECT
-
 from Legacy.trunk.S.Analyses.Mission.All_At_Once import All_At_Once
 from Legacy.trunk.S.Analyses.Mission.Mission import Mission
 from Legacy.trunk.S.Analyses.Mission.Sequential_Segments import Sequential_Segments
