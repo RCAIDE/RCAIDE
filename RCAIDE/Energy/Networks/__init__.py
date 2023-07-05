@@ -10,11 +10,10 @@
 
 from Legacy.trunk.S.Components.Energy.Networks import Battery_Cell_Cycler
 from Legacy.trunk.S.Components.Energy.Networks import Battery_Ducted_Fan
-from Legacy.trunk.S.Components.Energy.Networks import Battery_Propeller
+from .                                         import Battery_Electric_Rotor
 from Legacy.trunk.S.Components.Energy.Networks import Ducted_Fan
 from Legacy.trunk.S.Components.Energy.Networks import Internal_Combustion_Propeller
-from Legacy.trunk.S.Components.Energy.Networks import Internal_Combustion_Propeller_Constant_Speed
-from Legacy.trunk.S.Components.Energy.Networks import Lift_Cruise
+from Legacy.trunk.S.Components.Energy.Networks import Internal_Combustion_Propeller_Constant_Speed 
 from Legacy.trunk.S.Components.Energy.Networks import Liquid_Rocket
 from Legacy.trunk.S.Components.Energy.Networks import Network
 from Legacy.trunk.S.Components.Energy.Networks import Propulsor_Surrogate
