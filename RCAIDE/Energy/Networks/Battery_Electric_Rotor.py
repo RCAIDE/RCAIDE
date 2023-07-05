@@ -1,39 +1,31 @@
-## @ingroup Components-Energy-Networks
-# Battery_Electric_Rotor.py
+# RCAIDE/Energy/Networks/Battery_Electric_Rotor.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2015, E. Botero
-# Modified: Feb 2016, T. MacDonald
-#           Mar 2020, M. Clarke 
-#           Apr 2021, M. Clarke
-#           Jul 2021, E. Botero
-#           Jul 2021, R. Erhard
-#           Aug 2021, M. Clarke
-#           Feb 2022, R. Erhard
-#           Mar 2022, R. Erhard
+# Created:  Jul 2023, M. Clarke
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+""" RCAIDE Package Setup
+"""
 
-# package imports
-import MARC
-import numpy as np
-from .Network import Network
-from MARC.Analyses.Mission.Segments.Conditions import Residuals
-from MARC.Components.Energy.Converters   import Propeller, Lift_Rotor, Prop_Rotor 
-from MARC.Components.Energy.Thermal_Management.Batteries.Channel_Cooling   import Wavy_Channel_Gas_Liquid_Heat_Exchanger
-from MARC.Analyses.Mission.Segments.Ground import Takeoff, Landing 
-from MARC.Components.Physical_Component import Container 
-from MARC.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
-from MARC.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
-from MARC.Core import Data , Units 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------  
+import RCAIDE
+from RCAIDE.Analyses.Mission.Segments.Conditions                    import Residuals
+from RCAIDE.Analyses.Mission.Segments.Ground                        import Takeoff, Landing 
+from RCAIDE.Core                                                    import Data , Units 
+from RCAIDE.Components.Physical_Component                           import Container 
+from RCAIDE.Energy.Converters                                       import Propeller, Lift_Rotor, Prop_Rotor 
+from RCAIDE.Methods.Power.Battery.pack_battery_conditions           import pack_battery_conditions
+from RCAIDE.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
+from Legacy.trunk.S.Compoments.Energy.Network import Network
+
 import copy
+import numpy as np 
 
-# ----------------------------------------------------------------------
-#  Network
-# ----------------------------------------------------------------------
-
-## @ingroup Components-Energy-Networks
+# ----------------------------------------------------------------------------------------------------------------------
+#  NETWORK
+# ---------------------------------------------------------------------------------------------------------------------- 
+## @ingroup Energy-Networks
 class Battery_Electric_Rotor(Network):
     """ This is a simple network with a battery powering a rotor through
         an electric motor
@@ -67,20 +59,19 @@ class Battery_Electric_Rotor(Network):
             N/A
         """         
         
-        self.tag                               = 'Battery_Electric_Rotor'
-        self.motors                            = Container()
-        self.rotors                            = Container()
-        self.electronic_speed_controllers      = Container()
-        self.avionics                          = None
-        self.payload                           = None
-        self.battery                           = None   
-        self.voltage                           = None
-        self.use_surrogate                     = False 
-        self.generative_design_minimum         = 0 
-        self.rotor_group_indexes               = [0]
-        self.motor_group_indexes               = [0]
-        self.esc_group_indexes                 = [0]
-        self.active_propulsor_groups           = [True]
+        self.tag                          = 'Battery_Electric_Rotor'
+        self.motors                       = Container()
+        self.rotors                       = Container()
+        self.electronic_speed_controllers = Container()
+        self.avionics                     = None
+        self.battery                      = None 
+        self.payload                      = None 
+        self.voltage                      = None
+        self.use_surrogate                = False  
+        self.rotor_group_indexes          = [0]
+        self.motor_group_indexes          = [0]
+        self.esc_group_indexes            = [0]
+        self.active_propulsor_groups      = [True]
     
     # manage process with a driver function
     def evaluate_thrust(self,state):
@@ -124,8 +115,7 @@ class Battery_Electric_Rotor(Network):
         esc_group_indexes       = self.esc_group_indexes
         active_propulsor_groups = self.active_propulsor_groups
         motors                  = self.motors
-        rotors                  = self.rotors 
-        btms                    = battery.thermal_management_system
+        rotors                  = self.rotors
         
         # Set battery energy
         battery.pack.current_energy      = conditions.propulsion.battery.pack.energy
@@ -140,8 +130,13 @@ class Battery_Electric_Rotor(Network):
         n_parallel                       = battery.pack.electrical_configuration.parallel
         
         # update ambient temperature based on altitude
-        btms.atmosphere_conditions       = conditions.freestream 
-        a                                = conditions.freestream.speed_of_sound 
+        battery.ambient_temperature                   = conditions.freestream.temperature   
+        battery.cooling_fluid.thermal_conductivity    = conditions.freestream.thermal_conductivity
+        battery.cooling_fluid.kinematic_viscosity     = conditions.freestream.kinematic_viscosity
+        battery.cooling_fluid.prandtl_number          = conditions.freestream.prandtl_number
+        battery.cooling_fluid.density                 = conditions.freestream.density  
+        battery.ambient_pressure                      = conditions.freestream.pressure  
+        a                                             = conditions.freestream.speed_of_sound 
         
         # Predict voltage based on battery  
         volts = battery.compute_voltage(state)  
@@ -394,7 +389,7 @@ class Battery_Electric_Rotor(Network):
                 if active_propulsor_groups[i]:
                     q_motor   = segment.state.conditions.propulsion['propulsor_group_' + str(i)].motor.torque
                     q_prop    = segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.torque 
-                    segment.state.residuals.network['propulsor_group_' + str(i)] = q_motor - q_prop 
+                    segment.state.residuals.network['propulsor_group_' + str(i)] = q_motor - q_prop
                 
         network       = self
         battery       = self.battery 
@@ -409,8 +404,7 @@ class Battery_Electric_Rotor(Network):
                                               initial_rotor_power_coefficients = None,
                                               initial_battery_cell_temperature = 283. , 
                                               initial_battery_state_of_charge = 0.5,
-                                              initial_battery_cell_current = 5.,
-                                              wavy_channel_inlet_temperature = 284.):
+                                              initial_battery_cell_current = 5.):
         """ This function sets up the information that the mission needs to run a mission segment using this network
     
             Assumptions:
@@ -439,7 +433,6 @@ class Battery_Electric_Rotor(Network):
         active_propulsor_groups = segment.analyses.energy.network.battery_electric_rotor.active_propulsor_groups
         motors                  = self.motors
         rotors                  = self.rotors
-        btms                    = self.battery.thermal_management_system
         escs                    = self.electronic_speed_controllers
         n_rotors                = len(motors)
         n_motors                = len(rotors)
@@ -496,7 +489,8 @@ class Battery_Electric_Rotor(Network):
         segment.state.residuals.network = Residuals()  
         battery.append_battery_unknowns_and_residuals_to_segment(segment,initial_voltage,
                                               initial_battery_cell_temperature , initial_battery_state_of_charge,
-                                              initial_battery_cell_current,wavy_channel_inlet_temperature)   
+                                              initial_battery_cell_current)  
+
         if segment.battery_discharge:
             idx = 0
             for i in range(n_groups):  
@@ -511,16 +505,16 @@ class Battery_Electric_Rotor(Network):
                         else:
                             segment.state.unknowns['throttle_' + str(i)] = initial_throttles[i] * ones_row(1)    
                         idx += 1
-                            
-        # Setup the conditions
-        for i in range(n_groups):  
+                    
+        for i in range(n_groups):         
+            # Setup the conditions 
             idx = np.where(i == np.array(rotor_group_indexes))[0][0]
             identical_rotor   = rotors[list(rotors.keys())[idx]] 
             identical_motor   = motors[list(motors.keys())[idx]] 
             
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)]                         = MARC.Analyses.Mission.Segments.Conditions.Conditions()
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].motor                   = MARC.Analyses.Mission.Segments.Conditions.Conditions()
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor                   = MARC.Analyses.Mission.Segments.Conditions.Conditions()
+            segment.state.conditions.propulsion['propulsor_group_' + str(i)]                         = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
+            segment.state.conditions.propulsion['propulsor_group_' + str(i)].motor                   = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
+            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor                   = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
             segment.state.conditions.propulsion['propulsor_group_' + str(i)].throttle                = 0. * ones_row(1)  
             segment.state.conditions.propulsion['propulsor_group_' + str(i)].y_axis_rotation         = 0. * ones_row(1) 
             segment.state.conditions.propulsion['propulsor_group_' + str(i)].motor.tag               = identical_rotor.tag 
@@ -536,10 +530,7 @@ class Battery_Electric_Rotor(Network):
             segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.efficiency        = 0. * ones_row(1)   
             segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.figure_of_merit   = 0. * ones_row(1) 
             segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.power_coefficient = 0. * ones_row(1)
-        
-        if type(btms) == Wavy_Channel_Gas_Liquid_Heat_Exchanger:
-            segment.state.conditions.propulsion.battery.thermal_management_system.wavy_channel_inlet_temperature = 0. * ones_row(1)   
-        
+            
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network  = self.unpack_unknowns
         segment.process.iterate.residuals.network = self.residuals        
