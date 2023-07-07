@@ -10,6 +10,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Power-Battery
 
-from Legacy.trunk.S.Methods.Power.Battery.Sizing.initialize_from_mass                  import initialize_from_mass
-from Legacy.trunk.S.Methods.Power.Battery.Sizing.initialize_from_energy_and_power      import initialize_from_energy_and_power
-from Legacy.trunk.S.Methods.Power.Battery.Sizing.initialize_from_circuit_configuration import initialize_from_circuit_configuration
+from .initialize_from_mass                  import initialize_from_mass
+from .initialize_from_energy_and_power      import initialize_from_energy_and_power
+from .initialize_from_circuit_configuration import initialize_from_circuit_configuration
+from .find_mass_gain_rate                   import find_mass_gain_rate
+from .find_total_mass_gain                  import find_total_mass_gain

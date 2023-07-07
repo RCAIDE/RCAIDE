@@ -9,7 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import Aerodynamics
+from .Aerodynamics import Aerodynamics
 from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Basic        import Basic
 from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Conditions   import Conditions
 from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Numerics     import Numerics

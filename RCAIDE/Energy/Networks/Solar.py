@@ -9,15 +9,20 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+
+# RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Data , Units
-from RCAIDE.Analyses.Mission.Segments.Conditions import Residuals
-from RCAIDE.Components.Physical_Component import Container
-from RCAIDE.Energy.Converters   import Propeller, Lift_Rotor, Prop_Rotor 
-from RCAIDE.Methods.Power.Battery.pack_battery_conditions import pack_battery_conditions
-from RCAIDE.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions 
-from Legacy.trunk.S.Compoments.Energy.Network import Network
-   
+from RCAIDE.Core                                   import Data , Units
+from RCAIDE.Analyses.Mission.Segments.Conditions   import Residuals
+from RCAIDE.Energy.Converters                      import Propeller, Lift_Rotor, Prop_Rotor 
+from RCAIDE.Methods.Power.Battery.Common           import pack_battery_conditions
+from RCAIDE.Methods.Power.Battery.Common           import append_initial_battery_conditions 
+
+# Legacy imports 
+from Legacy.trunk.S.Components.Energy.Networks     import Network
+from Legacy.trunk.S.Components.Physical_Component  import Container
+
+# package imports 
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -25,9 +30,12 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Energy-Networks
 class Solar(Network):
-    """ A solar powered system with batteries and maximum power point tracking.
-        
-        This network adds an extra unknowns to the mission, the torque matching between motor and rotor.
+    """ A propeller-driven solar powered system with batteries and maximum power point tracking.  
+        Electronic speed controllers, thermal management system, avionics, and other eletric 
+        power systes paylaods are also modelled. Rotors and motors are arranged into groups,
+        called propulsor groups, to siginify how they are connected in the network.  
+        This network adds additional unknowns and residuals to the mission to determinge 
+        the torque matching between motors and rotors in each propulsor group.  
     
         Assumptions:
         None
@@ -163,8 +171,7 @@ class Solar(Network):
         # Setup numbers for iteration
         total_motor_current = 0.
         total_thrust        = 0. * state.ones_row(3)
-        total_power         = 0.
-        
+        total_power         = 0. 
 
         # Iterate over motor/rotors
         for ii in range(n_evals):
@@ -319,9 +326,7 @@ class Solar(Network):
             q_prop    = segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.torque 
             segment.state.residuals.network['propulsor_group_' + str(i)] = q_motor - q_prop 
         
-        return
-    
-    
+        return 
     
     def add_unknowns_and_residuals_to_segment(self, segment, initial_rotor_power_coefficients = None):
         """ This function sets up the information that the mission needs to run a mission segment using this network
@@ -379,8 +384,7 @@ class Solar(Network):
                 
         if len(active_propulsor_groups)!= n_groups:
             assert('The dimension of propulsor groups rotors must be equal to the number of distinct groups')            
-        segment.state.conditions.propulsion.number_of_propulsor_groups = n_groups 
-              
+        segment.state.conditions.propulsion.number_of_propulsor_groups = n_groups  
             
         # unpack the initial values if the user doesn't specify
         if initial_rotor_power_coefficients==None:  
@@ -390,8 +394,7 @@ class Solar(Network):
                 if type(identical_rotor) == Propeller:
                     initial_rotor_power_coefficients.append(float(identical_rotor.cruise.design_power_coefficient))
                 if type(identical_rotor) == Lift_Rotor or type(identical_rotor) == Prop_Rotor:
-                    initial_rotor_power_coefficients.append(float(identical_rotor.hover.design_power_coefficient))    
-             
+                    initial_rotor_power_coefficients.append(float(identical_rotor.hover.design_power_coefficient)) 
 
         # Assign initial segment conditions to segment if missing
         battery = self.battery

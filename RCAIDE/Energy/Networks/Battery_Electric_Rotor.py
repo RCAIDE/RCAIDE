@@ -9,16 +9,20 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
+ # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Analyses.Mission.Segments.Conditions                    import Residuals
-from RCAIDE.Analyses.Mission.Segments.Ground                        import Takeoff, Landing 
-from RCAIDE.Core                                                    import Data , Units 
-from RCAIDE.Components.Physical_Component                           import Container 
-from RCAIDE.Energy.Converters                                       import Propeller, Lift_Rotor, Prop_Rotor 
-from RCAIDE.Methods.Power.Battery.pack_battery_conditions           import pack_battery_conditions
-from RCAIDE.Methods.Power.Battery.append_initial_battery_conditions import append_initial_battery_conditions
-from Legacy.trunk.S.Compoments.Energy.Network import Network
+from RCAIDE.Analyses.Mission.Segments.Conditions                             import Residuals
+from RCAIDE.Analyses.Mission.Segments.Ground                                 import Takeoff, Landing 
+from RCAIDE.Core                                                             import Data , Units 
+from RCAIDE.Energy.Converters                                                import Propeller, Lift_Rotor, Prop_Rotor 
+from RCAIDE.Methods.Power.Battery.Common                                     import pack_battery_conditions
+from RCAIDE.Methods.Power.Battery.Common                                     import append_initial_battery_conditions 
+from .Network import Network 
 
+# Legacy imports 
+from Legacy.trunk.S.Components.Physical_Component                            import Container  
+
+ # package imports 
 import copy
 import numpy as np 
 
@@ -27,12 +31,12 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks
 class Battery_Electric_Rotor(Network):
-    """ This is a simple network with a battery powering a rotor through
-        an electric motor
-        
-        This network adds 2 extra unknowns to the mission. The first is
-        a voltage, to calculate the thevenin voltage drop in the pack.
-        The second is torque matching between motor and rotor.
+    """ A network comprising a battery pack to power rotors through via electric motors.
+        Electronic speed controllers, thermal management system, avionics, and other eletric 
+        power systes paylaods are also modelled. Rotors and motors are arranged into groups,
+        called propulsor groups, to siginify how they are connected in the network.     
+        The network adds additional unknowns and residuals to the mission to determinge 
+        the torque matching between motors and rotors in each propulsor group.  
     
         Assumptions:
         The y axis rotation is used for rotating the rotor about the Y-axis for tilt rotors and tiltwings
@@ -117,12 +121,12 @@ class Battery_Electric_Rotor(Network):
         motors                  = self.motors
         rotors                  = self.rotors
         
-        # Set battery energy
+        # Set battery energy   
+        battery.cell.age                 = conditions.propulsion.battery.cell.cycle_in_day    
+        battery.cell.charge_throughput   = conditions.propulsion.battery.cell.charge_throughput   
         battery.pack.current_energy      = conditions.propulsion.battery.pack.energy
+        battery.pack.max_energy          = conditions.propulsion.battery.pack.max_aged_energy     
         battery.pack.temperature         = conditions.propulsion.battery.pack.temperature
-        battery.pack.max_energy          = conditions.propulsion.battery.pack.max_aged_energy        
-        battery.cell.charge_throughput   = conditions.propulsion.battery.cell.charge_throughput     
-        battery.cell.age                 = conditions.propulsion.battery.cell.cycle_in_day  
         battery.cell.R_growth_factor     = conditions.propulsion.battery.cell.resistance_growth_factor
         battery.cell.E_growth_factor     = conditions.propulsion.battery.cell.capacity_fade_factor 
         discharge_flag                   = conditions.propulsion.battery.discharge_flag   
@@ -306,7 +310,7 @@ class Battery_Electric_Rotor(Network):
         return results
      
     def unpack_unknowns(self,segment):
-        """ This is an extra set of unknowns which are unpacked from the mission solver and send to the network.
+        """ This adds additional unknowns which are unpacked from the mission solver and send to the network.
     
             Assumptions:
             None

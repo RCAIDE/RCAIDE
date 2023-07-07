@@ -1,20 +1,26 @@
-## @defgroup Analyses-Mission-Segments-Conditions Conditions
 # RCAIDE/Analyses/Mission/Segments/Conditions/Aerodynamics.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
 # Created:  Jul 2023, M. Clarke
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
- 
-import numpy as np 
+
+# RCAIDE imports
 from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Basic      import Basic
 from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Conditions import Conditions
- 
+
+# python imports
+import numpy as np
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# CONDITIONS
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 ## @ingroup Analyses-Mission-Segments-Conditions
 class Aerodynamics(Basic):
@@ -47,12 +53,11 @@ class Aerodynamics(Basic):
             None
         """ 
         
-        self.tag                                              = 'aerodynamic_conditions'
+        self.tag = 'aerodynamic_conditions'
         
         # start default row vectors
-        ones_1col                                             = self.ones_row(1)
-        ones_2col                                             = self.ones_row(2)
-        ones_3col                                             = self.ones_row(3)
+        ones_1col = self.ones_row(1) 
+        ones_3col = self.ones_row(3)
 
         # wind frame conditions
         self.frames.wind                                      = Conditions()

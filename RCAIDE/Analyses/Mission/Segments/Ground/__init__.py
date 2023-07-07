@@ -12,4 +12,5 @@
 from Legacy.trunk.S.Analyses.Mission.Segments.Ground.Ground                   import Ground
 from Legacy.trunk.S.Analyses.Mission.Segments.Ground.Landing                  import Landing
 from Legacy.trunk.S.Analyses.Mission.Segments.Ground.Takeoff                  import Takeoff
-from Legacy.trunk.S.Analyses.Mission.Segments.Ground.Battery_Charge_Discharge import Battery_Charge_Discharge
+from .Battery_Discharge import Battery_Discharge
+from .Battery_Charge    import Battery_Charge

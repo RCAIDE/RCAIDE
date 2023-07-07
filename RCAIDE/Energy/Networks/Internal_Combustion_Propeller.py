@@ -9,10 +9,15 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+# RCAIDE imports 
 import RCAIDE
-from RCAIDE.Components.Physical_Component import Container
-from RCAIDE.Core import Data, Units 
-from Legacy.trunk.S.Compoments.Energy.Network import Network
+from RCAIDE.Core                                      import Data, Units 
+from .Network import Network 
+
+# Legacy imports  
+from Legacy.trunk.S.Components.Physical_Component     import Container
+
+# package imports 
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -20,8 +25,12 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks
 class Internal_Combustion_Propeller(Network):
-    """ A simple mock up of an internal combustion propeller engine. Tis network adds an extra
-        unknowns to the mission, the torque matching between motor and propeller.
+    """ A simple mock up of an internal combustion propeller engine.  
+        Electronic speed controllers, thermal management system, avionics, and other eletric 
+        power systes paylaods are also modelled. Rotors and motors are arranged into groups,
+        called propulsor groups, to siginify how they are connected in the network.  
+        This network adds additional unknowns and residuals to the mission to determinge 
+        the torque matching between motors and rotors in each propulsor group.  
     
         Assumptions:
         None
@@ -144,8 +153,8 @@ class Internal_Combustion_Propeller(Network):
             conditions.propulsion['propulsor_group_' + str(ii)].rotor.torque         = Q
             conditions.propulsion['propulsor_group_' + str(ii)].rotor.rpm            = rpm
             conditions.propulsion['propulsor_group_' + str(ii)].rotor.tip_mach       = (R*rpm*Units.rpm)/a
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.disc_loading   = (F_mag)/(np.pi*(R**2)) # N/m^2                  
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.power_loading  = (F_mag)/(P)      # N/W   
+            conditions.propulsion['propulsor_group_' + str(ii)].rotor.disc_loading   = (F_mag)/(np.pi*(R**2))             
+            conditions.propulsion['propulsor_group_' + str(ii)].rotor.power_loading  = (F_mag)/(P)    
             conditions.propulsion['propulsor_group_' + str(ii)].rotor.efficiency     = etap
             conditions.propulsion['propulsor_group_' + str(ii)].rotor.figure_of_merit= outputs.figure_of_merit
             conditions.propulsion['propulsor_group_' + str(ii)].throttle             = conditions.propulsion.throttle
@@ -223,7 +232,7 @@ class Internal_Combustion_Propeller(Network):
     
             Inputs:
             segment
-            rpm                      [rpm]
+            rpm                                                                   [rpm]
             
             Outputs:
             segment.state.unknowns.battery_voltage_under_load
@@ -247,8 +256,7 @@ class Internal_Combustion_Propeller(Network):
         n_eng     = self.number_of_engines
         
         if n_props!=n_engines!=n_eng:
-            print('The number of propellers is not the same as the number of engines')
-        
+            print('The number of propellers is not the same as the number of engines') 
     
         # Count the number of unique pairs of rotors and motors to determine number of unique pairs of residuals and unknowns 
         unique_rotor_groups = np.unique(rotor_group_indexes)

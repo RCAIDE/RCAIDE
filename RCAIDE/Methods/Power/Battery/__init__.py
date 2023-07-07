@@ -8,13 +8,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Power
+# @ingroup Methods-Power 
 
+from . import Common
+from . import State_Estimation_Models 
 from . import Ragone
-from . import Sizing
-from . import Variable_Mass
-from . import Cell_Cycle_Models
-
-from Legacy.trunk.S.Methods.Power.Battery    import append_initial_battery_conditions
-from Legacy.trunk.S.Methods.Power.Battery    import compute_net_generated_battery_heat
-from Legacy.trunk.S.Methods.Power.Battery    import pack_battery_conditions
+from . import Sizing 

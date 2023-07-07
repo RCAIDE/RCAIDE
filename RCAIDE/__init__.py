@@ -17,3 +17,5 @@ from . import External_Interfaces
 from . import Methods
 from . import Optimization
 from . import Visualization
+
+from .Vehicle import Vehicle

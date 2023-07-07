@@ -8,6 +8,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Energy.Storages.Batteries import Battery
-from . import Constant_Mass
-from . import Variable_Mass
+from .Aluminum_Air                        import Aluminum_Air
+from .Battery                             import Battery
+from .Lithium_Ion                         import Lithium_Ion 
+from .Lithium_Ion_LiFePO4_18650           import Lithium_Ion_LiFePO4_18650
+from .Lithium_Ion_LiNiMnCoO2_18650        import Lithium_Ion_LiNiMnCoO2_18650   
+from .Lithium_Sulfur                      import Lithium_Sulfur
+from .Lithium_Air                         import Lithium_Air

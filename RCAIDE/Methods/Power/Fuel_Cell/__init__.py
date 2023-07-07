@@ -1,4 +1,4 @@
-## @defgroup Methods-Power-Fuel_Cell Fuel Cell
+## @defgroup Methods-Power-Fuel_Cell Fuel_Cell
 # RCAIDE/Methods/Power/Fuel_Cell/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
@@ -10,5 +10,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Power
 
-from . import Discharge
+from . import Discharge_Models
 from . import Sizing
