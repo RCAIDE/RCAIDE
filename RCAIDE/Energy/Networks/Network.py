@@ -10,8 +10,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
-from RCAIDE.Components import Physical_Component
-from Legacy.trunk.S.Core import Container as ContainerBase
+from RCAIDE.Components import Physical_Component 
 from RCAIDE.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -51,8 +50,7 @@ class Network(Physical_Component):
                 Properties Used:
                 N/A
         """
-        self.tag                    = 'network' 
-        self.non_dimensional_origin = [[0.0,0.0,0.0]]
+        self.tag                    = 'network'  
         self.number_of_engines      = 1
         self.engine_length          = 1.0
         self.wing_mounted           = True
@@ -67,9 +65,9 @@ class Network(Physical_Component):
 #  Component Container
 # ----------------------------------------------------------------------
 
-## @ingroup Components
-class Container(ContainerBase):
-    """ RCAIDE.Components.Energy.Networks.Network.Container()
+## @ingroup Energy-Network
+class Container(Physical_Component.Container):
+    """ MARC.Components.Energy.Networks.Network.Container()
         
         The Network Container Class
     
@@ -77,9 +75,9 @@ class Container(ContainerBase):
             None
             
             Source:
-            N/A 
- 
-    """
+            N/A
+    
+    """ 
     def get_children(self):
         """ Returns the components that can go inside
         

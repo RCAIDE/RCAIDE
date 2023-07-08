@@ -255,7 +255,7 @@ def vehicle_setup(current,battery_chemistry):
     avionics.current              = current 
     net.avionics                  = avionics  
 
-    vehicle.append_network(net)
+    vehicle.append_component(net)
 
     return vehicle
 

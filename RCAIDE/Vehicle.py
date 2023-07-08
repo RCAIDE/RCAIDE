@@ -1,32 +1,29 @@
-# RCAIDE/Vehicle.py
-# (c) Copyright The Board of Trustees of RCAIDE
-# 
-# Created:  Jul 2023, M. Clarke
+## @defgroup Vehicle
+# Vehicle.py
+#
+# Created:  ### 2013, SUAVE Team (Stanford University)
+# Modified: ### ####, M. Vegh
+#           Feb 2016, E. Botero
+#           Apr 2017, M. Clarke 
+#           Apr 2020, E. Botero
 
-""" RCAIDE Package Setup
-"""
+# ----------------------------------------------------------------------
+#  Imports
+# ----------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
-
-# RCAIDE imports 
-from RCAIDE.Core       import Data, DataOrdered
-from RCAIDE            import Components
-from RCAIDE            import Energy
+from RCAIDE.Core import Data, DataOrdered
+from RCAIDE import Components
+from RCAIDE import Energy
 from RCAIDE.Components import Physical_Component
-
-# package imports 
 import numpy as np 
 import string
-characters   = string.punctuation + string.whitespace
-t_table      = str.maketrans( characters          + string.ascii_uppercase , 
-                            '_'*len(characters) + string.ascii_lowercase )
+chars = string.punctuation + string.whitespace
+t_table = str.maketrans( chars          + string.ascii_uppercase , 
+                            '_'*len(chars) + string.ascii_lowercase )
 
-
-# ----------------------------------------------------------------------------------------------------------------------
-#  VEHICLE
-# ---------------------------------------------------------------------------------------------------------------------- 
+# ----------------------------------------------------------------------
+#  Vehicle Data Class
+# ----------------------------------------------------------------------
 
 ## @ingroup Vehicle
 class Vehicle(Data):
@@ -57,7 +54,7 @@ class Vehicle(Data):
             Properties Used:
             None
             """          
-        self.tag                    = 'vehicle'
+        self.tag = 'vehicle'
         self.fuselages              = Components.Fuselages.Fuselage.Container()
         self.booms                  = Components.Booms.Boom.Container()
         self.wings                  = Components.Wings.Wing.Container()
@@ -74,7 +71,6 @@ class Vehicle(Data):
         self.performance            = DataOrdered()
 
     _component_root_map = None
-    _network_root_map   = None
 
     def __init__(self,*args,**kwarg):
         """ Sets up the component hierarchy for a vehicle
@@ -101,27 +97,51 @@ class Vehicle(Data):
             Components.Booms.Boom                      : self['booms']            ,
             Components.Envelope                        : self['envelope']         ,
             Components.Fuselages.Fuselage              : self['fuselages']        ,
-            Components.Landing_Gear.Landing_Gear       : self['landing_gear']     ,
             Components.Nacelles.Nacelle                : self['nacelles']         ,
-            Components.Systems.System                  : self['systems']          , 
+            Energy.Networks.Network                    : self['networks']         ,
+            Components.Landing_Gear.Landing_Gear       : self['landing_gear']     ,
+            Components.Systems.System                  : self['systems']          ,
             Components.Wings.Wing                      : self['wings']            ,
             Vehicle_Mass_Properties                    : self['mass_properties']  ,
         }
         
-
-        self._network_root_map = { 
-            Energy.Networks.Network                    : self['networks']         , 
-            Vehicle_Mass_Properties                    : self['mass_properties']  ,
-        }        
-        
         self.append_component(Vehicle_Mass_Properties())
-        self.append_network(Vehicle_Mass_Properties())
         
         return
 
+    def find_component_root(self,component):
+        """ find pointer to component data root.
+        
+            Assumptions:
+            None
+    
+            Source:
+            N/A
+    
+            Inputs:
+            None
+    
+            Outputs:
+            None
+    
+            Properties Used:
+            None
+        """  
+
+        component_type = type(component)
+
+        # find component root by type, allow subclasses
+        for component_type, component_root in self._component_root_map.items():
+            if isinstance(component,component_type):
+                break
+        else:
+            raise Exception("Unable to place component type %s" % component.typestring())
+
+        return component_root
+
 
     def append_component(self,component):
-        """ Adds a component to vehicle
+        """ adds a component to vehicle
             
             Assumptions:
             None
@@ -157,107 +177,7 @@ class Vehicle(Data):
         component_root.append(component)
 
         return
-    
 
-
-    def append_network(self,network):
-        """ Adds a network to vehicle
-            
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """  
-
-        # assert database type
-        if not isinstance(network,Data):
-            raise Exception('input network must be of type Data()')
-
-        # find the place to store data
-        network_root = self.find_network_root(network)
-        
-        # See if the network exists, if it does modify the name
-        keys = network_root.keys()
-        if str.lower(network.tag) in keys:
-            string_of_keys = "".join(network_root.keys())
-            n_comps = string_of_keys.count(network.tag)
-            network.tag = network.tag + str(n_comps+1)
-
-        # store data
-        network_root.append(network)
-
-        return
-    
-    def find_component_root(self,component):
-        """ Find pointer to component data root.
-        
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """  
-
-        component_type = type(component)
-
-        # find component root by type, allow subclasses
-        for component_type, component_root in self._component_root_map.items():
-            if isinstance(component,component_type):
-                break
-        else:
-            raise Exception("Unable to place component type %s" % component.typestring())
-
-        return component_root
-
-    def find_network_root(self,network):
-        """ Find pointer to network data root.
-        
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """  
-
-        network_type = type(network)
-
-        # find network root by type, allow subclasses
-        for network_type, network_root in self._network_root_map.items():
-            if isinstance(network,network_type):
-                break
-        else:
-            raise Exception("Unable to place network type %s" % network.typestring())
-
-        return network_root
-    
     def sum_mass(self):
         """ Regresses through the vehicle and sums the masses
         
@@ -288,7 +208,7 @@ class Vehicle(Data):
     
     
     def center_of_gravity(self):
-        """ Recursively searches the data tree and sum
+        """ will recursively search the data tree and sum
             any Comp.Mass_Properties.mass, and return the total sum
             
             Assumptions:
@@ -357,24 +277,24 @@ class Vehicle_Mass_Properties(Components.Mass_Properties):
             None
             """         
 
-        self.tag                               = 'mass_properties'
-        self.operating_empty                   = 0.0
-        self.max_takeoff                       = 0.0
-        self.takeoff                           = 0.0
-        self.max_landing                       = 0.0
-        self.landing                           = 0.0
-        self.max_cargo                         = 0.0
-        self.cargo                             = 0.0
-        self.max_payload                       = 0.0
-        self.payload                           = 0.0
-        self.passenger                         = 0.0
-        self.crew                              = 0.0
-        self.max_fuel                          = 0.0
-        self.fuel                              = 0.0
-        self.max_zero_fuel                     = 0.0
-        self.center_of_gravity                 = [[0.0,0.0,0.0]]
-        self.zero_fuel_center_of_gravity       = np.array([[0.0,0.0,0.0]])      
-
+        self.tag             = 'mass_properties'
+        self.operating_empty = 0.0
+        self.max_takeoff     = 0.0
+        self.takeoff         = 0.0
+        self.max_landing     = 0.0
+        self.landing         = 0.0
+        self.max_cargo       = 0.0
+        self.cargo           = 0.0
+        self.max_payload     = 0.0
+        self.payload         = 0.0
+        self.passenger       = 0.0
+        self.crew            = 0.0
+        self.max_fuel        = 0.0
+        self.fuel            = 0.0
+        self.max_zero_fuel   = 0.0
+        self.center_of_gravity = [[0.0,0.0,0.0]]
+        self.zero_fuel_center_of_gravity = np.array([[0.0,0.0,0.0]]) 
+        
 ## @ingroup Vehicle
 class Costs(Data):
     """ Costs class for organizing the costs of things
