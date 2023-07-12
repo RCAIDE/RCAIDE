@@ -12,9 +12,8 @@
 # ----------------------------------------------------------------------
 import RCAIDE 
 from RCAIDE.Core import Data , Units
-from .Noise     import Noise 
-
-from RCAIDE.Components.Physical_Component import Container 
+from .Noise      import Noise  
+from RCAIDE.Components.Component import Container 
 
 # noise imports 
 from RCAIDE.Methods.Noise.Fidelity_Zero.Airframe.noise_airframe_Fink                               import noise_airframe_Fink

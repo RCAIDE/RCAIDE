@@ -19,6 +19,6 @@ from . import Hover
 from . import Single_Point
 from . import Transition
 
-from Legacy.trunk.S.Methods.Missions.Segments  import converge_root
-from Legacy.trunk.S.Methods.Missions.Segments  import expand_state
-from Legacy.trunk.S.Methods.Missions.Segments  import converge_opt
+from .converge_root import converge_root
+from .expand_state  import expand_state
+from .optimize      import converge_opt

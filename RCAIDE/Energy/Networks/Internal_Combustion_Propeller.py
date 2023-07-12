@@ -1,21 +1,16 @@
 # RCAIDE/Energy/Networks/Internal_Combustion_Propeller.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core                                      import Data, Units 
-from .Network import Network 
-
-# Legacy imports  
-from Legacy.trunk.S.Components.Physical_Component     import Container
+from RCAIDE.Core                     import Data, Units 
+from .Network                        import Network  
+from RCAIDE.Components.Component     import Container
 
 # package imports 
 import numpy as np 

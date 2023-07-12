@@ -9,7 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Mission.Segments.Segment     import Segment
+from .Segment     import Segment
 from Legacy.trunk.S.Analyses.Mission.Segments.Simple      import Simple
 from .Aerodynamic import Aerodynamic
 

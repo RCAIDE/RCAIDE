@@ -1,10 +1,7 @@
 # RCAIDE/Methods/Power/Battery/Ragone/find_ragone_properties.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

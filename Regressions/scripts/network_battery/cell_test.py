@@ -233,7 +233,7 @@ def vehicle_setup(current,battery_chemistry):
     vehicle.append_component(wing)
      
 
-    net                           = RCAIDE.Energy.Networks.Battery_Cell_Isolated()
+    net                           = RCAIDE.Energy.Networks.Battery_Cell()
     net.tag                       ='battery_cell'   
     net.dischage_model_fidelity   = battery_chemistry
 

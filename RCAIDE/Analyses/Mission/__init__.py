@@ -10,8 +10,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from Legacy.trunk.S.Analyses.Mission.All_At_Once import All_At_Once
-from Legacy.trunk.S.Analyses.Mission.Mission import Mission
-from Legacy.trunk.S.Analyses.Mission.Sequential_Segments import Sequential_Segments
+from .Mission import Mission
+from .Sequential_Segments import Sequential_Segments
 
 # packages
 from . import Segments

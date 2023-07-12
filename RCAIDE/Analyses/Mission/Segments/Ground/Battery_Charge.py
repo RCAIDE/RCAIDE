@@ -2,10 +2,7 @@
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
 # Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
-
+ 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
@@ -15,10 +12,10 @@ from RCAIDE.Analyses.Mission.Segments import Aerodynamic
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Analyses                  import Process
 from RCAIDE.Methods.Missions          import Segments as Methods 
-from RCAIDE.Core                      import Units
 
 # Legacy imports 
 from Legacy.trunk.S.Methods.skip      import skip  
+from Legacy.trunk.S.Core              import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  SEGMENT

@@ -1,17 +1,14 @@
 # RCAIDE/Compoments/Booms/Boom.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 from RCAIDE.Core       import Data, Container, ContainerOrdered
-from RCAIDE.Components import Physical_Component, Lofted_Body 
+from RCAIDE.Components import Component, Lofted_Body 
 
 # package imports 
 import numpy as np
@@ -117,7 +114,7 @@ class Boom(Lofted_Body):
 
         return 
 
-class Container(Physical_Component.Container):
+class Container(Component.Container):
     def get_children(self):
         """ Returns the components that can go inside
         

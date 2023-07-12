@@ -1,10 +1,7 @@
 # RCAIDE/Energy/Networks/Battery_Cell_Isolated.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -23,7 +20,7 @@ import numpy as np
 #  NETWORK
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks
-class Battery_Cell_Isolated(Network):
+class Battery_Cell(Network):
     """ This is a test bench to analyze the discharge and charge profile 
         of a battery cell.
     

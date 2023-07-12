@@ -2,10 +2,7 @@
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
 # Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
-
+ 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
@@ -19,11 +16,9 @@ from RCAIDE.Analyses                  import Process
 # Legacy imports
 from Legacy.trunk.S.Methods.skip      import skip
 
-
 # ----------------------------------------------------------------------------------------------------------------------
-#  SEGMENT
+#  ANALYSES
 # ---------------------------------------------------------------------------------------------------------------------- 
-
 ## @ingroup Analyses-Mission-Segments
 class Aerodynamic(Simple):
     """ The third basic piece of a mission which each segment will expand upon

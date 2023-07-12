@@ -1,0 +1,195 @@
+# RCAIDE/Methods/Missions/Segments/Common/Sub_Segments.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------  
+# RCAIDE imports 
+from RCAIDE.Analyses import Process
+
+# legacy imports 
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Methods.skip import skip
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  METHOD
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Missions-Segments-Common   
+def expand_sub_segments(segment):
+    """ Fills in the segments to a mission with data, sets initials data if necessary
+    
+        Assumptions:
+        N/A
+        
+        Inputs:
+        N/A
+            
+        Outputs:
+        N/A
+
+        Properties Used:
+        N/A
+                                
+    """    
+
+    last_tag = None
+    
+    for tag,sub_segment in segment.segments.items():
+        
+        if Process.verbose:
+            print('segment start :' , tag)
+        
+        if last_tag:
+            sub_segment.state.initials = segment.segments[last_tag].state
+        last_tag = tag        
+        
+        sub_segment.process.initialize.expand_state(sub_segment)
+        
+        # Now we need to skip this next time because it's already done
+        sub_segment.process.initialize.expand_state = skip
+               
+        if Process.verbose:
+            print('segment end :' , tag)        
+
+            
+# ----------------------------------------------------------------------------------------------------------------------
+#  METHOD
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Missions-Segments-Common
+def update_sub_segments(segment):
+    """ Loops through the segments and fills them in
+    
+        Assumptions:
+        N/A
+        
+        Inputs:
+        N/A
+            
+        Outputs:
+        N/A
+
+        Properties Used:
+        N/A
+                                
+    """      
+    for tag,sub_segment in segment.segments.items():
+        sub_segment.initialize()
+        sub_segment.iterate()
+        sub_segment.finalize()
+   
+# ----------------------------------------------------------------------------------------------------------------------
+#  METHOD
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Missions-Segments-Common
+def finalize_sub_segments(segment):
+    """ Sets the conditions in each sub segment for a mission
+    
+        Assumptions:
+        N/A
+        
+        Inputs:
+        N/A
+            
+        Outputs:
+        N/A
+
+        Properties Used:
+        N/A
+                                
+    """           
+
+    for tag,sub_segment in segment.segments.items():
+        sub_segment.finalize()
+
+        
+# ----------------------------------------------------------------------------------------------------------------------
+#  METHOD
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Missions-Segments-Common
+def sequential_sub_segments(segment):
+    
+    """ Evaluates all the segments in a mission one by one
+    
+        Assumptions:
+        N/A
+        
+        Inputs:
+        N/A
+            
+        Outputs:
+        N/A
+
+        Properties Used:
+        N/A
+                                
+    """       
+
+    for tag,sub_segment in segment.segments.items():
+        sub_segment.evaluate()
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  METHOD
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Missions-Segments-Common
+def merge_sub_segment_states(segment):
+    
+    """ Merges all of the sub segment states back into the main state
+    
+        Assumptions:
+        N/A
+        
+        Inputs:
+        N/A
+            
+        Outputs:
+        N/A
+
+        Properties Used:
+        N/A
+                                
+    """       
+
+    segment.state.update(segment.merged())
+
+    
+# ----------------------------------------------------------------------------------------------------------------------
+#  METHOD
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Missions-Segments-Common
+def unpack_subsegments(segment):
+    
+    """ Unpacks the unknowns from the higher level state into the sub segments
+    
+        Assumptions:
+        The subsegments have numerics
+        
+        Inputs:
+        N/A
+            
+        Outputs:
+        N/A
+
+        Properties Used:
+        N/A
+                                
+    """       
+
+    # Build a dict with the sections, sections start at 0
+    counter = Data()
+    
+    for key in segment.state.unknowns.keys():
+        counter[key] = 0
+
+    for i, sub_segment in enumerate(segment.segments):
+        for key in sub_segment.state.unknowns.keys():
+            if key=='tag':
+                continue
+            points = sub_segment.state.unknowns[key].size
+            sub_segment.state.unknowns[key] = segment.state.unknowns[key][counter[key]:counter[key]+points]
+            counter[key] = counter[key]+points
+            
+    return
+            
+            

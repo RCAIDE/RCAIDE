@@ -9,13 +9,11 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Analysis import Analysis
-
-from Legacy.trunk.S.Analyses.Analysis  import Analysis
-from Legacy.trunk.S.Analyses.Sizing    import Sizing
-from Legacy.trunk.S.Analyses.Process   import Process
-from Legacy.trunk.S.Analyses.Settings  import Settings
-from Legacy.trunk.S.Analyses.Vehicle   import Vehicle
+from .Analysis  import Analysis
+from .Sizing    import Sizing
+from .Process   import Process
+from .Settings  import Settings
+from .Vehicle   import Vehicle
 
 from . import Aerodynamics
 from . import Stability

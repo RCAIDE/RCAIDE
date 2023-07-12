@@ -1,16 +1,13 @@
 # RCAIDE/Methods/Power/Battery/Sizing/initialize_from_circuit_configuration.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# RCAIDE imports 
-from RCAIDE.Core import Units 
+# Legacy imports 
+from Legacy.trunk.S.Core import Units 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD

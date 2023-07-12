@@ -10,10 +10,11 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission-Segments
 
-from Legacy.trunk.S.Methods.Missions.Segments.Common import Sub_Segments
-from Legacy.trunk.S.Methods.Missions.Segments.Common import Aerodynamics
-from Legacy.trunk.S.Methods.Missions.Segments.Common import Energy
-from Legacy.trunk.S.Methods.Missions.Segments.Common import Noise 
-from Legacy.trunk.S.Methods.Missions.Segments.Common import Frames
-from Legacy.trunk.S.Methods.Missions.Segments.Common import Numerics
-from Legacy.trunk.S.Methods.Missions.Segments.Common import Weights
+from . import Aerodynamics
+from . import Energy
+from . import Frames
+from . import Noise 
+from . import Numerics
+from . import Sub_Segments
+from . import Weights
+ 

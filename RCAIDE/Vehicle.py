@@ -3,21 +3,22 @@
 # (c) Copyright The Board of Trustees of RCAIDE
 #
 # Created:  Jul 2023, E. Botero
-# Modified: 
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# Modified:  
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 from Legacy.trunk.S import Vehicle as VH
 from Legacy.trunk.S.Components.Energy.Networks import Network as legacy_net
 from .Energy.Networks import Network
+from RCAIDE import Components , Energy
 
 
-# ----------------------------------------------------------------------
-#  Vehicle Data Class
-# ----------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
+#  VEHICLE
+# ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Vehicle
 class Vehicle(VH):
     """SUAVE Vehicle container class with database + input / output functionality
@@ -47,9 +48,9 @@ class Vehicle(VH):
             Properties Used:
             None
             """          
-
-        self.networks  = Network.Container()
-        #self.booms     = 
+        self.pop('networks')
+        self.networks  = Energy.Networks.Network.Container() 
+        self.booms     = Components.Booms.Boom.Container()
 
     def __init__(self,*args,**kwarg):
         """ Sets up the component hierarchy for a vehicle
@@ -70,11 +71,9 @@ class Vehicle(VH):
             None
         """          
         # will set defaults
-        super(Vehicle,self).__init__(*args,**kwarg)
-        self.__defaults__()
+        super(Vehicle,self).__init__(*args,**kwarg) 
 
         self._component_root_map.pop(legacy_net)
         self._component_root_map[Network] = self['networks']
-
-
+ 
         return

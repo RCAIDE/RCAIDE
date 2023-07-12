@@ -3,15 +3,11 @@
 # 
 # Created:  Jul 2023, M. Clarke
 
-""" RCAIDE Package Setup
-"""
-
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
-import RCAIDE
-from RCAIDE.Core import Data
+import RCAIDE 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
@@ -87,7 +83,7 @@ def append_initial_battery_conditions(segment,battery):
         segment.increment_battery_cycle_day   = False    
         
     # If an initial segment with battery energy set 
-    if 'battery_pack_temperature' not in segment:     
+    if 'battery_cell_temperature' not in segment:     
         pack_temperature              = atmo_data.temperature[0,0]
     else:
         pack_temperature              = segment.battery_pack_temperature 

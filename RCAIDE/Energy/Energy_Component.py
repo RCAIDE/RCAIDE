@@ -9,13 +9,13 @@
 #  Imports
 # ------------------------------------------------------------
 
-from Legacy.trunk.S.Core import Data
-
+from Legacy.trunk.S.Core import Data 
+from RCAIDE.Components.Component import Component
 # ----------------------------------------------------------------------
 #  Energy Component Class
 # ----------------------------------------------------------------------
 ## @ingroup Energy
-class Energy_Component(Data):
+class Energy_Component(Component):
     """A class representing an energy component.
     
     Assumptions:

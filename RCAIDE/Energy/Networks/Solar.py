@@ -1,10 +1,7 @@
 # RCAIDE/Energy/Networks/Solar.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -17,10 +14,8 @@ from RCAIDE.Analyses.Mission.Segments.Conditions   import Residuals
 from RCAIDE.Energy.Converters                      import Propeller, Lift_Rotor, Prop_Rotor 
 from RCAIDE.Methods.Power.Battery.Common           import pack_battery_conditions
 from RCAIDE.Methods.Power.Battery.Common           import append_initial_battery_conditions 
-
-# Legacy imports 
-from Legacy.trunk.S.Components.Energy.Networks     import Network
-from Legacy.trunk.S.Components.Physical_Component  import Container
+from RCAIDE.Components.Component                   import Container 
+from RCAIDE.Energy.Networks                        import Network
 
 # package imports 
 import numpy as np

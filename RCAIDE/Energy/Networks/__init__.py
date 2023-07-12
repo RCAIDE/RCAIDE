@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Battery_Cell_Isolated                         import Battery_Cell_Isolated
+from .Battery_Cell                                  import Battery_Cell 
 from Legacy.trunk.S.Components.Energy.Networks      import Battery_Ducted_Fan
 from .Battery_Electric_Rotor                        import Battery_Electric_Rotor
 from Legacy.trunk.S.Components.Energy.Networks      import Ducted_Fan

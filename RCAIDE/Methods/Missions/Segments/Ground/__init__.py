@@ -13,4 +13,4 @@
 from Legacy.trunk.S.Methods.Missions.Segments.Ground import Common
 from Legacy.trunk.S.Methods.Missions.Segments.Ground import Takeoff
 from Legacy.trunk.S.Methods.Missions.Segments.Ground import Landing
-from Legacy.trunk.S.Methods.Missions.Segments.Ground import Battery_Charge_Discharge
+from . import Battery_Charge_Discharge
