@@ -16,7 +16,7 @@ from Legacy.trunk.S.Components.Energy.Networks import Internal_Combustion_Propel
 from Legacy.trunk.S.Components.Energy.Networks import Internal_Combustion_Propeller_Constant_Speed
 from Legacy.trunk.S.Components.Energy.Networks import Lift_Cruise
 from Legacy.trunk.S.Components.Energy.Networks import Liquid_Rocket
-from Legacy.trunk.S.Components.Energy.Networks import Network
+from .Networks                                 import Network
 from Legacy.trunk.S.Components.Energy.Networks import Propulsor_Surrogate
 from Legacy.trunk.S.Components.Energy.Networks import PyCycle
 from Legacy.trunk.S.Components.Energy.Networks import Ramjet

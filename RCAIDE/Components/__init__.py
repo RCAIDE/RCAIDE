@@ -18,7 +18,6 @@ from Legacy.trunk.S.Components.Envelope import Envelope
 from . import Airfoils
 from . import Configs
 from . import Costs
-from . import Energy
 from . import Fuselages
 from . import Landing_Gear
 from . import Lofted_Body_Segment
