@@ -15,7 +15,7 @@ from Legacy.trunk.S.Components.Energy.Networks      import Ducted_Fan
 from .Internal_Combustion_Propeller                 import Internal_Combustion_Propeller
 from .Internal_Combustion_Propeller_Constant_Speed  import Internal_Combustion_Propeller_Constant_Speed 
 from Legacy.trunk.S.Components.Energy.Networks      import Liquid_Rocket
-from Legacy.trunk.S.Components.Energy.Networks      import Network
+from .Network                                       import Network
 from Legacy.trunk.S.Components.Energy.Networks      import Propulsor_Surrogate
 from Legacy.trunk.S.Components.Energy.Networks      import PyCycle
 from Legacy.trunk.S.Components.Energy.Networks      import Ramjet
