@@ -9,7 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Energy import Energy_Component
+from .Energy_Component import Energy_Component
 
 from . import Converters
 from . import Distributors
