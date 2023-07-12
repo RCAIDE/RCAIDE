@@ -2,19 +2,20 @@
 # (c) Copyright The Board of Trustees of RCAIDE
 #
 # Created:  Jul 2023, M. Clarke
-""" RCAIDE Package Setup
-"""
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports
-from RCAIDE.Components import Physical_Component
+from RCAIDE.Energy import Energy_Component
 from RCAIDE.Core import Data
+from Legacy.trunk.S.Components import Physical_Component
 # ----------------------------------------------------------------------------------------------------------------------
 #  NETWORK
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Networks
-class Network(Physical_Component):
+class Network(Energy_Component):
     """ RCAIDE.Energy.Networks.Network()
         The Top Level Network Class
             Assumptions:
@@ -37,13 +38,8 @@ class Network(Physical_Component):
         """
         self.tag                    = 'network'
         self.number_of_engines      = 1
-        self.engine_length          = 1.0
         self.wing_mounted           = True
-        self.areas                  = Data()
-        self.areas.wetted           = 0.0
-        self.areas.maximum          = 0.0
-        self.areas.exit             = 0.0
-        self.areas.inflow           = 0.0
+
 # ----------------------------------------------------------------------
 #  Component Container
 # ----------------------------------------------------------------------
@@ -56,21 +52,6 @@ class Container(Physical_Component.Container):
             Source:
             N/A
     """
-    def get_children(self):
-        """ Returns the components that can go inside
-        Assumptions:
-        None
-        Source:
-        N/A
-        Inputs:
-        None
-        Outputs:
-        None
-        Properties Used:
-        N/A
-        """
-        import RCAIDE.Energy.Networks as Nw
-        return [Nw.Turbofan,Nw.Turbojet_Super]
     def evaluate_thrust(self,state):
         """ This is used to evaluate the thrust produced by the network.
                 Assumptions:
