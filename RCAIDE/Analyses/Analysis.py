@@ -1,3 +1,4 @@
+## @ingroup Analyses
 # RCAIDE/Analyses/Analysis.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -6,13 +7,11 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Core import Container as ContainerBase
-
-# Legacy imports   
-from Legacy.trunk.S.Core import Data
+from RCAIDE.Core import Container as ContainerBase 
+from RCAIDE.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
-# ANALYSIS
+# ANALYSES
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses
 class Analysis(Data):
@@ -46,29 +45,7 @@ class Analysis(Data):
             """           
         self.tag    = 'analysis'
         self.features = Data()
-        self.settings = Data()
-    
-    def compile(self,*args,**kwarg):
-        """This is used to compile the data, settings, etc. used in the
-           analysis' specific algorithms.
-                
-                Assumptions:
-                None
-                
-                Source:
-                N/A
-                
-                Inputs:
-                None
-                
-                Outputs:
-                None
-                
-                Properties Used:
-                N/A
-            """        
-        
-        return
+        self.settings = Data() 
         
     def initialize(self,*args,**kwarg):
         """This is used to initialize the analysis' specific algorithms.
@@ -168,30 +145,7 @@ class Container(ContainerBase):
             
             Source:
             N/A
-    """
-    
-    def compile(self,*args,**kwarg):
-        """This is used to execute the compile functions of the analyses
-           stored in the container.
-                                
-                Assumptions:
-                None
-                                
-                Source:
-                N/A
-                                
-                Inputs:
-                None
-                                
-                Outputs:
-                None
-                                
-                Properties Used:
-                N/A
-            """            
-        for tag,analysis in self.items():
-            if hasattr(analysis,'compile'):
-                analysis.compile(*args,**kwarg)
+    """ 
         
     def initialize(self,*args,**kwarg):
         """This is used to execute the initialize functions of the analyses

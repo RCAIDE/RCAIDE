@@ -1,3 +1,4 @@
+## @ingroup Analyses
 # RCAIDE/Analyses/Vehicle.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -10,7 +11,7 @@ import RCAIDE
 from .Analysis import Analysis
 
 # ----------------------------------------------------------------------------------------------------------------------
-# ANALYSIS
+# ANALYSES
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses
 class Vehicle(Analysis.Container):
@@ -97,8 +98,7 @@ class Vehicle(Analysis.Container):
 
         Analysis.Container.__init__(self,*args,**kwarg)
 
-        self._analyses_map = {
-            RCAIDE.Analyses.Sizing.Sizing             : 'sizing'       ,
+        self._analyses_map = { 
             RCAIDE.Analyses.Weights.Weights           : 'weights'      ,
             RCAIDE.Analyses.Aerodynamics.Aerodynamics : 'aerodynamics' ,
             RCAIDE.Analyses.Stability.Stability       : 'stability'    ,
