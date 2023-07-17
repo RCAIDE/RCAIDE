@@ -11,7 +11,7 @@ from RCAIDE.Core import Container as ContainerBase
 from RCAIDE.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
-# ANALYSES
+# Analysis
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses
 class Analysis(Data):
