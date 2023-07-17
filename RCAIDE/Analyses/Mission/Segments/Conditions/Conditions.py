@@ -11,7 +11,7 @@
 import numpy as np
 
 # legacy imports
-from Legacy.trunk.S.Core                    import Data 
+from RCAIDE.Core                    import Data 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  CONDITIONS

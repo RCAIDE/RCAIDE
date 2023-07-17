@@ -51,9 +51,9 @@ def initialize_battery(segment):
         conditions.battery.cell.resistance_growth_factor= initials.battery.cell.resistance_growth_factor
         conditions.battery.cell.capacity_fade_factor    = battery_capacity_fade_factor 
     
-    if 'battery_pack_temperature' in segment: # rewrite initial temperature of the battery if it is known 
-        conditions.battery.pack.temperature[:,0]       = segment.battery_pack_temperature
-        conditions.battery.cell.temperature[:,0]       = segment.battery_pack_temperature 
+    if 'battery_cell_temperature' in segment: # rewrite initial temperature of the battery if it is known 
+        conditions.battery.pack.temperature[:,0]       = segment.battery_cell_temperature
+        conditions.battery.cell.temperature[:,0]       = segment.battery_cell_temperature 
         
             
 # ----------------------------------------------------------------------

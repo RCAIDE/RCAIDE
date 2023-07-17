@@ -84,11 +84,11 @@ def append_initial_battery_conditions(segment,battery):
         
     # If an initial segment with battery energy set 
     if 'battery_cell_temperature' not in segment:     
-        pack_temperature              = atmo_data.temperature[0,0]
+        cell_temperature              = atmo_data.temperature[0,0]
     else:
-        pack_temperature              = segment.battery_pack_temperature 
-    propulsion.battery.pack.temperature[:,0] = pack_temperature
-    propulsion.battery.cell.temperature[:,0] = pack_temperature
+        cell_temperature              = segment.battery_pack_temperature 
+    propulsion.battery.pack.temperature[:,0] = cell_temperature
+    propulsion.battery.cell.temperature[:,0] = cell_temperature
     
     
     if 'battery_max_aged_energy' in segment:
