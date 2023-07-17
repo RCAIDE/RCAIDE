@@ -9,9 +9,9 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Mission.Segments.Segment     import Segment
+from .Segment     import Segment
 from Legacy.trunk.S.Analyses.Mission.Segments.Simple      import Simple
-from Legacy.trunk.S.Analyses.Mission.Segments.Aerodynamic import Aerodynamic
+from .Aerodynamic import Aerodynamic
 
 from . import Climb
 from . import Conditions

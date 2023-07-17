@@ -11,6 +11,7 @@
 from RCAIDE.Energy import Energy_Component
 from RCAIDE.Core import Data
 from Legacy.trunk.S.Components import Physical_Component
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  NETWORK
 # ----------------------------------------------------------------------------------------------------------------------
@@ -39,13 +40,13 @@ class Network(Energy_Component):
         self.tag                    = 'network'
         self.number_of_engines      = 1
         self.wing_mounted           = True
-
-# ----------------------------------------------------------------------
-#  Component Container
-# ----------------------------------------------------------------------
+        
+# ----------------------------------------------------------------------------------------------------------------------
+#  COMPONENT CONTAINER
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Network
 class Container(Physical_Component.Container):
-    """ MARC.Components.Energy.Networks.Network.Container()
+    """ RCAIDE.Components.Energy.Networks.Network.Container()
         The Network Container Class
             Assumptions:
             None
@@ -79,7 +80,8 @@ class Container(Physical_Component.Container):
             for key in results.keys():
                 results[key] += results_p[key]
         return results
-# ----------------------------------------------------------------------
-#  Handle Linking
-# ----------------------------------------------------------------------
+    
+# ----------------------------------------------------------------------------------------------------------------------
+#  LINKING
+# ----------------------------------------------------------------------------------------------------------------------
 Network.Container = Container

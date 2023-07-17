@@ -9,10 +9,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Aerodynamics import Aerodynamics
-from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Basic        import Basic
-from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Conditions   import Conditions
-from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Numerics     import Numerics
-from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Residuals    import Residuals
-from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.State        import State
-from Legacy.trunk.S.Analyses.Mission.Segments.Conditions.Unknowns     import Unknowns
+from .Aerodynamics import Aerodynamics
+from .Basic        import Basic
+from .Conditions   import Conditions
+from .Numerics     import Numerics
+from .Residuals    import Residuals
+from .State        import State
+from .Unknowns     import Unknowns
