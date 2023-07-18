@@ -47,21 +47,25 @@ class All_At_Once(Mission):
         
         self.tag = 'mission'
          
-        # --------------------------------------------------------------
-        #   Initialize
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  THE SOLVING PROCESS
+        # -------------------------------------------------------------------------------------------------------------- 
+    
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  INITALIZE (BEFORE INTERATION)
+        # -------------------------------------------------------------------------------------------------------------- 
         self.process.initialize.expand_state             = Methods.Segments.expand_state
         self.process.initialize.expand_sub_segments      = Methods.Segments.Common.Sub_Segments.expand_sub_segments
         self.process.initialize.merge_sub_segment_states = Methods.Segments.Common.Sub_Segments.merge_sub_segment_states
 
-        # --------------------------------------------------------------
-        #   Converge
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  CONVERGE (STARTS INTERATION)
+        # -------------------------------------------------------------------------------------------------------------- 
         self.process.converge.converge_root         = Methods.Segments.converge_root
         
-        # --------------------------------------------------------------
-        #   Iterate
-        # --------------------------------------------------------------        
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  ITERATE
+        # -------------------------------------------------------------------------------------------------------------- 
         self.process.iterate.unpack                   = Methods.Segments.Common.Sub_Segments.unpack_subsegments
         self.process.iterate.sub_segments             = Methods.Segments.Common.Sub_Segments.update_sub_segments
         self.process.iterate.merge_sub_segment_states = Methods.Segments.Common.Sub_Segments.merge_sub_segment_states

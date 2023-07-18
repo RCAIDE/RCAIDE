@@ -12,7 +12,7 @@
 from RCAIDE.Core                      import Units , Data 
 from RCAIDE.Analyses.Mission.Segments import Aerodynamic ,  Conditions   
 from RCAIDE.Methods.Missions          import Segments as Methods
-from RCAIDE.Methods.skip              import skip 
+from RCAIDE.Methods                   import skip 
 from RCAIDE.Analyses                  import Process  
  
 # ----------------------------------------------------------------------------------------------------------------------

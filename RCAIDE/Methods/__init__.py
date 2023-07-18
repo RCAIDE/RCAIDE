@@ -24,5 +24,5 @@ from . import Utilities
 from . import Weights
 
 
-from Legacy.trunk.S.Methods import skip
+from Legacy.trunk.S.Methods.skip import skip
 

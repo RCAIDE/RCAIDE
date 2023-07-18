@@ -12,8 +12,7 @@
 from .Conditions        import Conditions
 from .Unknowns          import Unknowns
 from .Residuals         import Residuals
-from .Numerics          import Numerics 
-from RCAIDE.Core.Arrays import array_type
+from .Numerics          import Numerics   
 from RCAIDE.Core        import DataOrdered
 
 # python imports
@@ -184,7 +183,7 @@ def append_array(A,B=None):
         Properties Used:
         None
     """       
-    if isinstance(A,array_type) and isinstance(B,array_type):
+    if isinstance(A,np.ndarray) and isinstance(B,np.ndarray):
         return np.vstack([A,B])
     else:
         return None

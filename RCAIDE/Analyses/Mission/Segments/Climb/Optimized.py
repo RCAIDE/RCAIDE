@@ -14,7 +14,7 @@ from RCAIDE.Analyses.Mission.Segments import Conditions
 from RCAIDE.Analyses                  import Process 
 from RCAIDE.Core                      import Units 
 from RCAIDE.Methods.Missions          import Segments as Methods
-from RCAIDE.Methods.skip              import skip 
+from RCAIDE.Methods                   import skip 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Optimized

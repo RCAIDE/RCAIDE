@@ -11,7 +11,7 @@
 # RCAIDE imports
 from RCAIDE.Analyses.Mission.Segments import Aerodynamic, Conditions  
 from RCAIDE.Methods.Missions          import Segments as Methods
-from RCAIDE.Methods.skip              import skip 
+from RCAIDE.Methods                   import skip 
 from RCAIDE.Core                      import Units
 from RCAIDE.Analyses                  import Process
 

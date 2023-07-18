@@ -12,7 +12,7 @@
 from RCAIDE.Analyses.Mission.Segments import Simple , Conditions  
 from RCAIDE.Methods.Missions          import Segments as Methods 
 from RCAIDE.Analyses                  import Process 
-from RCAIDE.Methods.skip              import skip
+from RCAIDE.Methods                   import skip
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Aerodynamic
