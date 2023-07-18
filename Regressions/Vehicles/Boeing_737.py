@@ -14,10 +14,10 @@
 # ----------------------------------------------------------------------
 
 import numpy as np
-import  RCAIDE
-from RCAIDE.Core import Units
-from RCAIDE.Methods.Propulsion import turbofan_sizing
-from RCAIDE.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
+import RCAIDE
+from   RCAIDE.Core import Units
+from   RCAIDE.Methods.Propulsion import turbofan_sizing
+from   RCAIDE.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
 
 from copy import deepcopy 
 
