@@ -18,10 +18,10 @@ import numpy as np
 import pylab as plt 
 import sys
 
-sys.path.append('../Vehicles')
+sys.path.append('../../Vehicles')
 # the analysis functions
 
-from Legacy.regression.scripts.Vehicles.Boeing_737 import vehicle_setup, configs_setup
+from Boeing_737 import vehicle_setup, configs_setup
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  main
