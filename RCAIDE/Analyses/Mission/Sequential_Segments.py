@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission 
 # RCAIDE/Analyses/Mission/Sequential_Segments.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -13,7 +14,7 @@ from   Legacy.trunk.S.Methods import Missions as Methods
 from .Mission import Mission
 
 # ----------------------------------------------------------------------------------------------------------------------
-# ANALYSIS
+# Sequential_Segments
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses-Mission
 class Sequential_Segments(Mission):
@@ -49,7 +50,7 @@ class Sequential_Segments(Mission):
         
         
         # --------------------------------------------------------------
-        #   The Solving Process
+        #   THE SOLVING PROCESS
         # --------------------------------------------------------------
         
         # --------------------------------------------------------------

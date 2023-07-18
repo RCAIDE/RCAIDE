@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission-Segments-Climb
 # RCAIDE/Analyses/Mission/Segments/Climb/Optimized.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -11,14 +12,12 @@
 from RCAIDE.Analyses.Mission.Segments import Aerodynamic
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Analyses                  import Process 
-from RCAIDE.Core                      import Units
-
-# Legacy imports 
-from Legacy.trunk.S.Methods.Missions  import Segments as Methods
-from Legacy.trunk.S.Methods.skip      import skip 
+from RCAIDE.Core                      import Units 
+from RCAIDE.Methods.Missions          import Segments as Methods
+from RCAIDE.Methods.skip              import skip 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  SEGMENT
+#  Optimized
 # ----------------------------------------------------------------------------------------------------------------------  
 
 ## @ingroup Analyses-Mission-Segments-Climb

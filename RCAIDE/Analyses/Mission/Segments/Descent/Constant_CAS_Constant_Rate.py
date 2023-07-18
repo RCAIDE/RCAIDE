@@ -1,25 +1,21 @@
 ## @ingroup Analyses-Mission-Segments-Descent
-# Constant_CAS_Constant_Rate.py
-#
-# Created:  
-# Modified: Aug 2020, S. Karpuk
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# RCAIDE/Analyses/Mission/Segments/Descent/Constant_CAS_Constant_Rate.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports
-from RCAIDE.Methods.Missions import Segments as Methods
+from RCAIDE.Methods.Missions                                 import Segments as Methods 
+from RCAIDE.Analyses.Mission.Segments.Climb.Unknown_Throttle import Unknown_Throttle 
+from RCAIDE.Core                                             import Units
 
-from RCAIDE.Analyses.Mission.Segments.Climb.Unknown_Throttle import Unknown_Throttle
-
-# Units
-from RCAIDE.Core import Units
-
-
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Constant_CAS_Constant_Rate
+# ----------------------------------------------------------------------------------------------------------------------  
 
 ## @ingroup Analyses-Mission-Segments-Descent
 class Constant_CAS_Constant_Rate(Unknown_Throttle):
@@ -43,20 +39,18 @@ class Constant_CAS_Constant_Rate(Unknown_Throttle):
             None
         """            
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   USER INPUTS
+        # -------------------------------------------------------------------------------------------------------------- 
         self.altitude_start      = None # Optional
         self.altitude_end        = 10. * Units.km
         self.descent_rate        = 3.  * Units.m / Units.s
         self.calibrated_airspeed = 100 * Units.m / Units.s
         self.true_course_angle   = 0.0 * Units.degrees 
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
-    
-        # only need to change one setup step from constant_speed_constant_rate
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   SOLVING PROCESS
+        # --------------------------------------------------------------------------------------------------------------  
         initialize = self.process.initialize
         initialize.conditions = Methods.Descent.Constant_CAS_Constant_Rate.initialize_conditions
        

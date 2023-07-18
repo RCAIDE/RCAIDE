@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission
 # RCAIDE/Analyses/Mission/All_At_Once.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -14,7 +15,7 @@ from .Mission import Mission
 from Legacy.trunk.S.Methods import Missions as Methods
 
 # ----------------------------------------------------------------------------------------------------------------------
-# ANALYSIS
+# All_At_Once
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses-Mission
 class All_At_Once(Mission):

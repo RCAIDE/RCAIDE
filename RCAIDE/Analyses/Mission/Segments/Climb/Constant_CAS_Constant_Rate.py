@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission-Segments-Climb
 # RCAIDE/Analyses/Mission/Segments/Climb/Constant_CAS_Constant_Rate.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -13,7 +14,7 @@ from RCAIDE.Methods.Missions import Segments as Methods
 from .Unknown_Throttle       import Unknown_Throttle
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  SEGMENT
+#  Constant CAS Constant Rate
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Analyses-Mission-Segments-Climb
 class Constant_CAS_Constant_Rate(Unknown_Throttle):

@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission-Segments-Conditions
 # RCAIDE/Analyses/Mission/Segments/Conditions/Aerodynamics.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -16,7 +17,7 @@ import numpy as np
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# CONDITIONS
+# Aerodynamics
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 ## @ingroup Analyses-Mission-Segments-Conditions
@@ -50,12 +51,11 @@ class Aerodynamics(Basic):
             None
         """ 
         
-        self.tag = 'aerodynamic_conditions'
+        self.tag                                              = 'aerodynamic_conditions'
         
         # start default row vectors
-        ones_1col = self.ones_row(1) 
-        ones_2col = self.ones_row(2)
-        ones_3col = self.ones_row(3)
+        ones_1col                                             = self.ones_row(1)  
+        ones_3col                                             = self.ones_row(3)
 
         # wind frame conditions
         self.frames.wind                                      = Conditions()

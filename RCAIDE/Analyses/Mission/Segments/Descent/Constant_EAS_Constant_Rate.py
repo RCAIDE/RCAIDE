@@ -1,26 +1,21 @@
 ## @ingroup Analyses-Mission-Segments-Descent
-# Constant_EAS_Constant_Rate.py
-#
-# Created:  Aug 2016, T. MacDonald
-# Modified: 
-#
-# Adapted from Constant_Speed_Constant_Rate
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# RCAIDE/Analyses/Mission/Segments/Descent/Constant_EAS_Constant_Rate.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports
 from RCAIDE.Methods.Missions import Segments as Methods
+from .Unknown_Throttle       import Unknown_Throttle 
+from RCAIDE.Core             import Units
 
-from .Unknown_Throttle import Unknown_Throttle
-
-# Units
-from RCAIDE.Core import Units
-
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Constant_EAS_Constant_Rate
+# ----------------------------------------------------------------------------------------------------------------------  
 
 ## @ingroup Analyses-Mission-Segments-Descent
 class Constant_EAS_Constant_Rate(Unknown_Throttle):
@@ -52,22 +47,20 @@ class Constant_EAS_Constant_Rate(Unknown_Throttle):
             None
         """            
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   USER INPUTS
+        # -------------------------------------------------------------------------------------------------------------- 
         self.altitude_start       = None # Optional
         self.altitude_end         = 10. * Units.km
         self.descent_rate         = 3.  * Units.m / Units.s
         self.equivalent_air_speed = 100 * Units.m / Units.s
         self.true_course_angle    = 0.0 * Units.degrees 
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
-        initialize = self.process.initialize
-        
-        initialize.conditions = Methods.Descent.Constant_EAS_Constant_Rate.initialize_conditions
-    
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   SOLVING PROCESS
+        # -------------------------------------------------------------------------------------------------------------- 
+        initialize              = self.process.initialize 
+        initialize.conditions   = Methods.Descent.Constant_EAS_Constant_Rate.initialize_conditions 
         self.process.initialize = initialize
         
         return

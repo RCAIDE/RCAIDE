@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission-Segments-Cruise 
 # RCAIDE/Analyses/Mission/Segments/Cruise/Constant_Pitch_Rate_Constant_Altitude.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -11,14 +12,12 @@
 from RCAIDE.Analyses.Mission.Segments import Aerodynamic
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Analyses                  import Process 
-from RCAIDE.Core                      import Units
-
-# Legacy imports 
-from Legacy.trunk.S.Methods.Missions  import Segments as Methods 
-from Legacy.trunk.S.Methods.skip      import skip  
+from RCAIDE.Core                      import Units  
+from RCAIDE.Methods.Missions          import Segments as Methods 
+from RCAIDE.Methods.skip              import skip  
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  SEGMENT
+#  Constant_Pitch_Rate_Constant_Altitude
 # ----------------------------------------------------------------------------------------------------------------------  
 
 ## @ingroup Analyses-Mission-Segments-Cruise
@@ -129,7 +128,7 @@ class Constant_Pitch_Rate_Constant_Altitude(Aerodynamic):
         iterate.residuals.total_forces     = Methods.Cruise.Constant_Pitch_Rate_Constant_Altitude.residual_total_forces
         
         # --------------------------------------------------------------
-        #   Finalize - after iteration
+        #   FINALIZE (AFTER ITERATION)
         # --------------------------------------------------------------
         finalize                                = self.process.finalize 
         finalize.post_process                   = Process()        

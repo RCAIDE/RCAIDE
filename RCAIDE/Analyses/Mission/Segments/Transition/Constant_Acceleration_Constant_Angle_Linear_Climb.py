@@ -1,30 +1,24 @@
 ## @ingroup Analyses-Mission-Segments-Transition
-# Constant_Acceleration_Constant_Angle_Linear_Climb.py
-#
-# Created:  Feb 2019, M. Clarke
-#           Apr 2020, M. Clarke
-#           Aug 2021, R. Erhard
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# RCAIDE/Analyses/Mission/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Analyses.Mission.Segments import Aerodynamic
-from RCAIDE.Analyses.Mission.Segments import Conditions
-
-from RCAIDE.Methods.Missions import Segments as Methods
-from RCAIDE.Methods.skip import skip
-
-from RCAIDE.Analyses import Process
-
-# Units
-from RCAIDE.Core import Units
+from RCAIDE.Analyses.Mission.Segments import Aerodynamic, Conditions 
+from RCAIDE.Methods.Missions          import Segments as Methods
+from RCAIDE.Methods.skip              import skip 
+from RCAIDE.Analyses                  import Process 
+from RCAIDE.Core                      import Units
 
 
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  Constant_Acceleration_Constant_Angle_Linear_Climb
+# ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments-Transition
 class Constant_Acceleration_Constant_Angle_Linear_Climb(Aerodynamic):
@@ -56,9 +50,9 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Aerodynamic):
             None
         """           
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   USER INPUTS
+        # --------------------------------------------------------------------------------------------------------------
         self.altitude_start         = None
         self.altitude_end           = None
         self.air_speed_start        = None
@@ -69,9 +63,9 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Aerodynamic):
         self.true_course_angle      = 0.0 * Units.degrees 
         
 
-        # --------------------------------------------------------------
-        #   State
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        # STATE
+        # --------------------------------------------------------------------------------------------------------------
         
         # conditions
         self.state.conditions.update( Conditions.Aerodynamics() )
@@ -80,29 +74,29 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Aerodynamic):
         ones_row = self.state.ones_row
         self.state.residuals.forces    = ones_row(2) * 0.0 
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   THE SOLVING PROCESS
+        # --------------------------------------------------------------------------------------------------------------
         
-        # --------------------------------------------------------------
-        #   Initialize - before iteration
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   INITALIZE (BEFORE INTERATION)
+        # --------------------------------------------------------------------------------------------------------------
         initialize = self.process.initialize
         
         initialize.expand_state            = Methods.expand_state
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
         initialize.conditions              = Methods.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.initialize_conditions
 
-        # --------------------------------------------------------------
-        #   Converge - starts iteration
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   CONVERGE (STARTS INTERATION)
+        # --------------------------------------------------------------------------------------------------------------
         converge = self.process.converge
         
         converge.converge_root             = Methods.converge_root        
 
-        # --------------------------------------------------------------
-        #   Iterate - this is iterated
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   ITERATE
+        # --------------------------------------------------------------------------------------------------------------
         iterate = self.process.iterate
                 
         # Update Initials
@@ -135,9 +129,9 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Aerodynamic):
         iterate.residuals = Process()     
         iterate.residuals.total_forces     = Methods.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.residual_total_forces
         
-        # --------------------------------------------------------------
-        #   Finalize - after iteration
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   FINALIZE (AFTER ITERATION)
+        # --------------------------------------------------------------------------------------------------------------
         finalize = self.process.finalize
         
         # Post Processing

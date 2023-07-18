@@ -1,25 +1,23 @@
-## @ingroup Analyses-Mission-Segments-Hover
-# Takeoff.py
-#
-# Created:  
-# Modified: Feb 2016, Andrew Wendorff
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+## @ingroup Analyses-Mission-Segments-Ground
+# RCAIDE/Analyses/Mission/Segments/Ground/Takeoff.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from .Ground import Ground
-from RCAIDE.Methods.Missions import Segments as Methods
+from .Ground                 import Ground
+from RCAIDE.Methods.Missions import Segments as Methods 
+from RCAIDE.Core             import Units
 
-# Units
-from RCAIDE.Core import Units
+# ----------------------------------------------------------------------------------------------------------------------
+#  Takeoff
+# ----------------------------------------------------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------
-#  Class
-# ----------------------------------------------------------------------
-
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Mission-Segments-Ground
 class Takeoff(Ground):
     """ Segment for takeoff. Integrates equations of motion
         including rolling friction.
@@ -37,11 +35,7 @@ class Takeoff(Ground):
         Source: General Aviation Aircraft Design: Applied Methods and Procedures,
         by Snorri Gudmundsson, copyright 2014, published by Elsevier, Waltham,
         MA, USA [p.938]
-    """    
-
-    # ------------------------------------------------------------------
-    #   Data Defaults
-    # ------------------------------------------------------------------  
+    """     
 
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
@@ -62,6 +56,10 @@ class Takeoff(Ground):
             None
         """         
 
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   USER INPUTS
+        # -------------------------------------------------------------------------------------------------------------- 
+        
         self.velocity_start       = None
         self.velocity_end         = 150 * Units.knots
         self.friction_coefficient = 0.04
@@ -70,17 +68,16 @@ class Takeoff(Ground):
         self.true_course_angle    = 0.0 * Units.degrees 
         
         # initials and unknowns
-        ones_row_m1 = self.state.ones_row_m1
+        ones_row_m1                               = self.state.ones_row_m1
         self.state.unknowns.velocity_x            = ones_row_m1(1) * 0.0
         self.state.unknowns.time                  = 100.
         self.state.residuals.final_velocity_error = 0.0
         self.state.residuals.forces               = ones_row_m1(1) * 0.0        
 
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
-    
-        initialize = self.process.initialize
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   SOLVING PROCESS
+        # --------------------------------------------------------------------------------------------------------------  
+        initialize            = self.process.initialize
         initialize.conditions = Methods.Ground.Takeoff.initialize_conditions
         
         return

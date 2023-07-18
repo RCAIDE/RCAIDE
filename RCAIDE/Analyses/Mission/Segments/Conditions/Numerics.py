@@ -1,22 +1,20 @@
-## @ingroup Analyses-Mission-Segments-Conditions
-# Numerics.py
-#
-# Created:  
-# Modified: Feb 2016, Andrew Wendorff
+## @ingroup Analyses-Mission-Segments-Conditions 
+# RCAIDE/Analyses/Mission/Segments/Conditions/Numerics.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
-from .Conditions import Conditions
-
-from RCAIDE.Methods.Utilities.Chebyshev  import chebyshev_data
-
+from .Conditions import Conditions 
+from RCAIDE.Methods.Utilities.Chebyshev  import chebyshev_data 
 import numpy as np
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Numerics
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments-Conditions
 class Numerics(Conditions):

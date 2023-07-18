@@ -1,29 +1,24 @@
 ## @ingroup Analyses-Mission-Segments-Hover
-# Hover.py
+# RCAIDE/Analyses/Mission/Segments/Hover/Hover.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jan 2016, E. Botero
-# Modified: Mar 2020, M. Clarke
-#           Aug 2021, R. Erhard
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports
 from RCAIDE.Analyses.Mission.Segments import Aerodynamic
-from RCAIDE.Analyses.Mission.Segments import Conditions
+from RCAIDE.Analyses.Mission.Segments import Conditions 
+from RCAIDE.Methods.Missions          import Segments as Methods
+from RCAIDE.Methods.skip              import skip 
+from RCAIDE.Analyses                  import Process 
+from RCAIDE.Core                      import Units
 
-from RCAIDE.Methods.Missions import Segments as Methods
-from RCAIDE.Methods.skip import skip
-
-from RCAIDE.Analyses import Process
-
-# Units
-from RCAIDE.Core import Units
-
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  Hover
+# ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments-Hover
 class Hover(Aerodynamic):
@@ -55,16 +50,17 @@ class Hover(Aerodynamic):
             None
         """              
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   USER INPUTS
+        # -------------------------------------------------------------------------------------------------------------- 
+        
         self.altitude           = None
         self.time               = 1.0 * Units.seconds
         self.true_course_angle  = 0.0 * Units.degrees 
         
-        # --------------------------------------------------------------
-        #   State
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   STATE
+        # --------------------------------------------------------------------------------------------------------------
         
         # conditions
         self.state.conditions.update( Conditions.Aerodynamics() )
@@ -75,44 +71,43 @@ class Hover(Aerodynamic):
         self.state.residuals.force     = ones_row(1) * 0.0 
         
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  THE SOLVING PROCESS
+        # -------------------------------------------------------------------------------------------------------------- 
         
-        # --------------------------------------------------------------
-        #   Initialize - before iteration
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  INITALIZE (BEFORE INTERATION)
+        # -------------------------------------------------------------------------------------------------------------- 
         initialize = self.process.initialize
         
         initialize.expand_state            = Methods.expand_state
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
         initialize.conditions              = Methods.Hover.Hover.initialize_conditions
 
-        # --------------------------------------------------------------
-        #   Converge - starts iteration
-        # --------------------------------------------------------------
-        converge = self.process.converge
-        
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  CONVERGE (STARTS INTERATION)
+        # -------------------------------------------------------------------------------------------------------------- 
+        converge                           = self.process.converge 
         converge.converge_root             = Methods.converge_root        
 
-        # --------------------------------------------------------------
-        #   Iterate - this is iterated
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  ITERATE
+        # --------------------------------------------------------------------------------------------------------------
         iterate = self.process.iterate
                 
         # Update Initials
-        iterate.initials = Process()
+        iterate.initials                   = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights
         iterate.initials.inertial_position = Methods.Common.Frames.initialize_inertial_position
         iterate.initials.planet_position   = Methods.Common.Frames.initialize_planet_position
         
         # Unpack Unknowns
-        iterate.unknowns = Process()
+        iterate.unknowns                   = Process()
         iterate.unknowns.mission           = Methods.Hover.Common.unpack_unknowns
         
         # Update Conditions
-        iterate.conditions = Process()
+        iterate.conditions                 = Process()
         iterate.conditions.differentials   = Methods.Common.Numerics.update_differentials_time
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere
@@ -128,9 +123,9 @@ class Hover(Aerodynamic):
         iterate.residuals = Process()     
         iterate.residuals.total_forces     = Methods.Hover.Common.residual_total_forces
         
-        # --------------------------------------------------------------
-        #   Finalize - after iteration
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        # FINALIZE (AFTER ITERATION)
+        # -------------------------------------------------------------------------------------------------------------- 
         finalize = self.process.finalize
         
         # Post Processing

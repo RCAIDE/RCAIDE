@@ -1,29 +1,21 @@
 ## @ingroup Analyses-Mission-Segments-Hover
-# Climb.py
+# RCAIDE/Analyses/Mission/Segments/Hover/Climb.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jan 2016, E. Botero
-#           Apr 2020, M. Clarke
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# RCAIDE imports 
+from RCAIDE.Methods.Missions import Segments as Methods  
+from .Hover                  import Hover 
+from RCAIDE.Core             import Units
 
-# RCAIDE imports
-import RCAIDE
-from RCAIDE.Analyses.Mission.Segments import Aerodynamic
-from RCAIDE.Analyses.Mission.Segments import Conditions
-
-from RCAIDE.Methods.Missions import Segments as Methods
-
-from RCAIDE.Analyses import Process
-from .Hover import Hover
-
-# Units
-from RCAIDE.Core import Units
-
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  Climb
+# ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments-Hover
 class Climb(Hover):
@@ -55,16 +47,17 @@ class Climb(Hover):
             None
         """              
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   USER INPUTS
+        # -------------------------------------------------------------------------------------------------------------- 
+        
         self.altitude_start    = None # Optional
         self.altitude_end      = 1. * Units.km
         self.climb_rate        = 1.  * Units.m / Units.s
         self.true_course_angle = 0.0 * Units.degrees 
         
         # --------------------------------------------------------------
-        #   The Solving Process
+        #   THE SOLVING PROCESS
         # --------------------------------------------------------------
         initialize = self.process.initialize
         iterate    = self.process.iterate

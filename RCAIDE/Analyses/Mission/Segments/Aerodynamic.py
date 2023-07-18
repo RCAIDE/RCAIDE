@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission-Segments
 # RCAIDE/Analyses/Mission/Segment/Aerodynamic.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -17,7 +18,7 @@ from RCAIDE.Analyses                  import Process
 from Legacy.trunk.S.Methods.skip      import skip
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  ANALYSES
+# Aerodynamic
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Analyses-Mission-Segments
 class Aerodynamic(Simple):
@@ -50,58 +51,55 @@ class Aerodynamic(Simple):
             None
         """          
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   USER INPUTS
+        # --------------------------------------------------------------------------------------------------------------
         # self.example = 1.0
         
-        
-        # --------------------------------------------------------------
-        #   State
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   STATE
+        # --------------------------------------------------------------------------------------------------------------
         
         # conditions
         self.state.conditions.update( Conditions.Aerodynamics() )
         self.temperature_deviation = 0.0
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   THE SOLVING PROCESS
+        # --------------------------------------------------------------------------------------------------------------
         
-        # --------------------------------------------------------------
-        #   Initialize - before iteration
-        # --------------------------------------------------------------
-        initialize = self.process.initialize
-        
+        # --------------------------------------------------------------------------------------------------------------
+        #   INITALIZE (BEFORE INTERATION)
+        # --------------------------------------------------------------------------------------------------------------
+        initialize                         = self.process.initialize 
         initialize.expand_state            = Methods.expand_state
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
         initialize.conditions              = None        
         
-        # --------------------------------------------------------------
-        #   Converge - starts iteration
-        # --------------------------------------------------------------
-        converge = self.process.converge
-        
+        # --------------------------------------------------------------------------------------------------------------
+        #   CONVERGE (STARTS INTERATION)
+        # --------------------------------------------------------------------------------------------------------------
+        converge                           = self.process.converge 
         converge.converge_root             = Methods.converge_root        
         
-        # --------------------------------------------------------------
-        #   Iterate - this is iterated
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   ITERATE
+        # --------------------------------------------------------------------------------------------------------------
         iterate = self.process.iterate
 
         # Update Initials
-        iterate.initials = Process()
+        iterate.initials                   = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights
         iterate.initials.inertial_position = Methods.Common.Frames.initialize_inertial_position
         iterate.initials.planet_position   = Methods.Common.Frames.initialize_planet_position
         
         # Unpack Unknowns
-        iterate.unknowns = Process()
+        iterate.unknowns                   = Process()
         iterate.unknowns.mission           = None  
         
         # Update Conditions
-        iterate.conditions = Process()
+        iterate.conditions                 = Process()
         iterate.conditions.differentials   = Methods.Common.Numerics.update_differentials_time        
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere
@@ -118,13 +116,13 @@ class Aerodynamic(Simple):
         # Solve Residuals
         iterate.residuals = Process()
 
-        # --------------------------------------------------------------
-        #   Finalize - after iteration
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   FINALIZE (AFTER ITERATION)
+        # ---------------------------------------------------------------------------------------------------------------
         finalize = self.process.finalize
         
         # Post Processing
-        finalize.post_process = Process()        
+        finalize.post_process                   = Process()        
         finalize.post_process.inertial_position = Methods.Common.Frames.integrate_inertial_horizontal_position
         finalize.post_process.stability         = Methods.Common.Aerodynamics.update_stability
         finalize.post_process.aero_derivatives  = skip

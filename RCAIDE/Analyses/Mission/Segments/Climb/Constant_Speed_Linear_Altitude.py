@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission-Segments-Climb
 # RCAIDE/Analyses/Mission/Segments/Climb/Constant_Speed_Linear_Altitude.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -13,7 +14,7 @@ from RCAIDE.Methods.Missions import Segments as Methods
 from .Unknown_Throttle       import Unknown_Throttle
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  SEGMENT
+#  Constant_Speed_Linear_Altitude
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 ## @ingroup Analyses-Mission-Segments-Climb

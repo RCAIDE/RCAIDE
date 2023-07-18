@@ -16,7 +16,7 @@ from RCAIDE.Analyses.Mission.Segments import Conditions
 from RCAIDE.Methods.Missions import Segments as Methods
 
 # ----------------------------------------------------------------------
-#  Segment
+#  Simple
 # ----------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments
@@ -58,11 +58,11 @@ class Simple(Segment):
         self.state.conditions.update( Conditions.Basic() )
         
         # --------------------------------------------------------------
-        #   The Solving Process
+        #   THE SOLVING PROCESS
         # --------------------------------------------------------------
         
         # --------------------------------------------------------------
-        #   Initialize - before iteration
+        #   INITALIZE (BEFORE INTERATION)
         # --------------------------------------------------------------
         initialize = self.process.initialize
         
@@ -71,14 +71,14 @@ class Simple(Segment):
         initialize.conditions              = None
         
         # --------------------------------------------------------------
-        #   Converge - starts iteration
+        #   CONVERGE (STARTS INTERATION)
         # --------------------------------------------------------------
         converge = self.process.converge
         
         converge.converge_root             = Methods.converge_root
 
         # --------------------------------------------------------------
-        #   Iterate - this is iterated
+        #   ITERATE
         # --------------------------------------------------------------
         iterate = self.process.iterate
                 
@@ -98,7 +98,7 @@ class Simple(Segment):
         iterate.residuals = Process()
 
         # --------------------------------------------------------------
-        #   Finalize - after iteration
+        #   FINALIZE (AFTER ITERATION)
         # --------------------------------------------------------------
         finalize = self.process.finalize
         

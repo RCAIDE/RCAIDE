@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission 
 # RCAIDE/Analyses/Mission/Mission.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -12,7 +13,7 @@ from   RCAIDE.Core import Container as ContainerBase
 from . import Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
-# ANALYSIS
+# Mission
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses-Mission
 class Mission(Segments.Simple.Container):

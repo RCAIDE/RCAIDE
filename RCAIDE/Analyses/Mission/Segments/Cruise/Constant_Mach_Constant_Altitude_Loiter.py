@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission-Segments-Cruise 
 # RCAIDE/Analyses/Mission/Segments/Cruise/Constant_Mach_Constant_Altitude_Loiter.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -13,7 +14,7 @@ from RCAIDE.Methods.Missions           import Segments as Methods
 from .Constant_Speed_Constant_Altitude import Constant_Speed_Constant_Altitude
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  SEGMENT
+#  Constant_Mach_Constant_Altitude_Loiter
 # ----------------------------------------------------------------------------------------------------------------------  
 
 ## @ingroup Analyses-Mission-Segments-Cruise

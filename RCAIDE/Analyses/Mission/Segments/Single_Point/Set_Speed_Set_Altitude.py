@@ -1,32 +1,26 @@
 ## @ingroup Analyses-Mission-Segments-Single_Point
-# Set_Speed_Set_Altitude.py
-#
-# Created:  Mar 2017, T. MacDonald
-# Modified: Jul 2017, T. MacDonald
-#           Apr 2020, M. Clarke
-#           Aug 2021, R. Erhard
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# RCAIDE/Analyses/Mission/Segments/Single_Point/Set_Speed_Set_Altitude.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Analyses.Mission.Segments import Aerodynamic
-from RCAIDE.Analyses.Mission.Segments import Conditions
+from RCAIDE.Analyses.Mission.Segments import Aerodynamic, Conditions  
+from RCAIDE.Methods.Missions          import Segments as Methods
+from RCAIDE.Methods.skip              import skip 
+from RCAIDE.Core                      import Units
+from RCAIDE.Analyses                  import Process
 
-from RCAIDE.Methods.Missions import Segments as Methods
-from RCAIDE.Methods.skip import skip
-
-from RCAIDE.Analyses import Process
+# package imports 
 import numpy as np
 
-# Units
-from RCAIDE.Core import Units
-
-
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  Set_Speed_Set_Altitude
+# ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments-Single_Point
 class Set_Speed_Set_Altitude(Aerodynamic):
@@ -59,9 +53,9 @@ class Set_Speed_Set_Altitude(Aerodynamic):
             None
         """           
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   USER INPUTS
+        # --------------------------------------------------------------------------------------------------------------
         self.altitude  = None
         self.air_speed = 10. * Units['km/hr']
         self.distance  = 10. * Units.km
@@ -70,9 +64,9 @@ class Set_Speed_Set_Altitude(Aerodynamic):
         self.state.numerics.number_control_points = 1
         
         
-        # --------------------------------------------------------------
-        #   State
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   STATE
+        # --------------------------------------------------------------------------------------------------------------
         
         # conditions
         self.state.conditions.update( Conditions.Aerodynamics() )
@@ -83,29 +77,29 @@ class Set_Speed_Set_Altitude(Aerodynamic):
         self.state.residuals.forces    = np.array([[0.0,0.0]])
         
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   THE SOLVING PROCESS
+        # --------------------------------------------------------------------------------------------------------------
         
-        # --------------------------------------------------------------
-        #   Initialize - before iteration
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   INITALIZE (BEFORE INTERATION)
+        # --------------------------------------------------------------------------------------------------------------
         initialize = self.process.initialize
         
         initialize.expand_state            = skip
         initialize.differentials           = skip
         initialize.conditions              = Methods.Single_Point.Set_Speed_Set_Altitude.initialize_conditions
 
-        # --------------------------------------------------------------
-        #   Converge - starts iteration
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   CONVERGE (STARTS INTERATION)
+        # --------------------------------------------------------------------------------------------------------------
         converge = self.process.converge
         
         converge.converge_root             = Methods.converge_root        
 
-        # --------------------------------------------------------------
-        #   Iterate - this is iterated
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   ITERATE
+        # --------------------------------------------------------------------------------------------------------------
         iterate = self.process.iterate
                 
         # Update Initials
@@ -138,9 +132,9 @@ class Set_Speed_Set_Altitude(Aerodynamic):
         iterate.residuals = Process()     
         iterate.residuals.total_forces     = Methods.Climb.Common.residual_total_forces
         
-        # --------------------------------------------------------------
-        #   Finalize - after iteration
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   FINALIZE (AFTER ITERATION)
+        # --------------------------------------------------------------------------------------------------------------
         finalize = self.process.finalize
         
         # Post Processing

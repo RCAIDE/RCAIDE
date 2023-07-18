@@ -9,6 +9,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Mission.Segments.Hover.Climb import Climb
-from Legacy.trunk.S.Analyses.Mission.Segments.Hover.Hover import Hover
-from Legacy.trunk.S.Analyses.Mission.Segments.Hover.Descent import Descent
+from .Climb import Climb
+from .Hover import Hover
+from .Descent import Descent

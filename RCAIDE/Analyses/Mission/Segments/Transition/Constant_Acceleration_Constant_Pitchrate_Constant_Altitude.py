@@ -1,32 +1,25 @@
 ## @ingroup Analyses-Mission-Segments-Transition
-# Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py
-#
-# Created:  Jan 2016, E. Botero
-# Modified: Jul 2017, T. MacDonald
-#           Mar 2020, M. Clarke 
-#           Aug 2021, R. Erhard
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# RCAIDE/Analyses/Mission/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Analyses.Mission.Segments import Aerodynamic
-from RCAIDE.Analyses.Mission.Segments import Conditions
-
-from RCAIDE.Methods.Missions import Segments as Methods
-from RCAIDE.Methods.skip import skip
-
-from RCAIDE.Analyses import Process
-
-# Units
-from RCAIDE.Core import Units
+from RCAIDE.Analyses.Mission.Segments import Aerodynamic, Conditions 
+from RCAIDE.Methods.Missions          import Segments as Methods
+from RCAIDE.Methods.skip              import skip 
+from RCAIDE.Analyses                  import Process 
+from RCAIDE.Core                      import Units
 
 
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
+#  Constant_Acceleration_Constant_Pitchrate_Constant_Altitude
+# ----------------------------------------------------------------------------------------------------------------------
+ 
 ## @ingroup Analyses-Mission-Segments-Transition
 class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Aerodynamic):
     """ Vehicle accelerates at a constant rate between two airspeeds.
@@ -57,9 +50,9 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Aerodynamic):
             None
         """           
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   USER INPUTS
+        # --------------------------------------------------------------------------------------------------------------
         self.altitude           = None
         self.acceleration       = 1.  * Units['m/s/s']
         self.air_speed_start    = None
@@ -69,9 +62,9 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Aerodynamic):
         self.true_course_angle  = 0.0 * Units.degrees 
         
 
-        # --------------------------------------------------------------
-        #   State
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #  STATE
+        # --------------------------------------------------------------------------------------------------------------
         
         # conditions
         self.state.conditions.update( Conditions.Aerodynamics() )
@@ -81,44 +74,43 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Aerodynamic):
         self.state.residuals.forces   = ones_row(2) * 0.0 
         
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   THE SOLVING PROCESS
+        # --------------------------------------------------------------------------------------------------------------
         
-        # --------------------------------------------------------------
-        #   Initialize - before iteration
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   INITALIZE (BEFORE INTERATION)
+        # --------------------------------------------------------------------------------------------------------------
         initialize = self.process.initialize
         
         initialize.expand_state            = Methods.expand_state
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
         initialize.conditions              = Methods.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.initialize_conditions
 
-        # --------------------------------------------------------------
-        #   Converge - starts iteration
-        # --------------------------------------------------------------
-        converge = self.process.converge
-        
+        # --------------------------------------------------------------------------------------------------------------
+        #   CONVERGE (STARTS INTERATION)
+        # --------------------------------------------------------------------------------------------------------------
+        converge                           = self.process.converge 
         converge.converge_root             = Methods.converge_root        
 
-        # --------------------------------------------------------------
-        #   Iterate - this is iterated
-        # --------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+        #   ITERATE
+        # --------------------------------------------------------------------------------------------------------------
         iterate = self.process.iterate
                 
         # Update Initials
-        iterate.initials = Process()
+        iterate.initials                   = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights
         iterate.initials.inertial_position = Methods.Common.Frames.initialize_inertial_position
         iterate.initials.planet_position   = Methods.Common.Frames.initialize_planet_position
         
         # Unpack Unknowns
-        iterate.unknowns = Process()
+        iterate.unknowns                   = Process()
         iterate.unknowns.mission           = Methods.Cruise.Common.unpack_unknowns
         
         # Update Conditions
-        iterate.conditions = Process()
+        iterate.conditions                 = Process()
         iterate.conditions.differentials   = Methods.Common.Numerics.update_differentials_time
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere
@@ -133,16 +125,14 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Aerodynamic):
         iterate.conditions.planet_position = Methods.Common.Frames.update_planet_position
 
         # Solve Residuals
-        iterate.residuals = Process()     
+        iterate.residuals                  = Process()     
         iterate.residuals.total_forces     = Methods.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.residual_total_forces
         
-        # --------------------------------------------------------------
-        #   Finalize - after iteration
-        # --------------------------------------------------------------
-        finalize = self.process.finalize
-        
-        # Post Processing
-        finalize.post_process = Process()        
+        # --------------------------------------------------------------------------------------------------------------
+        #   FINALIZE (AFTER ITERATION)
+        # --------------------------------------------------------------------------------------------------------------
+        finalize                                = self.process.finalize 
+        finalize.post_process                   = Process()        
         finalize.post_process.inertial_position = Methods.Common.Frames.integrate_inertial_horizontal_position
         finalize.post_process.stability         = Methods.Common.Aerodynamics.update_stability
         finalize.post_process.aero_derivatives  = skip

@@ -1,27 +1,22 @@
 ## @ingroup Analyses-Mission-Segments-Descent
-# Constant_Speed_Constant_Angle_Noise.py
-#
-# Created:  
-# Modified: Feb 2016, Andrew Wendorff
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# RCAIDE/Analyses/Mission/Segments/Descent/Constant_Speed_Constant_Angle_Noise.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports
-import RCAIDE
+import RCAIDE 
+from RCAIDE.Methods.Missions                                 import Segments as Methods 
+from RCAIDE.Analyses.Mission.Segments.Climb.Unknown_Throttle import Unknown_Throttle 
+from RCAIDE.Core                                             import Units
 
-from RCAIDE.Methods.Missions import Segments as Methods
-
-from RCAIDE.Analyses.Mission.Segments.Climb.Unknown_Throttle import Unknown_Throttle
-
-# Units
-from RCAIDE.Core import Units
-
-
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Constant_Speed_Constant_Angle_Noise
+# ----------------------------------------------------------------------------------------------------------------------   
 
 ## @ingroup Analyses-Mission-Segments-Descent
 class Constant_Speed_Constant_Angle_Noise(Unknown_Throttle):
@@ -56,9 +51,9 @@ class Constant_Speed_Constant_Angle_Noise(Unknown_Throttle):
             None
         """            
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   USER INPUTS
+        # -------------------------------------------------------------------------------------------------------------- 
         self.altitude_start    = None # Optional
         self.altitude_end      = 0.0 * Units.km
         self.descent_angle     = 3.  * Units.deg
@@ -66,11 +61,11 @@ class Constant_Speed_Constant_Angle_Noise(Unknown_Throttle):
         self.true_course_angle = 0.0 * Units.degrees 
         
         self.state.numerics.discretization_method = RCAIDE.Methods.Utilities.Chebyshev.linear_data
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
-    
-        initialize = self.process.initialize
+        
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   SOLVING PROCESS
+        # -------------------------------------------------------------------------------------------------------------- 
+        initialize              = self.process.initialize
         initialize.conditions   = Methods.Descent.Constant_Speed_Constant_Angle_Noise.initialize_conditions
         initialize.expand_state = Methods.Descent.Constant_Speed_Constant_Angle_Noise.expand_state
         

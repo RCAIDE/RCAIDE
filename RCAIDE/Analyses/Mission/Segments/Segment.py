@@ -1,7 +1,8 @@
+## @ingroup Analyses-Mission-Segments
 # RCAIDE/Analyses/Mission/Segment/Segment.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke
+# Created: Jul 2023, M. Clarke
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -15,7 +16,7 @@ import numpy as np
 from copy import deepcopy
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  ANALYSES
+#  Segment
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses-Mission-Segments
 class Segment(Analysis):

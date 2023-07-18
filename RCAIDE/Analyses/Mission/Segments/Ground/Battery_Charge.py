@@ -1,3 +1,4 @@
+## @ingroup Analyses-Mission-Segments-Ground
 # RCAIDE/Analyses/Mission/Segments/Ground/Battery_Charge.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -8,18 +9,16 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Analyses.Mission.Segments import Aerodynamic
-from RCAIDE.Analyses.Mission.Segments import Conditions 
+from RCAIDE.Analyses.Mission.Segments import Aerodynamic , Conditions
 from RCAIDE.Analyses                  import Process
-from RCAIDE.Methods.Missions          import Segments as Methods 
-
-# Legacy imports 
-from Legacy.trunk.S.Methods.skip      import skip  
-from Legacy.trunk.S.Core              import Units
+from RCAIDE.Methods.Missions          import Segments as Methods  
+from RCAIDE.Methods.skip              import skip  
+from RCAIDE.Core                      import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  SEGMENT
-# ---------------------------------------------------------------------------------------------------------------------- 
+#  Battery_Charge
+# ----------------------------------------------------------------------------------------------------------------------
+
 ## @ingroup Analyses-Mission-Segments-Ground
 class Battery_Charge(Aerodynamic): 
     def __defaults__(self):  
@@ -40,20 +39,20 @@ class Battery_Charge(Aerodynamic):
     
             Properties Used:
             None
-        """              
-        
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        """  
+
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   USER INPUTS
+        # -------------------------------------------------------------------------------------------------------------- 
         self.altitude               = None
         self.time                   = 1.0 * Units.seconds
         self.overcharge_contingency = 1.25
         self.battery_discharge      = True  
         self.true_course_angle      = 0.0 * Units.degrees 
         
-        # --------------------------------------------------------------
-        #   State
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   STATE
+        # -------------------------------------------------------------------------------------------------------------- 
     
         # conditions
         self.state.conditions.update( Conditions.Aerodynamics() )
@@ -61,45 +60,43 @@ class Battery_Charge(Aerodynamic):
         # initials and unknowns
         ones_row = self.state.ones_row
     
-    
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
-    
-        # --------------------------------------------------------------
-        #   Initialize - before iteration
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  THE SOLVING PROCESS
+        # -------------------------------------------------------------------------------------------------------------- 
+        
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  INITALIZE (BEFORE INTERATION)
+        # -------------------------------------------------------------------------------------------------------------- 
         initialize = self.process.initialize
     
         initialize.expand_state            = Methods.expand_state
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
         initialize.conditions              = Methods.Ground.Battery_Charge_Discharge.initialize_conditions
       
-        # --------------------------------------------------------------
-        #   Converge - starts iteration
-        # --------------------------------------------------------------
-        converge = self.process.converge
-        
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  CONVERGE (STARTS INTERATION)
+        # -------------------------------------------------------------------------------------------------------------- 
+        converge                           = self.process.converge 
         converge.converge_root             = Methods.converge_root        
     
-        # --------------------------------------------------------------
-        #   Iterate - this is iterated
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  ITERATE
+        # -------------------------------------------------------------------------------------------------------------- 
         iterate = self.process.iterate
                 
         # Update Initials
-        iterate.initials = Process()
+        iterate.initials                   = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights
         iterate.initials.inertial_position = Methods.Common.Frames.initialize_inertial_position
         iterate.initials.planet_position   = Methods.Common.Frames.initialize_planet_position
         
         # Unpack Unknowns
-        iterate.unknowns = Process()
+        iterate.unknowns                   = Process()
         iterate.unknowns.mission           =  Methods.Ground.Battery_Charge_Discharge.unpack_unknowns
         
         # Update Conditions
-        iterate.conditions = Process()
+        iterate.conditions                 = Process()
         iterate.conditions.differentials   = Methods.Common.Numerics.update_differentials_time
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere
@@ -116,16 +113,17 @@ class Battery_Charge(Aerodynamic):
         # Solve Residuals
         iterate.residuals = Process()      
         
-        # --------------------------------------------------------------
-        #   Finalize - after iteration
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        # FINALIZE (AFTER ITERATION)
+        # -------------------------------------------------------------------------------------------------------------- 
         finalize = self.process.finalize
         
         # Post Processing
-        finalize.post_process = Process()        
+        finalize.post_process                   = Process()        
         finalize.post_process.inertial_position = Methods.Common.Frames.integrate_inertial_horizontal_position
         finalize.post_process.stability         = skip
         finalize.post_process.aero_derivatives  = skip
         finalize.post_process.noise             = skip
+                
         
         return

@@ -1,25 +1,20 @@
 ## @ingroup Analyses-Mission-Segments-Descent
-# Linear_Mach_Constant_Rate.py
-#
-# Created:  
-# Modified: Feb 2016, Andrew Wendorff
+# RCAIDE/Analyses/Mission/Segments/Descent/Linear_Mach_Constant_Rate.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-
-# RCAIDE imports
-from RCAIDE.Methods.Missions import Segments as Methods
-
+from RCAIDE.Methods.Missions                                 import Segments as Methods
 from RCAIDE.Analyses.Mission.Segments.Climb.Unknown_Throttle import Unknown_Throttle
+from RCAIDE.Core                                             import Units
 
-# Units
-from RCAIDE.Core import Units
-
-
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Linear_Mach_Constant_Rate
+# ----------------------------------------------------------------------------------------------------------------------  
 
 ## @ingroup Analyses-Mission-Segments-Descent
 class Linear_Mach_Constant_Rate(Unknown_Throttle):
@@ -52,9 +47,9 @@ class Linear_Mach_Constant_Rate(Unknown_Throttle):
             None
         """            
         
-        # --------------------------------------------------------------
-        #   User inputs
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   USER INPUTS
+        # -------------------------------------------------------------------------------------------------------------- 
         self.altitude_start    = None # Optional
         self.altitude_end      = 10. * Units.km
         self.descent_rate      = 3.  * Units.m / Units.s
@@ -62,11 +57,9 @@ class Linear_Mach_Constant_Rate(Unknown_Throttle):
         self.mach_number_start = None
         self.true_course_angle = 0.0 * Units.degrees 
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
-    
-        # only need to change one setup step from constant_speed_constant_rate
+        # -------------------------------------------------------------------------------------------------------------- 
+        #   SOLVING PROCESS
+        # -------------------------------------------------------------------------------------------------------------- 
         initialize = self.process.initialize
         initialize.conditions = Methods.Descent.Linear_Mach_Constant_Rate.initialize_conditions
 

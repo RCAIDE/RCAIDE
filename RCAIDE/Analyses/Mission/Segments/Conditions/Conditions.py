@@ -7,15 +7,16 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+# RCAIDE imports 
+from RCAIDE.Core                    import Data 
+
 # python imports
 import numpy as np
 
-# legacy imports
-from RCAIDE.Core                    import Data 
+# ----------------------------------------------------------------------------------------------------------------------
+#  Conditions
+# ----------------------------------------------------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  CONDITIONS
-# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Mission-Segments-Conditions
 class Conditions(Data):
     """ Conditions are the magic Data that contains the information about the vehicle in flight.
@@ -136,7 +137,10 @@ class Conditions(Data):
                     self[k] = np.resize(v,[rows,v.shape[1]])
         
         return
-        
+    
+# ----------------------------------------------------------------------------------------------------------------------
+#  extended_array
+# ----------------------------------------------------------------------------------------------------------------------        
 ## @ingroup Analyses-Mission-Segments-Conditions        
 class expanded_array(Data):
     """ This is an array that will expand later when the mission is initialized. It is called specifically by conditions
