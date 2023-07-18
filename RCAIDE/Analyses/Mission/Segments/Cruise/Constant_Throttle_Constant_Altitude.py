@@ -101,9 +101,7 @@ class Constant_Throttle_Constant_Altitude(Aerodynamic):
         # -------------------------------------------------------------------------------------------------------------- 
         #  ITERATE
         # -------------------------------------------------------------------------------------------------------------- 
-        iterate = self.process.iterate
-                
-        # Update Initials
+        iterate                            = self.process.iterate 
         iterate.initials                   = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights

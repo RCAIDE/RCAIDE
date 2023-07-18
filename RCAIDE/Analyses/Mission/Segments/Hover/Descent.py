@@ -59,9 +59,8 @@ class Descent(Hover):
         # --------------------------------------------------------------
         #   THE SOLVING PROCESS
         # --------------------------------------------------------------
-        initialize = self.process.initialize
-        iterate    = self.process.iterate
-        
+        initialize            = self.process.initialize
+        iterate               = self.process.iterate 
         initialize.conditions = Methods.Hover.Descent.initialize_conditions
     
         return

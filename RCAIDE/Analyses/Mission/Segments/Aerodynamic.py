@@ -9,13 +9,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Analyses.Mission.Segments import Simple
-from RCAIDE.Analyses.Mission.Segments import Conditions 
+from RCAIDE.Analyses.Mission.Segments import Simple , Conditions  
 from RCAIDE.Methods.Missions          import Segments as Methods 
-from RCAIDE.Analyses                  import Process
-
-# Legacy imports
-from Legacy.trunk.S.Methods.skip      import skip
+from RCAIDE.Analyses                  import Process 
+from RCAIDE.Methods.skip              import skip
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Aerodynamic
@@ -85,9 +82,7 @@ class Aerodynamic(Simple):
         # --------------------------------------------------------------------------------------------------------------
         #   ITERATE
         # --------------------------------------------------------------------------------------------------------------
-        iterate = self.process.iterate
-
-        # Update Initials
+        iterate                            = self.process.iterate 
         iterate.initials                   = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights
@@ -119,9 +114,7 @@ class Aerodynamic(Simple):
         # --------------------------------------------------------------------------------------------------------------
         #   FINALIZE (AFTER ITERATION)
         # ---------------------------------------------------------------------------------------------------------------
-        finalize = self.process.finalize
-        
-        # Post Processing
+        finalize                                = self.process.finalize 
         finalize.post_process                   = Process()        
         finalize.post_process.inertial_position = Methods.Common.Frames.integrate_inertial_horizontal_position
         finalize.post_process.stability         = Methods.Common.Aerodynamics.update_stability

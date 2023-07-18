@@ -7,12 +7,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-# legacy imports 
-# RCAIDE Imports
-from .Mission import Mission
 
-# Legacy imports 
-from Legacy.trunk.S.Methods import Missions as Methods
+# RCAIDE Imports
+from .Mission import Mission 
+from RCAIDE.Methods import Missions as Methods
 
 # ----------------------------------------------------------------------------------------------------------------------
 # All_At_Once

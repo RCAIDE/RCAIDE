@@ -97,10 +97,8 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Aerodynamic):
         # --------------------------------------------------------------------------------------------------------------
         #   ITERATE
         # --------------------------------------------------------------------------------------------------------------
-        iterate = self.process.iterate
-                
-        # Update Initials
-        iterate.initials = Process()
+        iterate                            = self.process.iterate 
+        iterate.initials                   = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights
         iterate.initials.inertial_position = Methods.Common.Frames.initialize_inertial_position

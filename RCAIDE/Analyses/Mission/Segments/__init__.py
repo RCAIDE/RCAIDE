@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from .Segment     import Segment
-from Legacy.trunk.S.Analyses.Mission.Segments.Simple      import Simple
+from .Simple      import Simple
 from .Aerodynamic import Aerodynamic
 
 from . import Climb
