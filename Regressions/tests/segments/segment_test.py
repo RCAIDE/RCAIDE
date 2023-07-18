@@ -8,19 +8,17 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-# RCAIDE imports  
-
+# RCAIDE imports   
 import RCAIDE
 from RCAIDE.Core import Units, Data 
 from RCAIDE.Methods.Center_of_Gravity  import compute_component_centers_of_gravity
 
+# package imports 
 import numpy as np
 import pylab as plt 
 import sys
 
-sys.path.append('../../Vehicles')
-# the analysis functions
-
+sys.path.append('../../Vehicles') 
 from Boeing_737 import vehicle_setup, configs_setup
  
 # ----------------------------------------------------------------------------------------------------------------------
@@ -238,8 +236,7 @@ def simple_sizing(configs, analyses):
     # weight analysis
     #need to put here, otherwise it won't be updated
     weights = analyses.configs.base.weights
-    breakdown = weights.evaluate()    
-    
+    breakdown = weights.evaluate()     
     
     #compute centers of gravity
     #need to put here, otherwise, results won't be stored
