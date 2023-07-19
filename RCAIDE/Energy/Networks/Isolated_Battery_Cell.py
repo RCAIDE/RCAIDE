@@ -17,10 +17,10 @@ from .Network import Network
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  NETWORK
+#  Isolated_Battery_Cell
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks
-class Battery_Cell(Network):
+class Isolated_Battery_Cell(Network):
     """ This is a test bench to analyze the discharge and charge profile 
         of a battery cell.
     

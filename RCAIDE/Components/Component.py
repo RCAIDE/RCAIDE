@@ -1,22 +1,23 @@
-## @ingroup Components
-# Component.py
+## @ingroup Compoments
+# RCAIDE/Compoments/Component.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  
-# Modified: Dec 2016, E. Botero
+# Created:  Jul 2023, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------  
 
-from RCAIDE.Core         import Container as ContainerBase
-from Legacy.trunk.S.Core import Data
+from RCAIDE.Core import Container as ContainerBase
+from RCAIDE.Core import Data
+from .Mass_Properties import Mass_Properties
 
 # package imports 
 import numpy as np
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Component
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------        
 
 ## @ingroup Components
 class Component(Data):
@@ -45,13 +46,14 @@ class Component(Data):
             Properties Used:
             None
             """         
-        self.tag    = 'Component'
-        self.origin = [[0.0,0.0,0.0]] 
-
+        self.tag             = 'Component' 
+        self.mass_properties = Mass_Properties()
+        self.origin          = np.array([[0.0,0.0,0.0]]) 
     
-# ----------------------------------------------------------------------
+        
+# ----------------------------------------------------------------------------------------------------------------------
 #  Component Container
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------    
 
 ## @ingroup Components
 class Container(ContainerBase):

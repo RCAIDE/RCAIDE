@@ -8,9 +8,9 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Battery_Cell                                  import Battery_Cell 
+from .Isolated_Battery_Cell                         import Isolated_Battery_Cell 
 from Legacy.trunk.S.Components.Energy.Networks      import Battery_Ducted_Fan
-from .Battery_Electric_Rotor                        import Battery_Electric_Rotor
+from .All_Electric                                  import All_Electric
 from Legacy.trunk.S.Components.Energy.Networks      import Ducted_Fan
 from .Internal_Combustion_Propeller                 import Internal_Combustion_Propeller
 from .Internal_Combustion_Propeller_Constant_Speed  import Internal_Combustion_Propeller_Constant_Speed 

@@ -10,6 +10,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission
 
+from .converge_root import converge_root
+from .expand_state  import expand_state
+from .optimize      import converge_opt
+
 from . import Common
 from . import Cruise
 from . import Climb
@@ -18,7 +22,3 @@ from . import Ground
 from . import Hover
 from . import Single_Point
 from . import Transition
-
-from .converge_root import converge_root
-from .expand_state  import expand_state
-from .optimize      import converge_opt

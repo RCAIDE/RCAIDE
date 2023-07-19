@@ -11,11 +11,9 @@
 from RCAIDE.Analyses.Mission.Segments import Aerodynamic
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Analyses                  import Process
-from RCAIDE.Methods.Missions          import Segments as Methods 
-
-# Legacy imports 
-from Legacy.trunk.S.Methods.skip      import skip  
-from Legacy.trunk.S.Core              import Units
+from RCAIDE.Methods.Missions          import Segments as Methods  
+from RCAIDE.Methods                   import skip  
+from RCAIDE.Core                      import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  SEGMENT

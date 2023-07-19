@@ -6,8 +6,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# RCAIDE imports 
-from Legacy.trunk.S.Methods.Utilities.soft_max import soft_max
+
+from RCAIDE.Methods.Utilities import soft_max
 
 # package imports 
 import numpy as np

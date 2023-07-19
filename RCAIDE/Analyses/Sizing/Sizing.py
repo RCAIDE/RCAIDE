@@ -7,10 +7,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports   
-from RCAIDE.Analyses import Analysis 
-
-# legacy  
-from Legacy.trunk.S.Core import Data
+from RCAIDE.Analyses import Analysis  
+from RCAIDE.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ANALYSIS

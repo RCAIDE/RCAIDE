@@ -6,10 +6,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Core import Container as ContainerBase
-
-# Legacy imports   
-from Legacy.trunk.S.Core import Data
+from RCAIDE.Core import Container as ContainerBase    
+from RCAIDE.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ANALYSIS

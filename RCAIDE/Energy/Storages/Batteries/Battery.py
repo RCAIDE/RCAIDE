@@ -8,10 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
  # RCAIDE imports
-from RCAIDE.Core import Data
-
-# Legacy imports 
-from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component  
+from RCAIDE.Core                    import Data 
+from RCAIDE.Energy.Energy_Component import Energy_Component  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  BATTERY

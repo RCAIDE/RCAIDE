@@ -8,8 +8,7 @@
 # ------------------------------------------------------------
 #  Imports
 # ------------------------------------------------------------
-
-from Legacy.trunk.S.Core import Data 
+from RCAIDE.Core import Data 
 from RCAIDE.Components.Component import Component
 # ----------------------------------------------------------------------
 #  Energy Component Class

@@ -1,3 +1,4 @@
+## @ingroup Core
 # RCAIDE/Core/Container.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
@@ -17,7 +18,7 @@ t_table = str.maketrans( chars          + string.ascii_uppercase ,
                             '_'*len(chars) + string.ascii_lowercase )
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  CORE
+#  Container
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Core
 class Container(Data):

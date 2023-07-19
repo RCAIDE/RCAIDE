@@ -11,10 +11,8 @@
 from RCAIDE.Analyses.Mission.Segments import Simple
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Methods.Missions          import Segments as Methods 
-from RCAIDE.Analyses                  import Process
-
-# Legacy imports
-from Legacy.trunk.S.Methods.skip      import skip
+from RCAIDE.Analyses                  import Process 
+from RCAIDE.Methods                   import skip
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ANALYSES

@@ -233,7 +233,7 @@ def vehicle_setup(current,battery_chemistry):
     vehicle.append_component(wing)
      
 
-    net                           = RCAIDE.Energy.Networks.Battery_Cell()
+    net                           = RCAIDE.Energy.Networks.Isolated_Battery_Cell()
     net.tag                       ='battery_cell'   
     net.dischage_model_fidelity   = battery_chemistry
 
@@ -255,7 +255,7 @@ def vehicle_setup(current,battery_chemistry):
     avionics.current              = current 
     net.avionics                  = avionics  
 
-    vehicle.append_component(net)
+    vehicle.append_energy_network(net)
 
     return vehicle
 
@@ -272,30 +272,19 @@ def analyses_setup(configs):
 
 def base_analysis(vehicle):    
     #   Initialize the Analyses     
-    analyses = RCAIDE.Analyses.Vehicle() 
- 
-    #  Weights
-    weights = RCAIDE.Analyses.Weights.Weights_eVTOL()
-    weights.vehicle = vehicle
-    analyses.append(weights)
- 
-    #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
-    aerodynamics.geometry = vehicle
-    aerodynamics.settings.drag_coefficient_increment = 0.0000
-    analyses.append(aerodynamics)  
-  
+    analyses = RCAIDE.Analyses.Vehicle()  
+    
     #  Energy
-    energy= RCAIDE.Analyses.Energy.Energy()
+    energy         = RCAIDE.Analyses.Energy.Energy()
     energy.network = vehicle.networks 
     analyses.append(energy)
  
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet  = RCAIDE.Analyses.Planets.Planet()
     analyses.append(planet)
  
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere                 = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
  

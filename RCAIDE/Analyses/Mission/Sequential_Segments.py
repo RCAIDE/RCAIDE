@@ -6,10 +6,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-# RCAIDE imports   
-import Legacy.trunk.S as SUAVE
-from   Legacy.trunk.S.Methods import Missions as Methods
-from .Mission import Mission
+# RCAIDE imports    
+from   RCAIDE.Methods import Missions as Methods
+from   .Mission import Mission
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ANALYSIS

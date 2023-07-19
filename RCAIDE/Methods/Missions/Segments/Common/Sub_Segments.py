@@ -7,11 +7,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
-from RCAIDE.Analyses import Process
-
-# legacy imports 
-from Legacy.trunk.S.Core import Data
-from Legacy.trunk.S.Methods.skip import skip
+import RCAIDE
+from RCAIDE.Analyses import Process 
+from RCAIDE.Core     import Data
+#from RCAIDE.Methods  import skip
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
@@ -48,7 +47,7 @@ def expand_sub_segments(segment):
         sub_segment.process.initialize.expand_state(sub_segment)
         
         # Now we need to skip this next time because it's already done
-        sub_segment.process.initialize.expand_state = skip
+        sub_segment.process.initialize.expand_state = RCAIDE.Methods.skip
                
         if Process.verbose:
             print('segment end :' , tag)        

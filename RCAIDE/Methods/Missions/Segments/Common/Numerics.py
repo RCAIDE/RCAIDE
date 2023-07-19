@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-from Legacy.trunk.S.Core.Arrays import atleast_2d_col 
+from RCAIDE.Core.Arrays  import atleast_2d_col 
 
 # ----------------------------------------------------------------------
 #  Initialize Differentials

@@ -11,10 +11,7 @@
 # ----------------------------------------------------------------------
 
 import scipy.optimize as opt
-import numpy as np
-
-from Legacy.trunk.S.Core.Arrays import array_type
-from Legacy.trunk.S.Core import Units
+import numpy as np  
 
 # ----------------------------------------------------------------------
 #  Converge Root

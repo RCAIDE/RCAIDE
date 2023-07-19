@@ -9,9 +9,7 @@
 # ----------------------------------------------------------------------
 
 import scipy.optimize
-import numpy as np
-
-from Legacy.trunk.S.Core.Arrays import array_type
+import numpy as np 
 
 # ----------------------------------------------------------------------
 #  Converge Root
@@ -91,7 +89,7 @@ def iterate(unknowns, segment):
     Properties Used:
     N/A
     """       
-    if isinstance(unknowns,array_type):
+    if isinstance(unknowns,np.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns

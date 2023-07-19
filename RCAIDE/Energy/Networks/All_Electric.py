@@ -22,10 +22,10 @@ import copy
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  NETWORK
+#  All_Electric
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks
-class Battery_Electric_Rotor(Network):
+class All_Electric(Network):
     """ A network comprising a battery pack to power rotors through via electric motors.
         Electronic speed controllers, thermal management system, avionics, and other eletric 
         power systes paylaods are also modelled. Rotors and motors are arranged into groups,
@@ -63,7 +63,7 @@ class Battery_Electric_Rotor(Network):
         self.rotors                       = Container()
         self.electronic_speed_controllers = Container()
         self.avionics                     = None
-        self.battery                      = None 
+        self.battery                      = None  
         self.payload                      = None 
         self.voltage                      = None
         self.use_surrogate                = False  

@@ -15,7 +15,7 @@ from RCAIDE.Components.Component  import Container
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  NETWORK
+#  Internal_Combustion_Propeller_Constant_Speed
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks
 class Internal_Combustion_Propeller_Constant_Speed(Network):
