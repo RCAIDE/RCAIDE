@@ -14,13 +14,13 @@ from RCAIDE.Core import Units
 import numpy as np
 from RCAIDE.Visualization import *     
 from RCAIDE.Core import Data
-from RCAIDE.Methods.Weights.Buildups.eVTOL.empty import empty 
+from RCAIDE.Methods.Weights.Buildups.eVTOL       import empty 
 from RCAIDE.Methods.Power.Battery.Sizing         import initialize_from_mass
 import sys
 
-sys.path.append('../Vehicles')
-from X57_Maxwell_Mod2    import vehicle_setup as   GA_vehicle_setup
-from X57_Maxwell_Mod2    import configs_setup as   GA_configs_setup
+sys.path.append('../../Vehicles')
+from NASA_X57            import vehicle_setup as   ECTOL_vehicle_setup
+from NASA_X57            import configs_setup as   ECTOL_configs_setup
 from Stopped_Rotor       import vehicle_setup as   EVTOL_vehicle_setup 
 from Stopped_Rotor       import configs_setup as   EVTOL_configs_setup
 import matplotlib.pyplot as plt  
@@ -130,15 +130,15 @@ def main():
 def GA_full_setup(battery_chemistry,unknown_throttles):
 
     # vehicle data
-    vehicle  = GA_vehicle_setup()
+    vehicle  = ECTOL_vehicle_setup()
     
     # Modify  Battery  
-    net = vehicle.networks.battery_electric_rotor
+    net = vehicle.networks.all_electric
     bat = net.battery 
     if battery_chemistry == 'NMC': 
-        bat = RCAIDE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiNiMnCoO2_18650()  
+        bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiNiMnCoO2_18650()  
     elif battery_chemistry == 'LFP': 
-        bat = RCAIDE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiFePO4_18650()  
+        bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiFePO4_18650()  
     
     bat.mass_properties.mass = 500. * Units.kg  
     bat.pack.max_voltage     = 500.             
@@ -156,7 +156,7 @@ def GA_full_setup(battery_chemistry,unknown_throttles):
     net.voltage              = bat.pack.max_voltage     
     
     # Set up configs
-    configs  = GA_configs_setup(vehicle)
+    configs  = ECTOL_configs_setup(vehicle)
 
     # vehicle analyses
     configs_analyses = analyses_setup(configs)
@@ -179,12 +179,12 @@ def EVTOL_full_setup(battery_chemistry,evtol_throttles):
 
 
     # Modify  Battery  
-    net = vehicle.networks.battery_electric_rotor
+    net = vehicle.networks.all_electric
     bat = net.battery 
     if battery_chemistry == 'NMC': 
-        bat= RCAIDE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiNiMnCoO2_18650()
+        bat= RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiNiMnCoO2_18650()
     elif battery_chemistry == 'LFP': 
-        bat= RCAIDE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiFePO4_18650()
+        bat= RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiFePO4_18650()
     
     bat.mass_properties.mass = 500. * Units.kg  
     bat.pack.max_voltage     = 500.             
@@ -315,7 +315,7 @@ def GA_mission_setup(analyses,vehicle,unknown_throttles):
     base_segment.process.iterate.conditions.planet_position                   = RCAIDE.Methods.skip
     base_segment.process.finalize.post_process.update_battery_state_of_health = RCAIDE.Methods.Missions.Segments.Common.Energy.update_battery_state_of_health  
     base_segment.state.numerics.number_control_points                         = 4   
-    bat                                                                       = vehicle.networks.battery_electric_rotor.battery
+    bat                                                                       = vehicle.networks.all_electric.battery
     base_segment.charging_SOC_cutoff                                          = bat.cell.charging_SOC_cutoff 
     base_segment.charging_current                                             = bat.charging_current
     base_segment.charging_voltage                                             = bat.charging_voltage 
@@ -342,17 +342,17 @@ def GA_mission_setup(analyses,vehicle,unknown_throttles):
             segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
             segment.tag = "Climb_1"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+1) 
             segment.analyses.extend( analyses.base ) 
-            segment.battery_energy                                   = vehicle.networks.battery_electric_rotor.battery.pack.max_energy * 0.89
+            segment.battery_energy                                   = vehicle.networks.all_electric.battery.pack.max_energy * 0.89
             segment.altitude_start                                   = 2500.0  * Units.feet
             segment.altitude_end                                     = 8012    * Units.feet 
             segment.air_speed                                        = 96.4260 * Units['mph'] 
             segment.climb_rate                                       = 700.034 * Units['ft/min']     
             segment.battery_pack_temperature                         = atmo_data.temperature[0,0]
             if (day == 0) and (flight_no == 0):        
-                segment.battery_energy                               = vehicle.networks.battery_electric_rotor.battery.pack.max_energy   
+                segment.battery_energy                               = vehicle.networks.all_electric.battery.pack.max_energy   
                 segment.initial_battery_resistance_growth_factor     = 1
                 segment.initial_battery_capacity_fade_factor         = 1
-            segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment)          
+            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)          
             # add to misison
             mission.append_segment(segment) 
             
@@ -366,7 +366,7 @@ def GA_mission_setup(analyses,vehicle,unknown_throttles):
             segment.altitude                  = 8012   * Units.feet
             segment.air_speed                 = 120.91 * Units['mph'] 
             segment.distance                  =  20.   * Units.nautical_mile   
-            segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment,  initial_rotor_power_coefficients = [unknown_throttles[1]])   
+            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,  initial_rotor_power_coefficients = [unknown_throttles[1]])   
         
             # add to misison
             mission.append_segment(segment)    
@@ -384,7 +384,7 @@ def GA_mission_setup(analyses,vehicle,unknown_throttles):
             segment.air_speed_end                                    = 110 * Units['mph']   
             segment.climb_rate                                       = -200 * Units['ft/min']  
             segment.state.unknowns.throttle                          = 0.8 * ones_row(1)  
-            segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment,  initial_rotor_power_coefficients = [unknown_throttles[2]])   
+            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,  initial_rotor_power_coefficients = [unknown_throttles[2]])   
             
             # add to misison
             mission.append_segment(segment)
@@ -399,7 +399,7 @@ def GA_mission_setup(analyses,vehicle,unknown_throttles):
             segment.battery_discharge                               = False    
             if flight_no  == flights_per_day:  
                 segment.increment_battery_cycle_day=True                        
-            segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment)    
+            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    
             
             # add to misison
             mission.append_segment(segment)        
@@ -451,11 +451,11 @@ def EVTOL_mission_setup(analyses,vehicle,evtol_throttles):
     segment.altitude_start                                   = 0.0  * Units.ft
     segment.altitude_end                                     = 40.  * Units.ft
     segment.climb_rate                                       = 500. * Units['ft/min']
-    segment.battery_energy                                   = vehicle.networks.battery_electric_rotor.battery.pack.max_energy
+    segment.battery_energy                                   = vehicle.networks.all_electric.battery.pack.max_energy
     segment.process.iterate.unknowns.mission                 = RCAIDE.Methods.skip
     segment.process.iterate.conditions.stability             = RCAIDE.Methods.skip
     segment.process.finalize.post_process.stability          = RCAIDE.Methods.skip   
-    segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment,\
+    segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,\
                                                                                     initial_rotor_power_coefficients = [0.02,0.01],
                                                                                     initial_throttles = evtol_throttles[0])
     # add to misison
@@ -477,7 +477,7 @@ def EVTOL_mission_setup(analyses,vehicle,evtol_throttles):
     segment.process.iterate.unknowns.mission           = RCAIDE.Methods.skip
     segment.process.iterate.conditions.stability       = RCAIDE.Methods.skip
     segment.process.finalize.post_process.stability    = RCAIDE.Methods.skip 
-    segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment,
+    segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,
                                                          initial_rotor_power_coefficients = [0.05,0.05], 
                                                          initial_throttles = evtol_throttles[1] )
 
@@ -499,7 +499,7 @@ def EVTOL_mission_setup(analyses,vehicle,evtol_throttles):
     segment.process.iterate.unknowns.mission        = RCAIDE.Methods.skip
     segment.process.iterate.conditions.stability    = RCAIDE.Methods.skip
     segment.process.finalize.post_process.stability = RCAIDE.Methods.skip
-    segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment,
+    segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,
                                                          initial_rotor_power_coefficients = [ 0.2, 0.01],
                                                          initial_throttles = evtol_throttles[2] )
 
@@ -517,7 +517,7 @@ def EVTOL_mission_setup(analyses,vehicle,evtol_throttles):
     segment.altitude_start                             = 50.0 * Units.ft
     segment.altitude_end                               = 300. * Units.ft
     segment.climb_rate                                 = 500. * Units['ft/min']  
-    segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment,
+    segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,
                                                          initial_throttles = evtol_throttles[3] )
 
     # add to misison
@@ -532,7 +532,7 @@ def EVTOL_mission_setup(analyses,vehicle,evtol_throttles):
     segment.altitude                                   = 300.0 * Units.ft
     segment.time                                       = 60.   * Units.second
     segment.air_speed                                  = 1.2*Vstall 
-    segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment,\
+    segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,\
                                                                                           initial_rotor_power_coefficients = [0.16,0.7],
                                                                                           initial_throttles = evtol_throttles[4] )
     # add to misison
@@ -544,7 +544,7 @@ def EVTOL_mission_setup(analyses,vehicle,evtol_throttles):
     segment.altitude                                   = 1000.0 * Units.ft
     segment.air_speed                                  = 110. * Units['mph']
     segment.distance                                   = 40. * Units.miles  
-    segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment ,
+    segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment ,
                                                                                    initial_throttles = evtol_throttles[5] )
 
     # add to misison
@@ -555,12 +555,12 @@ def EVTOL_mission_setup(analyses,vehicle,evtol_throttles):
     #  Charge Segment: 
     # ------------------------------------------------------------------  
     # Charge Model 
-    segment                                                  = Segments.Ground.Battery_Charge_Discharge(base_segment)     
+    segment                                                  = Segments.Ground.Battery_Recharge(base_segment)     
     segment.tag                                              = 'Charge'
     segment.analyses.extend(analyses.base)           
     segment.battery_discharge                                = False    
     segment.increment_battery_cycle_day                      = True         
-    segment = vehicle.networks.battery_electric_rotor.add_unknowns_and_residuals_to_segment(segment)    
+    segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    
     
     # add to misison
     mission.append_segment(segment)        
@@ -582,27 +582,6 @@ def missions_setup(base_mission):
 
 
 def plot_results(results):  
-    
-    # Plot Flight Conditions 
-    plot_flight_conditions(results) 
-    
-    # Plot Aerodynamic Coefficients
-    plot_aerodynamic_coefficients(results)  
-    
-    # Plot Aircraft Flight Speed
-    plot_aircraft_velocities(results)
-    
-    # Plot Aircraft Electronics
-    plot_battery_pack_conditions(results) 
-    plot_battery_cell_conditions(results)
-    plot_battery_cell_temperature(results)
-    plot_battery_degradation(results)
-    
-    # Plot Propeller Conditions 
-    plot_rotor_conditions(results) 
-    
-    # Plot Electric Motor and Propeller Efficiencies 
-    plot_electric_motor_and_rotor_efficiencies(results)
      
     return
 

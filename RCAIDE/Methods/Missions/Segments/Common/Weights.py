@@ -40,9 +40,11 @@ def initialize_weights(segment):
  
     if segment.state.initials:
         m_initial = segment.state.initials.conditions.weights.total_mass[-1,0]
-    else:
-
-        m_initial = segment.analyses.weights.vehicle.mass_properties.takeoff
+    else: 
+        if segment.analyses.weights != None: 
+            m_initial = segment.analyses.weights.vehicle.mass_properties.takeoff
+        else: 
+            m_initial = segment.analyses.energy.network[list(segment.analyses.energy.network.keys())[0]].mass_properties.mass
 
     m_current = segment.state.conditions.weights.total_mass
     

@@ -124,29 +124,29 @@ def main():
     legend_font_size = 12                     
     axes1.set_ylabel('Voltage $(V_{UL}$)')    
     axes1.set_xlabel('Amp-Hours (A-hr)') 
-    axes1.legend(loc='upper right', prop={'size': legend_font_size})  
-    axes1.set_ylim([2,4.5]) 
+    axes1.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})  
+    axes1.set_ylim([2.5,5]) 
     axes1.set_xlim([0,7])
     axes2.set_xlabel('Amp-Hours (A-hr)') 
-    axes2.legend(loc='upper right', prop={'size': legend_font_size})  
-    axes2.set_ylim([2,4.5])   
+    axes2.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})  
+    axes2.set_ylim([2.5,5])   
     axes2.set_xlim([0,7])
     axes3.set_xlabel('Amp-Hours (A-hr)')
-    axes3.legend(loc='upper right', prop={'size': legend_font_size})  
-    axes3.set_ylim([2,4.5]) 
+    axes3.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})  
+    axes3.set_ylim([2.5,5]) 
     axes3.set_xlim([0,7])
+
     axes4.set_xlabel('Amp-Hours (A-hr)') 
-    axes4.legend(loc='upper right', prop={'size': legend_font_size})
-    axes4.set_ylim([2,4.5])    
+    axes4.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})
+    axes4.set_ylim([273,320])
     axes4.set_xlim([0,7]) 
-    
     axes5.set_ylabel(r'Temperature ($\degree$C)')    
     axes5.set_xlabel('Amp-Hours (A-hr)')        
-    axes5.legend(loc='upper left', prop={'size': legend_font_size})
+    axes5.legend(loc='upper left', ncol = 2, prop={'size': legend_font_size})
     axes5.set_ylim([273,320])
     axes5.set_xlim([0,7]) 
     axes6.set_xlabel('Amp-Hours (A-hr)')     
-    axes6.legend(loc='upper left', prop={'size': legend_font_size})  
+    axes6.legend(loc='upper left', ncol = 2,  prop={'size': legend_font_size})  
     axes6.set_ylim([273,320])
     axes6.set_xlim([0,7]) 
     
@@ -162,14 +162,14 @@ def plot_results(results,j,bat_chem, axes1, axes2, axes3, axes4, axes5, axes6,m,
         Amp_Hrs       = segment.conditions.propulsion.battery.cell.charge_throughput[:,0]                   
           
         if j == 0:
-            axes1.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
-            axes4.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')   
+            axes1.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc[0] , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
+            axes4.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc[0] , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')   
         elif  j == 1: 
-            axes2.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
-            axes5.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')                   
+            axes2.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc[1] , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
+            axes5.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc[1] , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')                   
         elif  j == 2: 
-            axes3.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
-            axes6.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')       
+            axes3.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc[2] , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
+            axes6.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc[2] , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')       
     return
 
 # ----------------------------------------------------------------------
@@ -331,7 +331,7 @@ def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
     mission.append_segment(segment)         
     
     # Charge Segment 
-    segment                                = Segments.Ground.Battery_Charge(base_segment)      
+    segment                                = Segments.Ground.Battery_Recharge(base_segment)      
     segment.analyses.extend(analyses.base)
     segment.tag                            = charge_tag
     segment.battery_discharge              = False        

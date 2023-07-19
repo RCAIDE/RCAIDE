@@ -19,7 +19,7 @@ Data, Container,
 import numpy as np
 import copy, time
 
-from RCAIDE.Components.Energy.Networks.Solar import Solar
+from RCAIDE.Energy.Networks.Solar import Solar
 from RCAIDE.Methods.Propulsion import design_propeller
 from RCAIDE.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_vehicle import plot_3d_vehicle 

@@ -10,7 +10,7 @@ sys.path.append('../trunk')
 import RCAIDE  
 from RCAIDE.Core import Units, Data 
 from RCAIDE.Methods.Power.Battery.Sizing import initialize_from_mass  
-from RCAIDE.Components.Energy.Storages.Batteries import Battery 
+from RCAIDE.Energy.Storages.Batteries import Battery 
 from RCAIDE.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass, initialize_from_circuit_configuration 
 from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.size_wavy_channel_heat_exchanger  import size_wavy_channel_heat_exchanger 
 import numpy as np
@@ -134,12 +134,12 @@ def vehicle_setup():
     vehicle.append_component(wing)
      
 
-    net                           = RCAIDE.Components.Energy.Networks.Battery_Cell_Cycler()
+    net                           = RCAIDE.Energy.Networks.Battery_Cell_Cycler()
     net.tag                       ='battery_cell'    
 
     # Component 5: the Battery  
     air_cooled_flag  = False
-    bat                                                  = RCAIDE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiNiMnCoO2_18650() 
+    bat                                                  = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiNiMnCoO2_18650() 
     bat.pack.electrical_configuration.series             = 10 
     bat.pack.electrical_configuration.parallel           = 10 
     bat.pack.electrical_configuration.total              = bat.pack.electrical_configuration.series * bat.pack.electrical_configuration.parallel 
@@ -151,29 +151,11 @@ def vehicle_setup():
     bat.module_config.voltage                            = bat.pack.max_voltage/bat.module_config.number_of_modules
     net.voltage                                          = bat.pack.max_voltage 
 
-    # Component 6: the BTMS 
-    if air_cooled_flag:
-        btms  = RCAIDE.Components.Energy.Thermal_Management.Batteries.Direct_Convection_Cooling.Atmospheric_Air_Convection_Heat_Exchanger()  
-        btms.cooling_fluid.flowspeed                  = 1.0                                     
-        btms.convective_heat_transfer_coefficient     = 35.     # [W/m^2K]  
-        bat.thermal_management_system                 = btms
-    else:
-        btms = RCAIDE.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger()
-        btms.heat_exchanger.length_of_hot_fluid                        = 0.6
-        btms.heat_exchanger.length_of_cold_fluid                       = 0.9
-        btms.heat_exchanger.stack_height                               = 0.24
-        btms.heat_exchanger.hydraulic_diameter_of_hot_fluid_channel    = 5e-4
-        btms.heat_exchanger.aspect_ratio_of_hot_fluid_channel          = 1
-        btms.heat_exchanger.hydraulic_diameter_of_cold_fluid_channel   = 1e-2
-        btms.heat_exchanger.aspect_ratio_of_cold_fluid_channel         = 3 
-        btms.heat_exchanger.mass_flow_rate_of_cold_fluid               = 2  
-        btms.heat_exchanger.pressure_ratio_of_hot_fluid                = 0.7
-        btms.heat_exchanger.pressure_ratio_of_cold_fluid               = 0.98    # CHANGE IN OPTIMIZER
-        btms.heat_exchanger.pressure_at_inlet_of_hot_fluid             = 101325
-        btms.wavy_channel.channel_numbers_of_module                    = 10 
-        btms.mass_flow_rate_of_hot_fluid                               = 1       # CHANGE IN OPTIMIZER
-        size_wavy_channel_heat_exchanger(btms,bat,bat.pack.electrical_configuration.total)  
-        bat.thermal_management_system = btms
+    # Component 6: the BTMS  
+    btms  = RCAIDE.Energy.Thermal_Management.Batteries.Direct_Convection_Cooling.Atmospheric_Air_Convection_Heat_Exchanger()  
+    btms.cooling_fluid.flowspeed                  = 1.0                                     
+    btms.convective_heat_transfer_coefficient     = 35.     # [W/m^2K]  
+    bat.thermal_management_system                 = btms 
     net.battery                                          = bat 
     
     initialize_from_circuit_configuration(bat) 
@@ -181,7 +163,7 @@ def vehicle_setup():
     
     vehicle.mass_properties.takeoff = bat.mass_properties.mass 
 
-    avionics                      = RCAIDE.Components.Energy.Peripherals.Avionics()
+    avionics                      = RCAIDE.Energy.Peripherals.Avionics()
     avionics.current              = 108 # C rate of 3
     net.avionics                  = avionics  
 
@@ -287,7 +269,7 @@ def mission_setup(analyses,vehicle):
     discharge_time                                           = 0.33 * Units.hrs  # approx 3C
     
     # Discharge Segment 
-    segment                                             = Segments.Ground.Battery_Charge_Discharge(base_segment) 
+    segment                                             = Segments.Ground.Battery_Discharge(base_segment) 
     segment.analyses.extend(analyses.base)       
     segment.tag                                         = 'NMC_Module_Discharge'
     segment.time                                        = discharge_time 
@@ -296,7 +278,7 @@ def mission_setup(analyses,vehicle):
     mission.append_segment(segment)         
     
     # Charge Segment 
-    segment                   = Segments.Ground.Battery_Charge_Discharge(base_segment)      
+    segment                   = Segments.Ground.Battery_Recharge(base_segment)      
     segment.analyses.extend(analyses.base) 
     segment.tag               = 'NMC_Module_Charge'
     segment.battery_discharge = False        

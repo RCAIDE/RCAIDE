@@ -221,13 +221,13 @@ def vehicle_setup():
     # ------------------------------------------------------------------    
     
     # build network
-    net                                     = RCAIDE.Components.Energy.Networks.Internal_Combustion_Propeller()
+    net                                     = RCAIDE.Energy.Networks.Internal_Combustion_Propeller()
     net.tag                                 = 'internal_combustion'
     net.number_of_engines                   = 1.
     net.identical_rotors                    = True
                                                 
     # the engine                    
-    engine                                  = RCAIDE.Components.Energy.Converters.Internal_Combustion_Engine()
+    engine                                  = RCAIDE.Energy.Converters.Internal_Combustion_Engine()
     engine.sea_level_power                  = 180. * Units.horsepower
     engine.flat_rate_altitude               = 0.0
     engine.rated_speed                      = 2700. * Units.rpm
@@ -235,7 +235,7 @@ def vehicle_setup():
     net.engines.append(engine)
     
     # the prop
-    prop = RCAIDE.Components.Energy.Converters.Propeller()
+    prop = RCAIDE.Energy.Converters.Propeller()
     prop.number_of_blades                   = 2.0
     prop.tip_radius                         = 76./2. * Units.inches
     prop.hub_radius                         = 8.     * Units.inches
@@ -264,7 +264,7 @@ def vehicle_setup():
 
     #find uninstalled avionics weight
     Wuav                                        = 2. * Units.lbs
-    avionics                                    = RCAIDE.Components.Energy.Peripherals.Avionics()
+    avionics                                    = RCAIDE.Energy.Peripherals.Avionics()
     avionics.mass_properties.uninstalled        = Wuav
     vehicle.avionics                            = avionics     
 

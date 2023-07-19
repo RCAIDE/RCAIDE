@@ -9,8 +9,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Analyses import Process 
-from RCAIDE.Core     import Data
-#from RCAIDE.Methods  import skip
+from RCAIDE.Core     import Data 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD

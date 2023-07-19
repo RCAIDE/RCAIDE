@@ -73,14 +73,14 @@ def ICE_CS(vehicle):
     # Let's assume its an STC or 172RG 
     
     # build network
-    net                                         = RCAIDE.Components.Energy.Networks.Internal_Combustion_Propeller_Constant_Speed()
+    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Propeller_Constant_Speed()
     net.tag                                     = 'internal_combustion'
     net.number_of_engines                       = 1.
     net.rated_speed                             = 2700. * Units.rpm
     net.rated_power                             = 180.  * Units.hp
     
     # Component 1 the engine                    
-    engine                                  = RCAIDE.Components.Energy.Converters.Internal_Combustion_Engine()
+    engine                                  = RCAIDE.Energy.Converters.Internal_Combustion_Engine()
     engine.sea_level_power                  = 180. * Units.horsepower
     engine.flat_rate_altitude               = 0.0
     engine.rated_speed                      = 2700. * Units.rpm
@@ -89,7 +89,7 @@ def ICE_CS(vehicle):
     net.engines.append(engine)
     
     # 
-    prop                                   = RCAIDE.Components.Energy.Converters.Propeller()
+    prop                                   = RCAIDE.Energy.Converters.Propeller()
     prop.number_of_blades                  = 2.0
     prop.tip_radius                        = 76./2. * Units.inches
     prop.hub_radius                        = 8.     * Units.inches

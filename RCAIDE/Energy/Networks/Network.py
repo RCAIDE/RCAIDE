@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports
 from RCAIDE.Energy     import Energy_Component
-from RCAIDE.Core       import Data
-from RCAIDE.Components import Component
+from RCAIDE.Core       import Data 
 # ----------------------------------------------------------------------------------------------------------------------
 #  NETWORK
 # ----------------------------------------------------------------------------------------------------------------------
@@ -39,19 +38,7 @@ class Network(Energy_Component):
         self.tag                    = 'network'
         self.number_of_engines      = 1
         self.wing_mounted           = True
-
-# ----------------------------------------------------------------------
-#  Component Container
-# ----------------------------------------------------------------------
-## @ingroup Energy-Network
-class Container(Component.Container):
-    """ RCAIDE.Energy.Networks.Network.Container()
-        The Network Container Class
-            Assumptions:
-            None
-            Source:
-            N/A
-    """
+ 
     def evaluate_thrust(self,state):
         """ This is used to evaluate the thrust produced by the network.
                 Assumptions:
@@ -79,8 +66,4 @@ class Container(Component.Container):
             for key in results.keys():
                 results[key] += results_p[key]
         return results
-    
-# ----------------------------------------------------------------------
-#  Handle Linking
-# ----------------------------------------------------------------------
-Network.Container = Container 
+     

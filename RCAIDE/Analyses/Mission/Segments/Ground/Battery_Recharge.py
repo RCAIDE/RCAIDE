@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Analyses.Mission.Segments import Aerodynamic
+from RCAIDE.Analyses.Mission.Segments import Simple
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Analyses                  import Process
 from RCAIDE.Methods.Missions          import Segments as Methods  
@@ -20,7 +20,7 @@ from RCAIDE.Core                      import Units
 # ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments-Ground
-class Battery_Charge(Aerodynamic): 
+class Battery_Recharge(Simple): 
 
     # ------------------------------------------------------------------
     #   Data Defaults
@@ -61,6 +61,7 @@ class Battery_Charge(Aerodynamic):
     
         # conditions
         self.state.conditions.update( Conditions.Aerodynamics() )
+        self.temperature_deviation = 0.0
     
         # initials and unknowns
         ones_row = self.state.ones_row
@@ -111,8 +112,8 @@ class Battery_Charge(Aerodynamic):
         iterate.conditions.freestream      = Methods.Common.Aerodynamics.update_freestream
         iterate.conditions.orientations    = Methods.Common.Frames.update_orientations
         iterate.conditions.propulsion      = Methods.Common.Energy.update_thrust
-        iterate.conditions.aerodynamics    = Methods.Common.Aerodynamics.update_aerodynamics
-        iterate.conditions.stability       = Methods.Common.Aerodynamics.update_stability
+        #iterate.conditions.aerodynamics    = Methods.Common.Aerodynamics.update_aerodynamics
+        #iterate.conditions.stability       = Methods.Common.Aerodynamics.update_stability
         iterate.conditions.weights         = Methods.Common.Weights.update_weights
         iterate.conditions.forces          = Methods.Common.Frames.update_forces
         iterate.conditions.planet_position = Methods.Common.Frames.update_planet_position

@@ -14,7 +14,7 @@ import numpy as np
 
 # design propeller                                       
 def F8745_D4_Propeller():  
-    prop                            = RCAIDE.Components.Energy.Converters.Propeller()
+    prop                            = RCAIDE.Energy.Converters.Propeller()
     prop.inputs                     = Data()
     prop.inputs.pitch_command       = 0 
     prop.inputs.y_axis_rotation     = 0.

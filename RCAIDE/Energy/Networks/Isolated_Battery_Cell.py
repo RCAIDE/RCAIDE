@@ -132,10 +132,12 @@ class Isolated_Battery_Cell(Network):
           
         F     = np.zeros_like(volts)  * [0,0,0]      
         mdot  = state.ones_row(1)*0.0
+        y_rot = state.ones_row(1)*0.0  # remove in the future
          
         results                           = Data()
         results.thrust_force_vector       = F
         results.vehicle_mass_rate         = mdot  
+        results.network_y_axis_rotation   = y_rot # remove in the future
         
         return results 
     

@@ -8,8 +8,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------        
 
-from Legacy.trunk.S.Core.Data     import Data
-from warnings  import warn
+from RCAIDE.Core     import Data
+from warnings        import warn
 import random
 
 import string

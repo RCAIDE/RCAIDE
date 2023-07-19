@@ -10,6 +10,7 @@
 # ------------------------------------------------------------
 from RCAIDE.Core import Data 
 from RCAIDE.Components.Component import Component
+import numpy as np
 # ----------------------------------------------------------------------
 #  Energy Component Class
 # ----------------------------------------------------------------------

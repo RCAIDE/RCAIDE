@@ -58,7 +58,7 @@ class All_Electric(Network):
             N/A
         """         
         
-        self.tag                          = 'Battery_Electric_Rotor'
+        self.tag                          = 'All_Electric'
         self.motors                       = Container()
         self.rotors                       = Container()
         self.electronic_speed_controllers = Container()
@@ -326,7 +326,7 @@ class All_Electric(Network):
         """                          
         # unpack the ones function
         ones_row                = segment.state.ones_row  
-        active_propulsor_groups = segment.analyses.energy.network.battery_electric_rotor.active_propulsor_groups
+        active_propulsor_groups = segment.analyses.energy.network.all_electric.active_propulsor_groups
         
         # Here we are going to unpack the unknowns (Cp) provided for this network
         ss       = segment.state 
@@ -381,7 +381,7 @@ class All_Electric(Network):
            N/A
        """           
 
-        active_propulsor_groups = segment.analyses.energy.network.battery_electric_rotor.active_propulsor_groups
+        active_propulsor_groups = segment.analyses.energy.network.all_electric.active_propulsor_groups
            
         if segment.battery_discharge:       
             for i in range(segment.state.conditions.propulsion.number_of_propulsor_groups):
@@ -429,7 +429,7 @@ class All_Electric(Network):
         rotor_group_indexes     = self.rotor_group_indexes
         motor_group_indexes     = self.motor_group_indexes
         esc_group_indexes       = self.esc_group_indexes
-        active_propulsor_groups = segment.analyses.energy.network.battery_electric_rotor.active_propulsor_groups
+        active_propulsor_groups = segment.analyses.energy.network.all_electric.active_propulsor_groups
         motors                  = self.motors
         rotors                  = self.rotors
         escs                    = self.electronic_speed_controllers

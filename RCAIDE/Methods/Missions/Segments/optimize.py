@@ -111,7 +111,7 @@ def get_objective(unknowns, segment):
                                 
     """      
     
-    if isinstance(unknowns,array_type):
+    if isinstance(unknowns,np.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns
@@ -141,7 +141,7 @@ def get_econstraints(unknowns, segment):
                                 
     """       
     
-    if isinstance(unknowns,array_type):
+    if isinstance(unknowns,np.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns
@@ -214,7 +214,7 @@ def get_ieconstraints(unknowns, segment):
                                 
     """      
 
-    if isinstance(unknowns,array_type):
+    if isinstance(unknowns,np.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns
@@ -264,7 +264,7 @@ def get_problem_pyopt(unknowns, segment):
                                 
     """       
 
-    if isinstance(unknowns,array_type):
+    if isinstance(unknowns,np.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns
