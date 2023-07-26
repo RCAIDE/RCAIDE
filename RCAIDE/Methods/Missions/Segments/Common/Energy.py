@@ -27,10 +27,10 @@ def initialize_battery(segment):
                                 
     """ 
        
-    conditions = segment.state.conditions.propulsion
+    conditions = segment.state.conditions.energy
     if segment.state.initials:
 
-        initials   = segment.state.initials.conditions.propulsion
+        initials   = segment.state.initials.conditions.energy
         
         initial_mission_energy       = initials.battery.pack.max_initial_energy
         battery_max_aged_energy      = initials.battery.pack.max_aged_energy         

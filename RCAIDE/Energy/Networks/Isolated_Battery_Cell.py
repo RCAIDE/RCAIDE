@@ -65,7 +65,7 @@ class Isolated_Battery_Cell(Network):
             state [state()]
     
             Outputs: 
-            conditions.propulsion: 
+            conditions.energy: 
                 current                       [amps]
                 battery_power_draw            [watts]
                 battery_energy                [joules]
@@ -83,14 +83,14 @@ class Isolated_Battery_Cell(Network):
         battery           = self.battery    
          
         # Set battery energy
-        battery.pack.current_energy                   = conditions.propulsion.battery.pack.energy
-        battery.pack.max_energy                       = conditions.propulsion.battery.pack.max_aged_energy  
-        battery.pack.temperature                      = conditions.propulsion.battery.pack.temperature
-        battery.cell.charge_throughput                = conditions.propulsion.battery.cell.charge_throughput     
-        battery.cell.age                              = conditions.propulsion.battery.cell.cycle_in_day        
-        battery.cell.R_growth_factor                  = conditions.propulsion.battery.cell.resistance_growth_factor
-        battery.cell.E_growth_factor                  = conditions.propulsion.battery.cell.capacity_fade_factor 
-        battery_discharge_flag                        = conditions.propulsion.battery.discharge_flag    
+        battery.pack.current_energy                   = conditions.energy.battery.pack.energy
+        battery.pack.max_energy                       = conditions.energy.battery.pack.max_aged_energy  
+        battery.pack.temperature                      = conditions.energy.battery.pack.temperature
+        battery.cell.charge_throughput                = conditions.energy.battery.cell.charge_throughput     
+        battery.cell.age                              = conditions.energy.battery.cell.cycle_in_day        
+        battery.cell.R_growth_factor                  = conditions.energy.battery.cell.resistance_growth_factor
+        battery.cell.E_growth_factor                  = conditions.energy.battery.cell.capacity_fade_factor 
+        battery_discharge_flag                        = conditions.energy.battery.discharge_flag    
     
         # update ambient temperature based on altitude
         battery.ambient_temperature                   = conditions.freestream.temperature   

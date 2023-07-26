@@ -1,24 +1,20 @@
-## @ingroup Components-Energy-Thermal_Management
-# Cryogenic_Heat_Exchanger.py
-#
-# Created:  Feb 2020,  K. Hamilton - Through New Zealand Ministry of Business Innovation and Employment Research Contract RTVU2004
+# RCAIDE/Energy/Thermal_Management/Cryogenics/Cryogenic_Heat_Exchange.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
-import MARC
-
-import numpy as np
-from scipy.optimize import fsolve
-
-from MARC.Core import Data
-from MARC.Components.Energy.Energy_Component import Energy_Component
-from MARC.Methods.Weights.Thermal_Management.Cryogen.Consumption import Coolant_use
-
-# ----------------------------------------------------------------------
+# RCAIDE imports  
+import RCAIDE 
+from RCAIDE.Energy.Energy_Component import Energy_Component
+from RCAIDE.Methods.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate import compute_cryogen_mass_flow_rate
+ 
+# ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryogenic Heat Exchanger Component
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Energy-Converters
 class Cryogenic_Heat_Exchanger(Energy_Component):
     """This provides output values for a heat exchanger used to cool cryogenic components
@@ -52,7 +48,7 @@ class Cryogenic_Heat_Exchanger(Energy_Component):
         self.tag = 'Cryogenic_Heat_Exchanger'
         
         #-----setting the default values for the different components
-        self.cryogen                        = MARC.Attributes.Cryogens.Liquid_H2()
+        self.cryogen                        = RCAIDE.Attributes.Cryogens.Liquid_H2()
         self.cryogen_inlet_temperature      =    300.0      # [K]
         self.cryogen_outlet_temperature     =    300.0      # [K]
         self.cryogen_pressure               = 100000.0      # [Pa]
@@ -99,7 +95,7 @@ class Cryogenic_Heat_Exchanger(Energy_Component):
         vent_pressure   = pressure
 
         # calculate the cryogen mass flow
-        mdot = Coolant_use(cryogen,temp_in,temp_out,cooling_power,vent_pressure)
+        mdot = compute_cryogen_mass_flow_rate(cryogen,temp_in,temp_out,cooling_power,vent_pressure)
         self.outputs.mdot = mdot
     
         return mdot

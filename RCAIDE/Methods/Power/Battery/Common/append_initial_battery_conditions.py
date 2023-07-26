@@ -42,7 +42,7 @@ def append_initial_battery_conditions(segment,battery):
             segment
                battery_discharge                    [boolean]
                increment_battery_cycle_day          [boolean]
-            segment.state.conditions.propulsion
+            segment.state.conditions.energy
                battery.discharge_flag               [boolean]
                battery.pack.max_initial_energy      [watts]
                battery.pack.energy                  [watts]
@@ -60,7 +60,7 @@ def append_initial_battery_conditions(segment,battery):
         None
     """      
     # unpack
-    propulsion = segment.state.conditions.propulsion
+    propulsion = segment.state.conditions.energy
     
     # compute ambient conditions
     atmosphere    = RCAIDE.Analyses.Atmospheric.US_Standard_1976()

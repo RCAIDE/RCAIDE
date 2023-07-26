@@ -7,10 +7,8 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-# MARC imports
-import MARC
-import numpy as np
-from MARC.Components.Energy.Energy_Component import Energy_Component
+# RCAIDE imports 
+import numpy as np 
 
 # ----------------------------------------------------------------------
 #  Estimated efficiency of HTS Dynamo 

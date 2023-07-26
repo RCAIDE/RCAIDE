@@ -1,8 +1,12 @@
-## @defgroup Components-Energy-Thermal_Management Thermal_Management 
-# @ingroup Components-Energy
+## @defgroup Energy-Thermal_Management Thermal_Management
+# RCAIDE/Energy/Thermal_Management/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
 
-# __init__.py 
-# Modified  Jun 2023, M. Clarke
+""" RCAIDE Package Setup
+"""
 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 from . import Batteries                            
 from . import Cryogenics

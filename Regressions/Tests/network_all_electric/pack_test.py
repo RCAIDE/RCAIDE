@@ -20,9 +20,7 @@ import sys
 
 sys.path.append('../../Vehicles')
 from NASA_X57            import vehicle_setup as   ECTOL_vehicle_setup
-from NASA_X57            import configs_setup as   ECTOL_configs_setup
-from Stopped_Rotor       import vehicle_setup as   EVTOL_vehicle_setup 
-from Stopped_Rotor       import configs_setup as   EVTOL_configs_setup
+from NASA_X57            import configs_setup as   ECTOL_configs_setup 
 import matplotlib.pyplot as plt  
 # ----------------------------------------------------------------------
 #   Main
@@ -31,10 +29,8 @@ import matplotlib.pyplot as plt
 def main():     
     
     battery_chemistry       =  ['NMC','LFP']
-    ga_unknown_throttles    =  [[0.005,0.005,0.005],
-                                [0.005,0.005,0.005]]
-    evtol_unknown_throttles = [[ [0.7,0.9] , [0.7,0.7] ,[0.95,0.9] ,[0.8,0.9] ,[0.8,0.9],[0.8,0.9] ],
-                               [ [0.7,0.9] , [0.9,0.95] ,[0.95,0.9], [0.8,0.9], [0.8,0.9],[0.8,0.9] ]] 
+    unknown_throttles    =  [[0.005,0.005,0.005],
+                                [0.005,0.005,0.005]] 
     
     # ----------------------------------------------------------------------
     #  True Values  
@@ -42,14 +38,9 @@ def main():
 
     # General Aviation Aircraft   
 
-    GA_RPM_true              = [2091.4442095019845,2091.4442092004297]
-    GA_lift_coefficient_true = [0.5405970801673611,0.5405970801669211]
-    
-
-    # EVTOL Aircraft      
-    EVTOL_RPM_true              = [2404.5362376884173,2404.536237786673]
-
-    EVTOL_lift_coefficient_true = [0.8075313196430554,0.8075313206536326]
+    RPM_true              = [2091.4442095019845,2091.4442092004297]
+    lift_coefficient_true = [0.5405970801673611,0.5405970801669211]
+     
     
         
     for i in range(len(battery_chemistry)):
@@ -60,66 +51,33 @@ def main():
         print('\nBattery Propeller Network Analysis')
         print('--------------------------------------')
         
-        GA_configs, GA_analyses = GA_full_setup(battery_chemistry[i],ga_unknown_throttles[i])  
-        GA_configs.finalize()
-        GA_analyses.finalize()   
+        configs, analyses = full_setup(battery_chemistry[i],unknown_throttles[i])  
+        configs.finalize()
+        analyses.finalize()   
          
         # mission analysis
-        GA_mission = GA_analyses.missions.base
-        GA_results = GA_mission.evaluate() 
+        mission = analyses.missions.base
+        results = mission.evaluate() 
          
         # plot the results
-        plot_results(GA_results)  
+        plot_results(results)  
         
         # RPM of rotor check during hover
-        GA_RPM        = GA_results.segments.climb_1_f_1_d1.conditions.propulsion.propulsor_group_0.rotor.rpm[3][0] 
-        print('GA RPM: ' + str(GA_RPM))
-        GA_diff_RPM   = np.abs(GA_RPM - GA_RPM_true[i])
+        RPM        = results.segments.climb_1_f_1_d1.conditions.propulsion.propulsor_group_0.rotor.rpm[3][0] 
+        print('GA RPM: ' + str(RPM))
+        diff_RPM   = np.abs(RPM - RPM_true[i])
         print('RPM difference')
-        print(GA_diff_RPM)
-        assert np.abs((GA_RPM - GA_RPM_true[i])/GA_RPM_true[i]) < 1e-6  
+        print(diff_RPM)
+        assert np.abs((RPM - RPM_true[i])/RPM_true[i]) < 1e-6  
         
         # lift Coefficient Check During Cruise
-        GA_lift_coefficient        = GA_results.segments.cruise_f_1_d1.conditions.aerodynamics.lift_coefficient[2][0] 
-        print('GA CL: ' + str(GA_lift_coefficient)) 
-        GA_diff_CL                 = np.abs(GA_lift_coefficient  - GA_lift_coefficient_true[i]) 
+        lift_coefficient        = results.segments.cruise_f_1_d1.conditions.aerodynamics.lift_coefficient[2][0] 
+        print('GA CL: ' + str(lift_coefficient)) 
+        diff_CL                 = np.abs(lift_coefficient  - lift_coefficient_true[i]) 
         print('CL difference')
-        print(GA_diff_CL)
-        assert np.abs((GA_lift_coefficient  - GA_lift_coefficient_true[i])/GA_lift_coefficient_true[i]) < 1e-6
-            
-            
-      
-        print('\nLift-Cruise Network Analysis')  
-        print('--------------------------------------')
-        
-        EVTOL_configs, EVTOL_analyses = EVTOL_full_setup(battery_chemistry[i],evtol_unknown_throttles[i])   
-        EVTOL_configs.finalize()
-        EVTOL_analyses.finalize()   
-         
-        # mission analysis
-        EVTOL_mission = EVTOL_analyses.missions.base
-        EVTOL_results = EVTOL_mission.evaluate()  
-        
-        # plot the results
-        plot_results(EVTOL_results)  
-        
-        # RPM of rotor check during hover
-        EVTOL_RPM        = EVTOL_results.segments.climb_1.conditions.propulsion.propulsor_group_1.rotor.rpm[2][0] 
-        print('EVTOL RPM: ' + str(EVTOL_RPM)) 
-        EVTOL_diff_RPM   = np.abs(EVTOL_RPM - EVTOL_RPM_true[i])
-        print('EVTOL_RPM difference')
-        print(EVTOL_diff_RPM)
-        assert np.abs((EVTOL_RPM - EVTOL_RPM_true[i])/EVTOL_RPM_true[i]) < 1e-6  
-        
-        # lift Coefficient Check During Cruise 
-        EVTOL_lift_coefficient        = EVTOL_results.segments.departure_terminal_procedures.conditions.aerodynamics.lift_coefficient[2][0] 
-        print('EVTOL CL: ' + str(EVTOL_lift_coefficient)) 
-        EVTOL_diff_CL                 = np.abs(EVTOL_lift_coefficient  - EVTOL_lift_coefficient_true[i]) 
-        print('CL difference')
-        print(EVTOL_diff_CL)
-        assert np.abs((EVTOL_lift_coefficient  - EVTOL_lift_coefficient_true[i])/EVTOL_lift_coefficient_true[i]) < 1e-6   
-                
-            
+        print(diff_CL)
+        assert np.abs((lift_coefficient  - lift_coefficient_true[i])/lift_coefficient_true[i]) < 1e-6 
+             
     return
 
 
@@ -127,7 +85,7 @@ def main():
 #   Analysis Setup
 # ---------------------------------------------------------------------- 
 
-def GA_full_setup(battery_chemistry,unknown_throttles):
+def full_setup(battery_chemistry,unknown_throttles):
 
     # vehicle data
     vehicle  = ECTOL_vehicle_setup()
@@ -162,7 +120,7 @@ def GA_full_setup(battery_chemistry,unknown_throttles):
     configs_analyses = analyses_setup(configs)
 
     # mission analyses
-    mission  = GA_mission_setup(configs_analyses,vehicle,unknown_throttles)
+    mission  = mission_setup(configs_analyses,vehicle,unknown_throttles)
     missions_analyses = missions_setup(mission)
 
     analyses = RCAIDE.Analyses.Analysis.Container()
@@ -287,7 +245,7 @@ def base_analysis(vehicle):
 #   Define the Mission
 # ----------------------------------------------------------------------
 
-def GA_mission_setup(analyses,vehicle,unknown_throttles): 
+def mission_setup(analyses,vehicle,unknown_throttles): 
     # ------------------------------------------------------------------
     #   Initialize the Mission
     # ------------------------------------------------------------------

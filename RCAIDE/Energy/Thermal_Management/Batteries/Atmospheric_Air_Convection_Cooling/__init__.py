@@ -1,3 +1,0 @@
-## @defgroup Components-Energy-Thermal_Management-Battery-Direct_Convection
-
-from .Atmospheric_Air_Convection_Heat_Exchanger import Atmospheric_Air_Convection_Heat_Exchanger 

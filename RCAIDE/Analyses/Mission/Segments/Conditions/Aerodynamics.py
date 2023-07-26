@@ -125,41 +125,37 @@ class Aerodynamics(Basic):
         self.aero_derivatives.dCL_dThrottle                   = ones_1col * 0
         self.aero_derivatives.dCD_dThrottle                   = ones_1col * 0
 
-        # propulsion conditions
-        self.propulsion                                       = Conditions()
-        self.propulsion.throttle                              = ones_1col * 0
-        self.propulsion.number_of_propulsor_groups            = 1
-        self.propulsion.thrust_breakdown                      = Conditions() 
-        self.propulsion.propulsor_group_0                     = Conditions() 
-        self.propulsion.propulsor_group_0.rotor               = Conditions() 
+        # energy network conditions
+        self.energy                                           = Conditions()
+        self.energy.throttle                                  = ones_1col * 0
+        self.energy.number_of_propulsor_groups                = 1
+        self.energy.thrust_breakdown                          = Conditions() 
+        self.energy.propulsor_group_1                         = Conditions() 
+        self.energy.propulsor_group_1.rotor                   = Conditions()  
+             
+        self.energy.battery                                   = Conditions()  
+        self.energy.battery.pack                              = Conditions()
+        self.energy.battery.cell                              = Conditions()
+        self.energy.battery.pack.energy                       = ones_1col * 0
+        self.energy.battery.pack.voltage_under_load           = ones_1col * 0
+        self.energy.battery.pack.voltage_open_circuit         = ones_1col * 0
+        self.energy.battery.pack.temperature                  = ones_1col * 0
+        self.energy.battery.cell.state_of_charge              = ones_1col * 0
+        self.energy.battery.cell.temperature                  = ones_1col * 0 
+        self.energy.battery.cell.charge_throughput            = ones_1col * 0    
+        self.energy.battery.cell.cycle_in_day                 = 0
+        self.energy.battery.cell.resistance_growth_factor     = 1.
+        self.energy.battery.cell.capacity_fade_factor         = 1. 
          
          
-        self.propulsion.battery                               = Conditions()  
-        self.propulsion.battery.pack                          = Conditions()
-        self.propulsion.battery.cell                          = Conditions()
-        self.propulsion.battery.pack.energy                   = ones_1col * 0
-        self.propulsion.battery.pack.voltage_under_load       = ones_1col * 0
-        self.propulsion.battery.pack.voltage_open_circuit     = ones_1col * 0
-        self.propulsion.battery.pack.temperature              = ones_1col * 0
-        self.propulsion.battery.cell.state_of_charge          = ones_1col * 0
-        self.propulsion.battery.cell.temperature              = ones_1col * 0 
-        self.propulsion.battery.cell.charge_throughput        = ones_1col * 0    
-        self.propulsion.battery.cell.cycle_in_day             = 0
-        self.propulsion.battery.cell.resistance_growth_factor = 1.
-        self.propulsion.battery.cell.capacity_fade_factor     = 1. 
-         
-        # energy conditions
-        self.energies.gravity_energy                          = ones_1col * 0
-        self.energies.propulsion_power                        = ones_1col * 0
-                
         # weights conditions        
-        self.weights.vehicle_mass_rate                        = ones_1col * 0
-        self.weights.vehicle_fuel_rate                        = ones_1col * 0
-        self.weights.vehicle_additional_fuel_rate             = ones_1col * 0
-        self.weights.has_additional_fuel                      = False
-                
-        # noise conditions        
-        self.noise                                            = Conditions()
-        self.noise.total                                      = Conditions()
-        self.noise.sources                                    = Conditions() 
-        self.noise.sources.rotors                             = Conditions()
+        self.weights.vehicle_mass_rate                                = ones_1col * 0
+        self.weights.vehicle_fuel_rate                                = ones_1col * 0
+        self.weights.vehicle_additional_fuel_rate                     = ones_1col * 0
+        self.weights.has_additional_fuel                              = False
+                         
+        # noise conditions                 
+        self.noise                                                    = Conditions()
+        self.noise.total                                              = Conditions()
+        self.noise.sources                                            = Conditions() 
+        self.noise.sources.rotors                                     = Conditions()

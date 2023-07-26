@@ -1,25 +1,19 @@
-## @ingroup Components-Energy-Thermal_Management
-# Cryocooler.py
+# RCAIDE/Energy/Thermal_Management/Cryogenics/Cryocooler.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Feb 2020,   K.Hamilton
-# Modified: Nov 2021,   S. Claridge
+# Created:  Jul 2023, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 
-# MARC imports
-import MARC
+# RCAIDE imports  
+from RCAIDE.Energy.Energy_Component                                import Energy_Component
+from RCAIDE.Methods.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
 
-# package imports
-from MARC.Core import Data
-from MARC.Components.Energy.Energy_Component import Energy_Component
-from MARC.Methods.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
-import numpy as np
-
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryocooler
-# ----------------------------------------------------------------------    
+# ----------------------------------------------------------------------------------------------------------------------     
 ## @ingroup Components-Energy-Thermal_Management-Cryocooler
 class Cryocooler(Energy_Component):
     

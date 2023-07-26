@@ -69,7 +69,7 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
             Outputs:
             results.thrust_force_vector [newtons]
             results.vehicle_mass_rate   [kg/s]
-            conditions.propulsion:
+            conditions.energy:
                 rpm                     [radians/sec]
                 torque                  [N-M]
                 power                   [W]
@@ -81,7 +81,7 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
         conditions              = state.conditions
         engines                 = self.engines
         propellers              = self.propellers 
-        rpm                     = conditions.propulsion.rpm 
+        rpm                     = conditions.energy.rpm 
         rotor_group_indexes     = self.rotor_group_indexes
         motor_group_indexes     = self.motor_group_indexes
         active_propulsor_groups = self.active_propulsor_groups
@@ -106,11 +106,11 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
         ones_row = conditions.ones_row
         for i in range(n_evals):         
             # Setup the conditions        
-            conditions.propulsion['propulsor_group_' + str(i)].rotor.disc_loading         = ones_row(n_evals)
-            conditions.propulsion['propulsor_group_' + str(i)].rotor.power_loading        = ones_row(n_evals)
-            conditions.propulsion['propulsor_group_' + str(i)].rotor.torque               = ones_row(n_evals)
-            conditions.propulsion['propulsor_group_' + str(i)].rotor.tip_mach             = ones_row(n_evals)
-            conditions.propulsion['propulsor_group_' + str(i)].combustion_engine_throttle = ones_row(n_evals)
+            conditions.energy['propulsor_group_' + str(i)].rotor.disc_loading         = ones_row(n_evals)
+            conditions.energy['propulsor_group_' + str(i)].rotor.power_loading        = ones_row(n_evals)
+            conditions.energy['propulsor_group_' + str(i)].rotor.torque               = ones_row(n_evals)
+            conditions.energy['propulsor_group_' + str(i)].rotor.tip_mach             = ones_row(n_evals)
+            conditions.energy['propulsor_group_' + str(i)].combustion_engine_throttle = ones_row(n_evals)
             
         # Setup numbers for iteration
         total_thrust        = 0. * state.ones_row(3)
@@ -128,7 +128,7 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
                        
     
                 # Run the propeller to get the power
-                rot.inputs.pitch_command = conditions.propulsion.throttle - 0.5
+                rot.inputs.pitch_command = conditions.energy.throttle - 0.5
                 rot.inputs.omega         = rpm
                 
                 # step 4
@@ -147,19 +147,19 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
                 total_power         = total_power  + P * factor            
     
                 # Pack the conditions 
-                conditions.propulsion['propulsor_group_' + str(ii)].throttle                   = conditions.propulsion.throttle
-                conditions.propulsion['propulsor_group_' + str(ii)].rotor.torque               = Q
-                conditions.propulsion['propulsor_group_' + str(ii)].rotor.tip_mach             = (R*rpm*Units.rpm)/a
-                conditions.propulsion['propulsor_group_' + str(ii)].rotor.disc_loading         = (F_mag)/(np.pi*(R**2))            
-                conditions.propulsion['propulsor_group_' + str(ii)].rotor.power_loading        = (F_mag)/(P)               
-                conditions.propulsion['propulsor_group_' + str(ii)].combustion_engine_throttle = engine_throttle
-                conditions.propulsion['propulsor_group_' + str(ii)].rotor.efficiency           = etap
+                conditions.energy['propulsor_group_' + str(ii)].throttle                   = conditions.energy.throttle
+                conditions.energy['propulsor_group_' + str(ii)].rotor.torque               = Q
+                conditions.energy['propulsor_group_' + str(ii)].rotor.tip_mach             = (R*rpm*Units.rpm)/a
+                conditions.energy['propulsor_group_' + str(ii)].rotor.disc_loading         = (F_mag)/(np.pi*(R**2))            
+                conditions.energy['propulsor_group_' + str(ii)].rotor.power_loading        = (F_mag)/(P)               
+                conditions.energy['propulsor_group_' + str(ii)].combustion_engine_throttle = engine_throttle
+                conditions.energy['propulsor_group_' + str(ii)].rotor.efficiency           = etap
                 
                 
                 conditions.noise.sources.rotors[rot.tag]    = outputs
             
         # Create the outputs
-        conditions.propulsion.propulsor_group_0.power = total_power
+        conditions.energy.propulsor_group_0.power = total_power
         
         results = Data()
         results.thrust_force_vector       = F

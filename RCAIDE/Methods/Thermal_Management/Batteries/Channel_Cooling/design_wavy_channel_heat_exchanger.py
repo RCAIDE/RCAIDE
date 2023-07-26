@@ -4,8 +4,8 @@
 # ----------------------------------------------------------------------        
 #   Imports
 # ----------------------------------------------------------------------   
-from MARC.Methods.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Heat_Exchanger_Design.optimization_setup       import optimization_setup
-from MARC.Methods.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Heat_Exchanger_Design.set_optimized_parameters import set_optimized_parameters
+from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Heat_Exchanger_Design.optimization_setup       import optimization_setup
+from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Heat_Exchanger_Design.set_optimized_parameters import set_optimized_parameters
 
 # Python package imports  
 from numpy import linalg as LA  

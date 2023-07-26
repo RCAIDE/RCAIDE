@@ -8,11 +8,11 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-# MARC imports
-import MARC
+# RCAIDE imports
+import RCAIDE
 
 # package imports
-from MARC.Core import Data 
+from RCAIDE.Core import Data 
 import numpy as np
 
 # ----------------------------------------------------------------------

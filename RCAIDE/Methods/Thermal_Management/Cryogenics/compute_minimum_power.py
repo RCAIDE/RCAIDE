@@ -8,20 +8,14 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-# MARC imports
-import MARC
-
-from MARC.Components.Energy.Energy_Component import Energy_Component
-from MARC.Attributes.Solids.Solid import Solid
-from scipy import integrate
-from scipy import interpolate
-from scipy.misc import derivative
-import numpy as np
+# RCAIDE imports 
+from scipy import integrate 
+from scipy.misc import derivative 
 
 # ----------------------------------------------------------------------
-#  Lead calculation functions
+#  Compute Minimum Power 
 # ----------------------------------------------------------------------
-## @ingroup Methods-Cryogenics-Leads
+## @ingroup Methods-Thermal_Management-Cryogenics
 def compute_minimum_power(material, cold_temp, hot_temp, current):
     """Calculate minimum electrical power
 
@@ -58,7 +52,11 @@ def compute_minimum_power(material, cold_temp, hot_temp, current):
 
     return power
 
-def LARatio( material, cold_temp, hot_temp, current, minimum_Q):
+# ----------------------------------------------------------------------
+#  compute_optimal_ratio
+# ----------------------------------------------------------------------
+## @ingroup Methods-Thermal_Management-Cryogenics
+def compute_optimal_ratio( material, cold_temp, hot_temp, current, minimum_Q):
     """Calculate the optimum length to cross-sectional area ratio
 
     Assumptions:
@@ -83,11 +81,15 @@ def LARatio( material, cold_temp, hot_temp, current, minimum_Q):
     # Calculate the optimum length to cross-sectional area ratio
     # Taken directly from McFee
     sigTL = material.electrical_conductivity(cold_temp)
-    inte = integrate.quad(lambda T: Q_min(material,T,hot_temp,current)*derivative(material.electrical_conductivity,T), cold_temp, hot_temp)[0]
+    inte = integrate.quad(lambda T: compute_minimum_power(material,T,hot_temp,current)*derivative(material.electrical_conductivity,T), cold_temp, hot_temp)[0]
     la_ratio = (sigTL * minimum_Q + inte)/(current**2)
 
     return la_ratio
 
+# ----------------------------------------------------------------------
+#  calc_current
+# ----------------------------------------------------------------------
+## @ingroup Methods-Thermal_Management-Cryogenics
 def calc_current(Cryogenic_Lead, current):
 
     """Estimates the heat flow into the cryogenic environment when a current other than the current the lead was optimised for is flowing. Assumes the temperature difference remains constant.
@@ -145,13 +147,13 @@ def calc_current(Cryogenic_Lead, current):
 
         while error > 0.01:
             # Find length of warmer part of lead
-            warm_Q          = Q_min(material, hot_temp, max_temp, current)
+            warm_Q          = compute_minimum_power(material, hot_temp, max_temp, current)
 
-            warm_la         = LARatio(material, hot_temp, max_temp, current, warm_Q)
+            warm_la         = compute_optimal_ratio(material, hot_temp, max_temp, current, warm_Q)
             warm_length     = cs_area * warm_la
             # Find length of cooler part of lead
-            cool_Q          = Q_min(material, cold_temp, max_temp, current)
-            cool_la         = LARatio(material, cold_temp, max_temp, current, cool_Q)
+            cool_Q          = compute_minimum_power(material, cold_temp, max_temp, current)
+            cool_la         = compute_optimal_ratio(material, cold_temp, max_temp, current, cool_Q)
             cool_length     = cs_area * cool_la
             # compare lead length with known lead length as test of the max temp guess
             test_length     = warm_length + cool_length

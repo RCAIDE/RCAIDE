@@ -73,7 +73,7 @@ class Internal_Combustion_Propeller(Network):
             Outputs:
             results.thrust_force_vector [newtons]
             results.vehicle_mass_rate   [kg/s]
-            conditions.propulsion:
+            conditions.energy:
                 rpm                  [radians/sec]
                 propeller.torque     [N-M]
                 power                [W]
@@ -117,8 +117,8 @@ class Internal_Combustion_Propeller(Network):
             rot        = propellers[rotor_key]  
     
             # Throttle the engine
-            engine.inputs.speed                              = state.conditions.propulsion.propulsor_group_0.rotor.rpm * Units.rpm
-            conditions.propulsion.combustion_engine_throttle = conditions.propulsion.throttle
+            engine.inputs.speed                              = state.conditions.energy.propulsor_group_0.rotor.rpm * Units.rpm
+            conditions.energy.combustion_engine_throttle = conditions.energy.throttle
             
             # Run the engine
             engine.power(conditions)
@@ -126,13 +126,13 @@ class Internal_Combustion_Propeller(Network):
             torque       = engine.outputs.torque     
             
             # link
-            rot.inputs.omega = state.conditions.propulsion.propulsor_group_0.rotor.rpm * Units.rpm
+            rot.inputs.omega = state.conditions.energy.propulsor_group_0.rotor.rpm * Units.rpm
             
             # step 4
             F, Q, P, Cp, outputs, etap = rot.spin(conditions)
             
             # Check to see if magic thrust is needed
-            eta               = conditions.propulsion.throttle[:,0,None]
+            eta               = conditions.energy.throttle[:,0,None]
             P[eta>1.0]        = P[eta>1.0]*eta[eta>1.0]
             F[eta[:,0]>1.0,:] = F[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:]
                 
@@ -144,19 +144,19 @@ class Internal_Combustion_Propeller(Network):
             total_power         = total_power  + P * factor
               
             # Pack specific outputs
-            conditions.propulsion['propulsor_group_' + str(ii)].engine_torque        = torque
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.torque         = Q
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.rpm            = rpm
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.tip_mach       = (R*rpm*Units.rpm)/a
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.disc_loading   = (F_mag)/(np.pi*(R**2))             
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.power_loading  = (F_mag)/(P)    
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.efficiency     = etap
-            conditions.propulsion['propulsor_group_' + str(ii)].rotor.figure_of_merit= outputs.figure_of_merit
-            conditions.propulsion['propulsor_group_' + str(ii)].throttle             = conditions.propulsion.throttle
+            conditions.energy['propulsor_group_' + str(ii)].engine_torque        = torque
+            conditions.energy['propulsor_group_' + str(ii)].rotor.torque         = Q
+            conditions.energy['propulsor_group_' + str(ii)].rotor.rpm            = rpm
+            conditions.energy['propulsor_group_' + str(ii)].rotor.tip_mach       = (R*rpm*Units.rpm)/a
+            conditions.energy['propulsor_group_' + str(ii)].rotor.disc_loading   = (F_mag)/(np.pi*(R**2))             
+            conditions.energy['propulsor_group_' + str(ii)].rotor.power_loading  = (F_mag)/(P)    
+            conditions.energy['propulsor_group_' + str(ii)].rotor.efficiency     = etap
+            conditions.energy['propulsor_group_' + str(ii)].rotor.figure_of_merit= outputs.figure_of_merit
+            conditions.energy['propulsor_group_' + str(ii)].throttle             = conditions.energy.throttle
             conditions.noise.sources.rotors[rot.tag]  = outputs 
 
         # Create the outputs
-        conditions.propulsion.power = total_power
+        conditions.energy.power = total_power
         
         results = Data()
         results.thrust_force_vector       = total_thrust
@@ -178,15 +178,15 @@ class Internal_Combustion_Propeller(Network):
         state.unknowns.rpm                 [RPM] 
         
         Outputs:
-        state.conditions.propulsion.rpm    [RPM] 
+        state.conditions.energy.rpm    [RPM] 
 
         
         Properties Used:
         N/A
         """            
 
-        for i in range(segment.state.conditions.propulsion.number_of_propulsor_groups):        
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.rpm = segment.state.unknowns['rpm_' + str(i)]
+        for i in range(segment.state.conditions.energy.number_of_propulsor_groups):        
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.rpm = segment.state.unknowns['rpm_' + str(i)]
         
         return
     
@@ -196,7 +196,7 @@ class Internal_Combustion_Propeller(Network):
         Assumptions:
         
         Inputs:
-            segment.state.conditions.propulsion.
+            segment.state.conditions.energy.
                 motor.torque                       [newtom-meters]                 
                 propeller.torque                   [newtom-meters] 
         
@@ -209,9 +209,9 @@ class Internal_Combustion_Propeller(Network):
                                 
         """          
             
-        for i in range(segment.state.conditions.propulsion.number_of_propulsor_groups): 
-                q_motor   = segment.state.conditions.propulsion['propulsor_group_' + str(i)].engine_torque
-                q_prop    = segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.torque 
+        for i in range(segment.state.conditions.energy.number_of_propulsor_groups): 
+                q_motor   = segment.state.conditions.energy['propulsor_group_' + str(i)].engine_torque
+                q_prop    = segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.torque 
                 segment.state.residuals['propulsor_group_' + str(i)] = q_motor - q_prop  
         
         return
@@ -232,8 +232,8 @@ class Internal_Combustion_Propeller(Network):
             Outputs:
             segment.state.unknowns.battery_voltage_under_load
             segment.state.unknowns.propeller_power_coefficient
-            segment.state.conditions.propulsion.propulsor_group_0.motor.torque
-            segment.state.conditions.propulsion.propulsor_group_0.rotor.torque   
+            segment.state.conditions.energy.propulsor_group_0.motor.torque
+            segment.state.conditions.energy.propulsor_group_0.rotor.torque   
     
             Properties Used:
             N/A
@@ -269,19 +269,19 @@ class Internal_Combustion_Propeller(Network):
         # Setup the conditions  
         for i in range(n_groups):         
             # Setup the conditions
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)]                         = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].motor                   = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor                   = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].throttle                = 0. * ones_row(1)    
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.torque            = 0. * ones_row(1)
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.thrust            = 0. * ones_row(1)
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.rpm               = 0. * ones_row(1)
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.disc_loading      = 0. * ones_row(1)                 
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.power_loading     = 0. * ones_row(1)
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.tip_mach          = 0. * ones_row(1)
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.efficiency        = 0. * ones_row(1)   
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.figure_of_merit   = 0. * ones_row(1)  
-            segment.state.conditions.propulsion['propulsor_group_' + str(i)].rotor.throttle          = 0. * ones_row(1)          
+            segment.state.conditions.energy['propulsor_group_' + str(i)]                         = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
+            segment.state.conditions.energy['propulsor_group_' + str(i)].motor                   = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor                   = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()
+            segment.state.conditions.energy['propulsor_group_' + str(i)].throttle                = 0. * ones_row(1)    
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.torque            = 0. * ones_row(1)
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.thrust            = 0. * ones_row(1)
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.rpm               = 0. * ones_row(1)
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.disc_loading      = 0. * ones_row(1)                 
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.power_loading     = 0. * ones_row(1)
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.tip_mach          = 0. * ones_row(1)
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.efficiency        = 0. * ones_row(1)   
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.figure_of_merit   = 0. * ones_row(1)  
+            segment.state.conditions.energy['propulsor_group_' + str(i)].rotor.throttle          = 0. * ones_row(1)          
 
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network  = self.unpack_unknowns

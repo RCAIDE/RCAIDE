@@ -12,10 +12,9 @@
 # ----------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Core import Units , Data 
-from RCAIDE.Energy.Networks.All_Electric       import All_Electric
-from RCAIDE.Methods.Propulsion                           import design_propeller
-from RCAIDE.Methods.Power.Battery.Sizing                 import initialize_from_mass
-from RCAIDE.Methods.Propulsion.electric_motor_sizing     import size_optimal_motor
+from RCAIDE.Energy.Networks.All_Electric                 import All_Electric
+from RCAIDE.Methods.Propulsion                           import design_propeller,  size_optimal_motor
+from RCAIDE.Methods.Power.Battery.Sizing                 import initialize_from_mass 
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform    import wing_segmented_planform
 
 import numpy as np 
@@ -340,13 +339,13 @@ def vehicle_setup():
     # ------------------------------------------------------------------
     #   Nacelles
     # ------------------------------------------------------------------ 
-    nacelle                = RCAIDE.Components.Nacelles.Nacelle()
-    nacelle.tag            = 'nacelle_1'
-    nacelle.length         = 2
-    nacelle.diameter       = 42 * Units.inches
-    nacelle.areas.wetted   = 0.01*(2*np.pi*0.01/2)
-    nacelle.origin         = [[2.5,2.5,1.0]]
-    nacelle.flow_through   = False  
+    nacelle                    = RCAIDE.Components.Nacelles.Nacelle()
+    nacelle.tag                = 'nacelle_1'
+    nacelle.length             = 2
+    nacelle.diameter           = 42 * Units.inches
+    nacelle.areas.wetted       = 0.01*(2*np.pi*0.01/2)
+    nacelle.origin             = [[2.5,2.5,1.0]]
+    nacelle.flow_through       = False  
     
     nac_segment                    = RCAIDE.Components.Lofted_Body_Segment.Segment()
     nac_segment.tag                = 'segment_1'
@@ -408,23 +407,23 @@ def vehicle_setup():
     # DEFINE PROPELLER
     #---------------------------------------------------------------------------------------------
     # build network
-    net = All_Electric()  
+    net                          = All_Electric()  
     net.rotor_group_indexes      = [0,0]
     net.motor_group_indexes      = [0,0]
     net.esc_group_indexes        = [0,0]
+    net.battery_group_indexes    = [0,0]
 
-    # Component 1 the ESC
+    # ESCs
     esc_1            = RCAIDE.Energy.Distributors.Electronic_Speed_Controller()
     esc_1.tag        = 'esc_1'
     esc_1.efficiency = 0.95 
-    net.electronic_speed_controllers.append(esc_1)  
-
+    net.electronic_speed_controllers.append(esc_1)   
     esc_2            = RCAIDE.Energy.Distributors.Electronic_Speed_Controller()
     esc_2.tag        = 'esc_2'
     esc_2.efficiency = 0.95 
     net.electronic_speed_controllers.append(esc_2)     
     
-    # Component 2 the Propeller 
+    # Propellers 
     prop                                  = RCAIDE.Energy.Converters.Propeller()
     prop.tag                              = 'propeller_1'
     prop.number_of_blades                 = 3.0
@@ -434,45 +433,41 @@ def vehicle_setup():
     prop.cruise.design_angular_velocity   = 2400. * Units.rpm
     prop.cruise.design_Cl                 = 0.8
     prop.cruise.design_altitude           = 9000. * Units.feet  
-    prop.cruise.design_power              = 98 * 0.65  * Units.hp # assume 65 BHP at cruise
+    prop.cruise.design_power              = 98 * 0.65  * Units.hp  
     prop.origin                           = [[2.,2.5,0.784]]
     prop.rotation                         = -1
     prop.symmetry                         = True
     prop.variable_pitch                   = True 
     airfoil                               = RCAIDE.Components.Airfoils.Airfoil()   
     airfoil.number_of_points              = 102
-    airfoil.coordinate_file               = '../Vehicles/Airfoils/NACA_4412.txt'
-    airfoil.polar_files                   = ['../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
-                                          '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
-                                          '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
-                                          '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
-                                          '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
+    airfoil.coordinate_file               = '../../Vehicles/Airfoils/NACA_4412.txt'
+    airfoil.polar_files                   = ['../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
+                                          '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
+                                          '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
+                                          '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
+                                          '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
     prop.append_airfoil(airfoil)        
     prop.airfoil_polar_stations           = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] 
-    prop                                  = design_propeller(prop)  
-
-    prop_left = deepcopy(prop)
-    prop_left.tag = 'propeller_2' 
-    prop_left.origin   = [[2.,-2.5,0.784]]
-    prop_left.rotation = 1
-    
+    prop                                  = design_propeller(prop)   
+    prop_left                             = deepcopy(prop)
+    prop_left.tag                         = 'propeller_2' 
+    prop_left.origin                      = [[2.,-2.5,0.784]]
+    prop_left.rotation                    = 1 
     net.rotors.append(prop)
-    net.rotors.append(prop_left)
+    net.rotors.append(prop_left) 
 
-
-    # Component 3 the Battery
-    bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiNiMnCoO2_18650()
-    bat.mass_properties.mass = 500. * Units.kg  
-    bat.pack.max_voltage     = 400. 
-    initialize_from_mass(bat)
-    net.battery              = bat
-    net.voltage              = bat.pack.max_voltage
-
-    # Component 4 Miscellaneous Systems
-    sys = RCAIDE.Components.Systems.System()
-    sys.mass_properties.mass = 5 # kg
- 
-    # Component 5 the Motor  
+    # Batteries and Thermal Management Systems 
+    bat                             = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiNiMnCoO2_18650()
+    bat.mass_properties.mass        = 500. * Units.kg  
+    bat.pack.max_voltage            = 400. 
+    initialize_from_mass(bat)        
+    net.voltage                     = bat.pack.max_voltage  
+    btms                            = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()  
+    btms.heat_transfer_efficiency   = 0.95          
+    bat.thermal_management_system   = btms   
+    net.batteries.append(bat)     
+    
+    # Motors 
     motor                         = RCAIDE.Energy.Converters.Motor()
     motor.efficiency              = 0.95
     motor.gearbox_efficiency      = 1.
@@ -484,27 +479,22 @@ def vehicle_setup():
     motor.angular_velocity        = prop.cruise.design_angular_velocity/motor.gear_ratio
     motor                         = size_optimal_motor(motor)  
     motor.mass_properties.mass    = 10. * Units.kg 
-    
-    # append right motor
     net.motors.append(motor)
-    
-    # append left motor 
     motor_left = deepcopy(motor)
     motor_left.origin = [[2., -2.5, 0.95]] 
     net.motors.append(motor_left) 
 
-    # Component 6 the Payload
-    payload = RCAIDE.Energy.Peripherals.Payload()
+    # Payload
+    payload                      = RCAIDE.Energy.Peripherals.Payload()
     payload.power_draw           = 10. # Watts
     payload.mass_properties.mass = 1.0 * Units.kg
     net.payload                  = payload
 
-    # Component 7 the Avionics
-    avionics = RCAIDE.Energy.Peripherals.Avionics()
-    avionics.power_draw = 20. # Watts
-    net.avionics        = avionics
-
-    # add the solar network to the vehicle
+    # Avionics
+    avionics                     = RCAIDE.Energy.Peripherals.Avionics()
+    avionics.power_draw          = 20. # Watts
+    net.avionics                 = avionics  
+ 
     vehicle.append_component(net)
 
     # ------------------------------------------------------------------

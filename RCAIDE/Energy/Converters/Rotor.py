@@ -166,11 +166,11 @@ class Rotor(Energy_Component):
         conditions.frames.
           body.transform_to_inertial         (rotation matrix)
           inertial.velocity_vector           [m/s]
-        conditions.propulsion.
+        conditions.energy.
           throttle                           [-]
 
         Outputs:
-        conditions.propulsion.outputs.
+        conditions.energy.outputs.
            number_radial_stations            [-]
            number_azimuthal_stations         [-]
            disc_radial_distribution          [m]
@@ -518,10 +518,10 @@ class Rotor(Energy_Component):
         Cq[Cq<0]                                               = 0.
         Ct[Ct<0]                                               = 0.
         Cp[Cp<0]                                               = 0.
-        thrust[conditions.propulsion.throttle[:,0] <=0.0]      = 0.0
-        power[conditions.propulsion.throttle[:,0]  <=0.0]      = 0.0
-        torque[conditions.propulsion.throttle[:,0]  <=0.0]     = 0.0
-        rotor_drag[conditions.propulsion.throttle[:,0]  <=0.0] = 0.0
+        thrust[conditions.energy.throttle[:,0] <=0.0]      = 0.0
+        power[conditions.energy.throttle[:,0]  <=0.0]      = 0.0
+        torque[conditions.energy.throttle[:,0]  <=0.0]     = 0.0
+        rotor_drag[conditions.energy.throttle[:,0]  <=0.0] = 0.0
         thrust[omega<0.0]                                      = -thrust[omega<0.0]
         thrust[omega==0.0]                                     = 0.0
         power[omega==0.0]                                      = 0.0
@@ -538,7 +538,7 @@ class Rotor(Energy_Component):
         thrust_vector          = orientation_product(orientation_transpose(T_body2thrust),thrust_prop_frame)
 
         # Assign efficiency to network
-        conditions.propulsion.etap = etap
+        conditions.energy.etap = etap
 
 
         # Store data
