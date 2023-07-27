@@ -8,8 +8,8 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports 
-from RCAIDE.Core  import Units  
-from .Lithium_Ion import Lithium_Ion 
+from RCAIDE.Core          import Units  
+from .Lithium_Ion_Generic import Lithium_Ion_Generic 
 
 # package imports 
 import numpy as np 
@@ -18,7 +18,7 @@ import numpy as np
 #  BATTERY
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Storages-Batteries 
-class Lithium_Ion_LiFePO4_18650(Lithium_Ion):
+class Lithium_Ion_LFP(Lithium_Ion_Generic):
     """ Specifies discharge/specific energy characteristics specific 
         18650 lithium-iron-phosphate-oxide battery cells.     
         

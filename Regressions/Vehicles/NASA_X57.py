@@ -11,10 +11,11 @@
 #   Imports
 # ----------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Core import Units , Data 
+from RCAIDE.Core import Units  
 from RCAIDE.Energy.Networks.All_Electric                 import All_Electric
-from RCAIDE.Methods.Propulsion                           import design_propeller,  size_optimal_motor
-from RCAIDE.Methods.Power.Battery.Sizing                 import initialize_from_mass 
+from RCAIDE.Methods.Propulsion                           import design_rotor,  size_optimal_motor 
+from RCAIDE.Methods.Weights.Correlations.Propulsion      import nasa_motor
+from RCAIDE.Methods.Power.Battery.Sizing                 import initialize_from_circuit_configuration
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform    import wing_segmented_planform
 
 import numpy as np 
@@ -424,64 +425,64 @@ def vehicle_setup():
     net.electronic_speed_controllers.append(esc_2)     
     
     # Propellers 
-    prop                                  = RCAIDE.Energy.Converters.Propeller()
-    prop.tag                              = 'propeller_1'
-    prop.number_of_blades                 = 3.0
-    prop.tip_radius                       = 1.72/2  
-    prop.hub_radius                       = 10.     * Units.inches
-    prop.cruise.design_freestream_velocity= 150.   * Units.knots
-    prop.cruise.design_angular_velocity   = 2400. * Units.rpm
-    prop.cruise.design_Cl                 = 0.8
-    prop.cruise.design_altitude           = 9000. * Units.feet  
-    prop.cruise.design_power              = 98 * 0.65  * Units.hp  
-    prop.origin                           = [[2.,2.5,0.784]]
-    prop.rotation                         = -1
-    prop.symmetry                         = True
-    prop.variable_pitch                   = True 
-    airfoil                               = RCAIDE.Components.Airfoils.Airfoil()   
-    airfoil.number_of_points              = 102
-    airfoil.coordinate_file               = '../../Vehicles/Airfoils/NACA_4412.txt'
-    airfoil.polar_files                   = ['../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
-                                          '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
-                                          '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
-                                          '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
-                                          '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
-    prop.append_airfoil(airfoil)        
-    prop.airfoil_polar_stations           = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] 
-    prop                                  = design_propeller(prop)   
-    prop_left                             = deepcopy(prop)
-    prop_left.tag                         = 'propeller_2' 
-    prop_left.origin                      = [[2.,-2.5,0.784]]
-    prop_left.rotation                    = 1 
-    net.rotors.append(prop)
-    net.rotors.append(prop_left) 
+    propeller                                        = RCAIDE.Energy.Converters.Propeller() 
+    propeller.tag                                    = 'propeller_1'  
+    propeller.tip_radius                             = 1.72/2   
+    propeller.number_of_blades                       = 3
+    propeller.hub_radius                             = 10.     * Units.inches 
+    propeller.cruise.design_freestream_velocity      = 175.*Units['mph']   
+    propeller.cruise.design_angular_velocity         = 2700. * Units.rpm 
+    propeller.cruise.design_Cl                       = 0.7 
+    propeller.cruise.design_altitude                 = 2500. * Units.feet 
+    propeller.cruise.design_thrust                   = 2000   
+    propeller.clockwise_rotation                     = False
+    propeller.variable_pitch                         = True  
+    propeller.origin                                 = [[2.,2.5,0.95]] 
+    airfoil                                          = RCAIDE.Components.Airfoils.Airfoil()    
+    airfoil.coordinate_file                          = '../../Vehicles/Airfoils/NACA_4412.txt'
+    airfoil.polar_files                              = ['../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
+                                                     '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
+                                                     '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
+                                                     '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
+                                                     '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
+    propeller.append_airfoil(airfoil)              
+    propeller.airfoil_polar_stations                 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] 
+    propeller                                        = design_rotor(propeller)   
+    propeller_left                                   = deepcopy(propeller)
+    propeller_left.tag                               = 'propeller_2' 
+    propeller_left.origin                            = [[2.,-2.5,0.95]]
+    propeller_left.clockwise_rotation                = False
+    net.rotors.append(propeller)
+    net.rotors.append(propeller_left) 
 
     # Batteries and Thermal Management Systems 
-    bat                             = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiNiMnCoO2_18650()
-    bat.mass_properties.mass        = 500. * Units.kg  
-    bat.pack.max_voltage            = 400. 
-    initialize_from_mass(bat)        
-    net.voltage                     = bat.pack.max_voltage  
-    btms                            = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()  
-    btms.heat_transfer_efficiency   = 0.95          
-    bat.thermal_management_system   = btms   
-    net.batteries.append(bat)     
+    bat                                                    = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC() 
+    bat.pack.electrical_configuration.series               = 140   
+    bat.pack.electrical_configuration.parallel             = 100
+    initialize_from_circuit_configuration(bat)  
+    bat.module_config.number_of_modules                    = 14  
+    bat.module.geometrtic_configuration.total              = bat.pack.electrical_configuration.total
+    bat.module_config.voltage                              = bat.pack.max_voltage/bat.module_config.number_of_modules # assumes modules are connected in parallel, must be less than max_module_voltage (~50) /safety_factor (~ 1.5)  
+    bat.module.geometrtic_configuration.normal_count       = 24
+    bat.module.geometrtic_configuration.parallel_count     = 40
+    bat.thermal_management_system                          = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()     
+    net.voltage                                            = bat.pack.max_voltage     
+    net.batteries.append(bat)      
     
     # Motors 
     motor                         = RCAIDE.Energy.Converters.Motor()
-    motor.efficiency              = 0.95
-    motor.gearbox_efficiency      = 1.
-    motor.origin                  = [[2.,  2.5, 0.95],[2.,  -2.5, 0.95]]
-    motor.nominal_voltage         = bat.pack.max_voltage*0.8 
-    motor.no_load_current         = 0.1 
-    motor.rotor_radius            = prop.tip_radius
-    motor.design_torque           = prop.cruise.design_torque
-    motor.angular_velocity        = prop.cruise.design_angular_velocity/motor.gear_ratio
+    motor.efficiency              = 0.98
+    motor.origin                  = [[2.,  2.5, 0.95]]
+    motor.nominal_voltage         = bat.pack.max_voltage*0.5
+    motor.no_load_current         = 1
+    motor.rotor_radius            = propeller.tip_radius
+    motor.design_torque           = propeller.cruise.design_torque
+    motor.angular_velocity        = propeller.cruise.design_angular_velocity 
     motor                         = size_optimal_motor(motor)  
-    motor.mass_properties.mass    = 10. * Units.kg 
+    motor.mass_properties.mass    = nasa_motor(motor.design_torque)
     net.motors.append(motor)
-    motor_left = deepcopy(motor)
-    motor_left.origin = [[2., -2.5, 0.95]] 
+    motor_left                    = deepcopy(motor)
+    motor_left.origin             = [[2., -2.5, 0.95]] 
     net.motors.append(motor_left) 
 
     # Payload
@@ -495,7 +496,7 @@ def vehicle_setup():
     avionics.power_draw          = 20. # Watts
     net.avionics                 = avionics  
  
-    vehicle.append_component(net)
+    vehicle.append_energy_network(net)
 
     # ------------------------------------------------------------------
     #   Vehicle Definition Complete

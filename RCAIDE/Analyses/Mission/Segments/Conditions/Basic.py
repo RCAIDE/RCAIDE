@@ -57,8 +57,7 @@ class Basic(Conditions):
         
         # top level conditions
         self.frames   = Conditions()
-        self.weights  = Conditions()
-        self.energies = Conditions()
+        self.weights  = Conditions() 
         self.noise    = Conditions()
         
         # inertial conditions
@@ -82,7 +81,3 @@ class Basic(Conditions):
         self.weights.additional_fuel_mass  = ones_1col * 0
         self.weights.fuel_mass             = ones_1col * 0
         self.weights.weight_breakdown      = Conditions()
-        
-        # energy conditions
-        self.energies.total_energy         = ones_1col * 0
-        self.energies.total_efficiency     = ones_1col * 0

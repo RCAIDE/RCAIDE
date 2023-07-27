@@ -16,6 +16,7 @@ from RCAIDE.Methods.Power.Battery.Common          import pack_battery_conditions
 from RCAIDE.Methods.Power.Battery.Common          import append_initial_battery_conditions 
 from .Network                                     import Network  
 from RCAIDE.Components.Component                  import Container  
+from RCAIDE.Analyses.Mission.Segments.Ground      import Battery_Recharge
 
  # package imports 
 import copy
@@ -338,7 +339,7 @@ class All_Electric(Network):
         n_groups = ss.conditions.energy.number_of_propulsor_groups  
         idx      = 0
         for i in range(n_groups):   
-            if segment.battery_discharge:  
+            if type(segment) != Battery_Recharge:  
                 if active_propulsor_groups[i]:  
                      
                     ss.conditions.energy['propulsor_group_' + str(i)].rotor.power_coefficient = ss.unknowns['rotor_power_coefficient_' + str(i)] 
@@ -388,7 +389,7 @@ class All_Electric(Network):
 
         active_propulsor_groups = segment.analyses.energy.network.all_electric.active_propulsor_groups
            
-        if segment.battery_discharge:       
+        if type(segment) != Battery_Recharge:       
             for i in range(segment.state.conditions.energy.number_of_propulsor_groups):
                 if active_propulsor_groups[i]:
                     q_motor   = segment.state.conditions.energy['propulsor_group_' + str(i)].motor.torque
@@ -495,7 +496,7 @@ class All_Electric(Network):
                                               initial_battery_cell_temperature , initial_battery_state_of_charge,
                                               initial_battery_cell_current)  
 
-        if segment.battery_discharge:
+        if type(segment) != Battery_Recharge: 
             idx = 0
             for i in range(n_groups):  
                 if active_propulsor_groups[i]:                

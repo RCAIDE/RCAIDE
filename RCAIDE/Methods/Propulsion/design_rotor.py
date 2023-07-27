@@ -1,21 +1,27 @@
- 
-# ----------------------------------------------------------------------
-#  Imports
-# ---------------------------------------------------------------------- 
+# RCAIDE/Methods/Propulsion/design_rotor.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------  
 import RCAIDE
 from RCAIDE.Core   import interp2d
 from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil    import compute_airfoil_properties
 from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil    import compute_naca_4series
 from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil    import import_airfoil_geometry
 
+# package imports 
 import numpy as np
 import scipy as sp 
 from scipy.optimize import root 
-# ----------------------------------------------------------------------
-#  Design Design 
-# ----------------------------------------------------------------------
 
-def design_propeller(prop,number_of_stations=20):
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Design Design 
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Propulsion
+def design_rotor(prop,number_of_stations=20):
     """ Optimizes propeller chord and twist given input parameters.
           
           Inputs:
@@ -63,10 +69,8 @@ def design_propeller(prop,number_of_stations=20):
         V = 1E-6 
         
     # Calculate atmospheric properties
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
-    atmo_data = atmosphere.compute_values(alt)
-    
-    p              = atmo_data.pressure[0]
+    atmosphere     = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmo_data      = atmosphere.compute_values(alt) 
     T              = atmo_data.temperature[0]
     rho            = atmo_data.density[0]
     speed_of_sound = atmo_data.speed_of_sound[0]
@@ -87,8 +91,7 @@ def design_propeller(prop,number_of_stations=20):
     # Step 1, assume a zeta
     zeta = 0.1 # Assume to be small initially
     
-    # Step 2, determine F and phi at each blade station
-    
+    # Step 2, determine F and phi at each blade station 
     chi0    = Rh/R # Where the propeller blade actually starts
     chi     = np.linspace(chi0,1,N+1) # Vector of nondimensional radii
     chi     = chi[0:N]
@@ -206,7 +209,7 @@ def design_propeller(prop,number_of_stations=20):
         
         zeta = zetan
     
-    #Step 11, determine propeller efficiency etc...
+    # Step 11, determine propeller efficiency etc...
     if (Pc==0.)&(Tc!=0.): 
         if Tcnew>=I2*(I1/(2.*I2))**2.:
             Tcnew = I2*(I1/(2.*I2))**2.
@@ -255,7 +258,7 @@ def design_propeller(prop,number_of_stations=20):
         prop.cruise.design_thrust = Thrust[0]       
     
     # blade solidity
-    r          = chi*R                    # Radial coordinate   
+    r          = chi*R                     
     blade_area = sp.integrate.cumtrapz(B*c, r-r[0])
     sigma      = blade_area[-1]/(np.pi*R**2)   
     

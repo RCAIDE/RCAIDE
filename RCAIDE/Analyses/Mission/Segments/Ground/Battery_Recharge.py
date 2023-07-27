@@ -51,8 +51,7 @@ class Battery_Recharge(Simple):
         # --------------------------------------------------------------
         self.altitude               = None
         self.time                   = 1.0 * Units.seconds
-        self.overcharge_contingency = 1.25
-        self.battery_discharge      = True  
+        self.overcharge_contingency = 1.25 
         self.true_course_angle      = 0.0 * Units.degrees 
         
         # --------------------------------------------------------------
@@ -111,7 +110,7 @@ class Battery_Recharge(Simple):
         iterate.conditions.gravity         = Methods.Common.Weights.update_gravity
         iterate.conditions.freestream      = Methods.Common.Aerodynamics.update_freestream
         iterate.conditions.orientations    = Methods.Common.Frames.update_orientations
-        iterate.conditions.energy      = Methods.Common.Energy.update_thrust
+        iterate.conditions.energy          = Methods.Common.Energy.update_thrust
         #iterate.conditions.aerodynamics    = Methods.Common.Aerodynamics.update_aerodynamics
         #iterate.conditions.stability       = Methods.Common.Aerodynamics.update_stability
         iterate.conditions.weights         = Methods.Common.Weights.update_weights

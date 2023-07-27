@@ -12,10 +12,8 @@
 import RCAIDE
 from RCAIDE.Core import Units 
 import numpy as np
-from RCAIDE.Visualization import *     
-from RCAIDE.Core import Data
-from RCAIDE.Methods.Weights.Buildups.eVTOL       import empty 
-from RCAIDE.Methods.Power.Battery.Sizing         import initialize_from_mass
+from RCAIDE.Visualization import *      
+from RCAIDE.Methods.Power.Battery.Sizing         import initialize_from_circuit_configuration
 import sys
 
 sys.path.append('../../Vehicles')
@@ -90,28 +88,25 @@ def full_setup(battery_chemistry,unknown_throttles):
     # vehicle data
     vehicle  = ECTOL_vehicle_setup()
     
-    # Modify  Battery  
+    # Modify the battery 
     net = vehicle.networks.all_electric
-    bat = net.battery 
-    if battery_chemistry == 'NMC': 
-        bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiNiMnCoO2_18650()  
+    net.batteries.pop((list(net.batteries.keys())[0]))
+    if battery_chemistry   == 'NMC': 
+        bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()  
     elif battery_chemistry == 'LFP': 
-        bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiFePO4_18650()  
-    
-    bat.mass_properties.mass = 500. * Units.kg  
-    bat.pack.max_voltage     = 500.             
-    initialize_from_mass(bat)
-    
-    # Assume a battery pack module shape. This step is optional but
-    # required for thermal analysis of the pack
-    number_of_modules                                  = 10
-    bat.module.geometrtic_configuration.total          = int(np.ceil(bat.pack.electrical_configuration.total/number_of_modules))
-    bat.module.geometrtic_configuration.normal_count   = int(np.ceil(bat.module.geometrtic_configuration.total/bat.pack.electrical_configuration.series))
-    bat.module.geometrtic_configuration.parallel_count = int(np.ceil(bat.module.geometrtic_configuration.total/bat.pack.electrical_configuration.parallel))
-    net.battery                                        = bat      
-    
-    net.battery              = bat
-    net.voltage              = bat.pack.max_voltage     
+        bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()    
+
+    bat.pack.electrical_configuration.series               = 140   
+    bat.pack.electrical_configuration.parallel             = 100
+    initialize_from_circuit_configuration(bat)  
+    bat.module_config.number_of_modules                    = 14  
+    bat.module.geometrtic_configuration.total              = bat.pack.electrical_configuration.total
+    bat.module_config.voltage                              = bat.pack.max_voltage/bat.module_config.number_of_modules  
+    bat.module.geometrtic_configuration.normal_count       = 24
+    bat.module.geometrtic_configuration.parallel_count     = 40
+    bat.thermal_management_system                          = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()     
+    net.voltage                                            = bat.pack.max_voltage     
+    net.batteries.append(bat) 
     
     # Set up configs
     configs  = ECTOL_configs_setup(vehicle)
@@ -129,55 +124,7 @@ def full_setup(battery_chemistry,unknown_throttles):
 
     return configs, analyses
 
- 
-def EVTOL_full_setup(battery_chemistry,evtol_throttles):
-
-    # vehicle data
-    vehicle  = EVTOL_vehicle_setup() 
-
-
-    # Modify  Battery  
-    net = vehicle.networks.all_electric
-    bat = net.battery 
-    if battery_chemistry == 'NMC': 
-        bat= RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiNiMnCoO2_18650()
-    elif battery_chemistry == 'LFP': 
-        bat= RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LiFePO4_18650()
-    
-    bat.mass_properties.mass = 500. * Units.kg  
-    bat.pack.max_voltage     = 500.             
-    initialize_from_mass(bat)
-    
-    # Assume a battery pack module shape. This step is optional but required for thermal analysis of the pack. We will assume that all cells electrically connected 
-    # in series wihtin the module are arranged in one row normal direction to the airflow. Likewise ,
-    # all cells electrically in paralllel are arranged in the direction to the cooling fluid  
-    number_of_modules                                  = 10
-    bat.module.geometrtic_configuration.total          = int(np.ceil(bat.pack.electrical_configuration.total/number_of_modules))
-    bat.module.geometrtic_configuration.normal_count   = int(np.ceil(bat.module.geometrtic_configuration.total/bat.pack.electrical_configuration.series))
-    bat.module.geometrtic_configuration.parallel_count = int(np.ceil(bat.module.geometrtic_configuration.total/bat.pack.electrical_configuration.parallel))
-    
-    net.battery              = bat
-    net.voltage              = bat.pack.max_voltage     
-     
-    configs  = EVTOL_configs_setup(vehicle)
-
-    # vehicle analyses
-    configs_analyses = analyses_setup(configs)
-
-    # mission analyses
-    mission  = EVTOL_mission_setup(configs_analyses,vehicle,evtol_throttles)
-    missions_analyses = missions_setup(mission)
-
-    analyses = RCAIDE.Analyses.Analysis.Container()
-    analyses.configs  = configs_analyses
-    analyses.missions = missions_analyses
-
-    return configs, analyses
-
-# ----------------------------------------------------------------------
-#   Define the Vehicle Analyses
-# ----------------------------------------------------------------------
-
+  
 def analyses_setup(configs):
 
     analyses = RCAIDE.Analyses.Analysis.Container()
@@ -272,11 +219,7 @@ def mission_setup(analyses,vehicle,unknown_throttles):
     base_segment.process.initialize.initialize_battery                        = RCAIDE.Methods.Missions.Segments.Common.Energy.initialize_battery
     base_segment.process.iterate.conditions.planet_position                   = RCAIDE.Methods.skip
     base_segment.process.finalize.post_process.update_battery_state_of_health = RCAIDE.Methods.Missions.Segments.Common.Energy.update_battery_state_of_health  
-    base_segment.state.numerics.number_control_points                         = 4   
-    bat                                                                       = vehicle.networks.all_electric.battery
-    base_segment.charging_SOC_cutoff                                          = bat.cell.charging_SOC_cutoff 
-    base_segment.charging_current                                             = bat.charging_current
-    base_segment.charging_voltage                                             = bat.charging_voltage 
+    base_segment.state.numerics.number_control_points                         = 4    
     base_segment.battery_discharge                                            = True   
     
     flights_per_day = 2 
@@ -300,14 +243,14 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
             segment.tag = "Climb_1"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+1) 
             segment.analyses.extend( analyses.base ) 
-            segment.battery_energy                                   = vehicle.networks.all_electric.battery.pack.max_energy * 0.89
+            segment.battery_energy                                   = vehicle.networks.all_electric.batteries.lithium_ion_nmc.pack.max_energy * 0.89
             segment.altitude_start                                   = 2500.0  * Units.feet
             segment.altitude_end                                     = 8012    * Units.feet 
             segment.air_speed                                        = 96.4260 * Units['mph'] 
             segment.climb_rate                                       = 700.034 * Units['ft/min']     
             segment.battery_pack_temperature                         = atmo_data.temperature[0,0]
             if (day == 0) and (flight_no == 0):        
-                segment.battery_energy                               = vehicle.networks.all_electric.battery.pack.max_energy   
+                segment.battery_energy                               = vehicle.networks.all_electric.batteries.lithium_ion_nmc.pack.max_energy   
                 segment.initial_battery_resistance_growth_factor     = 1
                 segment.initial_battery_capacity_fade_factor         = 1
             segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)          
@@ -351,10 +294,13 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             #  Charge Segment: 
             # ------------------------------------------------------------------     
             # Charge Model 
-            segment                                                 = Segments.Ground.Battery_Charge_Discharge(base_segment)     
+            segment                                                 = Segments.Ground.Battery_Recharge(base_segment)     
             segment.tag                                             = 'Charge'  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
             segment.analyses.extend(analyses.base)           
-            segment.battery_discharge                               = False    
+            segment.battery_discharge                               = False     
+            #segment.charging_SOC_cutoff                             = bat.cell.charging_SOC_cutoff 
+            #segment.charging_current                                = bat.charging_current
+            #segment.charging_voltage                                = bat.charging_voltage             
             if flight_no  == flights_per_day:  
                 segment.increment_battery_cycle_day=True                        
             segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    

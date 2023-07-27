@@ -3,9 +3,9 @@
 
 from .                                                                        import Rotor_Wake
 from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing                      import ducted_fan_sizing
-from .design_propeller                                                        import design_propeller
+from .design_rotor                                                            import design_rotor
 from Legacy.trunk.S.Methods.Propulsion.turbofan_emission_index                import turbofan_emission_index
-from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing                  import size_from_kv, size_from_mass, size_optimal_motor
+from .size_electric_motor                                                     import size_from_kv, size_from_mass, size_optimal_motor
 from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing                        import turbofan_sizing
 from Legacy.trunk.S.Methods.Propulsion.turbojet_sizing                        import turbojet_sizing
 from Legacy.trunk.S.Methods.Propulsion.ramjet_sizing                          import ramjet_sizing

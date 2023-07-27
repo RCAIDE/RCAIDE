@@ -20,7 +20,7 @@ from scipy.integrate import  cumtrapz
 #  Lithium_Ion
 # ----------------------------------------------------------------------    
 ## @ingroup Energy-Storages-Batteries 
-class Lithium_Ion(Battery):
+class Lithium_Ion_Generic(Battery):
     """ Generic lithium ion battery that specifies discharge/specific energy 
     characteristics. 
     

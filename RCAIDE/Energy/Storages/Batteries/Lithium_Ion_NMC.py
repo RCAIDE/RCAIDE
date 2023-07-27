@@ -9,7 +9,7 @@
 # RCAIDE imports
 import RCAIDE
 from RCAIDE.Core                                                                            import Units , Data
-from .Lithium_Ion                                                                           import Lithium_Ion  
+from .Lithium_Ion_Generic                                                                   import Lithium_Ion_Generic  
 from RCAIDE.Methods.Power.Battery.State_Estimation_Models.LiNiMnCoO2_state_estimation_model import compute_NMC_cell_state_variables
 from RCAIDE.Methods.Power.Battery.Common.compute_net_generated_battery_heat                 import compute_net_generated_battery_heat
 
@@ -23,7 +23,7 @@ from scipy.interpolate  import RegularGridInterpolator
 #  BATTERY
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Storages-Batteries 
-class Lithium_Ion_LiNiMnCoO2_18650(Lithium_Ion):
+class Lithium_Ion_NMC(Lithium_Ion_Generic):
     """ Specifies discharge/specific energy characteristics specific 
         18650 lithium-nickel-manganese-cobalt-oxide battery cells     
         
@@ -67,7 +67,7 @@ class Lithium_Ion_LiNiMnCoO2_18650(Lithium_Ion):
     """       
     
     def __defaults__(self):    
-        self.tag                              = 'Lithium_Ion_LiNiMnCoO2_Cell'  
+        self.tag                              = 'Lithium_Ion_NMC'  
 
         self.cell.diameter                    = 0.0185                                                   # [m]
         self.cell.height                      = 0.0653                                                   # [m]

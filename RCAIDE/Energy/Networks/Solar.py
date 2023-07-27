@@ -290,7 +290,7 @@ class Solar(Network):
         ss       = segment.state 
         n_groups = ss.conditions.energy.number_of_propulsor_groups   
         for i in range(n_groups):   
-            if segment.battery_discharge:           
+            if type(segment) != Battery_Recharge:           
                 ss.conditions.energy['propulsor_group_' + str(i)].rotor.power_coefficient = ss.unknowns['rotor_power_coefficient_' + str(i)] 
                     
         return

@@ -33,7 +33,7 @@ def initialize_conditions(segment):
         segment_max_energy    = segment.battery_energy
     
     duration  = segment.time  
-    if segment.battery_discharge == False: 
+    if type(segment) == Battery_Recharge: 
         for network in segment.analyses.energy.network:  
             battery        = network.battery
             charge_current = battery.cell.charging_current * battery.pack.electrical_configuration.parallel

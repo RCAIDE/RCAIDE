@@ -79,7 +79,7 @@ class Rotor(Energy_Component):
         # operating conditions 
         self.induced_power_factor              = 1.48        # accounts for interference effects
         self.profile_drag_coefficient          = .03
-        self.rotation                          = 1
+        self.clockwise_rotation                = True
         self.phase_offset_angle                = 0.0
         self.orientation_euler_angles          = [0.,0.,0.]  # vector of angles defining default orientation of rotor 
         self.ducted                            = False
