@@ -1,7 +1,7 @@
 ## @defgroup Optimization-Packages-scipy scipy  
 # @ingroup Optimization-Packages 
 # RCAIDE/Optimization/Packages/scipy/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

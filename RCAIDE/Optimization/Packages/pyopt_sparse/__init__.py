@@ -1,7 +1,7 @@
 ## @defgroup Optimization-Packages-pyopt_sparse pyopt_sparse 
 # @ingroup Optimization-Packages 
 # RCAIDE/Optimization/Packages/pyopt_sparse/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

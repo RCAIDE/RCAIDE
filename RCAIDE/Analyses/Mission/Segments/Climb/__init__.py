@@ -1,6 +1,6 @@
 ## @defgroup Analyses-Mission-Segments-Climb Climb
 # RCAIDE/Analyses/Mission/Segments/Climb/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """
