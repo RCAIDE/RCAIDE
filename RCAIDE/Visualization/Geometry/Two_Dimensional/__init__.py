@@ -1,15 +1,14 @@
-## @defgroup Visualization-Geometry Geometry
-# RCAIDE/Visualization/Geometry/__init__.py
+## @defgroup Visualization-Geometry-Two_Dimensional Two_Dimensional
+# @ingroup Visualization-Geometry
+# RCAIDE/Visualization/Geometry/Two_Dimensional/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
-""" RCAIDE Package Setup
+"""RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Visualization
 
-from .Two_Dimensional   import *
-from .Three_Dimensional import * 
-from .Common            import * 
+from .plot_airfoil                 import plot_airfoil
+from .plot_rotor                   import plot_rotor 

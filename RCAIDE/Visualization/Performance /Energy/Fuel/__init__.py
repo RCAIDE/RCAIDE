@@ -1,15 +1,14 @@
-## @defgroup Visualization-Geometry Geometry
-# RCAIDE/Visualization/Geometry/__init__.py
+## @defgroup Visualization-Performance-Energy-Fuel Fuel
+# @ingroup Visualization-Performance-Energy
+# RCAIDE/Visualization/Performance/Energy/Fuel/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
-""" RCAIDE Package Setup
+"""RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Visualization
 
-from .Two_Dimensional   import *
-from .Three_Dimensional import * 
-from .Common            import * 
+from .plot_fuel_consumption    import plot_fuel_consumption
+from .plot_altitude_sfc_weight import plot_altitude_sfc_weight

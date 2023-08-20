@@ -1,15 +1,13 @@
-## @defgroup Visualization-Geometry Geometry
-# RCAIDE/Visualization/Geometry/__init__.py
+## @defgroup Visualization-Performance-Energy Energy
+# @ingroup Visualization-Performance 
+# RCAIDE/Visualization/Performance/Energy/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
-""" RCAIDE Package Setup
+"""RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Visualization
-
-from .Two_Dimensional   import *
-from .Three_Dimensional import * 
-from .Common            import * 
+from .Battery import * 
+from .Fuel    import *

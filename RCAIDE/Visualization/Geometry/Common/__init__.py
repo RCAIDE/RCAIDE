@@ -1,15 +1,13 @@
-## @defgroup Visualization-Geometry Geometry
-# RCAIDE/Visualization/Geometry/__init__.py
+## @defgroup Visualization-Geometry-Common Common
+# @ingroup Visualization-Geometry
+# RCAIDE/Visualization/Geometry/Common/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
-""" RCAIDE Package Setup
+"""RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Visualization
 
-from .Two_Dimensional   import *
-from .Three_Dimensional import * 
-from .Common            import * 
+from .contour_surface_slice            import contour_surface_slice
