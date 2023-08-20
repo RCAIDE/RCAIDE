@@ -23,7 +23,7 @@ from Legacy.trunk.S.Components.Energy.Converters import Internal_Combustion_Engi
 from .Lift_Rotor                                 import Lift_Rotor
 from Legacy.trunk.S.Components.Energy.Converters import Motor_HTS_Rotor
 from Legacy.trunk.S.Components.Energy.Converters import Motor_Lo_Fid
-from Legacy.trunk.S.Components.Energy.Converters import Motor
+from .Motor                                      import Motor
 from Legacy.trunk.S.Components.Energy.Converters import Propeller_Lo_Fid
 from .Propeller                                  import Propeller
 from Legacy.trunk.S.Components.Energy.Converters import Ram

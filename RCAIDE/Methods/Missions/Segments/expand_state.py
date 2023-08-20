@@ -1,14 +1,12 @@
-## @ingroup methods-mission-segments
-# expand_state.py
+# RCAIDE/Methods/Missions/Segments/expand_state.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2014, SUAVE Team
-# Modified: Jan 2016, E. Botero
+# Created:  Jul 2023, M. Clarke   
 
-# ----------------------------------------------------------------------
-#  Expand State
-# ----------------------------------------------------------------------
-
-## @ingroup methods-mission-segments
+# ----------------------------------------------------------------------------------------------------------------------
+# Expand State
+# ---------------------------------------------------------------------------------------------------------------------- 
+## @ingroup Methods-Missions-Segments 
 def expand_state(segment):
     
     """Makes all vectors in the state the same size.
@@ -20,7 +18,7 @@ def expand_state(segment):
     N/A
 
     Inputs:
-    state.numerics.number_control_points  [Unitless]
+    state.numerics.number_of_control_points  [Unitless]
 
     Outputs:
     N/A
@@ -29,7 +27,7 @@ def expand_state(segment):
     N/A
     """       
 
-    n_points = segment.state.numerics.number_control_points
+    n_points = segment.state.numerics.number_of_control_points
     
     segment.state.expand_rows(n_points)
     

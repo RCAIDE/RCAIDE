@@ -1,22 +1,20 @@
-## @ingroup Analyses-Mission-Segments-Conditions
-# Numerics.py
-#
-# Created:  
-# Modified: Feb 2016, Andrew Wendorff
+## @ingroup Analyses-Mission-Segments-Conditions 
+# RCAIDE/Analyses/Mission/Segments/Conditions/Numerics.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
-from .Conditions import Conditions
-
-from RCAIDE.Methods.Utilities.Chebyshev  import chebyshev_data
-
+from .Conditions import Conditions 
+from RCAIDE.Methods.Utilities.Chebyshev  import chebyshev_data 
 import numpy as np
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Numerics
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments-Conditions
 class Numerics(Conditions):
@@ -47,26 +45,24 @@ class Numerics(Conditions):
             Properties Used:
             None
         """           
-        self.tag = 'numerics'
-        
-        self.number_control_points = 16
-        self.discretization_method = chebyshev_data
-        
+        self.tag                              = 'numerics' 
+        self.number_of_control_points         = 16
+        self.discretization_method            = chebyshev_data 
         self.solver_jacobian                  = "none"
         self.tolerance_solution               = 1e-8
         self.converged                        = None
         self.max_evaluations                  = 0.
         self.step_size                        = None
         
-        self.dimensionless = Conditions()
-        self.dimensionless.control_points = np.empty([0,0])
-        self.dimensionless.differentiate  = np.empty([0,0])
-        self.dimensionless.integrate      = np.empty([0,0]) 
-        
-        self.time = Conditions()
-        self.time.control_points = np.empty([0,0])
-        self.time.differentiate  = np.empty([0,0])
-        self.time.integrate      = np.empty([0,0]) 
+        self.dimensionless                    = Conditions()
+        self.dimensionless.control_points     = np.empty([0,0])
+        self.dimensionless.differentiate      = np.empty([0,0])
+        self.dimensionless.integrate          = np.empty([0,0]) 
+            
+        self.time                             = Conditions()
+        self.time.control_points              = np.empty([0,0])
+        self.time.differentiate               = np.empty([0,0])
+        self.time.integrate                   = np.empty([0,0]) 
         
         
         

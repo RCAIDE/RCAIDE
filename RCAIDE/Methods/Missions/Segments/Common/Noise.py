@@ -1,11 +1,11 @@
-## @ingroup Methods-Missions-Segments-Common
-# Noise.py
+# RCAIDE/Methods/Missions/Segments/Common/Noise.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Oct 2020, M. Clarke
-
-# ----------------------------------------------------------------------
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Noise
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def compute_noise(segment):
     """ Evaluates the energy network to find the thrust force and mass rate
@@ -16,9 +16,7 @@ def compute_noise(segment):
         Outputs
             N/A
 
-        Assumptions -
-
-
+        Assumptions - None  
     """    
     noise_model = segment.analyses.noise
     

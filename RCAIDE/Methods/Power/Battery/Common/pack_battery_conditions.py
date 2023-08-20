@@ -4,10 +4,10 @@
 # Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  pack_battery_conditions
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Power-Battery 
-def pack_battery_conditions(conditions,battery,avionics_payload_power): 
+def pack_battery_conditions(battery_conditions,battery): 
     """ Packs the results from the network into propulsion data structures.
     
         Assumptions:
@@ -22,8 +22,8 @@ def pack_battery_conditions(conditions,battery,avionics_payload_power):
                current_energy                  [Joules]
                voltage_open_circuit            [Volts]
                voltage_under_load              [Volts] 
-               inputs.power_in                 [Watts]
-               max_energy                      [Joules]
+               inputs.power                    [Watts]
+               maximum_energy                  [Joules]
                age                             [days]
                internal_resistance             [Ohms]
                state_of_charge                 [unitless]
@@ -48,7 +48,7 @@ def pack_battery_conditions(conditions,battery,avionics_payload_power):
                        voltage_open_circuit       [Volts]     
                        voltage_under_load         [Volts]      
                        power_draw                 [Watts]     
-                       max_aged_energy            [Joules]        
+                       maximum_degraded_battery_energy            [Joules]        
                        cycle_day                  [unitless]
                        internal_resistance        [Ohms]
                        state_of_charge            [unitless]
@@ -71,30 +71,29 @@ def pack_battery_conditions(conditions,battery,avionics_payload_power):
     n_series           = battery.pack.electrical_configuration.series  
     n_parallel         = battery.pack.electrical_configuration.parallel
     n_total            = n_series*n_parallel 
-    battery_power_draw = battery.inputs.power_in    
-       
-    conditions.energy.payload_efficiency                   = (battery_power_draw+avionics_payload_power)/battery_power_draw  
-    conditions.energy.battery.pack.current                 = battery.inputs.current
-    conditions.energy.battery.pack.energy                  = battery.pack.current_energy
-    conditions.energy.battery.pack.voltage_open_circuit    = battery.pack.voltage_open_circuit
-    conditions.energy.battery.pack.voltage_under_load      = battery.pack.voltage_under_load 
-    conditions.energy.battery.pack.power_draw              = battery_power_draw 
-    conditions.energy.battery.pack.max_aged_energy         = battery.pack.max_energy  
-    conditions.energy.battery.pack.temperature             = battery.pack.temperature  
-    conditions.energy.battery.pack.heat_energy_generated   = battery.pack.heat_energy_generated
-    conditions.energy.battery.pack.efficiency              = (battery_power_draw+battery.pack.resistive_losses)/battery_power_draw          
-    conditions.energy.battery.pack.specfic_power           = -battery_power_draw/battery.mass_properties.mass   
-    conditions.energy.battery.pack.internal_resistance     = battery.pack.internal_resistance 
-    conditions.energy.battery.cell.cycle_in_day            = battery.cell.age
-    conditions.energy.battery.cell.state_of_charge         = battery.cell.state_of_charge 
-    conditions.energy.battery.cell.power                   = battery.inputs.power_in/n_series
-    conditions.energy.battery.cell.energy                  = battery.pack.current_energy/n_total   
-    conditions.energy.battery.cell.voltage_under_load      = battery.cell.voltage_under_load    
-    conditions.energy.battery.cell.voltage_open_circuit    = battery.cell.voltage_open_circuit  
-    conditions.energy.battery.cell.current                 = abs(battery.cell.current)        
-    conditions.energy.battery.cell.temperature             = battery.cell.temperature
-    conditions.energy.battery.cell.charge_throughput       = battery.cell.charge_throughput
-    conditions.energy.battery.cell.joule_heat_fraction     = battery.cell.joule_heat_fraction   
-    conditions.energy.battery.cell.entropy_heat_fraction   = battery.cell.entropy_heat_fraction 
+    battery_power_draw = battery.inputs.power    
+        
+    battery_conditions.pack.current                         = battery.inputs.current
+    battery_conditions.pack.energy                          = battery.pack.current_energy
+    battery_conditions.pack.voltage_open_circuit            = battery.pack.voltage_open_circuit
+    battery_conditions.pack.voltage_under_load              = battery.pack.voltage_under_load 
+    battery_conditions.pack.power_draw                      = battery_power_draw 
+    battery_conditions.pack.maximum_degraded_battery_energy = battery.pack.maximum_energy  
+    battery_conditions.pack.temperature                     = battery.pack.temperature  
+    battery_conditions.pack.heat_energy_generated           = battery.pack.heat_energy_generated
+    battery_conditions.pack.efficiency                      = (battery_power_draw+battery.pack.resistive_losses)/battery_power_draw          
+    battery_conditions.pack.specfic_power                   = -battery_power_draw/battery.mass_properties.mass   
+    battery_conditions.pack.internal_resistance             = battery.pack.internal_resistance 
+    battery_conditions.cell.cycle_in_day                    = battery.cell.age
+    battery_conditions.cell.state_of_charge                 = battery.cell.state_of_charge 
+    battery_conditions.cell.power                           = battery.inputs.power/n_series
+    battery_conditions.cell.energy                          = battery.pack.current_energy/n_total   
+    battery_conditions.cell.voltage_under_load              = battery.cell.voltage_under_load    
+    battery_conditions.cell.voltage_open_circuit            = battery.cell.voltage_open_circuit  
+    battery_conditions.cell.current                         = abs(battery.cell.current)        
+    battery_conditions.cell.temperature                     = battery.cell.temperature
+    battery_conditions.cell.charge_throughput               = battery.cell.charge_throughput
+    battery_conditions.cell.joule_heat_fraction             = battery.cell.joule_heat_fraction   
+    battery_conditions.cell.entropy_heat_fraction           = battery.cell.entropy_heat_fraction 
     
     return 

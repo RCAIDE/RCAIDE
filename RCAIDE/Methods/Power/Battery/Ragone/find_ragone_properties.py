@@ -37,8 +37,8 @@ def find_ragone_properties(specific_energy, battery, energy, power):
                 
     Outputs:
     battery.
-      max_energy      [J]
-      max_power       [W]
+      maximum_energy      [J]
+      maximum_power       [W]
       specific_energy [J/kg]
       specific_power  [W/kg]
       mass_properties.

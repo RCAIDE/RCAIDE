@@ -15,7 +15,7 @@ from .Lithium_Ion_Generic import Lithium_Ion_Generic
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  BATTERY
+#  Lithium_Ion_LFP
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Storages-Batteries 
 class Lithium_Ion_LFP(Lithium_Ion_Generic):
@@ -57,7 +57,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         N/A
         """ 
     def __defaults__(self):
-        self.tag                              = 'Lithium_Ion_LiFePO4_Cell' 
+        self.tag                              = 'Lithium_Ion_LFP' 
          
         self.cell.diameter                    = 0.0185                                                   # [m]
         self.cell.height                      = 0.0653                                                   # [m]
@@ -67,7 +67,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         self.cell.density                     = self.cell.mass/self.cell.volume                          # [kg/m^3]
         self.cell.electrode_area              = 0.0342                                                   # [m^2]  # estimated 
                                                         
-        self.cell.max_voltage                 = 3.6                                                      # [V]
+        self.cell.maximum_voltage             = 3.6                                                      # [V]
         self.cell.nominal_capacity            = 1.5                                                      # [Amp-Hrs]
         self.cell.nominal_voltage             = 3.6                                                      # [V]
         self.cell.charging_voltage            = self.cell.nominal_voltage                                # [V]  

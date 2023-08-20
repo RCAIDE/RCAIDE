@@ -4,16 +4,16 @@
 # 
 # Created:  Jul 2023, E. Botero
 # Modified: 
-
-# ------------------------------------------------------------
-#  Imports
-# ------------------------------------------------------------
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 from RCAIDE.Core import Data 
 from RCAIDE.Components.Component import Component
-import numpy as np
-# ----------------------------------------------------------------------
-#  Energy Component Class
-# ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Energy Component  
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy
 class Energy_Component(Component):
     """A class representing an energy component.
@@ -43,7 +43,8 @@ class Energy_Component(Component):
         N/A
         """          
         # function handles for input
-        self.inputs  = Data()
+        self.inputs          = Data()
+        self.propulsor_group = 'propulsor'
         
         # function handles for output
         self.outputs = Data()

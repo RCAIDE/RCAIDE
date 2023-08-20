@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Analyses.Mission.Segments import Simple
+from RCAIDE.Analyses.Mission.Segments import Simple 
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Analyses                  import Process
 from RCAIDE.Methods.Missions          import Segments as Methods  
@@ -73,8 +73,7 @@ class Battery_Recharge(Simple):
         # --------------------------------------------------------------
         #   Initialize - before iteration
         # --------------------------------------------------------------
-        initialize = self.process.initialize
-    
+        initialize                         = self.process.initialize 
         initialize.expand_state            = Methods.expand_state
         initialize.differentials           = Methods.Common.Numerics.initialize_differentials_dimensionless
         initialize.conditions              = Methods.Ground.Battery_Charge_Discharge.initialize_conditions
@@ -92,18 +91,18 @@ class Battery_Recharge(Simple):
         iterate = self.process.iterate
                 
         # Update Initials
-        iterate.initials = Process()
+        iterate.initials                   = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights
         iterate.initials.inertial_position = Methods.Common.Frames.initialize_inertial_position
         iterate.initials.planet_position   = Methods.Common.Frames.initialize_planet_position
         
         # Unpack Unknowns
-        iterate.unknowns = Process()
+        iterate.unknowns                   = Process()
         iterate.unknowns.mission           =  Methods.Ground.Battery_Charge_Discharge.unpack_unknowns
         
         # Update Conditions
-        iterate.conditions = Process()
+        iterate.conditions                 = Process()
         iterate.conditions.differentials   = Methods.Common.Numerics.update_differentials_time
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere

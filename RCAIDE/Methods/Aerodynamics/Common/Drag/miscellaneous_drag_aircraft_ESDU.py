@@ -7,13 +7,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
  
-from RCAIDE.Core import Data 
-
-# package imports 
-import numpy as np
+from RCAIDE.Core import Data  
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  miscellaneous_drag_aircraft_ESDU
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Aerodynamics-Common-Drag
 def miscellaneous_drag_aircraft_ESDU(state,settings,geometry):

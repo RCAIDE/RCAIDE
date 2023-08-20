@@ -9,5 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Methods.Weights.Buildups.eVTOL.empty import empty
-from Legacy.trunk.S.Methods.Weights.Buildups.eVTOL.converge_evtol_weight import converge_evtol_weight
+from .compute_weight                 import compute_weight
+from .converge_evtol_weight          import converge_evtol_weight

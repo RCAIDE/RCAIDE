@@ -9,9 +9,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-
-
-from Legacy.trunk.S.Methods.Weights.Buildups.Common.fuselage    import fuselage
-from Legacy.trunk.S.Methods.Weights.Buildups.Common.prop        import prop
-from Legacy.trunk.S.Methods.Weights.Buildups.Common.wing        import wing
-from Legacy.trunk.S.Methods.Weights.Buildups.Common.wiring      import wiring
+from .compute_boom_weight        import compute_boom_weight
+from .compute_fuselage_weight    import compute_fuselage_weight
+from .compute_rotor_weight       import compute_rotor_weight
+from .compute_wing_weight        import compute_wing_weight
+from .compute_wiring_weight      import compute_wiring_weight

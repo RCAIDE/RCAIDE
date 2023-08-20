@@ -15,7 +15,7 @@ from RCAIDE.Core import Units
 from . import Battery
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  BATTERY
+#  Lithium_Sulfur
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Storages-Batteries 
 class Lithium_Sulfur(Battery):

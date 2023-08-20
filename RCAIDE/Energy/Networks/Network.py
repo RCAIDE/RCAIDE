@@ -10,8 +10,9 @@
 # RCAIDE imports
 from RCAIDE.Energy     import Energy_Component
 from RCAIDE.Core       import Data 
+
 # ----------------------------------------------------------------------------------------------------------------------
-#  NETWORK
+#  Network
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Networks
 class Network(Energy_Component):

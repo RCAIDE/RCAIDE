@@ -12,7 +12,7 @@ from RCAIDE.Core import Units
 from RCAIDE.Energy.Storages.Batteries  import Battery
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  BATTERY
+#  Lithium_Air
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Energy-Storages-Batteries 
 class Lithium_Air(Battery):

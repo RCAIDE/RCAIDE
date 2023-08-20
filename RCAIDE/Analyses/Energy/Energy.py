@@ -34,8 +34,8 @@ class Energy(Analysis):
                     Properties Used:
                     N/A
                 """        
-        self.tag     = 'energy'
-        self.network = None
+        self.tag      = 'energy'
+        self.networks = None
         
     def evaluate_thrust(self,state):
         
@@ -58,8 +58,8 @@ class Energy(Analysis):
             """
                 
             
-        network = self.network
-        results = network.evaluate_thrust(state) 
+        networks = self.networks
+        results  = networks.evaluate_thrust(state) 
         
         return results
     

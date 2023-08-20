@@ -49,10 +49,7 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
         self.propellers                   = Container()
         self.engine_length                = None
         self.number_of_engines            = None
-        self.rated_speed                  = 0.0 
-        self.rotor_group_indexes          = [0]
-        self.motor_group_indexes          = [0]
-        self.active_propulsor_groups      = [True]
+        self.rated_speed                  = 0.0   
          
     # manage process with a driver function
     def evaluate_thrust(self,state):
@@ -81,10 +78,7 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
         conditions              = state.conditions
         engines                 = self.engines
         propellers              = self.propellers 
-        rpm                     = conditions.energy.rpm 
-        rotor_group_indexes     = self.rotor_group_indexes
-        motor_group_indexes     = self.motor_group_indexes
-        active_propulsor_groups = self.active_propulsor_groups
+        rpm                     = conditions.energy.rpm  
         
         # Unpack conditions
         a = conditions.freestream.speed_of_sound        

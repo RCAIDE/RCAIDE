@@ -8,7 +8,7 @@ import numpy as np
 #  Methods
 # ----------------------------------------------------------------------
 ## @ingroup Methods-Thermal_Management-Batteries-Direct_Convection_Cooling 
-def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics):
+def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
     '''Computes the net heat generated in a battery during cycling. 
 
     Assumptions:
@@ -65,10 +65,10 @@ def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics):
         P_net          = Q_heat_gen_tot - Q_convec
 
     else:   
-        K_coolant                    = btms.atmosphere_conditions.thermal_conductivity
-        nu_coolant                   = btms.atmosphere_conditions.kinematic_viscosity
-        Pr_coolant                   = btms.atmosphere_conditions.prandtl_number
-        rho_coolant                  = btms.atmosphere_conditions.density    
+        K_coolant                    = freestream.thermal_conductivity
+        nu_coolant                   = freestream.kinematic_viscosity
+        Pr_coolant                   = freestream.prandtl_number
+        rho_coolant                  = freestream.density    
         Cp_coolant                   = btms.cooling_fluid.compute_cp(btms.atmosphere_conditions.temperature,btms.atmosphere_conditions.pressure )
         V_coolant                    = btms.cooling_fluid.flowspeed  
         

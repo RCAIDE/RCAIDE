@@ -12,7 +12,7 @@ from RCAIDE.Core import Units
 from .Battery    import Battery
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  BATTERY
+#  Aluminum_Air
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Energy-Storages-Batteries
 class Aluminum_Air(Battery):

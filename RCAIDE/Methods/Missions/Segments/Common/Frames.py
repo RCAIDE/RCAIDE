@@ -1,25 +1,21 @@
-## @ingroup Methods-Missions-Segments-Common
-# Frames.py
+# RCAIDE/Methods/Missions/Segments/Common/Frames.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2014, SUAVE Team (Stanford University)
-# Modified: Jul 2016, E. Botero
-#           Jul 2017, E. Botero
-#           May 2019, T. MacDonald
+# Created:  Jul 2023, M. Clarke
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
+# RCAIDE imports 
+from RCAIDE.Core  import Units, angles_to_dcms, orientation_product, orientation_transpose
+
+# package imports 
 import numpy as np
-from RCAIDE.Core import Units
 
-from RCAIDE.Methods.Geometry.Three_Dimensional \
-     import angles_to_dcms, orientation_product, orientation_transpose
-
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Inertial Position
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def initialize_inertial_position(segment):
     """ Sets the initial location of the vehicle at the start of the segment
@@ -61,10 +57,9 @@ def initialize_inertial_position(segment):
     return
     
     
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Time
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def initialize_time(segment):
     """ Sets the initial time of the vehicle at the start of the segment
@@ -92,8 +87,7 @@ def initialize_time(segment):
     
     if segment.state.initials:
         t_initial = segment.state.initials.conditions.frames.inertial.time
-        t_current = segment.state.conditions.frames.inertial.time
-        
+        t_current = segment.state.conditions.frames.inertial.time 
         segment.state.conditions.frames.inertial.time[:,:] = t_current + (t_initial[-1,0] - t_current[0,0])
         
     else:
@@ -108,10 +102,9 @@ def initialize_time(segment):
     return
     
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Planet Position
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def initialize_planet_position(segment):
     """ Sets the initial location of the vehicle relative to the planet at the start of the segment
@@ -152,10 +145,9 @@ def initialize_planet_position(segment):
     return
     
     
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Planet Position
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_planet_position(segment):
     """ Updates the location of the vehicle relative to the Planet throughout the mission
@@ -209,7 +201,7 @@ def update_planet_position(segment):
     lamda     = np.reshape(lamda,shape)
     phi       = np.array([[np.cos(psi),-np.sin(psi),0],[np.sin(psi),np.cos(psi),0],[0,0,1]])
 
-    # Pack'r up
+    # Pack 
     lat                                           = conditions.frames.planet.latitude[0,0]
     lon                                           = conditions.frames.planet.longitude[0,0]
     conditions.frames.planet.latitude             = lat + lamda
@@ -219,10 +211,9 @@ def update_planet_position(segment):
     return
     
     
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Orientations
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_orientations(segment):
     
@@ -304,8 +295,8 @@ def update_orientations(segment):
     wind_body_rotations[:,2] = beta[:,0]  # psi is side slip angle
 
     # wind frame tranformation matricies
-    T_wind2body = angles_to_dcms(wind_body_rotations,(2,1,0))
-    T_body2wind = orientation_transpose(T_wind2body)
+    T_wind2body     = angles_to_dcms(wind_body_rotations,(2,1,0))
+    T_body2wind     = orientation_transpose(T_wind2body)
     T_wind2inertial = orientation_product(T_wind2body,T_body2inertial)
 
     # pack wind rotations
@@ -317,10 +308,9 @@ def update_orientations(segment):
     return
         
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Forces
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_forces(segment):
     
@@ -350,9 +340,7 @@ def update_forces(segment):
     """    
 
     # unpack
-    conditions = segment.state.conditions
-
-    # unpack forces
+    conditions                    = segment.state.conditions 
     wind_lift_force_vector        = conditions.frames.wind.lift_force_vector
     wind_drag_force_vector        = conditions.frames.wind.drag_force_vector
     body_thrust_force_vector      = conditions.frames.body.thrust_force_vector
@@ -377,10 +365,9 @@ def update_forces(segment):
 
     return
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Integrate Position
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def integrate_inertial_horizontal_position(segment):
     """ Determines how far the airplane has traveled. 
@@ -405,7 +392,7 @@ def integrate_inertial_horizontal_position(segment):
 
     conditions = segment.state.conditions
     psi        = segment.true_course_angle # sign convetion is clockwise positive
-    cpts       = int(segment.state.numerics.number_control_points)
+    cpts       = int(segment.state.numerics.number_of_control_points)
     x0         = conditions.frames.inertial.position_vector[0,None,0:1+1]
     R0         = conditions.frames.inertial.aircraft_range[0,None,0:1+1]
     vx         = conditions.frames.inertial.velocity_vector[:,0:1+1]
@@ -422,10 +409,9 @@ def integrate_inertial_horizontal_position(segment):
     
     return
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Acceleration
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_acceleration(segment):
     """ Differentiates the velocity vector to get accelerations

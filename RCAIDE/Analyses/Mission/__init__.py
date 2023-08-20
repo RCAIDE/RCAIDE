@@ -7,10 +7,9 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
-
-from Legacy.trunk.S.Analyses.Mission.All_At_Once import All_At_Once
-from .Mission import Mission
+# ---------------------------------------------------------------------------------------------------------------------- 
+from .All_At_Once         import All_At_Once
+from .Mission             import Mission
 from .Sequential_Segments import Sequential_Segments
 
 # packages

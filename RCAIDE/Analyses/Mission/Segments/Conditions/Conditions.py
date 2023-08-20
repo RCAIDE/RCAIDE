@@ -11,7 +11,7 @@ import numpy as np
 from RCAIDE.Core                    import Data 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  CONDITIONS
+#  Conditions
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Mission-Segments-Conditions
 class Conditions(Data):

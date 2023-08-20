@@ -1,22 +1,22 @@
-## @ingroup Components-Energy-Thermal_Management
-# Atmospheric_Air_Convection_Heat_Exchanger.py
-#
-# Created: Jun 2023. M. Clarke
+## @ingroup Components-Energy-Thermal_Management 
+# RCAIDE/Energy/Thermal_Management/Atmospheric_Air_Convection_Heat_Exchanger.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ---------------------------------------------------------------------- 
-import numpy as np
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+ 
 from RCAIDE.Core import Data
 from RCAIDE.Energy.Energy_Component import Energy_Component 
 from RCAIDE.Methods.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.direct_convection_model import compute_net_convected_heat 
 from RCAIDE.Attributes.Gases import Air
 
-# ----------------------------------------------------------------------
-#  Cryogenic Heat Exchanger Component
-# ----------------------------------------------------------------------
-## @ingroup Components-Energy-Thermal_Management
-
+# ----------------------------------------------------------------------------------------------------------------------
+#  Atmospheric_Air_Convection_Heat_Exchanger
+# ----------------------------------------------------------------------------------------------------------------------
+## @ingroup Components-Energy-Thermal_Management 
 class Atmospheric_Air_Convection_Heat_Exchanger(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
@@ -35,7 +35,7 @@ class Atmospheric_Air_Convection_Heat_Exchanger(Energy_Component):
         self.heat_transfer_efficiency                 = 1.0      
         return
     
-    def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics): 
+    def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics,freestream): 
         '''
         '''
         Q_heat_gen_tot,  P_net,  T_ambient, T_current =  compute_net_convected_heat(self,battery,Q_heat_gen,numerics) 

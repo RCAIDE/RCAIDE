@@ -10,6 +10,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission-Segments
 
-from Legacy.trunk.S.Methods.Missions.Segments.Single_Point import Set_Speed_Set_Altitude
-from Legacy.trunk.S.Methods.Missions.Segments.Single_Point import Set_Speed_Set_Throttle
-from Legacy.trunk.S.Methods.Missions.Segments.Single_Point import Set_Speed_Set_Altitude_No_Propulsion
+from . import Set_Speed_Set_Altitude
+from . import Set_Speed_Set_Throttle
+from . import Set_Speed_Set_Altitude_No_Propulsion

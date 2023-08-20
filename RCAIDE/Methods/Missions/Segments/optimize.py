@@ -63,7 +63,7 @@ def converge_opt(segment):
         # Have the optimizer call the wrapper
         obj_pyopt = lambda unknowns:get_problem_pyopt(unknowns,segment) 
     
-        opt_prob = pyOpt.Optimization('SUAVE',obj_pyopt)
+        opt_prob = pyOpt.Optimization('RCAIDE',obj_pyopt)
         opt_prob.addObj(segment.objective)
     
         for ii in range(0,len(unknowns)):
@@ -73,7 +73,7 @@ def converge_opt(segment):
             opt_prob.addVar(str(ii),vartype,lower=lbd,upper=ubd,value=unknowns[ii])  
     
         # Setup constraints
-        segment_points = segment.state.numerics.number_control_points
+        segment_points = segment.state.numerics.number_of_control_points
         for ii in range(0,2*segment_points):
             opt_prob.addCon(str(ii), type='e', equal=0.)
         for ii in range(0,5*segment_points-1):

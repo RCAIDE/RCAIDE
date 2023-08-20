@@ -23,6 +23,5 @@ from . import Propulsion
 from . import Utilities
 from . import Weights
 
-
-from Legacy.trunk.S.Methods import skip
+from .skip import skip
 

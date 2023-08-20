@@ -1,19 +1,17 @@
-## @ingroup Methods-Missions-Segments-Common
-# Numerics.py
+# RCAIDE/Methods/Missions/Segments/Common/Numerics.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2014, SUAVE Team (Stanford University)
-# Modified: Jan 2016, E. Botero
-
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-
+# Created:  Jul 2023, M. Clarke
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE Imports 
 from RCAIDE.Core.Arrays  import atleast_2d_col 
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Differentials
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def initialize_differentials_dimensionless(segment):
     """ Discretizes the differential operators
@@ -23,14 +21,14 @@ def initialize_differentials_dimensionless(segment):
         
         Inputs:
             state.numerics:
-                number_control_points [int]
-                discretization_method [function]
+                number_of_control_points [int]
+                discretization_method    [function]
             
         Outputs:
-            numerics.dimensionless:           
-                control_points        [array]
-                differentiate         [array]
-                integrate             [array]
+            numerics.dimensionless:            
+                control_points           [array]
+                differentiate            [array]
+                integrate                [array]
 
         Properties Used:
         N/A
@@ -40,7 +38,7 @@ def initialize_differentials_dimensionless(segment):
     
     # unpack
     numerics = segment.state.numerics
-    N                     = numerics.number_control_points
+    N                     = numerics.number_of_control_points
     discretization_method = numerics.discretization_method
     
     # get operators
@@ -54,10 +52,9 @@ def initialize_differentials_dimensionless(segment):
     
     return
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Differentials
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_differentials_time(segment):
     """ Scales the differential operators (integrate and differentiate) based on mission time

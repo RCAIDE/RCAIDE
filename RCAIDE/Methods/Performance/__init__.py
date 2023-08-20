@@ -9,6 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+from .estimate_cruise_drag                                                import estimate_cruise_drag
 from Legacy.trunk.S.Methods.Performance.estimate_take_off_field_length    import estimate_take_off_field_length
 from Legacy.trunk.S.Methods.Performance.estimate_stall_speed              import estimate_stall_speed
 from Legacy.trunk.S.Methods.Performance.payload_range                     import payload_range

@@ -1,5 +1,5 @@
-## @defgroup Methods-Noise-Fidelity_Zero Fidelity_Zero 
-# @ingroup Methods-Noise
+## @defgroup Methods-Noise-Fidelity_Zero Fidelity_Zero
+# @ingroup Methods 
 # RCAIDE/Methods/Noise/Fidelity_Zero/__init__.py
 # (c) Copyright The Board of Trustees of RCAIDE
 
@@ -10,4 +10,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Methods.Noise.Fidelity_Zero.shevell                     import shevell 
+from . import Airframe 
+from . import Rotor 
+from . import Turbofan

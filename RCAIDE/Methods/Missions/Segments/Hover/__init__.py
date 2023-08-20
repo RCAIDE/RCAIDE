@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission-Segments
 
-from Legacy.trunk.S.Methods.Missions.Segments.Hover import Climb
-from Legacy.trunk.S.Methods.Missions.Segments.Hover import Hover
-from Legacy.trunk.S.Methods.Missions.Segments.Hover import Common
-from Legacy.trunk.S.Methods.Missions.Segments.Hover import Descent
+from . import Climb
+from . import Hover
+from . import Common
+from . import Descent

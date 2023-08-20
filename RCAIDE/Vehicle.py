@@ -20,7 +20,7 @@ from Legacy.trunk.S.Components.Energy.Networks import Network as legacy_net
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Vehicle
 class Vehicle(VH):
-    """SUAVE Vehicle container class with database + input / output functionality
+    """RCAIDE Vehicle container class with database + input / output functionality
     
     Assumptions:
     None

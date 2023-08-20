@@ -54,9 +54,7 @@ class Internal_Combustion_Propeller(Network):
         self.engines                      = Container()
         self.propellers                   = Container()
         self.engine_length                = None
-        self.number_of_engines            = None 
-        self.rotor_group_indexes          = [0]
-        self.motor_group_indexes          = [0] 
+        self.number_of_engines            = None  
     
     # manage process with a driver function
     def evaluate_thrust(self,state):
@@ -84,9 +82,7 @@ class Internal_Combustion_Propeller(Network):
         # unpack
         conditions              = state.conditions
         engines                 = self.engines
-        propellers              = self.propellers 
-        rotor_group_indexes     = self.rotor_group_indexes
-        motor_group_indexes     = self.motor_group_indexes 
+        propellers              = self.propellers   
         
         # Unpack conditions
         a = conditions.freestream.speed_of_sound        
@@ -117,7 +113,7 @@ class Internal_Combustion_Propeller(Network):
             rot        = propellers[rotor_key]  
     
             # Throttle the engine
-            engine.inputs.speed                              = state.conditions.energy.propulsor_group_0.rotor.rpm * Units.rpm
+            engine.inputs.speed                          = state.conditions.energy.propulsor_group_0.rotor.rpm * Units.rpm
             conditions.energy.combustion_engine_throttle = conditions.energy.throttle
             
             # Run the engine
@@ -237,11 +233,7 @@ class Internal_Combustion_Propeller(Network):
     
             Properties Used:
             N/A
-        """                
-
-        rotor_group_indexes     = self.rotor_group_indexes
-        motor_group_indexes     = self.motor_group_indexes 
-        
+        """                 
         # unpack the ones function
         ones_row = segment.state.ones_row
         

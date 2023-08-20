@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Analyses.Mission.Segments import Simple
+from RCAIDE.Analyses.Mission.Segments import Simple 
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Analyses                  import Process
 from RCAIDE.Methods.Missions          import Segments as Methods  
@@ -82,8 +82,7 @@ class Battery_Discharge(Simple):
         # --------------------------------------------------------------
         #   Converge - starts iteration
         # --------------------------------------------------------------
-        converge = self.process.converge
-        
+        converge = self.process.converge 
         converge.converge_root             = Methods.converge_root        
     
         # --------------------------------------------------------------
@@ -99,18 +98,18 @@ class Battery_Discharge(Simple):
         iterate.initials.planet_position   = Methods.Common.Frames.initialize_planet_position
         
         # Unpack Unknowns
-        iterate.unknowns = Process()
+        iterate.unknowns                   = Process()
         iterate.unknowns.mission           =  Methods.Ground.Battery_Charge_Discharge.unpack_unknowns
         
         # Update Conditions
-        iterate.conditions = Process()
+        iterate.conditions                 = Process()
         iterate.conditions.differentials   = Methods.Common.Numerics.update_differentials_time
         iterate.conditions.altitude        = Methods.Common.Aerodynamics.update_altitude
         iterate.conditions.atmosphere      = Methods.Common.Aerodynamics.update_atmosphere
         iterate.conditions.gravity         = Methods.Common.Weights.update_gravity
         iterate.conditions.freestream      = Methods.Common.Aerodynamics.update_freestream
         iterate.conditions.orientations    = Methods.Common.Frames.update_orientations
-        iterate.conditions.energy      = Methods.Common.Energy.update_thrust
+        iterate.conditions.energy          = Methods.Common.Energy.update_thrust
         #iterate.conditions.aerodynamics    = Methods.Common.Aerodynamics.update_aerodynamics
         #iterate.conditions.stability       = Methods.Common.Aerodynamics.update_stability
         iterate.conditions.weights         = Methods.Common.Weights.update_weights
@@ -126,7 +125,7 @@ class Battery_Discharge(Simple):
         finalize = self.process.finalize
         
         # Post Processing
-        finalize.post_process = Process()        
+        finalize.post_process                   = Process()        
         finalize.post_process.inertial_position = Methods.Common.Frames.integrate_inertial_horizontal_position
         finalize.post_process.stability         = skip
         finalize.post_process.aero_derivatives  = skip

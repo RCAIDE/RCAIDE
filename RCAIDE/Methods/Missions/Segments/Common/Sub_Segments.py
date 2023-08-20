@@ -12,7 +12,7 @@ from RCAIDE.Analyses import Process
 from RCAIDE.Core     import Data 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  Expand Sub-Segments 
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Missions-Segments-Common   
 def expand_sub_segments(segment):
@@ -53,7 +53,7 @@ def expand_sub_segments(segment):
 
             
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  Update Sub-Segments
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Missions-Segments-Common
 def update_sub_segments(segment):
@@ -128,7 +128,7 @@ def sequential_sub_segments(segment):
         sub_segment.evaluate()
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  Merge Sub-Segment States
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Missions-Segments-Common
 def merge_sub_segment_states(segment):
@@ -153,7 +153,7 @@ def merge_sub_segment_states(segment):
 
     
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  Unpack Sub-Segments 
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Missions-Segments-Common
 def unpack_subsegments(segment):

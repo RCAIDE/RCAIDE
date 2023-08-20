@@ -1,21 +1,18 @@
-## @ingroup Methods-Missions-Segments-Common
-# Aerodynamics.py
+# RCAIDE/Methods/Missions/Segments/Common/Aerodynamics.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2014, SUAVE Team (Stanford University)
-# Modified: Jan 2016, E. Botero
-#           Jul 2017, E. Botero
-#           Aug 2021, M. Clarke
+# Created:  Jul 2023, M. Clarke
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
+# RCAIDE imports 
 import numpy as np
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Altitude
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_altitude(segment):
     """ Updates freestream altitude from inertial position
@@ -37,11 +34,10 @@ def update_altitude(segment):
     altitude = -segment.state.conditions.frames.inertial.position_vector[:,2]
     segment.state.conditions.freestream.altitude[:,0] = altitude
     
-
-# ----------------------------------------------------------------------
+    
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Atmosphere
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_atmosphere(segment):
     """ Computes conditions of the atmosphere at given altitudes
@@ -51,8 +47,8 @@ def update_atmosphere(segment):
         
         Inputs:
             state.conditions:
-                freestream.altitude    [meters]
-            segment.analyses.atmoshere [Function]
+                freestream.altitude             [meters]
+            segment.analyses.atmoshere          [Function]
             
         Outputs:
             state.conditions:
@@ -77,25 +73,24 @@ def update_atmosphere(segment):
     atmosphere            = segment.analyses.atmosphere
     
     # compute
-    atmo_data = atmosphere.compute_values(h,temperature_deviation)
+    atmosphere_data = atmosphere.compute_values(h,temperature_deviation)
     
     # pack
-    conditions.freestream.pressure               = atmo_data.pressure
-    conditions.freestream.temperature            = atmo_data.temperature
-    conditions.freestream.thermal_conductivity   = atmo_data.thermal_conductivity
-    conditions.freestream.density                = atmo_data.density
-    conditions.freestream.speed_of_sound         = atmo_data.speed_of_sound
-    conditions.freestream.dynamic_viscosity      = atmo_data.dynamic_viscosity
-    conditions.freestream.kinematic_viscosity    = atmo_data.kinematic_viscosity
-    conditions.freestream.prandtl_number         = atmo_data.prandtl_number
+    conditions.freestream.pressure               = atmosphere_data.pressure
+    conditions.freestream.temperature            = atmosphere_data.temperature
+    conditions.freestream.thermal_conductivity   = atmosphere_data.thermal_conductivity
+    conditions.freestream.density                = atmosphere_data.density
+    conditions.freestream.speed_of_sound         = atmosphere_data.speed_of_sound
+    conditions.freestream.dynamic_viscosity      = atmosphere_data.dynamic_viscosity
+    conditions.freestream.kinematic_viscosity    = atmosphere_data.kinematic_viscosity
+    conditions.freestream.prandtl_number         = atmosphere_data.prandtl_number
     
     return
     
     
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Freestream
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_freestream(segment):
     """ Computes freestream values
@@ -122,13 +117,13 @@ def update_freestream(segment):
     
     # unpack
     conditions = segment.state.conditions
-    Vvec = conditions.frames.inertial.velocity_vector
-    rho  = conditions.freestream.density
-    a    = conditions.freestream.speed_of_sound
-    mu   = conditions.freestream.dynamic_viscosity
+    V          = conditions.frames.inertial.velocity_vector
+    rho        = conditions.freestream.density
+    a          = conditions.freestream.speed_of_sound
+    mu         = conditions.freestream.dynamic_viscosity
 
     # velocity magnitude
-    Vmag2 = np.sum( Vvec**2, axis=1)[:,None] # keep 2d column vector
+    Vmag2 = np.sum( V**2, axis=1)[:,None]  
     Vmag  = np.sqrt(Vmag2)
 
     # dynamic pressure
@@ -149,10 +144,9 @@ def update_freestream(segment):
     return
 
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Aerodynamics
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_aerodynamics(segment):
     """ Gets aerodynamics conditions
@@ -216,14 +210,12 @@ def update_aerodynamics(segment):
     conditions.frames.wind.lift_force_vector[:,:] = L[:,:] # z-axis
     conditions.frames.wind.drag_force_vector[:,:] = D[:,:] # x-axis
 
-
-# ----------------------------------------------------------------------
-#  Update Stability
-# ----------------------------------------------------------------------
-
-## @ingroup Methods-Missions-Segments-Common
-def update_stability(segment):
     
+# ----------------------------------------------------------------------------------------------------------------------
+#  Update Stability
+# ----------------------------------------------------------------------------------------------------------------------
+## @ingroup Methods-Missions-Segments-Common
+def update_stability(segment): 
     """ Initiates the stability model
     
         Assumptions:
@@ -241,7 +233,7 @@ def update_stability(segment):
     """    
 
     # unpack
-    conditions = segment.state.conditions
+    conditions      = segment.state.conditions
     stability_model = segment.analyses.stability
     
     # call aerodynamics model

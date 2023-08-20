@@ -1,26 +1,24 @@
 # RCAIDE/Energy/Converters/Rotor.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
- 
+# ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports 
-from RCAIDE.Core                                    import Data , Units ,  ContainerOrdered 
-from RCAIDE.Energy.Energy_Component                 import Energy_Component 
-from RCAIDE.Analyses.Propulsion                     import Rotor_Wake_Fidelity_Zero
-from RCAIDE.Analyses.Propulsion                     import Rotor_Wake_Fidelity_One
-from RCAIDE.Methods.Aerodynamics.Common.Lift        import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss
-from RCAIDE.Methods.Geometry.Three_Dimensional      import orientation_product, orientation_transpose
+from RCAIDE.Core                                         import Data , Units, ContainerOrdered,orientation_product, orientation_transpose
+from RCAIDE.Energy.Energy_Component                      import Energy_Component 
+from RCAIDE.Analyses.Propulsion                          import Rotor_Wake_Fidelity_Zero
+from RCAIDE.Analyses.Propulsion                          import Rotor_Wake_Fidelity_One
+from RCAIDE.Methods.Aerodynamics.Common.Lift             import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss 
 
 # package imports
 import numpy as np
 import scipy as sp
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  GENERALIZED ROTOR CLASS
+# ---------------------------------------------------------------------------------------------------------------------- 
+#  Generalized Rotor Class
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Converters
 class Rotor(Energy_Component):
@@ -52,6 +50,7 @@ class Rotor(Energy_Component):
         """
 
         self.tag                               = 'rotor'
+        self.propulsor_group                   = None         
         
         # geometry properties 
         self.number_of_blades                  = 0.0
@@ -68,7 +67,7 @@ class Rotor(Energy_Component):
         self.number_azimuthal_stations         = 24  
         self.vtk_airfoil_points                = 40        
         self.Airfoils                          = Airfoil_Container()
-        self.airfoil_polar_stations            = None
+        self.airfoil_polar_stations            = None 
         
         # design flight conditions 
         self.cruise                            = Data() 
@@ -518,10 +517,6 @@ class Rotor(Energy_Component):
         Cq[Cq<0]                                               = 0.
         Ct[Ct<0]                                               = 0.
         Cp[Cp<0]                                               = 0.
-        thrust[conditions.energy.throttle[:,0] <=0.0]      = 0.0
-        power[conditions.energy.throttle[:,0]  <=0.0]      = 0.0
-        torque[conditions.energy.throttle[:,0]  <=0.0]     = 0.0
-        rotor_drag[conditions.energy.throttle[:,0]  <=0.0] = 0.0
         thrust[omega<0.0]                                      = -thrust[omega<0.0]
         thrust[omega==0.0]                                     = 0.0
         power[omega==0.0]                                      = 0.0
@@ -536,11 +531,7 @@ class Rotor(Energy_Component):
         thrust_prop_frame      = np.zeros((ctrl_pts,3))
         thrust_prop_frame[:,0] = thrust[:,0]
         thrust_vector          = orientation_product(orientation_transpose(T_body2thrust),thrust_prop_frame)
-
-        # Assign efficiency to network
-        conditions.energy.etap = etap
-
-
+  
         # Store data
         self.azimuthal_distribution                   = psi
         results_conditions                            = Data

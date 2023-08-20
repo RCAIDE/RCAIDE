@@ -20,7 +20,7 @@ from scipy.integrate    import  cumtrapz
 from scipy.interpolate  import RegularGridInterpolator 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  BATTERY
+#  Lithium_Ion_NMC
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Storages-Batteries 
 class Lithium_Ion_NMC(Lithium_Ion_Generic):
@@ -77,7 +77,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         self.cell.density                     = self.cell.mass/self.cell.volume                          # [kg/m^3]  
         self.cell.electrode_area              = 0.0342                                                   # [m^2] 
                                                                                                
-        self.cell.max_voltage                 = 4.2                                                      # [V]
+        self.cell.maximum_voltage             = 4.2                                                      # [V]
         self.cell.nominal_capacity            = 3.55                                                     # [Amp-Hrs]
         self.cell.nominal_voltage             = 3.6                                                      # [V] 
         self.cell.charging_voltage            = self.cell.nominal_voltage                                # [V] 
@@ -94,10 +94,10 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
                                               
         battery_raw_data                      = load_battery_results()                                                   
         self.discharge_performance_map        = create_discharge_performance_map(battery_raw_data)  
-        
+         
         return  
     
-    def energy_calc(self,numerics,battery_discharge_flag = True ): 
+    def energy_calc(self,numerics,freestream = None,battery_discharge_flag = True ): 
         '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
            battery cells. The model uses experimental data performed
            by the Automotive Industrial Systems Company of Panasonic Group 
@@ -119,7 +119,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
            
            Inputs:
              battery.
-                   I_bat             (max_energy)                          [Joules]
+                   I_bat             (maximum_energy)                      [Joules]
                    cell_mass         (battery cell mass)                   [kilograms]
                    Cp                (battery cell specific heat capacity) [J/(K kg)] 
                    t                 (battery age in days)                 [days] 
@@ -154,12 +154,12 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         battery                  = self
         btms                     = battery.thermal_management_system
         I_bat                    = battery.inputs.current
-        P_bat                    = battery.inputs.power_in    
+        P_bat                    = battery.inputs.power    
         electrode_area           = battery.cell.electrode_area 
         As_cell                  = battery.cell.surface_area  
         Q_prior                  = battery.cell.charge_throughput     
         T_cell                   = battery.cell.temperature       
-        E_max                    = battery.pack.max_energy
+        E_max                    = battery.pack.maximum_energy
         E_current                = battery.pack.current_energy 
         battery_data             = battery.discharge_performance_map     
         I                        = numerics.time.integrate      
@@ -213,12 +213,12 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         q_entropy_frac = q_dot_entropy/(q_dot_joule + q_dot_entropy)
 
         # Compute cell temperature  
-        btms_results = btms.compute_net_generated_battery_heat(battery,Q_heat_gen,numerics)
+        btms_results = btms.compute_net_generated_battery_heat(battery,Q_heat_gen,numerics,freestream)
         T_current    = btms_results.operating_conditions.battery_current_temperature
 
         # Power going into the battery accounting for resistance losses
         P_loss = n_total*Q_heat_gen
-        P = P_bat - np.abs(P_loss)      
+        P      = P_bat - np.abs(P_loss)      
         
         # Compute State Variables
         V_ul  = compute_NMC_cell_state_variables(battery_data,SOC_old,T_cell,I_cell)
@@ -293,8 +293,8 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         battery.cell.entropy_heat_fraction         = q_entropy_frac
         
         return battery 
-    
-    def append_battery_unknowns(self,segment): 
+       
+    def append_battery_unknowns(self,segment,bus_tag,battery_tag): 
         """ Appends unknowns specific to NMC cells which are unpacked from the mission solver and send to the network.
     
             Assumptions:
@@ -304,28 +304,30 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             N/A
     
             Inputs:
-            segment.state.unknowns.battery.cell.temperature        [Kelvin]
-            segment.state.unknowns.battery.cell.state_of_charge    [unitless]
-            segment.state.unknowns.battery.current                 [Amperes]
+            segment.state.unknowns,battery
+                .cell.temperature                    [Kelvin]
+                .cell.state_of_charge                [unitless]
+                .current                             [Amperes]
+            b_i                                      [unitless]
     
             Outputs: 
-            segment.state.conditions.energy.battery.cell.temperature       [Kelvin]  
-            segment.state.conditions.energy.battery.cell.state_of_charge   [unitless]
-            segment.state.conditions.energy.battery.pack.current           [Amperes]
+            segment.state.conditions.energy.battery
+                .cell.temperature                    [Kelvin]  
+                .cell.state_of_charge                [unitless]
+                .pack.current                        [Amperes]
     
             Properties Used:
             N/A
         """
-        propulsion = segment.state.conditions.energy
-        
-        propulsion.battery.cell.temperature[1:,:]      = segment.state.unknowns.battery_cell_temperature[1:,:]  
-        propulsion.battery.cell.state_of_charge[1:,0]  = segment.state.unknowns.battery_state_of_charge[:,0]
-        propulsion.battery.pack.current                = segment.state.unknowns.battery_current          
+        battery_conditions                             = segment.state.conditions.energy[bus_tag][battery_tag]
+        battery_conditions.cell.temperature[1:,:]      = segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_temperature' ][1:,:]  
+        battery_conditions.cell.state_of_charge[1:,0]  = segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_soc'][:,0]
+        battery_conditions.pack.current                = segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_current'  ]     
 
         return     
     
 
-    def append_battery_residuals(self,segment,network): 
+    def append_battery_residuals(self,segment,bus_tag,battery_tag): 
         """ Packs the residuals specific to NMC cells to be sent to the mission solver.
     
             Assumptions:
@@ -335,14 +337,17 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             N/A
     
             Inputs:
+            self                - battery data structure              [unitless] 
             segment.state.conditions.energy:
-                battery.cell.state_of_charge      [unitless] 
-                battery.cell.temperature     [Kelvin]        
-                battery.current              [Amperes]
-            segment.state.unknowns.
-                battery.cell.state_of_charge      [unitless]
-                battery.cell.temperature     [Kelvin]  
-                battery.current              [Amperes]
+                battery.cell.state_of_charge                          [unitless] 
+                battery.cell.temperature                              [Kelvin]        
+                battery.current                                       [Amperes]
+            segment.state.unknowns.                         
+                battery.cell.state_of_charge                          [unitless]
+                battery.cell.temperature                              [Kelvin]  
+                battery.current                                       [Amperes]
+            b_i                                                       [unitless]
+
             Outputs:
             None
     
@@ -350,25 +355,32 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             None
         """      
         
-        SOC_actual   = segment.state.conditions.energy.battery.cell.state_of_charge
-        SOC_predict  = segment.state.unknowns.battery_state_of_charge 
+        battery_conditions = segment.state.conditions.energy[bus_tag][battery_tag]
+        
+        SOC_actual   = battery_conditions.cell.state_of_charge
+        SOC_predict  = segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_soc'] 
     
-        Temp_actual  = segment.state.conditions.energy.battery.cell.temperature 
-        Temp_predict = segment.state.unknowns.battery_cell_temperature   
+        Temp_actual  = battery_conditions.cell.temperature 
+        Temp_predict = segment.state.unknowns[bus_tag + '_' + battery_tag +'_cell_temperature']  
     
-        i_actual     = segment.state.conditions.energy.battery.pack.current
-        i_predict    = segment.state.unknowns.battery_current    
+        i_actual     = battery_conditions.pack.current # change to cell 
+        i_predict    = segment.state.unknowns[bus_tag + '_' + battery_tag +'_cell_current']   
     
         # Return the residuals  
-        segment.state.residuals.network.SOC         = SOC_predict  - SOC_actual[1:,:]  
-        segment.state.residuals.network.temperature = Temp_predict - Temp_actual
-        segment.state.residuals.network.current     = i_predict    - i_actual  
+        segment.state.residuals.network[bus_tag + '_' + battery_tag + '_cell_soc']            = SOC_predict  - SOC_actual[1:,:]  
+        segment.state.residuals.network[bus_tag + '_' + battery_tag + '_cell_temperature' ]   = Temp_predict - Temp_actual
+        segment.state.residuals.network[bus_tag + '_' + battery_tag + '_cell_current'  ]      = i_predict    - i_actual  
         
         return  
     
-    def append_battery_unknowns_and_residuals_to_segment(self,segment,initial_voltage,
-                                              initial_battery_cell_temperature , initial_battery_state_of_charge,
-                                              initial_battery_cell_current): 
+    def append_battery_unknowns_and_residuals_to_segment(self,
+                                                         segment, 
+                                                         bus_tag, 
+                                                         battery_tag,
+                                                         estimated_voltage,
+                                                         estimated_cell_temperature ,
+                                                         estimated_state_of_charge,
+                                                         estimated_cell_current): 
         """ Sets up the information that the mission needs to run a mission segment using this network
     
             Assumptions:
@@ -378,10 +390,13 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             N/A
     
             Inputs:  
-            initial_voltage                       [volts] 
-            initial_battery_cell_temperature      [Kelvin]
-            initial_battery_state_of_charge       [unitless]
-            initial_battery_cell_current          [Amperes]
+            self                - battery data structure              [unitless]
+            segment             - segment data struction              [unitless]
+            estimated_voltage                                           [volts] 
+            estimated_cell_temperature                          [Kelvin]
+            estimated_state_of_charge                           [unitless]
+            estimated_cell_current                              [Amperes]
+            b_i                                                       [unitless]
             
             Outputs
             None
@@ -393,14 +408,14 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         ones_row    = segment.state.unknowns.ones_row
         ones_row_m1 = segment.state.unknowns.ones_row_m1      
 
-        parallel                                        = self.pack.electrical_configuration.parallel            
-        segment.state.unknowns.battery_state_of_charge  = initial_battery_state_of_charge       * ones_row_m1(1)  
-        segment.state.unknowns.battery_cell_temperature = initial_battery_cell_temperature      * ones_row(1)  
-        segment.state.unknowns.battery_current          = initial_battery_cell_current*parallel * ones_row(1)  
+        parallel                                                                    = self.pack.electrical_configuration.parallel            
+        segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_soc']           = estimated_state_of_charge       * ones_row_m1(1)  
+        segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_temperature' ]  = estimated_cell_temperature      * ones_row(1)  
+        segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_current'  ]     = estimated_cell_current*parallel * ones_row(1)  
         
         return   
 
-    def compute_voltage(self,state):  
+    def compute_voltage(self,battery_conditions):  
         """ Computes the voltage of a single NMC cell or a battery pack of NMC cells  
     
             Assumptions:
@@ -410,39 +425,39 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             N/A
     
             Inputs:  
-                self    - battery data structure             [unitless]
-                state   - segment unknowns to define voltage [unitless]
+                self                - battery data structure             [unitless]
+                battery_conditions  - segment unknowns to define voltage [unitless]
             
             Outputs
-                V_ul    - under-load voltage                 [volts]
+                V_ul                - under-load voltage                 [volts]
              
             Properties Used:
             N/A
         """           
         
         # Unpack battery properties
-        battery           = self
-        battery_data      = battery.discharge_performance_map
-        n_series          = battery.pack.electrical_configuration.series  
-        n_parallel        = battery.pack.electrical_configuration.parallel
+        battery                  = self
+        battery_data             = battery.discharge_performance_map
+        n_series                 = battery.pack.electrical_configuration.series  
+        n_parallel               = battery.pack.electrical_configuration.parallel
         
         # Unpack segment state properties  
-        SOC               = state.conditions.energy.battery.cell.state_of_charge
-        T_cell            = state.conditions.energy.battery.cell.temperature
-        I_cell            = state.conditions.energy.battery.pack.current/n_parallel 
+        SOC                      = battery_conditions.cell.state_of_charge
+        T_cell                   = battery_conditions.cell.temperature
+        I_cell                   = battery_conditions.pack.current/n_parallel 
 
         # Link Temperature and update
         battery.cell.temperature = T_cell
         
         # Compute State Variables
-        V_ul_cell = compute_NMC_cell_state_variables(battery_data,SOC,T_cell,I_cell) 
+        V_ul_cell                = compute_NMC_cell_state_variables(battery_data,SOC,T_cell,I_cell) 
         
         # Voltage under load
-        V_ul    = n_series*V_ul_cell    
+        V_ul                     = n_series*V_ul_cell    
            
         return V_ul 
     
-    def update_battery_state_of_health(self,segment,increment_battery_cycle_day = False):  
+    def update_battery_state_of_health(self,battery_conditions,increment_battery_age_by_one_day = False):  
         """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries. 
        
         Source: 
@@ -469,11 +484,11 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         N/A 
         """    
         n_series   = self.pack.electrical_configuration.series
-        SOC        = segment.conditions.energy.battery.cell.state_of_charge
-        V_ul       = segment.conditions.energy.battery.pack.voltage_under_load/n_series
-        t          = segment.conditions.energy.battery.cell.cycle_in_day         
-        Q_prior    = segment.conditions.energy.battery.cell.charge_throughput[-1,0] 
-        Temp       = np.mean(segment.conditions.energy.battery.cell.temperature) 
+        SOC        = battery_conditions.cell.state_of_charge
+        V_ul       = battery_conditions.pack.voltage_under_load/n_series
+        t          = battery_conditions.cell.cycle_in_day         
+        Q_prior    = battery_conditions.cell.charge_throughput[-1,0] 
+        Temp       = np.mean(battery_conditions.cell.temperature) 
         
         # aging model  
         delta_DOD = abs(SOC[0][0] - SOC[-1][0])
@@ -486,11 +501,11 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         E_fade_factor   = 1 - alpha_cap*(t**0.75) - beta_cap*np.sqrt(Q_prior)   
         R_growth_factor = 1 + alpha_res*(t**0.75) + beta_res*Q_prior  
         
-        segment.conditions.energy.battery.cell.capacity_fade_factor     = np.minimum(E_fade_factor,segment.conditions.energy.battery.cell.capacity_fade_factor)
-        segment.conditions.energy.battery.cell.resistance_growth_factor = np.maximum(R_growth_factor,segment.conditions.energy.battery.cell.resistance_growth_factor)
+        battery_conditions.cell.capacity_fade_factor     = np.minimum(E_fade_factor,battery_conditions.cell.capacity_fade_factor)
+        battery_conditions.cell.resistance_growth_factor = np.maximum(R_growth_factor,battery_conditions.cell.resistance_growth_factor)
         
-        if increment_battery_cycle_day:
-            segment.conditions.energy.battery.cell.cycle_in_day += 1 # update battery age by one day 
+        if increment_battery_age_by_one_day:
+            battery_conditions.cell.cycle_in_day += 1 # update battery age by one day 
       
         return  
 

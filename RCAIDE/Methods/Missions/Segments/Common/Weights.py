@@ -1,20 +1,18 @@
-## @ingroup Methods-Missions-Segments-Common
-# Weights.py
+# RCAIDE/Methods/Missions/Segments/Common/Weights.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2014, SUAVE Team (Stanford University)
-# Modified: Jan 2016, E. Botero
-#         : Dec 2021, S. Claridge
+# Created:  Jul 2023, M. Clarke
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
+# Package imports 
 import numpy as np
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Weights
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def initialize_weights(segment):
     """ Sets the initial weight of the vehicle at the start of the segment
@@ -44,7 +42,7 @@ def initialize_weights(segment):
         if segment.analyses.weights != None: 
             m_initial = segment.analyses.weights.vehicle.mass_properties.takeoff
         else: 
-            m_initial = segment.analyses.energy.network[list(segment.analyses.energy.network.keys())[0]].mass_properties.mass
+            m_initial = segment.analyses.energy.networks[list(segment.analyses.energy.networks.keys())[0]].mass_properties.mass
 
     m_current = segment.state.conditions.weights.total_mass
     
@@ -52,10 +50,9 @@ def initialize_weights(segment):
         
     return
     
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Gravity
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_gravity(segment):
     """ Sets the gravity for each part of the mission
@@ -86,10 +83,9 @@ def update_gravity(segment):
 
     return
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Update Weights
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common
 def update_weights(segment):
     

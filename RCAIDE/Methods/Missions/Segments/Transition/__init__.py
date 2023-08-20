@@ -10,5 +10,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission-Segments
 
-from Legacy.trunk.S.Methods.Missions.Segments.Transition import Constant_Acceleration_Constant_Pitchrate_Constant_Altitude
-from Legacy.trunk.S.Methods.Missions.Segments.Transition import Constant_Acceleration_Constant_Angle_Linear_Climb 
+from . import Common
+from . import Constant_Acceleration_Constant_Pitchrate_Constant_Altitude
+from . import Constant_Acceleration_Constant_Angle_Linear_Climb 

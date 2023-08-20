@@ -1,11 +1,23 @@
-## @defgroup Methods-Propulsion Propulsion 
-# @ingroup Methods
+## @defgroup Methods-Propulsion Propulsion
+# RCAIDE/Methods/Propulsion/__init__.py
+# (c) Copyright The Board of Trustees of RCAIDE
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 from .                                                                        import Rotor_Wake
+from .                                                                        import Rotor_Design
 from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing                      import ducted_fan_sizing
-from .design_rotor                                                            import design_rotor
+from .design_propeller                                                        import design_propeller 
+from .design_lift_rotor                                                       import design_lift_rotor
+from .design_prop_rotor                                                       import design_prop_rotor 
 from Legacy.trunk.S.Methods.Propulsion.turbofan_emission_index                import turbofan_emission_index
 from .size_electric_motor                                                     import size_from_kv, size_from_mass, size_optimal_motor
+from .compute_rotor_motor_esc_propulsor_performance                           import compute_rotor_motor_esc_propulsor_performance
 from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing                        import turbofan_sizing
 from Legacy.trunk.S.Methods.Propulsion.turbojet_sizing                        import turbojet_sizing
 from Legacy.trunk.S.Methods.Propulsion.ramjet_sizing                          import ramjet_sizing

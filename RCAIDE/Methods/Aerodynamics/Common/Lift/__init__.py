@@ -21,5 +21,5 @@ from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift              
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.fuselage_correction                     import fuselage_correction
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.make_VLM_wings                          import make_VLM_wings
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.VLM                                     import VLM
-from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.BET_calculations                        import compute_airfoil_aerodynamics 
-from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.BET_calculations                        import compute_inflow_and_tip_loss
+from .BET_calculations                                                                                     import compute_airfoil_aerodynamics 
+from .BET_calculations                                                                                     import compute_inflow_and_tip_loss

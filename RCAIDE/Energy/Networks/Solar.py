@@ -21,7 +21,7 @@ from RCAIDE.Energy.Networks                        import Network
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  NETWORK
+#  Solar
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Energy-Networks
 class Solar(Network):
@@ -56,23 +56,17 @@ class Solar(Network):
             Properties Used:
             N/A
         """            
-        self.solar_flux                      = None
-        self.solar_panel                     = None
-        self.motors                          = Container()
-        self.rotors                          = Container()
-        self.electronic_speed_controllers    = Container()
-        self.avionics                        = None
-        self.payload                         = None
-        self.solar_logic                     = None
-        self.battery                         = None 
-        self.engine_length                   = None
-        self.number_of_engines               = None
-        self.tag                             = 'Solar'
-        self.use_surrogate                   = False
-        self.generative_design_minimum       = 0
-        self.rotor_group_indexes             = [0]
-        self.motor_group_indexes             = [0] 
-        self.active_propulsor_groups         = [True]
+        self.tag                                    = 'Solar'
+        self.motors                                 = Container()
+        self.rotors                                 = Container()
+        self.electronic_speed_controllers           = Container()
+        self.batteries                              = Container()
+        self.solar_flux                             = None
+        self.solar_panel                            = None
+        self.bus_power_control_unit                 = None 
+        self.avionics                               = None
+        self.payload                                = None 
+        self.system_voltage                         = None    
     
     # manage process with a driver function
     def evaluate_thrust(self,state):
@@ -115,8 +109,9 @@ class Solar(Network):
         escs                    = self.electronic_speed_controllers
         avionics                = self.avionics
         payload                 = self.payload
-        solar_logic             = self.solar_logic
-        battery                 = self.battery
+        bus                     = self.bus_power_control_unit
+        bpsr                    = self.bus_power_split_ratios
+        batteries               = self.batteries
         rotor_group_indexes     = self.rotor_group_indexes
         motor_group_indexes     = self.motor_group_indexes
         active_propulsor_groups = self.active_propulsor_groups
@@ -125,14 +120,19 @@ class Solar(Network):
         a = conditions.freestream.speed_of_sound        
         
         # Set battery energy
-        battery.pack.current_energy           = conditions.energy.battery.pack.energy
-        battery.pack.temperature              = conditions.energy.battery.pack.temperature
-        battery.pack.max_energy               = conditions.energy.battery.pack.max_aged_energy   
-        battery.cell.charge_throughput        = conditions.energy.battery.cell.charge_throughput     
-        battery.cell.age                      = conditions.energy.battery.cell.cycle_in_day            
-        battery.cell.R_growth_factor          = conditions.energy.battery.cell.resistance_growth_factor
-        battery.cell.E_growth_factor          = conditions.energy.battery.cell.capacity_fade_factor 
-        
+        for b_i in range(len(batteries)):              
+            battery_key                      = list(batteries.keys())[b_i]
+            battery                          = batteries[battery_key]
+            battery_conditions               = state.conditions.energy['battery_0']
+            battery.cell.age                 = battery_conditions.cell.cycle_in_day    
+            battery.cell.charge_throughput   = battery_conditions.cell.charge_throughput   
+            battery.pack.current_energy      = battery_conditions.pack.energy
+            battery.pack.maximum_energy      = battery_conditions.pack.maximum_degraded_battery_energy     
+            battery.pack.temperature         = battery_conditions.pack.temperature
+            battery.cell.R_growth_factor     = battery_conditions.cell.resistance_growth_factor
+            battery.cell.E_growth_factor     = battery_conditions.cell.capacity_fade_factor  
+            
+ 
         # step 1
         solar_flux.solar_radiation(conditions)
         
@@ -143,11 +143,7 @@ class Solar(Network):
         solar_panel.power()
         
         # link
-        solar_logic.inputs.powerin = solar_panel.outputs.power
-        
-        # step 3
-        solar_logic.voltage()
-        
+        bus.inputs.powerin = solar_panel.outputs.power 
         
         # How many evaluations to do 
         unique_rotor_groups,factors = np.unique(rotor_group_indexes, return_counts=True)
@@ -179,7 +175,7 @@ class Solar(Network):
                 esc       = escs[esc_key]
                 
                 # Step 1 battery power
-                esc.inputs.voltagein = solar_logic.outputs.system_voltage
+                esc.inputs.voltagein = bus.voltage(conditions) 
                 
                 # Step 2 throttle the voltage
                 esc.voltageout(conditions.energy['propulsor_group_' + str(ii)].throttle)    
@@ -224,19 +220,19 @@ class Solar(Network):
                 conditions.energy['propulsor_group_' + str(ii)].rotor.power_loading    = (F_mag)/(P)      # N/W      
                 conditions.energy['propulsor_group_' + str(ii)].rotor.efficiency       = etap  
                 conditions.energy['propulsor_group_' + str(ii)].throttle               = eta 
-                conditions.noise.sources.rotors[rotor.tag]                                 = outputs
+                conditions.noise.sources.rotors[rotor.tag]                             = outputs
             
         # Run the avionics
         avionics.power()
         
         # link
-        solar_logic.inputs.pavionics =  avionics.outputs.power
+        bus.inputs.pavionics =  avionics.outputs.power
         
         # Run the payload
         payload.power()
         
         # link
-        solar_logic.inputs.ppayload = payload.outputs.power
+        bus.inputs.ppayload = payload.outputs.power
         
         # link
         esc.inputs.currentout = total_motor_current
@@ -245,19 +241,20 @@ class Solar(Network):
         esc.currentin(conditions.energy.throttle)
         
         # link
-        solar_logic.inputs.currentesc  = esc.outputs.currentin
-        solar_logic.logic(conditions,numerics)
+        bus.inputs.esc_current    = esc.outputs.currentin
+        bus.logic(conditions,numerics,efficiency = self.maximum_power_point_tracking_efficency)
         
-        # link
-        battery.inputs = solar_logic.outputs
-        battery.energy_calc(numerics)
-        
-        # Calculate avionics and payload power
-        avionics_payload_power = avionics.outputs.power + payload.outputs.power
-        
+        # link         
+        for b_i in range(len(batteries)):
+            battery_key               = list(batteries.keys())[0]
+            battery                   = batteries[battery_key]            
+            battery.inputs.current    = bus.outputs.current_in
+            battery.inputs.power      = -bus.outputs.power_in*bpsr[b_i]
+            battery.energy_calc(numerics,conditions.freestream)        
+            pack_battery_conditions(conditions,battery)  
+             
         # Pack the conditions for outputs 
-        conditions.energy.solar_flux   = solar_flux.outputs.flux          
-        pack_battery_conditions(conditions,battery,avionics_payload_power)  
+        conditions.energy.solar_flux   = solar_flux.outputs.flux    
 
         # Create the outputs
         results = Data()
@@ -290,7 +287,7 @@ class Solar(Network):
         ss       = segment.state 
         n_groups = ss.conditions.energy.number_of_propulsor_groups   
         for i in range(n_groups):   
-            if type(segment) != Battery_Recharge:           
+            if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:           
                 ss.conditions.energy['propulsor_group_' + str(i)].rotor.power_coefficient = ss.unknowns['rotor_power_coefficient_' + str(i)] 
                     
         return
@@ -334,7 +331,7 @@ class Solar(Network):
     
             Inputs:
             segment
-            initial_voltage                          [v]
+            estimated_voltage                          [v]
             initial_rotor_power_coefficients         [float]s
             
             Outputs:
@@ -347,13 +344,10 @@ class Solar(Network):
         """           
         
         # unpack the ones function
-        ones_row = segment.state.ones_row
-        
-        # Count how many unknowns and residuals based on p
-
+        ones_row = segment.state.ones_row  
         rotor_group_indexes     = self.rotor_group_indexes
         motor_group_indexes     = self.motor_group_indexes
-        active_propulsor_groups = segment.analyses.energy.network.solar.active_propulsor_groups
+        active_propulsor_groups = segment.analyses.energy.networks.solar.active_propulsor_groups
         motors                  = self.motors
         rotors                  = self.rotors 
         n_rotors                = len(motors)

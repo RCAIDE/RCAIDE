@@ -26,7 +26,7 @@ from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Drag.total_aircraf
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_volume_raymer                    import wave_drag_volume_raymer
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_volume_sears_haack               import wave_drag_volume_sears_haack
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.compressibility_drag_total                 import compressibility_drag_total
-from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.parasite_drag_nacelle                      import parasite_drag_nacelle
+from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.parasite_drag_nacelle                      import parasite_drag_nacelle as supersonic_nacelle_drag_fuselage
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_lift                             import wave_drag_lift
-from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.parasite_drag_fuselage                     import parasite_drag_fuselage
+from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.parasite_drag_fuselage                     import parasite_drag_fuselage as supersonic_parasite_drag_fuselage
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.miscellaneous_drag_aircraft                import miscellaneous_drag_aircraft

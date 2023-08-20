@@ -1,24 +1,21 @@
-## @ingroup Analyses-Mission-Segments
-# Simple.py
-#
-# Created:  
-# Modified: Feb 2016, Andrew Wendorff
+# RCAIDE/Analyses/Missions/Segments/Simple.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke  
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-
-# SUAVE imports
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE Imports 
 from RCAIDE.Analyses import Process
 from RCAIDE.Analyses.Mission.Segments import Segment
 from RCAIDE.Analyses.Mission.Segments import Conditions 
 from RCAIDE.Methods.Missions import Segments as Methods
 
-# ----------------------------------------------------------------------
-#  Segment
-# ----------------------------------------------------------------------
-
-## @ingroup Analyses-Mission-Segments
+# ----------------------------------------------------------------------------------------------------------------------
+# Simple
+# ---------------------------------------------------------------------------------------------------------------------- 
+## @ingroup Analyses-Mission-Segments 
 class Simple(Segment):
     """ The Second basic piece of a mission which each segment will expand upon
     
@@ -72,8 +69,7 @@ class Simple(Segment):
         # --------------------------------------------------------------
         #   Converge - starts iteration
         # --------------------------------------------------------------
-        converge = self.process.converge
-        
+        converge = self.process.converge 
         converge.converge_root             = Methods.converge_root
 
         # --------------------------------------------------------------
@@ -99,8 +95,7 @@ class Simple(Segment):
         # --------------------------------------------------------------
         #   Finalize - after iteration
         # --------------------------------------------------------------
-        finalize = self.process.finalize
-        
+        finalize              = self.process.finalize 
         finalize.post_process = Process()
         
         

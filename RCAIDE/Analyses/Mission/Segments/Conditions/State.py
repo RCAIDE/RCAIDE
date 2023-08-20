@@ -1,27 +1,26 @@
-## @ingroup Analyses-Mission-Segments-Conditions
-# State.py
-#
-# Created:  
-# Modified: Feb 2016, Andrew Wendorff
-#           Jan 2020, M. Clarke
+## @ingroup Analyses-Mission-Segments-Conditions 
+# RCAIDE/Analyses/Mission/Segments/Conditions/State.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
+# RCAIDE imports
+from .Conditions        import Conditions
+from .Unknowns          import Unknowns
+from .Residuals         import Residuals
+from .Numerics          import Numerics   
+from RCAIDE.Core        import DataOrdered
 
 # python imports
 import numpy as np
 
-# RCAIDE imports
-from .Conditions import Conditions
-from .Unknowns   import Unknowns
-from .Residuals  import Residuals
-from .Numerics   import Numerics 
-from RCAIDE.Core import DataOrdered
-
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  State
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Analyses-Mission-Segments-Conditions
 class State(Conditions):
@@ -102,6 +101,9 @@ class State(Conditions):
             #: if type
         #: for each key,value        
         
+# ----------------------------------------------------------------------------------------------------------------------
+# Container
+# ----------------------------------------------------------------------------------------------------------------------        
         
 ## @ingroup Analyses-Mission-Segments-Conditions        
 class Container(State):
@@ -155,7 +157,11 @@ class Container(State):
             
         return state_out
         
-State.Container = Container
+State.Container = Container 
+        
+# ----------------------------------------------------------------------------------------------------------------------
+# append_array
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 ## @ingroup Analyses-Mission-Segments-Conditions
 def append_array(A,B=None):

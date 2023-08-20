@@ -9,5 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Mission.Variable_Range_Cruise.Given_Weight import Given_Weight
-from Legacy.trunk.S.Analyses.Mission.Variable_Range_Cruise.Given_State_of_Charge import Given_State_of_Charge
+from .Given_Weight          import Given_Weight
+from .Given_State_of_Charge import Given_State_of_Charge

@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission-Segments
 
-from Legacy.trunk.S.Methods.Missions.Segments.Ground import Common
-from Legacy.trunk.S.Methods.Missions.Segments.Ground import Takeoff
-from Legacy.trunk.S.Methods.Missions.Segments.Ground import Landing
+from . import Common
+from . import Takeoff
+from . import Landing
 from . import Battery_Charge_Discharge

@@ -462,18 +462,18 @@ def vehicle_setup():
     initialize_from_circuit_configuration(bat)  
     bat.module_config.number_of_modules                    = 14  
     bat.module.geometrtic_configuration.total              = bat.pack.electrical_configuration.total
-    bat.module_config.voltage                              = bat.pack.max_voltage/bat.module_config.number_of_modules # assumes modules are connected in parallel, must be less than max_module_voltage (~50) /safety_factor (~ 1.5)  
+    bat.module_config.voltage                              = bat.pack.maximum_voltage/bat.module_config.number_of_modules # assumes modules are connected in parallel, must be less than max_module_voltage (~50) /safety_factor (~ 1.5)  
     bat.module.geometrtic_configuration.normal_count       = 24
     bat.module.geometrtic_configuration.parallel_count     = 40
     bat.thermal_management_system                          = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()     
-    net.voltage                                            = bat.pack.max_voltage     
+    net.voltage                                            = bat.pack.maximum_voltage     
     net.batteries.append(bat)      
     
     # Motors 
     motor                         = RCAIDE.Energy.Converters.Motor()
     motor.efficiency              = 0.98
     motor.origin                  = [[2.,  2.5, 0.95]]
-    motor.nominal_voltage         = bat.pack.max_voltage*0.5
+    motor.nominal_voltage         = bat.pack.maximum_voltage*0.5
     motor.no_load_current         = 1
     motor.rotor_radius            = propeller.tip_radius
     motor.design_torque           = propeller.cruise.design_torque

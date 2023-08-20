@@ -17,12 +17,12 @@ from RCAIDE.Components.Component import Container
 
 # noise imports 
 from RCAIDE.Methods.Noise.Fidelity_Zero.Airframe.noise_airframe_Fink                               import noise_airframe_Fink
-from RCAIDE.Methods.Noise.Fidelity_Zero.Engine.noise_SAE                                           import noise_SAE  
+from RCAIDE.Methods.Noise.Fidelity_Zero.Turbofan.SAE_turbofan_engine_noise_model                   import SAE_turbofan_engine_noise_model  
 from RCAIDE.Methods.Noise.Certification.compute_certification_distance_and_emission_angles         import compute_certification_distance_and_emission_angles
 from RCAIDE.Methods.Noise.Common.decibel_arithmetic                                                import SPL_arithmetic
-from RCAIDE.Methods.Noise.Common.generate_microphone_points                                        import generate_zero_elevation_microphone_points, generate_noise_hemisphere_microphone_points
+from RCAIDE.Methods.Noise.Common.generate_microphone_locations                                     import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
 from RCAIDE.Methods.Noise.Common.compute_relative_noise_evaluation_locations                       import compute_relative_noise_evaluation_locations 
-from RCAIDE.Methods.Noise.Fidelity_Zero.Rotor.total_rotor_noise                                    import total_rotor_noise 
+from RCAIDE.Methods.Noise.Fidelity_Zero.Rotor.compute_rotor_noise                                  import compute_rotor_noise 
 
 # package imports
 import numpy as np
@@ -134,14 +134,14 @@ class Fidelity_Zero(Noise):
         print_flag    = settings.print_noise_output  
         conditions    = segment.state.conditions  
         dim_cf        = len(settings.center_frequencies ) 
-        ctrl_pts      = int(segment.state.numerics.number_control_points) 
+        ctrl_pts      = int(segment.state.numerics.number_of_control_points) 
         
         # generate noise valuation points
         if settings.noise_hemisphere == True:
-            generate_noise_hemisphere_microphone_points(settings)     
+            generate_noise_hemisphere_microphone_locations(settings)     
             
         elif type(settings.ground_microphone_locations) is not np.ndarray: 
-            generate_zero_elevation_microphone_points(settings)     
+            generate_zero_elevation_microphone_locations(settings)     
         
         REGML,EGML,TGML,num_gm_mic,mic_stencil = compute_relative_noise_evaluation_locations(settings,segment)
           
@@ -188,7 +188,7 @@ class Fidelity_Zero(Noise):
                         config.networks[source].fan.rotation             = 0 # FUTURE WORK: NEED TO UPDATE ENGINE MODEL WITH FAN SPEED in RPM
                         config.networks[source].fan_nozzle.noise_speed   = conditions.noise.sources.turbofan.fan.exit_velocity 
                         config.networks[source].core_nozzle.noise_speed  = conditions.noise.sources.turbofan.core.exit_velocity
-                        engine_noise                                     = noise_SAE(config.networks[source],segment,analyses,config,settings,ioprint = print_flag)  
+                        engine_noise                                     = SAE_turbofan_engine_noise_model(config.networks[source],segment,analyses,config,settings,ioprint = print_flag)  
                         source_SPLs_dBA[:,0,:]                           = np.repeat(np.atleast_2d(engine_noise.SPL_dBA).T, num_gm_mic , axis =1)     # noise measures at one microphone location in segment
                         source_SPL_spectra[:,0,:,5:]                     = np.repeat(engine_noise.SPL_spectrum[:,np.newaxis,:], num_gm_mic , axis =1) # noise measures at one microphone location in segment
                    
@@ -224,16 +224,16 @@ class Fidelity_Zero(Noise):
                                 for r_idx , rotor  in enumerate(net.rotors):       
                                     if net.rotor_group_indexes[r_idx] == unique_rot_groups[i]: 
                                         rotor_group.append(rotor)                                  
-                                rotor_noise                                      = total_rotor_noise(rotor_group,aeroacoustic_data,segment,settings) 
-                                distributed_rotor_noise_SPL_dBA[k_idx]           = rotor_noise.SPL_dBA 
-                                distributed_rotor_noise_SPL_1_3_spectrum[k_idx]  = rotor_noise.SPL_1_3_spectrum_dBA                                   
+                                compute_rotor_noise                                      = compute_rotor_noise(rotor_group,aeroacoustic_data,segment,settings) 
+                                distributed_rotor_noise_SPL_dBA[k_idx]           = compute_rotor_noise.SPL_dBA 
+                                distributed_rotor_noise_SPL_1_3_spectrum[k_idx]  = compute_rotor_noise.SPL_1_3_spectrum_dBA                                   
                                 k_idx += 1
                                 
-                        rotor_noise.SPL_dBA          = SPL_arithmetic(distributed_rotor_noise_SPL_dBA ,sum_axis=0)
-                        rotor_noise.SPL_1_3_spectrum = SPL_arithmetic(distributed_rotor_noise_SPL_1_3_spectrum ,sum_axis=0)                                
+                        compute_rotor_noise.SPL_dBA          = SPL_arithmetic(distributed_rotor_noise_SPL_dBA ,sum_axis=0)
+                        compute_rotor_noise.SPL_1_3_spectrum = SPL_arithmetic(distributed_rotor_noise_SPL_1_3_spectrum ,sum_axis=0)                                
                                 
-                        source_SPLs_dBA[:,0,:]      = rotor_noise.SPL_dBA 
-                        source_SPL_spectra[:,0,:,:] = rotor_noise.SPL_1_3_spectrum 
+                        source_SPLs_dBA[:,0,:]      = compute_rotor_noise.SPL_dBA 
+                        source_SPL_spectra[:,0,:,:] = compute_rotor_noise.SPL_1_3_spectrum 
                         
                         # add noise  
                         total_SPL_dBA     = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],source_SPLs_dBA),axis =1),sum_axis=1)
