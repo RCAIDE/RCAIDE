@@ -3,13 +3,12 @@
 # 
 # Created:  Jul 2023, M. Clarke
 
-""" RCAIDE Package Setup
-"""
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_vortex_distribution    import generate_vortex_distribution 
+from RCAIDE.Methods.Aerodynamics.Common.Lift   import generate_vortex_distribution 
 from RCAIDE.Analyses.Aerodynamics import Vortex_Lattice
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_fuselage import plot_3d_fuselage
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_wing     import plot_3d_wing 

@@ -56,7 +56,7 @@ def compute_rotor_motor_esc_propulsor_performance(i,bus_tag,propulsor_group_tag,
     F[eta[:,0]>1.0,:]  = F[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:]
 
     # Run the motor for current
-    _ , etam =  motor.current(conditions)
+    _ , etam =  motor.current()
 
     # Determine Conditions specific to this instantation of motor and rotors
     R                   = rotor.tip_radius

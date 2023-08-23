@@ -9,8 +9,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Performance import * 
 from .Geometry    import * 
+from .Performance import * 
 from .Noise       import * 
 from .Topography  import * 
 from .Weights     import * 

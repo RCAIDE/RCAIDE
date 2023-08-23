@@ -3,14 +3,16 @@
 # 
 # Created:  Jul 2023, M. Clarke
 
-""" RCAIDE Package Setup
-"""
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
+# RCAIDE imports 
 from RCAIDE.Visualization.Performance.Common import plot_style
-from RCAIDE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry import import_airfoil_geometry  
+from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil  import import_airfoil_geometry  
+
+# package imports 
 import matplotlib.pyplot as plt 
 
 # ----------------------------------------------------------------------------------------------------------------------

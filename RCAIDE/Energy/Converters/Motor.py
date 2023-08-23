@@ -110,16 +110,14 @@ class Motor(Energy_Component):
         omega1[np.isnan(omega1)] = 0.0
         
         Q = ((v-omega1/Kv)/Res -io)/Kv
-        # store to outputs
-       
-        #P = Q*omega1
+        # store to outputs 
         
         self.outputs.torque = Q
         self.outputs.omega = omega1
 
         return omega1
     
-    def torque(self,conditions): 
+    def torque(self): 
         """Calculates the motor's torque
 
         Assumptions:
@@ -161,7 +159,7 @@ class Motor(Energy_Component):
     
         return Q
     
-    def voltage_current(self,conditions):
+    def voltage_current(self):
         """Calculates the motor's voltage and current
 
         Assumptions:
@@ -204,13 +202,12 @@ class Motor(Energy_Component):
         self.outputs.voltage = v
         self.outputs.current = i
         
-        etam=(1-io/i)*(1-i*Res/v)
-        conditions.energy.etam = etam        
+        etam=(1-io/i)*(1-i*Res/v)        
         
-        return
+        return etam
     
     
-    def current(self,conditions):
+    def current(self):
         """Calculates the motor's current
 
         Assumptions:
@@ -255,7 +252,6 @@ class Motor(Energy_Component):
         # Pack
         self.outputs.current = i
           
-        etam=(1-io/i)*(1-i*Res/v)
-        conditions.energy.etam = etam
+        etam=(1-io/i)*(1-i*Res/v) 
         
         return i, etam

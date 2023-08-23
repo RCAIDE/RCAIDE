@@ -3,8 +3,7 @@
 # 
 # Created:  Jul 2023, M. Clarke
 
-""" RCAIDE Package Setup
-"""
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -12,8 +11,8 @@
 import numpy as np 
 import plotly.graph_objects as go 
 from RCAIDE.Visualization.Geometry.Common.contour_surface_slice import contour_surface_slice
-from RCAIDE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry import import_airfoil_geometry
-from RCAIDE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_naca_4series    import compute_naca_4series 
+from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil import import_airfoil_geometry
+from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil import compute_naca_4series 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS

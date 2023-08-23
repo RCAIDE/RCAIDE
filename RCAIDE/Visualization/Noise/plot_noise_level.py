@@ -1,17 +1,14 @@
 # RCAIDE/Visualization/Noise/plot_noise_level.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Jul 2023, M. Clarke
-
-""" RCAIDE Package Setup
-"""
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Core import Units
 from RCAIDE.Visualization.Performance.Common import set_axes, plot_style
-from RCAIDE.Visualization.Noise.post_process_noise_data import post_process_noise_data
+from RCAIDE.Visualization.Noise              import post_process_noise_data
 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
