@@ -127,8 +127,6 @@ class Vehicle(Data):
             None
         """  
 
-        component_type = type(component)
-
         # find component root by type, allow subclasses
         for component_type, component_root in self._component_root_map.items():
             if isinstance(component,component_type):
