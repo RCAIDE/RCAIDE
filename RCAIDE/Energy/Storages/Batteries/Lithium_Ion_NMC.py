@@ -291,7 +291,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         
         return battery 
        
-    def assign_battery_unknowns(self,segment,bus_tag,battery_tag): 
+    def assign_battery_unknowns(self,segment,bus,battery): 
         """ Appends unknowns specific to NMC cells which are unpacked from the mission solver and send to the network.
     
             Assumptions:
@@ -316,15 +316,17 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             Properties Used:
             N/A
         """
-        battery_conditions                             = segment.state.conditions.energy[bus_tag][battery_tag]
-        battery_conditions.cell.temperature[1:,:]      = segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_temperature' ][1:,:]  
-        battery_conditions.cell.state_of_charge[1:,0]  = segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_soc'][:,0]
-        battery_conditions.pack.current                = segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_current'  ]     
+        
+        if bus.fixed_voltage == False: 
+            battery_conditions                             = segment.state.conditions.energy[bus.tag][battery.tag]
+            battery_conditions.cell.temperature[1:,:]      = segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_temperature' ][1:,:]  
+            battery_conditions.cell.state_of_charge[1:,0]  = segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_soc'][:,0]
+            battery_conditions.pack.current                = segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_current'  ]     
 
         return     
     
 
-    def assign_battery_residuals(self,segment,bus_tag,battery_tag): 
+    def assign_battery_residuals(self,segment,bus,battery): 
         """ Packs the residuals specific to NMC cells to be sent to the mission solver.
     
             Assumptions:
@@ -352,28 +354,29 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             None
         """      
         
-        battery_conditions = segment.state.conditions.energy[bus_tag][battery_tag]
+        if bus.fixed_voltage == False: 
+            battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag]
+            
+            SOC_actual   = battery_conditions.cell.state_of_charge
+            SOC_predict  = segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_soc'] 
         
-        SOC_actual   = battery_conditions.cell.state_of_charge
-        SOC_predict  = segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_soc'] 
-    
-        Temp_actual  = battery_conditions.cell.temperature 
-        Temp_predict = segment.state.unknowns[bus_tag + '_' + battery_tag +'_cell_temperature']  
-    
-        i_actual     = battery_conditions.pack.current # change to cell 
-        i_predict    = segment.state.unknowns[bus_tag + '_' + battery_tag +'_cell_current']   
-    
-        # Return the residuals  
-        segment.state.residuals.network[bus_tag + '_' + battery_tag + '_cell_soc']            = SOC_predict  - SOC_actual[1:,:]  
-        segment.state.residuals.network[bus_tag + '_' + battery_tag + '_cell_temperature' ]   = Temp_predict - Temp_actual
-        segment.state.residuals.network[bus_tag + '_' + battery_tag + '_cell_current'  ]      = i_predict    - i_actual  
+            Temp_actual  = battery_conditions.cell.temperature 
+            Temp_predict = segment.state.unknowns[bus.tag + '_' + battery.tag +'_cell_temperature']  
+        
+            i_actual     = battery_conditions.pack.current # change to cell 
+            i_predict    = segment.state.unknowns[bus.tag + '_' + battery.tag +'_cell_current']   
+        
+            # Return the residuals  
+            segment.state.residuals.network[bus.tag + '_' + battery.tag + '_cell_soc']            = SOC_predict  - SOC_actual[1:,:]  
+            segment.state.residuals.network[bus.tag + '_' + battery.tag + '_cell_temperature' ]   = Temp_predict - Temp_actual
+            segment.state.residuals.network[bus.tag + '_' + battery.tag + '_cell_current'  ]      = i_predict    - i_actual  
         
         return  
     
     def append_battery_unknowns_and_residuals_to_segment(self,
                                                          segment, 
-                                                         bus_tag, 
-                                                         battery_tag,
+                                                         bus, 
+                                                         battery,
                                                          estimated_voltage,
                                                          estimated_cell_temperature ,
                                                          estimated_state_of_charge,
@@ -400,15 +403,16 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             
             Properties Used:
             N/A
-        """        
+            """        
+      
         # setup the state
         ones_row    = segment.state.unknowns.ones_row
         ones_row_m1 = segment.state.unknowns.ones_row_m1      
-
-        parallel                                                                    = self.pack.electrical_configuration.parallel            
-        segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_soc']           = estimated_state_of_charge       * ones_row_m1(1)  
-        segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_temperature' ]  = estimated_cell_temperature      * ones_row(1)  
-        segment.state.unknowns[bus_tag + '_' + battery_tag + '_cell_current'  ]     = estimated_cell_current*parallel * ones_row(1)  
+        if bus.fixed_voltage == False: 
+            parallel                                                                    = self.pack.electrical_configuration.parallel            
+            segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_soc']           = estimated_state_of_charge       * ones_row_m1(1)  
+            segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_temperature' ]  = estimated_cell_temperature      * ones_row(1)  
+            segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_current'  ]     = estimated_cell_current*parallel * ones_row(1)  
         
         return   
 

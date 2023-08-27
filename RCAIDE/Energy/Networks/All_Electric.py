@@ -223,10 +223,9 @@ class All_Electric(Network):
                     else: 
                         bus_results[pg_tag].rotor.power_coefficient = 0. * ones_row(1)
                         bus_results[pg_tag].throttle                = 0. * ones_row(1)  
-    
-            if bus.fixed_voltage == False:
-                for battery in bus.batteries: 
-                    battery.assign_battery_unknowns(segment,bus.tag,battery.tag)        
+     
+            for battery in bus.batteries: 
+                battery.assign_battery_unknowns(segment,bus,battery)        
         
         return     
     
@@ -261,9 +260,9 @@ class All_Electric(Network):
                     q_motor   = bus_results[active_propulsor_groups[i]].motor.torque
                     q_prop    = bus_results[active_propulsor_groups[i]].rotor.torque 
                     segment.state.residuals.network[ bus.tag + '_' + active_propulsor_groups[i] + '_rotor_motor_torque'] = q_motor - q_prop
-            if bus.fixed_voltage == False: 
-                for battery in bus.batteries: 
-                    battery.assign_battery_residuals(segment,bus.tag,battery.tag)    
+            
+            for battery in bus.batteries: 
+                battery.assign_battery_residuals(segment,bus,battery)    
          
         return     
     
@@ -333,72 +332,72 @@ class All_Electric(Network):
             # Assign battery residuals, unknowns and results data structures 
             # ------------------------------------------------------------------------------------------------------  
             #  No bus power control unit, therefore variable system voltage  
-            if bus.fixed_voltage == False:
-                if len(batteries) > 1: 
-                    assert('The bus must have a fixed voltage is more than one battery is specified on the bus')  
-                else:
-                    for b_i , battery in enumerate(batteries):    
-                        try: 
-                            estimated_voltage   =  estimated_battery_voltages[bus_i][b_i]
-                        except: 
-                            estimated_voltage   = battery.pack.maximum_voltage  
-        
-                        try:
-                            initial_bat_temp    = estimated_battery_cell_temperature[bus_i][b_i]
-                        except:   
-                            initial_bat_temp    = 273.     
-                        
-                        try: 
-                            initial_battery_SOC = estimated_battery_state_of_charges[bus_i][b_i]
-                        except:
-                            initial_battery_SOC = 0.5
-        
-                        try:
-                            initial_battery_C   = estimated_battery_cell_currents[bus_i][b_i]
-                        except: 
-                            initial_battery_C   = 5.                                              
-                        
-                        # Create results data structure for battery   
-                        bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
-                        bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
-                        bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
-                        bus_results[battery.tag].pack.energy                   = ones_row(1)
-                        bus_results[battery.tag].pack.voltage_under_load       = ones_row(1)
-                        bus_results[battery.tag].pack.voltage_open_circuit     = ones_row(1)
-                        bus_results[battery.tag].pack.temperature              = ones_row(1)
-                        bus_results[battery.tag].cell.state_of_charge          = ones_row(1)
-                        bus_results[battery.tag].cell.temperature              = ones_row(1)
-                        bus_results[battery.tag].cell.charge_throughput        = ones_row(1) 
-                        bus_results[battery.tag].cell.cycle_in_day             = 0
-                        bus_results[battery.tag].cell.resistance_growth_factor = 1.
-                        bus_results[battery.tag].cell.capacity_fade_factor     = 1.  
-                        append_initial_battery_conditions(segment,bus,battery)    
-                        
-                        # add unknowns and residuals specific to battery cell
-                        battery.append_battery_unknowns_and_residuals_to_segment(segment,
-                                                                                 bus.tag,
-                                                                                 battery.tag,
-                                                                                 estimated_voltage,
-                                                                                 initial_bat_temp, 
-                                                                                 initial_battery_SOC,
-                                                                                 initial_battery_C) 
-            else:
-                for b_i , battery in enumerate(batteries):  
-                    # Create results data structure for battery   
-                    bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
-                    bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
-                    bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
-                    bus_results[battery.tag].pack.energy                   = ones_row(1)
-                    bus_results[battery.tag].pack.voltage_under_load       = ones_row(1)
-                    bus_results[battery.tag].pack.voltage_open_circuit     = ones_row(1)
-                    bus_results[battery.tag].pack.temperature              = ones_row(1)
-                    bus_results[battery.tag].cell.state_of_charge          = ones_row(1)
-                    bus_results[battery.tag].cell.temperature              = ones_row(1)
-                    bus_results[battery.tag].cell.charge_throughput        = ones_row(1) 
-                    bus_results[battery.tag].cell.cycle_in_day             = 0
-                    bus_results[battery.tag].cell.resistance_growth_factor = 1.
-                    bus_results[battery.tag].cell.capacity_fade_factor     = 1.  
-                    append_initial_battery_conditions(segment,bus,battery)   
+            #if bus.fixed_voltage == False:
+            if len(batteries) > 1 and (bus.fixed_voltage == False): 
+                assert('The bus must have a fixed voltage is more than one battery is specified on the bus')  
+            #else:
+            for b_i , battery in enumerate(batteries):    
+                try: 
+                    estimated_voltage   =  estimated_battery_voltages[bus_i][b_i]
+                except: 
+                    estimated_voltage   = battery.pack.maximum_voltage  
+
+                try:
+                    initial_bat_temp    = estimated_battery_cell_temperature[bus_i][b_i]
+                except:   
+                    initial_bat_temp    = 273.     
+                
+                try: 
+                    initial_battery_SOC = estimated_battery_state_of_charges[bus_i][b_i]
+                except:
+                    initial_battery_SOC = 0.5
+
+                try:
+                    initial_battery_C   = estimated_battery_cell_currents[bus_i][b_i]
+                except: 
+                    initial_battery_C   = 5.                                              
+                
+                # Create results data structure for battery   
+                bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].pack.energy                   = ones_row(1)
+                bus_results[battery.tag].pack.voltage_under_load       = ones_row(1)
+                bus_results[battery.tag].pack.voltage_open_circuit     = ones_row(1)
+                bus_results[battery.tag].pack.temperature              = ones_row(1)
+                bus_results[battery.tag].cell.state_of_charge          = ones_row(1)
+                bus_results[battery.tag].cell.temperature              = ones_row(1)
+                bus_results[battery.tag].cell.charge_throughput        = ones_row(1) 
+                bus_results[battery.tag].cell.cycle_in_day             = 0
+                bus_results[battery.tag].cell.resistance_growth_factor = 1.
+                bus_results[battery.tag].cell.capacity_fade_factor     = 1.  
+                append_initial_battery_conditions(segment,bus,battery)    
+                
+                # add unknowns and residuals specific to battery cell
+                battery.append_battery_unknowns_and_residuals_to_segment(segment,
+                                                                         bus ,
+                                                                         battery ,
+                                                                         estimated_voltage,
+                                                                         initial_bat_temp, 
+                                                                         initial_battery_SOC,
+                                                                         initial_battery_C) 
+            #else:
+                #for b_i , battery in enumerate(batteries):  
+                    ## Create results data structure for battery   
+                    #bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                    #bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                    #bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                    #bus_results[battery.tag].pack.energy                   = ones_row(1)
+                    #bus_results[battery.tag].pack.voltage_under_load       = ones_row(1)
+                    #bus_results[battery.tag].pack.voltage_open_circuit     = ones_row(1)
+                    #bus_results[battery.tag].pack.temperature              = ones_row(1)
+                    #bus_results[battery.tag].cell.state_of_charge          = ones_row(1)
+                    #bus_results[battery.tag].cell.temperature              = ones_row(1)
+                    #bus_results[battery.tag].cell.charge_throughput        = ones_row(1) 
+                    #bus_results[battery.tag].cell.cycle_in_day             = 0
+                    #bus_results[battery.tag].cell.resistance_growth_factor = 1.
+                    #bus_results[battery.tag].cell.capacity_fade_factor     = 1.  
+                    #append_initial_battery_conditions(segment,bus,battery)   
                 
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
