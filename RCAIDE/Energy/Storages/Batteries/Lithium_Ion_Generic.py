@@ -49,8 +49,7 @@ class Lithium_Ion_Generic(Battery):
         self.bus_power_split_ratio                                    = 1.0
         
         self.age                                                      = 0       # [days]
-        self.cell.mass                                                = None
-        self.cell.charging_SOC_cutoff                                 = 1. 
+        self.cell.mass                                                = None 
         self.cell.charging_current                                    = 3.0     # [Amps]
         self.cell.charging_voltage                                    = 3       # [Volts]
                                      
@@ -139,8 +138,8 @@ class Lithium_Ion_Generic(Battery):
         # Unpack varibles 
         battery           = self
         btms              = battery.thermal_management_system
-        I_bat             = battery.inputs.current
-        P_bat             = battery.inputs.power   
+        I_bat             = battery.outputs.current
+        P_bat             = battery.outputs.power   
         V_max             = battery.pack.maximum_voltage   
         T_current         = battery.pack.temperature   
         E_max             = battery.pack.maximum_energy
@@ -255,7 +254,7 @@ class Lithium_Ion_Generic(Battery):
         
         return      
     
-    def append_battery_unknowns(self,segment,b_i): 
+    def assign_battery_unknowns(self,segment,b_i): 
         """ Appends unknowns specific to LFP cells which are unpacked from the mission solver and send to the network.
     
             Assumptions:
@@ -281,7 +280,7 @@ class Lithium_Ion_Generic(Battery):
         
         return 
     
-    def append_battery_residuals(self,segment,b_i,network): 
+    def assign_battery_residuals(self,segment,b_i,network): 
         """ Packs the residuals specific to LFP cells to be sent to the mission solver.
     
             Assumptions:

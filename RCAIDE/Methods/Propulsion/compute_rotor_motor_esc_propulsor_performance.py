@@ -17,13 +17,39 @@ import numpy as np
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_rotor_motor_esc_propulsor_performance(i,bus_tag,propulsor_group_tag,motors,rotors,N_rotors,escs,state,conditions,voltage):
+def compute_rotor_motor_esc_propulsor_performance(i,bus_tag,propulsor_group_tag,motors,rotors,N_rotors,escs,state,voltage): 
+    ''' Computes the perfomrance of a propulsive unit comprising of rotors, motors and electronic speed controllers 
+    
+    Assumptions: 
+    N/A
+
+    Source:
+    N/A
+
+    Inputs: 
+    i                     - index of unique compoment             [-]
+    bus_tag               - tag of bus                            [string]
+    propulsor_group_tag   - tag of propulsor group                [string]
+    motors                - data structure of motors              [-]
+    rotors                - data structure of motors              [-]
+    N_rotors              - number of rotors in propulsor group   [-]
+    escs                  - data structure of motors              [-]
+    state                 - operating data structure              [-]
+    voltage               - system voltage                        [Volts]
+
+    Outputs: 
+    outputs              - propulsor operating outputs             [-]
+    total_thrust         - thrust of propulsor group              [N]
+    total_power          - power of propulsor group               [V]
+    total_current        - current of propulsor group             [N]
+    
+    Properties Used: 
+    N.A.        
     '''
-    '''
-    bus_results         = conditions.energy[bus_tag]
-    unique_rotor_tags   = conditions.energy[bus_tag][propulsor_group_tag].unique_rotor_tags
-    unique_motor_tags   = conditions.energy[bus_tag][propulsor_group_tag].unique_motor_tags
-    unique_esc_tags     = conditions.energy[bus_tag][propulsor_group_tag].unique_esc_tags  
+    bus_results         = state.conditions.energy[bus_tag]
+    unique_rotor_tags   = state.conditions.energy[bus_tag][propulsor_group_tag].unique_rotor_tags
+    unique_motor_tags   = state.conditions.energy[bus_tag][propulsor_group_tag].unique_motor_tags
+    unique_esc_tags     = state.conditions.energy[bus_tag][propulsor_group_tag].unique_esc_tags  
     
     motor    = motors[unique_motor_tags[i]]
     rotor    = rotors[unique_rotor_tags[i]]
@@ -41,11 +67,11 @@ def compute_rotor_motor_esc_propulsor_performance(i,bus_tag,propulsor_group_tag,
     # Assign conditions to the rotor
     motor.inputs.voltage         = esc.outputs.voltageout
     motor.inputs.rotor_CP        = bus_results[propulsor_group_tag].rotor.power_coefficient  
-    motor.omega(conditions) 
+    motor.omega(state.conditions) 
     rotor.inputs.omega           = motor.outputs.omega 
 
     # Spin the rotor 
-    F, Q, P, Cp, outputs, etap = rotor.spin(conditions) 
+    F, Q, P, Cp, outputs, etap = rotor.spin(state.conditions) 
 
     # Check to see if magic thrust is needed, the ESC caps throttle at 1.1 already
     eta                = bus_results[propulsor_group_tag].throttle 
@@ -67,46 +93,22 @@ def compute_rotor_motor_esc_propulsor_performance(i,bus_tag,propulsor_group_tag,
     total_motor_current = N_rotors[i]*motor.outputs.current
 
     # Pack specific outputs
-    conditions.energy[bus_tag][propulsor_group_tag].motor.efficiency        = etam  
-    conditions.energy[bus_tag][propulsor_group_tag].motor.torque            = motor.outputs.torque
-    conditions.energy[bus_tag][propulsor_group_tag].rotor.torque            = Q
-    conditions.energy[bus_tag][propulsor_group_tag].rotor.thrust            = np.atleast_2d(np.linalg.norm(total_thrust ,axis = 1)).T
-    conditions.energy[bus_tag][propulsor_group_tag].rotor.rpm               = rpm
-    conditions.energy[bus_tag][propulsor_group_tag].rotor.tip_mach          = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound 
-    conditions.energy[bus_tag][propulsor_group_tag].rotor.disc_loading      = (F_mag)/(np.pi*(R**2))                 
-    conditions.energy[bus_tag][propulsor_group_tag].rotor.power_loading     = (F_mag)/(P)        
-    conditions.energy[bus_tag][propulsor_group_tag].rotor.efficiency        = etap  
-    conditions.energy[bus_tag][propulsor_group_tag].rotor.figure_of_merit   = outputs.figure_of_merit  
-    conditions.energy[bus_tag][propulsor_group_tag].throttle                = eta 
-    conditions.noise.sources.rotors[rotor.tag]                              = outputs 
-
-    assign_identical_rotor_performance(conditions,bus_tag,propulsor_group_tag,rotor,rotors,unique_rotor_tags,i,outputs) 
+    state.conditions.energy[bus_tag][propulsor_group_tag].motor.efficiency        = etam  
+    state.conditions.energy[bus_tag][propulsor_group_tag].motor.torque            = motor.outputs.torque
+    state.conditions.energy[bus_tag][propulsor_group_tag].rotor.torque            = Q
+    state.conditions.energy[bus_tag][propulsor_group_tag].rotor.thrust            = np.atleast_2d(np.linalg.norm(total_thrust ,axis = 1)).T
+    state.conditions.energy[bus_tag][propulsor_group_tag].rotor.rpm               = rpm
+    state.conditions.energy[bus_tag][propulsor_group_tag].rotor.tip_mach          = (R*rpm*Units.rpm)/state.conditions.freestream.speed_of_sound 
+    state.conditions.energy[bus_tag][propulsor_group_tag].rotor.disc_loading      = (F_mag)/(np.pi*(R**2))                 
+    state.conditions.energy[bus_tag][propulsor_group_tag].rotor.power_loading     = (F_mag)/(P)        
+    state.conditions.energy[bus_tag][propulsor_group_tag].rotor.efficiency        = etap  
+    state.conditions.energy[bus_tag][propulsor_group_tag].rotor.figure_of_merit   = outputs.figure_of_merit  
+    state.conditions.energy[bus_tag][propulsor_group_tag].throttle                = eta 
+    state.conditions.noise.sources.rotors[rotor.tag]                              = outputs 
 
     # Detemine esc current 
     esc.inputs.currentout = total_motor_current
-    esc.currentin(conditions.energy[bus_tag][propulsor_group_tag].throttle)
+    esc.currentin(state.conditions.energy[bus_tag][propulsor_group_tag].throttle)
     total_current = esc.outputs.currentin
 
     return outputs , total_thrust , total_power , total_current 
-
-
-def assign_identical_rotor_performance(conditions,bus_tag,propulsor_group_tag,rotor,rotors,unique_rotor_tags,i,outputs):  
- 
-    for identical_rotor in rotors:
-        if identical_rotor.propulsor_group == unique_rotor_tags[i]: 
-            identical_rotor.inputs.y_axis_rotation = conditions.energy[bus_tag][propulsor_group_tag].y_axis_rotation 
-            if rotor.Wake.wake_method=="Fidelity_One":
-    
-                # make copy of rotor wake and vortex distribution
-                base_wake = copy.deepcopy(rotor.Wake)
-                wake_vd   = base_wake.vortex_distribution
-    
-                # apply offset 
-                origin_offset = np.array(identical_rotor.origin[0]) - np.array(rotor.origin[0])
-                identical_rotor.Wake = base_wake
-                identical_rotor.Wake.shift_wake_VD(wake_vd, origin_offset)   
-    
-            elif rotor.Wake.wake_method=="Fidelity_Zero":
-                identical_rotor.outputs = outputs  
-
-    return  

@@ -153,8 +153,8 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         # Unpack varibles  
         battery                  = self
         btms                     = battery.thermal_management_system
-        I_bat                    = battery.inputs.current
-        P_bat                    = battery.inputs.power    
+        I_bat                    = battery.outputs.current
+        P_bat                    = battery.outputs.power    
         electrode_area           = battery.cell.electrode_area 
         As_cell                  = battery.cell.surface_area  
         Q_prior                  = battery.cell.charge_throughput     
@@ -182,7 +182,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             I_cell = -I_bat/n_parallel 
         
         # State of charge of the battery
-        initial_discharge_state = np.dot(I,P_bat) + E_current[0]
+        initial_discharge_state = np.dot(I,-P_bat) + E_current[0]
         SOC_old =  np.divide(initial_discharge_state,E_max) 
           
         # Make sure things do not break by limiting current, temperature and current 
@@ -218,7 +218,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
 
         # Power going into the battery accounting for resistance losses
         P_loss = n_total*Q_heat_gen
-        P      = P_bat - np.abs(P_loss)      
+        P      = -P_bat - np.abs(P_loss)      
         
         # Compute State Variables
         V_ul  = compute_NMC_cell_state_variables(battery_data,SOC_old,T_cell,I_cell)
@@ -230,17 +230,14 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         V_oc      = V_ul + (I_cell * R_0) 
         
         # ---------------------------------------------------------------------------------
-        # Compute updates state of battery 
+        # Compute updated state of battery 
         # ---------------------------------------------------------------------------------   
-        
-        # Possible Energy going into the battery:
-        energy_unmodified = np.dot(I,P)
-    
+         
         # Available capacity
         capacity_available = E_max - battery.pack.current_energy[0]
     
         # How much energy the battery could be overcharged by
-        delta           = energy_unmodified -capacity_available
+        delta           =  np.dot(I,P) - capacity_available
         delta[delta<0.] = 0.
     
         # Power that shouldn't go in
@@ -269,7 +266,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         Q_total    = np.atleast_2d(np.hstack(( Q_prior[0] , Q_prior[0] + cumtrapz(I_cell[:,0], x = numerics.time.control_points[:,0])/Units.hr ))).T   
         
         # If SOC is negative, voltage under load goes to zero 
-        V_ul[SOC_new < 0.] = 0.
+        V_ul[SOC_new < 0.] = 0. 
             
         # Pack outputs
         battery.pack.resistive_losses              = P_loss
@@ -294,7 +291,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         
         return battery 
        
-    def append_battery_unknowns(self,segment,bus_tag,battery_tag): 
+    def assign_battery_unknowns(self,segment,bus_tag,battery_tag): 
         """ Appends unknowns specific to NMC cells which are unpacked from the mission solver and send to the network.
     
             Assumptions:
@@ -327,7 +324,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         return     
     
 
-    def append_battery_residuals(self,segment,bus_tag,battery_tag): 
+    def assign_battery_residuals(self,segment,bus_tag,battery_tag): 
         """ Packs the residuals specific to NMC cells to be sent to the mission solver.
     
             Assumptions:

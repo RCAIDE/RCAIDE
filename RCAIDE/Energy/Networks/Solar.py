@@ -226,13 +226,13 @@ class Solar(Network):
         avionics.power()
         
         # link
-        bus.inputs.pavionics =  avionics.outputs.power
+        bus.inputs.pavionics =  avionics.inputs.power
         
         # Run the payload
         payload.power()
         
         # link
-        bus.inputs.ppayload = payload.outputs.power
+        bus.inputs.ppayload = payload.inputs.power
         
         # link
         esc.inputs.currentout = total_motor_current
@@ -248,8 +248,8 @@ class Solar(Network):
         for b_i in range(len(batteries)):
             battery_key               = list(batteries.keys())[0]
             battery                   = batteries[battery_key]            
-            battery.inputs.current    = bus.outputs.current_in
-            battery.inputs.power      = -bus.outputs.power_in*bpsr[b_i]
+            battery.outputs.current    = bus.inputs.current
+            battery.outputs.power      = -bus.outputs.power_in*bpsr[b_i]
             battery.energy_calc(numerics,conditions.freestream)        
             pack_battery_conditions(conditions,battery)  
              

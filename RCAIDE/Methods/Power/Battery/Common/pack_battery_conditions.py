@@ -71,9 +71,9 @@ def pack_battery_conditions(battery_conditions,battery):
     n_series           = battery.pack.electrical_configuration.series  
     n_parallel         = battery.pack.electrical_configuration.parallel
     n_total            = n_series*n_parallel 
-    battery_power_draw = battery.inputs.power    
+    battery_power_draw = battery.outputs.power    
         
-    battery_conditions.pack.current                         = battery.inputs.current
+    battery_conditions.pack.current                         = battery.outputs.current
     battery_conditions.pack.energy                          = battery.pack.current_energy
     battery_conditions.pack.voltage_open_circuit            = battery.pack.voltage_open_circuit
     battery_conditions.pack.voltage_under_load              = battery.pack.voltage_under_load 
@@ -86,7 +86,7 @@ def pack_battery_conditions(battery_conditions,battery):
     battery_conditions.pack.internal_resistance             = battery.pack.internal_resistance 
     battery_conditions.cell.cycle_in_day                    = battery.cell.age
     battery_conditions.cell.state_of_charge                 = battery.cell.state_of_charge 
-    battery_conditions.cell.power                           = battery.inputs.power/n_series
+    battery_conditions.cell.power                           = battery.outputs.power/n_series
     battery_conditions.cell.energy                          = battery.pack.current_energy/n_total   
     battery_conditions.cell.voltage_under_load              = battery.cell.voltage_under_load    
     battery_conditions.cell.voltage_open_circuit            = battery.cell.voltage_open_circuit  

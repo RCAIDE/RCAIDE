@@ -109,15 +109,15 @@ class Isolated_Battery_Cell(Network):
             avionics_current =  np.ones((numerics.number_of_control_points,1))*avionics.current    
             
             # link
-            battery.inputs.current  = avionics_current
-            battery.inputs.power    = -avionics_power
+            battery.outputs.current  = avionics_current
+            battery.outputs.power    = -avionics_power
             battery.inputs.voltage  = volts
             battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)          
             
         else: 
-            battery.inputs.current  = -battery.charging_current * np.ones_like(volts)
+            battery.outputs.current  = -battery.charging_current * np.ones_like(volts)
             battery.inputs.voltage  =  battery.charging_voltage * np.ones_like(volts) 
-            battery.inputs.power    =  -battery.inputs.current * battery.inputs.voltage * np.ones_like(volts)
+            battery.outputs.power    =  -battery.outputs.current * battery.inputs.voltage * np.ones_like(volts)
             battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)        
         
         # Pack the conditions for outputs       
@@ -159,7 +159,7 @@ class Isolated_Battery_Cell(Network):
             battery        = batteries[battery_key]  
               
             # append battery unknowns 
-            battery.append_battery_unknowns(segment,b_i)   
+            battery.assign_battery_unknowns(segment,b_i)   
         return  
 
     
@@ -190,7 +190,7 @@ class Isolated_Battery_Cell(Network):
             battery        = batteries[battery_key]  
              
             # append battery residuals 
-            battery.append_battery_residuals(segment,b_i,network)   
+            battery.assign_battery_residuals(segment,b_i,network)   
                 
         return     
 

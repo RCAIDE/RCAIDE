@@ -51,7 +51,7 @@ class Battery_Discharge(Simple):
         # --------------------------------------------------------------
         self.altitude               = None
         self.time                   = 1.0 * Units.seconds
-        self.overcharge_contingency = 1.25  
+        self.overcharge_contingency = 1.10 
         self.true_course_angle      = 0.0 * Units.degrees 
         
         # --------------------------------------------------------------
@@ -110,8 +110,6 @@ class Battery_Discharge(Simple):
         iterate.conditions.freestream      = Methods.Common.Aerodynamics.update_freestream
         iterate.conditions.orientations    = Methods.Common.Frames.update_orientations
         iterate.conditions.energy          = Methods.Common.Energy.update_thrust
-        #iterate.conditions.aerodynamics    = Methods.Common.Aerodynamics.update_aerodynamics
-        #iterate.conditions.stability       = Methods.Common.Aerodynamics.update_stability
         iterate.conditions.weights         = Methods.Common.Weights.update_weights
         iterate.conditions.forces          = Methods.Common.Frames.update_forces
         iterate.conditions.planet_position = Methods.Common.Frames.update_planet_position

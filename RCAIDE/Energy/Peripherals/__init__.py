@@ -9,4 +9,4 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from .Avionics import Avionics
-from Legacy.trunk.S.Components.Energy.Peripherals import Payload
+from .Payload  import Payload

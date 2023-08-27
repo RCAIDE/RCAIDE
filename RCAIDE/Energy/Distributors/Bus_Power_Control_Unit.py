@@ -11,9 +11,6 @@
 from RCAIDE.Energy.Energy_Component import Energy_Component
 from RCAIDE.Components.Component    import Container   
 
-# package imports
-import numpy as np
-
 # ----------------------------------------------------------------------------------------------------------------------
 #  Bus_Power_Control_Unit
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -49,17 +46,21 @@ class Bus_Power_Control_Unit(Energy_Component):
             Properties Used:
             None
         """          
-        self.tag                          = 'bus'
-        self.motors                       = Container()
-        self.rotors                       = Container()
-        self.electronic_speed_controllers = Container()
-        self.batteries                    = Container()
-        self.fixed_voltage                = True
-        self.battery_power_split_ratios   = [1.0]
-        self.voltage                      = 0.0
-        self.active_propulsor_groups      = [True] 
-
-    def logic(self,conditions,numerics,voltage,efficiency = 1.0):
+        self.tag                           = 'bus'
+        self.motors                        = Container()
+        self.rotors                        = Container()
+        self.electronic_speed_controllers  = Container()
+        self.batteries                     = Container()
+        self.fixed_voltage                 = True
+        self.active_propulsor_groups       = None 
+        self.efficiency                    = 1.0
+        self.voltage                       = 0.0
+        self.outputs.avionics_power        = 0.0
+        self.outputs.payload_power         = 0.0
+        self.outputs.total_esc_power       = 0.0    
+        self.inputs.secondary_source_power = 0.0
+        
+    def logic(self,conditions,numerics):
         """ The power being sent to the battery
         
             Assumptions:
@@ -70,41 +71,27 @@ class Bus_Power_Control_Unit(Energy_Component):
             N/A
             
             Inputs:
-                self.inputs:
-                    powerin
-                    avionics_power
-                    payload_power
-                    esc_current
-                numerics.time.integrate
+            self.inputs:
+                    secondary_source_power           [Watts]
+                .outputs
+                    avionics_power                   [Watts]
+                    payload_power                    [Watts]
+                    total_esc_power                  [Watts]
 
             Outputs:
-                self.outputs:
-                    current
-                    power_in
-                    energy_transfer
-                    
-            Properties Used:
-                self.MPPT_efficiency
+            self.outputs.power                       [Watts]
+                inputs.power                         [Watts]
 
         """
-        #Unpack
-        #pin         = self.inputs.secondary_source_power
-        pavionics   = self.inputs.avionics_power
-        ppayload    = self.inputs.payload_power
-        esccurrent  = self.inputs.esc_current 
-        #I           = numerics.time.integrate
+        # Unpack
+        pin         = self.inputs.secondary_source_power
+        pavionics   = self.outputs.avionics_power
+        ppayload    = self.outputs.payload_power
+        pesc        = self.outputs.total_esc_power   
         
-        #pavail      = pin*efficiency
-        #plevel      = pavail -pavionics -ppayload - voltage*esccurrent
-        plevel      =  -pavionics -ppayload - voltage*esccurrent
+        # outputs from bus    
+        self.outputs.power    = pavionics + ppayload + pesc - pin
         
-        # Integrate the plevel over time to assess the energy consumption
-        # or energy storage
-        #e = np.dot(I,plevel)
-        
-        # Send or take power out of the battery, Pack up
-        self.outputs.current         = (plevel/voltage)
-        self.outputs.power           = plevel
-        #self.outputs.energy_transfer = e 
-        
+        # inputs to bus
+        self.inputs.power     = self.outputs.power/self.efficiency
         return 

@@ -12,3 +12,4 @@
  
 from .set_axes                  import set_axes
 from .plot_style                import plot_style 
+from .compile_propulsor_groups  import compile_propulsor_groups

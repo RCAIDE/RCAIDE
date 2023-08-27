@@ -1,4 +1,4 @@
-# RCAIDE/Energy/Peripherals/Avionics.py
+# RCAIDE/Energy/Peripherals/Payload.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -12,16 +12,16 @@ from RCAIDE.Energy.Energy_Component import Energy_Component
 # ----------------------------------------------------------------------------------------------------------------------
 #  Avionics
 # ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Energy-Peripherals 
-class Avionics(Energy_Component):
-    """A class representing avionics.
+## @ingroup Energy-Peripherals  
+class Payload(Energy_Component):
+    """A class representing a payload.
     
     Assumptions:
     None
     
     Source:
     N/A
-    """        
+    """          
     def __defaults__(self):
         """This sets the default power draw.
 
@@ -39,12 +39,11 @@ class Avionics(Energy_Component):
 
         Properties Used:
         N/A
-        """                 
+        """            
         self.power_draw = 0.0
-        self.tag        = 'avionics'
         
     def power(self):
-        """This gives the power draw from avionics.
+        """This gives the power draw from a payload.
 
         Assumptions:
         None
@@ -56,11 +55,11 @@ class Avionics(Energy_Component):
         None
 
         Outputs:
-        self.outputs.power_draw          [Watts]
-                                           
+        self.outputs.power_draw         [Watts]
+
         Properties Used:
-        self.power_draw    
-        """                 
+        self.power_draw
+        """          
         self.inputs.power = self.power_draw
         
-        return self.power_draw
+        return self.power_draw 
