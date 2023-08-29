@@ -12,6 +12,7 @@
 ## @ingroup Energy
 
 from Legacy.trunk.S.Components.Energy.Converters import Combustor
+from Legacy.trunk.S.Components.Energy.Converters import Compressor
 from Legacy.trunk.S.Components.Energy.Converters import Compression_Nozzle
 from Legacy.trunk.S.Components.Energy.Converters import de_Laval_Nozzle
 from Legacy.trunk.S.Components.Energy.Converters import Expansion_Nozzle
