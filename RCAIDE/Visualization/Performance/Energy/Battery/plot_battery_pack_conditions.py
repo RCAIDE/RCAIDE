@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 from RCAIDE.Core import Units
-from RCAIDE.Visualization.Performance.Common import set_axes, plot_style
+from RCAIDE.Visualization.Performance.Common import set_axes, plot_style,get_battery_names
 from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -58,78 +58,82 @@ def plot_battery_pack_conditions(results,
     # get line colors for plots 
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
     
-    fig   = plt.figure(save_filename)
-    fig.set_size_inches(width,height) 
-    legend_elements = []
-    for i in range(len(results.segments)): 
-        time    = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-        for network in results.segments[i].analyses.energy.networks: 
-            busses  = network.busses
-            for bus in busses:
-                for b_i, battery in enumerate(bus.batteries):    
-                    battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag] 
-                    pack_power          = battery_conditions.pack.power_draw[:,0]
-                    pack_energy         = battery_conditions.pack.energy[:,0]
-                    pack_volts          = battery_conditions.pack.voltage_under_load[:,0]
-                    pack_volts_oc       = battery_conditions.pack.voltage_open_circuit[:,0]
-                    pack_current        = battery_conditions.pack.current[:,0]
-                    pack_SOC            = battery_conditions.cell.state_of_charge[:,0] 
+    # compile a list of all propulsor group names on aircraft 
+    b = get_battery_names(results)
+    
+    for b_i in range(len(b)): 
+        fig = plt.figure(save_filename + '_' + b[b_i])
+        fig.set_size_inches(width,height) 
             
-                    segment_tag  =  results.segments[i].tag
-                    segment_name = segment_tag.replace('_', ' ') 
+        legend_elements = []    
+        for i in range(len(results.segments)): 
+            time    = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
+            for network in results.segments[i].analyses.energy.networks: 
+                busses  = network.busses
+                for bus in busses: 
+                    for battery in bus.batteries:
+                        if battery.tag == b[b_i]:  
+                            battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag] 
+                            pack_power          = battery_conditions.pack.power_draw[:,0]
+                            pack_energy         = battery_conditions.pack.energy[:,0]
+                            pack_volts          = battery_conditions.pack.voltage_under_load[:,0]
+                            pack_volts_oc       = battery_conditions.pack.voltage_open_circuit[:,0]
+                            pack_current        = battery_conditions.pack.current[:,0]
+                            pack_SOC            = battery_conditions.cell.state_of_charge[:,0] 
                     
-                    if i == 1: 
-                        legend_elements.append(Line2D([0], [0],  marker= ps.markers[b_i], color='w', label=battery.tag,
-                              markerfacecolor='k', markersize=10))
-                                       
-                    axes_1 = plt.subplot(3,2,1)
-                    axes_1.plot(time, pack_SOC, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)
-                    axes_1.set_ylabel(r'SOC')
-                    set_axes(axes_1)     
+                            segment_tag  =  results.segments[i].tag
+                            segment_name = segment_tag.replace('_', ' ') 
+                            
+                            if i == 1: 
+                                legend_elements.append(Line2D([0], [0],  marker= ps.marker, color='w', label=battery.tag,
+                                      markerfacecolor='k', markersize=10))
+                                               
+                            axes_1 = plt.subplot(3,2,1)
+                            axes_1.plot(time, pack_SOC, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
+                            axes_1.set_ylabel(r'SOC')
+                            set_axes(axes_1)     
+                            
+                            axes_2 = plt.subplot(3,2,2)
+                            axes_2.plot(time, (pack_energy/1000)/Units.Wh, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                            axes_2.set_ylabel(r'Energy (kW-hr)')
+                            set_axes(axes_2) 
                     
-                    axes_2 = plt.subplot(3,2,2)
-                    axes_2.plot(time, (pack_energy/1000)/Units.Wh, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-                    axes_2.set_ylabel(r'Energy (kW-hr)')
-                    set_axes(axes_2) 
-            
-                    axes_3 = plt.subplot(3,2,3)
-                    axes_3.plot(time, pack_current, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-                    axes_3.set_ylabel(r'Current (A)')
-                    set_axes(axes_3)  
-            
-                    axes_4 = plt.subplot(3,2,4)
-                    axes_4.plot(time, pack_power/1000, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-                    axes_4.set_ylabel(r'Power (kW)')
-                    set_axes(axes_4)     
+                            axes_3 = plt.subplot(3,2,3)
+                            axes_3.plot(time, pack_current, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                            axes_3.set_ylabel(r'Current (A)')
+                            set_axes(axes_3)  
                     
-                    axes_5 = plt.subplot(3,2,5)
-                    axes_5.plot(time, pack_volts, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-                    axes_5.set_ylabel(r'Voltage (V)')
-                    axes_5.set_xlabel('Time (mins)')
-                    set_axes(axes_5) 
+                            axes_4 = plt.subplot(3,2,4)
+                            axes_4.plot(time, pack_power/1000, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                            axes_4.set_ylabel(r'Power (kW)')
+                            set_axes(axes_4)     
+                            
+                            axes_5 = plt.subplot(3,2,5)
+                            axes_5.plot(time, pack_volts, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                            axes_5.set_ylabel(r'Voltage (V)')
+                            axes_5.set_xlabel('Time (mins)')
+                            set_axes(axes_5) 
+                    
+                            axes_6 = plt.subplot(3,2,6)
+                            axes_6.plot(time, pack_volts_oc, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                            axes_6.set_ylabel(r'Voltage OC (V)')
+                            axes_6.set_xlabel('Time (mins)')
+                            set_axes(axes_6)   
+    
+    
+        if show_legend:        
+            leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
+            leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})     
             
-                    axes_6 = plt.subplot(3,2,6)
-                    axes_6.plot(time, pack_volts_oc, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-                    axes_6.set_ylabel(r'Voltage OC (V)')
-                    axes_6.set_xlabel('Time (mins)')
-                    set_axes(axes_6)   
+        # Adjusting the sub-plots for legend 
+        fig.subplots_adjust(top=0.8)
+        
+        # set title of plot 
+        title_text    = 'Battery_Pack_Conditions: ' + b[b_i]
+        fig.suptitle(title_text)
     
-    
-    if show_legend:        
-        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
-        leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
-    
-        leg2 =  fig.legend(handles=legend_elements, bbox_to_anchor=(0.5, 0.8), loc='upper center', ncol = 3) 
-        leg2.set_title('Battery', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
-    # Adjusting the sub-plots for legend 
-    fig.subplots_adjust(top=0.75)
-    
-    # set title of plot 
-    title_text    = 'Battery Pack Conditions'      
-    fig.suptitle(title_text)
-    
-    if save_figure:
-        plt.savefig(save_filename + file_type)   
+        if save_figure:
+            plt.savefig(save_filename + '_' + b[b_i] + file_type)   
     return
 
 

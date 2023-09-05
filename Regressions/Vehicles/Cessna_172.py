@@ -1,27 +1,20 @@
-# Cessna_172.py
-#
-# Created:  Feb 2017, M. Vegh 
-# Modified: Feb 2018, M. Vegh 
-# Modified: Mar 2020, M. Clarke 
+# Regression/scripts/Vehicles/Cessna_172.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke 
 
-""" setup file for the Cessna_172, current values only used to test General Aviation script
-"""
-
-# ----------------------------------------------------------------------
-#   Imports
-# ----------------------------------------------------------------------
-
-import numpy as np
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
-from RCAIDE.Core import Units
-from RCAIDE.Core import (
-    Data, Container,
-)
+from RCAIDE.Core import Units,Data, Container 
 from RCAIDE.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
-from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
+from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom             import datcom
 from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_ac_x import trapezoid_ac_x
 from RCAIDE.Methods.Propulsion import design_propeller
 
+# python imports 
+import numpy as np
 def vehicle_setup(): 
     # ------------------------------------------------------------------
     #   Initialize the Vehicle

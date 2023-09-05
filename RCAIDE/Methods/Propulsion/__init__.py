@@ -17,7 +17,9 @@ from .design_lift_rotor                                                       im
 from .design_prop_rotor                                                       import design_prop_rotor 
 from Legacy.trunk.S.Methods.Propulsion.turbofan_emission_index                import turbofan_emission_index
 from .size_electric_motor                                                     import size_from_kv, size_from_mass, size_optimal_motor
-from .compute_rotor_motor_esc_propulsor_performance                           import compute_rotor_motor_esc_propulsor_performance
+from .all_electric_propulsor                                                  import compute_propulsor_performance , compute_unique_propulsor_groups
+from .internal_combustion_engine_cs_propulsor                                 import compute_propulsor_performance , compute_unique_propulsor_groups
+from .internal_combustion_engine_propulsor                                    import compute_propulsor_performance , compute_unique_propulsor_groups
 from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing                        import turbofan_sizing
 from Legacy.trunk.S.Methods.Propulsion.turbojet_sizing                        import turbojet_sizing
 from Legacy.trunk.S.Methods.Propulsion.ramjet_sizing                          import ramjet_sizing

@@ -1,4 +1,4 @@
-# regression/scripts/network_battery/cell_test.py
+# Regression/scripts/network_isolated_battery_cell/cell_test.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -189,72 +189,7 @@ def full_setup(current,battery_chemistry,mAh ):
     analyses.configs  = configs_analyses
     analyses.missions = missions_analyses 
 
-    return vehicle, analyses
-
-
-# ----------------------------------------------------------------------
-#   Build the Vehicle
-# ----------------------------------------------------------------------
-def vehicle_setup(current,battery_chemistry): 
-
-    vehicle                       = RCAIDE.Vehicle() 
-    vehicle.tag                   = 'battery'   
-    vehicle.reference_area        = 1
-
-    # ------------------------------------------------------------------
-    #   Vehicle-level Properties
-    # ------------------------------------------------------------------    
-    # mass properties
-    vehicle.mass_properties.takeoff         = 1 * Units.kg 
-    vehicle.mass_properties.max_takeoff     = 1 * Units.kg 
-       
-    # ------------------------------------------------------------------        
-    #   Main Wing
-    # ------------------------------------------------------------------   
-    wing                         = RCAIDE.Components.Wings.Wing()
-    wing.tag                     = 'main_wing' 
-    wing.areas.reference         = 1.
-    wing.spans.projected         = 1.
-    wing.aspect_ratio            = 1.
-    wing.symmetric               = True
-    wing.thickness_to_chord      = 0.10
-    wing.taper                   = 1.
-    wing.dynamic_pressure_ratio  = 1.
-    wing.chords.mean_aerodynamic = 1.
-    wing.chords.root             = 1.
-    wing.chords.tip              = 1.
-    wing.origin                  = [[0.0,0.0,0.0]] # meters
-    wing.aerodynamic_center      = [0.0,0.0,0.0] # meters
-    
-    # add to vehicle
-    vehicle.append_component(wing)
-     
-
-    net                           = RCAIDE.Energy.Networks.Isolated_Battery_Cell()
-    net.tag                       ='single_cell_network'   
-    net.dischage_model_fidelity   = battery_chemistry
-
-    # Battery    
-    if battery_chemistry == 'NMC': 
-        battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()
-    elif battery_chemistry == 'LFP': 
-        battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP() 
-    battery.charging_voltage                     = battery.cell.nominal_voltage    
-    battery.charging_current                     = current   
-    battery.convective_heat_transfer_coefficient = 7.17
-    net.voltage                                  = battery.cell.nominal_voltage 
-    initialize_from_circuit_configuration(battery) 
-    net.batteries.append(battery)   
-    
-    vehicle.mass_properties.takeoff = battery.mass_properties.mass 
-
-    avionics                      = RCAIDE.Energy.Peripherals.Avionics()
-    avionics.current              = current 
-    net.avionics                  = avionics  
-
-    vehicle.append_energy_network(net)
-
-    return vehicle
+    return vehicle, analyses 
 
 def analyses_setup(configs):
 
@@ -286,13 +221,6 @@ def base_analysis(vehicle):
     analyses.append(atmosphere)   
  
     return analyses     
-
-def configs_setup(vehicle): 
-    configs         = RCAIDE.Components.Configs.Config.Container()  
-    base_config     = RCAIDE.Components.Configs.Config(vehicle)
-    base_config.tag = 'base' 
-    configs.append(base_config)   
-    return configs
 
 def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
  

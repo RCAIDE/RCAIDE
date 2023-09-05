@@ -6,13 +6,14 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
- # RCAIDE imports   
+ # RCAIDE imports 
+import RCAIDE
 from RCAIDE.Analyses.Mission.Segments.Conditions                           import Residuals
 from RCAIDE.Core                                                           import Data
+from RCAIDE.Components.Component                                           import Container  
 from RCAIDE.Methods.Power.Battery.Common.pack_battery_conditions           import pack_battery_conditions
 from RCAIDE.Methods.Power.Battery.Common.append_initial_battery_conditions import append_initial_battery_conditions
 from .Network import Network 
-from RCAIDE.Components.Component                  import Container  
  
 # package imports
 import numpy as np
@@ -51,7 +52,7 @@ class Isolated_Battery_Cell(Network):
         """             
         self.avionics                = None
         self.voltage                 = None  
-        self.batteries               = Container()
+        self.busses                  = Container()
         
     # manage process with a driver function
     def evaluate_thrust(self,state):
@@ -68,74 +69,97 @@ class Isolated_Battery_Cell(Network):
     
             Outputs: 
             conditions.energy: 
-                current                       [amps]
-                battery_power_draw            [watts]
-                initial_battery_state_of_charge              [joules]
-                battery_voltage_open_circuit  [volts]
-                battery_voltage_under_load    [volts]  
+                current                            [amps]
+                battery.power                      [watts]
+                initial.battery_state_of_charge    [joules]
+                battery.voltage_open_circuit       [volts]
+                battery.voltage_under_load         [volts]  
     
             Properties Used:
             Defaulted values
-        """          
-    
-        # unpack
-        conditions        = state.conditions
-        numerics          = state.numerics 
-        avionics          = self.avionics 
-        batteries         = self.batteries    
-         
+        """        
+        
 
-        battery_key                      = list(batteries.keys())[0]
-        battery                          = batteries[battery_key] 
-        battery_conditions               = conditions.energy['battery_0'] 
-        battery.pack.current_energy      = battery_conditions.pack.energy
-        battery.pack.maximum_energy      = battery_conditions.pack.maximum_degraded_battery_energy  
-        battery.pack.temperature         = battery_conditions.pack.temperature
-        battery.cell.charge_throughput   = battery_conditions.cell.charge_throughput     
-        battery.cell.age                 = battery_conditions.cell.cycle_in_day        
-        battery.cell.R_growth_factor     = battery_conditions.cell.resistance_growth_factor
-        battery.cell.E_growth_factor     = battery_conditions.cell.capacity_fade_factor 
-        battery_discharge_flag           = battery_conditions.battery_discharge_flag     
-        volts                            = battery.compute_voltage(battery_conditions)   
-           
-        #-------------------------------------------------------------------------------
-        # Discharge
-        #-------------------------------------------------------------------------------
-        if battery_discharge_flag:
-            # Calculate avionics and payload power
-            avionics_power = np.ones((numerics.number_of_control_points,1))*avionics.current * volts
-        
-            # Calculate avionics and payload current
-            avionics_current =  np.ones((numerics.number_of_control_points,1))*avionics.current    
-            
-            # link
-            battery.outputs.current  = avionics_current
-            battery.outputs.power    = -avionics_power
-            battery.inputs.voltage  = volts
-            battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)          
-            
-        else: 
-            battery.outputs.current  = -battery.charging_current * np.ones_like(volts)
-            battery.inputs.voltage  =  battery.charging_voltage * np.ones_like(volts) 
-            battery.outputs.power    =  -battery.outputs.current * battery.inputs.voltage * np.ones_like(volts)
-            battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)        
-        
-        # Pack the conditions for outputs       
-        pack_battery_conditions(battery_conditions,battery) 
-          
-        F     = np.zeros_like(volts)  * [0,0,0]      
-        mdot  = state.ones_row(1)*0.0 
+        # unpack   
+        conditions = state.conditions
+        numerics   = state.numerics
+        busses     = self.busses
+        avionics   = self.avionics
+        payload    = self.payload 
          
+        for bus in busses:
+            batteries = bus.batteries      
+
+            for battery in batteries:               
+                battery_conditions               = state.conditions.energy[bus.tag][battery.tag] 
+                battery.pack.current_energy      = battery_conditions.pack.energy 
+                battery.pack.maximum_energy      = battery_conditions.pack.maximum_degraded_battery_energy     
+                battery.pack.temperature         = battery_conditions.pack.temperature
+                battery.cell.age                 = battery_conditions.cell.cycle_in_day    
+                battery.cell.charge_throughput   = battery_conditions.cell.charge_throughput   
+                battery.cell.temperature         = battery_conditions.cell.temperature
+                battery.cell.R_growth_factor     = battery_conditions.cell.resistance_growth_factor
+                battery.cell.E_growth_factor     = battery_conditions.cell.capacity_fade_factor  
+                battery_discharge_flag           = battery_conditions.battery_discharge_flag              
+             
+                if bus.fixed_voltage: 
+                    voltage = bus.voltage * state.ones_row(1)
+                else:    
+                    voltage = battery.compute_voltage(battery_conditions)   
+                    
+                if battery_discharge_flag:    
+                    total_current       = 0. 
+                     
+                    # Avionics Power Consumtion 
+                    avionics.power() 
+                    
+                    # Payload Power Consumtion 
+                    payload.power()
+            
+                    if bus.fixed_voltage:      
+                        bus.outputs.avionics_power  = avionics.inputs.power 
+                        bus.outputs.payload_power   = payload.inputs.power 
+                        bus.outputs.total_esc_power = total_current*voltage
+                        bus.logic(conditions,numerics)             
+                        
+                        # link to battery                  
+                        battery.outputs.current     = bus.outputs.power/voltage
+                        battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio
+                        
+                    else:       
+                        # link to battery   
+                        battery.outputs.current     = total_current + (avionics.inputs.power + payload.inputs.power)/voltage
+                        battery.outputs.power       = battery.outputs.current*voltage
+                        
+                    battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)       
+                    pack_battery_conditions(battery_conditions,battery)               
+                  
+                else: 
+                    if bus.fixed_voltage:    
+                        bus.inputs.secondary_source_power = -(battery.cell.charging_current * battery.pack.electrical_configuration.parallel) *\
+                                                             (battery.cell.charging_voltage * battery.pack.electrical_configuration.series) * np.ones_like(voltage)       
+                        bus.logic(conditions,numerics) 
+                        
+                        # link to battery    
+                        battery.outputs.current    = bus.outputs.power/voltage
+                        battery.outputs.power      = -bus.outputs.power*battery.bus_power_split_ratio  
+                    else: 
+                        # link to battery     
+                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(voltage) 
+                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series) 
+                     
+                    battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)      
+                    pack_battery_conditions(battery_conditions,battery)             
+                        
+        # Create the outputs
         results                           = Data()
-        results.thrust_force_vector       = F
-        results.vehicle_mass_rate         = mdot
-        
-        return results 
-    
-
+        results.thrust_force_vector       = np.zeros_like(voltage)  * [0,0,0]      
+        results.vehicle_mass_rate         = state.ones_row(1)*0.0 
+       
+        return results   
      
     def unpack_unknowns(self,segment):
-        """ This is an extra set of unknowns which are unpacked from the mission solver and send to the network.
+        """ This adds additional unknowns which are unpacked from the mission solver and send to the network.
     
             Assumptions:
             None
@@ -143,63 +167,58 @@ class Isolated_Battery_Cell(Network):
             Source:
             N/A
     
-            Inputs:
-            unknowns specific to the battery cell 
+            Inputs: 
+            unknowns specific to the battery cell                  
     
             Outputs: 
-            conditions specific to the battery cell
-             
+            conditions specific to the battery cell 
+    
             Properties Used:
             N/A
-        """             
-        # unpack 
-        batteries      = self.batteries  
-        for b_i in range(len(batteries)): 
-            battery_key    = list(batteries.keys())[b_i] 
-            battery        = batteries[battery_key]  
-              
-            # append battery unknowns 
-            battery.assign_battery_unknowns(segment,b_i)   
-        return  
-
+        """                          
+        # unpack the ones function 
+        busses       = segment.analyses.energy.networks.all_electric.busses
+        
+        for bus in busses: 
+            for battery in bus.batteries: 
+                battery.assign_battery_unknowns(segment,bus,battery)        
+        
+        return     
+     
     
     
     def residuals(self,segment):
         """ This packs the residuals to be sent to the mission solver.
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            unknowns specific to the battery cell 
-            
-            Outputs:
-            residuals specific to the battery cell
-    
-            Properties Used: 
-            N/A
-        """         
-        # unpack 
-        network        = self 
-        batteries      = self.batteries 
-        for b_i in range(len(batteries)): 
-            battery_key    = list(batteries.keys())[b_i] 
-            battery        = batteries[battery_key]  
-             
-            # append battery residuals 
-            battery.assign_battery_residuals(segment,b_i,network)   
-                
-        return     
+   
+           Assumptions:
+           None
+   
+           Source:
+           N/A
+   
+           Inputs: 
+           residuals soecific to the battery cell   
+           
+           Outputs:
+           residuals specific to battery cell and network
+   
+           Properties Used: 
+           N/A
+       """           
+ 
+        busses   = segment.analyses.energy.networks.all_electric.busses 
+        for bus in busses:   
+            for battery in bus.batteries: 
+                battery.assign_battery_residuals(segment,bus,battery)    
+         
+        return      
 
     def add_unknowns_and_residuals_to_segment(self, 
-                                              segment, 
-                                              estimated_battery_voltages             = None, 
-                                              estimated_battery_cell_temperature     = [300] , 
-                                              estimated_battery_state_of_charges     = [0.5],
-                                              estimated_battery_cell_currents        = [5.]):
+                                              segment,  
+                                              estimated_battery_voltages          = [[]], 
+                                              estimated_battery_cell_temperature  = [[283.]], 
+                                              estimated_battery_state_of_charges  = [[0.5]],
+                                              estimated_battery_cell_currents     = [[5.]]):
         """ This function sets up the information that the mission needs to run a mission segment using this network
     
             Assumptions:
@@ -209,10 +228,12 @@ class Isolated_Battery_Cell(Network):
             N/A
     
             Inputs:  
-            estimated_battery_voltages                  [volts]
-            estimated_battery_cell_temperature      [Kelvin]
+            self                                [None]
+            segment                             [None]
+            estimated_battery_voltages          [volts]
+            estimated_battery_cell_temperature  [Kelvin]
             estimated_battery_state_of_charges  [unitless]
-            estimated_battery_cell_currents          [Amperes]
+            estimated_battery_cell_currents     [Amperes]
             
             Outputs
             None
@@ -220,36 +241,80 @@ class Isolated_Battery_Cell(Network):
             Properties Used:
             N/A
         """          
-        
-        batteries      = self.batteries 
-        for b_i in range(len(batteries)): 
-            battery_key    = list(batteries.keys())[b_i] 
-            battery        = batteries[battery_key]  
-     
-            for b_i in range(len(batteries)):  
-                battery_key    = list(batteries.keys())[b_i] 
-                battery        = batteries[battery_key]   
-                if estimated_battery_voltages  == None: 
-                    estimated_voltage  = battery.pack.maximum_voltage 
-                else:
-                    estimated_voltage  = estimated_battery_voltages[b_i]            
+        busses   = segment.analyses.energy.networks.all_electric.busses
+        ones_row = segment.state.ones_row 
+        segment.state.residuals.network = Residuals()  
+         
+        for bus_i, bus in enumerate(busses):  
+            bus_results               = segment.state.conditions.energy[bus.tag] 
+            batteries                 = bus.batteries 
+
+            # ------------------------------------------------------------------------------------------------------            
+            # Create bus results data structure  
+            # ------------------------------------------------------------------------------------------------------
+            segment.state.conditions.energy[bus.tag] = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()            
+ 
+            # ------------------------------------------------------------------------------------------------------
+            # Assign battery residuals, unknowns and results data structures 
+            # ------------------------------------------------------------------------------------------------------  
             
-            # Assign initial segment conditions to segment if missing 
-            append_initial_battery_conditions(segment,battery,b_i)          
+            if len(batteries) > 1 and (bus.fixed_voltage == False): 
+                assert('The bus must have a fixed voltage is more than one battery is specified on the bus')  
                 
-            segment.state.residuals.network = Residuals()
+            for b_i , battery in enumerate(batteries):    
+                if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:   
+                    # appennd residuals and unknowns for recharge segment                     
+                    segment.state.unknowns['recharge_' + battery.tag]          =  0* ones_row(1)  
+                    segment.state.residuals.network['recharge_' + battery.tag] =  0* ones_row(1)
+                    
+                try: 
+                    estimated_voltage   =  estimated_battery_voltages[bus_i][b_i]
+                except: 
+                    estimated_voltage   = battery.pack.maximum_voltage  
+
+                try:
+                    initial_bat_temp    = estimated_battery_cell_temperature[bus_i][b_i]
+                except:   
+                    initial_bat_temp    = 273.     
+                
+                try: 
+                    initial_battery_SOC = estimated_battery_state_of_charges[bus_i][b_i]
+                except:
+                    initial_battery_SOC = 0.5
+
+                try:
+                    initial_battery_C   = estimated_battery_cell_currents[bus_i][b_i]
+                except: 
+                    initial_battery_C   = 5.                                              
+                
+                # Create results data structure for battery   
+                bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].pack.energy                   = ones_row(1)
+                bus_results[battery.tag].pack.voltage_under_load       = ones_row(1)
+                bus_results[battery.tag].pack.voltage_open_circuit     = ones_row(1)
+                bus_results[battery.tag].pack.temperature              = ones_row(1)
+                bus_results[battery.tag].cell.state_of_charge          = ones_row(1)
+                bus_results[battery.tag].cell.temperature              = ones_row(1)
+                bus_results[battery.tag].cell.charge_throughput        = ones_row(1) 
+                bus_results[battery.tag].cell.cycle_in_day             = 0
+                bus_results[battery.tag].cell.resistance_growth_factor = 1.
+                bus_results[battery.tag].cell.capacity_fade_factor     = 1.  
+                append_initial_battery_conditions(segment,bus,battery)    
+                
+                # add unknowns and residuals specific to battery cell
+                battery.append_battery_unknowns_and_residuals_to_segment(segment,
+                                                                         bus,
+                                                                         battery,
+                                                                         estimated_voltage,
+                                                                         initial_bat_temp, 
+                                                                         initial_battery_SOC,
+                                                                         initial_battery_C)     
             
-            # add unknowns and residuals specific to battery cell
-            battery.append_battery_unknowns_and_residuals_to_segment(segment,
-                                                                     bus_tag,
-                                                                     estimated_voltage,
-                                                                     estimated_battery_cell_temperature[b_i], 
-                                                                     estimated_battery_state_of_charges[b_i],
-                                                                     estimated_battery_cell_currents[b_i])  
-        
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
-        segment.process.iterate.unknowns.network  = self.unpack_unknowns
-        segment.process.iterate.residuals.network = self.residuals        
+        segment.process.iterate.unknowns.network                    = self.unpack_unknowns
+        segment.process.iterate.residuals.network                   = self.residuals     
 
         return segment
     

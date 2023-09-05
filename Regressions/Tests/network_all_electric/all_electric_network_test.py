@@ -1,29 +1,31 @@
-# aircraft_discharge_comparisons.py
+# Regression/scripts/Tests/network_all_electric/all_electric_network_test.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created: Feb 2020, M. Clarke
-#          Sep 2020, M. Clarke  
+# Created:  Jul 2023, M. Clarke 
 
-""" setup file for comparing battery packs of three chemistries in all-electric aircraft """
-
-# ----------------------------------------------------------------------
-#   Imports
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Units 
-import numpy as np
-from RCAIDE.Visualization import *      
-from RCAIDE.Methods.Power.Battery.Sizing         import initialize_from_circuit_configuration
+from RCAIDE.Core import Units  
+from RCAIDE.Visualization                 import *      
+from RCAIDE.Methods.Power.Battery.Sizing  import initialize_from_circuit_configuration
+
+# python imports     
+import numpy as np  
 import sys
-
-sys.path.append('../../Vehicles')
-from NASA_X57            import vehicle_setup as   ECTOL_vehicle_setup
-from NASA_X57            import configs_setup as   ECTOL_configs_setup 
 import matplotlib.pyplot as plt  
-# ----------------------------------------------------------------------
-#   Main
-# ----------------------------------------------------------------------
 
+# local imports 
+sys.path.append('../../Vehicles')
+from NASA_X57    import vehicle_setup as   ECTOL_vehicle_setup
+from NASA_X57    import configs_setup as   ECTOL_configs_setup 
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  REGRESSION
+# ----------------------------------------------------------------------------------------------------------------------  
 def main():     
     
     battery_chemistry       =  ['NMC','LFP']

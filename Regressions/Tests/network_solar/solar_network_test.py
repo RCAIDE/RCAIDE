@@ -1,35 +1,31 @@
-# test_solar_network.py
+# Regression/scripts/Tests/network_solar/solar_netwwork_test.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created:  Aug 2014, Emilio Botero, 
-#           Mar 2020, M. Clarke
-#           Apr 2020, M. Clarke
+# Created:  Jul 2023, M. Clarke 
 
-#----------------------------------------------------------------------
-#   Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports 
 
 import RCAIDE
-from RCAIDE.Core import Units
-from RCAIDE.Visualization import *     
-import matplotlib.pyplot as plt  
-from RCAIDE.Core import (
-Data, Container,
-)
-
-import numpy as np
-import copy, time
-
-from RCAIDE.Energy.Networks.Solar import Solar
-from RCAIDE.Methods.Propulsion import design_propeller
-from RCAIDE.Methods.Power.Battery.Sizing import initialize_from_energy_and_power, initialize_from_mass
+from RCAIDE.Core                                                     import Units , Data,
+from RCAIDE.Visualization                                            import *      
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_vehicle import plot_3d_vehicle 
-import sys
 
-sys.path.append('../Vehicles')
-# the analysis functions
+# python imports 
+import matplotlib.pyplot as plt    
+import numpy as np
+import copy, time 
 
+# local imports 
+import sys 
+sys.path.append('../Vehicles') 
 from Solar_UAV import vehicle_setup, configs_setup
 
+# ----------------------------------------------------------------------------------------------------------------------
+#  REGRESSION
+# ----------------------------------------------------------------------------------------------------------------------  
 def main():
     
  

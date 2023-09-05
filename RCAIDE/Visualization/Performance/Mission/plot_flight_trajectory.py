@@ -20,6 +20,7 @@ def plot_flight_trajectory(results,
                            line_color = 'bo-',
                            line_color2 = 'rs--',
                            save_figure = False,
+                           show_legend   = True,
                            save_filename = "Flight_Trajectory",
                            file_type = ".png",
                            width = 12, height = 7):
@@ -70,9 +71,12 @@ def plot_flight_trajectory(results,
         x        = results.segments[i].conditions.frames.inertial.position_vector[:,0]  
         y        = results.segments[i].conditions.frames.inertial.position_vector[:,1] 
         z        = -results.segments[i].conditions.frames.inertial.position_vector[:,2] 
+
+        segment_tag  =  results.segments[i].tag
+        segment_name = segment_tag.replace('_', ' ')
         
         axes = plt.subplot(2,2,1)
-        axes.plot( time , Range, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width )
+        axes.plot( time , Range, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width , label = segment_name)
         axes.set_ylabel('Distance (nmi)')
         axes.set_xlabel('Time (min)')
         set_axes(axes)            
@@ -95,9 +99,19 @@ def plot_flight_trajectory(results,
         axes.set_ylabel('y')
         axes.set_zlabel('z') 
         set_axes(axes)         
-    
-    plt.tight_layout()    
-    if save_figure:
-        plt.savefig(save_filename + file_type)
         
+    if show_legend:        
+        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
+        leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
+    
+    # Adjusting the sub-plots for legend 
+    fig.subplots_adjust(top=0.8)
+    
+    # set title of plot 
+    title_text    = 'Flight Trajectory'      
+    fig.suptitle(title_text)
+    
+    if save_figure:
+        plt.savefig(save_filename + file_type)   
+             
     return             

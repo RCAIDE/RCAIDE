@@ -8,8 +8,8 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
-from RCAIDE.Energy.Energy_Component import Energy_Component
-from RCAIDE.Components.Component    import Container   
+from RCAIDE.Energy.Energy_Component                   import Energy_Component
+from RCAIDE.Components.Component                      import Container    
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Bus_Power_Control_Unit
@@ -95,3 +95,4 @@ class Bus_Power_Control_Unit(Energy_Component):
         # inputs to bus
         self.inputs.power     = self.outputs.power/self.efficiency
         return 
+    

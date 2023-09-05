@@ -6,14 +6,12 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
-# RCAIDE imports 
-from RCAIDE.Core                  import Data, Units
-from .Network                     import Network  
-from RCAIDE.Components.Component  import Container 
-
-# package imports 
-import numpy as np
-
+# RCAIDE imports  
+from RCAIDE.Core                                                       import Data  
+from RCAIDE.Components.Component                                       import Container    
+from RCAIDE.Methods.Propulsion.internal_combustion_engine_cs_propulsor import compute_propulsor_performance ,compute_unique_propulsor_groups 
+from .Network                                                          import Network   
+ 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Internal_Combustion_Propeller_Constant_Speed
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -46,9 +44,7 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
             N/A
         """        
         self.engines                      = Container()
-        self.propellers                   = Container()
-        self.engine_length                = None
-        self.number_of_engines            = None
+        self.propellers                   = Container() 
         self.rated_speed                  = 0.0   
          
     # manage process with a driver function
@@ -75,89 +71,29 @@ class Internal_Combustion_Propeller_Constant_Speed(Network):
             Defaulted values
         """           
         # unpack
-        conditions              = state.conditions
-        engines                 = self.engines
-        propellers              = self.propellers 
-        rpm                     = conditions.energy.rpm  
-        
-        # Unpack conditions
-        a = conditions.freestream.speed_of_sound        
-
-        # How many evaluations to do 
-        unique_rotor_groups,factors = np.unique(rotor_group_indexes, return_counts=True)
-        unique_motor_groups,factors = np.unique(motor_group_indexes, return_counts=True)
-        if (unique_rotor_groups == unique_motor_groups).all(): # rotors and motors are paired 
-            n_evals = len(unique_rotor_groups)
-            rotor_indexes = unique_rotor_groups 
-            factor        = factors
-        else:
-            n_evals = len(rotor_group_indexes)
-            rotor_indexes = rotor_group_indexes 
-            factor        = np.ones_like(motor_group_indexes) 
+        conditions   = state.conditions
+        engines      = self.engines
+        propellers   = self.propellers    
+     
+        total_mdot   = 0.
+        total_thrust = 0. * state.ones_row(3)
+        total_power  = 0. 
  
-            
-        # Setup conditions
-        ones_row = conditions.ones_row
-        for i in range(n_evals):         
-            # Setup the conditions        
-            conditions.energy['propulsor_group_' + str(i)].rotor.disc_loading         = ones_row(n_evals)
-            conditions.energy['propulsor_group_' + str(i)].rotor.power_loading        = ones_row(n_evals)
-            conditions.energy['propulsor_group_' + str(i)].rotor.torque               = ones_row(n_evals)
-            conditions.energy['propulsor_group_' + str(i)].rotor.tip_mach             = ones_row(n_evals)
-            conditions.energy['propulsor_group_' + str(i)].combustion_engine_throttle = ones_row(n_evals)
-            
-        # Setup numbers for iteration
-        total_thrust        = 0. * state.ones_row(3)
-        total_power         = 0.
-        mdot                = 0.
-        
-
-        # Iterate over motor/rotors
-        for ii in range(n_evals):
-            if active_propulsor_groups[ii]:  
-                engine_key = list(engines.keys())[ii]
-                engine     = self.engines[engine_key]                
-                rotor_key = list(propellers.keys())[rotor_indexes[ii]] 
-                rot      = propellers[rotor_key] 
-                       
-    
-                # Run the propeller to get the power
-                rot.inputs.pitch_command = conditions.energy.throttle - 0.5
-                rot.inputs.omega         = rpm
-                
-                # step 4
-                F, Q, P, Cp, outputs, etap = rot.spin(conditions)
-                
-                # Run the engine to calculate the throttle setting and the fuel burn
-                engine.inputs.power = P
-                engine.calculate_throttle(conditions)
-    
-                # Create the outputs
-                R                   = rot.tip_radius
-                mdot                = mdot + engine.outputs.fuel_flow_rate * factor
-                F_mag               = np.atleast_2d(np.linalg.norm(F, axis=1))  
-                engine_throttle     = engine.outputs.throttle  
-                total_thrust        = total_thrust + F * factor
-                total_power         = total_power  + P * factor            
-    
-                # Pack the conditions 
-                conditions.energy['propulsor_group_' + str(ii)].throttle                   = conditions.energy.throttle
-                conditions.energy['propulsor_group_' + str(ii)].rotor.torque               = Q
-                conditions.energy['propulsor_group_' + str(ii)].rotor.tip_mach             = (R*rpm*Units.rpm)/a
-                conditions.energy['propulsor_group_' + str(ii)].rotor.disc_loading         = (F_mag)/(np.pi*(R**2))            
-                conditions.energy['propulsor_group_' + str(ii)].rotor.power_loading        = (F_mag)/(P)               
-                conditions.energy['propulsor_group_' + str(ii)].combustion_engine_throttle = engine_throttle
-                conditions.energy['propulsor_group_' + str(ii)].rotor.efficiency           = etap
-                
-                
-                conditions.noise.sources.rotors[rot.tag]    = outputs
-            
+        for i in range(state.conditions.energy[self.tag].number_of_propulsor_groups):
+            if self.active_propulsor_groups[i]:           
+                pg_tag                 = state.conditions.energy[self.tag].active_propulsor_groups[i]
+                N_rotors               = state.conditions.energy[self.tag].N_rotors
+                outputs , T , P, mdot  = compute_propulsor_performance(i,self.tag,pg_tag,engines,propellers,N_rotors,state)  
+                total_mdot             += mdot
+                total_thrust           += T       
+                total_power            += P    
+                 
         # Create the outputs
-        conditions.energy.propulsor_group_0.power = total_power
+        conditions.energy.power = total_power
         
         results = Data()
-        results.thrust_force_vector       = F
-        results.vehicle_mass_rate         = mdot 
+        results.thrust_force_vector       = total_thrust
+        results.vehicle_mass_rate         = mdot  
         
         return results
 

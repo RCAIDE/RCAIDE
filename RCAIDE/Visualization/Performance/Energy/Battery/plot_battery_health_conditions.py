@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 from RCAIDE.Core import Units
-from RCAIDE.Visualization.Performance.Common import set_axes, plot_style
+from RCAIDE.Visualization.Performance.Common import set_axes, plot_style , get_battery_names
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -59,40 +59,50 @@ def plot_battery_health_conditions(results,
     # get line colors for plots 
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
     
-    fig   = plt.figure(save_filename)
-    fig.set_size_inches(width,height) 
-    for i in range(len(results.segments)): 
-        time                = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min  
-        cell_temp           = results.segments[i].conditions.propulsion.battery.cell.temperature[:,0]
-        cell_charge         = results.segments[i].conditions.propulsion.battery.cell.charge_throughput[:,0] 
-
-        segment_tag  =  results.segments[i].tag
-        segment_name = segment_tag.replace('_', ' ')  
-
-        axes_1 = plt.subplot(2,1,1)
-        axes_1.plot(time, cell_charge, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
-        axes_1.set_xlabel('Time (mins)')
-        axes_1.set_ylabel(r'Charge Throughput (Ah)')
-        set_axes(axes_1)  
-
-        axes_2 = plt.subplot(2,1,2)
-        axes_2.plot(time,cell_temp, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-        axes_2.set_ylabel(r'Temperature (K)')
-        axes_2.set_xlabel('Time (mins)')
-        set_axes(axes_2)     
-                
+    # compile a list of all propulsor group names on aircraft 
+    b = get_battery_names(results)
     
-    if show_legend:        
-        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
-        leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
+    for b_i in range(len(b)): 
+        fig = plt.figure(save_filename + '_' + b[b_i])
+        fig.set_size_inches(width,height) 
+             
+        for i in range(len(results.segments)): 
+            time    = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
+            for network in results.segments[i].analyses.energy.networks: 
+                busses  = network.busses
+                for bus in busses: 
+                    for battery in bus.batteries:
+                        if battery.tag == b[b_i]:  
+                            battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag]  
+                            cell_temp           = battery_conditions.cell.temperature[:,0]
+                            cell_charge         = battery_conditions.cell.charge_throughput[:,0] 
+                    
+                            segment_tag  =  results.segments[i].tag
+                            segment_name = segment_tag.replace('_', ' ')  
+                    
+                            axes_1 = plt.subplot(2,1,1)
+                            axes_1.plot(time, cell_charge, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
+                            axes_1.set_xlabel('Time (mins)')
+                            axes_1.set_ylabel(r'Charge Throughput (Ah)')
+                            set_axes(axes_1)  
+                    
+                            axes_2 = plt.subplot(2,1,2)
+                            axes_2.plot(time,cell_temp, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                            axes_2.set_ylabel(r'Temperature (K)')
+                            axes_2.set_xlabel('Time (mins)')
+                            set_axes(axes_2)      
     
-    # Adjusting the sub-plots for legend 
-    fig.subplots_adjust(top=0.75)
-    
-    # set title of plot 
-    title_text    = 'Battery Health'      
-    fig.suptitle(title_text)
-    
-    if save_figure:
-        plt.savefig(save_filename + file_type)   
+        if show_legend:        
+            leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
+            leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
+        
+        # Adjusting the sub-plots for legend 
+        fig.subplots_adjust(top=0.8)
+        
+        # set title of plot 
+        title_text    = 'Battery Health: ' + b[b_i]      
+        fig.suptitle(title_text)
+        
+        if save_figure:
+            plt.savefig(save_filename + '_' + b[b_i] + file_type)   
     return

@@ -1,15 +1,12 @@
-# X57_Maxwell_Mod2.py
-#
-# Created:  Feb 2020, M. Clarke
-#           Sep 2020, M. Clarke
-#           Oct 2021, M. Clarke
+# Regression/scripts/Vehicles/NASA_X57.py
+# (c) Copyright The Board of Trustees of RCAIDE
+# 
+# Created:  Jul 2023, M. Clarke 
 
-""" setup file for the X57-Maxwell Modification 2 Electric Aircraft
-"""
-
-# ----------------------------------------------------------------------
-#   Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports 
 import RCAIDE
 from RCAIDE.Core import Units  
 from RCAIDE.Energy.Networks.All_Electric                 import All_Electric
@@ -18,13 +15,14 @@ from RCAIDE.Methods.Weights.Correlations.Propulsion      import nasa_motor
 from RCAIDE.Methods.Power.Battery.Sizing                 import initialize_from_circuit_configuration
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform    import wing_segmented_planform
 
+# python imports 
 import numpy as np 
 from copy import deepcopy
 import os
-# ----------------------------------------------------------------------
-#   Define the Vehicle
-# ----------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
+#   Define the Vehicle
+# ----------------------------------------------------------------------------------------------------------------------
 def vehicle_setup():
 
     # ------------------------------------------------------------------
