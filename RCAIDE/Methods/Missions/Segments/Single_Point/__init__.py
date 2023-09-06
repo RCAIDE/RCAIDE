@@ -1,6 +1,6 @@
 ## @defgroup Methods-Missions-Segments-Single_Point Single Point
 # RCAIDE/Methods/Mission/Segments/Single_Point/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

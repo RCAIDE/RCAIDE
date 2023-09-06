@@ -1,6 +1,6 @@
 ## @defgroup Methods-Weights-Correlations Correlations
 # RCAIDE/Methods/Weights/Correlations/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

@@ -1,16 +1,19 @@
+## @ingroup Networks
 # RCAIDE/Energy/Networks/Network.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 #
 # Created:  Jul 2023, M. Clarke
+# Modified: Aug 2023, E. Botero
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# RCAIDE imports
+
 from RCAIDE.Energy import Energy_Component
 from RCAIDE.Core import Data
-from Legacy.trunk.S.Components import Physical_Component
+from RCAIDE.Components import Physical_Component
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  NETWORK
 # ----------------------------------------------------------------------------------------------------------------------
@@ -45,7 +48,7 @@ class Network(Energy_Component):
 # ----------------------------------------------------------------------
 ## @ingroup Energy-Network
 class Container(Physical_Component.Container):
-    """ MARC.Components.Energy.Networks.Network.Container()
+    """ RCAIDE.Components.Energy.Networks.Network.Container()
         The Network Container Class
             Assumptions:
             None
@@ -70,6 +73,7 @@ class Container(Physical_Component.Container):
         results = Data()
         results.thrust_force_vector       = 0.*ones_row(3)
         results.vehicle_mass_rate         = 0.*ones_row(1)
+        results.network_y_axis_rotation   = 0.*ones_row(1) ## THIS MAY BE UNECESSARY
         for net in self.values():
             if hasattr(net, 'has_additional_fuel_type'):
                 if net.has_additional_fuel_type: #Check if Network has additional fuel
@@ -79,6 +83,7 @@ class Container(Physical_Component.Container):
             for key in results.keys():
                 results[key] += results_p[key]
         return results
+    
 # ----------------------------------------------------------------------
 #  Handle Linking
 # ----------------------------------------------------------------------
