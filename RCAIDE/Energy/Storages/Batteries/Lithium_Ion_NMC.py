@@ -378,7 +378,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
                                                          bus, 
                                                          battery,
                                                          estimated_voltage,
-                                                         estimated_cell_temperature ,
+                                                         estimated_cell_temperature,
                                                          estimated_state_of_charge,
                                                          estimated_cell_current): 
         """ Sets up the information that the mission needs to run a mission segment using this network

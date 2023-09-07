@@ -53,8 +53,8 @@ def compute_propulsor_performance(i,network_tag,propulsor_group_tag,engines,prop
  
     # Run the propeller to get the power
     propeller.inputs.pitch_command = state.conditions.energy.throttle - 0.5
-    propeller.inputs.omega         = rpm
-     
+    propeller.inputs.omega         = state.conditions.energy.rpm
+ 
     # Spin the propeller 
     F, Q, P, Cp, outputs, etap = propeller.spin(state.conditions) 
 
@@ -72,7 +72,7 @@ def compute_propulsor_performance(i,network_tag,propulsor_group_tag,engines,prop
     total_power         = P * N_propellers[i]  
       
     # Pack specific outputs
-    state.conditions.energy[network_tag][propulsor_group_tag].engine_torque            = torque
+    state.conditions.energy[network_tag][propulsor_group_tag].engine_torque            = Q
     state.conditions.energy[network_tag][propulsor_group_tag].propeller.torque         = Q
     state.conditions.energy[network_tag][propulsor_group_tag].propeller.rpm            = rpm
     state.conditions.energy[network_tag][propulsor_group_tag].propeller.tip_mach       = (R*rpm*Units.rpm)/a
@@ -80,7 +80,7 @@ def compute_propulsor_performance(i,network_tag,propulsor_group_tag,engines,prop
     state.conditions.energy[network_tag][propulsor_group_tag].propeller.power_loading  = (F_mag)/(P)    
     state.conditions.energy[network_tag][propulsor_group_tag].propeller.efficiency     = etap
     state.conditions.energy[network_tag][propulsor_group_tag].propeller.figure_of_merit= outputs.figure_of_merit
-    state.conditions.energy[network_tag][propulsor_group_tag].throttle                 = eta 
+    state.conditions.energy[network_tag][propulsor_group_tag].throttle                 = throttle
     state.conditions.noise.sources.propellers[propeller.tag]                           = outputs 
  
     return outputs , total_thrust , total_power 
@@ -125,7 +125,7 @@ def compute_unique_propulsor_groups(self):
     # Count the number of unique pairs of propellers and engines 
     unique_propeller_groups,N_propellers   = np.unique(propeller_group_indexes, return_counts=True)
     unique_engine_groups,_                 = np.unique(engine_group_indexes, return_counts=True) 
-    if (unique_propeller_groups == unique_engine_groups).all(): # propellers and engines are paired  
+    if (unique_propeller_groups == unique_engine_groups).all(): 
         propeller_indexes  = []
         engine_indexes = [] 
         for group in range(N_active_propulsor_groups):
@@ -138,6 +138,6 @@ def compute_unique_propulsor_groups(self):
     
     sorted_propulsors = Data(propeller_indexes       = propeller_indexes,
                              unique_propeller_tags   = unique_propeller_tags,
-                             unique_engine_tags  = unique_engine_tags, 
+                             unique_engine_tags      = unique_engine_tags, 
                              N_propellers            = N_propellers)
     return sorted_propulsors

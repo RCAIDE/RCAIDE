@@ -34,8 +34,10 @@ class Electronic_Speed_Controller(Energy_Component):
             Properties Used:
             None
             """         
-        
-        self.efficiency = 0.0
+
+        self.tag              = 'electronic_speed_controller'       
+        self.propulsor_group  = 'propulsor'    
+        self.efficiency       = 0.0       
     
     def voltageout(self,eta):
         """ The voltage out of the electronic speed controller

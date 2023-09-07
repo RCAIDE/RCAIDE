@@ -8,9 +8,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
 from RCAIDE.Core import Units,Data, Container 
-from RCAIDE.Methods.Geometry.Three_Dimensional.compute_span_location_from_chord_length import compute_span_location_from_chord_length
-from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom             import datcom
-from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.trapezoid_ac_x import trapezoid_ac_x
+from RCAIDE.Methods.Geometry.Three_Dimensional                                   import compute_span_location_from_chord_length
+from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations              import datcom
+from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions import trapezoid_ac_x
 from RCAIDE.Methods.Propulsion import design_propeller
 
 # python imports 
@@ -20,7 +20,7 @@ def vehicle_setup():
     #   Initialize the Vehicle
     # ------------------------------------------------------------------        
     vehicle                                     = RCAIDE.Vehicle()
-    vehicle.tag                                 = 'Cessna_172_SP'
+    vehicle.tag                                 = 'Cessna_172'
                                                 
     # ------------------------------------------------------------------
     #   Vehicle-level Properties
@@ -187,7 +187,7 @@ def vehicle_setup():
     landing_gear                                = RCAIDE.Components.Landing_Gear.Landing_Gear()
     main_gear                                   = RCAIDE.Components.Landing_Gear.Main_Landing_Gear()
     nose_gear                                   = RCAIDE.Components.Landing_Gear.Nose_Landing_Gear()
-    main_gear.strut_length                      = 12. * Units.inches #guess based on picture
+    main_gear.strut_length                      = 12. * Units.inches  
     nose_gear.strut_length                      = 6. * Units.inches 
                                                 
     landing_gear.main                           = main_gear
@@ -204,7 +204,7 @@ def vehicle_setup():
     fuel.mass_properties                        = RCAIDE.Components.Mass_Properties() 
     fuel.number_of_tanks                        = 1.
     fuel.origin                                 = wing.origin
-    fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density #all of the fuel volume is internal
+    fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
     fuel.mass_properties.center_of_gravity      = wing.mass_properties.center_of_gravity
     fuel.mass_properties.mass                   = 319 *Units.lbs
     vehicle.fuel                                = fuel
@@ -215,9 +215,7 @@ def vehicle_setup():
     
     # build network
     net                                     = RCAIDE.Energy.Networks.Internal_Combustion_Propeller()
-    net.tag                                 = 'internal_combustion'
-    net.number_of_engines                   = 1.
-    net.identical_rotors                    = True
+    net.tag                                 = 'internal_combustion' 
                                                 
     # the engine                    
     engine                                  = RCAIDE.Energy.Converters.Internal_Combustion_Engine()
@@ -239,12 +237,12 @@ def vehicle_setup():
     prop.cruise.design_power                = .64 * 180. * Units.horsepower
     prop.variable_pitch                     = True 
     airfoil                                 = RCAIDE.Components.Airfoils.Airfoil()   
-    airfoil.coordinate_file                 = '../Vehicles/Airfoils/NACA_4412.txt'
-    airfoil.polar_files                     = ['../Vehicles//Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
-                                            '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
-                                            '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
-                                            '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
-                                            '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
+    airfoil.coordinate_file                 = '../../Vehicles/Airfoils/NACA_4412.txt'
+    airfoil.polar_files                     = ['../../Vehicles//Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
+                                            '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
+                                            '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
+                                            '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
+                                            '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
     prop.append_airfoil(airfoil)            
     prop.airfoil_polar_stations             = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] 
     prop                                    = design_propeller(prop)   
@@ -253,7 +251,7 @@ def vehicle_setup():
      
     
     # add the network to the vehicle
-    vehicle.append_component(net) 
+    vehicle.append_energy_network(net) 
 
     #find uninstalled avionics weight
     Wuav                                        = 2. * Units.lbs

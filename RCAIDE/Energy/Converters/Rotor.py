@@ -50,7 +50,7 @@ class Rotor(Energy_Component):
         """
 
         self.tag                               = 'rotor'
-        self.propulsor_group                   = None         
+        self.propulsor_group                   = 'propulsor'  
         
         # geometry properties 
         self.number_of_blades                  = 0.0

@@ -63,9 +63,9 @@ def initialize_battery(segment):
                     battery_conditions.cell.capacity_fade_factor            = battery_capacity_fade_factor 
 
                 if 'battery_cell_temperature' in segment: 
-                    battery_conditions                             = conditions[battery.tag]        
-                    battery_conditions.pack.temperature[:,0]       = segment.battery_cell_temperatures 
-                    battery_conditions.cell.temperature[:,0]       = segment.battery_cell_temperatures 
+                    battery_conditions                             = conditions[bus.tag][battery.tag]        
+                    battery_conditions.pack.temperature[:,0]       = segment.battery_cell_temperature 
+                    battery_conditions.cell.temperature[:,0]       = segment.battery_cell_temperature 
 
 # ----------------------------------------------------------------------
 #  Update Thrust

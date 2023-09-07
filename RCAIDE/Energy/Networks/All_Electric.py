@@ -98,16 +98,16 @@ class All_Electric(Network):
             escs      = bus.electronic_speed_controllers 
 
             for battery in batteries:               
-                battery_conditions               = state.conditions.energy[bus.tag][battery.tag] 
-                battery.pack.current_energy      = battery_conditions.pack.energy 
-                battery.pack.maximum_energy      = battery_conditions.pack.maximum_degraded_battery_energy     
-                battery.pack.temperature         = battery_conditions.pack.temperature
-                battery.cell.age                 = battery_conditions.cell.cycle_in_day    
-                battery.cell.charge_throughput   = battery_conditions.cell.charge_throughput   
-                battery.cell.temperature         = battery_conditions.cell.temperature
-                battery.cell.R_growth_factor     = battery_conditions.cell.resistance_growth_factor
-                battery.cell.E_growth_factor     = battery_conditions.cell.capacity_fade_factor  
-                battery_discharge_flag           = battery_conditions.battery_discharge_flag              
+                battery_conditions                = state.conditions.energy[bus.tag][battery.tag] 
+                battery.pack.current_energy       = battery_conditions.pack.energy 
+                battery.pack.maximum_energy       = battery_conditions.pack.maximum_degraded_battery_energy     
+                battery.pack.temperature          = battery_conditions.pack.temperature
+                battery.cell.age                  = battery_conditions.cell.cycle_in_day    
+                battery.cell.charge_throughput    = battery_conditions.cell.charge_throughput   
+                battery.cell.temperature          = battery_conditions.cell.temperature
+                battery.cell.R_growth_factor      = battery_conditions.cell.resistance_growth_factor
+                battery.cell.E_growth_factor      = battery_conditions.cell.capacity_fade_factor  
+                battery_discharge_flag            = battery_conditions.battery_discharge_flag              
              
                 if bus.fixed_voltage: 
                     voltage = bus.voltage * state.ones_row(1)
@@ -409,8 +409,7 @@ class All_Electric(Network):
                 bus_results[pg_tag].rotor                   = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
                 bus_results[pg_tag].unique_rotor_tags       = sorted_propulsors.unique_rotor_tags
                 bus_results[pg_tag].unique_motor_tags       = sorted_propulsors.unique_motor_tags
-                bus_results[pg_tag].unique_esc_tags         = sorted_propulsors.unique_esc_tags  
-                bus_results[pg_tag].throttle                = 0. * ones_row(1)  
+                bus_results[pg_tag].unique_esc_tags         = sorted_propulsors.unique_esc_tags 
                 bus_results[pg_tag].y_axis_rotation         = 0. * ones_row(1)  
                 bus_results[pg_tag].motor.efficiency        = 0. * ones_row(1)
                 bus_results[pg_tag].motor.torque            = 0. * ones_row(1) 

@@ -9,7 +9,7 @@
 # RCAIDE imports 
 
 import RCAIDE
-from RCAIDE.Core                                                     import Units , Data,
+from RCAIDE.Core                                                     import Units , Data
 from RCAIDE.Visualization                                            import *      
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_vehicle import plot_3d_vehicle 
 
@@ -20,7 +20,7 @@ import copy, time
 
 # local imports 
 import sys 
-sys.path.append('../Vehicles') 
+sys.path.append('../../Vehicles') 
 from Solar_UAV import vehicle_setup, configs_setup
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -58,17 +58,17 @@ def main():
     plot_mission(results) 
     
     # Check Results 
-    F       = results.segments.cruise1.conditions.frames.body.thrust_force_vector[1,0]
-    rpm     = results.segments.cruise1.conditions.propulsion.propulsor_group_0.rotor.rpm[1,0]
-    current = results.segments.cruise1.conditions.propulsion.battery.pack.current[1,0]
-    energy  = results.segments.cruise1.conditions.propulsion.battery.pack.energy[8,0]  
+    F       = results.segments.cruise.conditions.frames.body.thrust_force_vector[1,0]
+    rpm     = results.segments.cruise.conditions.energy.bus.propulsor.rotor.rpm[1,0]
+    current = results.segments.cruise.conditions.energy.bus.Generic_Lithium_Ion_Battery_Cell.pack.current[1,0]
+    energy  = results.segments.cruise.conditions.energy.bus.Generic_Lithium_Ion_Battery_Cell.pack.energy[8,0]  
     
     # Truth results
 
     truth_F   = 82.50753846534745
     truth_rpm = 194.40119841312963
     truth_i   = -88.56579017873031
-    truth_bat = 124628733.86762737
+    truth_bat = 124499438.4272672
     
     print('battery energy')
     print(energy)
@@ -111,48 +111,47 @@ def analyses_setup(configs):
 # ----------------------------------------------------------------------  
 
 def base_analysis(vehicle):
+
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle()
+    analyses                             = RCAIDE.Analyses.Vehicle()
     
     # ------------------------------------------------------------------
     #  Basic Geometry Relations
-    sizing = RCAIDE.Analyses.Sizing.Sizing()
-    sizing.features.vehicle = vehicle
+    sizing                               = RCAIDE.Analyses.Sizing.Sizing()
+    sizing.features.vehicle              = vehicle
     analyses.append(sizing)
     
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Analyses.Weights.Weights_UAV()
-    weights.settings.empty_weight_method = \
-        RCAIDE.Methods.Weights.Correlations.Human_Powered.empty
-    weights.vehicle = vehicle
+    weights                              = RCAIDE.Analyses.Weights.Weights_UAV() 
+    weights.vehicle                      = vehicle
     analyses.append(weights)
     
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
+    aerodynamics                                     = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
-    aerodynamics.settings.span_efficiency = 0.98
+    aerodynamics.settings.span_efficiency            = 0.98
     analyses.append(aerodynamics)
     
     # ------------------------------------------------------------------
     #  Energy
-    energy = RCAIDE.Analyses.Energy.Energy()
-    energy.network = vehicle.networks #what is called throughout the mission (at every time step))
-    analyses.append(energy)
+    energy                               = RCAIDE.Analyses.Energy.Energy()
+    energy.networks                      = vehicle.networks  
+    analyses.append(energy) 
     
     # ------------------------------------------------------------------
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet                               = RCAIDE.Analyses.Planets.Planet()
     analyses.append(planet)
     
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
-    atmosphere.features.planet = planet.features
+    atmosphere                           = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere.features.planet           = planet.features
     analyses.append(atmosphere)   
  
     return analyses    
@@ -184,21 +183,17 @@ def mission_setup(analyses,vehicle):
     #   Cruise Segment: constant speed, constant altitude
     # ------------------------------------------------------------------    
     
-    segment = RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude(base_segment)
-    segment.tag = "cruise1"
-    
-    # connect vehicle configuration
-    segment.analyses.extend( analyses.cruise)
-    
-    # segment attributes     
-    segment.start_time     = time.strptime("Tue, Jun 21 11:30:00  2020", "%a, %b %d %H:%M:%S %Y",)
-    segment.altitude       = 15.0  * Units.km 
-    segment.mach_number    = 0.1
-    segment.distance       = 3050.0 * Units.km
-    segment.battery_energy = vehicle.networks.solar.battery.pack.max_energy*0.3 #Charge the battery to start
-    segment.latitude       = 37.4300   # this defaults to degrees (do not use Units.degrees)
-    segment.longitude      = -122.1700 # this defaults to degrees
-    segment = vehicle.networks.solar.add_unknowns_and_residuals_to_segment(segment,initial_rotor_power_coefficients = [0.05])    
+    segment                                 = RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude(base_segment)
+    segment.tag                             = "cruise" 
+    segment.analyses.extend( analyses.base) 
+    segment.start_time                      = time.strptime("Tue, Jun 21 11:30:00  2020", "%a, %b %d %H:%M:%S %Y",)
+    segment.altitude                        = 15.0  * Units.km 
+    segment.mach_number                     = 0.1
+    segment.distance                        = 3050.0 * Units.km
+    segment.initial_battery_state_of_charge = 0.3  
+    segment.latitude                        = 37.4300   # this defaults to degrees (do not use Units.degrees)
+    segment.longitude                       = -122.1700 # this defaults to degrees
+    segment = vehicle.networks.solar.add_unknowns_and_residuals_to_segment(segment)    
     
     
     mission.append_segment(segment)    
@@ -227,16 +222,16 @@ def missions_setup(base_mission):
 #   Plot Mission
 # ----------------------------------------------------------------------
 
-def plot_mission(results,line_style='bo-'):     
+def plot_mission(results):     
     
     # Plot Propeller Performance 
-    plot_rotor_conditions(results,line_style)
+    plot_rotor_conditions(results)
     
     # Plot Power and Disc Loading
-    plot_disc_power_loading(results,line_style)
+    plot_disc_and_power_loading(results)
     
     # Plot Solar Radiation Flux
-    plot_solar_flux(results,line_style) 
+    plot_solar_network_conditions(results) 
     
     return 
 

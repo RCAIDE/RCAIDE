@@ -84,13 +84,13 @@ class Bus_Power_Control_Unit(Energy_Component):
 
         """
         # Unpack
-        pin         = self.inputs.secondary_source_power
+        pin         = self.inputs.power
         pavionics   = self.outputs.avionics_power
         ppayload    = self.outputs.payload_power
         pesc        = self.outputs.total_esc_power   
         
         # outputs from bus    
-        self.outputs.power    = pavionics + ppayload + pesc - pin
+        self.outputs.power    = pin - pavionics - ppayload - pesc  
         
         # inputs to bus
         self.inputs.power     = self.outputs.power/self.efficiency

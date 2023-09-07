@@ -1,33 +1,27 @@
-# ICE_Test.py
+# Regression/scripts/Tests/network_all_electric/internal_combustion_engine_test.py
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created: Feb 2020, M. Clarke 
- 
-""" setup file for a mission with a Cessna 172 with an internal combustion engine network
-"""
+# Created:  Jul 2023, M. Clarke 
 
-# ----------------------------------------------------------------------
-#   Imports
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Units 
-import numpy as np 
- 
-
-from RCAIDE.Core import (
-Data, Container,
-)
-
-import sys
+from RCAIDE.Core import Units ,Data 
+# python imports     
+import numpy as np  
+import sys 
 
 sys.path.append('../Vehicles')
 # the analysis functions 
  
 from Cessna_172  import vehicle_setup  
-# ----------------------------------------------------------------------
-#   Main
-# ----------------------------------------------------------------------
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  REGRESSION
+# ----------------------------------------------------------------------------------------------------------------------  
 def main():   
      
     # Define internal combustion engine from Cessna Regression Aircraft 
@@ -39,21 +33,17 @@ def main():
     mission  = mission_setup(analyses,vehicle)
     
     # evaluate
-    results = mission.evaluate()
-    
-    h  = 0.008757244664175039
-
+    results     = mission.evaluate()  
     P_truth     = 53577.659232513804
     mdot_truth  = 0.004707455798446486
     
-    P    = results.segments.cruise.state.conditions.propulsion.power[-1,0]
+    P    = results.segments.cruise.state.conditions.energy.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]
 
     # Check the errors
     error = Data()
     error.P      = np.max(np.abs((P     - P_truth)/P_truth))
-    error.mdot   = np.max(np.abs((mdot - mdot_truth)/mdot_truth))
-
+    error.mdot   = np.max(np.abs((mdot - mdot_truth)/mdot_truth)) 
 
     print('Errors:')
     print(error)
@@ -97,25 +87,17 @@ def mission_setup(analyses,vehicle):
     #   Cruise Segment: Constant Speed Constant Altitude
     # ------------------------------------------------------------------    
 
-    segment = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
-    segment.tag = "cruise"
-
-    segment.analyses.extend( analyses )
-
-    segment.altitude  = 12000. * Units.feet
-    segment.air_speed = 119.   * Units.knots
-    segment.distance  = 10 * Units.nautical_mile
-    
-    ones_row                                        = segment.state.ones_row   
+    segment     = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+    segment.tag = "cruise" 
+    segment.analyses.extend( analyses ) 
+    segment.altitude                                = 12000. * Units.feet
+    segment.air_speed                               = 119.   * Units.knots
+    segment.distance                                = 10 * Units.nautical_mile  
     segment.state.numerics.number_control_points    = 4
-    segment.state.unknowns.throttle                 = 1.0 * ones_row(1)
-    segment = vehicle.networks.internal_combustion.add_unknowns_and_residuals_to_segment(segment,rpms=[2650])
-    
-    
+    segment.state.unknowns.throttle                 = 1.0 * segment.state.ones_row (1)
     segment.process.iterate.conditions.stability    = RCAIDE.Methods.skip
     segment.process.finalize.post_process.stability = RCAIDE.Methods.skip    
-
-    # add to mission
+    segment = vehicle.networks.internal_combustion.add_unknowns_and_residuals_to_segment(segment,rpms=[2650])  
     mission.append_segment(segment)
 
 
@@ -157,7 +139,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Energy
     energy= RCAIDE.Analyses.Energy.Energy()
-    energy.network = vehicle.networks #what is called throughout the mission (at every time step))
+    energy.networks = vehicle.networks  
     analyses.append(energy)
 
     # ------------------------------------------------------------------
@@ -172,10 +154,7 @@ def base_analysis(vehicle):
     analyses.append(atmosphere)   
 
     # done!
-    return analyses
-    
-
-
+    return analyses 
 
 # ----------------------------------------------------------------------        
 #   Call Main

@@ -7,23 +7,17 @@
 
 # ----------------------------------------------------------------------
 #   Imports
-# ----------------------------------------------------------------------
-
+# ---------------------------------------------------------------------- 
 import RCAIDE
-from RCAIDE.Core import Units 
-import numpy as np 
- 
+from RCAIDE.Core import Data, Units 
 
-from RCAIDE.Core import (
-Data, Container,
-)
+# python imports 
+import numpy as np   
 
-import sys
-
-sys.path.append('../Vehicles')
-# the analysis functions 
- 
-from Cessna_172      import vehicle_setup  
+# local imports 
+import sys 
+sys.path.append('../../Vehicles') 
+from Cessna_172                import vehicle_setup  
 from RCAIDE.Methods.Propulsion import design_propeller
 
 # ----------------------------------------------------------------------
@@ -73,13 +67,13 @@ def ICE_CS(vehicle):
     # Let's assume its an STC or 172RG 
     
     # build network
-    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Propeller_Constant_Speed()
-    net.tag                                     = 'internal_combustion'
-    net.number_of_engines                       = 1.
-    net.rated_speed                             = 2700. * Units.rpm
-    net.rated_power                             = 180.  * Units.hp
+    net                                     = RCAIDE.Energy.Networks.Internal_Combustion_Propeller_Constant_Speed()
+    net.tag                                 = 'internal_combustion_constant_speed'
+    net.number_of_engines                   = 1.
+    net.rated_speed                         = 2700. * Units.rpm
+    net.rated_power                         = 180.  * Units.hp
     
-    # Component 1 the engine                    
+    # Component 1 the engine                
     engine                                  = RCAIDE.Energy.Converters.Internal_Combustion_Engine()
     engine.sea_level_power                  = 180. * Units.horsepower
     engine.flat_rate_altitude               = 0.0
@@ -99,12 +93,12 @@ def ICE_CS(vehicle):
     prop.cruise.design_altitude            = 12000. * Units.feet
     prop.cruise.design_power               = .64 * 180. * Units.horsepower 
     airfoil                                = RCAIDE.Components.Airfoils.Airfoil()   
-    airfoil.coordinate_file                = '../Vehicles/Airfoils/NACA_4412.txt'
-    airfoil.polar_files                    = ['../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
-                                           '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
-                                           '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
-                                           '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
-                                           '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
+    airfoil.coordinate_file                = '../../Vehicles/Airfoils/NACA_4412.txt'
+    airfoil.polar_files                    = ['../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
+                                           '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
+                                           '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
+                                           '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
+                                           '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
     prop.append_airfoil(airfoil)  
     prop.airfoil_polar_stations            = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     prop                                   = design_propeller(prop)    
@@ -158,7 +152,7 @@ def mission_setup(analyses):
     segment.altitude                                = 12000. * Units.feet
     segment.air_speed                               = 119.   * Units.knots
     segment.distance                                = 10 * Units.nautical_mile
-    segment.state.conditions.propulsion.rpm         = 2650.  * Units.rpm *  ones_row(1) 
+    segment.state.conditions.energy.rpm             = 2650.  * Units.rpm *  ones_row(1) 
     segment.state.unknowns.throttle                 = 0.5 *  ones_row(1)
 
     # add to mission
@@ -198,7 +192,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Energy
     energy= RCAIDE.Analyses.Energy.Energy()
-    energy.network = vehicle.networks #what is called throughout the mission (at every time step))
+    energy.networks = vehicle.networks 
     analyses.append(energy)
 
     # ------------------------------------------------------------------

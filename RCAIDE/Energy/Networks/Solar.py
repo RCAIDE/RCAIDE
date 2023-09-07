@@ -56,14 +56,15 @@ class Solar(Network):
             Properties Used:
             N/A
         """            
-        self.tag                          = 'Solar' 
-        self.avionics                     = None
-        self.payload                      = None 
-        self.busses                       = Container()
-        self.system_voltage               = None   
-        self.solar_flux                   = None
-        self.solar_panel                  = None 
-        self.system_voltage               = None    
+        self.tag                                    = 'Solar' 
+        self.avionics                               = None
+        self.payload                                = None 
+        self.busses                                 = Container()
+        self.system_voltage                         = None   
+        self.solar_flux                             = None
+        self.maximum_power_point_tracking_efficency = 1.0
+        self.solar_panel                            = None 
+        self.system_voltage                         = None    
     
     # manage process with a driver function
     def evaluate_thrust(self,state):
@@ -97,10 +98,10 @@ class Solar(Network):
         solar_panel  = self.solar_panel 
          
         for bus in busses:
-            batteries = bus.batteries     
-            motors    = bus.motors
-            rotors    = bus.rotors 
-            escs      = bus.electronic_speed_controllers 
+            batteries      = bus.batteries     
+            motors         = bus.motors
+            rotors         = bus.rotors 
+            escs           = bus.electronic_speed_controllers   
 
             for battery in batteries:               
                 battery_conditions               = state.conditions.energy[bus.tag][battery.tag] 
@@ -118,67 +119,51 @@ class Solar(Network):
                     voltage = bus.voltage * state.ones_row(1)
                 else:    
                     voltage = battery.compute_voltage(battery_conditions)   
-                    
-                if battery_discharge_flag:    
-                    total_current       = 0.
-                    total_thrust        = 0. * state.ones_row(3)
-                    total_power         = 0. 
-                    
-                    # Motor Power 
-                    for i in range(state.conditions.energy[bus.tag].number_of_propulsor_groups):
-                        if bus.active_propulsor_groups[i]:           
-                            pg_tag              = state.conditions.energy[bus.tag].active_propulsor_groups[i]
-                            N_rotors            = state.conditions.energy[bus.tag].N_rotors
-                            outputs , T , P, I  = compute_propulsor_performance(i,bus.tag,pg_tag,motors,rotors,N_rotors,escs,state,voltage)  
-                            total_current       += I
-                            total_thrust        += T       
-                            total_power         += P   
-                
-                    # Avionics Power Consumtion 
-                    avionics.power() 
-                    
-                    # Payload Power Consumtion 
-                    payload.power() 
-                
-                    # step 1
-                    solar_flux.solar_radiation(conditions)
-                    
-                    # link
-                    solar_panel.inputs.flux = solar_flux.outputs.flux
-                    
-                    # step 2
-                    solar_panel.power()
-                    
-                    # link
-                    bus.inputs.powerin = solar_panel.outputs.power 
-
-                                            
-                    bus.outputs.avionics_power  = avionics.inputs.power 
-                    bus.outputs.payload_power   = payload.inputs.power 
-                    bus.outputs.total_esc_power = total_current*voltage
-                    bus.efficiency              = self.maximum_power_point_tracking_efficency
-                    bus.logic(conditions,numerics)             
-                    
-                    # link to battery                  
-                    battery.outputs.current     = bus.outputs.power/voltage
-                    battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio
                      
-                    battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)       
-                    pack_battery_conditions(battery_conditions,battery)               
-                  
-                else:    
-                    bus.inputs.secondary_source_power = -(battery.cell.charging_current * battery.pack.electrical_configuration.parallel) *\
-                                                         (battery.cell.charging_voltage * battery.pack.electrical_configuration.series) * np.ones_like(voltage)       
-                    bus.logic(conditions,numerics) 
-                    
-                    # link to battery    
-                    battery.outputs.current    = bus.outputs.power/voltage
-                    battery.outputs.power      = -bus.outputs.power*battery.bus_power_split_ratio  
-                          
-                    total_thrust  = np.zeros((len(voltage),3)) 
-                    battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)      
-                    pack_battery_conditions(battery_conditions,battery)             
+                total_current       = 0.
+                total_thrust        = 0. * state.ones_row(3)
+                total_power         = 0. 
+                
+                
+                # Motor Power 
+                for i in range(state.conditions.energy[bus.tag].number_of_propulsor_groups):
+                    if bus.active_propulsor_groups[i]:           
+                        pg_tag              = state.conditions.energy[bus.tag].active_propulsor_groups[i]
+                        N_rotors            = state.conditions.energy[bus.tag].N_rotors
+                        outputs , T , P, I  = compute_propulsor_performance(i,bus.tag,pg_tag,motors,rotors,N_rotors,escs,state,voltage)  
+                        total_current       += I
+                        total_thrust        += T       
+                        total_power         += P   
             
+                # Avionics Power Consumtion 
+                avionics.power() 
+                
+                # Payload Power Consumtion 
+                payload.power() 
+            
+                # step 1
+                solar_flux.solar_radiation(conditions)
+                
+                # link
+                solar_panel.inputs.flux = solar_flux.outputs.flux
+                
+                # step 2
+                solar_panel.power()
+                
+                # link
+                bus.inputs.power            = solar_panel.outputs.power/self.maximum_power_point_tracking_efficency  
+                bus.outputs.avionics_power  = avionics.inputs.power 
+                bus.outputs.payload_power   = payload.inputs.power 
+                bus.outputs.total_esc_power = total_current*voltage 
+                bus.logic(conditions,numerics)             
+                
+                # link to battery                  
+                battery.outputs.current     = bus.outputs.power/voltage
+                battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio
+                 
+                battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)       
+                pack_battery_conditions(battery_conditions,battery)                
+                    
         # Pack the conditions for outputs 
         conditions.energy.solar_flux   = solar_flux.outputs.flux                          
         
@@ -212,7 +197,7 @@ class Solar(Network):
         """       
         # unpack the ones function
         ones_row     = segment.state.ones_row
-        busses       = segment.analyses.energy.networks.all_electric.busses
+        busses       = segment.analyses.energy.networks.solar.busses
         
         for bus in busses:
             if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:  
@@ -250,7 +235,7 @@ class Solar(Network):
             None
         """  
          
-        busses   = segment.analyses.energy.networks.all_electric.busses 
+        busses   = segment.analyses.energy.networks.solar.busses 
         for bus in busses:  
             if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:  
                 bus_results             = segment.state.conditions.energy[bus.tag] 
@@ -287,7 +272,7 @@ class Solar(Network):
             Properties Used:
             N/A
         """              
-        busses   = segment.analyses.energy.networks.all_electric.busses
+        busses   = segment.analyses.energy.networks.solar.busses
         ones_row = segment.state.ones_row 
         segment.state.residuals.network = Residuals() 
 
@@ -319,6 +304,19 @@ class Solar(Network):
             # Assign battery residuals, unknowns and results data structures 
             # ------------------------------------------------------------------------------------------------------  
             for b_i , battery in enumerate(batteries):     
+                bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
+                bus_results[battery.tag].pack.energy                   = ones_row(1)
+                bus_results[battery.tag].pack.voltage_under_load       = ones_row(1)
+                bus_results[battery.tag].pack.voltage_open_circuit     = ones_row(1)
+                bus_results[battery.tag].pack.temperature              = ones_row(1)
+                bus_results[battery.tag].cell.state_of_charge          = ones_row(1)
+                bus_results[battery.tag].cell.temperature              = ones_row(1)
+                bus_results[battery.tag].cell.charge_throughput        = ones_row(1) 
+                bus_results[battery.tag].cell.cycle_in_day             = 0
+                bus_results[battery.tag].cell.resistance_growth_factor = 1.
+                bus_results[battery.tag].cell.capacity_fade_factor     = 1. 
                 append_initial_battery_conditions(segment,bus,battery)    
 
             # ------------------------------------------------------------------------------------------------------
@@ -357,8 +355,7 @@ class Solar(Network):
                 bus_results[pg_tag].rotor                   = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
                 bus_results[pg_tag].unique_rotor_tags       = sorted_propulsors.unique_rotor_tags
                 bus_results[pg_tag].unique_motor_tags       = sorted_propulsors.unique_motor_tags
-                bus_results[pg_tag].unique_esc_tags         = sorted_propulsors.unique_esc_tags  
-                bus_results[pg_tag].throttle                = 0. * ones_row(1)  
+                bus_results[pg_tag].unique_esc_tags         = sorted_propulsors.unique_esc_tags 
                 bus_results[pg_tag].y_axis_rotation         = 0. * ones_row(1)  
                 bus_results[pg_tag].motor.efficiency        = 0. * ones_row(1)
                 bus_results[pg_tag].motor.torque            = 0. * ones_row(1) 

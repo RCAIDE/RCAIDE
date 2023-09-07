@@ -44,6 +44,7 @@ class Motor(Energy_Component):
         None
         """           
         self.tag                = 'motor'
+        self.propulsor_group    = 'propulsor'
         self.resistance         = 0.0
         self.no_load_current    = 0.0
         self.speed_constant     = 0.0
@@ -54,7 +55,6 @@ class Motor(Energy_Component):
         self.gearbox_efficiency = 1.0
         self.expected_current   = 0.0
         self.interpolated_func  = None
-        self.propulsor_group    = None 
     
     def omega(self,conditions):
         """Calculates the motor's rotation rate
@@ -95,7 +95,7 @@ class Motor(Energy_Component):
         io    = self.no_load_current + exp_i*(1-etaG)
         G     = self.gear_ratio
         Kv    = self.speed_constant/G
-        R     = self.propeller_radius
+        R     = self.rotor_radius
         v     = self.inputs.voltage
         Cp    = self.inputs.rotor_CP
         

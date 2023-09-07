@@ -82,7 +82,7 @@ def append_initial_battery_conditions(segment,bus,battery):
     if 'battery_cell_temperature' not in segment:     
         cell_temperature              = atmo_data.temperature[0,0]
     else:
-        cell_temperature              = segment.battery_pack_temperature 
+        cell_temperature              = segment.battery_cell_temperature 
     battery_conditions.pack.temperature[:,0] = cell_temperature
     battery_conditions.cell.temperature[:,0] = cell_temperature 
     

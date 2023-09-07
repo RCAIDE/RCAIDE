@@ -1,12 +1,17 @@
 ## @ingroup Methods-Thermal_Management-Battery
-# direct_convection_model.py
+# RCAIDE/Methods/Thermal_Management/Battery/compute_net_convected_heat
+# (c) Copyright The Board of Trustees of RCAIDE
 # 
-# Created: Sep 2021, M. Clarke 
+# Created:  Jul 2023, M. Clarke 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 import numpy as np 
 
-# ----------------------------------------------------------------------
-#  Methods
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  Compute Net Convected Heat 
+# ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Thermal_Management-Batteries-Direct_Convection_Cooling 
 def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
     '''Computes the net heat generated in a battery during cycling. 
@@ -45,7 +50,7 @@ def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
     H_cell                   = battery.cell.height     
     T_current                = battery.pack.temperature      
     T_cell                   = battery.cell.temperature         
-    T_ambient                = btms.atmosphere_conditions.temperature 
+    T_ambient                = freestream.temperature 
     h                        = btms.convective_heat_transfer_coefficient
     T_cell                   = battery.cell.temperature       
     cell_mass                = battery.cell.mass    
@@ -69,7 +74,7 @@ def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
         nu_coolant                   = freestream.kinematic_viscosity
         Pr_coolant                   = freestream.prandtl_number
         rho_coolant                  = freestream.density    
-        Cp_coolant                   = btms.cooling_fluid.compute_cp(btms.atmosphere_conditions.temperature,btms.atmosphere_conditions.pressure )
+        Cp_coolant                   = btms.cooling_fluid.compute_cp(freestream.temperature,freestream.pressure )
         V_coolant                    = btms.cooling_fluid.flowspeed  
         
         # Chapter 7 pg 437-446 of Fundamentals of heat and mass transfer 

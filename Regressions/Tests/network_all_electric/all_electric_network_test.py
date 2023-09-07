@@ -38,8 +38,8 @@ def main():
 
     # General Aviation Aircraft   
 
-    RPM_true              = [2091.4442095019845,2091.4442092004297]
-    lift_coefficient_true = [0.5405970801673611,0.5405970801669211]
+    RPM_true              = [1612.2332848120207,1612.2332846434035]
+    lift_coefficient_true = [0.5405968044231505,0.5405968044232967]
      
     
         
@@ -63,7 +63,7 @@ def main():
         plot_results(results)  
         
         # RPM of rotor check during hover
-        RPM        = results.segments.climb_1_f_1_d1.conditions.propulsion.propulsor_group_0.rotor.rpm[3][0] 
+        RPM        = results.segments.climb_1_f_1_d1.conditions.energy.bus.propulsor.rotor.rpm[3][0] 
         print('GA RPM: ' + str(RPM))
         diff_RPM   = np.abs(RPM - RPM_true[i])
         print('RPM difference')
@@ -91,12 +91,15 @@ def full_setup(battery_chemistry,unknown_throttles):
     vehicle  = ECTOL_vehicle_setup()
     
     # Modify the battery 
-    net = vehicle.networks.all_electric
-    net.batteries.pop((list(net.batteries.keys())[0]))
+    bus = vehicle.networks.all_electric.busses.bus
+    bus.batteries.pop((list(bus.batteries.keys())[0]))
     if battery_chemistry   == 'NMC': 
         bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()  
+        bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.No_Heat_Exchanger()  
     elif battery_chemistry == 'LFP': 
+        bus.fixed_voltage   = True
         bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()    
+        bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()  
 
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 100
@@ -105,10 +108,9 @@ def full_setup(battery_chemistry,unknown_throttles):
     bat.module.geometrtic_configuration.total              = bat.pack.electrical_configuration.total
     bat.module_config.voltage                              = bat.pack.maximum_voltage/bat.module_config.number_of_modules  
     bat.module.geometrtic_configuration.normal_count       = 24
-    bat.module.geometrtic_configuration.parallel_count     = 40
-    bat.thermal_management_system                          = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()     
-    net.voltage                                            = bat.pack.maximum_voltage     
-    net.batteries.append(bat) 
+    bat.module.geometrtic_configuration.parallel_count     = 40 
+    bus.voltage                                            =  bat.pack.maximum_voltage  
+    bus.batteries.append(bat)                                     
     
     # Set up configs
     configs  = ECTOL_configs_setup(vehicle)
@@ -147,33 +149,33 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Basic Geometry Relations
-    sizing = RCAIDE.Analyses.Sizing.Sizing()
+    sizing                  = RCAIDE.Analyses.Sizing.Sizing()
     sizing.features.vehicle = vehicle
     analyses.append(sizing)
 
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Analyses.Weights.Weights_eVTOL()
+    weights         = RCAIDE.Analyses.Weights.Weights_eVTOL()
     weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
+    aerodynamics          = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
     aerodynamics.geometry = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics)  
 
     # ------------------------------------------------------------------	
     #  Stability Analysis	
-    stability = RCAIDE.Analyses.Stability.Fidelity_Zero()    	
+    stability          = RCAIDE.Analyses.Stability.Fidelity_Zero()    	
     stability.geometry = vehicle	
     analyses.append(stability) 
 
     # ------------------------------------------------------------------
     #  Energy
-    energy= RCAIDE.Analyses.Energy.Energy()
-    energy.network = vehicle.networks 
+    energy          = RCAIDE.Analyses.Energy.Energy()
+    energy.networks = vehicle.networks 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
@@ -228,11 +230,8 @@ def mission_setup(analyses,vehicle,unknown_throttles):
         # compute daily temperature in san francisco: link: https://www.usclimatedata.com/climate/san-francisco/california/united-states/usca0987/2019/1
         daily_temp = (13.5 + (day)*(-0.00882) + (day**2)*(0.00221) + (day**3)*(-0.0000314) + (day**4)*(0.000000185)  + \
                       (day**5)*(-0.000000000483)  + (day**6)*(4.57E-13)) + 273.2
-        
         base_segment.temperature_deviation = daily_temp - atmo_data.temperature[0][0]
         
-                
-        print(' ***********  Day ' + str(day+1) + ' ***********  ')
         for flight_no in range(flights_per_day): 
     
             # ------------------------------------------------------------------
@@ -242,14 +241,13 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
             segment.tag = "Climb_1"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+1) 
             segment.analyses.extend( analyses.base ) 
-            segment.battery_energies                                 = [vehicle.networks.all_electric.batteries.lithium_ion_nmc.pack.maximum_energy * 0.89]
             segment.altitude_start                                   = 2500.0  * Units.feet
             segment.altitude_end                                     = 8012    * Units.feet 
             segment.air_speed                                        = 96.4260 * Units['mph'] 
             segment.climb_rate                                       = 700.034 * Units['ft/min']     
-            segment.battery_pack_temperatures                        = [atmo_data.temperature[0,0]]
+            segment.battery_cell_temperature                         = atmo_data.temperature[0,0]
             if (day == 0) and (flight_no == 0):        
-                segment.battery_energies                             = [vehicle.networks.all_electric.batteries.lithium_ion_nmc.pack.maximum_energy]   
+                segment.initial_battery_state_of_charge              = 0.89 
                 segment.initial_battery_resistance_growth_factor     = 1
                 segment.initial_battery_capacity_fade_factor         = 1
             segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)          
@@ -266,7 +264,7 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             segment.altitude                  = 8012   * Units.feet
             segment.air_speed                 = 120.91 * Units['mph'] 
             segment.distance                  =  20.   * Units.nautical_mile   
-            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,  initial_rotor_power_coefficients = [unknown_throttles[1]])   
+            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
         
             # add to misison
             mission.append_segment(segment)    
@@ -284,7 +282,7 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             segment.air_speed_end                                    = 110 * Units['mph']   
             segment.climb_rate                                       = -200 * Units['ft/min']  
             segment.state.unknowns.throttle                          = 0.8 * ones_row(1)  
-            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment,  initial_rotor_power_coefficients = [unknown_throttles[2]])   
+            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
             
             # add to misison
             mission.append_segment(segment)
@@ -296,6 +294,7 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             segment                                                 = Segments.Ground.Battery_Recharge(base_segment)     
             segment.tag                                             = 'Recharge'  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
             segment.analyses.extend(analyses.base)                       
+            segment.time                                            = 1 * Units.hr
             if flight_no  == flights_per_day:  
                 segment.increment_battery_age_by_one_day            =True                        
             segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    
