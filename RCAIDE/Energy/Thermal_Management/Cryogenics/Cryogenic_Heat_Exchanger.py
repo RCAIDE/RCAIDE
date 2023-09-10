@@ -1,5 +1,6 @@
+## @ingroup Energy-Thermal_Management-Cryogenics
 # RCAIDE/Energy/Thermal_Management/Cryogenics/Cryogenic_Heat_Exchange.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -15,7 +16,7 @@ from RCAIDE.Methods.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryogenic Heat Exchanger Component
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Energy-Converters
+## @ingroup Energy-Thermal_Management-Cryogenics
 class Cryogenic_Heat_Exchanger(Energy_Component):
     """This provides output values for a heat exchanger used to cool cryogenic components
     

@@ -1,5 +1,6 @@
+## @ingroup Visualization-Performance-Noise
 # RCAIDE/Visualization/Noise/plot_noise_level.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -17,7 +18,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ---------------------------------------------------------------------------------------------------------------------- 
-
 ## @ingroup Visualization-Performance-Noise
 def plot_noise_level(noise_data,
                      noise_level = False,

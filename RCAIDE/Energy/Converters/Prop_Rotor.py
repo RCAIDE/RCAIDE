@@ -1,5 +1,6 @@
+## @ingroup Energy-Converters
 # RCAIDE/Energy/Converters/Prop_Rotor.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -13,7 +14,7 @@ from .Rotor      import Rotor
 # ----------------------------------------------------------------------------------------------------------------------
 #  PROP-ROTOR CLASS
 # ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Components-Energy-Converters
+## @ingroup Energy-Converters
 class Prop_Rotor(Rotor):
     """This is a prop_rotor component, and is a sub-class of rotor.
     

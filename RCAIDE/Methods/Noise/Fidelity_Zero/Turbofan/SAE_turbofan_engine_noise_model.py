@@ -1,5 +1,6 @@
+## @ingroup Methods-Noise-Fidelity_Zero-Engine 
 # RCAIDE/Methods/Noise/Fidelity_Zero/Engine/SAE_turbofan_engine_noise_model.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -25,7 +26,7 @@ from RCAIDE.Methods.Noise.Metrics import PNL_noise_metric
 from RCAIDE.Methods.Noise.Metrics import EPNL_noise_metric
 from RCAIDE.Methods.Noise.Metrics import SENEL_noise_metric_single_point
 from RCAIDE.Methods.Noise.Metrics import A_weighting_metric 
-from RCAIDE.Methods.Noise.Output  import print_engine_output
+from RCAIDE.Visualization.Noise   import print_engine_output
 
 # Python package imports   
 import numpy as np   

@@ -23,8 +23,9 @@ from RCAIDE.Methods.Noise.Metrics  import A_weighting_metric
 from RCAIDE.Methods.Noise.Common   import noise_tone_correction
 from RCAIDE.Methods.Noise.Common   import atmospheric_attenuation
 from RCAIDE.Methods.Noise.Common   import SPL_arithmetic
-from RCAIDE.Methods.Noise.Output   import print_airframe_output
+from RCAIDE.Visualization.Noise    import print_airframe_output
 
+# python imports 
 import numpy as np
 
 # ----------------------------------------------------------------------

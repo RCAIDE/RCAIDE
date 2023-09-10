@@ -1,5 +1,6 @@
+## @ingroup Methods-Weights-Buildups-Common 
 # RCAIDE/Methods/Weights/Buildups/Common/compute_fuselage_weight.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -8,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 # RCAIDE imports   
-from RCAIDE.Attributes.Solids import (
-    Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Acrylic, Steel)
+from RCAIDE.Attributes.Solids import Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Acrylic, Steel
 
 # package imports 
 import numpy as np

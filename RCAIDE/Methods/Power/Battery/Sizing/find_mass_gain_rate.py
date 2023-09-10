@@ -1,12 +1,13 @@
+## @ingroup Methods-Power-Battery-Sizing
 # RCAIDE/Methods/Power/Battery/Sizing/find_mass_gain_rate.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Power-Battery-Variable_Mass 
+## @ingroup Methods-Power-Battery-Sizing
 def find_mass_gain_rate(battery,power):
     """finds the mass gain rate of the battery from the ambient air
     Assumptions:

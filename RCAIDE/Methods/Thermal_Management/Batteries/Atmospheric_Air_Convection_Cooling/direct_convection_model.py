@@ -1,6 +1,6 @@
-## @ingroup Methods-Thermal_Management-Battery
-# RCAIDE/Methods/Thermal_Management/Battery/compute_net_convected_heat
-# (c) Copyright The Board of Trustees of RCAIDE
+## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling
+# RCAIDE/Methods/Thermal_Management/Batteries/Atmospheric_Air_Convection_Cooling/compute_net_convected_heat.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -12,7 +12,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Net Convected Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Thermal_Management-Batteries-Direct_Convection_Cooling 
+## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
 def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
     '''Computes the net heat generated in a battery during cycling. 
 

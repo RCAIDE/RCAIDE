@@ -1,5 +1,6 @@
-# RCAIDE/Methods/Missions/Segments/Cruise/Common.py
-# (c) Copyright The Board of Trustees of RCAIDE
+## @ingroup Methods-Missions-Segments-Transition-Common
+# RCAIDE/Methods/Missions/Segments/Transition/Common.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -12,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Cruise
+## @ingroup Methods-Missions-Segments-Transition-Common
 def unpack_unknowns(segment):
     """ Unpacks  
     
@@ -20,11 +21,10 @@ def unpack_unknowns(segment):
     pass
     
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Residual Total Forces
-# ----------------------------------------------------------------------
-
-## @ingroup Methods-Missions-Segments-Cruise
+# ----------------------------------------------------------------------------------------------------------------------
+## @ingroup Methods-Missions-Segments-Transition-Common
 def residual_total_forces(segment):
     """ Calculates a residual based on forces
     

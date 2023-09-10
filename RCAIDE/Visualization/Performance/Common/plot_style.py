@@ -1,5 +1,6 @@
+## @ingroup Visualization-Performance-Common
 # RCAIDE/Visualization/Performance/Common/plot_style.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 

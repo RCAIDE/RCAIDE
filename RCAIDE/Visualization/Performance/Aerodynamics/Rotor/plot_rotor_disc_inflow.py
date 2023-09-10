@@ -1,18 +1,16 @@
+## @ingroup Visualization-Performance-Aerodynamics-Rotor 
 # RCAIDE/Visualization/Performance/Aerodynamics/Rotor/plot_rotor_disc_inflow.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Core import Units
+# ----------------------------------------------------------------------------------------------------------------------   
 
-import matplotlib.patches as patches
-import pandas as pd
-import matplotlib.pyplot as plt
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+# python imports 
+import matplotlib.patches as patches 
+import matplotlib.pyplot as plt 
 import numpy as np
 
 

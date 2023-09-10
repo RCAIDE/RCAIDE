@@ -1,9 +1,8 @@
+## @ingroup Visualization-Geometry-Three_Dimensional  
 # RCAIDE/Visualization/Geometry/Three_Dimensional/plot_3d_rotor.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
-
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -13,6 +12,7 @@ from RCAIDE.Visualization.Geometry.Common.contour_surface_slice import contour_s
 from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil import import_airfoil_geometry
 from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil import compute_naca_4series
 
+# python imports 
 import numpy as np 
 import plotly.graph_objects as go  
 from plotly.express.colors import sample_colorscale   

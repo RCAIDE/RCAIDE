@@ -1,15 +1,15 @@
+## @ingroup Visualization-Performance-Noise
 # RCAIDE/Visualization/Noise/plot_2D_noise_contour.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
-
-
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Core import Units  
 
+# python imports 
 import numpy as np   
 import matplotlib.pyplot as plt  
 import matplotlib.colors

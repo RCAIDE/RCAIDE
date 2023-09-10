@@ -1,9 +1,8 @@
+## @ingroup Visualization-Performance-Noise
 # RCAIDE/Visualization/Noise/plot_3D_noise_contour.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
-
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -11,6 +10,7 @@
 from RCAIDE.Core import Units
 from RCAIDE.Visualization  import *
 
+# python imports 
 import numpy as np  
 import plotly.graph_objects as go
 

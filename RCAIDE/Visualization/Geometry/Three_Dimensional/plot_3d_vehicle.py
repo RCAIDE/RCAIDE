@@ -1,9 +1,8 @@
+## @ingroup Visualization-Geometry-Three_Dimensional
 # RCAIDE/Visualization/Geometry/Three_Dimensional/plot_3d_vehicle.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
-
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -15,6 +14,7 @@ from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_wing     import plo
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_nacelle  import plot_3d_nacelle
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_rotor    import plot_3d_rotor
 
+# python imports 
 import numpy as np 
 import plotly.graph_objects as go  
 
@@ -94,7 +94,8 @@ def plot_3d_vehicle(vehicle,
         fig.write_html( save_filename + '.html', auto_open=True) 
     
     return     
-    
+
+## @ingroup Visualization-Geometry-Three_Dimensional
 def generate_3d_vehicle_geometry_data(plot_data,
                                       vehicle,
                                       alpha                       = 1.0,

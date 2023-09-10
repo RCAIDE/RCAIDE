@@ -1,5 +1,6 @@
+## @ingroup Methods-Weights-Buildups-eVTOL 
 # RCAIDE/Methods/Weights/Buildups/eVTOL/compute_weight.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 

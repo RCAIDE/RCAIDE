@@ -1,7 +1,7 @@
 ## @defgroup Methods-Aerodynamics-Common-Helper_Functions Helper_Functions
 # @ingroup Methods-Aerodynamics-Common
 # RCAIDE/Methods/Aerodynamics/Common/Helper_Functions/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

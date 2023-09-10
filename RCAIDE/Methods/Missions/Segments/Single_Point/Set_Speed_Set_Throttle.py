@@ -1,5 +1,6 @@
+## @ingroup Methods-Missions-Segments-Single_Point
 # RCAIDE/Methods/Missions/Segments/Single_Point/Set_Speed_Set_Thottle.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
  
@@ -12,7 +13,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
-
 ## @ingroup Methods-Missions-Segments-Single_Point
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
@@ -60,7 +60,10 @@ def initialize_conditions(segment):
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed
     segment.state.conditions.energy.throttle[:,0]             = throttle
     segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[x_accel,0.0,z_accel]])
-
+    
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Update Weights 
+# ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Missions-Segments-Single_Point    
 def update_weights(segment):
     """Sets the gravity force vector during the segment
@@ -97,6 +100,9 @@ def update_weights(segment):
 
     return
 
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Unpack Unknowns 
+# ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Missions-Segments-Single_Point
 def unpack_unknowns(segment):
     """ Unpacks the x accleration and body angle from the solver to the mission

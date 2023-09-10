@@ -1,6 +1,6 @@
-## @ingroup Energy-Storages-Fuel_Tanks
+## @ingroup Energy-Storages-Fuel_Tanks 
 # RCAIDE/Energy/Storages/Fuel_Tanks/Fuel_Tanks.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 

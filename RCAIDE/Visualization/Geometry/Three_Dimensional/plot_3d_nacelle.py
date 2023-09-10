@@ -1,9 +1,8 @@
+## @ingroup Visualization-Geometry-Three_Dimensional
 # RCAIDE/Visualization/Geometry/Three_Dimensional/plot_3d_nacelle.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
-
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

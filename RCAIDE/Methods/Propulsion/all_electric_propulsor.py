@@ -1,5 +1,6 @@
+## @ingroup Methods-Propulsion
 # RCAIDE/Methods/Propulsion/all_electric_propulsor.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -14,7 +15,7 @@ from RCAIDE.Methods.Propulsion.compute_number_of_compoment_groups import compute
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# compute_propulsor_performanc
+# compute_propulsor_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
 def compute_propulsor_performance(i,bus_tag,propulsor_group_tag,motors,rotors,N_rotors,escs,conditions,voltage): 

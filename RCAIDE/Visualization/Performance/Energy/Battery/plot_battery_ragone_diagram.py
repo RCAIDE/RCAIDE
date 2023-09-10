@@ -1,9 +1,8 @@
+## @ingroup Visualization-Geometry-Three_Dimensional
 # RCAIDE/Visualization/Performance/Energy/Battery/plot_battery_ragone_diagram.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
-
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

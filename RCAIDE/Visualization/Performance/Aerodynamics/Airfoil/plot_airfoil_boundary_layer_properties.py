@@ -1,9 +1,8 @@
+## @ingroup Visualization-Performance-Aerodynamics-Airfoil  
 # RCAIDE/Visualization/Performance/Aerodynamics/Airfoil/plot_airfoil_boundary_layer_properties.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
-
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -11,6 +10,7 @@
 from RCAIDE.Core import Units
 from RCAIDE.Visualization.Performance.Common import set_axes, plot_style
 
+# python imports 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 

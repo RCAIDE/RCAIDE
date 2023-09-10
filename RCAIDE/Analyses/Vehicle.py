@@ -1,5 +1,6 @@
+## @ingroup Analyses
 # RCAIDE/Analyses/Vehicle.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -10,7 +11,7 @@ import RCAIDE
 from .Analysis import Analysis
 
 # ----------------------------------------------------------------------------------------------------------------------
-# ANALYSIS
+# Vehicle
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses
 class Vehicle(Analysis.Container):
@@ -42,15 +43,15 @@ class Vehicle(Analysis.Container):
                 Properties Used:
                 N/A
         """
-        self.sizing       = None
-        self.weights      = None
         self.aerodynamics = None
-        self.stability    = None
-        self.energy       = None
         self.atmosphere   = None
-        self.planet       = None
-        self.noise        = None
         self.costs        = None
+        self.energy       = None
+        self.noise        = None
+        self.planet       = None
+        self.sizing       = None
+        self.stability    = None
+        self.weights      = None
 
     def append(self,analysis):
         """This is used to add new analyses to the container.
@@ -71,11 +72,8 @@ class Vehicle(Analysis.Container):
                 N/A
         """
 
-        key = self.get_root(analysis)
-
-        self[key] = analysis
-
-
+        key = self.get_root(analysis) 
+        self[key] = analysis 
     _analyses_map = None
 
     def __init__(self,*args,**kwarg):
@@ -100,7 +98,7 @@ class Vehicle(Analysis.Container):
 
         Analysis.Container.__init__(self,*args,**kwarg)
 
-        self._analyses_map = {
+        self._analyses_map = { 
             RCAIDE.Analyses.Weights.Weights           : 'weights'      ,
             RCAIDE.Analyses.Aerodynamics.Aerodynamics : 'aerodynamics' ,
             RCAIDE.Analyses.Stability.Stability       : 'stability'    ,

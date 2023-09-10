@@ -1,9 +1,8 @@
+## @ingroup Visualization-Geometry
 # RCAIDE/Visualization/Geometry/Three_Dimensional/plot_3d_vehicle_vlm_panelization.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
-
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

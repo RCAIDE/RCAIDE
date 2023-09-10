@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Variable_Range_Cruise  
 # RCAIDE/Analyses/Mission/Variable_Range_Cruise/Given_State_of_Charge.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -15,8 +15,7 @@ from RCAIDE.Analyses.Mission import All_At_Once
 # ----------------------------------------------------------------------------------------------------------------------
 # Given_State_of_Charge
 # ---------------------------------------------------------------------------------------------------------------------- 
-
-## @ingroup Analyses-Mission-Vary_Cruise
+## @ingroup Analyses-Mission-Variable_Range_Cruise
 class Given_State_of_Charge(All_At_Once):
     """ Given a target landing state of charge, select the cruise distance by adding a residual to the mission
     

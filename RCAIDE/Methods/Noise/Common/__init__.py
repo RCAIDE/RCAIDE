@@ -1,7 +1,6 @@
-## @defgroup Methods-Noise-Common Common
-# @ingroup Methods 
+## @defgroup Methods-Noise-Common Common 
 # RCAIDE/Methods/Noise/Common/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

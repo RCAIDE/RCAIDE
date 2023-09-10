@@ -1,13 +1,13 @@
 ## @ingroup Methods-Missions-Segments-Descent
-# Constant_Speed_Constant_Angle_noise.py
+# RCAIDE/Methods/Missions/Segments/Descent/ Constant_Speed_Constant_Angle_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Nov 2015, C. Ilario
-# Modified: Jan 2016, E. Botero
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  IMPORT 
-# ---------------------------------------------------------------------------------------------------------------------- 
-# RCAIDE
+# ----------------------------------------------------------------------------------------------------------------------  
+# RCAIDE imports  
 from RCAIDE.Core import Units 
 
 # pacakge imports 

@@ -1,5 +1,7 @@
-# RCAIDE/Methods/Center_of_Gravit/compute_component_centers_of_gravity.py
-# (c) Copyright The Board of Trustees of RCAIDE
+
+## @ingroup Methods-Center_of_Gravity
+# RCAIDE/Methods/Center_of_Gravity/compute_component_centers_of_gravity.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 

@@ -1,7 +1,6 @@
-## @defgroup Methods-Costs-Industrial_Costs  Industrial_Costs  
-# @ingroup Methods-Costs
+## @defgroup Methods-Costs-Industrial_Costs  Industrial_Costs   
 # RCAIDE/Methods/Costs/Industrial_Costs /__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

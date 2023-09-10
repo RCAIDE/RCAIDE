@@ -1,6 +1,6 @@
-## @ingroup Components-Energy-Thermal_Management 
-# RCAIDE/Energy/Thermal_Management/Atmospheric_Air_Convection_Heat_Exchanger.py
-# (c) Copyright The Board of Trustees of RCAIDE
+## @ingroup Energy-Thermal_Management-Batteries
+# RCAIDE/Energy/Thermal_Management/Batteries/Atmospheric_Air_Convection_Heat_Exchanger.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -16,7 +16,7 @@ from RCAIDE.Attributes.Gases import Air
 # ----------------------------------------------------------------------------------------------------------------------
 #  Atmospheric_Air_Convection_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Components-Energy-Thermal_Management 
+## @ingroup Energy-Thermal_Management-Batteries
 class Atmospheric_Air_Convection_Heat_Exchanger(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     

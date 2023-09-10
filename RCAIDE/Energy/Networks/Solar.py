@@ -1,5 +1,6 @@
+## @ingroup Energy-Networks
 # RCAIDE/Energy/Networks/Solar.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -23,7 +24,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Solar
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Energy-Networks
+## @ingroup Energy-Networks
 class Solar(Network):
     """ A propeller-driven solar powered system with batteries and maximum power point tracking.  
         Electronic speed controllers, thermal management system, avionics, and other eletric 

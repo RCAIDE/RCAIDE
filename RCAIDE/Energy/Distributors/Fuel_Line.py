@@ -1,5 +1,6 @@
+## @ingroup Energy-Distributors
 # RCAIDE/Energy/Distributors/Fuel_Line.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -14,7 +15,7 @@ from RCAIDE.Components.Component                      import Container
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Line
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Energy-Distributors
+## @ingroup Energy-Distributors
 class Fuel_Line(Energy_Component):
     """  This controls the flow of energy into and from a fuel-powered nework 
     

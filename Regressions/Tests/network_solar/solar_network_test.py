@@ -1,5 +1,5 @@
 # Regression/scripts/Tests/network_solar/solar_netwwork_test.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -170,8 +170,7 @@ def mission_setup(analyses):
     Segments = RCAIDE.Analyses.Mission.Segments
     
     # base segment
-    base_segment = Segments.Segment()
-    base_segment.process.iterate.initials.initialize_battery = RCAIDE.Methods.Missions.Segments.Common.Energy.initialize_battery
+    base_segment = Segments.Segment() 
     
     # ------------------------------------------------------------------    
     #   Cruise Segment: constant speed, constant altitude

@@ -1,6 +1,6 @@
-## @ingroup Components-Energy-Thermal_Management 
-# RCAIDE/Energy/Thermal_Management/No_Heat_Exchanger.py
-# (c) Copyright The Board of Trustees of RCAIDE
+## @ingroup Energy-Thermal_Management-Batteries
+# RCAIDE/Energy/Thermal_Management/Batteries/No_Heat_Exchanger.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -15,6 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  No_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
+## @ingroup Energy-Thermal_Management-Batteries
 class No_Heat_Exchanger(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     

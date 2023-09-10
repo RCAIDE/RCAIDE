@@ -1,5 +1,6 @@
+## @ingroup Energy-Distributors
 # RCAIDE/Energy/Distributors/Electronic_Speed_Controller.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -13,7 +14,7 @@ from RCAIDE.Energy.Energy_Component import Energy_Component
 # ----------------------------------------------------------------------------------------------------------------------
 #  Electronic Speed Controller Class
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Energy-Distributors 
+## @ingroup Energy-Distributors
 class Electronic_Speed_Controller(Energy_Component):
     
     def __defaults__(self):

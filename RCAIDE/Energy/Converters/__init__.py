@@ -1,6 +1,6 @@
 ## @defgroup Energy-Converters Converters
 # RCAIDE/Energy/Converters/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
@@ -12,6 +12,7 @@
 ## @ingroup Energy
 
 from Legacy.trunk.S.Components.Energy.Converters import Combustor
+from Legacy.trunk.S.Components.Energy.Converters import Compressor
 from Legacy.trunk.S.Components.Energy.Converters import Compression_Nozzle
 from Legacy.trunk.S.Components.Energy.Converters import de_Laval_Nozzle
 from Legacy.trunk.S.Components.Energy.Converters import Expansion_Nozzle

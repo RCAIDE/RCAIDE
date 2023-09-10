@@ -1,5 +1,6 @@
+## @ingroup Methods-Missions-Segments-Climb
 # RCAIDE/Methods/Missions/Segments/Climb/Constant_Mach_Constant_Angle.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -84,6 +85,10 @@ def initialize_conditions(segment):
     conditions.frames.inertial.position_vector[:,2]              = -alts[:,0]  
     segment.state.conditions.frames.body.inertial_rotations[:,1] = theta[:,0]  
     
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Residual Total Forces
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Missions-Segments-Climb
 def residual_total_forces(segment):
     
     # Unpack results

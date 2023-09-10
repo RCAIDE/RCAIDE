@@ -1,5 +1,6 @@
+## @ingroup Energy-Thermal_Management-Cryogenics
 # RCAIDE/Energy/Thermal_Management/Cryogenics/Cryocooler.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -14,7 +15,7 @@ from RCAIDE.Methods.Thermal_Management.Cryogenics.cryocooler_model import cryoco
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryocooler
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Components-Energy-Thermal_Management-Cryocooler
+## @ingroup Energy-Thermal_Management-Cryogenics
 class Cryocooler(Energy_Component):
     
     """

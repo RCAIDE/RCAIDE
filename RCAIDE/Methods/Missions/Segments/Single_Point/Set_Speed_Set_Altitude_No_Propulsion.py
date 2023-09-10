@@ -1,5 +1,6 @@
+## @ingroup Methods-Missions-Segments-Single_Point
 # RCAIDE/Methods/Missions/Segments/Single_Point/Set_Speed_Set_Altitude_No_Propulsion.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
  
@@ -50,12 +51,14 @@ def initialize_conditions(segment):
         alt = -1.0 *segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
     
     # pack
-    segment.state.conditions.freestream.altitude[:,0]             = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed
-    segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[0.0,0.0,z_accel]])
+    conditions.freestream.altitude[:,0]             = alt
+    conditions.frames.inertial.position_vector[:,2] = -alt # z points down
+    conditions.frames.inertial.velocity_vector[:,0] = air_speed
+    conditions.frames.inertial.acceleration_vector  = np.array([[0.0,0.0,z_accel]])
     
-    
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Unpack Unknowns 
+# ----------------------------------------------------------------------------------------------------------------------     
 ## @ingroup Methods-Missions-Segments-Cruise
 def unpack_unknowns(segment):
     """ Unpacks the throttle setting and body angle from the solver to the mission
@@ -82,15 +85,12 @@ def unpack_unknowns(segment):
     body_angle = segment.state.unknowns.body_angle
 
     # apply unknowns
-    segment.state.conditions.frames.body.inertial_rotations[:,1] = body_angle[:,0]   
-        
+    segment.state.conditions.frames.body.inertial_rotations[:,1] = body_angle[:,0]    
     
     
-    
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------  
 #  Residual Total Forces
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Missions-Segments-Climb
 def residual_total_force(segment):
     """Takes the summation of forces and makes a residual from the accelerations.

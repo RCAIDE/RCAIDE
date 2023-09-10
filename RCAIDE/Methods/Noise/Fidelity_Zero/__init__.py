@@ -1,7 +1,6 @@
-## @defgroup Methods-Noise-Fidelity_Zero Fidelity_Zero
-# @ingroup Methods 
+## @defgroup Methods-Noise-Fidelity_Zero Fidelity_Zero 
 # RCAIDE/Methods/Noise/Fidelity_Zero/__init__.py
-# (c) Copyright The Board of Trustees of RCAIDE
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
