@@ -43,8 +43,7 @@ class Motor(Energy_Component):
         Properties Used:
         None
         """           
-        self.tag                = 'motor'
-        self.propulsor_group    = 'propulsor'
+        self.tag                = 'motor' 
         self.resistance         = 0.0
         self.no_load_current    = 0.0
         self.speed_constant     = 0.0

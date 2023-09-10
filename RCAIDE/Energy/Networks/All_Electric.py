@@ -24,7 +24,7 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks
 class All_Electric(Network):
-    """ A network comprising a battery pack to power rotors through via electric motors.
+    """ A network comprising battery pack(s) to power rotors using electric motors via a bus.
         Electronic speed controllers, thermal management system, avionics, and other eletric 
         power systes paylaods are also modelled. Rotors and motors are arranged into groups,
         called propulsor groups, to siginify how they are connected in the network.     
@@ -57,8 +57,8 @@ class All_Electric(Network):
         """         
         
         self.tag                          = 'All_Electric'
-        self.avionics                     = None
-        self.payload                      = None 
+        self.avionics                     = RCAIDE.Energy.Peripherals.Avionics()
+        self.payload                      = RCAIDE.Energy.Peripherals.Payload()
         self.busses                       = Container()
         self.system_voltage               = None  
         
@@ -91,6 +91,8 @@ class All_Electric(Network):
         avionics   = self.avionics
         payload    = self.payload 
          
+        total_thrust  = 0. * state.ones_row(3) 
+        total_power   = 1. * state.ones_row(3) 
         for bus in busses:
             batteries = bus.batteries     
             motors    = bus.motors
@@ -98,7 +100,7 @@ class All_Electric(Network):
             escs      = bus.electronic_speed_controllers 
 
             for battery in batteries:               
-                battery_conditions                = state.conditions.energy[bus.tag][battery.tag] 
+                battery_conditions                = conditions.energy[bus.tag][battery.tag] 
                 battery.pack.current_energy       = battery_conditions.pack.energy 
                 battery.pack.maximum_energy       = battery_conditions.pack.maximum_degraded_battery_energy     
                 battery.pack.temperature          = battery_conditions.pack.temperature
@@ -115,19 +117,15 @@ class All_Electric(Network):
                     voltage = battery.compute_voltage(battery_conditions)   
                     
                 if battery_discharge_flag:    
-                    total_current       = 0.
-                    total_thrust        = 0. * state.ones_row(3)
-                    total_power         = 0. 
-                    
-                    # Motor Power 
-                    for i in range(state.conditions.energy[bus.tag].number_of_propulsor_groups):
+                    total_current  = 0. 
+                    for i in range(conditions.energy[bus.tag].number_of_propulsor_groups):
                         if bus.active_propulsor_groups[i]:           
-                            pg_tag              = state.conditions.energy[bus.tag].active_propulsor_groups[i]
-                            N_rotors            = state.conditions.energy[bus.tag].N_rotors
-                            outputs , T , P, I  = compute_propulsor_performance(i,bus.tag,pg_tag,motors,rotors,N_rotors,escs,state,voltage)  
+                            pg_tag              = conditions.energy[bus.tag].active_propulsor_groups[i]
+                            N_rotors            = conditions.energy[bus.tag].N_rotors
+                            outputs , T , P, I  = compute_propulsor_performance(i,bus.tag,pg_tag,motors,rotors,N_rotors,escs,conditions,voltage)  
                             total_current       += I
-                            total_thrust        += T       
-                            total_power         += P   
+                            total_thrust        += T    
+                            total_power         += P
                 
                     # Avionics Power Consumtion 
                     avionics.power() 
@@ -170,13 +168,18 @@ class All_Electric(Network):
                     total_thrust  = np.zeros((len(voltage),3)) 
                     battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)      
                     pack_battery_conditions(battery_conditions,battery)             
-                        
-        # Create the outputs
+                         
+        conditions.energy.thrust_force_vector  = total_thrust
+        conditions.energy.power                = total_power 
+        conditions.energy.vehicle_mass_rate    = state.ones_row(1)*0.0  
+
+        # --------------------------------------------------        
+        # A PATCH TO BE DELETED IN RCAIDE
         results                           = Data()
         results.thrust_force_vector       = total_thrust
-        results.vehicle_mass_rate         = state.ones_row(1)*0.0     
-     
-        return results
+        results.vehicle_mass_rate         = state.ones_row(1)*0.0         
+        # --------------------------------------------------    
+        return  results 
      
     def unpack_unknowns(self,segment):
         """ This adds additional unknowns which are unpacked from the mission solver and send to the network.
@@ -260,9 +263,9 @@ class All_Electric(Network):
     ## @ingroup Components-Energy-Networks
     def add_unknowns_and_residuals_to_segment(self, 
                                               segment, 
-                                              estimated_propulsor_group_throttles = [[]], 
-                                              estimated_rotor_power_coefficients  = [[]],
-                                              estimated_battery_voltages          = [[]], 
+                                              estimated_propulsor_group_throttles = [[0.5]], 
+                                              estimated_rotor_power_coefficients  = [[0.02]],
+                                              estimated_battery_voltages          = [[400]], 
                                               estimated_battery_cell_temperature  = [[283.]], 
                                               estimated_battery_state_of_charges  = [[0.5]],
                                               estimated_battery_cell_currents     = [[5.]]):
@@ -282,11 +285,8 @@ class All_Electric(Network):
             estimated_battery_state_of_charges                            [unitless]
             estimated_battery_cell_currents                               [Amperes]
             
-            Outputs:
-            segment.state.unknowns.battery_voltage_under_load
-            segment.state.unknowns.rotor_power_coefficient
-            segment.state.conditions.energy.motor.torque
-            segment.state.conditions.energy.rotor.torque   
+            Outputs: 
+            segment
     
             Properties Used:
             N/A
@@ -326,28 +326,7 @@ class All_Electric(Network):
             if len(batteries) > 1 and (bus.fixed_voltage == False): 
                 assert('The bus must have a fixed voltage is more than one battery is specified on the bus')  
                 
-            for b_i , battery in enumerate(batteries):    
-                try: 
-                    estimated_voltage   =  estimated_battery_voltages[bus_i][b_i]
-                except: 
-                    estimated_voltage   = battery.pack.maximum_voltage  
-
-                try:
-                    initial_bat_temp    = estimated_battery_cell_temperature[bus_i][b_i]
-                except:   
-                    initial_bat_temp    = 273.     
-                
-                try: 
-                    initial_battery_SOC = estimated_battery_state_of_charges[bus_i][b_i]
-                except:
-                    initial_battery_SOC = 0.5
-
-                try:
-                    initial_battery_C   = estimated_battery_cell_currents[bus_i][b_i]
-                except: 
-                    initial_battery_C   = 5.                                              
-                
-                # Create results data structure for battery   
+            for b_i , battery in enumerate(batteries):         
                 bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
                 bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
                 bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
@@ -367,10 +346,10 @@ class All_Electric(Network):
                 battery.append_battery_unknowns_and_residuals_to_segment(segment,
                                                                          bus,
                                                                          battery,
-                                                                         estimated_voltage,
-                                                                         initial_bat_temp, 
-                                                                         initial_battery_SOC,
-                                                                         initial_battery_C) 
+                                                                         estimated_battery_voltages[bus_i][b_i],
+                                                                         estimated_battery_cell_temperature[bus_i][b_i], 
+                                                                         estimated_battery_state_of_charges[bus_i][b_i], 
+                                                                         estimated_battery_cell_currents[bus_i][b_i] ) 
                 
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
@@ -410,7 +389,7 @@ class All_Electric(Network):
                 bus_results[pg_tag].unique_rotor_tags       = sorted_propulsors.unique_rotor_tags
                 bus_results[pg_tag].unique_motor_tags       = sorted_propulsors.unique_motor_tags
                 bus_results[pg_tag].unique_esc_tags         = sorted_propulsors.unique_esc_tags 
-                bus_results[pg_tag].y_axis_rotation         = 0. * ones_row(1)  
+                bus_results[pg_tag].y_axis_rotation         = 0. * ones_row(1)  # NEED TO REMOVE
                 bus_results[pg_tag].motor.efficiency        = 0. * ones_row(1)
                 bus_results[pg_tag].motor.torque            = 0. * ones_row(1) 
                 bus_results[pg_tag].rotor.torque            = 0. * ones_row(1)
@@ -424,8 +403,8 @@ class All_Electric(Network):
                 bus_results[pg_tag].rotor.power_coefficient = 0. * ones_row(1)    
             
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
-        segment.process.iterate.unknowns.network                    = self.unpack_unknowns
-        segment.process.iterate.residuals.network                   = self.residuals        
+        segment.process.iterate.unknowns.network            = self.unpack_unknowns
+        segment.process.iterate.residuals.network           = self.residuals        
 
         return segment
     

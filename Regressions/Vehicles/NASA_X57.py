@@ -528,7 +528,7 @@ def configs_setup(vehicle):
     configs     = RCAIDE.Components.Configs.Config.Container() 
     base_config = RCAIDE.Components.Configs.Config(vehicle)
     base_config.tag = 'base' 
-    base_config.networks.all_electric.busses.bus.active_propulsor_groups = ['propulsor']  
+    base_config.networks.all_electric.busses.bus.active_propulsor_groups = ['propulsor']  # default in network 
     configs.append(base_config) 
 
     # done!

@@ -91,6 +91,7 @@ class Aerodynamic(Simple):
         iterate.initials = Process()
         iterate.initials.time              = Methods.Common.Frames.initialize_time
         iterate.initials.weights           = Methods.Common.Weights.initialize_weights
+        iterate.initials.energy            = Methods.Common.Energy.initialize_energy
         iterate.initials.inertial_position = Methods.Common.Frames.initialize_inertial_position
         iterate.initials.planet_position   = Methods.Common.Frames.initialize_planet_position
         
@@ -124,6 +125,7 @@ class Aerodynamic(Simple):
         # Post Processing
         finalize.post_process = Process()        
         finalize.post_process.inertial_position = Methods.Common.Frames.integrate_inertial_horizontal_position
+        finalize.post_process.update_battery_age= Methods.Common.Energy.update_battery_age
         finalize.post_process.stability         = Methods.Common.Aerodynamics.update_stability
         finalize.post_process.aero_derivatives  = skip
         finalize.post_process.noise             = Methods.Common.Noise.compute_noise

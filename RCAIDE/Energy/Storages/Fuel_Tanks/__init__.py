@@ -8,4 +8,4 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Energy.Storages.Fuel_Tanks import Fuel_Tank
+from .Fuel_Tank  import Fuel_Tank

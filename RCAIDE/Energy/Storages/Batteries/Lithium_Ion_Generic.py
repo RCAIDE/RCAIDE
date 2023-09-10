@@ -50,7 +50,7 @@ class Lithium_Ion_Generic(Battery):
         
         self.age                                                      = 0       # [days]
         self.cell.mass                                                = 0.03  * Units.kg  
-        self.cell.charging_current                                    = 3.0     # [Amps]
+        self.cell.charging_current                                    = 1.0     # [Amps]
         self.cell.charging_voltage                                    = 3       # [Volts]
         self.cell.specific_heat_capacity                              = 1115    # [J/kgK] 
         self.cell.maximum_voltage                                     = 3.6     # [V]   
@@ -153,8 +153,6 @@ class Lithium_Ion_Generic(Battery):
         I                 = numerics.time.integrate
         D                 = numerics.time.differentiate
 
-        if not battery_discharge_flag:   
-            I_bat = -I_bat  
         # ---------------------------------------------------------------------------------
         # Compute battery electrical properties 
         # ---------------------------------------------------------------------------------  
@@ -247,7 +245,7 @@ class Lithium_Ion_Generic(Battery):
         battery.cell.entropy_heat_fraction         = np.zeros_like(V_ul)  
         battery.cell.voltage_open_circuit          = np.zeros_like(V_ul)
         battery.cell.current                       = np.zeros_like(V_ul)
-        battery.cell.voltage_under_load            = V_ul 
+        battery.cell.voltage_under_load            = np.zeros_like(V_ul)
         
         return      
     
@@ -331,11 +329,11 @@ class Lithium_Ion_Generic(Battery):
             N/A
     
             Inputs:    
-            b_i                                              [unitless]
-            estimated_voltage                                  [volts]
-            estimated_battery_cell_temperature                     [Kelvin]
-            estimated_battery_state_of_charges                 [unitless]
-            estimated_battery_cell_currents                         [Amperes]
+            b_i                                      [unitless]
+            estimated_voltage                        [volts]
+            estimated_battery_cell_temperature       [Kelvin]
+            estimated_battery_state_of_charges       [unitless]
+            estimated_battery_cell_currents          [Amperes]
             
             Outputs
             None
@@ -345,9 +343,7 @@ class Lithium_Ion_Generic(Battery):
         """        
         
         ones_row = segment.state.ones_row 
-        if bus.fixed_voltage == False: 
-            if estimated_voltage==None:
-                estimated_voltage = battery.pack.maximum_voltage
+        if bus.fixed_voltage == False:  
             segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  = estimated_voltage * ones_row(1)     
         
         return  
@@ -373,9 +369,7 @@ class Lithium_Ion_Generic(Battery):
 
         return battery_conditions.pack.voltage_under_load 
     
-    def update_battery_state_of_health(self,segment,increment_battery_age_by_one_day = False):   
-        print(' No aging model currently implemented for LFP cells. Pristine condition of \n '
-              'the battery cell will be assigned each charge cycle')
+    def update_battery_age(self,segment,increment_battery_age_by_one_day = False):    
         return  
  
   

@@ -97,6 +97,8 @@ class Solar(Network):
         solar_flux   = self.solar_flux
         solar_panel  = self.solar_panel 
          
+        total_thrust        = 0. * state.ones_row(3)
+        total_power         = 0. * state.ones_row(1) 
         for bus in busses:
             batteries      = bus.batteries     
             motors         = bus.motors
@@ -120,12 +122,7 @@ class Solar(Network):
                 else:    
                     voltage = battery.compute_voltage(battery_conditions)   
                      
-                total_current       = 0.
-                total_thrust        = 0. * state.ones_row(3)
-                total_power         = 0. 
-                
-                
-                # Motor Power 
+                total_current       = 0.  
                 for i in range(state.conditions.energy[bus.tag].number_of_propulsor_groups):
                     if bus.active_propulsor_groups[i]:           
                         pg_tag              = state.conditions.energy[bus.tag].active_propulsor_groups[i]
@@ -165,14 +162,20 @@ class Solar(Network):
                 pack_battery_conditions(battery_conditions,battery)                
                     
         # Pack the conditions for outputs 
-        conditions.energy.solar_flux   = solar_flux.outputs.flux                          
+        conditions.energy.solar_flux           = solar_flux.outputs.flux      
+        conditions.energy.thrust_force_vector  = total_thrust
+        conditions.energy.power                = total_power 
+        conditions.energy.vehicle_mass_rate    = state.ones_row(1)*0.0  
         
-        # Create the outputs
+
+        # --------------------------------------------------        
+        # A PATCH TO BE DELETED IN RCAIDE
         results                           = Data()
         results.thrust_force_vector       = total_thrust
         results.vehicle_mass_rate         = state.ones_row(1)*0.0  
-            
-        return results
+        # --------------------------------------------------
+        
+        return results 
     
     
     def unpack_unknowns(self,segment):

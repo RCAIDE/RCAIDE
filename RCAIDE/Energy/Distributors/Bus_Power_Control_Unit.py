@@ -16,9 +16,7 @@ from RCAIDE.Components.Component                      import Container
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Energy-Distributors
 class Bus_Power_Control_Unit(Energy_Component):
-    """  This controls the flow of energy in to and from a battery-powered nework
-        This includes the basic logic of the maximum power point tracker that modifies the voltage of the panels to
-        extract maximum power.
+    """  This controls the flow of energy into and from a battery-powered nework 
     
         Assumptions:
         None
@@ -58,14 +56,13 @@ class Bus_Power_Control_Unit(Energy_Component):
         self.outputs.avionics_power        = 0.0
         self.outputs.payload_power         = 0.0
         self.outputs.total_esc_power       = 0.0    
-        self.inputs.secondary_source_power = 0.0
+        self.inputs.power                  = 0.0
         
     def logic(self,conditions,numerics):
-        """ The power being sent to the battery
+        """ Determines the power disturbution on a bus
         
-            Assumptions:
-                the system voltage is constant
-                the maximum power point is at a constant voltage
+            Assumptions: 
+            N/A
                 
             Source:
             N/A

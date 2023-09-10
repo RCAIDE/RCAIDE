@@ -37,7 +37,7 @@ def main():
     configs_analyses = analyses_setup(configs)
     
     # mission analyses
-    mission  = mission_setup(configs_analyses,vehicle)
+    mission  = mission_setup(configs_analyses)
     missions_analyses = missions_setup(mission)
 
     analyses = RCAIDE.Analyses.Analysis.Container()
@@ -86,7 +86,7 @@ def main():
         assert(np.abs(v)<1e-6)
  
     # Plot vehicle 
-    plot_3d_vehicle(configs.cruise, save_figure = False, show_wing_control_points = True,show_figure = False)
+    plot_3d_vehicle(configs.base, save_figure = False, show_wing_control_points = True,show_figure = False)
     
     return
 
@@ -115,13 +115,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses                             = RCAIDE.Analyses.Vehicle()
-    
-    # ------------------------------------------------------------------
-    #  Basic Geometry Relations
-    sizing                               = RCAIDE.Analyses.Sizing.Sizing()
-    sizing.features.vehicle              = vehicle
-    analyses.append(sizing)
+    analyses                             = RCAIDE.Analyses.Vehicle() 
     
     # ------------------------------------------------------------------
     #  Weights
@@ -160,7 +154,7 @@ def base_analysis(vehicle):
 # ----------------------------------------------------------------------
 #   Define the Mission
 # ----------------------------------------------------------------------
-def mission_setup(analyses,vehicle):
+def mission_setup(analyses):
     
     # ------------------------------------------------------------------
     #   Initialize the Mission
@@ -193,7 +187,7 @@ def mission_setup(analyses,vehicle):
     segment.initial_battery_state_of_charge = 0.3  
     segment.latitude                        = 37.4300   # this defaults to degrees (do not use Units.degrees)
     segment.longitude                       = -122.1700 # this defaults to degrees
-    segment = vehicle.networks.solar.add_unknowns_and_residuals_to_segment(segment)    
+    segment = analyses.base.energy.networks.solar.add_unknowns_and_residuals_to_segment(segment)    
     
     
     mission.append_segment(segment)    

@@ -12,8 +12,8 @@ from .Isolated_Battery_Cell                         import Isolated_Battery_Cell
 from Legacy.trunk.S.Components.Energy.Networks      import Battery_Ducted_Fan
 from .All_Electric                                  import All_Electric
 from Legacy.trunk.S.Components.Energy.Networks      import Ducted_Fan
-from .Internal_Combustion_Propeller                 import Internal_Combustion_Propeller
-from .Internal_Combustion_Propeller_Constant_Speed  import Internal_Combustion_Propeller_Constant_Speed 
+from .Internal_Combustion_Engine                    import Internal_Combustion_Engine
+from .Internal_Combustion_Engine_Constant_Speed     import Internal_Combustion_Engine_Constant_Speed 
 from Legacy.trunk.S.Components.Energy.Networks      import Liquid_Rocket
 from .Network                                       import Network
 from Legacy.trunk.S.Components.Energy.Networks      import Propulsor_Surrogate

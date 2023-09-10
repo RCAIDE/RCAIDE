@@ -17,7 +17,7 @@ import numpy as np
 # compute_ICE_propulsor_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_propulsor_performance(i,network_tag,propulsor_group_tag,engines,propellers,N_propellers,state,): 
+def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,rotors,N_rotors,conditions): 
     ''' Computes the performance of an internal combustion engine propulsor unit
     
     Assumptions: 
@@ -28,11 +28,11 @@ def compute_propulsor_performance(i,network_tag,propulsor_group_tag,engines,prop
 
     Inputs: 
     i                     - index of unique compoment               [-]
-    network_tag           - tag of network                          [string]
+    fuel_line_tag          - tag of network                         [string]
     propulsor_group_tag   - tag of propulsor group                  [string]
     engines               - data structure of engines               [-]
-    propellers            - data structure of engines               [-]
-    N_propellers          - number of propellers in propulsor group [-]
+    rotors                - data structure of engines               [-]
+    N_rotors              - number of rotors in propulsor group     [-]
     escs                  - data structure of engines               [-]
     state                 - operating data structure                [-]
     voltage               - system voltage                          [Volts]
@@ -46,47 +46,49 @@ def compute_propulsor_performance(i,network_tag,propulsor_group_tag,engines,prop
     Properties Used: 
     N.A.        
     ''' 
-    unique_propeller_tags   = state.conditions.energy[network_tag][propulsor_group_tag].unique_propeller_tags
-    unique_engine_tags      = state.conditions.energy[network_tag][propulsor_group_tag].unique_engine_tags  
-    engine                  = engines[unique_engine_tags[i]]
-    propeller               = propellers[unique_propeller_tags[i]]  
+    unique_rotor_tags   = conditions.energy[fuel_line_tag][propulsor_group_tag].unique_rotor_tags
+    unique_engine_tags  = conditions.energy[fuel_line_tag][propulsor_group_tag].unique_engine_tags  
+    engine              = engines[unique_engine_tags[i]]
+    rotor               = rotors[unique_rotor_tags[i]]  
  
-    # Run the propeller to get the power
-    propeller.inputs.pitch_command = state.conditions.energy.throttle - 0.5
-    propeller.inputs.omega         = state.conditions.energy.rpm
+    # Run the rotor to get the power
+    rotor.inputs.pitch_command = conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.pitch_command
+    rotor.inputs.omega         = conditions.energy[fuel_line_tag][propulsor_group_tag].engine.rpm
  
-    # Spin the propeller 
-    F, Q, P, Cp, outputs, etap = propeller.spin(state.conditions) 
+    # Spin the rotor 
+    F, Q, P, Cp, outputs, etap = rotor.spin(conditions) 
 
     # Run the engine to calculate the throttle setting and the fuel burn
     engine.inputs.power = P
-    engine.calculate_throttle(state.conditions)
+    engine.calculate_throttle(conditions)
 
     # Create the outputs 
-    R                   = propeller.tip_radius 
-    mdot                = mdot + engine.outputs.fuel_flow_rate * N_propellers[i]
+    R                   = rotor.tip_radius 
+    mdot                = engine.outputs.fuel_flow_rate * N_rotors[i]
     rpm                 = engine.inputs.speed / Units.rpm 
     F_mag               = np.atleast_2d(np.linalg.norm(F, axis=1)).T
     throttle            = engine.outputs.throttle  
-    total_thrust        = F * N_propellers[i]
-    total_power         = P * N_propellers[i]  
+    total_thrust        = F * N_rotors[i]
+    total_power         = P * N_rotors[i]  
       
     # Pack specific outputs
-    state.conditions.energy[network_tag][propulsor_group_tag].engine_torque            = Q
-    state.conditions.energy[network_tag][propulsor_group_tag].propeller.torque         = Q
-    state.conditions.energy[network_tag][propulsor_group_tag].propeller.rpm            = rpm
-    state.conditions.energy[network_tag][propulsor_group_tag].propeller.tip_mach       = (R*rpm*Units.rpm)/a
-    state.conditions.energy[network_tag][propulsor_group_tag].propeller.disc_loading   = (F_mag)/(np.pi*(R**2))             
-    state.conditions.energy[network_tag][propulsor_group_tag].propeller.power_loading  = (F_mag)/(P)    
-    state.conditions.energy[network_tag][propulsor_group_tag].propeller.efficiency     = etap
-    state.conditions.energy[network_tag][propulsor_group_tag].propeller.figure_of_merit= outputs.figure_of_merit
-    state.conditions.energy[network_tag][propulsor_group_tag].throttle                 = throttle
-    state.conditions.noise.sources.propellers[propeller.tag]                           = outputs 
+    conditions.energy[fuel_line_tag][propulsor_group_tag].mass_flow_rate       = mdot
+    conditions.energy[fuel_line_tag][propulsor_group_tag].engine.torque        = Q
+    conditions.energy[fuel_line_tag][propulsor_group_tag].engine.power         = P   
+    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.torque         = Q
+    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.rpm            = rpm
+    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.tip_mach       = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound 
+    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.disc_loading   = (F_mag)/(np.pi*(R**2))             
+    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.power_loading  = (F_mag)/(P)    
+    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.efficiency     = etap
+    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.figure_of_merit= outputs.figure_of_merit
+    conditions.energy[fuel_line_tag][propulsor_group_tag].throttle             = throttle
+    conditions.noise.sources.rotors[rotor.tag]                                 = outputs 
  
-    return outputs , total_thrust , total_power 
+    return outputs , total_thrust , total_power ,mdot
 
 def compute_unique_propulsor_groups(self): 
-    '''Computes the unique propeller groups on a bus    
+    '''Computes the unique rotor groups on a bus    
     
     Assumptions:
     None
@@ -99,45 +101,45 @@ def compute_unique_propulsor_groups(self):
     
     Outputs:  
     sorted_propulsors. 
-        propeller_indexes       - propeller indexes                   [-]
-        unique_propeller_tags   - propeller tags                      [string(s)]
+        rotor_indexes       - rotor indexes                   [-]
+        unique_rotor_tags   - rotor tags                      [string(s)]
         unique_engine_tags  - engine tags                     [string(s)]
-        unique_esc_tags     - electronic speed propeller tags     [string(s)]
-        N_propellers            - number of propellers                [-]
+        unique_esc_tags     - electronic speed rotor tags     [string(s)]
+        N_rotors            - number of rotors                [-]
 
     Properties Used:
     N/A 
     '''
     
     engines                    = self.engines 
-    propellers                 = self.propellers  
+    rotors                     = self.rotors  
     active_propulsor_groups    = self.active_propulsor_groups 
     N_active_propulsor_groups  = len(active_propulsor_groups)
     
     # determine propulsor group indexes 
     engine_group_indexes,engine_group_names,unique_engine_tags  = compute_number_of_compoment_groups(engines,active_propulsor_groups)
-    propeller_group_indexes,propeller_groups_names,unique_propeller_tags    = compute_number_of_compoment_groups(propellers,active_propulsor_groups) 
+    rotor_group_indexes,rotor_groups_names,unique_rotor_tags    = compute_number_of_compoment_groups(rotors,active_propulsor_groups) 
     
-    # make sure that each propeller has a engine and esc
-    if (len(propeller_group_indexes)!=len(engine_group_indexes)):
-        assert('The number of propellers and/or esc is not the same as the number of engines')  
+    # make sure that each rotor has a engine and esc
+    if (len(rotor_group_indexes)!=len(engine_group_indexes)):
+        assert('The number of rotors and/or esc is not the same as the number of engines')  
         
-    # Count the number of unique pairs of propellers and engines 
-    unique_propeller_groups,N_propellers   = np.unique(propeller_group_indexes, return_counts=True)
+    # Count the number of unique pairs of rotors and engines 
+    unique_rotor_groups,N_rotors   = np.unique(rotor_group_indexes, return_counts=True)
     unique_engine_groups,_                 = np.unique(engine_group_indexes, return_counts=True) 
-    if (unique_propeller_groups == unique_engine_groups).all(): 
-        propeller_indexes  = []
+    if (unique_rotor_groups == unique_engine_groups).all(): 
+        rotor_indexes  = []
         engine_indexes = [] 
         for group in range(N_active_propulsor_groups):
-            propeller_indexes.append(np.where(unique_propeller_groups[group]   == propeller_group_indexes)[0][0])
+            rotor_indexes.append(np.where(unique_rotor_groups[group]   == rotor_group_indexes)[0][0])
             engine_indexes.append(np.where(unique_engine_groups[group] == engine_group_indexes)[0][0]) 
     else: 
-        propeller_indexes = propeller_group_indexes
+        rotor_indexes = rotor_group_indexes
         engine_indexes = engine_group_indexes 
-        N_propellers      = np.ones_like(engine_group_indexes)   
+        N_rotors      = np.ones_like(engine_group_indexes)   
     
-    sorted_propulsors = Data(propeller_indexes       = propeller_indexes,
-                             unique_propeller_tags   = unique_propeller_tags,
+    sorted_propulsors = Data(rotor_indexes       = rotor_indexes,
+                             unique_rotor_tags   = unique_rotor_tags,
                              unique_engine_tags      = unique_engine_tags, 
-                             N_propellers            = N_propellers)
+                             N_rotors            = N_rotors)
     return sorted_propulsors

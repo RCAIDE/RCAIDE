@@ -8,11 +8,11 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Units, Data, Container 
+from RCAIDE.Core import Data 
 
 # python imports 
 import numpy as np
-import copy, time 
+import  time 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  REGRESSION

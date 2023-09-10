@@ -11,10 +11,16 @@ import RCAIDE
 from RCAIDE.Core                           import Units, Data 
 from RCAIDE.Methods.Power.Battery.Sizing   import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, initialize_from_circuit_configuration, find_mass_gain_rate, find_total_mass_gain
 from RCAIDE.Methods.Power.Battery.Ragone   import find_ragone_properties, find_ragone_optimum 
+from RCAIDE.Visualization import * 
 
 # package imports  
 import numpy as np
 import matplotlib.pyplot as plt
+
+# local imports 
+import sys 
+sys.path.append('../../Vehicles') 
+from Isolated_Battery_Cell   import vehicle_setup , configs_setup  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  REGRESSION
@@ -27,7 +33,7 @@ def main():
     
     # instantiate differet battery types 
     numerics                       = Data()
-    battery_inputs                 = Data() #create inputs data structure for inputs for testing discharge model
+    battery_outputs                = Data() #create inputs data structure for inputs for testing discharge model
     specific_energy_guess          = 400*Units.Wh/Units.kg 
     battery_al_air                 = RCAIDE.Energy.Storages.Batteries.Aluminum_Air()    
     battery_li_ion                 = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()
@@ -41,10 +47,10 @@ def main():
     numerics.time.control_points   = np.array([[0], [1]])
     
     # define battery inputs (i.e. current, power)
-    battery_inputs.current          = np.array([[100],[100]])*Units.amps
-    battery_inputs.power_in         = np.array([[Preq/2.] ,[ Preq]])
-    print('battery_inputs=', battery_inputs)
-    battery_li_ion.inputs = battery_inputs
+    battery_outputs.current          = np.array([[100],[100]])*Units.amps
+    battery_outputs.power            = np.array([[Preq/2.] ,[ Preq]])
+    print('battery outputs=', battery_outputs)
+    battery_li_ion.outputs           = battery_outputs
     battery_li_ion.pack.maximum_voltage = battery_li_ion.cell.maximum_voltage
     
     # run tests on functionality
@@ -64,33 +70,29 @@ def main():
     # run discharge models
     battery_li_ion.energy_calc(numerics)
     print(battery_li_ion)
-    #plot_ragone(battery_li_ion, 'lithium ion')
-    #plot_ragone(battery_li_s,   'lithium sulfur') 
+    plot_battery_ragone_diagram(battery_li_ion, save_filename =  'lithium_ion')
+    plot_battery_ragone_diagram(battery_li_s,   save_filename =  'lithium_sulfur') 
      
-    battery_chemistry     = ['NMC','LFP'] 
+    battery_chemistry     = ['Lithium_Ion_NMC','Lithium_Ion_LFP'] 
     marker                = ['s' ,'o' ,'P']
     linestyles            = ['-','--',':']
-    linecolors            = [['green' , 'blue' , 'red' ],['darkgreen', 'darkblue' , 'darkred'], ['limegreen', 'lightblue' , 'pink']]     
-    curr                  = [1.5, 3, 6 ] 
-    C_rat                 = [0.5,1,2]   
+    linecolors            = [['green' , 'blue' ],['darkgreen', 'darkblue'], ['limegreen', 'lightblue' ]]     
+    curr                  = [1.5, 3] 
+    C_rat                 = [0.5,1]   
     marker_size           = 8 
     mAh                   = np.array([3550,1500]) 
-    V_ul_true  = np.array([[3.9446784139104443,3.5590281079836554],
-                           [3.890187851174907,3.546414176818607],
-                           [3.698158733645092,3.5211734513546005],])
-    bat_temp_true     = np.array([[290.88689276343854,289.1293674284379],
-                                  [295.39761123008685,290.03365301513804],
-                                  [307.85017179101123,291.84526567740375],])  
+    V_ul_true  = np.array([[3.9556105043436403,3.5629236624192315],
+                           [3.9314035243453276,3.550898223730678]])
+    bat_temp_true     = np.array([[295.59648183900396,289.8921957322976],
+                                  [302.56445018941866,291.6305775084804]])  
  
     plt.rcParams.update({'font.size': 12})
     fig1 = plt.figure('Cell Test') 
     fig1.set_size_inches(12,7)   
-    axes1  = fig1.add_subplot(2,3,1)
-    axes2  = fig1.add_subplot(2,3,2)    
-    axes3  = fig1.add_subplot(2,3,3)
-    axes4  = fig1.add_subplot(2,3,4) 
-    axes5  = fig1.add_subplot(2,3,5)
-    axes6  = fig1.add_subplot(2,3,6)  
+    axes1  = fig1.add_subplot(2,2,1)
+    axes2  = fig1.add_subplot(2,2,2)  
+    axes3  = fig1.add_subplot(2,2,3) 
+    axes4  = fig1.add_subplot(2,2,4) 
     
     for j in range(len(curr)):      
         for i in range(len(battery_chemistry)):   
@@ -100,25 +102,25 @@ def main():
             results = mission.evaluate()   
             
             # Voltage Regression
-            V_ul        = results.segments[0].conditions.energy.battery_0.pack.voltage_under_load[2][0]   
+            V_ul        = results.segments[0].conditions.energy.bus[battery_chemistry[i]].pack.voltage_under_load[2][0]   
             print('Under load voltage: ' + str(V_ul))
             V_ul_diff   = np.abs(V_ul - V_ul_true[j,i])
             print('Under load voltage difference')
             print(V_ul_diff)
-            #assert np.abs((V_ul_diff)/V_ul_true[j,i]) < 1e-6 
+            assert np.abs((V_ul_diff)/V_ul_true[j,i]) < 1e-6 
             
             # Temperature Regression
-            bat_temp        = results.segments[1].conditions.energy.battery_0.cell.temperature[2][0]  
+            bat_temp        = results.segments[1].conditions.energy.bus[battery_chemistry[i]].cell.temperature[2][0]  
             print('cell temperature: ' + str(bat_temp))
             bat_temp_diff   = np.abs(bat_temp  - bat_temp_true[j,i]) 
             print('cell temperature difference')
             print(bat_temp_diff)
-            #assert np.abs((bat_temp_diff)/bat_temp_true[j,i]) < 1e-6    
+            assert np.abs((bat_temp_diff)/bat_temp_true[j,i]) < 1e-6    
             
-            plot_results(results,j,battery_chemistry[i], axes1, axes2, axes3, axes4, axes5, axes6,
+            plot_results(results,j,battery_chemistry[i], axes1, axes2, axes3, axes4, 
                          marker[i],marker_size,linecolors[i],linestyles[i],C_rat[j])  
 
-    legend_font_size = 12                     
+    legend_font_size = 6                     
     axes1.set_ylabel('Voltage $(V_{UL}$)')    
     axes1.set_xlabel('Amp-Hours (A-hr)') 
     axes1.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})  
@@ -127,46 +129,32 @@ def main():
     axes2.set_xlabel('Amp-Hours (A-hr)') 
     axes2.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})  
     axes2.set_ylim([2.5,5])   
-    axes2.set_xlim([0,7])
-    axes3.set_xlabel('Amp-Hours (A-hr)')
-    axes3.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})  
-    axes3.set_ylim([2.5,5]) 
-    axes3.set_xlim([0,7])
-
-    axes4.set_xlabel('Amp-Hours (A-hr)') 
-    axes4.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})
+    axes2.set_xlim([0,7])  
+    axes3.set_xlabel('Amp-Hours (A-hr)') 
+    axes3.legend(loc='upper right', ncol = 2, prop={'size': legend_font_size})
+    axes3.set_ylim([273,320])
+    axes3.set_xlim([0,7]) 
+    axes3.set_ylabel(r'Temperature ($\degree$C)')    
+    axes4.set_xlabel('Amp-Hours (A-hr)')        
+    axes4.legend(loc='upper left', ncol = 2, prop={'size': legend_font_size})
     axes4.set_ylim([273,320])
-    axes4.set_xlim([0,7]) 
-    axes5.set_ylabel(r'Temperature ($\degree$C)')    
-    axes5.set_xlabel('Amp-Hours (A-hr)')        
-    axes5.legend(loc='upper left', ncol = 2, prop={'size': legend_font_size})
-    axes5.set_ylim([273,320])
-    axes5.set_xlim([0,7]) 
-    axes6.set_xlabel('Amp-Hours (A-hr)')     
-    axes6.legend(loc='upper left', ncol = 2,  prop={'size': legend_font_size})  
-    axes6.set_ylim([273,320])
-    axes6.set_xlim([0,7]) 
-    
-    plt.tight_layout()
+    axes4.set_xlim([0,7])  
     
     return 
 
-def plot_results(results,j,bat_chem, axes1, axes2, axes3, axes4, axes5, axes6,m,ms,lc,ls,C_rat): 
+def plot_results(results,j,bat_chem, axes1, axes2, axes3, axes4,m,ms,lc,ls,C_rat): 
     
     for segment in results.segments.values(): 
-        volts         = segment.conditions.energy.battery_0.pack.voltage_under_load[:,0]   
-        cell_temp     = segment.conditions.energy.battery_0.cell.temperature[:,0]   
-        Amp_Hrs       = segment.conditions.energy.battery_0.cell.charge_throughput[:,0]                   
+        volts         = segment.conditions.energy.bus[bat_chem].pack.voltage_under_load[:,0]     
+        cell_temp     = segment.conditions.energy.bus[bat_chem].cell.temperature[:,0]   
+        Amp_Hrs       = segment.conditions.energy.bus[bat_chem].cell.charge_throughput[:,0]                   
           
         if j == 0:
             axes1.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc[0] , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
-            axes4.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc[0] , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')   
+            axes3.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc[0] , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')   
         elif  j == 1: 
             axes2.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc[1] , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
-            axes5.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc[1] , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')                   
-        elif  j == 2: 
-            axes3.plot(Amp_Hrs , volts , marker= m , linestyle = ls,  color= lc[2] , markersize=ms   ,label = bat_chem + ': '+ str(C_rat) + ' C') 
-            axes6.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc[2] , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')       
+            axes4.plot(Amp_Hrs , cell_temp, marker= m , linestyle = ls,  color= lc[1] , markersize=ms,label = bat_chem + ': '+ str(C_rat) + ' C')           
     return
 
 # ----------------------------------------------------------------------
@@ -207,8 +195,8 @@ def base_analysis(vehicle):
     analyses = RCAIDE.Analyses.Vehicle()  
     
     #  Energy
-    energy         = RCAIDE.Analyses.Energy.Energy()
-    energy.network = vehicle.networks 
+    energy          = RCAIDE.Analyses.Energy.Energy()
+    energy.networks = vehicle.networks 
     analyses.append(energy)
  
     #  Planet Analysis
@@ -225,15 +213,13 @@ def base_analysis(vehicle):
 def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
  
     #   Initialize the Mission 
-    mission                                                                   = RCAIDE.Analyses.Mission.Sequential_Segments()
-    mission.tag                                                               = 'cell_cycle_test'   
-    Segments                                                                  = RCAIDE.Analyses.Mission.Segments 
-    base_segment                                                              = Segments.Segment() 
-    base_segment.process.initialize.initialize_battery                        = RCAIDE.Methods.Missions.Segments.Common.Energy.initialize_battery 
-    base_segment.process.finalize.post_process.update_battery_state_of_health = RCAIDE.Methods.Missions.Segments.Common.Energy.update_battery_state_of_health    
-    discharge_time                    = 0.9 * (mAh/1000)/current * Units.hrs
+    mission            = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission.tag        = 'cell_cycle_test'   
+    Segments           = RCAIDE.Analyses.Mission.Segments 
+    base_segment       = Segments.Segment()   
+    time               = 0.9 * (mAh/1000)/current * Units.hrs
     
-    if battery_chemistry == 'LFP':
+    if battery_chemistry == 'Lithium_Ion_LFP':
         discharge_tag = 'LFP_Discharge'   
         charge_tag    = 'LFP_Charge'   
         
@@ -241,20 +227,21 @@ def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
         segment                                = Segments.Ground.Battery_Discharge(base_segment) 
         segment.analyses.extend(analyses.base) 
         segment.tag                            = discharge_tag
-        segment.time                           = discharge_time 
-        segment.battery_energies               = [vehicle.networks.single_cell_network.batteries.lithium_ion_lfp.pack.maximum_energy * 1.]
-        segment                                = vehicle.networks.single_cell_network.add_unknowns_and_residuals_to_segment(segment,initial_battery_temperatures = [295] )    
+        segment.time                           = time
+        segment.initial_battery_state_of_charge= 1
+        segment                                = vehicle.networks.isolated_battery_cell.add_unknowns_and_residuals_to_segment(segment,estimated_battery_cell_temperature = [[295]] )    
         mission.append_segment(segment)         
         
         # Charge Segment 
         segment                                = Segments.Ground.Battery_Recharge(base_segment)      
         segment.analyses.extend(analyses.base)
         segment.tag                            = charge_tag  
-        segment                                = vehicle.networks.single_cell_network.add_unknowns_and_residuals_to_segment(segment,initial_battery_temperatures = [303] )      
+        segment.time                           = time
+        segment                                = vehicle.networks.isolated_battery_cell.add_unknowns_and_residuals_to_segment(segment,estimated_battery_cell_temperature = [[303]] )      
         mission.append_segment(segment)  
          
         
-    elif battery_chemistry == 'NMC':
+    elif battery_chemistry == 'Lithium_Ion_NMC':
         discharge_tag = 'NMC_Discharge'  
         charge_tag    = 'NMC_Recharge'  
 
@@ -262,16 +249,17 @@ def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
         segment                                = Segments.Ground.Battery_Discharge(base_segment) 
         segment.analyses.extend(analyses.base) 
         segment.tag                            = discharge_tag
-        segment.time                           = discharge_time 
-        segment.battery_energies               = [vehicle.networks.single_cell_network.batteries.lithium_ion_nmc.pack.maximum_energy * 1.]
-        segment                                = vehicle.networks.single_cell_network.add_unknowns_and_residuals_to_segment(segment,initial_battery_temperatures = [295] )    
+        segment.time                           = time
+        segment.initial_battery_state_of_charge= 1
+        segment                                = vehicle.networks.isolated_battery_cell.add_unknowns_and_residuals_to_segment(segment,estimated_battery_cell_temperature = [[295]] )    
         mission.append_segment(segment)         
         
         # Charge Segment 
         segment                                = Segments.Ground.Battery_Recharge(base_segment)      
         segment.analyses.extend(analyses.base)
-        segment.tag                            = charge_tag     
-        segment                                = vehicle.networks.single_cell_network.add_unknowns_and_residuals_to_segment(segment,initial_battery_temperatures =[303] )      
+        segment.tag                            = charge_tag  
+        segment.time                           = time
+        segment                                = vehicle.networks.isolated_battery_cell.add_unknowns_and_residuals_to_segment(segment,estimated_battery_cell_temperature =[[303]] )      
         mission.append_segment(segment)          
     
 

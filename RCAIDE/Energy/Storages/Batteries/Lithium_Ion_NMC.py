@@ -174,12 +174,8 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         n_total           = n_series*n_parallel
         Nn                = battery.module.geometrtic_configuration.normal_count            
         Np                = battery.module.geometrtic_configuration.parallel_count          
-        n_total_module    = Nn*Np        
-
-        if battery_discharge_flag:
-            I_cell = I_bat/n_parallel
-        else: 
-            I_cell = -I_bat/n_parallel 
+        n_total_module    = Nn*Np     
+        I_cell            = I_bat/n_parallel
         
         # State of charge of the battery
         initial_discharge_state = np.dot(I,-P_bat) + E_current[0]
@@ -392,10 +388,10 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             Inputs:  
             self                - battery data structure              [unitless]
             segment             - segment data struction              [unitless]
-            estimated_voltage                                           [volts] 
-            estimated_cell_temperature                          [Kelvin]
-            estimated_state_of_charge                           [unitless]
-            estimated_cell_current                              [Amperes]
+            estimated_voltage                                         [volts] 
+            estimated_cell_temperature                                [Kelvin]
+            estimated_state_of_charge                                 [unitless]
+            estimated_cell_current                                    [Amperes]
             b_i                                                       [unitless]
             
             Outputs
@@ -458,7 +454,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
            
         return V_ul 
     
-    def update_battery_state_of_health(self,battery_conditions,increment_battery_age_by_one_day = False):  
+    def update_battery_age(self,battery_conditions,increment_battery_age_by_one_day = False):  
         """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries. 
        
         Source: 

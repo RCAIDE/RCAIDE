@@ -30,20 +30,31 @@ def main():
     vehicle    = vehicle_setup()
     
     # Setup the modified constant speed version of the network
-    vehicle = ICE_CS(vehicle)
-    
-    # Setup analyses and mission
-    analyses = base_analysis(vehicle)
-    analyses.finalize()
-    mission  = mission_setup(analyses)
-    
-    # evaluate
+    vehicle = ICE_CS(vehicle) 
+    configs  = configs_setup(vehicle)
+
+    # vehicle analyses
+    configs_analyses = analyses_setup(configs)
+
+    # mission analyses
+    mission  = mission_setup(configs_analyses)
+    missions_analyses = missions_setup(mission)
+
+    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses.configs  = configs_analyses
+    analyses.missions = missions_analyses
+
+    configs.finalize()
+    analyses.finalize()    
+
+    # mission analysis
+    mission = analyses.missions.base 
     results = mission.evaluate()
     
-    P_truth     = 53633.1366880748
-    mdot_truth  = 0.004712330174699661
+    P_truth     = 53595.13355279211
+    mdot_truth  = 0.004708991132231059
     
-    P    = results.segments.cruise.state.conditions.propulsion.propulsor_group_0.power[-1,0]
+    P    = results.segments.cruise.state.conditions.energy.fuel_line.propulsor.engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]     
 
     # Check the errors
@@ -63,28 +74,50 @@ def main():
 
 def ICE_CS(vehicle):
     
-    # Replace the C172 engine and propeller with a constant speed propeller
-    # Let's assume its an STC or 172RG 
+    # Replace the C172 engine and propeller with a constant speed propeller  
+    vehicle.networks.pop('internal_combustion_engine')
+
+    # ########################################################  Energy Network  #########################################################  
+    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Engine_Constant_Speed()  
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # Bus
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    fuel_line                                   = RCAIDE.Energy.Distributors.Fuel_Line() 
     
-    # build network
-    net                                     = RCAIDE.Energy.Networks.Internal_Combustion_Propeller_Constant_Speed()
-    net.tag                                 = 'internal_combustion_constant_speed'
-    net.number_of_engines                   = 1.
-    net.rated_speed                         = 2700. * Units.rpm
-    net.rated_power                         = 180.  * Units.hp
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #   Fuel
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # fuel tank
+    fuel_tank                                   = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.origin                            = vehicle.wings.main_wing.origin 
     
-    # Component 1 the engine                
-    engine                                  = RCAIDE.Energy.Converters.Internal_Combustion_Engine()
-    engine.sea_level_power                  = 180. * Units.horsepower
-    engine.flat_rate_altitude               = 0.0
-    engine.rated_speed                      = 2700. * Units.rpm
-    engine.power_specific_fuel_consumption  = 0.52
+    # fuel 
+    fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline() 
+    fuel.mass_properties.mass                   = 319 *Units.lbs 
+    fuel.mass_properties.center_of_gravity      =  vehicle.wings.main_wing.mass_properties.center_of_gravity
+    fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
+    fuel_tank.fuel                              = fuel 
     
-    net.engines.append(engine)
-    
-    # 
+    fuel_line.fuel_tanks.append(fuel_tank)
+
+    #------------------------------------------------------------------------------------------------------------------------------------                                                  
+    # Engine                    
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    engine                                     = RCAIDE.Energy.Converters.Engine()
+    engine.sea_level_power                     = 180. * Units.horsepower
+    engine.flat_rate_altitude                  = 0.0
+    engine.rated_speed                         = 2700. * Units.rpm
+    engine.rated_power                         = 180.  * Units.hp   
+    engine.power_specific_fuel_consumption     = 0.52 
+    fuel_line.engines.append(engine)
+
+    #------------------------------------------------------------------------------------------------------------------------------------     
+    # Prop
+    #------------------------------------------------------------------------------------------------------------------------------------  
     prop                                   = RCAIDE.Energy.Converters.Propeller()
     prop.number_of_blades                  = 2.0
+    prop.variable_pitch                    = True 
     prop.tip_radius                        = 76./2. * Units.inches
     prop.hub_radius                        = 8.     * Units.inches
     prop.cruise.design_freestream_velocity = 119.   * Units.knots
@@ -101,16 +134,62 @@ def ICE_CS(vehicle):
                                            '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
     prop.append_airfoil(airfoil)  
     prop.airfoil_polar_stations            = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    prop                                   = design_propeller(prop)    
+    prop                                   = design_propeller(prop)   
+    fuel_line.rotors.append(prop)  
     
-    net.propellers.append(prop)
+    net.fuel_lines.append(fuel_line) 
     
-    # Replace the network
-    vehicle.networks.internal_combustion = net
+    # add the network to the vehicle
+    vehicle.append_energy_network(net)
     
     
     return vehicle
 
+
+def analyses_setup(configs):
+
+    analyses = RCAIDE.Analyses.Analysis.Container()
+
+    # build a base analysis for each config
+    for tag,config in configs.items():
+        analysis = base_analysis(config)
+        analyses[tag] = analysis
+
+    return analyses
+
+def missions_setup(base_mission):
+
+    # the mission container
+    missions = RCAIDE.Analyses.Mission.Mission.Container()
+
+    # ------------------------------------------------------------------
+    #   Base Mission
+    # ------------------------------------------------------------------
+    missions.base = base_mission
+
+    # done!
+    return missions  
+
+
+def configs_setup(vehicle):
+     # ------------------------------------------------------------------
+    #   Initialize Configurations
+    # ------------------------------------------------------------------ 
+    configs                                                    = RCAIDE.Components.Configs.Config.Container() 
+    base_config                                                = RCAIDE.Components.Configs.Config(vehicle)
+    base_config.networks.internal_combustion_engine_constant_speed.fuel_lines.fuel_line.active_propulsor_groups = ['propulsor']  # default in network 
+    base_config.tag                                            = 'base'
+    configs.append(base_config)
+    
+    # ------------------------------------------------------------------
+    #   Cruise Configuration
+    # ------------------------------------------------------------------ 
+    config                                                     = RCAIDE.Components.Configs.Config(base_config)
+    config.tag                                                 = 'cruise' 
+    configs.append(config) 
+    
+    # done!
+    return configs
 
 # ----------------------------------------------------------------------
 #   Define the Mission
@@ -147,13 +226,12 @@ def mission_setup(analyses):
 
     segment        = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
     segment.tag    = "cruise"
-    segment.analyses.extend( analyses )
-
+    segment.analyses.extend( analyses.base ) 
     segment.altitude                                = 12000. * Units.feet
     segment.air_speed                               = 119.   * Units.knots
     segment.distance                                = 10 * Units.nautical_mile
-    segment.state.conditions.energy.rpm             = 2650.  * Units.rpm *  ones_row(1) 
-    segment.state.unknowns.throttle                 = 0.5 *  ones_row(1)
+    segment.state.conditions.energy.rpm             = 2650.  * Units.rpm *  ones_row(1)     
+    segment = analyses.base.energy.networks.internal_combustion_engine_constant_speed.add_unknowns_and_residuals_to_segment(segment)      
 
     # add to mission
     mission.append_segment(segment)
@@ -169,13 +247,7 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Analyses.Vehicle()
-
-    # ------------------------------------------------------------------
-    #  Basic Geometry Relations
-    sizing = RCAIDE.Analyses.Sizing.Sizing()
-    sizing.features.vehicle = vehicle
-    analyses.append(sizing)
-
+ 
     # ------------------------------------------------------------------
     #  Weights
     weights = RCAIDE.Analyses.Weights.Weights_Transport()
@@ -207,11 +279,7 @@ def base_analysis(vehicle):
     analyses.append(atmosphere)   
 
     # done!
-    return analyses
-    
-    
-    
-    
+    return analyses 
 
 # ----------------------------------------------------------------------        
 #   Call Main

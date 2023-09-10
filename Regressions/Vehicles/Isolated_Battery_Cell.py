@@ -26,33 +26,8 @@ def vehicle_setup(current,cell_chemistry):
     # mass properties
     vehicle.mass_properties.takeoff         = 1 * Units.kg 
     vehicle.mass_properties.max_takeoff     = 1 * Units.kg 
-       
-             
-    ## ##########################################################  Wings ################################################################   
-    
-    #wing                         = RCAIDE.Components.Wings.Wing()
-    #wing.tag                     = 'main_wing' 
-    #wing.areas.reference         = 1.
-    #wing.spans.projected         = 1.
-    #wing.aspect_ratio            = 1.
-    #wing.symmetric               = True
-    #wing.thickness_to_chord      = 0.10
-    #wing.taper                   = 1.
-    #wing.dynamic_pressure_ratio  = 1.
-    #wing.chords.mean_aerodynamic = 1.
-    #wing.chords.root             = 1.
-    #wing.chords.tip              = 1.
-    #wing.origin                  = [[0.0,0.0,0.0]] # meters
-    #wing.aerodynamic_center      = [0.0,0.0,0.0] # meters
-    
-    ## add to vehicle
-    #vehicle.append_component(wing) 
-
- 
-    ##########################################################  Energy Network  #########################################################  
-    net                           = RCAIDE.Energy.Networks.Isolated_Battery_Cell()
-    net.tag                       ='single_cell_network'   
-
+         
+    net                              = RCAIDE.Energy.Networks.Isolated_Battery_Cell() 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -62,9 +37,9 @@ def vehicle_setup(current,cell_chemistry):
     #net.dischage_model_fidelity   = cell_chemistry
 
     # Battery    
-    if cell_chemistry == 'NMC': 
+    if cell_chemistry == 'Lithium_Ion_NMC': 
         battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()
-    elif cell_chemistry == 'LFP': 
+    elif cell_chemistry == 'Lithium_Ion_LFP': 
         battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP() 
     battery.charging_voltage                     = battery.cell.nominal_voltage    
     battery.charging_current                     = current   
@@ -81,7 +56,7 @@ def vehicle_setup(current,cell_chemistry):
     # Avionics
     #------------------------------------------------------------------------------------------------------------------------------------  
     avionics                        = RCAIDE.Energy.Peripherals.Avionics()
-    avionics.current                = current 
+    avionics.power_draw             = current*3.2
     net.avionics                    = avionics  
     
     # append network 

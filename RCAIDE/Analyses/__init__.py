@@ -9,8 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Analysis  import Analysis
-from .Sizing    import Sizing
+from .Analysis  import Analysis 
 from .Process   import Process
 from .Settings  import Settings
 from .Vehicle   import Vehicle
@@ -22,7 +21,6 @@ from . import Weights
 from . import Mission
 from . import Atmospheric
 from . import Planets
-from . import Propulsion
-from . import Sizing
+from . import Propulsion 
 from . import Noise
 from . import Costs

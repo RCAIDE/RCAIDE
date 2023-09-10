@@ -49,10 +49,12 @@ class Isolated_Battery_Cell(Network):
     
             Properties Used:
             N/A
-        """             
-        self.avionics                = None
-        self.voltage                 = None  
+        """      
+        self.tag                     = 'isolated_battery_cell' 
+        self.avionics                = RCAIDE.Energy.Peripherals.Avionics()
+        self.payload                 = RCAIDE.Energy.Peripherals.Payload()
         self.busses                  = Container()
+        self.system_voltage          = None          
         
     # manage process with a driver function
     def evaluate_thrust(self,state):
@@ -86,7 +88,9 @@ class Isolated_Battery_Cell(Network):
         busses     = self.busses
         avionics   = self.avionics
         payload    = self.payload 
-         
+
+        total_thrust  = 0. * state.ones_row(3) 
+        total_power   = 1. * state.ones_row(3)          
         for bus in busses:
             batteries = bus.batteries      
 
@@ -145,18 +149,23 @@ class Isolated_Battery_Cell(Network):
                         battery.outputs.power      = -bus.outputs.power*battery.bus_power_split_ratio  
                     else: 
                         # link to battery     
-                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(voltage) 
-                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series) 
+                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)
+                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(voltage)  
                      
                     battery.energy_calc(numerics,conditions.freestream,battery_discharge_flag)      
                     pack_battery_conditions(battery_conditions,battery)             
                         
-        # Create the outputs
+           
+        conditions.energy.thrust_force_vector  = total_thrust
+        conditions.energy.power                = total_power 
+        conditions.energy.vehicle_mass_rate    = state.ones_row(1)*0.0   
+        
+        # A PATCH TO BE DELETED IN RCAIDE
         results                           = Data()
         results.thrust_force_vector       = np.zeros_like(voltage)  * [0,0,0]      
         results.vehicle_mass_rate         = state.ones_row(1)*0.0 
-       
-        return results   
+        
+        return results 
      
     def unpack_unknowns(self,segment):
         """ This adds additional unknowns which are unpacked from the mission solver and send to the network.
@@ -177,7 +186,7 @@ class Isolated_Battery_Cell(Network):
             N/A
         """                          
         # unpack the ones function 
-        busses       = segment.analyses.energy.networks.all_electric.busses
+        busses       = segment.analyses.energy.networks.isolated_battery_cell.busses
         
         for bus in busses: 
             for battery in bus.batteries: 
@@ -206,7 +215,7 @@ class Isolated_Battery_Cell(Network):
            N/A
        """           
  
-        busses   = segment.analyses.energy.networks.all_electric.busses 
+        busses   = segment.analyses.energy.networks.isolated_battery_cell.busses 
         for bus in busses:   
             for battery in bus.batteries: 
                 battery.assign_battery_residuals(segment,bus,battery)    
@@ -215,7 +224,7 @@ class Isolated_Battery_Cell(Network):
 
     def add_unknowns_and_residuals_to_segment(self, 
                                               segment,  
-                                              estimated_battery_voltages          = [[]], 
+                                              estimated_battery_voltages          = [[400]], 
                                               estimated_battery_cell_temperature  = [[283.]], 
                                               estimated_battery_state_of_charges  = [[0.5]],
                                               estimated_battery_cell_currents     = [[5.]]):
@@ -241,19 +250,23 @@ class Isolated_Battery_Cell(Network):
             Properties Used:
             N/A
         """          
-        busses   = segment.analyses.energy.networks.all_electric.busses
+        busses   = segment.analyses.energy.networks.isolated_battery_cell.busses
         ones_row = segment.state.ones_row 
         segment.state.residuals.network = Residuals()  
          
-        for bus_i, bus in enumerate(busses):  
-            bus_results               = segment.state.conditions.energy[bus.tag] 
+        for bus_i, bus in enumerate(busses):   
             batteries                 = bus.batteries 
 
             # ------------------------------------------------------------------------------------------------------            
             # Create bus results data structure  
             # ------------------------------------------------------------------------------------------------------
             segment.state.conditions.energy[bus.tag] = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions()            
- 
+
+            # ------------------------------------------------------------------------------------------------------            
+            # Determine number of propulsor groups in bus
+            # ------------------------------------------------------------------------------------------------------ 
+            bus_results                             = segment.state.conditions.energy[bus.tag] 
+             
             # ------------------------------------------------------------------------------------------------------
             # Assign battery residuals, unknowns and results data structures 
             # ------------------------------------------------------------------------------------------------------  
@@ -261,33 +274,7 @@ class Isolated_Battery_Cell(Network):
             if len(batteries) > 1 and (bus.fixed_voltage == False): 
                 assert('The bus must have a fixed voltage is more than one battery is specified on the bus')  
                 
-            for b_i , battery in enumerate(batteries):    
-                if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:   
-                    # appennd residuals and unknowns for recharge segment                     
-                    segment.state.unknowns['recharge_' + battery.tag]          =  0* ones_row(1)  
-                    segment.state.residuals.network['recharge_' + battery.tag] =  0* ones_row(1)
-                    
-                try: 
-                    estimated_voltage   =  estimated_battery_voltages[bus_i][b_i]
-                except: 
-                    estimated_voltage   = battery.pack.maximum_voltage  
-
-                try:
-                    initial_bat_temp    = estimated_battery_cell_temperature[bus_i][b_i]
-                except:   
-                    initial_bat_temp    = 273.     
-                
-                try: 
-                    initial_battery_SOC = estimated_battery_state_of_charges[bus_i][b_i]
-                except:
-                    initial_battery_SOC = 0.5
-
-                try:
-                    initial_battery_C   = estimated_battery_cell_currents[bus_i][b_i]
-                except: 
-                    initial_battery_C   = 5.                                              
-                
-                # Create results data structure for battery   
+            for b_i , battery in enumerate(batteries):        
                 bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
                 bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
                 bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Segments.Conditions.Conditions() 
@@ -307,10 +294,19 @@ class Isolated_Battery_Cell(Network):
                 battery.append_battery_unknowns_and_residuals_to_segment(segment,
                                                                          bus,
                                                                          battery,
-                                                                         estimated_voltage,
-                                                                         initial_bat_temp, 
-                                                                         initial_battery_SOC,
-                                                                         initial_battery_C)     
+                                                                         estimated_battery_voltages[bus_i][b_i],
+                                                                         estimated_battery_cell_temperature[bus_i][b_i], 
+                                                                         estimated_battery_state_of_charges[bus_i][b_i], 
+                                                                         estimated_battery_cell_currents[bus_i][b_i] )    
+                
+    
+                # ------------------------------------------------------------------------------------------------------
+                # Assign network-specific  residuals, unknowns and results data structures
+                # ------------------------------------------------------------------------------------------------------ 
+                if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:   
+                    # appennd residuals and unknowns for recharge segment                     
+                    segment.state.unknowns['recharge']          =  0* ones_row(1)  
+                    segment.state.residuals.network['recharge'] =  0* ones_row(1)                
             
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network                    = self.unpack_unknowns

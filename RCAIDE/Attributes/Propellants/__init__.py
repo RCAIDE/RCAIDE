@@ -9,8 +9,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Attributes.Propellants.Propellant import Propellant
-from Legacy.trunk.S.Attributes.Propellants.Aviation_Gasoline import Aviation_Gasoline
+from .Propellant        import Propellant
+from .Aviation_Gasoline import Aviation_Gasoline
 from Legacy.trunk.S.Attributes.Propellants.Gaseous_H2 import Gaseous_H2
 from Legacy.trunk.S.Attributes.Propellants.Jet_A import Jet_A
 from Legacy.trunk.S.Attributes.Propellants.Jet_A1 import Jet_A1

@@ -29,8 +29,6 @@ from NASA_X57    import configs_setup as   ECTOL_configs_setup
 def main():     
     
     battery_chemistry       =  ['NMC','LFP']
-    unknown_throttles       =  [[0.005,0.005,0.005],
-                                [0.005,0.005,0.005]] 
     
     # ----------------------------------------------------------------------
     #  True Values  
@@ -51,7 +49,7 @@ def main():
         print('\nBattery Propeller Network Analysis')
         print('--------------------------------------')
         
-        configs, analyses = full_setup(battery_chemistry[i],unknown_throttles[i])  
+        configs, analyses = full_setup(battery_chemistry[i])  
         configs.finalize()
         analyses.finalize()   
          
@@ -85,7 +83,7 @@ def main():
 #   Analysis Setup
 # ---------------------------------------------------------------------- 
 
-def full_setup(battery_chemistry,unknown_throttles):
+def full_setup(battery_chemistry):
 
     # vehicle data
     vehicle  = ECTOL_vehicle_setup()
@@ -119,7 +117,7 @@ def full_setup(battery_chemistry,unknown_throttles):
     configs_analyses = analyses_setup(configs)
 
     # mission analyses
-    mission  = mission_setup(configs_analyses,vehicle,unknown_throttles)
+    mission  = mission_setup(configs_analyses)
     missions_analyses = missions_setup(mission)
 
     analyses = RCAIDE.Analyses.Analysis.Container()
@@ -145,14 +143,8 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle()
-
-    # ------------------------------------------------------------------
-    #  Basic Geometry Relations
-    sizing                  = RCAIDE.Analyses.Sizing.Sizing()
-    sizing.features.vehicle = vehicle
-    analyses.append(sizing)
-
+    analyses = RCAIDE.Analyses.Vehicle() 
+    
     # ------------------------------------------------------------------
     #  Weights
     weights         = RCAIDE.Analyses.Weights.Weights_eVTOL()
@@ -164,13 +156,7 @@ def base_analysis(vehicle):
     aerodynamics          = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
     aerodynamics.geometry = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
-    analyses.append(aerodynamics)  
-
-    # ------------------------------------------------------------------	
-    #  Stability Analysis	
-    stability          = RCAIDE.Analyses.Stability.Fidelity_Zero()    	
-    stability.geometry = vehicle	
-    analyses.append(stability) 
+    analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------
     #  Energy
@@ -196,7 +182,7 @@ def base_analysis(vehicle):
 #   Define the Mission
 # ----------------------------------------------------------------------
 
-def mission_setup(analyses,vehicle,unknown_throttles): 
+def mission_setup(analyses): 
     # ------------------------------------------------------------------
     #   Initialize the Mission
     # ------------------------------------------------------------------
@@ -219,8 +205,6 @@ def mission_setup(analyses,vehicle,unknown_throttles):
     # base segment
     base_segment = Segments.Segment()
     ones_row     = base_segment.state.ones_row
-    base_segment.process.initialize.initialize_battery                        = RCAIDE.Methods.Missions.Segments.Common.Energy.initialize_battery
-    base_segment.process.finalize.post_process.update_battery_state_of_health = RCAIDE.Methods.Missions.Segments.Common.Energy.update_battery_state_of_health  
     base_segment.state.numerics.number_control_points                         = 4       
     
     flights_per_day = 2 
@@ -250,7 +234,7 @@ def mission_setup(analyses,vehicle,unknown_throttles):
                 segment.initial_battery_state_of_charge              = 0.89 
                 segment.initial_battery_resistance_growth_factor     = 1
                 segment.initial_battery_capacity_fade_factor         = 1
-            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)          
+            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)          
             # add to misison
             mission.append_segment(segment) 
             
@@ -264,7 +248,7 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             segment.altitude                  = 8012   * Units.feet
             segment.air_speed                 = 120.91 * Units['mph'] 
             segment.distance                  =  20.   * Units.nautical_mile   
-            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
+            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
         
             # add to misison
             mission.append_segment(segment)    
@@ -282,7 +266,7 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             segment.air_speed_end                                    = 110 * Units['mph']   
             segment.climb_rate                                       = -200 * Units['ft/min']  
             segment.state.unknowns.throttle                          = 0.8 * ones_row(1)  
-            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
+            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
             
             # add to misison
             mission.append_segment(segment)
@@ -297,7 +281,7 @@ def mission_setup(analyses,vehicle,unknown_throttles):
             segment.time                                            = 1 * Units.hr
             if flight_no  == flights_per_day:  
                 segment.increment_battery_age_by_one_day            =True                        
-            segment = vehicle.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    
+            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    
             
             # add to misison
             mission.append_segment(segment)        

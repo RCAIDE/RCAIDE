@@ -1,4 +1,4 @@
-# Regression/scripts/Tests/network_all_electric/internal_combustion_engine_test.py
+# Regression/scripts/Tests/network_internal_combustion_engine/internal_combustion_engine_test.py
 # (c) Copyright The Board of Trustees of RCAIDE
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -9,35 +9,51 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Core import Units ,Data 
+
 # python imports     
 import numpy as np  
 import sys 
 
-sys.path.append('../Vehicles')
+sys.path.append('../../Vehicles')
 # the analysis functions 
  
-from Cessna_172  import vehicle_setup  
+from Cessna_172  import vehicle_setup ,configs_setup
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  REGRESSION
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():   
-     
-    # Define internal combustion engine from Cessna Regression Aircraft 
-    vehicle    = vehicle_setup()
+    
 
-    # Setup analyses and mission
-    analyses = base_analysis(vehicle)
-    analyses.finalize()
-    mission  = mission_setup(analyses,vehicle)
+    # vehicle data
+    vehicle  = vehicle_setup()
+    configs  = configs_setup(vehicle)
+    
+    # vehicle analyses
+    configs_analyses = analyses_setup(configs)
+    
+    # mission analyses
+    mission  = mission_setup(configs_analyses)
+    missions_analyses = missions_setup(mission)
+
+    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses.configs  = configs_analyses
+    analyses.missions = missions_analyses
+    
+    configs.finalize()
+    analyses.finalize()    
+     
+    # mission analysis
+    mission = analyses.missions.base
+    results = mission.evaluate()   
     
     # evaluate
     results     = mission.evaluate()  
-    P_truth     = 53577.659232513804
-    mdot_truth  = 0.004707455798446486
+    P_truth     = 53537.3966546438
+    mdot_truth  = 0.004703918236179497
     
-    P    = results.segments.cruise.state.conditions.energy.power[-1,0]
+    P    = results.segments.cruise.state.conditions.energy.fuel_line.propulsor.engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]
 
     # Check the errors
@@ -58,7 +74,7 @@ def main():
 #   Define the Mission
 # ----------------------------------------------------------------------
 
-def mission_setup(analyses,vehicle):
+def mission_setup(analyses):
 
     # ------------------------------------------------------------------
     #   Initialize the Mission
@@ -89,15 +105,12 @@ def mission_setup(analyses,vehicle):
 
     segment     = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
     segment.tag = "cruise" 
-    segment.analyses.extend( analyses ) 
+    segment.analyses.extend( analyses.base ) 
     segment.altitude                                = 12000. * Units.feet
     segment.air_speed                               = 119.   * Units.knots
     segment.distance                                = 10 * Units.nautical_mile  
-    segment.state.numerics.number_control_points    = 4
-    segment.state.unknowns.throttle                 = 1.0 * segment.state.ones_row (1)
-    segment.process.iterate.conditions.stability    = RCAIDE.Methods.skip
-    segment.process.finalize.post_process.stability = RCAIDE.Methods.skip    
-    segment = vehicle.networks.internal_combustion.add_unknowns_and_residuals_to_segment(segment,rpms=[2650])  
+    segment.state.numerics.number_control_points    = 4 
+    segment = analyses.base.energy.networks.internal_combustion_engine.add_unknowns_and_residuals_to_segment(segment)  
     mission.append_segment(segment)
 
 
@@ -109,13 +122,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle()
-
-    # ------------------------------------------------------------------
-    #  Basic Geometry Relations
-    sizing = RCAIDE.Analyses.Sizing.Sizing()
-    sizing.features.vehicle = vehicle
-    analyses.append(sizing)
+    analyses = RCAIDE.Analyses.Vehicle() 
 
     # ------------------------------------------------------------------
     #  Weights
@@ -128,13 +135,7 @@ def base_analysis(vehicle):
     aerodynamics = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
-    analyses.append(aerodynamics)
-
-    # ------------------------------------------------------------------
-    #  Stability Analysis
-    stability = RCAIDE.Analyses.Stability.Fidelity_Zero()
-    stability.geometry = vehicle
-    analyses.append(stability)
+    analyses.append(aerodynamics) 
 
     # ------------------------------------------------------------------
     #  Energy
@@ -155,6 +156,31 @@ def base_analysis(vehicle):
 
     # done!
     return analyses 
+
+
+def analyses_setup(configs):
+
+    analyses = RCAIDE.Analyses.Analysis.Container()
+
+    # build a base analysis for each config
+    for tag,config in configs.items():
+        analysis = base_analysis(config)
+        analyses[tag] = analysis
+
+    return analyses
+
+def missions_setup(base_mission):
+
+    # the mission container
+    missions = RCAIDE.Analyses.Mission.Mission.Container()
+
+    # ------------------------------------------------------------------
+    #   Base Mission
+    # ------------------------------------------------------------------
+    missions.base = base_mission
+
+    # done!
+    return missions  
 
 # ----------------------------------------------------------------------        
 #   Call Main

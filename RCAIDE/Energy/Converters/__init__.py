@@ -19,7 +19,7 @@ from Legacy.trunk.S.Components.Energy.Converters import Fan
 from Legacy.trunk.S.Components.Energy.Converters import Fuel_Cell
 from Legacy.trunk.S.Components.Energy.Converters import Gearbox
 from Legacy.trunk.S.Components.Energy.Converters import Generator_Zero_Fid
-from Legacy.trunk.S.Components.Energy.Converters import Internal_Combustion_Engine
+from .Engine                                     import Engine
 from .Lift_Rotor                                 import Lift_Rotor
 from Legacy.trunk.S.Components.Energy.Converters import Motor_HTS_Rotor
 from Legacy.trunk.S.Components.Energy.Converters import Motor_Lo_Fid
