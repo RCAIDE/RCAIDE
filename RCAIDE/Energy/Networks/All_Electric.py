@@ -93,7 +93,7 @@ class All_Electric(Network):
         payload    = self.payload 
          
         total_thrust  = 0. * state.ones_row(3) 
-        total_power   = 1. * state.ones_row(3) 
+        total_power   = 0. * state.ones_row(3) 
         for bus in busses:
             batteries = bus.batteries     
             motors    = bus.motors
