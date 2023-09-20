@@ -260,9 +260,9 @@ def write_vsp_fuselage(fuselage,area_tags, main_wing, fuel_tank_set_ind, OML_set
 
         # Figure out the location x location of each section, 3 sections, end of nose, wing origin, and start of tail
 
-        x1 = n_fine*width/length
+        x1 = n_fine*height1/length
         x2 = (w_origin[0][0]+w_c_4)/length
-        x3 = 1-t_fine*width/length
+        x3 = 1-t_fine*height3/length
 
         end_ind = 4
 
@@ -315,11 +315,13 @@ def write_vsp_fuselage(fuselage,area_tags, main_wing, fuel_tank_set_ind, OML_set
 
         # Tail
         # Below can be enabled if AllSym (below) is removed
-        #vsp.SetParmVal(fuse_id,"RightLAngle","XSec_4",vals.tail.side.angle)
-        #vsp.SetParmVal(fuse_id,"RightLStrength","XSec_4",vals.tail.side.strength)
-        #vsp.SetParmVal(fuse_id,"TBSym","XSec_4",vals.tail.TB_Sym)
-        #vsp.SetParmVal(fuse_id,"BottomLAngle","XSec_4",vals.tail.bottom.angle)
-        #vsp.SetParmVal(fuse_id,"BottomLStrength","XSec_4",vals.tail.bottom.strength)
+        vsp.SetParmVal(fuse_id,"RightLAngle","XSec_4",vals.tail.side.angle)
+        vsp.SetParmVal(fuse_id,"RightLStrength","XSec_4",vals.tail.side.strength)
+        vsp.SetParmVal(fuse_id,"TBSym","XSec_4",vals.tail.TB_Sym)
+        vsp.SetParmVal(fuse_id,"BottomLAngle","XSec_4",vals.tail.bottom.angle)
+        vsp.SetParmVal(fuse_id,"BottomLStrength","XSec_4",vals.tail.bottom.strength)
+        vsp.SetParmVal(fuse_id,"TopLAngle","XSec_4",vals.tail.top.angle)
+        vsp.SetParmVal(fuse_id,"TopLStrength","XSec_4",vals.tail.top.strength)        
         if 'z_pos' in vals.tail:
             tail_z_pos = vals.tail.z_pos
         else:
@@ -327,18 +329,19 @@ def write_vsp_fuselage(fuselage,area_tags, main_wing, fuel_tank_set_ind, OML_set
 
 
     if num_segs == 0:
-        vsp.SetParmVal(fuse_id,"Length","Design",length)
-        vsp.SetParmVal(fuse_id,"Diameter","Design",width)
-        vsp.SetParmVal(fuse_id,"XLocPercent","XSec_1",x1)
-        vsp.SetParmVal(fuse_id,"XLocPercent","XSec_2",x2)
-        vsp.SetParmVal(fuse_id,"XLocPercent","XSec_3",x3)
-        vsp.SetParmVal(fuse_id,"ZLocPercent","XSec_4",tail_z_pos)
-        vsp.SetParmVal(fuse_id, "Ellipse_Width", "XSecCurve_1", width)
-        vsp.SetParmVal(fuse_id, "Ellipse_Width", "XSecCurve_2", width)
-        vsp.SetParmVal(fuse_id, "Ellipse_Width", "XSecCurve_3", width)
-        vsp.SetParmVal(fuse_id, "Ellipse_Height", "XSecCurve_1", height1);
-        vsp.SetParmVal(fuse_id, "Ellipse_Height", "XSecCurve_2", height2);
-        vsp.SetParmVal(fuse_id, "Ellipse_Height", "XSecCurve_3", height3);  
+        vsp.SetParmVal(fuse_id,"Length","Design",float(length))
+        vsp.SetParmVal(fuse_id,"XLocPercent","XSec_1",float(x1))
+        vsp.SetParmVal(fuse_id,"XLocPercent","XSec_2",float(x2))
+        vsp.SetParmVal(fuse_id,"XLocPercent","XSec_3",float(x3))
+        vsp.SetParmVal(fuse_id,"ZLocPercent","XSec_4",float(tail_z_pos))
+        vsp.SetParmVal(fuse_id, "Ellipse_Width", "XSecCurve_1", float(width))
+        vsp.SetParmVal(fuse_id, "Ellipse_Width", "XSecCurve_2", float(width))
+        vsp.SetParmVal(fuse_id, "Ellipse_Width", "XSecCurve_3", float(width))
+        vsp.SetParmVal(fuse_id, "Ellipse_Height", "XSecCurve_1", float(height1));
+        vsp.SetParmVal(fuse_id, "Ellipse_Height", "XSecCurve_2", float(height2));
+        vsp.SetParmVal(fuse_id, "Ellipse_Height", "XSecCurve_3", float(height3));  
+        
+        
     else:
         # OpenVSP vals do not exist:
         vals                   = Data()
@@ -383,9 +386,7 @@ def write_vsp_fuselage(fuselage,area_tags, main_wing, fuel_tank_set_ind, OML_set
 
         # Tail
         if heights[-1] > 0.:
-            stdout = vsp.cvar.cstdout
-            errorMgr = vsp.ErrorMgrSingleton_getInstance()
-            errorMgr.PopErrorAndPrint(stdout)
+
 
             pos = len(heights)-1
             vsp.InsertXSec(fuse_id, pos-1, vsp.XS_ELLIPSE)
@@ -425,6 +426,7 @@ def write_vsp_fuselage(fuselage,area_tags, main_wing, fuel_tank_set_ind, OML_set
             write_fuselage_conformal_fuel_tank(fuse_id, tank, fuel_tank_set_ind)    
 
     vsp.SetSetFlag(fuse_id, OML_set_ind, True)
+    vsp.SetParmVal(fuse_id,"Tess_W","Shape",float(50))
 
     return area_tags
 

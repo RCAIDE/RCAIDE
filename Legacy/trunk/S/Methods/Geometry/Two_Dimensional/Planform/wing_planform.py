@@ -98,7 +98,7 @@ def wing_planform(wing):
         y_coord = 0    
     
     # Total length calculation
-    total_length = np.tan(le_sweep)*span/2. + chord_tip
+    total_length = max(np.tan(le_sweep)*span/2. + chord_tip,chord_root)
         
     # Computing flap geometry
     affected_area = 0.

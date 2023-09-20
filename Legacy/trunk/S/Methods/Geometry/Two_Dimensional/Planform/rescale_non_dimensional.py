@@ -16,7 +16,7 @@ import numpy as np
 #  Set Origin Non-Dimensional
 # ----------------------------------------------------------------------
 
-def set_origin_non_dimensional(vehicle):
+def set_origin_non_dimensional(vehicle,length_scale=None):
     """ Places the origin of all major components in a 
     non-dimensional fashion. This is useful for optimization or
     generative design 
@@ -45,14 +45,14 @@ def set_origin_non_dimensional(vehicle):
         None
     """        
     
-    
-    try:
-        length_scale = vehicle.fuselages.fuselage.lengths.total
-    except:
+    if length_scale==None:
         try:
-            length_scale = vehicle.wings.main_wing.lengths.total
+            length_scale = vehicle.fuselages.fuselage.lengths.total
         except:
-            length_scale = 1.
+            try:
+                length_scale = vehicle.wings.main_wing.lengths.total
+            except:
+                length_scale = 1.
 
     for wing in vehicle.wings:
         origin  = wing.origin
@@ -81,7 +81,7 @@ def set_origin_non_dimensional(vehicle):
 #  Scale to Non-Dimensional
 # ----------------------------------------------------------------------
 
-def set_origin_dimensional(vehicle):
+def set_origin_dimensional(vehicle,length_scale=None):
     """ Places the origin of all components 
 
         Assumptions:
@@ -100,13 +100,14 @@ def set_origin_dimensional(vehicle):
         None
     """    
     
-    try:
-        length_scale = vehicle.fuselages.fuselage.lengths.total
-    except:
+    if length_scale==None:
         try:
-            length_scale = vehicle.wings.main_wing.lengths.total
+            length_scale = vehicle.fuselages.fuselage.lengths.total
         except:
-            length_scale = 1.
+            try:
+                length_scale = vehicle.wings.main_wing.lengths.total
+            except:
+                length_scale = 1.
 
     for wing in vehicle.wings:
         non_dim = wing.non_dimensional_origin
@@ -120,24 +121,26 @@ def set_origin_dimensional(vehicle):
         
         fuse.origin = origin.tolist()
                 
+    nac_id = 0 # The nacelle index
+    nacs   = list(vehicle.nacelles.keys()) 
     for net in vehicle.networks:
         n = int(net.number_of_engines)
         non_dims  = net.non_dimensional_origin
         
-        net.origin.clear()
-        
-        origin = np.zeros((n,3))
-    
-        for eng in range(0,n):
-            origin[eng,:] = np.array(non_dims[0])*length_scale
+        net.origin = np.array(non_dims[0])*length_scale
+
+        # Apply the origin to the nacelles
+        for eng in range(nac_id,n+nac_id):
+            nac = vehicle.nacelles[nacs[eng]]
+            nac.origin = np.array(non_dims[0])*length_scale
             
             if eng % 2 != 0:
-                origin[eng,1] = -origin[eng,1]
+                nac.origin[1] = -nac.origin[1]
                 
             elif (eng % 2 == 0) and (eng == n-1):
+                nac.origin[1]  = 0.
                 
-                origin[eng,1] = 0.
+            nac.origin = np.atleast_2d(nac.origin)
 
-        net.origin = origin.tolist()  
         
     return vehicle

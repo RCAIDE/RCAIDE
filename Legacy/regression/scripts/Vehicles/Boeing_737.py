@@ -224,7 +224,7 @@ def vehicle_setup():
     segment                        = SUAVE.Components.Wings.Segment()
     segment.tag                    = 'root_segment'
     segment.percent_span_location  = 0.0
-    segment.twist                  = 0. * Units.deg
+    segment.twist                  = 3. * Units.deg
     segment.root_chord_percent     = 1.0
     segment.dihedral_outboard      = 8.63 * Units.degrees
     segment.sweeps.quarter_chord   = 28.2250  * Units.degrees 
@@ -234,7 +234,7 @@ def vehicle_setup():
     segment                        = SUAVE.Components.Wings.Segment()
     segment.tag                    = 'tip_segment'
     segment.percent_span_location  = 1.
-    segment.twist                  = 0. * Units.deg
+    segment.twist                  = 3. * Units.deg
     segment.root_chord_percent     = 0.3333               
     segment.dihedral_outboard      = 0 * Units.degrees
     segment.sweeps.quarter_chord   = 0 * Units.degrees  

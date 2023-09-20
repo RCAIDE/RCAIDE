@@ -149,9 +149,9 @@ def write_vsp_nacelle(nacelle, OML_set_ind):
         vsp.SetParmVal( nac_id,'X_Rotation','XForm',nac_x_rotation)
         vsp.SetParmVal( nac_id,'Y_Rotation','XForm',nac_y_rotation)
         vsp.SetParmVal( nac_id,'Z_Rotation','XForm',nac_z_rotation) 
-        vsp.SetParmVal( nac_id,'X_Location','XForm',nac_x)
-        vsp.SetParmVal( nac_id,'Y_Location','XForm',nac_y)
-        vsp.SetParmVal( nac_id,'Z_Location','XForm',nac_z)  
+        vsp.SetParmVal( nac_id,'X_Location','XForm',float(nac_x))
+        vsp.SetParmVal( nac_id,'Y_Location','XForm',float(nac_y))
+        vsp.SetParmVal( nac_id,'Z_Location','XForm',float(nac_z))
         vsp.SetParmVal( nac_id,'Tess_U','Shape',radial_tesselation)
         vsp.SetParmVal( nac_id,'Tess_W','Shape',axial_tesselation)      
 

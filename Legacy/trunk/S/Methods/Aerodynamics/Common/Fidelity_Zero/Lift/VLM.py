@@ -520,7 +520,7 @@ def VLM(conditions,settings,geometry):
     results.V_distribution = rhs.V_distribution
     results.V_x            = rhs.Vx_ind_total
     results.V_z            = rhs.Vz_ind_total
-    
+
     return results
 
 # ----------------------------------------------------------------------

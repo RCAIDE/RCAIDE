@@ -77,9 +77,12 @@ def main():
     #   Vehicle Definition Complete
     # ------------------------------------------------------------------
     
+    SM(configs.cruise, results)
+    
     # plot vehicle 
     plot_vehicle(configs.base,plot_control_points = True)      
     return
+
 
 
 # ----------------------------------------------------------------------

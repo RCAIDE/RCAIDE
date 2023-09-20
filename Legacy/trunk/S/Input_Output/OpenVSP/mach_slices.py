@@ -107,4 +107,4 @@ def mach_slices(vehicle,mach,angle_of_attack=[0.],number_slices = 99):
         X_locs_all.append(X_locs)
         slice_areas_all.append(slice_areas)
 
-    return X_locs_all, slice_areas_all
+    return X_locs_all, slice_areas_all, X

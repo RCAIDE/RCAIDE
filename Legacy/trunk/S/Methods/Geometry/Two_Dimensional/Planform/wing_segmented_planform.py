@@ -156,7 +156,7 @@ def wing_segmented_planform(wing, overwrite_reference = False):
     aerodynamic_center[0] = single_side_aerodynamic_center[0]
     
     # Total length for supersonics
-    total_length = np.tan(le_sweep_total)*semispan + chords[-1]*RC
+    total_length = max(np.tan(le_sweep_total)*semispan + chords[-1]*RC,RC)
     
     # Pack stuff
     if overwrite_reference:

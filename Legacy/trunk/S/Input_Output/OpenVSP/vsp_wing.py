@@ -579,8 +579,8 @@ def write_vsp_wing(vehicle,wing, area_tags, fuel_tank_set_ind, OML_set_ind):
             vsp.Update()
 
     # Thickness to chords
-    vsp.SetParmVal( wing_id,'ThickChord','XSecCurve_0',root_tc)
-    vsp.SetParmVal( wing_id,'ThickChord','XSecCurve_1',tip_tc)
+    vsp.SetParmVal( wing_id,'ThickChord','XSecCurve_0',float(root_tc))
+    vsp.SetParmVal( wing_id,'ThickChord','XSecCurve_1',float(tip_tc))
 
     # Dihedral
     vsp.SetParmVal( wing_id,'Dihedral',x_secs[1],dihedral)

@@ -348,6 +348,11 @@ def vehicle_setup():
     fuselage.OpenVSP_values.tail.bottom = Data()
     fuselage.OpenVSP_values.tail.top.angle = 0.0
     fuselage.OpenVSP_values.tail.top.strength = 0.0 
+    fuselage.OpenVSP_values.tail.side.angle = -30.0
+    fuselage.OpenVSP_values.tail.side.strength = 0.50  
+    fuselage.OpenVSP_values.tail.TB_Sym =  False
+    fuselage.OpenVSP_values.tail.bottom.angle = -30.0
+    fuselage.OpenVSP_values.tail.bottom.strength = 0.50     
     
     # CG locations are approximate
     # Masses from http://www.concordesst.com/fuelsys.html
