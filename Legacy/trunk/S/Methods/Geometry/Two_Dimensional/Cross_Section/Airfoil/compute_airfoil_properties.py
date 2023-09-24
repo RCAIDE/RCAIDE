@@ -14,10 +14,10 @@
 import Legacy.trunk.S as SUAVE
 from Legacy.trunk.S.Core                                                                          import Data , Units
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.pre_stall_coefficients                           import pre_stall_coefficients
-from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.post_stall_coefficients                          import post_stall_coefficients  
 from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis                    import airfoil_analysis
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_polars  import import_airfoil_polars 
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_naca_4series   import compute_naca_4series   
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_naca_4series   import compute_naca_4series  
+from RCAIDE.Methods.Aerodynamics.AERODAS.post_stall_coefficients                                  import post_stall_coefficients  
 import numpy as np
 
 ## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil

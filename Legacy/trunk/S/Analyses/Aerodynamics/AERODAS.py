@@ -13,7 +13,8 @@ from Legacy.trunk.S.Analyses.Aerodynamics.Markup import Markup
 from Legacy.trunk.S.Core import Data, Units
 from Legacy.trunk.S.Analyses import Process
 from Legacy.trunk.S.Analyses.Aerodynamics.Process_Geometry import Process_Geometry
-from Legacy.trunk.S.Methods.Aerodynamics import AERODAS as Methods
+from Legacy.trunk.S.Methods.Aerodynamics import AERODAS as Legacy_Methods
+from RCAIDE.Methods.Aerodynamics import AERODAS as Methods
 from Legacy.trunk.S.Methods.Aerodynamics.Common import Fidelity_Zero as Common
 
 # ----------------------------------------------------------------------
@@ -58,14 +59,14 @@ class AERODAS(Markup):
         # build the evaluation process
         compute = self.process.compute
         
-        compute.setup_data = Methods.AERODAS_setup.setup_data
+        compute.setup_data = Legacy_Methods.AERODAS_setup.setup_data
     
         # Get all of the coefficients for AERODAS wings
         compute.wings_coefficients = Process()
         compute.wings_coefficients = Process_Geometry('wings')
-        compute.wings_coefficients.section_properties  = Methods.section_properties.section_properties
-        compute.wings_coefficients.finite_aspect_ratio = Methods.finite_aspect_ratio.finite_aspect_ratio
-        compute.wings_coefficients.pre_stall           = Methods.pre_stall_coefficients.pre_stall_coefficients
+        compute.wings_coefficients.section_properties  = Legacy_Methods.section_properties.section_properties
+        compute.wings_coefficients.finite_aspect_ratio = Legacy_Methods.finite_aspect_ratio.finite_aspect_ratio
+        compute.wings_coefficients.pre_stall           = Legacy_Methods.pre_stall_coefficients.pre_stall_coefficients
         compute.wings_coefficients.post_stall          = Methods.post_stall_coefficients.post_stall_coefficients
         
         # Fuselage drag?
@@ -74,12 +75,12 @@ class AERODAS(Markup):
         # Miscellaneous drag?
         # Compressibility corrections?
         
-        compute.lift_drag_total                        = Methods.AERODAS_setup.lift_drag_total
+        compute.lift_drag_total                        = Legacy_Methods.AERODAS_setup.lift_drag_total
         
         compute.lift = Process()
         compute.lift.total                             = Common.Lift.aircraft_total
         compute.drag = Process()
-        compute.drag.total                             = Methods.AERODAS_setup.drag_total
+        compute.drag.total                             = Legacy_Methods.AERODAS_setup.drag_total
         
         def initialize(self):
             super(AERODAS, self).initialize()
