@@ -21,7 +21,7 @@ from RCAIDE.Methods.Aerodynamics.AERODAS.post_stall_coefficients                
 import numpy as np
 
 ## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_pre_stall_data=True):
+def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_pre_stall_data=True,compute_boundary_layers=True):
     """This computes the aerodynamic properties and coefficients of an airfoil in stall regimes using pre-stall
     characterstics and AERODAS formation for post stall characteristics. This is useful for 
     obtaining a more accurate prediction of wing and blade loading as well as aeroacoustics. Pre stall characteristics 
@@ -66,14 +66,15 @@ def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_
     
     Properties Used:
     N/A
-    """     
-    Airfoil_Data   = Data()  
+    """    
    
     # ----------------------------------------------------------------------------------------
     # Compute airfoil boundary layers properties 
-    # ----------------------------------------------------------------------------------------   
-    Airfoil_Data   = compute_boundary_layer_properties(airfoil_geometry,Airfoil_Data)
-    num_polars     = len(Airfoil_Data.re_from_polar)
+    # ----------------------------------------------------------------------------------------  
+    Airfoil_Data = Data() 
+    if compute_boundary_layers:
+        Airfoil_Data = compute_boundary_layer_properties(airfoil_geometry,Airfoil_Data)
+        num_polars = len(Airfoil_Data.re_from_polar)
      
     # ----------------------------------------------------------------------------------------
     # Compute extended cl and cd polars 
@@ -93,9 +94,12 @@ def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_
         Airfoil_Data.lift_coefficients             = airfoil_file_data.lift_coefficients
         Airfoil_Data.drag_coefficients             = airfoil_file_data.drag_coefficients 
         
-    # Get all of the coefficients for AERODAS wings
-    AoA_sweep_deg         = np.linspace(-14,90,105)
-    AoA_sweep_rad         = AoA_sweep_deg*Units.degrees    
+    # Set alpha sweeps for linear and nonlinear aerodynamic regimes
+    neg_post_stall_region = np.linspace(-180, -45, 16) # course post-stall refinement
+    pos_post_stall_region = np.linspace(45, 180, 16) # course post-stall refinement
+    mid_region = np.linspace(-45,45,25)
+    AoA_sweep_deg = np.append(neg_post_stall_region, np.append(mid_region, pos_post_stall_region))#np.linspace(-180,180,361)
+    AoA_sweep_rad = AoA_sweep_deg*Units.degrees       
     
     # Create an infinite aspect ratio wing
     geometry              = SUAVE.Components.Wings.Wing()
