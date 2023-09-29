@@ -13,7 +13,6 @@ from . import Constants
 from . import Gases
 from . import Planets
 from . import Atmospheres
-from . import Propellants
-from . import Airports
+from . import Propellants 
 from . import Solids
 from . import Cryogens

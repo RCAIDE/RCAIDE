@@ -1,12 +1,28 @@
-## @defgroup Methods-Propulsion Propulsion 
-# @ingroup Methods
+## @defgroup Methods-Propulsion Propulsion
+# RCAIDE/Methods/Propulsion/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 from .                                                                        import Rotor_Wake
+from .                                                                        import Rotor_Design
 from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing                      import ducted_fan_sizing
-from Legacy.trunk.S.Methods.Propulsion.propeller_design                       import propeller_design
+from .design_propeller                                                        import design_propeller 
+from .design_lift_rotor                                                       import design_lift_rotor
+from .design_prop_rotor                                                       import design_prop_rotor 
+from .design_ducted_fan                                                       import design_ducted_fan
 from Legacy.trunk.S.Methods.Propulsion.turbofan_emission_index                import turbofan_emission_index
-from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing                  import size_from_kv, size_from_mass
-from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing                        import turbofan_sizing
+from .size_electric_motor                                                     import size_from_kv, size_from_mass, size_optimal_motor
+from .all_electric_propulsor                                                  import compute_propulsor_performance , compute_unique_propulsor_groups
+from .all_electric_ducted_fan_propulsor                                       import compute_propulsor_performance , compute_unique_propulsor_groups
+from .internal_combustion_engine_cs_propulsor                                 import compute_propulsor_performance , compute_unique_propulsor_groups
+from .internal_combustion_engine_propulsor                                    import compute_propulsor_performance , compute_unique_propulsor_groups
+from .design_turbofan                                                         import design_turbofan
 from Legacy.trunk.S.Methods.Propulsion.turbojet_sizing                        import turbojet_sizing
 from Legacy.trunk.S.Methods.Propulsion.ramjet_sizing                          import ramjet_sizing
 from Legacy.trunk.S.Methods.Propulsion.scramjet_sizing                        import scramjet_sizing
@@ -18,4 +34,4 @@ from Legacy.trunk.S.Methods.Propulsion                                        im
 from Legacy.trunk.S.Methods.Propulsion.liquid_rocket_sizing                   import liquid_rocket_sizing
 from Legacy.trunk.S.Methods.Propulsion.serial_HTS_turboelectric_sizing        import serial_HTS_turboelectric_sizing
 from Legacy.trunk.S.Methods.Propulsion.serial_HTS_dynamo_turboelectric_sizing import serial_HTS_dynamo_turboelectric_sizing
-
+ 

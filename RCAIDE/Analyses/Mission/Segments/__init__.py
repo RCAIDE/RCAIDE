@@ -9,15 +9,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Mission.Segments.Segment     import Segment
-from Legacy.trunk.S.Analyses.Mission.Segments.Simple      import Simple
-from Legacy.trunk.S.Analyses.Mission.Segments.Aerodynamic import Aerodynamic
+from .Segment             import Segment
 
 from . import Climb
-from . import Conditions
 from . import Cruise
 from . import Descent
 from . import Ground
-from . import Hover
 from . import Single_Point
 from . import Transition
+from . import Vertical_Flight

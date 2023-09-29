@@ -10,5 +10,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Geometry
 
-from . import Cross_Section
+from . import Airfoil
 from . import Planform
+from . import Propulsion

@@ -7,7 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
-from RCAIDE.Core import ContainerOrdered, Data 
+from RCAIDE.Core import ContainerOrdered
+from RCAIDE.Core import Data 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Process
@@ -23,9 +24,7 @@ class Process(ContainerOrdered):
             
             Source:
             N/A
-    """    
-    
-    verbose = False
+    """     
     
     def evaluate(self,*args,**kwarg):
         """This is used to execute the evaluate functions of the analyses
@@ -47,17 +46,9 @@ class Process(ContainerOrdered):
                 N/A
             """        
         
-        results = Data()
+        results = Data() 
         
-        if self.verbose:
-            print('process start')
-        
-        for tag,step in self.items(): 
-            
-            if self.verbose:
-                print('step :' , tag)
-            
-            #if not callable(step): continue
+        for tag,step in self.items():  
             
             if hasattr(step,'evaluate'): 
                 result = step.evaluate(*args,**kwarg)
@@ -65,12 +56,7 @@ class Process(ContainerOrdered):
                 result = step(*args,**kwarg)
                 
             results[tag] = result
-        
-        #: for each step
-        
-        if self.verbose:
-            print('process end')        
-        
+         
         return results
         
     def __call__(self,*args,**kwarg):

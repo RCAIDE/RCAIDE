@@ -8,5 +8,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Energy.Peripherals import Avionics
-from Legacy.trunk.S.Components.Energy.Peripherals import Payload
+from .Avionics import Avionics
+from .Payload  import Payload

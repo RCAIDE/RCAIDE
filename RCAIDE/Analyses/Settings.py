@@ -42,4 +42,6 @@ class Settings(Data):
                 Properties Used:
                 N/A
             """             
-        self.tag             = 'settings'  
+        self.tag    = 'settings'
+        
+        self.verbose_process = False

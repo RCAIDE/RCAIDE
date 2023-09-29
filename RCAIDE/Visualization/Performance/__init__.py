@@ -10,6 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Visualization
 
-from Legacy.trunk.S.Plots.Performance.Airfoil_Plots   import *
-from Legacy.trunk.S.Plots.Performance.Mission_Plots   import *
-from Legacy.trunk.S.Plots.Performance.Propeller_Plots import *
+from .Aerodynamics import * 
+from .Common       import * 
+from .Energy       import * 
+from .Mission      import *  

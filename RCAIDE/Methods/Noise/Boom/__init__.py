@@ -1,5 +1,5 @@
-## @defgroup Methods-Noise-Boom Boom  
-# @ingroup Methods-Noise
+## @defgroup Methods-Noise-Boom Boom
+# @ingroup Methods 
 # RCAIDE/Methods/Noise/Boom/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -9,5 +9,4 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from Legacy.trunk.S.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
+from . import lift_equivalent_area

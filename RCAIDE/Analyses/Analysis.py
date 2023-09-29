@@ -88,8 +88,8 @@ class Analysis(Data):
         raise NotImplementedError
         return Data()
     
-    def finalize(self,*args,**kwarg):
-        """This is used to finalize the analysis' specific algorithms.
+    def post_process(self,*args,**kwarg):
+        """This is used to post_process 
                 
                 Assumptions:
                 None
@@ -168,7 +168,7 @@ class Container(ContainerBase):
             """                    
         for tag,analysis in self.items:
             if hasattr(analysis,'initialize'):
-                analysis.initialize(*args,**kwarg)
+                analysis.initialize(*args,**kwarg) 
     
     def evaluate(self,*args,**kwarg):
         """This is used to execute the evaluate functions of the analyses
@@ -198,9 +198,8 @@ class Container(ContainerBase):
             results[tag] = result
         return results
     
-    def finalize(self,*args,**kwarg):
-        """This is used to execute the finalize functions of the analyses
-            stored in the container.
+    def post_process(self,*args,**kwarg):
+        """This is used to execute post processing functions 
                                                 
                 Assumptions:
                 None
@@ -219,8 +218,9 @@ class Container(ContainerBase):
             """        
         
         for tag,analysis in self.items():
-            if hasattr(analysis,'finalize'):
-                analysis.finalize(*args,**kwarg)
+            if hasattr(analysis,'post_process'):
+                analysis.post_process(*args,**kwarg)
+                
     
     def __call__(self,*args,**kwarg): 
         """This is used to set the class' call behavior to the evaluate functions.

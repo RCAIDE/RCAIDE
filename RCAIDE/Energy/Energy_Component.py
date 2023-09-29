@@ -4,18 +4,18 @@
 # 
 # Created:  Jul 2023, E. Botero
 # Modified: 
+ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+from RCAIDE.Core import Data 
+from RCAIDE.Components.Component import Component
 
-# ------------------------------------------------------------
-#  Imports
-# ------------------------------------------------------------
-
-from Legacy.trunk.S.Core import Data
-
-# ----------------------------------------------------------------------
-#  Energy Component Class
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  Energy Component  
+# ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy
-class Energy_Component(Data):
+class Energy_Component(Component):
     """A class representing an energy component.
     
     Assumptions:
@@ -43,7 +43,9 @@ class Energy_Component(Data):
         N/A
         """          
         # function handles for input
-        self.inputs  = Data()
+        self.inputs          = Data()
+        self.outputs         = Data() 
+        self.propulsor_group = 'propulsor'
         
         # function handles for output
         self.outputs = Data()

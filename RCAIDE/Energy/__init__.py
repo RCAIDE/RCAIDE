@@ -17,4 +17,5 @@ from . import Networks
 from . import Peripherals
 from . import Processes
 from . import Storages
+from . import Thermal_Management
 
