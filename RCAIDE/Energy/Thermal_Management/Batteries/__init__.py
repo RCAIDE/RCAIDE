@@ -10,3 +10,4 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 from .Atmospheric_Air_Convection_Heat_Exchanger  import Atmospheric_Air_Convection_Heat_Exchanger
 from .No_Heat_Exhanger                           import No_Heat_Exchanger
+from .Conjugate_Heat_Exchanger                  import Conjugate_Heat_Exchanger
