@@ -6,16 +6,16 @@
 # ----------------------------------------------------------------------        
 #   Imports
 # ----------------------------------------------------------------------  
-# MARC Imports    
-from MARC.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger                       import Wavy_Channel_Gas_Liquid_Heat_Exchanger 
-from MARC.Components.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.Atmospheric_Air_Convection_Heat_Exchanger import Atmospheric_Air_Convection_Heat_Exchanger 
+# RCAIDE Imports    
+from RCAIDE.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger                       import Wavy_Channel_Gas_Liquid_Heat_Exchanger 
+from RCAIDE.Components.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.Atmospheric_Air_Convection_Heat_Exchanger import Atmospheric_Air_Convection_Heat_Exchanger 
 
-from MARC.Core                                                             import Units, Data   
-from MARC.Optimization                                                     import Nexus   
-from MARC.Methods.Thermal_Management.Batteries.Sizing.btms_geometry_setup  import air_convection_cooling_geometry_setup
-from MARC.Methods.Thermal_Management.Batteries.Sizing.btms_geometry_setup  import channel_cooling_geometry_setup
-from MARC.Methods.Thermal_Management.Batteries.Sizing.btms_procedure_setup import air_convection_cooling_procedure_setup
-from MARC.Methods.Thermal_Management.Batteries.Sizing.btms_procedure_setup import channel_cooling_procedure_setup
+from RCAIDE.Core                                                             import Units, Data   
+from RCAIDE.Optimization                                                     import Nexus   
+from RCAIDE.Methods.Thermal_Management.Batteries.Sizing.btms_geometry_setup  import air_convection_cooling_geometry_setup
+from RCAIDE.Methods.Thermal_Management.Batteries.Sizing.btms_geometry_setup  import channel_cooling_geometry_setup
+from RCAIDE.Methods.Thermal_Management.Batteries.Sizing.btms_procedure_setup import air_convection_cooling_procedure_setup
+from RCAIDE.Methods.Thermal_Management.Batteries.Sizing.btms_procedure_setup import channel_cooling_procedure_setup
 
 # Python package imports   
 import numpy as np  

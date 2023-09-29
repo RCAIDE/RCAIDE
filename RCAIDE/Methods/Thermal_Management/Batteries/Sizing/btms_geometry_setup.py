@@ -6,10 +6,10 @@
 # ----------------------------------------------------------------------        
 #   Imports
 # ----------------------------------------------------------------------  
-# MARC Imports 
-import MARC    
-from MARC.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger                       import Wavy_Channel_Gas_Liquid_Heat_Exchanger 
-from MARC.Components.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.Atmospheric_Air_Convection_Heat_Exchanger import Atmospheric_Air_Convection_Heat_Exchanger 
+# RCAIDE Imports 
+import RCAIDE    
+from RCAIDE.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger                       import Wavy_Channel_Gas_Liquid_Heat_Exchanger 
+from RCAIDE.Components.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.Atmospheric_Air_Convection_Heat_Exchanger import Atmospheric_Air_Convection_Heat_Exchanger 
 
 # Python package imports   
 import numpy as np  
@@ -18,10 +18,10 @@ import numpy as np
 def btms_geometry_setup(bat_0): 
     """  
     """     
-    vehicle                                        = MARC.Vehicle()  
-    net                                            = MARC.Components.Energy.Networks.Battery_Electric_Rotor() 
+    vehicle                                        = RCAIDE.Vehicle()  
+    net                                            = RCAIDE.Components.Energy.Networks.Battery_Electric_Rotor() 
     # Component 5: the Battery
-    bat                                            = MARC.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiNiMnCoO2_18650() 
+    bat                                            = RCAIDE.Components.Energy.Storages.Batteries.Constant_Mass.Lithium_Ion_LiNiMnCoO2_18650() 
     bat.pack_config.series                         = bat_0.pack_config.series                        
     bat.pack_config.parallel                       = bat_0.pack_config.parallel                     
     bat.pack_config.total                          = bat_0.pack_config.total                        
@@ -35,7 +35,7 @@ def btms_geometry_setup(bat_0):
     bat.air_cooled                                 = bat_0.air_cooled         
 
     if type(bat_0.thermal_management_system) == Wavy_Channel_Gas_Liquid_Heat_Exchanger:
-        btms                                                = MARC.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger() 
+        btms                                                = RCAIDE.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger() 
         btms.hex.length_of_hot_fluid                        = 0.6    # L_h
         btms.hex.length_of_cold_fluid                       = 0.9    # L_c
         btms.hex.stack_height                               = 0.24   # H
@@ -58,10 +58,10 @@ def btms_geometry_setup(bat_0):
     net.battery.append(battery)  
     vehicle.append_component(net)
     
-    configs                             = MARC.Components.Configs.Config.Container()
-    base_config                         = MARC.Components.Configs.Config(vehicle) 
+    configs                             = RCAIDE.Components.Configs.Config.Container()
+    base_config                         = RCAIDE.Components.Configs.Config(vehicle) 
     
-    config                              = MARC.Components.Configs.Config(base_config)
+    config                              = RCAIDE.Components.Configs.Config(base_config)
     config.tag                          = 'optimized'  
     configs.append(config)         
     return configs 

@@ -5,12 +5,12 @@
 # Modified: Jun 2023, M. Clarke
  
 import numpy as np 
-from MARC.Attributes.Coolants.Glycol_Water import Glycol_Water
-from MARC.Attributes.Solids.Aluminum       import Aluminum  
-from MARC.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_pressure_properties
-from MARC.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_thermal_properties
-from MARC.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_surface_geometry_properties
-from MARC.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_geometry
+from RCAIDE.Attributes.Coolants.Glycol_Water import Glycol_Water
+from RCAIDE.Attributes.Solids.Aluminum       import Aluminum  
+from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_pressure_properties
+from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_thermal_properties
+from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_surface_geometry_properties
+from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_geometry
 
 # ----------------------------------------------------------------------
 #  Methods

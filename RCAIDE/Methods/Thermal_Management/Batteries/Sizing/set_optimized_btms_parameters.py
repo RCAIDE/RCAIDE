@@ -2,8 +2,8 @@
 # set_optimized_parameters.py 
 #
 # Created: Jun 2023, M. Clarke
-from MARC.Attributes.Coolants.Glycol_Water import Glycol_Water
-from MARC.Attributes.Gases import Air
+from RCAIDE.Attributes.Coolants.Glycol_Water import Glycol_Water
+from RCAIDE.Attributes.Gases import Air
 
 # ----------------------------------------------------------------------        
 #   Imports

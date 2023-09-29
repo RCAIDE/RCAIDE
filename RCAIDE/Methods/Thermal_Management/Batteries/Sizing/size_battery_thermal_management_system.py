@@ -2,10 +2,10 @@
 # size_battery_thermal_management_system.py
 #  
 # Modified: Jun 2023, M. Clarke   
-import MARC.Methods.Thermal_Management.Batteries.Sizing.btms_sizing_setup             as btms_sizing_setup 
-import MARC.Methods.Thermal_Management.Batteries.Sizing.set_optimized_btms_paramters  as set_optimized_btms_paramters   
+import RCAIDE.Methods.Thermal_Management.Batteries.Sizing.btms_sizing_setup             as btms_sizing_setup 
+import RCAIDE.Methods.Thermal_Management.Batteries.Sizing.set_optimized_btms_paramters  as set_optimized_btms_paramters   
 
-import MARC.Optimization.Package_Setups.scipy_setup                    as scipy_setup      
+import RCAIDE.Optimization.Package_Setups.scipy_setup                    as scipy_setup      
 import numpy as np  
 import time
 

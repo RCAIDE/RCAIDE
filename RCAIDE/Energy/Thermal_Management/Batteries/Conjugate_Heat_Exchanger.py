@@ -152,11 +152,11 @@ class Conjugate_Heat_Exchanger(Energy_Component):
         self.kc_values = load_kc_values()
         self.ke_values = load_ke_values()
         
-        return
+        return 
     
-def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics,freestream): 
-
-    return btms_results
+    def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics,freestream): 
+        btms_results  = 0 # out off design function 
+        return btms_results
 
 
 def load_kc_values(): 

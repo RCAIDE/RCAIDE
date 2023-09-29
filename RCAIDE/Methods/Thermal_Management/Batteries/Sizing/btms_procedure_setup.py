@@ -5,15 +5,15 @@
 # ----------------------------------------------------------------------        
 #   Imports
 # ----------------------------------------------------------------------  
-# MARC Imports 
-import MARC 
-from MARC.Core                                                  import Units   
-from MARC.Analyses.Process                                      import Process   
-from MARC.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger                       import Wavy_Channel_Gas_Liquid_Heat_Exchanger 
-from MARC.Components.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.Atmospheric_Air_Convection_Heat_Exchanger import Atmospheric_Air_Convection_Heat_Exchanger 
-from MARC.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_factors import compute_heat_exhanger_factors
-from MARC.Attributes.Coolants.Glycol_Water import Glycol_Water
-from MARC.Attributes.Gases import Air
+# RCAIDE Imports 
+import RCAIDE 
+from RCAIDE.Core                                                  import Units   
+from RCAIDE.Analyses.Process                                      import Process   
+from RCAIDE.Components.Energy.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Gas_Liquid_Heat_Exchanger                       import Wavy_Channel_Gas_Liquid_Heat_Exchanger 
+from RCAIDE.Components.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.Atmospheric_Air_Convection_Heat_Exchanger import Atmospheric_Air_Convection_Heat_Exchanger 
+from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_factors import compute_heat_exhanger_factors
+from RCAIDE.Attributes.Coolants.Glycol_Water import Glycol_Water
+from RCAIDE.Attributes.Gases import Air
 
 # Python package imports 
 from scipy.optimize import minimize  
