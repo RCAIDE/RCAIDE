@@ -160,7 +160,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         As_cell                  = battery.cell.surface_area  
         Q_prior                  = battery.cell.charge_throughput     
         T_cell                   = battery.cell.temperature       
-        E_max                    = conditions.energy[bus_tag][self.tag].pack.maximum_degraded_battery_energy
+        E_max                    = conditions.energy[bus_tag][self.tag].pack.maximum_initial_energy * conditions.energy[bus_tag][self.tag].cell.capacity_fade_factor
         E_current                = battery.pack.current_energy 
         battery_data             = battery.discharge_performance_map     
         I                        = numerics.time.integrate      
@@ -350,7 +350,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             Properties Used:
             None
         """      
-        
+    
         if bus.fixed_voltage == False: 
             battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag]
             

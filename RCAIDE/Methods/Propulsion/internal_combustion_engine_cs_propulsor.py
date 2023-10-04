@@ -61,7 +61,7 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
 
     # Run the engine to calculate the throttle setting and the fuel burn
     engine.inputs.power = P
-    engine.calculate_throttle(conditions)
+    engine.calculate_throttle_out_from_power(conditions)
 
     # Create the outputs 
     R                   = rotor.tip_radius 

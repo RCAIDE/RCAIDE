@@ -19,8 +19,7 @@ import matplotlib.pyplot as plt
 
 # local imports 
 sys.path.append('../../Vehicles')
-from NASA_X57    import vehicle_setup as   vehicle_setup
-from NASA_X57    import configs_setup as   configs_setup 
+from NASA_X57    import vehicle_setup, configs_setup 
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -28,7 +27,7 @@ from NASA_X57    import configs_setup as   configs_setup
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():     
     
-    battery_chemistry       =  ['NMC']
+    battery_chemistry       =  ['NMC','LFP']
     
     # ----------------------------------------------------------------------
     #  True Values  
@@ -36,9 +35,8 @@ def main():
 
     # General Aviation Aircraft   
 
-    RPM_true              = [1612.2332847048585,1612.2332846434035]
-    lift_coefficient_true = [0.5405968044232964,0.5405968044232967]
-     
+    RPM_true              = [1597.730347228566,1597.7303471313394]
+    lift_coefficient_true = [0.3519728024171797,0.35197280241717954] 
     
         
     for i in range(len(battery_chemistry)):
@@ -67,23 +65,24 @@ def main():
         results = missions.base_mission.evaluate() 
          
         # plot the results
-        plot_results(results)  
+        if i == 0: 
+            plot_results(results)  
         
-        ## RPM of rotor check during hover
-        #RPM        = results.segments.climb_1_f_1_d1.conditions.energy.bus.propulsor.rotor.rpm[3][0] 
-        #print('GA RPM: ' + str(RPM))
-        #diff_RPM   = np.abs(RPM - RPM_true[i])
-        #print('RPM difference')
-        #print(diff_RPM)
-        #assert np.abs((RPM - RPM_true[i])/RPM_true[i]) < 1e-6  
+        # RPM of rotor check during hover
+        RPM        = results.segments.climb_1_f_1_d1.conditions.energy.bus.propulsor.rotor.rpm[3][0] 
+        print('GA RPM: ' + str(RPM))
+        diff_RPM   = np.abs(RPM - RPM_true[i])
+        print('RPM difference')
+        print(diff_RPM)
+        assert np.abs((RPM - RPM_true[i])/RPM_true[i]) < 1e-6  
         
-        ## lift Coefficient Check During Cruise
-        #lift_coefficient        = results.segments.cruise_f_1_d1.conditions.aerodynamics.coefficients.lift[2][0] 
-        #print('GA CL: ' + str(lift_coefficient)) 
-        #diff_CL                 = np.abs(lift_coefficient  - lift_coefficient_true[i]) 
-        #print('CL difference')
-        #print(diff_CL)
-        #assert np.abs((lift_coefficient  - lift_coefficient_true[i])/lift_coefficient_true[i]) < 1e-6 
+        # lift Coefficient Check During Cruise
+        lift_coefficient        = results.segments.cruise_f_1_d1.conditions.aerodynamics.coefficients.lift[2][0] 
+        print('GA CL: ' + str(lift_coefficient)) 
+        diff_CL                 = np.abs(lift_coefficient  - lift_coefficient_true[i]) 
+        print('CL difference')
+        print(diff_CL)
+        assert np.abs((lift_coefficient  - lift_coefficient_true[i])/lift_coefficient_true[i]) < 1e-6 
              
     return
 
@@ -98,10 +97,10 @@ def modify_vehicle(vehicle,battery_chemistry):
     bus = vehicle.networks.all_electric.busses.bus
     bus.batteries.pop((list(bus.batteries.keys())[0]))
     if battery_chemistry   == 'NMC': 
-        bus.fixed_voltage   = True 
         bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()  
         bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.No_Heat_Exchanger()  
     elif battery_chemistry == 'LFP': 
+        bus.fixed_voltage == True 
         bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()    
         bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()  
 
@@ -209,13 +208,13 @@ def mission_setup(analyses):
             # ------------------------------------------------------------------  
 
             segment = Segments.Climb.Linear_Speed_Constant_Rate(base_segment) 
-            segment.tag = "Climb_1"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+1) 
+            segment.tag = "Climb"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+1) 
             segment.analyses.extend( analyses.base ) 
             segment.altitude_start                                   = 2500.0  * Units.feet
             segment.altitude_end                                     = 8012    * Units.feet  
-            segment.air_speed_start                                  = 120.* Units['mph']  
-            segment.air_speed_end                                    = 175 * Units['mph']   
-            segment.climb_rate                                       = 700.034 * Units['ft/min']     
+            segment.air_speed_start                                  = 100.     * Units['mph']  
+            segment.air_speed_end                                    = 150     * Units['mph']   
+            segment.climb_rate                                       = 500.    * Units['ft/min']     
             segment.battery_cell_temperature                         = atmo_data.temperature[0,0]
             if (day == 0) and (flight_no == 0):        
                 segment.initial_battery_state_of_charge              = 0.89 
@@ -226,19 +225,19 @@ def mission_setup(analyses):
             mission.append_segment(segment) 
             
         
-            ## ------------------------------------------------------------------
-            ##   Cruise Segment: constant Speed, constant altitude
-            ## ------------------------------------------------------------------ 
-            #segment = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
-            #segment.tag = "Cruise"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
-            #segment.analyses.extend(analyses.base) 
-            #segment.altitude                  = 8012   * Units.feet
-            #segment.air_speed                 = 175.    * Units['mph'] 
-            #segment.distance                  = 50.   * Units.nautical_mile   
-            #segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
+            # ------------------------------------------------------------------
+            #   Cruise Segment: constant Speed, constant altitude
+            # ------------------------------------------------------------------ 
+            segment = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+            segment.tag = "Cruise"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
+            segment.analyses.extend(analyses.base) 
+            segment.altitude                  = 8012   * Units.feet
+            segment.air_speed                 = 150.    * Units['mph'] 
+            segment.distance                  = 50.   * Units.nautical_mile   
+            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
         
-            ## add to misison
-            #mission.append_segment(segment)    
+            # add to misison
+            mission.append_segment(segment)    
         
         
             # ------------------------------------------------------------------
@@ -249,8 +248,8 @@ def mission_setup(analyses):
             segment.analyses.extend( analyses.base )       
             segment.altitude_start                                   = 8012 * Units.feet  
             segment.altitude_end                                     = 2500.0 * Units.feet
-            segment.air_speed_start                                  = 175.* Units['mph']  
-            segment.air_speed_end                                    = 120 * Units['mph']   
+            segment.air_speed_start                                  = 150.* Units['mph']  
+            segment.air_speed_end                                    = 90 * Units['mph']   
             segment.descent_rate                                     = 200 * Units['ft/min']   
             segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
             
@@ -264,7 +263,7 @@ def mission_setup(analyses):
             segment                                                 = Segments.Ground.Battery_Recharge(base_segment)     
             segment.tag                                             = 'Recharge'  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
             segment.analyses.extend(analyses.base)                       
-            segment.time                                            = 1 * Units.hr
+            segment.time                                            = 1.5 * Units.hr
             if flight_no  == flights_per_day:  
                 segment.increment_battery_age_by_one_day            =True                        
             segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    
@@ -297,6 +296,7 @@ def plot_results(results):
     # Plot Aircraft Electronics
     plot_battery_pack_conditions(results) 
     plot_battery_cell_conditions(results)
+    plot_battery_pack_C_rates(results)
     plot_battery_degradation(results)
     
     # Plot Propeller Conditions 

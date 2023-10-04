@@ -108,9 +108,7 @@ class Solar(Network):
                 battery.pack.temperature         = battery_conditions.pack.temperature
                 battery.cell.age                 = battery_conditions.cell.cycle_in_day    
                 battery.cell.charge_throughput   = battery_conditions.cell.charge_throughput   
-                battery.cell.temperature         = battery_conditions.cell.temperature
-                battery.cell.R_growth_factor     = battery_conditions.cell.resistance_growth_factor
-                battery.cell.E_growth_factor     = battery_conditions.cell.capacity_fade_factor  
+                battery.cell.temperature         = battery_conditions.cell.temperature 
                 battery_discharge_flag           = battery_conditions.battery_discharge_flag              
              
                 if bus.fixed_voltage: 
@@ -143,17 +141,17 @@ class Solar(Network):
                 # step 2
                 solar_panel.power()
                 
-                # link
+                # link 
                 bus.inputs.power            = solar_panel.outputs.power/self.maximum_power_point_tracking_efficency  
                 bus.outputs.avionics_power  = avionics.inputs.power 
                 bus.outputs.payload_power   = payload.inputs.power 
-                bus.outputs.total_esc_power = total_current*voltage 
+                bus.outputs.total_esc_power = total_current*voltage
                 bus.logic(conditions,numerics)             
                 
                 # link to battery                  
                 battery.outputs.current     = bus.outputs.power/voltage
-                battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio
-                 
+                battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio 
+                
                 battery.energy_calc(numerics,conditions,bus.tag,battery_discharge_flag)       
                 pack_battery_conditions(battery_conditions,battery)                
                     

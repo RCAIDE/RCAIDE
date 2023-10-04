@@ -48,6 +48,7 @@ class Bus_Power_Control_Unit(Energy_Component):
         self.tag                           = 'bus'
         self.motors                        = Container()
         self.rotors                        = Container()
+        self.ducted_fans                   = Container()
         self.electronic_speed_controllers  = Container()
         self.batteries                     = Container()
         self.fixed_voltage                 = True

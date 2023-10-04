@@ -100,9 +100,7 @@ class All_Electric_Ducted_Fan(Network):
                 battery.pack.temperature          = battery_conditions.pack.temperature
                 battery.cell.age                  = battery_conditions.cell.cycle_in_day    
                 battery.cell.charge_throughput    = battery_conditions.cell.charge_throughput   
-                battery.cell.temperature          = battery_conditions.cell.temperature
-                battery.cell.R_growth_factor      = battery_conditions.cell.resistance_growth_factor
-                battery.cell.E_growth_factor      = battery_conditions.cell.capacity_fade_factor  
+                battery.cell.temperature          = battery_conditions.cell.temperature   
                 battery_discharge_flag            = battery_conditions.battery_discharge_flag              
     
                 if bus.fixed_voltage: 

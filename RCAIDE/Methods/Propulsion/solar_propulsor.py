@@ -60,10 +60,7 @@ def compute_propulsor_performance(i,bus,propulsor_group_tag,motors,rotors,N_roto
     esc.inputs.voltage   = voltage
     
     # Throttle the voltage 
-    esc.calculate_voltage_out_from_throttle(bus_results[propulsor_group_tag].motor.throttle)    
-
-    # Set rotor y-axis rotation                
-    rotor.inputs.y_axis_rotation = bus_results[propulsor_group_tag].y_axis_rotation  
+    esc.calculate_voltage_out_from_throttle(bus_results[propulsor_group_tag].motor.throttle)     
  
     # Assign conditions to the rotor
     motor.inputs.voltage         = esc.outputs.voltage

@@ -14,5 +14,5 @@ from .plot_battery_pack_conditions               import plot_battery_pack_condit
 from .plot_battery_cell_conditions               import plot_battery_cell_conditions
 from .plot_battery_degradation                   import plot_battery_degradation 
 from .plot_battery_health_conditions             import plot_battery_health_conditions
-from .plot_battery_C_rate                        import plot_battery_C_rate
+from .plot_battery_pack_C_rates                  import plot_battery_pack_C_rates
 from .plot_battery_ragone_diagram                import plot_battery_ragone_diagram 
