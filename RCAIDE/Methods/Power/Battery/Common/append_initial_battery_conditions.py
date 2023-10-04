@@ -31,31 +31,27 @@ def append_initial_battery_conditions(segment,bus,battery):
             
             Optional:
             segment.
-                 battery_i.cycle_in_day               [unitless]
-                 battery_i.pack.temperature           [Kelvin]
-                 battery_i.charge_throughput          [Ampere-Hours] 
-                 battery_i.resistance_growth_factor   [unitless]
-                 battery_i.capacity_fade_factor       [unitless]
-                 battery_i.discharge                  [boolean]
+                 battery.cycle_in_day               [unitless]
+                 battery.pack.temperature           [Kelvin]
+                 battery.charge_throughput          [Ampere-Hours] 
+                 battery.resistance_growth_factor   [unitless]
+                 battery.capacity_fade_factor       [unitless]
+                 battery.discharge                  [boolean]
                  increment_battery_age_by_one_day     [boolean]
                
         Outputs:
             segment
-               battery_discharge                      [boolean]
-               increment_battery_age_by_one_day       [boolean]
+               battery_discharge                    [boolean]
+               increment_battery_age_by_one_day     [boolean]
             segment.state.conditions.energy
-               battery_i.battery_discharge_flag               [boolean]
-               battery_i.pack.maximum_initial_energy  [watts]
-               battery_i.pack.energy                  [watts]
-               battery_i.pack.maximum_degraded_battery_energy [watts]    
-               battery_i.pack.temperature             [kelvin]
-               battery_i.cycle_in_day                 [int]
-               battery_i.cell.charge_throughput       [Ampere-Hours] 
-               battery_i.resistance_growth_factor     [unitless]
-               battery_i.capacity_fade_factor         [unitless]
-               
-               where i = number of batteries  
-
+               battery.battery_discharge_flag       [boolean]
+               battery.pack.maximum_initial_energy  [watts]
+               battery.pack.energy                  [watts] 
+               battery.pack.temperature             [kelvin]
+               battery.cycle_in_day                 [int]
+               battery.cell.charge_throughput       [Ampere-Hours] 
+               battery.resistance_growth_factor     [unitless]
+               battery.capacity_fade_factor         [unitless] 
     
         Properties Used:
         None
@@ -85,44 +81,13 @@ def append_initial_battery_conditions(segment,bus,battery):
     else:
         cell_temperature              = segment.battery_cell_temperature 
     battery_conditions.pack.temperature[:,0] = cell_temperature
-    battery_conditions.cell.temperature[:,0] = cell_temperature 
-    
-    if 'maximum_degraded_battery_energy' in segment:
-        battery_conditions.pack.maximum_degraded_battery_energy = segment.maximum_degraded_battery_energy
-    else:
-        battery_conditions.pack.maximum_degraded_battery_energy = battery.pack.maximum_energy     
+    battery_conditions.cell.temperature[:,0] = cell_temperature  
         
     if 'initial_battery_state_of_charge' in segment:  
-        initial_battery_energy            = segment.initial_battery_state_of_charge*battery.pack.maximum_energy 
-        
-        if 'battery_cycle_in_day' not in segment: 
-            cycle_in_day                  = 0
-        else:
-            cycle_in_day                  = segment.battery_cycle_in_day
-
-        if 'battery_cell_charge_throughput' not in segment:
-            cell_charge_throughput        = 0.
-        else:
-            cell_charge_throughput        = segment.battery_cell_charge_throughput
-            
-        if 'battery_resistance_growth_factor' not in segment:
-            resistance_growth_factor      = 1 
-        else:
-            resistance_growth_factor      = segment.battery_resistance_growth_factor
-            
-        if 'battery_capacity_fade_factor' not in segment: 
-            capacity_fade_factor          = 1   
-        else:
-            capacity_fade_factor          = segment.battery_capacity_fade_factor
-        
-        # Pack into conditions
+        initial_battery_energy                               = segment.initial_battery_state_of_charge*battery.pack.maximum_energy   
         battery_conditions.pack.maximum_initial_energy       = initial_battery_energy
-        battery_conditions.pack.energy[:,0]                  = initial_battery_energy
-        battery_conditions.cell.cycle_in_day                 = cycle_in_day        
-        battery_conditions.cell.charge_throughput[:,0]       = cell_charge_throughput 
-        battery_conditions.cell.resistance_growth_factor     = resistance_growth_factor 
-        battery_conditions.cell.capacity_fade_factor         = capacity_fade_factor
-        battery_conditions.cell.state_of_charge[:,0]         = initial_battery_energy/battery_conditions.pack.maximum_degraded_battery_energy
+        battery_conditions.pack.energy[:,0]                  = initial_battery_energy*segment.initial_battery_state_of_charge
+        battery_conditions.cell.state_of_charge[:,0]         = segment.initial_battery_state_of_charge
             
     return 
     

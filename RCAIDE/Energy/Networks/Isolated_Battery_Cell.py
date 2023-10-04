@@ -53,7 +53,8 @@ class Isolated_Battery_Cell(Network):
         """      
         self.tag                     = 'isolated_battery_cell' 
         self.avionics                = RCAIDE.Energy.Peripherals.Avionics()
-        self.payload                 = RCAIDE.Energy.Peripherals.Payload() 
+        self.payload                 = RCAIDE.Energy.Peripherals.Payload()
+        self.busses                  = Container()
         self.system_voltage          = None          
         
     # manage process with a driver function
@@ -95,15 +96,13 @@ class Isolated_Battery_Cell(Network):
             batteries = bus.batteries      
 
             for battery in batteries:               
-                battery_conditions               = state.conditions.energy[bus.tag][battery.tag] 
-                battery.pack.current_energy      = battery_conditions.pack.energy       
-                battery.pack.temperature         = battery_conditions.pack.temperature
-                battery.cell.age                 = battery_conditions.cell.cycle_in_day    
-                battery.cell.charge_throughput   = battery_conditions.cell.charge_throughput   
-                battery.cell.temperature         = battery_conditions.cell.temperature
-                battery.cell.R_growth_factor     = battery_conditions.cell.resistance_growth_factor
-                battery.cell.E_growth_factor     = battery_conditions.cell.capacity_fade_factor  
-                battery_discharge_flag           = battery_conditions.battery_discharge_flag              
+                battery_conditions                = conditions.energy[bus.tag][battery.tag] 
+                battery.pack.current_energy       = battery_conditions.pack.energy     
+                battery.pack.temperature          = battery_conditions.pack.temperature
+                battery.cell.age                  = battery_conditions.cell.cycle_in_day    
+                battery.cell.charge_throughput    = battery_conditions.cell.charge_throughput   
+                battery.cell.temperature          = battery_conditions.cell.temperature 
+                battery_discharge_flag            = battery_conditions.battery_discharge_flag               
              
                 if bus.fixed_voltage: 
                     voltage = bus.voltage * state.ones_row(1)
@@ -118,41 +117,37 @@ class Isolated_Battery_Cell(Network):
                     
                     # Payload Power Consumtion 
                     payload.power()
-            
+                    
                     if bus.fixed_voltage:      
                         bus.outputs.avionics_power  = avionics.inputs.power 
                         bus.outputs.payload_power   = payload.inputs.power 
                         bus.outputs.total_esc_power = total_current*voltage
                         bus.logic(conditions,numerics)             
-                        
+                
                         # link to battery                  
-                        battery.outputs.current     = bus.outputs.power/voltage
-                        battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio
-                        
+                        battery.outputs.current     = abs(bus.outputs.power)/voltage
+                        battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio 
+                
                     else:       
                         # link to battery   
                         battery.outputs.current     = total_current + (avionics.inputs.power + payload.inputs.power)/voltage
                         battery.outputs.power       = battery.outputs.current*voltage
-                        
+                
                     battery.energy_calc(numerics,conditions,bus.tag,battery_discharge_flag)       
                     pack_battery_conditions(battery_conditions,battery)               
-                  
+                
                 else: 
-                    if bus.fixed_voltage:    
-                        bus.inputs.secondary_source_power = -(battery.cell.charging_current * battery.pack.electrical_configuration.parallel) *\
-                                                             (battery.cell.charging_voltage * battery.pack.electrical_configuration.series) * np.ones_like(voltage)       
-                        bus.logic(conditions,numerics) 
-                        
-                        # link to battery    
-                        battery.outputs.current    = bus.outputs.power/voltage
-                        battery.outputs.power      = -bus.outputs.power*battery.bus_power_split_ratio  
+                    if bus.fixed_voltage:     
+                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(voltage) 
+                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)*battery.bus_power_split_ratio   
                     else: 
                         # link to battery     
-                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)
-                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(voltage)  
-                     
-                    battery.energy_calc(numerics,conditions,bus.tag,battery_discharge_flag)      
-                    pack_battery_conditions(battery_conditions,battery)             
+                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(voltage) 
+                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series) 
+
+                 
+                battery.energy_calc(numerics,conditions,bus.tag,battery_discharge_flag) 
+                pack_battery_conditions(battery_conditions,battery)             
                         
            
         conditions.energy.thrust_force_vector  = total_thrust
@@ -276,11 +271,12 @@ class Isolated_Battery_Cell(Network):
             for b_i , battery in enumerate(batteries):        
                 bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Common.Conditions() 
                 bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Common.Conditions() 
-                bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Common.Conditions() 
                 bus_results[battery.tag].pack.energy                   = ones_row(1)
                 bus_results[battery.tag].pack.voltage_under_load       = ones_row(1)
                 bus_results[battery.tag].pack.voltage_open_circuit     = ones_row(1)
                 bus_results[battery.tag].pack.temperature              = ones_row(1)
+                bus_results[battery.tag].pack.temperature              = ones_row(1)
+                bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Common.Conditions() 
                 bus_results[battery.tag].cell.state_of_charge          = ones_row(1)
                 bus_results[battery.tag].cell.temperature              = ones_row(1)
                 bus_results[battery.tag].cell.charge_throughput        = ones_row(1) 
@@ -302,10 +298,10 @@ class Isolated_Battery_Cell(Network):
                 # ------------------------------------------------------------------------------------------------------
                 # Assign network-specific  residuals, unknowns and results data structures
                 # ------------------------------------------------------------------------------------------------------ 
-                if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:   
+                if bus.fixed_voltage:   
                     # appennd residuals and unknowns for recharge segment                     
-                    segment.state.unknowns['recharge']          =  0* ones_row(1)  
-                    segment.state.residuals.network['recharge'] =  0* ones_row(1)                
+                    segment.state.unknowns['fv_' + battery.tag]          =  0* ones_row(1)  
+                    segment.state.residuals.network['fv_' + battery.tag] =  0* ones_row(1)                
             
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network                    = self.unpack_unknowns

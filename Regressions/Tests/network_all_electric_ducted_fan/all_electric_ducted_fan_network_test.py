@@ -59,12 +59,12 @@ def main():
      
     plot_results(results)
  
-    CL  = results.segments.cruise.conditions.aerodynamics.coefficients.lift[2][0] 
-    P   = results.segments.cruise.conditions.energy.bus.propulsor.ducted_fan.power[3][0]  
+    #CL  = results.segments.cruise.conditions.aerodynamics.coefficients.lift[2][0] 
+    #P   = results.segments.cruise.conditions.energy.bus.propulsor.ducted_fan.power[3][0]  
  
 
     ## RPM of rotor check during hover
-    #CL_true = 0.5454790727048698
+    #CL_true = 0.35515343148759354
     #CL      = results.segments.cruise.conditions.aerodynamics.coefficients.lift[2][0] 
     #print('Lift Coefficient: ' + str(CL))
     #diff_CL   = np.abs(CL - CL_true)
@@ -73,7 +73,7 @@ def main():
     #assert np.abs((CL - CL_true)/CL_true) < 1e-6  
     
     ## lift Coefficient Check During Cruise
-    #P_true = 38354.30147918783
+    #P_true = 157734.9151012157
     #P      = results.segments.cruise.conditions.energy.bus.propulsor.ducted_fan.power[3][0]  
     #print('Power: ' + str(P )) 
     #diff_P                  = np.abs(P - P_true) 
@@ -124,8 +124,8 @@ def modify_vehicle(vehicle):
     ducted_fan.engine_length        = 1.038 * Units.meter
     ducted_fan.nacelle_diameter     = 1  
     ducted_fan.areas.wetted         = 1.1*np.pi*ducted_fan.nacelle_diameter*ducted_fan.engine_length
-    ducted_fan.design_thrust        = 2000   
-    ducted_fan.design_altitude      = 2500. * Units.feet
+    ducted_fan.design_thrust        = 5000   # 2500
+    ducted_fan.design_altitude      = 25000. * Units.feet # 2500
     ducted_fan.design_mach_number   = 0.01     
     ducted_fan.origin               = [[2.,  2.5, 0.95]]  
 
@@ -273,24 +273,59 @@ def mission_setup(analyses):
     # base segment
     base_segment = Segments.Segment()
     ones_row     = base_segment.state.ones_row
-    base_segment.state.numerics.number_control_points  = 4        
+    base_segment.state.numerics.number_control_points  = 4     
+
 
     # ------------------------------------------------------------------
-    #   Cruise Segment: constant Speed, constant altitude
-    # ------------------------------------------------------------------ 
-    segment = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
-    segment.tag = "Cruise"  
-    segment.analyses.extend(analyses.base) 
-    segment.initial_battery_state_of_charge              = 1.0
-    segment.initial_battery_resistance_growth_factor     = 1
-    segment.initial_battery_capacity_fade_factor         = 1
-    segment.altitude                                     = 8012   * Units.feet
-    segment.air_speed                                    = 120.91 * Units['mph'] 
-    segment.distance                                     = 20.   * Units.nautical_mile   
-    segment = analyses.base.energy.networks.battery_ducted_fan.add_unknowns_and_residuals_to_segment(segment)   
+    #   Climb 1 : constant Speed, constant rate segment 
+    # ------------------------------------------------------------------  
 
+    segment = Segments.Climb.Linear_Speed_Constant_Rate(base_segment) 
+    segment.tag = "Climb" 
+    segment.analyses.extend( analyses.base ) 
+    segment.altitude_start                                   = 5000   * Units.feet
+    segment.altitude_end                                     = 25000    * Units.feet  
+    segment.air_speed_start                                  = 300.     * Units['mph']  
+    segment.air_speed_end                                    = 400     * Units['mph']   
+    segment.climb_rate                                       = 500.    * Units['ft/min']     
+    segment.initial_battery_state_of_charge                  = 1.0 
+    segment.initial_battery_resistance_growth_factor         = 1
+    segment.initial_battery_capacity_fade_factor             = 1
+    segment = analyses.base.energy.networks.battery_ducted_fan.add_unknowns_and_residuals_to_segment(segment)          
     # add to misison
-    mission.append_segment(segment)    
+    mission.append_segment(segment) 
+    
+
+    ## ------------------------------------------------------------------
+    ##   Cruise Segment: constant Speed, constant altitude
+    ## ------------------------------------------------------------------ 
+    #segment = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+    #segment.tag = "Cruise"  
+    #segment.analyses.extend(analyses.base) 
+    #segment.altitude                  = 25000  * Units.feet
+    #segment.air_speed                 = 400.    * Units['mph'] 
+    #segment.distance                  = 50.   * Units.nautical_mile   
+    #segment = analyses.base.energy.networks.battery_ducted_fan.add_unknowns_and_residuals_to_segment(segment)   
+
+    ## add to misison
+    #mission.append_segment(segment)    
+
+
+    ## ------------------------------------------------------------------
+    ##   Descent Segment Flight 1   
+    ## ------------------------------------------------------------------ 
+    #segment = Segments.Descent.Linear_Speed_Constant_Rate(base_segment) 
+    #segment.tag = "Decent"  
+    #segment.analyses.extend( analyses.base )       
+    #segment.altitude_start                                   = 5000 * Units.feet  
+    #segment.altitude_end                                     = 25000.0 * Units.feet
+    #segment.air_speed_start                                  = 400.* Units['mph']  
+    #segment.air_speed_end                                    = 300 * Units['mph']   
+    #segment.descent_rate                                     = 200 * Units['ft/min']   
+    #segment = analyses.base.energy.networks.battery_ducted_fan.add_unknowns_and_residuals_to_segment(segment)   
+    
+    ## add to misison
+    #mission.append_segment(segment)    
     
 
     return mission

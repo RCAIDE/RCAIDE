@@ -62,8 +62,8 @@ def plot_battery_cell_conditions(results,
     b = get_battery_names(results)
     
     for b_i in range(len(b)): 
-        fig = plt.figure(save_filename + '_' + b[b_i])
-        fig.set_size_inches(width,height) 
+        fig = plt.figure(save_filename  + b[b_i]) 
+        fig.set_size_inches(width,height)  
              
         for i in range(len(results.segments)): 
             time    = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
@@ -79,67 +79,52 @@ def plot_battery_cell_conditions(results,
                             cell_volts_oc       = battery_conditions.cell.voltage_open_circuit[:,0]
                             cell_current        = battery_conditions.cell.current[:,0]
                             cell_SOC            = battery_conditions.cell.state_of_charge[:,0]  
-                            cell_battery_amp_hr = (cell_energy/ Units.Wh )/cell_volts
-                            cell_C_instant      = cell_current/cell_battery_amp_hr
-                            cell_C_nominal      = cell_current/np.max(cell_battery_amp_hr)
                     
-                            segment_tag  =  results.segments[i].tag
+                            segment_tag  = results.segments[i].tag
                             segment_name = segment_tag.replace('_', ' ') 
                             
-                            axes_1 = plt.subplot(4,2,1)
+                            axes_1 = plt.subplot(3,2,1)
                             axes_1.plot(time, cell_SOC, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
                             axes_1.set_ylabel(r'SOC')
                             set_axes(axes_1)     
                             
-                            axes_2 = plt.subplot(4,2,2)
+                            axes_2 = plt.subplot(3,2,2)
                             axes_2.plot(time, cell_energy/Units.Wh, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
                             axes_2.set_ylabel(r'Energy (W-hr)')
                             set_axes(axes_2) 
                     
-                            axes_3 = plt.subplot(4,2,3)
+                            axes_3 = plt.subplot(3,2,3)
                             axes_3.plot(time, cell_current, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
                             axes_3.set_ylabel(r'Current (A)')
                             set_axes(axes_3)  
                     
-                            axes_4 = plt.subplot(4,2,4)
-                            axes_4.plot(time, -cell_power, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                            axes_4 = plt.subplot(3,2,4)
+                            axes_4.plot(time, cell_power, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
                             axes_4.set_ylabel(r'Power (W)')
                             set_axes(axes_4)     
                             
-                            axes_5 = plt.subplot(4,2,5)
+                            axes_5 = plt.subplot(3,2,5)
                             axes_5.plot(time, cell_volts, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
                             axes_5.set_ylabel(r'Voltage (V)')
                             set_axes(axes_5) 
                     
-                            axes_6 = plt.subplot(4,2,6)
+                            axes_6 = plt.subplot(3,2,6)
                             axes_6.plot(time, cell_volts_oc, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
                             axes_6.set_ylabel(r'Voltage OC (V)')
-                            set_axes(axes_6)  
-                    
-                            axes_7 = plt.subplot(4,2,7)
-                            axes_7.plot(time, cell_C_instant, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-                            axes_7.set_ylabel(r'Inst. C-Rate (C)')
-                            axes_7.set_xlabel('Time (mins)')
-                            set_axes(axes_7)     
-                            
-                            axes_8 = plt.subplot(4,2,8)
-                            axes_8.plot(time, cell_C_nominal, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-                            axes_8.set_ylabel(r'Nom. C-Rate (C)')
-                            axes_8.set_xlabel('Time (mins)')
-                            set_axes(axes_8) 
+                            set_axes(axes_6)   
  
     
         if show_legend:        
             leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
-            leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
+            leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})      
         
         # Adjusting the sub-plots for legend 
-        fig.subplots_adjust(top=0.8)
+        fig.subplots_adjust(top=0.8) 
         
         # set title of plot 
-        title_text    = 'Battery Cell Conditions: ' + b[b_i]       
-        fig.suptitle(title_text)
+        title_text   = 'Battery Cell Conditions: ' + b[b_i]       
+        fig.suptitle(title_text) 
         
         if save_figure:
-            plt.savefig(save_filename + '_' + b[b_i] + file_type)   
+            plt.savefig(save_filename  + b[b_i] + file_type)    
     return

@@ -106,7 +106,7 @@ class Electronic_Speed_Controller(Energy_Component):
 
         return
 
-    def calculate_thottle_from_voltages(self,motor):
+    def calculate_thottle_from_voltages(self):
 
         """ The voltage out of the electronic speed controller
 

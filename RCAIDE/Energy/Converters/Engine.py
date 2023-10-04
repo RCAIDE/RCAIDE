@@ -68,7 +68,7 @@ class Engine(Energy_Component):
         delta_isa                        = conditions.freestream.delta_ISA 
         PSLS                             = self.sea_level_power
         h_flat                           = self.flat_rate_altitude
-        omega                           = self.inputs.omega
+        omega                            = self.inputs.omega
         power_specific_fuel_consumption  = self.power_specific_fuel_consumption
 
         # shift in power lapse due to flat rate

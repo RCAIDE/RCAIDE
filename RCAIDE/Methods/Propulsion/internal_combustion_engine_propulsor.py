@@ -54,10 +54,10 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
     rotor                   = rotors[unique_rotor_tags[i]]  
 
     # Throttle the engine
-    engine.inputs.speed  = conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.rpm * Units.rpm 
+    engine.inputs.omega  = conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.rpm * Units.rpm 
     
     # Run the engine
-    engine.power(conditions,conditions.energy[fuel_line_tag][propulsor_group_tag].engine.throttle)
+    engine.calculate_power_out_from_throttle(conditions,conditions.energy[fuel_line_tag][propulsor_group_tag].engine.throttle)
     mdot         = engine.outputs.fuel_flow_rate * N_rotors[i]
     torque       = engine.outputs.torque     
     
