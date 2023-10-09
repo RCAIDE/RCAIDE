@@ -48,8 +48,9 @@ class Fuel_Line(Energy_Component):
         self.rotors                        = Container() 
         self.engines                       = Container() 
         self.turbofans                     = Container() 
-        self.fuel_tanks                    = Container()  
-        self.active_propulsor_groups       = None 
+        self.turbojets                     = Container()
+        self.fuel_tanks                    = Container()
+        self.active_propulsor_groups       = ['propulsor']
         self.efficiency                    = 1.0 
         
     def logic(self,conditions,numerics):

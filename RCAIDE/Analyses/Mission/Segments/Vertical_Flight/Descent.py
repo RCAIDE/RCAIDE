@@ -69,7 +69,6 @@ class Descent(Evaluate):
         initialize                         = self.process.initialize
         iterate                            = self.process.iterate 
         initialize.conditions              = Segments.Vertical_Flight.Descent.initialize_conditions
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.vertical_flight
         iterate.residuals.total_forces     = Common.Residuals.vertical_flight_forces
         return
        

@@ -77,7 +77,8 @@ class Vehicle(VH):
 
         self._component_root_map.pop(legacy_net)
         self._energy_network_root_map= {
-            Energy.Networks.Network         : self['networks']
+            Energy.Networks.Network         : self['networks'],
+            Components.Booms.Boom           : self['booms']
             } 
         return
     

@@ -133,7 +133,7 @@ def get_3d_blade_coordinates(rotor,n_points,dim,i,aircraftRefFrame=True):
     a_loc        = rotor.airfoil_polar_stations
     origin       = rotor.origin
 
-    if rotor.rotation==1:
+    if rotor.clockwise_rotation:
         # negative chord and twist to give opposite rotation direction
         b    = -b    
         beta = -beta
