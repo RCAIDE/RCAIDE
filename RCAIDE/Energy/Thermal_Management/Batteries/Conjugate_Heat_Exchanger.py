@@ -12,8 +12,8 @@ import numpy as np
 from RCAIDE.Core import Data 
 from RCAIDE.Energy.Energy_Component            import Energy_Component  
 from RCAIDE.Attributes.Coolants.Glycol_Water   import Glycol_Water 
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.channel_cooling_model    import compute_net_generated_battery_heat_chan
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.channel_cooling_model    import compute_net_generated_battery_heat_hex
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.channel_cooling_model    import compute_net_generated_battery_heat_chan
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.channel_cooling_model    import compute_net_generated_battery_heat_hex
 import CoolProp.CoolProp as CoolProp
 
 import os
@@ -157,6 +157,9 @@ class Conjugate_Heat_Exchanger(Energy_Component):
     def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics,freestream): 
         btms_results  = 0 # out off design function 
         return btms_results
+
+
+
 
 
 def load_kc_values(): 

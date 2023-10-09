@@ -10,7 +10,7 @@ from RCAIDE.Core import Data
 import numpy as np
 import CoolProp.CoolProp as CoolProp 
 from RCAIDE.Attributes.Gases import Air
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_factors import compute_heat_exhanger_factors  
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.compute_heat_exhanger_factors import compute_heat_exhanger_factors  
 
 # ----------------------------------------------------------------------
 #  Methods

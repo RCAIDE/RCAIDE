@@ -4,8 +4,8 @@
 # ----------------------------------------------------------------------        
 #   Imports
 # ----------------------------------------------------------------------   
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Heat_Exchanger_Design.optimization_setup       import optimization_setup
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.Wavy_Channel_Heat_Exchanger_Design.set_optimized_parameters import set_optimized_parameters
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.Wavy_Channel_Heat_Exchanger_Design.optimization_setup       import optimization_setup
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.Wavy_Channel_Heat_Exchanger_Design.set_optimized_parameters import set_optimized_parameters
 
 # Python package imports  
 from numpy import linalg as LA  
@@ -39,4 +39,4 @@ def design_wavy_channel_heat_exchanger(btms, battery, single_side_contact=True, 
     # set remaining rotor variables using optimized parameters 
     btms     = set_optimized_parameters(btms,optimization_problem) 
     
-    return btsm
+    return btms
