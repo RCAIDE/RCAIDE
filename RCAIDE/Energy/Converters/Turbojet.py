@@ -17,23 +17,24 @@ import numpy as np
 #  Fan Component
 # ----------------------------------------------------------------------
 ## @ingroup Energy-Converters
-class Turbofan(Energy_Component):
+class Turbojet(Energy_Component):
     '''
     
     '''
     def __defaults__(self):    
         # setting the default values
-        self.tag = 'Turbofan' 
+        self.tag = 'Turbojet' 
         self.engine_length        = 0.0
         self.bypass_ratio         = 0.0 
         self.design_isa_deviation = 0.0
         self.design_altitude      = 0.0
+        self.afterburner_active   = False
         self.SFC_adjustment       = 0.0 # Less than 1 is a reduction
         self.compressor_nondimensional_massflow       = 0.0
         self.reference_temperature                    = 288.15
         self.reference_pressure                       = 1.01325*10**5 
         self.design_thrust                            = 0.0
-        self.mass_flow_rate_design                    = 0.0
+        self.mass_flow_rate_design                    = 0.0 
         self.OpenVSP_flow_through = False
         
         #areas needed for drag; not in there yet
@@ -409,4 +410,3 @@ class Turbofan(Energy_Component):
         self.compressor_nondimensional_massflow  = mdhc 
         
         return        
-        

@@ -134,34 +134,3 @@ class Fidelity_Zero(Aerodynamics):
         results  = self.process.compute(state,settings,geometry)
         
         return results
-        
-    def initialize(self):
-        """The default initialize function. Calls the initialize process.
-
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        N/A
-        """             
-        
-        use_surrogate             = self.settings.use_surrogate
-        propeller_wake_model      = self.settings.propeller_wake_model 
-        n_sw                      = self.settings.number_spanwise_vortices
-        n_cw                      = self.settings.number_chordwise_vortices
-        mf                        = self.settings.model_fuselage
-        mn                        = self.settings.model_nacelle
-        dcs                       = self.settings.discretize_control_surfaces
-
-        self.process.compute.lift.inviscid_wings.geometry = self.geometry 
-        self.process.compute.lift.inviscid_wings.initialize(use_surrogate,n_sw,n_cw,propeller_wake_model,mf,mn,dcs ) 
- 

@@ -26,11 +26,6 @@ def vertical_flight(segment):
         N/A
                                 
     """     
-    
-    # unpack unknowns
-    throttle   = segment.state.unknowns.throttle
-    
-    # apply unknowns
-    segment.state.conditions.propulsion.throttle[:,0] = throttle[:,0]
+    pass
     
  

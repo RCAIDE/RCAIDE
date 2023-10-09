@@ -17,13 +17,13 @@ from .design_lift_rotor                                                       im
 from .design_prop_rotor                                                       import design_prop_rotor 
 from .design_ducted_fan                                                       import design_ducted_fan
 from Legacy.trunk.S.Methods.Propulsion.turbofan_emission_index                import turbofan_emission_index
-from .size_electric_motor                                                     import size_from_kv, size_from_mass, size_optimal_motor
+from .design_electric_motor                                                   import size_from_kv, size_from_mass, size_optimal_motor
 from .all_electric_propulsor                                                  import compute_propulsor_performance , compute_unique_propulsor_groups
 from .all_electric_ducted_fan_propulsor                                       import compute_propulsor_performance , compute_unique_propulsor_groups
 from .internal_combustion_engine_cs_propulsor                                 import compute_propulsor_performance , compute_unique_propulsor_groups
 from .internal_combustion_engine_propulsor                                    import compute_propulsor_performance , compute_unique_propulsor_groups
 from .design_turbofan                                                         import design_turbofan
-from Legacy.trunk.S.Methods.Propulsion.turbojet_sizing                        import turbojet_sizing
+from .design_turbojet                                                         import design_turbojet
 from Legacy.trunk.S.Methods.Propulsion.ramjet_sizing                          import ramjet_sizing
 from Legacy.trunk.S.Methods.Propulsion.scramjet_sizing                        import scramjet_sizing
 from Legacy.trunk.S.Methods.Propulsion.fm_id                                  import fm_id

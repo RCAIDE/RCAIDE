@@ -1,5 +1,5 @@
 ## @ingroup Networks
-# RCAIDE/Energy/Networks/Turbofan_Engine.py
+# RCAIDE/Energy/Networks/Turbojet_Engine.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
 # Created:  Oct 2023, M. Clarke
@@ -11,9 +11,8 @@
 # RCAIDE Imports  
 import RCAIDE 
 from RCAIDE.Core                                                             import Data 
-from RCAIDE.Analyses.Mission.Common                                          import Residuals 
-from RCAIDE.Components.Component                                             import Container    
-from RCAIDE.Methods.Propulsion.turbofan_propulsor                            import compute_propulsor_performance , compute_unique_propulsor_groups 
+from RCAIDE.Analyses.Mission.Common                                          import Residuals     
+from RCAIDE.Methods.Propulsion.turbojet_propulsor                            import compute_propulsor_performance , compute_unique_propulsor_groups 
 from .Network                                                                import Network  
 from .Network import Network
 
@@ -23,11 +22,11 @@ from scipy.integrate import  cumtrapz
  
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Turbofan
-# ---------------------------------------------------------------------------------------------------------------------- 
+#  Turbojet 
+# ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Energy-Networks
-class Turbofan_Engine(Network):
-    """ This is a turbofan. 
+class Turbojet_Engine(Network):
+    """ This is a turbojet. 
     
         Assumptions:
         None
@@ -56,7 +55,7 @@ class Turbofan_Engine(Network):
             N/A
         """           
 
-        self.tag                          = 'turbofan_engine'  
+        self.tag                          = 'turbojet_engine'  
         self.system_voltage               = None   
         
     # linking the different network components
@@ -75,7 +74,7 @@ class Turbofan_Engine(Network):
             Outputs:
             results.thrust_force_vector [newtons]
             results.vehicle_mass_rate   [kg/s]
-            conditions.noise.sources.turbofan:
+            conditions.noise.sources.turbojet:
                 core:
                     exit_static_temperature      
                     exit_static_pressure       
@@ -104,21 +103,21 @@ class Turbofan_Engine(Network):
         
         for fuel_line in fuel_lines:
             fuel_tanks = fuel_line.fuel_tanks
-            turbofans  = fuel_line.turbofans  
+            turbojets  = fuel_line.turbojets  
             fuel_line_mdot  = 0   
             fuel_line_T     = 0   
             fuel_line_P     = 0               
             for i in range(conditions.energy[fuel_line.tag].number_of_propulsor_groups):
                 if fuel_line.active_propulsor_groups[i]:           
                     pg_tag      = conditions.energy[fuel_line.tag].active_propulsor_groups[i]
-                    N_turbofans = conditions.energy[fuel_line.tag].N_turbofans
-                    T , P, mdot = compute_propulsor_performance(i,fuel_line,pg_tag,turbofans,N_turbofans,conditions)     
+                    N_turbojets = conditions.energy[fuel_line.tag].N_turbojets
+                    T , P, mdot = compute_propulsor_performance(i,fuel_line,pg_tag,turbojets,N_turbojets,conditions)     
                     fuel_line_T            += T       
                     fuel_line_P            += P  
                     fuel_line_mdot         += mdot 
         
-                    conditions.energy[fuel_line.tag][pg_tag].turbofan.thrust = fuel_line_T   
-                    conditions.energy[fuel_line.tag][pg_tag].turbofan.power  = fuel_line_P                     
+                    conditions.energy[fuel_line.tag][pg_tag].turbojet.thrust = fuel_line_T   
+                    conditions.energy[fuel_line.tag][pg_tag].turbojet.power  = fuel_line_P                     
         
             for fuel_tank in fuel_tanks: 
                 fuel_line_results       = conditions.energy[fuel_line.tag]                
@@ -144,7 +143,7 @@ class Turbofan_Engine(Network):
      
     
     def size(self,state):  
-        """ Size the turbofan
+        """ Size the turbojet
     
             Assumptions:
             None
@@ -224,13 +223,13 @@ class Turbofan_Engine(Network):
         N/A
         """            
  
-        fuel_lines   = segment.analyses.energy.networks.turbofan_engine.fuel_lines 
+        fuel_lines   = segment.analyses.energy.networks.turbojet_engine.fuel_lines 
         for fuel_line in fuel_lines: 
             fuel_line_results       = segment.state.conditions.energy[fuel_line.tag] 
             active_propulsor_groups = fuel_line_results.active_propulsor_groups
             for i in range(len(active_propulsor_groups)): 
                 pg_tag = active_propulsor_groups[i]            
-                fuel_line_results[pg_tag].turbofan.throttle  = segment.state.unknowns[fuel_line.tag + '_' + pg_tag + '_throttle']  
+                fuel_line_results[pg_tag].turbojet.throttle  = segment.state.unknowns[fuel_line.tag + '_' + pg_tag + '_throttle']  
         
         return    
      
@@ -256,7 +255,7 @@ class Turbofan_Engine(Network):
             Properties Used:
             N/A
         """                  
-        fuel_lines   = segment.analyses.energy.networks.turbofan_engine.fuel_lines
+        fuel_lines   = segment.analyses.energy.networks.turbojet_engine.fuel_lines
         ones_row    = segment.state.ones_row 
         segment.state.residuals.network = Residuals() 
         
@@ -282,7 +281,7 @@ class Turbofan_Engine(Network):
             fuel_line_results                             = segment.state.conditions.energy[fuel_line.tag]
             fuel_line_results.number_of_propulsor_groups  = N_active_propulsor_groups
             fuel_line_results.active_propulsor_groups     = active_propulsor_groups
-            fuel_line_results.N_turbofans                 = sorted_propulsors.N_turbofans
+            fuel_line_results.N_turbojets                 = sorted_propulsors.N_turbojets
      
             for fuel_tank in fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  
@@ -292,20 +291,21 @@ class Turbofan_Engine(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures1
             # ------------------------------------------------------------------------------------------------------
-            for i in range(len(sorted_propulsors.unique_turbofan_tags)):         
+            for i in range(len(sorted_propulsors.unique_turbojet_tags)):         
                 segment.state.unknowns[fuel_line.tag + '_' + active_propulsor_groups[i] + '_throttle']    = estimated_propulsor_group_throttles[fuel_line_i][i] * ones_row(1)     
                                  
                 # Results data structure for each propulsor group    
                 pg_tag                                            = active_propulsor_groups[i] 
                 fuel_line_results[pg_tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
-                fuel_line_results[pg_tag].turbofan                = RCAIDE.Analyses.Mission.Common.Conditions() 
-                fuel_line_results[pg_tag].unique_turbofan_tags    = sorted_propulsors.unique_turbofan_tags
+                fuel_line_results[pg_tag].turbojet                = RCAIDE.Analyses.Mission.Common.Conditions() 
+                fuel_line_results[pg_tag].unique_turbojet_tags    = sorted_propulsors.unique_turbojet_tags
                 fuel_line_results[pg_tag].y_axis_rotation         = 0. * ones_row(1)   # NEED TO REMOVE
-                fuel_line_results[pg_tag].turbofan.thrust         = 0. * ones_row(1) 
-                fuel_line_results[pg_tag].turbofan.power          = 0. * ones_row(1) 
-                fuel_line_results[pg_tag].turbofan.thottle        = 0. * ones_row(1) 
+                fuel_line_results[pg_tag].turbojet.thrust         = 0. * ones_row(1) 
+                fuel_line_results[pg_tag].turbojet.power          = 0. * ones_row(1) 
+                fuel_line_results[pg_tag].turbojet.thottle        = 0. * ones_row(1) 
         
         segment.process.iterate.unknowns.network                  = self.unpack_unknowns                   
         return segment    
         
-    __call__ = evaluate_thrust
+    __call__ = evaluate_thrust 
+ 

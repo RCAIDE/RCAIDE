@@ -52,7 +52,7 @@ class Bus_Power_Control_Unit(Energy_Component):
         self.electronic_speed_controllers  = Container()
         self.batteries                     = Container()
         self.fixed_voltage                 = True
-        self.active_propulsor_groups       = None 
+        self.active_propulsor_groups       = ['propulsor']
         self.efficiency                    = 1.0
         self.voltage                       = 0.0
         self.outputs.avionics_power        = 0.0

@@ -1,34 +1,32 @@
-# turbofan_sizing.py
+## @ingroup Methods-Propulsion
+# RCAIDE/Methods/Propulsion/design_turbofan.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Mar 2015, A. Variyar 
-# Modified: Feb 2016, M. Vegh
-#           Jan 2016, E. Botero
-#           Jan 2020, T. MacDonald
+# Created:  Jul 2023, M. Clarke
 
-# ----------------------------------------------------------------------
-#   Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
-import Legacy.trunk.S as SUAVE
+# RCAIDE Imports
+import RCAIDE
+
+# Python package imports
 import numpy as np
-from Legacy.trunk.S.Core import Data
 
-# ----------------------------------------------------------------------
-#   Sizing
-# ----------------------------------------------------------------------
-
-def design_turbofan(turbofan):  
-    
-    """ create and evaluate a gas turbine network
-    """ 
+# ----------------------------------------------------------------------------------------------------------------------
+#  Design Turbofan
+# ----------------------------------------------------------------------------------------------------------------------
+## @ingroup Methods-Propulsion
+def design_turbofan(turbofan):
     # check if mach number and temperature are passed
     if(turbofan.design_mach_number==None) and (turbofan.design_altitude==None): 
         raise NameError('The sizing conditions require an altitude and a Mach number') 
     else:
         #call the atmospheric model to get the conditions at the specified altitude
-        atmosphere = SUAVE.Analyses.Atmospheric.US_Standard_1976()
+        atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
         atmo_data  = atmosphere.compute_values(turbofan.design_altitude,turbofan.design_isa_deviation)
-        planet     = SUAVE.Attributes.Planets.Earth()
+        planet     = RCAIDE.Attributes.Planets.Earth()
         
         p   = atmo_data.pressure          
         T   = atmo_data.temperature       
@@ -37,7 +35,7 @@ def design_turbofan(turbofan):
         mu  = atmo_data.dynamic_viscosity           
     
         # setup conditions
-        conditions = SUAVE.Analyses.Mission.Segments.Conditions.Aerodynamics()            
+        conditions = RCAIDE.Analyses.Mission.Common.Results()
     
         # freestream conditions    
         conditions.freestream.altitude                    = np.atleast_1d(turbofan.design_altitude)
