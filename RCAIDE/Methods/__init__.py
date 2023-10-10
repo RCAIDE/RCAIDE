@@ -10,7 +10,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from . import Aerodynamics
-from . import Center_of_Gravity
 from . import Costs
 from . import Cryogenics
 from . import Flight_Dynamics
