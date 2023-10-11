@@ -8,10 +8,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
  
-from RCAIDE.Core import Data
+#from RCAIDE.Core import Data
 from RCAIDE.Energy.Energy_Component import Energy_Component 
-from RCAIDE.Methods.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.direct_convection_model import compute_net_convected_heat 
-from RCAIDE.Attributes.Gases import Air
+#from RCAIDE.Methods.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.direct_convection_model import compute_net_convected_heat 
+#from RCAIDE.Attributes.Gases import Air
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Atmospheric_Air_Convection_Heat_Exchanger
