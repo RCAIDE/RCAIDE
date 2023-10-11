@@ -7,10 +7,10 @@
 import numpy as np 
 from RCAIDE.Attributes.Coolants.Glycol_Water import Glycol_Water
 from RCAIDE.Attributes.Solids.Aluminum       import Aluminum  
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_pressure_properties
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_thermal_properties
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_surface_geometry_properties
-from RCAIDE.Methods.Thermal_Management.Batteries.Channel_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_geometry
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_pressure_properties
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_thermal_properties
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.compute_heat_exhanger_offdesign_performance import compute_surface_geometry_properties
+from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.compute_heat_exhanger_offdesign_performance import compute_offdesign_geometry
 
 # ----------------------------------------------------------------------
 #  Methods
