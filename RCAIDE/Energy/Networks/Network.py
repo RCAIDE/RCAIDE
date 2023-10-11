@@ -74,7 +74,6 @@ class Container(Component.Container):
         results = Data()
         results.thrust_force_vector       = 0.*ones_row(3)
         results.vehicle_mass_rate         = 0.*ones_row(1)
-        results.network_y_axis_rotation   = 0.*ones_row(1) ## THIS MAY BE UNECESSARY
         for net in self.values():
             if hasattr(net, 'has_additional_fuel_type'):
                 if net.has_additional_fuel_type: #Check if Network has additional fuel
