@@ -8,7 +8,7 @@
 import numpy as np
 from scipy.optimize import minimize
 
-def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 1000):
+def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 50000):
     
     # solve for mass flow rate in the channel    
     opt_params = size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat,Q_gen)
@@ -20,19 +20,22 @@ def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_tempe
 
 def size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat, Q_gen, m_coolant_lower_bound=0.01, m_coolant_upper_bound=10.0 ): 
 
-     
+    arguments = (hrs,battery,inlet_coolant_temperature,T_bat, Q_gen)
     
-    cons = [ ] 
+    cons = [{'type':'eq', 'fun': constraint_1,'args': arguments}] 
     initials = [0.1]
-    bnds = (m_coolant_lower_bound, m_coolant_upper_bound)
+    bnds = [(m_coolant_lower_bound, m_coolant_upper_bound)]
 
-    sol = minimize(objective,initials , args=(hrs,battery,inlet_coolant_temperature,T_bat, Q_gen) , method='SLSQP', bounds=bnds, tol=1e-6, constraints=cons) 
+    sol = minimize(objective,initials , args=arguments , method='SLSQP', bounds=bnds, tol=1e-6) 
     
+    if sol.success == False:
+        print('Sizing Failed ')
     return sol.x   
 
 
 # objective function
-def objective(m_coolant,hrs,battery,inlet_coolant_temperature,T_bat,Q_gen) : 
+def objective(x,hrs,battery,inlet_coolant_temperature,T_bat,Q_gen) : 
+    m_coolant = x[0] 
     
     # Battery 
     d_cell    = battery.cell.diameter                    
@@ -63,7 +66,7 @@ def objective(m_coolant,hrs,battery,inlet_coolant_temperature,T_bat,Q_gen) :
     Pr   = coolant.compute_prandtl_number(T_i) 
     k    = coolant.compute_thermal_conductivity(T_i) 
  
-    # Claculate Q_convec as a function of m_coolant 
+    # COMPUTE POWER  Q_convec  
     
     #calculate the velocity of the fluid in the channel 
     v=rho*c*d*m_coolant
@@ -101,16 +104,24 @@ def objective(m_coolant,hrs,battery,inlet_coolant_temperature,T_bat,Q_gen) :
     # Calculated Heat Convected 
     Q_conv = U_total*A_chan*T_lm
     
-    # Residual 
-    Res = Q_gen-Q_conv
     
-    return  Res 
+    # COMPUTE POWER 
+    
+    
+    # COMPUTE WEIGHT 
+    
+    
+    
+    # Residuals
+    Heat_Residual = Q_gen-Q_conv
+    
+    return  Heat_Residual
 
 
 # hard efficiency constraint
-def constraint( ): 
+def constraint_1( x,hrs,battery,inlet_coolant_temperature,T_bat,Q_gen): 
     
     
-    return  
+    return 0
 
  
