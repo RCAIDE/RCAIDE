@@ -1,5 +1,5 @@
-## @ingroup Energy-Thermal_Management-Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/No_Heat_Exchanger.py
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Removal_Systems/Atmospheric_Air_Convection_HRS.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -9,14 +9,14 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 from RCAIDE.Core import Data
-from RCAIDE.Energy.Energy_Component import Energy_Component  
-import numpy as np 
+from RCAIDE.Energy.Energy_Component import Energy_Component 
+from RCAIDE.Attributes.Gases import Air
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  No_Heat_Exchanger
+#  Atmospheric_Air_Convection_Heat_Removal_System 
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Thermal_Management-Batteries
-class No_Heat_Exchanger(Energy_Component):
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems
+class Atmospheric_Air_Convection_HRS(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
     Assumptions:
@@ -27,11 +27,15 @@ class No_Heat_Exchanger(Energy_Component):
     """
     
     def __defaults__(self):  
-        self.tag   = 'No_Heat_Exchanger'
+        self.tag                                      = 'Atmospheric_Air_Convection_Heat_Exchanger'
+        self.cooling_fluid                            = Air()    
+        self.cooling_fluid.flowspeed                  = 0.01                                          
+        self.convective_heat_transfer_coefficient     = 35.     # [W/m^2K] 
+        self.heat_transfer_efficiency                 = 1.0      
         return
     
     def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics,freestream): 
-        '''Computes the net heat generate by the battery pack with no heat exchanger
+        '''Computes the net heat generate by the battery pack with an a direct atmospheric air 
         heat exchanger
         
         Assumtions:
@@ -50,26 +54,7 @@ class No_Heat_Exchanger(Energy_Component):
         Outputs
         btms_resylts          - battery thermal management system resukts [-]
         '''
-    
-        T_current                = battery.pack.temperature     
-        cell_mass                = battery.cell.mass    
-        Cp                       = battery.cell.specific_heat_capacity       
-        I                        = numerics.time.integrate        
-    
-        # Calculate the current going into one cell   
-        Nn                = battery.module.geometrtic_configuration.normal_count            
-        Np                = battery.module.geometrtic_configuration.parallel_count    
-        n_total_module    = Nn*Np  
-        
-        if n_total_module == 1:    
-            Q_heat_gen_tot = Q_heat_gen
-            P_net          = Q_heat_gen_tot   
-        else:     
-            Q_heat_gen_tot        = Q_heat_gen*n_total_module  
-            P_net                 = Q_heat_gen_tot  
-         
-        dT_dt                  = P_net/(cell_mass*n_total_module*Cp)
-        T_current              = T_current[0] + np.dot(I,dT_dt)   
+        Q_heat_gen_tot,  P_net,  T_ambient, T_current =  compute_net_convected_heat(self,battery,Q_heat_gen,numerics,freestream) 
 
         btms_results = Data()
         btms_results.operating_conditions = Data(battery_current_temperature = T_current,

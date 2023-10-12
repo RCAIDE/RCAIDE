@@ -1,6 +1,5 @@
 ## @defgroup Methods-Thermal_Management-Battery 
 # @ingroup Methods
 
-from . import Atmospheric_Air_Convection_Cooling 
-from . import Conjugate_Cooling
-from . import Sizing
+from . import Heat_Exchanger_Systems
+from . import Heat_Removal_Systems

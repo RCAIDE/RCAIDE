@@ -8,5 +8,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .  import Heat_Exchanger_Systems
-from .  import Heat_Removal_Systems
+from .Conjugate_Heat_Exchanger     import Conjugate_Heat_Exchanger
+from .No_Heat_Exchanger            import No_Heat_Exchanger

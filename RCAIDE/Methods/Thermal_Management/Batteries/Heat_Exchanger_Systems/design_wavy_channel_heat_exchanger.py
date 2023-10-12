@@ -1,4 +1,4 @@
-## @ingroup Methods-Thermal_Management-Batteries
+v## @ingroup Methods-Thermal_Management-Batteries
 # design_wavy_channel_heat_exchanger.py  
 
 # ----------------------------------------------------------------------        

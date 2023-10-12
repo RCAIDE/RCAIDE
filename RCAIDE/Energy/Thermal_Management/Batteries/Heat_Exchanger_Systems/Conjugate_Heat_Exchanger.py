@@ -1,5 +1,5 @@
-## @ingroup Energy-Thermal_Management-Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/Conjugate_Heat_Exchanger.py
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Removal_Systems/Conjugate_Heat_Exchanger.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -11,17 +11,13 @@
 import numpy as np 
 from RCAIDE.Core import Data 
 from RCAIDE.Energy.Energy_Component            import Energy_Component  
-from RCAIDE.Attributes.Coolants.Glycol_Water   import Glycol_Water 
-from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.channel_cooling_model    import compute_net_generated_battery_heat_chan
-from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.channel_cooling_model    import compute_net_generated_battery_heat_hex
-import CoolProp.CoolProp as CoolProp
-
+from RCAIDE.Attributes.Coolants.Glycol_Water   import Glycol_Water  
 import os
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Atmospheric_Air_Convection_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Thermal_Management-Batteries   
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems   
 class Conjugate_Heat_Exchanger(Energy_Component):
     """This provides output values for a wavy channel gas-liquid heat exchanger compoment 
     of a battery thermal management system
