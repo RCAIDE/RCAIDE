@@ -312,6 +312,7 @@ def vehicle_setup():
     fuselage.fineness.tail         = 6.4
     
     fuselage.lengths.total         = 61.66  
+    fuselage.lengths.cabin         = 27
     
     fuselage.width                 = 2.88
     

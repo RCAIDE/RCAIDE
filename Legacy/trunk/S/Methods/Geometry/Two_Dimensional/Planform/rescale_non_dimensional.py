@@ -133,14 +133,31 @@ def set_origin_dimensional(vehicle,length_scale=None):
         for eng in range(nac_id,n+nac_id):
             nac = vehicle.nacelles[nacs[eng]]
             nac.origin = np.array(non_dims[0])*length_scale
-            
-            if eng % 2 != 0:
-                nac.origin[1] = -nac.origin[1]
-                
-            elif (eng % 2 == 0) and (eng == n-1):
-                nac.origin[1]  = 0.
-                
             nac.origin = np.atleast_2d(nac.origin)
+            
+            
+        # Shift for symmetry
+        if n==1:
+            nac = vehicle.nacelles[nacs[0]]
+            nac.origin[0][1] = 0.
+        elif n==2:
+            nac = vehicle.nacelles[nacs[1]]
+            nac.origin[0][1] = -nac.origin[0][1]
+        elif n==3:
+            nac2 = vehicle.nacelles[nacs[1]]
+            nac2.origin[0][1] = 0    
+            nac3 = vehicle.nacelles[nacs[2]]
+            nac3.origin[0][1] = -nac3.origin[0][1]                       
+        elif n==4:
+            nac1 = vehicle.nacelles[nacs[0]]
+            nac2 = vehicle.nacelles[nacs[1]]
+            nac3 = vehicle.nacelles[nacs[2]]
+            nac4 = vehicle.nacelles[nacs[3]]
+            
+            nac1.origin[0][1] = 1.25*nac1.origin[0][1]
+            nac2.origin[0][1] = 0.75*nac2.origin[0][1]
+            nac3.origin[0][1] = -0.75*nac3.origin[0][1]
+            nac4.origin[0][1] = -1.25*nac4.origin[0][1]            
 
         
     return vehicle

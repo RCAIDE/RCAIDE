@@ -71,15 +71,15 @@ def fuselage_planform(fuselage):
     
     if length ==0.:    
         # process
-        nose_length     = nose_fineness * fuselage_width
-        tail_length     = tail_fineness * fuselage_width
+        nose_length     = nose_fineness * fuselage_height
+        tail_length     = tail_fineness * fuselage_height
         cabin_length    = number_seats * seat_pitch / seats_abreast + \
                        forward_extra + aft_extra
         fuselage_length = cabin_length + nose_length + tail_length
     else:
         fuselage_length = fuselage.lengths.total
-        nose_length     = nose_fineness * fuselage_width
-        tail_length     = tail_fineness * fuselage_width      
+        nose_length     = nose_fineness * min(fuselage_height,fuselage_width)
+        tail_length     = tail_fineness * min(fuselage_height,fuselage_width)
         cabin_length    = fuselage_length - nose_length - tail_length
         
         if fuselage_length <= 0:

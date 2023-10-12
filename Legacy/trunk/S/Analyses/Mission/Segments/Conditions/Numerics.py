@@ -53,7 +53,7 @@ class Numerics(Conditions):
         self.discretization_method = chebyshev_data
         
         self.solver_jacobian                  = "none"
-        self.tolerance_solution               = 1e-8
+        self.tolerance_solution               = 1e-5
         self.converged                        = None
         self.max_evaluations                  = 0.
         self.step_size                        = None

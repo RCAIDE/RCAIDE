@@ -108,9 +108,17 @@ def compute_industrial_costs(vehicle,determine_cash_flow=True):
     F_mat   = costs.material_factor #1 for conventional Al, 1.5 for stainless steel, 2~2.5 for composites, 3 for carbon fiber
 
     # general airplane data
-    weight            = 0.62 * vehicle.mass_properties.empty / lb_to_kg # correlation for AMPR weight, typical 62% * Empty weight
-    n_engines         = vehicle.networks.turbofan.number_of_engines
-    sls_thrust        = vehicle.networks.turbofan.sealevel_static_thrust / lbf_to_N
+    weight            = 0.62 * vehicle.mass_properties.operating_empty / lb_to_kg # correlation for AMPR weight, typical 62% * Empty weight
+    
+    n_engines  = 0.
+    sls_thrust = 0.
+    for network in vehicle.networks : # may have than one network
+        n_engines  += network.number_of_engines
+        sls_thrust += network.sealevel_static_thrust 
+    if n_engines == 0:
+        raise ValueError("No engine found in the vehicle")    
+    
+    sls_thrust        = sls_thrust / lbf_to_N
     n_pax             = vehicle.passengers
 
     # estimate escalation factor
@@ -134,32 +142,32 @@ def compute_industrial_costs(vehicle,determine_cash_flow=True):
     # =============================================
 
     # Airframe Engineering (DT&E)
-    AENGHD = 0.0396 * weight ** 0.791 * speed ** 1.526 * n_prototypes ** 0.183 * F_diff * F_CAD
+    AENGHD = 0.0396 * (weight ** 0.791) * (speed ** 1.526) * (n_prototypes ** 0.183) * F_diff * F_CAD
     AENGCD = AENGHD * rates_engineering # airframe eng costs development
 
     # Development Support (DT&E)
-    DSC = 0.008325 * weight ** 0.873 * speed ** 1.89 * n_prototypes ** 0.346 * F_diff * escalation_factor
+    DSC = 0.008325 * (weight ** 0.873) * (speed ** 1.89) * (n_prototypes ** 0.346) * F_diff * escalation_factor
 
     # Engine Cost for prototypes
-    eng_unit_cost = 520. * sls_thrust ** 0.8356 * escalation_factor * 0.235 # 0.235 to account for cost difference between 1970 and 1998 (roskam vs nicolai method)
+    eng_unit_cost = 520. * (sls_thrust ** 0.8356) * (escalation_factor * 0.235) # 0.235 to account for cost difference between 1970 and 1998 (roskam vs nicolai method)
     ECD = eng_unit_cost * n_prototypes * n_engines * 1.10 #10% to account for spare engine
 
     # Avionics cost for prototypes
     AVCOST = avionics_costs * n_prototypes
 
     # Manufacturing Labor (DT&E)
-    MLHD = 28.984 * weight ** 0.74 * speed ** 0.543 * n_prototypes ** 0.524 * F_diff
+    MLHD = 28.984 * (weight ** 0.74) * (speed ** 0.543) * (n_prototypes ** 0.524) * F_diff
     MLCD = MLHD * rates_manufacturing
 
     # Manufacturing materials (DT&E)
-    MMED = 2.0 * 37.632 * F_mat * weight ** 0.689 * speed ** 0.624 * n_prototypes ** 0.792 * escalation_factor
+    MMED = 37.632 * F_mat * (weight ** 0.689) * (speed ** 0.624) * (n_prototypes ** 0.792) * escalation_factor
 
     # Tooling (DT&E)
-    THD = 4.0127 * weight**0.764 * speed ** 0.899 * n_prototypes**0.178*(0.33)**0.066 * F_diff
+    THD = 4.0127 * (weight**0.764) * (speed ** 0.899) * (n_prototypes**0.178)*((0.33)**0.066) * F_diff
     TCD = THD * rates_tooling # tooling costs for prototypes
 
     # Tooling (Production)
-    THP = 4.0127 * weight**0.764 * speed ** 0.899 * total_production**0.178*(0.33)**0.066 * F_diff
+    THP = 4.0127 * (weight**0.764) * (speed ** 0.899) * (total_production**0.178)*((0.33)**0.066) * F_diff
     TCP = THP * rates_tooling - TCD # tooling costs for total production
 
     # Quality Control (DT&E)
@@ -167,7 +175,7 @@ def compute_industrial_costs(vehicle,determine_cash_flow=True):
     QCCD = QCHD * rates_quality_control
 
     # Flight Test Operations (DT&E)
-    FTC = 0.001244 * weight ** 1.16 * speed ** 1.371 * n_prototypes ** 1.281 * F_diff * F_obs * escalation_factor
+    FTC = 0.001244 * (weight ** 1.16) * (speed ** 1.371) * (n_prototypes ** 1.281) * F_diff * F_obs * escalation_factor
 
     # TOTAL NON-RECURRING COSTS
     TNRCE  = AENGCD         # airframe engineering
@@ -209,7 +217,7 @@ def compute_industrial_costs(vehicle,determine_cash_flow=True):
     # ================================
 
     # Airframe Engineering (Production)
-    AENGHP = 2.0 * (0.0396 * weight ** 0.791 * speed ** 1.526 *(n_prototypes + total_production)**0.183 * F_diff * F_CAD)
+    AENGHP = 2.0 * (0.0396 * (weight ** 0.791) * (speed ** 1.526) *((n_prototypes + total_production)**0.183) * F_diff * F_CAD)
     AENGCP = AENGHP * rates_engineering - AENGCD
 
     # Engine Cost
@@ -233,11 +241,11 @@ def compute_industrial_costs(vehicle,determine_cash_flow=True):
     INTRC = interior_index * n_pax * total_production * escalation_factor * 0.296
 
     # Manufacturing Labor (Production)
-    MLHP = 1.3 * 28.984 * weight ** 0.74 * speed ** 0.543 * total_production ** 0.524 * F_diff
+    MLHP = 1.3 * 28.984 * (weight ** 0.74) * (speed ** 0.543) * (total_production ** 0.524) * F_diff
     MLCP = MLHP * rates_manufacturing - MLCD
 
     # Manufacturing materials and equipment (Production)
-    MMEP = 2.0 * 37.632 * F_mat * weight ** 0.689 * speed ** 0.624 * total_production ** 0.792 * escalation_factor
+    MMEP = 37.632 * F_mat * (weight ** 0.689) * (speed ** 0.624) * (total_production ** 0.792) * escalation_factor
     MMEP = MMEP - MMED
 
     # Quality Control (Production)
