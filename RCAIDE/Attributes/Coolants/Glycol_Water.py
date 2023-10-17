@@ -19,7 +19,7 @@ class Glycol_Water(Coolant):
         """This sets the default values.
 
         Assumptions:
-        Ambient Pressure
+        We assume the mixture is 50%
 
         Source:
 
