@@ -18,10 +18,10 @@ import numpy as np
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Visualization-Performance-Energy-Battery
-def plot_battery_health_conditions(results,
+def plot_battery_temperature(results,
                                   save_figure = False,
                                   show_legend = True,
-                                  save_filename = "Battery_Health",
+                                  save_filename = "Battery_Temperature",
                                   file_type = ".png",
                                   width = 12, height = 7):
     """Plots the cell-level conditions of the battery throughout flight.
@@ -74,22 +74,31 @@ def plot_battery_health_conditions(results,
                         if battery.tag == b[b_i]:  
                             battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag]  
                             cell_temp           = battery_conditions.cell.temperature[:,0]
-                            cell_charge         = battery_conditions.cell.charge_throughput[:,0] 
+                            cell_charge         = battery_conditions.cell.charge_throughput[:,0]
+                            pack_Q              = battery_conditions.pack.generated_heat[:,0]
                     
                             segment_tag  =  results.segments[i].tag
                             segment_name = segment_tag.replace('_', ' ')  
                     
-                            axes_1 = plt.subplot(2,1,1)
-                            axes_1.plot(time, cell_charge, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
+                            axes_1 = plt.subplot(2,2,1)
+                            axes_1.plot(time,cell_temp, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                            axes_1.set_ylabel(r'Temperature (K)')
                             axes_1.set_xlabel('Time (mins)')
-                            axes_1.set_ylabel(r'Charge Throughput (Ah)')
-                            set_axes(axes_1)  
-                    
-                            axes_2 = plt.subplot(2,1,2)
-                            axes_2.plot(time,cell_temp, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-                            axes_2.set_ylabel(r'Temperature (K)')
+                            set_axes(axes_1)        
+                            
+                            axes_2 = plt.subplot(2,2,2)
+                            axes_2.plot(time, cell_charge, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
                             axes_2.set_xlabel('Time (mins)')
-                            set_axes(axes_2)      
+                            axes_2.set_ylabel(r'Charge Throughput (Ah)')
+                            set_axes(axes_2)  
+ 
+                            
+                            axes_3 = plt.subplot(2,2,3)
+                            axes_3.plot(time, pack_Q, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
+                            axes_3.set_xlabel('Time (mins)')
+                            axes_3.set_ylabel(r'Generated Pack Heat Power (W)')
+                            set_axes(axes_3)                              
+                    
     
         if show_legend:        
             leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 

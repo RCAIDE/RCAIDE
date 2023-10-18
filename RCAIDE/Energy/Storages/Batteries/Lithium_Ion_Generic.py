@@ -44,9 +44,7 @@ class Lithium_Ion_Generic(Battery):
         self.tag                                                      = 'Generic_Lithium_Ion_Battery_Cell'  
         self.cell                                                     = Data()  
         self.pack                                                     = Data()
-        self.module                                                   = Data()        
-        self.pack_config                                              = Data()
-        self.module_config                                            = Data() 
+        self.module                                                   = Data()  
         self.bus_power_split_ratio                                    = 1.0
         
         self.age                                                      = 0       # [days]
@@ -69,8 +67,7 @@ class Lithium_Ion_Generic(Battery):
         self.module.electrical_configuration.series                   = 1
         self.module.electrical_configuration.parallel                 = 1   
         self.module.electrical_configuration.total                    = 1   
-        self.module.geometrtic_configuration                          = Data()
-        self.module.geometrtic_configuration.total                    = 1       
+        self.module.geometrtic_configuration                          = Data() 
         self.module.geometrtic_configuration.normal_count             = 1       # number of cells normal to flow
         self.module.geometrtic_configuration.parallel_count           = 1       # number of cells parallel to flow      
         self.module.geometrtic_configuration.normal_spacing           = 0.02
@@ -227,7 +224,7 @@ class Lithium_Ion_Generic(Battery):
         # Pack outputs
         battery.pack.load_power                    = V_ul*I_bat
         battery.cell.depth_of_discharge            = DOD_new
-        battery.pack.resistive_losses              = Q_heat_gen
+        battery.pack.generated_heat                = Q_heat_gen
         battery.pack.current_energy                = E_current
         battery.pack.temperature                   = T_current 
         battery.pack.voltage_open_circuit          = V_oc

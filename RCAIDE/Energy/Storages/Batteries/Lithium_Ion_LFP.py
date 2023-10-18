@@ -186,10 +186,9 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         # Compute cell temperature  
         btms_results = btms.compute_net_generated_battery_heat(battery,Q_heat_gen,numerics,conditions.freestream)
         T_current    = btms_results.operating_conditions.battery_current_temperature
-    
-        # Power going into the battery accounting for resistance losses
-        P_loss = n_total*Q_heat_gen
-        P      = -P_bat - np.abs(P_loss)       
+        
+        # Effective Power flowing through battery 
+        P      = -(P_bat - np.abs(btms_results.operating_conditions.heat_energy_generated)) 
          
         # Available capacity
         capacity_available = E_max - battery.pack.current_energy[0]
@@ -235,9 +234,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
             V_ul    = V_oc  + I_cell*R_0 
              
         # Pack outputs
-        battery.pack.load_power                    = V_ul*n_series*I_bat
-        battery.cell.depth_of_discharge            = DOD_new
-        battery.pack.resistive_losses              = Q_heat_gen
+        battery.pack.generated_heat                = btms_results.operating_conditions.heat_energy_generated 
         battery.pack.current_energy                = E_current
         battery.pack.temperature                   = T_current 
         battery.pack.voltage_open_circuit          = V_oc*n_series
@@ -245,6 +242,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         battery.pack.current                       = I_cell
         battery.pack.heat_energy_generated         = Q_heat_gen 
         battery.pack.internal_resistance           = R_0 
+        battery.cell.depth_of_discharge            = DOD_new
         battery.cell.charge_throughput             = Q_total  
         battery.cell.state_of_charge               = SOC_new 
         battery.cell.temperature                   = T_current   
