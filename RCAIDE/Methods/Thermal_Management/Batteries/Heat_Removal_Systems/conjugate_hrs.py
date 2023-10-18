@@ -3,12 +3,13 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports   
+from RCAIDE.Core import Units
 
 # python packaged 
 import numpy as np
 from scipy.optimize import minimize
 
-def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 5000):
+def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 10000):
     
     # solve for mass flow rate in the channel    
     opt_params = size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat,Q_gen)
@@ -19,7 +20,7 @@ def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_tempe
     hrs.channel_contact_angle        = opt_params[3]
     return  
 
-def size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat, Q_gen, m_coolant_lower_bound=0.0001, m_coolant_upper_bound=10.0, theta_lowerbound=0.1, theta_uperbound=47.5 ): 
+def size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat, Q_gen ): 
     
     # Inital Mass Flow Rate
     mass_flow_rate = hrs.coolant_flow_rate
@@ -29,6 +30,7 @@ def size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat, Q_gen, m
     d        = hrs.channel_width                        
     c        = battery.cell.height       
     a        = hrs.channel_top_thickness
+    m_dot_0  = hrs.coolant_flow_rate 
     
     theta    = hrs.channel_contact_angle    
     
@@ -38,7 +40,7 @@ def size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat, Q_gen, m
     #{'type':'eq', 'fun': constraint_1,'args': arguments},
     initials = [mass_flow_rate, b, d, theta]
     
-    bnds     = [(m_coolant_lower_bound, m_coolant_upper_bound), (0.5*b,1.5*b), (0.5*d,1.5*d),(theta_lowerbound, theta_uperbound )]
+    bnds     = [(0.1*m_dot_0, 10*m_dot_0), (0.5*b,1.5*b), (0.5*d,1.5*d),(10*Units.degrees,47.5*Units.degrees )]
 
     sol = minimize(objective,initials , args=arguments , method='SLSQP', bounds=bnds, tol=1e-6, constraints= cons) 
     
