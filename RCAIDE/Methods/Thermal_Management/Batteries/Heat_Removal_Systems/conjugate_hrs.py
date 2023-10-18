@@ -9,7 +9,7 @@ from RCAIDE.Core import Units
 import numpy as np
 from scipy.optimize import minimize
 
-def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 10000):
+def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 10):
     
     # solve for mass flow rate in the channel    
     opt_params = size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat,Q_gen)
@@ -117,7 +117,8 @@ def objective(x,hrs,battery,inlet_coolant_temperature,T_bat,Q_gen) :
     
     mass_heat_removal_system = mass_channel+mass_liquid
     
-    return  Power 
+    Objective = (Power**2 + mass_heat_removal_system**2)**(0.5)
+    return   Objective
 
 
 # hard efficiency constraint
