@@ -27,7 +27,7 @@ install:
     - PATH=$PATH:/home/appveyor/.local/bin
     - python3 -m pip install coveralls==3.2.0
     - python3 setup.py develop --user
-    - cd Regression
+    - cd Regressions
     
 test_script:
   coverage run automatic_regression.py test
