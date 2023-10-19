@@ -80,7 +80,7 @@ def pack_battery_conditions(battery_conditions,battery):
     battery_conditions.pack.power_draw                      = battery_power_draw   
     battery_conditions.pack.temperature                     = battery.pack.temperature  
     battery_conditions.pack.heat_energy_generated           = battery.pack.heat_energy_generated
-    battery_conditions.pack.efficiency                      = (battery_power_draw+battery.pack.resistive_losses)/battery_power_draw          
+    battery_conditions.pack.efficiency                      = (battery_power_draw+battery.pack.heat_energy_generated)/battery_power_draw          
     battery_conditions.pack.specfic_power                   = -battery_power_draw/battery.mass_properties.mass   
     battery_conditions.pack.internal_resistance             = battery.pack.internal_resistance 
     battery_conditions.cell.cycle_in_day                    = battery.cell.age

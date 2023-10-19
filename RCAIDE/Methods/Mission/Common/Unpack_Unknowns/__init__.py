@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission-Segments-Common
    
-from .climb_descent   import climb_descent
-from .ground          import ground
-from .level_flight    import level_flight
-from .vertical_flight import vertical_flight
+from .climb_descent     import climb_descent
+from .ground            import ground
+from .level_flight      import level_flight
+from .vertical_flight   import vertical_flight

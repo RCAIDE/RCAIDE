@@ -8,9 +8,6 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-# RCAIDE imports
-import RCAIDE
-
 # package imports
 from RCAIDE.Core import Units
 from . import Battery

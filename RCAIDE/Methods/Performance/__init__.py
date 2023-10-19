@@ -11,7 +11,7 @@
 
 from .estimate_cruise_drag                                                import estimate_cruise_drag
 from Legacy.trunk.S.Methods.Performance.estimate_take_off_field_length    import estimate_take_off_field_length
-from Legacy.trunk.S.Methods.Performance.estimate_stall_speed              import estimate_stall_speed
+from .estimate_stall_speed                                                import estimate_stall_speed
 from Legacy.trunk.S.Methods.Performance.payload_range                     import payload_range
 from Legacy.trunk.S.Methods.Performance.estimate_landing_field_length     import estimate_landing_field_length
 from Legacy.trunk.S.Methods.Performance.find_take_off_weight_given_tofl   import find_take_off_weight_given_tofl

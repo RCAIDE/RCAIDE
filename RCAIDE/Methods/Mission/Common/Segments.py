@@ -26,36 +26,13 @@ def sequential_segments(mission):
         segment.process.initialize.expand_state(segment) 
         segment.process.initialize.expand_state = RCAIDE.Methods.skip        
         segment.evaluate()
-
-
-#def expand_segments(mission): 
-    #last_tag = None
-    
-    #for tag, segment in mission.segments.items():
-        #if last_tag:
-            #segment.state.initials = mission.segments[last_tag].state
-        #last_tag = tag        
-        
-        #segment.process.initialize.expand_state(segment)
-         
-        #segment.process.initialize.expand_state = RCAIDE.Methods.skip
-
-
         
 def update_segments(mission):   
     for tag,segment in mission.segments.items():
-        segment.post_process()
-        
-
-
-        
-
-
+        segment.post_process() 
         
 def merge_segment_states(mission): 
     mission.state.update(mission.merged())
-
-
     
 def unpack_segments(mission): 
     # Build a dict with the sections, sections start at 0

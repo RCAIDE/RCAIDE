@@ -10,10 +10,10 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Core import Data
-from .Aerodynamics   import Aerodynamics 
-from RCAIDE.Analyses import Process 
+from RCAIDE.Core                        import Data
+from RCAIDE.Analyses                    import Process 
 from RCAIDE.Methods.Aerodynamics        import Common
+from .Aerodynamics                      import Aerodynamics 
 from .Process_Geometry                  import Process_Geometry
 from .Vortex_Lattice                    import Vortex_Lattice
 
@@ -27,12 +27,22 @@ import numpy as np
 class Fidelity_Zero(Aerodynamics):
     """This is an analysis based on low-fidelity models.
 
-    Assumptions:
-    Subsonic
-
-    Source:
-    Primarily based on adg.stanford.edu, see methods for details
-    """       
+     Assumptions:
+     Stall effects are negligible 
+ 
+     Source:
+     N/A
+ 
+     Inputs:
+     None
+ 
+     Outputs:
+     None
+ 
+     Properties Used:
+     N/A 
+    """      
+    
     def __defaults__(self):
         """This sets the default values and methods for the analysis.
 
@@ -62,7 +72,7 @@ class Fidelity_Zero(Aerodynamics):
         settings.trim_drag_correction_factor        = 1.02
         settings.wing_parasite_drag_form_factor     = 1.1
         settings.fuselage_parasite_drag_form_factor = 2.3
-        settings.maximum_lift_coefficient_factor    =  1.0        
+        settings.maximum_lift_coefficient_factor    = 1.0        
         settings.lift_to_drag_adjustment            = 0.  
         settings.oswald_efficiency_factor           = None
         settings.span_efficiency                    = None

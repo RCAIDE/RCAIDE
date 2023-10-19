@@ -130,7 +130,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
            Outputs:
              battery.          
                   current_energy                                           [Joules]
-                  resistive_losses                                         [Watts] 
+                  heat_energy_generated                                         [Watts] 
                   load_power                                               [Watts]
                   current                                                  [Amps]
                   battery_voltage_open_circuit                             [Volts]
@@ -161,8 +161,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         # --------------------------------------------------------------------------------- 
         # Calculate the current going into one cell  
         n_series          = battery.pack.electrical_configuration.series  
-        n_parallel        = battery.pack.electrical_configuration.parallel
-        n_total           = n_series*n_parallel   
+        n_parallel        = battery.pack.electrical_configuration.parallel 
         I_cell            = I_bat/n_parallel
  
         # ---------------------------------------------------------------------------------

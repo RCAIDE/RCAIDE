@@ -122,7 +122,7 @@ class Lithium_Ion_Generic(Battery):
            Outputs:
              battery.          
                   current_energy                                           [Joules]
-                  resistive_losses                                         [Watts] 
+                  heat_energy_generated                                         [Watts] 
                   load_power                                               [Watts]
                   current                                                  [Amps]
                   battery_voltage_open_circuit                             [Volts]

@@ -140,7 +140,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
              battery.
                   current_energy                                           [Joules]
                   temperature                                              [Kelvin]
-                  resistive_losses                                         [Watts]
+                  heat_energy_generated                                    [Watts]
                   load_power                                               [Watts]
                   current                                                  [Amps]
                   battery_voltage_open_circuit                             [Volts]

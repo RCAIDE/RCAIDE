@@ -69,7 +69,7 @@ def main():
             plot_results(results)  
         
         # RPM of rotor check during hover
-        RPM        = results.segments.climb_1_f_1_d1.conditions.energy.bus.propulsor.rotor.rpm[3][0] 
+        RPM        = results.segments.climb_flight_no_1_day_1.conditions.energy.bus.propulsor.rotor.rpm[3][0] 
         print('GA RPM: ' + str(RPM))
         diff_RPM   = np.abs(RPM - RPM_true[i])
         print('RPM difference')
@@ -77,7 +77,7 @@ def main():
         assert np.abs((RPM - RPM_true[i])/RPM_true[i]) < 1e-6  
         
         # lift Coefficient Check During Cruise
-        lift_coefficient        = results.segments.cruise_f_1_d1.conditions.aerodynamics.coefficients.lift[2][0] 
+        lift_coefficient        = results.segments.cruise_flight_no_1_day_1.conditions.aerodynamics.coefficients.lift[2][0] 
         print('GA CL: ' + str(lift_coefficient)) 
         diff_CL                 = np.abs(lift_coefficient  - lift_coefficient_true[i]) 
         print('CL difference')
@@ -107,9 +107,9 @@ def modify_vehicle(vehicle,battery_chemistry):
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 100
     initialize_from_circuit_configuration(bat)  
-    bat.module_config.number_of_modules                    = 14  
+    bat.module.number_of_modules                           = 14  
     bat.module.geometrtic_configuration.total              = bat.pack.electrical_configuration.total
-    bat.module_config.voltage                              = bat.pack.maximum_voltage/bat.module_config.number_of_modules  
+    bat.module.voltage                                     = bat.pack.maximum_voltage/bat.module.number_of_modules  
     bat.module.geometrtic_configuration.normal_count       = 24
     bat.module.geometrtic_configuration.parallel_count     = 40 
     bus.voltage                                            =  bat.pack.maximum_voltage  
@@ -208,7 +208,7 @@ def mission_setup(analyses):
             # ------------------------------------------------------------------  
 
             segment = Segments.Climb.Linear_Speed_Constant_Rate(base_segment) 
-            segment.tag = "Climb"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+1) 
+            segment.tag = "climb"  + "_flight_no_" + str(flight_no+ 1) + "_day_" + str (day+1) 
             segment.analyses.extend( analyses.base ) 
             segment.altitude_start                                   = 2500.0  * Units.feet
             segment.altitude_end                                     = 8012    * Units.feet  
@@ -229,7 +229,7 @@ def mission_setup(analyses):
             #   Cruise Segment: constant Speed, constant altitude
             # ------------------------------------------------------------------ 
             segment = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
-            segment.tag = "Cruise"  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
+            segment.tag = "cruise"  + "_flight_no_" + str(flight_no+ 1) + "_day_" + str (day+ 1) 
             segment.analyses.extend(analyses.base) 
             segment.altitude                  = 8012   * Units.feet
             segment.air_speed                 = 150.    * Units['mph'] 
@@ -244,7 +244,7 @@ def mission_setup(analyses):
             #   Descent Segment Flight 1   
             # ------------------------------------------------------------------ 
             segment = Segments.Descent.Linear_Speed_Constant_Rate(base_segment) 
-            segment.tag = "Decent"   + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
+            segment.tag = "decent"   + "_flight_no_" + str(flight_no+ 1) + "_day_" + str (day+ 1) 
             segment.analyses.extend( analyses.base )       
             segment.altitude_start                                   = 8012 * Units.feet  
             segment.altitude_end                                     = 2500.0 * Units.feet
@@ -297,6 +297,7 @@ def plot_results(results):
     plot_battery_pack_conditions(results) 
     plot_battery_cell_conditions(results)
     plot_battery_pack_C_rates(results)
+    plot_battery_temperature(results)
     plot_battery_degradation(results)
     
     # Plot Propeller Conditions 
