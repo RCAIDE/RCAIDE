@@ -14,8 +14,7 @@ init:
     - sudo apt-get update
     - sudo apt-get install -qq python3-pip
     
-install:
-    - cd trunk
+install: 
     - python3 -m pip install --upgrade pip
     - python3 -m pip install --upgrade numpy
     - python3 -m pip install --upgrade scipy==1.7.3
@@ -28,7 +27,7 @@ install:
     - PATH=$PATH:/home/appveyor/.local/bin
     - python3 -m pip install coveralls==3.2.0
     - python3 setup.py develop --user
-    - cd ../regression
+    - cd Regression
     
 test_script:
   coverage run automatic_regression.py test

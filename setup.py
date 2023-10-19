@@ -90,8 +90,7 @@ def install(the_package,version,date):
         platforms = ['Win, Linux, Unix, Mac OS-X'],
         zip_safe  = False,
         requires  = requires,
-        python_requires = python_v,
-        #long_description = read('../README.md');
+        python_requires = python_v, 
     )  
     
     return
