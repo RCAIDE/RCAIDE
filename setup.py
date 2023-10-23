@@ -20,12 +20,12 @@ def main():
     
     the_package = 'RCAIDE'
     version     = '1.0.0'
-    date        = 'Jul 4th, 2023'
+    date        = 'Nov 1st, 2023'
     
     if len(sys.argv) >= 2:
         command = sys.argv[1]
     else:
-        command = ''
+        command = 'develop'
     
     if command == 'uninstall':
         uninstall(the_package,version,date)
@@ -67,22 +67,22 @@ def install(the_package,version,date):
     # test for requirements
     import_tests()
     
-    # list all SUAVE sub packages
+    # list all RCAIDE sub packages
     #print 'Listing Packages and Sub-Packages:'
     packages = list_subpackages(the_package,verbose=False)
     packages = list(map( '.'.join, packages ))
     
     requires = ['numpy','scipy','sklearn','plotly','matplotlib']
-    python_v = '>=3.6'
+    python_v = '>=3.8'
 
     # run the setup!!!
     setup(
         name = the_package,
         version = version, 
         description = 'RCAIDE: Research Community Aerospace Interdisciplinary Design Environment',
-        author = 'RCAIDE Trust',
+        author = 'Aerospace Research Community LLC',
         #author_email = '',
-        maintainer = 'The Developers',
+        maintainer = 'Aerospace Research Community LLC',
         url = 'rcaide.org',
         packages = packages,
         include_package_data = True,
