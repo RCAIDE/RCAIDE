@@ -11,8 +11,8 @@ import RCAIDE
 from RCAIDE.Core                                 import Units, Data 
 from RCAIDE.Methods.Power.Battery.Sizing         import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, initialize_from_circuit_configuration, find_mass_gain_rate, find_total_mass_gain
 from RCAIDE.Methods.Power.Battery.Ragone         import find_ragone_properties, find_ragone_optimum 
-from RCAIDE.Analyses.Mission.Common    import Conditions
-from RCAIDE.Visualization import * 
+from RCAIDE.Analyses.Mission.Common              import Conditions
+from RCAIDE.Visualization                        import * 
 
 # package imports  
 import numpy as np
@@ -96,10 +96,10 @@ def main():
     C_rat                 = [0.5,1]   
     marker_size           = 8 
     mAh                   = np.array([3550,1500]) 
-    V_ul_true  = np.array([[3.9785956029658225,3.5766346818252552],
-                           [3.9624907292567415,3.5649333172718887]])
-    bat_temp_true     = np.array([[291.56685519189483,288.99463326715926],
-                                  [293.3579773814795,289.66533632286996]])  
+    V_ul_true  = np.array([[3.9785956029658225,3.5769618285094573],
+                           [3.9624907292567415,3.565580805389241]])
+    bat_temp_true     = np.array([[291.56087343882047,288.8151417322579],
+                                  [293.3579773814795,289.3433741919282]])  
  
     plt.rcParams.update({'font.size': 12})
     fig1 = plt.figure('Cell Test') 

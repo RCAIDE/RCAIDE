@@ -35,7 +35,7 @@ def plot_rotor(prop, face_color = 'red', edge_color = 'black' ,show_figure = Tru
     Properties Used:
     N/A
     """
-    # initalize figure
+    # Initialize figure
     fig = make_subplots(rows=2, cols=2)
 
     df1 = pd.DataFrame(dict(x=prop.radius_distribution, y=prop.twist_distribution/Units.degrees))

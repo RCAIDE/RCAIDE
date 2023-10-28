@@ -74,7 +74,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------  
         initialize                         = self.process.initialize  
-        initialize.differentials_altitude  = Common.Initalize.differentials_altitude
+        initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.expand_state            = Segments.Descent.Constant_Speed_Constant_Angle_Noise.expand_state
         initialize.conditions              = Segments.Descent.Constant_Speed_Constant_Angle_Noise.initialize_conditions
         iterate                            = self.process.iterate   

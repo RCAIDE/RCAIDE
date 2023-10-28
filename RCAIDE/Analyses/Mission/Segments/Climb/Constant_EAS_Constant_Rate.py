@@ -68,7 +68,7 @@ class Constant_EAS_Constant_Rate(Evaluate):
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------    
         initialize                         = self.process.initialize  
-        initialize.differentials_altitude  = Common.Initalize.differentials_altitude
+        initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Constant_EAS_Constant_Rate.initialize_conditions  
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
