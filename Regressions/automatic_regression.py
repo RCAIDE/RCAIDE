@@ -19,6 +19,12 @@ import sys, os, traceback, time
 modules = [ 
     # ----------------------- Regression List --------------------------
     'Tests/network_all_electric/all_electric_rotor_test.py',  
+    'Tests/network_turbofan/turbofan_network_test.py',
+    'Tests/network_turbojet/turbojet_network_test.py',
+    'Tests/network_internal_combustion_engine/ICE_test.py',
+    'Tests/network_internal_combustion_engine/ICE_constant_speed_test.py',
+    'Tests/network_isolated_battery_cell/cell_test.py',
+    'Tests/network_solar/solar_radiation_test.py',
 ]
 
 def regressions():
