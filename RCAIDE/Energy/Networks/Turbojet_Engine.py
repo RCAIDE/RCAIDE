@@ -1,6 +1,6 @@
 ## @ingroup Networks
 # RCAIDE/Energy/Networks/Turbojet_Engine.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 #
 # Created:  Oct 2023, M. Clarke
 # Modified: 
@@ -120,7 +120,7 @@ class Turbojet_Engine(Network):
                     conditions.energy[fuel_line.tag][pg_tag].turbojet.power  = fuel_line_P                     
         
             for fuel_tank in fuel_tanks: 
-                fuel_line_results       = conditions.energy[fuel_line.tag]                
+                fuel_line_results                                = conditions.energy[fuel_line.tag]                
                 fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot
                 fuel_line_results[fuel_tank.tag].mass            = np.atleast_2d((fuel_line_results[fuel_tank.tag].mass[0,0] - cumtrapz(fuel_line_results[fuel_tank.tag].mass_flow_rate[:,0], x   = numerics.time.control_points[:,0]))).T
                 
@@ -130,7 +130,7 @@ class Turbojet_Engine(Network):
     
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
-        conditions.energy.vehicle_mass_rate    = total_mdot           
+        conditions.energy.vehicle_mass_rate    = total_mdot   
         
         # A PATCH TO BE DELETED IN RCAIDE
         results = Data()
@@ -165,42 +165,7 @@ class Turbojet_Engine(Network):
         conditions = state.conditions
         thrust     = self.thrust
         thrust.size(conditions)
-        
-    def engine_out(self,state):
-        """ Lose an engine
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            N/A
-        """           
-        
-        temp_throttle = np.zeros(len(state.conditions.propulsion.throttle))
-        
-        for i in range(0,len(state.conditions.propulsion.throttle)):
-            temp_throttle[i] = state.conditions.propulsion.throttle[i]
-            state.conditions.propulsion.throttle[i] = 1.0
-        
-        results = self.evaluate_thrust(state)
-        
-        for i in range(0,len(state.conditions.propulsion.throttle)):
-            state.conditions.propulsion.throttle[i] = temp_throttle[i]
-        
-        results.thrust_force_vector = results.thrust_force_vector/self.number_of_engines*(self.number_of_engines-1)
-        results.vehicle_mass_rate   = results.vehicle_mass_rate/self.number_of_engines*(self.number_of_engines-1)
-
-        return results
-    
+         
     def unpack_unknowns(self,segment):
         """Unpacks the unknowns set in the mission to be available for the mission.
 
@@ -235,7 +200,7 @@ class Turbojet_Engine(Network):
      
     def add_unknowns_and_residuals_to_segment(self,
                                               segment,
-                                              estimated_propulsor_group_throttles = [[1.0]]):
+                                              estimated_propulsor_group_throttles = [[0.5]]):
         """ This function sets up the information that the mission needs to run a mission segment using this network 
          
             Assumptions:
@@ -299,7 +264,7 @@ class Turbojet_Engine(Network):
                 fuel_line_results[pg_tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[pg_tag].turbojet                = RCAIDE.Analyses.Mission.Common.Conditions() 
                 fuel_line_results[pg_tag].unique_turbojet_tags    = sorted_propulsors.unique_turbojet_tags
-                fuel_line_results[pg_tag].y_axis_rotation         = 0. * ones_row(1)   # NEED TO REMOVE
+                fuel_line_results[pg_tag].y_axis_rotation         = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].turbojet.thrust         = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].turbojet.power          = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].turbojet.thottle        = 0. * ones_row(1) 

@@ -1,6 +1,6 @@
 ## @ingroup Methods-Power-Battery-Ragone
 # RCAIDE/Methods/Power/Battery/Ragone/find_specific_power.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
  

@@ -1,126 +1,69 @@
-# concorde.py
+# Regression/scripts/Tests/turbofan_network_test.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Aug 2014, SUAVE Team (Stanford University)
-# Modified: Nov 2016, T. MacDonald
-#           Jul 2017, T. MacDonald
-#           Aug 2018, T. MacDonald
-#           Nov 2018, T. MacDonald
-#           May 2021, E. Botero
+# Created:  Jul 2023, M. Clarke 
 
-""" setup file for a mission with Concorde
-"""
-
-
-# ----------------------------------------------------------------------
-#   Imports
-# ----------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports  
 import RCAIDE
-# Units allow any units to be specificied with RCAIDE then automatically converting them the standard
-from RCAIDE.Core import Units
-from RCAIDE.Visualization import *     
-
-# Numpy is use extensively throughout RCAIDE
-import numpy as np
-
-# Post processing plotting tools are imported here
-import pylab as plt
-
-# More basic RCAIDE function
-from RCAIDE.Core import Data
-
-import sys
-sys.path.append('../Vehicles')
-from Concorde import vehicle_setup, configs_setup
-
-# This is a sizing function to fill turbojet parameters
-from RCAIDE.Methods.Center_of_Gravity.compute_fuel_center_of_gravity_longitudinal_range \
-     import compute_fuel_center_of_gravity_longitudinal_range
-from RCAIDE.Methods.Center_of_Gravity.compute_fuel_center_of_gravity_longitudinal_range \
-     import plot_cg_map 
-
-
-# This imports lift equivalent area
+from RCAIDE.Core                          import Units , Data 
+from RCAIDE.Visualization                 import *       
 from RCAIDE.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
 
-# ----------------------------------------------------------------------
+# python imports     
+import numpy as np  
+import sys
+import matplotlib.pyplot as plt  
+
+# local imports 
+sys.path.append('../../Vehicles')
+from Concorde    import vehicle_setup as vehicle_setup
+from Concorde    import configs_setup as configs_setup 
+
+# ----------------------------------------------------------------------------------------------------------------------
 #   Main
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 
 def main():
     
-    # First we construct the baseline aircraft
-    configs, analyses = full_setup()
-    
-    # Any sizing functions are included here to size components
-    simple_sizing(configs)
-    
-    # Here we finalize the configuration and analysis settings
-    configs.finalize()
-    analyses.finalize()
-    
-    ## Use these scripts to test OpenVSP functionality if desired
-    #from RCAIDE.Input_Output.OpenVSP.vsp_write import write
-    #from RCAIDE.Input_Output.OpenVSP.get_vsp_measurements import get_vsp_measurements
-    #write(configs.base,'Concorde')
-    #get_vsp_measurements(filename='Unnamed_CompGeom.csv', measurement_type='wetted_area')
-    #get_vsp_measurements(filename='Unnamed_CompGeom.csv', measurement_type='wetted_volume')
 
-    # These functions analyze the mission
-    mission = analyses.missions.base
-    results = mission.evaluate()
+    # vehicle data
+    vehicle  = vehicle_setup() 
     
-    # Check the lift equivalent area
-    equivalent_area(configs.base, analyses.configs.base, results.segments.cruise.state.conditions)        
+    # Set up vehicle configs
+    configs  = configs_setup(vehicle)
+
+    # create analyses
+    analyses = analyses_setup(configs)
+
+    # mission analyses 
+    mission = mission_setup(analyses)
     
-    masses, cg_mins, cg_maxes = compute_fuel_center_of_gravity_longitudinal_range(configs.base)
-    plot_cg_map(masses, cg_mins, cg_maxes, units = 'metric', fig_title = 'Metric Test')  
-    plot_cg_map(masses, cg_mins, cg_maxes, units = 'imperial', fig_title = 'Foot Test')
-    plot_cg_map(masses, cg_mins, cg_maxes, units = 'imperial', special_length = 'inches',
-                fig_title = 'Inch Test')
+    # create mission instances (for multiple types of missions)
+    missions = missions_setup(mission) 
+     
+    # mission analysis 
+    results = missions.base_mission.evaluate()   
     
-    results.fuel_tank_test = Data()
-    results.fuel_tank_test.masses   = masses
-    results.fuel_tank_test.cg_mins  = cg_mins
-    results.fuel_tank_test.cg_maxes = cg_maxes
+    ## Check the lift equivalent area
+    #equivalent_area(configs.base, analyses, results.segments.climbing_cruise.state.conditions)    
+     
+    ## leave uncommented for regression 
+    #save_results(results)  
+    #old_results = load_results()    
     
-    # leave uncommented for regression 
-    save_results(results)  
-    old_results = load_results()    
-    
-    # plt the old results
+    ## plt the old results
     plot_mission(results)
-    plot_mission(old_results)
-    plt.show()
+    #plot_mission(old_results)
+    #plt.show()
 
-    # check the results
-    check_results(results,old_results)  
+    ## check the results
+    #check_results(results,old_results)  
     
     return
-
-
-# ----------------------------------------------------------------------
-#   Analysis Setup
-# ----------------------------------------------------------------------
-
-def full_setup():
-    
-    # Vehicle data
-    vehicle  = vehicle_setup()
-    configs  = configs_setup(vehicle)
-    
-    # Vehicle analyses
-    configs_analyses = analyses_setup(configs)
-    
-    # Mission analyses
-    mission  = mission_setup(configs_analyses)
-    missions_analyses = missions_setup(mission)
-
-    analyses = RCAIDE.Analyses.Analysis.Container()
-    analyses.configs  = configs_analyses
-    analyses.missions = missions_analyses        
-    
-    return configs, analyses
+ 
 
 
 # ----------------------------------------------------------------------
@@ -131,21 +74,14 @@ def equivalent_area(vehicle,analyses,conditions):
     
     X_locs, AE_x, _ = lift_equivalent_area(vehicle,analyses,conditions)
     
-    regression_X_locs = np.array([ 0.        , 30.0744302 , 36.06867764, 40.19118129, 42.87929299, 43.75864575,
-                                   44.46769982, 44.75288937, 45.40283952, 45.75323347, 45.83551432,
-                                   50.60861803, 53.90976954, 55.43400893, 56.10861803, 56.78777765,
-                                   57.28419734, 57.49949357, 57.99040541, 58.61763071, 58.94738099,
-                                   77.075     ])
+    regression_X_locs = np.arrayarray([ 9.2489996 , 20.53010197, 21.58099937, 24.08086729, 26.92006416,
+       27.57317331, 29.59647174, 30.96875399, 32.22881452])
 
-    regression_AE_x   = np.array([ 0.        ,  8.33595464, 12.66713223, 17.73910795, 19.62471738, 23.97123771,
-                                   24.43162196, 26.98062914, 34.56718328, 36.48486225, 37.03462371,
-                                   37.03462016, 37.03461949, 37.0346185 , 37.03461866, 37.03461816,
-                                   37.03461818, 37.03461807, 37.0346181 , 37.03461812, 37.03461812,
-                                   37.03461812])
-
+    regression_AE_x   = np.array([0.5153554 , 0.06737699, 0.24895593, 0.28295723, 0.48997988,
+       0.61036835, 1.06331585, 1.24096389, 1.74551694]) 
     
-    assert (np.abs((X_locs[1:] - regression_X_locs[1:] )/regression_X_locs[1:] ) < 1e-6).all() 
-    assert (np.abs((AE_x[1:] - regression_AE_x[1:])/regression_AE_x[1:]) < 1e-6).all()
+    assert (np.abs((X_locs[1:] - regression_X_locs )/regression_X_locs) < 1e-6).all() 
+    assert (np.abs((AE_x[1:] - regression_AE_x)/regression_AE_x) < 1e-6).all()
 
 
 # ----------------------------------------------------------------------
@@ -168,30 +104,23 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle()
-    
-    # ------------------------------------------------------------------
-    #  Basic Geometry Relations
-    sizing = RCAIDE.Analyses.Sizing.Sizing()
-    sizing.features.vehicle = vehicle
-    analyses.append(sizing)
+    analyses = RCAIDE.Analyses.Vehicle() 
     
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Analyses.Weights.Weights_Transport()
+    weights         = RCAIDE.Analyses.Weights.Weights_Transport()
     weights.vehicle = vehicle
     analyses.append(weights)
     
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Analyses.Aerodynamics.Supersonic_Zero()
-    aerodynamics.geometry = vehicle
+    aerodynamics                                       = RCAIDE.Analyses.Aerodynamics.Supersonic_VLM()
+    aerodynamics.geometry                              = vehicle
     aerodynamics.settings.number_spanwise_vortices     = 5
     aerodynamics.settings.number_chordwise_vortices    = 2       
     aerodynamics.process.compute.lift.inviscid_wings.settings.model_fuselage = True
     aerodynamics.settings.drag_coefficient_increment   = 0.0000
-    analyses.append(aerodynamics)
-    
+    analyses.append(aerodynamics) 
     
     # ------------------------------------------------------------------
     #  Energy
@@ -289,6 +218,7 @@ def mission_setup(analyses):
     segment.altitude_end   = 4000. * Units.ft
     segment.airpseed       = 250.  * Units.kts
     segment.climb_rate     = 4000. * Units['ft/min'] 
+    segment = analyses.climb.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)
     
     
@@ -302,6 +232,7 @@ def mission_setup(analyses):
     segment.altitude_end = 8000. * Units.ft
     segment.airpseed     = 250.  * Units.kts
     segment.climb_rate   = 2000. * Units['ft/min'] 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------
@@ -315,6 +246,7 @@ def mission_setup(analyses):
     segment.mach_number_start   = .45
     segment.mach_number_end     = 0.95
     segment.climb_rate          = 3000. * Units['ft/min'] 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)    
 
     # ------------------------------------------------------------------
@@ -328,6 +260,7 @@ def mission_setup(analyses):
     segment.mach_number_start   = 0.95
     segment.mach_number_end     = 1.1
     segment.climb_rate          = 2000.  * Units['ft/min'] 
+    segment = analyses.climb.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment) 
 
     # ------------------------------------------------------------------
@@ -340,6 +273,7 @@ def mission_setup(analyses):
     segment.mach_number_start   = 1.1
     segment.mach_number_end     = 1.7
     segment.climb_rate          = 1750.  * Units['ft/min'] 
+    segment = analyses.climb.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------
@@ -352,6 +286,7 @@ def mission_setup(analyses):
     segment.mach_number_start   = 1.7
     segment.mach_number_end     = 2.02
     segment.climb_rate          = 750.  * Units['ft/min'] 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)     
     
 
@@ -359,11 +294,12 @@ def mission_setup(analyses):
     #   Fourth Climb Segment: linear Mach, constant segment angle 
     # ------------------------------------------------------------------  
     segment = Segments.Climb.Constant_Mach_Constant_Rate(base_segment)
-    segment.tag = "cruise" 
+    segment.tag = "climbing_cruise" 
     segment.analyses.extend( analyses.cruise ) 
     segment.altitude_end = 56500. * Units.ft
     segment.mach_number  = 2.02
     segment.climb_rate   = 50.  * Units['ft/min'] 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------    
@@ -375,6 +311,7 @@ def mission_setup(analyses):
     segment.mach_number                          = 2.02
     segment.distance                             = 1. * Units.nmi
     segment.state.numerics.number_control_points = 4 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)    
     
     # ------------------------------------------------------------------
@@ -384,8 +321,8 @@ def mission_setup(analyses):
     segment.tag = "decel_1" 
     segment.analyses.extend( analyses.cruise )
     segment.acceleration      = -.5  * Units['m/s/s']
-    segment.air_speed_start   = 2.02*573. * Units.kts
     segment.air_speed_end     = 1.5*573.  * Units.kts 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)   
     
     # ------------------------------------------------------------------
@@ -395,9 +332,9 @@ def mission_setup(analyses):
     segment.tag = "descent_1" 
     segment.analyses.extend( analyses.cruise )
     segment.altitude_end      = 41000. * Units.ft
-    segment.mach_number_start = 1.5
     segment.mach_number_end   = 1.3
     segment.descent_rate      = 2000. * Units['ft/min'] 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -407,8 +344,8 @@ def mission_setup(analyses):
     segment.tag = "decel_2" 
     segment.analyses.extend( analyses.cruise )
     segment.acceleration      = -.5  * Units['m/s/s']
-    segment.air_speed_start   = 1.35*573. * Units.kts
     segment.air_speed_end     = 0.95*573.  * Units.kts 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -419,9 +356,9 @@ def mission_setup(analyses):
     segment.tag = "descent_2" 
     segment.analyses.extend( analyses.cruise )
     segment.altitude_end      = 10000. * Units.ft
-    segment.mach_number_start = 0.95
     segment.mach_number_end   = 250./638. 
     segment.descent_rate      = 2000. * Units['ft/min'] 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -433,6 +370,7 @@ def mission_setup(analyses):
     segment.altitude_end = 0. * Units.ft
     segment.air_speed    = 250. * Units.kts
     segment.descent_rate = 1000. * Units['ft/min'] 
+    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
     mission.append_segment(segment)      
     
     # ------------------------------------------------------------------    
@@ -454,14 +392,10 @@ def check_results(new_results,old_results):
 
     # check segment values
     check_list = [
-        'segments.cruise.conditions.aerodynamics.angle_of_attack',
-        'segments.cruise.conditions.aerodynamics.drag_coefficient',
-        'segments.cruise.conditions.aerodynamics.lift_coefficient',
-        'segments.cruise.conditions.propulsion.throttle',
-        'segments.cruise.conditions.weights.vehicle_mass_rate',
-        'fuel_tank_test.masses',
-        'fuel_tank_test.cg_mins',
-        'fuel_tank_test.cg_maxes',
+        'segments.climbing_cruise.conditions.aerodynamics.angle_of_attack',
+        'segments.climbing_cruise.conditions.aerodynamics.coefficients.drag',
+        'segments.climbing_cruise.conditions.aerodynamics.coefficient.lift', 
+        'segments.climbing_cruise.conditions.weights.vehicle_mass_rate', 
     ]
 
     # do the check

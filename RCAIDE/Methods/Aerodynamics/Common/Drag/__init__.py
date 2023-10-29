@@ -1,7 +1,7 @@
 ## @defgroup Methods-Aerodynamics-Common-Drag Drag 
 # @ingroup Methods-Aerodynamics-Common
 # RCAIDE/Methods/Aerodynamics/Common/Drag/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """
@@ -25,8 +25,8 @@ from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Drag.untrimmed    
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Drag.total_aircraft                        import total_aircraft 
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_volume_raymer                    import wave_drag_volume_raymer
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_volume_sears_haack               import wave_drag_volume_sears_haack
-from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.compressibility_drag_total                 import compressibility_drag_total
+from .compressibility_drag_total                 import compressibility_drag_total
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.parasite_drag_nacelle                      import parasite_drag_nacelle as supersonic_nacelle_drag_fuselage
-from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_lift                             import wave_drag_lift
+from .wave_drag                            import wave_drag 
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.parasite_drag_fuselage                     import parasite_drag_fuselage as supersonic_parasite_drag_fuselage
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.miscellaneous_drag_aircraft                import miscellaneous_drag_aircraft

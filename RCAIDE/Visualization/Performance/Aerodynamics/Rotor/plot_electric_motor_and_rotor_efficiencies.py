@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Performance-Energy-Battery
 # RCAIDE/Visualization/Performance/Energy/Battery/plot_electric_motor_and_rotor_efficiencies.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 

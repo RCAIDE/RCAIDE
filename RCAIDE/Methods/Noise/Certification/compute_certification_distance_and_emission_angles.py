@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Certification
 # RCAIDE/Methods/Noise/Certification/compute_certification_distance_and_emission_angles.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 

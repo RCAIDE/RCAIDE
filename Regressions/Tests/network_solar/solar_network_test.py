@@ -1,5 +1,5 @@
 # Regression/scripts/Tests/network_solar/solar_netwwork_test.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

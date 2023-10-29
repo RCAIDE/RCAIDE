@@ -1,7 +1,7 @@
 ## @defgroup Methods-Noise-Certification Certification
 # @ingroup Methods 
 # RCAIDE/Methods/Noise/Certification/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

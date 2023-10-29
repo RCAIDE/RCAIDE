@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments
 # RCAIDE/Analyses/Mission/Segment/Evaluate.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -58,8 +58,7 @@ class Evaluate(Segment):
         initialize                         = self.process.initialize 
         initialize.expand_state            = Solver.expand_state
         initialize.differentials           = Common.Initialize.differentials_dimensionless 
-        initialize.conditions              = None
-        #initialize.aerodynamics            = Common.Initialize.aerodynamics
+        initialize.conditions              = None 
 
         # --------------------------------------------------------------         
         #   Converge 

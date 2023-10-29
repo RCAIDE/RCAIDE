@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Performance-Aerodynamics-Vehicle
 # RCAIDE/Visualization/Performance/Aerodynamics/Vehicle/plot_lift_distribution.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 

@@ -1,6 +1,6 @@
 ## @defgroup Methods-Flight_Dynamics-Dynamic_Stability-Full_Linearized_Equations Full_Linearized_Equations
 # RCAIDE/Methods/Flight_Dynamics/Dynamic_Stability/Full_Linearized_Equations/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

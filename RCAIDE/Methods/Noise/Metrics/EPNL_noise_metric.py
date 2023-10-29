@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Metrics  
 # RCAIDE/Methods/Noise/Metrics/EPNL_noise_metric.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 

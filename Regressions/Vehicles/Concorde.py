@@ -1,26 +1,22 @@
-# Concorde.py
-#
-# Created:  Feb 2017, M. Vegh (created from data taken from concorde/concorde.py)
-# Modified: Jul 2017, T. MacDonald
-#           Aug 2018, T. MacDonald
-#           Oct 2018, T. MacDonald
-#           Nov 2018, T. MacDonald
-#           Feb 2019, T. MacDonald
-#           Oct 2021, M. Clarke
+# Regression/scripts/Vehicles/Concorde.py
+# 
+# 
+# Created:  Jul 2023, M. Clarke 
 
-""" setup file for the Concorde 
-"""
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
+# RCAIDE imports 
+import RCAIDE
+from RCAIDE.Core                                           import Units , Data    
+from RCAIDE.Methods.Propulsion                             import design_turbojet
+from RCAIDE.Methods.Geometry.Two_Dimensional.Planform      import wing_planform, segment_properties,wing_segmented_planform
+from RCAIDE.Visualization                 import *     
 
-import numpy as np
-import MARC
-from MARC.Core import Units
-from MARC.Core import Data
-
-from MARC.Methods.Propulsion.turbojet_sizing import turbojet_sizing
-from MARC.Methods.Propulsion.turbofan_sizing import turbofan_sizing
-from MARC.Methods.Geometry.Two_Dimensional.Planform import wing_segmented_planform
-
+# python imports 
+import numpy as np  
 from copy import deepcopy
+
 
 def vehicle_setup():
 
@@ -28,7 +24,7 @@ def vehicle_setup():
     #   Initialize the Vehicle
     # ------------------------------------------------------------------    
     
-    vehicle = MARC.Vehicle()
+    vehicle = RCAIDE.Vehicle()
     vehicle.tag = 'Concorde'    
     
     
@@ -62,7 +58,7 @@ def vehicle_setup():
     #   Main Wing
     # ------------------------------------------------------------------        
     
-    wing = MARC.Components.Wings.Main_Wing()
+    wing = RCAIDE.Components.Wings.Main_Wing()
     wing.tag = 'main_wing'
     
     wing.aspect_ratio            = 1.83
@@ -93,20 +89,15 @@ def vehicle_setup():
     wing.symmetric                 = True
     wing.high_lift                 = True
     wing.vortex_lift               = True
-    wing.high_mach                 = True
-    
+    wing.high_mach                 = True 
     wing.dynamic_pressure_ratio    = 1.0
-    
-    wing_airfoil = MARC.Components.Airfoils.Airfoil()
-    
-    # This airfoil is not a true Concorde airfoil
-    wing_airfoil.coordinate_file   = '../Vehicles/Airfoils/NACA65-203.txt' 
-
-    
+     
+    wing_airfoil                   = RCAIDE.Components.Airfoils.Airfoil() 
+    wing_airfoil.coordinate_file   = '../../Vehicles/Airfoils/NACA65-203.txt'  
     wing.append_airfoil(wing_airfoil)  
     
     # set root sweep with inner section
-    segment = MARC.Components.Wings.Segment()
+    segment = RCAIDE.Components.Wings.Segment()
     segment.tag                   = 'section_1'
     segment.percent_span_location = 0.
     segment.twist                 = 0. * Units.deg
@@ -114,11 +105,11 @@ def vehicle_setup():
     segment.dihedral_outboard     = 0.
     segment.sweeps.quarter_chord  = 67. * Units.deg
     segment.thickness_to_chord    = 0.03
-    #segment.append_airfoil(wing_airfoil)
+    segment.append_airfoil(wing_airfoil)
     wing.Segments.append(segment)
     
     # set section 2 start point
-    segment = MARC.Components.Wings.Segment()
+    segment = RCAIDE.Components.Wings.Segment()
     segment.tag                   = 'section_2'
     segment.percent_span_location = 6.15/(25.6/2) + wing.Segments['section_1'].percent_span_location
     segment.twist                 = 0. * Units.deg
@@ -131,7 +122,7 @@ def vehicle_setup():
     
     
     # set section 3 start point
-    segment = MARC.Components.Wings.Segment() 
+    segment = RCAIDE.Components.Wings.Segment() 
     segment.tag                   = 'section_3'
     segment.percent_span_location = 5.95/(25.6/2) + wing.Segments['section_2'].percent_span_location
     segment.twist                 = 0. * Units.deg
@@ -143,7 +134,7 @@ def vehicle_setup():
     wing.Segments.append(segment)  
     
     # set tip
-    segment = MARC.Components.Wings.Segment() 
+    segment = RCAIDE.Components.Wings.Segment() 
     segment.tag                   = 'tip'
     segment.percent_span_location = 1.
     segment.twist                 = 0. * Units.deg
@@ -157,56 +148,6 @@ def vehicle_setup():
     # Fill out more segment properties automatically
     wing = wing_segmented_planform(wing)        
     
-    # CG locations are approximate
-    # Masses from http://www.concordesst.com/fuelsys.html
-    fuel_tank = MARC.Components.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.tag                  = 'tank_9'
-    fuel_tank.mass_properties.center_of_gravity    = np.array([[26.5,0,0]])
-    fuel_tank.mass_properties.fuel_mass_when_full  = 11096
-    fuel_tank.fuel_type            = MARC.Attributes.Propellants.Jet_A()
-    wing.Fuel_Tanks.append(fuel_tank)
-    
-    fuel_tank = MARC.Components.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.tag                  = 'tank_10'
-    fuel_tank.mass_properties.center_of_gravity    = np.array([[28.7,0,0]])
-    fuel_tank.mass_properties.fuel_mass_when_full  = 11943
-    fuel_tank.fuel_type            = MARC.Attributes.Propellants.Jet_A()
-    wing.Fuel_Tanks.append(fuel_tank)
-    
-    fuel_tank = MARC.Components.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.tag                  = 'tank_1_and_4'
-    fuel_tank.mass_properties.center_of_gravity    = np.array([[31.0,0,0]])
-    fuel_tank.mass_properties.fuel_mass_when_full  = 4198+4198
-    fuel_tank.fuel_type            = MARC.Attributes.Propellants.Jet_A()
-    wing.Fuel_Tanks.append(fuel_tank)   
-    
-    fuel_tank = MARC.Components.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.tag                  = 'tank_5_and_8'
-    fuel_tank.mass_properties.center_of_gravity    = np.array([[32.9,0,0]])
-    fuel_tank.mass_properties.fuel_mass_when_full  = 7200+12838
-    fuel_tank.fuel_type            = MARC.Attributes.Propellants.Jet_A()
-    wing.Fuel_Tanks.append(fuel_tank)
-    
-    fuel_tank = MARC.Components.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.tag                  = 'tank_6_and_7'
-    fuel_tank.mass_properties.center_of_gravity    = np.array([[37.4,0,0]])
-    fuel_tank.mass_properties.fuel_mass_when_full  = 11587+7405
-    fuel_tank.fuel_type            = MARC.Attributes.Propellants.Jet_A()
-    wing.Fuel_Tanks.append(fuel_tank)
-    
-    fuel_tank = MARC.Components.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.tag                  = 'tank_5A_and_7A'
-    fuel_tank.mass_properties.center_of_gravity    = np.array([[40.2,0,0]])
-    fuel_tank.mass_properties.fuel_mass_when_full  = 2225+2225
-    fuel_tank.fuel_type            = MARC.Attributes.Propellants.Jet_A()
-    wing.Fuel_Tanks.append(fuel_tank)
-    
-    fuel_tank = MARC.Components.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.tag                  = 'tank_2_and_3'
-    fuel_tank.mass_properties.center_of_gravity    = np.array([[40.2,0,0]])
-    fuel_tank.mass_properties.fuel_mass_when_full  = 4570+4570
-    fuel_tank.fuel_type            = MARC.Attributes.Propellants.Jet_A()
-    wing.Fuel_Tanks.append(fuel_tank)    
     
     # add to vehicle
     vehicle.append_component(wing)
@@ -216,32 +157,26 @@ def vehicle_setup():
     #   Vertical Stabilizer
     # ------------------------------------------------------------------
     
-    wing = MARC.Components.Wings.Vertical_Tail()
+    wing = RCAIDE.Components.Wings.Vertical_Tail()
     wing.tag = 'vertical_stabilizer'    
     
-    wing.aspect_ratio            = 0.74      #
+    wing.aspect_ratio            = 0.74     
     wing.sweeps.quarter_chord    = 60 * Units.deg
     wing.thickness_to_chord      = 0.04
-    wing.taper                   = 0.14
-    
-    wing.spans.projected         = 6.0      #    
-
+    wing.taper                   = 0.14 
+    wing.spans.projected         = 6.0     
     wing.chords.root             = 14.5
     wing.total_length            = 14.5
     wing.chords.tip              = 2.7
-    wing.chords.mean_aerodynamic = 8.66
-    
-    wing.areas.reference         = 33.91    #
+    wing.chords.mean_aerodynamic = 8.66 
+    wing.areas.reference         = 33.91     
     wing.areas.wetted            = 76. 
     wing.areas.exposed           = 38.
-    wing.areas.affected          = 33.91
-    
+    wing.areas.affected          = 33.91 
     wing.twists.root             = 0.0 * Units.degrees
-    wing.twists.tip              = 0.0 * Units.degrees  
-    
+    wing.twists.tip              = 0.0 * Units.degrees   
     wing.origin                  = [[42.,0,1.]]
-    wing.aerodynamic_center      = [50,0,0]    
-    
+    wing.aerodynamic_center      = [50,0,0]     
     wing.vertical                = True 
     wing.symmetric               = False
     wing.t_tail                  = False
@@ -249,14 +184,14 @@ def vehicle_setup():
     
     wing.dynamic_pressure_ratio  = 1.0
     
-    tail_airfoil = MARC.Components.Airfoils.Airfoil()
+    tail_airfoil = RCAIDE.Components.Airfoils.Airfoil()
     # This airfoil is not a true Concorde airfoil
-    tail_airfoil.coordinate_file = '../Vehicles/Airfoils/supersonic_tail.txt' 
+    tail_airfoil.coordinate_file = '../../Vehicles/Airfoils/supersonic_tail.txt' 
     
     wing.append_airfoil(tail_airfoil)  
 
     # set root sweep with inner section
-    segment = MARC.Components.Wings.Segment()
+    segment = RCAIDE.Components.Wings.Segment()
     segment.tag                   = 'section_1'
     segment.percent_span_location = 0.0
     segment.twist                 = 0. * Units.deg
@@ -268,7 +203,7 @@ def vehicle_setup():
     wing.Segments.append(segment)
     
     # set mid section start point
-    segment = MARC.Components.Wings.Segment()
+    segment = RCAIDE.Components.Wings.Segment()
     segment.tag                   = 'section_2'
     segment.percent_span_location = 2.4/(6.0) + wing.Segments['section_1'].percent_span_location
     segment.twist                 = 0. * Units.deg
@@ -280,7 +215,7 @@ def vehicle_setup():
     wing.Segments.append(segment)
     
     # set tip
-    segment = MARC.Components.Wings.Segment()
+    segment = RCAIDE.Components.Wings.Segment()
     segment.tag                   = 'tip'
     segment.percent_span_location = 1.
     segment.twist                 = 0. * Units.deg
@@ -302,33 +237,23 @@ def vehicle_setup():
     #  Fuselage
     # ------------------------------------------------------------------
     
-    fuselage = MARC.Components.Fuselages.Fuselage()
-    fuselage.tag = 'fuselage'
-    
-    fuselage.seats_abreast         = 4
-    fuselage.seat_pitch            = 38. * Units.inches
-    
-    fuselage.fineness.nose         = 4.3
-    fuselage.fineness.tail         = 6.4
-    
-    fuselage.lengths.total         = 61.66  
-    
-    fuselage.width                 = 2.88
-    
-    fuselage.heights.maximum       = 3.32    #
-    
-    fuselage.heights.maximum       = 3.32    #
-    fuselage.heights.at_quarter_length              = 3.32    #
-    fuselage.heights.at_wing_root_quarter_chord     = 3.32    #
-    fuselage.heights.at_three_quarters_length       = 3.32    #
-
-    fuselage.areas.wetted          = 442.
-    fuselage.areas.front_projected = 11.9
-    
-    
-    fuselage.effective_diameter    = 3.1
-    
-    fuselage.differential_pressure = 7.4e4 * Units.pascal    # Maximum differential pressure 
+    fuselage                                        = RCAIDE.Components.Fuselages.Fuselage()
+    fuselage.tag                                    = 'fuselage' 
+    fuselage.seats_abreast                          = 4
+    fuselage.seat_pitch                             = 38. * Units.inches 
+    fuselage.fineness.nose                          = 4.3
+    fuselage.fineness.tail                          = 6.4 
+    fuselage.lengths.total                          = 61.66   
+    fuselage.width                                  = 2.88 
+    fuselage.heights.maximum                        = 3.32    
+    fuselage.heights.maximum                        = 3.32    
+    fuselage.heights.at_quarter_length              = 3.32    
+    fuselage.heights.at_wing_root_quarter_chord     = 3.32    
+    fuselage.heights.at_three_quarters_length       = 3.32    
+    fuselage.areas.wetted                           = 442.
+    fuselage.areas.front_projected                  = 11.9 
+    fuselage.effective_diameter                     = 3.1 
+    fuselage.differential_pressure                  = 7.4e4 * Units.pascal    # Maximum differential pressure 
     
     fuselage.OpenVSP_values = Data() # VSP uses degrees directly
     
@@ -349,25 +274,15 @@ def vehicle_setup():
     fuselage.OpenVSP_values.tail.top.angle = 0.0
     fuselage.OpenVSP_values.tail.top.strength = 0.0 
     
-    # CG locations are approximate
-    # Masses from http://www.concordesst.com/fuelsys.html
-    fuel_tank = MARC.Components.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.tag                  = 'tank_11'
-    fuel_tank.mass_properties.center_of_gravity    = np.array([[49.8,0,0]])
-    fuel_tank.mass_properties.fuel_mass_when_full  = 10415
-    fuel_tank.fuel_type            = MARC.Attributes.Propellants.Jet_A()
-    fuselage.Fuel_Tanks.append(fuel_tank)     
-    
-    # add to vehicle
     vehicle.append_component(fuselage)
     
 
     # ------------------------------------------------------------------        
     # the nacelle 
     # ------------------------------------------------------------------    
-    nacelle                  = MARC.Components.Nacelles.Nacelle()
+    nacelle                  = RCAIDE.Components.Nacelles.Nacelle()
     nacelle.diameter         = 1.3
-    nacelle.tag              = 'nacelle_L1'
+    nacelle.tag              = 'nacelle_1'
     nacelle.origin           = [[36.56, 22, -1.9]] 
     nacelle.length           = 12.0 
     nacelle.inlet_diameter   = 1.1 
@@ -389,193 +304,202 @@ def vehicle_setup():
     nacelle_4.origin       = [[37.,-6.,-1.3]]
     vehicle.append_component(nacelle_4)       
         
+        
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Turbofan Network
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    net                                            = RCAIDE.Energy.Networks.Turbojet_Engine() 
+    
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # Fuel Distrubition Line 
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    fuel_line                                     = RCAIDE.Energy.Distributors.Fuel_Line() 
+       
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #   Fuel
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # fuel tank 
+    fuel_tank                                      = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.tag                                  = 'tank_9'
+    fuel_tank.mass_properties.center_of_gravity    = np.array([[26.5,0,0]])
+    fuel_tank.mass_properties.fuel_mass_when_full  = 11096
+    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
+    fuel_line.fuel_tanks.append(fuel_tank) 
+    
+    fuel_tank                                      = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.tag                                  = 'tank_10'
+    fuel_tank.mass_properties.center_of_gravity    = np.array([[28.7,0,0]])
+    fuel_tank.mass_properties.fuel_mass_when_full  = 11943
+    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
+    fuel_line.fuel_tanks.append(fuel_tank) 
+    
+    fuel_tank                                      = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.tag                                  = 'tank_1_and_4'
+    fuel_tank.mass_properties.center_of_gravity    = np.array([[31.0,0,0]])
+    fuel_tank.mass_properties.fuel_mass_when_full  = 4198+4198
+    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
+    fuel_line.fuel_tanks.append(fuel_tank) 
+    
+    fuel_tank                                      = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.tag                                  = 'tank_5_and_8'
+    fuel_tank.mass_properties.center_of_gravity    = np.array([[32.9,0,0]])
+    fuel_tank.mass_properties.fuel_mass_when_full  = 7200+12838
+    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
+    fuel_line.fuel_tanks.append(fuel_tank) 
+    
+    fuel_tank                                      = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.tag                                  = 'tank_6_and_7'
+    fuel_tank.mass_properties.center_of_gravity    = np.array([[37.4,0,0]])
+    fuel_tank.mass_properties.fuel_mass_when_full  = 11587+7405
+    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
+    fuel_line.fuel_tanks.append(fuel_tank) 
+    
+    fuel_tank                                      = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.tag                                  = 'tank_5A_and_7A'
+    fuel_tank.mass_properties.center_of_gravity    = np.array([[40.2,0,0]])
+    fuel_tank.mass_properties.fuel_mass_when_full  = 2225+2225
+    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
+    fuel_line.fuel_tanks.append(fuel_tank) 
+    
+    fuel_tank                                      = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.tag                                  = 'tank_2_and_3'
+    fuel_tank.mass_properties.center_of_gravity    = np.array([[40.2,0,0]])
+    fuel_tank.mass_properties.fuel_mass_when_full  = 4570+4570
+    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
+    fuel_line.fuel_tanks.append(fuel_tank)  
+ 
+    fuel_tank = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.tag                                  = 'tank_11'
+    fuel_tank.mass_properties.center_of_gravity    = np.array([[49.8,0,0]])
+    fuel_tank.mass_properties.fuel_mass_when_full  = 10415
+    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
+    fuel_line.fuel_tanks.append(fuel_tank)      
+    
     # ------------------------------------------------------------------
     #   Turbojet Network
     # ------------------------------------------------------------------    
     
     # instantiate the gas turbine network
-    turbojet = MARC.Components.Energy.Networks.Turbojet_Super()
-    turbojet.tag = 'turbojet'
+    turbojet                    = RCAIDE.Energy.Converters.Turbojet()
+    turbojet.tag                = 'turbojet_1'  
+    turbojet.engine_length      = 4.039
+    turbojet.nacelle_diameter   = 1.3
+    turbojet.inlet_diameter     = 1.212 
+    turbojet.areas.wetted       = 30
+    turbojet.design_altitude    = 60000.0*Units.ft
+    turbojet.design_mach_number = 2.02
+    turbojet.design_thrust      = 40000. * Units.lbf  
+    turbojet.origin             = [[37.,6.,-1.3]] 
+    turbojet.working_fluid      = RCAIDE.Attributes.Gases.Air()
     
-    # setup
-    turbojet.number_of_engines = 4.0
-    turbojet.engine_length     = 12.0
-    turbojet.nacelle_diameter  = 1.3
-    turbojet.inlet_diameter    = 1.1
-    turbojet.areas             = Data()
-    turbojet.areas.wetted      = 120./turbojet.number_of_engines
-    turbojet.origin            = [[37.,6.,-1.3],[37.,5.3,-1.3],[37.,-5.3,-1.3],[37.,-6.,-1.3]]
-    
-    # working fluid
-    turbojet.working_fluid = MARC.Attributes.Gases.Air()
-    
-    
-    # ------------------------------------------------------------------
-    #   Component 1 - Ram
-    
-    # to convert freestream static to stagnation quantities
-    
-    # instantiate
-    ram = MARC.Components.Energy.Converters.Ram()
-    ram.tag = 'ram'
-    
-    # add to the network
-    turbojet.append(ram)
-
-
-    # ------------------------------------------------------------------
-    #  Component 2 - Inlet Nozzle
-    
-    # instantiate
-    inlet_nozzle = MARC.Components.Energy.Converters.Compression_Nozzle()
-    inlet_nozzle.tag = 'inlet_nozzle'
-    
-    # setup
-    inlet_nozzle.polytropic_efficiency = 1.0
-    inlet_nozzle.pressure_ratio        = 1.0
-    inlet_nozzle.pressure_recovery     = 0.94
-    
-    # add to network
-    turbojet.append(inlet_nozzle)
-    
-    
-    # ------------------------------------------------------------------
-    #  Component 3 - Low Pressure Compressor
-    
-    # instantiate 
-    compressor = MARC.Components.Energy.Converters.Compressor()    
-    compressor.tag = 'low_pressure_compressor'
-
-    # setup
-    compressor.polytropic_efficiency = 0.88
-    compressor.pressure_ratio        = 3.1    
-    
-    # add to network
+    # Ram  
+    ram     = RCAIDE.Energy.Converters.Ram()
+    ram.tag = 'ram' 
+    turbojet.append(ram) 
+ 
+    # Inlet Nozzle 
+    inlet_nozzle                          = RCAIDE.Energy.Converters.Compression_Nozzle()
+    inlet_nozzle.tag                      = 'inlet_nozzle' 
+    inlet_nozzle.polytropic_efficiency    = 1.0
+    inlet_nozzle.pressure_ratio           = 1.0
+    inlet_nozzle.pressure_recovery        = 0.94 
+    turbojet.append(inlet_nozzle)     
+          
+    #  Low Pressure Compressor      
+    compressor                            = RCAIDE.Energy.Converters.Compressor()    
+    compressor.tag                        = 'low_pressure_compressor' 
+    compressor.polytropic_efficiency      = 0.88
+    compressor.pressure_ratio             = 3.1     
+    turbojet.append(compressor)       
+        
+    # High Pressure Compressor        
+    compressor                            = RCAIDE.Energy.Converters.Compressor()    
+    compressor.tag                        = 'high_pressure_compressor' 
+    compressor.polytropic_efficiency      = 0.88
+    compressor.pressure_ratio             = 5.0  
     turbojet.append(compressor)
-
-    
-    # ------------------------------------------------------------------
-    #  Component 4 - High Pressure Compressor
-    
-    # instantiate
-    compressor = MARC.Components.Energy.Converters.Compressor()    
-    compressor.tag = 'high_pressure_compressor'
-    
-    # setup
-    compressor.polytropic_efficiency = 0.88
-    compressor.pressure_ratio        = 5.0  
-    
-    # add to network
-    turbojet.append(compressor)
-
-
-    # ------------------------------------------------------------------
-    #  Component 5 - Low Pressure Turbine
-    
-    # instantiate
-    turbine = MARC.Components.Energy.Converters.Turbine()   
-    turbine.tag='low_pressure_turbine'
-    
-    # setup
-    turbine.mechanical_efficiency = 0.99
-    turbine.polytropic_efficiency = 0.89
-    
-    # add to network
-    turbojet.append(turbine)
-    
-      
-    # ------------------------------------------------------------------
-    #  Component 6 - High Pressure Turbine
-    
-    # instantiate
-    turbine = MARC.Components.Energy.Converters.Turbine()   
-    turbine.tag='high_pressure_turbine'
-
-    # setup
-    turbine.mechanical_efficiency = 0.99
-    turbine.polytropic_efficiency = 0.87
-    
-    # add to network
-    turbojet.append(turbine)
-      
-    
-    # ------------------------------------------------------------------
-    #  Component 7 - Combustor
-    
-    # instantiate    
-    combustor = MARC.Components.Energy.Converters.Combustor()   
-    combustor.tag = 'combustor'
-    
-    # setup
-    combustor.efficiency                = 0.94
-    combustor.alphac                    = 1.0     
-    combustor.turbine_inlet_temperature = 1440.
-    combustor.pressure_ratio            = 0.92
-    combustor.fuel_data                 = MARC.Attributes.Propellants.Jet_A()    
-    
-    # add to network
+ 
+    # Low Pressure Turbine 
+    turbine                               = RCAIDE.Energy.Converters.Turbine()   
+    turbine.tag                           ='low_pressure_turbine' 
+    turbine.mechanical_efficiency         = 0.99
+    turbine.polytropic_efficiency         = 0.89 
+    turbojet.append(turbine)        
+             
+    # High Pressure Turbine         
+    turbine                               = RCAIDE.Energy.Converters.Turbine()   
+    turbine.tag                           ='high_pressure_turbine' 
+    turbine.mechanical_efficiency         = 0.99
+    turbine.polytropic_efficiency         = 0.87 
+    turbojet.append(turbine)  
+          
+    # Combustor   
+    combustor                             = RCAIDE.Energy.Converters.Combustor()   
+    combustor.tag                         = 'combustor' 
+    combustor.efficiency                  = 0.94
+    combustor.alphac                      = 1.0     
+    combustor.turbine_inlet_temperature   = 1440.
+    combustor.pressure_ratio              = 0.92
+    combustor.fuel_data                   = RCAIDE.Attributes.Propellants.Jet_A()     
     turbojet.append(combustor)
-    
-    # ------------------------------------------------------------------
-    #  Afterburner
-    
-    # instantiate    
-    afterburner = MARC.Components.Energy.Converters.Combustor()   
-    afterburner.tag = 'afterburner'
-    
-    # setup
+     
+    #  Afterburner  
+    afterburner                           = RCAIDE.Energy.Converters.Combustor()   
+    afterburner.tag                       = 'afterburner' 
     afterburner.efficiency                = 0.9
     afterburner.alphac                    = 1.0     
     afterburner.turbine_inlet_temperature = 1500
     afterburner.pressure_ratio            = 1.0
-    afterburner.fuel_data                 = MARC.Attributes.Propellants.Jet_A()    
-    
-    # add to network
+    afterburner.fuel_data                 = RCAIDE.Attributes.Propellants.Jet_A()     
     turbojet.append(afterburner)    
-
-    
-    # ------------------------------------------------------------------
-    #  Component 8 - Core Nozzle
-    
-    # instantiate
-    nozzle = MARC.Components.Energy.Converters.Supersonic_Nozzle()   
-    nozzle.tag = 'core_nozzle'
-    
-    # setup
-    nozzle.pressure_recovery     = 0.95
-    nozzle.pressure_ratio        = 1.   
-    
-    # add to network
-    turbojet.append(nozzle)
-    
-    
-    # ------------------------------------------------------------------
-    #Component 10 : thrust (to compute the thrust)
-    thrust = MARC.Components.Energy.Processes.Thrust()       
-    thrust.tag ='compute_thrust'
-    
-    #total design thrust (includes all the engines)
-    thrust.total_design             = 40000. * Units.lbf
  
-    # Note: Sizing builds the network. It does not actually set the size of the turbojet
-    #design sizing conditions
-    altitude      = 60000.0*Units.ft
-    mach_number   = 2.02
-    isa_deviation = 0.    
+    # Core Nozzle 
+    nozzle                                = RCAIDE.Energy.Converters.Supersonic_Nozzle()   
+    nozzle.tag                            = 'core_nozzle' 
+    nozzle.pressure_recovery              = 0.95
+    nozzle.pressure_ratio                 = 1.    
+    turbojet.append(nozzle) 
     
-    # add to network
-    turbojet.thrust = thrust
+    # design turbojet 
+    design_turbojet(turbojet)  
+    
+    # append turbojet 
+    fuel_line.turbojets.append(turbojet) 
+    
 
-    #size the turbojet
-    turbojet_sizing(turbojet,mach_number,altitude)   
+    # append turbojet     
+    turbojet_2                      = deepcopy(turbojet)
+    turbojet_2.tag                  = 'turbojet_2' 
+    turbojet_2.origin               = [[37.,5.3,-1.3]] 
+    fuel_line.turbojets.append(turbojet_2)    
+
+    # append turbojet    
+    turbojet_3                      = deepcopy(turbojet)
+    turbojet_3.tag                  = 'turbojet_3' 
+    turbojet_3.origin               = [[37.,-5.3,-1.3]] 
+    fuel_line.turbojets.append(turbojet_3)    
     
-    # add  gas turbine network gt_engine to the vehicle
-    vehicle.append_component(turbojet)
+    # append turbojet 
+    turbojet_4                      = deepcopy(turbojet)
+    turbojet_4.tag                  = 'turbojet_4' 
+    turbojet_4.origin               = [[37.,-6.,-1.3]] 
+    fuel_line.turbojets.append(turbojet_4)      
+
+    net.fuel_lines.append(fuel_line)    
+    vehicle.append_energy_network(net)     
     
     # ------------------------------------------------------------------
     #   Vehicle Definition Complete
-    # ------------------------------------------------------------------
-    
+    # ------------------------------------------------------------------ 
 
     return vehicle
 
@@ -588,47 +512,42 @@ def configs_setup(vehicle):
     
     # ------------------------------------------------------------------
     #   Initialize Configurations
-    # ------------------------------------------------------------------
-    
-    configs = MARC.Components.Configs.Config.Container()
-    
-    base_config = MARC.Components.Configs.Config(vehicle)
+    # ------------------------------------------------------------------ 
+    configs         = RCAIDE.Components.Configs.Config.Container() 
+    base_config     = RCAIDE.Components.Configs.Config(vehicle)
     base_config.tag = 'base'
     configs.append(base_config)
     
     # ------------------------------------------------------------------
     #   Cruise Configuration
-    # ------------------------------------------------------------------
-    
-    config = MARC.Components.Configs.Config(base_config)
-    config.tag = 'cruise'
-    
+    # ------------------------------------------------------------------ 
+    config     = RCAIDE.Components.Configs.Config(base_config)
+    config.tag = 'cruise' 
     configs.append(config)
     
     # ------------------------------------------------------------------
     #   Afterburner Climb Configuration
-    # ------------------------------------------------------------------
-    
-    config = MARC.Components.Configs.Config(base_config)
-    config.tag = 'climb'
-    
-    config.networks.turbojet.afterburner_active = True
-    
+    # ------------------------------------------------------------------ 
+    config                                      = RCAIDE.Components.Configs.Config(base_config)
+    config.tag                                  = 'climb' 
+    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_1.afterburner_active = True
+    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_2.afterburner_active = True
+    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_3.afterburner_active = True
+    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_4.afterburner_active = True 
     configs.append(config)    
     
     
     # ------------------------------------------------------------------
     #   Takeoff Configuration
-    # ------------------------------------------------------------------
-    
-    config = MARC.Components.Configs.Config(base_config)
-    config.tag = 'takeoff'
-    
-    config.V2_VS_ratio = 1.21
-    config.maximum_lift_coefficient = 2.
-    
-    config.networks.turbojet.afterburner_active = True
-    
+    # ------------------------------------------------------------------  
+    config                                      = RCAIDE.Components.Configs.Config(base_config)
+    config.tag                                  = 'takeoff' 
+    config.V2_VS_ratio                          = 1.21
+    config.maximum_lift_coefficient             = 2.  
+    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_1.afterburner_active = True
+    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_2.afterburner_active = True
+    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_3.afterburner_active = True
+    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_4.afterburner_active = True 
     configs.append(config)
     
     
@@ -636,14 +555,12 @@ def configs_setup(vehicle):
     #   Landing Configuration
     # ------------------------------------------------------------------
 
-    config = MARC.Components.Configs.Config(base_config)
-    config.tag = 'landing'
-    
+    config                                = RCAIDE.Components.Configs.Config(base_config)
+    config.tag                            = 'landing' 
     config.wings['main_wing'].flaps_angle = 0. * Units.deg
-    config.wings['main_wing'].slats_angle = 0. * Units.deg
-
-    config.Vref_VS_ratio = 1.23
-    config.maximum_lift_coefficient = 2.
+    config.wings['main_wing'].slats_angle = 0. * Units.deg 
+    config.Vref_VS_ratio                  = 1.23
+    config.maximum_lift_coefficient       = 2.
     
     configs.append(config)
     

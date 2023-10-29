@@ -1,6 +1,6 @@
 ## @ingroup Methods-Propulsion
 # RCAIDE/Methods/Propulsion/design_turbojet.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -146,7 +146,7 @@ def design_turbojet(turbojet):
     turbojet.inputs.stag_temp_lpt_exit                       = low_pressure_compressor.outputs.stagnation_temperature
     turbojet.inputs.stag_press_lpt_exit                      = low_pressure_compressor.outputs.stagnation_pressure 
     turbojet.inputs.total_temperature_reference              = low_pressure_compressor.outputs.stagnation_temperature
-    turbojet.inputs.total_pressure_reference                 = low_pressure_compressor.outputs.stagnation_pressure
+    turbojet.inputs.total_pressure_reference                 = low_pressure_compressor.outputs.stagnation_pressure  
 
     #compute the thrust
     turbojet.inputs.fan_nozzle                               = Data()
@@ -156,5 +156,6 @@ def design_turbojet(turbojet):
     turbojet.inputs.bypass_ratio                             = 0.0
     turbojet.inputs.flow_through_core                        =  1.0 #scaled constant to turn on core thrust computation
     turbojet.inputs.flow_through_fan                         =  0.0 #scaled constant to turn on fan thrust computation     
-    turbojet.size_core(conditions)
+    turbojet.size_core(conditions) 
+    test = 0
   

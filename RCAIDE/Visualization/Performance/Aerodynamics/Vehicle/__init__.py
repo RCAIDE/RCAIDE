@@ -1,6 +1,6 @@
 ## @defgroup Visualization-Performance-Aerodynamics-Vehicle Vehicle 
 # RCAIDE/Visualization/Performance/Aerodynamics/Vehicle/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Boom  
 # RCAIDE/Methods/Noise/Boom/lift_equivalent_area.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -10,6 +10,7 @@
 
 # RCAIDE
 from RCAIDE.Methods.Aerodynamics.Fidelity_Zero import VLM
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_vortex_distribution       import generate_vortex_distribution 
 
 # Python package imports   
 import numpy as np  
@@ -56,9 +57,8 @@ def lift_equivalent_area(config,analyses,conditions):
     length       = config.total_length
     
     results = VLM(conditions, settings, config)
-    CP = results.CP
-    
-    VD = analyses.aerodynamics.geometry.vortex_distribution
+    CP = results.CP 
+    VD = results.VD
     
     areas      = VD.panel_areas
     normal_vec = VD.normals

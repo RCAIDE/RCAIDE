@@ -1,7 +1,7 @@
 ## @defgroup Methods-Aerodynamics-Common-Lift Lift
 # @ingroup Methods-Aerodynamics-Common
 # RCAIDE/Methods/Aerodynamics/Common/Lift/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

@@ -1,6 +1,6 @@
 ## @defgroup Methods-Missions-Common-Residuals Residuals
 # RCAIDE/Methods/Mission/Common/Residuals/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

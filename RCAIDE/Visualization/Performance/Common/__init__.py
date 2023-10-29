@@ -1,6 +1,6 @@
 ## @defgroup Visualization-Performance-Common Common 
 # RCAIDE/Visualization/Performance/Common/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

@@ -1,6 +1,6 @@
 ## @ingroup Methods-Missions-Segments-Transition
 # RCAIDE/Methods/Missions/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.p
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
   

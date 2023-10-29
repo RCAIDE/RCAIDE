@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Common 
 # RCAIDE/Methods/Noise/Common/decibel_arithmetic.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 

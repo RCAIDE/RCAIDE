@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Fidelity_Zero-Turbofan
 # RCAIDE/Methods/Noise/Fidelity_Zero/Turbofan/compute_turbofan_aircraft_noise.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 

@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Descent
 # RCAIDE/Analyses/Mission/Segments/Descent/Constant_Speed_Constant_Angle_Noise.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  

@@ -1,5 +1,5 @@
 # Regression/scripts/Vehicles/Embraer_E190.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -8,8 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Units   
-from RCAIDE.Methods.Geometry.Two_Dimensional.Planform      import segment_properties   
+from RCAIDE.Core import Units      
 from RCAIDE.Methods.Propulsion                             import design_turbofan
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform      import wing_planform, segment_properties
 from RCAIDE.Visualization                 import *     
@@ -434,9 +433,9 @@ def vehicle_setup():
     vehicle.append_component(nacelle)   
     vehicle.append_component(nacelle_2)    
   
-    # ------------------------------------------------------------------
+    #------------------------------------------------------------------------------------------------------------------------------------  
     #  Turbofan Network
-    # ------------------------------------------------------------------ 
+    #------------------------------------------------------------------------------------------------------------------------------------  
     #initialize the gas turbine network
     net                   = RCAIDE.Energy.Networks.Turbofan_Engine() 
     
@@ -463,7 +462,6 @@ def vehicle_setup():
      
     turbofan                                    = RCAIDE.Energy.Converters.Turbofan() 
     turbofan.tag                                = 'turbofan'
-    turbofan.origin                             = [[12.0,4.38,-1.1]] 
     turbofan.engine_length                      = 2.71     
     turbofan.bypass_ratio                       = 5.4   
     turbofan.design_altitude                    = 35000.0*Units.ft
@@ -549,7 +547,7 @@ def vehicle_setup():
     fuel_line.turbofans.append(turbofan)
 
     turbofan_2                      = deepcopy(turbofan)
-    turbofan_2.tag                  = 'propeller_2' 
+    turbofan_2.tag                  = 'turbofan_2' 
     turbofan_2.origin               = [[12.0,-4.38,-1.1]] 
     fuel_line.turbofans.append(turbofan_2)    
 

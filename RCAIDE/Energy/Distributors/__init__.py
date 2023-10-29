@@ -1,6 +1,6 @@
 ## @defgroup Energy-Distributors Distributors
 # RCAIDE/Energy/Distributors/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

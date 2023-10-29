@@ -1,6 +1,6 @@
 ## @defgroup Methods-Noise-Fidelity_Zero-Rotor Rotor 
 # RCAIDE/Methods/Noise/Fidelity_Zero/Rotor/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

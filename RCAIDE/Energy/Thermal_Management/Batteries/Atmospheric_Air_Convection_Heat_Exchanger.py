@@ -1,6 +1,6 @@
 ## @ingroup Energy-Thermal_Management-Batteries
 # RCAIDE/Energy/Thermal_Management/Batteries/Atmospheric_Air_Convection_Heat_Exchanger.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

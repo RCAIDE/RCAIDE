@@ -1,5 +1,5 @@
 # Regression/scripts/Vehicles/Solar_UAV.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

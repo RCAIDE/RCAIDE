@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Performance-Aerodynamics-Rotor 
 # RCAIDE/Visualization/Performance/Aerodynamics/Rotor/plot_rotor_disc_inflow.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

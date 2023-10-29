@@ -1,6 +1,6 @@
 ## @ingroup Energy-Networks
 # RCAIDE/Energy/Networks/Internal_Combustion_Engine_Constant_Speed.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

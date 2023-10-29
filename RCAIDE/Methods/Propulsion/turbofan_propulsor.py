@@ -1,6 +1,6 @@
 ## @ingroup Methods-Propulsion
 # RCAIDE/Methods/Propulsion/turbofan_propulsor.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -171,7 +171,7 @@ def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbofans,N_turbofan
     #compute the thrust
     turbofan.compute_thrust(conditions,throttle = conditions.energy[PCU.tag][propulsor_group_tag].turbofan.throttle )
 
-    #getting the network outputs from the thrust outputs
+    # getting the network outputs from the thrust outputs
     F            = turbofan.outputs.thrust*[1,0,0]*N_turbofans
     mdot         = turbofan.outputs.fuel_flow_rate*N_turbofans
     P            = turbofan.outputs.power*N_turbofans

@@ -1,5 +1,5 @@
 # setup.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  June 2023, E. Botero
 # Modified: 

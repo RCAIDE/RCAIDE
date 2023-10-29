@@ -1,6 +1,6 @@
 ## @ingroup Methods-Power-Battery 
 # RCAIDE/Methods/Power/Battery/Common/pack_battery_conditions.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
