@@ -56,7 +56,8 @@ def main():
                     min_y_axis_limit            = -20,
                     max_y_axis_limit            = 20,
                     min_z_axis_limit            = -20,
-                    max_z_axis_limit            = 20)         
+                    max_z_axis_limit            = 20,
+                    show_figure                 = False)         
         
     return 
 
