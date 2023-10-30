@@ -14,37 +14,39 @@ from Legacy.trunk.S.Core import Data, Units
 import numpy as np
 
 ## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-def  import_airfoil_polars(airfoil_polar_files,angel_of_attack_discretization = 89):
+def  import_airfoil_polars(airfoil_polar_files, angle_of_attack_discretization=89):
     """This imports airfoil polars from a text file output from XFOIL or Airfoiltools.com
     
     Assumptions:
     Input airfoil polars file is obtained from XFOIL or from Airfoiltools.com
+    
     Source:
     http://airfoiltools.com/
+    
     Inputs:
     airfoil polar files   <list of strings>
+    
     Outputs:
     data       numpy array with airfoil data
+    
     Properties Used:
     N/A
     """      
      
     # number of airfoils   
-    num_polars                   = 0 
-    n_p = len(airfoil_polar_files)
-    if n_p < 3:
-        raise AttributeError('Provide three or more airfoil polars to compute surrogate') 
-    num_polars            = max(num_polars, n_p)       
+    num_polars = len(airfoil_polar_files)
+    if num_polars < 3:
+        raise AttributeError('Provide three or more airfoil polars to compute surrogate')     
     
     # create empty data structures 
     airfoil_data = Data() 
-    AoA          = np.zeros((num_polars,angel_of_attack_discretization))
-    CL           = np.zeros((num_polars,angel_of_attack_discretization))
-    CD           = np.zeros((num_polars,angel_of_attack_discretization)) 
+    AoA          = np.zeros((num_polars,angle_of_attack_discretization))
+    CL           = np.zeros((num_polars,angle_of_attack_discretization))
+    CD           = np.zeros((num_polars,angle_of_attack_discretization)) 
     Re           = np.zeros(num_polars)
     Ma           = np.zeros(num_polars)
     
-    AoA_interp = np.linspace(-6,16,angel_of_attack_discretization)  
+    AoA_interp = np.linspace(-6,16,angle_of_attack_discretization)  
     
     for j in range(len(airfoil_polar_files)):   
         # Open file and read column names and data block
@@ -72,7 +74,7 @@ def  import_airfoil_polars(airfoil_polar_files,angel_of_attack_discretization = 
                 last_line = True
         
         data_len = len(data_block)
-        airfoil_aoa= np.zeros(data_len)
+        airfoil_aoa = np.zeros(data_len)
         airfoil_cl = np.zeros(data_len)
         airfoil_cd = np.zeros(data_len)     
     

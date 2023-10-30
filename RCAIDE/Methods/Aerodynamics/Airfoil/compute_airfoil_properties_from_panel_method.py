@@ -1,4 +1,4 @@
-## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
+## @ingroup Methods-Aerodynamics-Airfoil
 # compute_airfoil_properties.py
 # 
 # Created:  Mar 2019, M. Clarke
@@ -16,12 +16,11 @@ from Legacy.trunk.S.Core                                                        
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.pre_stall_coefficients                           import pre_stall_coefficients
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.post_stall_coefficients                          import post_stall_coefficients  
 from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis                    import airfoil_analysis
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_polars  import import_airfoil_polars 
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_naca_4series   import compute_naca_4series   
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_polars  import import_airfoil_polars   
 import numpy as np
 
-## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_pre_stall_data=True):
+## @ingroup Methods-Aerodynamics-Airfoil
+def compute_airfoil_properties_from_panel_method(settings, airfoil):
     """This computes the aerodynamic properties and coefficients of an airfoil in stall regimes using pre-stall
     characterstics and AERODAS formation for post stall characteristics. This is useful for 
     obtaining a more accurate prediction of wing and blade loading as well as aeroacoustics. Pre stall characteristics 
@@ -66,36 +65,25 @@ def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_
     
     Properties Used:
     N/A
-    """     
-    Airfoil_Data   = Data()  
-   
+    """
+    # Extract any initialized airfoil data
+    Airfoil_Data = compute_boundary_layer_properties(settings, airfoil)
+    use_pre_stall_data = settings.use_pre_stall_data
+    
     # ----------------------------------------------------------------------------------------
     # Compute airfoil boundary layers properties 
     # ----------------------------------------------------------------------------------------   
-    Airfoil_Data   = compute_boundary_layer_properties(airfoil_geometry,Airfoil_Data)
-    num_polars     = len(Airfoil_Data.re_from_polar)
+    num_polars = len(Airfoil_Data.re_from_polar)
      
     # ----------------------------------------------------------------------------------------
     # Compute extended cl and cd polars 
-    # ----------------------------------------------------------------------------------------    
-    if airfoil_polar_files != None : 
-        # check number of polars per airfoil in batch
-        num_polars   = 0 
-        n_p = len(airfoil_polar_files)
-        if n_p < 3:
-            raise AttributeError('Provide three or more airfoil polars to compute surrogate') 
-        num_polars = max(num_polars, n_p)         
-         
-        # read in polars from files overwrite panel code  
-        airfoil_file_data                          = import_airfoil_polars(airfoil_polar_files)  
-        Airfoil_Data.aoa_from_polar                = airfoil_file_data.aoa_from_polar
-        Airfoil_Data.re_from_polar                 = airfoil_file_data.re_from_polar 
-        Airfoil_Data.lift_coefficients             = airfoil_file_data.lift_coefficients
-        Airfoil_Data.drag_coefficients             = airfoil_file_data.drag_coefficients 
-        
+    # ----------------------------------------------------------------------------------------
     # Get all of the coefficients for AERODAS wings
-    AoA_sweep_deg         = np.linspace(-14,90,105)
-    AoA_sweep_rad         = AoA_sweep_deg*Units.degrees    
+    neg_post_stall_region = np.linspace(-180, -45, 16) # coarse post-stall refinement
+    pos_post_stall_region = np.linspace(45, 180, 16) # coarse post-stall refinement
+    mid_region = np.linspace(-45, 45, 25)
+    AoA_sweep_deg = np.append(neg_post_stall_region, np.append(mid_region, pos_post_stall_region))
+    AoA_sweep_rad = AoA_sweep_deg * Units.degrees
     
     # Create an infinite aspect ratio wing
     geometry              = SUAVE.Components.Wings.Wing()
@@ -122,7 +110,8 @@ def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_
     Airfoil_Data.drag_coefficients   = CD    
         
     return Airfoil_Data
- 
+
+## @ingroup Methods-Aerodynamics-Airfoil
 def compute_extended_polars(airfoil_cl,airfoil_cd,airfoil_aoa,AoA_sweep_deg,geometry,use_pre_stall_data): 
     """ Computes the aerodynamic polars of an airfoil over an extended angle of attack range
     
@@ -220,6 +209,7 @@ def compute_extended_polars(airfoil_cl,airfoil_cd,airfoil_aoa,AoA_sweep_deg,geom
         
     return CL,CD
 
+## @ingroup Methods-Aerodynamics-Airfoil
 def apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL, CD): 
     '''Applies prestall data to lift and drag curve slopes
     
@@ -263,10 +253,10 @@ def apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL,
     
     return CL, CD
 
-## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-def compute_boundary_layer_properties(airfoil_geometry,Airfoil_Data): 
+## @ingroup Methods-Aerodynamics-Airfoil
+def compute_boundary_layer_properties(settings, airfoil): 
     '''Computes the boundary layer properties of an airfoil for a sweep of Reynolds numbers 
-    and angle of attacks. 
+    and angle of attacks using a panel method.
     
     Source:
     None
@@ -284,39 +274,38 @@ def compute_boundary_layer_properties(airfoil_geometry,Airfoil_Data):
     Properties Used:
     N/A
     '''
-    if airfoil_geometry == None:
-        print('No airfoil defined, NACA 0012 surrogates will be used') 
-        a_names                       = ['0012']                
-        airfoil_geometry              = compute_naca_4series(a_names, npoints= 100)    
-    
-    AoA_sweep = np.array([-4,0,2,4,8,10,14])*Units.degrees 
-    Re_sweep  = np.array([1,5,10,30,50,75,100])*1E4  
-    AoA_vals  = np.tile(AoA_sweep[None,:],(len(Re_sweep) ,1))
-    Re_vals   = np.tile(Re_sweep[:,None],(1, len(AoA_sweep)))     
-    
-    # run airfoil analysis  
-    af_res  = airfoil_analysis(airfoil_geometry,AoA_vals,Re_vals) 
-    
+    # Extract airfoil geometry and settings for simulation
+    airfoil_geometry = airfoil.geometry
+    AoA_sweep = settings.panel_method.angle_of_attach_range
+    Re_sweep = settings.panel_method.Reynolds_number_range
+    AoA_vals = np.tile(AoA_sweep[None,:], (len(Re_sweep) ,1))
+    Re_vals = np.tile(Re_sweep[:,None], (1, len(AoA_sweep)))
+
+    # run airfoil analysis
+    af_res  = airfoil_analysis(airfoil_geometry, AoA_vals, Re_vals)
+
     # store data
-    Airfoil_Data.aoa_from_polar                                     = np.tile(AoA_sweep[None,:],(len(Re_sweep),1)) 
-    Airfoil_Data.re_from_polar                                      = Re_sweep 
-    Airfoil_Data.lift_coefficients                                  = af_res.cl
-    Airfoil_Data.drag_coefficients                                  = af_res.cd
-    Airfoil_Data.cm                                                 = af_res.cm
-    Airfoil_Data.boundary_layer                                     = Data() 
-    Airfoil_Data.boundary_layer.angle_of_attacks                    = AoA_sweep 
-    Airfoil_Data.boundary_layer.reynolds_numbers                    = Re_sweep      
-    Airfoil_Data.boundary_layer.theta_lower_surface                 = af_res.theta 
-    Airfoil_Data.boundary_layer.delta_lower_surface                 = af_res.delta  
-    Airfoil_Data.boundary_layer.delta_star_lower_surface            = af_res.delta_star  
-    Airfoil_Data.boundary_layer.Ue_Vinf_lower_surface               = af_res.Ue_Vinf   
-    Airfoil_Data.boundary_layer.cf_lower_surface                    = af_res.cf   
-    Airfoil_Data.boundary_layer.dcp_dx_lower_surface                = af_res.dcp_dx 
-    Airfoil_Data.boundary_layer.theta_upper_surface                 = af_res.theta 
-    Airfoil_Data.boundary_layer.delta_upper_surface                 = af_res.delta 
-    Airfoil_Data.boundary_layer.delta_star_upper_surface            = af_res.delta_star   
-    Airfoil_Data.boundary_layer.Ue_Vinf_upper_surface               = af_res.Ue_Vinf     
-    Airfoil_Data.boundary_layer.cf_upper_surface                    = af_res.cf   
-    Airfoil_Data.boundary_layer.dcp_dx_upper_surface                = af_res.dcp_dx   
-    
+    Airfoil_Data = Data()
+    Airfoil_Data.aoa_from_polar = np.tile(AoA_sweep[None,:],(len(Re_sweep),1)) 
+    Airfoil_Data.re_from_polar = Re_sweep 
+    Airfoil_Data.lift_coefficients = af_res.cl
+    Airfoil_Data.drag_coefficients = af_res.cd
+    Airfoil_Data.cm = af_res.cm
+
+    Airfoil_Data.boundary_layer = Data()
+    Airfoil_Data.boundary_layer.angle_of_attacks = AoA_sweep 
+    Airfoil_Data.boundary_layer.reynolds_numbers = Re_sweep      
+    Airfoil_Data.boundary_layer.theta_lower_surface = af_res.theta 
+    Airfoil_Data.boundary_layer.delta_lower_surface = af_res.delta  
+    Airfoil_Data.boundary_layer.delta_star_lower_surface = af_res.delta_star  
+    Airfoil_Data.boundary_layer.Ue_Vinf_lower_surface = af_res.Ue_Vinf   
+    Airfoil_Data.boundary_layer.cf_lower_surface = af_res.cf   
+    Airfoil_Data.boundary_layer.dcp_dx_lower_surface = af_res.dcp_dx 
+    Airfoil_Data.boundary_layer.theta_upper_surface = af_res.theta 
+    Airfoil_Data.boundary_layer.delta_upper_surface = af_res.delta 
+    Airfoil_Data.boundary_layer.delta_star_upper_surface = af_res.delta_star   
+    Airfoil_Data.boundary_layer.Ue_Vinf_upper_surface = af_res.Ue_Vinf     
+    Airfoil_Data.boundary_layer.cf_upper_surface = af_res.cf   
+    Airfoil_Data.boundary_layer.dcp_dx_upper_surface = af_res.dcp_dx   
+
     return Airfoil_Data
