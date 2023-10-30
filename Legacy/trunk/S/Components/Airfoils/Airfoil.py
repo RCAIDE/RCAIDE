@@ -13,6 +13,8 @@
 from Legacy.trunk.S.Core import Data
 from Legacy.trunk.S.Components import Lofted_Body
 
+import Aircraft_Modules
+import os
 # ------------------------------------------------------------
 #   Airfoil
 # ------------------------------------------------------------
@@ -39,10 +41,24 @@ class Airfoil(Lofted_Body.Section):
         """         
         
         self.tag                        = 'Airfoil' 
-        self.coordinate_file            = None    # absolute path  
-        self.NACA_4_series_flag         = False   # Flag for NACA 4 series airfoil
-        self.geometry                   = None
-        self.polar_files                = None
-        self.polars                     = None
+        self.airfoil_directory          = f"{os.path.dirname(Aircraft_Modules.__file__)}/Clark_y" # Default airfoil directory used if unspecified
+        self.coordinate_file            = 'Clark_Y.txt'      # default airfoil coordinate file path, relative to airfoil_directory
         self.number_of_points           = 200
-       
+        self.surface_interpolation      = "cubic"  # type of interpolation used in the SciPy function. Preferable options are linear, quardratic and cubic. 
+                                                   # Full list of options can be found here : https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html#scipy.interpolate.interp1d
+        
+        self.geometry                   = Data()
+        self.geometry.thickness_to_chord = None
+        self.geometry.max_thickness      = None
+        self.geometry.x_coordinates      = None
+        self.geometry.y_coordinates      = None
+        self.geometry.x_upper_surface    = None
+        self.geometry.x_lower_surface    = None
+        self.geometry.y_upper_surface    = None
+        self.geometry.y_lower_surface    = None
+        self.geometry.camber_coordinates = None
+        
+        #self.NACA_4_series_flag         = False   # Flag for NACA 4 series airfoil
+        #self.polar_files                = None # absolute path to each polar file 
+        #self.polars                     = None
+        #self.number_of_points           = 200

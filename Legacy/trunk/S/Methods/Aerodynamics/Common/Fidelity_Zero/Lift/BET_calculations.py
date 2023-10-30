@@ -6,11 +6,11 @@
 from Legacy.trunk.S.Core.Utilities import interp2d 
 import numpy as np
 ## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
-def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts,Nr,Na,tc,use_2d_analysis):
+def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoil_analyses,a_loc,ctrl_pts,Nr,Na,tc,use_2d_analysis):
     """
     Cl, Cdval = compute_airfoil_aerodynamics( beta,c,r,R,B,
                                               Wa,Wt,a,nu,
-                                              airfoils,a_loc
+                                              airfoil_analyses,a_loc
                                               ctrl_pts,Nr,Na,tc,use_2d_analysis )
 
     Computes the aerodynamic forces at sectional blade locations. If airfoil
@@ -62,10 +62,10 @@ def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
             # return the 2D Cl and CDval of shape (ctrl_pts, Nr, Na)
             Cl      = np.zeros((ctrl_pts,Nr,Na))
             Cdval   = np.zeros((ctrl_pts,Nr,Na))
-            for jj,airfoil in enumerate(airfoils):
+            for jj,airfoil in enumerate(airfoil_analyses):
                 pd              = airfoil.polars
-                Cl_af           = interp2d(Re,alpha,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients) 
-                Cdval_af        = interp2d(Re,alpha,pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
+                Cl_af           = interp2d(Re, alpha, pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients) 
+                Cdval_af        = interp2d(Re, alpha, pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
                 locs            = np.where(np.array(a_loc) == jj )
                 Cl[:,locs,:]    = Cl_af[:,locs,:]
                 Cdval[:,locs,:] = Cdval_af[:,locs,:]
@@ -74,10 +74,10 @@ def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
             Cl      = np.zeros((ctrl_pts,Nr))
             Cdval   = np.zeros((ctrl_pts,Nr))
 
-            for jj,airfoil in enumerate(airfoils):
+            for jj,airfoil in enumerate(airfoil_analyses):
                 pd            = airfoil.polars
-                Cl_af         = interp2d(Re,alpha,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients)
-                Cdval_af      = interp2d(Re,alpha,pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
+                Cl_af         = interp2d(Re, alpha, pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients)
+                Cdval_af      = interp2d(Re, alpha, pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
                 locs          = np.where(np.array(a_loc) == jj )
                 Cl[:,locs]    = Cl_af[:,locs]
                 Cdval[:,locs] = Cdval_af[:,locs]
