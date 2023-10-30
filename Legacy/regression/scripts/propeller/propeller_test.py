@@ -20,6 +20,7 @@ import numpy as np
 import copy, time
 from Legacy.trunk.S.Methods.Propulsion import propeller_design
 from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
+import os
 
 def main():
     
@@ -81,25 +82,15 @@ def main():
     # define first airfoil 
     airfoil_1                         = SUAVE.Components.Airfoils.Airfoil()
     airfoil_1.tag                     = 'NACA_4412' 
-    airfoil_1.airfoil_directory       = '../Vehicles/Airfoils/NACA_4412'
-    airfoil_1.coordinate_file         = 'NACA_4412.txt'   # absolute path   
-    #airfoil_1.polar_files             = ['../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt',
-                                            #'../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt',
-                                            #'../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt',
-                                            #'../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt',
-                                            #'../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt'] 
+    airfoil_1.airfoil_directory       = os.path.abspath('../Vehicles/Airfoils/NACA_4412')
+    airfoil_1.coordinate_file         = 'NACA_4412.txt'
     prop_a.append_airfoil(airfoil_1)   # append first airfoil 
     
     # define  second airfoil 
     airfoil_2                         = SUAVE.Components.Airfoils.Airfoil()  
     airfoil_2.tag                     = 'Clark_Y' 
-    airfoil_2.airfoil_directory       = '../Vehicles/Airfoils/Clark_y'
+    airfoil_2.airfoil_directory       = os.path.abspath('../Vehicles/Airfoils/Clark_y')
     airfoil_2.coordinate_file         = 'Clark_y.txt'
-    #airfoil_2.polar_files             = ['../Vehicles/Airfoils/Polars/Clark_y_polar_Re_50000.txt',
-                                          #'../Vehicles/Airfoils/Polars/Clark_y_polar_Re_100000.txt',
-                                          #'../Vehicles/Airfoils/Polars/Clark_y_polar_Re_200000.txt',
-                                          #'../Vehicles/Airfoils/Polars/Clark_y_polar_Re_500000.txt',
-                                          #'../Vehicles/Airfoils/Polars/Clark_y_polar_Re_1000000.txt'] 
     prop_a.append_airfoil(airfoil_2)  # append second airfoil 
     
     # define polar stations on rotor 
