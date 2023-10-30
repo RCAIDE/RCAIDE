@@ -44,6 +44,7 @@ class Vehicle(Analysis.Container):
                 N/A
         """
         self.aerodynamics = None
+        self.airfoils     = None
         self.atmosphere   = None
         self.costs        = None
         self.energy       = None
@@ -99,14 +100,15 @@ class Vehicle(Analysis.Container):
         Analysis.Container.__init__(self,*args,**kwarg)
 
         self._analyses_map = { 
-            RCAIDE.Analyses.Weights.Weights           : 'weights'      ,
-            RCAIDE.Analyses.Aerodynamics.Aerodynamics : 'aerodynamics' ,
-            RCAIDE.Analyses.Stability.Stability       : 'stability'    ,
-            RCAIDE.Analyses.Energy.Energy             : 'energy'       ,
-            RCAIDE.Analyses.Atmospheric.Atmospheric   : 'atmosphere'   ,
-            RCAIDE.Analyses.Planets.Planet            : 'planet'       ,
-            RCAIDE.Analyses.Noise.Noise               : 'noise'        ,
-            RCAIDE.Analyses.Costs.Costs               : 'costs'        ,
+            RCAIDE.Analyses.Weights.Weights               : 'weights'      ,
+            RCAIDE.Analyses.Aerodynamics.Aerodynamics     : 'aerodynamics' ,
+            RCAIDE.Analyses.Aerodynamics.Airfoils.Airfoil : 'airfoils' ,
+            RCAIDE.Analyses.Stability.Stability           : 'stability'    ,
+            RCAIDE.Analyses.Energy.Energy                 : 'energy'       ,
+            RCAIDE.Analyses.Atmospheric.Atmospheric       : 'atmosphere'   ,
+            RCAIDE.Analyses.Planets.Planet                : 'planet'       ,
+            RCAIDE.Analyses.Noise.Noise                   : 'noise'        ,
+            RCAIDE.Analyses.Costs.Costs                   : 'costs'        ,
         }
 
     def get_root(self,analysis):

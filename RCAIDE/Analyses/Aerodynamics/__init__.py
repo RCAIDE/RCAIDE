@@ -24,3 +24,4 @@ from Legacy.trunk.S.Analyses.Aerodynamics.SU2_Euler_Super              import SU
 from Legacy.trunk.S.Analyses.Aerodynamics.SU2_inviscid_Super           import SU2_inviscid_Super
 from Legacy.trunk.S.Analyses.Aerodynamics.Supersonic_OpenVSP_Wave_Drag import Supersonic_OpenVSP_Wave_Drag
 from Legacy.trunk.S.Analyses.Aerodynamics.Lifting_Line                 import Lifting_Line
+from . import Airfoils
