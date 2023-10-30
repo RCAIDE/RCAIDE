@@ -548,7 +548,7 @@ def get_blade_coordinates(prop,n_points,dim,i,aircraftRefFrame=True):
     r            = prop.radius_distribution
     MCA          = prop.mid_chord_alignment
     t            = prop.max_thickness_distribution
-    a_loc        = prop.airfoil_polar_stations
+    a_loc        = prop.airfoil_stations
     origin       = prop.origin
     
     if prop.rotation==1:
