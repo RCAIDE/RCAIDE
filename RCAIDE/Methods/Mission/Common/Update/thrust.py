@@ -1,6 +1,6 @@
 ## @ingroup Methods-Missions-Common-Update
 # RCAIDE/Methods/Missions/Common/Update/thrust.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

@@ -1,6 +1,6 @@
 ## @ingroup Energy-Thermal_Management-Cryogenics
 # RCAIDE/Energy/Thermal_Management/Cryogenics/Cryogenic_Heat_Exchange.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

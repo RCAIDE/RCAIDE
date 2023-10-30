@@ -1,6 +1,6 @@
 ## @ingroup Energy-Storages-Batteries
 # RCAIDE/Energy/Storages/Batteries/Lithium_Sulfur.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

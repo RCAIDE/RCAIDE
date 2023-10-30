@@ -1,6 +1,6 @@
 ## @ingroup Methods-Aerodynamics-Common-Lift
 # RCAIDE/Methods/Aerodynamics/Common/Lift/compute_RHS_matrix.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

@@ -1,6 +1,6 @@
 ## @defgroup Analyses-Noise Noise
 # RCAIDE/Analyses/Noise/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

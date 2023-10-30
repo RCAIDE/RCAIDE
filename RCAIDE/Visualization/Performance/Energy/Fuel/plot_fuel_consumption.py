@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Performance-Energy-Fuel
 # RCAIDE/Visualization/Performance/Energy/Fuel/plot_fuel_consumption.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

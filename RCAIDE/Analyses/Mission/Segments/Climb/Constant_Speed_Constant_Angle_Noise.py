@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Climb
 # RCAIDE/Analyses/Mission/Segments/Climb/Constant_Speed_Constant_Angle_Noise.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -72,7 +72,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize  
         initialize.expand_state            = Climb.Constant_Speed_Constant_Angle_Noise.expand_state    
-        initialize.differentials_altitude  = Common.Initalize.differentials_altitude
+        initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Constant_Speed_Constant_Angle_Noise.initialize_conditions  
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 

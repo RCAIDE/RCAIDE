@@ -1,5 +1,5 @@
 # Regression/scripts/Vehicles/NASA_X57.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

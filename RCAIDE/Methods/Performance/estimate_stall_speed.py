@@ -1,6 +1,6 @@
 ## @ingroup Methods-Performance
 # RCAIDE/Methods/Performance/estimate_stall_speed.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 

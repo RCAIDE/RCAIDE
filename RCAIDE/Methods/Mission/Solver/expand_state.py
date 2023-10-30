@@ -1,6 +1,6 @@
 ## @ingroup Methods-Missions-Segments 
 # RCAIDE/Methods/Missions/Segments/expand_state.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke   
 

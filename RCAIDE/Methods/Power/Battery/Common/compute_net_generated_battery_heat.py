@@ -1,6 +1,6 @@
 ## @ingroup Methods-Power-Battery-Common
 # RCAIDE/Methods/Power/Battery/Common/compute_net_generated_battery_heat.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 

@@ -1,5 +1,5 @@
 # Regression/scripts/Tests/network_all_electric/all_electric_network_test.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -144,7 +144,7 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics          = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
+    aerodynamics          = RCAIDE.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics)   

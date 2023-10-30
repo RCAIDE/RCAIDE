@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Cruise 
 # RCAIDE/Analyses/Mission/Segments/Cruise/Constant_Acceleration_Constant_Altitude.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -71,7 +71,7 @@ class Constant_Acceleration_Constant_Altitude(Evaluate):
         initialize                         = self.process.initialize 
         initialize.conditions              = Segments.Cruise.Constant_Acceleration_Constant_Altitude.initialize_conditions       
         iterate                            = self.process.iterate  
-        iterate.unknowns.mission           = Common.Residuals.level_flight_forces 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight 
         iterate.residuals.total_forces     = Segments.Cruise.Constant_Acceleration_Constant_Altitude.residual_total_forces 
         return
 

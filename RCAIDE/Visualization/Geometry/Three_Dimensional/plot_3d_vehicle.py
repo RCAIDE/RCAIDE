@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Geometry-Three_Dimensional
 # RCAIDE/Visualization/Geometry/Three_Dimensional/plot_3d_vehicle.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Methods.Aerodynamics.Fidelity_Zero                        import generate_vortex_distribution 
-from RCAIDE.Analyses.Aerodynamics.Vortex_Lattice                      import Vortex_Lattice
+from RCAIDE.Analyses.Aerodynamics.Common.Vortex_Lattice               import Vortex_Lattice
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_fuselage import plot_3d_fuselage
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_wing     import plot_3d_wing 
 from RCAIDE.Visualization.Geometry.Three_Dimensional.plot_3d_nacelle  import plot_3d_nacelle

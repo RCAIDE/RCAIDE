@@ -1,6 +1,6 @@
 ## @ingroup Methods-Missions-Common Common-Update
 # RCAIDE/Methods/Missions/Common/Update/kinematics.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 

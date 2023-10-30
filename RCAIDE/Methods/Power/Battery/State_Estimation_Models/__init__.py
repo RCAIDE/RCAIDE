@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Battery-State_Estimation_Models State_Estimation_Models
 # RCAIDE/Methods/Power/Battery/State_Estimation_Models/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

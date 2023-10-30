@@ -1,6 +1,6 @@
 ## @defgroup Methods-Weights-Buildups-Common Common
 # RCAIDE/Methods/Weights/Buildups/Common/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

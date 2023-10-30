@@ -1,6 +1,6 @@
 ## @ingroup Energy-Converters
 # RCAIDE/Energy/Converters/Fan.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -24,28 +24,28 @@ class Turbojet(Energy_Component):
     def __defaults__(self):    
         # setting the default values
         self.tag = 'Turbojet' 
-        self.engine_length        = 0.0
-        self.bypass_ratio         = 0.0 
-        self.design_isa_deviation = 0.0
-        self.design_altitude      = 0.0
-        self.afterburner_active   = False
-        self.SFC_adjustment       = 0.0 # Less than 1 is a reduction
+        self.engine_length                            = 0.0
+        self.bypass_ratio                             = 0.0 
+        self.design_isa_deviation                     = 0.0
+        self.design_altitude                          = 0.0
+        self.afterburner_active                       = False
+        self.SFC_adjustment                           = 0.0  
         self.compressor_nondimensional_massflow       = 0.0
         self.reference_temperature                    = 288.15
         self.reference_pressure                       = 1.01325*10**5 
         self.design_thrust                            = 0.0
         self.mass_flow_rate_design                    = 0.0 
-        self.OpenVSP_flow_through = False
+        self.OpenVSP_flow_through                     = False
         
         #areas needed for drag; not in there yet
-        self.areas             = Data()
-        self.areas.wetted      = 0.0
-        self.areas.maximum     = 0.0
-        self.areas.exit        = 0.0
-        self.areas.inflow      = 0.0
-         
-        self.inputs             = Data()
-        self.outputs            = Data()
+        self.areas                                    = Data()
+        self.areas.wetted                             = 0.0
+        self.areas.maximum                            = 0.0
+        self.areas.exit                               = 0.0
+        self.areas.inflow                             = 0.0
+                               
+        self.inputs                                   = Data()
+        self.outputs                                  = Data()
         
         self.inputs.fuel_to_air_ratio                 = 0.0
         self.outputs.thrust                           = 0.0 

@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Descent
 # RCAIDE/Analyses/Mission/Segments/Descent/Linear_Mach_Constant_Rate.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -70,7 +70,7 @@ class Linear_Mach_Constant_Rate(Evaluate):
         #  Mission specific processes 
         # -------------------------------------------------------------------------------------------------------------- 
         initialize                         = self.process.initialize  
-        initialize.differentials_altitude  = Common.Initalize.differentials_altitude
+        initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Descent.Linear_Mach_Constant_Rate.initialize_conditions
         iterate                            = self.process.iterate   
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 

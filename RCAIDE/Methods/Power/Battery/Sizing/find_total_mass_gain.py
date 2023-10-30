@@ -1,6 +1,6 @@
 ## @ingroup Methods-Power-Battery-Sizing
 # RCAIDE/Methods/Power/Battery/Sizing/find_total_mass_gain.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

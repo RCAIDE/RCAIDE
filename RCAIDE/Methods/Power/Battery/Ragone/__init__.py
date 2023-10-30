@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Battery-Ragone Ragone
 # RCAIDE/Methods/Power/Battery/Ragone/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

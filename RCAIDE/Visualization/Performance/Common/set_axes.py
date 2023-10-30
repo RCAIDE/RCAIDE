@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Performance-Common
 # RCAIDE/Visualization/Performance/Common/set_axes.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  

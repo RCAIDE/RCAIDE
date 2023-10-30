@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Turboelectric-Sizing Sizing
 # RCAIDE/Methods/Power/Turboelectric/Sizing/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

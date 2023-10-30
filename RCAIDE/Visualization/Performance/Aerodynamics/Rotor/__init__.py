@@ -1,6 +1,6 @@
 ## @defgroup Visualization-Performance-Aerodynamics-Rotor Rotor 
 # RCAIDE/Visualization/Performance/Aerodynamics/Rotor/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

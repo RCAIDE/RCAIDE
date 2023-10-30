@@ -1,6 +1,6 @@
 ## @ingroup Methods-Propulsion
 # RCAIDE/Methods/Propulsion/turbojet_propulsor.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -21,24 +21,18 @@ import numpy as np
 def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbojets,N_turbojets,conditions): 
     ''' 
     ''' 
-    unique_turbojet_tags  = conditions.energy[PCU.tag][propulsor_group_tag].unique_turbojet_tags 
-    turbojet              = turbojets[unique_turbojet_tags[i]] 
-
+    unique_turbojet_tags      = conditions.energy[PCU.tag][propulsor_group_tag].unique_turbojet_tags 
+    turbojet                  = turbojets[unique_turbojet_tags[i]]  
     ram                       = turbojet.ram
     inlet_nozzle              = turbojet.inlet_nozzle
     low_pressure_compressor   = turbojet.low_pressure_compressor
     high_pressure_compressor  = turbojet.high_pressure_compressor
     combustor                 = turbojet.combustor
     high_pressure_turbine     = turbojet.high_pressure_turbine
-    low_pressure_turbine      = turbojet.low_pressure_turbine
-    try:
-        afterburner           = turbojet.afterburner
-    except:
-        pass
+    low_pressure_turbine      = turbojet.low_pressure_turbine 
+    afterburner               = turbojet.afterburner 
     core_nozzle               = turbojet.core_nozzle  
-
-    #Creating the network by manually linking the different components
-
+ 
     #set the working fluid to determine the fluid properties
     ram.inputs.working_fluid                               = turbojet.working_fluid
 
@@ -140,13 +134,13 @@ def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbojets,N_turbojet
     turbojet.inputs.flow_through_fan                         =  0.0 #scaled constant to turn on fan thrust computation        
 
     #compute the thrust
-    turbojet.compute_thrust(conditions,throttle = conditions.energy[PCU.tag][propulsor_group_tag].turbofan.throttle )
+    turbojet.compute_thrust(conditions,throttle = conditions.energy[PCU.tag][propulsor_group_tag].turbojet.throttle )
 
     #getting the network outputs from the thrust outputs
-    F            = turbojet.outputs.thrust*[1,0,0]
-    mdot         = turbojet.outputs.fuel_flow_rate
+    F            = turbojet.outputs.thrust*[1,0,0]*N_turbojets
+    mdot         = turbojet.outputs.fuel_flow_rate*N_turbojets
     Isp          = turbojet.outputs.specific_impulse
-    P            = turbojet.outputs.power
+    P            = turbojet.outputs.power*N_turbojets
     F_vec        = conditions.ones_row(3) * 0.0
     F_vec[:,0]   = F[:,0]
     F            = F_vec

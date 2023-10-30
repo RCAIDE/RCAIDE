@@ -1,7 +1,7 @@
 ## @defgroup Methods-Noise-Fidelity_Zero-Engine Engine
 # @ingroup Methods 
 # RCAIDE/Methods/Noise/Fidelity_Zero/Engine/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Geometry-Three_Dimensional 
 # RCAIDE/Visualization/Geometry/Three_Dimensional/plot_3d_fuselage.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 

@@ -1,6 +1,6 @@
 ## @ingroup Methods-Missions-Segments-Climb
 # RCAIDE/Methods/Missions/Segments/Climb/Constant_Dynamic_Pressure_Constant_Rate.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 

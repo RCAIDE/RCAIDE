@@ -1,6 +1,6 @@
 ## @defgroup Methods-Power-Battery-Sizing Sizing
 # RCAIDE/Methods/Power/Battery/Sizing/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

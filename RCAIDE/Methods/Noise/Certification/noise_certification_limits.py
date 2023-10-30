@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Certification
 # RCAIDE/Methods/Noise/Certification/noise_certification_limits.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 

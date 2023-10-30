@@ -1,7 +1,7 @@
 ## @defgroup External_Interfaces-SU2 SU2
 # @ingroup External_Interfaces
 # RCAIDE/External_Interfaces/SU2/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

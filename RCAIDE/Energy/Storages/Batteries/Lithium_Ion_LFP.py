@@ -1,6 +1,6 @@
 ## @ingroup Energy-Storages-Batteries
 # RCAIDE/Energy/Storages/Batteries/Lithium_Ion_LiFePO4_18650.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
