@@ -4,7 +4,7 @@
 import Legacy.trunk.S as SUAVE
 from Legacy.trunk.S.Core import Units, Data 
 from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller                                       import Battery_Propeller
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties  import compute_airfoil_properties
+from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties  import compute_airfoil_properties
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_naca_4series        import compute_naca_4series
 from Legacy.trunk.S.Methods.Noise.Fidelity_One.Propeller.propeller_mid_fidelity                        import propeller_mid_fidelity
 from Legacy.trunk.S.Analyses.Mission.Segments.Conditions                                               import Aerodynamics , Conditions

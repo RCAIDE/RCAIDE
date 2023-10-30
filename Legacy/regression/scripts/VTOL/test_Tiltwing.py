@@ -15,6 +15,7 @@ from Legacy.trunk.S.Plots.Performance.Mission_Plots import *
 from Legacy.trunk.S.Plots.Geometry.plot_vehicle import plot_vehicle 
 import numpy as np  
 import sys 
+import RCAIDE
 
 sys.path.append('../Vehicles')
 # the analysis functions
@@ -139,6 +140,13 @@ def base_analysis(vehicle):
     aerodynamics.settings.drag_coefficient_increment = 0.4*vehicle.excrescence_area_spin / vehicle.reference_area
     analyses.append(aerodynamics)
 
+    # ------------------------------------------------------------------
+    #  Airfoil Analysis
+    airfoil_analysis = RCAIDE.Analyses.Aerodynamics.Airfoils.Airfoil()
+    airfoil_analysis.geometry                  = vehicle 
+    airfoil_analysis.settings.use_panel_method = False
+    analyses.append(airfoil_analysis)
+    
     # ------------------------------------------------------------------
     #  Energy
     energy= SUAVE.Analyses.Energy.Energy()

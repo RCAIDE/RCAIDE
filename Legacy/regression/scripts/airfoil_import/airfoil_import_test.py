@@ -14,7 +14,8 @@ from Legacy.trunk.S.Core import Units, Data
 from Legacy.trunk.S.Plots.Geometry import plot_airfoil
 import matplotlib.pyplot as plt  
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil\
-     import import_airfoil_geometry, compute_airfoil_properties, convert_airfoil_to_meshgrid
+     import import_airfoil_geometry, convert_airfoil_to_meshgrid
+from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties import compute_airfoil_properties
 from Legacy.trunk.S.Plots.Performance.Airfoil_Plots import *
 import os
 import numpy as np

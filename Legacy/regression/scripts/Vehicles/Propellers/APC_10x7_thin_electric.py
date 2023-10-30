@@ -10,7 +10,7 @@ from Legacy.trunk.S.Core import Data, Units
 import numpy as np
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
      import import_airfoil_geometry
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import (
+from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties import (
     compute_airfoil_properties,
 )
 import os
@@ -116,5 +116,5 @@ def propeller_geometry():
     airfoil.geometry                 = import_airfoil_geometry(airfoil.coordinate_file,airfoil.number_of_points)
     airfoil.polars                   = compute_airfoil_properties(airfoil.geometry,airfoil.polar_files)
     prop.append_airfoil(airfoil) 
-    prop.airfoil_polar_stations      = list(np.zeros(len(r_R)).astype(int))
+    prop.airfoil_stations      = list(np.zeros(len(r_R)).astype(int))
     return prop

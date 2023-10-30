@@ -5,7 +5,7 @@
 # Imports
 import Legacy.trunk.S as SUAVE
 from Legacy.trunk.S.Core import Units, Data  
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties  import compute_airfoil_properties
+from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties  import compute_airfoil_properties
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry \
      import import_airfoil_geometry    
 from scipy.interpolate import interp1d
@@ -52,7 +52,7 @@ def F8745_D4_Propeller():
     airfoil.geometry                 = import_airfoil_geometry(airfoil.coordinate_file,airfoil.number_of_points)
     airfoil.polars                   = compute_airfoil_properties(airfoil.geometry,airfoil.polar_files)
     prop.append_airfoil(airfoil) 
-    prop.airfoil_polar_stations      = list(np.zeros(num_sec).astype(int))  
+    prop.airfoil_stations      = list(np.zeros(num_sec).astype(int))  
     prop.mid_chord_alignment         = np.zeros_like(prop.chord_distribution)  
         
     return prop
