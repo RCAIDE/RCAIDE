@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Fidelity_Zero-Rotor
 # RCAIDE/Methods/Noise/Fidelity_Zero/Rotor/compute_BPM_boundary_layer_properties.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 

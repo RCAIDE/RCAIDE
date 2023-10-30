@@ -1,5 +1,5 @@
 # Regression/scripts/Vehicles/Solar_UAV.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -190,7 +190,7 @@ def vehicle_setup():
     bat.specific_energy      = 600. * Units.Wh/Units.kg
     bat.resistance           = 0.05
     bat.pack.maximum_voltage = 45.0
-    bat.thermal_management_system = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger() 
+    bat.thermal_management_system = RCAIDE.Energy.Thermal_Management.Batteries.No_Heat_Exchanger() 
     initialize_from_mass(bat) 
     bus.batteries.append(bat)                                
        
@@ -201,7 +201,7 @@ def vehicle_setup():
     propeller.number_of_blades                      = 2.0
     propeller.tip_radius                            = 4.25 * Units.meters
     propeller.hub_radius                            = 0.05 * Units.meters
-    propeller.cruise.design_freestream_velocity     = 40.0 * Units['m/s']# freestream
+    propeller.cruise.design_freestream_velocity     = 40.0 * Units['m/s'] 
     propeller.cruise.design_angular_velocity        = 150. * Units['rpm']
     propeller.cruise.design_Cl                      = 0.7
     propeller.cruise.design_altitude                = 14.0 * Units.km

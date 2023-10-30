@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments
 # RCAIDE/Analyses/Mission/Segment/Evaluate.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -57,9 +57,8 @@ class Evaluate(Segment):
         # -------------------------------------------------------------- 
         initialize                         = self.process.initialize 
         initialize.expand_state            = Solver.expand_state
-        initialize.differentials           = Common.Initalize.differentials_dimensionless 
-        initialize.conditions              = None
-        #initialize.aerodynamics            = Common.Initalize.aerodynamics
+        initialize.differentials           = Common.Initialize.differentials_dimensionless 
+        initialize.conditions              = None 
 
         # --------------------------------------------------------------         
         #   Converge 
@@ -72,11 +71,11 @@ class Evaluate(Segment):
         # -------------------------------------------------------------- 
         iterate                            = self.process.iterate 
         iterate.initials                   = Process()
-        iterate.initials.time              = Common.Initalize.time
-        iterate.initials.weights           = Common.Initalize.weights
-        iterate.initials.energy            = Common.Initalize.energy
-        iterate.initials.inertial_position = Common.Initalize.inertial_position
-        iterate.initials.planet_position   = Common.Initalize.planet_position
+        iterate.initials.time              = Common.Initialize.time
+        iterate.initials.weights           = Common.Initialize.weights
+        iterate.initials.energy            = Common.Initialize.energy
+        iterate.initials.inertial_position = Common.Initialize.inertial_position
+        iterate.initials.planet_position   = Common.Initialize.planet_position
         
         # Unpack Unknowns
         iterate.unknowns                   = Process()

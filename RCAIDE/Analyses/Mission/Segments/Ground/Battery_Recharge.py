@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Ground
 # RCAIDE/Analyses/Mission/Segments/Ground/Battery_Charge.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  

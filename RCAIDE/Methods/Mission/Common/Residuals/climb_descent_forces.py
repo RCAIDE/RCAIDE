@@ -1,6 +1,6 @@
 ## @ingroup Methods-Missions-Common-Residuals
 # RCAIDE/Methods/Missions/Common/Residuals/climb_descent_unknowns.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  

@@ -1,6 +1,6 @@
 ## @defgroup Methods-Costs-Operating_Costs  Operating_Costs 
 # RCAIDE/Methods/Costs/Operating_Costs /__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

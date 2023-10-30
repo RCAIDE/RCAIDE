@@ -1,6 +1,6 @@
 ## @defgroup Methods-Flight_Dynamics-Static_Stability-Approximations-Tube_Wing Tube_Wing
 # RCAIDE/Methods/Flight_Dynamics/Static_Stability/Approximations/Tube_Wing/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

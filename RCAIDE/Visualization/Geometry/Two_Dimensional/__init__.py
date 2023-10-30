@@ -1,6 +1,6 @@
 ## @defgroup Visualization-Geometry-Two_Dimensional Two_Dimensional 
 # RCAIDE/Visualization/Geometry/Two_Dimensional/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

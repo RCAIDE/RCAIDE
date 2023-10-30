@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Climb
 # RCAIDE/Analyses/Mission/Segments/Climb/Constant_Mach_Constant_Angle.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -69,7 +69,7 @@ class Constant_Mach_Constant_Angle(Evaluate):
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize  
-        initialize.differentials_altitude  = Common.Initalize.differentials_altitude
+        initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions  
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Segments.Climb.Constant_Mach_Constant_Angle.residual_total_forces 

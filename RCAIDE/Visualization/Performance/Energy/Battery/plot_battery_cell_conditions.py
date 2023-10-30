@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Geometry-Three_Dimensional
 # RCAIDE/Visualization/Performance/Energy/Battery/plot_battery_cell_conditions.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -21,7 +21,7 @@ import numpy as np
 def plot_battery_cell_conditions(results,
                                   save_figure = False,
                                   show_legend = True,
-                                  save_filename = "Battery_Cell_Conditions",
+                                  save_filename = "Battery_Cell_Conditions_",
                                   file_type = ".png",
                                   width = 12, height = 7):
     """Plots the cell-level conditions of the battery throughout flight.

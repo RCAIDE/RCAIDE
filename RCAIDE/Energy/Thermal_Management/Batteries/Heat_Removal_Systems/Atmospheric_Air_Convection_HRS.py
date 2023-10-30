@@ -1,6 +1,6 @@
-## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Removal_Systems/Atmospheric_Air_Convection_HRS.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Energy-Thermal_Management-Batteries
+# RCAIDE/Energy/Thermal_Management/Batteries/Atmospheric_Air_Convection_Heat_Exchanger.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -10,13 +10,14 @@
  
 from RCAIDE.Core import Data
 from RCAIDE.Energy.Energy_Component import Energy_Component 
+from RCAIDE.Methods.Thermal_Management.Batteries.Atmospheric_Air_Convection_Cooling.direct_convection_model import compute_net_convected_heat 
 from RCAIDE.Attributes.Gases import Air
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Atmospheric_Air_Convection_Heat_Removal_System 
+#  Atmospheric_Air_Convection_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems
-class Atmospheric_Air_Convection_HRS(Energy_Component):
+## @ingroup Energy-Thermal_Management-Batteries
+class Atmospheric_Air_Convection_Heat_Exchanger(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
     Assumptions:

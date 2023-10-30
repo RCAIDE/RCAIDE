@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Fidelity_Zero-Engine
 # RCAIDE/Methods/Noise/Fidelity_Zero/Engine/external_plug_effect.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 

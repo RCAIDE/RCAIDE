@@ -1,6 +1,6 @@
 ## @defgroup Components-Wings-Control_Surfaces Control_Surfaces
 # RCAIDE/Components/Wings/Control_Surfaces/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

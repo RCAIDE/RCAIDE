@@ -1,6 +1,6 @@
 ## @ingroup Energy-Distributors
 # RCAIDE/Energy/Distributors/Bus_Power_Control_Unit.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

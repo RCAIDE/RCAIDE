@@ -1,6 +1,6 @@
 ## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling
 # RCAIDE/Methods/Thermal_Management/Batteries/Atmospheric_Air_Convection_Cooling/compute_net_convected_heat.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Climb
 # RCAIDE/Analyses/Mission/Segments/Climb/Linear_Mach_Constant_Rate.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -61,14 +61,15 @@ class Linear_Mach_Constant_Rate(Evaluate):
         #  Mission Specific Unknowns and Residuals 
         # --------------------------------------------------------------------------------------------------------------   
         ones_row = self.state.ones_row        
-        self.state.unknowns.altitudes  = ones_row(1) * 0.0
-        self.state.residuals.forces    = ones_row(3) * 0.0        
+        self.state.unknowns.throttle   = ones_row(1) * 0.5
+        self.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees
+        self.state.residuals.forces    = ones_row(2) * 0.0        
                 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize  
-        initialize.differentials_altitude  = Common.Initalize.differentials_altitude
+        initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Linear_Mach_Constant_Rate.initialize_conditions  
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 

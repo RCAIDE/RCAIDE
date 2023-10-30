@@ -1,6 +1,6 @@
 ## @ingroup Energy-Storages-Batteries
 # RCAIDE/Energy/Storages/Batteries/Lithium_Ion_LiNiMnCoO2_18650.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -140,7 +140,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
              battery.
                   current_energy                                           [Joules]
                   temperature                                              [Kelvin]
-                  resistive_losses                                         [Watts]
+                  heat_energy_generated                                    [Watts]
                   load_power                                               [Watts]
                   current                                                  [Amps]
                   battery_voltage_open_circuit                             [Volts]
@@ -213,9 +213,8 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         btms_results = btms.compute_net_generated_battery_heat(battery,Q_heat_gen,numerics,conditions.freestream)
         T_current    = btms_results.operating_conditions.battery_current_temperature
 
-        # Power going into the battery accounting for resistance losses
-        P_loss = n_total*Q_heat_gen
-        P      = -P_bat - np.abs(P_loss)      
+        # Effective Power flowing through battery 
+        P      = -(P_bat - np.abs(btms_results.operating_conditions.heat_energy_generated)) 
         
         # Compute State Variables
         V_ul  = compute_NMC_cell_state_variables(battery_data,SOC_old,T_cell,I_cell)
@@ -266,7 +265,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         V_ul[SOC_new < 0.] = 0. 
             
         # Pack outputs
-        battery.pack.resistive_losses              = P_loss
+        battery.pack.generated_heat                = btms_results.operating_conditions.heat_energy_generated
         battery.pack.load_power                    = V_ul*n_series*I_bat
         battery.pack.current_energy                = E_current
         battery.pack.temperature                   = T_current 

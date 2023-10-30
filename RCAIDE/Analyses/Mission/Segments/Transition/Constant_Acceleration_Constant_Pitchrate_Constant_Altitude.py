@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Transition
 # RCAIDE/Analyses/Mission/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py 
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -69,8 +69,7 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Evaluate):
         # --------------------------------------------------------------------------------------------------------------          
         initialize                         = self.process.initialize 
         initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.initialize_conditions      
-        iterate                            = self.process.iterate   
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight
+        iterate                            = self.process.iterate    
         iterate.residuals.total_forces     = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.residual_total_forces
         
         return

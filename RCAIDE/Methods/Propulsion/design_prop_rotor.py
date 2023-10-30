@@ -1,6 +1,6 @@
 ## @ingroup Methods-Propulsion
 # RCAIDE/Methods/Propulsion/design_prop_rotor.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

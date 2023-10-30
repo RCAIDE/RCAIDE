@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Mission-Segments-Climb
 # RCAIDE/Analyses/Mission/Segments/Climb/Optimized.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -84,7 +84,7 @@ class Optimized(Evaluate):
         self.state.constraint_values          = 0.0
            
         
-        #  Initalize 
+        #  Initialize 
         initialize                         = self.process.initialize 
         initialize.solved_mission          = Climb.Optimized.solve_linear_speed_constant_rate 
         initialize.conditions              = skip  

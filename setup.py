@@ -1,5 +1,5 @@
 # setup.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  June 2023, E. Botero
 # Modified: 
@@ -90,8 +90,7 @@ def install(the_package,version,date):
         platforms = ['Win, Linux, Unix, Mac OS-X'],
         zip_safe  = False,
         requires  = requires,
-        python_requires = python_v,
-        #long_description = read('../README.md');
+        python_requires = python_v, 
     )  
     
     return
@@ -205,8 +204,8 @@ def import_tests():
     try:
         import numpy
     except ImportError:
-        raise ImportError('numpy is required for this package')
-    
+        raise ImportError('numpy is required for this package') 
+     
     try:
         import scipy
     except ImportError:
@@ -225,7 +224,22 @@ def import_tests():
     try:
         import plotly
     except ImportError:
-        raise ImportError('plotly is required for this package')
+        raise ImportError('plotly is required for this package') 
+    
+    try:
+        import kaleido
+    except ImportError:
+        raise ImportError('kaleido is required for this package')   
+
+    try:
+        import pandas
+    except ImportError:
+        raise ImportError('pandas is required for this package')
+     
+    try:
+        import geopy
+    except ImportError:
+        raise ImportError('geopy is required for this package')    
     
     return
     

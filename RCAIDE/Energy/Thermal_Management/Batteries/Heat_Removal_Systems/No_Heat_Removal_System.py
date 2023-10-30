@@ -1,6 +1,6 @@
-## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Removal_Systems/No_Removal_System.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Energy-Thermal_Management-Batteries
+# RCAIDE/Energy/Thermal_Management/Batteries/No_Heat_Exchanger.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -15,8 +15,8 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  No_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems
-class No_Heat_Removal_System(Energy_Component):
+## @ingroup Energy-Thermal_Management-Batteries
+class No_Heat_Exchanger(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
     Assumptions:
@@ -27,7 +27,7 @@ class No_Heat_Removal_System(Energy_Component):
     """
     
     def __defaults__(self):  
-        self.tag   = 'No_Removal_System'
+        self.tag   = 'No_Heat_Exchanger'
         return
     
     def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics,freestream): 
@@ -57,18 +57,20 @@ class No_Heat_Removal_System(Energy_Component):
         I                        = numerics.time.integrate        
     
         # Calculate the current going into one cell   
-        Nn                = battery.module.geometrtic_configuration.normal_count            
-        Np                = battery.module.geometrtic_configuration.parallel_count    
-        n_total_module    = Nn*Np  
+        Nn                 = battery.module.geometrtic_configuration.normal_count            
+        Np                 = battery.module.geometrtic_configuration.parallel_count    
+        N_modules          = battery.module.number_of_modules
+        N_cells_per_module = Nn*Np
+        N_total            = N_modules * N_cells_per_module 
         
-        if n_total_module == 1:    
+        if (N_cells_per_module == 1) and (N_modules==1):    
             Q_heat_gen_tot = Q_heat_gen
             P_net          = Q_heat_gen_tot   
         else:     
-            Q_heat_gen_tot        = Q_heat_gen*n_total_module  
+            Q_heat_gen_tot        = Q_heat_gen*N_total
             P_net                 = Q_heat_gen_tot  
          
-        dT_dt                  = P_net/(cell_mass*n_total_module*Cp)
+        dT_dt                  = P_net/(cell_mass*N_total*Cp)
         T_current              = T_current[0] + np.dot(I,dT_dt)   
 
         btms_results = Data()

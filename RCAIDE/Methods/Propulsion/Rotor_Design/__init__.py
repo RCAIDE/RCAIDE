@@ -1,6 +1,6 @@
 ## @defgroup Methods-Propulsion-Rotor_Design Rotor_Design
 # RCAIDE/Methods/Propulsion/Rotor_Design/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """

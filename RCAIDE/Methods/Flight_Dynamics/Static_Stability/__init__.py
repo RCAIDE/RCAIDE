@@ -1,6 +1,6 @@
 ## @defgroup Methods-Flight_Dynamics-Static_Stability Static_Stability
 # RCAIDE/Methods/Flight_Dynamics/Static_Stability/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

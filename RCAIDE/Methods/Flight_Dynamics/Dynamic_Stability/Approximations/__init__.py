@@ -1,6 +1,6 @@
 ## @defgroup Methods-Flight_Dynamics-Dynamic_Stability-Approximations Approximations
 # RCAIDE/Methods/Flight_Dynamics/Dynamic_Stability/Approximations/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

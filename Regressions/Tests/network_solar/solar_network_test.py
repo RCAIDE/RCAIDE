@@ -1,5 +1,5 @@
 # Regression/scripts/Tests/network_solar/solar_netwwork_test.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -118,7 +118,7 @@ def base_analysis(vehicle):
     
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics                                     = RCAIDE.Analyses.Aerodynamics.Fidelity_Zero() 
+    aerodynamics                                     = RCAIDE.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     aerodynamics.settings.span_efficiency            = 0.98
@@ -176,8 +176,8 @@ def mission_setup(analyses):
     segment.mach_number                     = 0.1
     segment.distance                        = 3050.0 * Units.km
     segment.initial_battery_state_of_charge = 0.3  
-    segment.latitude                        = 37.4300   # this defaults to degrees (do not use Units.degrees)
-    segment.longitude                       = -122.1700 # this defaults to degrees
+    segment.latitude                        = 37.4300     
+    segment.longitude                       = -122.1700   
     segment = analyses.base.energy.networks.solar.add_unknowns_and_residuals_to_segment(segment)    
     
     
@@ -192,7 +192,7 @@ def mission_setup(analyses):
 
 def missions_setup(mission): 
 
-    missions         = RCAIDE.Analyses.Mission.Missions()
+    missions     = RCAIDE.Analyses.Mission.Missions()
 
     # base mission 
     mission.tag  = 'base_mission'

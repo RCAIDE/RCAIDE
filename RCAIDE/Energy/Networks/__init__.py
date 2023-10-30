@@ -1,5 +1,5 @@
 # RCAIDE/Energy/Networks/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """
@@ -24,10 +24,9 @@ from Legacy.trunk.S.Components.Energy.Networks import Turbojet_Super            
  
 from .Network                                       import Network  
 from .Turbofan_Engine                               import Turbofan_Engine
-from .Turbojet                                      import Turbojet 
+from .Turbojet_Engine                               import Turbojet_Engine 
 from .Isolated_Battery_Cell                         import Isolated_Battery_Cell  
 from .All_Electric                                  import All_Electric 
-from .All_Electric_Ducted_Fan                       import All_Electric_Ducted_Fan 
 from .Internal_Combustion_Engine                    import Internal_Combustion_Engine
 from .Internal_Combustion_Engine_Constant_Speed     import Internal_Combustion_Engine_Constant_Speed  
 from .Network                                       import Network 

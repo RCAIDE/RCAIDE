@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Geometry-Three_Dimensional
 # RCAIDE/Visualization/Performance/Energy/Fuel/plot_altitude_sfc_weight.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -96,8 +96,7 @@ def plot_altitude_sfc_weight(results,
                     
         
         axes_2 = plt.subplot(2,2,2)
-        axes_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-        axes_2.set_xlabel('Time (mins)')
+        axes_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.marker, linewidth = ps.line_width) 
         axes_2.set_ylabel(r'Weight (kN)')  
         set_axes(axes_2) 
 
@@ -106,6 +105,12 @@ def plot_altitude_sfc_weight(results,
         axes_3.set_xlabel('Time (mins)')
         axes_3.set_ylabel(r'SFC (lb/lbf-hr)')
         set_axes(axes_3) 
+
+        axes_3 = plt.subplot(2,2,4)
+        axes_3.plot(time, mdot, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+        axes_3.set_xlabel('Time (mins)')
+        axes_3.set_ylabel(r'Fuel Rate (kg/s)')
+        set_axes(axes_3)         
         
     
     if show_legend:
@@ -126,15 +131,17 @@ def plot_altitude_sfc_weight(results,
 
 def plot_propulsor_throttles(results,distributor,i,pg,pg_i,time,line_colors,ps,segment_name,axes_1): 
     active_propulsor_groups   = distributor.active_propulsor_groups    
-    bus_results               = results.segments[i].conditions.energy[distributor.tag] 
+    results               = results.segments[i].conditions.energy[distributor.tag] 
     for j in range(len(active_propulsor_groups)):  
         if pg[pg_i] == active_propulsor_groups[j]:  
-            if 'engine' in bus_results[active_propulsor_groups[j]]:  
-                eta    =  bus_results[active_propulsor_groups[j]].engine.throttle[:,0]
-            elif 'motor' in bus_results[active_propulsor_groups[j]]:
-                eta    =  bus_results[active_propulsor_groups[j]].motor.throttle[:,0]   
-            elif 'turbofan' in bus_results[active_propulsor_groups[j]]:
-                eta    =  bus_results[active_propulsor_groups[j]].turbofan.throttle[:,0]  
+            if 'engine' in  results[active_propulsor_groups[j]]:  
+                eta    =   results[active_propulsor_groups[j]].engine.throttle[:,0]
+            elif 'motor' in  results[active_propulsor_groups[j]]:
+                eta    =   results[active_propulsor_groups[j]].motor.throttle[:,0]   
+            elif 'turbofan' in  results[active_propulsor_groups[j]]:
+                eta    =   results[active_propulsor_groups[j]].turbofan.throttle[:,0]  
+            elif 'turbojet' in  results[active_propulsor_groups[j]]:
+                eta    =  results[active_propulsor_groups[j]].turbojet.throttle[:,0]  
 
             axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)         
     return       

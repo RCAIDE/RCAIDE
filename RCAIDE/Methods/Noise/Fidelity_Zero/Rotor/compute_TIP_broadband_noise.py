@@ -1,6 +1,6 @@
 ## @ingroup Methods-Noise-Fidelity_Zero-Rotor
 # RCAIDE/Methods/Noise/Fidelity_Zero/Rotor/compute_TIP_broadband_noise.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 
