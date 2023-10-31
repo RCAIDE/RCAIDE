@@ -7,6 +7,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
+from Legacy.trunk.S.Core import Data
 from Legacy.trunk.S.Components.Energy.Converters import Rotor as Rotor_Legacy
 from RCAIDE.Components.Airfoils import Airfoil
 
@@ -44,7 +45,7 @@ class Rotor(Rotor_Legacy):
         None
         """
 
-        self.number_of_radial_stations = 20 
+        self.number_of_radial_stations = 20
 
     def finalize(self):
         # If no airfoils were specified, attach a default airfoil

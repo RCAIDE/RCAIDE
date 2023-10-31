@@ -85,8 +85,8 @@ class Rotor(Energy_Component):
         self.sol_tolerance                     = 1e-8
         self.design_power_coefficient          = 0.01
         
-        self.Airfoils                          = ContainerOrdered()
-        self.airfoil_stations                  = None
+        self.Airfoils                          = ContainerOrdered() # The analyses for the airfoils
+        self.airfoil_polar_stations            = None
 
         self.use_2d_analysis                   = False    # True if rotor is at an angle relative to freestream or nonuniform freestream
         self.nonuniform_freestream             = False
@@ -103,9 +103,8 @@ class Rotor(Energy_Component):
         # Initialize the default wake set to Fidelity Zero
         self.Wake                              = Rotor_Wake_Fidelity_Zero()
 
-    
-    def append_airfoil(self, airfoil):
-        """ Adds an airfoil to the rotor
+    def append_airfoil(self,airfoil):
+        """ Adds an airfoil analysis to the rotor
 
         Assumptions:
         None
@@ -213,9 +212,8 @@ class Rotor(Energy_Component):
         sweep    = self.sweep_distribution     # quarter chord distance from quarter chord of root airfoil
         r_1d     = self.radius_distribution
         tc       = self.thickness_to_chord
-        a_loc    = self.airfoil_stations
-        airfoils = self.Airfoils # Physical airfoil components
-        airfoil_analyses = conditions.aerodynamics.airfoil # Output analyses from airfoil polar analysis
+        a_loc    = self.airfoil_polar_stations
+        airfoils = self.Airfoils
  
 
         # Unpack rotor inputs and conditions
@@ -407,7 +405,7 @@ class Rotor(Energy_Component):
         lamdaw, F, _ = compute_inflow_and_tip_loss(r,R,Wa,Wt,B)
 
         # Compute aerodynamic forces based on specified input airfoil or surrogate
-        Cl, Cdval, alpha, Ma,W = compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoil_analyses,a_loc,ctrl_pts,Nr,Na,tc,use_2d_analysis)
+        Cl, Cdval, alpha, Ma,W = compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts,Nr,Na,tc,use_2d_analysis)
         
         
         # compute HFW circulation at the blade
