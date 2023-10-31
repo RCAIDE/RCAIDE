@@ -91,14 +91,7 @@ class Airfoil(Analysis):
         
         """
         
-        ## Check for provided polar files if data is not to be computed with panel method
-        #if self.polar_files is None and not self.settings.use_panel_method:
-            #default_polar_files = ['Clark_y_polar_Re_50000.txt', 'Clark_y_polar_Re_100000.txt', 'Clark_y_polar_Re_200000.txt', 
-                                   #'Clark_y_polar_Re_500000.txt', 'Clark_y_polar_Re_1000000.txt']
-            #self.polar_files = [f"{self.airfoil_data_directory}/Polars/{file}" for file in default_polar_files]
-        
-        
-        # Initialize the polar data calculations
+        # Initialize the analysis with the proper evaluate method
         if self.settings.use_panel_method:
             self.evaluate = self.evaluate_with_panel_method
         else:
@@ -132,7 +125,10 @@ class Airfoil(Analysis):
         geometry = self.geometry
         if isinstance(geometry, Rotor):
 
-            for airfoil in geometry.Airfoils:
+            for airfoil in geometry.Airfoil_Components:
+                # Initialize airfoil
+                airfoil.initialize()
+                
                 # Evaluate airfoil geometry for this rotor
                 if airfoil.settings.NACA_4_series_flag:
                     airfoil.geometry = compute_naca_4series_geometry(airfoil)
@@ -149,12 +145,18 @@ class Airfoil(Analysis):
                 for wing in geometry.wings:
                     if bool(wing.Airfoil.keys()):
                         for airfoil in wing.Airfoil:
+                            # Initialize airfoil
+                            airfoil.initialize()
+                            
                             # Evaluate airfoil geometry for this wing
                             airfoil.geometry = import_airfoil_geometry(airfoil)
     
             for net in geometry.networks:
                 for prop in net.propellers:
-                    for airfoil in prop.Airfoils:
+                    for airfoil in prop.Airfoil_Components:
+                        # Initialize airfoil
+                        airfoil.initialize()
+                        
                         # Evaluate airfoil geometry for this rotor
                         airfoil.geometry = import_airfoil_geometry(airfoil)
                         

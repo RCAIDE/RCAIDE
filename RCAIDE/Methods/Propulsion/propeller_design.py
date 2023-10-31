@@ -29,7 +29,7 @@ from RCAIDE.Analyses.Aerodynamics.Airfoils import Airfoil
 #  Propeller Design
 # ----------------------------------------------------------------------
 
-def propeller_design(prop, airfoil_analysis=None, tol=1e-10):
+def propeller_design(prop, tol=1e-10):
     """ Optimizes propeller chord and twist given input parameters.
           
           Inputs:
@@ -67,8 +67,9 @@ def propeller_design(prop, airfoil_analysis=None, tol=1e-10):
     alt          = prop.design_altitude
     Thrust       = prop.design_thrust
     Power        = prop.design_power
-    airfoils     = prop.Airfoils 
-    a_loc        = prop.airfoil_stations
+    airfoil_components = prop.Airfoil_Components
+    airfoil_analyses = prop.Airfoil_Analyses 
+    a_loc        = prop.airfoil_polar_stations
     
     # Check for static conditions
     if V == 0.0:
@@ -77,14 +78,14 @@ def propeller_design(prop, airfoil_analysis=None, tol=1e-10):
     # ---------------------------------------------------------------------------------------------------------
     # Setup Analyses for Rotor Design
     # ---------------------------------------------------------------------------------------------------------
-    # Calculate airfoil properties from airfoil analysis
-    if airfoil_analysis is None:
-        airfoil_analysis = Airfoil.Airfoil()
+    ## Calculate airfoil properties from airfoil analysis
+    #if not bool(airfoil_analyses):
+        #airfoil_analysis = Airfoil.Airfoil()
     
-    # Set prop as geometry for analysis
-    airfoil_analysis.geometry = prop
-    airfoil_analysis.initialize()
-    airfoil_analysis.evaluate()
+        ## Set prop as geometry for analysis
+        #airfoil_analyses.geometry = prop
+        #airfoil_analyses.initialize()
+        #airfoil_analyses.evaluate()
     
     # If no airfoil locations specified, default to using the first attached airfoil
     #if not bool(a_loc):
@@ -133,11 +134,11 @@ def propeller_design(prop, airfoil_analysis=None, tol=1e-10):
     if len(a_loc) != N:
         raise AssertionError('\nDimension of airfoil sections must be equal to number of stations on propeller') 
     
-    for _,airfoil in enumerate(airfoils):
+    for _,airfoil in enumerate(airfoil_components):
         # Check that airfoil analysis has been run
         if not bool(airfoil.geometry):
             raise AssertionError("Airfoil geometry import not yet run!")
-        if not bool(airfoil_analysis.airfoil_data):
+        if not bool(airfoil_analyses.airfoil_data[airfoil.tag]):
             raise AssertionError("Airfoil analysis not yet run!")
     
     while diff>tol:      
@@ -164,12 +165,12 @@ def propeller_design(prop, airfoil_analysis=None, tol=1e-10):
         alpha0   = np.ones(N)*0.05
         
         # solve for optimal alpha to meet design Cl target
-        sol      = root(objective, x0 = alpha0 , args=(airfoil_analysis,a_loc,RE,Cl,N))
+        sol      = root(objective, x0 = alpha0 , args=(airfoil_analyses,a_loc,RE,Cl,N))
         alpha    = sol.x
         
         # query surrogate for sectional Cls at stations 
         Cdval    = np.zeros_like(RE) 
-        for j, airfoil_polar_data in enumerate(airfoil_analysis.airfoil_data):                   
+        for j, airfoil_polar_data in enumerate(airfoil_analyses.airfoil_data):                   
             pd          = airfoil_polar_data
             Cdval_af    = interp2d(RE, alpha, pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
             locs        = np.where(np.array(a_loc) == j )
@@ -259,7 +260,7 @@ def propeller_design(prop, airfoil_analysis=None, tol=1e-10):
     t_max  = np.zeros(N)    
     t_c    = np.zeros(N)   
     #if num_airfoils>0:
-    for j,airfoil in enumerate(airfoils): 
+    for j,airfoil in enumerate(airfoil_components): 
         a_geo         = airfoil.geometry
         locs          = np.where(np.array(a_loc) == j )
         t_max[locs]   = a_geo.max_thickness*c[locs] 

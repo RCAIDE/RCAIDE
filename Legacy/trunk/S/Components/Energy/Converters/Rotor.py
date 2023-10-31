@@ -213,7 +213,7 @@ class Rotor(Energy_Component):
         r_1d     = self.radius_distribution
         tc       = self.thickness_to_chord
         a_loc    = self.airfoil_polar_stations
-        airfoils = self.Airfoils
+        airfoils = self.Airfoils              # Contains airfoil analysis data
  
 
         # Unpack rotor inputs and conditions

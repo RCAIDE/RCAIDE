@@ -41,8 +41,8 @@ class Airfoil(Lofted_Body.Section):
         """         
         
         self.tag                        = 'Airfoil' 
-        self.airfoil_directory          = f"{os.path.dirname(Aircraft_Modules.__file__)}/Airfoils/Clark_y" # Default airfoil directory used if unspecified
-        self.coordinate_file            = 'Clark_Y.txt'      # default airfoil coordinate file path, relative to airfoil_directory
+        self.airfoil_directory          = None
+        self.coordinate_file            = None
 
         self.settings = Data()
         self.settings.number_of_points = 200
@@ -62,3 +62,20 @@ class Airfoil(Lofted_Body.Section):
         self.geometry.y_upper_surface    = None
         self.geometry.y_lower_surface    = None
         self.geometry.camber_coordinates = None
+        
+        
+    def initialize(self):
+        """
+        Initialize this airfoil.
+        """
+        # Default airfoil directory used if unspecified
+        if self.airfoil_directory is None:
+            self.airfoil_directory = f"{os.path.dirname(Aircraft_Modules.__file__)}/Airfoils/Clark_y" 
+            print(f'Warning: No airfoil directory specified. Defaulted to: {self.airfoil_directory}')
+        
+        # Default airfoil coordinate file path, relative to airfoil_directory
+        if self.coordinate_file is None and not self.settings.NACA_4_series_flag:
+            self.coordinate_file = 'Clark_Y.txt'
+            print(f'Warning: No airfoil coordinate file specified. Defaulted to: {self.coordinate_file}')
+        
+        return

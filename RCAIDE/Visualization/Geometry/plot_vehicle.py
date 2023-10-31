@@ -254,14 +254,14 @@ def get_blade_coordinates(prop,n_points,dim,i,aircraftRefFrame=True):
     """    
     # unpack
     num_B        = prop.number_of_blades
-    airfoils     = prop.Airfoils 
+    airfoils     = prop.Airfoil_Components 
     beta         = prop.twist_distribution + prop.inputs.pitch_command
     a_o          = prop.start_angle
     b            = prop.chord_distribution
     r            = prop.radius_distribution
     MCA          = prop.mid_chord_alignment
     t            = prop.max_thickness_distribution
-    a_loc        = prop.airfoil_stations
+    a_loc        = prop.airfoil_polar_stations
     origin       = prop.origin
     
     if prop.rotation==1:
