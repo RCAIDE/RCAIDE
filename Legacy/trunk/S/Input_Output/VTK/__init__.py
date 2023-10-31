@@ -5,6 +5,7 @@
 
 from .save_evaluation_points_vtk   import save_evaluation_points_vtk
 from .save_fuselage_vtk            import save_fuselage_vtk           
+from .save_nacelle_vtk             import save_nacelle_vtk            
 from .save_prop_vtk                import save_prop_vtk               
 from .save_vehicle_vtk             import save_vehicle_vtk            
 from .save_prop_wake_vtk           import save_prop_wake_vtk          

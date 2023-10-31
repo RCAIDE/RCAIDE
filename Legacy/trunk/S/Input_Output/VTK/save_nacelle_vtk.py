@@ -12,6 +12,45 @@
 from Legacy.trunk.S.Input_Output.VTK.write_azimuthal_cell_values import write_azimuthal_cell_values
 import numpy as np
 
+from Legacy.trunk.S.Plots.Geometry.plot_vehicle import generate_nacelle_points
+
+
+#------------------------------
+# Nacelle VTK generation
+#------------------------------
+## @ingroup Input_Output-VTK
+def save_nacelle_vtk(nacelle, filename, Results, origin_offset):
+    """
+    Saves a SUAVE nacelle object as a VTK in legacy format.
+
+    Inputs:
+       nacelle        Data structure of SUAVE nacelle                [Unitless]
+       filename       Name of vtk file to save                       [String]
+       Results        Data structure of wing and propeller results   [Unitless]
+
+    Outputs:
+       N/A
+
+    Properties Used:
+       N/A
+
+    Assumptions:
+       N/A
+
+    Source:
+       None
+
+    """
+
+    nac_pts = generate_nacelle_points(nacelle)
+    num_nac_segs = np.shape(nac_pts)[0]
+    if num_nac_segs == 0:
+        print("No nacelle segments found!")
+    else:
+        write_nacelle_data(nac_pts,filename,origin_offset)
+
+    return
+
 
 #------------------------------
 # Writing nacelle data
