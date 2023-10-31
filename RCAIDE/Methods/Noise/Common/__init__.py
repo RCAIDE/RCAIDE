@@ -19,4 +19,4 @@ from .compute_noise_source_coordinates                   import compute_rotor_po
 from .generate_microphone_locations                      import generate_zero_elevation_microphone_locations
 from .generate_microphone_locations                      import generate_terrain_elevated_microphone_locations
 from .generate_microphone_locations                      import generate_noise_hemisphere_microphone_locations
-from .compute_relative_noise_evaluation_locations        import compute_relative_noise_evaluation_locations 
+from .compute_relative_noise_evaluation_locations        import compute_relative_noise_evaluation_locations  

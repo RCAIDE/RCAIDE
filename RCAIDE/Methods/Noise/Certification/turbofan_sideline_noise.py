@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE
-from RCAIDE.Methods.Noise.Fidelity_Zero.Turbofan import compute_turbofan_aircraft_noise
+from RCAIDE.Methods.Noise.Correlation_Buildup.Turbofan import compute_turbofan_aircraft_noise
 
 # Python package imports   
 import numpy as np  
@@ -18,7 +18,7 @@ import numpy as np
 #  Turbofan Sideline Noise
 # ----------------------------------------------------------------------------------------------------------------------      
 ## @ingroup Methods-Noise-Certification
-def turbofan_sideline_noise(analyses,noise_configs):  
+def turbofan_sideline_noise(sideline_takeoff_mission,noise_configs):  
     """This method calculates sideline noise of a turbofan aircraft 
             
     Assumptions:
@@ -40,7 +40,7 @@ def turbofan_sideline_noise(analyses,noise_configs):
     """ 
 
     # Update number of control points for noise 
-    mission                                                     = analyses.missions.sideline_takeoff 
+    mission                                                     = sideline_takeoff_mission
     sideline_initialization_results                             = mission.evaluate() 
     n_points                                                    = np.ceil(sideline_initialization_results.segments.climb.conditions.frames.inertial.time[-1] /0.5 +1) 
     mission.npoints_sideline_sign                               = np.sign(n_points) 

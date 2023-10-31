@@ -1,13 +1,13 @@
-## @defgroup Methods-Weights Weights
-# RCAIDE/Methods/Weights/__init__.py
+## @defgroup Methods-Noise-Correlation_Buildups Correlation_Buildups 
+# RCAIDE/Methods/Noise/Correlation_Buildups/__init__.py
 # 
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import Physics_Based_Buildups 
-from . import Correlation_Buildups 
+from . import Airframe 
+from . import Turbofan

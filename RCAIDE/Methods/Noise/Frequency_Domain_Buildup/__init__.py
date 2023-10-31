@@ -1,13 +1,12 @@
-## @defgroup Methods-Weights Weights
-# RCAIDE/Methods/Weights/__init__.py
+## @defgroup Methods-Noise-Frequency_Domain_Buildups Frequency_Domain_Buildups
+# RCAIDE/Methods/Noise/Frequency_Domain_Buildups/__init__.py
 # 
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import Physics_Based_Buildups 
-from . import Correlation_Buildups 
+from . import Rotor

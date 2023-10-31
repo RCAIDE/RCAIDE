@@ -11,7 +11,7 @@
 # RCAIDE Imports 
 import RCAIDE 
 from RCAIDE.Core                                                  import Units  
-from RCAIDE.Methods.Noise.Fidelity_Zero.Rotor.compute_rotor_noise import compute_rotor_noise 
+from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor          import rotor_noise 
 from RCAIDE.Analyses.Process                                      import Process   
 
 # Python package imports   
@@ -274,13 +274,13 @@ def run_rotor_hover(nexus):
     segment                                          = RCAIDE.Analyses.Mission.Segments.Segment() 
     segment.state.conditions                         = conditions
     segment.state.conditions.expand_rows(ctrl_pts)  
-    noise                                            = RCAIDE.Analyses.Noise.Fidelity_Zero() 
+    noise                                            = RCAIDE.Analyses.Noise.Frequency_Domain_Buildup() 
     settings                                         = noise.settings   
     num_mic                                          = len(conditions.noise.total_microphone_locations[0])  
     conditions.noise.number_of_microphones           = num_mic   
     
     if alpha != 1: 
-        propeller_noise_hover                           = compute_rotor_noise(rotors,outputs,segment,settings)   
+        propeller_noise_hover                           = rotor_noise(rotors,outputs,segment,settings)   
         mean_SPL_hover                                  = np.mean(propeller_noise_hover.SPL_dBA) 
         nexus.results.hover.mean_SPL   = mean_SPL_hover 
         nexus.results.hover.noise_data = propeller_noise_hover     
@@ -355,13 +355,13 @@ def run_rotor_cruise(nexus):
         segment                                          = RCAIDE.Analyses.Mission.Segments.Segment() 
         segment.state.conditions                         = conditions
         segment.state.conditions.expand_rows(ctrl_pts)  
-        noise                                            = RCAIDE.Analyses.Noise.Fidelity_Zero() 
+        noise                                            = RCAIDE.Analyses.Noise.Frequency_Domain_Buildup() 
         settings                                         = noise.settings   
         num_mic                                          = len(conditions.noise.total_microphone_locations[0])  
         conditions.noise.number_of_microphones           = num_mic    
         
         if alpha != 1: 
-            propeller_noise_cruise                           = compute_rotor_noise(rotors,outputs,segment,settings)   
+            propeller_noise_cruise                           = rotor_noise(rotors,outputs,segment,settings)   
             mean_SPL_cruise                                  = np.mean(propeller_noise_cruise.SPL_dBA)    
                 
             # Pack

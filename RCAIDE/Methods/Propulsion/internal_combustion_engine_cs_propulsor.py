@@ -47,14 +47,15 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
     Properties Used: 
     N.A.        
     ''' 
-    unique_rotor_tags   = conditions.energy[fuel_line_tag][propulsor_group_tag].unique_rotor_tags
-    unique_engine_tags  = conditions.energy[fuel_line_tag][propulsor_group_tag].unique_engine_tags  
-    engine              = engines[unique_engine_tags[i]]
-    rotor               = rotors[unique_rotor_tags[i]]  
+    ice_cs_net_pg_results = conditions.energy[fuel_line_tag][propulsor_group_tag]
+    unique_rotor_tags     = ice_cs_net_pg_results.unique_rotor_tags
+    unique_engine_tags    = ice_cs_net_pg_results.unique_engine_tags  
+    engine                = engines[unique_engine_tags[i]]
+    rotor                 = rotors[unique_rotor_tags[i]]  
  
     # Run the rotor to get the power
-    rotor.inputs.pitch_command = conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.pitch_command
-    rotor.inputs.omega         = conditions.energy[fuel_line_tag][propulsor_group_tag].engine.rpm
+    rotor.inputs.pitch_command = ice_cs_net_pg_results.rotor.pitch_command
+    rotor.inputs.omega         = ice_cs_net_pg_results.engine.rpm
  
     # Spin the rotor 
     F, Q, P, Cp, outputs, etap = rotor.spin(conditions) 
@@ -73,17 +74,17 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
     total_power         = P * N_rotors[i]  
       
     # Pack specific outputs
-    conditions.energy[fuel_line_tag][propulsor_group_tag].mass_flow_rate       = mdot
-    conditions.energy[fuel_line_tag][propulsor_group_tag].engine.torque        = Q
-    conditions.energy[fuel_line_tag][propulsor_group_tag].engine.power         = P   
-    conditions.energy[fuel_line_tag][propulsor_group_tag].engine.throttle      = throttle
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.torque         = Q
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.rpm            = rpm
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.tip_mach       = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound 
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.disc_loading   = (F_mag)/(np.pi*(R**2))             
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.power_loading  = (F_mag)/(P)    
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.efficiency     = etap
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.figure_of_merit= outputs.figure_of_merit
+    ice_cs_net_pg_results.mass_flow_rate       = mdot
+    ice_cs_net_pg_results.engine.torque        = Q
+    ice_cs_net_pg_results.engine.power         = P   
+    ice_cs_net_pg_results.engine.throttle      = throttle
+    ice_cs_net_pg_results.rotor.torque         = Q
+    ice_cs_net_pg_results.rotor.rpm            = rpm
+    ice_cs_net_pg_results.rotor.tip_mach       = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound 
+    ice_cs_net_pg_results.rotor.disc_loading   = (F_mag)/(np.pi*(R**2))             
+    ice_cs_net_pg_results.rotor.power_loading  = (F_mag)/(P)    
+    ice_cs_net_pg_results.rotor.efficiency     = etap
+    ice_cs_net_pg_results.rotor.figure_of_merit= outputs.figure_of_merit
     conditions.noise.sources.rotors[rotor.tag]                                 = outputs 
  
     return outputs , total_thrust , total_power ,mdot
