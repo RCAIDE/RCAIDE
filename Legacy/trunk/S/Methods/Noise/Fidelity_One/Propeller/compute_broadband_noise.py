@@ -81,7 +81,7 @@ def compute_broadband_noise(freestream,angle_of_attack,bspv,
     blade_chords       = rotor.chord_distribution           # blade chord    
     r                  = rotor.radius_distribution          # radial location 
     airfoils           = rotor.Airfoils
-    a_loc              = rotor.airfoil_stations 
+    a_loc              = rotor.airfoil_polar_stations 
     num_sec            = len(r) 
     num_azi            = len(aeroacoustic_data.disc_effective_angle_of_attack[0,0,:])    
     U_blade            = np.sqrt(Vt_2d**2 + Va_2d**2)

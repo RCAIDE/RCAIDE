@@ -143,7 +143,7 @@ def generate_fidelity_one_wake_shape(wake,rotor):
     # trailing edge points in airfoil coordinates 
     airfoils = rotor.Airfoils
     af       = airfoils[list(airfoils.keys())[0]]
-    a_loc    = rotor.airfoil_stations
+    a_loc    = rotor.airfoil_polar_stations
     xupper   = np.zeros((Nr,len(af.geometry.x_upper_surface)))
     yupper   = np.zeros((Nr,len(af.geometry.x_upper_surface)))
     for i,airfoil in enumerate(airfoils):

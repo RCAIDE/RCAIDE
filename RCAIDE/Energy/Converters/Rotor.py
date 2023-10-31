@@ -46,6 +46,7 @@ class Rotor(Rotor_Legacy):
         """
 
         self.number_of_radial_stations = 20
+        self.airfoil_stations = self.airfoil_polar_stations      # update necessary for legacy code
 
     def finalize(self):
         # If no airfoils were specified, attach a default airfoil
