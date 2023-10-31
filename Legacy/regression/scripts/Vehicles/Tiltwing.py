@@ -12,24 +12,20 @@ from Legacy.trunk.S.Core import Units, Data
 from Legacy.trunk.S.Methods.Power.Battery.Sizing                                   import initialize_from_mass
 from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing                       import  size_optimal_motor
 from Legacy.trunk.S.Methods.Weights.Correlations.Propulsion                        import nasa_motor
-#from Legacy.trunk.S.Methods.Propulsion                                             import propeller_design
-from RCAIDE.Methods.Propulsion                                                     import propeller_design
+from Legacy.trunk.S.Methods.Propulsion                                             import propeller_design
 from Legacy.trunk.S.Plots.Geometry                                                 import *
 from Legacy.trunk.S.Methods.Weights.Buildups.eVTOL.empty                           import empty
 from Legacy.trunk.S.Methods.Weights.Buildups.eVTOL.converge_evtol_weight           import converge_evtol_weight
 from Legacy.trunk.S.Methods.Center_of_Gravity.compute_component_centers_of_gravity import compute_component_centers_of_gravity
 from copy import deepcopy
 
-import RCAIDE
 import numpy as np
-import os
-
 
 def vehicle_setup():
     # ------------------------------------------------------------------
     #   Initialize the Vehicle
     # ------------------------------------------------------------------
-    vehicle                                     = RCAIDE.Vehicle()
+    vehicle                                     = SUAVE.Vehicle()
     vehicle.tag                                 = 'Tiltwing'
     vehicle.configuration                       = 'eVTOL'
     # ------------------------------------------------------------------
@@ -274,19 +270,17 @@ def vehicle_setup():
     prop.design_altitude          = 500 * Units.feet
     Hover_Load                    = vehicle.mass_properties.takeoff*9.81
     prop.design_thrust            = Hover_Load/(net.number_of_propeller_engines-1) # contingency for one-engine-inoperative condition
-    
-    airfoil                       = SUAVE.Components.Airfoils.Airfoil()
-    airfoil.tag                   = 'NACA_4412'
-    airfoil.airfoil_directory     = os.path.abspath('../Vehicles/Airfoils/NACA_4412') # Absolute path
-    airfoil.coordinate_file       = 'NACA_4412.txt'
+    airfoil                       = SUAVE.Components.Airfoils.Airfoil()   
+    airfoil.coordinate_file       = '../Vehicles/Airfoils/NACA_4412.txt'
+    airfoil.polar_files           = ['../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
+                                  '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
+                                  '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
+                                  '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
+                                  '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
     prop.append_airfoil(airfoil)
-    
-    prop.airfoil_stations   = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] 
-    prop.rotation           = 1
-    
-    # Design the propeller using the base airfoil analysis
-    airfoil_analysis = RCAIDE.Analyses.Aerodynamics.Airfoils.Airfoil()
-    prop = propeller_design(prop, airfoil_analysis)    
+    prop.airfoil_polar_stations   = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] 
+    prop                          = propeller_design(prop)
+    prop.rotation                 = 1
 
     # Front Rotors Locations
 
