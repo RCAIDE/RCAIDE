@@ -14,8 +14,7 @@ from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil import compute_naca_4series
 
 # python imports 
 import numpy as np 
-import plotly.graph_objects as go  
-from plotly.express.colors import sample_colorscale   
+import plotly.graph_objects as go     
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS

@@ -7,10 +7,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Core import Units
+
 from RCAIDE.Visualization.Performance.Common import set_axes, plot_style
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
+import matplotlib.pyplot as plt 
 import numpy as np 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -80,4 +79,4 @@ def plot_lift_distribution(results,vehicle,
             img_idx += 1
         seg_idx +=1
 
-    return 
+    return fig 

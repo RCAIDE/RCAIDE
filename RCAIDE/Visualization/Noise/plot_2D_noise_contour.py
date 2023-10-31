@@ -104,7 +104,7 @@ def plot_2D_noise_contour(noise_data,
         figure_title  = save_filename
         plt.savefig(figure_title + file_type )     
          
-    return         
+    return fig       
 
 # ------------------------------------------------------------------ 
 # Truncate colormaps
@@ -133,11 +133,7 @@ class FixPointNormalize(matplotlib.colors.Normalize):
 
     def __call__(self, value, clip=None):
         x, y = [self.vmin, self.sealevel, self.vmax], [0, self.col_val, 1]
-        return np.ma.masked_array(np.interp(value, x, y)) 
-    
-
-
+        return np.ma.masked_array(np.interp(value, x, y))   
 
 def colorax(vmin, vmax):
-    return dict(cmin=vmin,
-                cmax=vmax)
+    return dict(cmin=vmin,cmax=vmax)

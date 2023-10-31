@@ -70,5 +70,5 @@ def plot_rotor_performance(rotor, title=None, show_figure = True,save_figure=Fal
     
     if show_figure:
         fig.write_html( save_filename + '.html', auto_open=True)
-    return
+    return fig 
  

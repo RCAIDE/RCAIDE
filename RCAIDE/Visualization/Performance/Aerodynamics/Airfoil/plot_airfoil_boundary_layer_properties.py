@@ -61,8 +61,8 @@ def plot_airfoil_boundary_layer_properties(ap,
     blues = cm.winter(np.linspace(0,0.9,n_cases))     
     reds  = cm.autumn(np.linspace(0,0.9,n_cases))   
 
-    fig_0   = plt.figure(save_filename)
-    fig_0.set_size_inches(width,height)
+    fig   = plt.figure(save_filename)
+    fig.set_size_inches(width,height)
     
     for i in range(n_cpts):   
         for j in range(n_cases):  
@@ -74,12 +74,12 @@ def plot_airfoil_boundary_layer_properties(ap,
    
     # set title of plot 
     title_text    = 'Airfoil with Boundary Layers'  
-    fig_0.suptitle(title_text)
+    fig.suptitle(title_text)
     
     if save_figure:
         plt.savefig(save_filename + file_type)   
  
-    return    
+    return fig    
  
 # ----------------------------------------------------------------------
 #  Plot Quantity

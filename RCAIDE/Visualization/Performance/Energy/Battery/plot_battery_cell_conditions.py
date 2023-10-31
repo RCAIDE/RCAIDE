@@ -127,4 +127,4 @@ def plot_battery_cell_conditions(results,
         
         if save_figure:
             plt.savefig(save_filename  + b[b_i] + file_type)    
-    return
+    return fig 

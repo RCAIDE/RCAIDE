@@ -112,4 +112,4 @@ def plot_electric_motor_and_rotor_efficiencies(results,
         if save_figure:
             plt.savefig(save_filename + '_' + pg[pg_i] + file_type)   
      
-    return
+    return fig 

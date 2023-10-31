@@ -126,7 +126,7 @@ def plot_altitude_sfc_weight(results,
     
     if save_figure:
         plt.savefig(save_filename + file_type)   
-    return
+    return fig
 
 
 def plot_propulsor_throttles(results,distributor,i,pg,pg_i,time,line_colors,ps,segment_name,axes_1): 
@@ -144,4 +144,4 @@ def plot_propulsor_throttles(results,distributor,i,pg,pg_i,time,line_colors,ps,s
                 eta    =  results[active_propulsor_groups[j]].turbojet.throttle[:,0]  
 
             axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)         
-    return       
+    return     

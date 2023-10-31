@@ -62,4 +62,4 @@ def plot_airfoil(airfoil_paths,
     if save_figure:
         fig.savefig(save_filename.replace("_", " ") + file_type)  
      
-    return
+    return fig

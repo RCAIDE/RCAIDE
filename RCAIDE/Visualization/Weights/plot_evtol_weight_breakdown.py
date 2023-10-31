@@ -131,7 +131,6 @@ def plot_evtol_weight_breakdown(vehicle,
     fig.tight_layout()
     
     if save_figure:
-        plt.savefig(save_filename + '.pdf')   
+        plt.savefig(save_filename + '.pdf')    
         
-    
-    return 
+    return  fig 

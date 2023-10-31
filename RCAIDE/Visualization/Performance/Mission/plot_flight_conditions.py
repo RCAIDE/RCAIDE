@@ -112,4 +112,4 @@ def plot_flight_conditions(results,
     
     if save_figure:
         plt.savefig(save_filename + file_type)   
-    return
+    return  fig 
