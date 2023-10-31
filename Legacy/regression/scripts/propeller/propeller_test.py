@@ -18,7 +18,7 @@ Data, Container,
 
 import numpy as np
 import copy, time
-from Legacy.trunk.S.Methods.Propulsion import propeller_design
+from RCAIDE.Methods.Propulsion import propeller_design
 from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
 import os
 
@@ -55,14 +55,11 @@ def main():
     bad_prop.angular_velocity         = gearbox.inputs.speed  
     bad_prop.design_Cl                = 0.7
     bad_prop.design_altitude          = 1. * Units.km  
-    airfoil                           = SUAVE.Components.Airfoils.Airfoil()   
-    airfoil.coordinate_file           ='4412'   
-    airfoil.NACA_4_series_flag        = True 
-    airfoil.polar_files               =  ['../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt',
-                                              '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt',
-                                              '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt',
-                                              '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt',
-                                              '../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt']
+    airfoil                           = SUAVE.Components.Airfoils.Airfoil()  
+    airfoil.airfoil_directory         = os.path.abspath('../Vehicles/Airfoils/NACA_4412')
+    airfoil.settings.NACA_4_series_flag   = True
+    airfoil.settings.NACA_4_series_digits ='4412'  
+
     bad_prop.append_airfoil(airfoil)
     bad_prop.airfoil_stations   =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     bad_prop.design_thrust            = 100000

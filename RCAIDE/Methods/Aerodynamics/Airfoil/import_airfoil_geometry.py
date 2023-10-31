@@ -52,8 +52,8 @@ def import_airfoil_geometry(airfoil):
     """  
     # Extract airfoil component properties
     airfoil_geometry_file = f"{airfoil.airfoil_directory}/{airfoil.coordinate_file}"
-    surface_interpolation = airfoil.surface_interpolation
-    npoints = airfoil.number_of_points
+    surface_interpolation = airfoil.settings.surface_interpolation
+    npoints = airfoil.settings.number_of_points
     
     geometry     = Data()
     half_npoints = npoints//2

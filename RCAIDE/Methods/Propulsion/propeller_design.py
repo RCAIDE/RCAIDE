@@ -79,7 +79,7 @@ def propeller_design(prop, airfoil_analysis=None, number_of_stations=20, tol=1e-
     # ---------------------------------------------------------------------------------------------------------
     # Calculate airfoil properties from airfoil analysis
     if airfoil_analysis is None:
-        airfoil_analysis = Airfoil()
+        airfoil_analysis = Airfoil.Airfoil()
     
     # Set prop as geometry for analysis
     airfoil_analysis.geometry = prop

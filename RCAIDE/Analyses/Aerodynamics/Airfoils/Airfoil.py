@@ -14,6 +14,8 @@ from Legacy.trunk.S.Components.Energy.Converters import Rotor
 from Legacy.trunk.S import Vehicle
 
 from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_geometry import import_airfoil_geometry
+from RCAIDE.Methods.Aerodynamics.Airfoil.compute_naca_4series_geometry import compute_naca_4series_geometry
+
 #from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry import import_airfoil_geometry
 #from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties import compute_airfoil_properties, compute_boundary_layer_properties
 
@@ -133,7 +135,10 @@ class Airfoil(Analysis):
 
             for airfoil in geometry.Airfoils:
                 # Evaluate airfoil geometry for this rotor
-                airfoil.geometry = import_airfoil_geometry(airfoil)
+                if airfoil.settings.NACA_4_series_flag:
+                    airfoil.geometry = compute_naca_4series_geometry(airfoil)
+                else:
+                    airfoil.geometry = import_airfoil_geometry(airfoil)
                 
                 # Compute airfoil polar surrogate using provided polar files, append as analysis polars
                 self.airfoil_data[airfoil.tag] = compute_airfoil_properties_from_polar_files(self.settings, airfoil)

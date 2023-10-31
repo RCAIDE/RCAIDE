@@ -43,10 +43,15 @@ class Airfoil(Lofted_Body.Section):
         self.tag                        = 'Airfoil' 
         self.airfoil_directory          = f"{os.path.dirname(Aircraft_Modules.__file__)}/Clark_y" # Default airfoil directory used if unspecified
         self.coordinate_file            = 'Clark_Y.txt'      # default airfoil coordinate file path, relative to airfoil_directory
-        self.number_of_points           = 200
-        self.surface_interpolation      = "cubic"  # type of interpolation used in the SciPy function. Preferable options are linear, quardratic and cubic. 
-                                                   # Full list of options can be found here : https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html#scipy.interpolate.interp1d
-        
+
+        self.settings = Data()
+        self.settings.number_of_points = 200
+        self.settings.NACA_4_series_flag = False
+        self.settings.NACA_4_series_digits = '4412'
+        self.settings.leading_and_trailing_edge_resolution_factor = 1.5
+        self.settings.surface_interpolation = "cubic"  # type of interpolation used in the SciPy function. Preferable options are linear, quardratic and cubic. 
+                                                       # Full list of options can be found here : https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html#scipy.interpolate.interp1d
+
         self.geometry                   = Data()
         self.geometry.thickness_to_chord = None
         self.geometry.max_thickness      = None
@@ -57,8 +62,3 @@ class Airfoil(Lofted_Body.Section):
         self.geometry.y_upper_surface    = None
         self.geometry.y_lower_surface    = None
         self.geometry.camber_coordinates = None
-        
-        #self.NACA_4_series_flag         = False   # Flag for NACA 4 series airfoil
-        #self.polar_files                = None # absolute path to each polar file 
-        #self.polars                     = None
-        #self.number_of_points           = 200

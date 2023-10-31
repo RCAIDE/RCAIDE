@@ -18,10 +18,11 @@ from Legacy.trunk.S.Core import Data
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry import import_airfoil_geometry
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_naca_4series    import compute_naca_4series
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_vortex_distribution    import generate_vortex_distribution 
 from Legacy.trunk.S.Analyses.Aerodynamics import Vortex_Lattice
+
+from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_geometry import import_airfoil_geometry
 
 ## @ingroup Plots-Geometry
 def plot_vehicle(vehicle, elevation_angle = 30,azimuthal_angle = 210, axis_limits = 10,plot_axis = False,
@@ -572,7 +573,7 @@ def get_blade_coordinates(prop,n_points,dim,i,aircraftRefFrame=True):
         zpts  = np.zeros((dim,n_points))
         max_t = np.zeros(dim)
         for i,airfoil in enumerate(airfoils):
-            geometry     = import_airfoil_geometry(airfoil.coordinate_file,n_points)
+            geometry     = airfoil.geometry #import_airfoil_geometry(airfoil)
             locs         = np.where(np.array(a_loc) == i )
             xpts[locs]   = geometry.x_coordinates  
             zpts[locs]   = geometry.y_coordinates  
