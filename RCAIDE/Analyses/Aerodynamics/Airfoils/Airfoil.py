@@ -7,27 +7,26 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
+# Legacy imports
 from Legacy.trunk.S.Core import Data, Units
 from Legacy.trunk.S.Analyses import Analysis
 
-from Legacy.trunk.S.Components.Energy.Converters import Rotor
-from Legacy.trunk.S import Vehicle
-
+# RCAIDE imports
 from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_geometry import import_airfoil_geometry
 from RCAIDE.Methods.Aerodynamics.Airfoil.compute_naca_4series_geometry import compute_naca_4series_geometry
-
-#from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry import import_airfoil_geometry
-#from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties import compute_airfoil_properties, compute_boundary_layer_properties
-
 from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties_from_polar_files import compute_airfoil_properties_from_polar_files
 from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties_from_panel_method import compute_airfoil_properties_from_panel_method
+from RCAIDE.Energy.Converters import Rotor
+from RCAIDE import Vehicle
+
+# External package imports
 import numpy as np
 
 
 # ----------------------------------------------------------------------
 #  Analysis
 # ----------------------------------------------------------------------
-## @ingroup Analyses-Airfoil
+## @ingroup Analyses-Aerodynamics-Airfoil
 class Airfoil(Analysis):
     """This is the class for airfoil analyses. It contains functions
     for airfoil analysis.
@@ -56,7 +55,7 @@ class Airfoil(Analysis):
         Properties Used:
         N/A
         """           
-        self.tag    = 'Airfoil'
+        self.tag = 'Airfoil_Analysis'
         self.geometry = Data() # Vehicle data structure, used to extract airfoil components
         
         self.airfoil_data = Data() # Data structure that will contain data from all airfoils in analysis

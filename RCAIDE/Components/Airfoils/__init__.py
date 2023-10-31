@@ -9,4 +9,4 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Airfoils.Airfoil import Airfoil
+from .Airfoil import Airfoil

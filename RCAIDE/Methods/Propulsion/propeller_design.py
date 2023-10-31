@@ -29,7 +29,7 @@ from RCAIDE.Analyses.Aerodynamics.Airfoils import Airfoil
 #  Propeller Design
 # ----------------------------------------------------------------------
 
-def propeller_design(prop, airfoil_analysis=None, number_of_stations=20, tol=1e-10):
+def propeller_design(prop, airfoil_analysis=None, tol=1e-10):
     """ Optimizes propeller chord and twist given input parameters.
           
           Inputs:
@@ -57,7 +57,7 @@ def propeller_design(prop, airfoil_analysis=None, number_of_stations=20, tol=1e-
           
     """
     # Unpack
-    N            = number_of_stations       # this number determines the discretization of the propeller into stations
+    N            = prop.number_of_radial_stations       # this number determines the discretization of the propeller into stations
     B            = prop.number_of_blades
     R            = prop.tip_radius
     Rh           = prop.hub_radius
@@ -85,6 +85,9 @@ def propeller_design(prop, airfoil_analysis=None, number_of_stations=20, tol=1e-
     airfoil_analysis.geometry = prop
     airfoil_analysis.initialize()
     airfoil_analysis.evaluate()
+    
+    # If no airfoil locations specified, default to using the first attached airfoil
+    #if not bool(a_loc):
     
     # Calculate atmospheric properties
     atmosphere = SUAVE.Analyses.Atmospheric.US_Standard_1976()

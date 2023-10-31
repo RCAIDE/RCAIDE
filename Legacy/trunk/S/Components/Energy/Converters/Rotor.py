@@ -86,7 +86,7 @@ class Rotor(Energy_Component):
         self.design_power_coefficient          = 0.01
         
         self.Airfoils                          = ContainerOrdered()
-        self.airfoil_stations            = None
+        self.airfoil_stations                  = None
 
         self.use_2d_analysis                   = False    # True if rotor is at an angle relative to freestream or nonuniform freestream
         self.nonuniform_freestream             = False
@@ -103,7 +103,8 @@ class Rotor(Energy_Component):
         # Initialize the default wake set to Fidelity Zero
         self.Wake                              = Rotor_Wake_Fidelity_Zero()
 
-    def append_airfoil(self,airfoil):
+    
+    def append_airfoil(self, airfoil):
         """ Adds an airfoil to the rotor
 
         Assumptions:

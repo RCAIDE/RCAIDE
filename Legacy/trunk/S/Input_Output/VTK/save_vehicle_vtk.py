@@ -13,7 +13,6 @@ from Legacy.trunk.S.Input_Output.VTK.save_wing_vtk import save_wing_vtk
 from Legacy.trunk.S.Input_Output.VTK.save_prop_vtk import save_prop_vtk
 from Legacy.trunk.S.Input_Output.VTK.save_prop_wake_vtk import save_prop_wake_vtk
 from Legacy.trunk.S.Input_Output.VTK.save_fuselage_vtk import save_fuselage_vtk
-from Legacy.trunk.S.Input_Output.VTK.save_nacelle_vtk import save_nacelle_vtk
 from Legacy.trunk.S.Input_Output.VTK.save_vortex_distribution_vtk import save_vortex_distribution_vtk
 
 from Legacy.trunk.S.Analyses.Aerodynamics import Vortex_Lattice
@@ -234,17 +233,4 @@ def save_vehicle_vtk(vehicle, conditions=None, Results=Data(),
         save_fuselage_vtk(vehicle, file, Results, origin_offset)
 
 
-    #------------------------------
-    # Save nacelles to vtk
-    #------------------------------
-    nacelles    = vehicle.nacelles
-    for i, nacelle in enumerate(nacelles):
-        if save_loc ==None:
-            filename = nacelle_filename
-        else:
-            filename = save_loc + nacelle_filename
-        sep  = filename.rfind('.')
-        file = filename[0:sep]+str(i)+"_t"+str(time_step)+filename[sep:]
-
-        save_nacelle_vtk(nacelle, file, Results, origin_offset)
     return

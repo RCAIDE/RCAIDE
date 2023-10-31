@@ -41,7 +41,7 @@ class Airfoil(Lofted_Body.Section):
         """         
         
         self.tag                        = 'Airfoil' 
-        self.airfoil_directory          = f"{os.path.dirname(Aircraft_Modules.__file__)}/Clark_y" # Default airfoil directory used if unspecified
+        self.airfoil_directory          = f"{os.path.dirname(Aircraft_Modules.__file__)}/Airfoils/Clark_y" # Default airfoil directory used if unspecified
         self.coordinate_file            = 'Clark_Y.txt'      # default airfoil coordinate file path, relative to airfoil_directory
 
         self.settings = Data()

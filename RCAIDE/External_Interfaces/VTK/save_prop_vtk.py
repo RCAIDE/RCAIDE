@@ -13,6 +13,8 @@ from Legacy.trunk.S.Core import Data
 import numpy as np
 import copy
 
+from RCAIDE.Visualization.Geometry.plot_vehicle import get_blade_coordinates
+
 ## @ingroup Input_Output-VTK
 def save_prop_vtk(prop, filename, Results, time_step, origin_offset=np.array([0,0,0]), aircraftReferenceFrame=True):
     """
