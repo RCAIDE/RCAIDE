@@ -1,17 +1,8 @@
 ## @ingroup Methods-Aerodynamics-Airfoil
 # import_airfoil_geometry.py
 # 
-# Created:  Mar 2019, M. Clarke
-# Modified: Mar 2020, M. Clarke
-#           Apr 2020, M. Clarke
-#           Apr 2020, M. Clarke
-#           May 2020, B. Dalman
-#           Sep 2020, M. Clarke
-#           May 2021, E. Botero
-#           May 2021, R. Erhard
-#           Jun 2021, E. Botero
-#           Aug 2021, M. Clarke
-#           Oct 2023, R. Erhard
+# Created:  Oct 2023, R. Erhard
+# Modified: 
 
 # ----------------------------------------------------------------------
 #  Imports

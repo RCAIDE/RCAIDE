@@ -11,7 +11,7 @@
 import Legacy.trunk.S as SUAVE
 from Legacy.trunk.S.Core import Data , Units
 from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis import airfoil_analysis
-from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties_from_polar_files  import compute_extended_polars
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import compute_extended_polars
 import numpy as np
 
 ## @ingroup Methods-Aerodynamics-Airfoil

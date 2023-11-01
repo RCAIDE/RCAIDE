@@ -12,6 +12,7 @@ import Legacy.trunk.S as SUAVE
 from Legacy.trunk.S.Core                                                                          import Data, Units
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.pre_stall_coefficients                           import pre_stall_coefficients
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.post_stall_coefficients                          import post_stall_coefficients
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import compute_extended_polars
 from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_polars  import import_airfoil_polars   
 import numpy as np
 import os
@@ -103,103 +104,6 @@ def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_compon
     
     return Airfoil_Data
 
-## @ingroup Methods-Aerodynamics-Airfoil
-def compute_extended_polars(airfoil_cl,airfoil_cd,airfoil_aoa,AoA_sweep_deg,geometry,use_pre_stall_data): 
-    """ Computes the aerodynamic polars of an airfoil over an extended angle of attack range
-    
-    Assumptions:
-    Uses AERODAS formulation for post stall characteristics 
-    Source:
-    Models of Lift and Drag Coefficients of Stalled and Unstalled Airfoils in Wind Turbines and Wind Tunnels
-    by D Spera, 2008
-        
-    Inputs:
-    airfoil_cl          [unitless]
-    airfoil_cd          [unitless]
-    airfoil_aoa         [degrees]
-    AoA_sweep_deg       [unitless]
-    geometry            [N/A]
-    use_pre_stall_data  [boolean]
-    Outputs: 
-    CL                  [unitless]
-    CD                  [unitless]       
-    
-    Properties Used:
-    N/A
-    """    
-    
-    # Create dummy settings and state
-    settings                                              = Data()
-    state                                                 = Data()
-    state.conditions                                      = Data()
-    state.conditions.aerodynamics                         = Data()
-    state.conditions.aerodynamics.pre_stall_coefficients  = Data()
-    state.conditions.aerodynamics.post_stall_coefficients = Data()  
-    
-    # computing approximate zero lift aoa
-    AoA_sweep_radians    = AoA_sweep_deg*Units.degrees
-    airfoil_cl_plus      = airfoil_cl[airfoil_cl>0]
-    idx_zero_lift        = np.where(airfoil_cl == min(airfoil_cl_plus))[0][0]
-    airfoil_cl_crossing  = airfoil_cl[idx_zero_lift-1:idx_zero_lift+1]
-    airfoil_aoa_crossing = airfoil_aoa[idx_zero_lift-1:idx_zero_lift+1]
-    try:
-        A0  = np.interp(0,airfoil_cl_crossing, airfoil_aoa_crossing)* Units.deg 
-    except:
-        A0 = airfoil_aoa[idx_zero_lift] * Units.deg 
-
-    # max lift coefficent and associated aoa
-    CL1max                  = np.max(airfoil_cl)
-    idx_aoa_max_prestall_cl = np.where(airfoil_cl == CL1max)[0][0]
-    ACL1                    = airfoil_aoa[idx_aoa_max_prestall_cl] * Units.degrees
-
-    # computing approximate lift curve slope
-    linear_idxs             = [int(np.where(airfoil_aoa==0)[0]),int(np.where(airfoil_aoa==4)[0])]
-    cl_range                = airfoil_cl[linear_idxs]
-    aoa_range               = airfoil_aoa[linear_idxs] * Units.degrees
-    S1                      = (cl_range[1]-cl_range[0])/(aoa_range[1]-aoa_range[0])
-
-    # max drag coefficent and associated aoa
-    CD1max                  = np.max(airfoil_cd) 
-    idx_aoa_max_prestall_cd = np.where(airfoil_cd == CD1max)[0][0]
-    ACD1                    = airfoil_aoa[idx_aoa_max_prestall_cd] * Units.degrees     
-    
-    # Find the point of lowest drag and the CD
-    idx_CD_min              = np.where(airfoil_cd==min(airfoil_cd))[0][0]
-    ACDmin                  = airfoil_aoa[idx_CD_min] * Units.degrees
-    CDmin                   = airfoil_cd[idx_CD_min]    
-    
-    # Setup data structures for this run
-    ones                                                      = np.ones_like(AoA_sweep_radians)
-    settings.section_zero_lift_angle_of_attack                = A0
-    state.conditions.aerodynamics.angle_of_attack             = AoA_sweep_radians* ones  
-    geometry.section.angle_attack_max_prestall_lift           = ACL1 * ones 
-    geometry.pre_stall_maximum_drag_coefficient_angle         = ACD1 * ones 
-    geometry.pre_stall_maximum_lift_coefficient               = CL1max * ones 
-    geometry.pre_stall_maximum_lift_drag_coefficient          = CD1max * ones 
-    geometry.section.minimum_drag_coefficient                 = CDmin * ones 
-    geometry.section.minimum_drag_coefficient_angle_of_attack = ACDmin
-    geometry.pre_stall_lift_curve_slope                       = S1
-    
-    # Get prestall coefficients
-    CL1, CD1 = pre_stall_coefficients(state,settings,geometry)
-    
-    # Get poststall coefficents
-    CL2, CD2 = post_stall_coefficients(state,settings,geometry)
-    
-    # Take the maxes
-    CL_ij = np.fmax(CL1,CL2)
-    CL_ij[AoA_sweep_radians<=A0] = np.fmin(CL1[AoA_sweep_radians<=A0],CL2[AoA_sweep_radians<=A0])
-    
-    CD_ij = np.fmax(CD1,CD2)
-    
-    # Pack this loop
-    CL = CL_ij
-    CD = CD_ij
-    
-    if use_pre_stall_data == True:
-        CL, CD = apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL, CD)
-        
-    return CL,CD
 
 ## @ingroup Methods-Aerodynamics-Airfoil
 def apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL, CD): 
@@ -240,7 +144,7 @@ def apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL,
     # remove kinks/overlap between pre- and post-stall                
     data_lb       = np.where(CD == CD[np.argmin(CD - airfoil_cd[0])])[0][0]
     data_ub       = np.where(CD == CD[np.argmin(CD - airfoil_cd[-1])])[0][-1]
-    CD[0:data_lb] = np.maximum(CD[0:data_lb], CD[data_lb]*np.ones_like(CD[0:data_lb]))
-    CD[data_ub:]  = np.maximum(CD[data_ub:],  CD[data_ub]*np.ones_like(CD[data_ub:])) 
+    CD[0:data_lb] = np.maximum(CD[0:data_lb], CD[data_lb] * np.ones_like(CD[0:data_lb]))
+    CD[data_ub:]  = np.maximum(CD[data_ub:],  CD[data_ub] * np.ones_like(CD[data_ub:])) 
     
     return CL, CD
