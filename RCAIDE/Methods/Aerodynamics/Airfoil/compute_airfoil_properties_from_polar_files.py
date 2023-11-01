@@ -12,12 +12,12 @@ import Legacy.trunk.S as SUAVE
 from Legacy.trunk.S.Core                                                                          import Data, Units
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.pre_stall_coefficients                           import pre_stall_coefficients
 from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.post_stall_coefficients                          import post_stall_coefficients
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_polars  import import_airfoil_polars   
+from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_polars  import import_airfoil_polars   
 import numpy as np
 import os
 
 ## @ingroup Methods-Aerodynamics-Airfoil
-def compute_airfoil_properties_from_polar_files(settings, airfoil):
+def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_component):
     """
     Takes the airfoil and extracts the attached polar data from the polar files. This data is then used to
     construct airfoil polar surrogates over the provided Reynolds, Mach, and angle of attack ranges.
@@ -47,28 +47,28 @@ def compute_airfoil_properties_from_polar_files(settings, airfoil):
     # ----------------------------------------------------------------------------------------
     # Extract settings and check for polar data
     # ----------------------------------------------------------------------------------------
-    use_pre_stall_data = settings.use_pre_stall_data
-    polars_directory = f"{airfoil.airfoil_directory}/Polars"
+    use_pre_stall_data = airfoil_analysis.settings.use_pre_stall_data
+    polars_directory = f"{airfoil_component.airfoil_directory}/Polars"
     # Find polars in airfoil data directory
     if not os.path.exists(polars_directory):
-        raise Exception(f"Must include Polars directory in {airfoil.airfoil_directory}!")
+        raise Exception(f"Must include Polars directory in {airfoil_component.airfoil_directory}!")
     else:
-        airfoil_polar_files = os.listdir(polars_directory)
-        airfoil_polar_files = sorted([f"{polars_directory}/{file}" for file in airfoil_polar_files])
+        airfoil_analysis.polar_files = os.listdir(polars_directory)
+        airfoil_analysis.polar_files = sorted([f"{polars_directory}/{file}" for file in airfoil_analysis.polar_files])
     
-    if airfoil_polar_files is None:
+    if airfoil_analysis.polar_files is None:
         raise Exception('No airfoil polar files included in Polars directory! Required for running compute_airfoil_properties_from_polar_files()!')
 
     # ----------------------------------------------------------------------------------------
     # Compute extended cl and cd polars 
     # ----------------------------------------------------------------------------------------
     # check number of polars per airfoil in batch
-    num_polars = len(airfoil_polar_files)
+    num_polars = len(airfoil_analysis.polar_files)
     if num_polars < 3:
         raise AttributeError('Provide three or more airfoil polars to compute surrogate')     
      
     # read in polars from files overwrite panel code  
-    Airfoil_Data = import_airfoil_polars(airfoil_polar_files)
+    Airfoil_Data = import_airfoil_polars(airfoil_analysis)
         
     # Get all of the coefficients for AERODAS wings
     neg_post_stall_region = np.linspace(-180, -45, 16) # coarse post-stall refinement

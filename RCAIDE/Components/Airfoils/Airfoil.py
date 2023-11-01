@@ -1,10 +1,8 @@
 ## @ingroup Components-Airfoils
 # Airfoil.py
 # 
-# Created:  
-# Modified: Sep 2016, E. Botero
-#           Mar 2020, M. Clarke
-#           Oct 2021, M. Clarke
+# Created:  Oct 2023, Racheal M. Erhard
+# Modified: 
 
 
 # ----------------------------------------------------------------------

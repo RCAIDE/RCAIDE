@@ -13,3 +13,4 @@ from . import Airfoil_Panel_Method
 from .compute_airfoil_properties_from_polar_files import compute_airfoil_properties_from_polar_files
 from .compute_airfoil_properties_from_panel_method import compute_airfoil_properties_from_panel_method
 from .import_airfoil_geometry import import_airfoil_geometry
+from .import_airfoil_polars import import_airfoil_polars

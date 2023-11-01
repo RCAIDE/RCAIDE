@@ -57,11 +57,14 @@ class Airfoil(Analysis):
         """           
         self.tag = 'Airfoil_Analysis'
         self.geometry = Data() # Vehicle data structure, used to extract airfoil components
+        self.polar_files = None
         
         self.airfoil_data = Data() # Data structure that will contain data from all airfoils in analysis
         
         self.settings = Data()
         self.settings.use_pre_stall_data = True
+        
+        # Settings for panel method
         self.settings.use_panel_method = False      
         self.settings.panel_method = Data()
         self.settings.panel_method.angle_of_attack_range = np.array([-4, 0, 2, 4, 8, 10, 14]) * Units.degrees 
@@ -70,6 +73,12 @@ class Airfoil(Analysis):
         self.settings.panel_method.tolerance = 1
         self.settings.panel_method.H_wake = 1.05
         self.settings.panel_method.Ue_wake = 0.99
+        
+        # Settings for importing airfoil polar data
+        self.settings.angle_of_attack_discretization = 89 # Number of angles of attack over which to interpolate from the direct data. 
+                                                          # This is required if more than one polar file is analyzed, as the output structure is assumed to have the same shape.
+        self.settings.interpolated_angle_of_attack_lower_bound = -6
+        self.settings.interpolated_angle_of_attack_upper_bound = 16
         
         
     def initialize(self):
@@ -136,7 +145,7 @@ class Airfoil(Analysis):
                     airfoil.geometry = import_airfoil_geometry(airfoil)
                 
                 # Compute airfoil polar surrogate using provided polar files, append as analysis polars
-                self.airfoil_data[airfoil.tag] = compute_airfoil_properties_from_polar_files(self.settings, airfoil)
+                self.airfoil_data[airfoil.tag] = compute_airfoil_properties_from_polar_files(self, airfoil)
                 
         
         elif isinstance(geometry, Vehicle):
