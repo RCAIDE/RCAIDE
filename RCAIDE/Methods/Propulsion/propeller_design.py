@@ -17,14 +17,7 @@ from Legacy.trunk.S.Core.Utilities import interp2d
 import numpy as np
 import scipy as sp 
 from scipy.optimize import root 
-#from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties \
-     #import compute_airfoil_properties
-#from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_naca_4series \
-     #import compute_naca_4series
-#from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
-     #import import_airfoil_geometry
 
-from RCAIDE.Analyses.Aerodynamics.Airfoils import Airfoil
 # ----------------------------------------------------------------------
 #  Propeller Design
 # ----------------------------------------------------------------------
@@ -67,9 +60,10 @@ def propeller_design(prop, tol=1e-10):
     alt          = prop.design_altitude
     Thrust       = prop.design_thrust
     Power        = prop.design_power
+    
     airfoil_components = prop.Airfoil_Components
-    airfoil_analyses = prop.Airfoil_Analyses 
-    a_loc        = prop.airfoil_polar_stations
+    airfoil_analyses   = prop.Airfoil_Analyses 
+    a_loc              = prop.airfoil_polar_stations
     
     # Check for static conditions
     if V == 0.0:
@@ -79,16 +73,14 @@ def propeller_design(prop, tol=1e-10):
     # Setup Analyses for Rotor Design
     # ---------------------------------------------------------------------------------------------------------
     ## Calculate airfoil properties from airfoil analysis
-    #if not bool(airfoil_analyses):
+    if not bool(airfoil_analyses):
+        raise Exception("Airfoil not yet initialized!")
         #airfoil_analysis = Airfoil.Airfoil()
     
         ## Set prop as geometry for analysis
         #airfoil_analyses.geometry = prop
         #airfoil_analyses.initialize()
         #airfoil_analyses.evaluate()
-    
-    # If no airfoil locations specified, default to using the first attached airfoil
-    #if not bool(a_loc):
     
     # Calculate atmospheric properties
     atmosphere = SUAVE.Analyses.Atmospheric.US_Standard_1976()

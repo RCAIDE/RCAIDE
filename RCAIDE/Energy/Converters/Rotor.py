@@ -10,7 +10,7 @@
 from Legacy.trunk.S.Components.Energy.Converters import Rotor as Rotor_Legacy
 from Legacy.trunk.S.Core import ContainerOrdered, Data
 
-from RCAIDE.Components.Airfoils import Airfoil as Airfoil_Component
+from RCAIDE.Components.Airfoils.Airfoil import Airfoil as Airfoil_Component
 
 
 
@@ -68,7 +68,7 @@ class Rotor(Rotor_Legacy):
         # New airfoil methods
         # Legacy code has self.Airfoils as the combined component and analysis outputs. 
         # RCAIDE treats these separately. The spin function in legacy uses only the analysis part, so
-        # here we replace the self.Airfoils with the self.Airfoil_Analyses        
+        # here we replace the self.Airfoils with the self.Airfoil_Analyses    
         airfoil_analysis.geometry = self
         airfoil_analysis.initialize()
         airfoil_analysis.evaluate()
