@@ -7,10 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-
-import RCAIDE
-from RCAIDE.Core import Units 
-import numpy as np 
+ 
+from RCAIDE.Core import Units  
 import matplotlib.pyplot as plt    
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -57,5 +55,5 @@ def plot_airfoil_surface_forces(ap, save_figure = False , arrow_color = 'red',sa
                               fc=arrow_color, ec=arrow_color,head_width=0.005, head_length=0.01 )   
     
     
-    return   
+    return fig 
 

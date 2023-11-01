@@ -9,6 +9,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Noise.Noise            import Noise
-from Legacy.trunk.S.Analyses.Noise.Fidelity_Zero    import Fidelity_Zero
-from Legacy.trunk.S.Analyses.Noise.Fidelity_One     import Fidelity_One
+from .Noise                        import Noise
+from .Correlation_Buildup          import Correlation_Buildup
+from .Frequency_Domain_Buildup     import Frequency_Domain_Buildup

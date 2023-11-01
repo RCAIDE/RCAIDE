@@ -48,6 +48,7 @@ def compute_propulsor_performance(i,bus,propulsor_group_tag, ducted_fans,N_ducte
     N.A.        
     '''  
     bus_results               = conditions.energy[bus.tag][propulsor_group_tag]
+    noise_pg_results          = conditions.noise[bus.tag][propulsor_group_tag]
     unique_ducted_fan_tags    = bus_results.unique_ducted_fan_tags 
     ducted_fan                = ducted_fans[unique_ducted_fan_tags[i]]
    
@@ -119,6 +120,7 @@ def compute_propulsor_performance(i,bus,propulsor_group_tag, ducted_fans,N_ducte
    
     bus_results.ducted_fan.power             = P
     bus_results.ducted_fan.thrust            = F  
+    noise_pg_results.ducted_fan.fan          = fan_outputs
     
     I = P/voltage
     

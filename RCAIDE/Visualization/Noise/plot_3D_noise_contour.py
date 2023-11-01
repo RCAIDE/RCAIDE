@@ -153,9 +153,8 @@ def plot_3D_noise_contour(noise_data,
     if save_figure:
         fig_3d.write_image(save_filename, file_type)
 
-    return        
+    return fig_3d       
 
 def colorax(vmin, vmax):
-    return dict(cmin=vmin,
-                cmax=vmax)
+    return dict(cmin=vmin, cmax=vmax)
  

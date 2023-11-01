@@ -111,7 +111,7 @@ def plot_elevation_contours(topography_file,
         axis.set_xlabel('Longitudinal Distance [nmi]')
         axis.set_ylabel('Latitudinal Distance [nmi]') 
      
-    return   
+    return  fig   
 
 class FixPointNormalize(matplotlib.colors.Normalize):
     """ 

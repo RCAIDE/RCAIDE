@@ -111,4 +111,4 @@ def plot_battery_pack_C_rates(results,
         
         if save_figure:
             plt.savefig(save_filename + '_' + b[b_i] + file_type)   
-    return
+    return fig 

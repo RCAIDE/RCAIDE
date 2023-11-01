@@ -289,16 +289,14 @@ class All_Electric_Ducted_Fan(Network):
             # ------------------------------------------------------------------------------------------------------            
             # Create bus results data structure  
             # ------------------------------------------------------------------------------------------------------
-            segment.state.conditions.energy[bus.tag] = RCAIDE.Analyses.Mission.Common.Conditions()            
-
-            # ------------------------------------------------------------------------------------------------------            
-            # Determine number of propulsor groups in bus
-            # ------------------------------------------------------------------------------------------------------
-            sorted_propulsors                       = compute_unique_propulsor_groups(bus)
-            bus_results                             = segment.state.conditions.energy[bus.tag]
-            bus_results.number_of_propulsor_groups  = N_active_propulsor_groups
-            bus_results.active_propulsor_groups     = active_propulsor_groups
-            bus_results.N_ducted_fans                    = sorted_propulsors.N_ducted_fans
+            segment.state.conditions.energy[bus.tag] = RCAIDE.Analyses.Mission.Common.Conditions()             
+            sorted_propulsors                        = compute_unique_propulsor_groups(bus)
+            bus_results                              = segment.state.conditions.energy[bus.tag]
+            bus_results.number_of_propulsor_groups   = N_active_propulsor_groups
+            bus_results.active_propulsor_groups      = active_propulsor_groups
+            bus_results.N_ducted_fans                = sorted_propulsors.N_ducted_fans
+            segment.state.conditions.noise[bus.tag]  = RCAIDE.Analyses.Mission.Common.Conditions()  
+            noise_results                            = segment.state.conditions.noise[bus.tag]
     
             # ------------------------------------------------------------------------------------------------------
             # Assign battery residuals, unknowns and results data structures 
@@ -350,14 +348,16 @@ class All_Electric_Ducted_Fan(Network):
                         segment.state.unknowns[bus.tag + '_' + active_propulsor_groups[i]+ '_throttle'] = initial_throttle* ones_row(1)    
                                  
                 # Results data structure for each propulsor group    
-                pg_tag                                           = active_propulsor_groups[i] 
-                bus_results[pg_tag]                              = RCAIDE.Analyses.Mission.Common.Conditions() 
-                bus_results[pg_tag].ducted_fan                   = RCAIDE.Analyses.Mission.Common.Conditions() 
-                bus_results[pg_tag].unique_ducted_fan_tags       = sorted_propulsors.unique_ducted_fan_tags 
-                bus_results[pg_tag].unique_esc_tags              = sorted_propulsors.unique_esc_tags   
-                bus_results[pg_tag].ducted_fan.throttle          = 0. * ones_row(1)  
-                bus_results[pg_tag].ducted_fan.torque            = 0. * ones_row(1)
-                bus_results[pg_tag].ducted_fan.thrust            = 0. * ones_row(1) 
+                pg_tag                                      = active_propulsor_groups[i] 
+                bus_results[pg_tag]                         = RCAIDE.Analyses.Mission.Common.Conditions() 
+                bus_results[pg_tag].ducted_fan              = RCAIDE.Analyses.Mission.Common.Conditions() 
+                bus_results[pg_tag].unique_ducted_fan_tags  = sorted_propulsors.unique_ducted_fan_tags 
+                bus_results[pg_tag].unique_esc_tags         = sorted_propulsors.unique_esc_tags   
+                bus_results[pg_tag].ducted_fan.throttle     = 0. * ones_row(1)  
+                bus_results[pg_tag].ducted_fan.torque       = 0. * ones_row(1)
+                bus_results[pg_tag].ducted_fan.thrust       = 0. * ones_row(1) 
+                noise_results[pg_tag]                       = RCAIDE.Analyses.Mission.Common.Conditions()
+                noise_results[pg_tag].ducted_fan            = RCAIDE.Analyses.Mission.Common.Conditions()
                 
         
         # Ensure the mission knows how to pack and unpack the unknowns and residuals

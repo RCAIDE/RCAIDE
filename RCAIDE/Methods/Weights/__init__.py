@@ -9,6 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import Buildups 
-from . import Correlations
-from . import Dynamo_Supply
+from . import Physics_Based_Buildups 
+from . import Correlation_Buildups 

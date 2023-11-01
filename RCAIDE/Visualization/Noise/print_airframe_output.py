@@ -144,6 +144,5 @@ def print_airframe_output(SAE_Airframe_Noise_Outputs):
         fid.write('SPLmax (dBA) =  ')
         fid.write(str('%3.2f' % (np.max(SPLt_dBA_history[nid][:])))+'  dB')
         fid.write('\n')
-
-    fid.close    
-    return
+ 
+    return 

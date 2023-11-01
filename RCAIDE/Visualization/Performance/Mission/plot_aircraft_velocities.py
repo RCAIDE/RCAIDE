@@ -109,4 +109,4 @@ def plot_aircraft_velocities(results,
     
     if save_figure:
         plt.savefig(save_filename + file_type)   
-    return
+    return fig 

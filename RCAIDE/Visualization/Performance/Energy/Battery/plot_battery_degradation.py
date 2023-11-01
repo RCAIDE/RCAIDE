@@ -125,5 +125,5 @@ def plot_battery_degradation(results,
         if save_figure:    
             fig.savefig(save_filename + '_'+ b[b_i] + file_type) 
     
-    return
+    return fig 
 

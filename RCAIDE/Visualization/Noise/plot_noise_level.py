@@ -8,8 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Core import Units
-from RCAIDE.Visualization.Performance.Common import set_axes, plot_style
-from RCAIDE.Visualization.Noise              import post_process_noise_data
+from RCAIDE.Visualization.Performance.Common import set_axes, plot_style 
 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -78,4 +77,4 @@ def plot_noise_level(noise_data,
     if save_figure:
         plt.savefig(save_filename + ".png")    
         
-    return
+    return fig

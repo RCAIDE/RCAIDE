@@ -90,13 +90,12 @@ def plot_noise_hemisphere(noise_data,
     )  
     
     if save_figure:
-        fig.write_image(save_filename + ".png")
+        fig_3d.write_image(save_filename + ".png")
         
     if show_figure:
-        fig.write_html( save_filename + '.html', auto_open=True)         
+        fig_3d.write_html( save_filename + '.html', auto_open=True)         
 
-    return        
+    return fig_3d     
 
 def colorax(vmin, vmax):
-    return dict(cmin=vmin,
-                cmax=vmax)
+    return dict(cmin=vmin,  cmax=vmax)
