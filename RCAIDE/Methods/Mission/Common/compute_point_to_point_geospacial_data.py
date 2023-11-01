@@ -1,13 +1,14 @@
-## @ingroup Methods-Missions
-# compute_point_to_point_geospacial_data.py
+## @ingroup Visualization-Performance-Noise
+# RCAIDE/Methods/Missions/Common/compute_point_to_point_geospacial_data.py
 # 
-# Created: Mar 2023, M. Clarke  
+# 
+# Created:  Jul 2023, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ---------------------------------------------------------------------
-import MARC
-from MARC.Core import Units, Data
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------  
+import RCAIDE
+from RCAIDE.Core import Units, Data
 from scipy.interpolate import griddata
 import numpy as np
 from geopy.distance import geodesic as GD
@@ -54,7 +55,7 @@ def compute_point_to_point_geospacial_data(topography_file                      
     Lat   = data[:,1]
     Elev  = data[:,2]
     
-    earth = MARC.Attributes.Planets.Earth()
+    earth = RCAIDE.Attributes.Planets.Earth()
     R     = earth.mean_radius      
      
     # Compute distance between departure and destimation points

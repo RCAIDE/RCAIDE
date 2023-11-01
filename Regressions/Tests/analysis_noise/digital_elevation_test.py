@@ -8,8 +8,7 @@
 import RCAIDE
 from RCAIDE.Core import Units , Data 
 from RCAIDE.Visualization import *     
-from RCAIDE.Methods.Noise.Metrics import * 
-from RCAIDE.Methods.Performance.estimate_stall_speed                          import estimate_stall_speed 
+from RCAIDE.Methods.Noise.Metrics import *  
 from RCAIDE.Methods.Noise.Common.generate_microphone_locations                import generate_terrain_elevated_microphone_locations
 from RCAIDE.Methods.Mission.Common.compute_point_to_point_geospacial_data     import compute_point_to_point_geospacial_data
 
