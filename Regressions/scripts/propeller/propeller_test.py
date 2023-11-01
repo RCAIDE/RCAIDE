@@ -39,7 +39,7 @@ def main():
     airfoil_0 = RCAIDE.Components.Airfoils.Airfoil()  
     airfoil_0.airfoil_directory = os.path.abspath('../Vehicles/Airfoils/NACA_4412')
     airfoil_0.settings.NACA_4_series_flag   = True
-    airfoil_0.settings.NACA_4_series_digits ='4412'
+    airfoil_0.settings.NACA_4_series_digits ='4412' 
     
     #    Define airfoil using provided coordinate file and polars in the indicated directory
     airfoil_1 = RCAIDE.Components.Airfoils.Airfoil()
@@ -52,6 +52,14 @@ def main():
     airfoil_2.tag = 'Clark_Y' 
     airfoil_2.airfoil_directory = os.path.abspath('../Vehicles/Airfoils/Clark_y')
     airfoil_2.coordinate_file = 'Clark_y.txt'
+    
+    # Define hard-coded polar files for analysis    
+    airfoil_analysis_4412_hardcode = Airfoil_Analysis()
+    airfoil_analysis_4412_hardcode.settings.polar_import_method.polar_files = [os.path.abspath('../Vehicles/Airfoils/NACA_4412/Polars/NACA_4412_polar_Re_50000.txt'),
+                                                                               os.path.abspath('../Vehicles/Airfoils/NACA_4412/Polars/NACA_4412_polar_Re_100000.txt'),
+                                                                               os.path.abspath('../Vehicles/Airfoils/NACA_4412/Polars/NACA_4412_polar_Re_200000.txt'),
+                                                                               os.path.abspath('../Vehicles/Airfoils/NACA_4412/Polars/NACA_4412_polar_Re_500000.txt'),
+                                                                               os.path.abspath('../Vehicles/Airfoils/NACA_4412/Polars/NACA_4412_polar_Re_1000000.txt')]
     
     # ------------------------------------------------------------------------------------------    
     net                       = Battery_Propeller()   
@@ -71,7 +79,8 @@ def main():
     conditions, conditions_r = set_conditions()
 
     # ------------------------------------------------------------------------------------------        
-    test_bad_prop(gearbox, airfoil_0, conditions)
+    test_bad_prop(gearbox, airfoil_0, conditions, Airfoil_Analysis())    
+    test_bad_prop(gearbox, airfoil_0, conditions, airfoil_analysis_4412_hardcode)
 
     # ------------------------------------------------------------------------------------------    
     prop_a, F_a, Q_a, P_a, Cplast_a ,output_a , etap_a = test_prop_a(gearbox, airfoil_1, airfoil_2, conditions)
@@ -101,10 +110,10 @@ def main():
     plot_results(outputr, rot,'black','-','P')
     
     # Truth values for propeller with airfoil geometry defined 
-    F_a_truth       = 3367.1596921441087
-    Q_a_truth       = 927.6570322
-    P_a_truth       = 192174.91949376
-    Cplast_a_truth  = 0.09905162
+    F_a_truth       = 3351.4727231223133
+    Q_a_truth       = 990.01867471
+    P_a_truth       = 205093.85743498
+    Cplast_a_truth  = 0.10571036
     
     # Truth values for propeller without airfoil geometry defined 
     F_truth         = 3760.214425042781
@@ -155,7 +164,7 @@ def main():
     return
 
 
-def test_bad_prop(gearbox, airfoil_0, conditions):
+def test_bad_prop(gearbox, airfoil_0, conditions, airfoil_analysis_method):
     # ------------------------------------------------------------------------------------------
     # Design the Propeller with airfoil  geometry defined                      
     bad_prop                          = RCAIDE.Energy.Converters.Propeller() 
@@ -175,7 +184,7 @@ def test_bad_prop(gearbox, airfoil_0, conditions):
     bad_prop.airfoil_polar_stations   =  [0] * 20
 
     # Set the airfoil analysis methods
-    bad_prop.finalize(Airfoil_Analysis())
+    bad_prop.finalize(airfoil_analysis_method)
     
     bad_prop = propeller_design(bad_prop)
     

@@ -36,10 +36,10 @@ def import_airfoil_polars(airfoil_analysis):
     N/A
     """  
     # Extract settings from the airfoil analysis
-    aoa_discretization = airfoil_analysis.settings.angle_of_attack_discretization
-    aoa_interpolated_lb = airfoil_analysis.settings.interpolated_angle_of_attack_lower_bound
-    aoa_interpolated_ub = airfoil_analysis.settings.interpolated_angle_of_attack_upper_bound
-    airfoil_polar_files = airfoil_analysis.polar_files
+    aoa_discretization = airfoil_analysis.settings.polar_import_method.angle_of_attack_discretization
+    aoa_interpolated_lb = airfoil_analysis.settings.polar_import_method.interpolated_angle_of_attack_lower_bound
+    aoa_interpolated_ub = airfoil_analysis.settings.polar_import_method.interpolated_angle_of_attack_upper_bound
+    airfoil_polar_files = airfoil_analysis.settings.polar_import_method.polar_files
     
     # number of airfoils   
     num_polars = len(airfoil_polar_files)
@@ -84,6 +84,7 @@ def import_airfoil_polars(airfoil_analysis):
     return airfoil_data 
 
 
+## @ingroup Methods-Aerodynamics-Airfoil
 def parse_data_from_file(airfoil_polar_file):
     f = open(airfoil_polar_file) 
     data_block = f.readlines()

@@ -10,8 +10,6 @@
 
 import Legacy.trunk.S as SUAVE
 from Legacy.trunk.S.Core                                                                          import Data, Units
-from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.pre_stall_coefficients                           import pre_stall_coefficients
-from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.post_stall_coefficients                          import post_stall_coefficients
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import compute_extended_polars as legacy_compute_extended_polars
 from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_polars  import import_airfoil_polars   
 import numpy as np
@@ -50,21 +48,30 @@ def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_compon
     # ----------------------------------------------------------------------------------------
     use_pre_stall_data = airfoil_analysis.settings.use_pre_stall_data
     polars_directory = f"{airfoil_component.airfoil_directory}/Polars"
-    # Find polars in airfoil data directory
-    if not os.path.exists(polars_directory):
+    
+    # Identify polar files
+    if bool(airfoil_analysis.settings.polar_import_method.polar_files):
+        # Check that all polar files passed exist
+        all_exist = np.all([os.path.exists(f) for f in airfoil_analysis.settings.polar_import_method.polar_files])
+        
+        if not all_exist:
+            raise Exception("Polar file does not exist!")
+        
+    elif not os.path.exists(polars_directory):
         raise Exception(f"Must include Polars directory in {airfoil_component.airfoil_directory}!")
     else:
-        airfoil_analysis.polar_files = os.listdir(polars_directory)
-        airfoil_analysis.polar_files = sorted([f"{polars_directory}/{file}" for file in airfoil_analysis.polar_files])
+        airfoil_analysis.settings.polar_import_method.polar_files = os.listdir(polars_directory)
+        airfoil_analysis.settings.polar_import_method.polar_files = sorted([f"{polars_directory}/{file}" for file in \
+                                                                            airfoil_analysis.settings.polar_import_method.polar_files])
     
-    if airfoil_analysis.polar_files is None:
+    if airfoil_analysis.settings.polar_import_method.polar_files is None:
         raise Exception('No airfoil polar files included in Polars directory! Required for running compute_airfoil_properties_from_polar_files()!')
 
     # ----------------------------------------------------------------------------------------
     # Compute extended cl and cd polars 
     # ----------------------------------------------------------------------------------------
     # check number of polars per airfoil in batch
-    num_polars = len(airfoil_analysis.polar_files)
+    num_polars = len(airfoil_analysis.settings.polar_import_method.polar_files)
     if num_polars < 3:
         raise AttributeError('Provide three or more airfoil polars to compute surrogate')     
      

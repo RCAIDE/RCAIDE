@@ -15,7 +15,7 @@ from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compu
 import numpy as np
 
 ## @ingroup Methods-Aerodynamics-Airfoil
-def compute_airfoil_properties_from_panel_method(settings, airfoil):
+def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
     """This computes the aerodynamic properties and coefficients of an airfoil in stall regimes using pre-stall
     characterstics and AERODAS formation for post stall characteristics. This is useful for 
     obtaining a more accurate prediction of wing and blade loading as well as aeroacoustics. Pre stall characteristics 
@@ -62,8 +62,8 @@ def compute_airfoil_properties_from_panel_method(settings, airfoil):
     N/A
     """
     # Extract any initialized airfoil data
-    Airfoil_Data = compute_boundary_layer_properties(settings, airfoil)
-    use_pre_stall_data = settings.use_pre_stall_data
+    Airfoil_Data = compute_boundary_layer_properties(airfoil_analysis.settings, airfoil)
+    use_pre_stall_data = airfoil_analysis.settings.use_pre_stall_data
     
     # ----------------------------------------------------------------------------------------
     # Compute airfoil boundary layers properties 

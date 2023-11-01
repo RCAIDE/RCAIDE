@@ -1,4 +1,4 @@
-## @ingroup Analyses-Aerodynamics-Airfoil
+## @ingroup Analyses-Aerodynamics-Airfoils
 # Airfoil.py
 #
 # Created:  Oct 2023, Racheal M. Erhard
@@ -16,8 +16,6 @@ from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_geometry import import_a
 from RCAIDE.Methods.Aerodynamics.Airfoil.compute_naca_4series_geometry import compute_naca_4series_geometry
 from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties_from_polar_files import compute_airfoil_properties_from_polar_files
 from RCAIDE.Methods.Aerodynamics.Airfoil.compute_airfoil_properties_from_panel_method import compute_airfoil_properties_from_panel_method
-from RCAIDE.Energy.Converters import Rotor
-from RCAIDE import Vehicle
 
 # External package imports
 import numpy as np
@@ -26,7 +24,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 #  Analysis
 # ----------------------------------------------------------------------
-## @ingroup Analyses-Aerodynamics-Airfoil
+## @ingroup Analyses-Aerodynamics-Airfoils
 class Airfoil(Analysis):
     """This is the class for airfoil analyses. It contains functions
     for airfoil analysis.
@@ -57,7 +55,6 @@ class Airfoil(Analysis):
         """           
         self.tag = 'Airfoil_Analysis'
         self.geometry = Data() # Vehicle data structure, used to extract airfoil components
-        self.polar_files = None
         
         self.airfoil_data = Data() # Data structure that will contain data from all airfoils in analysis
         
@@ -74,11 +71,15 @@ class Airfoil(Analysis):
         self.settings.panel_method.H_wake = 1.05
         self.settings.panel_method.Ue_wake = 0.99
         
-        # Settings for importing airfoil polar data
-        self.settings.angle_of_attack_discretization = 89 # Number of angles of attack over which to interpolate from the direct data. 
-                                                          # This is required if more than one polar file is analyzed, as the output structure is assumed to have the same shape.
-        self.settings.interpolated_angle_of_attack_lower_bound = -6
-        self.settings.interpolated_angle_of_attack_upper_bound = 16
+        # Settings for polar import method
+        self.settings.use_polar_import = True      
+        self.settings.polar_import_method = Data()  
+        self.settings.polar_import_method.polar_files = None 
+        self.settings.polar_import_method.interpolated_angle_of_attack_lower_bound = -6
+        self.settings.polar_import_method.interpolated_angle_of_attack_upper_bound = 16
+        self.settings.polar_import_method.angle_of_attack_discretization = 89 # Number of angles of attack over which to interpolate from the direct data. 
+                                    # This is required if more than one polar file is analyzed, as the output structure is assumed to have the same shape.
+        
         
         
     def initialize(self):
@@ -103,9 +104,10 @@ class Airfoil(Analysis):
         # Initialize the analysis with the proper evaluate method
         if self.settings.use_panel_method:
             self.evaluate = self.evaluate_with_panel_method
+        elif self.settings.use_polar_import:
+            self.evaluate = self.evaluate_with_polar_files
         else:
-            self.evaluate = self.evaluate_with_polar_files       
-        
+            self.evaluate = None
         return
         
         
@@ -132,8 +134,7 @@ class Airfoil(Analysis):
         N/A
         """
         geometry = self.geometry
-        if isinstance(geometry, Rotor):
-
+        if bool(geometry.Airfoil_Components):
             for airfoil in geometry.Airfoil_Components:
                 # Initialize airfoil
                 airfoil.initialize()
@@ -146,31 +147,9 @@ class Airfoil(Analysis):
                 
                 # Compute airfoil polar surrogate using provided polar files, append as analysis polars
                 self.airfoil_data[airfoil.tag] = compute_airfoil_properties_from_polar_files(self, airfoil)
+        else:
+            raise Exception("No Airfoil_Components in specified geometry! Required for airfoil polar evaluation.")
                 
-        
-        elif isinstance(geometry, Vehicle):
-            
-            if bool(geometry.wings.keys()):
-                for wing in geometry.wings:
-                    if bool(wing.Airfoil.keys()):
-                        for airfoil in wing.Airfoil:
-                            # Initialize airfoil
-                            airfoil.initialize()
-                            
-                            # Evaluate airfoil geometry for this wing
-                            airfoil.geometry = import_airfoil_geometry(airfoil)
-    
-            for net in geometry.networks:
-                for prop in net.propellers:
-                    for airfoil in prop.Airfoil_Components:
-                        # Initialize airfoil
-                        airfoil.initialize()
-                        
-                        # Evaluate airfoil geometry for this rotor
-                        airfoil.geometry = import_airfoil_geometry(airfoil)
-                        
-                        # Compute airfoil polar surrogate using provided polar files, append as analysis polars
-                        self.polars[airfoil.tag] = compute_airfoil_properties_from_polar_files(self.settings, airfoil)
         return
     
     def evaluate_with_panel_method(self):
@@ -196,18 +175,21 @@ class Airfoil(Analysis):
         Properties Used:
         N/A
         """
-        for wing in self.geometry.wings:
-            if bool(wing.Airfoil.keys()):
-                for airfoil in wing.Airfoil:
-                    # Evaluate airfoil geometry for this wing
+        geometry = self.geometry
+        if bool(geometry.Airfoil_Components):
+            for airfoil in geometry.Airfoil_Components:
+                # Initialize airfoil
+                airfoil.initialize()
+                
+                # Evaluate airfoil geometry for this rotor
+                if airfoil.settings.NACA_4_series_flag:
+                    airfoil.geometry = compute_naca_4series_geometry(airfoil)
+                else:
                     airfoil.geometry = import_airfoil_geometry(airfoil)
-
-        for net in self.geometry.networks:
-            for prop in net.propellers:
-                for airfoil in prop.Airfoils:
-                    # Evaluate airfoil geometry for this rotor
-                    airfoil.geometry = import_airfoil_geometry(airfoil)
-                    
-                    # Compute airfoil polar surrogate using panel method, append as analysis polars
-                    self.polars = compute_airfoil_properties_from_panel_method(self.settings, airfoil)
+                
+                # Compute airfoil polar surrogate using provided polar files, append as analysis polars
+                self.airfoil_data[airfoil.tag] = compute_airfoil_properties_from_panel_method(self, airfoil)
+        else:
+            raise Exception("No Airfoil_Components in specified geometry! Required for airfoil polar evaluation.")
+        
         return
