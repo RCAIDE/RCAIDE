@@ -20,7 +20,8 @@ import os
 ## @ingroup Components-Airfoils
 class Airfoil(Lofted_Body.Section):
     def __defaults__(self):
-        """This sets the default values of a airfoil defined in SUAVE.
+        """This sets the default values of an airfoil component.
+        It contains the required geometric information.
 
         Assumptions:
         None
@@ -64,7 +65,7 @@ class Airfoil(Lofted_Body.Section):
         
     def initialize(self):
         """
-        Initialize this airfoil.
+        Initializes the airfoil by setting the proper paths.
         """
         # Default airfoil directory used if unspecified
         if self.airfoil_directory is None:
