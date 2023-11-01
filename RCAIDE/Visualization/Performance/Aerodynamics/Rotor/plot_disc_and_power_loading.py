@@ -103,4 +103,4 @@ def plot_disc_and_power_loading(results,
         
         if save_figure:
             plt.savefig(save_filename + '_' + pg[pg_i] + file_type)   
-    return
+    return fig 

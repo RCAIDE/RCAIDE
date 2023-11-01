@@ -7,6 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+import RCAIDE
 from RCAIDE.Core import Data  
 from RCAIDE.Methods.Noise.Common.background_noise     import background_noise
 
@@ -51,7 +52,7 @@ def post_process_noise_data(results,time_step = 20):
     # Step 1: Merge data from all segments 
     idx = 0 
     for i in range(N_segs):  
-        if  results.segments[i].battery_discharge == False:
+        if  type(results.segments[i]) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:
             pass
         else:  
             if i == 0:

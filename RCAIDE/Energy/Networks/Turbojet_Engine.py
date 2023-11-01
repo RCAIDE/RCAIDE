@@ -237,16 +237,14 @@ class Turbojet_Engine(Network):
             # ------------------------------------------------------------------------------------------------------            
             # Create fuel_line results data structure  
             # ------------------------------------------------------------------------------------------------------
-            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()            
-
-            # ------------------------------------------------------------------------------------------------------            
-            # Determine number of propulsor groups in fuel_line
-            # ------------------------------------------------------------------------------------------------------
+            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()             
             sorted_propulsors                             = compute_unique_propulsor_groups(fuel_line)
             fuel_line_results                             = segment.state.conditions.energy[fuel_line.tag]
             fuel_line_results.number_of_propulsor_groups  = N_active_propulsor_groups
             fuel_line_results.active_propulsor_groups     = active_propulsor_groups
             fuel_line_results.N_turbojets                 = sorted_propulsors.N_turbojets
+            segment.state.conditions.noise[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()  
+            noise_results                                 = segment.state.conditions.noise[fuel_line.tag]
      
             for fuel_tank in fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  
@@ -268,6 +266,8 @@ class Turbojet_Engine(Network):
                 fuel_line_results[pg_tag].turbojet.thrust         = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].turbojet.power          = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].turbojet.thottle        = 0. * ones_row(1) 
+                noise_results[pg_tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
+                noise_results[pg_tag].turbofan                    = RCAIDE.Analyses.Mission.Common.Conditions() 
         
         segment.process.iterate.unknowns.network                  = self.unpack_unknowns                   
         return segment    

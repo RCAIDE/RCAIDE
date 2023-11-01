@@ -433,6 +433,23 @@ def vehicle_setup():
     vehicle.append_component(nacelle)   
     vehicle.append_component(nacelle_2)    
   
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Landing Gear
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    landing_gear                          =  RCAIDE.Components.Landing_Gear.Landing_Gear()
+    landing_gear.tag                      = "main_landing_gear"
+    landing_gear.main_tire_diameter       = 1.12000 * Units.m
+    landing_gear.nose_tire_diameter       = 0.6858 * Units.m
+    landing_gear.main_strut_length        = 1.8 * Units.m
+    landing_gear.nose_strut_length        = 1.3 * Units.m
+    landing_gear.main_units               = 1    #number of nose landing gear
+    landing_gear.nose_units               = 1    #number of nose landing gear
+    landing_gear.main_wheels              = 2    #number of wheels on the main landing gear
+    landing_gear.nose_wheels              = 2    #number of wheels on the nose landing gear
+    vehicle.landing_gear                  = landing_gear
+
+  
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Turbofan Network
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -569,8 +586,8 @@ def configs_setup(vehicle):
 
     configs     = RCAIDE.Components.Configs.Config.Container() 
     base_config = RCAIDE.Components.Configs.Config(vehicle)
-    base_config.tag = 'base'
-    base_config.networks.turbofan_engine.fuel_lines.fuel_line.active_propulsor_groups = ['propulsor']  # default in network 
+    base_config.tag = 'base' 
+    base_config.landing_gear.gear_condition                      = 'up'
     configs.append(base_config)
 
     # ------------------------------------------------------------------
@@ -590,6 +607,7 @@ def configs_setup(vehicle):
     config.tag = 'takeoff'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
+    config.landing_gear.gear_condition                          = 'up'       
     config.V2_VS_ratio = 1.21
     configs.append(config)
     
@@ -601,6 +619,7 @@ def configs_setup(vehicle):
     config.tag = 'landing'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
+    config.landing_gear.gear_condition                          = 'down'   
     config.Vref_VS_ratio = 1.23
     configs.append(config)   
      
@@ -612,6 +631,7 @@ def configs_setup(vehicle):
     config.tag = 'short_field_takeoff'    
     config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
+    config.landing_gear.gear_condition                          = 'down'   
     config.V2_VS_ratio = 1.21
     
     # payload?
@@ -620,3 +640,5 @@ def configs_setup(vehicle):
 
     # done!
     return configs
+
+ 

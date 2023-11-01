@@ -101,4 +101,4 @@ def plot_airfoil_polar_files(polar_data,
     
     if save_figure:
         plt.savefig(save_filename + file_type)   
-    return
+    return fig

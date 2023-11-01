@@ -84,7 +84,7 @@ def plot_airfoil_polars(polar_data,
             
     if save_figure:
         plt.savefig(save_filename + file_type)   
-    return    
+    return  fig
      
      
      

@@ -71,4 +71,4 @@ def plot_battery_ragone_diagram(battery,
     
     if save_figure:
         plt.savefig(save_filename + file_type)   
-    return 
+    return  fig 

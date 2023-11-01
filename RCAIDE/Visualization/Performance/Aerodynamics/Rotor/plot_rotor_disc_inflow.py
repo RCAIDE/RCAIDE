@@ -127,4 +127,4 @@ def plot_rotor_disc_inflow(prop,velocities, grid_points):
     
     fig.suptitle("Induced Velocities at Rotor")
     
-    return
+    return fig 

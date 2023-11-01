@@ -110,4 +110,4 @@ def plot_aerodynamic_forces(results,
     
     if save_figure:
         plt.savefig(save_filename + file_type)   
-    return
+    return fig 

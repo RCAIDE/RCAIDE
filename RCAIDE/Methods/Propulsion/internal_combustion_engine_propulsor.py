@@ -47,28 +47,29 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
     Properties Used: 
     N.A.        
     '''
-    ice_net__results        = conditions.energy[fuel_line_tag]
-    unique_rotor_tags       = conditions.energy[fuel_line_tag][propulsor_group_tag].unique_rotor_tags
-    unique_engine_tags      = conditions.energy[fuel_line_tag][propulsor_group_tag].unique_engine_tags  
+    ice_net_pg_results      = conditions.energy[fuel_line_tag][propulsor_group_tag]
+    noise_pg_results        = conditions.noise[fuel_line_tag][propulsor_group_tag]
+    unique_rotor_tags       = ice_net_pg_results.unique_rotor_tags
+    unique_engine_tags      = ice_net_pg_results.unique_engine_tags  
     engine                  = engines[unique_engine_tags[i]]
     rotor                   = rotors[unique_rotor_tags[i]]  
 
     # Throttle the engine
-    engine.inputs.omega  = conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.rpm * Units.rpm 
+    engine.inputs.omega  = ice_net_pg_results.rotor.rpm * Units.rpm 
     
     # Run the engine
-    engine.calculate_power_out_from_throttle(conditions,conditions.energy[fuel_line_tag][propulsor_group_tag].engine.throttle)
+    engine.calculate_power_out_from_throttle(conditions,ice_net_pg_results.engine.throttle)
     mdot         = engine.outputs.fuel_flow_rate * N_rotors[i]
     torque       = engine.outputs.torque     
     
     # link
-    rotor.inputs.omega = conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.rpm * Units.rpm 
+    rotor.inputs.omega = ice_net_pg_results.rotor.rpm * Units.rpm 
 
     # Spin the rotor 
     F, Q, P, Cp, outputs, etap = rotor.spin(conditions) 
 
     # Check to see if magic thrust is needed, the ESC caps throttle at 1.1 already
-    eta                 = ice_net__results[propulsor_group_tag].engine.throttle  
+    eta                 = ice_net_pg_results.engine.throttle  
     P[eta>1.0]          = P[eta>1.0]*eta[eta>1.0]
     F[eta[:,0]>1.0,:]   = F[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:]
 
@@ -82,18 +83,18 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
     # Pack specific outputs
 
     # Create the outputs
-    conditions.energy[fuel_line_tag][propulsor_group_tag].mass_flow_rate            = mdot
-    conditions.energy[fuel_line_tag][propulsor_group_tag].engine.power              = total_power 
-    conditions.energy[fuel_line_tag][propulsor_group_tag].engine.torque             = torque
-    conditions.energy[fuel_line_tag][propulsor_group_tag].engine.throttle           = eta 
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.torque              = Q
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.rpm                 = rpm
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.tip_mach            = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound    
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.disc_loading        = (F_mag)/(np.pi*(R**2))             
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.power_loading       = (F_mag)/(P)    
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.efficiency          = etap
-    conditions.energy[fuel_line_tag][propulsor_group_tag].rotor.figure_of_merit     = outputs.figure_of_merit
-    conditions.noise.sources.rotors[rotor.tag]                                      = outputs  
+    ice_net_pg_results.mass_flow_rate            = mdot
+    ice_net_pg_results.engine.power              = total_power 
+    ice_net_pg_results.engine.torque             = torque
+    ice_net_pg_results.engine.throttle           = eta 
+    ice_net_pg_results.rotor.torque              = Q
+    ice_net_pg_results.rotor.rpm                 = rpm
+    ice_net_pg_results.rotor.tip_mach            = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound    
+    ice_net_pg_results.rotor.disc_loading        = (F_mag)/(np.pi*(R**2))             
+    ice_net_pg_results.rotor.power_loading       = (F_mag)/(P)    
+    ice_net_pg_results.rotor.efficiency          = etap
+    ice_net_pg_results.rotor.figure_of_merit     = outputs.figure_of_merit
+    noise_pg_results.rotor                       = outputs 
  
     return outputs , total_thrust , total_power ,mdot
 

@@ -9,11 +9,11 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Core import Units  
-from RCAIDE.Energy.Networks.All_Electric                 import All_Electric
-from RCAIDE.Methods.Propulsion                           import design_propeller,  size_optimal_motor 
-from RCAIDE.Methods.Weights.Correlations.Propulsion      import nasa_motor
-from RCAIDE.Methods.Power.Battery.Sizing                 import initialize_from_circuit_configuration
-from RCAIDE.Methods.Geometry.Two_Dimensional.Planform    import wing_segmented_planform
+from RCAIDE.Energy.Networks.All_Electric                    import All_Electric
+from RCAIDE.Methods.Propulsion                              import design_propeller,  size_optimal_motor 
+from RCAIDE.Methods.Weights.Correlation_Buildups.Propulsion import nasa_motor
+from RCAIDE.Methods.Power.Battery.Sizing                    import initialize_from_circuit_configuration
+from RCAIDE.Methods.Geometry.Two_Dimensional.Planform       import wing_segmented_planform
 
 # python imports 
 import numpy as np 
@@ -521,15 +521,14 @@ def vehicle_setup():
 
 def configs_setup(vehicle):
 
+    configs     = RCAIDE.Components.Configs.Config.Container() 
+    
     # ------------------------------------------------------------------
     #   Initialize Configurations
-    # ------------------------------------------------------------------
-
-    configs     = RCAIDE.Components.Configs.Config.Container() 
+    # ------------------------------------------------------------------  
     base_config = RCAIDE.Components.Configs.Config(vehicle)
-    base_config.tag = 'base' 
-    base_config.networks.all_electric.busses.bus.active_propulsor_groups = ['propulsor']  # default in network 
-    configs.append(base_config) 
-
+    base_config.tag = 'base'  
+    configs.append(base_config)   
+    
     # done!
     return configs

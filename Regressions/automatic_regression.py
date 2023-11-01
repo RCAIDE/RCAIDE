@@ -18,6 +18,9 @@ import sys, os, traceback, time
  
 modules = [ 
     # ----------------------- Regression List --------------------------
+    'Tests/analysis_noise/digital_elevation_test.py',  
+    'Tests/analysis_noise/frequency_domain_test.py',
+    'Tests/analysis_noise/noise_hemisphere_test.py',
     'Tests/network_all_electric/all_electric_rotor_test.py',  
     'Tests/network_turbofan/turbofan_network_test.py',
     'Tests/network_turbojet/turbojet_network_test.py',
