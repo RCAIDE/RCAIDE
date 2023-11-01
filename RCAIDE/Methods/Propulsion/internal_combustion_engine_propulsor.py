@@ -48,6 +48,7 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
     N.A.        
     '''
     ice_net_pg_results      = conditions.energy[fuel_line_tag][propulsor_group_tag]
+    noise_pg_results        = conditions.noise[fuel_line_tag][propulsor_group_tag]
     unique_rotor_tags       = ice_net_pg_results.unique_rotor_tags
     unique_engine_tags      = ice_net_pg_results.unique_engine_tags  
     engine                  = engines[unique_engine_tags[i]]
@@ -93,7 +94,7 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
     ice_net_pg_results.rotor.power_loading       = (F_mag)/(P)    
     ice_net_pg_results.rotor.efficiency          = etap
     ice_net_pg_results.rotor.figure_of_merit     = outputs.figure_of_merit
-    conditions.noise.sources.rotors[rotor.tag]                                      = outputs  
+    noise_pg_results.rotor                       = outputs 
  
     return outputs , total_thrust , total_power ,mdot
 

@@ -25,7 +25,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 ## @ingroup Analyses-Aerodynamics
 class Supersonic_VLM(Aerodynamics):
-    """This is an analysis based on low-fidelity models.
+    """This is a supersonic aerodynamic buildup analysis based on the vortex lattice method
 
     Assumptions:
     None

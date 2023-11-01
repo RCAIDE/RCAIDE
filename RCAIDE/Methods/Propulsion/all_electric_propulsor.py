@@ -48,6 +48,7 @@ def compute_propulsor_performance(i,bus,propulsor_group_tag,motors,rotors,N_roto
     N.A.        
     '''
     bus_pg_results      = conditions.energy[bus.tag][propulsor_group_tag]
+    noise_pg_results    = conditions.noise[bus.tag][propulsor_group_tag]
     unique_rotor_tags   = bus_pg_results.unique_rotor_tags
     unique_motor_tags   = bus_pg_results.unique_motor_tags
     unique_esc_tags     = bus_pg_results.unique_esc_tags
@@ -102,7 +103,7 @@ def compute_propulsor_performance(i,bus,propulsor_group_tag,motors,rotors,N_roto
     bus_pg_results.rotor.power_loading     = (F_mag)/(P)
     bus_pg_results.rotor.efficiency        = etap
     bus_pg_results.rotor.figure_of_merit   = outputs.figure_of_merit
-    conditions.noise.sources.rotors[propulsor_group_tag]                              = outputs 
+    noise_pg_results.rotor                 = outputs 
 
     # Detemine esc current 
     esc.outputs.current  = total_motor_current

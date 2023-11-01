@@ -27,8 +27,22 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Noise
 class Correlation_Buildup(Noise): 
-    """  
-    """
+    """This is an acoustic analysis based on a collection of correlative modes
+
+     Assumptions: 
+ 
+     Source:
+     N/A
+ 
+     Inputs:
+     None
+ 
+     Outputs:
+     None
+ 
+     Properties Used:
+     N/A 
+    """    
     
     def __defaults__(self):
         

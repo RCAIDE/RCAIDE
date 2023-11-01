@@ -19,9 +19,33 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
 def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbojets,N_turbojets,conditions): 
-    ''' 
-    ''' 
+    ''' Computes the perfomrance of a turbojet engine 
+    
+    Assumptions: 
+    N/A
+
+    Source:
+    N/A
+
+    Inputs: 
+    i                     - index of unique compoment              [-]
+    bus_tag               - tag of bus                             [string]
+    propulsor_group_tag   - tag of propulsor group                 [string]
+    turbojets             - data structure of turbojets            [-] 
+    N_turbojets           - number of turbojets in propulsor group [-] 
+    conditions            - operating data structure               [-] 
+
+    Outputs: 
+    outputs              - propulsor operating outputs             [-]
+    total_thrust         - thrust of propulsor group               [N]
+    total_power          - power of propulsor group                [V]
+    mdot                 - mass flow rate of fuel                  [N]
+    
+    Properties Used: 
+    N.A.        
+    '''
     unique_turbojet_tags      = conditions.energy[PCU.tag][propulsor_group_tag].unique_turbojet_tags 
+    noise_pg_results          = conditions.noise[PCU.tag][propulsor_group_tag]
     turbojet                  = turbojets[unique_turbojet_tags[i]]  
     ram                       = turbojet.ram
     inlet_nozzle              = turbojet.inlet_nozzle
@@ -135,21 +159,30 @@ def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbojets,N_turbojet
 
     #compute the thrust
     turbojet.compute_thrust(conditions,throttle = conditions.energy[PCU.tag][propulsor_group_tag].turbojet.throttle )
-
-    #getting the network outputs from the thrust outputs
-    F            = turbojet.outputs.thrust*[1,0,0]*N_turbojets
-    mdot         = turbojet.outputs.fuel_flow_rate*N_turbojets
-    Isp          = turbojet.outputs.specific_impulse
-    P            = turbojet.outputs.power*N_turbojets
-    F_vec        = conditions.ones_row(3) * 0.0
-    F_vec[:,0]   = F[:,0]
-    F            = F_vec
-
-    results = Data()
-    results.thrust_force_vector         = F
-    results.vehicle_mass_rate           = mdot  
+  
+    # getting the network outputs from the thrust outputs
+    F                 = turbojet.outputs.thrust*[1,0,0]*N_turbojets
+    mdot              = turbojet.outputs.fuel_flow_rate*N_turbojets
+    total_power       = turbojet.outputs.power*N_turbojets
+    total_thrust      = conditions.ones_row(3) * 0.0
+    total_thrust[:,0] = F[:,0] 
     
-    return F_vec, P , mdot
+    # store data
+    core_nozzle_res = Data(
+        exit_static_temperature             = core_nozzle.outputs.static_temperature,
+        exit_static_pressure                = core_nozzle.outputs.static_pressure,
+        exit_stagnation_temperature         = core_nozzle.outputs.stagnation_temperature,
+        exit_stagnation_pressure            = core_nozzle.outputs.static_pressure,
+        exit_velocity                       = core_nozzle.outputs.velocity
+        )
+    
+    fan_nozzle_res = None 
+    noise_pg_results.turbofan.fan_nozzle    = fan_nozzle_res
+    noise_pg_results.turbofan.core_nozzle   = core_nozzle_res
+    noise_pg_results.turbofan.fan           = None 
+    
+    return total_thrust,total_power , mdot
+ 
 
 
 # ----------------------------------------------------------------------------------------------------------------------

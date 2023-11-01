@@ -19,12 +19,35 @@ import numpy as np
 # compute_propulsor_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbofans,N_turbofans,conditions): 
-    ''' 
-    ''' 
-    unique_turbofan_tags  = conditions.energy[PCU.tag][propulsor_group_tag].unique_turbofan_tags 
-    turbofan              = turbofans[unique_turbofan_tags[i]]
-   
+def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbofans,N_turbofans,conditions):  
+    ''' Computes the perfomrance of a turbofan engine 
+    
+    Assumptions: 
+    N/A
+
+    Source:
+    N/A
+
+    Inputs: 
+    i                     - index of unique compoment              [-]
+    bus_tag               - tag of bus                             [string]
+    propulsor_group_tag   - tag of propulsor group                 [string]
+    turbofans             - data structure of turbofans            [-] 
+    N_turbofans           - number of turbofans in propulsor group [-] 
+    conditions            - operating data structure               [-] 
+
+    Outputs: 
+    outputs              - propulsor operating outputs             [-]
+    total_thrust         - thrust of propulsor group               [N]
+    total_power          - power of propulsor group                [V]
+    mdot                 - mass flow rate of fuel                  [N]
+    
+    Properties Used: 
+    N.A.        
+    '''
+    unique_turbofan_tags      = conditions.energy[PCU.tag][propulsor_group_tag].unique_turbofan_tags 
+    noise_pg_results          = conditions.noise[PCU.tag][propulsor_group_tag]
+    turbofan                  = turbofans[unique_turbofan_tags[i]] 
     ram                       = turbofan.ram
     inlet_nozzle              = turbofan.inlet_nozzle
     low_pressure_compressor   = turbofan.low_pressure_compressor
@@ -172,14 +195,14 @@ def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbofans,N_turbofan
     turbofan.compute_thrust(conditions,throttle = conditions.energy[PCU.tag][propulsor_group_tag].turbofan.throttle )
 
     # getting the network outputs from the thrust outputs
-    F            = turbofan.outputs.thrust*[1,0,0]*N_turbofans
-    mdot         = turbofan.outputs.fuel_flow_rate*N_turbofans
-    P            = turbofan.outputs.power*N_turbofans
-    F_vec        = conditions.ones_row(3) * 0.0
-    F_vec[:,0]   = F[:,0] 
+    F                 = turbofan.outputs.thrust*[1,0,0]*N_turbofans
+    mdot              = turbofan.outputs.fuel_flow_rate*N_turbofans
+    total_power       = turbofan.outputs.power*N_turbofans
+    total_thrust      = conditions.ones_row(3) * 0.0
+    total_thrust[:,0] = F[:,0] 
     
     # store data
-    core_outputs = Data(
+    core_nozzle_res = Data(
         exit_static_temperature             = core_nozzle.outputs.static_temperature,
         exit_static_pressure                = core_nozzle.outputs.static_pressure,
         exit_stagnation_temperature         = core_nozzle.outputs.stagnation_temperature,
@@ -187,19 +210,19 @@ def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbofans,N_turbofan
         exit_velocity                       = core_nozzle.outputs.velocity
         )
     
-    fan_outputs = Data(
+    fan_nozzle_res = Data(
         exit_static_temperature             = fan_nozzle.outputs.static_temperature,
         exit_static_pressure                = fan_nozzle.outputs.static_pressure,
         exit_stagnation_temperature         = fan_nozzle.outputs.stagnation_temperature,
         exit_stagnation_pressure            = fan_nozzle.outputs.static_pressure,
         exit_velocity                       = fan_nozzle.outputs.velocity
         )
+
+    noise_pg_results.turbofan.fan_nozzle    = fan_nozzle_res
+    noise_pg_results.turbofan.core_nozzle   = core_nozzle_res
+    noise_pg_results.turbofan.fan           = None 
     
-    conditions.noise.sources.turbofan       = Conditions()        
-    conditions.noise.sources.turbofan.fan   = fan_outputs
-    conditions.noise.sources.turbofan.core  = core_outputs
-    
-    return F_vec, P , mdot
+    return total_thrust,total_power , mdot
 
 
 # ----------------------------------------------------------------------------------------------------------------------

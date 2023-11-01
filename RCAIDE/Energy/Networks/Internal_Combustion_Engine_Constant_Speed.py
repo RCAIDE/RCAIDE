@@ -187,16 +187,14 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
             # ------------------------------------------------------------------------------------------------------            
             # Create fuel_line results data structure  
             # ------------------------------------------------------------------------------------------------------
-            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()            
-
-            # ------------------------------------------------------------------------------------------------------            
-            # Determine number of propulsor groups in fuel_line
-            # ------------------------------------------------------------------------------------------------------
+            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()             
             sorted_propulsors                             = compute_unique_propulsor_groups(fuel_line)
             fuel_line_results                             = segment.state.conditions.energy[fuel_line.tag]
             fuel_line_results.number_of_propulsor_groups  = N_active_propulsor_groups
             fuel_line_results.active_propulsor_groups     = active_propulsor_groups
             fuel_line_results.N_rotors                    = sorted_propulsors.N_rotors
+            segment.state.conditions.noise[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()  
+            noise_results                                 = segment.state.conditions.noise[fuel_line.tag]
      
             for fuel_tank in fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                = RCAIDE.Analyses.Mission.Common.Conditions()  
@@ -230,7 +228,8 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
                 fuel_line_results[pg_tag].rotor.tip_mach          = 0. * ones_row(1)
                 fuel_line_results[pg_tag].rotor.efficiency        = 0. * ones_row(1)   
                 fuel_line_results[pg_tag].rotor.figure_of_merit   = 0. * ones_row(1) 
-                fuel_line_results[pg_tag].rotor.power_coefficient = 0. * ones_row(1)     
+                fuel_line_results[pg_tag].rotor.power_coefficient = 0. * ones_row(1)  
+                noise_results[pg_tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
         
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network                    = self.unpack_unknowns                

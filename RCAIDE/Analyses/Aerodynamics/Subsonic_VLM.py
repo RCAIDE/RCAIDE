@@ -25,7 +25,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Aerodynamics
 class Subsonic_VLM(Aerodynamics):
-    """This is an analysis based on low-fidelity models.
+    """This is a subsonic aerodynamic buildup analysis based on the vortex lattice method
 
      Assumptions:
      Stall effects are negligible 
