@@ -14,12 +14,13 @@ from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis i
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import compute_extended_polars
 import numpy as np
 
+
 ## @ingroup Methods-Aerodynamics-Airfoil
 def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
     """This computes the aerodynamic properties and coefficients of an airfoil in stall regimes using pre-stall
     characterstics and AERODAS formation for post stall characteristics. This is useful for 
     obtaining a more accurate prediction of wing and blade loading as well as aeroacoustics. Pre stall characteristics 
-    are obtained in the form of a text file of airfoil polar data obtained from airfoiltools.com
+    are obtained by running a panel method analysis.
     
     Assumptions:
         None 
@@ -28,35 +29,36 @@ def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
         None
         
     Inputs:
-    airfoil_geometry                        <data_structure>
-    airfoil_polar_files                     <string>
-    boundary_layer_files                    <string>
-    use_pre_stall_data                      [Boolean]
+       airfoil_analysis                       <data_structure>
+          .settings
+             .use_pre_stall_data              [Bool]
+       airfoil                                <data_structure>
+    
     Outputs:
-    airfoil_data.
-        cl_polars                           [unitless]
-        cd_polars                           [unitless]      
-        aoa_sweep                           [unitless]
-        
-        # raw data                          [unitless]
-        theta_lower_surface                 [unitless]
-        delta_lower_surface                 [unitless]
-        delta_star_lower_surface            [unitless] 
-        sa_lower_surface                    [unitless]
-        ue_lower_surface                    [unitless]
-        cf_lower_surface                    [unitless]
-        dcp_dx_lower_surface                [unitless] 
-        Ret_lower_surface                   [unitless]
-        H_lower_surface                     [unitless]
-        theta_upper_surface                 [unitless]
-        delta_upper_surface                 [unitless]
-        delta_star_upper_surface            [unitless] 
-        sa_upper_surface                    [unitless]
-        ue_upper_surface                    [unitless]
-        cf_upper_surface                    [unitless]
-        dcp_dx_upper_surface                [unitless] 
-        Ret_upper_surface                   [unitless]
-        H_upper_surface                     [unitless] 
+       airfoil_data.
+          cl_polars                           [unitless]
+          cd_polars                           [unitless]      
+          aoa_sweep                           [unitless]
+          
+          # raw data                          [unitless]
+          theta_lower_surface                 [unitless]
+          delta_lower_surface                 [unitless]
+          delta_star_lower_surface            [unitless] 
+          sa_lower_surface                    [unitless]
+          ue_lower_surface                    [unitless]
+          cf_lower_surface                    [unitless]
+          dcp_dx_lower_surface                [unitless] 
+          Ret_lower_surface                   [unitless]
+          H_lower_surface                     [unitless]
+          theta_upper_surface                 [unitless]
+          delta_upper_surface                 [unitless]
+          delta_star_upper_surface            [unitless] 
+          sa_upper_surface                    [unitless]
+          ue_upper_surface                    [unitless]
+          cf_upper_surface                    [unitless]
+          dcp_dx_upper_surface                [unitless] 
+          Ret_upper_surface                   [unitless]
+          H_upper_surface                     [unitless] 
     
     Properties Used:
     N/A
@@ -105,6 +107,7 @@ def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
     Airfoil_Data.drag_coefficients   = CD    
         
     return Airfoil_Data
+
 
 ## @ingroup Methods-Aerodynamics-Airfoil
 def compute_boundary_layer_properties(settings, airfoil): 
