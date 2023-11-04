@@ -1,3 +1,3 @@
  
 
-from .design_wavy_channel_heat_removal_system import design_conjugate_cooling_heat_removal_system
+from .design_wavy_channel_heat_removal_system import design_wavy_channel_heat_removal_system  

@@ -3,229 +3,136 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports   
-from RCAIDE.Core import Units
+from RCAIDE.Core import Units , Data 
+from RCAIDE.Methods.Thermal_Management.Batteries.Design.Conjugate_Heat_Removal.wavy_channel_geometry_setup    import wavy_channel_geometry_setup
+from RCAIDE.Methods.Thermal_Management.Batteries.Design.Conjugate_Heat_Removal.wavy_channel_sizing_setup      import wavy_channel_sizing_setup
+from RCAIDE.Optimization.Common             import Nexus
+from RCAIDE.Optimization.Packages.scipy     import scipy_setup
 
 # python packaged 
-import numpy as np
-from scipy.optimize import minimize
+import numpy as np   
+ 
+# Python package imports   
+import numpy as np  
+import time 
 
-def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 20000): 
+# ----------------------------------------------------------------------
+#  Rotor Design
+# ----------------------------------------------------------------------
+## @ingroup Methods-Thermal_Management-Batteries
+def design_wavy_channel_heat_removal_system(HRS,battery,single_side_contact=True, dry_mass=True,
+                                       solver_name= 'SLSQP',iterations = 200,solver_sense_step = 1E-5,
+                                       solver_tolerance = 1E-6,print_iterations = False):  
+    """ 
+    """ 
+    if HRS.coolant_inlet_temperature == None:
+        assert('specify coolant inlet temperature')
+    elif HRS.design_battery_operating_temperature  == None:
+        assert('specify design battery temperature')  
+    elif HRS.design_heat_generated == None: 
+        assert('specify heat generated') 
     
-    # Inital Mass Flow Rate
-    mass_flow_rate = hrs.coolant_flow_rate
+    # start optimization 
+    ti                   = time.time()   
+    optimization_problem = wavy_channel_design_problem_setup(HRS,battery,print_iterations)
+    output               = scipy_setup.SciPy_Solve(optimization_problem,solver=solver_name, iter = iterations , sense_step = solver_sense_step,tolerance = solver_tolerance)  
     
-    # Inital Channel Geometric Properties    
-    b        = hrs.channel_side_thickness                           
-    d        = hrs.channel_width                        
-    c        = battery.cell.height       
-    a        = hrs.channel_top_thickness
-    m_dot_0  = hrs.coolant_flow_rate 
+    tf                   = time.time()
+    elapsed_time         = round((tf-ti)/60,2)
+    print('Channel Cooling hex Optimization Simulation Time: ' + str(elapsed_time) + ' mins')   
     
-    theta    = hrs.channel_contact_angle    
-    
-    arguments = (hrs,battery,inlet_coolant_temperature,T_bat, Q_gen)
-    
-    cons     = [{'type':'ineq', 'fun': heat_energy_constraint,'args': arguments},
-                {'type':'ineq', 'fun': temperature_constraint,'args': arguments}] 
-   
-    initials = [mass_flow_rate, b, d, theta]
-    
-    bnds     = [(0.1*m_dot_0, 10*m_dot_0), (0.5*b,1.5*b), (0.5*d,1.5*d),(10*Units.degrees,47.5*Units.degrees )]
+    # print optimization results 
+    print (output)   
+    HRS_opt = optimization_problem.hrs_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_removal_system
+    HRS.mass_properties.mass       = HRS_opt.mass_properties.mass      
+    HRS.design_power_draw          = HRS_opt.design_power_draw         
+    HRS.design_heat_removed        = HRS_opt.design_heat_removed       
+    HRS.coolant_outlet_temperature = HRS_opt.coolant_outlet_temperature
+    HRS.coolant_pressure_ratio     = HRS_opt.coolant_pressure_ratio
+    HRS.channel_side_thickness     = HRS_opt.channel_side_thickness     
+    HRS.channel_width              = HRS_opt.channel_width          
+    HRS.coolant_flow_rate          = HRS_opt.coolant_flow_rate  
+    HRS.channel_contact_angle      = HRS_opt.channel_contact_angle   
+     
+    return HRS
 
-    sol = minimize(power_mass_objective,initials , args=arguments , method='SLSQP', bounds=bnds, constraints= cons) 
+## @ingroup Methods-Thermal_Management-Batteries-Sizing
+def wavy_channel_design_problem_setup(HRS,battery,print_iterations):  
     
-    if sol.success == False:
-        print('Heat Removal System Sizing Failed ')
-        
-    
-    hrs.coolant_flowrate             = sol.x[0]
-    hrs.channel_side_thickness       = sol.x[1]        
-    hrs.channel_width                = sol.x[2]       
-    hrs.channel_contact_angle        = sol.x[3]
-        
-    return sol.x   
+    nexus                        = Nexus()
+    problem                      = Data()
+    nexus.optimization_problem   = problem 
+ 
+    b_0        = HRS.channel_side_thickness                           
+    d_0        = HRS.channel_width          
+    m_dot_0    = HRS.coolant_flow_rate  
+    theta_0    = HRS.channel_contact_angle       
 
-
-# objective function
-def power_mass_objective(x,hrs,battery,inlet_coolant_temperature,T_bat,Q_gen) : 
+    # ---------------------------------------------------------------------------------------------------------- 
+    # Design Variables 
+    # ----------------------------------------------------------------------------------------------------------       
+    inputs = []   
+    #               variable   initial        upper limit   lower limit          scaling       units 
+    inputs.append([ 'm_dot' ,  m_dot_0     ,0.1*m_dot_0    ,10*m_dot_0           , 1.0     ,  1*Units.less])  
+    inputs.append([ 'b'     ,  b_0         ,0.5*b_0        , 1.5*b_0             , 1.0     ,  1*Units.less])  
+    inputs.append([ 'd'     ,  d_0         ,0.5*d_0        , 1.5*d_0             , 1.0     ,  1*Units.less])  
+    inputs.append([ 'theta' ,  theta_0     ,10*Units.degrees, 47.5*Units.degrees , 1.0     ,  1*Units.less])         
+    problem.inputs = np.array(inputs,dtype=object)    
     
-    # Mass flow rate 
-    m_coolant = x[0]  
-    b         = x[1]               
-    d         = x[2]               
-    theta     = x[3]  
-    c         = battery.cell.height 
-    a         = hrs.channel_top_thickness
-    
-    # Battery 
-    d_cell    = battery.cell.diameter                    
-    h_cell    = battery.cell.height                      
-    A_cell    = np.pi*d_cell*h_cell                      
-    N_battery = battery.pack.electrical_configuration.total 
+    # ----------------------------------------------------------------------------------------------------------
+    # Objective
+    # ---------------------------------------------------------------------------------------------------------- 
+    problem.objective = np.array([  
+                                 [  'Obj'  ,  10000   ,    1*Units.less] 
+    ],dtype=object)
             
-    coolant  = hrs.coolant
-    AR       = d/c    
-    T_i      = inlet_coolant_temperature 
-    n_pump   = 0.7
-  
-    # Channel Properties 
-    channel_density= hrs.channel_density
+
+    # ----------------------------------------------------------------------------------------------------------
+    # Constraints
+    # ----------------------------------------------------------------------------------------------------------  
+    constraints = []    
+    constraints.append([ 'Q_con'         ,  '<'  ,  0.1 ,   1.0   , 1*Units.less])    
+    constraints.append([ 'delta_T_con'   ,  '<'  ,  2.  ,   1.0   , 1*Units.less])     
+    problem.constraints =  np.array(constraints,dtype=object)                
     
-    #Length of Channel 
-    L_extra  = 4*d_cell             # Assumption made by Zhao et al. 
-    L_chan   = N_battery*theta*np.pi*(d_cell+b+0.5*d)+L_extra
-
-    # Hydraullic diameter    
-    dh = (4*c*d)/(2*(c+d))   
- 
-    # Thermophysical Properties of Coolant  
-    rho  = coolant.density
-    mu   = coolant.compute_absolute_viscosity(T_i)  
+    # ----------------------------------------------------------------------------------------------------------
+    #  Aliases
+    # ---------------------------------------------------------------------------------------------------------- 
+    aliases = [] 
+    btms = 'hrs_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_removal_system'  
+    aliases.append([ 'm_dot'       , btms + '.coolant_flow_rate'])    
+    aliases.append([ 'b'           , btms + '.channel_side_thickness']) 
+    aliases.append([ 'd'           , btms + '.channel_width']) 
+    aliases.append([ 'theta'       , btms + '.channel_contact_angle']) 
+    aliases.append([ 'Obj'         , 'summary.mass_power_objective' ])  
+    aliases.append([ 'Q_con'       , 'summary.heat_energy_constraint'])   
+    aliases.append([ 'delta_T_con' , 'summary.temperature_constraint'])      
+    problem.aliases = aliases
     
-    # COMPUTE POWER  Q_convec  
+    # -------------------------------------------------------------------
+    #  Vehicles
+    # ------------------------------------------------------------------- 
+    nexus.hrs_configurations = wavy_channel_geometry_setup(HRS,battery)
+
+    # -------------------------------------------------------------------
+    #  Analyses
+    # -------------------------------------------------------------------
+    nexus.analyses = None 
     
-    #calculate the velocity of the fluid in the channel 
-    v=rho*c*d*m_coolant
+    # -------------------------------------------------------------------
+    #  Missions
+    # -------------------------------------------------------------------
+    nexus.missions = None
     
-    # calculate the Reynolds Number 
-    Re=(rho*dh*v)/mu
+    # -------------------------------------------------------------------
+    #  Procedure
+    # -------------------------------------------------------------------    
+    nexus.print_iterations  = print_iterations 
+    nexus.procedure         = wavy_channel_sizing_setup()
     
-    # fanning friction factor (eq 32)
-    if Re< 2300:
-        f= 24*(1-(1.3553*AR)+(1.9467*AR**2)-(1.7012*AR**3)+(0.9564*AR**4)-(0.2537*AR**5))
-    elif Re>=2300:
-        f= (0.0791*(Re**(-0.25)))*(1.8075-0.1125*AR)
-        
-    # Calculate the pressure drop in the channel 
-    dp     = 2*f*rho*v*v*L_chan/dh
-    
-    # Calculate the Power consumed
-    Power   = m_coolant*dp/(n_pump*rho)
- 
-    # Mass calculations - Channel  
-    rho_line        = channel_density*(2*a*((2*b)+d)+(2*b*c))
-    mass_channel    = rho_line*L_chan
-    
-    # Mass calculations - Liquid 
-    mass_liquid     = rho*c*d
-    
-    mass_heat_removal_system = mass_channel+mass_liquid
-    
-    scaling = 0.0001
-     
-    Objective = scaling*(Power**2 + mass_heat_removal_system**2)**(0.5)
-    
-    hrs.mass_properties.mass = mass_heat_removal_system
-    hrs.power_draw           = Power
-    hrs.hydraulic_diamater   = dh 
-    hrs.channel_aspect_ratio = AR
-    return Objective
-
-
-# equality constraint 
-def heat_energy_constraint( x,hrs,battery,T_i,T_bat,Q_gen):              
-     
-    m_coolant = x[0]  
-    b         = x[1]               
-    d         = x[2]               
-    theta     = x[3]  
-    c         = battery.cell.height  
-        
-    Q_conv = compute(hrs,battery,T_bat,T_i,m_coolant,b,d,theta,c)  
-    
-    tolerance = 0.01
-    con  =  tolerance - (Q_gen - Q_conv) 
-    return con
-
-def temperature_constraint( x,hrs,battery,T_i,T_bat,Q_gen,delta_T_threshold = 2 ): 
-   
-    # Battery                      
-    h_cell            = battery.cell.height                       
-    Cp_batery         = battery.cell.specific_heat_capacity 
-    mass_battery      = battery.cell.mass    
-    N_battery_series  = battery.pack.electrical_configuration.series 
-    N_battery_parllel = battery.pack.electrical_configuration.parallel
-
-    # Mass Flow Rate Variable
-    m_coolant = x[0] 
-
-    #include gemotric variables 
-    b        = x[1]               
-    d        = x[2]               
-    theta    = x[3]  
-    c        = h_cell
-        
-    Q_conv = compute(hrs,battery,T_bat,T_i,m_coolant,b,d,theta,c)
-    
-    # Net Heat  
-    Q_net= Q_gen - Q_conv    
-    
-    delta_bat  = Q_net/(Cp_batery*mass_battery*N_battery_parllel*N_battery_series)  
-    
-    con = delta_T_threshold-delta_bat 
-
-    return con 
-
-def compute(hrs,battery,T_bat,T_i,m_coolant,b,d,theta,c): 
- 
-    # Battery 
-    d_cell            = battery.cell.diameter                    
-    h_cell            = battery.cell.height                      
-    A_cell            = np.pi*d_cell*h_cell                      
-    N_battery         = battery.pack.electrical_configuration.total 
- 
-    # Inital Channel Geometric Properties     
-    k_chan   = hrs.channel_thermal_conductivity                   # Conductivity of the Channel (Replace with function)    
-    coolant  = hrs.coolant
-    AR       = d/c     
-
-    # Surface area of the channel 
-    A_chan = N_battery*theta*A_cell/360
-
-    # Hydraullic diameter    
-    dh = (4*c*d)/(2*(c+d))   
-
-    # Thermophysical Properties of Coolant  
-    rho  = coolant.density
-    mu   = coolant.compute_absolute_viscosity(T_i)  
-    cp   = coolant.compute_cp(T_i)
-    Pr   = coolant.compute_prandtl_number(T_i) 
-    k    = coolant.compute_thermal_conductivity(T_i) 
-
-    #calculate the velocity of the fluid in the channel 
-    v=rho*c*d*m_coolant
-
-    # calculate the Reynolds Number 
-    Re=(rho*dh*v)/mu
-
-    # fanning friction factor (eq 32)
-    if Re< 2300:
-        f= 24*(1-(1.3553*AR)+(1.9467*AR**2)-(1.7012*AR**3)+(0.9564*AR**4)-(0.2537*AR**5))
-    elif Re>=2300:
-        f= (0.0791*(Re**(-0.25)))*(1.8075-0.1125*AR)
-
-    # Nusselt Number (eq 12)   
-    if Re< 2300:
-        Nu= 8.235*(1-(2.0421*AR)+(3.0853*AR**2)-(2.4765*AR**3)+(1.0578*AR**4)-(0.1861*AR**5))    
-    elif Re >= 2300:
-        Nu = ((f/2)*(Re-1000)*Pr)/(1+(12.7*(f**0.5)*(Pr**(2/3)-1)))   
-
-    # heat transfer coefficient of the channeled coolant (eq 11)
-    h = k*Nu/dh
-
-    # Overall Heat Transfer Coefficient from battery surface to the coolant fluid (eq 10)
-    U_total = 1/((1/h)+(b/k_chan))
-
-    # Calculate NTU
-    NTU = U_total*A_chan/(m_coolant*cp)
-
-    # Calculate Outlet Temparture To ( eq 8)
-    T_o = ((T_bat-T_i)*(1-np.exp(-NTU)))+T_i
-
-    # Calculate the Log mean temperature 
-    T_lm = ((T_bat-T_i)-(T_bat-T_o))/(np.log((T_bat-T_i)/(T_bat-T_o)))
-
-    # Calculated Heat Convected 
-    Q_conv = U_total*A_chan*T_lm     
-    
-    return Q_conv
+    # -------------------------------------------------------------------
+    #  Summary
+    # -------------------------------------------------------------------    
+    nexus.summary         = Data()     
+         
+    return nexus

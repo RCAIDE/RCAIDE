@@ -35,8 +35,10 @@ class Conjugate_Heat_Removal(Energy_Component):
         self.channels_per_module           = 1
         self.battery_contact_area          = 1.
         self.contact_area_per_module       = 1.  
-        self.power_draw                    = 1.     
-      
+        self.power_draw                    = 1.    
+        self.coolant_inlet_temperature     = None
+        self.design_battery_temperature    = None
+        self.design_heat_generated         = None    
     
     def compute_heat_removed(self,battery, Q_heat_gen,numerics, freestream):
         """Computes the net heat generated in a battery module during cycling.
