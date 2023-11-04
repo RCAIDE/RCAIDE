@@ -1,5 +1,5 @@
 ## @ingroup Methods-Power-Battery 
-# compute_net_generated_battery_heat_liquid.py
+# compute_heat_exhanger_factors.py
 # 
 # Created : Dec 2022, C.R. Zhao
 # Modified: Jun 2023, M. Clarke

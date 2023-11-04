@@ -27,8 +27,13 @@ class No_Heat_Exchanger(Energy_Component):
     """
     
     def __defaults__(self):  
-        self.tag   = 'No_Exchanger'
+        self.tag   = 'No_Heat_Exchanger'
         return
+    
+
+    def compute_heat_removed(self,hrs_results,Q_heat_gen,numerics,freestream): 
+        hex_results = hrs_results # need to correct 
+        return hex_results
     
     
         

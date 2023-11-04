@@ -8,6 +8,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .Atmospheric_Air_Convection_HRS import Atmospheric_Air_Convection_HRS
-from .No_Heat_Removal_System         import No_Heat_Removal_System
-from .Conjugate_HRS                  import Conjugate_HRS
+from .Direct_Air_Convection_Heat_Removal  import Direct_Air_Convection_Heat_Removal  
+from .No_Heat_Removal                     import No_Heat_Removal 
+from .Conjugate_Heat_Removal              import Conjugate_Heat_Removal 

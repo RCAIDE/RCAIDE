@@ -1,5 +1,5 @@
 ## @ingroup Energy-Thermal_Management-Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/No_Heat_Exchanger.py
+# RCAIDE/Energy/Thermal_Management/Batteries/No_Heat_Removal.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -16,7 +16,7 @@ import numpy as np
 #  No_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Thermal_Management-Batteries
-class No_Heat_Exchanger(Energy_Component):
+class No_Heat_Removal(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
     Assumptions:
@@ -27,10 +27,10 @@ class No_Heat_Exchanger(Energy_Component):
     """
     
     def __defaults__(self):  
-        self.tag   = 'No_Heat_Exchanger'
+        self.tag   = 'No_Heat_Removal'
         return
     
-    def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics,freestream): 
+    def compute_heat_removed(self,battery,Q_heat_gen,numerics,freestream): 
         '''Computes the net heat generate by the battery pack with no heat exchanger
         heat exchanger
         
@@ -48,7 +48,7 @@ class No_Heat_Exchanger(Energy_Component):
         freestream            - freestream conditions                     [-]
         
         Outputs
-        btms_resylts          - battery thermal management system resukts [-]
+        hex_resylts          - battery thermal management system resukts [-]
         '''
     
         T_current                = battery.pack.temperature     
@@ -73,8 +73,8 @@ class No_Heat_Exchanger(Energy_Component):
         dT_dt                  = P_net/(cell_mass*N_total*Cp)
         T_current              = T_current[0] + np.dot(I,dT_dt)   
 
-        btms_results = Data()
-        btms_results.operating_conditions = Data(battery_current_temperature = T_current,
+        hex_results = Data()
+        hex_results.operating_conditions = Data(battery_current_temperature = T_current,
                                                  heat_energy_generated       = Q_heat_gen_tot )   
-        return btms_results
+        return hex_results
         

@@ -145,7 +145,8 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
          
         # Unpack varibles 
         battery           = self 
-        btms              = battery.thermal_management_system 
+        HRS               = battery.thermal_management_system.heat_removal_system 
+        HEX               = battery.thermal_management_system.heat_exchanger
         I_bat             = battery.outputs.current
         P_bat             = battery.outputs.power   
         V_max             = battery.cell.maximum_voltage   
@@ -183,11 +184,12 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         Q_heat_gen = (I_cell**2.)*R_0  
         
         # Compute cell temperature  
-        btms_results = btms.compute_net_generated_battery_heat(battery,Q_heat_gen,numerics,conditions.freestream)
-        T_current    = btms_results.operating_conditions.battery_current_temperature
+        hrs_results = HRS.compute_heat_removed(battery,Q_heat_gen,numerics,conditions.freestream)
+        hex_results = HEX.compute_heat_removed(battery,hrs_results,numerics,conditions.freestream)
+        T_current   = hex_results.operating_conditions.battery_current_temperature
         
         # Effective Power flowing through battery 
-        P      = -(P_bat - np.abs(btms_results.operating_conditions.heat_energy_generated)) 
+        P      = -(P_bat - np.abs(hex_results.operating_conditions.heat_energy_generated)) 
          
         # Available capacity
         capacity_available = E_max - battery.pack.current_energy[0]
@@ -233,7 +235,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
             V_ul    = V_oc  + I_cell*R_0 
              
         # Pack outputs
-        battery.pack.generated_heat                = btms_results.operating_conditions.heat_energy_generated 
+        battery.pack.generated_heat                = hrs_results.operating_conditions.heat_energy_generated 
         battery.pack.current_energy                = E_current
         battery.pack.temperature                   = T_current 
         battery.pack.voltage_open_circuit          = V_oc*n_series

@@ -9,18 +9,7 @@ from RCAIDE.Core import Units
 import numpy as np
 from scipy.optimize import minimize
 
-def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 20000):
-    
-    # solve for mass flow rate in the channel    
-    opt_params = size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat,Q_gen)
-        
-    hrs.coolant_flowrate             = opt_params[0]
-    hrs.channel_side_thickness       = opt_params[1]        
-    hrs.channel_width                = opt_params[2]       
-    hrs.channel_contact_angle        = opt_params[3]
-    return  
-
-def size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat, Q_gen ): 
+def design_conjugate_cooling_heat_removal_system(hrs,battery,inlet_coolant_temperature = 278 ,T_bat = 315, Q_gen = 20000): 
     
     # Inital Mass Flow Rate
     mass_flow_rate = hrs.coolant_flow_rate
@@ -47,6 +36,13 @@ def size_conjugate_cooling(hrs,battery,inlet_coolant_temperature,T_bat, Q_gen ):
     
     if sol.success == False:
         print('Heat Removal System Sizing Failed ')
+        
+    
+    hrs.coolant_flowrate             = sol.x[0]
+    hrs.channel_side_thickness       = sol.x[1]        
+    hrs.channel_width                = sol.x[2]       
+    hrs.channel_contact_angle        = sol.x[3]
+        
     return sol.x   
 
 
@@ -118,6 +114,11 @@ def power_mass_objective(x,hrs,battery,inlet_coolant_temperature,T_bat,Q_gen) :
     scaling = 0.0001
      
     Objective = scaling*(Power**2 + mass_heat_removal_system**2)**(0.5)
+    
+    hrs.mass_properties.mass = mass_heat_removal_system
+    hrs.power_draw           = Power
+    hrs.hydraulic_diamater   = dh 
+    hrs.channel_aspect_ratio = AR
     return Objective
 
 

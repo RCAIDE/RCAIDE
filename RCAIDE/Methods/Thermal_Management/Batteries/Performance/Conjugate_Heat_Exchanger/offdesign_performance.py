@@ -7,10 +7,9 @@
 #  Imports
 # ---------------------------------------------------------------------- 
 from RCAIDE.Core import Data 
-import numpy as np
-import CoolProp.CoolProp as CoolProp 
+import numpy as np 
 from RCAIDE.Attributes.Gases import Air
-from RCAIDE.Methods.Thermal_Management.Batteries.Conjugate_Cooling.compute_heat_exhanger_factors import compute_heat_exhanger_factors  
+from .compute_heat_exhanger_factors import compute_heat_exhanger_factors  
 
 # ----------------------------------------------------------------------
 #  Methods
@@ -109,13 +108,7 @@ def compute_offdesign_thermal_properties(atmospheric_conditions, m_dot_h=None, m
     cp_c_2      = cold_fuild.compute_cp(T_c_2,p_c_2)  
     mu_c_2      = cold_fuild.compute_absolute_viscosity(T_c_2,p_c_2) 
     Pr_c_2      = cold_fuild.compute_prandtl_number(T_c_2)  
-     
-    #rho_c_2     = np.atleast_2d(CoolProp.PropsSI('D', 'P', p_c_2, 'T', T_c_2, 'Air')).T
-    #k_c_2       = np.atleast_2d(CoolProp.PropsSI('L', 'P', p_c_2, 'T', T_c_2, 'Air')).T
-    #cp_c_2      = np.atleast_2d(CoolProp.PropsSI('C', 'P', p_c_2, 'T', T_c_2, 'Air')).T
-    #mu_c_2      = np.atleast_2d(CoolProp.PropsSI('V', 'P', p_c_2, 'T', T_c_2, 'Air')).T
-    #Pr_c_2      = np.atleast_2d(CoolProp.PropsSI('Prandtl', 'P', p_c_2, 'T', T_c_2, 'Air')).T
-
+      
     # mean cold fluid properties
     rho_c_m                         = 2 / (1 / rho_c_1 + 1 / rho_c_2) 
     cp_c                            = (cp_c_1 + cp_c_2) / 2
@@ -262,7 +255,9 @@ def compute_offdesign_pressure_properties(kc_vals,ke_vals,sigma_h=None, sigma_c=
     f_c_updated                     = f_c_updated_1 * x + f_c_updated_2 * (1 - x)
 
     # water is being cooled -- assume liquid coolant is water here
-    mu_h_w                          = CoolProp.PropsSI('V', 'P', p_1_h, 'T', T_w, 'Water') 
+
+    coolant     = Glycol()  
+    mu_h_w      = coolant.compute_absolute_viscosity(T_w,p_1_h)   
     
     y = Re_h < 2300
 
