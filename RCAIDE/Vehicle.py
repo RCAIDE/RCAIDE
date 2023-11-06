@@ -74,7 +74,7 @@ class Vehicle(VH):
         self.__defaults__()
 
         self._component_root_map.pop(legacy_net)
-        self._component_root_map[Network] = self['networks']    
+        self._component_root_map[Network] = self['networks']
 
 
         return

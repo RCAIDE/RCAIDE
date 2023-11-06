@@ -7,12 +7,13 @@
 #           Mar 2020, M. Clarke
 #           Sep 2020, M. Clarke
 #           Feb 2022, M. Clarke
+#           Oct 2023, R. Erhard
 
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Core.Utilities import interp2d
+from RCAIDE.Core import Utilities
 import numpy as np
 import scipy as sp 
 from scipy.optimize import root 
@@ -158,7 +159,7 @@ def propeller_design(prop, tol=1e-10):
         Cdval    = np.zeros_like(RE) 
         for j, airfoil_polar_data in enumerate(airfoil_analyses.airfoil_data):                   
             pd          = airfoil_polar_data
-            Cdval_af    = interp2d(RE, alpha, pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
+            Cdval_af    = Utilities.interp2d(RE, alpha, pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
             locs        = np.where(np.array(a_loc) == j )
             Cdval[locs] = Cdval_af[locs]
             
@@ -279,7 +280,7 @@ def objective(x,airfoil_analyses,a_loc,RE,Cl,N):
     Cl_vals          = np.zeros(N)       
     for j, airfoil_polar_data in enumerate(airfoil_analyses.airfoil_data): 
         pd            = airfoil_polar_data
-        Cl_af         = interp2d(RE,x,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients)
+        Cl_af         = Utilities.interp2d(RE,x,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients)
         locs          = np.where(np.array(a_loc) == j )
         Cl_vals[locs] = Cl_af[locs] 
         

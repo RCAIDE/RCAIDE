@@ -10,9 +10,10 @@
 
 import RCAIDE
 from RCAIDE.Core import Units, Data
-from RCAIDE.Visualization.Geometry.plot_propeller import plot_propeller
 from RCAIDE.Methods.Propulsion import propeller_design
 from RCAIDE.Analyses.Aerodynamics.Airfoils.Airfoil import Airfoil as Airfoil_Analysis
+
+# Legacy imports to be removed and rewritten in RCAIDE eventually
 from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
 
 import matplotlib.pyplot as plt  
@@ -45,7 +46,7 @@ def main():
     #    Define airfoil using provided coordinate file and polars in the indicated directory
     airfoil_2 = RCAIDE.Components.Airfoils.Airfoil()  
     airfoil_2.tag = 'Clark_Y' 
-    airfoil_2.airfoil_directory = os.path.abspath('../Vehicles/Airfoils/Clark_y')
+    airfoil_2.airfoil_directory = os.path.abspath('../../../Aircraft_Modules/Airfoils/Clark_y')
     airfoil_2.coordinate_file = 'Clark_y.txt'
     
     # Define hard-coded polar files for analysis    
@@ -62,7 +63,7 @@ def main():
 
     # ------------------------------------------------------------------------------------------    
     # Design Gearbox 
-    gearbox                   = RCAIDE.Components.Energy.Converters.Gearbox()
+    gearbox                   = RCAIDE.Energy.Converters.Gearbox()
     gearbox.gearwheel_radius1 = 1
     gearbox.gearwheel_radius2 = 1
     gearbox.efficiency        = 0.95
@@ -214,9 +215,6 @@ def test_prop_a(gearbox, airfoil_1, airfoil_2, conditions):
     prop_a.finalize(Airfoil_Analysis())
     
     prop_a = propeller_design(prop_a)
-    
-    # plot propeller 
-    plot_propeller(prop_a)    
     
     # Set conditions and spin
     prop_a.inputs.omega     = np.array(gearbox.inputs.speed, ndmin=2)      
