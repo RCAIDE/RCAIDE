@@ -3,26 +3,31 @@
 
 """ RCAIDE Regressions
 """
-# Created:  Jun M. Clarke
-# Modified: 
+# Created:  Jun 2023, M. Clarke
+# Modified: Oct 2023, Racheal M. Erhard
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-import sys, os, traceback, time
+from Legacy.regression.automatic_regression import main as regressions
 
-from Legacy.regression.automatic_regression import main as legacy_regressions
 
-def regressions():
+
+
+# ----------------------------------------------------------------------
+#   RCAIDE Modules to Test
+# ----------------------------------------------------------------------
+RCAIDE_modules = [
+
+    # ----------------------- Regression List --------------------------
+    '../regression/scripts/propeller/propeller_test.py',
     
-    pass_fail = legacy_regressions()
-    
-    return pass_fail
+]
 
 # ----------------------------------------------------------------------
 #   Call Main
 # ----------------------------------------------------------------------
 
 if __name__ == '__main__':
-    regressions()
+    regressions(RCAIDE_modules)

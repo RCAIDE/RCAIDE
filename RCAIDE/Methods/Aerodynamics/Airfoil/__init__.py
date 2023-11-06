@@ -9,10 +9,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import AVL
-from . import AERODAS
-from . import Fidelity_Zero
-from . import Common
-from . import Lifting_Line
-from . import OpenVSP_Wave_Drag
-from . import Airfoil
+from . import Airfoil_Panel_Method
+from .compute_airfoil_properties_from_polar_files import compute_airfoil_properties_from_polar_files
+from .compute_airfoil_properties_from_panel_method import compute_airfoil_properties_from_panel_method
+from .import_airfoil_geometry import import_airfoil_geometry
+from .import_airfoil_polars import import_airfoil_polars

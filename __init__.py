@@ -10,3 +10,4 @@
 
 from . import Legacy
 from . import RCAIDE
+from . import Aircraft_Modules

@@ -1,8 +1,8 @@
-## @defgroup Components-Airfoils Airfoils
-# RCAIDE/Components/Airfoils/__init__.py
+## @defgroup Analyses-Aerodynamics Aerodynamics
+# RCAIDE/Analyses/Aerodynamics/Airfoil/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
-"""RCAIDE Package Setup
+"""Airfoil Analysis Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------

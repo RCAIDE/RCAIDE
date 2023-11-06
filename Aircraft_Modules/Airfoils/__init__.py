@@ -1,12 +1,11 @@
-## @defgroup Components-Airfoils Airfoils
-# RCAIDE/Components/Airfoils/__init__.py
+# Aircraft_Modules/Airfoils/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
-"""RCAIDE Package Setup
+""" Aircraft_Modules Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Airfoil import Airfoil
+from . import Clark_y

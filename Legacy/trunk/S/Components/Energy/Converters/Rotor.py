@@ -85,7 +85,7 @@ class Rotor(Energy_Component):
         self.sol_tolerance                     = 1e-8
         self.design_power_coefficient          = 0.01
         
-        self.Airfoils                          = ContainerOrdered()
+        self.Airfoils                          = ContainerOrdered() # The analyses for the airfoils
         self.airfoil_polar_stations            = None
 
         self.use_2d_analysis                   = False    # True if rotor is at an angle relative to freestream or nonuniform freestream
@@ -104,7 +104,7 @@ class Rotor(Energy_Component):
         self.Wake                              = Rotor_Wake_Fidelity_Zero()
 
     def append_airfoil(self,airfoil):
-        """ Adds an airfoil to the rotor
+        """ Adds an airfoil analysis to the rotor
 
         Assumptions:
         None
@@ -213,7 +213,7 @@ class Rotor(Energy_Component):
         r_1d     = self.radius_distribution
         tc       = self.thickness_to_chord
         a_loc    = self.airfoil_polar_stations
-        airfoils = self.Airfoils
+        airfoils = self.Airfoils              # Contains airfoil analysis data
  
 
         # Unpack rotor inputs and conditions

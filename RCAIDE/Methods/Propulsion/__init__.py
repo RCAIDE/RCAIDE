@@ -3,7 +3,6 @@
 
 from .                                                                        import Rotor_Wake
 from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing                      import ducted_fan_sizing
-from Legacy.trunk.S.Methods.Propulsion.propeller_design                       import propeller_design
 from Legacy.trunk.S.Methods.Propulsion.turbofan_emission_index                import turbofan_emission_index
 from Legacy.trunk.S.Methods.Propulsion.electric_motor_sizing                  import size_from_kv, size_from_mass
 from Legacy.trunk.S.Methods.Propulsion.turbofan_sizing                        import turbofan_sizing
@@ -19,3 +18,4 @@ from Legacy.trunk.S.Methods.Propulsion.liquid_rocket_sizing                   im
 from Legacy.trunk.S.Methods.Propulsion.serial_HTS_turboelectric_sizing        import serial_HTS_turboelectric_sizing
 from Legacy.trunk.S.Methods.Propulsion.serial_HTS_dynamo_turboelectric_sizing import serial_HTS_dynamo_turboelectric_sizing
 
+from .propeller_design import propeller_design
