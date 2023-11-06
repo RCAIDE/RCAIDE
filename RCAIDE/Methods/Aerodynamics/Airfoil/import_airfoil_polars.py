@@ -6,8 +6,9 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from Legacy.trunk.S.Core import Data, Units 
+from RCAIDE.Core import Data, Units 
 import numpy as np
+
 
 ## @ingroup Methods-Aerodynamics-Airfoil
 def import_airfoil_polars(airfoil_analysis):

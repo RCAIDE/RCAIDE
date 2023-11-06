@@ -1,29 +1,24 @@
 # propeller_test.py
 # 
-# Created:  Sep 2014, E. Botero
-# Modified: Feb 2020, M. Clarke  
-#           Sep 2020, M. Clarke 
-#           Oct 2023, Racheal M. Erhard
+# Created:  Oct 2023, Racheal M. Erhard
+# Modified: 
+#           
 
 #----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
 
-import Legacy.trunk.S as SUAVE
-from Legacy.trunk.S.Core import Units
+import RCAIDE
+from RCAIDE.Core import Units, Data
 from RCAIDE.Visualization.Geometry.plot_propeller import plot_propeller
-import matplotlib.pyplot as plt  
-from Legacy.trunk.S.Core import (
-Data, Container,
-)
-
-import numpy as np
-import copy, time
 from RCAIDE.Methods.Propulsion import propeller_design
 from RCAIDE.Analyses.Aerodynamics.Airfoils.Airfoil import Airfoil as Airfoil_Analysis
 from Legacy.trunk.S.Components.Energy.Networks.Battery_Propeller import Battery_Propeller
+
+import matplotlib.pyplot as plt  
+import numpy as np
+import copy
 import os
-import RCAIDE
 
 
 def main():
@@ -67,7 +62,7 @@ def main():
 
     # ------------------------------------------------------------------------------------------    
     # Design Gearbox 
-    gearbox                   = SUAVE.Components.Energy.Converters.Gearbox()
+    gearbox                   = RCAIDE.Components.Energy.Converters.Gearbox()
     gearbox.gearwheel_radius1 = 1
     gearbox.gearwheel_radius2 = 1
     gearbox.efficiency        = 0.95
@@ -313,13 +308,13 @@ def test_rot(gearbox, conditions_r):
 
 def set_conditions():
     # Set the operating conditions
-    atmosphere                     = SUAVE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere                     = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
     atmosphere_conditions          = atmosphere.compute_values(20 * Units.feet)
     
     V = 49.1744
     Vr = 500. * Units['ft/min']
     
-    conditions                                          = SUAVE.Analyses.Mission.Segments.Conditions.Aerodynamics()
+    conditions                                          = RCAIDE.Analyses.Mission.Segments.Conditions.Aerodynamics()
     conditions._size                                    = 1
     #conditions.freestream                               = Data()
     #conditions.propulsion                               = Data()

@@ -11,9 +11,8 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-import Legacy.trunk.S as SUAVE
-from Legacy.trunk.S.Core import Data
-from Legacy.trunk.S.Core.Utilities import interp2d
+import RCAIDE
+from RCAIDE.Core.Utilities import interp2d
 import numpy as np
 import scipy as sp 
 from scipy.optimize import root 
@@ -28,17 +27,19 @@ def propeller_design(prop, tol=1e-10):
           Inputs:
           
           prop.
-            hub radius                       [m]
-            tip radius                       [m]
-            rotation rate                    [rad/s]
-            freestream velocity              [m/s]
-            number of blades               
-            number of stations
-            design lift coefficient
+            number_of_radial_stations        [-]
+            number_of_blades                 [-]
+            tip_radius                       [m]
+            hub_radius                       [m]
+            angular_velocity                 [rad/s]
+            freestream_velocity              [m/s]
+            design_Cl                        [-]
             design_altitude                  [m]
-            airfoil data
-          airfoil_analysis                    Analysis method for airfoils
-          number_of_stations                 Number of blade element stations
+            design_thrust
+            design_power
+            Airfoil_Components
+            Airfoil_Analyses
+            airfoil_polar_stations
           tol                                Convergence tolerance for rotor design
             
           Outputs:
@@ -72,18 +73,12 @@ def propeller_design(prop, tol=1e-10):
     # ---------------------------------------------------------------------------------------------------------
     # Setup Analyses for Rotor Design
     # ---------------------------------------------------------------------------------------------------------
-    ## Calculate airfoil properties from airfoil analysis
+    # Calculate airfoil properties from airfoil analysis
     if not bool(airfoil_analyses):
         raise Exception("Airfoil not yet initialized!")
-        #airfoil_analysis = Airfoil.Airfoil()
-    
-        ## Set prop as geometry for analysis
-        #airfoil_analyses.geometry = prop
-        #airfoil_analyses.initialize()
-        #airfoil_analyses.evaluate()
     
     # Calculate atmospheric properties
-    atmosphere = SUAVE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
     atmo_data = atmosphere.compute_values(alt)
     
     T              = atmo_data.temperature[0]
@@ -152,7 +147,6 @@ def propeller_design(prop, tol=1e-10):
         Ma      = Wc/speed_of_sound
         RE      = Wc/nu
 
-        #if num_airfoils>0:
         # assign initial values 
         alpha0   = np.ones(N)*0.05
         
@@ -166,31 +160,27 @@ def propeller_design(prop, tol=1e-10):
             pd          = airfoil_polar_data
             Cdval_af    = interp2d(RE, alpha, pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
             locs        = np.where(np.array(a_loc) == j )
-            Cdval[locs] = Cdval_af[locs]    
+            Cdval[locs] = Cdval_af[locs]
             
-        #else:    
-            #Cdval   = (0.108*(Cl**4)-0.2612*(Cl**3)+0.181*(Cl**2)-0.0139*Cl+0.0278)*((50000./RE)**0.2)
-            #alpha   = Cl/(2.*np.pi)
-            
-        #More Cd scaling from Mach from AA241ab notes for turbulent skin friction
+        # More Cd scaling from Mach from AA241ab notes for turbulent skin friction
         Tw_Tinf = 1. + 1.78*(Ma**2)
         Tp_Tinf = 1. + 0.035*(Ma**2) + 0.45*(Tw_Tinf-1.)
         Tp      = Tp_Tinf*T
         Rp_Rinf = (Tp_Tinf**2.5)*(Tp+110.4)/(T+110.4) 
         Cd      = ((1/Tp_Tinf)*(1/Rp_Rinf)**0.2)*Cdval
         
-        #Step 5, change Cl and repeat steps 3 and 4 until epsilon is minimized 
+        # Step 5, change Cl and repeat steps 3 and 4 until epsilon is minimized 
         epsilon = Cd/Cl  
         
         #Step 6, determine a and a', and W 
         a       = (zeta/2.)*(np.cos(phi)**2.)*(1.-epsilon*np.tan(phi)) 
         W       = V*(1.+a)/np.sin(phi)
         
-        #Step 7, compute the chord length and blade twist angle  
+        # Step 7, compute the chord length and blade twist angle  
         c       = Wc/W
         beta    = alpha + phi # Blade twist angle
     
-        #Step 8, determine 4 derivatives in I and J 
+        # Step 8, determine 4 derivatives in I and J 
         Iprime1 = 4.*chi*G*(1.-epsilon*np.tan(phi))
         Iprime2 = lamda*(Iprime1/(2.*chi))*(1.+epsilon/np.tan(phi)
                                             )*np.sin(phi)*np.cos(phi)
@@ -198,13 +188,13 @@ def propeller_design(prop, tol=1e-10):
         Jprime2 = (Jprime1/2.)*(1.-epsilon*np.tan(phi))*(np.cos(phi)**2.) 
         dchi    = (chi[1]-chi[0])*np.ones_like(Jprime1)
         
-        #Integrate derivatives from chi=chi0 to chi=1 
+        # Integrate derivatives from chi=chi0 to chi=1 
         I1      = np.dot(Iprime1,dchi)
         I2      = np.dot(Iprime2,dchi)
         J1      = np.dot(Jprime1,dchi)
         J2      = np.dot(Jprime2,dchi)        
 
-        #Step 9, determine zeta and and Pc or zeta and Tc 
+        # Step 9, determine zeta and and Pc or zeta and Tc 
         if (Pc==0.)&(Tc!=0.): 
             #First Case, Thrust is given
             #Check to see if Tc is feasible, otherwise try a reasonable number
@@ -216,12 +206,12 @@ def propeller_design(prop, tol=1e-10):
             #Second Case, Thrust is given
             zetan    = -(J1/(J2*2.)) + ((J1/(J2*2.))**2.+Pc/J2)**0.5 
     
-        #Step 10, repeat starting at step 2 with the new zeta
+        # Step 10, repeat starting at step 2 with the new zeta
         diff = abs(zeta-zetan)
         
         zeta = zetan
     
-    #Step 11, determine propeller efficiency etc...
+    # Step 11, determine propeller efficiency etc...
     if (Pc==0.)&(Tc!=0.): 
         if Tcnew>=I2*(I1/(2.*I2))**2.:
             Tcnew = I2*(I1/(2.*I2))**2.
@@ -251,17 +241,12 @@ def propeller_design(prop, tol=1e-10):
     # compute max thickness distribution  
     t_max  = np.zeros(N)    
     t_c    = np.zeros(N)   
-    #if num_airfoils>0:
+    
     for j,airfoil in enumerate(airfoil_components): 
         a_geo         = airfoil.geometry
         locs          = np.where(np.array(a_loc) == j )
         t_max[locs]   = a_geo.max_thickness*c[locs] 
-        t_c[locs]     = a_geo.thickness_to_chord 
-    #else:     
-        #c_blade = np.repeat(np.atleast_2d(np.linspace(0,1,N)),N, axis = 0)* np.repeat(np.atleast_2d(c).T,N, axis = 1)
-        #t       = (5*c_blade)*(0.2969*np.sqrt(c_blade) - 0.1260*c_blade - 0.3516*(c_blade**2) + 0.2843*(c_blade**3) - 0.1015*(c_blade**4)) # local thickness distribution
-        #t_max   = np.max(t,axis = 1) 
-        #t_c     = np.max(t,axis = 1) /c  
+        t_c[locs]     = a_geo.thickness_to_chord
             
     # Nondimensional thrust
     if prop.design_power == None: 

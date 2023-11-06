@@ -7,8 +7,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-
-import Legacy.trunk.S as SUAVE
+import RCAIDE
 from Legacy.trunk.S.Core import Data , Units
 from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis import airfoil_analysis
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import compute_extended_polars
@@ -16,7 +15,7 @@ import numpy as np
 
 
 ## @ingroup Methods-Aerodynamics-Airfoil
-def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
+def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil_component):
     """This computes the aerodynamic properties and coefficients of an airfoil in stall regimes using pre-stall
     characterstics and AERODAS formation for post stall characteristics. This is useful for 
     obtaining a more accurate prediction of wing and blade loading as well as aeroacoustics. Pre stall characteristics 
@@ -29,10 +28,10 @@ def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
         None
         
     Inputs:
-       airfoil_analysis                       <data_structure>
+       airfoil_analysis                       <Airfoil Analysis Data Structure>
           .settings
              .use_pre_stall_data              [Bool]
-       airfoil                                <data_structure>
+       airfoil                                <Airfoil Component Data Structure>
     
     Outputs:
        airfoil_data.
@@ -64,7 +63,7 @@ def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
     N/A
     """
     # Extract any initialized airfoil data
-    Airfoil_Data = compute_boundary_layer_properties(airfoil_analysis.settings, airfoil)
+    Airfoil_Data = compute_boundary_layer_properties(airfoil_analysis.settings, airfoil_component)
     use_pre_stall_data = airfoil_analysis.settings.use_pre_stall_data
     
     # ----------------------------------------------------------------------------------------
@@ -83,7 +82,7 @@ def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
     AoA_sweep_rad = AoA_sweep_deg * Units.degrees
     
     # Create an infinite aspect ratio wing
-    geometry              = SUAVE.Components.Wings.Wing()
+    geometry              = RCAIDE.Components.Wings.Wing()
     geometry.aspect_ratio = np.inf
     geometry.section      = Data()  
     
@@ -110,7 +109,7 @@ def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil):
 
 
 ## @ingroup Methods-Aerodynamics-Airfoil
-def compute_boundary_layer_properties(settings, airfoil): 
+def compute_boundary_layer_properties(settings, airfoil_component): 
     '''Computes the boundary layer properties of an airfoil for a sweep of Reynolds numbers 
     and angle of attacks using a panel method.
     
@@ -131,7 +130,7 @@ def compute_boundary_layer_properties(settings, airfoil):
     N/A
     '''
     # Extract airfoil geometry and settings for simulation
-    airfoil_geometry = airfoil.geometry
+    airfoil_geometry = airfoil_component.geometry
     AoA_sweep = settings.panel_method.angle_of_attach_range
     Re_sweep = settings.panel_method.Reynolds_number_range
     AoA_vals = np.tile(AoA_sweep[None,:], (len(Re_sweep) ,1))

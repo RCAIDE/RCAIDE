@@ -7,11 +7,10 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-
-import Legacy.trunk.S as SUAVE
-from Legacy.trunk.S.Core                                                                          import Data, Units
+import RCAIDE
+from RCAIDE.Core import Data, Units
+from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_polars  import import_airfoil_polars
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import compute_extended_polars as legacy_compute_extended_polars
-from RCAIDE.Methods.Aerodynamics.Airfoil.import_airfoil_polars  import import_airfoil_polars   
 import numpy as np
 import os
 
@@ -31,8 +30,8 @@ def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_compon
         None
         
     Inputs:
-    airfoil                                <data_structure>
-    use_pre_stall_data                      [Boolean]
+    airfoil_analysis                        <Airfoil Analysis Data Structure>
+    airfoil_component                       <Airfoil Component Data Structure>
     
     Outputs:
     airfoil_data.
@@ -86,7 +85,7 @@ def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_compon
     AoA_sweep_rad = AoA_sweep_deg * Units.degrees       
     
     # Create an infinite aspect ratio wing
-    geometry = SUAVE.Components.Wings.Wing()
+    geometry = RCAIDE.Components.Wings.Wing()
     geometry.aspect_ratio = np.inf
     geometry.section = Data()  
     
@@ -110,6 +109,7 @@ def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_compon
     Airfoil_Data.drag_coefficients   = CD
     
     return Airfoil_Data
+
 
 ## @ingroup Methods-Aerodynamics-Airfoil
 def compute_extended_polars(airfoil_cl,airfoil_cd,airfoil_aoa,AoA_sweep_deg,geometry,use_pre_stall_data):
@@ -143,6 +143,7 @@ def compute_extended_polars(airfoil_cl,airfoil_cd,airfoil_aoa,AoA_sweep_deg,geom
         CL, CD = apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL, CD)
     
     return CL, CD
+
 
 ## @ingroup Methods-Aerodynamics-Airfoil
 def apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL, CD): 

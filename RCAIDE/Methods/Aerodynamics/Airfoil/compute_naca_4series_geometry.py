@@ -5,7 +5,7 @@
 # Modified: 
 #           
 
-from SUAVE.Core import Data   
+from RCAIDE.Core import Data   
 import numpy as np
 
 
