@@ -33,20 +33,20 @@ def main():
     # Set up a few airfoils for use in the following rotor tests
     #    Define airfoil using generated naca 4 series for geometry and polars in the indicated directory    
     airfoil_0 = RCAIDE.Components.Airfoils.Airfoil()  
-    airfoil_0.airfoil_directory = os.path.abspath('../Vehicles/Airfoils/NACA_4412')
+    airfoil_0.directory = os.path.abspath('../Vehicles/Airfoils/NACA_4412')
     airfoil_0.settings.NACA_4_series_flag   = True
     airfoil_0.settings.NACA_4_series_digits ='4412' 
     
     #    Define airfoil using provided coordinate file and polars in the indicated directory
     airfoil_1 = RCAIDE.Components.Airfoils.Airfoil()
     airfoil_1.tag = 'NACA_4412' 
-    airfoil_1.airfoil_directory = os.path.abspath('../Vehicles/Airfoils/NACA_4412')
+    airfoil_1.directory = os.path.abspath('../Vehicles/Airfoils/NACA_4412')
     airfoil_1.coordinate_file = 'NACA_4412.txt'
     
     #    Define airfoil using provided coordinate file and polars in the indicated directory
     airfoil_2 = RCAIDE.Components.Airfoils.Airfoil()  
     airfoil_2.tag = 'Clark_Y' 
-    airfoil_2.airfoil_directory = os.path.abspath('../../../Aircraft_Modules/Airfoils/Clark_y')
+    airfoil_2.directory = os.path.abspath('../../../Aircraft_Modules/Airfoils/Clark_y')
     airfoil_2.coordinate_file = 'Clark_y.txt'
     
     # Define hard-coded polar files for analysis    

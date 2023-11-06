@@ -46,7 +46,7 @@ def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_compon
     # Extract settings and check for polar data
     # ----------------------------------------------------------------------------------------
     use_pre_stall_data = airfoil_analysis.settings.use_pre_stall_data
-    polars_directory = f"{airfoil_component.airfoil_directory}/Polars"
+    polars_directory = f"{airfoil_component.directory}/Polars"
     
     # Identify polar files
     if bool(airfoil_analysis.settings.polar_import_method.polar_files):
@@ -57,7 +57,7 @@ def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_compon
             raise Exception("Polar file does not exist!")
         
     elif not os.path.exists(polars_directory):
-        raise Exception(f"Must include Polars directory in {airfoil_component.airfoil_directory}!")
+        raise Exception(f"Must include Polars directory in {airfoil_component.directory}!")
     else:
         airfoil_analysis.settings.polar_import_method.polar_files = os.listdir(polars_directory)
         airfoil_analysis.settings.polar_import_method.polar_files = sorted([f"{polars_directory}/{file}" for file in \
@@ -78,9 +78,10 @@ def compute_airfoil_properties_from_polar_files(airfoil_analysis, airfoil_compon
     Airfoil_Data = import_airfoil_polars(airfoil_analysis)
         
     # Get all of the coefficients for AERODAS wings
-    neg_post_stall_region = np.linspace(-180, -45, 16) # coarse post-stall refinement
-    pos_post_stall_region = np.linspace(45, 180, 16) # coarse post-stall refinement
-    mid_region = np.linspace(-45, 45, 25)
+    neg_post_stall_region = airfoil_analysis.settings.post_stall_method.negative_post_stall_region
+    pos_post_stall_region = airfoil_analysis.settings.post_stall_method.positive_post_stall_region
+    mid_region = airfoil_analysis.settings.post_stall_method.mid_and_pre_stall_region
+    
     AoA_sweep_deg = np.append(neg_post_stall_region, np.append(mid_region, pos_post_stall_region))
     AoA_sweep_rad = AoA_sweep_deg * Units.degrees       
     

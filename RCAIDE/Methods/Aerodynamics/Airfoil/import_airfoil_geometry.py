@@ -42,7 +42,7 @@ def import_airfoil_geometry(airfoil):
     N/A
     """  
     # Extract airfoil component properties
-    airfoil_geometry_file = f"{airfoil.airfoil_directory}/{airfoil.coordinate_file}"
+    airfoil_geometry_file = f"{airfoil.directory}/{airfoil.coordinate_file}"
     surface_interpolation = airfoil.settings.surface_interpolation
     npoints = airfoil.settings.number_of_points
     

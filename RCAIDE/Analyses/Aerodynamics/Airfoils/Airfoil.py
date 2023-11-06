@@ -71,6 +71,12 @@ class Airfoil(Analysis):
         self.settings.panel_method.H_wake = 1.05
         self.settings.panel_method.Ue_wake = 0.99
         
+        # Set post stall method settings
+        self.settings.post_stall_method = Data()
+        self.settings.post_stall_method.negative_post_stall_region = np.linspace(-180, -45, 16)  # coarse post-stall refinement
+        self.settings.post_stall_method.positive_post_stall_region = np.linspace(45, 180, 16)    # coarse post-stall refinement
+        self.settings.post_stall_method.mid_and_pre_stall_region = np.linspace(-45, 45, 25)      # finer grid over mid and pre stall range
+        
         # Settings for polar import method
         self.settings.use_polar_import = True      
         self.settings.polar_import_method = Data()  

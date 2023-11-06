@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------
 import RCAIDE
 from Legacy.trunk.S.Core import Data , Units
-from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis import airfoil_analysis
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import compute_extended_polars
+from Legacy.trunk.S.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis import airfoil_analysis as legacy_airfoil_analysis
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import compute_extended_polars as legacy_compute_extended_polars
 import numpy as np
 
 
@@ -75,9 +75,10 @@ def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil_compo
     # Compute extended cl and cd polars 
     # ----------------------------------------------------------------------------------------
     # Get all of the coefficients for AERODAS wings
-    neg_post_stall_region = np.linspace(-180, -45, 16) # coarse post-stall refinement
-    pos_post_stall_region = np.linspace(45, 180, 16) # coarse post-stall refinement
-    mid_region = np.linspace(-45, 45, 25)
+    neg_post_stall_region = airfoil_analysis.settings.post_stall_method.negative_post_stall_region
+    pos_post_stall_region = airfoil_analysis.settings.post_stall_method.positive_post_stall_region
+    mid_region = airfoil_analysis.settings.post_stall_method.mid_and_pre_stall_region
+    
     AoA_sweep_deg = np.append(neg_post_stall_region, np.append(mid_region, pos_post_stall_region))
     AoA_sweep_rad = AoA_sweep_deg * Units.degrees
     
@@ -95,7 +96,7 @@ def compute_airfoil_properties_from_panel_method(airfoil_analysis, airfoil_compo
         airfoil_aoa = Airfoil_Data.aoa_from_polar[j,:]/Units.degrees 
     
         # compute airfoil cl and cd for extended AoA range 
-        CL[j,:],CD[j,:] = compute_extended_polars(airfoil_cl,airfoil_cd,airfoil_aoa,AoA_sweep_deg,geometry,use_pre_stall_data)  
+        CL[j,:],CD[j,:] = legacy_compute_extended_polars(airfoil_cl,airfoil_cd,airfoil_aoa,AoA_sweep_deg,geometry,use_pre_stall_data)  
          
     # ----------------------------------------------------------------------------------------
     # Store data 
@@ -137,7 +138,7 @@ def compute_boundary_layer_properties(settings, airfoil_component):
     Re_vals = np.tile(Re_sweep[:,None], (1, len(AoA_sweep)))
 
     # run airfoil analysis
-    af_res  = airfoil_analysis(airfoil_geometry, AoA_vals, Re_vals)
+    af_res  = legacy_airfoil_analysis(airfoil_geometry, AoA_vals, Re_vals)
 
     # store data
     Airfoil_Data = Data()
