@@ -122,7 +122,7 @@ def compute_offdesign_thermal_properties(atmospheric_conditions, m_dot_h=None, m
     Re_h                            = G_h * d_H_h / mu_h
     Re_c                            = G_c * d_H_c / mu_c
 
-    # todo modify the Re_h to have the same shape of Re_c
+    # tozdo modify the Re_h to have the same shape of Re_c
     Re_h                            = Re_h * np.ones_like(Re_c)
     
     #j and f factors for hot fluid side, assuming L > d_H 

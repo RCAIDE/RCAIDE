@@ -42,7 +42,7 @@ def modify_channel_cooling_hex(nexus):
     # Unpack paramters  
     # ------------------------------------------------------------------------------------------------------------------------
   
-    # fized paramters   
+    # fixed paramters   
     rho_hex          = hex_opt.density  
     t_w              = hex_opt.t_w
     t_f              = hex_opt.t_f
@@ -83,153 +83,227 @@ def modify_channel_cooling_hex(nexus):
     b_f_h            = 0 # Sai, I am not sure if these can be put in the optimizer since they are also computed below 
     b_f_c            = 0 # Sai, I am not sure if these can be put in the optimizer since they are also computed below     
 
-    # ------------------------------------------------------------------------------------------------------------------------      
-    # Hex Geometry 
-    # ------------------------------------------------------------------------------------------------------------------------  
-    A_f_div_A_h        = AR_h/(1+AR_h) # eqn 21 
-    A_f_div_A_c        = AR_c/(1+AR_c)
     
-    # ------------------------------------------------------------------------------------------------------------------------  
-    # Thermodynamic calculations with desired heat tranfer rate, and pressure ratios, and inlet pressures
-    # ------------------------------------------------------------------------------------------------------------------------  
+    
+    # ------------------------------------------------------------------------------------------------------------------------      
+    # Evaluate HEX Size (Sizing Problem) 
+    # ------------------------------------------------------------------------------------------------------------------------    
+    
+    #Calculate C_h and C_c
     C_h                = m_dot_h*c_p_h_1 
     C_c                = C_h/C_R   
+    
+    #Calculate Outlet Temperatures 
     T_h_2              = -Q/C_h  + T_h_1              # eqn 25a 
     T_c_2              =  Q/C_c  + T_c_1              # eqn 25a    
-    c_p_c_1            = air.compute_cp(T_c_1,p_c_1)
-    m_dot_c            = C_c/c_p_c_1                  # eqn 26  
-    hex_effectiveness  = Q/(C_h*(T_h_1 -T_c_1 ) )     # eqn 27  
-    delta_p_h          = (1-PI_h_guess)*p_h_1         # eqn 28 
-    delta_p_c          = (1-PI_c_guess)*p_c_1       
     
-    # ------------------------------------------------------------------------------------------------------------------------  
-    #  STEP 2 : finding NTU  
-    # ------------------------------------------------------------------------------------------------------------------------  
+   
+    eff_HEX            = Q/(C_h*(T_h_1 -T_c_1 ) )               # eqn 27  
+    
     sol                = minimize(solve_for_NTU, [1] , args=(Q,C_h,T_h_1,T_c_1,C_R), method='SLSQP', bounds=[0,20], tol=1e-6)  # Eqn 28 and 29   
-    NTU                = sol.x   # eqn 29
-                
+    NTU                = sol.x   # eqn 29    
+    
+    #Determine Hot and cold side NTU
     ntu_c              = 1.1*C_R*NTU   
-    ntu_h              = 10*NTU 
-                  
-    Pr_c               = air.compute_Pr(T_c_1,p_c_1)
-    Pr_h               = coolant.compute_Pr(T_c_1,p_c_1)
-    mu_h               = air.compute_dynamic_viscosity(T_c_1,p_c_1)
-    mu_c               = coolant.compute_dynamic_viscosity(T_c_1,p_c_1)
-                
-    p_h_2              = p_h_1  - delta_p_h
-    p_c_2              = p_c_1  - delta_p_c
-    rho_h_1            = coolant.density(T_h_1,p_h_1)
-    rho_h_2            = coolant.density(T_h_2,p_h_2)
-    rho_c_m            =  2/(1/rho_c_1 + 1/rho_c_2)
-    rho_h_m            =  2/(1/rho_h_1 + 1/rho_h_2)
-            
-    G_c                = np.sqrt(2*rho_c_m*delta_p_c/(Pr_c**(2/3)) * (eta_0_c_guess*j_div_f_c_guess)/ntu_c  ) # eqn 30 
-    G_h                = np.sqrt(2*rho_h_m*delta_p_c/(Pr_h**(2/3)) * (eta_0_h_guess*j_div_f_h_guess)/ntu_h  )
-                    
+    ntu_h              = 10*NTU     
+    
+    #Inital Guess values for core mass compute
+    eta_0_c_inita = 0.8
+    eta_0_h_inita = 0.8
+    
+    div_f_c_inital  =0.25
+    div_f_h_inital  =0.25
+    
+    # Inital Compute Core Mass Velcoity 
+    G_c                = np.sqrt(2*rho_c_m*delta_p_c/(Pr_c**(2/3)) * (eta_0_c_inital*j_div_f_c_inital)/ntu_c  ) # eqn 30 
+    G_h                = np.sqrt(2*rho_h_m*delta_p_c/(Pr_h**(2/3)) * (eta_0_h_inital*j_div_f_h_inital)/ntu_h  )    
+    
+    #Compute Reunolds Number 
     Re_h               = G_h*d_H_h/mu_h # Eqn 31 
-    Re_c               = G_c*d_H_c/mu_c # Eqn 31  
-     
-    # hot fluid 
-    # fanning friction factor (eq 32)
-    if Re_c< 2300:
-        f_c= 24*(1-(1.3553*AR_c)+(1.9467*AR_c**2)-(1.7012*AR_c**3)+(0.9564*AR_c**4)-(0.2537*AR_c**5))
-    elif Re_c>=2300:
-        f_c= (0.0791*(Re_c**(-0.25)))*(1.8075-0.1125*AR_c)
-
+    Re_c               = G_c*d_H_c/mu_c # Eqn 31     
+    
     # Nusselt Number (eq 12)   
     if Re_c< 2300:
         Nu_c= 8.235*(1-(2.0421*AR_c)+(3.0853*AR_c**2)-(2.4765*AR_c**3)+(1.0578*AR_c**4)-(0.1861*AR_c**5))    
     elif Re_c >= 2300:
-        Nu_c = ((f_c/2)*(Re_c-1000)*Pr_c)/(1+(12.7*(f_c**0.5)*(Pr_c**(2/3)-1)))  
-
-     
-    # hot fluid 
-    # fanning friction factor (eq 32)
-    if Re_h< 2300:
-        f_h= 24*(1-(1.3553*AR_h)+(1.9467*AR_h**2)-(1.7012*AR_h**3)+(0.9564*AR_h**4)-(0.2537*AR_h**5))
-    elif Re_h>=2300:
-        f_h= (0.0791*(Re_h**(-0.25)))*(1.8075-0.1125*AR_h)
-
-    # Nusselt Number (eq 12)   
-    if Re_h< 2300:
-        Nu_h= 8.235*(1-(2.0421*AR_h)+(3.0853*AR_h**2)-(2.4765*AR_h**3)+(1.0578*AR_h**4)-(0.1861*AR_h**5))    
-    elif Re_h >= 2300:
-        Nu_h = ((f_h/2)*(Re_h-1000)*Pr_h)/(1+(12.7*(f_h**0.5)*(Pr_h**(2/3)-1)))  
-            
+        Nu_c = ((f_c/2)*(Re_c-1000)*Pr_c)/(1+(12.7*(f_c**0.5)*(Pr_c**(2/3)-1)))     
+        
+    # Calculates Colburn Factor 
+    
     j_h               =  (Nu_h * Pr_h**(-1/3))/ Re_h
-    j_c               =  (Nu_c * Pr_c**(-1/3))/ Re_c   
+    j_c               =  (Nu_c * Pr_c**(-1/3))/ Re_c       
+    
+    
+    
+    
+    
+    # ------------------------------------------------------------------------------------------------------------------------      
+    # Evaluate HEX Performance (Rating Problem) 
+    # ------------------------------------------------------------------------------------------------------------------------     
+    
+    # b_c, b_h, beta_h, beta_c, d_H_h, d_H_c, L_c, L_h, H_stack, t_w Need to bring in these variables as inital guesses. Everything is 1.0 exceot t_w=5e-4 
+    
+    #Caluclates the Surface Geometry Porperties 
+    
+    # Calculates the number of hot fluid passages eq (47)
+    # Np+1 is considered the number iof passes for air, this is a common practice to minimize the heat losses to ambient 
+    N_p = (H_stack - b_c - 2 * t_w) / (b_h + b_c + 2 * t_w)
+    
+    # the frontal areas on both fluid sides eq (48)
+    A_fr_h                          = L_c * H_stack
+    A_fr_c                          = L_h * H_stack    
+    
+    # the heat exchanger volume between plates on both fluid sides
+    V_p_h                           = L_h * L_c * N_p * b_h
+    V_p_c                           = L_h * L_c * (N_p + 1) * b_c
 
+    # the heat transfer areas eq (49)
+    A_h                             = beta_h * V_p_h
+    A_c                             = beta_c * V_p_c    
+
+    # the minimum free-flow areas [cross-section area of the fluid passages] (50)
+    A_o_h                             = d_H_h * A_h / (4 * L_h)
+    A_o_c                             = d_H_c * A_c / (4 * L_c)    
+
+    # the ratio of minimum free-flow area to the frontal area (51)
+    sigma_h                           = A_o_h / A_fr_h
+    sigma_c                           = A_o_c / A_fr_c
+    
+    
+    # Inital Assumption of eff_Hex=0.5; 
+    #C_r=0.5; (Why?) 
+    #p_c_2=p_c_1 Freestream pressure
+    
+    #The thermal Calculations 
+    
+    # Calculate the inital outlet temperature and mean temperatures with the guess values of eff. 
+    
+    # hot fluid eq (52a)
+    T_h_2                           = T_h_1 - eff_HEX * (T_h_1 - T_c_1)
+    T_h_m                           = (T_h_1 + T_h_2) / 2
+  
+    # Air Temperature eq (52b)
+    T_c_2                           = T_c_1 + eff_HEX * C_R * (T_h_1 - T_c_1)
+    T_c_m                           = (T_c_1 + T_c_2) / 2
+    
+    
+    #*add thermal property calcilatyions*
+    
+    
+    #CMV and Re values eq(31)
+    G_h                             = m_dot_h / A_o_h #m_dot_h is assumed to be 1 (defaults) to start with. But then use eq 30 to calculate the inital reynaolds number. 
+    G_c                             = m_dot_c / A_o_c #m_dot_c is assumed to be 1 to start with 
+
+    Re_h                            = G_h * d_H_h / mu_h
+    Re_c                            = G_c * d_H_c / mu_c    
+    
+    # Calculate friction factor, Nusselt Number, Colburn factor for hot fluid eq(32, 12, 33)
+    if Re_h< 2300:
+        f_h         = 24*(1-(1.3553*AR_h)+(1.9467*AR_h**2)-(1.7012*AR_h**3)+(0.9564*AR_h**4)-(0.2537*AR_h**5))      #Inital Value of AR_h needs to be defined in defaults
+        Nu_h        = 8.235*(1-(2.0421*AR_h)+(3.0853*AR_h**2)-(2.4765*AR_h**3)+(1.0578*AR_h**4)-(0.1861*AR_h**5))   # IMP: Assumed contant values of Nu and f for AR=1 in original code 
+        j_h         = (Nu_h * Pr_h**(-1/3))/ Re_h
+    elif Re_h>=2300:
+        f_h         = (0.0791*(Re_h**(-0.25)))*(1.8075-0.1125*AR_h)    
+        Nu_h        = ((f_h/2)*(Re_h-1000)*Pr_h)/(1+(12.7*(f_h**0.5)*(Pr_h**(2/3)-1)))  
+        j_h         = (Nu_h * Pr_h**(-1/3))/ Re_h
+        
+    # Calculate friction factor, Nusselt Number, Colburn factor for cold fluid eq(32, 12, 33)
+        
+    if Re_c< 2300:
+        f_c         = 24*(1-(1.3553*AR_c)+(1.9467*AR_c**2)-(1.7012*AR_c**3)+(0.9564*AR_c**4)-(0.2537*AR_c**5))
+        Nu_c        = 8.235*(1-(2.0421*AR_c)+(3.0853*AR_c**2)-(2.4765*AR_c**3)+(1.0578*AR_c**4)-(0.1861*AR_c**5)) 
+        j_c         = (Nu_c * Pr_c**(-1/3))/ Re_c
+    elif Re_c>=2300:
+        f_c         = (0.0791*(Re_c**(-0.25)))*(1.8075-0.1125*AR_c)
+        Nu_c        = ((f_c/2)*(Re_c-1000)*Pr_c)/(1+(12.7*(f_c**0.5)*(Pr_c**(2/3)-1)))  
+        j_c         = (Nu_c * Pr_c**(-1/3))/ Re_c
+    
     # convective heat transfer coefficent Eqn 34  
-    h_h               = j_h * G_h * c_p_h /(Pr_h**(2/3)) # not sure what cp value to use here  
+    h_h               = j_h * G_h * c_p_h /(Pr_h**(2/3)) 
     h_c               = j_c * G_c * c_p_c /(Pr_c**(2/3))
    
-    m_f_h             = np.sqrt(2 * h_h / k_f / t_f)
-    m_f_c             = np.sqrt(2 * h_c / k_f / t_f)
-   
-    l_f_h             = b_f_h / 2 - t_f
-    l_f_c             = b_f_c / 2 - t_f
-   
-    eta_f_h           = np.tanh(m_f_h * l_f_h) / (m_f_h * l_f_h)  # eqn 35  
+    # Geomtric fin property calcualtions 
+    m_f_h             = np.sqrt(2 * h_h / k_f / t_f) #k_f=121W/m.K
+    m_f_c             = np.sqrt(2 * h_c / k_f / t_f)# t_f= 1e-4m fin thickness 
+
+    l_f_h             = b_h / 2 - t_f
+    l_f_c             = b_c / 2 - t_f
+
+    # Fin Efficiency Eq (35)
+    eta_f_h           = np.tanh(m_f_h * l_f_h) / (m_f_h * l_f_h)   
     eta_f_c           = np.tanh(m_f_c * l_f_c) / (m_f_c * l_f_c)
 
-    # overall fin efficiency
-    eta_0_h           = 1 - (1 - eta_f_h) * A_f_div_A_h
-    eta_0_c           = 1 - (1 - eta_f_c) * A_f_div_A_c # eqn 36  
-    
-    # area density
-    beta_h            = 4 * (1 + AR_h) / (d_H_h * (1 + AR_h) + 2 * AR_h * t_f) # Eqn 22
-    beta_c            = 4 * (1 + AR_c) / (d_H_c * (1 + AR_c) + 2 * AR_c * t_f) 
-                     
-    alpha_h           = (b_f_h*beta_h)/(b_f_c + b_f_h + 2*t_w)
-    alpha_c           = (b_f_c*beta_c)/(b_f_c + b_f_h + 2*t_w)
+    # overall fin efficiency Eq (36)
+    eta_0_h           = 1 - (1 - eta_f_h) * A_f_div_A_h        # A_f/A_h inital value is 1.0    
+    eta_0_c           = 1 - (1 - eta_f_c) * A_f_div_A_c        # A_f/A_c inital value is 1.0       
 
-    # the ratio of minimum free-flow area to the frontal area
-    sigma_h           = alpha_h*d_H_h/ 4
-    sigma_c           = alpha_c*d_H_c/ 4
- 
-    U_h               = 1/( (1/(eta_0_h*h_h) ) + ((alpha_c/alpha_h)/(eta_0_c*h_c))) # eqn 37
-    A_h               = NTU * (C_h/U_h)       # eqn 38 a 
-    A_c               = A_h*(alpha_c/alpha_h) # eqn 38 b  
+    # Calculates the Overall Heat Transfer modified eq(37) 
+    A_w               = L_c * L_h * 2 * (N_p + 1)
+    R_w               = t_w / (k_w * A_w) #k_w= 121 w/m.K
+    UA                = 1 / (1 / (eta_0_h* h_h * A_h) + R_w + 1 / (eta_0_c * h_c * A_c))
     
-    A_0_h              = m_dot_h/G_c
-    A_0_c              = m_dot_c/G_h 
-                      
-    A_fr_h            = A_0_h/sigma_h # eqn 40
-    A_fr_c            = A_0_c/sigma_c  
     
-    L_h               = A_h*d_H_h/(4*A_0_c) # eqn 41
-    L_c               = A_c*d_H_c/(4*A_0_h)
+    # This step we updates the values of eff_Hex, Cr
+  
+    C_h                             = m_dot_h*cp_h
+    C_c                             = m_dot_c*cp_c
+    #Calcualting C_min
+    if C_h> C_c:
+        C_min=C_c
+    else:
+        C_min=C_h
+        
+    C_R                             = C_h / C_c
+    NTU                             = UA / C_min
+    eff_HEX                         = 1 - np.exp(np.power(NTU, 0.22) / C_R * (np.exp(- C_R * np.power(NTU, 0.78)) - 1))  # Eq 29
     
-    H                 = A_fr_c /L_h # eqn 42
-                      
+    # Recomutes the temperatures based off the new effectivenss eq(25a) and eq (25b)
+    Q                               = eff_HEX * C_min * (T_h_1 - T_c_1)
+    T_h_2                           = T_h_1 - Q / C_h
+    T_c_2                           = T_c_1 + Q / C_c
+    
+    # Pressure Drop Calculations (Use updated values from the thermal calculations)
+    
+    #Calculate wall temperature 
+    R_h                             = 1 / (eta_o_h * h_h * A_h)  # hot fluid -- liquid coolant
+    R_c                             = 1 / (eta_o_c * h_c * A_c)  # cold fluid -- air
+    
+    T_w                             = (T_h_m + (R_h / R_c) * T_c_m) / (1 + R_h / R_c) #calculates wall temperature 
+    
+    #Calculate friction factor for HEX cold side  (Temperature dependenat property effects of gases, Table 7.12 and eq 7.157 from the textbook)
+    if Re_c< 2300: 
+        f_c_updated              = f_c * np.power((T_w / T_c_m), 1)  
+    else:
+        f_c_updated              = f_c * np.power((T_w / T_c_m), -0.1)
+    
+    #Calculate friction factor for HEX cold side  (Temperature dependenat property effects of gases, Table 7.12 and eq 7.158 from the textbook)
+    #include the function to calculate coolant viscoscity at wall temp
+    if Re_h< 2300:
+        f_h_updated          = f_h * np.power((mu_h_w / mu_h), 0.54)  # mu_h_w / mu_m_h > 1 Given viscoscity at wall and bulk viscoscity
+    else:
+        f_h_updated          = f_h * np.power((mu_h_w / mu_h), -0.25)  # 1 < mu_h_w / mu_m_h < 40
+        
+    
+    # Computes the heat exchanger enterance and exit coefficients 
     Ke_c, Kc_c        = compute_heat_exhanger_factors(hex_opt.kc_values,hex_opt.kc_values,sigma_c, Re_c)
     
-    # get density of fluids 
-    rho_c_1           = air.compute_density(T_c_1,p_c_1)
-    rho_c_2           = air.compute_density(T_c_2,p_c_2) 
-    
-    # asssume mean densities are used in computations of pressure losses 
-    rho_c = (rho_c_1 +rho_c_2)/2
-    rho_h = (rho_h_1 +rho_h_2)/2
-                      
-    rho_c_m           = 2/(1/rho_c_1 + 1/rho_c_2)
-    delta_p_c_true    = (G_h**2 / (2 * rho_c_1)) * ((1 - sigma_c**2 + Kc_c)  + 2 * (rho_c_1 / rho_c_2 - 1)\
-                    + f_c * 4 * L_c / d_H_c * rho_c_1 / rho_c_m  - (1 - sigma_c**2 - Ke_c) * rho_c_1 / rho_c_2)  #eqn 43 
-  
+    #Calcuate the pressure drop
+    delta_p_h                       = 4 * np.power(G_h, 2) * f_h_updated * L_h / (2 * rho_h * d_H_h)
 
-    # ------------------------------------------------------------------------------------------------------------------------  
-    #  System-level calculations
-    # ------------------------------------------------------------------------------------------------------------------------  
-    # masses (eqn 45)
-    V_hex             = L_c*L_h*H
-    m_hex             = density_hex * V_hex * (1 - sigma_h - sigma_c)  
+    delta_p_c                       = np.power(G_c, 2) / (2 * rho_c_1) * ((1 - np.power(sigma_c, 2) + Kc_c)
+                                        + 2 * (rho_c_1 / rho_c_2 - 1) + f_c_updated * 4 * L_c / d_H_c * rho_c_1 / rho_c_m
+                                        - (1 - np.power(sigma_c, 2) - Ke_c) * rho_c_1 / rho_c_2) #eq 9.20 
     
-    # power (eqn 46)
-    u_c               = m_dot_c/(rho_c*A_c)  
-    P_hex             = m_dot_h * (delta_p_h / rho_h) / pump_efficiency  +  (m_dot_c*(delta_p_c/rho_c) +  (u_c**2)*0.5)/fan_efficiency
     
-    # number of passes 
-    N_p               =  (H - b_f_c - 2 * t_w) / (b_f_h + b_f_c + 2 * t_w) 
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     # ------------------------------------------------------------------------------------------------------------------------  
     #  Compute residuals 
