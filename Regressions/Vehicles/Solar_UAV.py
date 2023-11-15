@@ -10,9 +10,9 @@
 import RCAIDE
 from RCAIDE.Core                             import Units, Data
 from RCAIDE.Energy.Networks.Solar            import Solar
-from RCAIDE.Methods.Propulsion               import design_propeller
+from RCAIDE.Methods.Propulsion.Design        import design_propeller
 from RCAIDE.Methods.Power.Battery.Sizing     import initialize_from_energy_and_power, initialize_from_mass
-from RCAIDE.Methods.Weights.Correlations.UAV import empty
+from RCAIDE.Methods.Weights.Correlation_Buildups.UAV import empty
 
 # python imports 
 import numpy as np 

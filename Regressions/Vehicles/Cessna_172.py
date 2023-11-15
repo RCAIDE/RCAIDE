@@ -7,11 +7,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
-from RCAIDE.Core import Units,Data, Container 
-from RCAIDE.Methods.Geometry.Three_Dimensional                                   import compute_span_location_from_chord_length
-from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations              import datcom
-from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions import trapezoid_ac_x
-from RCAIDE.Methods.Propulsion import design_propeller
+from RCAIDE.Core import Units   
+from RCAIDE.Methods.Propulsion.Design import design_propeller
 
 # python imports 
 import numpy as np

@@ -9,7 +9,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Core import Units      
-from RCAIDE.Methods.Propulsion                             import design_turbofan
+from RCAIDE.Methods.Propulsion.Design                      import design_turbofan
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform      import wing_planform, segment_properties
 from RCAIDE.Visualization                 import *     
 

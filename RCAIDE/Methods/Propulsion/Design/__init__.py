@@ -10,7 +10,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 from .                                                                        import Rotor_Design
-from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing                      import ducted_fan_sizing
 from .design_propeller                                                        import design_propeller 
 from .design_lift_rotor                                                       import design_lift_rotor
 from .design_prop_rotor                                                       import design_prop_rotor 
@@ -19,6 +18,7 @@ from .design_electric_motor                                                   im
 from .design_turbofan                                                         import design_turbofan
 from .design_turbojet                                                         import design_turbojet
 
+from Legacy.trunk.S.Methods.Propulsion.ducted_fan_sizing                      import ducted_fan_sizing
 from Legacy.trunk.S.Methods.Propulsion.turbofan_emission_index                import turbofan_emission_index
 from Legacy.trunk.S.Methods.Propulsion.ramjet_sizing                          import ramjet_sizing
 from Legacy.trunk.S.Methods.Propulsion.scramjet_sizing                        import scramjet_sizing

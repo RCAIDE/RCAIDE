@@ -10,7 +10,7 @@
 import RCAIDE
 from RCAIDE.Core import Units  
 from RCAIDE.Energy.Networks.All_Electric                    import All_Electric
-from RCAIDE.Methods.Propulsion                              import design_propeller,  size_optimal_motor 
+from RCAIDE.Methods.Propulsion.Design                       import design_propeller,  size_optimal_motor 
 from RCAIDE.Methods.Weights.Correlation_Buildups.Propulsion import nasa_motor
 from RCAIDE.Methods.Power.Battery.Sizing                    import initialize_from_circuit_configuration
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform       import wing_segmented_planform

@@ -11,6 +11,7 @@
 # RCAIDE Imports  
 import RCAIDE 
 from RCAIDE.Core                                                             import Data   
+from RCAIDE.Analyses.Mission.Common                                          import Residuals 
 from RCAIDE.Methods.Propulsion.Performance.turbojet_propulsor                import compute_propulsor_performance , compute_unique_propulsor_groups 
 from .Network                                                                import Network  
 from .Network import Network

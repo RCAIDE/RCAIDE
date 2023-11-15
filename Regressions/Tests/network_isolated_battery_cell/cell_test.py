@@ -265,10 +265,7 @@ def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
     segment.tag                            = 'Recharge'
     segment.time                           = time
     segment                                = vehicle.networks.isolated_battery_cell.add_unknowns_and_residuals_to_segment(segment,estimated_battery_cell_temperature = [[303]] )      
-    mission.append_segment(segment)  
-     
-        
- 
+    mission.append_segment(segment)   
 
     return mission 
 

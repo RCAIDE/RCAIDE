@@ -9,9 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Core                                                       import Data  
-from RCAIDE.Components.Component                                       import Container    
-from RCAIDE.Methods.Propulsion.internal_combustion_engine_cs_propulsor import compute_propulsor_performance ,compute_unique_propulsor_groups 
+from RCAIDE.Core                                                       import Data   
+from RCAIDE.Methods.Propulsion.Performance.internal_combustion_engine_cs_propulsor import compute_propulsor_performance ,compute_unique_propulsor_groups 
 from .Network                                                          import Network   
  
 # python imports 
