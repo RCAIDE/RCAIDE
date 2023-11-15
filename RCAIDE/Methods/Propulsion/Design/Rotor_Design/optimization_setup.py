@@ -10,10 +10,10 @@
  
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Core                                                    import Units, Data   
-from RCAIDE.Optimization.Common                                     import Nexus       
-from RCAIDE.Methods.Propulsion.Rotor_Design.blade_geometry_setup    import blade_geometry_setup
-from RCAIDE.Methods.Propulsion.Rotor_Design.procedure_setup         import procedure_setup
+from RCAIDE.Core                                                           import Units, Data   
+from RCAIDE.Optimization.Common                                            import Nexus       
+from RCAIDE.Methods.Propulsion.Design.Rotor_Design.blade_geometry_setup    import blade_geometry_setup
+from RCAIDE.Methods.Propulsion.Design.Rotor_Design.procedure_setup         import procedure_setup
 
 # Python package imports   
 import numpy as np  
