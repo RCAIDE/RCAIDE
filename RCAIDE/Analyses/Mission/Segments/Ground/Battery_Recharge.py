@@ -12,7 +12,7 @@
 from RCAIDE.Analyses.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Methods.Mission.Segments                 import Ground   
 from RCAIDE.Core                                     import Units
-from RCAIDE.Methods                                  import skip 
+from RCAIDE.Methods.skip                             import skip 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  SEGMENT
