@@ -10,6 +10,7 @@
 import RCAIDE     
 
 # Python package imports   
+
 import numpy as np  
 
 ## @ingroup Methods-Thermal_Management-Batteries-Sizing

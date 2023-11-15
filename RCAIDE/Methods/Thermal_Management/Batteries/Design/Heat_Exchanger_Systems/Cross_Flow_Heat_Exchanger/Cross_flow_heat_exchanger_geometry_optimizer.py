@@ -18,21 +18,21 @@ import time
 #  Rotor Design
 # ----------------------------------------------------------------------
 ## @ingroup Methods-Thermal_Management-Batteries
-def design_atmospheric_air_heat_exchanger(HEX,HRS,battery, single_side_contact=True, dry_mass=True,
+def design_crossflow_heat_exchanger(HEX,HRS,battery, single_side_contact=True, dry_mass=True,
                                        solver_name= 'SLSQP',iterations = 200,solver_sense_step = 1E-5,
                                        solver_tolerance = 1E-6,print_iterations = False):  
     """ 
     """    
-    # Unpack rotor geometry   
+    # Unpack HEX geometry?   
     
     # start optimization 
     ti                   = time.time()   
-    optimization_problem = atmospheric_air_heat_exchanger_design_problem_setup(HEX,HRS,print_iterations)
+    optimization_problem = crossflow__heat_exchanger_design_problem_setup(HEX,HRS,print_iterations)
     output               = scipy_setup.SciPy_Solve(optimization_problem,solver=solver_name, iter = iterations , sense_step = solver_sense_step,tolerance = solver_tolerance)  
     
     tf                   = time.time()
     elapsed_time         = round((tf-ti)/60,2)
-    print('Channel Cooling hex Optimization Simulation Time: ' + str(elapsed_time) + ' mins')   
+    print('HEX sizing optimization Simulation Time: ' + str(elapsed_time) + ' mins')   
     
     # print optimization results 
     print (output)  
@@ -40,7 +40,7 @@ def design_atmospheric_air_heat_exchanger(HEX,HRS,battery, single_side_contact=T
     return HEX
 
 ## @ingroup Methods-Thermal_Management-Batteries-Sizing
-def atmospheric_air_heat_exchanger_design_problem_setup(HEX,HRS,print_iterations): 
+def crossflow__heat_exchanger_design_problem_setup(HEX,HRS,print_iterations): 
     """"""
     
     nexus                        = Nexus()
@@ -53,6 +53,9 @@ def atmospheric_air_heat_exchanger_design_problem_setup(HEX,HRS,print_iterations
     # ----------------------------------------------------------------------------------------------------------       
     inputs = []   
     #               variable   initial   upper limit   lower limit     scaling       units 
+   
+   
+   
     inputs.append([ 'd_H_c'   ,  10    , 1               , 15            , 10      ,  1*Units.less])  
     inputs.append([ 'd_H_h'   ,  10    , 1               , 15            , 10      ,  1*Units.less]) 
     inputs.append([ 'gamma_c' ,  3     , 0.1             , 10            , 10      ,  1*Units.less])  
