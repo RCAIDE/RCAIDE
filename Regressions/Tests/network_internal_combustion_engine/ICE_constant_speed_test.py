@@ -17,8 +17,8 @@ import numpy as np
 # local imports 
 import sys 
 sys.path.append('../../Vehicles') 
-from Cessna_172                import vehicle_setup  
-from RCAIDE.Methods.Propulsion import design_propeller
+from Cessna_172                       import vehicle_setup  
+from RCAIDE.Methods.Propulsion.Design import design_propeller
 
 # ----------------------------------------------------------------------
 #   Main

@@ -9,7 +9,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Core                                           import Units , Data    
-from RCAIDE.Methods.Propulsion                             import design_turbojet
+from RCAIDE.Methods.Propulsion.Design                      import design_turbojet
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform      import wing_planform, segment_properties,wing_segmented_planform
 from RCAIDE.Visualization                 import *     
 

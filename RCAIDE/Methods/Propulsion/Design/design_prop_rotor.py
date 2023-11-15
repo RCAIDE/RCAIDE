@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 # RCAIDE Imports    
-from RCAIDE.Optimization.Packages.scipy                              import scipy_setup 
-from RCAIDE.Methods.Propulsion.Rotor_Design.optimization_setup       import optimization_setup
-from RCAIDE.Methods.Propulsion.Rotor_Design.set_optimized_parameters import set_optimized_parameters
+from RCAIDE.Optimization.Packages.scipy                                     import scipy_setup 
+from RCAIDE.Methods.Propulsion.Design.Rotor_Design.optimization_setup       import optimization_setup
+from RCAIDE.Methods.Propulsion.Design.Rotor_Design.set_optimized_parameters import set_optimized_parameters
 
 # Python package imports   
 import time 
