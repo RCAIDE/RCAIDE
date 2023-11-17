@@ -5,14 +5,13 @@
 import RCAIDE 
 from RCAIDE.Core                                                  import Units   
 from RCAIDE.Analyses.Process                                      import Process     
-from RCAIDE.Methods.Thermal_Management.Batteries.Performance.Conjugate_Heat_Exchanger.compute_heat_exhanger_factors import compute_heat_exhanger_factors
+from RCAIDE.Methods.Thermal_Management.Batteries.Design.Heat_Exchanger_Systems.Cross_Flow_Heat_Exchanger import compute_heat_exhanger_factors
 from RCAIDE.Attributes.Coolants.Glycol_Water import Glycol_Water
-from RCAIDE.Attributes.Gases import Air
+from RCAIDE.Attributes.Gases import Air 
 
 # Python package imports 
-from scipy.optimize import minimize,fsolve 
+from scipy.optimize import fsolve 
 import numpy as np 
-import scipy as sp  
 
 ## @ingroup Methods-Thermal_Management-Batteries-Sizing 
 def atmospheric_air_HEX_sizing_setup(): 
@@ -39,61 +38,66 @@ def modify_crossflow_hex_size(nexus):
     # ------------------------------------------------------------------------------------------------------------------------
     
     # Overall HEX properties
-    eff_hex     = 0.8381     # Assigned design variable by user (fixed)
-    delta_p_h   = 9.05e3 #Pa # Assigned design variable by user (fixed) 
-    delta_p_c   = 8.79e3 #Pa # Assigned design variable by user (fixed) 
+    eff_hex     = hex_opt.heat_exchanger_efficiency   
+    delta_p_h   = hex_opt.pressure_drop_hot 
+    delta_p_c   = hex_opt.pressure_drop_cold
+    density_hex = hex_opt.density    
       
     # Inlet Temperatures 
-    T_i_h       = hex_opt.coolant_temperature_of_hot_fluid #deg C # HRS input
-    T_i_c       = hex_opt.inlet_temperature_of_cold_fluid #deg C # atmosphere
+    T_i_h       = hex_opt.coolant_temperature_of_hot_fluid 
+    T_i_c       = hex_opt.inlet_temperature_of_cold_fluid
                 
     # Inlet Pressures
-    P_i_h       = hex_opt.coolant_inlet_pressure #Pa # HRS
-    P_i_c       = hex_opt.inlet_pressure_of_cold_fluid #Pa # Fan (user)   
+    P_i_h       = hex_opt.coolant_inlet_pressure 
+    P_i_c       = hex_opt.air_inlet_pressure
                 
     # Hydraulic Diameters
-    d_h_c       = hex_opt.coolant_hydraulic_diameter #m # optimized variable
-    d_h_h       = hex_opt.air_hydraulic_diameter #m # optimized variable    
+    d_h_c       = hex_opt.coolant_hydraulic_diameter 
+    d_h_h       = hex_opt.air_hydraulic_diameter 
                 
     # Fin Height/Spaceing 
-    b_c         = 2.49e-3 #m # fixed variable
-    b_h         = 2.49e-3 #m # fixed variable
+    b_c         = hex_opt.fin_spacing_cold                                       
+    b_h         = hex_opt.fin_spacing_hot
                 
     # Fin metal thickness
-    delta_h     = 0.102e-3 #m
-    delta_c     = 0.102e-3 #m
-    
+    delta_h     = hex_opt.fin_metal_thickness_hot  
+    delta_c     = hex_opt.fin_metal_thickness_cold 
+                  
     # Platethickness
-    delta_w     = hex_opt.t_w #m    
+    delta_w     = hex_opt.t_w 
     
     # Strip edge exposed 
-    l_s_h       = 3.175e-3 #m
-    l_s_c       = 3.175e-3 #m
+    l_s_h       = hex_opt.fin_exposed_strip_edge_hot  
+    l_s_c       = hex_opt.fin_exposed_strip_edge_cold 
     
     #Fin and wall Conductivity 
-    k_f         = hex_opt.k_f #W/mK  
-    k_w         = hex_opt.k_w #W/mK  
+    k_f         = hex_opt.k_f  
+    k_w         = hex_opt.k_w 
     
     # Ratio of finned area to total area 
-    Af_A_h      = hex_opt.coolant_channel_aspect_ratio  # fixed variable
-    Af_A_c      = hex_opt.air_channel_aspect_ratio      # fixed variable    
+    Af_A_h      = hex_opt.coolant_channel_aspect_ratio  
+    Af_A_c      = hex_opt.air_channel_aspect_ratio        
     
     #Finned area density 
-    beta_h      = 2254 #m^2/m^3 # fixed variable 
-    beta_c      = 2254 #m^2/m^3 # fixed variable
+    beta_h      = hex_opt.fin_area_density_hot  
+    beta_c      = hex_opt.fin_area_density_cold 
     
-    #mass flow rates of the fluids
+    #mass flow rates of the fluids (not sure about this)
     m_dot_h     = hex_opt.mass_flow_rate_of_hot_fluid #kg/s #HRS
-    m_dot_c     = 2.00 #kg/s # Optimized variable
+    m_dot_c     = 2.00 #kg/s # Optimized variable # whats the name of the variable?
     
     #Efficiency 
     pump_efficiency  = hex_opt.pump_efficiency
     fan_efficiency   = hex_opt.fan_efficiency  
     
     #Define working fluids 
-    air              = hex_opt.air
-    coolant          = hex_opt.coolant    
-    
+    air              = hex_opt.Air
+    coolant          = hex_opt.Coolant    
+    # Enterance and Exit pressure loss coefficients 
+   
+    kc_vals          = hex_opt.kc_values   
+    ke_vals          = hex_opt.ke_values      
+                    
     # Assumed inital values of j/f and efficiency 
     j_f_h,j_f_c        = 0.25,0.25
     eta_o_h, eta_o_c   = 0.8,0.8    
@@ -101,6 +105,10 @@ def modify_crossflow_hex_size(nexus):
     # ------------------------------------------------------------------------------------------------------------------------      
     # Evaluate HEX Size (Sizing Problem) 
     # ------------------------------------------------------------------------------------------------------------------------    
+    
+    # Calculate Outlet Pressure 
+    P_o_h    =delta_p_h-P_i_h
+    P_o_c    =delta_p_c-P_i_c
     
     # Calculate the Outlet Temperatures 
     
@@ -144,12 +152,14 @@ def modify_crossflow_hex_size(nexus):
     mu_c    = air.compute_absolute_viscosity(T_m_c)
 
     # from the inlet and outlet pressures given the mean density is calcualted. 
-    rho_h_i  = 0.4751 # kg/m^3
-    rho_c_i  = 1.4726 # kg/m^3
-    rho_h_o  = 0.8966 # kg/m^3
-    rho_c_o  = 0.6817 # kg/m^3    
-    rho_h_m  = 0.6212 # kg/m^3
-    rho_c_m  = 0.9319 # kg/m^3
+    rho_h_i  =  coolant.compute_density(T_i_h,P_i_h)
+    rho_c_i  =  coolant.compute_density(T_i_c,P_i_c)     
+    rho_h_o  =  coolant.compute_density(T_o_h,P_o_h)
+    rho_c_o  =  coolant.compute_density(T_o_c,P_o_c)
+    
+    
+    rho_h_m  = (rho_h_i+rho_h_o)/2
+    rho_c_m  = (rho_c_i+rho_c_o)/2
 
     # Heat Capacity 
     C_h              = m_dot_h*c_p_h
@@ -173,8 +183,8 @@ def modify_crossflow_hex_size(nexus):
     G_h        = np.sqrt(2 * rho_h_m * delta_p_h / (Pr_h**(2/3)) * (eta_o_h * j_f_h) / ntu_h)
     G_c        = np.sqrt(2 * rho_c_m * delta_p_c / (Pr_c**(2/3)) * (eta_o_c * j_f_c) / ntu_c)
     
-    
-    check    =0
+    # While Loop tracker
+    check=0
     
     while check==0: # Replace with for loop? Might result in an infinte loop
         
@@ -183,7 +193,7 @@ def modify_crossflow_hex_size(nexus):
         Re_h       = G_h * d_h_h / mu_h
 
 
-        # Calculate the colburn factor and friction factor using curve fitted values
+        # Calculate the colburn factor and friction factor using curve fitted values (What about for Turbulent regim, check in london and Kays )
         j_c            = 0.0131 * (Re_c / 1000)**(-0.415)
         j_h            = 0.0131 * (Re_h / 1000)**(-0.415)
 
@@ -242,7 +252,7 @@ def modify_crossflow_hex_size(nexus):
         A_f_h = A_o_h / sigma_h
         A_f_c = A_o_c / sigma_c
 
-        # Calculate the height of the HEX PS the value of both L3 need to be almost the same, this is slightly different due to rounding off errors
+        # Calculate the height of the HEX 
         L_3_h = A_f_c / L_h
         L_3_c = A_f_h / L_c
 
@@ -250,8 +260,10 @@ def modify_crossflow_hex_size(nexus):
         # Pressure Drop
         # ----------------------------------------------------------------------------------------------------------
 
-        # Compute entrance and exit pressure loss coefficients (from the function that is already there)
+        # Compute entrance and exit pressure loss coefficients 
 
+        # Kc_c, Ke_c     = compute_heat_exhanger_factors(kc_vals,ke_vals,sigma_c, Re_c) 
+        # Need to check if the values obtained from the function are close to what is obtained ere 
         k_c_c = 0.36
         k_c_h = 0.36
 
@@ -287,7 +299,6 @@ def modify_crossflow_hex_size(nexus):
         res_c    = abs(delta_p_c_updated-delta_p_c)
         res_h    = abs(delta_p_h_updated-delta_p_h)
 
-
         if res_c <0.01 and res_h<0.01:
 
             check =1
@@ -305,11 +316,28 @@ def modify_crossflow_hex_size(nexus):
                                                           rho_c_i / rho_c_m
                                                               - (1 - np.power(sigma_c, 2) - k_e_c) * rho_c_i / rho_c_o))      
 
+        #Calculate the inlet and outlet velocity
+        P_o_c    = delta_p_c_updated-P_i_c
+        u_i      =  np.sqrt((2*P_i_c)/rho_c_i)
+        u_o      =  np.sqrt((2*P_o_c)/rho_c_o)
 
+
+    #Calculate Mass of HEX 
+    V_hex    = L_c*L_h*L_3_c
+    mass_hex = density_hex*V_hex*(1-sigma_c-sigma_h)
     
- 
- 
- 
+    #Calculate Power drawn by HEX 
+    P_hex    = ((m_dot_h*delta_p_h)/(pump_efficiency*rho_h_m))+((m_dot_c*delta_p_c_updated/rho_c_m)+((u_i**2-u_o**2)/2))/(fan_efficiency)
+    
+  # ------------------------------------------------------------------------------------------------------------------------  
+  #  Pack results   
+  # ------------------------------------------------------------------------------------------------------------------------
+    nexus.results.stack_height                    = L_3_h
+    nexus.results.heat_exchanger_mass             = mass_hex
+    nexus.results.power_draw                      = P_hex  
+    #Include other variables that are needed for the rating problem, code that up and list the variables here.
+  
+  
  
     return nexus   
 
@@ -318,3 +346,24 @@ def modify_crossflow_hex_size(nexus):
 def equation(NTU,*data):
     C_r,eff_hex = data 
     return(1 - np.exp(((NTU**0.22)/C_r)*(np.exp(-C_r*(NTU**(0.78))) - 1 ))) - eff_hex
+
+# ----------------------------------------------------------------------
+#   Post Process Results to give back to the optimizer
+# ----------------------------------------------------------------------   
+def post_process(nexus):
+    battery       = nexus.hrs_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc 
+    hex_opt       = battery.thermal_management_system.heat_exchanger
+    
+    summary             = nexus.summary   
+    # -------------------------------------------------------
+    # Objective 
+    # -------------------------------------------------------   
+    summary.objective      = nexus.results.power_draw 
+    
+
+    # -------------------------------------------------------
+    # Constraints 
+    # -------------------------------------------------------       
+    
+ 
+    return nexus     

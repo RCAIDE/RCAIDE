@@ -60,7 +60,7 @@ class Glycol_Water(Coolant):
     def compute_thermal_conductivity(self,T=300.,p=101325.): 
         # use engineering toolbox  http://www.mhtl.uwaterloo.ca/old/onlinetools/airprop/airprop.html
     
-        return self.density  
+        return self.thermal_conductivity
     
     
     def compute_prandtl_number(self,T=300.): 

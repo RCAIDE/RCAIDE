@@ -23,7 +23,7 @@ def design_crossflow_heat_exchanger(HEX,HRS,battery, single_side_contact=True, d
                                        solver_tolerance = 1E-6,print_iterations = False):  
     """ 
     """    
-    # Unpack HEX geometry?   
+    
     
     # start optimization 
     ti                   = time.time()   
@@ -52,18 +52,11 @@ def crossflow__heat_exchanger_design_problem_setup(HEX,HRS,print_iterations):
     # Design Variables 
     # ----------------------------------------------------------------------------------------------------------       
     inputs = []   
-    #               variable   initial   upper limit   lower limit     scaling       units 
-   
-   
-   
-    inputs.append([ 'd_H_c'   ,  10    , 1               , 15            , 10      ,  1*Units.less])  
-    inputs.append([ 'd_H_h'   ,  10    , 1               , 15            , 10      ,  1*Units.less]) 
-    inputs.append([ 'gamma_c' ,  3     , 0.1             , 10            , 10      ,  1*Units.less])  
-    inputs.append([ 'gamma_h' ,  3     , 0.1             , 10            , 10      ,  1*Units.less])  
+    #               variable   initial   lower limit   upper limit     scaling       units 
+    inputs.append([ 'P_i_c'   ,     1 , 1               , 15            , 10      ,  1*Units.less])
     inputs.append([ 'm_dot_c' ,  1     , 0.1             , 3             , 1.0     ,  1*Units.less])  
-    inputs.append([ 'PI_c'    ,  0.8   , 0.75            , 0.98          , 1.0     ,  1*Units.less])   
-    inputs.append([ 'p_c_1'   ,  1     , 0.1             , 10            , 10      ,  1*Units.less])   
-    inputs.append([ 'C_R'     ,  0.5   , 0.2             , 0.8           , 1.0     ,  1*Units.less])       
+   
+        
     problem.inputs = np.array(inputs,dtype=object)   
 
     # ----------------------------------------------------------------------------------------------------------
@@ -90,13 +83,13 @@ def crossflow__heat_exchanger_design_problem_setup(HEX,HRS,print_iterations):
     # ------------------------------------------------------------------- 
     aliases = [] 
     btms = 'hex_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_exchanger'  
-    aliases.append([ 'd_H_c'       , btms + '.air_hydraulic_diameter'])   
-    aliases.append([ 'd_H_h'       , btms + '.coolant_hydraulic_diameter'])   
-    aliases.append([ 'gamma_h'     , btms + '.coolant_channel_aspect_ratio' ])  
-    aliases.append([ 'gamma_c'     , btms + '.air_channel_aspect_ratio' ])    
+    #aliases.append([ 'd_H_c'       , btms + '.air_hydraulic_diameter'])   
+    #aliases.append([ 'd_H_h'       , btms + '.coolant_hydraulic_diameter'])   
+    #aliases.append([ 'gamma_h'     , btms + '.coolant_channel_aspect_ratio' ])  
+    #aliases.append([ 'gamma_c'     , btms + '.air_channel_aspect_ratio' ])    
     aliases.append([ 'm_dot_c'     , btms + '.air_flow_rate' ])       
-    aliases.append([ 'C_R'         , btms + '.heat_capacity_rato' ])    
-    aliases.append([ 'PI_c'        , btms + '.air_pressure_ratio' ])     
+    #aliases.append([ 'C_R'         , btms + '.heat_capacity_rato' ])    
+    #aliases.append([ 'PI_c'        , btms + '.air_pressure_ratio' ])     
     aliases.append([ 'p_c_1'       , btms + '.air_inlet_pressure' ])  
     #aliases.append([ 'L_h_con'     , 'summary.length_of_hot_fluid_constraint'])   
     #aliases.append([ 'L_c_con'     , 'summary.length_of_cold_fluid_constraint'])   

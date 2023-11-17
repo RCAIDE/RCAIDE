@@ -1,6 +1,12 @@
+# RCAIDE/Methods/Thermal_Management/Batteries/Design/__init__.py
+# 
 
-## @defgroup Methods-Thermal_Management-Battery-Channel_Cooling
-# @ingroup Methods
+""" RCAIDE Package Setup
+"""
 
-from . import Conjugate_Heat_Exchanger 
-from . import Conjugate_Heat_Removal
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
+from . import Heat_Acquistion_Systems
+from . import Heat_Exchanger_Systems

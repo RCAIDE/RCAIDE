@@ -257,6 +257,8 @@ def compute_offdesign_pressure_properties(kc_vals,ke_vals,sigma_h=None, sigma_c=
     # water is being cooled -- assume liquid coolant is water here
 
     coolant     = Glycol()  
+    
+    
     mu_h_w      = coolant.compute_absolute_viscosity(T_w,p_1_h)   
     
     y = Re_h < 2300

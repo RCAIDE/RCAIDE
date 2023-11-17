@@ -1,5 +1,4 @@
-## @defgroup Energy-Thermal_Management-Batteries Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/__init__.py
+# RCAIDE/Methods/Thermal_Management/Batteries/Design/Heat_Acquisition_Systems/__init__.py
 # 
 
 """ RCAIDE Package Setup
@@ -8,5 +7,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .  import Heat_Exchanger_Systems
-from .  import Heat_Acquisition_Systems
+
+from . import Wavy_Channel_Heat_Acquisition
