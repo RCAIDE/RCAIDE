@@ -60,9 +60,10 @@ class Lithium_Ion_Generic(Battery):
         self.pack.electrical_configuration                            = Data()
         self.pack.electrical_configuration.series                     = 1
         self.pack.electrical_configuration.parallel                   = 1  
-        self.pack.electrical_configuration.total                      = 1    
+        self.pack.electrical_configuration.total                      = 1   
+        self.pack.number_of_modules                                   = 1
          
-        self.module.number_of_modules                                 = 1                   
+        self.module.number_of_cells                                   = 1                   
         self.module.electrical_configuration                          = Data()
         self.module.electrical_configuration.series                   = 1
         self.module.electrical_configuration.parallel                 = 1   

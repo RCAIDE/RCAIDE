@@ -9,4 +9,6 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
  
 
-from .design_wavy_channel_heat_removal_system import design_wavy_channel_heat_removal_system  
+from .design_wavy_channel                     import design_wavy_channel
+from .wavy_channel_geometry_setup             import wavy_channel_geometry_setup
+from .wavy_channel_sizing_setup               import wavy_channel_sizing_setup

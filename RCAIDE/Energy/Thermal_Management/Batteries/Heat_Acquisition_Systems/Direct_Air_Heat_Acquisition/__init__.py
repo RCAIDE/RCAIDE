@@ -8,6 +8,4 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .Direct_Air_Convection_Heat_Removal  import Direct_Air_Convection_Heat_Removal  
-from .No_Heat_Removal                     import No_Heat_Removal 
-from .Conjugate_Heat_Removal              import Conjugate_Heat_Removal 
+from .Direct_Air  import Direct_Air

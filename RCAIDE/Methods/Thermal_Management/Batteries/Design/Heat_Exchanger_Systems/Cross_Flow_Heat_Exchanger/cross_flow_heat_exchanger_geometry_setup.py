@@ -14,19 +14,18 @@ import RCAIDE
 import numpy as np  
 
 ## @ingroup Methods-Thermal_Management-Batteries-Sizing
-def atmospheric_air_HEX_geometry_setup(HEX,HRS): 
+def cross_flow_heat_exchanger_geometry_setup(HEX,HAS): 
     """  
     """     
     vehicle                                        = RCAIDE.Vehicle()  
     net                                            = RCAIDE.Energy.Networks.All_Electric()  
     bus                                            = RCAIDE.Energy.Distributors.Bus_Power_Control_Unit()
     bat                                            = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()   
-    
-    HEX                                            = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Exchanger_Systems.Conjugate_Heat_Exchanger()  
-    HEX.coolant_flow_rate                          = HRS.coolant_flow_rate
-    HEX.coolant_pressure_ratio                     = HRS.coolant_pressure_ratio 
-      
-    bat.thermal_management_system.heat_exchanger = HEX 
+     
+    HEX.coolant_flow_rate                          = HAS.coolant_flow_rate
+    HEX.coolant_pressure_drop                      = HAS.coolant_pressure_drop
+    HEX.coolant_temperature_of_hot_fluid           = HAS.coolant_outlet_temperature 
+    bat.thermal_management_system.heat_exchanger   = HEX 
     bus.batteries.append(bat)
     net.busses.append(bus) 
     vehicle.append_energy_network(net)

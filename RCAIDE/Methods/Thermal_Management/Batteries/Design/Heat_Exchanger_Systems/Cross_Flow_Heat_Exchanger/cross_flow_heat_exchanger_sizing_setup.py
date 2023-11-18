@@ -14,7 +14,7 @@ from scipy.optimize import fsolve
 import numpy as np 
 
 ## @ingroup Methods-Thermal_Management-Batteries-Sizing 
-def atmospheric_air_HEX_sizing_setup(): 
+def cross_flow_heat_exchanger_sizing_setup(): 
     
     # size the base config
     procedure = Process()
@@ -39,7 +39,7 @@ def modify_crossflow_hex_size(nexus):
     
     # Overall HEX properties
     eff_hex     = hex_opt.heat_exchanger_efficiency   
-    delta_p_h   = hex_opt.pressure_drop_hot 
+    delta_p_h   = hex_opt.coolant_pressure_drop # hex_opt.coolant_pressure_drop_limit  , SAI, where do we put the presssure drop from the HAS? 
     delta_p_c   = hex_opt.pressure_drop_cold
     density_hex = hex_opt.density    
       
@@ -75,24 +75,24 @@ def modify_crossflow_hex_size(nexus):
     k_w         = hex_opt.k_w 
     
     # Ratio of finned area to total area 
-    Af_A_h      = hex_opt.coolant_channel_aspect_ratio  
-    Af_A_c      = hex_opt.air_channel_aspect_ratio        
+    Af_A_h      = hex_opt.finned_area_to_total_area_hot  
+    Af_A_c      = hex_opt.finned_area_to_total_area_cold        
     
     #Finned area density 
     beta_h      = hex_opt.fin_area_density_hot  
     beta_c      = hex_opt.fin_area_density_cold 
     
     #mass flow rates of the fluids (not sure about this)
-    m_dot_h     = hex_opt.mass_flow_rate_of_hot_fluid #kg/s #HRS
-    m_dot_c     = 2.00 #kg/s # Optimized variable # whats the name of the variable?
+    m_dot_h     = hex_opt.coolant_flow_rate
+    m_dot_c     = hex_opt.air_flow_rate
     
     #Efficiency 
     pump_efficiency  = hex_opt.pump_efficiency
     fan_efficiency   = hex_opt.fan_efficiency  
     
     #Define working fluids 
-    air              = hex_opt.Air
-    coolant          = hex_opt.Coolant    
+    air              = hex_opt.air
+    coolant          = hex_opt.coolant    
     # Enterance and Exit pressure loss coefficients 
    
     kc_vals          = hex_opt.kc_values   
@@ -128,7 +128,7 @@ def modify_crossflow_hex_size(nexus):
     max_iterations_c_p    = 100
     tolerance_c_p         = 10
     
-    for iteration in range(max_iterations_c_p):
+    for _ in range(max_iterations_c_p):
         T_o_c         = T_i_c + (eff_hex * m_dot_h / (m_dot_c * c_p_c)) * (T_i_h - T_i_c)
         T_m_c         = (T_o_c + T_i_c) / 2
         c_p_c_new     = air.compute_cp(T_m_c)
@@ -333,6 +333,8 @@ def modify_crossflow_hex_size(nexus):
   #  Pack results   
   # ------------------------------------------------------------------------------------------------------------------------
     nexus.results.stack_height                    = L_3_h
+    nexus.results.stack_width                     = L_h
+    nexus.results.stack_length                    = L_c
     nexus.results.heat_exchanger_mass             = mass_hex
     nexus.results.power_draw                      = P_hex  
     #Include other variables that are needed for the rating problem, code that up and list the variables here.
@@ -351,19 +353,21 @@ def equation(NTU,*data):
 #   Post Process Results to give back to the optimizer
 # ----------------------------------------------------------------------   
 def post_process(nexus):
-    battery       = nexus.hrs_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc 
+    battery       = nexus.hex_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc 
     hex_opt       = battery.thermal_management_system.heat_exchanger
     
     summary             = nexus.summary   
     # -------------------------------------------------------
     # Objective 
     # -------------------------------------------------------   
-    summary.objective      = nexus.results.power_draw 
+    summary.heat_exchanger_power   = nexus.results.power_draw 
     
 
     # -------------------------------------------------------
     # Constraints 
     # -------------------------------------------------------       
-    
+    summary.stack_height  = nexus.results.stack_height            
+    summary.stack_width   = nexus.results.stack_width                      
+    summary.stack_length  = nexus.results.stack_length                    
  
     return nexus     

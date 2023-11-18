@@ -145,7 +145,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
          
         # Unpack varibles 
         battery           = self 
-        HRS               = battery.thermal_management_system.heat_removal_system 
+        HAS               = battery.thermal_management_system.heat_aquisition_system 
         HEX               = battery.thermal_management_system.heat_exchanger
         I_bat             = battery.outputs.current
         P_bat             = battery.outputs.power   
@@ -184,7 +184,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         Q_heat_gen = (I_cell**2.)*R_0  
         
         # Compute cell temperature  
-        hrs_results = HRS.compute_heat_removed(battery,Q_heat_gen,numerics,conditions.freestream)
+        hrs_results = HAS.compute_heat_removed(battery,Q_heat_gen,numerics,conditions.freestream)
         hex_results = HEX.compute_heat_removed(battery,hrs_results,numerics,conditions.freestream)
         T_current   = hex_results.operating_conditions.battery_current_temperature
         

@@ -1,4 +1,4 @@
-## @defgroup Methods-Thermal_Management-Battery-Direct_Convection_Cooling
+## @defgroup Methods-Thermal_Management-Batteries-Performance-Heat_Aquisition_Systems
 # @ingroup Methods
 
-from . import Conjugate_Heat_Exchanger
+from . import Wavy_Channel_Heat_Acquisition

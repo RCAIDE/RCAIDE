@@ -12,13 +12,13 @@ import RCAIDE
 # Python package imports    
 
 ## @ingroup Methods-Thermal_Management-Batteries-Sizing
-def wavy_channel_geometry_setup(HRS,battery): 
+def wavy_channel_geometry_setup(HAS,battery): 
     """  
     """     
     vehicle                             = RCAIDE.Vehicle()  
     net                                 = RCAIDE.Energy.Networks.All_Electric()  
     bus                                 = RCAIDE.Energy.Distributors.Bus_Power_Control_Unit()     
-    battery.thermal_management_system.heat_removal_system = HRS 
+    battery.thermal_management_system.heat_aquisition_system = HAS 
     bus.batteries.append(battery)
     net.busses.append(bus) 
     vehicle.append_energy_network(net) 

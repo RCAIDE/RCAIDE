@@ -1,5 +1,4 @@
-## @defgroup Methods-Thermal_Management-Battery-Direct_Convection_Cooling
+## @defgroup Methods-Thermal_Management-Batteries-Performance-Heat_Exchanger_Systems
 # @ingroup Methods
 
-from .compute_heat_exhanger_factors import * 
-from .offdesign_performance         import * 
+from . import Cross_Flow_Heat_Exchanger

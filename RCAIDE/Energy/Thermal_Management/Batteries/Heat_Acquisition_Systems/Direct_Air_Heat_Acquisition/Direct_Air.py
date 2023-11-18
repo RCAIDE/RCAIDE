@@ -1,5 +1,5 @@
-## @ingroup Energy-Thermal_Management-Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/Atmospheric_Air_Convection_Heat_Exchanger.py
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Aquisition_Systems/Direct_Air.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -16,8 +16,8 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Atmospheric_Air_Convection_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Thermal_Management-Batteries
-class Direct_Air_Convection_Heat_Removal(Energy_Component):
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems
+class Direct_Air(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
     Assumptions:

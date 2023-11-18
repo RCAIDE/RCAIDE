@@ -1,4 +1,5 @@
-## @defgroup Methods-Thermal_Management-Battery-Direct_Convection_Cooling
+## @defgroup Methods-Thermal_Management-Battery-Performance
 # @ingroup Methods
 
-from . import Conjugate_Heat_Exchanger
+from . import Heat_Exchanger_Systems
+from . import Heat_Acquisition_System

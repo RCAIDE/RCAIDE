@@ -1,3 +1,9 @@
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Aquisition_Systems/Conjugate_Heat_Aquisition.py
+# 
+# 
+# Created:  Jul 2023, M. Clarke 
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
@@ -12,33 +18,32 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Conjugate_Heat_Removal_System  
 # ----------------------------------------------------------------------------------------------------------------------
-class Conjugate_Heat_Removal(Energy_Component):
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems
+class Wavy_Channel(Energy_Component):
     
     def __defaults__(self):  
         self.tag                          = 'Conjugate_Heat_Removal_System' 
         self.heat_transfer_efficiency     = 1.0
         
-        self.coolant                      = Glycol_Water()
+        self.coolant                       = Glycol_Water()
         self.coolant_Reynolds_number       = 1.
         self.coolant_velocity              = 1.
-        self.coolant_flow_rate_per_module  = 1.
-        self.coolant_flow_rate             = 0.1
+        self.coolant_flow_rate             = 1
+        self.coolant_inlet_temperature     = None
         self.coolant_hydraulic_diameter    = 1.
-        self.channel_side_thickness        = 0.002                  # Thickness of the Chanel through which condcution occurs 
-        self.channel_top_thickness         = 0.002                  # Thickness of Channel on the top where no conduction occurs
-        self.channel_width                 = 0.01                   # width of the channel 
-        self.channel_height                = 0.03                   # height of the channel 
+        self.channel_side_thickness        = 0.001                  # Thickness of the Chanel through which condcution occurs 
+        self.channel_top_thickness         = 0.001                  # Thickness of Channel on the top where no conduction occurs
+        self.channel_width                 = 0.005                 # width of the channel 
+        self.channel_height                = 0.003                  # height of the channel 
         self.channel_contact_angle         = 47.5 * Units.degrees   # Contact Arc angle in degrees    
-        self.channel_thermal_conductivity  = 237                    # Conductivity of the Channel
-        self.channel_density               = 2710                   # Denisty of the Channel
+        self.channel                       = Aluminum()
         self.channel_aspect_ratio          = 1. 
         self.channels_per_module           = 1
         self.battery_contact_area          = 1.
         self.contact_area_per_module       = 1.  
-        self.power_draw                    = 1.    
-        self.coolant_inlet_temperature     = None
-        self.design_battery_temperature    = None
-        self.design_heat_generated         = None    
+        self.power_draw                    = 1. 
+        self.single_side_contact           = True 
+        self.design_heat_removed           = None    
     
     def compute_heat_removed(self,battery, Q_heat_gen,numerics, freestream):
         """Computes the net heat generated in a battery module during cycling.

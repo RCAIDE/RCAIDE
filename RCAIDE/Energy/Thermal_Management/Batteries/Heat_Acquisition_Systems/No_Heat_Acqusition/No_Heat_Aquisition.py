@@ -1,5 +1,5 @@
-## @ingroup Energy-Thermal_Management-Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/No_Heat_Removal.py
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Aquisition_Systems/No_Heat_Aquisition.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -15,8 +15,8 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  No_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Thermal_Management-Batteries
-class No_Heat_Removal(Energy_Component):
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems
+class No_Heat_Aquisition(Energy_Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
     Assumptions:
@@ -59,7 +59,7 @@ class No_Heat_Removal(Energy_Component):
         # Calculate the current going into one cell   
         Nn                 = battery.module.geometrtic_configuration.normal_count            
         Np                 = battery.module.geometrtic_configuration.parallel_count    
-        N_modules          = battery.module.number_of_modules
+        N_modules          = battery.pack.number_of_modules
         N_cells_per_module = Nn*Np
         N_total            = N_modules * N_cells_per_module 
         

@@ -52,8 +52,7 @@ class Cross_Flow_Heat_Exchanger(Energy_Component):
         self.heat_exchanger_efficiency                              = 0.8381
         self.density                                                = 8440   # kg/m^3
         self.thermal_conductivity                                   = 121    # W/m.K
-        self.specific_heat_capacity                                 = 871    # J/kg.K
-                               
+        self.specific_heat_capacity                                 = 871    # J/kg.K 
         
         
         # heat exchanger: geometric properties     
@@ -84,8 +83,8 @@ class Cross_Flow_Heat_Exchanger(Energy_Component):
         self.finned_area_to_total_area_cold                         = 0.785
         
         #Hydraullic Diameter
-        self.hydraulic_diameter_hot                                 = 1.54e-3  #m
-        self.hydraulic_diameter_cold                                = 1.54e-3  #m
+        self.coolant_hydraulic_diameter                             = 1.54e-3  #m
+        self.air_hydraulic_diameter                                 = 1.54e-3  #m
         
         #Fin and wall Conductivity 
         self.k_f                                                    = 121    # W/m.K
@@ -103,8 +102,7 @@ class Cross_Flow_Heat_Exchanger(Energy_Component):
         self.pressure_drop_cold                                     = 8.79e3 #Pa 
         
         
-        # Enterance and Exit pressure loss coefficients 
-        
+        # Enterance and Exit pressure loss coefficients  
         self.kc_values                                             = load_kc_values()
         self.ke_values                                             = load_ke_values()
         

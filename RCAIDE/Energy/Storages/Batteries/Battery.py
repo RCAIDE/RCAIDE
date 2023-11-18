@@ -11,8 +11,8 @@
  # RCAIDE imports
 from RCAIDE.Core                                import Data 
 from RCAIDE.Energy.Energy_Component             import Energy_Component  
-from RCAIDE.Energy.Thermal_Management.Batteries.Heat_Removal_Systems   import No_Heat_Removal 
-from RCAIDE.Energy.Thermal_Management.Batteries.Heat_Exchanger_Systems import No_Heat_Exchanger
+from RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acqusition  import No_Heat_Aquisition
+from RCAIDE.Energy.Thermal_Management.Batteries.Heat_Exchanger_Systems.No_Heat_Exchaneger    import No_Heat_Exchanger
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery
@@ -46,6 +46,6 @@ class Battery(Energy_Component):
         self.ragone.lower_bound                            = 0.0     # lower bound specific energy for which ragone curves no longer make sense
         self.ragone.i                                      = 0.0 
                       
-        self.thermal_management_system                     = Data()    
-        self.thermal_management_system.heat_removal_system =  No_Heat_Removal()
-        self.thermal_management_system.heat_exchanger      =  No_Heat_Exchanger()
+        self.thermal_management_system                        = Data()    
+        self.thermal_management_system.heat_aquisition_system =  No_Heat_Aquisition()
+        self.thermal_management_system.heat_exchanger         =  No_Heat_Exchanger()
