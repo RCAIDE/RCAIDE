@@ -53,9 +53,9 @@ def crossflow__heat_exchanger_design_problem_setup(HEX,HAS,print_iterations):
     # ----------------------------------------------------------------------------------------------------------       
     inputs = []   
     #               variable   initial   lower limit   upper limit     scaling       units 
-    inputs.append([ 'p_c_1'   ,   1     ,   0.001    , 1000000       , 1         ,  1*Units.less])
-    inputs.append([ 'p_h_1'   ,   1     ,   0.001    , 1000000       , 1         ,  1*Units.less]) 
-    inputs.append([ 'm_dot_c' ,   1     ,  0.1       , 100           , 1.0       ,  1*Units.less])  
+    inputs.append([ 'p_c_1'   ,   1     ,  200e3     , 200e3+1       , 1         ,  1*Units.less])
+    inputs.append([ 'p_h_1'   ,   1     ,   160e3    , 160e3+1       , 1         ,  1*Units.less]) 
+    inputs.append([ 'm_dot_c' ,   1     ,  1.95        , 2.1           , 1.0       ,  1*Units.less])  
    
         
     problem.inputs = np.array(inputs,dtype=object)   

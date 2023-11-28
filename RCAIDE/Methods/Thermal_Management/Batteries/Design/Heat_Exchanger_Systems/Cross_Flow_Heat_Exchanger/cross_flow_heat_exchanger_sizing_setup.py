@@ -39,7 +39,7 @@ def modify_crossflow_hex_size(nexus):
     
     # Overall HEX properties
     eff_hex     = hex_opt.heat_exchanger_efficiency   
-    delta_p_h   = hex_opt.coolant_pressure_drop # hex_opt.coolant_pressure_drop_limit  , SAI, where do we put the presssure drop from the HAS? 
+    delta_p_h   = hex_opt.pressure_drop_hot # hex_opt.coolant_pressure_drop_limit  , SAI, where do we put the presssure drop from the HAS? 
     delta_p_c   = hex_opt.pressure_drop_cold
     density_hex = hex_opt.density    
       
@@ -120,8 +120,8 @@ def modify_crossflow_hex_size(nexus):
     T_m_c   = (T_o_c+T_i_c)/2    
     
     # Evaluate the bulk Cp values 
-    c_p_h   = coolant.compute_cp(T_m_h) #J/kg-K
-    c_p_c   = air.compute_cp(T_m_c)     #J/kg-K
+    c_p_h   = 1.117 #coolant.compute_cp(T_m_h) #J/kg-K
+    c_p_c   = 1.079 #air.compute_cp(T_m_c)     #J/kg-K
     
     
     # Maximum iterations and tolerance for convergence of c_p
@@ -131,7 +131,7 @@ def modify_crossflow_hex_size(nexus):
     for _ in range(max_iterations_c_p):
         T_o_c         = T_i_c + (eff_hex * m_dot_h / (m_dot_c * c_p_c)) * (T_i_h - T_i_c)
         T_m_c         = (T_o_c + T_i_c) / 2
-        c_p_c_new     = air.compute_cp(T_m_c)
+        c_p_c_new     = 1.079 #air.compute_cp(T_m_c)
                           
         if abs(c_p_c_new - c_p_c) < tolerance_c_p:
             c_p_c = c_p_c_new
@@ -144,18 +144,18 @@ def modify_crossflow_hex_size(nexus):
             
     # Fluid Properties are now evaluated based off the new outlet temperatures. 
     #Prandtl Number 
-    Pr_h    = coolant.compute_prandtl_number(T_m_h)
-    Pr_c    = air.compute_prandtl_number(T_m_c)
+    Pr_h    = 0.721 #coolant.compute_prandtl_number(T_m_h)
+    Pr_c    = 0.692 #air.compute_prandtl_number(T_m_c)
     
     #Absolute viscosity 
-    mu_h    = coolant.compute_absolute_viscosity(T_m_h)
-    mu_c    = air.compute_absolute_viscosity(T_m_c)
+    mu_h    = 39.3e-6#coolant.compute_absolute_viscosity(T_m_h)
+    mu_c    = 34.7e-6#air.compute_absolute_viscosity(T_m_c)
 
     # from the inlet and outlet pressures given the mean density is calcualted. 
-    rho_h_i  =  coolant.compute_density(T_i_h,P_i_h)
-    rho_c_i  =  coolant.compute_density(T_i_c,P_i_c)     
-    rho_h_o  =  coolant.compute_density(T_o_h,P_o_h)
-    rho_c_o  =  coolant.compute_density(T_o_c,P_o_c)
+    rho_h_i  = 0.4751 #coolant.compute_density(T_i_h,P_i_h)
+    rho_c_i  = 1.4726 #air.compute_density(T_i_c,P_i_c)     
+    rho_h_o  = 0.8966 #coolant.compute_density(T_o_h,P_o_h)
+    rho_c_o  = 0.6817 #air.compute_density(T_o_c,P_o_c)
     
     
     rho_h_m  = (rho_h_i+rho_h_o)/2
@@ -317,7 +317,7 @@ def modify_crossflow_hex_size(nexus):
                                                               - (1 - np.power(sigma_c, 2) - k_e_c) * rho_c_i / rho_c_o))      
 
         #Calculate the inlet and outlet velocity
-        P_o_c    = delta_p_c_updated-P_i_c
+        P_o_c    = (delta_p_c_updated+P_i_c)
         u_i      =  np.sqrt((2*P_i_c)/rho_c_i)
         u_o      =  np.sqrt((2*P_o_c)/rho_c_o)
 
@@ -327,7 +327,7 @@ def modify_crossflow_hex_size(nexus):
     mass_hex = density_hex*V_hex*(1-sigma_c-sigma_h)
     
     #Calculate Power drawn by HEX 
-    P_hex    = ((m_dot_h*delta_p_h)/(pump_efficiency*rho_h_m))+((m_dot_c*delta_p_c_updated/rho_c_m)+((u_i**2-u_o**2)/2))/(fan_efficiency)
+    P_hex    = ((m_dot_h*delta_p_h)/(pump_efficiency*rho_h_m))+((m_dot_c*delta_p_c_updated/rho_c_m)+(abs(u_i**2-u_o**2)/2))/(fan_efficiency)
     
   # ------------------------------------------------------------------------------------------------------------------------  
   #  Pack results   
@@ -361,7 +361,7 @@ def post_process(nexus):
     # Objective 
     # -------------------------------------------------------   
     summary.heat_exchanger_power   = nexus.results.power_draw 
-    
+    print(summary.heat_exchanger_power)
 
     # -------------------------------------------------------
     # Constraints 
@@ -369,5 +369,7 @@ def post_process(nexus):
     summary.stack_height  = nexus.results.stack_height            
     summary.stack_width   = nexus.results.stack_width                      
     summary.stack_length  = nexus.results.stack_length                    
+    print(summary.stack_height,summary.stack_width,summary.stack_length)
+ 
  
     return nexus     

@@ -81,7 +81,7 @@ def modify_wavy_channel_HAS(nexus):
     #Length of Channel 
     k_chan   = channel.thermal_conductivity  # Conductivity of the Channel (Replace with function)    
     L_extra  = 4*d_cell             # Assumption made by Zhao et al. 
-    L_chan   = N_cells*(theta/2)*(d_cell+b+0.5*d)+L_extra
+    L_chan   = N_cells*(theta/2)*(d_cell+b+0.5*d)+L_extra # this is not right imo need to figure what it exactly is 
 
     # Hydraulic diameter    
     dh   = (4*c*d)/(2*(c+d))   
