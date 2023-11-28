@@ -22,9 +22,9 @@ def cross_flow_heat_exchanger_geometry_setup(HEX,HAS):
     bus                                            = RCAIDE.Energy.Distributors.Bus_Power_Control_Unit()
     bat                                            = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()   
      
-    HEX.coolant_flow_rate                          = 1.0 #HAS.coolant_flow_rate
+    HEX.coolant_flow_rate                          = HAS.coolant_flow_rate #1.0
    # HEX.coolant_pressure_drop                      = HAS.coolant_pressure_drop
-    HEX.coolant_temperature_of_hot_fluid           = 50 #HAS.coolant_outlet_temperature 
+    HEX.coolant_temperature_of_hot_fluid           = 303 #HAS.coolant_outlet_temperature #50
     bat.thermal_management_system.heat_exchanger   = HEX 
     bus.batteries.append(bat)
     net.busses.append(bus) 
