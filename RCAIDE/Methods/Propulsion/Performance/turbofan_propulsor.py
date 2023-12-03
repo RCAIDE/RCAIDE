@@ -51,18 +51,24 @@ def compute_propulsor_performance(fuel_line,state):
     for propulsor_index, propulsor in enumerate(fuel_line.propulsors): 
         if fuel_line.identical_propulsors == True and propulsor_index>0: 
             propulsor_0                          = list(fuel_line.propulsors.keys())[0] 
-            energy_results_0                     = conditions.energy[fuel_line.tag][propulsor_0]
+            fuel_line_results                    = conditions.energy[fuel_line.tag]
+            turbofan_results_0                   = fuel_line_results[propulsor_0]
             noise_results_0                      = conditions.noise[fuel_line.tag][propulsor_0]
-            energy_results                       = conditions.energy[fuel_line.tag][propulsor.tag]  
+            turbofan_results                     = fuel_line_results[propulsor.tag]  
             noise_results                        = conditions.noise[fuel_line.tag][propulsor.tag] 
-            energy_results.turbofan.thrust       = energy_results_0.turbofan.thrust 
-            energy_results.turbofan.power        = energy_results_0.turbofan.power   
+            turbofan_results.turbofan.thrust     = turbofan_results_0.turbofan.thrust 
+            turbofan_results.turbofan.power      = turbofan_results_0.turbofan.power   
             noise_results.turbofan.fan_nozzle    = noise_results_0.turbofan.fan_nozzle 
             noise_results.turbofan.core_nozzle   = noise_results_0.turbofan.core_nozzle 
-            noise_results.turbofan.fan           = None 
+            noise_results.turbofan.fan           = None  
+            mdot                                 += fuel_line_results.fuel_flow_rate 
+            total_power                          += turbofan_results.turbofan.power
+            total_thrust[:,0]                    += turbofan_results.turbofan.thrust[:,0]
+            
         else:  
-            noise_results             = conditions.noise[fuel_line.tag][propulsor.tag]
-            energy_results            = conditions.energy[fuel_line.tag][propulsor.tag]
+            noise_results             = conditions.noise[fuel_line.tag][propulsor.tag] 
+            fuel_line_results         = conditions.energy[fuel_line.tag]
+            turbofan_results          = fuel_line_results[propulsor.tag]
             turbofan                  = propulsor.turbofan 
             ram                       = turbofan.ram
             inlet_nozzle              = turbofan.inlet_nozzle
@@ -208,14 +214,15 @@ def compute_propulsor_performance(fuel_line,state):
             turbofan.inputs.flow_through_fan                         = bypass_ratio/(1.+bypass_ratio) #scaled constant to turn on fan thrust computation        
         
             #compute the thrust
-            turbofan.compute_thrust(conditions,throttle = energy_results.turbofan.throttle )
+            turbofan.compute_thrust(conditions,throttle = turbofan_results.turbofan.throttle )
         
             # getting the network outputs from the thrust outputs  
-            energy_results.turbofan.thrust = turbofan.outputs.thrust
-            energy_results.turbofan.power  = turbofan.outputs.power   
-            mdot                           += turbofan.outputs.fuel_flow_rate 
-            total_power                    += energy_results.turbofan.power
-            total_thrust[:,0]              += energy_results.turbofan.thrust[:,0]
+            turbofan_results.turbofan.thrust = turbofan.outputs.thrust
+            turbofan_results.turbofan.power  = turbofan.outputs.power  
+            fuel_line_results.fuel_flow_rate = turbofan.outputs.fuel_flow_rate
+            mdot                            += fuel_line_results.fuel_flow_rate
+            total_power                     += turbofan_results.turbofan.power
+            total_thrust[:,0]               += turbofan_results.turbofan.thrust[:,0]
             
             # store data
             core_nozzle_res = Data(
@@ -236,8 +243,6 @@ def compute_propulsor_performance(fuel_line,state):
         
             noise_results.turbofan.fan_nozzle    = fan_nozzle_res
             noise_results.turbofan.core_nozzle   = core_nozzle_res
-            noise_results.turbofan.fan           = None 
-            
-                              
+            noise_results.turbofan.fan           = None  
     
     return total_thrust,total_power,mdot 

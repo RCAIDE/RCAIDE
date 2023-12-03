@@ -9,6 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
+import RCAIDE 
 from RCAIDE.Energy.Energy_Component                   import Energy_Component
 from RCAIDE.Components.Component                      import Container    
 
@@ -47,7 +48,9 @@ class Bus_Power_Control_Unit(Energy_Component):
         """          
         self.tag                           = 'bus' 
         self.batteries                     = Container()
-        self.propulsors                    = Container()
+        self.propulsors                    = Container() 
+        self.avionics                      = RCAIDE.Energy.Peripherals.Avionics()
+        self.payload                       = RCAIDE.Energy.Peripherals.Payload()        
         self.identical_propulsors          = True 
         self.fixed_voltage                 = True 
         self.active                        = True
@@ -56,7 +59,7 @@ class Bus_Power_Control_Unit(Energy_Component):
         self.outputs.avionics_power        = 0.0
         self.outputs.payload_power         = 0.0
         self.outputs.total_esc_power       = 0.0    
-        self.inputs.power                  = 0.0
+        self.inputs.secondary_power        = 0.0
         
     def logic(self,conditions,numerics):
         """ Determines the power disturbution on a bus
@@ -80,16 +83,18 @@ class Bus_Power_Control_Unit(Energy_Component):
                 inputs.power                         [Watts]
 
         """
-        # Unpack
-        pin         = self.inputs.power
+        # Unpack 
+        # Outputs of bus
         pavionics   = self.outputs.avionics_power
         ppayload    = self.outputs.payload_power
-        pesc        = self.outputs.total_esc_power   
+        pesc        = self.outputs.total_esc_power 
+        voltage     = self.outputs.voltage
         
-        # outputs from bus    
-        self.outputs.power    = (pavionics + ppayload + pesc) - pin  
+        # Secondary energy source to battery
+        pin         = self.inputs.secondary_power
         
-        # inputs to bus
-        self.inputs.power     = self.outputs.power/self.efficiency
+        # inputs form battery     
+        self.inputs.power     = ((pavionics + ppayload + pesc) - pin)/self.efficiency
+        self.inputs.current   = self.inputs.power/voltage
         return 
     

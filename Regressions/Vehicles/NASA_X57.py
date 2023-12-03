@@ -500,24 +500,25 @@ def vehicle_setup():
     # append propulsor to distribution line 
     bus.propulsors.append(port_propulsor) 
 
-    # append bus   
-    net.busses.append(bus)
-    
+
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Payload 
     #------------------------------------------------------------------------------------------------------------------------------------  
     payload                      = RCAIDE.Energy.Peripherals.Payload()
     payload.power_draw           = 10. # Watts
     payload.mass_properties.mass = 1.0 * Units.kg
-    net.payload                  = payload
+    bus.payload                  = payload
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Avionics
     #------------------------------------------------------------------------------------------------------------------------------------  
     avionics                     = RCAIDE.Energy.Peripherals.Avionics()
     avionics.power_draw          = 20. # Watts
-    net.avionics                 = avionics  
- 
+    bus.avionics                 = avionics   
+
+    # append bus   
+    net.busses.append(bus)
+    
     vehicle.append_energy_network(net)
 
     # ------------------------------------------------------------------

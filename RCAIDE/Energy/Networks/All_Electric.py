@@ -58,8 +58,6 @@ class All_Electric(Network):
         """         
         
         self.tag                          = 'All_Electric'
-        self.avionics                     = RCAIDE.Energy.Peripherals.Avionics()
-        self.payload                      = RCAIDE.Energy.Peripherals.Payload()
         self.busses                       = Container()
         self.system_voltage               = None  
         
@@ -89,13 +87,14 @@ class All_Electric(Network):
         conditions      = state.conditions
         numerics        = state.numerics
         busses          = self.busses
-        avionics        = self.avionics
-        payload         = self.payload  
         total_thrust    = 0. * state.ones_row(3) 
         total_power     = 0. * state.ones_row(1) 
         recharging_flag = conditions.energy.recharging 
         
         for bus in busses: 
+            avionics        = bus.avionics
+            payload         = bus.payload  
+            
             # Avionics Power Consumtion 
             avionics.power() 
             
@@ -107,30 +106,23 @@ class All_Electric(Network):
                 bus_voltage = bus.voltage * state.ones_row(1)
                 if recharging_flag:
                     for battery in bus.batteries:     
-                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
-                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)*battery.bus_power_split_ratio  
-                    total_thrust  = np.zeros((len(bus_voltage),3))                 
+                        battery.outputs.current =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
+                        battery.outputs.power   = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)*battery.bus_power_split_ratio  
+                    total_thrust                = 0. * state.ones_row(3)             
+                    bus.outputs.total_esc_power = 0. * state.ones_row(1) 
                 else:        
-                    outputs,bus_T,bus_P,bus_V,bus_I  = compute_propulsor_performance(bus,state,bus_voltage)  
-                    total_thrust += bus_T
-                    total_power  += bus_P
-                    bus.outputs.avionics_power  = avionics.inputs.power 
-                    bus.outputs.payload_power   = payload.inputs.power 
-                    bus.outputs.total_esc_power = bus_I*bus_voltage
-                    bus.logic(conditions,numerics)             
+                    bus_T,bus_P,bus_I  = compute_propulsor_performance(bus,state,bus_voltage)  
+                    total_thrust      += bus_T
+                    total_power       += bus_P 
                     
-                    for battery in bus.batteries:                  
-                        battery.outputs.current     = bus.outputs.power/bus_voltage
-                        battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio  
-                        
             else: #Variable Voltage Bus  
                 bus_voltage = 0 * state.ones_row(1)  
                 if recharging_flag:   
                     for battery in bus.batteries: 
-                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
-                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)  
-                    total_thrust  = np.zeros((len(bus_voltage),3)) 
-                    
+                        battery.outputs.current =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
+                        battery.outputs.power   = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)  
+                    total_thrust                = 0. * state.ones_row(3)             
+                    bus.outputs.total_esc_power = 0. * state.ones_row(1)  
                 else:  # Loop through batteries on bus to compute total bus voltage   
                     for battery in bus.batteries:               
                         battery_conditions                = conditions.energy[bus.tag][battery.tag] 
@@ -141,24 +133,27 @@ class All_Electric(Network):
                         battery.cell.temperature          = battery_conditions.cell.temperature     
                         bus_voltage += battery.compute_voltage(battery_conditions)   
                         
-                    outputs,bus_T,bus_P,bus_V,bus_I  = compute_propulsor_performance(bus,state,bus_voltage)  
+                    bus_T,bus_P,bus_I  = compute_propulsor_performance(bus,state,bus_voltage)  
                     total_thrust                += bus_T
-                    total_power                 += bus_P
-                    bus.outputs.avionics_power  = avionics.inputs.power 
-                    bus.outputs.payload_power   = payload.inputs.power 
-                    bus.outputs.total_esc_power = bus_I*bus_voltage
-                    bus.logic(conditions,numerics)      
-                    
-                    for battery in bus.batteries:  
-                        battery.outputs.current     = bus.outputs.power/bus_voltage
-                        battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio 
-                        
-            # Run energy calculation for each battery on the bus             
-            for battery in bus.batteries:     
-                battery_conditions   = conditions.energy[bus.tag][battery.tag]                  
-                battery.energy_calc(numerics,conditions,bus.tag,recharging_flag )      
-                pack_battery_conditions(battery_conditions,battery)                        
+                    total_power                 += bus_P     
     
+            # compute energy calculation for each battery on bus  
+            for battery in bus.batteries: 
+                # append compoment power to bus 
+                bus.outputs.avionics_power  = avionics.inputs.power*battery.bus_power_split_ratio 
+                bus.outputs.payload_power   = payload.inputs.power*battery.bus_power_split_ratio   
+                bus.outputs.total_esc_power = total_power*battery.bus_power_split_ratio 
+                bus.outputs.voltage         = bus_voltage
+                
+                # run bus 
+                bus.logic(conditions,numerics)                    
+                
+                # append bus outputs to battery 
+                battery.outputs.current     = bus.inputs.current
+                battery.outputs.power       = bus.inputs.power 
+                battery_conditions          = conditions.energy[bus.tag][battery.tag]              
+                battery.energy_calc(numerics,conditions,bus.tag,recharging_flag)      
+                pack_battery_conditions(battery_conditions,battery)     
                          
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 

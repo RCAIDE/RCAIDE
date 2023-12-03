@@ -138,7 +138,7 @@ class Electronic_Speed_Controller(Energy_Component):
         self.inputs.throttle = eta
         return
 
-    def calculate_current_in_from_throttle(self,eta):
+    def calculate_current_in_from_throttle(self):
         """ The current going into the speed controller
         
             Assumptions:
@@ -158,10 +158,9 @@ class Electronic_Speed_Controller(Energy_Component):
         # Unpack, don't modify the throttle   
         eff        = self.efficiency
         currentout = self.outputs.current
-        currentin  = currentout*eta/eff # The inclusion of eta satisfies a power balance: p_in = p_out/eff
+        currentin  = currentout/eff # The inclusion of eta satisfies a power balance: p_in = p_out/eff
         
-        # Pack
-        self.inputs.throttle  = eta
+        # Pack 
         self.inputs.current   = currentin
         self.inputs.power     = self.inputs.voltage *currentin
         

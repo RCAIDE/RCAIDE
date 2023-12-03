@@ -49,6 +49,9 @@ def compute_propulsor_performance(bus,state,voltage):
     
 
     conditions      = state.conditions
+    total_power     = 0*state.ones_row(1) 
+    total_current   = 0*state.ones_row(1) 
+    total_thrust    = 0*state.ones_row(3) 
     for propulsor_index, propulsor in enumerate(bus.propulsors): 
         if bus.identical_propulsors == True and propulsor_index>0: 
             propulsor_0                            = list(bus.propulsors.keys())[0] 
@@ -67,7 +70,13 @@ def compute_propulsor_performance(bus,state,voltage):
             energy_results.rotor.power_loading     = energy_results_0.rotor.power_loading   
             energy_results.rotor.efficiency        = energy_results_0.rotor.efficiency      
             energy_results.rotor.figure_of_merit   = energy_results_0.rotor.figure_of_merit 
-            noise_results.rotor                    = noise_results_0.rotor  
+            energy_results.esc.current             = energy_results_0.esc.current   
+            energy_results.esc.power               = energy_results_0.esc.power     
+            noise_results.rotor                    = noise_results_0.rotor   
+
+            total_thrust                           += energy_results_0.rotor.thrust 
+            total_power                            += energy_results_0.esc.power
+            total_current                          += energy_results_0.esc.current 
              
         else:  
             noise_results        = conditions.noise[bus.tag][propulsor.tag]
@@ -104,8 +113,6 @@ def compute_propulsor_performance(bus,state,voltage):
             R                   = rotor.tip_radius
             rpm                 = motor.outputs.omega / Units.rpm
             F_mag               = np.atleast_2d(np.linalg.norm(F, axis=1)).T
-            total_thrust        = F  
-            total_power         = P  
             total_motor_current = motor.outputs.current
         
             # Pack specific outputs
@@ -115,7 +122,7 @@ def compute_propulsor_performance(bus,state,voltage):
             energy_results.motor.throttle          = eta
             energy_results.rotor.power             = P
             energy_results.esc.throttle            = esc.inputs.throttle
-            energy_results.rotor.thrust            = np.atleast_2d(np.linalg.norm(total_thrust ,axis = 1)).T
+            energy_results.rotor.thrust            = F
             energy_results.rotor.rpm               = rpm
             energy_results.rotor.tip_mach          = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound
             energy_results.rotor.disc_loading      = (F_mag)/(np.pi*(R**2))
@@ -126,8 +133,12 @@ def compute_propulsor_performance(bus,state,voltage):
         
             # Detemine esc current 
             esc.outputs.current  = total_motor_current
-            esc.calculate_current_in_from_throttle(energy_results.motor.throttle)
-            total_current = esc.inputs.current
+            esc.calculate_current_in_from_throttle()
+            energy_results.esc.current   = esc.inputs.current  
+            energy_results.esc.power     = esc.inputs.power
             
-
-    return outputs , total_thrust , total_power , voltage, total_current 
+            total_thrust  += energy_results.rotor.thrust 
+            total_power   += energy_results.esc.power
+            total_current += energy_results.esc.current
+            
+    return total_thrust , total_power ,  total_current 
