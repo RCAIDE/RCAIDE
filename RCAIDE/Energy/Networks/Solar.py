@@ -14,7 +14,7 @@ from RCAIDE.Core                                              import Data
 from RCAIDE.Analyses.Mission.Common                           import Residuals   
 from RCAIDE.Energy.Propulsors.Converters                      import Propeller, Lift_Rotor, Prop_Rotor 
 from RCAIDE.Methods.Power.Battery.Common                      import pack_battery_conditions,append_initial_battery_conditions 
-from RCAIDE.Methods.Propulsion.Performance.solar_propulsor    import compute_propulsor_performance, compute_unique_propulsor_groups
+from RCAIDE.Methods.Propulsion.Performance.solar_propulsor    import compute_propulsor_performance 
 from .Network                                                 import Network  
  
 # ----------------------------------------------------------------------------------------------------------------------
@@ -289,12 +289,10 @@ class Solar(Network):
 
             # ------------------------------------------------------------------------------------------------------            
             # Determine number of propulsor groups in bus
-            # ------------------------------------------------------------------------------------------------------
-            sorted_propulsors                       = compute_unique_propulsor_groups(bus)
+            # ------------------------------------------------------------------------------------------------------ 
             bus_results                             = segment.state.conditions.energy[bus.tag]
             bus_results.number_of_propulsor_groups  = N_active_propulsor_groups
-            bus_results.active_propulsor_groups     = active_propulsor_groups
-            bus_results.N_rotors                    = sorted_propulsors.N_rotors
+            bus_results.active_propulsor_groups     = active_propulsor_groups 
 
             # ------------------------------------------------------------------------------------------------------
             # Assign battery residuals, unknowns and results data structures 

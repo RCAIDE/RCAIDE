@@ -8,9 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core import Data 
-from RCAIDE.Analyses.Mission.Common.Conditions import Conditions
-from RCAIDE.Methods.Propulsion.compute_number_of_compoment_groups import compute_number_of_compoment_groups
+from RCAIDE.Core import Data  
 
 # pacakge imports  
 import numpy as np 
@@ -46,20 +44,21 @@ def compute_propulsor_performance(fuel_line,state):
     N.A.        
     '''
      
-    mdot            = state.ones_row(1) 
-    total_power     = state.ones_row(1) 
-    total_thrust    = state.ones_row(3) 
+    mdot            = 0*state.ones_row(1) 
+    total_power     = 0*state.ones_row(1) 
+    total_thrust    = 0*state.ones_row(3)
     conditions      = state.conditions
     for propulsor_index, propulsor in enumerate(fuel_line.propulsors): 
         if fuel_line.identical_propulsors == True and propulsor_index>0: 
             propulsor_0                          = list(fuel_line.propulsors.keys())[0] 
+            energy_results_0                     = conditions.energy[fuel_line.tag][propulsor_0]
+            noise_results_0                      = conditions.noise[fuel_line.tag][propulsor_0]
             energy_results                       = conditions.energy[fuel_line.tag][propulsor.tag]  
-            energy_results.turbofan.thrust       = conditions.energy[fuel_line.tag][propulsor_0].turbofan.thrust 
-            energy_results.turbofan.power        = conditions.energy[fuel_line.tag][propulsor_0].turbofan.power  
-            
-            noise_results                        = conditions.noise[fuel_line.tag][propulsor.tag]
-            noise_results.turbofan.fan_nozzle    = conditions.noise[fuel_line.tag][propulsor_0].turbofan.fan_nozzle 
-            noise_results.turbofan.core_nozzle   = conditions.noise[fuel_line.tag][propulsor_0].turbofan.core_nozzle 
+            noise_results                        = conditions.noise[fuel_line.tag][propulsor.tag] 
+            energy_results.turbofan.thrust       = energy_results_0.turbofan.thrust 
+            energy_results.turbofan.power        = energy_results_0.turbofan.power   
+            noise_results.turbofan.fan_nozzle    = noise_results_0.turbofan.fan_nozzle 
+            noise_results.turbofan.core_nozzle   = noise_results_0.turbofan.core_nozzle 
             noise_results.turbofan.fan           = None 
         else:  
             noise_results             = conditions.noise[fuel_line.tag][propulsor.tag]
@@ -209,14 +208,14 @@ def compute_propulsor_performance(fuel_line,state):
             turbofan.inputs.flow_through_fan                         = bypass_ratio/(1.+bypass_ratio) #scaled constant to turn on fan thrust computation        
         
             #compute the thrust
-            turbofan.compute_thrust(conditions,throttle = conditions.energy[fuel_line.tag][propulsor.tag].turbofan.throttle )
+            turbofan.compute_thrust(conditions,throttle = energy_results.turbofan.throttle )
         
             # getting the network outputs from the thrust outputs  
-            energy_results.turbofan.thrust = turbofan.outputs.thrust 
+            energy_results.turbofan.thrust = turbofan.outputs.thrust
             energy_results.turbofan.power  = turbofan.outputs.power   
-            mdot              += turbofan.outputs.fuel_flow_rate 
-            total_power       += energy_results.turbofan.power
-            total_thrust      += energy_results.turbofan.thrust
+            mdot                           += turbofan.outputs.fuel_flow_rate 
+            total_power                    += energy_results.turbofan.power
+            total_thrust[:,0]              += energy_results.turbofan.thrust[:,0]
             
             # store data
             core_nozzle_res = Data(

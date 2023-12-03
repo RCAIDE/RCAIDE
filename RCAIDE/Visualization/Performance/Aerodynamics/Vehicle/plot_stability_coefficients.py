@@ -110,7 +110,8 @@ def plot_stability_coefficients(results,
     # set title of plot 
     title_text    = 'Stability Coefficents'      
     fig.suptitle(title_text)
-    
+
+    plt.tight_layout()        
     if save_figure:
         plt.savefig(save_filename + file_type)   
     return fig 

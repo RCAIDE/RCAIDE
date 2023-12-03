@@ -13,7 +13,7 @@ from RCAIDE.Core                                                             imp
 from RCAIDE.Analyses.Mission.Common                                          import Residuals 
 from RCAIDE.Components.Component                                             import Container    
 from RCAIDE.Methods.Power.Battery.Common                                     import pack_battery_conditions,append_initial_battery_conditions 
-from RCAIDE.Methods.Propulsion.all_electric_ducted_fan_propulsor             import compute_propulsor_performance , compute_unique_propulsor_groups 
+from RCAIDE.Methods.Propulsion.all_electric_ducted_fan_propulsor             import compute_propulsor_performance 
 from .Network                                                                import Network  
 
  # package imports 
@@ -289,12 +289,10 @@ class All_Electric_Ducted_Fan(Network):
             # ------------------------------------------------------------------------------------------------------            
             # Create bus results data structure  
             # ------------------------------------------------------------------------------------------------------
-            segment.state.conditions.energy[bus.tag] = RCAIDE.Analyses.Mission.Common.Conditions()             
-            sorted_propulsors                        = compute_unique_propulsor_groups(bus)
+            segment.state.conditions.energy[bus.tag] = RCAIDE.Analyses.Mission.Common.Conditions()    
             bus_results                              = segment.state.conditions.energy[bus.tag]
             bus_results.number_of_propulsor_groups   = N_active_propulsor_groups
-            bus_results.active_propulsor_groups      = active_propulsor_groups
-            bus_results.N_ducted_fans                = sorted_propulsors.N_ducted_fans
+            bus_results.active_propulsor_groups      = active_propulsor_groups 
             segment.state.conditions.noise[bus.tag]  = RCAIDE.Analyses.Mission.Common.Conditions()  
             noise_results                            = segment.state.conditions.noise[bus.tag]
     

@@ -11,7 +11,7 @@
 import RCAIDE 
 from RCAIDE.Core                                                    import Data 
 from RCAIDE.Analyses.Mission.Common                                 import Residuals    
-from RCAIDE.Methods.Propulsion.Performance.internal_combustion_engine_propulsor import compute_propulsor_performance ,compute_unique_propulsor_groups 
+from RCAIDE.Methods.Propulsion.Performance.internal_combustion_engine_propulsor import compute_propulsor_performance   
 from .Network                                                       import Network  
 
 # python imports 
@@ -232,12 +232,10 @@ class Internal_Combustion_Engine(Network):
             # ------------------------------------------------------------------------------------------------------            
             # Create fuel_line results data structure  
             # ------------------------------------------------------------------------------------------------------
-            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()             
-            sorted_propulsors                             = compute_unique_propulsor_groups(fuel_line)
+            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()    
             fuel_line_results                             = segment.state.conditions.energy[fuel_line.tag]
             fuel_line_results.number_of_propulsor_groups  = N_active_propulsor_groups
-            fuel_line_results.active_propulsor_groups     = active_propulsor_groups
-            fuel_line_results.N_rotors                    = sorted_propulsors.N_rotors
+            fuel_line_results.active_propulsor_groups     = active_propulsor_groups 
             segment.state.conditions.noise[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()  
             noise_results                                 = segment.state.conditions.noise[fuel_line.tag]
      

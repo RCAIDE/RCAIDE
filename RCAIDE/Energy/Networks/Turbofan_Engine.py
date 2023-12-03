@@ -196,7 +196,7 @@ class Turbofan_Engine(Network):
             Inputs:
             segment
             eestimated_throttles           [-]
-            estimated_propulsor_group_rpms                 [-]  
+            estimated_propulsor_group_rpms [-]  
             
             Outputs:
             segment
@@ -217,11 +217,11 @@ class Turbofan_Engine(Network):
             # ------------------------------------------------------------------------------------------------------            
             # Create fuel_line results data structure  
             # ------------------------------------------------------------------------------------------------------
-            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()       
-            fuel_line_results                              = segment.state.conditions.energy[fuel_line.tag]   
-            segment.state.conditions.noise[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()  
-            noise_results                                 = segment.state.conditions.noise[fuel_line.tag]
-            segment.state.unknowns[fuel_line.tag + '_throttle']  = estimated_throttles[fuel_line_i] * ones_row(1) 
+            segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Analyses.Mission.Common.Conditions()       
+            fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]   
+            segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Analyses.Mission.Common.Conditions()  
+            noise_results                                        = segment.state.conditions.noise[fuel_line.tag]
+            segment.state.unknowns[fuel_line.tag + '_throttle']  = estimated_throttles[fuel_line_i][0] * ones_row(1) 
      
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  

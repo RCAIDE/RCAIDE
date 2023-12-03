@@ -35,6 +35,9 @@ def plot_3d_vehicle(vehicle,
                     max_y_axis_limit            = None,
                     min_z_axis_limit            = None,
                     max_z_axis_limit            = None,
+                    camera_x                    = -1.5,
+                    camera_y                    = -1.5,
+                    camera_z                    = .8,
                     show_figure                 = True):
     """This plots a 3D representation of the aircraft 
 
@@ -65,7 +68,7 @@ def plot_3d_vehicle(vehicle,
     """
 
     print("\nPlotting vehicle") 
-    camera        = dict(up=dict(x=0.5, y=0.5, z=1), center=dict(x=0, y=0, z= -.75), eye=dict(x=-1.5, y=-1.5, z=.8))
+    camera        = dict(eye=dict(x=camera_x, y=camera_y, z=camera_z)) # dict(up=dict(x=0.5, y=0.5, z=1), center=dict(x=0, y=0, z= -.75), eye=dict(x=camera_x, y=camera_y, z=camera_z))
     plot_data     = []
     
     plot_data,x_min,x_max,y_min,y_max,z_min,z_max  = generate_3d_vehicle_geometry_data(plot_data,
@@ -234,9 +237,15 @@ def plot_3d_energy_network(plot_data,network,number_of_airfoil_points,color_map)
     save_figure   = False 
     show_figure   = False
     save_filename = 'Rotor'
-    if ('rotors' in network.keys()):
-        rots = network.rotors 
-        for rot in rots:  
-            plot_data = plot_3d_rotor(rot,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,color_map) 
+ 
+    if 'busses' in network:  
+        for bus in network.busses:
+            for rotor in bus.rotors:
+                plot_data = plot_3d_rotor(rotor,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,color_map) 
+ 
+    elif 'fuel_lines' in network:  
+        for fuel_line in network.fuel_lines:
+            for rotor in fuel_line.rotors: 
+                plot_data = plot_3d_rotor(rotor,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,color_map) 
  
     return plot_data

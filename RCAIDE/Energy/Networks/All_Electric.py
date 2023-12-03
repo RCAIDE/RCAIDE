@@ -14,7 +14,7 @@ from RCAIDE.Analyses.Mission.Common                                          imp
 from RCAIDE.Components.Component                                             import Container   
 from RCAIDE.Energy.Propulsors.Converters                                     import Propeller, Lift_Rotor, Prop_Rotor 
 from RCAIDE.Methods.Power.Battery.Common                                     import pack_battery_conditions,append_initial_battery_conditions 
-from RCAIDE.Methods.Propulsion.Performance.all_electric_propulsor            import compute_propulsor_performance , compute_unique_propulsor_groups 
+from RCAIDE.Methods.Propulsion.Performance.all_electric_propulsor            import compute_propulsor_performance 
 from .Network                                                                import Network  
 
  # package imports 
@@ -86,81 +86,79 @@ class All_Electric(Network):
         """          
     
         # unpack   
-        conditions = state.conditions
-        numerics   = state.numerics
-        busses     = self.busses
-        avionics   = self.avionics
-        payload    = self.payload 
-         
-        total_thrust  = 0. * state.ones_row(3) 
-        total_power   = 0. * state.ones_row(3) 
-        for bus in busses:
-            batteries = bus.batteries     
-            motors    = bus.motors
-            rotors    = bus.rotors 
-            escs      = bus.electronic_speed_controllers 
-
-            for battery in batteries:               
-                battery_conditions                = conditions.energy[bus.tag][battery.tag] 
-                battery.pack.current_energy       = battery_conditions.pack.energy     
-                battery.pack.temperature          = battery_conditions.pack.temperature
-                battery.cell.age                  = battery_conditions.cell.cycle_in_day    
-                battery.cell.charge_throughput    = battery_conditions.cell.charge_throughput   
-                battery.cell.temperature          = battery_conditions.cell.temperature 
-                battery_discharge_flag            = battery_conditions.battery_discharge_flag              
-             
-                if bus.fixed_voltage: 
-                    voltage = bus.voltage * state.ones_row(1)
-                else:    
-                    voltage = battery.compute_voltage(battery_conditions)   
-                    
-                if battery_discharge_flag:    
-                    total_current  = 0. 
-                    for i in range(conditions.energy[bus.tag].number_of_propulsor_groups):
-                        if bus.active_propulsor_groups[i]:           
-                            pg_tag              = conditions.energy[bus.tag].active_propulsor_groups[i]
-                            N_rotors            = conditions.energy[bus.tag].N_rotors
-                            outputs , T , P, V, I  = compute_propulsor_performance(i,bus,pg_tag,motors,rotors,N_rotors,escs,conditions,voltage)
-                            total_current       += I
-                            total_thrust        += T    
-                            total_power         += P
-                
-                    # Avionics Power Consumtion 
-                    avionics.power() 
-                    
-                    # Payload Power Consumtion 
-                    payload.power()
+        conditions      = state.conditions
+        numerics        = state.numerics
+        busses          = self.busses
+        avionics        = self.avionics
+        payload         = self.payload  
+        total_thrust    = 0. * state.ones_row(3) 
+        total_power     = 0. * state.ones_row(1) 
+        recharging_flag = conditions.energy.recharging 
+        
+        for bus in busses: 
+            # Avionics Power Consumtion 
+            avionics.power() 
             
-                    if bus.fixed_voltage:      
-                        bus.outputs.avionics_power  = avionics.inputs.power 
-                        bus.outputs.payload_power   = payload.inputs.power 
-                        bus.outputs.total_esc_power = total_current*voltage
-                        bus.logic(conditions,numerics)             
+            # Payload Power 
+            payload.power() 
                         
-                        # link to battery                  
-                        battery.outputs.current     = bus.outputs.power/voltage
-                        battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio
-                        
-                    else:       
-                        # link to battery   
-                        battery.outputs.current     = total_current + (avionics.inputs.power + payload.inputs.power)/voltage
-                        battery.outputs.power       = battery.outputs.current*voltage
-                        
-                    battery.energy_calc(numerics,conditions,bus.tag,battery_discharge_flag)       
-                    pack_battery_conditions(battery_conditions,battery)               
-                  
-                else: 
-                    if bus.fixed_voltage:     
-                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(voltage) 
-                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)*battery.bus_power_split_ratio   
-                    else: 
-                        # link to battery     
-                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(voltage) 
-                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series) 
+            # Bus Voltage
+            if bus.fixed_voltage:  
+                bus_voltage = bus.voltage * state.ones_row(1)
+                if recharging_flag:
+                    for battery in bus.batteries:     
+                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
+                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)*battery.bus_power_split_ratio  
+                    total_thrust  = np.zeros((len(bus_voltage),3))                 
+                else:        
+                    outputs,bus_T,bus_P,bus_V,bus_I  = compute_propulsor_performance(bus,state,bus_voltage)  
+                    total_thrust += bus_T
+                    total_power  += bus_P
+                    bus.outputs.avionics_power  = avionics.inputs.power 
+                    bus.outputs.payload_power   = payload.inputs.power 
+                    bus.outputs.total_esc_power = bus_I*bus_voltage
+                    bus.logic(conditions,numerics)             
                     
-                    total_thrust  = np.zeros((len(voltage),3)) 
-                    battery.energy_calc(numerics,conditions,bus.tag,battery_discharge_flag)      
-                    pack_battery_conditions(battery_conditions,battery)             
+                    for battery in bus.batteries:                  
+                        battery.outputs.current     = bus.outputs.power/bus_voltage
+                        battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio  
+                        
+            else: #Variable Voltage Bus  
+                bus_voltage = 0 * state.ones_row(1)  
+                if recharging_flag:   
+                    for battery in bus.batteries: 
+                        battery.outputs.current    =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
+                        battery.outputs.power      = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)  
+                    total_thrust  = np.zeros((len(bus_voltage),3)) 
+                    
+                else:  # Loop through batteries on bus to compute total bus voltage   
+                    for battery in bus.batteries:               
+                        battery_conditions                = conditions.energy[bus.tag][battery.tag] 
+                        battery.pack.current_energy       = battery_conditions.pack.energy     
+                        battery.pack.temperature          = battery_conditions.pack.temperature
+                        battery.cell.age                  = battery_conditions.cell.cycle_in_day    
+                        battery.cell.charge_throughput    = battery_conditions.cell.charge_throughput   
+                        battery.cell.temperature          = battery_conditions.cell.temperature     
+                        bus_voltage += battery.compute_voltage(battery_conditions)   
+                        
+                    outputs,bus_T,bus_P,bus_V,bus_I  = compute_propulsor_performance(bus,state,bus_voltage)  
+                    total_thrust                += bus_T
+                    total_power                 += bus_P
+                    bus.outputs.avionics_power  = avionics.inputs.power 
+                    bus.outputs.payload_power   = payload.inputs.power 
+                    bus.outputs.total_esc_power = bus_I*bus_voltage
+                    bus.logic(conditions,numerics)      
+                    
+                    for battery in bus.batteries:  
+                        battery.outputs.current     = bus.outputs.power/bus_voltage
+                        battery.outputs.power       = bus.outputs.power*battery.bus_power_split_ratio 
+                        
+            # Run energy calculation for each battery on the bus             
+            for battery in bus.batteries:     
+                battery_conditions   = conditions.energy[bus.tag][battery.tag]                  
+                battery.energy_calc(numerics,conditions,bus.tag,recharging_flag )      
+                pack_battery_conditions(battery_conditions,battery)                        
+    
                          
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
@@ -200,16 +198,14 @@ class All_Electric(Network):
         
         for bus in busses:
             if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:  
-                bus_results             = segment.state.conditions.energy[bus.tag] 
-                active_propulsor_groups = bus_results.active_propulsor_groups
-                for i in range(len(active_propulsor_groups)): 
-                    pg_tag = active_propulsor_groups[i]     
-                    bus_results[pg_tag].rotor.power_coefficient = segment.state.unknowns[bus.tag + '_' + pg_tag + '_rotor_cp'] 
+                bus_results = segment.state.conditions.energy[bus.tag]  
+                for propulsor in bus.propulsors:      
+                    bus_results[propulsor.tag].rotor.power_coefficient = segment.state.unknowns[bus.tag + '_rotor_cp'] 
                     if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:     
-                        bus_results[pg_tag].motor.throttle = segment.state.unknowns[bus.tag + '_' + pg_tag + '_throttle']
+                        bus_results[propulsor.tag].motor.throttle = segment.state.unknowns[bus.tag + '_throttle']
                     else: 
-                        bus_results[pg_tag].rotor.power_coefficient = 0. * ones_row(1)
-                        bus_results[pg_tag].motor.throttle          = 0. * ones_row(1)  
+                        bus_results[propulsor.tag].rotor.power_coefficient = 0. * ones_row(1)
+                        bus_results[propulsor.tag].motor.throttle          = 0. * ones_row(1)  
      
             for battery in bus.batteries: 
                 battery.assign_battery_unknowns(segment,bus,battery)        
@@ -241,13 +237,11 @@ class All_Electric(Network):
         busses   = segment.analyses.energy.networks.all_electric.busses 
         for bus in busses:  
             if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:  
-                bus_results             = segment.state.conditions.energy[bus.tag] 
-                active_propulsor_groups = bus_results.active_propulsor_groups  
-                for i in range(len(active_propulsor_groups)):              
-                    q_motor   = bus_results[active_propulsor_groups[i]].motor.torque
-                    q_prop    = bus_results[active_propulsor_groups[i]].rotor.torque 
-                    segment.state.residuals.network[ bus.tag + '_' + active_propulsor_groups[i] + '_rotor_motor_torque'] = q_motor - q_prop
-            
+                bus_results   = segment.state.conditions.energy[bus.tag]  
+                for propulsor in bus.propulsors:               
+                    q_motor   = bus_results[propulsor.tag].motor.torque
+                    q_prop    = bus_results[propulsor.tag].rotor.torque 
+                    segment.state.residuals.network[ bus.tag  + '_rotor_motor_torque'] = q_motor - q_prop 
             for battery in bus.batteries: 
                 battery.assign_battery_residuals(segment,bus,battery)    
          
@@ -294,20 +288,14 @@ class All_Electric(Network):
         if 'throttle' in segment.state.conditions.energy: 
             segment.state.conditions.energy.pop('throttle')
          
-        for bus_i, bus in enumerate(busses):  
-            active_propulsor_groups   = bus.active_propulsor_groups 
-            N_active_propulsor_groups = len(active_propulsor_groups)
-            batteries                 = bus.batteries 
+        for bus_i, bus in enumerate(busses):   
+            batteries                                = bus.batteries 
 
             # ------------------------------------------------------------------------------------------------------            
             # Create bus results data structure  
             # ------------------------------------------------------------------------------------------------------
             segment.state.conditions.energy[bus.tag] = RCAIDE.Analyses.Mission.Common.Conditions()    
-            sorted_propulsors                        = compute_unique_propulsor_groups(bus)
-            bus_results                              = segment.state.conditions.energy[bus.tag]  
-            bus_results.number_of_propulsor_groups   = N_active_propulsor_groups
-            bus_results.active_propulsor_groups      = active_propulsor_groups
-            bus_results.N_rotors                     = sorted_propulsors.N_rotors
+            bus_results                              = segment.state.conditions.energy[bus.tag]    
             segment.state.conditions.noise[bus.tag]  = RCAIDE.Analyses.Mission.Common.Conditions()  
             noise_results                            = segment.state.conditions.noise[bus.tag]
     
@@ -346,55 +334,51 @@ class All_Electric(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
-            for i in range(len(sorted_propulsors.unique_rotor_tags)):   
-                if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:   
-                    # appennd residuals and unknowns for recharge segment                     
-                    segment.state.unknowns['recharge'+ active_propulsor_groups[i]]          =  0* ones_row(1)  
-                    segment.state.residuals.network['recharge'+ active_propulsor_groups[i]] =  0* ones_row(1)
+            for propulsor in bus.propulsors:
+                if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge: 
+                    segment.state.conditions.energy.recharging  = True 
+                    segment.state.unknowns['recharge']          =  0* ones_row(1)  
+                    segment.state.residuals.network['recharge'] =  0* ones_row(1)
                 else:                 
+                    segment.state.conditions.energy.recharging  = False 
                     try: 
-                        cp_init = estimated_rotor_power_coefficients[bus_i][i]
+                        cp_init = estimated_rotor_power_coefficients[bus_i]
                     except: 
-                        rotor   = bus.rotors[sorted_propulsors.unique_rotor_tags[i]] 
-                        if rotor.propulsor_group ==  active_propulsor_groups[i]: 
-                            if type(rotor) == Propeller:
-                                cp_init  = float(rotor.cruise.design_power_coefficient)
-                            elif (type(rotor) == Lift_Rotor) or (type(rotor) == Prop_Rotor):
-                                cp_init  = float(rotor.hover.design_power_coefficient)    
-                    segment.state.unknowns[ bus.tag + '_' + active_propulsor_groups[i] + '_rotor_cp']                    = cp_init * ones_row(1)  
-                    segment.state.residuals.network[ bus.tag + '_' + active_propulsor_groups[i] + '_rotor_motor_torque'] = 0. * ones_row(1)            
+                        rotor   = propulsor.rotor  
+                        if type(rotor) == Propeller:
+                            cp_init  = float(rotor.cruise.design_power_coefficient)
+                        elif (type(rotor) == Lift_Rotor) or (type(rotor) == Prop_Rotor):
+                            cp_init  = float(rotor.hover.design_power_coefficient)    
+                    segment.state.unknowns[ bus.tag  + '_rotor_cp']                    = cp_init * ones_row(1)  
+                    segment.state.residuals.network[ bus.tag  + '_rotor_motor_torque'] = 0. * ones_row(1)            
                     
                     # append throttle unknown 
                     if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Takeoff or type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing:   
                         try: 
-                            initial_throttle = estimated_propulsor_group_throttles[bus_i][i]
+                            initial_throttle = estimated_propulsor_group_throttles[bus_i][0]
                         except:  
                             initial_throttle = 0.5 
-                        segment.state.unknowns[bus.tag + '_' + active_propulsor_groups[i]+ '_throttle'] = initial_throttle* ones_row(1)    
+                        segment.state.unknowns[bus.tag + '_throttle'] = initial_throttle* ones_row(1)    
                                  
-                # Results data structure for each propulsor group    
-                pg_tag                                      = active_propulsor_groups[i] 
-                bus_results[pg_tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
-                bus_results[pg_tag].motor                   = RCAIDE.Analyses.Mission.Common.Conditions()
-                bus_results[pg_tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions() 
-                bus_results[pg_tag].esc                     = RCAIDE.Analyses.Mission.Common.Conditions() 
-                bus_results[pg_tag].unique_rotor_tags       = sorted_propulsors.unique_rotor_tags
-                bus_results[pg_tag].unique_motor_tags       = sorted_propulsors.unique_motor_tags
-                bus_results[pg_tag].unique_esc_tags         = sorted_propulsors.unique_esc_tags  
-                bus_results[pg_tag].motor.efficiency        = 0. * ones_row(1)
-                bus_results[pg_tag].motor.torque            = 0. * ones_row(1) 
-                bus_results[pg_tag].motor.throttle          = 0. * ones_row(1) 
-                bus_results[pg_tag].esc.throttle            = 0. * ones_row(1) 
-                bus_results[pg_tag].rotor.torque            = 0. * ones_row(1)
-                bus_results[pg_tag].rotor.thrust            = 0. * ones_row(1)
-                bus_results[pg_tag].rotor.rpm               = 0. * ones_row(1)
-                bus_results[pg_tag].rotor.disc_loading      = 0. * ones_row(1)                 
-                bus_results[pg_tag].rotor.power_loading     = 0. * ones_row(1)
-                bus_results[pg_tag].rotor.tip_mach          = 0. * ones_row(1)
-                bus_results[pg_tag].rotor.efficiency        = 0. * ones_row(1)   
-                bus_results[pg_tag].rotor.figure_of_merit   = 0. * ones_row(1) 
-                bus_results[pg_tag].rotor.power_coefficient = 0. * ones_row(1)  
-                noise_results[pg_tag]                       = RCAIDE.Analyses.Mission.Common.Conditions() 
+                # Results data structure for each propulsor group     
+                bus_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
+                bus_results[propulsor.tag].motor                   = RCAIDE.Analyses.Mission.Common.Conditions()
+                bus_results[propulsor.tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions() 
+                bus_results[propulsor.tag].esc                     = RCAIDE.Analyses.Mission.Common.Conditions()  
+                bus_results[propulsor.tag].motor.efficiency        = 0. * ones_row(1)
+                bus_results[propulsor.tag].motor.torque            = 0. * ones_row(1) 
+                bus_results[propulsor.tag].motor.throttle          = 0. * ones_row(1) 
+                bus_results[propulsor.tag].esc.throttle            = 0. * ones_row(1) 
+                bus_results[propulsor.tag].rotor.torque            = 0. * ones_row(1)
+                bus_results[propulsor.tag].rotor.thrust            = 0. * ones_row(1)
+                bus_results[propulsor.tag].rotor.rpm               = 0. * ones_row(1)
+                bus_results[propulsor.tag].rotor.disc_loading      = 0. * ones_row(1)                 
+                bus_results[propulsor.tag].rotor.power_loading     = 0. * ones_row(1)
+                bus_results[propulsor.tag].rotor.tip_mach          = 0. * ones_row(1)
+                bus_results[propulsor.tag].rotor.efficiency        = 0. * ones_row(1)   
+                bus_results[propulsor.tag].rotor.figure_of_merit   = 0. * ones_row(1) 
+                bus_results[propulsor.tag].rotor.power_coefficient = 0. * ones_row(1)  
+                noise_results[propulsor.tag]                       = RCAIDE.Analyses.Mission.Common.Conditions() 
             
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network            = self.unpack_unknowns

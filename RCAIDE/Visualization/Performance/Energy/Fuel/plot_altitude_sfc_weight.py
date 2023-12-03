@@ -78,21 +78,21 @@ def plot_altitude_sfc_weight(results,
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
         
-        ## power 
-        #axes_1 = plt.subplot(2,2,1)
-        #axes_1.set_ylabel(r'Throttle')
-        #set_axes(axes_1)               
-        #for network in results.segments[i].analyses.energy.networks: 
-            #busses      = network.busses
-            #fuel_lines  = network.fuel_lines
-            #for bus in busses:  
-                #if bus.active: 
-                    #for propulsor in fuel_line.propulsors:
-                        #plot_propulsor_throttles(results,i,bus,propulsor,time,line_colors,ps,segment_name,axes_1)           
-            #for fuel_line in fuel_lines: 
-                #if fuel_line.active:
-                    #for propulsor in fuel_line.propulsors:
-                        #plot_propulsor_throttles(results,i,fuel_line,propulsor,time,line_colors,ps,segment_name,axes_1) 
+        # power 
+        axes_1 = plt.subplot(2,2,1)
+        axes_1.set_ylabel(r'Throttle')
+        set_axes(axes_1)               
+        for network in results.segments[i].analyses.energy.networks: 
+            busses      = network.busses
+            fuel_lines  = network.fuel_lines
+            for bus in busses:  
+                if bus.active: 
+                    for propulsor in fuel_line.propulsors:
+                        plot_propulsor_throttles(results,i,bus,propulsor,time,line_colors,ps,segment_name,axes_1)           
+            for fuel_line in fuel_lines: 
+                if fuel_line.active:
+                    for propulsor in fuel_line.propulsors:
+                        plot_propulsor_throttles(results,i,fuel_line,propulsor,time,line_colors,ps,segment_name,axes_1) 
                     
         
         axes_2 = plt.subplot(2,2,2)

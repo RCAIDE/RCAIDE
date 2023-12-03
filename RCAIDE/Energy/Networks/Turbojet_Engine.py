@@ -10,10 +10,10 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Core                                                             import Data   
-from RCAIDE.Analyses.Mission.Common                                          import Residuals 
-from RCAIDE.Methods.Propulsion.Performance.turbojet_propulsor                import compute_propulsor_performance , compute_unique_propulsor_groups 
-from .Network                                                                import Network  
+from RCAIDE.Core                                                import Data   
+from RCAIDE.Analyses.Mission.Common                             import Residuals 
+from RCAIDE.Methods.Propulsion.Performance.turbojet_propulsor   import compute_propulsor_performance 
+from .Network                                                   import Network  
 from .Network import Network
 
  # package imports 
@@ -237,12 +237,10 @@ class Turbojet_Engine(Network):
             # ------------------------------------------------------------------------------------------------------            
             # Create fuel_line results data structure  
             # ------------------------------------------------------------------------------------------------------
-            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()             
-            sorted_propulsors                             = compute_unique_propulsor_groups(fuel_line)
+            segment.state.conditions.energy[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()     
             fuel_line_results                             = segment.state.conditions.energy[fuel_line.tag]
             fuel_line_results.number_of_propulsor_groups  = N_active_propulsor_groups
-            fuel_line_results.active_propulsor_groups     = active_propulsor_groups
-            fuel_line_results.N_turbojets                 = sorted_propulsors.N_turbojets
+            fuel_line_results.active_propulsor_groups     = active_propulsor_groups 
             segment.state.conditions.noise[fuel_line.tag] = RCAIDE.Analyses.Mission.Common.Conditions()  
             noise_results                                 = segment.state.conditions.noise[fuel_line.tag]
      
@@ -260,8 +258,7 @@ class Turbojet_Engine(Network):
                 # Results data structure for each propulsor group    
                 pg_tag                                            = active_propulsor_groups[i] 
                 fuel_line_results[pg_tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
-                fuel_line_results[pg_tag].turbojet                = RCAIDE.Analyses.Mission.Common.Conditions() 
-                fuel_line_results[pg_tag].unique_turbojet_tags    = sorted_propulsors.unique_turbojet_tags
+                fuel_line_results[pg_tag].turbojet                = RCAIDE.Analyses.Mission.Common.Conditions()  
                 fuel_line_results[pg_tag].y_axis_rotation         = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].turbojet.thrust         = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].turbojet.power          = 0. * ones_row(1) 
