@@ -12,7 +12,7 @@ import RCAIDE
 from RCAIDE.Core                                                             import Data 
 from RCAIDE.Analyses.Mission.Common                                          import Residuals 
 from RCAIDE.Components.Component                                             import Container   
-from RCAIDE.Energy.Converters                                                import Propeller, Lift_Rotor, Prop_Rotor 
+from RCAIDE.Energy.Propulsors.Converters                                     import Propeller, Lift_Rotor, Prop_Rotor 
 from RCAIDE.Methods.Power.Battery.Common                                     import pack_battery_conditions,append_initial_battery_conditions 
 from RCAIDE.Methods.Propulsion.Performance.all_electric_propulsor            import compute_propulsor_performance , compute_unique_propulsor_groups 
 from .Network                                                                import Network  

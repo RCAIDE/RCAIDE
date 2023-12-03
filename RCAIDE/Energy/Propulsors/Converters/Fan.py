@@ -1,5 +1,5 @@
-## @ingroup Energy-Converters
-# RCAIDE/Energy/Converters/Fan.py
+## @ingroup Energy-Propulsors-Converters
+# RCAIDE/Energy/Propulsors/Converters/Fan.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -15,7 +15,7 @@ from RCAIDE.Energy.Energy_Component                      import Energy_Component
 # ----------------------------------------------------------------------
 #  Fan Component
 # ----------------------------------------------------------------------
-## @ingroup Energy-Converters
+## @ingroup Energy-Propulsors-Converters
 class Fan(Energy_Component):
     """This is a fan component typically used in a turbofan.
     Calling this class calls the compute function.

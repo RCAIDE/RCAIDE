@@ -1,5 +1,5 @@
-## @ingroup Energy-Converters
-# RCAIDE/Energy/Converters/Rotor.py
+## @ingroup Energy-Propulsors-Converters
+# RCAIDE/Energy/Propulsors/Converters/Rotor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -21,7 +21,7 @@ import scipy as sp
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Generalized Rotor Class
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Converters
+## @ingroup Energy-Propulsors-Converters
 class Rotor(Energy_Component):
     """This is a general rotor component.
 

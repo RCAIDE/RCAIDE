@@ -1,5 +1,5 @@
-## @ingroup Energy-Converters
-# RCAIDE/Energy/Converters/Motor.py
+## @ingroup Energy-Propulsors-Converters
+# RCAIDE/Energy/Propulsors/Converters/Motor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Motor  
 # ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Energy-Converters 
+## @ingroup Energy-Propulsors-Converters 
 class Motor(Energy_Component):
     """This is a motor component.
     

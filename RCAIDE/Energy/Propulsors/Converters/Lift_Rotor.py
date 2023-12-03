@@ -1,5 +1,5 @@
-## @ingroup Energy-Converters
-# RCAIDE/Energy/Converters/Lift_Rotor.py
+## @ingroup Energy-Propulsors-Converters
+# RCAIDE/Energy/Propulsors/Converters/Lift_Rotor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  LIFT ROTOR CLASS
 # ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Energy-Converters
+## @ingroup Energy-Propulsors-Converters
 class Lift_Rotor(Rotor):
     """This is a lift rotor component, and is a sub-class of rotor.
     

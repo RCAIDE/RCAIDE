@@ -1,5 +1,5 @@
-## @ingroup Energy-Converters
-# RCAIDE/Energy/Converters/Engine.py
+## @ingroup Energy-Propulsors-Converters
+# RCAIDE/Energy/Propulsors/Converters/Engine.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -18,7 +18,7 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Engine Class
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Energy-Converters
+## @ingroup Energy-Propulsors-Converters
 class Engine(Energy_Component):
     """This is an internal combustion engine component.
     

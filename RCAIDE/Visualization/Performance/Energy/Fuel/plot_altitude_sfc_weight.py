@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Core import Units
-from RCAIDE.Visualization.Performance.Common import set_axes, plot_style, get_propulsor_group_names
+from RCAIDE.Visualization.Performance.Common import set_axes, plot_style 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -63,10 +63,7 @@ def plot_altitude_sfc_weight(results,
     plt.rcParams.update(parameters)
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
-
-    # compile a list of all propulsor group names on aircraft 
-    pg = get_propulsor_group_names(results)    
+    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))      
      
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
@@ -81,18 +78,21 @@ def plot_altitude_sfc_weight(results,
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
         
-        # power 
-        axes_1 = plt.subplot(2,2,1)
-        axes_1.set_ylabel(r'Throttle')
-        set_axes(axes_1)               
-        for pg_i in range(len(pg)): 
-            for network in results.segments[i].analyses.energy.networks: 
-                busses      = network.busses
-                fuel_lines  = network.fuel_lines
-                for bus in busses:  
-                    plot_propulsor_throttles(results,bus,i,pg,pg_i,time,line_colors,ps,segment_name,axes_1)           
-                for fuel_line in fuel_lines: 
-                    plot_propulsor_throttles(results,fuel_line,i,pg,pg_i,time,line_colors,ps,segment_name,axes_1) 
+        ## power 
+        #axes_1 = plt.subplot(2,2,1)
+        #axes_1.set_ylabel(r'Throttle')
+        #set_axes(axes_1)               
+        #for network in results.segments[i].analyses.energy.networks: 
+            #busses      = network.busses
+            #fuel_lines  = network.fuel_lines
+            #for bus in busses:  
+                #if bus.active: 
+                    #for propulsor in fuel_line.propulsors:
+                        #plot_propulsor_throttles(results,i,bus,propulsor,time,line_colors,ps,segment_name,axes_1)           
+            #for fuel_line in fuel_lines: 
+                #if fuel_line.active:
+                    #for propulsor in fuel_line.propulsors:
+                        #plot_propulsor_throttles(results,i,fuel_line,propulsor,time,line_colors,ps,segment_name,axes_1) 
                     
         
         axes_2 = plt.subplot(2,2,2)
@@ -129,19 +129,15 @@ def plot_altitude_sfc_weight(results,
     return fig
 
 
-def plot_propulsor_throttles(results,distributor,i,pg,pg_i,time,line_colors,ps,segment_name,axes_1): 
-    active_propulsor_groups   = distributor.active_propulsor_groups    
-    results               = results.segments[i].conditions.energy[distributor.tag] 
-    for j in range(len(active_propulsor_groups)):  
-        if pg[pg_i] == active_propulsor_groups[j]:  
-            if 'engine' in  results[active_propulsor_groups[j]]:  
-                eta    =   results[active_propulsor_groups[j]].engine.throttle[:,0]
-            elif 'motor' in  results[active_propulsor_groups[j]]:
-                eta    =   results[active_propulsor_groups[j]].motor.throttle[:,0]   
-            elif 'turbofan' in  results[active_propulsor_groups[j]]:
-                eta    =   results[active_propulsor_groups[j]].turbofan.throttle[:,0]  
-            elif 'turbojet' in  results[active_propulsor_groups[j]]:
-                eta    =  results[active_propulsor_groups[j]].turbojet.throttle[:,0]  
-
-            axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)         
+def plot_propulsor_throttles(results,i,distributor,propulsor,time,line_colors,ps,segment_name,axes_1): 
+    res = results.segments[i].conditions.energy[distributor.tag][propulsor.tag]
+    if 'engine' in res :   
+        eta    =   res.engine.throttle[:,0]
+    elif 'motor' in res:   
+        eta    =   res.motor.throttle[:,0]   
+    elif 'turbofan' in res:   
+        eta    =  res.turbofan.throttle[:,0]  
+    elif 'turbojet' in res:   
+        eta    = res.turbojet.throttle[:,0]   
+    axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)         
     return     

@@ -1,5 +1,5 @@
-## @ingroup Energy-Distributors
-# RCAIDE/Energy/Distributors/Fuel_Line.py
+## @ingroup Energy-Distribution
+# RCAIDE/Energy/Distribution/Fuel_Line.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -15,7 +15,7 @@ from RCAIDE.Components.Component                      import Container
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Line
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Distributors
+## @ingroup Energy-Distribution
 class Fuel_Line(Energy_Component):
     """  This controls the flow of energy into and from a fuel-powered nework 
     
@@ -44,13 +44,11 @@ class Fuel_Line(Energy_Component):
             Properties Used:
             None
         """          
-        self.tag                           = 'fuel_line' 
-        self.rotors                        = Container() 
-        self.engines                       = Container() 
-        self.turbofans                     = Container() 
-        self.turbojets                     = Container()
+        self.tag                           = 'fuel_line'  
         self.fuel_tanks                    = Container()
-        self.active_propulsor_groups       = ['propulsor']
+        self.propulsors                    = Container()
+        self.identical_propulsors          = True 
+        self.active                        = True 
         self.efficiency                    = 1.0 
         
     def logic(self,conditions,numerics):

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 from RCAIDE.Core import Units
-from RCAIDE.Visualization.Performance.Common import set_axes, plot_style,get_propulsor_group_names
+from RCAIDE.Visualization.Performance.Common import set_axes, plot_style 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -54,10 +54,7 @@ def plot_electric_motor_and_rotor_efficiencies(results,
     plt.rcParams.update(parameters) 
     
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))    
-     
-    # compile a list of all propulsor group names on aircraft 
-    pg = get_propulsor_group_names(results)
+    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
     
     for pg_i in range(len(pg)): 
         fig = plt.figure(save_filename + '_' + pg[pg_i])

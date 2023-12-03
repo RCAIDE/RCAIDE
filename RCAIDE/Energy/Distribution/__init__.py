@@ -1,5 +1,5 @@
-## @defgroup Energy Energy
-# RCAIDE/Energy/__init__.py
+## @defgroup Energy-Distribution
+# RCAIDE/Energy/Distribution/__init__.py
 # 
 
 """ RCAIDE Package Setup
@@ -9,13 +9,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Energy_Component import Energy_Component
- 
-from . import Distribution 
-from . import Networks
-from . import Peripherals
-from . import Processes
-from . import Propulsors
-from . import Storages
-from . import Thermal_Management
+## @ingroup Energy 
+from .Bus_Power_Control_Unit                       import Bus_Power_Control_Unit 
+from .Fuel_Line                                    import Fuel_Line
+
 

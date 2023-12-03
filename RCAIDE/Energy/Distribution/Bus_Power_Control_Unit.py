@@ -1,5 +1,5 @@
-## @ingroup Energy-Distributors
-# RCAIDE/Energy/Distributors/Bus_Power_Control_Unit.py
+## @ingroup Energy-Distribution
+# RCAIDE/Energy/Distribution/Bus_Power_Control_Unit.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -15,7 +15,7 @@ from RCAIDE.Components.Component                      import Container
 # ----------------------------------------------------------------------------------------------------------------------
 #  Bus_Power_Control_Unit
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Distributors
+## @ingroup Energy-Distribution
 class Bus_Power_Control_Unit(Energy_Component):
     """  This controls the flow of energy into and from a battery-powered nework 
     
@@ -45,14 +45,12 @@ class Bus_Power_Control_Unit(Energy_Component):
             Properties Used:
             None
         """          
-        self.tag                           = 'bus'
-        self.motors                        = Container()
-        self.rotors                        = Container()
-        self.ducted_fans                   = Container()
-        self.electronic_speed_controllers  = Container()
+        self.tag                           = 'bus' 
         self.batteries                     = Container()
-        self.fixed_voltage                 = True
-        self.active_propulsor_groups       = ['propulsor']
+        self.propulsors                    = Container()
+        self.identical_propulsors          = True 
+        self.fixed_voltage                 = True 
+        self.active                        = True
         self.efficiency                    = 1.0
         self.voltage                       = 0.0
         self.outputs.avionics_power        = 0.0

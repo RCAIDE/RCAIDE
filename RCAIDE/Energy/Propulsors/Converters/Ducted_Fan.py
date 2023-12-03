@@ -1,5 +1,5 @@
-## @ingroup Energy-Converters
-# RCAIDE/Energy/Converters/Fan.py
+## @ingroup Energy-Propulsors-Converters
+# RCAIDE/Energy/Propulsors/Converters/Fan.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 #  Fan Component
 # ----------------------------------------------------------------------
-## @ingroup Energy-Converters
+## @ingroup Energy-Propulsors-Converters
 class Ducted_Fan(Energy_Component): 
     
     

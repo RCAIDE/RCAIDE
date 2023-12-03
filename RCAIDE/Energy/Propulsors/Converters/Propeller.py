@@ -1,5 +1,5 @@
-## @ingroup Energy-Converters
-# RCAIDE/Energy/Converters/Propeller.py
+## @ingroup Energy-Propulsors-Converters
+# RCAIDE/Energy/Propulsors/Converters/Propeller.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -12,7 +12,7 @@ from .Rotor import Rotor
 # ----------------------------------------------------------------------------------------------------------------------
 #  Propeller
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Energy-Converters
+## @ingroup Energy-Propulsors-Converters
 class Propeller(Rotor):
     """This is a propeller component, and is a sub-class of rotor.
     

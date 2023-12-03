@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Core import Units
-from RCAIDE.Visualization.Performance.Common import set_axes, plot_style, get_propulsor_group_names
+from RCAIDE.Visualization.Performance.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -55,9 +55,6 @@ def plot_aerodynamic_forces(results,
      
     # get line colors for plots 
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
-
-    # compile a list of all propulsor group names on aircraft 
-    pg = get_propulsor_group_names(results)
     
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
