@@ -184,7 +184,7 @@ class Turbofan_Engine(Network):
      
     def add_unknowns_and_residuals_to_segment(self,
                                               segment,
-                                              estimated_throttles = [[0.5]]):
+                                              estimated_throttles = [[1.0]]):
         """ This function sets up the information that the mission needs to run a mission segment using this network 
          
             Assumptions:
