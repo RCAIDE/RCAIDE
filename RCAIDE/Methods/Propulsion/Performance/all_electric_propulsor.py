@@ -112,8 +112,7 @@ def compute_propulsor_performance(bus,state,voltage):
             # Determine Conditions specific to this instantation of motor and rotors
             R                   = rotor.tip_radius
             rpm                 = motor.outputs.omega / Units.rpm
-            F_mag               = np.atleast_2d(np.linalg.norm(F, axis=1)).T
-            total_motor_current = motor.outputs.current
+            F_mag               = np.atleast_2d(np.linalg.norm(F, axis=1)).T 
         
             # Pack specific outputs
             energy_results.motor.efficiency        = motor.outputs.efficiency
@@ -132,7 +131,7 @@ def compute_propulsor_performance(bus,state,voltage):
             noise_results.rotor                    = outputs 
         
             # Detemine esc current 
-            esc.outputs.current  = total_motor_current
+            esc.outputs.current          = motor.outputs.current
             esc.calculate_current_in_from_throttle()
             energy_results.esc.current   = esc.inputs.current  
             energy_results.esc.power     = esc.inputs.power
