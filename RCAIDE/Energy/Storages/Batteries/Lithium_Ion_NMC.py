@@ -161,8 +161,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         As_cell            = battery.cell.surface_area           
         battery_data       = battery.discharge_performance_map  
         I_bat              = battery.outputs.current
-        P_bat              = battery.outputs.power   
-        V_max              = battery.cell.maximum_voltage      
+        P_bat              = battery.outputs.power      
         E_max              = battery_conditions.pack.maximum_initial_energy * battery_conditions.cell.capacity_fade_factor
         E_pack             = battery_conditions.pack.energy    
         I_pack             = battery_conditions.pack.current                        #  battery.outputs.current 
@@ -191,10 +190,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         # Calculate the current going into one cell  
         n_series          = battery.pack.electrical_configuration.series  
         n_parallel        = battery.pack.electrical_configuration.parallel 
-        n_total           = battery.pack.electrical_configuration.total  
-        Nn                = battery.module.geometrtic_configuration.normal_count            
-        Np                = battery.module.geometrtic_configuration.parallel_count          
-        n_total_module    = Nn*Np     
+        n_total           = battery.pack.electrical_configuration.total   
         
         delta_t           = np.diff(time)
         for t_idx in range(state.numerics.number_of_control_points):   
@@ -202,19 +198,11 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             # ---------------------------------------------------------------------------------------------------
             # Current State 
             # ---------------------------------------------------------------------------------------------------
-            I_cell[t_idx]  = I_bat[t_idx]/n_parallel  
-            
-            # A voltage model from Chen, M. and Rincon-Mora, G. A., "Accurate Electrical Battery Model Capable of Predicting
-            # Runtime and I - V Performance" IEEE Transactions on Energy Conversion, Vol. 21, No. 2, June 2006, pp. 504-511
-            V_normalized  = (-1.031*np.exp(-35.*SOC[t_idx]) + 3.685 + 0.2156*SOC[t_idx] - 0.1178*(SOC[t_idx]**2.) + 0.3201*(SOC[t_idx]**3.))/4.1
-            V_oc[t_idx] = V_normalized * V_max
-            V_oc[t_idx][V_oc[t_idx] > V_max] = V_max
-                 
-            # Voltage under load: 
+            I_cell[t_idx]  = I_bat[t_idx]/n_parallel   
+                  
             V_ul[t_idx]    = compute_NMC_cell_state_variables(battery_data,SOC[t_idx],T_cell[t_idx],I_cell[t_idx]) 
             
-            V_oc[t_idx]    = V_ul[t_idx] + (I_cell[t_idx] * R_0[t_idx]) 
-            
+            V_oc[t_idx]    = V_ul[t_idx] + (I_cell[t_idx] * R_0[t_idx])  
   
             # ---------------------------------------------------------------------------------
             # Compute battery cell temperature 
@@ -230,14 +218,14 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             q_dot_entropy         = -(T_cell[t_idx])*delta_S*i_cell/(n*F)       
             q_dot_joule           = (i_cell**2)/sigma                   
             Q_heat_cell[t_idx]    = (q_dot_joule + q_dot_entropy)*As_cell 
+            Q_heat_pack[t_idx]    = Q_heat_cell[t_idx]*n_total
             q_joule_frac          = q_dot_joule/(q_dot_joule + q_dot_entropy)
             q_entropy_frac        = q_dot_entropy/(q_dot_joule + q_dot_entropy)
             
             R_0[t_idx]            =  0.01483*(SOC[t_idx]**2) - 0.02518*SOC[t_idx] + 0.1036 
             
             # Effective Power flowing through battery 
-            P_pack[t_idx]   = P_bat[t_idx]  - np.abs(Q_heat_pack[t_idx])
-            
+            P_pack[t_idx]         = P_bat[t_idx]  - np.abs(Q_heat_pack[t_idx]) 
                 
             # store remaining variables 
             I_pack[t_idx]         = I_bat[t_idx]  
@@ -245,8 +233,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             V_ul_pack[t_idx]      = V_ul[t_idx]*n_series  
             T_pack[t_idx]         = T_cell[t_idx] 
             P_cell[t_idx]         = P_pack[t_idx]/n_total  
-            E_cell[t_idx]         = E_pack[t_idx]/n_total 
-            
+            E_cell[t_idx]         = E_pack[t_idx]/n_total  
 
             # ---------------------------------------------------------------------------------------------------
             # Current State 
@@ -264,9 +251,8 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
                 DOD_cell[t_idx+1]    = 1 - SOC[t_idx+1] 
                 
                 # Determine new charge throughput (the amount of charge gone through the battery)
-                Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr 
-            
-            
+                Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr  
+       
         return battery 
        
     def assign_battery_unknowns(self,segment,bus,battery): 
@@ -295,8 +281,9 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             N/A
         """ 
         if bus.fixed_voltage == False: 
-            battery_conditions               = segment.state.conditions.energy[bus.tag][battery.tag]  
-            battery_conditions.pack.current  = segment.state.unknowns[bus.tag + '_' + battery.tag + '_pack_current']  
+            battery_conditions                          = segment.state.conditions.energy[bus.tag][battery.tag]  
+            battery_conditions.pack.voltage_under_load  = segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load'] 
+            
 
         return     
     
@@ -331,10 +318,12 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
 
         if bus.fixed_voltage == False:         
             battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag]
-            i_actual           = battery_conditions.pack.current
-            i_predict          = segment.state.unknowns[bus.tag + '_' + battery.tag + '_pack_current']   
+            v_actual           = battery_conditions.pack.voltage_under_load
+            v_predict          = segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  
+            v_max              = bus.voltage
+            
             # Return the residuals
-            segment.state.residuals.network[bus.tag + '_' + battery.tag + 'current']  = (i_predict - i_actual)/100 
+            segment.state.residuals.network[bus.tag + '_' + battery.tag + 'voltage']  = (v_predict - v_actual)/v_max             
                 
         return  
     
@@ -370,7 +359,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
 
         ones_row = segment.state.ones_row 
         if bus.fixed_voltage == False:  
-            segment.state.unknowns[bus.tag + '_' + battery.tag + '_pack_current']  = estimated_current * ones_row(1)  
+            segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  = estimated_voltage * ones_row(1)  
             
         return   
 
@@ -392,26 +381,8 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
              
             Properties Used:
             N/A
-        """           
-        
-        # Unpack battery properties
-        battery                  = self
-        battery_data             = battery.discharge_performance_map
-        n_series                 = battery.pack.electrical_configuration.series  
-        n_parallel               = battery.pack.electrical_configuration.parallel
-        
-        # Unpack segment state properties  
-        SOC                      = battery_conditions.cell.state_of_charge
-        T_cell                   = battery_conditions.cell.temperature
-        I_cell                   = battery_conditions.pack.current/n_parallel  
-        
-        # Compute State Variables
-        V_ul_cell                = compute_NMC_cell_state_variables(battery_data,SOC,T_cell,I_cell) 
-        
-        # Voltage under load
-        V_ul                     = n_series*V_ul_cell    
-           
-        return V_ul 
+        """              
+        return battery_conditions.pack.voltage_under_load 
     
     def update_battery_age(self,battery_conditions,increment_battery_age_by_one_day = False):  
         """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries. 

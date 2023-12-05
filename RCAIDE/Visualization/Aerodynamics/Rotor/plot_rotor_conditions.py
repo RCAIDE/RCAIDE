@@ -65,45 +65,31 @@ def plot_rotor_conditions(results,
                     bus_results  = results.segments[i].conditions.energy[bus.tag] 
                     time         = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min   
                     rpm          =  bus_results[propulsor.tag].rotor.rpm[:,0]
-                    thrust       =  np.linalg.norm(results.segments[i].conditions.frames.body.thrust_force_vector[:,:],axis=1)
-                    torque       =  bus_results[propulsor.tag].motor.torque[:,0]
-                    tm           =  bus_results[propulsor.tag].rotor.tip_mach[:,0]
-                    Cp           =  bus_results[propulsor.tag].rotor.power_coefficient[:,0]
-                    eta          =  bus_results[propulsor.tag].motor.throttle[:,0] 
+                    thrust       =  bus_results[propulsor.tag].rotor.thrust[:,0]
+                    torque       =  bus_results[propulsor.tag].rotor.torque[:,0]
+                    tm           =  bus_results[propulsor.tag].rotor.tip_mach[:,0]  
                     segment_tag  =  results.segments[i].tag
                     segment_name = segment_tag.replace('_', ' ')
                     
-                    axes_1 = plt.subplot(3,2,1)
+                    axes_1 = plt.subplot(2,2,1)
                     axes_1.plot(time,rpm, color = line_colors[i], marker = ps.marker  , linewidth = ps.line_width, label = segment_name)
                     axes_1.set_ylabel(r'RPM')
                     set_axes(axes_1)    
                     
-                    axes_2 = plt.subplot(3,2,2)
+                    axes_2 = plt.subplot(2,2,2)
                     axes_2.plot(time, tm, color = line_colors[i], marker = ps.marker  , linewidth = ps.line_width) 
                     axes_2.set_ylabel(r'Tip Mach')
                     set_axes(axes_2) 
             
-                    axes_3 = plt.subplot(3,2,3)
+                    axes_3 = plt.subplot(2,2,3)
                     axes_3.plot(time,thrust, color = line_colors[i], marker = ps.marker , linewidth = ps.line_width)
                     axes_3.set_ylabel(r'Thrust (N)')
                     set_axes(axes_3) 
                     
-                    axes_4 = plt.subplot(3,2,4)
+                    axes_4 = plt.subplot(2,2,4)
                     axes_4.plot(time,torque, color = line_colors[i], marker = ps.marker , linewidth = ps.line_width)
                     axes_4.set_ylabel(r'Torque (N-m)')
-                    set_axes(axes_4)    
-                    
-                    axes_5 = plt.subplot(3,2,5)
-                    axes_5.plot(time, Cp, color = line_colors[i], marker = ps.marker , linewidth = ps.line_width)
-                    axes_5.set_xlabel('Time (mins)')
-                    axes_5.set_ylabel(r'Power Coefficient')
-                    set_axes(axes_5) 
-            
-                    axes_6 = plt.subplot(3,2,6)
-                    axes_6.plot(time, eta, color = line_colors[i], marker = ps.marker  , linewidth = ps.line_width)
-                    axes_6.set_xlabel('Time (mins)')
-                    axes_6.set_ylabel(r'Throttle')
-                    set_axes(axes_6)  
+                    set_axes(axes_4)     
                     
             if show_legend:            
                 leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
@@ -113,9 +99,9 @@ def plot_rotor_conditions(results,
             fig.subplots_adjust(top=0.8)
             
             # set title of plot 
-            title_text  =  'Rotor Condition:' + propulsor.tag
+            title_text  =  'Rotor Performance:' + propulsor.tag
             fig.suptitle(title_text)
-            
+            plt.tight_layout()
             if save_figure:
                 plt.savefig(save_filename + '_' + propulsor.tag + file_type)   
     return fig 

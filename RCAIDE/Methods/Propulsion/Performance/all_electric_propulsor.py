@@ -122,7 +122,7 @@ def all_electric_propulsor(bus,state,voltage):
             energy_results.motor.throttle          = eta
             energy_results.rotor.power             = P
             energy_results.esc.throttle            = esc.inputs.throttle
-            energy_results.rotor.thrust            = F
+            energy_results.rotor.thrust            = F_mag
             energy_results.rotor.rpm               = rpm
             energy_results.rotor.tip_mach          = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound
             energy_results.rotor.disc_loading      = (F_mag)/(np.pi*(R**2))
