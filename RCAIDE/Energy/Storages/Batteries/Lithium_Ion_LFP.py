@@ -306,7 +306,8 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
                                                          segment,
                                                          bus,
                                                          battery,
-                                                         estimated_voltage,): 
+                                                         estimated_voltage,
+                                                         estimated_current): 
         """ Sets up the information that the mission needs to run a mission segment using this network
     
             Assumptions:
@@ -329,7 +330,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         ones_row = segment.state.ones_row 
         if bus.fixed_voltage == False:  
             segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  = estimated_voltage * ones_row(1)   
-        
+            segment.state.residuals.network[bus.tag + '_' + battery.tag + 'voltage']     = 0 * ones_row(1)   
         return  
     
     def compute_voltage(self,battery_conditions):
