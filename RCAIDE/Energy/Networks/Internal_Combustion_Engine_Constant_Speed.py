@@ -10,7 +10,7 @@
 # RCAIDE imports  
 import RCAIDE
 from RCAIDE.Core                                                       import Data   
-from RCAIDE.Methods.Propulsion.Performance.internal_combustion_engine_cs_propulsor import compute_propulsor_performance  
+from RCAIDE.Methods.Propulsion.Performance.internal_combustion_engine_cs_propulsor import internal_combustion_engine_cs_propulsor
 from .Network                                                          import Network   
  
 # python imports 
@@ -92,7 +92,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
                 if fuel_line.active_propulsor_groups[i]:           
                     pg_tag                 = conditions.energy[fuel_line.tag].active_propulsor_groups[i]
                     N_rotors               = conditions.energy[fuel_line.tag].N_rotors
-                    outputs , T , P, mdot  = compute_propulsor_performance(i,fuel_line.tag,pg_tag,engines,rotors,N_rotors,conditions)  
+                    outputs , T , P, mdot  = internal_combustion_engine_cs_propulsor(i,fuel_line.tag,pg_tag,engines,rotors,N_rotors,conditions)  
                     fuel_line_mdot         += mdot
                     total_thrust           += T       
                     total_power            += P  

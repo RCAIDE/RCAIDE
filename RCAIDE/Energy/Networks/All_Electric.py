@@ -13,8 +13,8 @@ from RCAIDE.Core                                                             imp
 from RCAIDE.Analyses.Mission.Common                                          import Residuals 
 from RCAIDE.Components.Component                                             import Container   
 from RCAIDE.Energy.Propulsors.Converters                                     import Propeller, Lift_Rotor, Prop_Rotor 
-from RCAIDE.Methods.Power.Battery.Common                                     import pack_battery_conditions,append_initial_battery_conditions 
-from RCAIDE.Methods.Propulsion.Performance.all_electric_propulsor            import compute_propulsor_performance 
+from RCAIDE.Methods.Power.Battery.Common                                     import append_initial_battery_conditions 
+from RCAIDE.Methods.Propulsion.Performance.all_electric_propulsor            import all_electric_propulsor
 from .Network                                                                import Network  
 
  # package imports 
@@ -88,7 +88,7 @@ class All_Electric(Network):
         numerics        = state.numerics
         busses          = self.busses
         total_thrust    = 0. * state.ones_row(3) 
-        total_power     = 0. * state.ones_row(1) 
+        total_power     = 0. * state.ones_row(1)  
         recharging_flag = conditions.energy.recharging 
         
         for bus in busses: 
@@ -105,37 +105,35 @@ class All_Electric(Network):
             if bus.fixed_voltage:  
                 bus_voltage = bus.voltage * state.ones_row(1)
                 if recharging_flag:
-                    for battery in bus.batteries:     
+                    for battery in bus.batteries:   
                         battery.outputs.current =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
                         battery.outputs.power   = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)*battery.bus_power_split_ratio  
+                        
                     total_thrust                = 0. * state.ones_row(3)             
                     bus.outputs.total_esc_power = 0. * state.ones_row(1) 
-                else:        
-                    bus_T,bus_P,bus_I  = compute_propulsor_performance(bus,state,bus_voltage)  
+                else:          
+                    bus_T,bus_P,bus_I  = all_electric_propulsor(bus,state,bus_voltage)  
                     total_thrust      += bus_T
-                    total_power       += bus_P 
+                    total_power       += bus_P  
                     
             else: #Variable Voltage Bus  
                 bus_voltage = 0 * state.ones_row(1)  
                 if recharging_flag:   
-                    for battery in bus.batteries: 
-                        battery.outputs.current =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
-                        battery.outputs.power   = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)  
+                    for battery in bus.batteries:   
+                        battery.outputs.current           =  battery.cell.charging_current*battery.pack.electrical_configuration.parallel * np.ones_like(bus_voltage) 
+                        battery.outputs.power             = -battery.outputs.current * (battery.cell.charging_voltage*battery.pack.electrical_configuration.series)
+  
                     total_thrust                = 0. * state.ones_row(3)             
                     bus.outputs.total_esc_power = 0. * state.ones_row(1)  
+                    
                 else:  # Loop through batteries on bus to compute total bus voltage   
-                    for battery in bus.batteries:               
-                        battery_conditions                = conditions.energy[bus.tag][battery.tag] 
-                        battery.pack.current_energy       = battery_conditions.pack.energy     
-                        battery.pack.temperature          = battery_conditions.pack.temperature
-                        battery.cell.age                  = battery_conditions.cell.cycle_in_day    
-                        battery.cell.charge_throughput    = battery_conditions.cell.charge_throughput   
-                        battery.cell.temperature          = battery_conditions.cell.temperature     
+                    for battery in bus.batteries:                 
+                        battery_conditions   = conditions.energy[bus.tag][battery.tag]       
                         bus_voltage += battery.compute_voltage(battery_conditions)   
                         
-                    bus_T,bus_P,bus_I  = compute_propulsor_performance(bus,state,bus_voltage)  
-                    total_thrust                += bus_T
-                    total_power                 += bus_P     
+                    bus_T,bus_P,bus_I    = all_electric_propulsor(bus,state,bus_voltage)  
+                    total_thrust         += bus_T
+                    total_power          += bus_P  
     
             # compute energy calculation for each battery on bus  
             for battery in bus.batteries: 
@@ -151,9 +149,9 @@ class All_Electric(Network):
                 # append bus outputs to battery 
                 battery.outputs.current     = bus.inputs.current
                 battery.outputs.power       = bus.inputs.power 
-                battery_conditions          = conditions.energy[bus.tag][battery.tag]              
-                battery.energy_calc(numerics,conditions,bus.tag,recharging_flag)      
-                pack_battery_conditions(battery_conditions,battery)     
+                battery_conditions           = conditions.energy[bus.tag][battery.tag]              
+                battery.energy_calc(state,bus,recharging_flag)      
+                #pack_battery_conditions(battery_conditions,battery)     
                          
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
@@ -248,10 +246,7 @@ class All_Electric(Network):
                                               estimated_propulsor_group_throttles = [[0.5]], 
                                               estimated_rotor_power_coefficients  = [[0.02]],
                                               estimated_propulsor_group_rpms      = [[1500]],
-                                              estimated_battery_voltages          = [[400]], 
-                                              estimated_battery_cell_temperature  = [[283.]], 
-                                              estimated_battery_state_of_charges  = [[0.5]],
-                                              estimated_battery_cell_currents     = [[5.]]):
+                                              estimated_battery_voltages          = [[400]],):
         """ This function sets up the information that the mission needs to run a mission segment using this network
     
             Assumptions:
@@ -305,13 +300,24 @@ class All_Electric(Network):
                 bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Common.Conditions() 
                 bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Common.Conditions() 
                 bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Common.Conditions() 
-                bus_results[battery.tag].pack.energy                   = ones_row(1)
-                bus_results[battery.tag].pack.voltage_under_load       = ones_row(1)
-                bus_results[battery.tag].pack.voltage_open_circuit     = ones_row(1)
-                bus_results[battery.tag].pack.temperature              = ones_row(1)
-                bus_results[battery.tag].cell.state_of_charge          = ones_row(1)
-                bus_results[battery.tag].cell.temperature              = ones_row(1)
-                bus_results[battery.tag].cell.charge_throughput        = ones_row(1) 
+                bus_results[battery.tag].pack.energy                   = 0 * ones_row(1)    
+                bus_results[battery.tag].pack.current                  = 0 * ones_row(1)   
+                bus_results[battery.tag].pack.voltage_open_circuit     = 0 * ones_row(1)  
+                bus_results[battery.tag].pack.voltage_under_load       = 0 * ones_row(1)  
+                bus_results[battery.tag].pack.power                    = 0 * ones_row(1)   
+                bus_results[battery.tag].pack.temperature              = 0 * ones_row(1)   
+                bus_results[battery.tag].pack.heat_energy_generated    = 0 * ones_row(1)   
+                bus_results[battery.tag].pack.internal_resistance      = 0 * ones_row(1)   
+                bus_results[battery.tag].cell.heat_energy_generated    = 0 * ones_row(1)    
+                bus_results[battery.tag].cell.state_of_charge          = 0 * ones_row(1)   
+                bus_results[battery.tag].cell.power                    = 0 * ones_row(1)         
+                bus_results[battery.tag].cell.energy                   = 0 * ones_row(1)         
+                bus_results[battery.tag].cell.voltage_under_load       = 0 * ones_row(1)         
+                bus_results[battery.tag].cell.voltage_open_circuit     = 0 * ones_row(1)        
+                bus_results[battery.tag].cell.current                  = 0 * ones_row(1)         
+                bus_results[battery.tag].cell.temperature              = 0 * ones_row(1)         
+                bus_results[battery.tag].cell.charge_throughput        = 0 * ones_row(1)         
+                bus_results[battery.tag].cell.depth_of_discharge       = 0 * ones_row(1)
                 bus_results[battery.tag].cell.cycle_in_day             = 0
                 bus_results[battery.tag].cell.resistance_growth_factor = 1.
                 bus_results[battery.tag].cell.capacity_fade_factor     = 1.  
@@ -321,10 +327,7 @@ class All_Electric(Network):
                 battery.append_battery_unknowns_and_residuals_to_segment(segment,
                                                                          bus,
                                                                          battery,
-                                                                         estimated_battery_voltages[bus_i][b_i],
-                                                                         estimated_battery_cell_temperature[bus_i][b_i], 
-                                                                         estimated_battery_state_of_charges[bus_i][b_i], 
-                                                                         estimated_battery_cell_currents[bus_i][b_i] ) 
+                                                                         estimated_battery_voltages[bus_i][b_i] ) 
                 
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures

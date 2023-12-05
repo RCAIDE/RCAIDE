@@ -8,17 +8,13 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core import Data  
-from RCAIDE.Methods.Propulsion.compute_number_of_compoment_groups import compute_number_of_compoment_groups
-
-# pacakge imports  
-import numpy as np 
+from RCAIDE.Core import Data    
 
 # ----------------------------------------------------------------------------------------------------------------------
-# compute_propulsor_performance
+# turbojet_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_propulsor_performance(i,PCU,propulsor_group_tag,turbojets,N_turbojets,conditions): 
+def turbojet_propulsor(i,PCU,propulsor_group_tag,turbojets,N_turbojets,conditions): 
     ''' Computes the perfomrance of a turbojet engine 
     
     Assumptions: 

@@ -154,8 +154,8 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         # Unpack varibles  
         battery                  = self
         btms                     = battery.thermal_management_system
-        I_bat                    = battery.outputs.current
-        P_bat                    = battery.outputs.power    
+        I_bat                    = battery.outputs.current              # current coming out of battery 
+        P_bat                    = battery.outputs.power                # power coming out of battery 
         electrode_area           = battery.cell.electrode_area 
         As_cell                  = battery.cell.surface_area  
         Q_prior                  = battery.cell.charge_throughput     
@@ -171,8 +171,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         # --------------------------------------------------------------------------------- 
         # Calculate the current going into one cell  
         n_series          = battery.pack.electrical_configuration.series  
-        n_parallel        = battery.pack.electrical_configuration.parallel
-        n_total           = n_series*n_parallel
+        n_parallel        = battery.pack.electrical_configuration.parallel 
         Nn                = battery.module.geometrtic_configuration.normal_count            
         Np                = battery.module.geometrtic_configuration.parallel_count          
         n_total_module    = Nn*Np     
@@ -180,7 +179,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         
         # State of charge of the battery
         initial_discharge_state = np.dot(I,-P_bat) + E_current[0]
-        SOC_old =  np.divide(initial_discharge_state,E_max) 
+        SOC_old                 = np.divide(initial_discharge_state,E_max) 
           
         # Make sure things do not break by limiting current, temperature and current 
         SOC_old[SOC_old < 0.] = 0.  
@@ -214,7 +213,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         T_current    = btms_results.operating_conditions.battery_current_temperature
 
         # Effective Power flowing through battery 
-        P      = -(P_bat - np.abs(btms_results.operating_conditions.heat_energy_generated)) 
+        P      = -(P_bat + np.abs(btms_results.operating_conditions.heat_energy_generated)) 
         
         # Compute State Variables
         V_ul  = compute_NMC_cell_state_variables(battery_data,SOC_old,T_cell,I_cell)
@@ -228,12 +227,9 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         # ---------------------------------------------------------------------------------
         # Compute updated state of battery 
         # ---------------------------------------------------------------------------------   
-         
-        # Available capacity
-        capacity_available = E_max - battery.pack.current_energy[0]
-    
+        
         # How much energy the battery could be overcharged by
-        delta           =  np.dot(I,P) - capacity_available
+        delta           =  np.dot(I,P) - E_current[0]
         delta[delta<0.] = 0.
     
         # Power that shouldn't go in
@@ -242,7 +238,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         # Power actually going into the battery
         P[P>0.] = P[P>0.] - ddelta[P>0.]
         E_bat = np.dot(I,P)
-        E_bat = np.reshape(E_bat,np.shape(E_current)) #make sure it's consistent
+        E_bat = np.reshape(E_bat,np.shape(E_current)) # make sure it's consistent
         
         # Add this to the current state
         if np.isnan(E_bat).any():
@@ -311,13 +307,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
     
             Properties Used:
             N/A
-        """
-        
-        if bus.fixed_voltage == False: 
-            battery_conditions                             = segment.state.conditions.energy[bus.tag][battery.tag]
-            battery_conditions.cell.temperature[1:,:]      = segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_temperature' ][1:,:]  
-            battery_conditions.cell.state_of_charge[1:,0]  = segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_soc'][:,0]
-            battery_conditions.pack.current                = segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_current'  ]     
+        """ 
 
         return     
     
@@ -348,24 +338,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
     
             Properties Used:
             None
-        """      
-    
-        if bus.fixed_voltage == False: 
-            battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag]
-            
-            SOC_actual   = battery_conditions.cell.state_of_charge
-            SOC_predict  = segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_soc'] 
-        
-            Temp_actual  = battery_conditions.cell.temperature 
-            Temp_predict = segment.state.unknowns[bus.tag + '_' + battery.tag +'_cell_temperature']  
-        
-            i_actual     = battery_conditions.pack.current # change to cell 
-            i_predict    = segment.state.unknowns[bus.tag + '_' + battery.tag +'_cell_current']   
-        
-            # Return the residuals  
-            segment.state.residuals.network[bus.tag + '_' + battery.tag + '_cell_soc']            = SOC_predict  - SOC_actual[1:,:]  
-            segment.state.residuals.network[bus.tag + '_' + battery.tag + '_cell_temperature' ]   = Temp_predict - Temp_actual
-            segment.state.residuals.network[bus.tag + '_' + battery.tag + '_cell_current'  ]      = i_predict    - i_actual  
+        """       
         
         return  
     
@@ -373,10 +346,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
                                                          segment, 
                                                          bus, 
                                                          battery,
-                                                         estimated_voltage,
-                                                         estimated_cell_temperature,
-                                                         estimated_state_of_charge,
-                                                         estimated_cell_current): 
+                                                         estimated_voltage): 
         """ Sets up the information that the mission needs to run a mission segment using this network
     
             Assumptions:
@@ -399,17 +369,12 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             
             Properties Used:
             N/A
-            """        
-      
-        # setup the state
-        ones_row    = segment.state.unknowns.ones_row
-        ones_row_m1 = segment.state.unknowns.ones_row_m1      
-        if bus.fixed_voltage == False: 
-            parallel                                                                    = self.pack.electrical_configuration.parallel            
-            segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_soc']           = estimated_state_of_charge       * ones_row_m1(1)  
-            segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_temperature' ]  = estimated_cell_temperature      * ones_row(1)  
-            segment.state.unknowns[bus.tag + '_' + battery.tag + '_cell_current'  ]     = estimated_cell_current*parallel * ones_row(1)  
-        
+            """         
+
+        ones_row = segment.state.ones_row 
+        if bus.fixed_voltage == False:  
+            segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  = estimated_voltage * ones_row(1)  
+            
         return   
 
     def compute_voltage(self,battery_conditions):  

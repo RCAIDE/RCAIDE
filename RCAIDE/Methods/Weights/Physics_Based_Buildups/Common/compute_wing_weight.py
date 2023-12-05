@@ -94,7 +94,8 @@ def compute_wing_weight(wing,
     motor_locs    = []
     for network in config.networks:
         for bus in network.busses:
-            for motor in bus.motors:
+            for propulsor in bus.propulsors:
+                motor = propulsor.motor 
                 if motor.wing_mounted == True: 
                     if motor.wing_tag == wing.tag: 
                         motor_locs.append(motor.origin[0][1]) 

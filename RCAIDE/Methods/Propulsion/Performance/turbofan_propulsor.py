@@ -8,16 +8,13 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core import Data  
-
-# pacakge imports  
-import numpy as np 
+from RCAIDE.Core import Data   
 
 # ----------------------------------------------------------------------------------------------------------------------
-# compute_propulsor_performance
+# turbofan_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_propulsor_performance(fuel_line,state):  
+def turbofan_propulsor(fuel_line,state):  
     ''' Computes the perfomrance of a turbofan engine 
     
     Assumptions: 

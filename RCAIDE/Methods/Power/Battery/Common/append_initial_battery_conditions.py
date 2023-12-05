@@ -43,7 +43,7 @@ def append_initial_battery_conditions(segment,bus,battery):
             segment
                battery_discharge                    [boolean]
                increment_battery_age_by_one_day     [boolean]
-            segment.state.conditions.energy
+               segment.state.conditions.energy
                battery.battery_discharge_flag       [boolean]
                battery.pack.maximum_initial_energy  [watts]
                battery.pack.energy                  [watts] 
@@ -63,31 +63,38 @@ def append_initial_battery_conditions(segment,bus,battery):
         temp_dev = segment.temperature_deviation    
     atmo_data    = atmosphere.compute_values(altitude = alt,temperature_deviation=temp_dev) 
       
-    battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag]
+    battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag] 
     
     # Set if it is a discharge segment
     if type(segment) ==  RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:  
-        battery_conditions.battery_discharge_flag  = False
+        segment.state.conditions.energy.recharging  = False
     else:
-        battery_conditions.battery_discharge_flag  = True
+        segment.state.conditions.energy.recharging  = True
         
     # This is the only one besides energy and discharge flag that should be packed into the segment top level
     if 'increment_battery_age_by_one_day' not in segment:
         segment.increment_battery_age_by_one_day   = False    
         
     # If an initial segment with battery energy set 
-    if 'battery_cell_temperature' not in segment:     
-        cell_temperature              = atmo_data.temperature[0,0]
+    if 'battery_cell_temperature' in segment:
+        cell_temperature  = segment.battery_cell_temperature  
     else:
-        cell_temperature              = segment.battery_cell_temperature 
+        cell_temperature  = atmo_data.temperature[0,0]
     battery_conditions.pack.temperature[:,0] = cell_temperature
-    battery_conditions.cell.temperature[:,0] = cell_temperature  
+    battery_conditions.cell.temperature[:,0] = cell_temperature 
+    
+    # charge thoughput 
+    if 'charge_throughput' in segment: 
+        battery_conditions.cell.charge_throughput[:,0] = segment.charge_throughput 
+    else:
+        battery_conditions.cell.charge_throughput[:,0] = 0
         
     if 'initial_battery_state_of_charge' in segment:  
         initial_battery_energy                               = segment.initial_battery_state_of_charge*battery.pack.maximum_energy   
         battery_conditions.pack.maximum_initial_energy       = initial_battery_energy
         battery_conditions.pack.energy[:,0]                  = initial_battery_energy*segment.initial_battery_state_of_charge
         battery_conditions.cell.state_of_charge[:,0]         = segment.initial_battery_state_of_charge
+        battery_conditions.cell.depth_of_discharge[:,0]      = 1 - segment.initial_battery_state_of_charge
             
     return 
     

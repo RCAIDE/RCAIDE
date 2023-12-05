@@ -1,5 +1,5 @@
 ## @ingroup Methods-Propulsion
-# RCAIDE/Methods/Propulsion/internal_combustion_engine_constant_speed_propulsor.py
+# RCAIDE/Methods/Propulsion/internal_combustion_engine_cs_propulsor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,17 +8,16 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core import Units , Data 
-from RCAIDE.Methods.Propulsion.compute_number_of_compoment_groups import compute_number_of_compoment_groups
+from RCAIDE.Core import Units , Data  
 
 # pacakge imports  
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# compute_ICE_propulsor_performance
+# internal_combustion_engine_constant_speed_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,rotors,N_rotors,conditions): 
+def internal_combustion_engine_cs_propulsor(i,fuel_line_tag,propulsor_group_tag,engines,rotors,N_rotors,conditions): 
     ''' Computes the performance of an internal combustion engine propulsor unit
     
     Assumptions: 
@@ -89,60 +88,4 @@ def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,ro
     noise_pg_results.rotor                     = outputs 
  
     return outputs , total_thrust , total_power ,mdot
-
-def compute_unique_propulsor_groups(self): 
-    '''Computes the unique rotor groups on a bus    
-    
-    Assumptions:
-    None
-
-    Source:
-    N/A
-
-    Inputs: 
-    bus                     - bus control unit data structure [-]
-    
-    Outputs:  
-    sorted_propulsors. 
-        rotor_indexes       - rotor indexes                   [-]
-        unique_rotor_tags   - rotor tags                      [string(s)]
-        unique_engine_tags  - engine tags                     [string(s)]
-        unique_esc_tags     - electronic speed rotor tags     [string(s)]
-        N_rotors            - number of rotors                [-]
-
-    Properties Used:
-    N/A 
-    '''
-    
-    engines                    = self.engines 
-    rotors                     = self.rotors  
-    active_propulsor_groups    = self.active_propulsor_groups 
-    N_active_propulsor_groups  = len(active_propulsor_groups)
-    
-    # determine propulsor group indexes 
-    engine_group_indexes,engine_group_names,unique_engine_tags  = compute_number_of_compoment_groups(engines,active_propulsor_groups)
-    rotor_group_indexes,rotor_groups_names,unique_rotor_tags    = compute_number_of_compoment_groups(rotors,active_propulsor_groups) 
-    
-    # make sure that each rotor has a engine and esc
-    if (len(rotor_group_indexes)!=len(engine_group_indexes)):
-        assert('The number of rotors and/or esc is not the same as the number of engines')  
-        
-    # Count the number of unique pairs of rotors and engines 
-    unique_rotor_groups,N_rotors   = np.unique(rotor_group_indexes, return_counts=True)
-    unique_engine_groups,_                 = np.unique(engine_group_indexes, return_counts=True) 
-    if (unique_rotor_groups == unique_engine_groups).all(): 
-        rotor_indexes  = []
-        engine_indexes = [] 
-        for group in range(N_active_propulsor_groups):
-            rotor_indexes.append(np.where(unique_rotor_groups[group]   == rotor_group_indexes)[0][0])
-            engine_indexes.append(np.where(unique_engine_groups[group] == engine_group_indexes)[0][0]) 
-    else: 
-        rotor_indexes = rotor_group_indexes
-        engine_indexes = engine_group_indexes 
-        N_rotors      = np.ones_like(engine_group_indexes)   
-    
-    sorted_propulsors = Data(rotor_indexes       = rotor_indexes,
-                             unique_rotor_tags   = unique_rotor_tags,
-                             unique_engine_tags      = unique_engine_tags, 
-                             N_rotors            = N_rotors)
-    return sorted_propulsors
+ 

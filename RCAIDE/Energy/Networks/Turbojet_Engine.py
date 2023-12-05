@@ -12,7 +12,7 @@
 import RCAIDE 
 from RCAIDE.Core                                                import Data   
 from RCAIDE.Analyses.Mission.Common                             import Residuals 
-from RCAIDE.Methods.Propulsion.Performance.turbojet_propulsor   import compute_propulsor_performance 
+from RCAIDE.Methods.Propulsion.Performance.turbojet_propulsor   import turbojet_propulsor
 from .Network                                                   import Network  
 from .Network import Network
 
@@ -111,7 +111,7 @@ class Turbojet_Engine(Network):
                 if fuel_line.active_propulsor_groups[i]:           
                     pg_tag      = conditions.energy[fuel_line.tag].active_propulsor_groups[i]
                     N_turbojets = conditions.energy[fuel_line.tag].N_turbojets
-                    T , P, mdot = compute_propulsor_performance(i,fuel_line,pg_tag,turbojets,N_turbojets,conditions)     
+                    T , P, mdot = turbojet_propulsor(i,fuel_line,pg_tag,turbojets,N_turbojets,conditions)     
                     fuel_line_T            += T       
                     fuel_line_P            += P  
                     fuel_line_mdot         += mdot 

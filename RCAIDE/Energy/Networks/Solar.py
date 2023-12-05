@@ -14,7 +14,7 @@ from RCAIDE.Core                                              import Data
 from RCAIDE.Analyses.Mission.Common                           import Residuals   
 from RCAIDE.Energy.Propulsors.Converters                      import Propeller, Lift_Rotor, Prop_Rotor 
 from RCAIDE.Methods.Power.Battery.Common                      import pack_battery_conditions,append_initial_battery_conditions 
-from RCAIDE.Methods.Propulsion.Performance.solar_propulsor    import compute_propulsor_performance 
+from RCAIDE.Methods.Propulsion.Performance.solar_propulsor    import solar_propulsor
 from .Network                                                 import Network  
  
 # ----------------------------------------------------------------------------------------------------------------------
@@ -120,7 +120,7 @@ class Solar(Network):
                     if bus.active_propulsor_groups[i]:           
                         pg_tag              = state.conditions.energy[bus.tag].active_propulsor_groups[i]
                         N_rotors            = state.conditions.energy[bus.tag].N_rotors
-                        outputs , T , P, I  = compute_propulsor_performance(i,bus,pg_tag,motors,rotors,N_rotors,escs,conditions,voltage)  
+                        outputs , T , P, I  = solar_propulsor(i,bus,pg_tag,motors,rotors,N_rotors,escs,conditions,voltage)  
                         total_current       += I
                         total_thrust        += T       
                         total_power         += P   

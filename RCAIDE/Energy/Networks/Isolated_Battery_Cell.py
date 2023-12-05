@@ -289,10 +289,7 @@ class Isolated_Battery_Cell(Network):
                 battery.append_battery_unknowns_and_residuals_to_segment(segment,
                                                                          bus,
                                                                          battery,
-                                                                         estimated_battery_voltages[bus_i][b_i],
-                                                                         estimated_battery_cell_temperature[bus_i][b_i], 
-                                                                         estimated_battery_state_of_charges[bus_i][b_i], 
-                                                                         estimated_battery_cell_currents[bus_i][b_i] )    
+                                                                         estimated_battery_voltages[bus_i][b_i])    
                 
     
                 # ------------------------------------------------------------------------------------------------------

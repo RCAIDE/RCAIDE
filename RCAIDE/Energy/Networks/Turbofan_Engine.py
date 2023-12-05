@@ -12,7 +12,7 @@
 import RCAIDE 
 from RCAIDE.Core                                                             import Data 
 from RCAIDE.Analyses.Mission.Common                                          import Residuals    
-from RCAIDE.Methods.Propulsion.Performance.turbofan_propulsor                import compute_propulsor_performance 
+from RCAIDE.Methods.Propulsion.Performance.turbofan_propulsor                import turbofan_propulsor
 from .Network                                                                import Network  
 from .Network import Network
 
@@ -103,7 +103,7 @@ class Turbofan_Engine(Network):
         
         for fuel_line in fuel_lines:
             fuel_tanks   = fuel_line.fuel_tanks    
-            fuel_line_T , fuel_line_P, fuel_line_mdot  = compute_propulsor_performance(fuel_line,state)    
+            fuel_line_T , fuel_line_P, fuel_line_mdot  = turbofan_propulsor(fuel_line,state)    
         
             for fuel_tank in fuel_tanks: 
                 fuel_line_results                                = conditions.energy[fuel_line.tag]  

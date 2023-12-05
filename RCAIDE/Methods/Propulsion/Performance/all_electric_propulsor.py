@@ -8,16 +8,15 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core import Units , Data  
-
+from RCAIDE.Core import Units  
 # pacakge imports  
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# compute_propulsor_performance
+# all_electric_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_propulsor_performance(bus,state,voltage):
+def all_electric_propulsor(bus,state,voltage):
     ''' Computes the perfomrance of an all electric propulsor unit
     
     Assumptions: 
@@ -57,6 +56,7 @@ def compute_propulsor_performance(bus,state,voltage):
             propulsor_0                            = list(bus.propulsors.keys())[0] 
             energy_results_0                       = conditions.energy[bus.tag][propulsor_0]
             noise_results_0                        = conditions.noise[bus.tag][propulsor_0] 
+            energy_results                         = conditions.energy[bus.tag][propulsor.tag] 
             energy_results.motor.efficiency        = energy_results_0.motor.efficiency      
             energy_results.motor.torque            = energy_results_0.motor.torque          
             energy_results.rotor.torque            = energy_results_0.rotor.torque          
@@ -71,9 +71,10 @@ def compute_propulsor_performance(bus,state,voltage):
             energy_results.rotor.efficiency        = energy_results_0.rotor.efficiency      
             energy_results.rotor.figure_of_merit   = energy_results_0.rotor.figure_of_merit 
             energy_results.esc.current             = energy_results_0.esc.current   
+            energy_results.rotor.power_coefficient = energy_results_0.rotor.power_coefficient 
+            energy_results.motor.throttle          = energy_results_0.motor.throttle          
             energy_results.esc.power               = energy_results_0.esc.power     
-            noise_results.rotor                    = noise_results_0.rotor   
-
+            noise_results.rotor                    = noise_results_0.rotor    
             total_thrust                           += energy_results_0.rotor.thrust 
             total_power                            += energy_results_0.esc.power
             total_current                          += energy_results_0.esc.current 
@@ -140,4 +141,4 @@ def compute_propulsor_performance(bus,state,voltage):
             total_power   += energy_results.esc.power
             total_current += energy_results.esc.current
             
-    return total_thrust , total_power ,  total_current 
+    return total_thrust , total_power ,  total_current

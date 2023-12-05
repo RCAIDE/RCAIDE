@@ -8,17 +8,16 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core import Units , Data 
-from RCAIDE.Methods.Propulsion.compute_number_of_compoment_groups import compute_number_of_compoment_groups
+from RCAIDE.Core import Units  
 
 # pacakge imports  
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-# compute_propulsor_performance
+# internal_combustion_engine_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_propulsor_performance(i,fuel_line_tag,propulsor_group_tag,engines,rotors,N_rotors,conditions): 
+def internal_combustion_engine_propulsor(i,fuel_line_tag,propulsor_group_tag,engines,rotors,N_rotors,conditions): 
     ''' Computes the performance of an internal combustion engine propulsor unit
     
     Assumptions: 

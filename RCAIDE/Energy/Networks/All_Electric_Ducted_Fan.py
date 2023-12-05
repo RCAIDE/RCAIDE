@@ -13,7 +13,7 @@ from RCAIDE.Core                                                             imp
 from RCAIDE.Analyses.Mission.Common                                          import Residuals 
 from RCAIDE.Components.Component                                             import Container    
 from RCAIDE.Methods.Power.Battery.Common                                     import pack_battery_conditions,append_initial_battery_conditions 
-from RCAIDE.Methods.Propulsion.all_electric_ducted_fan_propulsor             import compute_propulsor_performance 
+from RCAIDE.Methods.Propulsion.all_electric_ducted_fan_propulsor             import all_electric_ducted_fan_propulsor
 from .Network                                                                import Network  
 
  # package imports 
@@ -114,7 +114,7 @@ class All_Electric_Ducted_Fan(Network):
                         if bus.active_propulsor_groups[i]:           
                             pg_tag              = conditions.energy[bus.tag].active_propulsor_groups[i]
                             N_ducted_fans       = conditions.energy[bus.tag].N_ducted_fans
-                            T, P, I, eta,mdot,Isp,outputs  = compute_propulsor_performance(i,bus,pg_tag,ducted_fans,N_ducted_fans,escs,conditions,voltage) 
+                            T, P, I, eta,mdot,Isp,outputs  = all_electric_ducted_fan_propulsor(i,bus,pg_tag,ducted_fans,N_ducted_fans,escs,conditions,voltage) 
                             total_current       += I
                             total_thrust        += T    
                             total_power         += P
@@ -323,10 +323,7 @@ class All_Electric_Ducted_Fan(Network):
                 battery.append_battery_unknowns_and_residuals_to_segment(segment,
                                                                          bus,
                                                                          battery,
-                                                                         estimated_battery_voltages[bus_i][b_i],
-                                                                         estimated_battery_cell_temperature[bus_i][b_i], 
-                                                                         estimated_battery_state_of_charges[bus_i][b_i], 
-                                                                         estimated_battery_cell_currents[bus_i][b_i] ) 
+                                                                         estimated_battery_voltages[bus_i][b_i] ) 
                 
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures

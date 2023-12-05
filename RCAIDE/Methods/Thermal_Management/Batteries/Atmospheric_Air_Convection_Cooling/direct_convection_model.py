@@ -13,7 +13,7 @@ import numpy as np
 #  Compute Net Convected Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
-def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
+def compute_net_convected_heat(btms,battery,Q_heat_gen,T_cell,state,dt,i):
     '''Computes the net heat generated in a battery during cycling. 
 
     Assumptions:
@@ -45,23 +45,19 @@ def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
     Properties Used:
     None 
     ''' 
+    
+    # battery properties  
     As_cell                  = battery.cell.surface_area 
     D_cell                   = battery.cell.diameter                     
-    H_cell                   = battery.cell.height     
-    T_current                = battery.pack.temperature      
-    T_cell                   = battery.cell.temperature         
-    T_ambient                = freestream.temperature 
-    h                        = btms.convective_heat_transfer_coefficient
-    T_cell                   = battery.cell.temperature       
+    H_cell                   = battery.cell.height              
     cell_mass                = battery.cell.mass    
-    Cp                       = battery.cell.specific_heat_capacity       
-    I                        = numerics.time.integrate      
-    heat_transfer_efficiency = btms.heat_transfer_efficiency  
-
-    # Calculate the current going into one cell   
-    Nn                = battery.module.geometrtic_configuration.normal_count            
-    Np                = battery.module.geometrtic_configuration.parallel_count    
-    n_total_module    = Nn*Np  
+    Cp                       = battery.cell.specific_heat_capacity    
+    Nn                       = battery.module.geometrtic_configuration.normal_count            
+    Np                       = battery.module.geometrtic_configuration.parallel_count    
+    n_total_module           = Nn*Np  
+    h                        = btms.convective_heat_transfer_coefficient 
+    heat_transfer_efficiency = btms.heat_transfer_efficiency   
+    T_ambient                = state.conditions.freestream.temperature[i,:] 
     
     if n_total_module == 1: 
         # Using lumped model   
@@ -70,11 +66,11 @@ def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
         P_net          = Q_heat_gen_tot - Q_convec
 
     else:   
-        K_coolant                    = freestream.thermal_conductivity
-        nu_coolant                   = freestream.kinematic_viscosity
-        Pr_coolant                   = freestream.prandtl_number
-        rho_coolant                  = freestream.density    
-        Cp_coolant                   = btms.cooling_fluid.compute_cp(freestream.temperature,freestream.pressure )
+        K_coolant                    = state.conditions.freestream.thermal_conductivity[i,:]
+        nu_coolant                   = state.conditions.freestream.kinematic_viscosity[i,:]
+        Pr_coolant                   = state.conditions.freestream.prandtl_number[i,:]
+        rho_coolant                  = state.conditions.freestream.density[i,:]    
+        Cp_coolant                   = btms.cooling_fluid.compute_cp(state.conditions.freestream.temperature[i,:],state.conditions.freestream.pressure[i,:] )
         V_coolant                    = btms.cooling_fluid.flowspeed  
         
         # Chapter 7 pg 437-446 of Fundamentals of heat and mass transfer 
@@ -87,7 +83,7 @@ def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
         else:
             V_max = V_coolant*(S_T/(S_T-D_cell))
 
-        T        = (T_ambient+T_current)/2   
+        T        = (T_ambient+T_cell)/2   
         Re_max   = V_max*D_cell/nu_coolant   
         if all(Re_max) > 10E2: 
             C = 0.35*((S_T/S_L)**0.2) 
@@ -108,7 +104,6 @@ def compute_net_convected_heat(btms,battery,Q_heat_gen,numerics,freestream):
         P_net                 = Q_heat_gen_tot - Q_convec 
      
     dT_dt                  = P_net/(cell_mass*n_total_module*Cp)
-    T_current              = T_current[0] + np.dot(I,dT_dt)  
-    T_current[T_ambient>T_current] = T_ambient[T_ambient>T_current]
+    T_current              = T_cell + dT_dt*dt   
     
     return Q_heat_gen_tot, P_net, T_ambient, T_current

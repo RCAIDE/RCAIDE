@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Core                             import Units
-from RCAIDE.Visualization.Performance.Common import plot_style
+from RCAIDE.Visualization.Common import plot_style
 
 from geopy.distance                          import geodesic as GD 
 import matplotlib.pyplot as plt

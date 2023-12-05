@@ -8,8 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core import Units , Data 
-from RCAIDE.Methods.Propulsion.compute_number_of_compoment_groups import compute_number_of_compoment_groups
+from RCAIDE.Core import Units  
 
 # pacakge imports  
 import numpy as np 
@@ -18,7 +17,7 @@ import numpy as np
 # compute_propulsor_performanc
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
-def compute_propulsor_performance(i,bus,propulsor_group_tag,motors,rotors,N_rotors,escs,conditions,voltage):
+def solar_propulsor(i,bus,propulsor_group_tag,motors,rotors,N_rotors,escs,conditions,voltage):
     ''' Computes the perfomrance of an all electric propulsor unit
     
     Assumptions: 
