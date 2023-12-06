@@ -74,14 +74,14 @@ def plot_battery_pack_conditions(results,
                 for bus in busses: 
                     for battery in bus.batteries:
                         if battery.tag == b[b_i]:  
-                            battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag] 
+                            bus_results         = results.segments[i].conditions.energy[bus.tag] 
+                            battery_conditions  = bus_results[battery.tag] 
                             pack_power          = battery_conditions.pack.power[:,0]
                             pack_energy         = battery_conditions.pack.energy[:,0]
-                            pack_volts          = battery_conditions.pack.voltage_under_load[:,0]
-                            pack_volts_oc       = battery_conditions.pack.voltage_open_circuit[:,0]
+                            pack_volts          = battery_conditions.pack.voltage_under_load[:,0] 
                             pack_current        = battery_conditions.pack.current[:,0]
                             pack_SOC            = battery_conditions.cell.state_of_charge[:,0] 
-                            throttle            = results.segments[i].conditions.energy[bus.tag].throttle
+                            throttle            = bus_results.throttle
                     
                             segment_tag  =  results.segments[i].tag
                             segment_name = segment_tag.replace('_', ' ') 

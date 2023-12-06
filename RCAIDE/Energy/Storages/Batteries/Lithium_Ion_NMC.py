@@ -203,7 +203,8 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             # ---------------------------------------------------------------------------------
             # Compute battery cell temperature 
             # ---------------------------------------------------------------------------------
-            R_0[t_idx]            =  0.01483*(SOC[t_idx]**2) - 0.02518*SOC[t_idx] + 0.1036  
+            R_0[t_idx]               =  0.01483*(SOC[t_idx]**2) - 0.02518*SOC[t_idx] + 0.1036  
+            R_0[t_idx][R_0[t_idx]<0] = 0. 
             
             # Determine temperature increase         
             sigma                 = 139 # Electrical conductivity
@@ -244,9 +245,11 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
                 T_cell[t_idx+1] = btms_results.operating_conditions.battery_current_temperature
                     
                 # Compute state of charge and depth of discarge of the battery
-                E_pack[t_idx+1]      = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 
-                SOC[t_idx+1]         = E_pack[t_idx+1]/E_max 
-                DOD_cell[t_idx+1]    = 1 - SOC[t_idx+1] 
+                E_pack[t_idx+1]              = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 
+                SOC[t_idx+1]                 = E_pack[t_idx+1]/E_max 
+                SOC[t_idx+1][SOC[t_idx+1]>1] = 1.
+                SOC[t_idx+1][SOC[t_idx+1]<0] = 0. 
+                DOD_cell[t_idx+1]            = 1 - SOC[t_idx+1]  
                 
                 # Determine new charge throughput (the amount of charge gone through the battery)
                 Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr  

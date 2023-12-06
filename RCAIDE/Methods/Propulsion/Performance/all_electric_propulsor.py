@@ -56,6 +56,7 @@ def all_electric_propulsor(bus,state,voltage):
             energy_results_0                       = conditions.energy[bus.tag][propulsor_0]
             noise_results_0                        = conditions.noise[bus.tag][propulsor_0]  
             energy_results                         = conditions.energy[bus.tag][propulsor.tag] 
+            noise_results                          = conditions.noise[bus.tag][propulsor.tag]
             energy_results.motor.efficiency        = energy_results_0.motor.efficiency      
             energy_results.motor.torque            = energy_results_0.motor.torque          
             energy_results.rotor.torque            = energy_results_0.rotor.torque        

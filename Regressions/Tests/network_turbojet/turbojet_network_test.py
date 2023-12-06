@@ -55,8 +55,7 @@ def main():
     old_results = load_results()    
     
     ## plt the old results
-    plot_mission(results) 
-    plt.show()
+    plot_mission(results)  
 
     # check the results
     check_results(results,old_results)  
@@ -391,9 +390,9 @@ def check_results(new_results,old_results):
 
     # check segment values
     check_list = [
-        'segments.climbing_cruise.conditions.aerodynamics.angle_of_attack',
+        'segments.climbing_cruise.conditions.aerodynamics.angles.alpha',
         'segments.climbing_cruise.conditions.aerodynamics.coefficients.drag',
-        'segments.climbing_cruise.conditions.aerodynamics.coefficient.lift', 
+        'segments.climbing_cruise.conditions.aerodynamics.coefficients.lift', 
         'segments.climbing_cruise.conditions.weights.vehicle_mass_rate', 
     ]
 

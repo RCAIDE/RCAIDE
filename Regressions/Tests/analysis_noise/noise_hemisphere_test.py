@@ -135,8 +135,7 @@ def mission_setup(analyses,vehicle):
     segment.air_speed                                = Vstall*1.2       
     segment.distance                                 = 1000       
     segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)      
-    mission.append_segment(segment)     
-    
+    mission.append_segment(segment)  
      
     return mission
 

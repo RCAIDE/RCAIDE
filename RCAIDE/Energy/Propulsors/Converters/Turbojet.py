@@ -18,9 +18,14 @@ import numpy as np
 # ----------------------------------------------------------------------
 ## @ingroup Energy-Propulsors-Converters
 class Turbojet(Energy_Component):
-    '''
+    """This is a  turbojet component.
     
-    '''
+    Assumptions:
+    None
+
+    Source:
+    None
+    """ 
     def __defaults__(self):    
         # setting the default values
         self.tag = 'Turbojet' 

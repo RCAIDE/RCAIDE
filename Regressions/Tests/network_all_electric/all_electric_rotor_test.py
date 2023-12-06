@@ -36,18 +36,11 @@ def main():
     # General Aviation Aircraft   
 
     RPM_true              = [1597.730347228566,1597.7303471313394]
-    lift_coefficient_true = [0.3519728024171797,0.35197280241717954] 
-    
+    lift_coefficient_true = [0.3519728024171797,0.35197280241717954]  
         
-    for i in range(len(battery_chemistry)):
-        print('***********************************')
-        print(battery_chemistry[i] + ' Cell Powered Aircraft')
-        print('***********************************')
-        
-        print('\nBattery Propeller Network Analysis')
-        print('--------------------------------------')
-        
-    
+    for i in range(len(battery_chemistry)): 
+        print(battery_chemistry[i] + ' Battery Electric Aircraft') 
+         
         # vehicle data
         baseline_vehicle  = vehicle_setup()
         vehicle           = modify_vehicle(baseline_vehicle,battery_chemistry[i])
@@ -70,18 +63,16 @@ def main():
         
         # RPM of rotor check during hover
         RPM        = results.segments.climb_flight_no_1_day_1.conditions.energy.bus.propulsor.rotor.rpm[3][0] 
-        print('GA RPM: ' + str(RPM))
+        print('RPM: ' + str(RPM))
         diff_RPM   = np.abs(RPM - RPM_true[i])
-        print('RPM difference')
-        print(diff_RPM)
+        print('RPM difference: ' +  str(diff_RPM))
         assert np.abs((RPM - RPM_true[i])/RPM_true[i]) < 1e-6  
         
         # lift Coefficient Check During Cruise
         lift_coefficient        = results.segments.cruise_flight_no_1_day_1.conditions.aerodynamics.coefficients.lift[2][0] 
-        print('GA CL: ' + str(lift_coefficient)) 
+        print('CL: ' + str(lift_coefficient)) 
         diff_CL                 = np.abs(lift_coefficient  - lift_coefficient_true[i]) 
-        print('CL difference')
-        print(diff_CL)
+        print('CL difference: ' +  str(diff_CL)) 
         assert np.abs((lift_coefficient  - lift_coefficient_true[i])/lift_coefficient_true[i]) < 1e-6 
              
     return
@@ -111,7 +102,7 @@ def modify_vehicle(vehicle,battery_chemistry):
     bat.module.voltage                                     = bat.pack.maximum_voltage/bat.module.number_of_modules  
     bat.module.geometrtic_configuration.normal_count       = 24
     bat.module.geometrtic_configuration.parallel_count     = 40 
-    bus.voltage                                            =  bat.pack.maximum_voltage  
+    bus.voltage                                            = bat.pack.maximum_voltage  
     bus.batteries.append(bat)                                     
     
     return vehicle
@@ -261,6 +252,7 @@ def mission_setup(analyses):
             # Charge Model 
             segment                                                 = Segments.Ground.Battery_Recharge(base_segment)     
             segment.tag                                             = 'Recharge'  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
+            segment.current                                         = 100
             segment.analyses.extend(analyses.base)                       
             segment.time                                            = 1.5 * Units.hr
             if flight_no  == flights_per_day:  

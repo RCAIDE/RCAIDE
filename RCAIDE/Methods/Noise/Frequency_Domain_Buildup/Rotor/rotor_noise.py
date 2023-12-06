@@ -10,6 +10,7 @@
 
 # RCAIDE Imports 
 from RCAIDE.Core import  Data  
+from RCAIDE.Components.Component import Container 
 from RCAIDE.Methods.Noise.Common.decibel_arithmetic                        import SPL_arithmetic  
 from RCAIDE.Methods.Noise.Common.compute_noise_source_coordinates          import compute_rotor_point_source_coordinates
 from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor.harmonic_noise    import harmonic_noise
@@ -24,7 +25,7 @@ import numpy as np
 #  Rotor Noise 
 # ----------------------------------------------------------------------------------------------------------------------    
 ## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
-def rotor_noise(rotors,aeroacoustic_data,segment,settings):
+def rotor_noise(bus,results,segment,settings):
     ''' This is a collection medium-fidelity frequency domain methods for rotor acoustic noise prediction which 
     computes the acoustic signature (sound pressure level, weighted sound pressure levels,
     and frequency spectrums of a system of rotating blades           
@@ -38,7 +39,7 @@ def rotor_noise(rotors,aeroacoustic_data,segment,settings):
     Inputs:
         rotors                  - data structure of rotors                            [None]
         segment                 - flight segment data structure                       [None] 
-        aeroacoustic_data       - data structure of acoustic data                     [None]
+        results                 - data structure containing of acoustic data          [None]
         settings                - accoustic settings                                  [None]
                                
     Outputs:
@@ -58,7 +59,13 @@ def rotor_noise(rotors,aeroacoustic_data,segment,settings):
     Properties Used:
         N/A   
     '''
-    
+
+    # neet to correct compute_rotor_point_source_coordinates function to take different rotors on same bus 
+    rotors  = Container() 
+    for propulsor in bus.propulsors: 
+        rotors.append(propulsor.rotor)  
+    aeroacoustic_data = results[propulsor.tag].rotor 
+                 
     # unpack 
     conditions           = segment.state.conditions
     microphone_locations = conditions.noise.total_microphone_locations
@@ -71,7 +78,7 @@ def rotor_noise(rotors,aeroacoustic_data,segment,settings):
     Noise   = Data()  
     Results = Data()
                      
-     # compute position vector from point source at rotor hub to microphones
+    # compute position vector from point source at rotor hub to microphones 
     coordinates = compute_rotor_point_source_coordinates(conditions,rotors,microphone_locations,settings) 
 
     # Harmonic Noise    

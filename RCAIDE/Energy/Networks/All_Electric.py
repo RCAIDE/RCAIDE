@@ -271,12 +271,15 @@ class All_Electric(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign battery residuals, unknowns and results data structures 
             # ------------------------------------------------------------------------------------------------------   
-            for b_i , battery in enumerate(batteries):         
+            for b_i , battery in enumerate(batteries):            
                 bus_results[battery.tag]                               = RCAIDE.Analyses.Mission.Common.Conditions() 
                 bus_results[battery.tag].pack                          = RCAIDE.Analyses.Mission.Common.Conditions() 
                 bus_results[battery.tag].cell                          = RCAIDE.Analyses.Mission.Common.Conditions() 
-                bus_results[battery.tag].pack.energy                   = 0 * ones_row(1)    
-                bus_results[battery.tag].pack.current                  = 0 * ones_row(1)   
+                if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:
+                    bus_results[battery.tag].pack.current              = segment.current * ones_row(1)  
+                else: 
+                    bus_results[battery.tag].pack.current              = 0 * ones_row(1)    
+                bus_results[battery.tag].pack.energy                   = 0 * ones_row(1)   
                 bus_results[battery.tag].pack.voltage_open_circuit     = 0 * ones_row(1)  
                 bus_results[battery.tag].pack.voltage_under_load       = 0 * ones_row(1)  
                 bus_results[battery.tag].pack.power                    = 0 * ones_row(1)   
@@ -328,13 +331,13 @@ class All_Electric(Network):
                         segment.state.unknowns[bus.tag + '_throttle'] = initial_throttle* ones_row(1)    
                                  
                 # Results data structure for each propulsor group     
+                bus_results.throttle                               = 0. * ones_row(1)
                 bus_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 bus_results[propulsor.tag].motor                   = RCAIDE.Analyses.Mission.Common.Conditions()
                 bus_results[propulsor.tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions() 
                 bus_results[propulsor.tag].esc                     = RCAIDE.Analyses.Mission.Common.Conditions()  
                 bus_results[propulsor.tag].motor.efficiency        = 0. * ones_row(1)
                 bus_results[propulsor.tag].motor.torque            = 0. * ones_row(1) 
-                bus_results[propulsor.tag].throttle                = 0. * ones_row(1)
                 bus_results[propulsor.tag].rotor.torque            = 0. * ones_row(1)
                 bus_results[propulsor.tag].rotor.thrust            = 0. * ones_row(1)
                 bus_results[propulsor.tag].rotor.rpm               = 0. * ones_row(1)

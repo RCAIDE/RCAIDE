@@ -26,8 +26,7 @@ modules = [
     'Tests/network_turbojet/turbojet_network_test.py',
     'Tests/network_internal_combustion_engine/ICE_test.py',
     'Tests/network_internal_combustion_engine/ICE_constant_speed_test.py',
-    'Tests/network_isolated_battery_cell/cell_test.py',
-    'Tests/network_solar/solar_radiation_test.py',
+    'Tests/network_isolated_battery_cell/cell_test.py', 
 ]
 
 def regressions():

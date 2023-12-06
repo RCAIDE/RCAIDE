@@ -18,9 +18,14 @@ import numpy as np
 # ----------------------------------------------------------------------
 ## @ingroup Energy-Propulsors-Converters
 class Turbofan(Energy_Component):
-    '''
+    """This is a  turbofan component.
     
-    '''
+    Assumptions:
+    None
+
+    Source:
+    None
+    """ 
     def __defaults__(self):    
         # setting the default values
         self.tag = 'Turbofan' 

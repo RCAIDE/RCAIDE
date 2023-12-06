@@ -45,8 +45,8 @@ def main():
     # mission analysis 
     results = missions.base_mission.evaluate()   
     
-    P_truth     = 53595.13355279211
-    mdot_truth  = 0.004708991132231059
+    P_truth     = 53595.133552791885
+    mdot_truth  = 0.004708991132231039
     
     P    = results.segments.cruise.state.conditions.energy.fuel_line.propulsor.engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]     
@@ -77,7 +77,7 @@ def ICE_CS(vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                   = RCAIDE.Energy.Distributors.Fuel_Line() 
+    fuel_line                                   = RCAIDE.Energy.Distribution.Fuel_Line() 
     
     #------------------------------------------------------------------------------------------------------------------------------------  
     #   Fuel
@@ -95,21 +95,27 @@ def ICE_CS(vehicle):
     
     fuel_line.fuel_tanks.append(fuel_tank)
 
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------   
+    propulsor  = RCAIDE.Energy.Propulsors.Propulsor()    
+    
     #------------------------------------------------------------------------------------------------------------------------------------                                                  
     # Engine                    
     #------------------------------------------------------------------------------------------------------------------------------------  
-    engine                                     = RCAIDE.Energy.Converters.Engine()
+    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
     engine.rated_power                         = 180.  * Units.hp   
     engine.power_specific_fuel_consumption     = 0.52 
-    fuel_line.engines.append(engine)
+    propulsor.engine                           = engine 
 
     #------------------------------------------------------------------------------------------------------------------------------------     
     # Prop
     #------------------------------------------------------------------------------------------------------------------------------------  
-    prop                                   = RCAIDE.Energy.Converters.Propeller()
+    prop                                   = RCAIDE.Energy.Propulsors.Converters.Propeller()
     prop.number_of_blades                  = 2.0
     prop.variable_pitch                    = True 
     prop.tip_radius                        = 76./2. * Units.inches
@@ -129,8 +135,9 @@ def ICE_CS(vehicle):
     prop.append_airfoil(airfoil)  
     prop.airfoil_polar_stations            = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     prop                                   = design_propeller(prop)   
-    fuel_line.rotors.append(prop)  
+    propulsor.rotor                        =  prop
     
+    fuel_line.propulsors.append(propulsor)
     net.fuel_lines.append(fuel_line) 
     
     # add the network to the vehicle
