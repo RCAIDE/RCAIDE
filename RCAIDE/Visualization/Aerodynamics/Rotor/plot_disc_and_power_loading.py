@@ -56,48 +56,45 @@ def plot_disc_and_power_loading(results,
      
     # get line colors for plots 
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))    
-    
-    for pg_i in range(len(pg)): 
-        fig = plt.figure(save_filename + '_' + pg[pg_i])
-        fig.set_size_inches(width,height) 
+    for network in results.segments[0].analyses.energy.networks: 
+        busses  = network.busses
+        for bus in busses:     
+            for j,propulsor in enumerate(bus.propulsors):  
             
-        for i in range(len(results.segments)): 
-            time    = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-            for network in results.segments[i].analyses.energy.networks: 
-                busses  = network.busses
-                for bus in busses: 
-                    active_propulsor_groups   = bus.active_propulsor_groups    
-                    bus_results               = results.segments[i].conditions.energy[bus.tag] 
-                    for j in range(len(active_propulsor_groups)):  
-                        if pg[pg_i] == active_propulsor_groups[j]:    
-                            DL     = bus_results[active_propulsor_groups[j]].rotor.disc_loading[:,0]
-                            PL     = bus_results[active_propulsor_groups[j]].rotor.power_loading[:,0] 
-                                     
-                            segment_tag  =  results.segments[i].tag
-                            segment_name = segment_tag.replace('_', ' ')
-                            
-                            axes_1 = plt.subplot(2,1,1)
-                            axes_1.plot(time,DL, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name) 
-                            axes_1.set_ylabel(r'Disc Loading (N/m^2)')
-                            set_axes(axes_1)    
-                            
-                            axes_2 = plt.subplot(2,1,2)
-                            axes_2.plot(time,PL, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-                            axes_2.set_xlabel('Time (mins)')
-                            axes_2.set_ylabel(r'Power Loading (N/W)')
-                            set_axes(axes_2)   
-                            
-        if show_legend:
-            leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
-            leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
-        
-        # Adjusting the sub-plots for legend 
-        fig.subplots_adjust(top=0.8)
-        
-        # set title of plot 
-        title_text    = 'Rotor Disc and Power Loadings: ' +  pg[pg_i]      
-        fig.suptitle(title_text)
-        
-        if save_figure:
-            plt.savefig(save_filename + '_' + pg[pg_i] + file_type)   
+                fig = plt.figure(save_filename + '_' + propulsor.tag)
+                fig.set_size_inches(width,height)   
+                
+                for i in range(len(results.segments)): 
+                    bus_results  = results.segments[i].conditions.energy[bus.tag] 
+                    time         = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
+                    DL     = bus_results[propulsor.tag].rotor.disc_loading[:,0]
+                    PL     = bus_results[propulsor.tag].rotor.power_loading[:,0] 
+                             
+                    segment_tag  =  results.segments[i].tag
+                    segment_name = segment_tag.replace('_', ' ')
+                    
+                    axes_1 = plt.subplot(2,1,1)
+                    axes_1.plot(time,DL, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name) 
+                    axes_1.set_ylabel(r'Disc Loading (N/m^2)')
+                    set_axes(axes_1)    
+                    
+                    axes_2 = plt.subplot(2,1,2)
+                    axes_2.plot(time,PL, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
+                    axes_2.set_xlabel('Time (mins)')
+                    axes_2.set_ylabel(r'Power Loading (N/W)')
+                    set_axes(axes_2)   
+                                    
+                if show_legend:
+                    leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
+                    leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
+                
+                # Adjusting the sub-plots for legend 
+                fig.subplots_adjust(top=0.8)
+                
+                # set title of plot 
+                title_text    = 'Rotor Disc and Power Loadings: ' + propulsor.tag 
+                fig.suptitle(title_text)
+                
+                if save_figure:
+                    plt.savefig(save_filename +  '_' + propulsor.tag  + file_type)   
     return fig 

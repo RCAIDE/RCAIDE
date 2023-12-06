@@ -170,19 +170,8 @@ def vehicle_setup():
     panel.area                 = vehicle.reference_area * 0.9
     panel.efficiency           = 0.25
     panel.mass_properties.mass = panel.area*(0.60 * Units.kg)
-    net.solar_panel            = panel
-     
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    # Propulsor
-    #------------------------------------------------------------------------------------------------------------------------------------   
-    propulsor  = RCAIDE.Energy.Propulsors.Propulsor()  
-    
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    # Electronic Speed Controller    
-    #------------------------------------------------------------------------------------------------------------------------------------ 
-    esc            = RCAIDE.Energy.Propulsors.Modulators.Electronic_Speed_Controller()
-    esc.efficiency = 0.95 
-    propulsor.electronic_speed_controllers = esc   
+    bus.solar_panel            = panel
+
 
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Battery
@@ -195,7 +184,18 @@ def vehicle_setup():
     bat.thermal_management_system = RCAIDE.Energy.Thermal_Management.Batteries.No_Heat_Exchanger() 
     initialize_from_mass(bat) 
     bus.batteries.append(bat)                                
-       
+          
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------   
+    propulsor  = RCAIDE.Energy.Propulsors.Propulsor()  
+    
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # Electronic Speed Controller    
+    #------------------------------------------------------------------------------------------------------------------------------------ 
+    esc            = RCAIDE.Energy.Propulsors.Modulators.Electronic_Speed_Controller()
+    esc.efficiency = 0.95 
+    propulsor.electronic_speed_controller  = esc   
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propeller    
     #------------------------------------------------------------------------------------------------------------------------------------    
@@ -224,10 +224,8 @@ def vehicle_setup():
     motor.gearbox_efficiency   = .98 # Gear box efficiency
     motor.expected_current     = 160. # Expected current
     motor.mass_properties.mass = 2.0  * Units.kg
-    propulsor.rotor            = motor 
+    propulsor.motor            = motor 
 
-    # append propulsor to distribution line 
-    bus.propulsors.append(propulsor)     
 
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Payload 
@@ -244,6 +242,9 @@ def vehicle_setup():
     avionics.power_draw = 50. * Units.watts
     bus.avionics        = avionics     
 
+    # append propulsor to distribution line 
+    bus.propulsors.append(propulsor)     
+    
     # append bus   
     net.busses.append(bus)
         

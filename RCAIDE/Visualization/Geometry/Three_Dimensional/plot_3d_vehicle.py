@@ -240,12 +240,14 @@ def plot_3d_energy_network(plot_data,network,number_of_airfoil_points,color_map)
  
     if 'busses' in network:  
         for bus in network.busses:
-            for rotor in bus.rotors:
+            for propulsor in bus.propulsors:
+                rotor = propulsor.rotor 
                 plot_data = plot_3d_rotor(rotor,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,color_map) 
  
     elif 'fuel_lines' in network:  
         for fuel_line in network.fuel_lines:
-            for rotor in fuel_line.rotors: 
+            for propulsor in fuel_line.propulsors:
+                rotor = propulsor.rotor 
                 plot_data = plot_3d_rotor(rotor,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,color_map) 
  
     return plot_data

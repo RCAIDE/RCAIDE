@@ -55,8 +55,7 @@ def main():
     old_results = load_results()    
     
     ## plt the old results
-    plot_mission(results)
-    plot_mission(old_results)
+    plot_mission(results) 
     plt.show()
 
     # check the results

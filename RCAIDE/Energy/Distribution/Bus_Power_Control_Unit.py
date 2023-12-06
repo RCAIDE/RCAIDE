@@ -49,6 +49,7 @@ class Bus_Power_Control_Unit(Energy_Component):
         self.tag                           = 'bus' 
         self.batteries                     = Container()
         self.propulsors                    = Container() 
+        self.solar_panel                   = None 
         self.avionics                      = RCAIDE.Energy.Peripherals.Avionics()
         self.payload                       = RCAIDE.Energy.Peripherals.Payload()        
         self.identical_propulsors          = True  

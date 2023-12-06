@@ -56,7 +56,7 @@ def plot_rotor_conditions(results,
     for network in results.segments[0].analyses.energy.networks: 
         busses  = network.busses
         for bus in busses:     
-            for j,propulsor in enumerate(bus.propulsors):  
+            for propulsor in bus.propulsors:  
             
                 fig = plt.figure(save_filename + '_' + propulsor.tag)
                 fig.set_size_inches(width,height)   
@@ -99,7 +99,7 @@ def plot_rotor_conditions(results,
                 fig.subplots_adjust(top=0.8) 
                 
                 # set title of plot 
-                title_text  =  'Rotor Performance:' + propulsor.tag
+                title_text  =  'Rotor Performance: ' + propulsor.tag
                 fig.suptitle(title_text)
                 if save_figure:
                     plt.savefig(save_filename + '_' + propulsor.tag + file_type)   

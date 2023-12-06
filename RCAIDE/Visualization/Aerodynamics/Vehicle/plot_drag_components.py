@@ -73,7 +73,6 @@ def plot_drag_components(results,
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')
         
-        
         axes_1 = plt.subplot(3,2,1)
         axes_1.plot(time, cdp, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
         axes_1.set_ylabel(r'$C_{Dp}$')

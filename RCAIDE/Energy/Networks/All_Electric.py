@@ -225,10 +225,7 @@ class All_Electric(Network):
     def add_unknowns_and_residuals_to_segment(self, 
                                               segment, 
                                               estimated_propulsor_group_throttles = [[0.5]], 
-                                              estimated_rotor_power_coefficients  = [[0.02]],
-                                              estimated_propulsor_group_rpms      = [[1500]],
-                                              estimated_battery_voltage           = [[400]],
-                                              estimated_battery_current           = [[150]],):
+                                              estimated_rotor_power_coefficients  = [[0.02]],):
         """ This function sets up the information that the mission needs to run a mission segment using this network
     
             Assumptions:
