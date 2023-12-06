@@ -99,8 +99,7 @@ def modify_vehicle(vehicle,battery_chemistry):
     if battery_chemistry   == 'NMC': 
         bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()  
         bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.No_Heat_Exchanger()  
-    elif battery_chemistry == 'LFP': 
-        bus.fixed_voltage == True 
+    elif battery_chemistry == 'LFP':  
         bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()    
         bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()  
 

@@ -13,7 +13,7 @@ from RCAIDE.Energy.Networks.All_Electric                    import All_Electric
 from RCAIDE.Methods.Propulsion.Design                       import design_propeller,  size_optimal_motor 
 from RCAIDE.Methods.Weights.Correlation_Buildups.Propulsion import nasa_motor
 from RCAIDE.Methods.Power.Battery.Sizing                    import initialize_from_circuit_configuration
-from RCAIDE.Methods.Geometry.Two_Dimensional.Planform       import wing_segmented_planform
+from RCAIDE.Methods.Geometry.Two_Dimensional.Planform       import wing_segmented_planform 
 
 # python imports 
 import numpy as np 
@@ -404,8 +404,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    bus                              = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit()
-    bus.fixed_voltage                = True
+    bus                              = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit() 
 
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Battery
@@ -475,8 +474,7 @@ def vehicle_setup():
     starboard_propulsor.motor                        = motor 
  
     # append propulsor to distribution line 
-    bus.propulsors.append(starboard_propulsor)
-
+    bus.propulsors.append(starboard_propulsor) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Port Propulsor

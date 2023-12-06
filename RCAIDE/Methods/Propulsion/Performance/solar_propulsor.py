@@ -59,7 +59,7 @@ def solar_propulsor(i,bus,propulsor_group_tag,motors,rotors,N_rotors,escs,condit
     esc.inputs.voltage   = voltage
     
     # Throttle the voltage 
-    esc.calculate_voltage_out_from_throttle(bus_results[propulsor_group_tag].motor.throttle)     
+    esc.calculate_voltage_out_from_throttle(bus_results[propulsor_group_tag].throttle)     
  
     # Assign conditions to the rotor
     motor.inputs.voltage         = esc.outputs.voltage
@@ -71,7 +71,7 @@ def solar_propulsor(i,bus,propulsor_group_tag,motors,rotors,N_rotors,escs,condit
     F, Q, P, Cp, outputs, etap = rotor.spin(conditions) 
 
     # Check to see if magic thrust is needed, the ESC caps throttle at 1.1 already
-    eta                = bus_results[propulsor_group_tag].motor.throttle 
+    eta                = bus_results[propulsor_group_tag].throttle 
     F[eta[:,0]  <=0.0] = 0.0
     P[eta[:,0]  <=0.0] = 0.0
     Q[eta[:,0]  <=0.0] = 0.0 
@@ -92,7 +92,7 @@ def solar_propulsor(i,bus,propulsor_group_tag,motors,rotors,N_rotors,escs,condit
     # Pack specific outputs
     conditions.energy[bus.tag][propulsor_group_tag].motor.efficiency        = motor.outputs.efficiency
     conditions.energy[bus.tag][propulsor_group_tag].motor.torque            = motor.outputs.torque
-    conditions.energy[bus.tag][propulsor_group_tag].motor.throttle          = eta
+    conditions.energy[bus.tag][propulsor_group_tag].throttle                = eta
     conditions.energy[bus.tag][propulsor_group_tag].rotor.torque            = Q
     conditions.energy[bus.tag][propulsor_group_tag].rotor.thrust            = np.atleast_2d(np.linalg.norm(total_thrust ,axis = 1)).T
     conditions.energy[bus.tag][propulsor_group_tag].rotor.rpm               = rpm
@@ -105,7 +105,7 @@ def solar_propulsor(i,bus,propulsor_group_tag,motors,rotors,N_rotors,escs,condit
 
     # Detemine esc current 
     esc.outputs.current  = total_motor_current
-    esc.calculate_current_in_from_throttle(bus_results[propulsor_group_tag].motor.throttle)
+    esc.calculate_current_in_from_throttle(bus_results[propulsor_group_tag].throttle)
     total_current = esc.inputs.current
 
     return outputs , total_thrust , total_power , total_current 

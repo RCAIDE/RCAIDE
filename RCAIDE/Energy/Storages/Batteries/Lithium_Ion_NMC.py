@@ -198,31 +198,29 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             # ---------------------------------------------------------------------------------------------------
             # Current State 
             # ---------------------------------------------------------------------------------------------------
-            I_cell[t_idx]  = I_bat[t_idx]/n_parallel   
-                  
-            V_ul[t_idx]    = compute_NMC_cell_state_variables(battery_data,SOC[t_idx],T_cell[t_idx],I_cell[t_idx]) 
-            
-            V_oc[t_idx]    = V_ul[t_idx] + (I_cell[t_idx] * R_0[t_idx])  
+            I_cell[t_idx]        = I_bat[t_idx]/n_parallel   
   
             # ---------------------------------------------------------------------------------
             # Compute battery cell temperature 
             # ---------------------------------------------------------------------------------
+            R_0[t_idx]            =  0.01483*(SOC[t_idx]**2) - 0.02518*SOC[t_idx] + 0.1036  
+            
             # Determine temperature increase         
-            sigma   = 139 # Electrical conductivity
-            n       = 1
-            F       = 96485 # C/mol Faraday constant    
-            delta_S = -496.66*(SOC[t_idx])**6 +  1729.4*(SOC[t_idx])**5 + -2278 *(SOC[t_idx])**4 +  1382.2 *(SOC[t_idx])**3 + \
-                      -380.47*(SOC[t_idx])**2 +  46.508*(SOC[t_idx])    + -10.692  
+            sigma                 = 139 # Electrical conductivity
+            n                     = 1
+            F                     = 96485 # C/mol Faraday constant    
+            delta_S               = -496.66*(SOC[t_idx])**6 +  1729.4*(SOC[t_idx])**5 + -2278 *(SOC[t_idx])**4 +  1382.2 *(SOC[t_idx])**3 + \
+                                    -380.47*(SOC[t_idx])**2 +  46.508*(SOC[t_idx])    + -10.692  
             
             i_cell                = I_cell[t_idx]/electrode_area # current intensity 
             q_dot_entropy         = -(T_cell[t_idx])*delta_S*i_cell/(n*F)       
             q_dot_joule           = (i_cell**2)/sigma                   
             Q_heat_cell[t_idx]    = (q_dot_joule + q_dot_entropy)*As_cell 
-            Q_heat_pack[t_idx]    = Q_heat_cell[t_idx]*n_total
-            q_joule_frac          = q_dot_joule/(q_dot_joule + q_dot_entropy)
-            q_entropy_frac        = q_dot_entropy/(q_dot_joule + q_dot_entropy)
+            Q_heat_pack[t_idx]    = Q_heat_cell[t_idx]*n_total  
+                  
+            V_ul[t_idx]           = compute_NMC_cell_state_variables(battery_data,SOC[t_idx],T_cell[t_idx],I_cell[t_idx]) 
             
-            R_0[t_idx]            =  0.01483*(SOC[t_idx]**2) - 0.02518*SOC[t_idx] + 0.1036 
+            V_oc[t_idx]           = V_ul[t_idx] + (I_cell[t_idx] * R_0[t_idx])              
             
             # Effective Power flowing through battery 
             P_pack[t_idx]         = P_bat[t_idx]  - np.abs(Q_heat_pack[t_idx]) 
@@ -252,117 +250,9 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
                 
                 # Determine new charge throughput (the amount of charge gone through the battery)
                 Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr  
-       
-        return battery 
-       
-    def assign_battery_unknowns(self,segment,bus,battery): 
-        """ Appends unknowns specific to NMC cells which are unpacked from the mission solver and send to the network.
+        
+        return battery   
     
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            segment.state.unknowns,battery
-                .cell.temperature                    [Kelvin]
-                .cell.state_of_charge                [unitless]
-                .current                             [Amperes]
-            b_i                                      [unitless]
-    
-            Outputs: 
-            segment.state.conditions.energy.battery
-                .cell.temperature                    [Kelvin]  
-                .cell.state_of_charge                [unitless]
-                .pack.current                        [Amperes]
-    
-            Properties Used:
-            N/A
-        """ 
-        if bus.fixed_voltage == False: 
-            battery_conditions                          = segment.state.conditions.energy[bus.tag][battery.tag]  
-            battery_conditions.pack.voltage_under_load  = segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load'] 
-            
-
-        return     
-    
-
-    def assign_battery_residuals(self,segment,bus,battery): 
-        """ Packs the residuals specific to NMC cells to be sent to the mission solver.
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            self                - battery data structure              [unitless] 
-            segment.state.conditions.energy:
-                battery.cell.state_of_charge                          [unitless] 
-                battery.cell.temperature                              [Kelvin]        
-                battery.current                                       [Amperes]
-            segment.state.unknowns.                         
-                battery.cell.state_of_charge                          [unitless]
-                battery.cell.temperature                              [Kelvin]  
-                battery.current                                       [Amperes]
-            b_i                                                       [unitless]
-
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """       
-
-        if bus.fixed_voltage == False:         
-            battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag]
-            v_actual           = battery_conditions.pack.voltage_under_load
-            v_predict          = segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  
-            v_max              = bus.voltage
-            
-            # Return the residuals
-            segment.state.residuals.network[bus.tag + '_' + battery.tag + 'voltage']  = (v_predict - v_actual)/v_max             
-                
-        return  
-    
-    def append_battery_unknowns_and_residuals_to_segment(self,
-                                                         segment, 
-                                                         bus, 
-                                                         battery,
-                                                         estimated_voltage,
-                                                         estimated_current): 
-        """ Sets up the information that the mission needs to run a mission segment using this network
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:  
-            self                - battery data structure              [unitless]
-            segment             - segment data struction              [unitless]
-            estimated_current                                         [i] 
-            estimated_cell_temperature                                [Kelvin]
-            estimated_state_of_charge                                 [unitless]
-            estimated_cell_current                                    [Amperes]
-            b_i                                                       [unitless]
-            
-            Outputs
-            None
-            
-            Properties Used:
-            N/A
-            """         
-
-        ones_row = segment.state.ones_row 
-        if bus.fixed_voltage == False:  
-            segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  = estimated_voltage * ones_row(1)  
-            
-        return   
-
     def compute_voltage(self,battery_conditions):  
         """ Computes the voltage of a single NMC cell or a battery pack of NMC cells  
     

@@ -15,7 +15,7 @@ from RCAIDE.Core import Data
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Propulsion
 def turbofan_propulsor(fuel_line,state):  
-    ''' Computes the perfomrance of a turbofan engine 
+    ''' Computes the performance of all turbofan engines on a fuel line  
     
     Assumptions: 
     N/A
@@ -23,19 +23,15 @@ def turbofan_propulsor(fuel_line,state):
     Source:
     N/A
 
-    Inputs: 
-    i                     - index of unique compoment              [-]
-    bus_tag               - tag of bus                             [string]
-    propulsor_group_tag   - tag of propulsor group                 [string]
-    turbofans             - data structure of turbofans            [-] 
-    N_turbofans           - number of turbofans in propulsor group [-] 
-    conditions            - operating data structure               [-] 
-
-    Outputs: 
-    outputs              - propulsor operating outputs             [-]
-    total_thrust         - thrust of propulsor group               [N]
-    total_power          - power of propulsor group                [V]
-    mdot                 - mass flow rate of fuel                  [N]
+    Inputs:   
+    fuel_line             - data structure containing turbofans on distrubution network [-]  
+    state                 - operating data structure                                    [-] 
+                     
+    Outputs:                      
+    outputs              - propulsor operating outputs                                  [-]
+    total_thrust         - thrust of turbofans                                          [N]
+    total_power          - power of turbofans                                           [W]
+    mdot                 - mass flow rate of fuel                                       [N]
     
     Properties Used: 
     N.A.        
@@ -44,7 +40,7 @@ def turbofan_propulsor(fuel_line,state):
     mdot            = 0*state.ones_row(1) 
     total_power     = 0*state.ones_row(1) 
     total_thrust    = 0*state.ones_row(3)
-    conditions      = state.conditions
+    conditions      = state.conditions 
     for propulsor_index, propulsor in enumerate(fuel_line.propulsors): 
         if fuel_line.identical_propulsors == True and propulsor_index>0: 
             propulsor_0                          = list(fuel_line.propulsors.keys())[0] 
@@ -211,7 +207,7 @@ def turbofan_propulsor(fuel_line,state):
             turbofan.inputs.flow_through_fan                         = bypass_ratio/(1.+bypass_ratio) #scaled constant to turn on fan thrust computation        
         
             #compute the thrust
-            turbofan.compute_thrust(conditions,throttle = turbofan_results.turbofan.throttle )
+            turbofan.compute_thrust(conditions,throttle = fuel_line_results.throttle )
         
             # getting the network outputs from the thrust outputs  
             turbofan_results.turbofan.thrust = turbofan.outputs.thrust

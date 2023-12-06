@@ -91,17 +91,16 @@ def plot_rotor_conditions(results,
                     axes_4.set_ylabel(r'Torque (N-m)')
                     set_axes(axes_4)     
                     
-            if show_legend:            
-                leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
-                leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
-            
-            # Adjusting the sub-plots for legend 
-            fig.subplots_adjust(top=0.8)
-            
-            # set title of plot 
-            title_text  =  'Rotor Performance:' + propulsor.tag
-            fig.suptitle(title_text)
-            plt.tight_layout()
-            if save_figure:
-                plt.savefig(save_filename + '_' + propulsor.tag + file_type)   
+                if show_legend:            
+                    leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
+                    leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
+                
+                # Adjusting the sub-plots for legend 
+                fig.subplots_adjust(top=0.8) 
+                
+                # set title of plot 
+                title_text  =  'Rotor Performance:' + propulsor.tag
+                fig.suptitle(title_text)
+                if save_figure:
+                    plt.savefig(save_filename + '_' + propulsor.tag + file_type)   
     return fig 

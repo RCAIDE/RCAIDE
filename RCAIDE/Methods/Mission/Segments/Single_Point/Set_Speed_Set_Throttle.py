@@ -1,5 +1,5 @@
 ## @ingroup Methods-Missions-Segments-Single_Point
-# RCAIDE/Methods/Missions/Segments/Single_Point/Set_Speed_Set_Thottle.py
+# RCAIDE/Methods/Missions/Segments/Single_Point/Set_Speed_Set_Throttle.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

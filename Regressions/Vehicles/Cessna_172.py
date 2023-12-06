@@ -220,7 +220,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------                                                  
     # Engine                    
     #------------------------------------------------------------------------------------------------------------------------------------  
-    engine                                     = RCAIDE.Energy.Converters.Engine()
+    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
@@ -230,7 +230,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------     
     # Prop
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    prop = RCAIDE.Energy.Converters.Propeller()
+    prop = RCAIDE.Energy.Propulsors.Converters.Propeller()
     prop.number_of_blades                   = 2.0
     prop.tip_radius                         = 76./2. * Units.inches
     prop.hub_radius                         = 8.     * Units.inches

@@ -30,7 +30,7 @@ class Atmospheric_Air_Convection_Heat_Exchanger(Energy_Component):
     def __defaults__(self):  
         self.tag                                      = 'Atmospheric_Air_Convection_Heat_Exchanger'
         self.cooling_fluid                            = Air()    
-        self.cooling_fluid.flowspeed                  = 0.01                                          
+        self.cooling_fluid.flowspeed                  = 0.01                                       
         self.convective_heat_transfer_coefficient     = 35.     # [W/m^2K] 
         self.heat_transfer_efficiency                 = 1.0      
         return

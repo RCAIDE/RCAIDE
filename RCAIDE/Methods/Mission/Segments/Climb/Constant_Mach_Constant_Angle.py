@@ -48,7 +48,7 @@ def initialize_conditions(segment):
     alt0        = segment.altitude_start  
     conditions  = segment.state.conditions 
 
-    if 'thottle' in segment.state.unknowns: 
+    if 'throttle' in segment.state.unknowns: 
         throttle = segment.state.unknowns.throttle
         segment.state.conditions.energy.throttle[:,0] = throttle[:,0]
         

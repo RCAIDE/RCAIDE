@@ -211,36 +211,7 @@ class All_Electric_Ducted_Fan(Network):
             for battery in bus.batteries: 
                 battery.assign_battery_unknowns(segment,bus,battery)        
         
-        return       
-    
-    def residuals(self,segment):
-        """ This packs the residuals to be sent to the mission solver.
-   
-           Assumptions:
-           None
-   
-           Source:
-           N/A
-   
-           Inputs:
-           state.conditions.energy:
-               motor(s).torque                      [N-m]
-               rotor(s).torque                      [N-m] 
-           residuals soecific to the battery cell   
-           
-           Outputs:
-           residuals specific to battery cell and network
-   
-           Properties Used: 
-           N/A
-       """           
- 
-        busses   = segment.analyses.energy.networks.battery_ducted_fan.busses 
-        for bus in busses:   
-            for battery in bus.batteries: 
-                battery.assign_battery_residuals(segment,bus,battery)    
-         
-        return     
+        return          
     
     ## @ingroup Components-Energy-Networks
     def add_unknowns_and_residuals_to_segment(self, 
@@ -318,13 +289,7 @@ class All_Electric_Ducted_Fan(Network):
                 bus_results[battery.tag].cell.resistance_growth_factor = 1.
                 bus_results[battery.tag].cell.capacity_fade_factor     = 1.  
                 append_initial_battery_conditions(segment,bus,battery)    
-                
-                # add unknowns and residuals specific to battery cell
-                battery.append_battery_unknowns_and_residuals_to_segment(segment,
-                                                                         bus,
-                                                                         battery,
-                                                                         estimated_battery_voltages[bus_i][b_i] ) 
-                
+                 
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------

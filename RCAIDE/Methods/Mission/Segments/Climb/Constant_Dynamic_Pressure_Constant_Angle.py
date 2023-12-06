@@ -54,7 +54,7 @@ def initialize_conditions_unpack_unknowns(segment):
     conditions  = segment.state.conditions
     rho         = conditions.freestream.density[:,0] 
 
-    if 'thottle' in segment.state.unknowns: 
+    if 'throttle' in segment.state.unknowns: 
         throttle = segment.state.unknowns.throttle
         segment.state.conditions.energy.throttle[:,0] = throttle[:,0]    
     

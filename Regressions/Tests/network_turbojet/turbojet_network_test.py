@@ -47,20 +47,20 @@ def main():
     # mission analysis 
     results = missions.base_mission.evaluate()   
     
-    ## Check the lift equivalent area
+    # Check the lift equivalent area
     #equivalent_area(configs.base, analyses, results.segments.climbing_cruise.state.conditions)    
      
-    ## leave uncommented for regression 
-    #save_results(results)  
-    #old_results = load_results()    
+    # leave uncommented for regression 
+    save_results(results)  
+    old_results = load_results()    
     
     ## plt the old results
     plot_mission(results)
-    #plot_mission(old_results)
-    #plt.show()
+    plot_mission(old_results)
+    plt.show()
 
-    ## check the results
-    #check_results(results,old_results)  
+    # check the results
+    check_results(results,old_results)  
     
     return
  
@@ -420,10 +420,10 @@ def check_results(new_results,old_results):
 
 
 def load_results():
-    return RCAIDE.Input_Output.RCAIDE.load('results_mission_concorde.res')
+    return RCAIDE.External_Interfaces.RCAIDE.load('results_mission_concorde.res')
 
 def save_results(results):
-    RCAIDE.Input_Output.RCAIDE.archive(results,'results_mission_concorde.res')
+    RCAIDE.External_Interfaces.RCAIDE.archive(results,'results_mission_concorde.res')
     return    
         
 if __name__ == '__main__': 

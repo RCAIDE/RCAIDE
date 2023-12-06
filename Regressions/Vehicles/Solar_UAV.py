@@ -160,27 +160,29 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    bus                        = RCAIDE.Energy.Distributors.Bus_Power_Control_Unit()
-    bus.fixed_voltage          = True 
+    bus                        = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit() 
     bus.voltage                = 40
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Solar Panel 
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    panel                      = RCAIDE.Energy.Converters.Solar_Panel()
+    panel                      = RCAIDE.Energy.Propulsors.Converters.Solar_Panel()
     panel.area                 = vehicle.reference_area * 0.9
     panel.efficiency           = 0.25
     panel.mass_properties.mass = panel.area*(0.60 * Units.kg)
     net.solar_panel            = panel
+     
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------   
+    propulsor  = RCAIDE.Energy.Propulsors.Propulsor()  
     
-
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Electronic Speed Controller    
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    esc            = RCAIDE.Energy.Distributors.Electronic_Speed_Controller()
+    esc            = RCAIDE.Energy.Propulsors.Modulators.Electronic_Speed_Controller()
     esc.efficiency = 0.95 
-    bus.electronic_speed_controllers.append(esc)  
-    
+    propulsor.electronic_speed_controllers = esc   
 
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Battery
@@ -197,7 +199,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propeller    
     #------------------------------------------------------------------------------------------------------------------------------------    
-    propeller                                       = RCAIDE.Energy.Converters.Propeller()
+    propeller                                       = RCAIDE.Energy.Propulsors.Converters.Propeller()
     propeller.number_of_blades                      = 2.0
     propeller.tip_radius                            = 4.25 * Units.meters
     propeller.hub_radius                            = 0.05 * Units.meters
@@ -207,12 +209,12 @@ def vehicle_setup():
     propeller.cruise.design_altitude                = 14.0 * Units.km
     propeller.cruise.design_thrust                  = 110.  
     propeller                                       = design_propeller(propeller) 
-    bus.rotors.append(propeller)  
+    propulsor.rotor                                 = propeller  
 
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Motor 
     #------------------------------------------------------------------------------------------------------------------------------------   
-    motor                      = RCAIDE.Energy.Converters.Motor()
+    motor                      = RCAIDE.Energy.Propulsors.Converters.Motor()
     motor.resistance           = 0.008
     motor.no_load_current      = 4.5  * Units.ampere
     motor.speed_constant       = 120. * Units['rpm'] # RPM/volt converted to (rad/s)/volt    
@@ -222,26 +224,29 @@ def vehicle_setup():
     motor.gearbox_efficiency   = .98 # Gear box efficiency
     motor.expected_current     = 160. # Expected current
     motor.mass_properties.mass = 2.0  * Units.kg
-    bus.motors.append(motor)
+    propulsor.rotor            = motor 
 
-    # append bus   
-    net.busses.append(bus)
-    
+    # append propulsor to distribution line 
+    bus.propulsors.append(propulsor)     
+
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Payload 
     #------------------------------------------------------------------------------------------------------------------------------------
     payload                      = RCAIDE.Energy.Peripherals.Payload()
     payload.power_draw           = 50. * Units.watts 
     payload.mass_properties.mass = 5.0 * Units.kg
-    net.payload                  = payload
+    bus.payload                  = payload
     
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Avionics
     #------------------------------------------------------------------------------------------------------------------------------------  
     avionics            = RCAIDE.Energy.Peripherals.Avionics()
     avionics.power_draw = 50. * Units.watts
-    net.avionics        = avionics     
-    
+    bus.avionics        = avionics     
+
+    # append bus   
+    net.busses.append(bus)
+        
     # add the solar network to the vehicle
     vehicle.append_energy_network(net)      
 

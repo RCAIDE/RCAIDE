@@ -263,7 +263,7 @@ class Internal_Combustion_Engine(Network):
                 fuel_line_results[pg_tag].engine.efficiency       = 0. * ones_row(1)
                 fuel_line_results[pg_tag].engine.torque           = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].engine.power            = 0. * ones_row(1) 
-                fuel_line_results[pg_tag].engine.thottle          = 0. * ones_row(1) 
+                fuel_line_results[pg_tag].engine.throttle          = 0. * ones_row(1) 
                 fuel_line_results[pg_tag].rotor.torque            = 0. * ones_row(1)
                 fuel_line_results[pg_tag].rotor.thrust            = 0. * ones_row(1)
                 fuel_line_results[pg_tag].rotor.rpm               = 0. * ones_row(1)

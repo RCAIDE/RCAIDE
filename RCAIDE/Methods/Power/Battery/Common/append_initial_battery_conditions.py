@@ -67,9 +67,9 @@ def append_initial_battery_conditions(segment,bus,battery):
     
     # Set if it is a discharge segment
     if type(segment) ==  RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:  
-        segment.state.conditions.energy.recharging  = False
+        segment.state.conditions.energy.recharging  = True 
     else:
-        segment.state.conditions.energy.recharging  = True
+        segment.state.conditions.energy.recharging  = False 
         
     # This is the only one besides energy and discharge flag that should be packed into the segment top level
     if 'increment_battery_age_by_one_day' not in segment:

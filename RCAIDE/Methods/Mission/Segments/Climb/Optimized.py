@@ -54,7 +54,7 @@ def unpack_unknowns(segment):
     vel0     = segment.air_speed_start
     velf     = segment.air_speed_end 
 
-    if 'thottle' in segment.state.unknowns: 
+    if 'throttle' in segment.state.unknowns: 
         throttle = segment.state.unknowns.throttle
         segment.state.conditions.energy.throttle[:,0]  = throttle[:,0]    
 

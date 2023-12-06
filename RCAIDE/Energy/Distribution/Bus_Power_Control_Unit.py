@@ -51,8 +51,7 @@ class Bus_Power_Control_Unit(Energy_Component):
         self.propulsors                    = Container() 
         self.avionics                      = RCAIDE.Energy.Peripherals.Avionics()
         self.payload                       = RCAIDE.Energy.Peripherals.Payload()        
-        self.identical_propulsors          = True 
-        self.fixed_voltage                 = True 
+        self.identical_propulsors          = True  
         self.active                        = True
         self.efficiency                    = 1.0
         self.voltage                       = 0.0

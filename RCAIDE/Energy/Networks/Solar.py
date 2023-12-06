@@ -53,9 +53,7 @@ class Solar(Network):
             Properties Used:
             N/A
         """            
-        self.tag                                    = 'Solar' 
-        self.avionics                               = None
-        self.payload                                = None  
+        self.tag                                    = 'Solar'  
         self.system_voltage                         = None   
         self.solar_flux                             = None
         self.maximum_power_point_tracking_efficency = 1.0
@@ -203,10 +201,10 @@ class Solar(Network):
                     pg_tag = active_propulsor_groups[i]           
                     bus_results[pg_tag].rotor.power_coefficient = segment.state.unknowns[bus.tag + '_' + pg_tag + '_rotor_cp'] 
                     if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:     
-                        bus_results[pg_tag].motor.throttle = segment.state.unknowns[bus.tag + '_' + pg_tag + '_throttle']
+                        bus_results[pg_tag].throttle = segment.state.unknowns[bus.tag + '_' + pg_tag + '_throttle']
                     else: 
                         bus_results[pg_tag].rotor.power_coefficient = 0. * ones_row(1)
-                        bus_results[pg_tag].motor.throttle                = 0. * ones_row(1)  
+                        bus_results[pg_tag].throttle                = 0. * ones_row(1)  
       
         return
     

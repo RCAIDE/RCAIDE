@@ -85,15 +85,12 @@ def plot_altitude_sfc_weight(results,
         for network in results.segments[i].analyses.energy.networks: 
             busses      = network.busses
             fuel_lines  = network.fuel_lines
-            for bus in busses:  
-                if bus.active: 
-                    for propulsor in fuel_line.propulsors:
-                        plot_propulsor_throttles(results,i,bus,propulsor,time,line_colors,ps,segment_name,axes_1)           
-            for fuel_line in fuel_lines: 
-                if fuel_line.active:
-                    for propulsor in fuel_line.propulsors:
-                        plot_propulsor_throttles(results,i,fuel_line,propulsor,time,line_colors,ps,segment_name,axes_1) 
-                    
+            for bus in busses:   
+                eta = results.segments[i].conditions.energy[bus.tag].throttle[:,0]  
+                axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)               
+            for fuel_line in fuel_lines:  
+                eta = results.segments[i].conditions.energy[fuel_line.tag].throttle[:,0]  
+                axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)     
         
         axes_2 = plt.subplot(2,2,2)
         axes_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.marker, linewidth = ps.line_width) 
@@ -126,18 +123,4 @@ def plot_altitude_sfc_weight(results,
     
     if save_figure:
         plt.savefig(save_filename + file_type)   
-    return fig
-
-
-def plot_propulsor_throttles(results,i,distributor,propulsor,time,line_colors,ps,segment_name,axes_1): 
-    res = results.segments[i].conditions.energy[distributor.tag][propulsor.tag]
-    if 'engine' in res :   
-        eta    =   res.engine.throttle[:,0]
-    elif 'motor' in res:   
-        eta    =   res.motor.throttle[:,0]   
-    elif 'turbofan' in res:   
-        eta    =  res.turbofan.throttle[:,0]  
-    elif 'turbojet' in res:   
-        eta    = res.turbojet.throttle[:,0]   
-    axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)         
-    return     
+    return fig 

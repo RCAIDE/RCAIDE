@@ -176,9 +176,8 @@ class Turbofan_Engine(Network):
  
         fuel_lines   = segment.analyses.energy.networks.turbofan_engine.fuel_lines 
         for fuel_line_i, fuel_line in enumerate(fuel_lines):    
-            fuel_line_results       = segment.state.conditions.energy[fuel_line.tag] 
-            for propulsor in fuel_line.propulsors:  
-                fuel_line_results[propulsor.tag].turbofan.throttle  = segment.state.unknowns[fuel_line.tag + '_throttle']  
+            fuel_line_results           = segment.state.conditions.energy[fuel_line.tag]  
+            fuel_line_results.throttle  = segment.state.unknowns[fuel_line.tag + '_throttle']  
         
         return    
      
@@ -237,7 +236,7 @@ class Turbofan_Engine(Network):
                 fuel_line_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)   # NEED TO REMOVE
                 fuel_line_results[propulsor.tag].turbofan.thrust         = 0. * ones_row(1) 
                 fuel_line_results[propulsor.tag].turbofan.power          = 0. * ones_row(1) 
-                fuel_line_results[propulsor.tag].turbofan.thottle        = 0. * ones_row(1) 
+                fuel_line_results[propulsor.tag].throttle                = 0. * ones_row(1) 
                 noise_results[propulsor.tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
                 noise_results[propulsor.tag].turbofan                    = RCAIDE.Analyses.Mission.Common.Conditions() 
         
