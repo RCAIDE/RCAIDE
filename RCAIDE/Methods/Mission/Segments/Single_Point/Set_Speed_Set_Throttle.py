@@ -43,8 +43,7 @@ def initialize_conditions(segment):
     
     # unpack
     alt        = segment.altitude
-    air_speed  = segment.air_speed
-    throttle   = segment.throttle
+    air_speed  = segment.air_speed 
     z_accel    = segment.z_accel
     x_accel    = segment.state.unknowns.x_accel
     conditions = segment.state.conditions 
@@ -58,7 +57,6 @@ def initialize_conditions(segment):
     segment.state.conditions.freestream.altitude[:,0]             = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed
-    segment.state.conditions.energy.throttle[:,0]             = throttle
     segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[x_accel,0.0,z_accel]]) 
     
 # ----------------------------------------------------------------------------------------------------------------------  

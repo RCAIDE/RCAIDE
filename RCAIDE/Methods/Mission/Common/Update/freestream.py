@@ -16,8 +16,28 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Common-Update
 def freestream(segment):
-    """  
-    """
+    """ Updates the freestream conditions 
+        
+        Assumptions:
+        N/A
+        
+        Inputs:
+            segment.state.conditions.:
+                 frames.inertial.velocity_vector   [m/s]
+                 freestream.density                [kg/m^3]
+                 freestream.speed_of_sound         [m/s]
+                 freestream.dynamic_viscosity      [Pa-s]
+        Outputs:
+            segment.conditions.freestream
+                 velocity                          [m/s]
+                 mach_number                       [-]
+                 reynolds_number                   [-]
+                 dynamic_pressure                  [Pa] 
+      
+        Properties Used:
+        N/A
+                    
+    """   
     
     # unpack
     conditions = segment.state.conditions

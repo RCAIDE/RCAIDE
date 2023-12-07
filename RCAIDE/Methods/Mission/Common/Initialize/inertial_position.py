@@ -8,11 +8,26 @@
 #  Initialize Inertial Position
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common-Initialize
-def inertial_position(segment):
-    """  
-                                
-    """    
+def inertial_position(segment): 
+    """ Initializes intertial positon of vehicle
     
+        Assumptions:  
+            Only used if there is an initial condition
+            
+        Inputs: 
+            state.conditions:           
+                numerics.dimensionless.integrate        [i]
+                numerics.dimensionless.control_points   [-]
+                frames.inertial.aircraft_range          [m]
+                inertial.velocity_vector                [m/s]
+            
+        Outputs: 
+            state.conditions.frames.inertial.position_vector  [m]
+            state.conditions.frames.inertial.aircraft_range   [m]
+           
+        Properties Used:
+        N/A 
+    """      
     if segment.state.initials:
         r_initial = segment.state.initials.conditions.frames.inertial.position_vector
         r_current = segment.state.conditions.frames.inertial.position_vector

@@ -10,13 +10,26 @@
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Common-Initialize
 def weights(segment):
-    """  
-                                
-    """     
+    """ Initializes weight of vehicle
+    
+        Assumptions:   
+            Uses max takeoff weight if no weight analysis is performed 
+            
+        Inputs: 
+            state.
+                initials.conditions.weights.total_mass  [kg]
+            state.conditions:           
+                conditions.weights.total_mass           [kg]
+            
+        Outputs: 
+            state.conditions.weights.total_mass         [kg] 
+           
+        Properties Used:
+        N/A 
+    """      
  
     if segment.state.initials:
-        m_initial = segment.state.initials.conditions.weights.total_mass[-1,0]
-        
+        m_initial = segment.state.initials.conditions.weights.total_mass[-1,0] 
     else: 
         if segment.analyses.weights != None: 
             m_initial = segment.analyses.weights.vehicle.mass_properties.takeoff

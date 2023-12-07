@@ -9,8 +9,21 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Missions-Common-Update
 def thrust(segment):
-    """  
-    """    
+    """ Updates the thrust vector of the vehicle from the propulsors 
+        
+        Assumptions:
+        N/A
+        
+        Inputs:
+            None 
+                 
+        Outputs: 
+            None
+      
+        Properties Used:
+        N/A
+                    
+    """ 
 
     # unpack
     energy_model = segment.analyses.energy

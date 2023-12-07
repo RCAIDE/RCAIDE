@@ -176,16 +176,24 @@ class All_Electric(Network):
         busses       = segment.analyses.energy.networks.all_electric.busses
         
         for bus in busses:
-            if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:  
+            if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge: 
+                pass
+            elif type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Discharge:
+                pass
+            else:
                 bus_results = segment.state.conditions.energy[bus.tag]  
                 for propulsor in bus.propulsors:      
-                    bus_results[propulsor.tag].rotor.power_coefficient = segment.state.unknowns[bus.tag + '_rotor_cp'] 
-                    if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:      
-                        bus_results.throttle = segment.state.unknowns[bus.tag + '_throttle']
-                    else: 
+                    bus_results[propulsor.tag].rotor.power_coefficient = segment.state.unknowns[bus.tag + '_rotor_cp']   
+                    if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
                         bus_results[propulsor.tag].rotor.power_coefficient = 0. * ones_row(1)
                         bus_results.throttle = 0. * ones_row(1)  
-      
+                    elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
+                        bus_results[propulsor.tag].rotor.power_coefficient = 0. * ones_row(1)
+                        bus_results.throttle = 0. * ones_row(1)  
+                    elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude):
+                        pass                        
+                    else: 
+                        bus_results.throttle = segment.state.unknowns[bus.tag + '_throttle'] 
         return     
     
     def residuals(self,segment):
@@ -266,8 +274,26 @@ class All_Electric(Network):
             segment.state.conditions.energy[bus.tag] = RCAIDE.Analyses.Mission.Common.Conditions()    
             bus_results                              = segment.state.conditions.energy[bus.tag]    
             segment.state.conditions.noise[bus.tag]  = RCAIDE.Analyses.Mission.Common.Conditions()  
-            noise_results                            = segment.state.conditions.noise[bus.tag]
-    
+            noise_results                            = segment.state.conditions.noise[bus.tag] 
+
+            # append throttle unknown 
+            if type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:
+                pass
+            elif type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Battery_Discharge:
+                pass
+            elif type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff:
+                pass 
+            elif type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing:   
+                pass
+            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
+                bus_results.throttle = segment.throttle 
+            else: 
+                try: 
+                    initial_throttle = estimated_propulsor_group_throttles[bus_i][0]
+                except:  
+                    initial_throttle = 0.5 
+                segment.state.unknowns[bus.tag + '_throttle'] = initial_throttle* ones_row(1)     
+                
             # ------------------------------------------------------------------------------------------------------
             # Assign battery residuals, unknowns and results data structures 
             # ------------------------------------------------------------------------------------------------------   
@@ -322,14 +348,6 @@ class All_Electric(Network):
                     segment.state.unknowns[ bus.tag  + '_rotor_cp']                    = cp_init * ones_row(1)  
                     segment.state.residuals.network[ bus.tag  + '_rotor_motor_torque'] = 0. * ones_row(1)            
                     
-                    # append throttle unknown 
-                    if type(segment) != RCAIDE.Analyses.Mission.Segments.Ground.Takeoff or type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing:  
-                        try: 
-                            initial_throttle = estimated_propulsor_group_throttles[bus_i][0]
-                        except:  
-                            initial_throttle = 0.5 
-                        segment.state.unknowns[bus.tag + '_throttle'] = initial_throttle* ones_row(1)    
-                                 
                 # Results data structure for each propulsor group     
                 bus_results.throttle                               = 0. * ones_row(1)
                 bus_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()

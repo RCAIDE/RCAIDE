@@ -15,6 +15,20 @@ import RCAIDE
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Missions-Segments-Common-Initialize
 def aerodynamics(mission):
+    """ Runs aerdoynamics model and build surrogate
+    
+        Assumptions:
+            N/A
+        
+        Inputs:
+            None
+            
+        Outputs:
+            None 
+
+        Properties Used:
+        N/A                
+    """      
     last_tag = None
     for tag,segment in mission.segments.items():        
         if (type(segment.analyses.aerodynamics) == RCAIDE.Analyses.Aerodynamics.Subsonic_VLM) or (type(segment.analyses.aerodynamics) == RCAIDE.Analyses.Aerodynamics.Supersonic_VLM): 
@@ -26,7 +40,5 @@ def aerodynamics(mission):
                 aero.process.compute.lift.inviscid_wings.settings.model_fuselage = aero.settings.model_fuselage
                 aero.process.compute.lift.inviscid_wings.initialize()  
                 
-                last_tag = tag 
-        
-    
+                last_tag = tag  
     return 

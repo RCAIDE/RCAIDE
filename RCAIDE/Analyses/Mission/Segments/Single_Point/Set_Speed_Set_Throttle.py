@@ -76,10 +76,15 @@ class Set_Speed_Set_Throttle(Evaluate):
         initialize.differentials           = skip
         initialize.conditions              = Segments.Single_Point.Set_Speed_Set_Throttle.initialize_conditions 
         iterate                            = self.process.iterate 
-        iterate.unknowns.mission           = Segments.Single_Point.Set_Speed_Set_Throttle.unpack_unknowns 
-        iterate.conditions.differentials   = skip 
-        iterate.conditions.weights         = Common.Update.weights
-        iterate.conditions.planet_position = skip 
+        iterate.initials.energy            = skip    
+        iterate.unknowns.mission           = Segments.Single_Point.Set_Speed_Set_Throttle.unpack_unknowns # Common.Unpack_Unknowns.level_flight
+        iterate.conditions.differentials   = skip   
+        iterate.conditions.planet_position = skip    
+        iterate.conditions.acceleration    = skip
+        iterate.conditions.weights         = skip 
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
+        post_process                       = self.process.post_process 
+        post_process.inertial_position     = skip    
+                
         return
 

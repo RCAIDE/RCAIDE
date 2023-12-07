@@ -68,15 +68,15 @@ class Constant_Throttle_Constant_Altitude(Evaluate):
         self.state.unknowns.body_angle            = ones_row(1) * 0.0
         self.state.unknowns.accel_x               = ones_row(1) * 1.
         self.state.unknowns.time                  = 100.
-        self.state.residuals.final_velocity_error = 0.0
         self.state.residuals.forces               = ones_row(2) * 0.0
+        self.state.residuals.final_velocity_error = 0.0
      
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize  
         initialize.conditions              = Segments.Cruise.Constant_Throttle_Constant_Altitude.initialize_conditions      
-        iterate                            = self.process.iterate       
+        iterate                            = self.process.iterate        
         iterate.conditions.velocity        = Segments.Cruise.Constant_Throttle_Constant_Altitude.integrate_velocity  
         iterate.residuals.total_forces     = Segments.Cruise.Constant_Throttle_Constant_Altitude.solve_residuals 
         iterate.unknowns.mission           = Segments.Cruise.Constant_Throttle_Constant_Altitude.unpack_unknowns                  

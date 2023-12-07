@@ -34,8 +34,7 @@ def differentials_dimensionless(segment):
         Properties Used:
         N/A
                                 
-    """    
-    
+    """     
     
     # unpack
     numerics = segment.state.numerics

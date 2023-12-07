@@ -75,8 +75,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
         """           
         
         #Unpack
-        conditions  = state.conditions
-        numerics    = state.numerics  
+        conditions  = state.conditions 
         fuel_lines  = self.fuel_lines 
     
         total_thrust  = 0. * state.ones_row(3) 
@@ -89,8 +88,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
     
             for fuel_tank in fuel_tanks: 
                 fuel_line_results                                = conditions.energy[fuel_line.tag]  
-                fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot # change 
-                fuel_line_results[fuel_tank.tag].mass            = np.atleast_2d((fuel_line_results[fuel_tank.tag].mass[0,0] - cumtrapz(fuel_line_results[fuel_tank.tag].mass_flow_rate[:,0], x   = numerics.time.control_points[:,0]))).T
+                fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot  
     
             total_thrust += fuel_line_T   
             total_power  += fuel_line_P    
@@ -177,7 +175,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
             fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]   
             segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Analyses.Mission.Common.Conditions()  
             noise_results                                        = segment.state.conditions.noise[fuel_line.tag] 
-     
+    
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  
                 fuel_line_results[fuel_tank.tag].mass_flow_rate  = ones_row(1)  
@@ -191,11 +189,10 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
                 fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].engine                  = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions()  
-                fuel_line_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)   # NEED TO REMOVE
+                fuel_line_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)   
                 fuel_line_results[propulsor.tag].engine.efficiency       = 0. * ones_row(1)
                 fuel_line_results[propulsor.tag].engine.torque           = 0. * ones_row(1) 
-                fuel_line_results[propulsor.tag].engine.power            = 0. * ones_row(1) 
-                fuel_line_results[propulsor.tag].engine.throttle         = 0. * ones_row(1) 
+                fuel_line_results[propulsor.tag].engine.power            = 0. * ones_row(1)  
                 fuel_line_results[propulsor.tag].rotor.torque            = 0. * ones_row(1) 
                 fuel_line_results[propulsor.tag].engine.rpm              = segment.state.conditions.energy.rpm * ones_row(1)                 
                 fuel_line_results[propulsor.tag].rotor.thrust            = 0. * ones_row(1)

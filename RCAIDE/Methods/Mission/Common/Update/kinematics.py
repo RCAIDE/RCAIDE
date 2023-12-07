@@ -15,9 +15,24 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common-Update
 def kinematics(segment):
-    """  
-                                
-    """            
+    """ Updates the kinematics of the rigid body (aircraft) 
+        
+        Assumptions:
+        N/A
+        
+        Inputs:
+            segment.state.:
+                 conditions.frames.inertial.velocity_vector    [m/s]
+                 numerics.time.differentiate                   [-]
+                 
+        Outputs:
+            segment.conditions 
+                 frames.inertial.acceleration_vector 
+      
+        Properties Used:
+        N/A
+                    
+    """   
     
     # unpack conditions
     v = segment.state.conditions.frames.inertial.velocity_vector

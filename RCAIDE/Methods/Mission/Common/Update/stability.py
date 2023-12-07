@@ -9,9 +9,21 @@
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Common-Update
 def stability(segment): 
-    """  
-    """    
-
+    """ Updates the stability of the aircraft 
+        
+        Assumptions:
+        N/A
+        
+        Inputs:
+            None 
+                 
+        Outputs: 
+            None
+      
+        Properties Used:
+        N/A
+                    
+    """   
     # unpack
     conditions = segment.state.conditions
     stability_model = segment.analyses.stability

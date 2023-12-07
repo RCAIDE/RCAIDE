@@ -16,7 +16,7 @@ from RCAIDE.Visualization                 import *
 # python imports 
 import numpy as np  
 from copy import deepcopy
-
+import os
 
 def vehicle_setup():
 
@@ -92,8 +92,11 @@ def vehicle_setup():
     wing.high_mach                 = True 
     wing.dynamic_pressure_ratio    = 1.0
      
-    wing_airfoil                   = RCAIDE.Components.Airfoils.Airfoil() 
-    wing_airfoil.coordinate_file   = '../../Vehicles/Airfoils/NACA65-203.txt'  
+    wing_airfoil                   = RCAIDE.Components.Airfoils.Airfoil()  
+    ospath                         = os.path.abspath(__file__)
+    separator                      = os.path.sep
+    rel_path                       = os.path.dirname(ospath) + separator   
+    wing_airfoil.coordinate_file   = rel_path + 'Airfoils' + separator + 'NACA65-203.txt' 
     wing.append_airfoil(wing_airfoil)  
     
     # set root sweep with inner section
@@ -184,9 +187,8 @@ def vehicle_setup():
     
     wing.dynamic_pressure_ratio  = 1.0
     
-    tail_airfoil = RCAIDE.Components.Airfoils.Airfoil()
-    # This airfoil is not a true Concorde airfoil
-    tail_airfoil.coordinate_file = '../../Vehicles/Airfoils/supersonic_tail.txt' 
+    tail_airfoil = RCAIDE.Components.Airfoils.Airfoil() 
+    tail_airfoil.coordinate_file = rel_path + 'Airfoils' + separator + 'supersonic_tail.txt' 
     
     wing.append_airfoil(tail_airfoil)  
 
@@ -315,6 +317,7 @@ def vehicle_setup():
     # Fuel Distrubition Line 
     #------------------------------------------------------------------------------------------------------------------------------------  
     fuel_line                                     = RCAIDE.Energy.Distribution.Fuel_Line() 
+    fuel_line.identical_propulsors                = False # only for regression 
        
     #------------------------------------------------------------------------------------------------------------------------------------  
     #   Fuel

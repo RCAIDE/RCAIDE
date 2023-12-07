@@ -107,8 +107,7 @@ class Turbofan_Engine(Network):
         
             for fuel_tank in fuel_tanks: 
                 fuel_line_results                                = conditions.energy[fuel_line.tag]  
-                fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot # change 
-                fuel_line_results[fuel_tank.tag].mass            = np.atleast_2d((fuel_line_results[fuel_tank.tag].mass[0,0] - cumtrapz(fuel_line_results[fuel_tank.tag].mass_flow_rate[:,0], x   = numerics.time.control_points[:,0]))).T
+                fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot 
                 
             total_thrust += fuel_line_T   
             total_power  += fuel_line_P    
@@ -173,11 +172,18 @@ class Turbofan_Engine(Network):
         Properties Used:
         N/A
         """            
- 
-        fuel_lines   = segment.analyses.energy.networks.turbofan_engine.fuel_lines 
-        for fuel_line_i, fuel_line in enumerate(fuel_lines):    
-            fuel_line_results           = segment.state.conditions.energy[fuel_line.tag]  
-            fuel_line_results.throttle  = segment.state.unknowns[fuel_line.tag + '_throttle']  
+         
+        if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
+            pass
+        elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
+            pass
+        elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
+            pass    
+        else:
+            fuel_lines   = segment.analyses.energy.networks.turbofan_engine.fuel_lines 
+            for fuel_line_i, fuel_line in enumerate(fuel_lines):    
+                fuel_line_results           = segment.state.conditions.energy[fuel_line.tag]  
+                fuel_line_results.throttle  = segment.state.unknowns[fuel_line.tag + '_throttle']  
         
         return    
      
@@ -218,9 +224,18 @@ class Turbofan_Engine(Network):
             # ------------------------------------------------------------------------------------------------------
             segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Analyses.Mission.Common.Conditions()       
             fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]   
+            fuel_line_results.throttle                           = 0. * ones_row(1) 
             segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Analyses.Mission.Common.Conditions()  
             noise_results                                        = segment.state.conditions.noise[fuel_line.tag]
-            segment.state.unknowns[fuel_line.tag + '_throttle']  = estimated_throttles[fuel_line_i][0] * ones_row(1) 
+            
+            if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
+                pass
+            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
+                pass 
+            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
+                fuel_line_results.throttle = segment.throttle * ones_row(1)            
+            else:       
+                segment.state.unknowns[fuel_line.tag + '_throttle']  = estimated_throttles[fuel_line_i][0] * ones_row(1) 
      
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  
@@ -233,14 +248,13 @@ class Turbofan_Engine(Network):
             for propulsor in fuel_line.propulsors:               
                 fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].turbofan                = RCAIDE.Analyses.Mission.Common.Conditions()  
-                fuel_line_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)   # NEED TO REMOVE
+                fuel_line_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)  
                 fuel_line_results[propulsor.tag].turbofan.thrust         = 0. * ones_row(1) 
                 fuel_line_results[propulsor.tag].turbofan.power          = 0. * ones_row(1) 
-                fuel_line_results[propulsor.tag].throttle                = 0. * ones_row(1) 
                 noise_results[propulsor.tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
                 noise_results[propulsor.tag].turbofan                    = RCAIDE.Analyses.Mission.Common.Conditions() 
         
-        segment.process.iterate.unknowns.network                  = self.unpack_unknowns                   
+        segment.process.iterate.unknowns.network   = self.unpack_unknowns                   
         return segment    
         
     __call__ = evaluate_thrust

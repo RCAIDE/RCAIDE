@@ -63,7 +63,7 @@ def initialize_conditions_unpack_unknowns(segment):
     alts     = segment.state.unknowns.altitudes    
 
     # Update freestream to get density
-    atmosphere(segment)
+    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment)
     rho = conditions.freestream.density[:,0]   
 
     # check for initial altitude
@@ -81,7 +81,7 @@ def initialize_conditions_unpack_unknowns(segment):
         v_mag = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])
     else: 
         # Update freestream to get density
-        atmosphere(segment)
+        RCAIDE.Methods.Mission.Common.Update.atmosphere(segment)
         rho = conditions.freestream.density[:,0]       
     
         # process velocity vector
@@ -120,15 +120,15 @@ def residual_total_forces(segment):
     """     
     
     # Unpack results
-    FT = segment.state.conditions.frames.inertial.total_force_vector
-    a  = segment.state.conditions.frames.inertial.acceleration_vector
-    m  = segment.state.conditions.weights.total_mass    
+    FT      = segment.state.conditions.frames.inertial.total_force_vector
+    a       = segment.state.conditions.frames.inertial.acceleration_vector
+    m       = segment.state.conditions.weights.total_mass    
     alt_in  = segment.state.unknowns.altitudes[:,0] 
     alt_out = segment.state.conditions.freestream.altitude[:,0] 
     
     # Residual in X and Z, as well as a residual on the guess altitude
-    segment.state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a[:,0]
-    segment.state.residuals.forces[:,1] = FT[:,2]/m[:,0] - a[:,2]
-    segment.state.residuals.forces[:,2] = (alt_in - alt_out)/alt_out[-1]
+    segment.state.residuals.forces[:,0]   = FT[:,0]/m[:,0] - a[:,0]
+    segment.state.residuals.forces[:,1]   = FT[:,2]/m[:,0] - a[:,2]
+    segment.state.residuals.altitude[:,0] = (alt_in - alt_out)/alt_out[-1]
 
     return

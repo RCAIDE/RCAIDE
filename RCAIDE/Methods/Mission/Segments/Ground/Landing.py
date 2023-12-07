@@ -4,6 +4,8 @@
 # 
 # Created:  Jul 2023, M. Clarke  
  
+import numpy as np 
+
 # ----------------------------------------------------------------------------------------------------------------------
 # unpack unknowns
 # ----------------------------------------------------------------------------------------------------------------------
@@ -64,19 +66,22 @@ def initialize_conditions(segment):
     segment.state.unknowns.velocity_x = initialized_velocity[1:,0]    
 
     # pack conditions 
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = initialized_velocity[:,0]
-    segment.state.conditions.ground.incline[:,0]                  = segment.ground_incline
-    segment.state.conditions.ground.friction_coefficient[:,0]     = segment.friction_coefficient
-    segment.state.conditions.propulsion.throttle[:,0]             = throttle  
-    segment.state.conditions.freestream.altitude[:,0]             = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt      
-    
-    # Unpack
-    throttle  = segment.throttle
+    conditions = segment.state.conditions    
+    conditions.frames.inertial.velocity_vector[:,0] = initialized_velocity[:,0]
+    conditions.ground.incline[:,0]                  = segment.ground_incline
+    conditions.ground.friction_coefficient[:,0]     = segment.friction_coefficient 
+    conditions.freestream.altitude[:,0]             = alt
+    conditions.frames.inertial.position_vector[:,2] = -alt      
+
+    for network in segment.analyses.energy.networks:
+        if 'busses' in network:
+            for bus in network.busses: 
+                conditions.energy[bus.tag].throttle[:,0]      = throttle   
+        if 'fuel_lines' in network:
+            for fuel_line in network.fuel_lines: 
+                conditions.energy[fuel_line.tag].throttle[:,0] = throttle     
+    # Unpack 
     m_initial = segment.analyses.weights.vehicle.mass_properties.landing
           
     # apply initials
-    conditions.weights.total_mass[:,0]  = m_initial
-    conditions.propulsion.throttle[:,0] = throttle        
-
-    return conditions
+    conditions.weights.total_mass[:,0]  = m_initial 

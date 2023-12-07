@@ -257,9 +257,7 @@ def mission_setup(analyses):
             segment.time                                            = 1.5 * Units.hr
             if flight_no  == flights_per_day:  
                 segment.increment_battery_age_by_one_day            =True                        
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    
-            
-            # add to misison
+            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)     
             mission.append_segment(segment)        
 
     return mission
