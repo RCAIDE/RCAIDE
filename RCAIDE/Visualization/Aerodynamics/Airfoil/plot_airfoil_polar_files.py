@@ -71,29 +71,29 @@ def plot_airfoil_polar_files(polar_data,
         
         Re_val = str(round(Re_raw[j])/1e6)+'e6'  
         
-        axes_1 = plt.subplot(2,2,1)
-        axes_1.plot(alpha, CL[j,:], color = line_colors[j], marker = ps.marker, linewidth = ps.line_width, label ='Re='+Re_val)
-        axes_1.set_ylabel(r'$C_l$')
-        axes_1.set_xlabel(r'$\alpha$')
-        set_axes(axes_1)    
+        axis_1 = plt.subplot(2,2,1)
+        axis_1.plot(alpha, CL[j,:], color = line_colors[j], marker = ps.markers[0], linewidth = ps.line_width, label ='Re='+Re_val)
+        axis_1.set_ylabel(r'$C_l$')
+        axis_1.set_xlabel(r'$\alpha$')
+        set_axes(axis_1)    
         
-        axes_2 = plt.subplot(2,2,2)
-        axes_2.plot(alpha,CD[j,:], color = line_colors[j], marker = ps.marker, linewidth = ps.line_width, label ='Re='+Re_val) 
-        axes_2.set_ylabel(r'$C_d$')
-        axes_2.set_xlabel(r'$\alpha$')
-        set_axes(axes_2)  
+        axis_2 = plt.subplot(2,2,2)
+        axis_2.plot(alpha,CD[j,:], color = line_colors[j], marker = ps.markers[0], linewidth = ps.line_width, label ='Re='+Re_val) 
+        axis_2.set_ylabel(r'$C_d$')
+        axis_2.set_xlabel(r'$\alpha$')
+        set_axes(axis_2)  
         
-        axes_3 = plt.subplot(2,2,3)
-        axes_3.plot(CL[j,:],CD[j,:], color = line_colors[j], marker = ps.marker, linewidth = ps.line_width, label ='Re='+Re_val)
-        axes_3.set_xlabel('$C_l$')
-        axes_3.set_ylabel(r'$C_d$')
-        set_axes(axes_3) 
+        axis_3 = plt.subplot(2,2,3)
+        axis_3.plot(CL[j,:],CD[j,:], color = line_colors[j], marker = ps.markers[0], linewidth = ps.line_width, label ='Re='+Re_val)
+        axis_3.set_xlabel('$C_l$')
+        axis_3.set_ylabel(r'$C_d$')
+        set_axes(axis_3) 
     
-        axes_4 = plt.subplot(2,2,4)
-        axes_4.plot(alpha, CL[j,:]/CD[j,:], color = line_colors[j], marker = ps.marker, linewidth = ps.line_width, label ='Re='+Re_val) 
-        axes_4.set_ylabel(r'$Cl/Cd$')
-        axes_4.set_xlabel(r'$\alpha$')
-        set_axes(axes_4)   
+        axis_4 = plt.subplot(2,2,4)
+        axis_4.plot(alpha, CL[j,:]/CD[j,:], color = line_colors[j], marker = ps.markers[0], linewidth = ps.line_width, label ='Re='+Re_val) 
+        axis_4.set_ylabel(r'$Cl/Cd$')
+        axis_4.set_xlabel(r'$\alpha$')
+        set_axes(axis_4)   
      
     # set title of plot 
     title_text    = 'Airfoil Polars'      

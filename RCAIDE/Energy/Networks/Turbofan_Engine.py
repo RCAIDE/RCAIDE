@@ -15,12 +15,7 @@ from RCAIDE.Analyses.Mission.Common                                          imp
 from RCAIDE.Methods.Propulsion.Performance.turbofan_propulsor                import turbofan_propulsor
 from .Network                                                                import Network  
 from .Network import Network
-
- # package imports 
-import numpy as np  
-from scipy.integrate import  cumtrapz 
  
-
 # ----------------------------------------------------------------------------------------------------------------------
 #  Turbofan
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -93,8 +88,7 @@ class Turbofan_Engine(Network):
         """           
 
         #Unpack
-        conditions  = state.conditions
-        numerics    = state.numerics  
+        conditions  = state.conditions  
         fuel_lines  = self.fuel_lines 
          
         total_thrust  = 0. * state.ones_row(3) 
@@ -102,16 +96,17 @@ class Turbofan_Engine(Network):
         total_mdot    = 0. * state.ones_row(1) 
         
         for fuel_line in fuel_lines:
-            fuel_tanks   = fuel_line.fuel_tanks    
-            fuel_line_T , fuel_line_P, fuel_line_mdot  = turbofan_propulsor(fuel_line,state)    
-        
-            for fuel_tank in fuel_tanks: 
-                fuel_line_results                                = conditions.energy[fuel_line.tag]  
-                fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot 
-                
-            total_thrust += fuel_line_T   
-            total_power  += fuel_line_P    
-            total_mdot   += fuel_line_mdot    
+            if fuel_line.active:   
+                fuel_tanks   = fuel_line.fuel_tanks    
+                fuel_line_T , fuel_line_P, fuel_line_mdot  = turbofan_propulsor(fuel_line,state)    
+            
+                for fuel_tank in fuel_tanks: 
+                    fuel_line_results                                = conditions.energy[fuel_line.tag]  
+                    fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot 
+                    
+                total_thrust += fuel_line_T   
+                total_power  += fuel_line_P    
+                total_mdot   += fuel_line_mdot    
     
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
@@ -172,16 +167,16 @@ class Turbofan_Engine(Network):
         Properties Used:
         N/A
         """            
-         
-        if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
-            pass
-        elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
-            pass
-        elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
-            pass    
-        else:
-            fuel_lines   = segment.analyses.energy.networks.turbofan_engine.fuel_lines 
-            for fuel_line_i, fuel_line in enumerate(fuel_lines):    
+
+        fuel_lines   = segment.analyses.energy.networks.turbofan_engine.fuel_lines  
+        for fuel_line_i, fuel_line in enumerate(fuel_lines):            
+            if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
+                pass
+            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
+                pass
+            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
+                pass    
+            elif fuel_line.active:    
                 fuel_line_results           = segment.state.conditions.energy[fuel_line.tag]  
                 fuel_line_results.throttle  = segment.state.unknowns[fuel_line.tag + '_throttle']  
         
@@ -234,7 +229,7 @@ class Turbofan_Engine(Network):
                 pass 
             elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
                 fuel_line_results.throttle = segment.throttle * ones_row(1)            
-            else:       
+            elif fuel_line.active:         
                 segment.state.unknowns[fuel_line.tag + '_throttle']  = estimated_throttles[fuel_line_i][0] * ones_row(1) 
      
             for fuel_tank in fuel_line.fuel_tanks:               

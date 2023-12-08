@@ -660,9 +660,7 @@ def vehicle_setup():
     starboard_propulsor.turbofan = turbofan 
 
     # append propulsor to distribution line 
-    fuel_line.propulsors.append(starboard_propulsor)    
-    
-
+    fuel_line.propulsors.append(starboard_propulsor)  
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Port Propulsor
@@ -673,7 +671,7 @@ def vehicle_setup():
     # copy turbofan
     turbofan_2                             = deepcopy(turbofan)
     turbofan_2.tag                         = 'turbofan_2' 
-    turbofan_2.origin                      = [[12.0,-4.38,-1.1]]  # change origin
+    turbofan_2.origin                      = [[13.72,-4.38,-1.1]]  # change origin
     
     # append turbofan to propulsor data class 
     port_propulsor.turbofan                = turbofan_2 
@@ -705,8 +703,7 @@ def configs_setup(vehicle):
     # ------------------------------------------------------------------
     #   Initialize Configurations
     # ------------------------------------------------------------------
-    configs = RCAIDE.Components.Configs.Config.Container()
-
+    configs = RCAIDE.Components.Configs.Config.Container() 
     base_config = RCAIDE.Components.Configs.Config(vehicle)
     base_config.tag = 'base' 
     configs.append(base_config)
@@ -724,10 +721,8 @@ def configs_setup(vehicle):
     config = RCAIDE.Components.Configs.Config(base_config)
     config.tag = 'takeoff'
     config.wings['main_wing'].control_surfaces.flap.deflection = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection = 25. * Units.deg
-    # A max lift coefficient factor of 1 is the default, but it is highlighted here as an option
-    config.max_lift_coefficient_factor    = 1.
-
+    config.wings['main_wing'].control_surfaces.slat.deflection = 25. * Units.deg 
+    config.max_lift_coefficient_factor    = 1. 
     configs.append(config)
     
     # ------------------------------------------------------------------
@@ -746,8 +741,7 @@ def configs_setup(vehicle):
     # ------------------------------------------------------------------
 
     config = RCAIDE.Components.Configs.Config(base_config)
-    config.tag = 'landing'
-
+    config.tag = 'landing' 
     config.wings['main_wing'].control_surfaces.flap.deflection = 30. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection = 25. * Units.deg  
     config.max_lift_coefficient_factor    = 1. 
@@ -759,8 +753,7 @@ def configs_setup(vehicle):
     # ------------------------------------------------------------------ 
 
     config = RCAIDE.Components.Configs.Config(base_config)
-    config.tag = 'short_field_takeoff'
-    
+    config.tag = 'short_field_takeoff' 
     config.wings['main_wing'].control_surfaces.flap.deflection = 20. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection = 20. * Units.deg
     config.max_lift_coefficient_factor    = 1. 

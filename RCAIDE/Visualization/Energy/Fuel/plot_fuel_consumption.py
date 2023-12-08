@@ -92,9 +92,9 @@ def plot_fuel_consumption(results,
                 plot_fuel     = np.negative(fuel)
                 plot_alt_fuel = np.negative(alt_fuel)
 
-                axes.plot( time , plot_fuel , 'ro-', marker = ps.marker, linewidth = ps.line_width , label = 'fuel')
-                axes.plot( time , plot_alt_fuel , 'bo-', marker = ps.marker, linewidth = ps.line_width, label = 'additional fuel' )
-                axes.plot( time , np.add(plot_fuel, plot_alt_fuel), 'go-', marker = ps.marker, linewidth = ps.line_width, label = 'total fuel' )
+                axes.plot( time , plot_fuel , 'ro-', marker = ps.markers[0], linewidth = ps.line_width , label = 'fuel')
+                axes.plot( time , plot_alt_fuel , 'bo-', marker = ps.markers[0], linewidth = ps.line_width, label = 'additional fuel' )
+                axes.plot( time , np.add(plot_fuel, plot_alt_fuel), 'go-', marker = ps.markers[0], linewidth = ps.line_width, label = 'total fuel' )
 
                 axes.legend(loc='center right')   
 
@@ -105,9 +105,9 @@ def plot_fuel_consumption(results,
                 current_fuel         = np.add(fuel, prev_seg_fuel)
                 current_alt_fuel     = np.add(alt_fuel, prev_seg_extra_fuel)
 
-                axes.plot( time , np.negative(current_fuel)  , 'ro-' , marker = ps.marker, linewidth = ps.line_width)
-                axes.plot( time , np.negative(current_alt_fuel ), 'bo-', marker = ps.marker, linewidth = ps.line_width)
-                axes.plot( time , np.negative(current_fuel + current_alt_fuel), 'go-', marker = ps.marker, linewidth = ps.line_width)
+                axes.plot( time , np.negative(current_fuel)  , 'ro-' , marker = ps.markers[0], linewidth = ps.line_width)
+                axes.plot( time , np.negative(current_alt_fuel ), 'bo-', marker = ps.markers[0], linewidth = ps.line_width)
+                axes.plot( time , np.negative(current_fuel + current_alt_fuel), 'go-', marker = ps.markers[0], linewidth = ps.line_width)
 
         else:
             
@@ -115,7 +115,7 @@ def plot_fuel_consumption(results,
             fuel            = results.segments[i].conditions.weights.total_mass[:,0]
             time            = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
             total_fuel      = np.negative(results.segments[i].conditions.weights.total_mass[:,0] - initial_weight )
-            axes.plot( time, total_fuel, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
+            axes.plot( time, total_fuel, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
 
     axes.set_ylabel('Fuel (kg)')
     axes.set_xlabel('Time (min)')

@@ -57,13 +57,13 @@ def plot_battery_ragone_diagram(battery,
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)  
         
-    axes_1 = plt.subplot(1,1,1)
+    axis_1 = plt.subplot(1,1,1)
     esp_plot = np.linspace(battery.ragone.lower_bound, battery.ragone.upper_bound,50)
     psp_plot = battery.ragone.const_1*10**(esp_plot*battery.ragone.const_2)
-    axes_1.plot(esp_plot/(Units.Wh/Units.kg),psp_plot/(Units.kW/Units.kg), color = 'black', marker = ps.marker, linewidth = ps.line_width, label= battery.tag) 
-    axes_1.set_ylabel('Specific Power (kW/kg)')
-    axes_1.set_xlabel('Specific Energy (W-h/kg)')
-    set_axes(axes_1)       
+    axis_1.plot(esp_plot/(Units.Wh/Units.kg),psp_plot/(Units.kW/Units.kg), color = 'black', marker = ps.markers[0], linewidth = ps.line_width, label= battery.tag) 
+    axis_1.set_ylabel('Specific Power (kW/kg)')
+    axis_1.set_xlabel('Specific Energy (W-h/kg)')
+    set_axes(axis_1)       
      
     # set title of plot 
     title_text    = 'Battery Ragone Plot'      

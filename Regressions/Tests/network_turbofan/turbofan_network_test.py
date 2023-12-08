@@ -276,10 +276,7 @@ def missions_setup(mission):
 
 
 def plot_results(results):  
-    
-    # Plot Flight Conditions 
-    plot_flight_conditions(results)
-    
+     
     # Plot Aerodynamic Forces 
     plot_aerodynamic_forces(results)
     

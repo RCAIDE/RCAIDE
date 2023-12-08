@@ -76,27 +76,27 @@ def plot_flight_conditions(results,
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')
         
-        axes_1 = plt.subplot(2,2,1)
-        axes_1.plot(time, altitude, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)
-        axes_1.set_ylabel(r'Altitude (ft)')
-        set_axes(axes_1)    
+        axis_1 = plt.subplot(2,2,1)
+        axis_1.plot(time, altitude, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
+        axis_1.set_ylabel(r'Altitude (ft)')
+        set_axes(axis_1)    
         
-        axes_2 = plt.subplot(2,2,2)
-        axes_2.plot(time, airspeed, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width) 
-        axes_2.set_ylabel(r'Airspeed (mph)')
-        set_axes(axes_2) 
+        axis_2 = plt.subplot(2,2,2)
+        axis_2.plot(time, airspeed, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
+        axis_2.set_ylabel(r'Airspeed (mph)')
+        set_axes(axis_2) 
         
-        axes_3 = plt.subplot(2,2,3)
-        axes_3.plot(time, Range, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-        axes_3.set_xlabel('Time (mins)')
-        axes_3.set_ylabel(r'Range (nmi)')
-        set_axes(axes_3) 
+        axis_3 = plt.subplot(2,2,3)
+        axis_3.plot(time, Range, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_3.set_xlabel('Time (mins)')
+        axis_3.set_ylabel(r'Range (nmi)')
+        set_axes(axis_3) 
          
-        axes_4 = plt.subplot(2,2,4)
-        axes_4.plot(time, theta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-        axes_4.set_xlabel('Time (mins)')
-        axes_4.set_ylabel(r'Pitch Angle (deg)')
-        set_axes(axes_4) 
+        axis_4 = plt.subplot(2,2,4)
+        axis_4.plot(time, theta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_4.set_xlabel('Time (mins)')
+        axis_4.set_ylabel(r'Pitch Angle (deg)')
+        set_axes(axis_4) 
          
     
     if show_legend:        

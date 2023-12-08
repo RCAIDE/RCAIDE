@@ -67,13 +67,13 @@ def modify_blade_geometry(nexus):
     # Pull out the vehicles
 
     vehicle_hover     = nexus.vehicle_configurations.hover
-    rotor_hover       = vehicle_hover.networks.all_electric.busses.bus.rotors.rotor
+    rotor_hover       = vehicle_hover.networks.all_electric.busses.bus.propulsors.propulsor.rotor
     vehicle_oei       = nexus.vehicle_configurations.oei
-    rotor_oei         = vehicle_oei.networks.all_electric.busses.bus.rotors.rotor    
+    rotor_oei         = vehicle_oei.networks.all_electric.busses.bus.propulsors.propulsor.rotor    
     
     if nexus.prop_rotor_flag:  
         vehicle_cruise    = nexus.vehicle_configurations.cruise 
-        rotor_cruise      = vehicle_cruise.networks.all_electric.busses.bus.rotors.rotor 
+        rotor_cruise      = vehicle_cruise.networks.all_electric.busses.bus.propulsors.propulsor.rotor 
         
     airfoils = rotor_hover.Airfoils      
     a_loc    = rotor_hover.airfoil_polar_stations   
@@ -165,15 +165,15 @@ def updated_blade_geometry(chi,c_r,p,q,c_t):
 def run_rotor_OEI(nexus):
     
     # Unpack  
-    rotor    = nexus.vehicle_configurations.oei.networks.all_electric.busses.bus.rotors.rotor
+    bus                   = nexus.vehicle_configurations.oei.networks.all_electric.busses.bus 
+    propulsor             = bus.propulsors.propulsor 
+    rotor                 = propulsor.rotor
     
     # Setup Test conditions
-    speed    = rotor.oei.design_freestream_velocity 
-    altitude = np.array([rotor.oei.design_altitude]) 
-    R        = rotor.tip_radius
-    TM       = rotor.oei.design_tip_mach   
-
-    # Calculate the atmospheric properties
+    speed                 = rotor.oei.design_freestream_velocity 
+    altitude              = np.array([rotor.oei.design_altitude]) 
+    R                     = rotor.tip_radius
+    TM                    = rotor.oei.design_tip_mach  
     atmosphere            = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
     atmosphere_conditions = atmosphere.compute_values(altitude)
 
@@ -214,20 +214,22 @@ def run_rotor_OEI(nexus):
 # ----------------------------------------------------------------------  
 def run_rotor_hover(nexus):
      
-    # Unpack   
-    rotors = nexus.vehicle_configurations.hover.networks.all_electric.busses.bus.rotors 
-    rotor  = rotors.rotor  
-    alpha  = rotor.optimization_parameters.multiobjective_aeroacoustic_weight
-
+    # Unpack    
+    bus                   = nexus.vehicle_configurations.hover.networks.all_electric.busses.bus 
+    propulsor             = bus.propulsors.propulsor
+    rotor                 = propulsor.rotor
+    
     # Setup Test conditions
-    speed    = rotor.hover.design_freestream_velocity 
-    altitude = np.array([rotor.hover.design_altitude]) 
-    R        = rotor.tip_radius
-    TM       = rotor.hover.design_tip_mach  
-
-    # Calculate the atmospheric properties
+    alpha                 = rotor.optimization_parameters.multiobjective_aeroacoustic_weight 
+    speed                 = rotor.hover.design_freestream_velocity 
+    altitude              = np.array([rotor.hover.design_altitude]) 
+    R                     = rotor.tip_radius
+    TM                    = rotor.hover.design_tip_mach   
     atmosphere            = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
     atmosphere_conditions = atmosphere.compute_values(altitude)
+    tip_speed             = atmosphere_conditions.speed_of_sound*TM
+    omega                 = tip_speed/R
+    rotor.inputs.omega = np.array(omega)
 
     # Pack everything up
     conditions                                          = RCAIDE.Analyses.Mission.Common.Results()
@@ -236,41 +238,37 @@ def run_rotor_hover(nexus):
     conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
     conditions.frames.wind.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
     conditions.frames.planet.true_course_angle          = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
-    
-    # Calculate the RPM
-    tip_speed = atmosphere_conditions.speed_of_sound*TM
-    omega       = tip_speed/R
-    
-    # Set the RPM
-    rotor.inputs.omega = np.array(omega)    
-    
+       
     # Run the rotor
     F, Q, P, Cp, outputs, etap  = rotor.spin(conditions)
     
     # Pack the results
-    nexus.results.hover.thrust           = -F[0,2]  
-    nexus.results.hover.torque           = Q[0][0]
-    nexus.results.hover.power            = P[0][0]
-    nexus.results.hover.power_c          = Cp[0][0]
-    nexus.results.hover.thurst_c         = outputs.thrust_coefficient[0][0]
-    nexus.results.hover.omega            = omega[0][0]
-    nexus.results.hover.max_sectional_cl = np.max(outputs.lift_coefficient[0]) 
-    nexus.results.hover.mean_CL          = np.mean(outputs.lift_coefficient[0])
-    nexus.results.hover.full_results     = outputs   
-    nexus.results.hover.figure_of_merit  = outputs.figure_of_merit[0][0]  
-    nexus.results.hover.efficiency       = etap[0][0] 
-    nexus.results.hover.conditions       = conditions  
-    
-    # microphone locations
-    altitude            = rotor.hover.design_altitude
-    ctrl_pts            = 1 
-    theta               = rotor.optimization_parameters.noise_evaluation_angle 
-    S_hover             = np.maximum(altitude,20*Units.feet)  
-    mic_positions_hover = np.array([[0.0 , S_hover*np.sin(theta)  ,S_hover*np.cos(theta)]])      
+    nexus.results.hover.thrust                       = -F[0,2]  
+    nexus.results.hover.torque                       = Q[0][0]
+    nexus.results.hover.power                        = P[0][0]
+    nexus.results.hover.power_c                      = Cp[0][0]
+    nexus.results.hover.thurst_c                     = outputs.thrust_coefficient[0][0]
+    nexus.results.hover.omega                        = omega[0][0]
+    nexus.results.hover.max_sectional_cl             = np.max(outputs.lift_coefficient[0]) 
+    nexus.results.hover.mean_CL                      = np.mean(outputs.lift_coefficient[0])
+    nexus.results.hover.full_results                 = outputs   
+    nexus.results.hover.figure_of_merit              = outputs.figure_of_merit[0][0]  
+    nexus.results.hover.efficiency                   = etap[0][0] 
+    nexus.results.hover.conditions                   = conditions  
+                
+    # microphone locations            
+    altitude                                         = rotor.hover.design_altitude
+    ctrl_pts                                         = 1 
+    theta                                            = rotor.optimization_parameters.noise_evaluation_angle 
+    S_hover                                          = np.maximum(altitude,20*Units.feet)  
+    mic_positions_hover                              = np.array([[0.0 , S_hover*np.sin(theta)  ,S_hover*np.cos(theta)]])      
     
     # Run noise model  
+    conditions.noise[bus.tag]                        = RCAIDE.Analyses.Mission.Common.Conditions()      
+    conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Analyses.Mission.Common.Conditions() 
+    conditions.noise[bus.tag][propulsor.tag].rotor   = outputs
     conditions.noise.total_microphone_locations      = np.repeat(mic_positions_hover[ np.newaxis,:,: ],1,axis=0)
-    conditions.aerodynamics.angles.alpha          = np.ones((ctrl_pts,1))* 0. * Units.degrees 
+    conditions.aerodynamics.angles.alpha             = np.ones((ctrl_pts,1))* 0. * Units.degrees 
     segment                                          = RCAIDE.Analyses.Mission.Segments.Segment() 
     segment.state.conditions                         = conditions
     segment.state.conditions.expand_rows(ctrl_pts)  
@@ -280,7 +278,7 @@ def run_rotor_hover(nexus):
     conditions.noise.number_of_microphones           = num_mic   
     
     if alpha != 1: 
-        propeller_noise_hover                           = rotor_noise(rotors,outputs,segment,settings)   
+        propeller_noise_hover                           = rotor_noise(bus,conditions.noise[bus.tag],segment,settings)   
         mean_SPL_hover                                  = np.mean(propeller_noise_hover.SPL_dBA) 
         nexus.results.hover.mean_SPL   = mean_SPL_hover 
         nexus.results.hover.noise_data = propeller_noise_hover     
@@ -295,20 +293,22 @@ def run_rotor_hover(nexus):
 # ----------------------------------------------------------------------  
 def run_rotor_cruise(nexus):
  
-    if nexus.prop_rotor_flag:    
-        rotors = nexus.vehicle_configurations.cruise.networks.all_electric.busses.bus.rotors 
-        rotor  = rotors.rotor   
+    if nexus.prop_rotor_flag:     
+        bus    = nexus.vehicle_configurations.cruise.networks.all_electric.busses.bus 
+        propulsor  = bus.propulsors.propulsor
+        rotor      = propulsor.rotor 
         alpha  = rotor.optimization_parameters.multiobjective_aeroacoustic_weight       
         
         # Setup Test conditions
-        speed    = rotor.cruise.design_freestream_velocity 
-        altitude = np.array([rotor.cruise.design_altitude]) 
-        R        = rotor.tip_radius
-        TM       = rotor.cruise.design_tip_mach 
-        
-        # Calculate the atmospheric properties
+        speed                 = rotor.cruise.design_freestream_velocity 
+        altitude              = np.array([rotor.cruise.design_altitude]) 
+        R                     = rotor.tip_radius
+        TM                    = rotor.cruise.design_tip_mach  
         atmosphere            = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
         atmosphere_conditions = atmosphere.compute_values(altitude)
+        tip_speed             = atmosphere_conditions.speed_of_sound*TM
+        omega                 = tip_speed/R
+        rotor.inputs.omega    = np.array(omega) 
     
         # Pack everything up
         conditions                                          = RCAIDE.Analyses.Mission.Common.Results()
@@ -317,39 +317,35 @@ def run_rotor_cruise(nexus):
         conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
         conditions.frames.wind.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
         conditions.frames.planet.true_course_angle          = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]])         
-        
-        # Calculate the RPM
-        tip_speed = atmosphere_conditions.speed_of_sound*TM
-        omega     = tip_speed/R
-        
-        # Set the RPM
-        rotor.inputs.omega = np.array(omega)    
-        
+           
         # Run the rotor
         F, Q, P, Cp, outputs, etap  = rotor.spin(conditions)
         
         # Pack the results
-        nexus.results.cruise.thrust           = -F[0,2] 
-        nexus.results.cruise.torque           = Q[0][0]
-        nexus.results.cruise.power            = P[0][0]
-        nexus.results.cruise.power_c          = Cp[0][0]
-        nexus.results.cruise.omega            = omega[0][0]
-        nexus.results.cruise.thurst_c         = outputs.thrust_coefficient[0][0]
-        nexus.results.cruise.max_sectional_cl = np.max(outputs.lift_coefficient[0]) 
-        nexus.results.cruise.mean_CL          = np.mean(outputs.lift_coefficient[0]) 
-        nexus.results.cruise.collective       = rotor.inputs.pitch_command        
-        nexus.results.cruise.full_results     = outputs 
-        nexus.results.cruise.efficiency       = etap[0][0]
-        nexus.results.cruise.conditions       = conditions  
-         
-        # microphone locations
-        altitude             = rotor.cruise.design_altitude
-        ctrl_pts             = 1 
-        theta                = rotor.optimization_parameters.noise_evaluation_angle 
-        S_cruise              = np.maximum(altitude,20*Units.feet)  
-        mic_positions_cruise = np.array([[0.0 ,S_cruise*np.sin(theta)  ,S_cruise*np.cos(theta)]])      
+        nexus.results.cruise.thrust                      = -F[0,2] 
+        nexus.results.cruise.torque                      = Q[0][0]
+        nexus.results.cruise.power                       = P[0][0]
+        nexus.results.cruise.power_c                     = Cp[0][0]
+        nexus.results.cruise.omega                       = omega[0][0]
+        nexus.results.cruise.thurst_c                    = outputs.thrust_coefficient[0][0]
+        nexus.results.cruise.max_sectional_cl            = np.max(outputs.lift_coefficient[0]) 
+        nexus.results.cruise.mean_CL                     = np.mean(outputs.lift_coefficient[0]) 
+        nexus.results.cruise.collective                  = rotor.inputs.pitch_command        
+        nexus.results.cruise.full_results                = outputs 
+        nexus.results.cruise.efficiency                  = etap[0][0]
+        nexus.results.cruise.conditions                  = conditions  
+                    
+        # microphone locations           
+        altitude                                         = rotor.cruise.design_altitude
+        ctrl_pts                                         = 1 
+        theta                                            = rotor.optimization_parameters.noise_evaluation_angle 
+        S_cruise                                         = np.maximum(altitude,20*Units.feet)  
+        mic_positions_cruise                             = np.array([[0.0 ,S_cruise*np.sin(theta)  ,S_cruise*np.cos(theta)]])      
         
         # Run noise model  
+        conditions.noise[bus.tag]                        = RCAIDE.Analyses.Mission.Common.Conditions()      
+        conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Analyses.Mission.Common.Conditions() 
+        conditions.noise[bus.tag][propulsor.tag].rotor   = outputs  
         conditions.noise.total_microphone_locations      = np.repeat(mic_positions_cruise[ np.newaxis,:,: ],1,axis=0)
         conditions.aerodynamics.angles.alpha             = np.ones((ctrl_pts,1))* 0. * Units.degrees 
         segment                                          = RCAIDE.Analyses.Mission.Segments.Segment() 
@@ -361,7 +357,7 @@ def run_rotor_cruise(nexus):
         conditions.noise.number_of_microphones           = num_mic    
         
         if alpha != 1: 
-            propeller_noise_cruise                           = rotor_noise(rotors,outputs,segment,settings)   
+            propeller_noise_cruise                           = rotor_noise(bus,conditions.noise[bus.tag],segment,settings)   
             mean_SPL_cruise                                  = np.mean(propeller_noise_cruise.SPL_dBA)    
                 
             # Pack
@@ -393,18 +389,17 @@ def run_rotor_cruise(nexus):
 # ----------------------------------------------------------------------   
 def post_process(nexus):
      
-    summary             = nexus.summary 
-    rotor               = nexus.vehicle_configurations.hover.networks.all_electric.busses.bus.rotors.rotor  
-    rotor_oei           = nexus.vehicle_configurations.oei.networks.all_electric.busses.bus.rotors.rotor  
-    alpha               = rotor.optimization_parameters.multiobjective_aeroacoustic_weight
-    beta                = rotor.optimization_parameters.multiobjective_performance_weight
-    gamma               = rotor.optimization_parameters.multiobjective_acoustic_weight
-    tol                 = rotor.optimization_parameters.tolerance 
-    ideal_SPL           = rotor.optimization_parameters.ideal_SPL_dBA  
-    ideal_efficiency    = rotor.optimization_parameters.ideal_efficiency      
-    ideal_FoM           = rotor.optimization_parameters.ideal_figure_of_merit  
-    print_iter          = nexus.print_iterations 
-    
+    summary                         = nexus.summary 
+    rotor                           = nexus.vehicle_configurations.hover.networks.all_electric.busses.bus.propulsors.propulsor.rotor  
+    rotor_oei                       = nexus.vehicle_configurations.oei.networks.all_electric.busses.bus.propulsors.propulsor.rotor
+    alpha                           = rotor.optimization_parameters.multiobjective_aeroacoustic_weight
+    beta                            = rotor.optimization_parameters.multiobjective_performance_weight
+    gamma                           = rotor.optimization_parameters.multiobjective_acoustic_weight
+    tol                             = rotor.optimization_parameters.tolerance 
+    ideal_SPL                       = rotor.optimization_parameters.ideal_SPL_dBA  
+    ideal_efficiency                = rotor.optimization_parameters.ideal_efficiency      
+    ideal_FoM                       = rotor.optimization_parameters.ideal_figure_of_merit  
+    print_iter                      = nexus.print_iterations  
     summary.max_sectional_cl_hover  = nexus.results.hover.max_sectional_cl
     mean_CL_hover                   = nexus.results.hover.mean_CL
     omega_hover                     = nexus.results.hover.omega

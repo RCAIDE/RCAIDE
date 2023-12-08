@@ -77,19 +77,19 @@ def plot_flight_trajectory(results,
         segment_name = segment_tag.replace('_', ' ')
         
         axes = plt.subplot(2,2,1)
-        axes.plot( time , Range, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width , label = segment_name)
+        axes.plot( time , Range, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width , label = segment_name)
         axes.set_ylabel('Distance (nmi)')
         axes.set_xlabel('Time (min)')
         set_axes(axes)            
 
         axes = plt.subplot(2,2,2)
-        axes.plot(x, y , line_color, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width )
+        axes.plot(x, y , line_color, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width )
         axes.set_xlabel('x (m)')
         axes.set_ylabel('y (m)')
         set_axes(axes)
 
         axes = plt.subplot(2,2,3)
-        axes.plot( time , z, line_color , color = line_colors[i], marker = ps.marker, linewidth = ps.line_width )
+        axes.plot( time , z, line_color , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width )
         axes.set_ylabel('z (m)')
         axes.set_xlabel('Time (min)')
         set_axes(axes)   

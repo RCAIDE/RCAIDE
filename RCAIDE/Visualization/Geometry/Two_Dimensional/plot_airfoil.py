@@ -55,7 +55,7 @@ def plot_airfoil(airfoil_paths,
     fig  = plt.figure(save_filename)
     fig.set_size_inches(width,height) 
     axis = fig.add_subplot(1,1,1)     
-    axis.plot(airfoil_geometry.x_coordinates,airfoil_geometry.y_coordinates, color = ps.color, marker = ps.marker, linewidth = ps.line_width) 
+    axis.plot(airfoil_geometry.x_coordinates,airfoil_geometry.y_coordinates, color = ps.color, marker = ps.markers[0], linewidth = ps.line_width) 
     axis.set_xlabel('x')
     axis.set_ylabel('y')    
      

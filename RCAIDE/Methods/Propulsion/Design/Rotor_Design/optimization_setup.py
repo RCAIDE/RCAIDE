@@ -42,10 +42,10 @@ def optimization_setup(rotor,number_of_stations,print_iterations):
     problem                      = Data()
     nexus.optimization_problem   = problem
    
-    if type(rotor) != RCAIDE.Energy.Converters.Prop_Rotor or  type(rotor) != RCAIDE.Energy.Converters.Lift_Rotor:
+    if type(rotor) != RCAIDE.Energy.Propulsors.Converters.Prop_Rotor or  type(rotor) != RCAIDE.Energy.Propulsors.Converters.Lift_Rotor:
         assert('rotor must be of Lift-Rotor or Prop-Rotor class') 
         
-    if type(rotor) == RCAIDE.Energy.Converters.Prop_Rotor:
+    if type(rotor) == RCAIDE.Energy.Propulsors.Converters.Prop_Rotor:
         nexus.prop_rotor_flag = True 
     else:
         nexus.prop_rotor_flag = False 
@@ -106,15 +106,15 @@ def optimization_setup(rotor,number_of_stations,print_iterations):
     #  Aliases
     # ------------------------------------------------------------------- 
     aliases = [] 
-    aliases.append([ 'chord_r'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.rotors.rotor.chord_r' ])
-    aliases.append([ 'chord_p'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.rotors.rotor.chord_p' ])
-    aliases.append([ 'chord_q'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.rotors.rotor.chord_q' ])
-    aliases.append([ 'chord_t'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.rotors.rotor.chord_t' ]) 
-    aliases.append([ 'twist_r'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.rotors.rotor.twist_r' ])
-    aliases.append([ 'twist_p'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.rotors.rotor.twist_p' ])
-    aliases.append([ 'twist_q'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.rotors.rotor.twist_q' ])
-    aliases.append([ 'twist_t'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.rotors.rotor.twist_t' ])     
-    aliases.append([ 'hover_tip_mach'             , 'vehicle_configurations.hover.networks.all_electric.busses.bus.rotors.rotor.hover.design_tip_mach' ]) 
+    aliases.append([ 'chord_r'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.propulsors.propulsor.rotor.chord_r' ])
+    aliases.append([ 'chord_p'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.propulsors.propulsor.rotor.chord_p' ])
+    aliases.append([ 'chord_q'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.propulsors.propulsor.rotor.chord_q' ])
+    aliases.append([ 'chord_t'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.propulsors.propulsor.rotor.chord_t' ]) 
+    aliases.append([ 'twist_r'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.propulsors.propulsor.rotor.twist_r' ])
+    aliases.append([ 'twist_p'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.propulsors.propulsor.rotor.twist_p' ])
+    aliases.append([ 'twist_q'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.propulsors.propulsor.rotor.twist_q' ])
+    aliases.append([ 'twist_t'                    , 'vehicle_configurations.*.networks.all_electric.busses.bus.propulsors.propulsor.rotor.twist_t' ])     
+    aliases.append([ 'hover_tip_mach'             , 'vehicle_configurations.hover.networks.all_electric.busses.bus.propulsors.propulsor.rotor.hover.design_tip_mach' ]) 
     aliases.append([ 'objective'                  , 'summary.objective'       ])  
     aliases.append([ 'hover_thrust_pow_res'       , 'summary.hover_thrust_power_residual'   ]) 
     aliases.append([ 'blade_taper_constraint_1'   , 'summary.blade_taper_constraint_1'])   
@@ -124,11 +124,11 @@ def optimization_setup(rotor,number_of_stations,print_iterations):
     aliases.append([ 'chord_p_to_q_ratio'         , 'summary.chord_p_to_q_ratio'    ])  
     aliases.append([ 'twist_p_to_q_ratio'         , 'summary.twist_p_to_q_ratio'    ])   
     aliases.append([ 'OEI_hov_thrust_pow_res'     , 'summary.oei_thrust_power_residual'   ]) 
-    aliases.append([ 'OEI_collective_pitch'       , 'vehicle_configurations.oei.networks.all_electric.busses.bus.rotors.rotor.inputs.pitch_command' ]) 
-    aliases.append([ 'OEI_tip_mach'               , 'vehicle_configurations.oei.networks.all_electric.busses.bus.rotors.rotor.oei.design_tip_mach' ]) 
+    aliases.append([ 'OEI_collective_pitch'       , 'vehicle_configurations.oei.networks.all_electric.busses.bus.propulsors.propulsor.rotor.inputs.pitch_command' ]) 
+    aliases.append([ 'OEI_tip_mach'               , 'vehicle_configurations.oei.networks.all_electric.busses.bus.propulsors.propulsor.rotor.oei.design_tip_mach' ]) 
     if nexus.prop_rotor_flag: 
-        aliases.append([ 'cruise_tip_mach'        , 'vehicle_configurations.cruise.networks.all_electric.busses.bus.rotors.rotor.cruise.design_tip_mach' ])  
-        aliases.append([ 'cuise_collective_pitch' , 'vehicle_configurations.cruise.networks.all_electric.busses.bus.rotors.rotor.inputs.pitch_command' ])  
+        aliases.append([ 'cruise_tip_mach'        , 'vehicle_configurations.cruise.networks.all_electric.busses.bus.propulsors.propulsor.rotor.cruise.design_tip_mach' ])  
+        aliases.append([ 'cuise_collective_pitch' , 'vehicle_configurations.cruise.networks.all_electric.busses.bus.propulsors.propulsor.rotor.inputs.pitch_command' ])  
         aliases.append([ 'cruise_thrust_pow_res'  , 'summary.cruise_thrust_power_residual'   ]) 
         aliases.append([ 'max_sectional_cl_cruise', 'summary.max_sectional_cl_cruise'])  
          

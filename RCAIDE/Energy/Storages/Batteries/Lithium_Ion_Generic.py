@@ -225,9 +225,10 @@ class Lithium_Ion_Generic(Battery):
                 T_cell[t_idx+1] = T_cell[t_idx] + dT_dt*delta_t[t_idx] 
                     
                 # Compute state of charge and depth of discarge of the battery
-                E_pack[t_idx+1]      = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 
-                SOC[t_idx+1]         = E_pack[t_idx+1]/E_max 
-                DOD_cell[t_idx+1]    = 1 - SOC[t_idx+1] 
+                E_pack[t_idx+1]                          = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx]
+                E_pack[t_idx+1][E_pack[t_idx+1] > E_max] = E_max 
+                SOC[t_idx+1]                             = E_pack[t_idx+1]/E_max 
+                DOD_cell[t_idx+1]                        = 1 - SOC[t_idx+1] 
                 
                 # Determine new charge throughput (the amount of charge gone through the battery)
                 Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr

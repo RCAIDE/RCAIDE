@@ -64,8 +64,7 @@ def regressions():
     else:
         sys.exit(1)
         
-    return pass_fail
-   
+    return pass_fail 
  
 # ----------------------------------------------------------------------
 #   Module Tester

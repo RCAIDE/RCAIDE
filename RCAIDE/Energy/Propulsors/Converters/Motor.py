@@ -55,6 +55,7 @@ class Motor(Energy_Component):
         self.gearbox_efficiency = 1.0
         self.expected_current   = 0.0
         self.power_split_ratio  = 0.0
+        self.design_torque      = 0.0
         self.wing_mounted       = False
         self.interpolated_func  = None
     

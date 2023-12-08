@@ -12,11 +12,7 @@ import RCAIDE
 from RCAIDE.Core                                                       import Data   
 from RCAIDE.Methods.Propulsion.Performance.internal_combustion_engine_cs_propulsor import internal_combustion_engine_cs_propulsor
 from .Network                                                          import Network   
- 
-# python imports 
-import numpy as np
-from scipy.integrate import  cumtrapz
-
+  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Internal_Combustion_Propeller_Constant_Speed
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -83,16 +79,17 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
         total_mdot    = 0. * state.ones_row(1) 
     
         for fuel_line in fuel_lines:
-            fuel_tanks   = fuel_line.fuel_tanks    
-            fuel_line_T , fuel_line_P, fuel_line_mdot  = internal_combustion_engine_cs_propulsor(fuel_line,state)    
-    
-            for fuel_tank in fuel_tanks: 
-                fuel_line_results                                = conditions.energy[fuel_line.tag]  
-                fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot  
-    
-            total_thrust += fuel_line_T   
-            total_power  += fuel_line_P    
-            total_mdot   += fuel_line_mdot    
+            if fuel_line.active:   
+                fuel_tanks   = fuel_line.fuel_tanks    
+                fuel_line_T , fuel_line_P, fuel_line_mdot  = internal_combustion_engine_cs_propulsor(fuel_line,state)    
+        
+                for fuel_tank in fuel_tanks: 
+                    fuel_line_results                                = conditions.energy[fuel_line.tag]  
+                    fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot  
+        
+                total_thrust += fuel_line_T   
+                total_power  += fuel_line_P    
+                total_mdot   += fuel_line_mdot    
     
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
@@ -130,9 +127,10 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
  
         fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine_constant_speed.fuel_lines 
         for fuel_line in fuel_lines: 
-            fuel_line_results       = segment.state.conditions.energy[fuel_line.tag]  
-            for propulsor in fuel_line.propulsors:          
-                fuel_line_results[propulsor.tag].rotor.pitch_command  = segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_pitch_command']  
+            if fuel_line.active: 
+                fuel_line_results       = segment.state.conditions.energy[fuel_line.tag]  
+                for propulsor in fuel_line.propulsors:          
+                    fuel_line_results[propulsor.tag].rotor.pitch_command  = segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_pitch_command']  
         
         return    
     

@@ -79,35 +79,35 @@ def plot_altitude_sfc_weight(results,
         segment_name = segment_tag.replace('_', ' ') 
         
         # power 
-        axes_1 = plt.subplot(2,2,1)
-        axes_1.set_ylabel(r'Throttle')
-        set_axes(axes_1)               
+        axis_1 = plt.subplot(2,2,1)
+        axis_1.set_ylabel(r'Throttle')
+        set_axes(axis_1)               
         for network in results.segments[i].analyses.energy.networks: 
             busses      = network.busses
             fuel_lines  = network.fuel_lines
             for bus in busses:   
                 eta = results.segments[i].conditions.energy[bus.tag].throttle[:,0]  
-                axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)               
+                axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)               
             for fuel_line in fuel_lines:  
                 eta = results.segments[i].conditions.energy[fuel_line.tag].throttle[:,0]  
-                axes_1.plot(time, eta, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width, label = segment_name)     
+                axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)     
         
-        axes_2 = plt.subplot(2,2,2)
-        axes_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.marker, linewidth = ps.line_width) 
-        axes_2.set_ylabel(r'Weight (kN)')  
-        set_axes(axes_2) 
+        axis_2 = plt.subplot(2,2,2)
+        axis_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
+        axis_2.set_ylabel(r'Weight (kN)')  
+        set_axes(axis_2) 
 
-        axes_3 = plt.subplot(2,2,3)
-        axes_3.plot(time, sfc, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-        axes_3.set_xlabel('Time (mins)')
-        axes_3.set_ylabel(r'SFC (lb/lbf-hr)')
-        set_axes(axes_3) 
+        axis_3 = plt.subplot(2,2,3)
+        axis_3.plot(time, sfc, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_3.set_xlabel('Time (mins)')
+        axis_3.set_ylabel(r'SFC (lb/lbf-hr)')
+        set_axes(axis_3) 
 
-        axes_3 = plt.subplot(2,2,4)
-        axes_3.plot(time, mdot, color = line_colors[i], marker = ps.marker, linewidth = ps.line_width)
-        axes_3.set_xlabel('Time (mins)')
-        axes_3.set_ylabel(r'Fuel Rate (kg/s)')
-        set_axes(axes_3)         
+        axis_3 = plt.subplot(2,2,4)
+        axis_3.plot(time, mdot, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_3.set_xlabel('Time (mins)')
+        axis_3.set_ylabel(r'Fuel Rate (kg/s)')
+        set_axes(axis_3)         
         
     
     if show_legend:

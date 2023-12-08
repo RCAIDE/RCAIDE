@@ -169,7 +169,6 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------
     mission = RCAIDE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'mission'
- 
 
     # unpack Segments module
     Segments = RCAIDE.Analyses.Mission.Segments 
@@ -273,27 +272,26 @@ def missions_setup(mission):
     return missions  
 def plot_results(results):
 
-    # Plot Flight Conditions 
+    # Plots fligh conditions 
     plot_flight_conditions(results) 
     
-    # Plot Aerodynamic Coefficients
-    plot_aerodynamic_coefficients(results)  
-    
-    # Plot Aircraft Flight Speed
-    plot_aircraft_velocities(results)
+    # Plot arcraft trajectory
+    plot_flight_trajectory(results)   
     
     # Plot Aircraft Electronics
     plot_battery_pack_conditions(results) 
-    plot_battery_cell_conditions(results)
-    plot_battery_pack_C_rates(results)
     plot_battery_temperature(results)
-    plot_battery_degradation(results)
+    plot_battery_cell_conditions(results) 
+    plot_battery_pack_C_rates(results)
+    plot_battery_degradation(results) 
     
     # Plot Propeller Conditions 
     plot_rotor_conditions(results) 
+    plot_disc_and_power_loading(results)
     
     # Plot Electric Motor and Propeller Efficiencies 
-    plot_electric_efficiencies(results)
+    plot_electric_efficiencies(results)  
+      
     return 
 
 if __name__ == '__main__': 

@@ -66,11 +66,10 @@ def plot_airfoil_boundary_layer_properties(ap,
     
     for i in range(n_cpts):   
         for j in range(n_cases):  
-            axes_0 = plt.subplot(1,1,1)
-            
-            axes_0.plot(ap.x[i,j], ap.y[i,j], color = blues[j], marker = ps.marker, linewidth = ps.line_width )
-            axes_0.plot(ap.x[i,j][:-1], ap.y_bl[i,j], color = reds[j], marker = ps.marker, linewidth = ps.line_width ) 
-            set_axes(axes_0)    
+            axis_0 = plt.subplot(1,1,1) 
+            axis_0.plot(ap.x[i,j], ap.y[i,j], color = blues[j], marker = ps.markers[0], linewidth = ps.line_width )
+            axis_0.plot(ap.x[i,j][:-1], ap.y_bl[i,j], color = reds[j], marker = ps.markers[0], linewidth = ps.line_width ) 
+            set_axes(axis_0)    
    
     # set title of plot 
     title_text    = 'Airfoil with Boundary Layers'  
@@ -130,7 +129,7 @@ def plot_quantity(ap, q, qaxis, qname,ylim_low,ylim_high,file_type,show_legend,s
     for i in range(n_cpts):   
         for j in range(n_cases): 
             case_label = 'AoA: ' + str(round(ap.AoA[i,j]/Units.degrees, 2)) + ', Re: ' + str(ap.Re[i,j]) 
-            axis.plot( ap.x[i,j], q[i,j], color = line_colors[j], marker = ps.marker, linewidth = ps.line_width,  label =case_label)  
+            axis.plot( ap.x[i,j], q[i,j], color = line_colors[j], marker = ps.markers[0], linewidth = ps.line_width,  label =case_label)  
             axis.set_ylim([ylim_low,ylim_high]) 
      
     if show_legend:
