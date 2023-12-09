@@ -11,3 +11,4 @@
 # @ingroup Methods-Mission-Segments-Common
    
 from .aerodynamics                 import aerodynamics 
+from .energy                       import energy

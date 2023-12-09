@@ -44,8 +44,7 @@ class Energy_Component(Component):
         """          
         # function handles for input
         self.inputs          = Data()
-        self.outputs         = Data() 
-        self.propulsor_group = 'propulsor'
+        self.outputs         = Data()
         
         # function handles for output
         self.outputs = Data()

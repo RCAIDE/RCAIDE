@@ -97,8 +97,7 @@ def mission_setup(analyses):
     segment.altitude                                = 12000. * Units.feet
     segment.air_speed                               = 119.   * Units.knots
     segment.distance                                = 10 * Units.nautical_mile  
-    segment.state.numerics.number_control_points    = 4 
-    segment = analyses.base.energy.networks.internal_combustion_engine.add_unknowns_and_residuals_to_segment(segment)  
+    segment.state.numerics.number_control_points    = 4   
     mission.append_segment(segment)
 
 

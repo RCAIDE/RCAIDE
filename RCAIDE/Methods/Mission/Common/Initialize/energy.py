@@ -23,12 +23,21 @@ def energy(segment):
 
         Inputs:
             segment.state.initials.conditions:
-                propulsion.battery.pack.energy    [Joules]
-            segment.initial_battery_state_of_charge   [Joules]
-
-        Outputs:
-            segment.state.conditions:
-                propulsion.battery.pack.energy    [Joules]
+                propulsion.battery.pack.energy               [Joules]
+            segment.initial_battery_state_of_charge          [Joules]
+ 
+        Outputs: 
+            segment.state.conditions: 
+                energy.battery.pack.energy                   [Joules]
+                energy.battery.pack.maximum_initial_energy   [Joules]     
+                energy.battery.pack.energy                   [Joules]
+                energy.battery.pack.temperature              [Kelvin]
+                energy.battery.cell.temperature              [Kelvin]            
+                energy.battery.cell.cycle_in_day             [N.A]              
+                energy.battery.cell.charge_throughput        [Amp-Hrs]  
+                energy.battery.cell.resistance_growth_factor [N.A]      
+                energy.battery.cell.capacity_fade_factor     [N.A]      
+                energy.battery.cell.state_of_charge          [N.A] 
 
         Properties Used:
         N/A
@@ -43,23 +52,22 @@ def energy(segment):
         if 'busses' in network: 
             for bus in network.busses:
                 for battery in bus.batteries:   
-                    battery_conditions                                      = conditions[bus.tag][battery.tag]
+                    battery_conditions = conditions[bus.tag][battery.tag]
                     if segment.state.initials:  
-                        battery_initials                                        = segment.state.initials.conditions.energy[bus.tag][battery.tag] 
-                        initial_mission_energy                                  = battery_initials.pack.maximum_initial_energy
-                        battery_capacity_fade_factor                            = battery_initials.cell.capacity_fade_factor 
+                        battery_initials                                        = segment.state.initials.conditions.energy[bus.tag][battery.tag]  
                         if type(segment) ==  RCAIDE.Analyses.Mission.Segments.Ground.Battery_Recharge:             
                             battery_conditions.battery_discharge_flag           = False 
                         else:                   
                             battery_conditions.battery_discharge_flag           = True             
-                        battery_conditions.pack.maximum_initial_energy          = initial_mission_energy 
+                        battery_conditions.pack.maximum_initial_energy          = battery_initials.pack.maximum_initial_energy 
                         battery_conditions.pack.energy[:,0]                     = battery_initials.pack.energy[-1,0]
                         battery_conditions.pack.temperature[:,0]                = battery_initials.pack.temperature[-1,0]
                         battery_conditions.cell.temperature[:,0]                = battery_initials.cell.temperature[-1,0]
                         battery_conditions.cell.cycle_in_day                    = battery_initials.cell.cycle_in_day      
                         battery_conditions.cell.charge_throughput[:,0]          = battery_initials.cell.charge_throughput[-1,0]
                         battery_conditions.cell.resistance_growth_factor        = battery_initials.cell.resistance_growth_factor 
-                        battery_conditions.cell.capacity_fade_factor            = battery_capacity_fade_factor 
+                        battery_conditions.cell.capacity_fade_factor            = battery_initials.cell.capacity_fade_factor 
+                        battery_conditions.cell.state_of_charge[:,0]            = battery_initials.cell.state_of_charge[-1,0]
     
                     if 'battery_cell_temperature' in segment:       
                         battery_conditions.pack.temperature[:,0]       = segment.battery_cell_temperature 

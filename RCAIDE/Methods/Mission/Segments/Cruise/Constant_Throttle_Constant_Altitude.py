@@ -21,7 +21,7 @@ def unpack_unknowns(segment):
     theta      = unknowns.body_angle
     accel_x    = unknowns.accel_x
     time       = unknowns.time
-    
+     
     # rescale time
     t_initial  = segment.state.conditions.frames.inertial.time[0,0]
     t_final    = t_initial + time  
@@ -97,8 +97,7 @@ def initialize_conditions(segment):
     # unpack inputs
     alt      = segment.altitude 
     v0       = segment.air_speed_start
-    vf       = segment.air_speed_end 
-    throttle = segment.throttle	
+    vf       = segment.air_speed_end  
     N        = segment.state.numerics.number_of_control_points   
     
     # check for initial altitude
@@ -122,8 +121,7 @@ def initialize_conditions(segment):
     segment.air_speed_start = v0
     segment.air_speed_end   = vf
     
-    # pack conditions  
-    segment.state.conditions.energy.throttle[:,0] = throttle  
+    # pack conditions   
     segment.state.conditions.freestream.altitude[:,0] = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down    
     
@@ -160,11 +158,11 @@ def solve_residuals(segment):
 
     # unpack inputs
     conditions = segment.state.conditions
-    FT = conditions.frames.inertial.total_force_vector
-    vf = segment.air_speed_end
-    v  = conditions.frames.inertial.velocity_vector
-    m  = conditions.weights.total_mass
-    a  = conditions.frames.inertial.acceleration_vector
+    FT         = conditions.frames.inertial.total_force_vector
+    vf         = segment.air_speed_end
+    v          = conditions.frames.inertial.velocity_vector
+    m          = conditions.weights.total_mass
+    a          = conditions.frames.inertial.acceleration_vector 
 
     segment.state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a[:,0]
     segment.state.residuals.forces[:,1] = FT[:,2]/m[:,0] 

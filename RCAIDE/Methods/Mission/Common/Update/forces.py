@@ -16,7 +16,25 @@ from RCAIDE.Core  import  orientation_product
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Segments-Common-Update
 def forces(segment): 
-    """  
+    """ Updates the total resultant force on the vehicle 
+        
+        Assumptions:
+        N/A
+        
+        Inputs:
+            segment.state.conditions.:
+                frames.wind.lift_force_vector          [N]
+                frames.wind.drag_force_vector          [N]
+                frames.body.thrust_force_vector        [N]
+                frames.inertial.gravity_force_vector   [N]
+        Outputs:
+            segment.conditions
+                frames.inertial.total_force_vector     [N]
+
+      
+        Properties Used:
+        N/A
+                    
     """    
 
     # unpack

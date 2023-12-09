@@ -64,7 +64,7 @@ def initialize_conditions(segment):
     conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
     
     # determine airspeed from equivalent airspeed
-    atmosphere(segment) # get density for airspeed
+    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment) # get density for airspeed
     density   = conditions.freestream.density[:,0]   
     MSL_data  = segment.analyses.atmosphere.compute_values(0.0,0.0)
 

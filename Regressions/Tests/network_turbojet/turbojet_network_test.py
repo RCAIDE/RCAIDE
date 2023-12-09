@@ -47,20 +47,18 @@ def main():
     # mission analysis 
     results = missions.base_mission.evaluate()   
     
-    ## Check the lift equivalent area
+    # Check the lift equivalent area
     #equivalent_area(configs.base, analyses, results.segments.climbing_cruise.state.conditions)    
      
-    ## leave uncommented for regression 
-    #save_results(results)  
-    #old_results = load_results()    
+    # leave uncommented for regression 
+    save_results(results)  
+    old_results = load_results()    
     
     ## plt the old results
-    plot_mission(results)
-    #plot_mission(old_results)
-    #plt.show()
+    plot_mission(results)  
 
-    ## check the results
-    #check_results(results,old_results)  
+    # check the results
+    check_results(results,old_results)  
     
     return
  
@@ -217,8 +215,7 @@ def mission_setup(analyses):
     segment.altitude_start = 0.0   * Units.km
     segment.altitude_end   = 4000. * Units.ft
     segment.airpseed       = 250.  * Units.kts
-    segment.climb_rate     = 4000. * Units['ft/min'] 
-    segment = analyses.climb.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate     = 4000. * Units['ft/min']  
     mission.append_segment(segment)
     
     
@@ -231,8 +228,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise ) 
     segment.altitude_end = 8000. * Units.ft
     segment.airpseed     = 250.  * Units.kts
-    segment.climb_rate   = 2000. * Units['ft/min'] 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate   = 2000. * Units['ft/min']  
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------
@@ -245,8 +241,7 @@ def mission_setup(analyses):
     segment.altitude_end        = 33000. * Units.ft
     segment.mach_number_start   = .45
     segment.mach_number_end     = 0.95
-    segment.climb_rate          = 3000. * Units['ft/min'] 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate          = 3000. * Units['ft/min']  
     mission.append_segment(segment)    
 
     # ------------------------------------------------------------------
@@ -259,8 +254,7 @@ def mission_setup(analyses):
     segment.altitude_end        = 34000. * Units.ft
     segment.mach_number_start   = 0.95
     segment.mach_number_end     = 1.1
-    segment.climb_rate          = 2000.  * Units['ft/min'] 
-    segment = analyses.climb.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate          = 2000.  * Units['ft/min']  
     mission.append_segment(segment) 
 
     # ------------------------------------------------------------------
@@ -272,8 +266,7 @@ def mission_setup(analyses):
     segment.altitude_end        = 40000. * Units.ft
     segment.mach_number_start   = 1.1
     segment.mach_number_end     = 1.7
-    segment.climb_rate          = 1750.  * Units['ft/min'] 
-    segment = analyses.climb.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate          = 1750.  * Units['ft/min']  
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------
@@ -285,8 +278,7 @@ def mission_setup(analyses):
     segment.altitude_end        = 50000. * Units.ft
     segment.mach_number_start   = 1.7
     segment.mach_number_end     = 2.02
-    segment.climb_rate          = 750.  * Units['ft/min'] 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate          = 750.  * Units['ft/min']  
     mission.append_segment(segment)     
     
 
@@ -298,8 +290,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise ) 
     segment.altitude_end = 56500. * Units.ft
     segment.mach_number  = 2.02
-    segment.climb_rate   = 50.  * Units['ft/min'] 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate   = 50.  * Units['ft/min']  
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------    
@@ -310,8 +301,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise ) 
     segment.mach_number                          = 2.02
     segment.distance                             = 1. * Units.nmi
-    segment.state.numerics.number_control_points = 4 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.state.numerics.number_control_points = 4  
     mission.append_segment(segment)    
     
     # ------------------------------------------------------------------
@@ -321,8 +311,7 @@ def mission_setup(analyses):
     segment.tag = "decel_1" 
     segment.analyses.extend( analyses.cruise )
     segment.acceleration      = -.5  * Units['m/s/s']
-    segment.air_speed_end     = 1.5*573.  * Units.kts 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.air_speed_end     = 1.5*573.  * Units.kts  
     mission.append_segment(segment)   
     
     # ------------------------------------------------------------------
@@ -333,8 +322,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise )
     segment.altitude_end      = 41000. * Units.ft
     segment.mach_number_end   = 1.3
-    segment.descent_rate      = 2000. * Units['ft/min'] 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.descent_rate      = 2000. * Units['ft/min']  
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -344,8 +332,7 @@ def mission_setup(analyses):
     segment.tag = "decel_2" 
     segment.analyses.extend( analyses.cruise )
     segment.acceleration      = -.5  * Units['m/s/s']
-    segment.air_speed_end     = 0.95*573.  * Units.kts 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.air_speed_end     = 0.95*573.  * Units.kts  
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -357,8 +344,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise )
     segment.altitude_end      = 10000. * Units.ft
     segment.mach_number_end   = 250./638. 
-    segment.descent_rate      = 2000. * Units['ft/min'] 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.descent_rate      = 2000. * Units['ft/min']  
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -369,8 +355,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise )
     segment.altitude_end = 0. * Units.ft
     segment.air_speed    = 250. * Units.kts
-    segment.descent_rate = 1000. * Units['ft/min'] 
-    segment = analyses.cruise.energy.networks.turbojet_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.descent_rate = 1000. * Units['ft/min']  
     mission.append_segment(segment)      
     
     # ------------------------------------------------------------------    
@@ -392,9 +377,9 @@ def check_results(new_results,old_results):
 
     # check segment values
     check_list = [
-        'segments.climbing_cruise.conditions.aerodynamics.angle_of_attack',
+        'segments.climbing_cruise.conditions.aerodynamics.angles.alpha',
         'segments.climbing_cruise.conditions.aerodynamics.coefficients.drag',
-        'segments.climbing_cruise.conditions.aerodynamics.coefficient.lift', 
+        'segments.climbing_cruise.conditions.aerodynamics.coefficients.lift', 
         'segments.climbing_cruise.conditions.weights.vehicle_mass_rate', 
     ]
 
@@ -420,10 +405,10 @@ def check_results(new_results,old_results):
 
 
 def load_results():
-    return RCAIDE.Input_Output.RCAIDE.load('results_mission_concorde.res')
+    return RCAIDE.External_Interfaces.RCAIDE.load('results_mission_concorde.res')
 
 def save_results(results):
-    RCAIDE.Input_Output.RCAIDE.archive(results,'results_mission_concorde.res')
+    RCAIDE.External_Interfaces.RCAIDE.archive(results,'results_mission_concorde.res')
     return    
         
 if __name__ == '__main__': 

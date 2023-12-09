@@ -45,7 +45,7 @@ class Wavy_Channel(Energy_Component):
         self.single_side_contact           = True 
         self.design_heat_removed           = None    
     
-    def compute_heat_removed(self,battery, Q_heat_gen,numerics, freestream):
+    def compute_heat_removed(btms,battery,Q_heat_gen,T_cell,state,dt,i):
         """Computes the net heat generated in a battery module during cycling.
         Assumptions:
         1) Battery pack cell heat transfer can be modelled as a cooling columns in a cross-flow

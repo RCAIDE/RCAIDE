@@ -68,7 +68,7 @@ class Ground(Evaluate):
         self.true_course_angle    = 0.0 * Units.degrees      
 
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
+        #  Mission Conditions 
         # --------------------------------------------------------------------------------------------------------------          
         ones_row = self.state.ones_row  
         self.state.conditions.ground                              = Data()
@@ -77,11 +77,15 @@ class Ground(Evaluate):
         self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0 
 
         # -------------------------------------------------------------------------------------------------------------- 
+        #  Mission Specific Unknowns and Residuals 
+        # --------------------------------------------------------------------------------------------------------------       
+        iterate.unknowns.mission           = Unpack_Unknowns.ground
+        iterate.residuals.total_forces     = Residuals.ground
+        
+        # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # -------------------------------------------------------------------------------------------------------------- 
         iterate                            = self.process.iterate   
         iterate.conditions.forces_ground   = Update.ground_forces    
-        iterate.unknowns.mission           = Unpack_Unknowns.ground
-        iterate.residuals.total_forces     = Residuals.ground
     
         return

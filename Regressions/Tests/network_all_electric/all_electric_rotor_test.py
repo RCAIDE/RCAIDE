@@ -36,18 +36,11 @@ def main():
     # General Aviation Aircraft   
 
     RPM_true              = [1597.730347228566,1597.7303471313394]
-    lift_coefficient_true = [0.3519728024171797,0.35197280241717954] 
-    
+    lift_coefficient_true = [0.3519728024171797,0.35197280241717954]  
         
-    for i in range(len(battery_chemistry)):
-        print('***********************************')
-        print(battery_chemistry[i] + ' Cell Powered Aircraft')
-        print('***********************************')
-        
-        print('\nBattery Propeller Network Analysis')
-        print('--------------------------------------')
-        
-    
+    for i in range(len(battery_chemistry)): 
+        print(battery_chemistry[i] + ' Battery Electric Aircraft') 
+         
         # vehicle data
         baseline_vehicle  = vehicle_setup()
         vehicle           = modify_vehicle(baseline_vehicle,battery_chemistry[i])
@@ -70,18 +63,16 @@ def main():
         
         # RPM of rotor check during hover
         RPM        = results.segments.climb_flight_no_1_day_1.conditions.energy.bus.propulsor.rotor.rpm[3][0] 
-        print('GA RPM: ' + str(RPM))
+        print('RPM: ' + str(RPM))
         diff_RPM   = np.abs(RPM - RPM_true[i])
-        print('RPM difference')
-        print(diff_RPM)
+        print('RPM difference: ' +  str(diff_RPM))
         assert np.abs((RPM - RPM_true[i])/RPM_true[i]) < 1e-6  
         
         # lift Coefficient Check During Cruise
         lift_coefficient        = results.segments.cruise_flight_no_1_day_1.conditions.aerodynamics.coefficients.lift[2][0] 
-        print('GA CL: ' + str(lift_coefficient)) 
+        print('CL: ' + str(lift_coefficient)) 
         diff_CL                 = np.abs(lift_coefficient  - lift_coefficient_true[i]) 
-        print('CL difference')
-        print(diff_CL)
+        print('CL difference: ' +  str(diff_CL)) 
         assert np.abs((lift_coefficient  - lift_coefficient_true[i])/lift_coefficient_true[i]) < 1e-6 
              
     return
@@ -99,8 +90,7 @@ def modify_vehicle(vehicle,battery_chemistry):
     if battery_chemistry   == 'NMC': 
         bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()  
         bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.No_Heat_Exchanger()  
-    elif battery_chemistry == 'LFP': 
-        bus.fixed_voltage == True 
+    elif battery_chemistry == 'LFP':  
         bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()    
         bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()  
 
@@ -112,7 +102,7 @@ def modify_vehicle(vehicle,battery_chemistry):
     bat.module.voltage                                     = bat.pack.maximum_voltage/bat.module.number_of_modules  
     bat.module.geometrtic_configuration.normal_count       = 24
     bat.module.geometrtic_configuration.parallel_count     = 40 
-    bus.voltage                                            =  bat.pack.maximum_voltage  
+    bus.voltage                                            = bat.pack.maximum_voltage  
     bus.batteries.append(bat)                                     
     
     return vehicle
@@ -179,7 +169,6 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------
     mission = RCAIDE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'mission'
- 
 
     # unpack Segments module
     Segments = RCAIDE.Analyses.Mission.Segments 
@@ -219,9 +208,7 @@ def mission_setup(analyses):
             if (day == 0) and (flight_no == 0):        
                 segment.initial_battery_state_of_charge              = 0.89 
                 segment.initial_battery_resistance_growth_factor     = 1
-                segment.initial_battery_capacity_fade_factor         = 1
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)          
-            # add to misison
+                segment.initial_battery_capacity_fade_factor         = 1 
             mission.append_segment(segment) 
             
         
@@ -233,10 +220,7 @@ def mission_setup(analyses):
             segment.analyses.extend(analyses.base) 
             segment.altitude                  = 8012   * Units.feet
             segment.air_speed                 = 150.    * Units['mph'] 
-            segment.distance                  = 50.   * Units.nautical_mile   
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
-        
-            # add to misison
+            segment.distance                  = 50.   * Units.nautical_mile    
             mission.append_segment(segment)    
         
         
@@ -250,10 +234,7 @@ def mission_setup(analyses):
             segment.altitude_end                                     = 2500.0 * Units.feet
             segment.air_speed_start                                  = 150.* Units['mph']  
             segment.air_speed_end                                    = 90 * Units['mph']   
-            segment.descent_rate                                     = 200 * Units['ft/min']   
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
-            
-            # add to misison
+            segment.descent_rate                                     = 200 * Units['ft/min']      
             mission.append_segment(segment)
             
             # ------------------------------------------------------------------
@@ -262,13 +243,11 @@ def mission_setup(analyses):
             # Charge Model 
             segment                                                 = Segments.Ground.Battery_Recharge(base_segment)     
             segment.tag                                             = 'Recharge'  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
+            segment.current                                         = 100
             segment.analyses.extend(analyses.base)                       
             segment.time                                            = 1.5 * Units.hr
             if flight_no  == flights_per_day:  
-                segment.increment_battery_age_by_one_day            =True                        
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)    
-            
-            # add to misison
+                segment.increment_battery_age_by_one_day            =True                            
             mission.append_segment(segment)        
 
     return mission
@@ -284,27 +263,26 @@ def missions_setup(mission):
     return missions  
 def plot_results(results):
 
-    # Plot Flight Conditions 
+    # Plots fligh conditions 
     plot_flight_conditions(results) 
     
-    # Plot Aerodynamic Coefficients
-    plot_aerodynamic_coefficients(results)  
-    
-    # Plot Aircraft Flight Speed
-    plot_aircraft_velocities(results)
+    # Plot arcraft trajectory
+    plot_flight_trajectory(results)   
     
     # Plot Aircraft Electronics
     plot_battery_pack_conditions(results) 
-    plot_battery_cell_conditions(results)
-    plot_battery_pack_C_rates(results)
     plot_battery_temperature(results)
-    plot_battery_degradation(results)
+    plot_battery_cell_conditions(results) 
+    plot_battery_pack_C_rates(results)
+    plot_battery_degradation(results) 
     
     # Plot Propeller Conditions 
     plot_rotor_conditions(results) 
+    plot_disc_and_power_loading(results)
     
     # Plot Electric Motor and Propeller Efficiencies 
-    plot_electric_motor_and_rotor_efficiencies(results)
+    plot_electric_efficiencies(results)  
+      
     return 
 
 if __name__ == '__main__': 

@@ -84,7 +84,7 @@ class Lithium_Ion_Generic(Battery):
         return           
 
 
-    def energy_calc(self,numerics,conditions,bus_tag,battery_discharge_flag= True): 
+    def energy_calc(self,state,bus,battery_discharge_flag= True): 
         """This is an electric cycle model for 18650 lithium-iron_phosphate battery cells. It
            models losses based on an empirical correlation Based on method taken 
            from Datta and Johnson.
@@ -135,211 +135,106 @@ class Lithium_Ion_Generic(Battery):
                   battery_voltage_under_load                               [Volts]   
             
         """ 
-         
+        
+  
         # Unpack varibles 
-        battery           = self 
-        bat_mass          = battery.mass_properties.mass             
-        bat_Cp            = battery.specific_heat_capacity  
-        I_bat             = battery.outputs.current
-        P_bat             = battery.outputs.power   
-        V_max             = battery.pack.maximum_voltage   
-        T_current         = battery.pack.temperature   
-        E_max             = conditions.energy[bus_tag][self.tag].pack.maximum_initial_energy * conditions.energy[bus_tag][self.tag].cell.capacity_fade_factor
-        E_current         = battery.pack.current_energy 
-        Q_prior           = battery.cell.charge_throughput 
-        I                 = numerics.time.integrate
-        D                 = numerics.time.differentiate
-
+        battery            = self  
+        battery_conditions = state.conditions.energy[bus.tag][self.tag]     
+        I_bat              = battery.outputs.current
+        P_bat              = battery.outputs.power   
+        V_max              = battery.cell.maximum_voltage      
+        bat_mass           = battery.mass_properties.mass             
+        bat_Cp             = battery.specific_heat_capacity
+        E_max              = battery_conditions.pack.maximum_initial_energy * battery_conditions.cell.capacity_fade_factor
+        E_pack             = battery_conditions.pack.energy    
+        I_pack             = battery_conditions.pack.current                        #  battery.outputs.current 
+        V_oc_pack          = battery_conditions.pack.voltage_open_circuit           #  battery.pack.voltage_open_circuit
+        V_ul_pack          = battery_conditions.pack.voltage_under_load             #  battery.pack.voltage_under_load 
+        P_pack             = battery_conditions.pack.power                          #  battery_power_draw   
+        T_pack             = battery_conditions.pack.temperature                    #  battery.pack.temperature  
+        Q_heat_pack        = battery_conditions.pack.heat_energy_generated          #  battery.pack.heat_energy_generated 
+        R_0                = battery_conditions.pack.internal_resistance            #  battery.pack.internal_resistance  
+        Q_heat_cell        = battery_conditions.cell.heat_energy_generated          #  battery.pack.heat_energy_generated
+        SOC                = battery_conditions.cell.state_of_charge                #  battery.cell.state_of_charge 
+        P_cell             = battery_conditions.cell.power                          #  battery.outputs.power/n_series
+        E_cell             = battery_conditions.cell.energy                         #  battery.pack.current_energy/n_total   
+        V_ul               = battery_conditions.cell.voltage_under_load             #  battery.cell.voltage_under_load    
+        V_oc               = battery_conditions.cell.voltage_open_circuit           #  battery.cell.voltage_open_circuit  
+        I_cell             = battery_conditions.cell.current                        #  abs(battery.cell.current)        
+        T_cell             = battery_conditions.cell.temperature                    #  battery.cell.temperature
+        Q_cell             = battery_conditions.cell.charge_throughput              #  battery.cell.charge_throughput  
+        DOD_cell           = battery_conditions.cell.depth_of_discharge 
+        time               = state.conditions.frames.inertial.time[:,0] 
+        
+        
         # ---------------------------------------------------------------------------------
         # Compute battery electrical properties 
-        # ---------------------------------------------------------------------------------   
+        # --------------------------------------------------------------------------------- 
+        # Calculate the current going into one cell  
+        n_series          = battery.pack.electrical_configuration.series  
+        n_parallel        = battery.pack.electrical_configuration.parallel 
+        n_total           = battery.pack.electrical_configuration.total 
         
-        # Compute state of charge and depth of discarge of the battery
-        initial_discharge_state = np.dot(I,-P_bat) + E_current[0]
-        SOC_old                 = np.divide(initial_discharge_state,E_max)
-        
-        SOC_old[SOC_old>1] = 1.
-        SOC_old[SOC_old<0] = 0.
-        
-        # Compute internal resistance
-        R_bat = -0.0169*(SOC_old**4) + 0.0418*(SOC_old**3) - 0.0273*(SOC_old**2) + 0.0069*(SOC_old) + 0.0043
-        R_0   = R_bat*conditions.energy[bus_tag][self.tag].cell.resistance_growth_factor
-        R_0[R_0<0] = 0.  # when battery isn't being called
-        
-        # Compute Heat power generated by all cells
-        Q_heat_gen = (I_bat**2.)*R_0 
-        
-        # Determine actual power going into the battery accounting for resistance losses 
-        P  = -P_bat - np.abs(Q_heat_gen) 
-
-        # Compute temperature rise of battery
-        dT_dt     = Q_heat_gen /(bat_mass*bat_Cp)
-        T_current = T_current[0] + np.dot(I,dT_dt)
-        
-        # Possible Energy going into the battery:
-        energy_unmodified = np.dot(I,P)
-    
-        # Available capacity
-        capacity_available = E_max - battery.pack.current_energy[0]
-    
-        # How much energy the battery could be overcharged by
-        delta           = energy_unmodified -capacity_available
-        delta[delta<0.] = 0.
-    
-        # Power that shouldn't go in
-        ddelta = np.dot(D,delta) 
-    
-        # Power actually going into the battery
-        P[P>0.] = P[P>0.] - ddelta[P>0.]
-        E_bat = np.dot(I,P)
-        E_bat = np.reshape(E_bat,np.shape(E_current)) #make sure it's consistent
-        
-        # Add this to the current state
-        if np.isnan(E_bat).any():
-            E_bat=np.ones_like(E_bat)*np.max(E_bat)
-            if np.isnan(E_bat.any()): #all nans; handle this instance
-                E_bat=np.zeros_like(E_bat)
+        delta_t           = np.diff(time)
+        for t_idx in range(state.numerics.number_of_control_points):       
+            # ---------------------------------------------------------------------------------------------------
+            # Current State 
+            # ---------------------------------------------------------------------------------------------------
+            I_cell[t_idx]  = I_bat[t_idx]/n_parallel  
+            
+            # A voltage model from Chen, M. and Rincon-Mora, G. A., "Accurate Electrical Battery Model Capable of Predicting
+            # Runtime and I - V Performance" IEEE Transactions on Energy Conversion, Vol. 21, No. 2, June 2006, pp. 504-511
+            V_normalized  = (-1.031*np.exp(-35.*SOC[t_idx]) + 3.685 + 0.2156*SOC[t_idx] - 0.1178*(SOC[t_idx]**2.) + 0.3201*(SOC[t_idx]**3.))/4.1
+            V_oc[t_idx] = V_normalized * V_max
+            V_oc[t_idx][V_oc[t_idx] > V_max] = V_max
+                 
+            # Voltage under load:
+            if battery_discharge_flag:
+                V_ul[t_idx]    = V_oc[t_idx]  - I_cell[t_idx]*R_0[t_idx]
+            else: 
+                V_ul[t_idx]    = V_oc[t_idx]  + I_cell[t_idx]*R_0[t_idx]
                 
-        E_current = E_bat + E_current[0]
-        
-        SOC_new = np.divide(E_current,E_max)
-        SOC_new[SOC_new>1] = 1.
-        SOC_new[SOC_new<0] = 0. 
-        DOD_new = 1 - SOC_new
-          
-        # Determine new charge throughput (the amount of charge gone through the battery)
-        Q_total    = np.atleast_2d(np.hstack(( Q_prior[0] , Q_prior[0] + cumtrapz(abs(I_bat)[:,0], x   = numerics.time.control_points[:,0])/Units.hr ))).T      
+            # Compute internal resistance
+            R_bat        = -0.0169*(SOC[t_idx]**4) + 0.0418*(SOC[t_idx]**3) - 0.0273*(SOC[t_idx]**2) + 0.0069*(SOC[t_idx]) + 0.0043
+            R_0[t_idx]   = R_bat*battery_conditions.cell.resistance_growth_factor 
+            
+            # Compute Heat power generated by all cells
+            Q_heat_cell[t_idx] = (I_cell[t_idx]**2.)*R_0[t_idx]
+            Q_heat_pack[t_idx] = (I_pack[t_idx]**2.)*R_0[t_idx]
+            
+            # Effective Power flowing through battery 
+            P_pack[t_idx]   = P_bat[t_idx]  - np.abs(Q_heat_pack[t_idx])
+            
                 
-        # A voltage model from Chen, M. and Rincon-Mora, G. A., "Accurate Electrical Battery Model Capable of Predicting
-        # Runtime and I - V Performance" IEEE Transactions on Energy Conversion, Vol. 21, No. 2, June 2006, pp. 504-511
-        V_normalized  = (-1.031*np.exp(-35.*SOC_new) + 3.685 + 0.2156*SOC_new - 0.1178*(SOC_new**2.) + 0.3201*(SOC_new**3.))/4.1
-        V_oc = V_normalized * V_max
-        V_oc[ V_oc > V_max] = V_max
-        
-        # Voltage under load:
-        if battery_discharge_flag:
-            V_ul   = V_oc - I_bat*R_0
-        else: 
-            V_ul   = V_oc + I_bat*R_0 
-             
-        # Pack outputs
-        battery.pack.load_power                    = V_ul*I_bat
-        battery.cell.depth_of_discharge            = DOD_new
-        battery.pack.generated_heat                = Q_heat_gen
-        battery.pack.current_energy                = E_current
-        battery.pack.temperature                   = T_current 
-        battery.pack.voltage_open_circuit          = V_oc
-        battery.pack.voltage_under_load            = V_ul
-        battery.pack.current                       = I_bat  
-        battery.pack.heat_energy_generated         = Q_heat_gen 
-        battery.pack.internal_resistance           = R_0 
-        battery.cell.charge_throughput             = Q_total  
-        battery.cell.state_of_charge               = SOC_new 
-        battery.cell.temperature                   = T_current 
-        battery.cell.joule_heat_fraction           = np.zeros_like(V_ul)
-        battery.cell.entropy_heat_fraction         = np.zeros_like(V_ul)  
-        battery.cell.voltage_open_circuit          = np.zeros_like(V_ul)
-        battery.cell.current                       = np.zeros_like(V_ul)
-        battery.cell.voltage_under_load            = np.zeros_like(V_ul)
-        
-        return      
-    
-    def assign_battery_unknowns(self,segment,bus,battery): 
-        """ Appends unknowns specific to LFP cells which are unpacked from the mission solver and send to the network.
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            state.unknowns.battery_voltage_under_load                [volts]
-            segment                                                  [N.A]
-            b_i                                                      [unitless]
-    
-            Outputs: 
-            state.conditions.energy.battery.pack.voltage_under_load  [volts]
-    
-            Properties Used:
-            N/A
-        """             
+            # store remaining variables 
+            I_pack[t_idx]         = I_bat[t_idx]  
+            V_oc_pack[t_idx]      = V_oc[t_idx]*n_series 
+            V_ul_pack[t_idx]      = V_ul[t_idx]*n_series  
+            T_pack[t_idx]         = T_cell[t_idx] 
+            P_cell[t_idx]         = P_pack[t_idx]/n_total  
+            E_cell[t_idx]         = E_pack[t_idx]/n_total  
 
-        if bus.fixed_voltage == False: 
-            battery_conditions                          = segment.state.conditions.energy[bus.tag][battery.tag]  
-            battery_conditions.pack.voltage_under_load  = segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  
+            # ---------------------------------------------------------------------------------------------------
+            # Current State 
+            # --------------------------------------------------------------------------------------------------- 
+            if t_idx != state.numerics.number_of_control_points-1:  
+                # Compute cell temperature   
         
-        return 
-    
-    def assign_battery_residuals(self,segment,bus,battery): 
-        """ Packs the residuals specific to LFP cells to be sent to the mission solver.
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            segment.state.conditions.energy:
-                motor.torque                                [N-m]
-                rotor.torque                                [N-m]
-                voltage_under_load                          [volts]
-            state.unknowns.battery_voltage_under_load       [volts] 
-            b_i                                             [unitless]
-            
-            Outputs:
-            None
-    
-            Properties Used:
-            network.voltage                                 [volts]
-        """     
-        if bus.fixed_voltage == False:         
-            battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag]
-            v_actual           = battery_conditions.pack.voltage_under_load
-            v_predict          = segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  
-            v_max              = bus.voltage
-            
-            # Return the residuals
-            segment.state.residuals.network[bus.tag + '_' + battery.tag + 'voltage']  = (v_predict - v_actual)/v_max
-        
-        return 
-    
-    def append_battery_unknowns_and_residuals_to_segment(self,
-                                                         segment,
-                                                         bus,
-                                                         battery,
-                                                         estimated_voltage,
-                                                         estimated_cell_temperature,
-                                                         estimated_state_of_charge,
-                                                         estimated_cell_current): 
-        """ Sets up the information that the mission needs to run a mission segment using this network
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:    
-            b_i                                      [unitless]
-            estimated_voltage                        [volts]
-            estimated_battery_cell_temperature       [Kelvin]
-            estimated_battery_state_of_charges       [unitless]
-            estimated_battery_cell_currents          [Amperes]
-            
-            Outputs
-            None
-            
-            Properties Used:
-            N/A
-        """        
-        
-        ones_row = segment.state.ones_row 
-        if bus.fixed_voltage == False:  
-            segment.state.unknowns[bus.tag + '_' + battery.tag + '_voltage_under_load']  = estimated_voltage * ones_row(1)   
-        
-        return  
+                dT_dt     = Q_heat_pack[t_idx] /(bat_mass*bat_Cp) 
+                
+                # Temperature 
+                T_cell[t_idx+1] = T_cell[t_idx] + dT_dt*delta_t[t_idx] 
+                    
+                # Compute state of charge and depth of discarge of the battery
+                E_pack[t_idx+1]                          = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx]
+                E_pack[t_idx+1][E_pack[t_idx+1] > E_max] = E_max 
+                SOC[t_idx+1]                             = E_pack[t_idx+1]/E_max 
+                DOD_cell[t_idx+1]                        = 1 - SOC[t_idx+1] 
+                
+                # Determine new charge throughput (the amount of charge gone through the battery)
+                Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr
+                        
+        return       
     
     def compute_voltage(self,battery_conditions):
         """ Computes the voltage of a single LFP cell or a battery pack of LFP cells   
@@ -362,7 +257,9 @@ class Lithium_Ion_Generic(Battery):
 
         return battery_conditions.pack.voltage_under_load 
     
-    def update_battery_age(self,segment,increment_battery_age_by_one_day = False):    
+    def update_battery_age(self,segment,increment_battery_age_by_one_day = False):   
+        pass 
         return  
+ 
  
   

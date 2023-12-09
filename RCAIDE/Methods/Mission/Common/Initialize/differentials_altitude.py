@@ -16,7 +16,23 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Missions-Segments-Common-Update
 def differentials_altitude(segment):
-    """  
+    """ Initializes the differntial altitude
+    
+        Assumptions: 
+            None
+        
+        Inputs: 
+            state.conditions:           
+                numerics.dimensionless.integrate        [-]
+                numerics.dimensionless.control_points   [s]
+                frames.position_vector                  [m]
+                inertial.velocity_vector                [m/s]
+            
+        Outputs:
+            state.conditions.frames.inertial.time       [s]
+           
+        Properties Used:
+        N/A 
     """
 
     # unpack

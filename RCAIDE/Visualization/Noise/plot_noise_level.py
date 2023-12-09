@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Core import Units
-from RCAIDE.Visualization.Performance.Common import set_axes, plot_style 
+from RCAIDE.Visualization.Common import set_axes, plot_style 
 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm

@@ -29,7 +29,7 @@ def climb_descent(segment):
     N/A
     """        
      
-    if 'thottle' in segment.state.unknowns: 
+    if 'throttle' in segment.state.unknowns: 
         throttle = segment.state.unknowns.throttle
         segment.state.conditions.energy.throttle[:,0] = throttle[:,0]
     

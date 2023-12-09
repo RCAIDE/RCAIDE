@@ -10,9 +10,25 @@
 
 ## @ingroup Methods-Missions-Segments-Common-Update
 def differentials_time(segment):
-    """  
-                                
-    """     
+    """ Updates the time descretization 
+        
+        Assumptions:
+        N/A
+        
+        Inputs:
+            segment.state.conditions:
+                .frames.inertial.time         [s]
+        Outputs:
+            segment.state.numerics.time
+                .control_points               [s]
+                .differentiate                [-]
+                .integrate                    [-]
+
+      
+        Properties Used:
+        N/A
+                    
+    """    
     
     # unpack
     numerics = segment.state.numerics

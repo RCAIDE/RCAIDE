@@ -12,7 +12,7 @@
 from RCAIDE.Analyses.Mission.Segments.Evaluate        import Evaluate    
 from RCAIDE.Core                                      import Units
 from RCAIDE.Methods.Mission.Segments                  import Ground  
-from RCAIDE.Methods                                   import skip 
+from RCAIDE.Methods.skip                              import skip 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  SEGMENT
@@ -49,6 +49,7 @@ class Battery_Discharge(Evaluate):
         # --------------------------------------------------------------
         self.altitude               = None
         self.time                   = 1.0 * Units.seconds
+        self.current                = 0
         self.overcharge_contingency = 1.10 
         self.true_course_angle      = 0.0 * Units.degrees 
 

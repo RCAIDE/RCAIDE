@@ -70,21 +70,20 @@ def initialize_conditions(segment):
     segment.state.unknowns.velocity_x = initialized_velocity[1:,0]    
 
     # pack conditions 
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = initialized_velocity[:,0]
-    segment.state.conditions.ground.incline[:,0]                  = segment.ground_incline
-    segment.state.conditions.ground.friction_coefficient[:,0]     = segment.friction_coefficient
-    segment.state.conditions.propulsion.throttle[:,0]             = throttle  
-    segment.state.conditions.freestream.altitude[:,0]             = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt  
     conditions = segment.state.conditions    
-    
-    # unpack
-    throttle  = segment.throttle	
-    r_initial = conditions.frames.inertial.position_vector[0,:][None,:]
-    m_initial = segment.analyses.weights.vehicle.mass_properties.takeoff    
-
-    # default initial time, position, and mass
-    # apply initials
-    conditions.weights.total_mass[:,0]              = m_initial
-    conditions.frames.inertial.position_vector[:,:] = r_initial[:,:]
-    conditions.propulsion.throttle[:,0]             = throttle
+    conditions.frames.inertial.velocity_vector[:,0] = initialized_velocity[:,0]
+    conditions.ground.incline[:,0]                  = segment.ground_incline
+    conditions.ground.friction_coefficient[:,0]     = segment.friction_coefficient
+    for network in segment.analyses.energy.networks:
+        if 'busses' in network:
+            for bus in network.busses: 
+                conditions.energy[bus.tag].throttle[:,0]      = throttle   
+        if 'fuel_lines' in network:
+            for fuel_line in network.fuel_lines: 
+                conditions.energy[fuel_line.tag].throttle[:,0] = throttle  
+        
+    conditions.freestream.altitude[:,0]             = alt
+    conditions.frames.inertial.position_vector[:,2] = -alt   
+    conditions.weights.total_mass[:,0]              = segment.analyses.weights.vehicle.mass_properties.takeoff
+    conditions.frames.inertial.position_vector[:,:] = conditions.frames.inertial.position_vector[0,:][None,:][:,:] 
+     
