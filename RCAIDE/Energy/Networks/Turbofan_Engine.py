@@ -182,9 +182,7 @@ class Turbofan_Engine(Network):
         
         return    
      
-    def add_unknowns_and_residuals_to_segment(self,
-                                              segment,
-                                              estimated_throttles = [[1.0]]):
+    def add_unknowns_and_residuals_to_segment(self, segment):
         """ This function sets up the information that the mission needs to run a mission segment using this network 
          
             Assumptions:
@@ -230,7 +228,7 @@ class Turbofan_Engine(Network):
             elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
                 fuel_line_results.throttle = segment.throttle * ones_row(1)            
             elif fuel_line.active:         
-                segment.state.unknowns[fuel_line.tag + '_throttle']  = estimated_throttles[fuel_line_i][0] * ones_row(1) 
+                segment.state.unknowns[fuel_line.tag + '_throttle']  = segment.estimated_throttles[fuel_line_i]  * ones_row(1) 
      
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  

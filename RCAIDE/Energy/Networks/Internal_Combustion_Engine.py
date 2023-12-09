@@ -169,10 +169,7 @@ class Internal_Combustion_Engine(Network):
         
         return
     
-    def add_unknowns_and_residuals_to_segment(self,
-                                              segment,
-                                              estimated_throttles = [[0.5]], 
-                                              estimated_rpms      = [[2500]]):
+    def add_unknowns_and_residuals_to_segment(self,segment):
         """ This function sets up the information that the mission needs to run a mission segment using this network 
          
             Assumptions:
@@ -218,7 +215,7 @@ class Internal_Combustion_Engine(Network):
             elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
                 fuel_line_results.throttle = segment.throttle * ones_row(1)            
             elif fuel_line.active:    
-                segment.state.unknowns[fuel_line.tag + '_throttle']  = estimated_throttles[fuel_line_i][0] * ones_row(1) 
+                segment.state.unknowns[fuel_line.tag + '_throttle']  = segment.estimated_throttles[fuel_line_i] * ones_row(1) 
  
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  
@@ -230,7 +227,7 @@ class Internal_Combustion_Engine(Network):
             # ------------------------------------------------------------------------------------------------------
             for propulsor in fuel_line.propulsors:         
 
-                segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_rpm']                           = estimated_rpms[fuel_line_i][0] * ones_row(1)  
+                segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_rpm']                           = segment.estimated_RPMs[fuel_line_i] * ones_row(1)  
                 segment.state.residuals.network[ fuel_line.tag + '_' + propulsor.tag + '_rotor_engine_torque'] = 0. * ones_row(1)       
                 
                 fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()

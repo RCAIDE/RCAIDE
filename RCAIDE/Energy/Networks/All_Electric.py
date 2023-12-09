@@ -231,10 +231,7 @@ class All_Electric(Network):
         return     
     
     ## @ingroup Components-Energy-Networks
-    def add_unknowns_and_residuals_to_segment(self, 
-                                              segment, 
-                                              estimated_propulsor_group_throttles = [[0.5]], 
-                                              estimated_rotor_power_coefficients  = [[0.02]],):
+    def add_unknowns_and_residuals_to_segment(self, segment):
         """ This function sets up the information that the mission needs to run a mission segment using this network
     
             Assumptions:
@@ -290,7 +287,7 @@ class All_Electric(Network):
                 bus_results.throttle = segment.throttle 
             elif bus.active: 
                 try: 
-                    initial_throttle = estimated_propulsor_group_throttles[bus_i][0]
+                    initial_throttle = segment.estimated_throttles[bus_i] 
                 except:  
                     initial_throttle = 0.5  
                 segment.state.unknowns[bus.tag + '_throttle'] = initial_throttle* ones_row(1)     
@@ -339,7 +336,7 @@ class All_Electric(Network):
                 elif bus.active:
                     segment.state.conditions.energy.recharging  = False 
                     try: 
-                        cp_init = estimated_rotor_power_coefficients[bus_i]
+                        cp_init = segment.estimated_rotor_power_coefficients[bus_i]
                     except: 
                         rotor   = propulsor.rotor  
                         if type(rotor) == Propeller:

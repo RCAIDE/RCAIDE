@@ -217,10 +217,7 @@ def mission_setup(analyses):
     segment.altitude                                = 12000. * Units.feet
     segment.air_speed                               = 119.   * Units.knots
     segment.distance                                = 10 * Units.nautical_mile
-    segment.state.conditions.energy.rpm             = 2650.  * Units.rpm *  ones_row(1)     
-    segment = analyses.base.energy.networks.internal_combustion_engine_constant_speed.add_unknowns_and_residuals_to_segment(segment)      
-
-    # add to mission
+    segment.state.conditions.energy.rpm             = 2650.  * Units.rpm *  ones_row(1)            
     mission.append_segment(segment)
 
 

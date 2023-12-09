@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Initialize
-# RCAIDE/Methods/Missions/Common/Initialize/energy.py
+## @ingroup Methods-Missions-Segments-Common-Pre_Process
+# RCAIDE/Methods/Missions/Common/Pre_Process/aerodynamics.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -11,9 +11,9 @@
 # RCAIDE imports 
 import RCAIDE 
 # ----------------------------------------------------------------------------------------------------------------------
-#  energy
+#  aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Common-Initialize
+## @ingroup Methods-Missions-Segments-Common-Pre_Process
 def aerodynamics(mission):
     """ Runs aerdoynamics model and build surrogate
     

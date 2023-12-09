@@ -208,9 +208,7 @@ def mission_setup(analyses):
             if (day == 0) and (flight_no == 0):        
                 segment.initial_battery_state_of_charge              = 0.89 
                 segment.initial_battery_resistance_growth_factor     = 1
-                segment.initial_battery_capacity_fade_factor         = 1
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)          
-            # add to misison
+                segment.initial_battery_capacity_fade_factor         = 1 
             mission.append_segment(segment) 
             
         
@@ -222,10 +220,7 @@ def mission_setup(analyses):
             segment.analyses.extend(analyses.base) 
             segment.altitude                  = 8012   * Units.feet
             segment.air_speed                 = 150.    * Units['mph'] 
-            segment.distance                  = 50.   * Units.nautical_mile   
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
-        
-            # add to misison
+            segment.distance                  = 50.   * Units.nautical_mile    
             mission.append_segment(segment)    
         
         
@@ -239,10 +234,7 @@ def mission_setup(analyses):
             segment.altitude_end                                     = 2500.0 * Units.feet
             segment.air_speed_start                                  = 150.* Units['mph']  
             segment.air_speed_end                                    = 90 * Units['mph']   
-            segment.descent_rate                                     = 200 * Units['ft/min']   
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)   
-            
-            # add to misison
+            segment.descent_rate                                     = 200 * Units['ft/min']      
             mission.append_segment(segment)
             
             # ------------------------------------------------------------------
@@ -255,8 +247,7 @@ def mission_setup(analyses):
             segment.analyses.extend(analyses.base)                       
             segment.time                                            = 1.5 * Units.hr
             if flight_no  == flights_per_day:  
-                segment.increment_battery_age_by_one_day            =True                        
-            segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)     
+                segment.increment_battery_age_by_one_day            =True                            
             mission.append_segment(segment)        
 
     return mission

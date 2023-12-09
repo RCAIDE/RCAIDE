@@ -134,9 +134,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
         
         return    
     
-    def add_unknowns_and_residuals_to_segment(self,
-                                              segment,
-                                              estimated_rotor_pitch_commands = [[0.1]],):
+    def add_unknowns_and_residuals_to_segment(self,segment):
         """ This function sets up the information that the mission needs to run a mission segment using this network 
          
             Assumptions:
@@ -183,7 +181,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
             for propulsor in fuel_line.propulsors:         
-                segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_pitch_command'] = estimated_rotor_pitch_commands[fuel_line_i][0] * ones_row(1)  
+                segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_pitch_command'] = segment.estimated_rotor_pitch_commands[fuel_line_i] * ones_row(1)  
                 fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].engine                  = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions()  

@@ -263,8 +263,7 @@ def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
     segment.tag                             = 'Discharge_1' 
     segment.time                            = time/2 
     segment.current                         = current
-    segment.initial_battery_state_of_charge = 1
-    segment                                 = vehicle.networks.isolated_battery_cell.add_unknowns_and_residuals_to_segment(segment)    
+    segment.initial_battery_state_of_charge = 1  
     mission.append_segment(segment)         
     
 
@@ -272,8 +271,7 @@ def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
     segment.tag                            = 'Discharge_2'
     segment.analyses.extend(analyses.base)  
     segment.current                        = current
-    segment.time                           = time/2 
-    segment                                = vehicle.networks.isolated_battery_cell.add_unknowns_and_residuals_to_segment(segment )    
+    segment.time                           = time/2  
     mission.append_segment(segment)         
             
     
@@ -282,8 +280,7 @@ def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
     segment.analyses.extend(analyses.base) 
     segment.tag                            = 'Recharge'
     segment.current                        = current
-    segment.time                           = time
-    segment                                = vehicle.networks.isolated_battery_cell.add_unknowns_and_residuals_to_segment(segment)      
+    segment.time                           = time     
     mission.append_segment(segment)   
 
     return mission 

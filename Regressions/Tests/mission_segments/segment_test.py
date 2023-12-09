@@ -218,8 +218,7 @@ def mission_setup(analyses):
     segment.velocity_start           = 100.* Units.knots
     segment.velocity_end             = 150 * Units.knots
     segment.friction_coefficient     = 0.04
-    segment.altitude                 = 0.0
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.altitude                 = 0.0 
     mission.append_segment(segment)
     
 
@@ -233,8 +232,7 @@ def mission_setup(analyses):
     segment.altitude_start = 0.0   * Units.km
     segment.altitude_end   = 0.05  * Units.km
     segment.air_speed      = 150   * Units.knots
-    segment.climb_rate     = 10.0  * Units['m/s']
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate     = 10.0  * Units['m/s'] 
     mission.append_segment(segment)
 
    
@@ -247,8 +245,7 @@ def mission_setup(analyses):
     segment.altitude_start                   = 0.05  * Units.km
     segment.altitude_end                     = 2.    * Units.km
     segment.climb_angle                      = 5.   * Units.degrees 
-    segment.dynamic_pressure                 = 3800 * Units.pascals   
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.dynamic_pressure                 = 3800 * Units.pascals    
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
@@ -260,8 +257,7 @@ def mission_setup(analyses):
     segment.altitude_start                   = 2.   * Units.km
     segment.altitude_end                     = 4.   * Units.km
     segment.climb_rate                       = 730. * Units['ft/min']    
-    segment.dynamic_pressure                 = 12000 * Units.pascals 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.dynamic_pressure                 = 12000 * Units.pascals  
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------
@@ -273,8 +269,7 @@ def mission_setup(analyses):
     segment.altitude_start                   = 4.   * Units.km
     segment.altitude_end                     = 6.   * Units.km
     segment.mach_number                      = 0.5
-    segment.climb_angle                      = 3.5 * Units.degrees   
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_angle                      = 3.5 * Units.degrees    
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
@@ -286,8 +281,7 @@ def mission_setup(analyses):
     segment.altitude_start                   = 6.    * Units.km
     segment.altitude_end                     = 7.    * Units.km
     segment.air_speed                        = 180   * Units.m / Units.s
-    segment.climb_angle                      = 3.    * Units.degrees   
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_angle                      = 3.    * Units.degrees    
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------
@@ -297,8 +291,7 @@ def mission_setup(analyses):
     segment.tag = "climb_6"
     segment.analyses.extend( analyses.base )  
     segment.altitude_end                     = 8.    * Units.km   
-    segment.mach_number                      = 0.75  
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.mach_number                      = 0.75   
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
@@ -309,8 +302,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.base ) 
     segment.altitude_start                   = 8.    * Units.km
     segment.altitude_end                     = 9.    * Units.km   
-    segment.air_speed                        = 250.2 * Units.m / Units.s 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.air_speed                        = 250.2 * Units.m / Units.s  
     mission.append_segment(segment)
  
     # ------------------------------------------------------------------
@@ -321,8 +313,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.base )  
     segment.altitude_end                     = 10.   * Units.km    
     segment.equivalent_air_speed             = 150. * Units.m / Units.s
-    segment.climb_rate                       = 1.  
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate                       = 1.   
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
@@ -333,8 +324,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.base )  
     segment.altitude_end                     = 10.9   * Units.km    
     segment.calibrated_air_speed             = 150. * Units.m / Units.s
-    segment.climb_rate                       = 1.  
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate                       = 1.   
     mission.append_segment(segment)
     
     ## ------------------------------------------------------------------
@@ -349,8 +339,7 @@ def mission_setup(analyses):
     #segment.air_speed_end          = None
     #segment.objective              = 'conditions.frames.inertial.time[-1,0]*1000'
     #segment.minimize               = True
-    #segment.state.numerics.number_control_points = 3
-    #segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    #segment.state.numerics.number_control_points = 3 
     #mission.append_segment(segment)
         
     
@@ -362,8 +351,7 @@ def mission_setup(analyses):
     segment.analyses.extend(analyses.base) 
     segment.altitude                  = 11. * Units.km    
     segment.dynamic_pressure          = 28000 * Units.pascals   
-    segment.distance                  = 500 * Units.km 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.distance                  = 500 * Units.km  
     mission.append_segment(segment)    
 
     ## ------------------------------------------------------------------
@@ -378,8 +366,7 @@ def mission_setup(analyses):
     #segment.distance                             = 500 * Units.km 
     #segment.state.numerics.number_control_points = 32
     #segment.state.unknowns.accel_x               = 0.1 * ones_row(1)
-    #segment.state.unknowns.time                  = 100. 
-    #segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    #segment.state.unknowns.time                  = 100.  
     #mission.append_segment(segment)   
     
     # ------------------------------------------------------------------
@@ -392,9 +379,8 @@ def mission_setup(analyses):
     segment.pitch_rate                = 0.0001  * Units['rad/s/s']
     segment.pitch_final               = 4.  * Units.degrees 
     segment.distance                  = 500 * Units.km 
-    segment.state.unknowns.throttle = ones_row(1) * 0.9
-    segment.state.unknowns.velocity = ones_row(1) * 200
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.state.unknowns.throttle   = ones_row(1) * 0.9
+    segment.state.unknowns.velocity   = ones_row(1) * 200 
     mission.append_segment(segment)   
     
     # ------------------------------------------------------------------
@@ -405,8 +391,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.base ) 
     segment.altitude_start            = 10.    * Units.km    
     segment.air_speed                 = 150   * Units.m / Units.s 
-    segment.altitude_end              = 5  * Units.km 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.altitude_end              = 5  * Units.km  
     mission.append_segment(segment) 
 
     # ------------------------------------------------------------------
@@ -417,8 +402,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.base ) 
     segment.altitude_end              = 2500. * Units.feet
     segment.descent_rate              = 2.  * Units.m / Units.s
-    segment.calibrated_air_speed      = 100 * Units.m / Units.s
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.calibrated_air_speed      = 100 * Units.m / Units.s 
     mission.append_segment(segment) 
 
     # ------------------------------------------------------------------
@@ -428,8 +412,7 @@ def mission_setup(analyses):
     segment.tag = "single_point_1" 
     segment.analyses.extend(analyses.base) 
     segment.altitude    =  2500. * Units.feet
-    segment.air_speed   =  200. * Units['m/s']  
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.air_speed   =  200. * Units['m/s']   
     mission.append_segment(segment)    
     
     # ------------------------------------------------------------------
@@ -440,8 +423,7 @@ def mission_setup(analyses):
     segment.analyses.extend(analyses.base) 
     segment.altitude    =  2500. * Units.feet
     segment.air_speed   =  200. * Units['m/s']   
-    segment.throttle    =  0.5
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.throttle    =  0.5 
     mission.append_segment(segment)    
     
     # ------------------------------------------------------------------
@@ -451,8 +433,7 @@ def mission_setup(analyses):
     segment.tag = "loiter" 
     segment.analyses.extend(analyses.base) 
     segment.altitude                  = 2500  * Units.feet
-    segment.dynamic_pressure          = 12000 * Units.pascals 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.dynamic_pressure          = 12000 * Units.pascals  
     mission.append_segment(segment)   
        
     # ------------------------------------------------------------------
@@ -464,8 +445,7 @@ def mission_setup(analyses):
     segment.altitude_start            = 2500  * Units.feet
     segment.altitude_end              = 0  * Units.feet 
     segment.descent_rate              = 3.  * Units.m / Units.s
-    segment.equivalent_air_speed      = 100 * Units.m / Units.s
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.equivalent_air_speed      = 100 * Units.m / Units.s 
     mission.append_segment(segment)   
 
     # ------------------------------------------------------------------
@@ -480,8 +460,7 @@ def mission_setup(analyses):
     segment.velocity_end             = 100 * Units.knots
     segment.state.unknowns.time      = 30.
     segment.friction_coefficient     = 0.4
-    segment.altitude                 = 0.0
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.altitude                 = 0.0 
     mission.append_segment(segment)     
 
 
@@ -495,8 +474,7 @@ def mission_setup(analyses):
     segment.throttle                             = 0
     segment.distance                             = 10 * Units.km 
     segment.state.numerics.number_control_points = 2
-    segment.state.numerics.max_evaluations       = 10
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.state.numerics.max_evaluations       = 10 
     mission.append_segment(segment)     
 
         
