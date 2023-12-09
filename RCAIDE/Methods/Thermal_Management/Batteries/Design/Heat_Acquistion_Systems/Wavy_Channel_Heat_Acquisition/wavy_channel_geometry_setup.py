@@ -17,7 +17,7 @@ def wavy_channel_geometry_setup(HAS,battery):
     """     
     vehicle                             = RCAIDE.Vehicle()  
     net                                 = RCAIDE.Energy.Networks.All_Electric()  
-    bus                                 = RCAIDE.Energy.Distributors.Bus_Power_Control_Unit()     
+    bus                                 = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit()     
     battery.thermal_management_system.heat_aquisition_system = HAS 
     bus.batteries.append(battery)
     net.busses.append(bus) 

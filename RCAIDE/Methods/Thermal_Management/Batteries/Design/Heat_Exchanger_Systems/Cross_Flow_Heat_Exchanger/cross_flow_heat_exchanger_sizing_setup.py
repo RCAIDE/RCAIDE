@@ -6,7 +6,7 @@ import RCAIDE
 from RCAIDE.Core                                                  import Units   
 from RCAIDE.Analyses.Process                                      import Process     
 from RCAIDE.Methods.Thermal_Management.Batteries.Design.Heat_Exchanger_Systems.Cross_Flow_Heat_Exchanger import compute_heat_exhanger_factors
-from RCAIDE.Attributes.Coolants.Glycol_Water import Glycol_Water
+from RCAIDE.Attributes.Coolants  import Glycol_Water
 from RCAIDE.Attributes.Gases import Air 
 
 # Python package imports 
@@ -107,8 +107,8 @@ def modify_crossflow_hex_size(nexus):
     # ------------------------------------------------------------------------------------------------------------------------    
     
     # Calculate Outlet Pressure 
-    P_o_h    =delta_p_h-P_i_h
-    P_o_c    =delta_p_c-P_i_c
+    P_o_h    = P_i_h-delta_p_h
+    P_o_c    = P_i_c-delta_p_c
     
     # Calculate the Outlet Temperatures 
     
@@ -154,9 +154,8 @@ def modify_crossflow_hex_size(nexus):
     # from the inlet and outlet pressures given the mean density is calcualted. 
     rho_h_i  =  coolant.compute_density(T_i_h+273,P_i_h)#0.4751
     rho_c_i  =  air.compute_density(T_i_c+273,P_i_c)    #1.4726 
-    rho_h_o  =  coolant.compute_density(T_o_h+273,P_o_h)#0.8966
-    T_o_c_Kel = T_o_c + 273
-    rho_c_o  =  air.compute_density(T = T_o_c_Kel,P_o_c)    #0.6817
+    rho_h_o  =  coolant.compute_density(T_o_h+273,P_o_h)#0.8966 
+    rho_c_o  =  air.compute_density(T_o_c + 273,P_o_c)    #0.6817
     
     
     rho_h_m  = (rho_h_i+rho_h_o)/2

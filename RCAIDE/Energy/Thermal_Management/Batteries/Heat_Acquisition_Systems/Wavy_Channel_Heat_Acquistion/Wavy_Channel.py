@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 from RCAIDE.Core import Data , Units
-from RCAIDE.Attributes.Coolants.Glycol_Water import Glycol_Water
+from RCAIDE.Attributes.Coolants.Glycol_Water   import Glycol_Water
 from RCAIDE.Energy.Energy_Component            import Energy_Component  
-from RCAIDE.Attributes.Solids.Aluminum       import Aluminum  
+from RCAIDE.Attributes.Solids.Aluminum         import Aluminum  
      
 import numpy as np  
 

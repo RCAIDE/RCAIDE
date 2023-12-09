@@ -19,7 +19,7 @@ def cross_flow_heat_exchanger_geometry_setup(HEX,HAS):
     """     
     vehicle                                        = RCAIDE.Vehicle()  
     net                                            = RCAIDE.Energy.Networks.All_Electric()  
-    bus                                            = RCAIDE.Energy.Distributors.Bus_Power_Control_Unit()
+    bus                                            = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit()
     bat                                            = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()   
      
     HEX.coolant_flow_rate                          = HAS.coolant_flow_rate #1.0
