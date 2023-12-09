@@ -11,7 +11,7 @@
 # RCAIDE imports  
 from RCAIDE.Core                                     import Units 
 from RCAIDE.Analyses.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Methods.Mission                          import Common,Segments
+from RCAIDE.Methods.Mission                          import Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_Dynamic_Pressure_Constant_Angle
@@ -62,7 +62,9 @@ class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
         # --------------------------------------------------------------------------------------------------------------    
         ones_row = self.state.ones_row        
         self.state.unknowns.altitudes  = ones_row(1) * 0.0
-        self.state.residuals.forces    = ones_row(3) * 0.0        
+        self.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees
+        self.state.residuals.forces    = ones_row(2) * 0.0  
+        self.state.residuals.altitude  = ones_row(1) * 0.0              
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

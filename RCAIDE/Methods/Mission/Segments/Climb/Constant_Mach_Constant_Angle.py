@@ -48,7 +48,7 @@ def initialize_conditions(segment):
     alt0        = segment.altitude_start  
     conditions  = segment.state.conditions 
 
-    if 'thottle' in segment.state.unknowns: 
+    if 'throttle' in segment.state.unknowns: 
         throttle = segment.state.unknowns.throttle
         segment.state.conditions.energy.throttle[:,0] = throttle[:,0]
         
@@ -67,9 +67,8 @@ def initialize_conditions(segment):
     # check for initial velocity
     if mach_number is None: 
         if not segment.state.initials: raise AttributeError('mach not set')
-        v_mag  = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])   
-    else:
-         
+        v_mag  = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])*segment.state.ones_row(1)   
+    else: 
         # Update freestream to get speed of sound
         atmosphere(segment)
         a = conditions.freestream.speed_of_sound    
@@ -99,8 +98,8 @@ def residual_total_forces(segment):
     alt_out = segment.state.conditions.freestream.altitude[:,0] 
     
     # Residual in X and Z, as well as a residual on the guess altitude
-    segment.state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a[:,0]
-    segment.state.residuals.forces[:,1] = FT[:,2]/m[:,0] - a[:,2]
-    segment.state.residuals.forces[:,2] = (alt_in - alt_out)/alt_out[-1]
+    segment.state.residuals.forces[:,0]   = FT[:,0]/m[:,0] - a[:,0]
+    segment.state.residuals.forces[:,1]   = FT[:,2]/m[:,0] - a[:,2]
+    segment.state.residuals.altitude[:,0] = (alt_in - alt_out)/alt_out[-1]
 
     return    

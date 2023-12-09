@@ -30,12 +30,12 @@ class Atmospheric_Air_Convection_Heat_Exchanger(Energy_Component):
     def __defaults__(self):  
         self.tag                                      = 'Atmospheric_Air_Convection_Heat_Exchanger'
         self.cooling_fluid                            = Air()    
-        self.cooling_fluid.flowspeed                  = 0.01                                          
+        self.cooling_fluid.flowspeed                  = 0.01                                       
         self.convective_heat_transfer_coefficient     = 35.     # [W/m^2K] 
         self.heat_transfer_efficiency                 = 1.0      
         return
     
-    def compute_net_generated_battery_heat(self,battery,Q_heat_gen,numerics,freestream): 
+    def compute_net_generated_battery_heat(self,battery,Q_heat_gen,T_cell,state,dt,i): 
         '''Computes the net heat generate by the battery pack with an a direct atmospheric air 
         heat exchanger
         
@@ -55,7 +55,7 @@ class Atmospheric_Air_Convection_Heat_Exchanger(Energy_Component):
         Outputs
         btms_resylts          - battery thermal management system resukts [-]
         '''
-        Q_heat_gen_tot,  P_net,  T_ambient, T_current =  compute_net_convected_heat(self,battery,Q_heat_gen,numerics,freestream) 
+        Q_heat_gen_tot,  P_net,  T_ambient, T_current =  compute_net_convected_heat(self,battery,Q_heat_gen,T_cell,state,dt,i) 
 
         btms_results = Data()
         btms_results.operating_conditions = Data(battery_current_temperature = T_current,

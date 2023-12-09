@@ -10,7 +10,7 @@
 
 # RCAIDE imports
 from RCAIDE.Analyses.Mission.Segments.Evaluate        import Evaluate 
-from RCAIDE.Core                                      import Units
+from RCAIDE.Core                                      import Units , Data 
 from RCAIDE.Methods.Mission.Segments                  import Ground  
 from RCAIDE.Methods.Mission.Common                    import Residuals , Unpack_Unknowns, Update
 
@@ -60,17 +60,27 @@ class Landing(Evaluate):
         #   User Inputs
         # -------------------------------------------------------------------------------------------------------------- 
 
+        self.ground_incline       = 0.0 
         self.velocity_start       = 150 * Units.knots
         self.velocity_end         = 0.0
         self.friction_coefficient = 0.4
         self.throttle             = 0.0
         self.altitude             = 0.0
         self.true_course_angle    = 0.0 * Units.degrees 
+
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  Mission Conditions 
+        # --------------------------------------------------------------------------------------------------------------          
+        ones_row = self.state.ones_row  
+        self.state.conditions.ground                              = Data()
+        self.state.conditions.ground.incline                      = ones_row(1) * 0.0
+        self.state.conditions.ground.friction_coefficient         = ones_row(1) * 0.0
+        self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0 
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
         # --------------------------------------------------------------------------------------------------------------  
-        ones_row_m1 = self.state.ones_row_m1
+        ones_row_m1                               = self.state.ones_row_m1
         self.state.unknowns.velocity_x            = ones_row_m1(1) * 0.0
         self.state.unknowns.time                  = 100.
         self.state.residuals.final_velocity_error = 0.0
@@ -80,8 +90,7 @@ class Landing(Evaluate):
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------  
         initialize                         = self.process.initialize
-        initialize.conditions_ground       = Ground.Landing.initialize_conditions 
-
+        initialize.conditions              = Ground.Landing.initialize_conditions  
         iterate                            = self.process.iterate   
         iterate.conditions.forces_ground   = Update.ground_forces    
         iterate.unknowns.mission           = Unpack_Unknowns.ground

@@ -12,11 +12,11 @@ def set_optimized_parameters(rotor,optimization_problem):
     """ Append parameters of optimized prop-rotor to input prop-rotor
           
           Inputs:  
-             prop-rotor                - prop-rotor data structure                   [None]
-             optimization_problem      - data struction of optimized parameters      [None]
+             rotor                - rotor data structure                        [None]
+             optimization_problem      - data struction of optimized parameters [None]
              
           Outputs: 
-             prop-rotor                - prop-rotor data structure                   [None]
+             rotor                - rotor data structure                        [None]
               
           Assumptions: 
              1) Default noise measurements are taken 135 degrees from prop-rotor plane 
@@ -25,8 +25,9 @@ def set_optimized_parameters(rotor,optimization_problem):
              None
     """    
     results                         = optimization_problem.results
-    optimal_hover_rotor_network     = optimization_problem.vehicle_configurations.hover.networks.all_electric.busses.bus.rotors
-    optimal_hover_rotor             = optimal_hover_rotor_network.rotor      
+    optimal_hover_rotor_bus         = optimization_problem.vehicle_configurations.hover.networks.all_electric.busses.bus
+    optimal_hover_rotor_propulsor   = optimal_hover_rotor_bus.propulsors.propulsor 
+    optimal_hover_rotor             = optimal_hover_rotor_propulsor.rotor      
     rotor.chord_distribution        = optimal_hover_rotor.chord_distribution
     rotor.twist_distribution        = optimal_hover_rotor.twist_distribution   
     

@@ -16,7 +16,7 @@ from RCAIDE.Visualization                 import *
 # python imports 
 import numpy as np  
 from copy import deepcopy
-
+import os
 
 def vehicle_setup():
 
@@ -92,8 +92,11 @@ def vehicle_setup():
     wing.high_mach                 = True 
     wing.dynamic_pressure_ratio    = 1.0
      
-    wing_airfoil                   = RCAIDE.Components.Airfoils.Airfoil() 
-    wing_airfoil.coordinate_file   = '../../Vehicles/Airfoils/NACA65-203.txt'  
+    wing_airfoil                   = RCAIDE.Components.Airfoils.Airfoil()  
+    ospath                         = os.path.abspath(__file__)
+    separator                      = os.path.sep
+    rel_path                       = os.path.dirname(ospath) + separator   
+    wing_airfoil.coordinate_file   = rel_path + 'Airfoils' + separator + 'NACA65-203.txt' 
     wing.append_airfoil(wing_airfoil)  
     
     # set root sweep with inner section
@@ -184,9 +187,8 @@ def vehicle_setup():
     
     wing.dynamic_pressure_ratio  = 1.0
     
-    tail_airfoil = RCAIDE.Components.Airfoils.Airfoil()
-    # This airfoil is not a true Concorde airfoil
-    tail_airfoil.coordinate_file = '../../Vehicles/Airfoils/supersonic_tail.txt' 
+    tail_airfoil = RCAIDE.Components.Airfoils.Airfoil() 
+    tail_airfoil.coordinate_file = rel_path + 'Airfoils' + separator + 'supersonic_tail.txt' 
     
     wing.append_airfoil(tail_airfoil)  
 
@@ -314,7 +316,8 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Fuel Distrubition Line 
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                     = RCAIDE.Energy.Distributors.Fuel_Line() 
+    fuel_line                                     = RCAIDE.Energy.Distribution.Fuel_Line() 
+    fuel_line.identical_propulsors                = False # only for regression 
        
     #------------------------------------------------------------------------------------------------------------------------------------  
     #   Fuel
@@ -384,12 +387,14 @@ def vehicle_setup():
     fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
     fuel_line.fuel_tanks.append(fuel_tank)      
     
-    # ------------------------------------------------------------------
-    #   Turbojet Network
-    # ------------------------------------------------------------------    
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Inner Right Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------   
+    outer_right_propulsor       = RCAIDE.Energy.Propulsors.Propulsor()  
     
     # instantiate the gas turbine network
-    turbojet                    = RCAIDE.Energy.Converters.Turbojet()
+    turbojet                    = RCAIDE.Energy.Propulsors.Converters.Turbojet()
     turbojet.tag                = 'turbojet_1'  
     turbojet.engine_length      = 4.039
     turbojet.nacelle_diameter   = 1.3
@@ -402,12 +407,12 @@ def vehicle_setup():
     turbojet.working_fluid      = RCAIDE.Attributes.Gases.Air()
     
     # Ram  
-    ram     = RCAIDE.Energy.Converters.Ram()
+    ram     = RCAIDE.Energy.Propulsors.Converters.Ram()
     ram.tag = 'ram' 
     turbojet.append(ram) 
  
     # Inlet Nozzle 
-    inlet_nozzle                          = RCAIDE.Energy.Converters.Compression_Nozzle()
+    inlet_nozzle                          = RCAIDE.Energy.Propulsors.Converters.Compression_Nozzle()
     inlet_nozzle.tag                      = 'inlet_nozzle' 
     inlet_nozzle.polytropic_efficiency    = 1.0
     inlet_nozzle.pressure_ratio           = 1.0
@@ -415,35 +420,35 @@ def vehicle_setup():
     turbojet.append(inlet_nozzle)     
           
     #  Low Pressure Compressor      
-    compressor                            = RCAIDE.Energy.Converters.Compressor()    
+    compressor                            = RCAIDE.Energy.Propulsors.Converters.Compressor()    
     compressor.tag                        = 'low_pressure_compressor' 
     compressor.polytropic_efficiency      = 0.88
     compressor.pressure_ratio             = 3.1     
     turbojet.append(compressor)       
         
     # High Pressure Compressor        
-    compressor                            = RCAIDE.Energy.Converters.Compressor()    
+    compressor                            = RCAIDE.Energy.Propulsors.Converters.Compressor()    
     compressor.tag                        = 'high_pressure_compressor' 
     compressor.polytropic_efficiency      = 0.88
     compressor.pressure_ratio             = 5.0  
     turbojet.append(compressor)
  
     # Low Pressure Turbine 
-    turbine                               = RCAIDE.Energy.Converters.Turbine()   
+    turbine                               = RCAIDE.Energy.Propulsors.Converters.Turbine()   
     turbine.tag                           ='low_pressure_turbine' 
     turbine.mechanical_efficiency         = 0.99
     turbine.polytropic_efficiency         = 0.89 
     turbojet.append(turbine)        
              
     # High Pressure Turbine         
-    turbine                               = RCAIDE.Energy.Converters.Turbine()   
+    turbine                               = RCAIDE.Energy.Propulsors.Converters.Turbine()   
     turbine.tag                           ='high_pressure_turbine' 
     turbine.mechanical_efficiency         = 0.99
     turbine.polytropic_efficiency         = 0.87 
     turbojet.append(turbine)  
           
     # Combustor   
-    combustor                             = RCAIDE.Energy.Converters.Combustor()   
+    combustor                             = RCAIDE.Energy.Propulsors.Converters.Combustor()   
     combustor.tag                         = 'combustor' 
     combustor.efficiency                  = 0.94
     combustor.alphac                      = 1.0     
@@ -453,7 +458,7 @@ def vehicle_setup():
     turbojet.append(combustor)
      
     #  Afterburner  
-    afterburner                           = RCAIDE.Energy.Converters.Combustor()   
+    afterburner                           = RCAIDE.Energy.Propulsors.Converters.Combustor()   
     afterburner.tag                       = 'afterburner' 
     afterburner.efficiency                = 0.9
     afterburner.alphac                    = 1.0     
@@ -463,7 +468,7 @@ def vehicle_setup():
     turbojet.append(afterburner)    
  
     # Core Nozzle 
-    nozzle                                = RCAIDE.Energy.Converters.Supersonic_Nozzle()   
+    nozzle                                = RCAIDE.Energy.Propulsors.Converters.Supersonic_Nozzle()   
     nozzle.tag                            = 'core_nozzle' 
     nozzle.pressure_recovery              = 0.95
     nozzle.pressure_ratio                 = 1.    
@@ -473,33 +478,45 @@ def vehicle_setup():
     design_turbojet(turbojet)  
     
     # append turbojet 
-    fuel_line.turbojets.append(turbojet) 
+    outer_right_propulsor.turbojet = turbojet   
+    fuel_line.propulsors.append(outer_right_propulsor) 
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Inner Right Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------   
+    inner_right_propulsor           = RCAIDE.Energy.Propulsors.Propulsor()        
+    inner_right_turbojet            = deepcopy(turbojet)
+    inner_right_turbojet.tag        = 'turbojet_2' 
+    inner_right_turbojet.origin     = [[37.,5.3,-1.3]] 
+    inner_right_propulsor.turbojet  = inner_right_turbojet  
+    fuel_line.propulsors.append(inner_right_propulsor) 
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Inner Right Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------   
+    inner_left_propulsor           = RCAIDE.Energy.Propulsors.Propulsor()        
+    inner_left_turbojet            = deepcopy(turbojet)
+    inner_left_turbojet.tag        = 'turbojet_3' 
+    inner_left_turbojet.origin     = [[37.,-5.3,-1.3]] 
+    inner_left_propulsor.turbojet  = inner_left_turbojet 
+    fuel_line.propulsors.append(inner_left_propulsor) 
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Inner Left Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------   
+    outer_left_propulsor           = RCAIDE.Energy.Propulsors.Propulsor()        
+    outer_left_turbojet            = deepcopy(turbojet)
+    outer_left_turbojet.tag        = 'turbojet_3' 
+    outer_left_turbojet.origin     = [[37.,-6.,-1.3]] 
+    outer_left_propulsor.turbojet  = outer_left_turbojet 
+    fuel_line.propulsors.append(outer_left_propulsor)
+     
+    #------------------------------------------------------------------------------------------------------------------------------------      
+    # Append fuel line to network      
+    net.fuel_lines.append(fuel_line)        
     
-
-    # append turbojet     
-    turbojet_2                      = deepcopy(turbojet)
-    turbojet_2.tag                  = 'turbojet_2' 
-    turbojet_2.origin               = [[37.,5.3,-1.3]] 
-    fuel_line.turbojets.append(turbojet_2)    
-
-    # append turbojet    
-    turbojet_3                      = deepcopy(turbojet)
-    turbojet_3.tag                  = 'turbojet_3' 
-    turbojet_3.origin               = [[37.,-5.3,-1.3]] 
-    fuel_line.turbojets.append(turbojet_3)    
-    
-    # append turbojet 
-    turbojet_4                      = deepcopy(turbojet)
-    turbojet_4.tag                  = 'turbojet_4' 
-    turbojet_4.origin               = [[37.,-6.,-1.3]] 
-    fuel_line.turbojets.append(turbojet_4)      
-
-    net.fuel_lines.append(fuel_line)    
+    # Append energy network to aircraft 
     vehicle.append_energy_network(net)     
-    
-    # ------------------------------------------------------------------
-    #   Vehicle Definition Complete
-    # ------------------------------------------------------------------ 
 
     return vehicle
 
@@ -530,10 +547,8 @@ def configs_setup(vehicle):
     # ------------------------------------------------------------------ 
     config                                      = RCAIDE.Components.Configs.Config(base_config)
     config.tag                                  = 'climb' 
-    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_1.afterburner_active = True
-    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_2.afterburner_active = True
-    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_3.afterburner_active = True
-    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_4.afterburner_active = True 
+    for propulsor in config.networks.turbojet_engine.fuel_lines.fuel_line.propulsors:
+        propulsor.turbojet.afterburner_active = True 
     configs.append(config)    
     
     
@@ -544,12 +559,9 @@ def configs_setup(vehicle):
     config.tag                                  = 'takeoff' 
     config.V2_VS_ratio                          = 1.21
     config.maximum_lift_coefficient             = 2.  
-    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_1.afterburner_active = True
-    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_2.afterburner_active = True
-    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_3.afterburner_active = True
-    config.networks.turbojet_engine.fuel_lines.fuel_line.turbojets.turbojet_4.afterburner_active = True 
-    configs.append(config)
-    
+    for propulsor in config.networks.turbojet_engine.fuel_lines.fuel_line.propulsors:
+        propulsor.turbojet.afterburner_active = True 
+    configs.append(config) 
     
     # ------------------------------------------------------------------
     #   Landing Configuration

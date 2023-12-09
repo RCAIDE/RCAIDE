@@ -47,8 +47,8 @@ def initialize_conditions(segment):
     q          = segment.dynamic_pressure
     conditions = segment.state.conditions   
     
-    # Update freestream to get density
-    atmosphere(segment)
+    # Update freestream to get density 
+    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment) 
     rho        = conditions.freestream.density[:,0]   
     
     # check for initial altitude

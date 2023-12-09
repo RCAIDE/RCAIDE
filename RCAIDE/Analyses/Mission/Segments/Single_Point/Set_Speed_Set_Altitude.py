@@ -78,10 +78,14 @@ class Set_Speed_Set_Altitude(Evaluate):
         initialize.differentials           = skip
         initialize.conditions              = Segments.Single_Point.Set_Speed_Set_Altitude.initialize_conditions 
         iterate                            = self.process.iterate 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight  
-        iterate.conditions.weights         = Common.Update.weights
+        iterate.initials.energy            = skip
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight   
         iterate.conditions.planet_position = skip    
+        iterate.conditions.acceleration    = skip
+        iterate.conditions.weights         = skip
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces
-        
+        post_process                       = self.process.post_process 
+        post_process.inertial_position     = skip   
+                
         return
 

@@ -155,30 +155,18 @@ class Frequency_Domain_Buildup(Noise):
         # iterate through sources  
         for network in config.networks:
             if 'busses' in network:
-                for bus in network.busses:
-                    total_SPL_dBA ,  total_SPL_spectra = acumulate_rotor_noise(bus,conditions,segment,settings,total_SPL_dBA,total_SPL_spectra) 
+                for bus in network.busses:    
+                    rotor_noise_res   = rotor_noise(bus,conditions.noise[bus.tag],segment,settings)   
+                    total_SPL_dBA     = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],rotor_noise_res.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
+                    total_SPL_spectra = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,:],rotor_noise_res.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1)
+                      
             if 'fuel_line ' in network:
-                for fuel_line in network.fuel_lines:
-                    total_SPL_dBA ,  total_SPL_spectra = acumulate_rotor_noise(fuel_line,conditions,segment,settings,total_SPL_dBA,total_SPL_spectra) 
-             
+                for fuel_line in network.fuel_lines:  
+                    rotor_noise_res   = rotor_noise(bus,conditions.noise[fuel_line.tag],segment,settings)   
+                    total_SPL_dBA     = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],rotor_noise_res.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
+                    total_SPL_spectra = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,:],rotor_noise_res.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1)
+ 
         conditions.noise.total_SPL_dBA              = total_SPL_dBA
         conditions.noise.total_SPL_1_3_spectrum_dBA = total_SPL_spectra
         
-        return   
-
-def acumulate_rotor_noise(distrubutor,conditions,segment,settings,total_SPL_dBA,total_SPL_spectra):  
-    for i in range(conditions.energy[distrubutor.tag].number_of_propulsor_groups):  
-        pg_tag       = conditions.energy[distrubutor.tag].active_propulsor_groups[i]           
-        if distrubutor.active_propulsor_groups[i] and bool(conditions.noise[distrubutor.tag][pg_tag].rotor):     
-            rotor_group  = Container() 
-            for rotor in distrubutor.rotors:
-                if rotor.propulsor_group == pg_tag:
-                    rotor_group.append(rotor)   
-            # compute noise 
-            rotor_noise_res                          = rotor_noise(rotor_group,conditions.noise[distrubutor.tag][pg_tag].rotor,segment,settings)  
-                     
-            # add noise  
-            total_SPL_dBA     = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],rotor_noise_res.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
-            total_SPL_spectra = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,:],rotor_noise_res.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1)
-
-    return total_SPL_dBA , total_SPL_spectra
+        return    

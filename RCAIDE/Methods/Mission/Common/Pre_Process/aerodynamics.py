@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Initialize
-# RCAIDE/Methods/Missions/Common/Initialize/energy.py
+## @ingroup Methods-Missions-Segments-Common-Pre_Process
+# RCAIDE/Methods/Missions/Common/Pre_Process/aerodynamics.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -11,10 +11,24 @@
 # RCAIDE imports 
 import RCAIDE 
 # ----------------------------------------------------------------------------------------------------------------------
-#  energy
+#  aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Common-Initialize
+## @ingroup Methods-Missions-Segments-Common-Pre_Process
 def aerodynamics(mission):
+    """ Runs aerdoynamics model and build surrogate
+    
+        Assumptions:
+            N/A
+        
+        Inputs:
+            None
+            
+        Outputs:
+            None 
+
+        Properties Used:
+        N/A                
+    """      
     last_tag = None
     for tag,segment in mission.segments.items():        
         if (type(segment.analyses.aerodynamics) == RCAIDE.Analyses.Aerodynamics.Subsonic_VLM) or (type(segment.analyses.aerodynamics) == RCAIDE.Analyses.Aerodynamics.Supersonic_VLM): 
@@ -26,7 +40,5 @@ def aerodynamics(mission):
                 aero.process.compute.lift.inviscid_wings.settings.model_fuselage = aero.settings.model_fuselage
                 aero.process.compute.lift.inviscid_wings.initialize()  
                 
-                last_tag = tag 
-        
-    
+                last_tag = tag  
     return 

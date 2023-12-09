@@ -54,8 +54,7 @@ def compute_rotor_point_source_coordinates(conditions,rotors,mls,settings):
     num_sec        = len(rotor.radius_distribution)    
     
     # Get the rotation matrix
-    prop2body   = rotor.prop_vel_to_body()  
-
+    prop2body      = rotor.prop_vel_to_body()  
     phi            = np.linspace(0,2*np.pi,num_blades+1)[0:num_blades]  
     c              = rotor.chord_distribution 
     r              = rotor.radius_distribution  

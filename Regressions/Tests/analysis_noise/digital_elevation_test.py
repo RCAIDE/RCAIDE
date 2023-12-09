@@ -168,9 +168,7 @@ def mission_setup(analyses,geospacial_data):
     segment.air_speed_start                     = 100.    * Units['mph'] 
     segment.air_speed_end                       = 120.    * Units['mph'] 
     segment.climb_rate                          = 50.     * Units['ft/min']         
-    segment.true_course_angle                   = geospacial_data.true_course_angle 
-    segment = analyses.base.energy.networks.all_electric.add_unknowns_and_residuals_to_segment(segment)          
-    # add to misison
+    segment.true_course_angle                   = geospacial_data.true_course_angle  
     mission.append_segment(segment)  
      
     return mission

@@ -10,9 +10,21 @@
 
 ## @ingroup Methods-Missions-Segments-Common-Update
 def noise(segment):
-    """  
-
-    """    
+    """ Updates the noise produced by the vehicle
+        
+        Assumptions:
+        N/A
+        
+        Inputs:
+            None 
+                 
+        Outputs: 
+            None
+      
+        Properties Used:
+        N/A
+                    
+    """   
     noise_model = segment.analyses.noise
     
     if noise_model:

@@ -96,8 +96,10 @@ def blade_geometry_setup(rotor,number_of_stations):
     
     vehicle                            = RCAIDE.Vehicle()  
     net                                = RCAIDE.Energy.Networks.All_Electric() 
-    bus                                = RCAIDE.Energy.Distributors.Bus_Power_Control_Unit()
-    bus.rotors.append(rotor)  
+    bus                                = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit()
+    propulsor                          = RCAIDE.Energy.Propulsors.Propulsor()
+    propulsor.rotor                    = rotor  
+    bus.propulsors.append(propulsor)
     net.busses.append(bus)
     vehicle.append_energy_network(net)
     
@@ -106,15 +108,15 @@ def blade_geometry_setup(rotor,number_of_stations):
     
     config                              = RCAIDE.Components.Configs.Config(base_config)
     config.tag                          = 'hover' 
-    config.networks.all_electric.busses.bus.rotors.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
+    config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
     configs.append(config)        
 
     config                              = RCAIDE.Components.Configs.Config(base_config)
     config.tag                          = 'oei' 
-    config.networks.all_electric.busses.bus.rotors.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
+    config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
     configs.append(config)       
     
-    if type(rotor) == RCAIDE.Energy.Converters.Prop_Rotor:  
+    if type(rotor) == RCAIDE.Energy.Propulsors.Converters.Prop_Rotor:  
         design_thrust_cruise  = rotor.cruise.design_thrust 
         design_power_cruise   = rotor.cruise.design_power      
         if (design_thrust_cruise == None) and (design_power_cruise== None):
@@ -124,6 +126,6 @@ def blade_geometry_setup(rotor,number_of_stations):
         
         config                          = RCAIDE.Components.Configs.Config(base_config)
         config.tag                      = 'cruise'
-        config.networks.all_electric.busses.bus.rotors.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0] 
+        config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0] 
         configs.append(config)
     return configs 

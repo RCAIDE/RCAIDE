@@ -61,7 +61,7 @@ def initialize_conditions(segment):
     alt = t_nondim * (altf-alt0) + alt0
     
     # determine airspeed from calibrated airspeed
-    atmosphere(segment) # get density for airspeed
+    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment) # get density for airspeed
 
     alt_data = segment.analyses.atmosphere.compute_values(alt,segment.temperature_deviation)
     density  = alt_data.density[:,0]  

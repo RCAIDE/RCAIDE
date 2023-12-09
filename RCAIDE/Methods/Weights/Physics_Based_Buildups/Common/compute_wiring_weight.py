@@ -37,11 +37,11 @@ def compute_wiring_weight(wing, config, cablePower):
     """
     weight      = 0.0 
     cableLength = 0.0
-    fLength     = config.fuselages.fuselage.lengths.total
-    #fHeight     = config.fuselages.fuselage.heights.maximum
+    fLength     = config.fuselages.fuselage.lengths.total 
     for network in config.networks:
-        for bus in network.busses:
-            for motor in bus.motors:
+        for bus in network.busses: 
+            for propulsor in bus.propulsors:
+                motor = propulsor.motor
                 if motor.wing_mounted == True: 
                     if motor.wing_tag == wing.tag: 
                         MSL             = np.array(motor.origin)  

@@ -31,33 +31,22 @@ def vehicle_setup(current,cell_chemistry,fixed_bus_voltage):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    bus                              = RCAIDE.Energy.Distributors.Bus_Power_Control_Unit()
-    bus.fixed_voltage                = fixed_bus_voltage
-    
-    #net.dischage_model_fidelity   = cell_chemistry
-
+    bus                              = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit() 
+ 
     # Battery    
     if cell_chemistry == 'Lithium_Ion_NMC': 
         battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()
     elif cell_chemistry == 'Lithium_Ion_LFP': 
-        battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP() 
-    battery.charging_voltage                     = battery.cell.nominal_voltage    
-    battery.charging_current                     = current   
-    battery.convective_heat_transfer_coefficient = 7.17
+        battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()  
+    battery.thermal_management_system             = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()         
+    battery.thermal_management_system.convective_heat_transfer_coefficient    = 7.17
     net.voltage                                  = battery.cell.nominal_voltage 
     initialize_from_circuit_configuration(battery)  
     bus.voltage                      =  battery.pack.maximum_voltage  
     bus.batteries.append(battery)                                
       
     # append bus   
-    net.busses.append(bus)
-
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    # Avionics
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    avionics                        = RCAIDE.Energy.Peripherals.Avionics()
-    avionics.power_draw             = current*3.2
-    net.avionics                    = avionics  
+    net.busses.append(bus) 
     
     # append network 
     vehicle.append_energy_network(net) 

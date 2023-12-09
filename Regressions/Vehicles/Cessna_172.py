@@ -199,38 +199,37 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                   = RCAIDE.Energy.Distributors.Fuel_Line() 
-    
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    #   Fuel
-    #------------------------------------------------------------------------------------------------------------------------------------  
+    fuel_line                                   = RCAIDE.Energy.Distribution.Fuel_Line()  
+     
     # fuel tank
     fuel_tank                                   = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.origin                            = wing.origin 
-    
-    # fuel 
+    fuel_tank.origin                            = wing.origin  
     fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline() 
     fuel.mass_properties.mass                   = 319 *Units.lbs 
     fuel.mass_properties.center_of_gravity      = wing.mass_properties.center_of_gravity
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel 
-    
-    fuel_line.fuel_tanks.append(fuel_tank)
+    fuel_tank.fuel                              = fuel  
+    fuel_line.fuel_tanks.append(fuel_tank) 
 
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    # Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------   
+    propulsor  = RCAIDE.Energy.Propulsors.Propulsor()     
+    
     #------------------------------------------------------------------------------------------------------------------------------------                                                  
     # Engine                    
     #------------------------------------------------------------------------------------------------------------------------------------  
-    engine                                     = RCAIDE.Energy.Converters.Engine()
+    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
     engine.power_specific_fuel_consumption     = 0.52 
-    fuel_line.engines.append(engine)
+    propulsor.engine                           = engine 
 
     #------------------------------------------------------------------------------------------------------------------------------------     
     # Prop
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    prop = RCAIDE.Energy.Converters.Propeller()
+    prop = RCAIDE.Energy.Propulsors.Converters.Propeller()
     prop.number_of_blades                   = 2.0
     prop.tip_radius                         = 76./2. * Units.inches
     prop.hub_radius                         = 8.     * Units.inches
@@ -250,7 +249,9 @@ def vehicle_setup():
     prop.append_airfoil(airfoil)            
     prop.airfoil_polar_stations             = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] 
     prop                                    = design_propeller(prop)    
-    fuel_line.rotors.append(prop)  
+    propulsor.rotor                         = prop 
+    
+    fuel_line.propulsors.append(propulsor)
     net.fuel_lines.append(fuel_line)
 
     #------------------------------------------------------------------------------------------------------------------------------------ 
@@ -275,8 +276,7 @@ def configs_setup(vehicle):
     #   Initialize Configurations
     # ------------------------------------------------------------------ 
     configs                                                    = RCAIDE.Components.Configs.Config.Container() 
-    base_config                                                = RCAIDE.Components.Configs.Config(vehicle)
-    base_config.networks.internal_combustion_engine.fuel_lines.fuel_line.active_propulsor_groups = ['propulsor']  # default in network 
+    base_config                                                = RCAIDE.Components.Configs.Config(vehicle) 
     base_config.tag                                            = 'base'
     configs.append(base_config)
     

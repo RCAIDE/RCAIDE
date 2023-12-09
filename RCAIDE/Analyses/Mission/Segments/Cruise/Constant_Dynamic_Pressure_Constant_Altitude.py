@@ -68,7 +68,7 @@ class Constant_Dynamic_Pressure_Constant_Altitude(Evaluate):
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------      
         initialize                         = self.process.initialize  
-        initialize.conditions              = Segments.CCruise.Constant_Dynamic_Pressure_Constant_Altitude.initialize_conditions 
+        initialize.conditions              = Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude.initialize_conditions 
         iterate                            = self.process.iterate   
         iterate.residuals.total_forces     = Common.Residuals.level_flight_forces 
         iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight  

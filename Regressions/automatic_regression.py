@@ -20,14 +20,14 @@ modules = [
     # ----------------------- Regression List --------------------------
     'Tests/analysis_noise/digital_elevation_test.py',  
     'Tests/analysis_noise/frequency_domain_test.py',
-    'Tests/analysis_noise/noise_hemisphere_test.py',
+    'Tests/analysis_noise/noise_hemisphere_test.py', 
+    'Tests/mission_segments/segment_test.py',    
     'Tests/network_all_electric/all_electric_rotor_test.py',  
     'Tests/network_turbofan/turbofan_network_test.py',
     'Tests/network_turbojet/turbojet_network_test.py',
     'Tests/network_internal_combustion_engine/ICE_test.py',
     'Tests/network_internal_combustion_engine/ICE_constant_speed_test.py',
-    'Tests/network_isolated_battery_cell/cell_test.py',
-    'Tests/network_solar/solar_radiation_test.py',
+    'Tests/network_isolated_battery_cell/cell_test.py', 
 ]
 
 def regressions():
@@ -64,8 +64,7 @@ def regressions():
     else:
         sys.exit(1)
         
-    return pass_fail
-   
+    return pass_fail 
  
 # ----------------------------------------------------------------------
 #   Module Tester

@@ -141,8 +141,7 @@ def mission_setup(analyses):
     segment.altitude_start = 0.0   * Units.km
     segment.altitude_end   = 3.0   * Units.km
     segment.air_speed      = 125.0 * Units['m/s']
-    segment.climb_rate     = 6.0   * Units['m/s'] 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate     = 6.0   * Units['m/s']  
     mission.append_segment(segment)
 
 
@@ -155,8 +154,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise ) 
     segment.altitude_end   = 8.0   * Units.km
     segment.air_speed      = 190.0 * Units['m/s']
-    segment.climb_rate     = 6.0   * Units['m/s'] 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate     = 6.0   * Units['m/s']  
     mission.append_segment(segment)
 
 
@@ -169,8 +167,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise ) 
     segment.altitude_end = 10.5   * Units.km
     segment.air_speed    = 226.0  * Units['m/s']
-    segment.climb_rate   = 3.0    * Units['m/s'] 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.climb_rate   = 3.0    * Units['m/s']  
     mission.append_segment(segment)
 
 
@@ -183,8 +180,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise ) 
     segment.altitude  = 10.668 * Units.km  
     segment.air_speed = 230.412 * Units['m/s']
-    segment.distance  = 1000 * Units.nmi 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.distance  = 1000 * Units.nmi  
     mission.append_segment(segment)
 
 
@@ -198,8 +194,7 @@ def mission_setup(analyses):
     segment.altitude_start = 10.5 * Units.km 
     segment.altitude_end   = 8.0   * Units.km
     segment.air_speed      = 220.0 * Units['m/s']
-    segment.descent_rate   = 4.5   * Units['m/s'] 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.descent_rate   = 4.5   * Units['m/s']  
     mission.append_segment(segment)
 
 
@@ -212,8 +207,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.landing ) 
     segment.altitude_end = 6.0   * Units.km
     segment.air_speed    = 195.0 * Units['m/s']
-    segment.descent_rate = 5.0   * Units['m/s'] 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.descent_rate = 5.0   * Units['m/s']  
     mission.append_segment(segment)
 
 
@@ -226,8 +220,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.landing ) 
     segment.altitude_end = 4.0   * Units.km
     segment.air_speed    = 170.0 * Units['m/s']
-    segment.descent_rate = 5.0   * Units['m/s'] 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.descent_rate = 5.0   * Units['m/s']  
     mission.append_segment(segment)
 
 
@@ -240,10 +233,8 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.landing ) 
     segment.altitude_end = 2.0   * Units.km
     segment.air_speed    = 150.0 * Units['m/s']
-    segment.descent_rate = 5.0   * Units['m/s'] 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
-    mission.append_segment(segment)
-
+    segment.descent_rate = 5.0   * Units['m/s']  
+    mission.append_segment(segment) 
 
 
     # ------------------------------------------------------------------
@@ -255,8 +246,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.landing ) 
     segment.altitude_end = 0.0   * Units.km
     segment.air_speed    = 145.0 * Units['m/s']
-    segment.descent_rate = 3.0   * Units['m/s'] 
-    segment = analyses.base.energy.networks.turbofan_engine.add_unknowns_and_residuals_to_segment(segment)
+    segment.descent_rate = 3.0   * Units['m/s']  
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
@@ -277,10 +267,7 @@ def missions_setup(mission):
 
 
 def plot_results(results):  
-    
-    # Plot Flight Conditions 
-    plot_flight_conditions(results)
-    
+     
     # Plot Aerodynamic Forces 
     plot_aerodynamic_forces(results)
     

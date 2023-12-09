@@ -40,7 +40,12 @@ class Evaluate(Segment):
             Properties Used:
             None
         """          
-        self.temperature_deviation   = 0.0
+        self.temperature_deviation          = 0.0
+        self.estimated_rotor_pitch_commands = [[0.1]]
+        self.estimated_throttles            = [[0.5]]
+        self.estimated_RPMs                 = [[2500]]
+        
+        
         # --------------------------------------------------------------
         #   State
         # --------------------------------------------------------------
