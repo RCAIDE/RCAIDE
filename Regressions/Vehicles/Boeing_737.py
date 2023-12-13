@@ -490,7 +490,7 @@ def vehicle_setup():
     nacelle.length                        = 2.71
     nacelle.tag                           = 'nacelle_1'
     nacelle.inlet_diameter                = 2.0
-    nacelle.origin                        = [[13.5,4.38,-1.1]]
+    nacelle.origin                        = [[13.5,4.38,-1.5]]
     Awet                                  = 1.1*np.pi*nacelle.diameter*nacelle.length # 1.1 is simple coefficient
     nacelle.areas.wetted                  = Awet   
     nacelle.Airfoil.NACA_4_series_flag    = True 
@@ -534,7 +534,7 @@ def vehicle_setup():
         
     nacelle_2                             = deepcopy(nacelle)
     nacelle_2.tag                         = 'nacelle_2'
-    nacelle_2.origin                      = [[13.5,-4.38,-1.1]]
+    nacelle_2.origin                      = [[13.5,-4.38,-1.5]]
     
     vehicle.append_component(nacelle)   
     vehicle.append_component(nacelle_2)   
@@ -574,7 +574,7 @@ def vehicle_setup():
      
     turbofan                                    = RCAIDE.Energy.Propulsors.Converters.Turbofan() 
     turbofan.tag                                = 'pratt_whitney_jt9d'
-    turbofan.origin                             = [[13.72, 4.86,-1.1]] 
+    turbofan.origin                             = [[13.72, 4.86,-1.5]] 
     turbofan.engine_length                      = 2.71     
     turbofan.bypass_ratio                       = 5.4    
     turbofan.design_altitude                    = 35000.0*Units.ft
@@ -671,7 +671,7 @@ def vehicle_setup():
     # copy turbofan
     turbofan_2                             = deepcopy(turbofan)
     turbofan_2.tag                         = 'turbofan_2' 
-    turbofan_2.origin                      = [[13.72,-4.38,-1.1]]  # change origin
+    turbofan_2.origin                      = [[13.72,-4.38,-1.5]]  # change origin
     
     # append turbofan to propulsor data class 
     port_propulsor.turbofan                = turbofan_2 

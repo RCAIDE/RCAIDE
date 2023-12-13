@@ -115,10 +115,10 @@ def generate_3d_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_points =
         nac_pts = np.zeros((num_nac_segs,tessellation,3)) 
         for i_seg in range(num_nac_segs):
             a        = nac.Segments[i_seg].width/2
-            b        = nac.Segments[i_seg].height/2
-            r        = np.sqrt((b*np.sin(theta))**2  + (a*np.cos(theta))**2)
-            nac_ypts = r*np.cos(theta)
-            nac_zpts = r*np.sin(theta)
+            b        = nac.Segments[i_seg].height/2 
+            r        = (a*b)/np.sqrt((b*np.sin(theta))**2  + (a*np.cos(theta))**2)
+            nac_zpts = r*np.cos(theta)
+            nac_ypts = r*np.sin(theta) 
             nac_pts[i_seg,:,0] = nac.Segments[i_seg].percent_x_location*nac.length
             nac_pts[i_seg,:,1] = nac_ypts + nac.Segments[i_seg].percent_y_location*nac.length 
             nac_pts[i_seg,:,2] = nac_zpts + nac.Segments[i_seg].percent_z_location*nac.length  

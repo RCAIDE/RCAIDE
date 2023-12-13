@@ -107,11 +107,11 @@ def plot_drag_components(results,
         
     
     if show_legend:                    
-        leg =  fig.legend(bbox_to_anchor=(1.0, 0.5), loc='center right', ncol = 1) 
+        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
         leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
     
     # Adjusting the sub-plots for legend 
-    fig.subplots_adjust(right=0.85)
+    fig.subplots_adjust(top=0.8)
     
     # set title of plot 
     title_text    = 'Drag Components'      

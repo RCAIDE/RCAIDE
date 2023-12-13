@@ -35,9 +35,12 @@ def plot_3d_vehicle(vehicle,
                     max_y_axis_limit            = None,
                     min_z_axis_limit            = None,
                     max_z_axis_limit            = None,
-                    camera_x                    = -1.5,
-                    camera_y                    = -1.5,
-                    camera_z                    = .8,
+                    camera_eye_x                = -1.5,
+                    camera_eye_y                = -1.5,
+                    camera_eye_z                = .8,
+                    camera_center_x             = 0.,
+                    camera_center_y             = 0.,
+                    camera_center_z             = 0.,
                     show_figure                 = True):
     """This plots a 3D representation of the aircraft 
 
@@ -68,7 +71,7 @@ def plot_3d_vehicle(vehicle,
     """
 
     print("\nPlotting vehicle") 
-    camera        = dict(eye=dict(x=camera_x, y=camera_y, z=camera_z)) # dict(up=dict(x=0.5, y=0.5, z=1), center=dict(x=0, y=0, z= -.75), eye=dict(x=camera_x, y=camera_y, z=camera_z))
+    camera        =  dict(eye=dict(x=camera_eye_x, y=camera_eye_y, z=camera_eye_z), center=dict(x= camera_center_x, y=camera_center_x, z= camera_center_z))   
     plot_data     = []
     
     plot_data,x_min,x_max,y_min,y_max,z_min,z_max  = generate_3d_vehicle_geometry_data(plot_data,
