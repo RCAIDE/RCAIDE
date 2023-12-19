@@ -1,5 +1,5 @@
-## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Removal_Systems/Conjugate_Heat_Exchanger.py
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Aquisition_Systems/Conjugate_Heat_Exchanger.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -21,7 +21,7 @@ import os
 # ----------------------------------------------------------------------------------------------------------------------
 #  Atmospheric_Air_Convection_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Thermal_Management-Batteries-Heat_Removal_Systems   
+## @ingroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems   
 class Cross_Flow_Heat_Exchanger(Energy_Component):
     """This provides output values for a wavy channel gas-liquid heat exchanger compoment 
     of a battery thermal management system

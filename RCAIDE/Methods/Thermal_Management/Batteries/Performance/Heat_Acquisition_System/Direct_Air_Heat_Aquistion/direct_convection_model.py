@@ -7,7 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-import numpy as np 
+import numpy as np
+from RCAIDE.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Net Convected Heat 
@@ -101,9 +102,10 @@ def direct_convection_model(btms,battery,Q_heat_gen,T_cell,state,dt,i):
         Q_convec              = heat_transfer_efficiency*h*np.pi*D_cell*H_cell*n_total_module*dT_lm 
         Q_convec[Tw_Ti == 0.] = 0.
         Q_heat_gen_tot        = Q_heat_gen*n_total_module  
-        P_net                 = Q_heat_gen_tot - Q_convec 
+        Q_net                 = Q_heat_gen_tot - Q_convec 
      
-    dT_dt                  = P_net/(cell_mass*n_total_module*Cp)
+    dT_dt                  = Q_net/(cell_mass*n_total_module*Cp)
     T_current              = T_cell + dT_dt*dt   
+    HAS_outputs            = Data()
     
-    return Q_heat_gen_tot, P_net, T_ambient, T_current
+    return Q_heat_gen_tot, Q_convec, T_current, HAS_outputs
