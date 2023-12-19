@@ -14,7 +14,7 @@ from RCAIDE.Core import Data
 #  Compute Net Convected Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
-def direct_convection_model(btms,battery,Q_heat_gen,T_cell,state,dt,i):
+def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
     '''Computes the net heat generated in a battery during cycling. 
 
     Assumptions:
@@ -56,8 +56,8 @@ def direct_convection_model(btms,battery,Q_heat_gen,T_cell,state,dt,i):
     Nn                       = battery.module.geometrtic_configuration.normal_count            
     Np                       = battery.module.geometrtic_configuration.parallel_count    
     n_total_module           = Nn*Np  
-    h                        = btms.convective_heat_transfer_coefficient 
-    heat_transfer_efficiency = btms.heat_transfer_efficiency   
+    h                        = HAS.convective_heat_transfer_coefficient 
+    heat_transfer_efficiency = HAS.heat_transfer_efficiency   
     T_ambient                = state.conditions.freestream.temperature[i,:] 
     
     if n_total_module == 1: 
@@ -71,8 +71,8 @@ def direct_convection_model(btms,battery,Q_heat_gen,T_cell,state,dt,i):
         nu_coolant                   = state.conditions.freestream.kinematic_viscosity[i,:]
         Pr_coolant                   = state.conditions.freestream.prandtl_number[i,:]
         rho_coolant                  = state.conditions.freestream.density[i,:]    
-        Cp_coolant                   = btms.cooling_fluid.compute_cp(state.conditions.freestream.temperature[i,:],state.conditions.freestream.pressure[i,:] )
-        V_coolant                    = btms.cooling_fluid.flowspeed  
+        Cp_coolant                   = HAS.cooling_fluid.compute_cp(state.conditions.freestream.temperature[i,:],state.conditions.freestream.pressure[i,:] )
+        V_coolant                    = HAS.cooling_fluid.flowspeed  
         
         # Chapter 7 pg 437-446 of Fundamentals of heat and mass transfer 
         S_T             = battery.module.geometrtic_configuration.normal_spacing          
@@ -93,7 +93,7 @@ def direct_convection_model(btms,battery,Q_heat_gen,T_cell,state,dt,i):
             C = 0.51
             m = 0.5  
 
-        Pr_w_coolant          = btms.cooling_fluid.compute_prandtl_number(T)            
+        Pr_w_coolant          = HAS.cooling_fluid.compute_prandtl_number(T)            
         Nu                    = C*(Re_max**m)*(Pr_coolant**0.36)*((Pr_coolant/Pr_w_coolant)**0.25)           
         h                     = Nu*K_coolant/D_cell
         Tw_Ti                 = (T - T_ambient)
