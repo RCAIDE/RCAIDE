@@ -1,13 +1,13 @@
-## @defgroup Energy-Thermal_Management-Batteries-Heat_Removal_Systmems  Heat_Removal_Systmems 
-# RCAIDE/Energy/Thermal_Management/Batteries//Heat_Removal_Systmems __init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Energy-Thermal_Management-Batteries-Heat_Aquisition_Systems  Heat_Aquisition_Systems 
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Aquisition_Systems/__init__.py 
 
 """ RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
-from  .  import Direct_Air_Heat_Acquisition
-from  .  import No_Heat_Acqusition
-from  .  import Wavy_Channel_Heat_Acquistion 
+# ----------------------------------------------------------------------------------------------------------------------  
+from .Wavy_Channel         import Wavy_Channel
+from .No_Heat_Aquisition   import No_Heat_Aquisition
+from .Direct_Air  import Direct_Air
+

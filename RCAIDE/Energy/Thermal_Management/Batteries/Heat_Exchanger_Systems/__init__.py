@@ -1,12 +1,11 @@
-## @defgroup Energy-Thermal_Management-Batteries Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Energy-Thermal_Management-Batteries-Heat_Exchanger_Systems  Heat_Exchanger_Systems 
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Exchanger_Systems/__init__.py  
 
 """ RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
-from .   import Cross_Flow_Heat_Exchanger
-from .   import No_Heat_Exchaneger
+# ----------------------------------------------------------------------------------------------------------------------  
+from .Cross_Flow_Heat_Exchanger    import Cross_Flow_Heat_Exchanger
+from .No_Heat_Exchanger            import No_Heat_Exchanger

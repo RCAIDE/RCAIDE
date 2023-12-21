@@ -1,14 +1,13 @@
-## @defgroup Methods-Stability Stability
-# RCAIDE/Methods/Stability/__init__.py
+## @defgroup Methods-Energy-Thermal_Management Thermal_Management 
+# RCAIDE/Methods/Energy/Thermal_Management/__init__.py
 # 
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import Dynamic_Stability
-from . import Static_Stability
-from . import Center_of_Gravity
+from . import Batteries
+from . import Cryogenics

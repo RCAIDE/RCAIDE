@@ -1,14 +1,12 @@
-## @defgroup Methods-Stability Stability
-# RCAIDE/Methods/Stability/__init__.py
+## @defgroup Methods-Propulsion-Converters-Motor 
+# RCAIDE/Methods/Propulsion/Converters/Motor/__init__.py
 # 
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from . import Dynamic_Stability
-from . import Static_Stability
-from . import Center_of_Gravity
+  
+from .design_electric_motor        import size_from_kv, size_from_mass, size_optimal_motor  

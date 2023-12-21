@@ -1,14 +1,15 @@
-## @defgroup Methods-Stability Stability
-# RCAIDE/Methods/Stability/__init__.py
+## @defgroup Methods-Energy-Sources Sources
+# RCAIDE/Methods/Energy/Sources/__init__.py
 # 
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+# @ingroup Methods
 
-from . import Dynamic_Stability
-from . import Static_Stability
-from . import Center_of_Gravity
+from . import Battery
+from . import Fuel_Cell
+from . import Turboelectric

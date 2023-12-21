@@ -1,14 +1,14 @@
-## @defgroup Methods-Stability Stability
-# RCAIDE/Methods/Stability/__init__.py
+## @defgroup Methods-Energy-Sources-Fuel_Cell Fuel_Cell
+# RCAIDE/Methods/Power/Fuel_Cell/__init__.py
 # 
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+# @ingroup Methods-Energy-Sources
 
-from . import Dynamic_Stability
-from . import Static_Stability
-from . import Center_of_Gravity
+from . import Discharge_Models
+from . import Sizing

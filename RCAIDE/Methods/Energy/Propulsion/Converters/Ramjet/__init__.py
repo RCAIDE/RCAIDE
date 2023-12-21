@@ -1,14 +1,12 @@
-## @defgroup Methods-Stability Stability
-# RCAIDE/Methods/Stability/__init__.py
+## @defgroup Methods-Propulsion-Converters-Ramjet
+# RCAIDE/Methods/Propulsion/Converters/Ramjet/__init__.py
 # 
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from . import Dynamic_Stability
-from . import Static_Stability
-from . import Center_of_Gravity
+  
+from Legacy.trunk.S.Methods.Propulsion.ramjet_sizing                          import ramjet_sizing 
