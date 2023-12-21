@@ -106,10 +106,7 @@ def Hararmonic_Noise_Validation(PP):
     # Run BEMT
     F, Q, P, Cp , noise_data , etap                        = rotor.spin(conditions) 
 
-    # Prepare Inputs for Noise Model  
-    conditions.noise[bus.tag]                              = RCAIDE.Analyses.Mission.Common.Conditions()      
-    conditions.noise[bus.tag][propulsor.tag]               = RCAIDE.Analyses.Mission.Common.Conditions() 
-    conditions.noise[bus.tag][propulsor.tag].rotor         = noise_data
+    # Prepare Inputs for Noise Model   
     conditions.noise.total_microphone_locations            = np.repeat(positions[ np.newaxis,:,: ],1,axis=0)
     conditions.aerodynamics.angle_of_attack                = np.ones((ctrl_pts,1))* 0. * Units.degrees 
     segment                                                = Segment() 
@@ -121,7 +118,7 @@ def Hararmonic_Noise_Validation(PP):
     conditions.noise.number_of_microphones                 = num_mic
                  
     # Run Frequency Domain Rotor Noise Model          
-    noise_res                                              = rotor_noise(bus,conditions.noise[bus.tag],segment,settings )
+    noise_res                                              = rotor_noise(rotor,noise_data,segment,settings )
     F8745D4_SPL                                            = noise_res.SPL     
     F8745D4_SPL_harmonic                                   = noise_res.SPL_harmonic 
     F8745D4_SPL_broadband                                  = noise_res.SPL_broadband  
@@ -280,10 +277,7 @@ def Broadband_Noise_Validation(PP):
     # Run BEMT
     APC_SF_thrust, APC_SF_torque, APC_SF_power, APC_SF_Cp, noise_data , APC_SF_etap  =  rotor.spin(conditions)  
 
-    # Prepare Inputs for Rotor Noise Model   
-    conditions.noise[bus.tag]                               = RCAIDE.Analyses.Mission.Common.Conditions()      
-    conditions.noise[bus.tag][propulsor.tag]                = RCAIDE.Analyses.Mission.Common.Conditions() 
-    conditions.noise[bus.tag][propulsor.tag].rotor          = noise_data    
+    # Prepare Inputs for Rotor Noise Model     
     conditions.noise.total_microphone_locations             = np.repeat(positions[ np.newaxis,:,: ],ctrl_pts,axis=0)
     conditions.aerodynamics.angle_of_attack                 = np.ones((ctrl_pts,1))* 0. * Units.degrees 
     segment                                                 = Segment() 
@@ -293,7 +287,7 @@ def Broadband_Noise_Validation(PP):
     settings                                                = setup_noise_settings(segment)    
     
     # Run Frequency Domain Rotor Noise Model  
-    noise_res                                               = rotor_noise(bus,conditions.noise[bus.tag],segment,settings )    
+    noise_res                                               = rotor_noise(rotor,noise_data,segment,settings )    
     APC_SF_1_3_Spectrum                                     = noise_res.SPL_1_3_spectrum 
     APC_SF_SPL_broadband_1_3_spectrum                       = noise_res.SPL_broadband_1_3_spectrum  
 

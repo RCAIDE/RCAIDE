@@ -25,7 +25,7 @@ import numpy as np
 #  Rotor Noise 
 # ----------------------------------------------------------------------------------------------------------------------    
 ## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
-def rotor_noise(bus,results,segment,settings):
+def rotor_noise(rotor,aeroacoustic_data,segment,settings):
     ''' This is a collection medium-fidelity frequency domain methods for rotor acoustic noise prediction which 
     computes the acoustic signature (sound pressure level, weighted sound pressure levels,
     and frequency spectrums of a system of rotating blades           
@@ -59,13 +59,7 @@ def rotor_noise(bus,results,segment,settings):
     Properties Used:
         N/A   
     '''
-
-    # neet to correct compute_rotor_point_source_coordinates function to take different rotors on same bus 
-    rotors  = Container() 
-    for propulsor in bus.propulsors: 
-        rotors.append(propulsor.rotor)  
-    aeroacoustic_data = results[propulsor.tag].rotor 
-                 
+ 
     # unpack 
     conditions           = segment.state.conditions
     microphone_locations = conditions.noise.total_microphone_locations
@@ -79,13 +73,13 @@ def rotor_noise(bus,results,segment,settings):
     Results = Data()
                      
     # compute position vector from point source at rotor hub to microphones 
-    coordinates = compute_rotor_point_source_coordinates(conditions,rotors,microphone_locations,settings) 
+    coordinates = compute_rotor_point_source_coordinates(conditions,rotor,microphone_locations,settings) 
 
     # Harmonic Noise    
-    harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,velocity_vector,rotors,aeroacoustic_data,settings,Noise)       
+    harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,velocity_vector,rotor,aeroacoustic_data,settings,Noise)       
      
     # Broadband Noise
-    broadband_noise(freestream,angle_of_attack,coordinates,velocity_vector,rotors,aeroacoustic_data,settings,Noise)
+    broadband_noise(freestream,angle_of_attack,coordinates,velocity_vector,rotor,aeroacoustic_data,settings,Noise)
     
     # Atmospheric attenuation 
     delta_atmo = atmospheric_attenuation(np.linalg.norm(coordinates.X_r[:,0,0,0,0,:],axis=1),settings.center_frequencies)

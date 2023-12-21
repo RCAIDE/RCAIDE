@@ -20,7 +20,7 @@ import scipy as sp
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor 
 def harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,
-                           velocity_vector,rotors,aeroacoustic_data,settings,res):
+                           velocity_vector,rotor,aeroacoustic_data,settings,res):
     '''This computes the  harmonic noise (i.e. thickness and loading noise) of a rotor or rotor
     in the frequency domain
 
@@ -63,11 +63,8 @@ def harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,
     num_cpt      = len(angle_of_attack) 
     num_mic      = len(coordinates.X_hub[0,:,0,0,0,0])
     num_rot      = len(coordinates.X_hub[0,0,:,0,0,0]) 
-    phi_0        = np.zeros(num_rot)            # phase angle offset 
-    for r_idx,rotor in enumerate(rotors):
-        phi_0[r_idx] = rotor.phase_offset_angle
-    rotor        = rotors[list(rotors.keys())[0]] 
-    num_sec        = len(rotor.radius_distribution) 
+    phi_0        = rotor.phase_offset_angle  # phase angle offset  
+    num_sec      = len(rotor.radius_distribution) 
     orientation  = np.array(rotor.orientation_euler_angles) * 1 
     body2thrust  = sp.spatial.transform.Rotation.from_rotvec(orientation).as_matrix()
     
