@@ -12,7 +12,7 @@ import RCAIDE
 from RCAIDE.Analyses.Mission.Common                                        import Residuals
 from RCAIDE.Core                                                           import Data
 from RCAIDE.Components.Component                                           import Container    
-from RCAIDE.Methods.Power.Battery.Common.append_initial_battery_conditions import append_initial_battery_conditions
+from RCAIDE.Methods./Energy.Sources.Battery.Common.append_initial_battery_conditions import append_initial_battery_conditions
 from .Network import Network 
  
 # package imports

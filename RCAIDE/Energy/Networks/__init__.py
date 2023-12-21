@@ -22,7 +22,8 @@ from Legacy.trunk.S.Components.Energy.Networks import Turboelectric_HTS_Dynamo_D
 from Legacy.trunk.S.Components.Energy.Networks import Turbofan                                     as legacy_turbofan
 from Legacy.trunk.S.Components.Energy.Networks import Turbojet_Super                               as legacy_turbojet
 from Legacy.trunk.S.Components.Energy.Networks import Solar                                        as legacy_solar
- 
+
+from . import Distribution  
 from .Network                                       import Network  
 from .Turbofan_Engine                               import Turbofan_Engine
 from .Turbojet_Engine                               import Turbojet_Engine 
