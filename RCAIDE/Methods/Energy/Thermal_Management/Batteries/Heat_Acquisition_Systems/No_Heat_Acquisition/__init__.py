@@ -1,6 +1,5 @@
-## @defgroup Energy-Thermal_Management-Batteries Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/__init__.py
-# 
+## @ingroup Methods-Thermal_Management-Batteries-Heat_Acquisition_System-No_Heat_Acquisition
+# RCAIDE/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/No_Heat_Acquisition/__init__.py
 
 """ RCAIDE Package Setup
 """
@@ -8,5 +7,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .  import Heat_Acquisition_Systems
-from .  import Heat_Exchanger_Systems
+
+from .no_heat_acquisition_model import no_heat_acquisition_model

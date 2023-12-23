@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion
-# RCAIDE/Methods/Propulsion/turbofan_propulsor.py
+## @ingroup Methods-Energy-Propulsion-Networks
+# RCAIDE/Methods/Energy/Propulsion/Networks/turbofan_propulsor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -13,7 +13,7 @@ from RCAIDE.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 # turbofan_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion-Networks
 def turbofan_propulsor(fuel_line,state):  
     ''' Computes the performance of all turbofan engines on a fuel line  
     

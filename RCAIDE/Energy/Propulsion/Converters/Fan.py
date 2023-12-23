@@ -1,5 +1,5 @@
 ## @ingroup Energy-Propulsion-Converters
-# RCAIDE/Energy/Propulsors/Converters/Fan.py
+# RCAIDE/Energy/Propulsion/Converters/Fan.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -116,3 +116,5 @@ class Fan(Energy_Component):
         self.outputs.stagnation_pressure     = Pt_out
         self.outputs.stagnation_enthalpy     = ht_out
         self.outputs.work_done               = work_done  
+        
+    __call__ = compute

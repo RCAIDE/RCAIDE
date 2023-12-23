@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion
-# RCAIDE/Methods/Propulsion/design_turbofan.py
+## @ingroup Methods-Energy-Propulsion
+# RCAIDE/Methods/Energy/Propulsion/design_turbofan.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Design Turbofan
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion
 def design_turbofan(turbofan):
     # check if mach number and temperature are passed
     if(turbofan.design_mach_number==None) and (turbofan.design_altitude==None): 

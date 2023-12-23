@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion
-# RCAIDE/Methods/Propulsion/turbojet_propulsor.py
+## @ingroup Methods-Energy-Propulsion-Networks
+# RCAIDE/Methods/Energy/Propulsion/Networks/turbojet_propulsor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -13,7 +13,7 @@ from RCAIDE.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 # turbojet_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion-Networks
 def turbojet_propulsor(fuel_line,state):   
     ''' Computes the performance of all turbojet engines on a fuel line  
     

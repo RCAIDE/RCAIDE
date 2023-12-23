@@ -8,9 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
 import RCAIDE  
-from RCAIDE.Core                           import Units 
-from RCAIDE.Methods.Power.Battery.Sizing   import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, initialize_from_circuit_configuration, find_mass_gain_rate, find_total_mass_gain
-from RCAIDE.Methods.Power.Battery.Ragone   import find_ragone_properties, find_ragone_optimum 
+from RCAIDE.Core                                    import Units 
+from RCAIDE.Methods.Energy.Sources.Battery.Sizing   import initialize_from_circuit_configuration  
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Build the Vehicle
@@ -31,15 +30,16 @@ def vehicle_setup(current,cell_chemistry,fixed_bus_voltage):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    bus                              = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit() 
+    bus                              = RCAIDE.Energy.Networks.Distribution.Electrical_Bus() 
  
     # Battery    
     if cell_chemistry == 'Lithium_Ion_NMC': 
-        battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()
+        battery = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_NMC()
     elif cell_chemistry == 'Lithium_Ion_LFP': 
-        battery = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()  
-    battery.thermal_management_system             = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()         
-    battery.thermal_management_system.convective_heat_transfer_coefficient    = 7.17
+        battery = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_LFP()  
+    HAS                 = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air() 
+    HAS.convective_heat_transfer_coefficient    = 7.17
+    battery.thermal_management_system.heat_acquisition_system = HAS 
     net.voltage                                  = battery.cell.nominal_voltage 
     initialize_from_circuit_configuration(battery)  
     bus.voltage                      =  battery.pack.maximum_voltage  

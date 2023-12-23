@@ -8,5 +8,5 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-from . import Heat_Acquistion_Systems
+from . import Heat_Acquisition_Systems
 from . import Heat_Exchanger_Systems

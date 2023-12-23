@@ -1,3 +1,4 @@
+## @defgroup Energy-Sources Sources
 # RCAIDE/Energy/Sources/__init__.py
 # 
 

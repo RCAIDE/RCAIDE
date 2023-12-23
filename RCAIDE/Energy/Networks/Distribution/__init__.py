@@ -1,4 +1,4 @@
-## @defgroup Energy-Networks-Distribution
+## @defgroup Energy-Networks-Distribution Distribution
 # RCAIDE/Energy/Networks/Distribution/__init__.py
 # 
 

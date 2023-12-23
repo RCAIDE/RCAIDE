@@ -1,5 +1,5 @@
-## @ingroup Methods-Thermal_Management-Batteries-Heat_Aquisition_System-Direct_Air_Heat_Aquisition Direct_Air_Heat_Aquisition
-# RCAIDE/Methods/Thermal_Management/Batteries/Heat_Aquisition_System/Direct_Air_Heat_Aquisition/__init__.py
+## @ingroup Methods-Thermal_Management-Batteries-Heat_Acquisition_System-Direct_Air_Heat_Acquisition Direct_Air_Heat_Acquisition
+# RCAIDE/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/Direct_Air_Heat_Acquisition/__init__.py
 
 """ RCAIDE Package Setup
 """

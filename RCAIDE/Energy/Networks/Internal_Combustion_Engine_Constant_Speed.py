@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Core                                                       import Data   
-from RCAIDE.Methods.Propulsion.Performance.internal_combustion_engine_cs_propulsor import internal_combustion_engine_cs_propulsor
-from .Network                                                          import Network   
+from RCAIDE.Core                                                            import Data   
+from RCAIDE.Methods.Energy.Networks.internal_combustion_engine_cs_propulsor import internal_combustion_engine_cs_propulsor
+from .Network                                                               import Network   
   
 # ----------------------------------------------------------------------------------------------------------------------
 #  Internal_Combustion_Propeller_Constant_Speed

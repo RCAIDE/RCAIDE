@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion
-# RCAIDE/Methods/Propulsion/design_turbojet.py
+## @ingroup Methods-Energy-Propulsion
+# RCAIDE/Methods/Energy/Propulsion/design_turbojet.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -18,7 +18,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Design Turbojet
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Propulsion 
+## @ingroup Methods-Energy-Propulsion 
 def design_turbojet(turbojet):  
     #check if mach number and temperature are passed
     if(turbojet.design_mach_number==None or turbojet.design_altitude==None):

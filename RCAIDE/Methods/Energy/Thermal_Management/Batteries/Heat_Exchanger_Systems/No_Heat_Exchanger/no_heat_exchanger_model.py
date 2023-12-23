@@ -26,6 +26,6 @@ def no_heat_exchanger_model(HEX,HAS_outputs,state,dt,i):
     Properties Used:
     None 
     ''' 
-    
-    HEX_outputs = Data()
+     
+    HEX_outputs            = Data(total_heat_removed   = 0)    
     return HEX_outputs 

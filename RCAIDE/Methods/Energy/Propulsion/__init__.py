@@ -1,5 +1,5 @@
-## @defgroup Methods-Propulsion Propulsion
-# RCAIDE/Methods/Propulsion/__init__.py
+## @defgroup Methods-Energy-Propulsion Propulsion
+# RCAIDE/Methods/Energy/Propulsion/__init__.py
 # 
 
 """ RCAIDE Package Setup

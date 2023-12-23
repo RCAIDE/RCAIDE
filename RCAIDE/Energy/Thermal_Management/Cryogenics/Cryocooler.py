@@ -9,8 +9,8 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
-from RCAIDE.Energy.Energy_Component                                import Energy_Component
-from RCAIDE.Methods.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
+from RCAIDE.Energy.Energy_Component                                       import Energy_Component
+from RCAIDE.Methods.Energy.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryocooler
@@ -25,10 +25,10 @@ class Cryocooler(Energy_Component):
     def __defaults__(self):
         
         # Initialise cryocooler properties as null values
-        self.cooler_type                    =  ''
-        self.rated_power                    =  0.0
-        self.min_cryo_temp                  =  0.0 
-        self.ambient_temp                   =  300.0
+        self.cooler_type                    = None
+        self.rated_power                    = 0.0
+        self.min_cryo_temp                  = 0.0 
+        self.ambient_temp                   = 300.0
         self.inputs.cooling_power           = 0.0
         self.inputs.cryo_temp               = 0.0
         self.mass_properties.mass           = 0.0

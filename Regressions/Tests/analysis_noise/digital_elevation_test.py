@@ -54,7 +54,7 @@ def main():
     plot_results(results,regression_plotting_flag)   
 
     X57_SPL        = np.max(results.segments.climb.conditions.noise.total_SPL_dBA) 
-    X57_SPL_true   = 48.03343942155021  
+    X57_SPL_true   = 64.16716714084842
     X57_diff_SPL   = np.abs(X57_SPL - X57_SPL_true)
     print('Error: ',X57_diff_SPL)
     assert np.abs((X57_SPL - X57_SPL_true)/X57_SPL_true) < 1e-3    

@@ -1,5 +1,5 @@
-## @defgroup Methods-Propulsion-Converters-Ramjet
-# RCAIDE/Methods/Propulsion/Converters/Ramjet/__init__.py
+## @defgroup Methods-Energy-Propulsion-Converters-Ramjet
+# RCAIDE/Methods/Energy/Propulsion/Converters/Ramjet/__init__.py
 # 
 
 """ RCAIDE Package Setup

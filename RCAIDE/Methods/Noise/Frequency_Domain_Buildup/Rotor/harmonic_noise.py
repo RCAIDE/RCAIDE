@@ -63,7 +63,7 @@ def harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,
     num_cpt      = len(angle_of_attack) 
     num_mic      = len(coordinates.X_hub[0,:,0,0,0,0])
     num_rot      = len(coordinates.X_hub[0,0,:,0,0,0]) 
-    phi_0        = rotor.phase_offset_angle  # phase angle offset  
+    phi_0        = np.array([rotor.phase_offset_angle])  # phase angle offset  
     num_sec      = len(rotor.radius_distribution) 
     orientation  = np.array(rotor.orientation_euler_angles) * 1 
     body2thrust  = sp.spatial.transform.Rotation.from_rotvec(orientation).as_matrix()

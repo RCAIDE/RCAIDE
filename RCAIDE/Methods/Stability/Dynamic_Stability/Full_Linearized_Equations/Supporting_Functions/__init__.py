@@ -1,5 +1,5 @@
-## @defgroup Methods-Flight_Dynamics-Dynamic_Stability-Full_Linearized_Equations-Supporting_Functions Supporting_Functions
-# RCAIDE/Methods/Flight_Dynamics/Dynamic_Stability/Full_Linearized_Equations/Supporting_Functions/__init__.py
+## @defgroup Methods-Stability-Dynamic_Stability-Full_Linearized_Equations-Supporting_Functions Supporting_Functions
+# RCAIDE/Methods/Stability/Dynamic_Stability/Full_Linearized_Equations/Supporting_Functions/__init__.py
 # 
 
 """RCAIDE Package Setup

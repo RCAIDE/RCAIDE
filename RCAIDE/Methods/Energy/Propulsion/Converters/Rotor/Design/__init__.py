@@ -1,5 +1,5 @@
-## @defgroup Methods-Propulsion-Rotor_Design Rotor_Design
-# RCAIDE/Methods/Propulsion/Rotor_Design/__init__.py
+## @defgroup Methods-Energy-Propulsion-Rotor_Design Rotor_Design
+# RCAIDE/Methods/Energy/Propulsion/Rotor_Design/__init__.py
 # 
 
 """ RCAIDE Package Setup

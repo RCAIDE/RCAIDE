@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion-Rotor_Design  
-# RCAIDE/Methods/Propulsion/Rotor_Design/optimization_setup.py
+## @ingroup Methods-Energy-Propulsion-Rotor_Design  
+# RCAIDE/Methods/Energy/Propulsion/Rotor_Design/optimization_setup.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -19,7 +19,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Blade Geometry Setup 
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Propulsion-Rotor_Design    
+## @ingroup Methods-Energy-Propulsion-Rotor_Design    
 def blade_geometry_setup(rotor,number_of_stations): 
     """ Defines a dummy vehicle for prop-rotor blade optimization.
           
@@ -96,8 +96,8 @@ def blade_geometry_setup(rotor,number_of_stations):
     
     vehicle                            = RCAIDE.Vehicle()  
     net                                = RCAIDE.Energy.Networks.All_Electric() 
-    bus                                = RCAIDE.Energy.Distribution.Bus_Power_Control_Unit()
-    propulsor                          = RCAIDE.Energy.Propulsors.Propulsor()
+    bus                                = RCAIDE.Energy.Networks.Distribution.Electrical_Bus()
+    propulsor                          = RCAIDE.Energy.Propulsion.Propulsor()
     propulsor.rotor                    = rotor  
     bus.propulsors.append(propulsor)
     net.busses.append(bus)
@@ -116,7 +116,7 @@ def blade_geometry_setup(rotor,number_of_stations):
     config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
     configs.append(config)       
     
-    if type(rotor) == RCAIDE.Energy.Propulsors.Converters.Prop_Rotor:  
+    if type(rotor) == RCAIDE.Energy.Propulsion.Converters.Prop_Rotor:  
         design_thrust_cruise  = rotor.cruise.design_thrust 
         design_power_cruise   = rotor.cruise.design_power      
         if (design_thrust_cruise == None) and (design_power_cruise== None):

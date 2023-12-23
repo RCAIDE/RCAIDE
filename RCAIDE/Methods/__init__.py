@@ -10,13 +10,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from . import Aerodynamics
-from . import Costs
-from . import Cryogenics
-from . import Stability
+from . import Costs 
+from . import Energy
 from . import Geometry
 from . import Mission
 from . import Noise
-from . import Flight_Performance 
+from . import Performance 
+from . import Stability
 from . import Utilities
 from . import Weights
 

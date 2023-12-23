@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion-Rotor_Design 
-# RCAIDE/Methods/Propulsion/Rotor_Design/procedure_setup.py
+## @ingroup Methods-Energy-Propulsion-Rotor_Design 
+# RCAIDE/Methods/Energy/Propulsion/Rotor_Design/procedure_setup.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke  
@@ -21,7 +21,7 @@ import scipy as sp
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Procedure Setup 
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Propulsion-Rotor_Design  
+## @ingroup Methods-Energy-Propulsion-Rotor_Design  
 def procedure_setup(): 
     
     # size the base config

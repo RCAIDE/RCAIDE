@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion
-# RCAIDE/Methods/Propulsion/size_electric_motor.py
+## @ingroup Methods-Energy-Propulsion
+# RCAIDE/Methods/Energy/Propulsion/size_electric_motor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -15,7 +15,7 @@ from scipy.optimize import minimize
 # ----------------------------------------------------------------------------------------------------------------------  
 #  size_from_kv
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion
 def size_from_kv(motor):
     """
     Determines a motors mass based on the speed constant KV
@@ -58,7 +58,7 @@ def size_from_kv(motor):
     
     return motor
 
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion
 def size_from_mass(motor):
     """
     Sizes motor from mass
@@ -96,7 +96,7 @@ def size_from_mass(motor):
 
     return motor 
 
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion
 def size_optimal_motor(motor):
     ''' Optimizes the motor to obtain the best combination of speed constant and resistance values
     by essentially sizing the motor for a design RPM value. Note that this design RPM 
@@ -142,7 +142,7 @@ def size_optimal_motor(motor):
     
     return motor 
   
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion
 def optimize_kv(io, v , omeg,  etam ,  Q, kv_lower_bound =  0.01, Res_lower_bound = 0.001, kv_upper_bound = 100, Res_upper_bound = 10 ): 
     ''' Optimizer for compute_optimal_motor_parameters function  
     

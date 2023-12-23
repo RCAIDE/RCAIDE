@@ -1,5 +1,5 @@
 ## @ingroup Energy-Propulsion-Converters
-# RCAIDE/Energy/Propulsors/Converters/Motor.py
+# RCAIDE/Energy/Propulsion/Converters/Motor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

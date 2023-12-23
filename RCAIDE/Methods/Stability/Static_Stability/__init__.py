@@ -1,5 +1,5 @@
-## @defgroup Methods-Flight_Dynamics-Static_Stability Static_Stability
-# RCAIDE/Methods/Flight_Dynamics/Static_Stability/__init__.py
+## @defgroup Methods-Stability-Static_Stability Static_Stability
+# RCAIDE/Methods/Stability/Static_Stability/__init__.py
 # 
 
 """RCAIDE Package Setup

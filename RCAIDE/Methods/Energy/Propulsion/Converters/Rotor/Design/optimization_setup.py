@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion-Rotor_Design  
-# RCAIDE/Methods/Propulsion/Rotor_Design/optimization_setup.py
+## @ingroup Methods-Energy-Propulsion-Rotor_Design  
+# RCAIDE/Methods/Energy/Propulsion/Rotor_Design/optimization_setup.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -10,10 +10,10 @@
  
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Core                                                           import Units, Data   
-from RCAIDE.Optimization.Common                                            import Nexus       
-from RCAIDE.Methods.Propulsion.Design.Rotor_Design.blade_geometry_setup    import blade_geometry_setup
-from RCAIDE.Methods.Propulsion.Design.Rotor_Design.procedure_setup         import procedure_setup
+from RCAIDE.Core                                                                      import Units, Data   
+from RCAIDE.Optimization.Common                                                       import Nexus       
+from RCAIDE.Methods.Energy.Propulsion.Converters.Rotor.Design.blade_geometry_setup    import blade_geometry_setup
+from RCAIDE.Methods.Energy.Propulsion.Converters.Rotor.Design.procedure_setup         import procedure_setup
 
 # Python package imports   
 import numpy as np  
@@ -21,7 +21,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Optimization Setuo 
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Propulsion-Rotor_Design   
+## @ingroup Methods-Energy-Propulsion-Rotor_Design   
 def optimization_setup(rotor,number_of_stations,print_iterations):
     """ Sets up rotor optimization problem including design variables, constraints and objective function
         using RCAIDE's Nexus optimization framework. Appends methodolody of planform modification to Nexus.
@@ -42,10 +42,10 @@ def optimization_setup(rotor,number_of_stations,print_iterations):
     problem                      = Data()
     nexus.optimization_problem   = problem
    
-    if type(rotor) != RCAIDE.Energy.Propulsors.Converters.Prop_Rotor or  type(rotor) != RCAIDE.Energy.Propulsors.Converters.Lift_Rotor:
+    if type(rotor) != RCAIDE.Energy.Propulsion.Converters.Prop_Rotor or  type(rotor) != RCAIDE.Energy.Propulsion.Converters.Lift_Rotor:
         assert('rotor must be of Lift-Rotor or Prop-Rotor class') 
         
-    if type(rotor) == RCAIDE.Energy.Propulsors.Converters.Prop_Rotor:
+    if type(rotor) == RCAIDE.Energy.Propulsion.Converters.Prop_Rotor:
         nexus.prop_rotor_flag = True 
     else:
         nexus.prop_rotor_flag = False 

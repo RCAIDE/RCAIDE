@@ -12,9 +12,8 @@
 import RCAIDE 
 from RCAIDE.Core                                                             import Data 
 from RCAIDE.Analyses.Mission.Common                                          import Residuals    
-from RCAIDE.Methods.Propulsion.Performance.turbojet_propulsor                import turbojet_propulsor
+from RCAIDE.Methods.Energy.Networks.turbojet_propulsor                       import turbojet_propulsor
 from .Network                                                                import Network  
-from .Network import Network   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Turbojet

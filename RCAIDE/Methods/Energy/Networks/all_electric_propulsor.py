@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion
-# RCAIDE/Methods/Propulsion/all_electric_propulsor.py
+## @ingroup Methods-Energy-Propulsion-Networks
+# RCAIDE/Methods/Energy/Propulsion/Networks/all_electric_propulsor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -15,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # all_electric_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion-Networks
 def all_electric_propulsor(bus,state,voltage):
     ''' Computes the Performance of an all electric propulsor unit
     

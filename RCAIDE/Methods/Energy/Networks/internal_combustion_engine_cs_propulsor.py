@@ -1,5 +1,5 @@
-## @ingroup Methods-Propulsion
-# RCAIDE/Methods/Propulsion/internal_combustion_engine_cs_propulsor.py
+## @ingroup Methods-Energy-Propulsion-Networks
+# RCAIDE/Methods/Energy/Propulsion/Networks/internal_combustion_engine_cs_propulsor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # internal_combustion_engine_constant_speed_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Propulsion
+## @ingroup Methods-Energy-Propulsion-Networks
 def internal_combustion_engine_cs_propulsor(fuel_line,state): 
     ''' Computes the performance of an internal combustion engine propulsor constant speed unit
      

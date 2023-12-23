@@ -11,13 +11,11 @@
 import RCAIDE
 from RCAIDE.Core                                                                            import Units , Data
 from .Lithium_Ion_Generic                                                                   import Lithium_Ion_Generic  
-from RCAIDE.Methods.Power.Battery.State_Estimation_Models.LiNiMnCoO2_state_estimation_model import compute_NMC_cell_state_variables
-from RCAIDE.Methods.Power.Battery.Common.compute_net_generated_battery_heat                 import compute_net_generated_battery_heat
+from RCAIDE.Methods.Energy.Sources.Battery.State_Estimation_Models.LiNiMnCoO2_state_estimation_model import compute_NMC_cell_state_variables 
 
 # package imports 
 import numpy as np
-import os
-from scipy.integrate    import  cumtrapz
+import os 
 from scipy.interpolate  import RegularGridInterpolator 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -156,7 +154,9 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         # Unpack varibles 
         battery            = self  
         battery_conditions = state.conditions.energy[bus.tag][self.tag]    
-        btms               = battery.thermal_management_system  
+        btms               = battery.thermal_management_system 
+        HAS                = btms.heat_acquisition_system
+        HEX                = btms.heat_exchanger_system
         electrode_area     = battery.cell.electrode_area 
         As_cell            = battery.cell.surface_area           
         battery_data       = battery.discharge_performance_map  
@@ -239,10 +239,11 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             # --------------------------------------------------------------------------------------------------- 
             if t_idx != state.numerics.number_of_control_points-1:  
                 # Compute cell temperature   
-                btms_results  = btms.compute_net_generated_battery_heat(battery,Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx) 
+                HAS_results  = HAS.compute_heat_removed(battery,Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx) 
+                HEX_results  = HEX.compute_heat_removed(HAS_results,state,delta_t[t_idx],t_idx)
                 
                 # Temperature 
-                T_cell[t_idx+1] = btms_results.operating_conditions.battery_current_temperature
+                T_cell[t_idx+1] = HAS_results.current_battery_temperature
                     
                 # Compute state of charge and depth of discarge of the battery
                 E_pack[t_idx+1]                          = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 

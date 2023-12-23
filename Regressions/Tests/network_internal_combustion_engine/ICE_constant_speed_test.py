@@ -18,7 +18,7 @@ import numpy as np
 import sys 
 sys.path.append('../../Vehicles') 
 from Cessna_172                       import vehicle_setup  
-from RCAIDE.Methods.Propulsion.Design import design_propeller
+from RCAIDE.Methods.Energy.Propulsion.Converters.Rotor import design_propeller
 
 # ----------------------------------------------------------------------
 #   Main
@@ -99,12 +99,12 @@ def ICE_CS(vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    propulsor  = RCAIDE.Energy.Propulsors.Propulsor()    
+    propulsor  = RCAIDE.Energy.Propulsion.Propulsor()    
     
     #------------------------------------------------------------------------------------------------------------------------------------                                                  
     # Engine                    
     #------------------------------------------------------------------------------------------------------------------------------------  
-    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
+    engine                                     = RCAIDE.Energy.Propulsion.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
@@ -115,7 +115,7 @@ def ICE_CS(vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------     
     # Prop
     #------------------------------------------------------------------------------------------------------------------------------------  
-    prop                                   = RCAIDE.Energy.Propulsors.Converters.Propeller()
+    prop                                   = RCAIDE.Energy.Propulsion.Converters.Propeller()
     prop.number_of_blades                  = 2.0
     prop.variable_pitch                    = True 
     prop.tip_radius                        = 76./2. * Units.inches

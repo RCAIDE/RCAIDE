@@ -1,9 +1,17 @@
-## @defgroup Methods-Propulsion-Rotor_Wake Rotor_Wake
+## @defgroup Methods-energy-Propulsion-Converters-Rotor-Wake Wake 
 # Rotor_Wake provides the functions needed to perform analyses.
-# @ingroup Methods-Propulsion
+# @ingroup Methods-energy-Propulsion-Converters
 
-from . import Fidelity_One
-from . import Fidelity_Zero
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
+from . import Momentum_Theory
+from . import Perscribed_Vortex_Wake 
 
 
 

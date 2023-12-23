@@ -43,7 +43,7 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
     num_cpt     = conditions._size
     num_mic     = len(mls[0,:,0])  
     num_rot     = len(rotor)   
-    rot_origins = rotor.origin  
+    rot_origins = np.array(rotor.origin)  
     num_blades  = rotor.number_of_blades  
     num_sec     = len(rotor.radius_distribution)    
     

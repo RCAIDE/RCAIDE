@@ -1,5 +1,5 @@
-## @ingroup Methods-Thermal_Management-Batteries-Heat_Aquisition_System-Direct_Air_Heat_Aquisition
-# RCAIDE/Methods/Thermal_Management/Batteries/Heat_Aquisition_System/Direct_Air_Heat_Aquisition/direct_convection_model.py
+## @ingroup Methods-Thermal_Management-Batteries-Heat_Acquisition_System-Direct_Air_Heat_Acquisition
+# RCAIDE/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/Direct_Air_Heat_Acquisition/direct_convection_model.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -15,7 +15,7 @@ from RCAIDE.Core import Data
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
 def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
-    '''Computes the net heat removed by direct air heat aquisition system.
+    '''Computes the net heat removed by direct air heat acquisition system.
 
     Assumptions:
     1) Battery pack cell heat transfer can be modelled as a cooling columns in a cross-flow
@@ -63,8 +63,7 @@ def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
     if n_total_module == 1: 
         # Using lumped model   
         Q_convec       = h*As_cell*(T_cell - T_ambient)
-        Q_heat_gen_tot = Q_heat_gen
-        P_net          = Q_heat_gen_tot - Q_convec
+        Q_heat_gen_tot = Q_heat_gen 
 
     else:   
         K_coolant                    = state.conditions.freestream.thermal_conductivity[i,:]
@@ -102,10 +101,11 @@ def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
         Q_convec              = heat_transfer_efficiency*h*np.pi*D_cell*H_cell*n_total_module*dT_lm 
         Q_convec[Tw_Ti == 0.] = 0.
         Q_heat_gen_tot        = Q_heat_gen*n_total_module  
-        Q_net                 = Q_heat_gen_tot - Q_convec 
-     
-    dT_dt                  = Q_net/(cell_mass*n_total_module*Cp)
-    T_current              = T_cell + dT_dt*dt   
-    HAS_outputs            = Data()
+    Q_net                     = Q_heat_gen_tot - Q_convec  
+    dT_dt                     = Q_net/(cell_mass*n_total_module*Cp)
+    T_current                 = T_cell + dT_dt*dt     
+    HAS_outputs               = Data(total_heat_generated = Q_heat_gen_tot, 
+                                     total_heat_removed   = Q_convec,
+                                     current_battery_temperature = T_current)    
     
-    return Q_heat_gen_tot, Q_convec, T_current, HAS_outputs
+    return  HAS_outputs 

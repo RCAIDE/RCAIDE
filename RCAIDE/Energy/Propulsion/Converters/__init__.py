@@ -1,5 +1,5 @@
-## @defgroup Energy-Propulsors-Converters Converters
-# RCAIDE/Energy/Propulsors/Converters/__init__.py
+## @defgroup Energy-Propulsion-Converters Converters
+# RCAIDE/Energy/Propulsion/Converters/__init__.py
 # 
 
 """ RCAIDE Package Setup

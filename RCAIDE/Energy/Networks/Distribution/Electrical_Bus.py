@@ -1,5 +1,5 @@
 ## @defgroup Energy-Networks-Distribution
-# RCAIDE/Energy/Networks/Distribution/Bus_Power_Control_Unit.py
+# RCAIDE/Energy/Networks/Distribution/Electrical_Bus.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -14,7 +14,7 @@ from RCAIDE.Energy.Energy_Component                   import Energy_Component
 from RCAIDE.Components.Component                      import Container    
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Bus_Power_Control_Unit
+#  Electrical_Bus
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks-Distribution
 class Electrical_Bus(Energy_Component):
