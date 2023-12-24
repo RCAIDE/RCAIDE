@@ -11,8 +11,8 @@
 import RCAIDE
 from RCAIDE.Methods.Mission.Common.Segments    import  sequential_segments
 from RCAIDE.Methods.Mission.Common.Pre_Process import  aerodynamics, energy
-from RCAIDE.Core import Container as ContainerBase
-from RCAIDE.Analyses                          import Process 
+from RCAIDE.Core                               import Container as ContainerBase
+from RCAIDE.Analyses                           import Process 
 from . import Segments
 
 # ----------------------------------------------------------------------------------------------------------------------

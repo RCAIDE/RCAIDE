@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports   
-from RCAIDE.Methods                                  import skip   
+from RCAIDE.Methods.skip                             import skip 
 from RCAIDE.Core                                     import Units 
 from RCAIDE.Analyses.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Methods.Mission                          import Common,Segments

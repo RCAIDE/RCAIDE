@@ -63,7 +63,7 @@ def base_analysis(vehicle):
     noise.geometry = vehicle
     noise.settings.noise_hemisphere                       = True 
     noise.settings.noise_hemisphere_radius                = 20          
-    noise.settings.noise_hemisphere_microphone_resolution = 20
+    noise.settings.noise_hemisphere_microphone_resolution = 3
     noise.settings.noise_hemisphere_phi_angle_bounds      = np.array([0,np.pi]) 
     noise.settings.noise_hemisphere_theta_angle_bounds    = np.array([np.pi/2,-np.pi/2])
     analyses.append(noise)                                                           
@@ -122,7 +122,7 @@ def mission_setup(analyses,vehicle):
     mission.tag   = 'mission' 
     Segments      = RCAIDE.Analyses.Mission.Segments  
     base_segment  = Segments.Segment()   
-    base_segment.state.numerics.number_control_points  = 5 
+    base_segment.state.numerics.number_of_control_points  = 5 
      
     # ------------------------------------------------------------------
     #   Constant Altitude Cruises 

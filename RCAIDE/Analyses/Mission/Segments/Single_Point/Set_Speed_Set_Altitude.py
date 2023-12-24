@@ -12,7 +12,7 @@
 from RCAIDE.Core                                     import Units 
 from RCAIDE.Analyses.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Methods.Mission                          import Common,Segments
-from RCAIDE.Methods                                  import skip 
+from RCAIDE.Methods.skip                             import skip 
 
 # package imports 
 import numpy as np
@@ -60,8 +60,7 @@ class Set_Speed_Set_Altitude(Evaluate):
         self.distance                                = 10. * Units.km
         self.x_accel                                 = 0.
         self.z_accel                                 = 0. # note that down is positive
-        self.state.numerics.number_of_control_points = 1
-        
+        self.state.numerics.number_of_control_points = 1 
          
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 

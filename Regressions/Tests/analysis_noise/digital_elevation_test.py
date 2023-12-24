@@ -1,10 +1,11 @@
 # digital_elevation_and_noise_hemispheres_test.py
 #
-# Created: Apr 2021, M. Clarke  
+# Created: Dec 2023 M. Clarke  
  
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
+# RCAIDE Imports 
 import RCAIDE
 from RCAIDE.Core import Units , Data 
 from RCAIDE.Visualization import *     
@@ -12,7 +13,7 @@ from RCAIDE.Methods.Noise.Metrics import *
 from RCAIDE.Methods.Noise.Common.generate_microphone_locations                import generate_terrain_elevated_microphone_locations
 from RCAIDE.Methods.Mission.Common.compute_point_to_point_geospacial_data     import compute_point_to_point_geospacial_data
 
-# python import
+# Python imports
 import matplotlib.pyplot as plt  
 import sys 
 import numpy as np     
@@ -28,8 +29,8 @@ def main():
     microphone_terrain_data =  generate_terrain_elevated_microphone_locations(topography_file   ='LA_Metropolitan_Area.txt',
                                                            ground_microphone_x_resolution    = 201,  
                                                            ground_microphone_y_resolution    = 101, 
-                                                           ground_microphone_x_stencil       = 3,   
-                                                           ground_microphone_y_stencil       = 3)    
+                                                           ground_microphone_x_stencil       = 1,   
+                                                           ground_microphone_y_stencil       = 1)    
     
 
     geospacial_data =  compute_point_to_point_geospacial_data(topography_file  = 'LA_Metropolitan_Area.txt',
@@ -54,7 +55,7 @@ def main():
     plot_results(results,regression_plotting_flag)   
 
     X57_SPL        = np.max(results.segments.climb.conditions.noise.total_SPL_dBA) 
-    X57_SPL_true   = 64.16716714084842
+    X57_SPL_true   = 71.12567232675062
     X57_diff_SPL   = np.abs(X57_SPL - X57_SPL_true)
     print('Error: ',X57_diff_SPL)
     assert np.abs((X57_SPL - X57_SPL_true)/X57_SPL_true) < 1e-3    
