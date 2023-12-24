@@ -17,7 +17,7 @@ import numpy as np
 #  Source Coordinates 
 # ----------------------------------------------------------------------------------------------------------------------      
 ## @ingroup Methods-Noise-Common 
-def compute_rotor_point_source_coordinates(conditions,rotors,mls,settings):
+def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
     """This calculated the position vector from a point source to the observer 
             
     Assumptions:
@@ -42,35 +42,29 @@ def compute_rotor_point_source_coordinates(conditions,rotors,mls,settings):
     # aquire dimension of matrix
     num_cpt     = conditions._size
     num_mic     = len(mls[0,:,0])  
-    num_rot     = len(rotors)  
-    rot_origins = []
-     
-    for rotor in rotors:
-        rot_origins.append(rotor.origin[0])
-    rot_origins = np.array(rot_origins)    
-
-    rotor          = rotors[list(rotors.keys())[0]] 
-    num_blades     = rotor.number_of_blades  
-    num_sec        = len(rotor.radius_distribution)    
+    num_rot     = len(rotor)   
+    rot_origins = np.array(rotor.origin)  
+    num_blades  = rotor.number_of_blades  
+    num_sec     = len(rotor.radius_distribution)    
     
     # Get the rotation matrix
-    prop2body      = rotor.prop_vel_to_body()  
-    phi            = np.linspace(0,2*np.pi,num_blades+1)[0:num_blades]  
-    c              = rotor.chord_distribution 
-    r              = rotor.radius_distribution  
-    beta           = rotor.flap_angle
-    theta          = rotor.twist_distribution   # blade pitch 
-    theta_0        = rotor.inputs.pitch_command # collective
-    MCA            = rotor.mid_chord_alignment
-    theta_tot      = theta + theta_0
+    prop2body   = rotor.prop_vel_to_body()  
+    phi         = np.linspace(0,2*np.pi,num_blades+1)[0:num_blades]  
+    c           = rotor.chord_distribution 
+    r           = rotor.radius_distribution  
+    beta        = rotor.flap_angle
+    theta       = rotor.twist_distribution   # blade pitch 
+    theta_0     = rotor.inputs.pitch_command # collective
+    MCA         = rotor.mid_chord_alignment
+    theta_tot   = theta + theta_0
  
     # dimension of matrices [control point, microphone , rotor, number of blades, number of sections , x,y,z coords]  
 
     # -----------------------------------------------------------------------------------------------------------------------------
     # translation matrix of rotor blade
     # ----------------------------------------------------------------------------------------------------------------------------- 
-    I                               = np.atleast_3d(np.eye(4)).T 
-    Tranlation_blade_trailing_edge  = np.tile(I[None,None,None,None,:,:,:],(num_cpt,num_mic,num_rot,num_blades,num_sec,1,1)) 
+    I                                             = np.atleast_3d(np.eye(4)).T 
+    Tranlation_blade_trailing_edge                = np.tile(I[None,None,None,None,:,:,:],(num_cpt,num_mic,num_rot,num_blades,num_sec,1,1)) 
     Tranlation_blade_trailing_edge[:,:,:,:,:,0,3] = MCA + 0.5*c  
     Tranlation_blade_trailing_edge[:,:,:,:,:,1,3] = r 
     rev_Tranlation_blade_trailing_edge            = np.linalg.inv(Tranlation_blade_trailing_edge)       

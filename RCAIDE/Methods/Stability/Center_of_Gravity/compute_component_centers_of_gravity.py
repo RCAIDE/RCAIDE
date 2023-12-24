@@ -12,7 +12,7 @@
 import RCAIDE
 from RCAIDE.Methods.Geometry.Three_Dimensional import compute_span_location_from_chord_length
 from RCAIDE.Methods.Geometry.Three_Dimensional import compute_chord_length_from_span_location
-from RCAIDE.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions import convert_sweep
+from RCAIDE.Methods.Stability.Static_Stability.Approximations.Supporting_Functions import convert_sweep
 from RCAIDE.Energy.Energy_Component import Energy_Component
 
 # package imports 

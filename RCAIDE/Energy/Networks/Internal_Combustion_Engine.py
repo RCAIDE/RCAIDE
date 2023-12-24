@@ -9,10 +9,10 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE 
-from RCAIDE.Core                                                    import Data 
-from RCAIDE.Analyses.Mission.Common                                 import Residuals    
-from RCAIDE.Methods.Propulsion.Performance.internal_combustion_engine_propulsor import internal_combustion_engine_propulsor
-from .Network                                                       import Network   
+from RCAIDE.Core                                                         import Data 
+from RCAIDE.Analyses.Mission.Common                                      import Residuals    
+from RCAIDE.Methods.Energy.Networks.internal_combustion_engine_propulsor import internal_combustion_engine_propulsor
+from .Network                                                            import Network   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ICE_Propelle

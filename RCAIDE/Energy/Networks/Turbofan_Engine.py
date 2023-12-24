@@ -10,12 +10,11 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Core                                                             import Data 
-from RCAIDE.Analyses.Mission.Common                                          import Residuals    
-from RCAIDE.Methods.Propulsion.Performance.turbofan_propulsor                import turbofan_propulsor
-from .Network                                                                import Network  
-from .Network import Network
- 
+from RCAIDE.Core                                                      import Data 
+from RCAIDE.Analyses.Mission.Common                                   import Residuals    
+from RCAIDE.Methods.Energy.Networks.turbofan_propulsor                import turbofan_propulsor
+from .Network                                                         import Network  
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  Turbofan
 # ---------------------------------------------------------------------------------------------------------------------- 

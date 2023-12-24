@@ -12,13 +12,10 @@ import RCAIDE
 from RCAIDE.Core                                                             import Data 
 from RCAIDE.Analyses.Mission.Common                                          import Residuals 
 from RCAIDE.Components.Component                                             import Container   
-from RCAIDE.Energy.Propulsors.Converters                                     import Propeller, Lift_Rotor, Prop_Rotor 
-from RCAIDE.Methods.Power.Battery.Common                                     import append_initial_battery_conditions 
-from RCAIDE.Methods.Propulsion.Performance.all_electric_propulsor            import all_electric_propulsor
+from RCAIDE.Energy.Propulsion.Converters                                     import Propeller, Lift_Rotor, Prop_Rotor 
+from RCAIDE.Methods.Energy.Sources.Battery.Common                            import append_initial_battery_conditions 
+from RCAIDE.Methods.Energy.Networks.all_electric_propulsor                   import all_electric_propulsor
 from .Network                                                                import Network  
-
- # package imports 
-import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  All Electric

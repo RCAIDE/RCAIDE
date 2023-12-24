@@ -10,7 +10,7 @@
 import RCAIDE
 from RCAIDE.Core import Units  
 from RCAIDE.Visualization                 import *      
-from RCAIDE.Methods.Power.Battery.Sizing  import initialize_from_circuit_configuration
+from RCAIDE.Methods.Energy.Sources.Battery.Sizing  import initialize_from_circuit_configuration
 
 # python imports     
 import numpy as np  
@@ -88,11 +88,11 @@ def modify_vehicle(vehicle,battery_chemistry):
     bus = vehicle.networks.all_electric.busses.bus
     bus.batteries.pop((list(bus.batteries.keys())[0]))
     if battery_chemistry   == 'NMC': 
-        bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_NMC()  
-        bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.No_Heat_Exchanger()  
+        bat = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_NMC()  
+        bat.thermal_management_system.heat_aquisition_system  = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition()  
     elif battery_chemistry == 'LFP':  
-        bat = RCAIDE.Energy.Storages.Batteries.Lithium_Ion_LFP()    
-        bat.thermal_management_system  = RCAIDE.Energy.Thermal_Management.Batteries.Atmospheric_Air_Convection_Heat_Exchanger()  
+        bat = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_LFP()    
+        bat.thermal_management_system.heat_aquisition_system  = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air()  
 
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 100

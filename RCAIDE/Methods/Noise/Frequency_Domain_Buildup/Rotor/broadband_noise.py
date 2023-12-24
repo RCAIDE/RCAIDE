@@ -24,7 +24,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
 def broadband_noise(freestream,angle_of_attack,coordinates,
-                            velocity_vector,rotors,aeroacoustic_data,settings,res):
+                            velocity_vector,rotor,aeroacoustic_data,settings,res):
     '''This computes the trailing edge noise compoment of broadband noise of a propeller or 
     lift-rotor in the frequency domain. Boundary layer properties are computed using RCAIDE's 
     panel method.
@@ -66,8 +66,7 @@ def broadband_noise(freestream,angle_of_attack,coordinates,
     num_mic       = len(coordinates.X[0,:,0,0,0,0])  
     num_rot       = len(coordinates.X[0,0,:,0,0,0])
     num_blades    = len(coordinates.X[0,0,0,:,0,0])
-    num_sec       = len(coordinates.X[0,0,0,0,:,0])
-    rotor         = rotors[list(rotors.keys())[0]]
+    num_sec       = len(coordinates.X[0,0,0,0,:,0]) 
     frequency     = settings.center_frequencies
     num_cf        = len(frequency)     
     
@@ -103,8 +102,7 @@ def broadband_noise(freestream,angle_of_attack,coordinates,
         res.p_pref_azimuthal_broadband_dBA            = np.zeros_like(res.p_pref_azimuthal_broadband)
         res.SPL_prop_azimuthal_broadband_spectrum     = np.zeros_like(res.p_pref_azimuthal_broadband)
         res.SPL_prop_azimuthal_broadband_spectrum_dBA = np.zeros_like(res.p_pref_azimuthal_broadband)
-    else:
-        
+    else: 
         # dimension of matrices [control point, microphone , num rotors , number of blades, number of sections ,num center frequencies ] 
         c                 = np.tile(blade_chords[None,None,None,:,None],(num_mic,num_rot,num_blades,1,num_cf))
         L                 = np.tile(L[None,None,None,:,None],(num_mic,num_rot,num_blades,1,num_cf))
@@ -127,9 +125,7 @@ def broadband_noise(freestream,angle_of_attack,coordinates,
             M_tot             = V_tot/c_0   
               
             X_prime_r         = np.tile(coordinates.X_prime_r[cpt_i,:,:,:,:,None,:],(1,1,1,1,num_cf,1))
-            cos_zeta_r        = np.sum(X_prime_r*V, axis = 5)/(np.linalg.norm(X_prime_r, axis = 5)*np.linalg.norm(V, axis = 5))                 
-            #norm_X_r          = np.tile(np.linalg.norm(coordinates.X_r,axis = 5)[cpt_i,:,:,:,:,None],(1,1,1,1,num_cf)) 
-            #sigma             = np.sqrt((norm_X_r**2)*((1 - M_tot*cos_zeta_r)**2))                  
+            cos_zeta_r        = np.sum(X_prime_r*V, axis = 5)/(np.linalg.norm(X_prime_r, axis = 5)*np.linalg.norm(V, axis = 5)) 
             r_er              = np.tile(np.linalg.norm(coordinates.X_e_r, axis = 5)[cpt_i,:,:,:,:,None],(1,1,1,1,num_cf))           
             Phi_er            = np.tile(coordinates.phi_e_r[cpt_i,:,:,:,:,None],(1,1,1,1,num_cf))
             Theta_er          = np.tile(coordinates.theta_e_r[cpt_i,:,:,:,:,None],(1,1,1,1,num_cf))    

@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
 from RCAIDE.Core import Units   
-from RCAIDE.Methods.Propulsion.Design import design_propeller
+from RCAIDE.Methods.Energy.Propulsion.Converters.Rotor import design_propeller
 
 # python imports 
 import numpy as np
@@ -199,10 +199,10 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                   = RCAIDE.Energy.Distribution.Fuel_Line()  
+    fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line()  
      
     # fuel tank
-    fuel_tank                                   = RCAIDE.Energy.Storages.Fuel_Tanks.Fuel_Tank()
+    fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = wing.origin  
     fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline() 
     fuel.mass_properties.mass                   = 319 *Units.lbs 
@@ -214,12 +214,12 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    propulsor  = RCAIDE.Energy.Propulsors.Propulsor()     
+    propulsor  = RCAIDE.Energy.Propulsion.Propulsor()     
     
     #------------------------------------------------------------------------------------------------------------------------------------                                                  
     # Engine                    
     #------------------------------------------------------------------------------------------------------------------------------------  
-    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
+    engine                                     = RCAIDE.Energy.Propulsion.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
@@ -229,7 +229,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------     
     # Prop
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    prop = RCAIDE.Energy.Propulsors.Converters.Propeller()
+    prop = RCAIDE.Energy.Propulsion.Converters.Propeller()
     prop.number_of_blades                   = 2.0
     prop.tip_radius                         = 76./2. * Units.inches
     prop.hub_radius                         = 8.     * Units.inches

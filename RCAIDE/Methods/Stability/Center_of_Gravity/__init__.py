@@ -1,5 +1,12 @@
-## @defgroup Methods-Center_of_Gravity Center_of_Gravity
-# Description
-# @ingroup Methods
+## @defgroup Methods-Stability-Center_of_Gravity Center_of_Gravity 
+# RCAIDE/Methods/Stability/Center_of_Gravity/__init__.py
+# 
+
+""" RCAIDE Package Setup
+"""
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 
 from .compute_component_centers_of_gravity import compute_component_centers_of_gravity 
