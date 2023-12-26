@@ -11,7 +11,7 @@
 # RCAIDE imports  
 import RCAIDE 
 from RCAIDE.Energy.Energy_Component import Energy_Component
-from RCAIDE.Methods.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate import compute_cryogen_mass_flow_rate
+from RCAIDE.Methods.Energy.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate import compute_cryogen_mass_flow_rate
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryogenic Heat Exchanger Component

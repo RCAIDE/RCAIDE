@@ -1,3 +1,4 @@
+## @defgroup Energy-Networks Networks 
 # RCAIDE/Energy/Networks/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -25,6 +26,6 @@ from Legacy.trunk.S.Components.Energy.Networks import Turboelectric_HTS_Dynamo_D
 from Legacy.trunk.S.Components.Energy.Networks import Turbofan                                     as legacy_turbofan
 from Legacy.trunk.S.Components.Energy.Networks import Turbojet_Super                               as legacy_turbojet
 
+from .                                         import Distribution
 from .Networks                                 import Network
-from .Turbofan                                 import Turbofan
-from .Turbojet                                 import Turbojet
+from .Turbofan_Engine                          import Turbofan_Engine 

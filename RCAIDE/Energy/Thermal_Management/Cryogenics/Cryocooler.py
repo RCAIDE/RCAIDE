@@ -8,9 +8,9 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-# RCAIDE imports  
-from RCAIDE.Energy.Energy_Component                                import Energy_Component
-from RCAIDE.Methods.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
+# RCAIDE imports    
+from RCAIDE.Energy.Energy_Component                                       import Energy_Component
+from RCAIDE.Methods.Energy.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryocooler

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
   
 from RCAIDE.Energy.Energy_Component import Energy_Component  
-from RCAIDE.Methods.Thermal_Management.Batteries.Performance.Heat_Acquisition_System.Direct_Air_Heat_Aquistion import direct_convection_model
+from RCAIDE.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air_Heat_Acquistion import direct_convection_model
 from RCAIDE.Attributes.Gases import Air 
 
 # ----------------------------------------------------------------------------------------------------------------------

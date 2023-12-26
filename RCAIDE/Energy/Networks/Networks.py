@@ -38,10 +38,11 @@ class Network(Energy_Component):
                 None
                 Properties Used:
                 N/A
-        """
-        self.tag                    = 'network'
-        self.number_of_engines      = 1
-        self.wing_mounted           = True
+        """ 
+        self.tag                    = 'network'  
+        self.busses                 = Container()     
+        self.fuel_lines             = Container()    
+        self.wing_mounted           = True        
 
 # ----------------------------------------------------------------------
 #  Component Container
