@@ -47,7 +47,7 @@ def post_process_noise_data(results,time_step = 20):
     SPL_dBA_t            = np.zeros((N_ctrl_pts ,N_gm_x,N_gm_y)) 
     time_old             = np.zeros(N_ctrl_pts)
     Aircraft_pos         = np.zeros((N_ctrl_pts,3)) 
-    Mic_pos_gm           = results.segments[0].conditions.noise.total_ground_microphone_locations[0].reshape(N_gm_x,N_gm_y,3) 
+    Mic_pos_gm           = results.segments[0].conditions.noise.absolute_ground_microphone_locations[0].reshape(N_gm_x,N_gm_y,3) 
       
     # Step 1: Merge data from all segments 
     idx = 0 

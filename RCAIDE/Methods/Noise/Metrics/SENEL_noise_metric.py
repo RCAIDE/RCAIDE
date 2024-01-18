@@ -107,37 +107,40 @@ def SENEL_noise_metric_single_point(SPL):
         SPL      - Noise level 
         
     Outputs: 
-        SENEL    - Single Event Noise Exposure Level            [SENEL]
+        SENEL    - Single Event Noise Exposure Level         
         
     Properties Used:
         N/A     
     """       
     # Maximum noise level on the time history data    
-    dBA_max = np.max(SPL)
+    dBA_max  = np.max(SPL,axis= 0)  
+    n_mic    = len(SPL[0,:])
+    SENEL    = np.zeros(n_mic)
     
     # Calculates the number of discrete points on the trajectory
     nsteps   = len(SPL)    
 
-    # Finding the time duration for the noise history where the noise level is higher than maximum noise level - 10 dB
-    i = 0
-    while SPL[i]<=(dBA_max-10) and i<=nsteps:
-        i = i+1
-    t1 = i # t1 is the first time interval
-    i  = i+1
-
-    # Correction for the noise level-10 when it falls outside the limit of the data
-    if SPL[nsteps-1]>=(dBA_max-10):
-        t2=nsteps-2
-    else:
-        while i<=nsteps and SPL[i]>=(dBA_max-10):
+    for j in range(n_mic):
+        # Finding the time duration for the noise history where the noise level is higher than maximum noise level - 10 dB
+        i = 0
+        while SPL[i][j]<=(dBA_max[j]-10) and i<=nsteps:
             i = i+1
-        t2 = i-1 #t2 is the last time interval 
-        
-    # Calculates the integral of the noise which between t1 and t2 points
-    sumation = 0
-    for i in range (t1-1,t2+1):
-        sumation = 10**(SPL[i]/10)+sumation
-        
-    SENEL = 10*np.log10(sumation)
+        t1 = i # t1 is the first time interval
+        i  = i+1
+    
+        # Correction for the noise level-10 when it falls outside the limit of the data
+        if SPL[nsteps-1][j]>=(dBA_max[j]-10):
+            t2=nsteps-2
+        else:
+            while i<=nsteps and SPL[i][j]>=(dBA_max[j]-10):
+                i = i+1
+            t2 = i-1 #t2 is the last time interval 
+            
+        # Calculates the integral of the noise which between t1 and t2 points
+        sumation = 0
+        for i in range (t1-1,t2+1):
+            sumation = 10**(SPL[i][j]/10)+sumation
+            
+        SENEL[j] = 10*np.log10(sumation)
     
     return SENEL    

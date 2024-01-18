@@ -32,9 +32,9 @@ def compute_relative_noise_evaluation_locations(settings,segment):
     Outputs: 
     GM_THETA   - angle measured from ground microphone in the x-z plane from microphone to aircraft 
     GM_PHI     - angle measured from ground microphone in the y-z plane from microphone to aircraft 
-    REGML      - relative evaluation ground microphone locations
+    RML        - relative microphone locations
     EGML       - evaluation ground microphone locations
-    TGML       - total ground microphone locations
+    AGML       - absolute ground microphone locations
     num_gm_mic - number of ground microphones
  
     Properties Used:
@@ -49,11 +49,11 @@ def compute_relative_noise_evaluation_locations(settings,segment):
     gml               = settings.ground_microphone_locations 
     pos               = segment.state.conditions.frames.inertial.position_vector 
     ctrl_pts          = len(pos)  
-    TGML              = np.repeat(gml[np.newaxis,:,:],ctrl_pts,axis=0) 
+    AGML              = np.repeat(gml[np.newaxis,:,:],ctrl_pts,axis=0) 
     
     if settings.noise_hemisphere:
-        REGML = TGML 
-        EGML  = TGML   
+        RML   = AGML 
+        EGML  = AGML   
 
         mic_stencil      = np.zeros((ctrl_pts,4))
         mic_stencil[:,0] = 0 
@@ -105,9 +105,9 @@ def compute_relative_noise_evaluation_locations(settings,segment):
         
         num_gm_mic   = (mic_stencil_x*2 + 1)*(mic_stencil_y*2 + 1)
         EGML         = np.zeros((ctrl_pts,num_gm_mic,3))   
-        REGML        = np.zeros_like(EGML)
+        RML          = np.zeros_like(EGML)
         for cpt in range(ctrl_pts):
-            surface         = TGML[cpt,:,:].reshape((N_gm_x,N_gm_y,3))
+            surface         = AGML[cpt,:,:].reshape((N_gm_x,N_gm_y,3))
             stencil         = surface[start_x[cpt]:end_x[cpt],start_y[cpt]:end_y[cpt],:].reshape(num_gm_mic,3,1)  # extraction of points 
             EGML[cpt]       = stencil[:,:,0]
             
@@ -119,7 +119,7 @@ def compute_relative_noise_evaluation_locations(settings,segment):
             else:
                 relative_locations[:,2,0]    = -(pos[cpt,2])    
             
-            REGML[cpt,:,:]   = relative_locations[:,:,0] 
+            RML[cpt,:,:]   = relative_locations[:,:,0] 
      
-    return REGML,EGML,TGML,num_gm_mic,mic_stencil
+    return RML,EGML,AGML,num_gm_mic,mic_stencil
  

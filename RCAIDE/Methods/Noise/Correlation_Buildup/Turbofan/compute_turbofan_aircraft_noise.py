@@ -10,8 +10,8 @@
 
 # RCAIDE Imports 
 from RCAIDE.Methods.Noise.Correlation_Buildup.Turbofan                                      import turbofan_engine_noise  
-from RCAIDE.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise                       import airframe_noise 
-from RCAIDE.Methods.Noise.Certification.compute_certification_distance_and_emission_angles import compute_certification_distance_and_emission_angles
+from RCAIDE.Methods.Noise.Correlation_Buildup.Airframe                                      import airframe_noise 
+from RCAIDE.Methods.Noise.Common.compute_certification_distance_and_emission_angles         import compute_certification_distance_and_emission_angles
 
 # Python package imports   
 import numpy as np   

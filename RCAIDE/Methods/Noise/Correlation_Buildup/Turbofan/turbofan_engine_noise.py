@@ -35,7 +35,7 @@ import numpy as np
 #  turbofan engine noise 
 # ----------------------------------------------------------------------------------------------------------------------        
 ## @ingroup Methods-Noise-Correlation_Buildup-Engine
-def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0, filename = 0):  
+def turbofan_engine_noise(turbofan,aeroacoustic_data,segment,settings,ioprint):  
     """This method predicts the free-field 1/3 Octave Band SPL of coaxial subsonic
        jets for turbofan engines under the following conditions:
        a) Flyover (observer on ground)
@@ -73,18 +73,17 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
         SPL_total                       - Sound Pressure Level of the total jet noise        [dB]
 
     """ 
-    # unpack 
-    Velocity_primary       = turbofan.core_nozzle.noise_speed * 0.92*(turbofan.design_thrust/52700.)   
-    Temperature_primary    = segment.conditions.noise.sources.turbofan.core.exit_stagnation_temperature[:,0] 
-    Pressure_primary       = segment.conditions.noise.sources.turbofan.core.exit_stagnation_pressure[:,0] 
+    # unpack   
+    Velocity_primary       = aeroacoustic_data.core_nozzle.exit_velocity * 0.92*(turbofan.design_thrust/52700.)   
+    Temperature_primary    = aeroacoustic_data.core_nozzle.exit_stagnation_temperature[:,0] 
+    Pressure_primary       = aeroacoustic_data.core_nozzle.exit_stagnation_pressure[:,0]  
+    Velocity_secondary     = aeroacoustic_data.fan_nozzle.exit_velocity  * (turbofan.design_thrust/52700.) 
+    Temperature_secondary  = aeroacoustic_data.fan_nozzle.exit_stagnation_temperature[:,0] 
+    Pressure_secondary     = aeroacoustic_data.fan_nozzle.exit_stagnation_pressure[:,0] 
 
-    Velocity_secondary     = turbofan.fan_nozzle.noise_speed * (turbofan.design_thrust/52700.) 
-    Temperature_secondary  = segment.conditions.noise.sources.turbofan.fan.exit_stagnation_temperature[:,0] 
-    Pressure_secondary     = segment.conditions.noise.sources.turbofan.fan.exit_stagnation_pressure[:,0] 
-
-    N1                     = turbofan.fan.rotation* 0.92*(turbofan.design_thrust/52700.)
-    Diameter_primary       = turbofan.core_nozzle_diameter
-    Diameter_secondary     = turbofan.fan_nozzle_diameter
+    N1                     = 0 # turbofan.fan.rotation* 0.92*(turbofan.design_thrust/52700.)  # FUTURE WORK: NEED TO UPDATE ENGINE MODEL WITH FAN SPEED in RPM 
+    Diameter_primary       = turbofan.core_nozzle.diameter
+    Diameter_secondary     = turbofan.fan_nozzle.diameter
     engine_height          = turbofan.engine_height
     EXA                    = turbofan.exa
     Plug_diameter          = turbofan.plug_diameter 
@@ -92,26 +91,18 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
     Ye                     = turbofan.geometry_ye
     Ce                     = turbofan.geometry_Ce
 
-    Velocity_aircraft      = np.float(segment.conditions.freestream.velocity[0,0]) 
+    Velocity_aircraft      = segment.conditions.freestream.velocity[:,0]
+    Mach_aircraft          = segment.conditions.freestream.mach_number
     Altitude               = segment.conditions.freestream.altitude[:,0] 
-    AOA                    = np.mean(segment.conditions.aerodynamics.angles.alpha / Units.deg)
-
+    AOA                    = np.mean(segment.conditions.aerodynamics.angles.alpha / Units.deg) 
     noise_time             = segment.conditions.frames.inertial.time[:,0]
 
     # unpack
-    distance_microphone = segment.dist   
-    angles              = segment.theta  
-    phi                 = segment.phi     
-
-    nsteps = len(noise_time)        
-
-    #Preparing matrix for noise calculation
-    sound_ambient       = np.zeros(nsteps)
-    density_ambient     = np.zeros(nsteps)
-    viscosity           = np.zeros(nsteps)
-    temperature_ambient = np.zeros(nsteps)
-    pressure_amb        = np.zeros(nsteps)
-    Mach_aircraft       = np.zeros(nsteps)
+    RML = segment.conditions.noise.relative_microphone_locations  
+    distance_microphone = np.linalg.norm(RML,axis = 2)
+    angles              = np.arccos(RML[:,:,0]/distance_microphone) 
+    phi                 = np.arccos(RML[:,:,1]/distance_microphone) 
+    nsteps              = len(noise_time)         
 
     if type(Velocity_primary) == float:
         Velocity_primary    = np.ones(nsteps)*Velocity_primary
@@ -129,9 +120,9 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
     pressure_amb        =   segment.conditions.freestream.pressure[:,0]
 
     #Base parameters necessary input for the noise code
-    pressure_isa = 101325 # [Pa]
-    R_gas        = 287.1  # [J/kg K]
-    gamma_primary = 1.37   # Corretion for the primary jet
+    pressure_isa  = 101325 # [Pa]
+    R_gas         = 287.1  # [J/kg K]
+    gamma_primary = 1.37  # Corretion for the primary jet
     gamma         = 1.4
 
     #Calculation of nozzle areas
@@ -200,7 +191,7 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
         mass_flow_secondary = Area_secondary*Velocity_secondary[id]*density_secondary
 
         #Mach number of the external flow - based on the aircraft velocity
-        Mach_aircraft[id] = Velocity_aircraft/sound_ambient[id]
+        Mach_aircraft[id] = Velocity_aircraft[id]/sound_ambient[id]
 
         #Calculation Procedure for the Mixed Jet Flow Parameters
         Velocity_mixed = (mass_flow_primary*Velocity_primary[id]+mass_flow_secondary*Velocity_secondary[id])/ \
@@ -223,15 +214,15 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
             XBPR=4
 
         #Auxiliary parameter defined as DVPS
-        DVPS = np.abs((Velocity_primary[id] - (Velocity_secondary[id]*Area_secondary+Velocity_aircraft*Area_primary)/\
+        DVPS = np.abs((Velocity_primary[id] - (Velocity_secondary[id]*Area_secondary+Velocity_aircraft[id]*Area_primary)/\
                        (Area_secondary+Area_primary)))
         if DVPS<0.3:
             DVPS=0.3
 
         # Calculation of the Strouhal number for each jet component (p-primary, s-secondary, m-mixed)
         Str_p = frequency*Diameter_primary/(DVPS)  #Primary jet
-        Str_s = frequency*Diameter_mixed/(Velocity_secondary[id]-Velocity_aircraft) #Secondary jet
-        Str_m = frequency*Diameter_mixed/(Velocity_mixed-Velocity_aircraft) #Mixed jet
+        Str_s = frequency*Diameter_mixed/(Velocity_secondary[id]-Velocity_aircraft[id]) #Secondary jet
+        Str_m = frequency*Diameter_mixed/(Velocity_mixed-Velocity_aircraft[id]) #Mixed jet
 
         #Calculation of the Excitation adjustment parameter
         #Excitation Strouhal Number
@@ -260,7 +251,7 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
         # Call function noise source location for the calculation of theta
         thetaj = noise_source_location(B,Xo,zk,Diameter_primary,theta_p,Area_primary,Area_secondary,distance_microphone[id],
                                        Diameter_secondary,theta,theta_s,theta_m,Diameter_mixed,Velocity_primary[id],
-                                       Velocity_secondary[id],Velocity_mixed,Velocity_aircraft,sound_ambient[id],Str_m,Str_s)
+                                       Velocity_secondary[id],Velocity_mixed,Velocity_aircraft[id],sound_ambient[id],Str_m,Str_s)
 
         # Loop for the frequency array range
         for i in range(0,num_f):
@@ -355,13 +346,13 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
 
         # Calculation of the sound pressure level for each jet component
         SPL_p = primary_noise_component(SPL_p,Velocity_primary[id],Temperature_primary[id],R_gas,theta_p,DVPS,sound_ambient[id],
-                                        Velocity_secondary[id],Velocity_aircraft,Area_primary,Area_secondary,DSPL_p,EX_p,Str_p) + Plug.PG_p
+                                        Velocity_secondary[id],Velocity_aircraft[id],Area_primary,Area_secondary,DSPL_p,EX_p,Str_p) + Plug.PG_p
 
         SPL_s = secondary_noise_component(SPL_s,Velocity_primary[id],theta_s,sound_ambient[id],Velocity_secondary[id],
-                                          Velocity_aircraft,Area_primary,Area_secondary,DSPL_s,EX_s,Str_s) + Plug.PG_s + INST_s
+                                          Velocity_aircraft[id],Area_primary,Area_secondary,DSPL_s,EX_s,Str_s) + Plug.PG_s + INST_s
 
         SPL_m = mixed_noise_component(SPL_m,Velocity_primary[id],theta_m,sound_ambient[id],Velocity_secondary[id],
-                                      Velocity_aircraft,Area_primary,Area_secondary,DSPL_m,EX_m,Str_m,Velocity_mixed,XBPR) + \
+                                      Velocity_aircraft[id],Area_primary,Area_secondary,DSPL_m,EX_m,Str_m,Velocity_mixed,XBPR) + \
             Plug.PG_m + ATK_m + GPROX_m
 
         # Sum of the Total Noise
@@ -406,9 +397,8 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
     SENEL_total = SENEL_noise_metric_single_point(SPLt_dBA_max)
 
     # Open output file to print the results
-    SAE_Engine_Noise_Outputs = Data(
-        filename               = filename,
-        tag                    = config.tag,
+    SAE_Engine_Noise_Outputs = Data( 
+        tag                    = segment.tag,
         EPNL_total             = EPNL_total,
         PNLT_total             = PNLT_total,
         Velocity_aircraft      = Velocity_aircraft,
@@ -441,7 +431,7 @@ def turbofan_engine_noise(turbofan,segment,analyses,config,settings,ioprint = 0,
     engine_noise                   = Data()
     engine_noise.EPNL_total        = EPNL_total 
     engine_noise.SENEL_total       = SENEL_total
-    engine_noise.SPL_spectrum      = SPL_total_history
+    engine_noise.SPL_1_3_spectrum  = SPL_total_history
     engine_noise.SPL               = SPL_arithmetic(SPL_total_history,sum_axis=1)
     engine_noise.SPL_dBA           = SPLt_dBA_max
 

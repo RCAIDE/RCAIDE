@@ -644,7 +644,8 @@ def vehicle_setup():
     core_nozzle                                    = RCAIDE.Energy.Propulsion.Converters.Expansion_Nozzle()   
     core_nozzle.tag                                = 'core nozzle'
     core_nozzle.polytropic_efficiency              = 0.95
-    core_nozzle.pressure_ratio                     = 0.99  
+    core_nozzle.pressure_ratio                     = 0.99   
+    core_nozzle.diameter                           = 0.92    
     turbofan.core_nozzle                           = core_nozzle
              
     # fan nozzle             
@@ -652,6 +653,7 @@ def vehicle_setup():
     fan_nozzle.tag                                 = 'fan nozzle'
     fan_nozzle.polytropic_efficiency               = 0.95
     fan_nozzle.pressure_ratio                      = 0.99 
+    fan_nozzle.diameter                            = 1.659
     turbofan.fan_nozzle                            = fan_nozzle 
     
     # design turbofan

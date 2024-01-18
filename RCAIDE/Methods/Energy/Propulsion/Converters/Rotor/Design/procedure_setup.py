@@ -267,14 +267,14 @@ def run_rotor_hover(nexus):
     conditions.noise[bus.tag]                        = RCAIDE.Analyses.Mission.Common.Conditions()      
     conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Analyses.Mission.Common.Conditions() 
     conditions.noise[bus.tag][propulsor.tag].rotor   = outputs
-    conditions.noise.total_microphone_locations      = np.repeat(mic_positions_hover[ np.newaxis,:,: ],1,axis=0)
+    conditions.noise.relative_microphone_locations      = np.repeat(mic_positions_hover[ np.newaxis,:,: ],1,axis=0)
     conditions.aerodynamics.angles.alpha             = np.ones((ctrl_pts,1))* 0. * Units.degrees 
     segment                                          = RCAIDE.Analyses.Mission.Segments.Segment() 
     segment.state.conditions                         = conditions
     segment.state.conditions.expand_rows(ctrl_pts)  
     noise                                            = RCAIDE.Analyses.Noise.Frequency_Domain_Buildup() 
     settings                                         = noise.settings   
-    num_mic                                          = len(conditions.noise.total_microphone_locations[0])  
+    num_mic                                          = len(conditions.noise.relative_microphone_locations[0])  
     conditions.noise.number_of_microphones           = num_mic   
     
     if alpha != 1: 
@@ -346,14 +346,14 @@ def run_rotor_cruise(nexus):
         conditions.noise[bus.tag]                        = RCAIDE.Analyses.Mission.Common.Conditions()      
         conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Analyses.Mission.Common.Conditions() 
         conditions.noise[bus.tag][propulsor.tag].rotor   = outputs  
-        conditions.noise.total_microphone_locations      = np.repeat(mic_positions_cruise[ np.newaxis,:,: ],1,axis=0)
+        conditions.noise.relative_microphone_locations   = np.repeat(mic_positions_cruise[ np.newaxis,:,: ],1,axis=0)
         conditions.aerodynamics.angles.alpha             = np.ones((ctrl_pts,1))* 0. * Units.degrees 
         segment                                          = RCAIDE.Analyses.Mission.Segments.Segment() 
         segment.state.conditions                         = conditions
         segment.state.conditions.expand_rows(ctrl_pts)  
         noise                                            = RCAIDE.Analyses.Noise.Frequency_Domain_Buildup() 
         settings                                         = noise.settings   
-        num_mic                                          = len(conditions.noise.total_microphone_locations[0])  
+        num_mic                                          = len(conditions.noise.relative_microphone_locations[0])  
         conditions.noise.number_of_microphones           = num_mic    
         
         if alpha != 1: 

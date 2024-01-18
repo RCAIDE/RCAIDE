@@ -235,7 +235,7 @@ def turbofan_propulsor(fuel_line,state):
                 )
         
             noise_results.turbofan.fan_nozzle    = fan_nozzle_res
-            noise_results.turbofan.core_nozzle   = core_nozzle_res
-            noise_results.turbofan.fan           = None  
-    
+            noise_results.turbofan.core_nozzle   = core_nozzle_res  
+            noise_results.turbofan.fan           = None    
+            
     return total_thrust,total_power,mdot 

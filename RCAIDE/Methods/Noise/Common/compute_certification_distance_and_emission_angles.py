@@ -152,7 +152,7 @@ def compute_certification_distance_and_emission_angles(noise_segment,analyses,co
         
         # append and update microphone locations to conditions
         num_mic              = noise_segment.state.conditions.noise.total_number_of_microphones
-        mic_locations        = noise_segment.state.conditions.noise.total_microphone_locations 
+        mic_locations        = noise_segment.state.conditions.noise.relative_microphone_locations 
         mic_locations        = np.zeros((n_steps,num_mic,3))   
         mic_locations[:,:,0] = np.repeat(np.atleast_2d(s-x0).T, num_mic, axis =1)
         mic_locations[:,:,1] = np.repeat(np.atleast_2d(y0).T, num_mic, axis =1)

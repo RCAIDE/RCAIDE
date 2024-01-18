@@ -32,9 +32,7 @@ def print_engine_output(SAE_Engine_Noise_Outputs):
     Properties Used:
         None 
     """ 
-    # unpack   
-    
-    filename               = SAE_Engine_Noise_Outputs.filename             
+    # unpack                
     tag                    = SAE_Engine_Noise_Outputs.tag                  
     EPNL_total             = SAE_Engine_Noise_Outputs.EPNL_total           
     PNLT_total             = SAE_Engine_Noise_Outputs.PNLT_total           
@@ -61,10 +59,8 @@ def print_engine_output(SAE_Engine_Noise_Outputs):
     SPL_secondary_history  = SAE_Engine_Noise_Outputs.SPL_secondary_history
     SPL_mixed_history      = SAE_Engine_Noise_Outputs.SPL_mixed_history    
     SPL_total_history      = SAE_Engine_Noise_Outputs.SPL_total_history    
-                        
-    if not filename:
-        filename = ('SAE_Noise_' + str( tag) + '.dat')
-
+                         
+    filename = ('SAE_Noise_' + str( tag) + '.dat') 
     fid      = open(filename,'w')
      
     # print EPNL_total

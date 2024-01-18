@@ -63,39 +63,40 @@ def PNL_noise_metric(SPL):
 
     
     # Defining the necessary arrays for the calculation
-    nsteps  = len(SPL)
-    SPL_noy = np.zeros((nsteps,24))
-    PNL     = np.zeros(nsteps)
+    n_cpts  = len(SPL[:,0,0])
+    n_mic   = len(SPL[0,:,0])
+    SPL_noy = np.zeros((n_cpts,n_mic,24))
+    PNL     = np.zeros((n_cpts,n_mic))
     
     #-------------------------------------------
     # STEP 1 - Convert SPL to Perceived Noisiness
     #-------------------------------------------  
-    for j in range(0,nsteps):
-    
-        for i in range(0,23):
-            if SPL[j][i]>=noy[1][2]:
-                SPL_noy[j][i] = 10**(noy[i][8]*(SPL[j][i]-noy[i][4]))
+    for k in range(n_mic):
+        for j in range(n_cpts):
+            for i in range(24):
+                if SPL[j][k][i]>=noy[1][2]:
+                    SPL_noy[j][k][i] = 10**(noy[i][8]*(SPL[j][k][i]-noy[i][4]))
+                    
+                if SPL[j][k][i]>=noy[i][3] and SPL[j][k][i]<noy[i][2]:
+                    SPL_noy[j][k][i] = 10**(noy[i][7]*(SPL[j][k][i]-noy[i][3]))
+                    
+                if SPL[j][k][i]>=noy[i][6] and SPL[j][k][i]<noy[i][3]:
+                    SPL_noy[j][k][i] = 0.3*(10**(noy[i][10]*(SPL[j][k][i]-noy[i][6])))
+                    
+                if SPL[j][k][i]>=noy[i][5] and SPL[j][k][i]<noy[i][6]:
+                    SPL_noy[j][k][i] = 0.1*(10**(noy[i][9]*(SPL[j][k][i]-noy[i][5])))
                 
-            if SPL[j][i]>=noy[i][3] and SPL[j][i]<noy[i][2]:
-                SPL_noy[j][i] = 10**(noy[i][7]*(SPL[j][i]-noy[i][3]))
-                
-            if SPL[j][i]>=noy[i][6] and SPL[j][i]<noy[i][3]:
-                SPL_noy[j][i] = 0.3*(10**(noy[i][10]*(SPL[j][i]-noy[i][6])))
-                
-            if SPL[j][i]>=noy[i][5] and SPL[j][i]<noy[i][6]:
-                SPL_noy[j][i] = 0.1*(10**(noy[i][9]*(SPL[j][i]-noy[i][5])))
+            #-------------------------------------------  
+            # STEP 2 - Combine perceived noiseness values  
+            #-------------------------------------------
+            max_noy = np.max(SPL_noy[j][k][:])            
+            Perceived_noisinees = 0.85*max_noy+0.15*np.sum(SPL_noy[j][k][:])
             
-        #-------------------------------------------  
-        # STEP 2 - Combine perceived noiseness values  
-        #-------------------------------------------
-        max_noy = np.max(SPL_noy[j][:])            
-        Perceived_noisinees = 0.85*max_noy+0.15*np.sum(SPL_noy[j][:])
-        
-        #-----------------------------------------------------------------
-        # STEP 3 - Convert Perceived Noiseness into Perceived Noise Level
-        #------------------------------------------------------------------    
-        if Perceived_noisinees==0:
-            Perceived_noisinees = 0.0625
-        PNL[j] = 40+(10/np.log10(2))*np.log10(Perceived_noisinees)
+            #-----------------------------------------------------------------
+            # STEP 3 - Convert Perceived Noiseness into Perceived Noise Level
+            #------------------------------------------------------------------    
+            if Perceived_noisinees==0:
+                Perceived_noisinees = 0.0625
+            PNL[j,k] = 40+(10/np.log10(2))*np.log10(Perceived_noisinees)
         
     return PNL

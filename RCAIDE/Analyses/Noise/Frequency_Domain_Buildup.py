@@ -138,14 +138,14 @@ class Frequency_Domain_Buildup(Noise):
         elif type(settings.ground_microphone_locations) is not np.ndarray: 
             generate_zero_elevation_microphone_locations(settings)     
         
-        REGML,EGML,TGML,num_gm_mic,mic_stencil = compute_relative_noise_evaluation_locations(settings,segment)
+        RML,EGML,AGML,num_gm_mic,mic_stencil = compute_relative_noise_evaluation_locations(settings,segment)
           
         # append microphone locations to conditions  
         conditions.noise.ground_microphone_stencil_locations   = mic_stencil        
         conditions.noise.evaluated_ground_microphone_locations = EGML       
-        conditions.noise.total_ground_microphone_locations     = TGML
+        conditions.noise.absolute_ground_microphone_locations  = AGML
         conditions.noise.number_of_ground_microphones          = num_gm_mic 
-        conditions.noise.total_microphone_locations            = REGML 
+        conditions.noise.relative_microphone_locations         = RML 
         conditions.noise.total_number_of_microphones           = num_gm_mic 
         
         # create empty arrays for results      

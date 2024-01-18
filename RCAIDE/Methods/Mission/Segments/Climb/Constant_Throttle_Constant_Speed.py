@@ -62,15 +62,14 @@ def initialize_conditions(segment):
     conditions.freestream.density                       [kilograms/meter^3]
 
     Outputs:
-    conditions.frames.inertial.velocity_vector  [meters/second]
-    conditions.energy.throttle              [Unitless]
+    conditions.frames.inertial.velocity_vector          [meters/second]
+    conditions.energy.throttle                          [Unitless]
 
     Properties Used:
     N/A
     """         
     
-    # unpack
-    throttle   = segment.throttle
+    # unpack 
     air_speed  = segment.air_speed   
     alt0       = segment.altitude_start 
     conditions = segment.state.conditions  
@@ -80,8 +79,7 @@ def initialize_conditions(segment):
         if not segment.state.initials: raise AttributeError('initial altitude not set')
         alt0 = -1.0 *segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
 
-    # pack conditions  
-    conditions.energy.throttle[:,0] = throttle
+    # pack conditions   
     conditions.frames.inertial.velocity_vector[:,0] = air_speed # start up value
 
 ## @ingroup Methods-Missions-Segments-Climb
