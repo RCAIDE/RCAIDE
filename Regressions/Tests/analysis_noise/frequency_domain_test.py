@@ -107,14 +107,14 @@ def Hararmonic_Noise_Validation(PP):
     F, Q, P, Cp , noise_data , etap                        = rotor.spin(conditions) 
 
     # Prepare Inputs for Noise Model   
-    conditions.noise.total_microphone_locations            = np.repeat(positions[ np.newaxis,:,: ],1,axis=0)
+    conditions.noise.relative_microphone_locations            = np.repeat(positions[ np.newaxis,:,: ],1,axis=0)
     conditions.aerodynamics.angle_of_attack                = np.ones((ctrl_pts,1))* 0. * Units.degrees 
     segment                                                = Segment() 
     segment.state.conditions                               = conditions
     segment.state.conditions.expand_rows(ctrl_pts) 
     noise                                                  = RCAIDE.Analyses.Noise.Frequency_Domain_Buildup() 
     settings                                               = noise.settings   
-    num_mic                                                = len(conditions.noise.total_microphone_locations[0] )  
+    num_mic                                                = len(conditions.noise.relative_microphone_locations[0] )  
     conditions.noise.number_of_microphones                 = num_mic
                  
     # Run Frequency Domain Rotor Noise Model          
@@ -278,7 +278,7 @@ def Broadband_Noise_Validation(PP):
     APC_SF_thrust, APC_SF_torque, APC_SF_power, APC_SF_Cp, noise_data , APC_SF_etap  =  rotor.spin(conditions)  
 
     # Prepare Inputs for Rotor Noise Model     
-    conditions.noise.total_microphone_locations             = np.repeat(positions[ np.newaxis,:,: ],ctrl_pts,axis=0)
+    conditions.noise.relative_microphone_locations          = np.repeat(positions[ np.newaxis,:,: ],ctrl_pts,axis=0)
     conditions.aerodynamics.angle_of_attack                 = np.ones((ctrl_pts,1))* 0. * Units.degrees 
     segment                                                 = Segment() 
     segment.state.conditions                                = conditions

@@ -1,8 +1,8 @@
-# B737_noise.py
+# empirical_jet_noise_test.py
 #
-# Created: Apr 2021, M. Clarke 
+# Created: Jan 2024, M. Clarke 
 
-""" setup file for the X57-Maxwell Electric Aircraft to valdiate noise in a climb segment
+""" setup file for empirical jet noise base on SAE standards 
 """
  
 # ----------------------------------------------------------------------
@@ -10,10 +10,9 @@
 # ----------------------------------------------------------------------
 
 import RCAIDE
-from RCAIDE.Core import Units , Data 
+from RCAIDE.Core import Units 
 from RCAIDE.Visualization import *      
-from RCAIDE.Methods.Geometry.Two_Dimensional.Planform import wing_planform
-from RCAIDE.Methods.Noise.Certification import turbofan_sideline_noise, turbofan_flyover_noise, turbofan_approach_noise 
+from RCAIDE.Methods.Geometry.Two_Dimensional.Planform import wing_planform 
 
 import sys
 import matplotlib.pyplot as plt 
@@ -44,27 +43,10 @@ def main():
     mission           = baseline_mission_setup(analyses)
     basline_missions  = baseline_missions_setup(mission )     
     baseline_results  = basline_missions.base_mission.evaluate()   
-    
-    # certification calculations  
-    mission           = sideline_mission_setup(analyses)
-    sideline_missions = sideline_missions_setup(mission)     
-    sideline_SPL      = turbofan_sideline_noise(sideline_missions,configs)  
-    print('Sideline Noise: ',sideline_SPL)
-
-    mission           = flyover_mission_setup(analyses)
-    flyover_missions  = flyover_missions_setup(mission )         
-    flyover_SPL       = turbofan_flyover_noise(flyover_missions,configs)   
-    print('Flyover Noise: ',flyover_SPL)
-
-    mission           = approach_mission_setup(analyses)
-    approach_missions = approach_missions_setup(mission)         
-    approach_SPL      = turbofan_approach_noise(approach_missions,configs) 
-    print('Approach Noise: ',approach_SPL)
-    
-    # SPL of rotor check during hover
-    print('\n\n SAE Turbofan Aircraft Noise Model')
-    B737_SPL        = baseline_results.segments.climb_1.conditions.noise.total_SPL_dBA[3][0]
-    B737_SPL_true   = 21.799191185936067 
+     
+    # SPL of rotor check during hover 
+    B737_SPL        = np.max(baseline_results.segments.takeoff.conditions.noise.total_SPL_dBA)
+    B737_SPL_true   = 91.49589151204171
     B737_diff_SPL   = np.abs(B737_SPL - B737_SPL_true)
     print('SPL difference: ',B737_diff_SPL)
     assert np.abs((B737_SPL - B737_SPL_true)/B737_SPL_true) < 1e-6    
@@ -147,21 +129,54 @@ def baseline_mission_setup(analyses):
     Segments     = RCAIDE.Analyses.Mission.Segments 
     base_segment = Segments.Segment() 
 
+    # -------------------   -----------------------------------------------
+    #   Mission for Landing Noise
+    # ------------------------------------------------------------------     
+    segment                           = Segments.Descent.Constant_Speed_Constant_Angle(base_segment)
+    segment.tag                       = "descent"
+    segment.analyses.extend(analyses.base )   
+    segment.altitude_start            = 120.5
+    segment.altitude_end              = 0.
+    segment.air_speed                 = 67. * Units['m/s']
+    segment.descent_angle             = 3.0   * Units.degrees   
+    mission.append_segment(segment) 
+
     # ------------------------------------------------------------------
     #   First Climb Segment: constant Mach, constant segment angle 
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------  
+    segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    segment.tag                       = "takeoff"    
+    segment.analyses.extend(analyses.base )  
+    segment.altitude_start            =  35.  *  Units.fts
+    segment.altitude_end              = 304.8 *  Units.meter
+    segment.air_speed                 = 85.4 * Units['m/s']
+    segment.throttle                  = 1.    
+    mission.append_segment(segment)
 
+    # ------------------------------------------------------------------  
+    # Cutback Segment: Constant speed, constant segment angle
+    # ------------------------------------------------------------------  
+    segment                           = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
+    segment.tag                       = "cutback"     
+    segment.analyses.extend(analyses.base )
+    segment.air_speed                 = 85.4 * Units['m/s']
+    segment.climb_angle               = 2.86  * Units.degrees  
+    mission.append_segment(segment)   
+
+    # ------------------------------------------------------------------
+    #   First Climb Segment: constant Mach, constant segment angle 
+    # ------------------------------------------------------------------      
     segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
     segment.tag = "climb_1" 
-    segment.analyses.extend( analyses.takeoff ) 
-    segment.altitude_start = 0.001   * Units.km
+    segment.analyses.extend( analyses.takeoff )  
     segment.altitude_end   = 3.0   * Units.km
     segment.air_speed      = 125.0 * Units['m/s']
     segment.climb_rate     = 6.0   * Units['m/s']  
     mission.append_segment(segment) 
 
     return mission 
-
+ 
+    
 def flyover_mission_setup(analyses):
 
     # ------------------------------------------------------------------
@@ -171,69 +186,11 @@ def flyover_mission_setup(analyses):
     mission.tag  = 'base_mission' 
     Segments     = RCAIDE.Analyses.Mission.Segments 
     base_segment = Segments.Segment() 
-   
-    # ------------------------------------------------------------------
-    #   Mission for Takeoff Noise
-    # ------------------------------------------------------------------      
-    takeoff                          = RCAIDE.Analyses.Mission.Sequential_Segments()
-    takeoff.tag                      = 'takeoff'   
-    Segments                         = RCAIDE.Analyses.Mission.Segments 
-    base_segment                     = Segments.Segment() 
     
-    # Climb Segment: Constant throttle, constant speed
-    segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
-    segment.tag                       = "climb"    
-    segment.analyses.extend(analyses.base )  
-    segment.altitude_start            =  35. *  Units.fts
-    segment.altitude_end              = 304.8 *  Units.meter
-    segment.air_speed                 = 85.4 * Units['m/s']
-    segment.throttle                  = 1.    
-    takeoff.append_segment(segment)
 
-    # Cutback Segment: Constant speed, constant segment angle
-    segment                           = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
-    segment.tag                       = "cutback"     
-    segment.analyses.extend(analyses.base )
-    segment.air_speed                 = 85.4 * Units['m/s']
-    segment.climb_angle               = 2.86  * Units.degrees  
-    takeoff.append_segment(segment)   
-
-    return takeoff
-
-def sideline_mission_setup(analyses): 
-    
-    # ------------------------------------------------------------------
-    #   Mission for Sideline Noise
+    # ------------------------------------------------------------------ 
+    # Approach Noise 
     # ------------------------------------------------------------------     
-    sideline_takeoff                  = RCAIDE.Analyses.Mission.Sequential_Segments()
-    sideline_takeoff.tag              = 'sideline_takeoff' 
-    Segments     = RCAIDE.Analyses.Mission.Segments 
-    base_segment = Segments.Segment() 
-    
-    segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
-    segment.tag                       = "climb"    
-    segment.analyses.extend(analyses.base) 
-    segment.altitude_start            =  35. *  Units.fts
-    segment.altitude_end              = 1600 *  Units.fts
-    segment.air_speed                 = 85.4 * Units['m/s']
-    segment.throttle                  = 1.  
-    ones_row                          = segment.state.ones_row
-    segment.state.unknowns.body_angle = ones_row(1) * 12. * Units.deg  
-    segment.state.unknowns.wind_angle = ones_row(1) * 5. * Units.deg   
-    sideline_takeoff.append_segment(segment)   
-    
-    return sideline_takeoff
-
-def approach_mission_setup(analyses):
-      
-    # -------------------   -----------------------------------------------
-    #   Mission for Landing Noise
-    # ------------------------------------------------------------------    
-    landing                           = RCAIDE.Analyses.Mission.Sequential_Segments()
-    landing.tag                       = 'landing'    
-    Segments                          = RCAIDE.Analyses.Mission.Segments 
-    base_segment                      = Segments.Segment() 
-    
     segment                           = Segments.Descent.Constant_Speed_Constant_Angle(base_segment)
     segment.tag                       = "descent"
     segment.analyses.extend(analyses.base )   
@@ -241,11 +198,31 @@ def approach_mission_setup(analyses):
     segment.altitude_end              = 0.
     segment.air_speed                 = 67. * Units['m/s']
     segment.descent_angle             = 3.0   * Units.degrees   
-    landing.append_segment(segment)
-    
-    return landing
-    
-    
+    mission.append_segment(segment) 
+
+    # ------------------------------------------------------------------     
+    # Takeoff Noise 
+    # ------------------------------------------------------------------ 
+    segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    segment.tag                       = "takeoff"    
+    segment.analyses.extend(analyses.base )  
+    segment.altitude_start            =  35. *  Units.fts
+    segment.altitude_end              = 304.8 *  Units.meter
+    segment.air_speed                 = 85.4 * Units['m/s']
+    segment.throttle                  = 1.    
+    mission.append_segment(segment)
+
+    # Cutback Segment: Constant speed, constant segment angle
+    segment                           = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
+    segment.tag                       = "cutback"     
+    segment.analyses.extend(analyses.base )
+    segment.air_speed                 = 85.4 * Units['m/s']
+    segment.climb_angle               = 2.86  * Units.degrees  
+    mission.append_segment(segment)   
+
+   
+    return mission 
+
 def baseline_missions_setup(base_mission):
 
     # the mission container
@@ -256,53 +233,8 @@ def baseline_missions_setup(base_mission):
     # ------------------------------------------------------------------ 
     base_mission.tag  = 'base_mission'
     missions.append(base_mission)
-
-    # ------------------------------------------------------------------
-    #   Mission for Constrained Fuel
-    # ------------------------------------------------------------------  
-    fuel_mission           =  deepcopy(base_mission) 
-    fuel_mission.tag       = 'fuel'
-    fuel_mission.range     = 1277. * Units.nautical_mile
-    fuel_mission.payload   = 19000.
-    missions.append(fuel_mission)   
-
-    # ------------------------------------------------------------------
-    #   Mission for Constrained Short Field
-    # ------------------------------------------------------------------    
-    short_field            =  deepcopy(base_mission) 
-    short_field.tag        = 'short_field'   
-    missions.append(short_field) 
-    
-    # ------------------------------------------------------------------
-    #   Mission for Fixed Payload
-    # ------------------------------------------------------------------    
-    payload         =  deepcopy(base_mission) 
-    payload.tag     = 'payload'
-    payload.range   = 2316. * Units.nautical_mile
-    payload.payload = 19000.
-    missions.append(payload) 
-     
-    return missions  
-
-def sideline_missions_setup(base_mission,analyses): 
-    missions          = RCAIDE.Analyses.Mission.Missions()  
-    base_mission.tag  = 'sideline_mission'
-    missions.append(base_mission)  
-    return missions  
-
-def flyover_missions_setup(base_mission,analyses): 
-    missions          = RCAIDE.Analyses.Mission.Missions()  
-    base_mission.tag  = 'flyover_mission'
-    missions.append(base_mission) 
-     
-    return missions 
-
-def approach_missions_setup(base_mission,analyses): 
-    missions          = RCAIDE.Analyses.Mission.Missions()  
-    base_mission.tag  = 'approach_mission'
-    missions.append(base_mission)  
-    return missions 
+ 
+    return missions   
 
 if __name__ == '__main__': 
     main()    
-    plt.show()

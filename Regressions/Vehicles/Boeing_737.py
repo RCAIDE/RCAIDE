@@ -571,6 +571,7 @@ def vehicle_setup():
     #  Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
     starboard_propulsor                         = RCAIDE.Energy.Propulsion.Propulsor()     
+    starboard_propulsor.tag                         = 'starboard_propulsor'
      
     turbofan                                    = RCAIDE.Energy.Propulsion.Converters.Turbofan() 
     turbofan.tag                                = 'pratt_whitney_jt9d'
@@ -644,7 +645,8 @@ def vehicle_setup():
     core_nozzle                                    = RCAIDE.Energy.Propulsion.Converters.Expansion_Nozzle()   
     core_nozzle.tag                                = 'core nozzle'
     core_nozzle.polytropic_efficiency              = 0.95
-    core_nozzle.pressure_ratio                     = 0.99  
+    core_nozzle.pressure_ratio                     = 0.99   
+    core_nozzle.diameter                           = 0.92    
     turbofan.core_nozzle                           = core_nozzle
              
     # fan nozzle             
@@ -652,6 +654,7 @@ def vehicle_setup():
     fan_nozzle.tag                                 = 'fan nozzle'
     fan_nozzle.polytropic_efficiency               = 0.95
     fan_nozzle.pressure_ratio                      = 0.99 
+    fan_nozzle.diameter                            = 1.659
     turbofan.fan_nozzle                            = fan_nozzle 
     
     # design turbofan
@@ -667,6 +670,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------     
 
     port_propulsor                         = RCAIDE.Energy.Propulsion.Propulsor() 
+    port_propulsor.tag                     = 'port_propulsor'
     
     # copy turbofan
     turbofan_2                             = deepcopy(turbofan)
@@ -703,61 +707,78 @@ def configs_setup(vehicle):
     # ------------------------------------------------------------------
     #   Initialize Configurations
     # ------------------------------------------------------------------
-    configs = RCAIDE.Components.Configs.Config.Container() 
+
+    configs     = RCAIDE.Components.Configs.Config.Container() 
     base_config = RCAIDE.Components.Configs.Config(vehicle)
     base_config.tag = 'base' 
+    base_config.landing_gear.gear_condition                      = 'up'
     configs.append(base_config)
 
     # ------------------------------------------------------------------
     #   Cruise Configuration
     # ------------------------------------------------------------------
+
     config = RCAIDE.Components.Configs.Config(base_config)
     config.tag = 'cruise'
     configs.append(config)
 
+
     # ------------------------------------------------------------------
     #   Takeoff Configuration
     # ------------------------------------------------------------------
+
     config = RCAIDE.Components.Configs.Config(base_config)
     config.tag = 'takeoff'
-    config.wings['main_wing'].control_surfaces.flap.deflection = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection = 25. * Units.deg 
-    config.max_lift_coefficient_factor    = 1. 
+    config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
+    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].turbofan.fan.angular_velocity =  3470. * Units.rpm
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].turbofan.fan.angular_velocity      =  3470. * Units.rpm
+    config.landing_gear.gear_condition                          = 'up'       
+    config.V2_VS_ratio = 1.21
     configs.append(config)
+
     
     # ------------------------------------------------------------------
     #   Cutback Configuration
     # ------------------------------------------------------------------
+
     config = RCAIDE.Components.Configs.Config(base_config)
     config.tag = 'cutback'
-    config.wings['main_wing'].control_surfaces.flap.deflection = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection = 20. * Units.deg
-    config.max_lift_coefficient_factor    = 1.
-
-    configs.append(config)    
-
+    config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
+    config.wings['main_wing'].control_surfaces.slat.deflection  = 20. * Units.deg
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].turbofan.fan.angular_velocity =  2780. * Units.rpm
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].turbofan.fan.angular_velocity      =  2780. * Units.rpm
+    config.landing_gear.gear_condition                          = 'up'       
+    configs.append(config)   
+    
+        
+    
     # ------------------------------------------------------------------
     #   Landing Configuration
     # ------------------------------------------------------------------
 
     config = RCAIDE.Components.Configs.Config(base_config)
-    config.tag = 'landing' 
-    config.wings['main_wing'].control_surfaces.flap.deflection = 30. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection = 25. * Units.deg  
-    config.max_lift_coefficient_factor    = 1. 
-
-    configs.append(config)
-
+    config.tag = 'landing'
+    config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
+    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].turbofan.fan.angular_velocity =  2030. * Units.rpm
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].turbofan.fan.angular_velocity      =  2030. * Units.rpm
+    config.landing_gear.gear_condition                          = 'down'   
+    config.Vref_VS_ratio = 1.23
+    configs.append(config)   
+     
     # ------------------------------------------------------------------
     #   Short Field Takeoff Configuration
     # ------------------------------------------------------------------ 
 
     config = RCAIDE.Components.Configs.Config(base_config)
-    config.tag = 'short_field_takeoff' 
-    config.wings['main_wing'].control_surfaces.flap.deflection = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection = 20. * Units.deg
-    config.max_lift_coefficient_factor    = 1. 
-  
-    configs.append(config)
+    config.tag = 'short_field_takeoff'    
+    config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
+    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].turbofan.fan.angular_velocity =  3470. * Units.rpm
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].turbofan.fan.angular_velocity      =  3470. * Units.rpm
+    config.landing_gear.gear_condition                          = 'down'   
+    config.V2_VS_ratio = 1.21 
+    configs.append(config)    
 
     return configs  

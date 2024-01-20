@@ -173,7 +173,9 @@ class Turbofan_Engine(Network):
                 pass
             elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
                 pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
+            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) \
+                 or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle)\
+                 or (type(segment) == RCAIDE.Analyses.Mission.Segments.Climb.Constant_Throttle_Constant_Speed):
                 pass    
             elif fuel_line.active:    
                 fuel_line_results           = segment.state.conditions.energy[fuel_line.tag]  
@@ -224,7 +226,9 @@ class Turbofan_Engine(Network):
                 pass
             elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
                 pass 
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
+            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude)\
+                 or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle)\
+                 or (type(segment) == RCAIDE.Analyses.Mission.Segments.Climb.Constant_Throttle_Constant_Speed):
                 fuel_line_results.throttle = segment.throttle * ones_row(1)            
             elif fuel_line.active:         
                 segment.state.unknowns[fuel_line.tag + '_throttle']  = segment.estimated_throttles[fuel_line_i]  * ones_row(1) 

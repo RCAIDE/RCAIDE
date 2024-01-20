@@ -15,7 +15,7 @@ import numpy as np
 #  Secondary Noise Component
 # ----------------------------------------------------------------------------------------------------------------------      
 ## @ingroup Methods-Noise-Correlation_Buildup-Engine 
-def secondary_noise_component(SPL_s,Velocity_primary,theta_s,sound_ambient,Velocity_secondary,Velocity_aircraft,
+def secondary_noise_component(Velocity_primary,theta_s,sound_ambient,Velocity_secondary,Velocity_aircraft,
                               Area_primary,Area_secondary,DSPL_s,EX_s,Str_s):
     """This function calculates the noise contribution of the secondary jet component
     

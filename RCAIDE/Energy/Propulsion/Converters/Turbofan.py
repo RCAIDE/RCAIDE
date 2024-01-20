@@ -30,6 +30,12 @@ class Turbofan(Energy_Component):
         # setting the default values
         self.tag                                      = 'Turbofan' 
         self.engine_length                            = 0.0
+        self.engine_height                            = 0.5     # Engine centerline heigh above the ground plane
+        self.exa                                      = 1       # distance from fan face to fan exit/ fan diameter)
+        self.plug_diameter                            = 0.1     # dimater of the engine plug
+        self.geometry_xe                              = 1.      # Geometry information for the installation effects function
+        self.geometry_ye                              = 1.      # Geometry information for the installation effects function
+        self.geometry_Ce                              = 2.      # Geometry information for the installation effects function
         self.bypass_ratio                             = 0.0 
         self.design_isa_deviation                     = 0.0
         self.design_altitude                          = 0.0
@@ -39,7 +45,8 @@ class Turbofan(Energy_Component):
         self.reference_pressure                       = 1.01325*10**5 
         self.design_thrust                            = 0.0
         self.mass_flow_rate_design                    = 0.0
-        self.OpenVSP_flow_through                     = False
+        self.OpenVSP_flow_through                     = False 
+        
         
         #areas needed for drag; not in there yet
         self.areas                                    = Data()

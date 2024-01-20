@@ -62,7 +62,7 @@ def rotor_noise(rotor,aeroacoustic_data,segment,settings):
  
     # unpack 
     conditions           = segment.state.conditions
-    microphone_locations = conditions.noise.total_microphone_locations
+    microphone_locations = conditions.noise.relative_microphone_locations
     angle_of_attack      = conditions.aerodynamics.angles.alpha 
     velocity_vector      = conditions.frames.inertial.velocity_vector 
     freestream           = conditions.freestream  

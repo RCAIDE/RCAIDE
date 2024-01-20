@@ -6,15 +6,12 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
-import RCAIDE  
-from .Noise      import Noise  
-from RCAIDE.Components.Component import Container 
+# ----------------------------------------------------------------------------------------------------------------------  
+from .Noise      import Noise   
 
 # noise imports 
 from RCAIDE.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise                              import airframe_noise
-from RCAIDE.Methods.Noise.Correlation_Buildup.Turbofan.turbofan_engine_noise                       import turbofan_engine_noise  
-from RCAIDE.Methods.Noise.Certification.compute_certification_distance_and_emission_angles         import compute_certification_distance_and_emission_angles
+from RCAIDE.Methods.Noise.Correlation_Buildup.Turbofan.turbofan_engine_noise                       import turbofan_engine_noise   
 from RCAIDE.Methods.Noise.Common.decibel_arithmetic                                                import SPL_arithmetic
 from RCAIDE.Methods.Noise.Common.generate_microphone_locations                                     import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
 from RCAIDE.Methods.Noise.Common.compute_relative_noise_evaluation_locations                       import compute_relative_noise_evaluation_locations  
@@ -67,11 +64,7 @@ class Correlation_Buildup(Noise):
         
         # Initialize quantities
         settings                                        = self.settings
-        settings.harmonics                              = np.arange(1,30) 
-        settings.flyover                                = False    
-        settings.approach                               = False
-        settings.sideline                               = False
-        settings.sideline_x_position                    = 0 
+        settings.harmonics                              = np.arange(1,30)        
         settings.print_noise_output                     = False  
         settings.mean_sea_level_altitude                = True 
         settings.aircraft_destination_location          = np.array([0,0,0])
@@ -82,9 +75,9 @@ class Correlation_Buildup(Noise):
         settings.ground_microphone_coordinates          = None
         settings.ground_microphone_x_resolution         = 100
         settings.ground_microphone_y_resolution         = 100
-        settings.ground_microphone_x_stencil            = 2
-        settings.ground_microphone_y_stencil            = 2
-        settings.ground_microphone_min_x                = 1E-6
+        settings.ground_microphone_x_stencil            = 5
+        settings.ground_microphone_y_stencil            = 5
+        settings.ground_microphone_min_x                = 0
         settings.ground_microphone_max_x                = 5000 
         settings.ground_microphone_min_y                = 1E-6
         settings.ground_microphone_max_y                = 450  
@@ -130,7 +123,7 @@ class Correlation_Buildup(Noise):
         # unpack 
         config        = segment.analyses.noise.geometry
         analyses      = segment.analyses
-        settings      = self.settings 
+        settings      = self.settings  
         print_flag    = settings.print_noise_output  
         conditions    = segment.state.conditions  
         dim_cf        = len(settings.center_frequencies ) 
@@ -143,59 +136,36 @@ class Correlation_Buildup(Noise):
         elif type(settings.ground_microphone_locations) is not np.ndarray: 
             generate_zero_elevation_microphone_locations(settings)     
         
-        REGML,EGML,TGML,num_gm_mic,mic_stencil = compute_relative_noise_evaluation_locations(settings,segment)
+        RML,EGML,AGML,num_gm_mic,mic_stencil = compute_relative_noise_evaluation_locations(settings,segment)
           
         # append microphone locations to conditions  
         conditions.noise.ground_microphone_stencil_locations   = mic_stencil        
         conditions.noise.evaluated_ground_microphone_locations = EGML       
-        conditions.noise.total_ground_microphone_locations     = TGML
+        conditions.noise.absolute_ground_microphone_locations  = AGML
         conditions.noise.number_of_ground_microphones          = num_gm_mic 
-        conditions.noise.total_microphone_locations            = REGML 
+        conditions.noise.relative_microphone_locations         = RML 
         conditions.noise.total_number_of_microphones           = num_gm_mic 
         
         # create empty arrays for results      
         total_SPL_dBA          = np.ones((ctrl_pts,num_gm_mic))*1E-16 
-        total_SPL_spectra      = np.ones((ctrl_pts,num_gm_mic,dim_cf))*1E-16  
-         
-        # iterate through sources 
-        for source in conditions.noise.sources.keys():  
-            for network in config.networks.keys(): 
-                if source  == 'turbofan': 
-                    
-                    geometric = compute_certification_distance_and_emission_angles(segment,analyses,config)  
-                     
-                    # flap noise - only applicable for turbofan aircraft
-                    if 'flap' in config.wings.main_wing.control_surfaces:   
-                
-                        source_SPLs_dBA    = np.zeros((ctrl_pts,1,num_gm_mic)) 
-                        source_SPL_spectra = np.zeros((ctrl_pts,1,num_gm_mic,dim_cf))
-                        
-                        airframe_noise_res           = airframe_noise(segment,analyses,config,settings)  
-                        source_SPLs_dBA[:,0,:]       = airframe_noise_res.SPL_dBA          
-                        source_SPL_spectra[:,0,:,5:] = np.repeat(airframe_noise_res.SPL_spectrum[:,np.newaxis,:], num_gm_mic , axis =1)
-                        
-                        # add noise 
-                        total_SPL_dBA     = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],source_SPLs_dBA),axis =1),sum_axis=1)
-                        total_SPL_spectra = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,:],source_SPL_spectra),axis =1),sum_axis=1)
-                    
-                    
-                    if bool(conditions.noise.sources[source].fan) and bool(conditions.noise.sources[source].core): 
-
-                        source_SPLs_dBA    = np.zeros((ctrl_pts,1,num_gm_mic)) 
-                        source_SPL_spectra = np.zeros((ctrl_pts,1,num_gm_mic,dim_cf ))
-                                                
-                                              
-                        config.networks[source].fan.rotation             = 0 # FUTURE WORK: NEED TO UPDATE ENGINE MODEL WITH FAN SPEED in RPM
-                        config.networks[source].fan_nozzle.noise_speed   = conditions.noise.sources.turbofan.fan.exit_velocity 
-                        config.networks[source].core_nozzle.noise_speed  = conditions.noise.sources.turbofan.core.exit_velocity
-                        engine_noise                                     = turbofan_engine_noise(config.networks[source],segment,analyses,config,settings,ioprint = print_flag)  
-                        source_SPLs_dBA[:,0,:]                           = np.repeat(np.atleast_2d(engine_noise.SPL_dBA).T, num_gm_mic , axis =1)     # noise measures at one microphone location in segment
-                        source_SPL_spectra[:,0,:,5:]                     = np.repeat(engine_noise.SPL_spectrum[:,np.newaxis,:], num_gm_mic , axis =1) # noise measures at one microphone location in segment
-                   
-                        # add noise 
-                        total_SPL_dBA     = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],source_SPLs_dBA),axis =1),sum_axis=1)
-                        total_SPL_spectra = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,:],source_SPL_spectra),axis =1),sum_axis=1) 
-                            
+        total_SPL_spectra      = np.ones((ctrl_pts,num_gm_mic,dim_cf))*1E-16     
+    
+        # flap noise - only applicable for turbofan aircraft
+        if 'flap' in config.wings.main_wing.control_surfaces:    
+            airframe_noise_res        = airframe_noise(segment,analyses,config,settings)     
+            total_SPL_dBA             = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],airframe_noise_res.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
+            total_SPL_spectra[:,:,5:] = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,5:],airframe_noise_res.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1)
+             
+            
+          # iterate through sources  
+        for network in config.networks: 
+            if 'fuel_lines' in network:
+                for fuel_line in network.fuel_lines:  
+                    for propulsor in fuel_line.propulsors:        
+                        engine_noise                = turbofan_engine_noise(propulsor.turbofan,conditions.noise[fuel_line.tag][propulsor.tag].turbofan,segment,settings)    
+                        total_SPL_dBA               = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],engine_noise.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
+                        total_SPL_spectra[:,:,5:]   = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,5:],engine_noise.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1)
+                                                     
              
         conditions.noise.total_SPL_dBA              = total_SPL_dBA
         conditions.noise.total_SPL_1_3_spectrum_dBA = total_SPL_spectra

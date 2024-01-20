@@ -69,6 +69,7 @@ class Constant_Throttle_Constant_Speed(Evaluate):
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------      
         initialize                         = self.process.initialize  
+        initialize.velocities              = Segments.Climb.Constant_Throttle_Constant_Speed.update_velocity_vector_from_wind_angle
         initialize.conditions              = Segments.Climb.Constant_Throttle_Constant_Speed.initialize_conditions
         iterate                            = self.process.iterate
         iterate.unknowns.mission           = Segments.Climb.Constant_Throttle_Constant_Speed.unpack_body_angle 

@@ -20,7 +20,8 @@ modules = [
     # ----------------------- Regression List --------------------------
     'Tests/analysis_aerodynamics/airfoil_panel_method_test.py',  
     'Tests/analysis_noise/digital_elevation_test.py',  
-    'Tests/analysis_noise/frequency_domain_test.py',
+    'Tests/analysis_noise/frequency_domain_test.py', 
+    'Tests/analysis_noise/empirical_jet_noise_test.py',     
     'Tests/analysis_noise/noise_hemisphere_test.py', 
     'Tests/mission_segments/segment_test.py',    
     'Tests/network_all_electric/all_electric_rotor_test.py',  
