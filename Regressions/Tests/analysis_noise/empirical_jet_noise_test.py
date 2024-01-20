@@ -238,4 +238,3 @@ def baseline_missions_setup(base_mission):
 
 if __name__ == '__main__': 
     main()    
-    plt.show()
