@@ -45,8 +45,8 @@ def main():
     baseline_results  = basline_missions.base_mission.evaluate()   
      
     # SPL of rotor check during hover 
-    B737_SPL        = baseline_results.segments.climb_1.conditions.noise.total_SPL_dBA[3][0]
-    B737_SPL_true   = 21.799191185936067 
+    B737_SPL        = np.max(baseline_results.segments.takeoff.conditions.noise.total_SPL_dBA)
+    B737_SPL_true   = 91.49589151204171
     B737_diff_SPL   = np.abs(B737_SPL - B737_SPL_true)
     print('SPL difference: ',B737_diff_SPL)
     assert np.abs((B737_SPL - B737_SPL_true)/B737_SPL_true) < 1e-6    
@@ -131,47 +131,44 @@ def baseline_mission_setup(analyses):
 
     # -------------------   -----------------------------------------------
     #   Mission for Landing Noise
-    # ------------------------------------------------------------------    
-    landing                           = RCAIDE.Analyses.Mission.Sequential_Segments()
-    landing.tag                       = 'landing'    
-    Segments                          = RCAIDE.Analyses.Mission.Segments 
-    base_segment                      = Segments.Segment() 
-    
+    # ------------------------------------------------------------------     
     segment                           = Segments.Descent.Constant_Speed_Constant_Angle(base_segment)
     segment.tag                       = "descent"
     segment.analyses.extend(analyses.base )   
-    segment.altitude_start            = 2.0   * Units.km
+    segment.altitude_start            = 120.5
     segment.altitude_end              = 0.
     segment.air_speed                 = 67. * Units['m/s']
     segment.descent_angle             = 3.0   * Units.degrees   
-    landing.append_segment(segment) 
+    mission.append_segment(segment) 
 
     # ------------------------------------------------------------------
     #   First Climb Segment: constant Mach, constant segment angle 
-    # ------------------------------------------------------------------ 
-    
-    # Climb Segment: Constant throttle, constant speed
+    # ------------------------------------------------------------------  
     segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
-    segment.tag                       = "climb"    
+    segment.tag                       = "takeoff"    
     segment.analyses.extend(analyses.base )  
-    segment.altitude_start            =  35. *  Units.fts
+    segment.altitude_start            =  35.  *  Units.fts
     segment.altitude_end              = 304.8 *  Units.meter
     segment.air_speed                 = 85.4 * Units['m/s']
     segment.throttle                  = 1.    
     mission.append_segment(segment)
 
+    # ------------------------------------------------------------------  
     # Cutback Segment: Constant speed, constant segment angle
+    # ------------------------------------------------------------------  
     segment                           = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
     segment.tag                       = "cutback"     
     segment.analyses.extend(analyses.base )
     segment.air_speed                 = 85.4 * Units['m/s']
     segment.climb_angle               = 2.86  * Units.degrees  
     mission.append_segment(segment)   
-    
+
+    # ------------------------------------------------------------------
+    #   First Climb Segment: constant Mach, constant segment angle 
+    # ------------------------------------------------------------------      
     segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
     segment.tag = "climb_1" 
-    segment.analyses.extend( analyses.takeoff ) 
-    #segment.altitude_start = 0.001   * Units.km
+    segment.analyses.extend( analyses.takeoff )  
     segment.altitude_end   = 3.0   * Units.km
     segment.air_speed      = 125.0 * Units['m/s']
     segment.climb_rate     = 6.0   * Units['m/s']  
@@ -207,7 +204,7 @@ def flyover_mission_setup(analyses):
     # Takeoff Noise 
     # ------------------------------------------------------------------ 
     segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
-    segment.tag                       = "climb"    
+    segment.tag                       = "takeoff"    
     segment.analyses.extend(analyses.base )  
     segment.altitude_start            =  35. *  Units.fts
     segment.altitude_end              = 304.8 *  Units.meter
@@ -223,20 +220,6 @@ def flyover_mission_setup(analyses):
     segment.climb_angle               = 2.86  * Units.degrees  
     mission.append_segment(segment)   
 
-    # ------------------------------------------------------------------ 
-    # Sideline Noise 
-    # ------------------------------------------------------------------     
-    segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
-    segment.tag                       = "sideline_takeoff"    
-    segment.analyses.extend(analyses.base) 
-    segment.altitude_start            =  35. *  Units.fts
-    segment.altitude_end              = 1600 *  Units.fts
-    segment.air_speed                 = 85.4 * Units['m/s']
-    segment.throttle                  = 1.  
-    ones_row                          = segment.state.ones_row
-    segment.state.unknowns.body_angle = ones_row(1) * 12. * Units.deg  
-    segment.state.unknowns.wind_angle = ones_row(1) * 5. * Units.deg   
-    mission.append_segment(segment)    
    
     return mission 
 

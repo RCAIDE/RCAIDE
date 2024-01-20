@@ -1,6 +1,6 @@
-## @defgroup Methods-Noise-Correlation_Buildup-Engine Engine
+## @defgroup Methods-Noise-Correlation_Buildup-Turbofan Turbofan
 # @ingroup Methods 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Engine/__init__.py
+# RCAIDE/Methods/Noise/Correlation_Buildup/Turbofan/__init__.py
 # 
 
 """ RCAIDE Package Setup
@@ -9,6 +9,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from .compute_turbofan_aircraft_noise      import compute_turbofan_aircraft_noise 
+ 
 from .turbofan_engine_noise                import turbofan_engine_noise

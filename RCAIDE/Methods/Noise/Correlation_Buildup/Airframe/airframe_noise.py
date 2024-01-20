@@ -16,13 +16,11 @@ from .landing_gear_noise           import landing_gear_noise
 from .leading_edge_slat_noise      import leading_edge_slat_noise
 from .trailing_edge_flap_noise     import trailing_edge_flap_noise 
 from RCAIDE.Methods.Noise.Metrics  import PNL_noise_metric
-from RCAIDE.Methods.Noise.Metrics  import EPNL_noise_metric
-from RCAIDE.Methods.Noise.Metrics  import SENEL_noise_metric_single_point
+from RCAIDE.Methods.Noise.Metrics  import EPNL_noise_metric 
 from RCAIDE.Methods.Noise.Metrics  import A_weighting_metric 
 from RCAIDE.Methods.Noise.Common   import noise_tone_correction
 from RCAIDE.Methods.Noise.Common   import atmospheric_attenuation
-from RCAIDE.Methods.Noise.Common   import SPL_arithmetic
-from RCAIDE.Visualization.Noise    import print_airframe_output
+from RCAIDE.Methods.Noise.Common   import SPL_arithmetic 
 
 # python imports 
 import numpy as np
@@ -32,7 +30,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 
 ## @ingroup Methods-Noise-Correlation_Buildup-Airframe
-def airframe_noise(segment,analyses,config,settings,ioprint = 0, filename=0):  
+def airframe_noise(segment,analyses,config,settings):  
     """ This computes the noise from different sources of the airframe for a given vehicle for a constant altitude flight. 
 
     Assumptions:
@@ -102,8 +100,7 @@ def airframe_noise(segment,analyses,config,settings,ioprint = 0, filename=0):
     nose_wheels  = config.landing_gear.nose_wheels                          # Number of wheels   
     main_wheels  = config.landing_gear.main_wheels                          # Number of wheels   
     main_units   = config.landing_gear.main_units                           # Number of main units   
-    velocity     = np.float(segment.conditions.freestream.velocity[0,0])    # aircraft velocity 
-    altitude     = segment.conditions.freestream.altitude[:,0]              # aircraft altitude
+    velocity     = np.float(segment.conditions.freestream.velocity[0,0])    # aircraft velocity  
     noise_time   = segment.conditions.frames.inertial.time[:,0]             # time discretization 
 
     # determining flap slot number
@@ -229,53 +226,20 @@ def airframe_noise(segment,analyses,config,settings,ioprint = 0, filename=0):
     EPNL_nose_landing_gear = EPNL_noise_metric(PNLT_nose_landing_gear)
     EPNL_main_landing_gear = EPNL_noise_metric(PNLT_main_landing_gear)
     EPNL_slat              = EPNL_noise_metric(PNLT_slat)
-    EPNL_flap              = EPNL_noise_metric(PNLT_flap)
-    
-    # Calculation of the SENEL total
-    SENEL_total = SENEL_noise_metric_single_point(SPLt_dBA_max) 
-    
-    SAE_Airframe_Noise_Outputs = Data(
-        tag                       = config.tag,
-        filename                  = filename,
-        velocity                  = velocity,
-        n_cpts                    = n_cpts,
-        time                      = noise_time,
-        altitude                  = altitude,
-        M                         = M,
-        angle                     = thetas,
-        distance_vector           = distance_vector,
-        PNLT_wing                 = PNLT_wing,
-        phi                       = phi,
-        PNLT_ht                   = PNLT_ht,
-        PNLT_vt                   = PNLT_vt,
-        PNLT_flap                 = PNLT_flap,
-        PNLT_slat                 = PNLT_slat,
-        PNLT_nose_landing_gear    = PNLT_nose_landing_gear,
-        PNLT_main_landing_gear    = PNLT_main_landing_gear,
-        PNLT_total                = PNLT_total,
-        SPLt_dBA_max              = SPLt_dBA_max,
-        frequency                 = frequency,
-        EPNL_wing                 = EPNL_wing,
-        EPNL_ht                   = EPNL_ht,
-        EPNL_vt                   = EPNL_vt,
-        EPNL_flap                 = EPNL_flap,
-        EPNL_slat                 = EPNL_slat,
-        EPNL_nose_landing_gear    = EPNL_nose_landing_gear,
-        EPNL_main_landing_gear    = EPNL_main_landing_gear,
-        EPNL_total                = EPNL_total,
-        SENEL_total               = SENEL_total,
-        SPL_total_history         = SPL_total_history,
-        SPLt_dBA_history          = SPLt_dBA_history)  
-    
-    if ioprint:
-        print_airframe_output(SAE_Airframe_Noise_Outputs) 
+    EPNL_flap              = EPNL_noise_metric(PNLT_flap) 
     
     # Pack Airframe Noise 
-    airframe_noise                   = Data()
-    airframe_noise.EPNL_total        = EPNL_total
-    airframe_noise.SPL               = SPL_arithmetic(SPL_total_history, sum_axis= 2)
-    airframe_noise.SPL_1_3_spectrum  = SPL_total_history
-    airframe_noise.SPL_dBA           = SPL_arithmetic(np.atleast_2d(SPLt_dBA_history), sum_axis= 2)
-    airframe_noise.SENEL_total       = SENEL_total 
-    airframe_noise.noise_time        = noise_time 
+    airframe_noise                        = Data()
+    airframe_noise.EPNL_total             = EPNL_total
+    airframe_noise.EPNL_wing              = EPNL_wing              
+    airframe_noise.EPNL_ht                = EPNL_ht                
+    airframe_noise.EPNL_vt                = EPNL_vt                
+    airframe_noise.EPNL_nose_landing_gear = EPNL_nose_landing_gear 
+    airframe_noise.EPNL_main_landing_gear = EPNL_main_landing_gear 
+    airframe_noise.EPNL_slat              = EPNL_slat              
+    airframe_noise.EPNL_flap              = EPNL_flap    
+    airframe_noise.SPL                    = SPL_arithmetic(SPL_total_history, sum_axis= 2)
+    airframe_noise.SPL_1_3_spectrum       = SPL_total_history
+    airframe_noise.SPL_dBA                = SPL_arithmetic(np.atleast_2d(SPLt_dBA_history), sum_axis= 2) 
+    airframe_noise.noise_time             = noise_time 
     return airframe_noise

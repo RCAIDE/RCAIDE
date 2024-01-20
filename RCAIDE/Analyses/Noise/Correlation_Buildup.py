@@ -11,8 +11,7 @@ from .Noise      import Noise
 
 # noise imports 
 from RCAIDE.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise                              import airframe_noise
-from RCAIDE.Methods.Noise.Correlation_Buildup.Turbofan.turbofan_engine_noise                       import turbofan_engine_noise  
-from RCAIDE.Methods.Noise.Common.compute_certification_distance_and_emission_angles                import compute_certification_distance_and_emission_angles
+from RCAIDE.Methods.Noise.Correlation_Buildup.Turbofan.turbofan_engine_noise                       import turbofan_engine_noise   
 from RCAIDE.Methods.Noise.Common.decibel_arithmetic                                                import SPL_arithmetic
 from RCAIDE.Methods.Noise.Common.generate_microphone_locations                                     import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
 from RCAIDE.Methods.Noise.Common.compute_relative_noise_evaluation_locations                       import compute_relative_noise_evaluation_locations  
@@ -65,11 +64,7 @@ class Correlation_Buildup(Noise):
         
         # Initialize quantities
         settings                                        = self.settings
-        settings.harmonics                              = np.arange(1,30) 
-        settings.flyover                                = False    
-        settings.approach                               = False
-        settings.sideline                               = False
-        settings.sideline_x_position                    = 0 
+        settings.harmonics                              = np.arange(1,30)        
         settings.print_noise_output                     = False  
         settings.mean_sea_level_altitude                = True 
         settings.aircraft_destination_location          = np.array([0,0,0])
@@ -167,7 +162,7 @@ class Correlation_Buildup(Noise):
             if 'fuel_lines' in network:
                 for fuel_line in network.fuel_lines:  
                     for propulsor in fuel_line.propulsors:        
-                        engine_noise                = turbofan_engine_noise(propulsor.turbofan,conditions.noise[fuel_line.tag][propulsor.tag].turbofan,segment,settings,ioprint = print_flag)    
+                        engine_noise                = turbofan_engine_noise(propulsor.turbofan,conditions.noise[fuel_line.tag][propulsor.tag].turbofan,segment,settings)    
                         total_SPL_dBA               = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],engine_noise.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
                         total_SPL_spectra[:,:,5:]   = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,5:],engine_noise.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1)
                                                      
