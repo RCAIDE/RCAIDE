@@ -544,34 +544,20 @@ def vehicle_setup():
     #  Turbofan Network
     #-------------------------------------------------------------------------------------------------------------------------   
     net                                         = RCAIDE.Energy.Networks.Turbofan_Engine() 
+
+    # Append energy network to aircraft 
+    vehicle.append_energy_network(net)     
     
     #------------------------------------------------------------------------------------------------------------------------- 
     # Fuel Distrubition Line 
     #------------------------------------------------------------------------------------------------------------------------- 
-    fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line() 
-    
-    #------------------------------------------------------------------------------------------------------------------------- 
-    #   Fuel
-    #------------------------------------------------------------------------------------------------------------------------- 
-    # fuel tank
-    fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.origin                            = wing.origin 
-    
-    # fuel 
-    fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline()   
-    fuel.mass_properties.mass                   = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
-    fuel.origin                                 = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel.mass_properties.center_of_gravity      = vehicle.wings.main_wing.aerodynamic_center
-    fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel  
-    fuel_line.fuel_tanks.append(fuel_tank) 
-    
+    fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line()  
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
     starboard_propulsor                         = RCAIDE.Energy.Propulsion.Propulsor()     
-    starboard_propulsor.tag                         = 'starboard_propulsor'
+    starboard_propulsor.tag                     = 'starboard_propulsor'
      
     turbofan                                    = RCAIDE.Energy.Propulsion.Converters.Turbofan() 
     turbofan.tag                                = 'pratt_whitney_jt9d'
@@ -683,14 +669,34 @@ def vehicle_setup():
     # append propulsor to distribution line 
     fuel_line.propulsors.append(port_propulsor)
 
-    #------------------------------------------------------------------------------------------------------------------------------------     
+
+    #------------------------------------------------------------------------------------------------------------------------- 
+    #   Fuel
+    #------------------------------------------------------------------------------------------------------------------------- 
+    # fuel tank
+    fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
+    fuel_tank.origin                            = wing.origin 
+    
+    # fuel 
+    fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline()   
+    fuel.mass_properties.mass                   = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
+    fuel.origin                                 = vehicle.wings.main_wing.mass_properties.center_of_gravity      
+    fuel.mass_properties.center_of_gravity      = vehicle.wings.main_wing.aerodynamic_center
+    fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
+    fuel_tank.fuel                              = fuel  
+
+    # assign propulsors that are powered by this fuel tank
+    fuel_tank.assigned_propulsors               = ['starboard_propulsor','port_propulsor']  
+     
+    # Append fuel line to Network      
+    net.fuel_lines.append(fuel_line)   
     
     # Append fuel line to network      
-    net.fuel_lines.append(fuel_line)        
-    
-    # Append energy network to aircraft 
-    vehicle.append_energy_network(net)     
+    net.fuel_lines.append(fuel_line)   
 
+
+    #------------------------------------------------------------------------------------------------------------------------------------     
+      
     compute_component_centers_of_gravity(vehicle)
     vehicle.center_of_gravity()        
         

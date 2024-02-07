@@ -475,6 +475,7 @@ def vehicle_setup():
     fuel.mass_properties.center_of_gravity      = vehicle.wings.main_wing.aerodynamic_center
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
     fuel_tank.fuel                              = fuel  
+    fuel_tank.assigned_propulsors               = ['starboard_propulsor','port_propulsor']  
     fuel_line.fuel_tanks.append(fuel_tank) 
     
 

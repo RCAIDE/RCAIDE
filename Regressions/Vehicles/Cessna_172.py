@@ -194,7 +194,10 @@ def vehicle_setup():
     vehicle.landing_gear                        = landing_gear
 
     # ########################################################  Energy Network  #########################################################  
-    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Engine()  
+    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Engine()   
+
+    # add the network to the vehicle
+    vehicle.append_energy_network(net) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
@@ -208,8 +211,16 @@ def vehicle_setup():
     fuel.mass_properties.mass                   = 319 *Units.lbs 
     fuel.mass_properties.center_of_gravity      = wing.mass_properties.center_of_gravity
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel  
+    fuel_tank.fuel                              = fuel   
+
+    # assign propulsors that are powered by this fuel tank
+    fuel_tank.assigned_propulsors               = ['propulsor'] 
+    
+    # 
     fuel_line.fuel_tanks.append(fuel_tank) 
+    
+
+    net.fuel_lines.append(fuel_line)    
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
@@ -252,7 +263,6 @@ def vehicle_setup():
     propulsor.rotor                         = prop 
     
     fuel_line.propulsors.append(propulsor)
-    net.fuel_lines.append(fuel_line)
 
     #------------------------------------------------------------------------------------------------------------------------------------ 
     # Avionics
@@ -262,9 +272,6 @@ def vehicle_setup():
     avionics.mass_properties.uninstalled        = Wuav
     vehicle.avionics                            = avionics     
 
-    # add the network to the vehicle
-    vehicle.append_energy_network(net)
-    
     #------------------------------------------------------------------------------------------------------------------------------------ 
     #   Vehicle Definition Complete
     #------------------------------------------------------------------------------------------------------------------------------------ 

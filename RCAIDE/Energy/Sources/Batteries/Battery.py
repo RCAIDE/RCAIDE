@@ -25,6 +25,7 @@ class Battery(Energy_Component):
     """
     def __defaults__(self):
         self.chemistry                                         = None 
+        self.assigned_propulsors                               = None
         self.mass_properties.mass                              = 0.0
         self.energy_density                                    = 0.0
         self.current_energy                                    = 0.0
