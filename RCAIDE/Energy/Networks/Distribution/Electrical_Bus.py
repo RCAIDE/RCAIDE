@@ -55,46 +55,6 @@ class Electrical_Bus(Energy_Component):
         self.identical_propulsors          = True  
         self.active                        = True
         self.efficiency                    = 1.0
-        self.voltage                       = 0.0
-        self.outputs.avionics_power        = 0.0
-        self.outputs.payload_power         = 0.0
-        self.outputs.total_esc_power       = 0.0    
-        self.inputs.secondary_power        = 0.0
-        
-    def logic(self,conditions,numerics):
-        """ Determines the power disturbution on a bus
-        
-            Assumptions: 
-            N/A
-                
-            Source:
-            N/A
-            
-            Inputs:
-            self.inputs:
-                    secondary_source_power           [Watts]
-                .outputs
-                    avionics_power                   [Watts]
-                    payload_power                    [Watts]
-                    total_esc_power                  [Watts]
-
-            Outputs:
-            self.outputs.power                       [Watts]
-                inputs.power                         [Watts]
-
-        """
-        # Unpack 
-        # Outputs of bus
-        pavionics   = self.outputs.avionics_power
-        ppayload    = self.outputs.payload_power
-        pesc        = self.outputs.total_esc_power 
-        voltage     = self.outputs.voltage
-        
-        # Secondary energy source to battery
-        pin         = self.inputs.secondary_power
-        
-        # inputs form battery     
-        self.inputs.power     = ((pavionics + ppayload + pesc) - pin)/self.efficiency
-        self.inputs.current   = self.inputs.power/voltage
-        return 
-    
+        self.voltage                       = 0.0 
+        self.charging_power                = 0.0
+         

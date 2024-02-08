@@ -87,6 +87,7 @@ class Isolated_Battery_Cell(Network):
         for bus in busses: 
             avionics        = bus.avionics
             payload         = bus.payload  
+            batteries       = bus.batteries
     
             # Avionics Power Consumtion 
             avionics.power() 
@@ -97,37 +98,31 @@ class Isolated_Battery_Cell(Network):
             # Bus Voltage 
             bus_voltage = bus.voltage * state.ones_row(1)
             if recharging_flag:
-                for battery in bus.batteries:   
+                for battery in batteries:   
                     # append compoment power to bus 
-                    bus.outputs.avionics_power  = avionics.inputs.power*battery.bus_power_split_ratio* state.ones_row(1)
-                    bus.outputs.payload_power   = payload.inputs.power*battery.bus_power_split_ratio* state.ones_row(1)            
-                    bus.outputs.total_esc_power =  -state.conditions.energy[bus.tag][battery.tag].pack.current*bus_voltage*battery.bus_power_split_ratio
-                    bus.outputs.voltage         = bus_voltage
-        
-                    # run bus 
-                    bus.logic(conditions,numerics)                    
-        
+                    avionics_power         = (avionics.inputs.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1)
+                    payload_power          = (payload.inputs.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1)            
+                    total_esc_power        = 0 * state.ones_row(1)     
+                    charging_power         = (state.conditions.energy[bus.tag][battery.tag].pack.current*bus_voltage*battery.bus_power_split_ratio)/len(batteries)
+                   
                     # append bus outputs to battery 
-                    battery.outputs.current     = -bus.inputs.current
-                    battery.outputs.power       = bus.inputs.power       
+                    battery.outputs.power       = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
+                    battery.outputs.current     = -battery.outputs.power/bus_voltage
                     battery.energy_calc(state,bus,recharging_flag)    
             
             else:
                 # compute energy calculation for each battery on bus  
-                for battery in bus.batteries: 
-                    # append compoment power to bus 
-                    bus.outputs.avionics_power  = avionics.inputs.power*battery.bus_power_split_ratio* state.ones_row(1)
-                    bus.outputs.payload_power   = payload.inputs.power*battery.bus_power_split_ratio* state.ones_row(1)   
-                    bus.outputs.total_esc_power = state.conditions.energy[bus.tag][battery.tag].pack.current*bus_voltage*battery.bus_power_split_ratio
-                    bus.outputs.voltage         = bus_voltage
-        
-                    # run bus 
-                    bus.logic(conditions,numerics)                    
-        
+                for battery in batteries:  
+                    # compute power from each componemnt 
+                    avionics_power  = (avionics.inputs.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1) 
+                    payload_power   = (payload.inputs.power*battery.bus_power_split_ratio)/len(batteries) * state.ones_row(1)  
+                    charging_power  = bus.charging_power*battery.bus_power_split_ratio/len(batteries)
+                    total_esc_power = state.conditions.energy[bus.tag][battery.tag].pack.current*bus_voltage*battery.bus_power_split_ratio
+                       
                     # append bus outputs to battery 
-                    battery.outputs.current     = bus.inputs.current
-                    battery.outputs.power       = bus.inputs.power       
-                    battery.energy_calc(state,bus,recharging_flag)       
+                    battery.outputs.power       = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
+                    battery.outputs.current     = battery.outputs.power/bus_voltage
+                    battery.energy_calc(state,bus,recharging_flag)   
     
         conditions.energy.thrust_force_vector  =  0. * state.ones_row(3)     
         conditions.energy.power                = state.ones_row(1)*0.0        

@@ -62,7 +62,7 @@ def main():
             plot_results(results)  
         
         # RPM of rotor check during hover
-        RPM        = results.segments.climb_flight_no_1_day_1.conditions.energy.bus.propulsor.rotor.rpm[3][0] 
+        RPM        = results.segments.climb_flight_no_1_day_1.conditions.energy.bus.starboard_propulsor.rotor.rpm[3][0] 
         print('RPM: ' + str(RPM))
         diff_RPM   = np.abs(RPM - RPM_true[i])
         print('RPM difference: ' +  str(diff_RPM))
@@ -94,6 +94,7 @@ def modify_vehicle(vehicle,battery_chemistry):
         bat = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_LFP()    
         bat.thermal_management_system.heat_aquisition_system  = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air()  
 
+    bat.assigned_propulsors                                = ['starboard_propulsor','port_propulsor']  
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 100
     initialize_from_circuit_configuration(bat)  

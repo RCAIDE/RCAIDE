@@ -40,7 +40,7 @@ def vehicle_setup(current,cell_chemistry,fixed_bus_voltage):
     HAS                 = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air() 
     HAS.convective_heat_transfer_coefficient    = 7.17
     battery.thermal_management_system.heat_acquisition_system = HAS 
-    net.voltage                                  = battery.cell.nominal_voltage 
+    net.voltage                                 = battery.cell.nominal_voltage 
     initialize_from_circuit_configuration(battery)  
     bus.voltage                      =  battery.pack.maximum_voltage  
     bus.batteries.append(battery)                                

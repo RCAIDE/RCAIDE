@@ -50,18 +50,3 @@ class Fuel_Line(Energy_Component):
         self.identical_propulsors          = True 
         self.active                        = True 
         self.efficiency                    = 1.0 
-        
-    def logic(self,conditions,numerics):
-        """ Determines the fuel supply disturbution on an fuel-powered network
-        
-            Assumptions: 
-                
-            Source:
-            N/A
-            
-            Inputs: 
-
-            Outputs: 
-        """
-        # Unpack 
-        return 

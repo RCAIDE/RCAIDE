@@ -194,22 +194,29 @@ def vehicle_setup():
     vehicle.landing_gear                        = landing_gear
 
     # ########################################################  Energy Network  #########################################################  
-    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Engine()  
+    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Engine()   
+
+    # add the network to the vehicle
+    vehicle.append_energy_network(net) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line()  
-     
-    # fuel tank
+    fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line()   
+
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Fuel Tank & Fuel
+    #------------------------------------------------------------------------------------------------------------------------------------       
     fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = wing.origin  
     fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline() 
     fuel.mass_properties.mass                   = 319 *Units.lbs 
     fuel.mass_properties.center_of_gravity      = wing.mass_properties.center_of_gravity
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel  
-    fuel_line.fuel_tanks.append(fuel_tank) 
+    fuel_tank.fuel                              = fuel    
+    fuel_tank.assigned_propulsors               = ['propulsor']  
+    fuel_line.fuel_tanks.append(fuel_tank)  
+    net.fuel_lines.append(fuel_line)    
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
@@ -252,7 +259,6 @@ def vehicle_setup():
     propulsor.rotor                         = prop 
     
     fuel_line.propulsors.append(propulsor)
-    net.fuel_lines.append(fuel_line)
 
     #------------------------------------------------------------------------------------------------------------------------------------ 
     # Avionics
@@ -262,9 +268,6 @@ def vehicle_setup():
     avionics.mass_properties.uninstalled        = Wuav
     vehicle.avionics                            = avionics     
 
-    # add the network to the vehicle
-    vehicle.append_energy_network(net)
-    
     #------------------------------------------------------------------------------------------------------------------------------------ 
     #   Vehicle Definition Complete
     #------------------------------------------------------------------------------------------------------------------------------------ 

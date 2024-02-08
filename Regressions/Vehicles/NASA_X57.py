@@ -412,6 +412,7 @@ def vehicle_setup():
     # Battery
     #------------------------------------------------------------------------------------------------------------------------------------  
     bat                                                    = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_NMC() 
+    bat.assigned_propulsors                                = ['starboard_propulsor','port_propulsor']  
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 100
     initialize_from_circuit_configuration(bat)  
@@ -428,13 +429,14 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Starboard Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    starboard_propulsor  = RCAIDE.Energy.Propulsion.Propulsor()  
- 
-    # Electronic Speed Controller      
-    esc            = RCAIDE.Energy.Propulsion.Modulators.Electronic_Speed_Controller()
-    esc.tag        = 'esc_1'
-    esc.efficiency = 0.95 
-    starboard_propulsor.electronic_speed_controller = esc   
+    starboard_propulsor                              = RCAIDE.Energy.Propulsion.Propulsor()  
+    starboard_propulsor.tag                          = 'starboard_propulsor'
+  
+    # Electronic Speed Controller       
+    esc                                              = RCAIDE.Energy.Propulsion.Modulators.Electronic_Speed_Controller()
+    esc.tag                                          = 'esc_1'
+    esc.efficiency                                   = 0.95 
+    starboard_propulsor.electronic_speed_controller  = esc   
      
     # Propeller              
     propeller                                        = RCAIDE.Energy.Propulsion.Converters.Propeller() 
@@ -482,6 +484,7 @@ def vehicle_setup():
     # Port Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
     port_propulsor                             = RCAIDE.Energy.Propulsion.Propulsor() 
+    port_propulsor.tag                         = "port_propulsor"
             
     esc_2                                      = deepcopy(esc)
     esc_2.origin                               = [[2., -2.5, 0.95]]      

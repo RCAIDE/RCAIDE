@@ -92,20 +92,19 @@ class Turbofan_Engine(Network):
          
         total_thrust  = 0. * state.ones_row(3) 
         total_power   = 0. * state.ones_row(1) 
-        total_mdot    = 0. * state.ones_row(1) 
+        total_mdot    = 0. * state.ones_row(1)   
         
         for fuel_line in fuel_lines:
             if fuel_line.active:   
                 fuel_tanks   = fuel_line.fuel_tanks    
-                fuel_line_T , fuel_line_P, fuel_line_mdot  = turbofan_propulsor(fuel_line,state)    
-            
-                for fuel_tank in fuel_tanks: 
-                    fuel_line_results                                = conditions.energy[fuel_line.tag]  
-                    fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot 
-                    
-                total_thrust += fuel_line_T   
-                total_power  += fuel_line_P    
-                total_mdot   += fuel_line_mdot    
+                for fuel_tank in fuel_tanks:  
+                    fuel_line_T , fuel_line_P, fuel_tank_mdot        = turbofan_propulsor(fuel_line,fuel_tank.assigned_propulsors,state)    
+                    fuel_line_results                                = conditions.energy[fuel_line.tag]   
+                    fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_tank_mdot + fuel_tank.secondary_fuel_flow 
+                        
+                    total_thrust += fuel_line_T   
+                    total_power  += fuel_line_P    
+                    total_mdot   += fuel_line_results[fuel_tank.tag].mass_flow_rate  
     
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
