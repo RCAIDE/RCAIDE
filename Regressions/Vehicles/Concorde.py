@@ -445,9 +445,8 @@ def vehicle_setup():
 
        
     #------------------------------------------------------------------------------------------------------------------------------------  
-    #   Fuel
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    # fuel tank 
+    #  Fuel Tank & Fuel
+    #------------------------------------------------------------------------------------------------------------------------------------   
     fuel_tank                                      = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
     fuel_tank.tag                                  = 'tank_9'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[26.5,0,0]])
@@ -521,8 +520,7 @@ def vehicle_setup():
     fuel_line.fuel_tanks.append(fuel_tank)      
     
      # Append fuel line to network      
-    net.fuel_lines.append(fuel_line)        
-    
+    net.fuel_lines.append(fuel_line)    
   
     #------------------------------------------------------------------------------------------------------------------------------------          
     # Append energy network to aircraft 

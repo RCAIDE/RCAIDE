@@ -112,7 +112,7 @@ class All_Electric(Network):
                         charging_power         = (state.conditions.energy[bus.tag][battery.tag].pack.current*bus_voltage*battery.bus_power_split_ratio)/len(batteries)
                        
                         # append bus outputs to battery 
-                        battery.outputs.power       = ((avionics_power + payload_power + total_esc_power) - charging_power)/self.efficiency
+                        battery.outputs.power       = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
                         battery.outputs.current     = -battery.outputs.power/bus_voltage
                         battery.energy_calc(state,bus,recharging_flag)  
                 else:       

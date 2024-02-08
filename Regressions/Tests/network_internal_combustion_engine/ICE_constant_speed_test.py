@@ -80,19 +80,16 @@ def ICE_CS(vehicle):
     fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line() 
     
     #------------------------------------------------------------------------------------------------------------------------------------  
-    #   Fuel
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    # fuel tank
+    # uel Tank and Fuel
+    #------------------------------------------------------------------------------------------------------------------------------------   
     fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.origin                            = vehicle.wings.main_wing.origin 
-    
-    # fuel 
+    fuel_tank.origin                            = vehicle.wings.main_wing.origin  
     fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline() 
     fuel.mass_properties.mass                   = 319 *Units.lbs 
     fuel.mass_properties.center_of_gravity      =  vehicle.wings.main_wing.mass_properties.center_of_gravity
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
     fuel_tank.fuel                              = fuel 
-    
+    fuel_tank.assigned_propulsors               = ['propulsor']  
     fuel_line.fuel_tanks.append(fuel_tank)
 
 
@@ -135,7 +132,7 @@ def ICE_CS(vehicle):
     prop.append_airfoil(airfoil)  
     prop.airfoil_polar_stations            = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     prop                                   = design_propeller(prop)   
-    propulsor.rotor                        =  prop
+    propulsor.rotor                        = prop
     
     fuel_line.propulsors.append(propulsor)
     net.fuel_lines.append(fuel_line) 

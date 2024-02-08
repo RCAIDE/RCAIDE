@@ -670,10 +670,9 @@ def vehicle_setup():
     fuel_line.propulsors.append(port_propulsor)
 
 
-    #------------------------------------------------------------------------------------------------------------------------- 
-    #   Fuel
-    #------------------------------------------------------------------------------------------------------------------------- 
-    # fuel tank
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Fuel Tank & Fuel
+    #------------------------------------------------------------------------------------------------------------------------------------   
     fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = wing.origin 
     
@@ -683,16 +682,14 @@ def vehicle_setup():
     fuel.origin                                 = vehicle.wings.main_wing.mass_properties.center_of_gravity      
     fuel.mass_properties.center_of_gravity      = vehicle.wings.main_wing.aerodynamic_center
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel  
-
-    # assign propulsors that are powered by this fuel tank
+    fuel_tank.fuel                              = fuel   
     fuel_tank.assigned_propulsors               = ['starboard_propulsor','port_propulsor']  
+    fuel_line.fuel_tanks.append(fuel_tank)      
      
     # Append fuel line to Network      
     net.fuel_lines.append(fuel_line)   
      
-    #------------------------------------------------------------------------------------------------------------------------------------     
-      
+    #------------------------------------------------------------------------------------------------------------------------------------      
     compute_component_centers_of_gravity(vehicle)
     vehicle.center_of_gravity()        
         
