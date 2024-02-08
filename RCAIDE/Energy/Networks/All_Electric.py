@@ -118,10 +118,10 @@ class All_Electric(Network):
                 else:       
                     # compute energy consumption of each battery on bus  
                     for battery in batteries:  
-                        T,P,I           = all_electric_propulsor(bus,battery.assigned_propulsors,state,bus_voltage)  
+                        T,P,I            = all_electric_propulsor(bus,battery.assigned_propulsors,state,bus_voltage)  
                         total_thrust    += T
-                        total_power     += P   
-                         
+                        total_power     += P    
+                        
                         # compute power from each componemnt 
                         avionics_power  = (avionics.inputs.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1) 
                         payload_power   = (payload.inputs.power*battery.bus_power_split_ratio)/len(batteries) * state.ones_row(1)  

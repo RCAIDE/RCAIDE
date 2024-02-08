@@ -80,16 +80,15 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
 
         for fuel_line in fuel_lines:
             if fuel_line.active:   
-                fuel_tanks   = fuel_line.fuel_tanks      
-            
+                fuel_tanks   = fuel_line.fuel_tanks       
                 for fuel_tank in fuel_tanks:  
-                    fuel_line_T , fuel_line_P, fuel_line_mdot        = internal_combustion_engine_cs_propulsor(fuel_line,fuel_tank.assigned_propulsors,state)   
-                    fuel_line_results                                = conditions.energy[fuel_line.tag]  
-                    fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_line_mdot 
-                    
-                total_thrust += fuel_line_T   
-                total_power  += fuel_line_P    
-                total_mdot   += fuel_line_mdot  
+                    fuel_line_T , fuel_line_P, fuel_tank_mdot        = internal_combustion_engine_cs_propulsor(fuel_line,fuel_tank.assigned_propulsors,state)   
+                    fuel_line_results                                = conditions.energy[fuel_line.tag]   
+                    fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_tank_mdot + fuel_tank.secondary_fuel_flow 
+                        
+                    total_thrust += fuel_line_T   
+                    total_power  += fuel_line_P    
+                    total_mdot   += fuel_line_results[fuel_tank.tag].mass_flow_rate    
     
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 

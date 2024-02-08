@@ -690,11 +690,7 @@ def vehicle_setup():
      
     # Append fuel line to Network      
     net.fuel_lines.append(fuel_line)   
-    
-    # Append fuel line to network      
-    net.fuel_lines.append(fuel_line)   
-
-
+     
     #------------------------------------------------------------------------------------------------------------------------------------     
       
     compute_component_centers_of_gravity(vehicle)
