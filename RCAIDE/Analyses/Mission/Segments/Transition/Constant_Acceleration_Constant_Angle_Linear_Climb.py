@@ -61,10 +61,12 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------     
-        # initials and unknowns
-        ones_row = self.state.ones_row
-        self.state.residuals.forces    = ones_row(2) * 0.0  
+        # --------------------------------------------------------------------------------------------------------------      
+        self.body_angle_control.active             = True            
+        self.body_angle_control.initial_values     = [[0.0 * Units.degrees]]  
+        self.throttle_control.active               = True
+        self.throttle_control.propulsor_list       = None
+        self.throttle_control.initial_values       = [[0.5]]                 
          
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

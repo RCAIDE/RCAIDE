@@ -9,7 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission-Segments-Common
-  
+   
 from .weights                      import weights
 from .differentials_dimensionless  import differentials_dimensionless
 from .differentials_altitude       import differentials_altitude

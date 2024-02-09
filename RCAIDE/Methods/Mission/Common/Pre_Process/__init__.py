@@ -12,3 +12,4 @@
    
 from .aerodynamics                 import aerodynamics 
 from .energy                       import energy
+from .flight_controls              import flight_controls

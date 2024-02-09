@@ -9,6 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
+from RCAIDE.Core                              import Data 
 from RCAIDE.Analyses.Mission.Segments         import Segment
 from RCAIDE.Analyses.Mission.Common.Results   import Results
 from RCAIDE.Methods.Mission                   import Common , Solver 
@@ -19,7 +20,22 @@ from RCAIDE.Analyses                          import Process
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Analyses-Mission-Segments
 class Evaluate(Segment):
-    """  
+    """ Base process class used to analyze a vehicle in each flight segment  
+    
+    Assumptions:
+    None
+
+    Source:
+    N/A
+
+    Inputs:
+    None
+
+    Outputs:
+    None
+
+    Properties Used:
+    None
     """     
     
     def __defaults__(self):
@@ -40,17 +56,76 @@ class Evaluate(Segment):
             Properties Used:
             None
         """          
-        self.temperature_deviation          = 0.0
-        self.estimated_rotor_pitch_commands = [[0.1]]
-        self.estimated_throttles            = [[0.5]]
-        self.estimated_RPMs                 = [[2500]]
+
+        # --------------------------------------------------------------
+        # Degrees of Freedom 
+        # -------------------------------------------------------------- 
+        self.degrees_of_freedom                                   = 2
         
+        # --------------------------------------------------------------
+        # Flight Controls 
+        # --------------------------------------------------------------    
+        self.body_angle_control                                   = Data()
+        self.body_angle_control.active                            = False                 
+        self.body_angle_control.initial_values                    = None  
+        
+        self.wind_angle_control                                   = Data()
+        self.wind_angle_control.active                            = False                 
+        self.wind_angle_control.initial_values                    = None   
+        
+        self.velocity_control                                     = Data()
+        self.velocity_control.active                              = False                 
+        self.velocity_control.initial_values                      = None   
+
+        self.flight_path_angle_control                            = Data()
+        self.flight_path_angle_control.active                     = False                 
+        self.flight_path_angle_control.initial_values             = None   
+        
+        self.altitude_control                                     = Data()
+        self.altitude_control.active                              = False                 
+        self.altitude_control.initial_values                      = None         
+             
+        self.throttle_control                                     = Data() 
+        self.throttle_control.active                              = False              
+        self.throttle_control.assigned_propulsors                 = None       
+        self.throttle_control.initial_values                      = None  
+             
+        self.elevator_deflection_control                          = Data() 
+        self.elevator_deflection_control.active                   = False      
+        self.elevator_deflection_control.assigned_control_surface = None
+        self.elevator_deflection_control.initial_values           = None  
+        
+        self.flap_deflection_control                              = Data() 
+        self.flap_deflection_control.active                       = False          
+        self.flap_deflection_control.assigned_control_surface     = None
+        self.flap_deflection_control.initial_values               = None  
+             
+        self.aileron_deflection_control                           = Data() 
+        self.aileron_deflection_control.active                    = False      
+        self.aileron_deflection_control.assigned_control_surface  = None
+        self.aileron_deflection_control.initial_values            = None  
+             
+        self.thurst_vector_angle_control                          = Data() 
+        self.thurst_vector_angle_control.active                   = False        
+        self.thurst_vector_angle_control.assigned_propulsors      = None
+        self.thurst_vector_angle_control.initial_values           = None  
+             
+        self.blade_pitch_angle_control                            = Data() 
+        self.blade_pitch_angle_control.active                     = False          
+        self.blade_pitch_angle_control.assigned_propulsors        = None
+        self.blade_pitch_angle_control.initial_values             = None  
+        
+        self.RPM_control                                          = Data() 
+        self.RPM_control.active                                   = False              
+        self.RPM_control.assigned_propulsors                      = None
+        self.RPM_control.initial_values                           = None  
         
         # --------------------------------------------------------------
         #   State
         # --------------------------------------------------------------
         
         # conditions
+        self.temperature_deviation                                = 0.0     
         self.state.conditions.update(Results())
         
         # --------------------------------------------------------------

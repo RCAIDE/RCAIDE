@@ -51,9 +51,10 @@ class Sequential_Segments(Segments.Segment.Container):
         self.tag = 'mission'
         
         #   Initialize   
-        self.process.initialize          = Process() 
-        self.process.initialize.aero     = aerodynamics
-        self.process.initialize.energy   = energy
+        self.process.initialize                   = Process() 
+        self.process.initialize.aero              = aerodynamics
+        self.process.initialize.energy            = energy
+        self.process.initialize.flight_controls   = flight_controls
  
         #   Converge 
         self.process.converge    = sequential_segments

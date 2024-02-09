@@ -59,10 +59,11 @@ class Constant_Speed_Constant_Rate(Evaluate):
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
         # --------------------------------------------------------------------------------------------------------------   
-        ones_row                       = self.state.ones_row        
-        self.state.unknowns.throttle   = ones_row(1) * 0.5
-        self.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees
-        self.state.residuals.forces    = ones_row(2) * 0.0
+        self.body_angle_control.active             = True            
+        self.body_angle_control.initial_values     = [[3.0 * Units.degrees]]  
+        self.throttle_control.active               = True
+        self.throttle_control.propulsor_list       = None
+        self.throttle_control.initial_values       = [[0.5]]         
                 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
@@ -70,6 +71,7 @@ class Constant_Speed_Constant_Rate(Evaluate):
         initialize                         = self.process.initialize  
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Constant_Speed_Constant_Rate.initialize_conditions  
+        initialize.aircraft_flight_control = Common.Initialize.aircraft_flight_control
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
         iterate.unknowns.mission           = Common.Unpack_Unknowns.climb_descent   

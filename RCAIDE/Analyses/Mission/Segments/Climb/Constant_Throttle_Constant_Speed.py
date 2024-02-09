@@ -59,11 +59,11 @@ class Constant_Throttle_Constant_Speed(Evaluate):
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------    
-        ones_row                       = self.state.ones_row
-        self.state.unknowns.body_angle = ones_row(1) * 5.0 * Units.deg
-        self.state.unknowns.wind_angle = ones_row(1) * 1.0 * Units.deg
-        self.state.residuals.forces    = ones_row(2) * 0.0   
+        # --------------------------------------------------------------------------------------------------------------   
+        self.body_angle_control.active             = True            
+        self.body_angle_control.initial_values     = [[5.0 * Units.degrees]]  
+        self.wind_angle.active                     = True 
+        self.wind_angle.initial_values             = [[1.0 * Units.deg]]               
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

@@ -71,17 +71,26 @@ class Optimized(Evaluate):
         self.algorithm              = 'SLSQP'
         self.true_course_angle      = 0.0 * Units.degrees    
          
-         
-        # initials and unknowns
-        ones_row                              = self.state.ones_row
-        self.state.unknowns.throttle          = ones_row(1) * 0.8
-        self.state.unknowns.body_angle        = ones_row(1) * 5.0 * Units.degrees
-        self.state.unknowns.flight_path_angle = ones_row(1) * 3.0 * Units.degrees
-        self.state.unknowns.velocity          = ones_row(1) * 1.0
-        self.state.residuals.forces           = ones_row(2) * 0.0
-        self.state.inputs_last                = None
-        self.state.objective_value            = 0.0
-        self.state.constraint_values          = 0.0
+
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  Initials and Unknowns  
+        # --------------------------------------------------------------------------------------------------------------           
+        self.throttle_control.active                  = True             
+        self.throttle_control.assigned_propulsors     = None       
+        self.throttle_control.initial_values          = [[0.5]]       
+        self.flight_path_angle_control.active         = True                 
+        self.flight_path_angle_control.initial_values = [[3.0 * Units.degrees]]    
+        self.body_angle_control.active                = True        
+        self.body_angle_control.initial_values        = [[5.0 * Units.degrees]]    
+        self.velocity_control.active                  = True          
+        self.velocity_control.initial_values          = [[100]]     
+        
+        # -------------------------------------------------------------------------------------------------------------- 
+        # Optimization Problem
+        # --------------------------------------------------------------------------------------------------------------                
+        self.state.inputs_last             = None
+        self.state.objective_value         = 0.0
+        self.state.constraint_values       = 0.0
            
         
         #  Initialize 

@@ -57,10 +57,11 @@ class Hover(Evaluate):
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------   
-        ones_row                           = self.state.ones_row
-        self.state.unknowns.throttle       = ones_row(1) * 0.5
-        self.state.residuals.forces        = ones_row(1) * 0.0  
+        # --------------------------------------------------------------------------------------------------------------    
+        self.degrees_of_freedom                    = 1 
+        self.throttle_control.active               = True
+        self.throttle_control.propulsor_list       = None
+        self.throttle_control.initial_values       = [[0.5]]               
              
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
