@@ -105,10 +105,10 @@ class Evaluate(Segment):
         self.aileron_deflection_control.assigned_control_surface  = None
         self.aileron_deflection_control.initial_values            = None  
              
-        self.thurst_vector_angle_control                          = Data() 
-        self.thurst_vector_angle_control.active                   = False        
-        self.thurst_vector_angle_control.assigned_propulsors      = None
-        self.thurst_vector_angle_control.initial_values           = None  
+        self.thrust_vector_angle_control                          = Data() 
+        self.thrust_vector_angle_control.active                   = False        
+        self.thrust_vector_angle_control.assigned_propulsors      = None
+        self.thrust_vector_angle_control.initial_values           = None  
              
         self.blade_pitch_angle_control                            = Data() 
         self.blade_pitch_angle_control.active                     = False          

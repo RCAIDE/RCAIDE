@@ -53,5 +53,6 @@ class Propulsor(Energy_Component):
         self.turbofan                     = None
         self.turbojet                     = None 
         self.active                       = True 
+        self.energy_sources               = None 
         
     

@@ -29,9 +29,9 @@ def climb_descent(segment):
     N/A
     """        
      
-    if 'throttle' in segment.state.unknowns: 
-        throttle = segment.state.unknowns.throttle
-        segment.state.conditions.energy.throttle[:,0] = throttle[:,0]
+    #if 'throttle' in segment.state.unknowns: 
+        #throttle = segment.state.unknowns.throttle
+        #segment.state.conditions.energy.throttle[:,0] = throttle[:,0]
     
-    theta    = segment.state.unknowns.body_angle 
-    segment.state.conditions.frames.body.inertial_rotations[:,1] = theta[:,0]    
+    #theta    = segment.state.unknowns.body_angle 
+    #segment.state.conditions.frames.body.inertial_rotations[:,1] = theta[:,0]    
