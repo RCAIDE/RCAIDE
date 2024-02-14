@@ -46,15 +46,10 @@ def initialize_conditions(segment):
     climb_angle = segment.climb_angle
     mach_number = segment.mach_number
     alt0        = segment.altitude_start  
-    conditions  = segment.state.conditions 
-
-    if 'throttle' in segment.state.unknowns: 
-        throttle = segment.state.unknowns.throttle
-        segment.state.conditions.energy.throttle[:,0] = throttle[:,0]
+    conditions  = segment.state.conditions  
         
-    # unpack unknowns 
-    theta    = segment.state.unknowns.body_angle
-    alts     = segment.state.unknowns.altitudes   
+    # unpack unknowns  
+    alts     = -conditions.frames.inertial.position_vector[:,2]
     
     # check for initial altitude
     if alt0 is None:
@@ -80,9 +75,7 @@ def initialize_conditions(segment):
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0]              = v_x[:,0]
-    conditions.frames.inertial.velocity_vector[:,2]              = v_z[:,0]
-    conditions.frames.inertial.position_vector[:,2]              = -alts[:,0]  
-    segment.state.conditions.frames.body.inertial_rotations[:,1] = theta[:,0]  
+    conditions.frames.inertial.velocity_vector[:,2]              = v_z[:,0]   
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Residual Total Forces

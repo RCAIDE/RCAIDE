@@ -66,7 +66,8 @@ class Constant_Mach_Constant_Angle(Evaluate):
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Segments.Climb.Constant_Mach_Constant_Angle.residual_total_forces 
         iterate.conditions.differentials   = Segments.Climb.Optimized.update_differentials 
-        iterate.unknowns.mission           = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
+        iterate.unknowns.kinematics        = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions 
           
         return
 

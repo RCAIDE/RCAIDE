@@ -11,7 +11,7 @@
 # RCAIDE imports  
 from RCAIDE.Core                                     import Units 
 from RCAIDE.Analyses.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Methods.Mission                          import Segments
+from RCAIDE.Methods.Mission                          import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_Dynamic_Pressure_Constant_Angle
@@ -68,8 +68,9 @@ class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize
         initialize.conditions              = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns 
-        iterate                            = self.process.iterate
-        iterate.unknowns.mission           = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns 
+        iterate                            = self.process.iterate 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
+        iterate.unknowns.kinematics        = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns 
         iterate.conditions.differentials   = Segments.Climb.Optimized.update_differentials 
         iterate.residuals.total_forces     = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.residual_total_forces    
     

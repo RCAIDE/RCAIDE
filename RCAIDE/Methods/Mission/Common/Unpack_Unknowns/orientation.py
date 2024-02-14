@@ -18,6 +18,10 @@ def orientation(segment):
     if segment.flight_controls.velocity.active:
         segment.state.conditions.frames.inertial.velocity_vector[:,0] = segment.state.unknowns.velocity[:,0]
         
+    # Altitude Control
+    if segment.flight_controls.altitudes.active:
+        segment.state.conditions.frames.inertial.position_vector[:,2] = -segment.state.unknowns.altitudes[:,0]
+        
     return 
             
             

@@ -64,7 +64,7 @@ class Constant_EAS_Constant_Rate(Evaluate):
         initialize.conditions              = Segments.Descent.Constant_EAS_Constant_Rate.initialize_conditions  
         iterate                            = self.process.iterate   
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.climb_descent   
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
         
         return
        

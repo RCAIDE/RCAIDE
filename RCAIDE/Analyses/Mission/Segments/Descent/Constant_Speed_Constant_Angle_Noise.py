@@ -71,7 +71,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         initialize.conditions              = Segments.Descent.Constant_Speed_Constant_Angle_Noise.initialize_conditions
         iterate                            = self.process.iterate   
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.climb_descent          
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation          
         
         return
 

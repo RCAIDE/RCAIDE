@@ -32,9 +32,7 @@ def initialize_conditions_unpack_unknowns(segment):
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
     segment.state.numerics.dimensionless.control_points [unitless]
-    conditions.freestream.density                       [kilograms/meter^3] 
-    segment.state.unknowns.body_angle                   [radians]
-    segment.state.unknowns.altitudes                    [meter]
+    conditions.freestream.density                       [kilograms/meter^3]  
 
     Outputs:
     conditions.frames.inertial.velocity_vector  [meters/second]
@@ -51,15 +49,10 @@ def initialize_conditions_unpack_unknowns(segment):
     q           = segment.dynamic_pressure
     alt0        = segment.altitude_start  
     conditions  = segment.state.conditions
-    rho         = conditions.freestream.density[:,0] 
-
-    #if 'throttle' in segment.state.unknowns: 
-        #throttle = segment.state.unknowns.throttle
-        #segment.state.conditions.energy.throttle[:,0] = throttle[:,0]    
+    rho         = conditions.freestream.density[:,0]  
     
-    ## unpack unknowns 
-    #theta    = segment.state.unknowns.body_angle
-    #alts     = segment.state.unknowns.altitudes    
+    # unpack unknowns  
+    alts     = -conditions.frames.inertial.position_vector[:,2]
 
     # Update freestream to get density
     RCAIDE.Methods.Mission.Common.Update.atmosphere(segment)
@@ -91,9 +84,7 @@ def initialize_conditions_unpack_unknowns(segment):
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0] = v_x
-    conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alts[:,0] # z points down 
-    conditions.frames.body.inertial_rotations[:,1]  = theta[:,0]  
+    conditions.frames.inertial.velocity_vector[:,2] = v_z   
     
 ## @ingroup Methods-Missions-Segments-Climb
 def residual_total_forces(segment):
