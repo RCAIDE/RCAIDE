@@ -92,9 +92,7 @@ def modify_vehicle(vehicle,battery_chemistry):
         bat.thermal_management_system.heat_aquisition_system  = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition()  
     elif battery_chemistry == 'LFP':  
         bat = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_LFP()    
-        bat.thermal_management_system.heat_aquisition_system  = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air()  
-
-    bat.assigned_propulsors                                = ['starboard_propulsor','port_propulsor']  
+        bat.thermal_management_system.heat_aquisition_system  = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air()   
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 100
     initialize_from_circuit_configuration(bat)  
@@ -205,7 +203,20 @@ def mission_setup(analyses):
             segment.air_speed_start                                  = 100.     * Units['mph']  
             segment.air_speed_end                                    = 150     * Units['mph']   
             segment.climb_rate                                       = 500.    * Units['ft/min']     
-            segment.battery_cell_temperature                         = atmo_data.temperature[0,0]
+            segment.battery_cell_temperature                         = atmo_data.temperature[0,0] 
+            
+            # define flight dynamics to model 
+            segment.flight_dynamics.force_x                      = True  
+            segment.flight_dynamics.force_z                      = True     
+            
+            # define flight controls 
+            segment.flight_controls.throttle.active               = True           
+            segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+            segment.flight_controls.throttle.initial_values       = [[0.5]]
+            segment.flight_controls.body_angle                   
+            segment.flight_controls.body_angle.active             = True               
+            segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+     
             if (day == 0) and (flight_no == 0):        
                 segment.initial_battery_state_of_charge              = 0.89 
                 segment.initial_battery_resistance_growth_factor     = 1
@@ -221,7 +232,20 @@ def mission_setup(analyses):
             segment.analyses.extend(analyses.base) 
             segment.altitude                  = 8012   * Units.feet
             segment.air_speed                 = 150.    * Units['mph'] 
-            segment.distance                  = 50.   * Units.nautical_mile    
+            segment.distance                  = 50.   * Units.nautical_mile  
+            
+            # define flight dynamics to model 
+            segment.flight_dynamics.force_x                      = True  
+            segment.flight_dynamics.force_z                      = True     
+            
+            # define flight controls 
+            segment.flight_controls.throttle.active               = True           
+            segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+            segment.flight_controls.throttle.initial_values       = [[0.5]]
+            segment.flight_controls.body_angle                   
+            segment.flight_controls.body_angle.active             = True               
+            segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+       
             mission.append_segment(segment)    
         
         
@@ -235,7 +259,20 @@ def mission_setup(analyses):
             segment.altitude_end                                     = 2500.0 * Units.feet
             segment.air_speed_start                                  = 150.* Units['mph']  
             segment.air_speed_end                                    = 90 * Units['mph']   
-            segment.descent_rate                                     = 200 * Units['ft/min']      
+            segment.descent_rate                                     = 200 * Units['ft/min'] 
+            
+            # define flight dynamics to model 
+            segment.flight_dynamics.force_x                      = True  
+            segment.flight_dynamics.force_z                      = True     
+            
+            # define flight controls 
+            segment.flight_controls.throttle.active               = True           
+            segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+            segment.flight_controls.throttle.initial_values       = [[0.5]]
+            segment.flight_controls.body_angle                   
+            segment.flight_controls.body_angle.active             = True               
+            segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+          
             mission.append_segment(segment)
             
             # ------------------------------------------------------------------

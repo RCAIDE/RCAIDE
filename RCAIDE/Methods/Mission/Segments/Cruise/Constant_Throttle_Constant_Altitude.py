@@ -78,8 +78,7 @@ def initialize_conditions(segment):
     Inputs:
     segment.altitude                             [meters]
     segment.air_speed_start                      [meters/second]
-    segment.air_speed_end                        [meters/second]
-    segment.throttle	                         [unitless]
+    segment.air_speed_end                        [meters/second] 
     segment.state.numerics.number_of_control_points [int]
 
     Outputs:
@@ -91,8 +90,7 @@ def initialize_conditions(segment):
     N/A
     """   
     
-    state      = segment.state
-    conditions = state.conditions
+    state      = segment.state 
 
     # unpack inputs
     alt      = segment.altitude 

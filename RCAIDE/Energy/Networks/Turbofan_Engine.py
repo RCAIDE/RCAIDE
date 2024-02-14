@@ -174,11 +174,9 @@ class Turbofan_Engine(Network):
         Properties Used:
         N/A
         """            
-        
-
-        ones_row   = segment.state.ones_row  
+         
         fuel_lines = segment.analyses.energy.networks.turbofan_engine.fuel_lines
-        RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy(segment,fuel_lines) 
+        RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
             
         return    
      

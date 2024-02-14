@@ -129,13 +129,8 @@ class Internal_Combustion_Engine(Network):
         N/A
         """            
  
-        fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine.fuel_lines 
-        for fuel_line in fuel_lines: 
-            if fuel_line.active: 
-                fuel_line_results           = segment.state.conditions.energy[fuel_line.tag]  
-                fuel_line_results.throttle  = segment.state.unknowns[fuel_line.tag + '_throttle']  
-                for propulsor in fuel_line.propulsors: 
-                    fuel_line_results[propulsor.tag].rotor.rpm = segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_rpm']   
+        fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine.fuel_lines   
+        RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines)      
         
         return
     
@@ -191,12 +186,7 @@ class Internal_Combustion_Engine(Network):
         
         fuel_lines  = segment.analyses.energy.networks.internal_combustion_engine.fuel_lines
         ones_row    = segment.state.ones_row 
-        segment.state.residuals.network = Residuals() 
-        
-        if 'throttle' in segment.state.unknowns: 
-            segment.state.unknowns.pop('throttle')
-        if 'throttle' in segment.state.conditions.energy: 
-            segment.state.conditions.energy.pop('throttle') 
+        segment.state.residuals.network = Residuals()  
          
         for fuel_line_i, fuel_line in enumerate(fuel_lines):    
             # ------------------------------------------------------------------------------------------------------            
@@ -205,16 +195,7 @@ class Internal_Combustion_Engine(Network):
             segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Analyses.Mission.Common.Conditions()       
             fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]   
             segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Analyses.Mission.Common.Conditions()  
-            noise_results                                        = segment.state.conditions.noise[fuel_line.tag]
-
-            if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
-                pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
-                pass 
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
-                fuel_line_results.throttle = segment.throttle * ones_row(1)            
-            elif fuel_line.active:    
-                segment.state.unknowns[fuel_line.tag + '_throttle']  = segment.estimated_throttles[fuel_line_i] * ones_row(1) 
+            noise_results                                        = segment.state.conditions.noise[fuel_line.tag] 
  
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  
@@ -224,11 +205,8 @@ class Internal_Combustion_Engine(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
-            for propulsor in fuel_line.propulsors:         
-
-                segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_rpm']                           = segment.estimated_RPMs[fuel_line_i] * ones_row(1)  
-                segment.state.residuals.network[ fuel_line.tag + '_' + propulsor.tag + '_rotor_engine_torque'] = 0. * ones_row(1)       
-                
+            for propulsor in fuel_line.propulsors:          
+                segment.state.residuals.network[ fuel_line.tag + '_' + propulsor.tag + '_rotor_engine_torque'] = 0. * ones_row(1) 
                 fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].engine                  = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions()  

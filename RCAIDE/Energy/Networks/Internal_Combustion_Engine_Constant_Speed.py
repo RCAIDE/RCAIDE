@@ -124,12 +124,8 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
         N/A
         """            
  
-        fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine_constant_speed.fuel_lines 
-        for fuel_line in fuel_lines: 
-            if fuel_line.active: 
-                fuel_line_results       = segment.state.conditions.energy[fuel_line.tag]  
-                for propulsor in fuel_line.propulsors:          
-                    fuel_line_results[propulsor.tag].rotor.pitch_command  = segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_pitch_command']  
+        fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine_constant_speed.fuel_lines  
+        RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines)    
         
         return    
     
@@ -155,12 +151,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
         """
 
         fuel_lines  = segment.analyses.energy.networks.internal_combustion_engine_constant_speed.fuel_lines
-        ones_row    = segment.state.ones_row  
-        
-        if 'throttle' in segment.state.unknowns: 
-            segment.state.unknowns.pop('throttle')
-        if 'throttle' in segment.state.conditions.energy: 
-            segment.state.conditions.energy.pop('throttle') 
+        ones_row    = segment.state.ones_row   
          
         for fuel_line_i, fuel_line in enumerate(fuel_lines):    
             # ------------------------------------------------------------------------------------------------------            
@@ -179,8 +170,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
-            for propulsor in fuel_line.propulsors:         
-                segment.state.unknowns[fuel_line.tag + '_' + propulsor.tag + '_pitch_command'] = segment.estimated_rotor_pitch_commands[fuel_line_i] * ones_row(1)  
+            for propulsor in fuel_line.propulsors:           
                 fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].engine                  = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions()  

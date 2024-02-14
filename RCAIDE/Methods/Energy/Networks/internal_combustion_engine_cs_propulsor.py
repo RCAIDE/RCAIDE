@@ -97,9 +97,9 @@ def compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power,
     engine                  = propulsor.engine 
     rotor                   = propulsor.rotor 
 
-    # Run the rotor to get the power
-    rotor.inputs.pitch_command = ice_cs_results.rotor.pitch_command
-    rotor.inputs.omega         = ice_cs_results.engine.rpm
+    ## Run the rotor to get the power
+    #rotor.inputs.pitch_command = ice_cs_results.rotor.pitch_command
+    #rotor.inputs.omega         = ice_cs_results.engine.rpm
 
     # Spin the rotor 
     F, Q, P, Cp, outputs, etap = rotor.spin(conditions) 

@@ -1,5 +1,5 @@
-## @ingroup Energy-Propulsion-Electric_Rotor
-# RCAIDE/Energy/Propulsion/Electric_Rotor.py
+## @ingroup Energy-Propulsion 
+# RCAIDE/Energy/Propulsion/ICE_Propeller.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -14,8 +14,8 @@ from .                import Propulsor
 #  Fan Component
 # ----------------------------------------------------------------------
 ## @ingroup Energy-Propulsion-Converters
-class Electric_Rotor(Propulsor):
-    """This is a electric motor-rotor propulsor 
+class ICE_Propeller(Propulsor):
+    """This is an internal engine-propeller propulsor
     
     Assumptions:
     None
@@ -25,10 +25,9 @@ class Electric_Rotor(Propulsor):
     """ 
     def __defaults__(self):    
         # setting the default values
-        self.tag                          = 'electric_rotor'   
-        self.active_batteries             = None
-        self.motor                        = None
-        self.rotor                        = None 
-        self.electronic_speed_controller  = None  
+        self.tag                          = 'ice_propeller'   
+        self.active_fuel_tanks            = None
+        self.engine                       = None
+        self.propeller                    = None  
           
  

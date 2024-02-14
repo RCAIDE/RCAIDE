@@ -215,7 +215,20 @@ def mission_setup(analyses):
     segment.altitude_start = 0.0   * Units.km
     segment.altitude_end   = 4000. * Units.ft
     segment.airpseed       = 250.  * Units.kts
-    segment.climb_rate     = 4000. * Units['ft/min']  
+    segment.climb_rate     = 4000. * Units['ft/min']
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+      
     mission.append_segment(segment)
     
     
@@ -229,6 +242,19 @@ def mission_setup(analyses):
     segment.altitude_end = 8000. * Units.ft
     segment.airpseed     = 250.  * Units.kts
     segment.climb_rate   = 2000. * Units['ft/min']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------
@@ -242,6 +268,19 @@ def mission_setup(analyses):
     segment.mach_number_start   = .45
     segment.mach_number_end     = 0.95
     segment.climb_rate          = 3000. * Units['ft/min']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)    
 
     # ------------------------------------------------------------------
@@ -255,6 +294,19 @@ def mission_setup(analyses):
     segment.mach_number_start   = 0.95
     segment.mach_number_end     = 1.1
     segment.climb_rate          = 2000.  * Units['ft/min']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment) 
 
     # ------------------------------------------------------------------
@@ -267,6 +319,19 @@ def mission_setup(analyses):
     segment.mach_number_start   = 1.1
     segment.mach_number_end     = 1.7
     segment.climb_rate          = 1750.  * Units['ft/min']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------
@@ -279,6 +344,19 @@ def mission_setup(analyses):
     segment.mach_number_start   = 1.7
     segment.mach_number_end     = 2.02
     segment.climb_rate          = 750.  * Units['ft/min']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)     
     
 
@@ -291,6 +369,19 @@ def mission_setup(analyses):
     segment.altitude_end = 56500. * Units.ft
     segment.mach_number  = 2.02
     segment.climb_rate   = 50.  * Units['ft/min']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)
     
     # ------------------------------------------------------------------    
@@ -302,6 +393,19 @@ def mission_setup(analyses):
     segment.mach_number                          = 2.02
     segment.distance                             = 1. * Units.nmi
     segment.state.numerics.number_control_points = 4  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)    
     
     # ------------------------------------------------------------------
@@ -311,7 +415,20 @@ def mission_setup(analyses):
     segment.tag = "decel_1" 
     segment.analyses.extend( analyses.cruise )
     segment.acceleration      = -.5  * Units['m/s/s']
-    segment.air_speed_end     = 1.5*573.  * Units.kts  
+    segment.air_speed_end     = 1.5*573.  * Units.kts 
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+     
     mission.append_segment(segment)   
     
     # ------------------------------------------------------------------
@@ -323,6 +440,19 @@ def mission_setup(analyses):
     segment.altitude_end      = 41000. * Units.ft
     segment.mach_number_end   = 1.3
     segment.descent_rate      = 2000. * Units['ft/min']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -333,6 +463,19 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise )
     segment.acceleration      = -.5  * Units['m/s/s']
     segment.air_speed_end     = 0.95*573.  * Units.kts  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -345,6 +488,19 @@ def mission_setup(analyses):
     segment.altitude_end      = 10000. * Units.ft
     segment.mach_number_end   = 250./638. 
     segment.descent_rate      = 2000. * Units['ft/min']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)     
     
     # ------------------------------------------------------------------
@@ -355,7 +511,20 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise )
     segment.altitude_end = 0. * Units.ft
     segment.air_speed    = 250. * Units.kts
-    segment.descent_rate = 1000. * Units['ft/min']  
+    segment.descent_rate = 1000. * Units['ft/min']    
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['inner_right_turbojet','outer_right_turbojet','outer_left_turbojet','inner_left_turbojet']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)      
     
     # ------------------------------------------------------------------    

@@ -167,18 +167,9 @@ class Turbojet_Engine(Network):
         Properties Used:
         N/A
         """            
-
-        fuel_lines   = segment.analyses.energy.networks.turbojet_engine.fuel_lines  
-        for fuel_line_i, fuel_line in enumerate(fuel_lines):     
-            if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
-                pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
-                pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude):
-                pass    
-            elif fuel_line.active:     
-                fuel_line_results           = segment.state.conditions.energy[fuel_line.tag]  
-                fuel_line_results.throttle  = segment.state.unknowns[fuel_line.tag + '_throttle']  
+        
+        fuel_lines = segment.analyses.energy.networks.turbojet_engine.fuel_lines
+        RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
         
         return    
      
@@ -204,12 +195,7 @@ class Turbojet_Engine(Network):
         """                  
         fuel_lines  = segment.analyses.energy.networks.turbojet_engine.fuel_lines
         ones_row    = segment.state.ones_row 
-        segment.state.residuals.network = Residuals() 
-        
-        if 'throttle' in segment.state.unknowns: 
-            segment.state.unknowns.pop('throttle')
-        if 'throttle' in segment.state.conditions.energy: 
-            segment.state.conditions.energy.pop('throttle') 
+        segment.state.residuals.network = Residuals()  
          
         for fuel_line_i, fuel_line in enumerate(fuel_lines):    
             # ------------------------------------------------------------------------------------------------------            
@@ -219,16 +205,7 @@ class Turbojet_Engine(Network):
             fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]   
             fuel_line_results.throttle                           = 0. * ones_row(1) 
             segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Analyses.Mission.Common.Conditions()  
-            noise_results                                        = segment.state.conditions.noise[fuel_line.tag] 
-    
-            if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
-                pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
-                pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
-                fuel_line_results.throttle = segment.throttle * ones_row(1)       
-            elif fuel_line.active:              
-                segment.state.unknowns[fuel_line.tag + '_throttle']  = segment.estimated_throttles[fuel_line_i] * ones_row(1) 
+            noise_results                                        = segment.state.conditions.noise[fuel_line.tag]  
      
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  

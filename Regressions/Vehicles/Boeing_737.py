@@ -540,28 +540,31 @@ def vehicle_setup():
     vehicle.append_component(nacelle_2)   
 
     # ################################################# Energy Network #######################################################         
+    # Step 1: Define network
+    # Step 2: Define Distribution Type
+    # Step 3: Define Propulsors 
+    # Step 4: Define Enegy Source 
+
     #------------------------------------------------------------------------------------------------------------------------- 
     #  Turbofan Network
     #-------------------------------------------------------------------------------------------------------------------------   
     net                                         = RCAIDE.Energy.Networks.Turbofan_Engine() 
 
     # Append energy network to aircraft 
-    vehicle.append_energy_network(net)     
+    vehicle.append_energy_network(net)   
     
     #------------------------------------------------------------------------------------------------------------------------- 
     # Fuel Distrubition Line 
     #------------------------------------------------------------------------------------------------------------------------- 
     fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line()  
-
+    
     #------------------------------------------------------------------------------------------------------------------------------------  
-    #  Propulsor
-    #------------------------------------------------------------------------------------------------------------------------------------   
-    starboard_propulsor                         = RCAIDE.Energy.Propulsion.Propulsor()     
-    starboard_propulsor.tag                     = 'starboard_propulsor'
-     
-    turbofan                                    = RCAIDE.Energy.Propulsion.Converters.Turbofan() 
-    turbofan.tag                                = 'pratt_whitney_jt9d'
-    turbofan.origin                             = [[13.72, 4.86,-1.5]] 
+    # Propulsor: Starboard Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------         
+    turbofan                                    = RCAIDE.Energy.Propulsion.Turbofan() 
+    turbofan.tag                                = 'starboard_propulsor'
+    turbofan.active_fuel_tanks                  = ['fuel_tank']   
+    turbofan.origin                             = [[13.72, 4.86,-1.1]] 
     turbofan.engine_length                      = 2.71     
     turbofan.bypass_ratio                       = 5.4    
     turbofan.design_altitude                    = 35000.0*Units.ft
@@ -586,8 +589,7 @@ def vehicle_setup():
     inlet_nozzle.tag                            = 'inlet nozzle'
     inlet_nozzle.polytropic_efficiency          = 0.98
     inlet_nozzle.pressure_ratio                 = 0.98 
-    turbofan.inlet_nozzle                       = inlet_nozzle
-
+    turbofan.inlet_nozzle                       = inlet_nozzle 
 
     # low pressure compressor    
     low_pressure_compressor                       = RCAIDE.Energy.Propulsion.Converters.Compressor()    
@@ -631,8 +633,7 @@ def vehicle_setup():
     core_nozzle                                    = RCAIDE.Energy.Propulsion.Converters.Expansion_Nozzle()   
     core_nozzle.tag                                = 'core nozzle'
     core_nozzle.polytropic_efficiency              = 0.95
-    core_nozzle.pressure_ratio                     = 0.99   
-    core_nozzle.diameter                           = 0.92    
+    core_nozzle.pressure_ratio                     = 0.99  
     turbofan.core_nozzle                           = core_nozzle
              
     # fan nozzle             
@@ -640,59 +641,57 @@ def vehicle_setup():
     fan_nozzle.tag                                 = 'fan nozzle'
     fan_nozzle.polytropic_efficiency               = 0.95
     fan_nozzle.pressure_ratio                      = 0.99 
-    fan_nozzle.diameter                            = 1.659
     turbofan.fan_nozzle                            = fan_nozzle 
     
     # design turbofan
-    design_turbofan(turbofan) 
-    
-    starboard_propulsor.turbofan = turbofan 
-
+    design_turbofan(turbofan)  
     # append propulsor to distribution line 
-    fuel_line.propulsors.append(starboard_propulsor)  
+    fuel_line.propulsors.append(turbofan)  
 
     #------------------------------------------------------------------------------------------------------------------------------------  
-    # Port Propulsor
-    #------------------------------------------------------------------------------------------------------------------------------------     
-
-    port_propulsor                         = RCAIDE.Energy.Propulsion.Propulsor() 
-    port_propulsor.tag                     = 'port_propulsor'
-    
+    # Propulsor: Port Propulsor
+    #------------------------------------------------------------------------------------------------------------------------------------      
     # copy turbofan
     turbofan_2                             = deepcopy(turbofan)
-    turbofan_2.tag                         = 'turbofan_2' 
-    turbofan_2.origin                      = [[13.72,-4.38,-1.5]]  # change origin
-    
-    # append turbofan to propulsor data class 
-    port_propulsor.turbofan                = turbofan_2 
-    
+    turbofan_2.active_fuel_tanks           = ['fuel_tank'] 
+    turbofan_2.tag                         = 'port_propulsor' 
+    turbofan_2.origin                      = [[13.72,-4.38,-1.1]]  # change origin
+         
     # append propulsor to distribution line 
-    fuel_line.propulsors.append(port_propulsor)
-
-
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    #  Fuel Tank & Fuel
-    #------------------------------------------------------------------------------------------------------------------------------------   
+    fuel_line.propulsors.append(turbofan_2)
+  
+    #------------------------------------------------------------------------------------------------------------------------- 
+    #  Energy Source: Fuel Tank
+    #------------------------------------------------------------------------------------------------------------------------- 
+    # fuel tank
     fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = wing.origin 
     
-    # fuel 
+    # append fuel 
     fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline()   
     fuel.mass_properties.mass                   = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
     fuel.origin                                 = vehicle.wings.main_wing.mass_properties.center_of_gravity      
     fuel.mass_properties.center_of_gravity      = vehicle.wings.main_wing.aerodynamic_center
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel   
-    fuel_tank.assigned_propulsors               = ['starboard_propulsor','port_propulsor']  
-    fuel_line.fuel_tanks.append(fuel_tank)      
-     
+    fuel_tank.fuel                              = fuel            
+    
+    # apend fuel tank to dataclass of fuel tanks on fuel line 
+    fuel_line.fuel_tanks.append(fuel_tank) 
+
     # Append fuel line to Network      
-    net.fuel_lines.append(fuel_line)   
-     
-    #------------------------------------------------------------------------------------------------------------------------------------      
+    net.fuel_lines.append(fuel_line)  
+    
+    #------------------------------------------------------------------------------------------------------------------------- 
+    # Compute Center of Gravity of aircraft (Optional)
+    #------------------------------------------------------------------------------------------------------------------------- 
+   
+    vehicle.center_of_gravity()    
     compute_component_centers_of_gravity(vehicle)
-    vehicle.center_of_gravity()        
-        
+    
+    #------------------------------------------------------------------------------------------------------------------------- 
+    # Done ! 
+    #------------------------------------------------------------------------------------------------------------------------- 
+      
     return vehicle
  
 # ----------------------------------------------------------------------

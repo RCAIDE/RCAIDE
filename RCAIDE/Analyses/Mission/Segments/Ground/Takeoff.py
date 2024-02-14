@@ -76,16 +76,7 @@ class Takeoff(Evaluate):
         self.state.conditions.ground                              = Data()
         self.state.conditions.ground.incline                      = ones_row(1) * 0.0
         self.state.conditions.ground.friction_coefficient         = ones_row(1) * 0.0
-        self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0 
-        
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------  
-        ones_row_m1                               = self.state.ones_row_m1
-        self.state.unknowns.velocity_x            = ones_row_m1(1) * 0.0
-        self.state.unknowns.time                  = 100.
-        self.state.residuals.final_velocity_error = 0.0
-        self.state.residuals.forces               = ones_row_m1(1) * 0.0        
+        self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0       
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

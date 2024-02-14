@@ -214,7 +214,20 @@ def mission_setup(analyses):
     segment.altitude                                = 12000. * Units.feet
     segment.air_speed                               = 119.   * Units.knots
     segment.distance                                = 10 * Units.nautical_mile
-    segment.state.conditions.energy.rpm             = 2650.  * Units.rpm *  ones_row(1)            
+    segment.state.conditions.energy.rpm             = 2650.  * Units.rpm *  ones_row(1)
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                       = True  
+    segment.flight_dynamics.force_z                       = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['ice_propeller']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+                
     mission.append_segment(segment)
 
 

@@ -473,20 +473,16 @@ def vehicle_setup():
     fuel.origin                                 = vehicle.wings.main_wing.mass_properties.center_of_gravity      
     fuel.mass_properties.center_of_gravity      = vehicle.wings.main_wing.aerodynamic_center
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel  
-    fuel_tank.assigned_propulsors               = ['starboard_propulsor','port_propulsor']  
+    fuel_tank.fuel                              = fuel
     fuel_line.fuel_tanks.append(fuel_tank) 
     
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Propulsor
-    #------------------------------------------------------------------------------------------------------------------------------------   
-    starboard_propulsor                             = RCAIDE.Energy.Propulsion.Propulsor() 
-    starboard_propulsor.tag                         = 'starboard_propulsor'
-       
-    # Turbofan     
-    turbofan                                        = RCAIDE.Energy.Propulsion.Converters.Turbofan() 
-    turbofan.tag                                    = 'turbofan'
+    #------------------------------------------------------------------------------------------------------------------------------------    
+    turbofan                                        = RCAIDE.Energy.Propulsion.Turbofan() 
+    turbofan.tag                                    = 'starboard_propulsor'
+    turbofan.active_fuel_tanks                  = ['fuel_tank']   
     turbofan.engine_length                          = 2.71     
     turbofan.bypass_ratio                           = 5.4   
     turbofan.design_altitude                        = 35000.0*Units.ft
@@ -569,35 +565,26 @@ def vehicle_setup():
     turbofan.fan_nozzle                         = fan_nozzle 
     
     #design turbofan
-    design_turbofan(turbofan) 
-    
-    # append turbofan to propulsor data class 
-    starboard_propulsor.turbofan = turbofan 
+    design_turbofan(turbofan)  
     
     # append propulsor to distribution line 
-    fuel_line.propulsors.append(starboard_propulsor)
+    fuel_line.propulsors.append(turbofan)
 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Port Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------     
-
-    port_propulsor                         = RCAIDE.Energy.Propulsion.Propulsor() 
-    port_propulsor.tag                     = 'port_propulsor'
     
     # copy turbofan
     turbofan_2                             = deepcopy(turbofan)
-    turbofan_2.tag                         = 'turbofan_2' 
-    turbofan_2.origin                      = [[12.0,-4.38,-1.1]]  # change origin
-    
-    # append turbofan to propulsor data class 
-    port_propulsor.turbofan                = turbofan_2 
+    turbofan_2.tag                         = 'port_propulsor' 
+    turbofan_2.active_fuel_tanks           = ['fuel_tank'] 
+    turbofan_2.origin                      = [[12.0,-4.38,-1.1]]  # change origin 
     
     # append propulsor to distribution line 
-    fuel_line.propulsors.append(port_propulsor)
+    fuel_line.propulsors.append(turbofan_2)
 
-    #------------------------------------------------------------------------------------------------------------------------------------     
-    
+    #------------------------------------------------------------------------------------------------------------------------------------   
     # Append fuel line to network      
     net.fuel_lines.append(fuel_line)        
     

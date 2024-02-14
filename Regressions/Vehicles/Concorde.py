@@ -323,25 +323,23 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Inner Right Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    outer_right_propulsor                 = RCAIDE.Energy.Propulsion.Propulsor()  
-    outer_right_propulsor.tag             = 'turbojet_1'   
-    
-    # instantiate the gas turbine network
-    turbojet                              = RCAIDE.Energy.Propulsion.Converters.Turbojet() 
-    turbojet.engine_length                = 4.039
-    turbojet.nacelle_diameter             = 1.3
-    turbojet.inlet_diameter               = 1.212 
-    turbojet.areas.wetted                 = 30
-    turbojet.design_altitude              = 60000.0*Units.ft
-    turbojet.design_mach_number           = 2.02
-    turbojet.design_thrust                = 40000. * Units.lbf  
-    turbojet.origin                       = [[37.,6.,-1.3]] 
-    turbojet.working_fluid                = RCAIDE.Attributes.Gases.Air()
+    outer_right_turbojet                              = RCAIDE.Energy.Propulsion.Turbojet()  
+    outer_right_turbojet.tag                          = 'outer_right_turbojet'   
+    outer_right_turbojet.active_fuel_tanks            = ['tank_6_and_7','tank_5A_and_7A','tank_2_and_3','tank_11']    
+    outer_right_turbojet.engine_length                = 4.039
+    outer_right_turbojet.nacelle_diameter             = 1.3
+    outer_right_turbojet.inlet_diameter               = 1.212 
+    outer_right_turbojet.areas.wetted                 = 30
+    outer_right_turbojet.design_altitude              = 60000.0*Units.ft
+    outer_right_turbojet.design_mach_number           = 2.02
+    outer_right_turbojet.design_thrust                = 40000. * Units.lbf  
+    outer_right_turbojet.origin                       = [[37.,6.,-1.3]] 
+    outer_right_turbojet.working_fluid                = RCAIDE.Attributes.Gases.Air()
     
     # Ram  
     ram     = RCAIDE.Energy.Propulsion.Converters.Ram()
     ram.tag = 'ram' 
-    turbojet.append(ram) 
+    outer_right_turbojet.append(ram) 
  
     # Inlet Nozzle 
     inlet_nozzle                          = RCAIDE.Energy.Propulsion.Converters.Compression_Nozzle()
@@ -349,35 +347,35 @@ def vehicle_setup():
     inlet_nozzle.polytropic_efficiency    = 1.0
     inlet_nozzle.pressure_ratio           = 1.0
     inlet_nozzle.pressure_recovery        = 0.94 
-    turbojet.append(inlet_nozzle)     
+    outer_right_turbojet.append(inlet_nozzle)     
           
     #  Low Pressure Compressor      
     compressor                            = RCAIDE.Energy.Propulsion.Converters.Compressor()    
     compressor.tag                        = 'low_pressure_compressor' 
     compressor.polytropic_efficiency      = 0.88
     compressor.pressure_ratio             = 3.1     
-    turbojet.append(compressor)       
+    outer_right_turbojet.append(compressor)       
         
     # High Pressure Compressor        
     compressor                            = RCAIDE.Energy.Propulsion.Converters.Compressor()    
     compressor.tag                        = 'high_pressure_compressor' 
     compressor.polytropic_efficiency      = 0.88
     compressor.pressure_ratio             = 5.0  
-    turbojet.append(compressor)
+    outer_right_turbojet.append(compressor)
  
     # Low Pressure Turbine 
     turbine                               = RCAIDE.Energy.Propulsion.Converters.Turbine()   
     turbine.tag                           ='low_pressure_turbine' 
     turbine.mechanical_efficiency         = 0.99
     turbine.polytropic_efficiency         = 0.89 
-    turbojet.append(turbine)        
+    outer_right_turbojet.append(turbine)        
              
     # High Pressure Turbine         
     turbine                               = RCAIDE.Energy.Propulsion.Converters.Turbine()   
     turbine.tag                           ='high_pressure_turbine' 
     turbine.mechanical_efficiency         = 0.99
     turbine.polytropic_efficiency         = 0.87 
-    turbojet.append(turbine)  
+    outer_right_turbojet.append(turbine)  
           
     # Combustor   
     combustor                             = RCAIDE.Energy.Propulsion.Converters.Combustor()   
@@ -387,7 +385,7 @@ def vehicle_setup():
     combustor.turbine_inlet_temperature   = 1440.
     combustor.pressure_ratio              = 0.92
     combustor.fuel_data                   = RCAIDE.Attributes.Propellants.Jet_A()     
-    turbojet.append(combustor)
+    outer_right_turbojet.append(combustor)
      
     #  Afterburner  
     afterburner                           = RCAIDE.Energy.Propulsion.Converters.Combustor()   
@@ -397,50 +395,47 @@ def vehicle_setup():
     afterburner.turbine_inlet_temperature = 1500
     afterburner.pressure_ratio            = 1.0
     afterburner.fuel_data                 = RCAIDE.Attributes.Propellants.Jet_A()     
-    turbojet.append(afterburner)    
+    outer_right_turbojet.append(afterburner)    
  
     # Core Nozzle 
     nozzle                                = RCAIDE.Energy.Propulsion.Converters.Supersonic_Nozzle()   
     nozzle.tag                            = 'core_nozzle' 
     nozzle.pressure_recovery              = 0.95
     nozzle.pressure_ratio                 = 1.    
-    turbojet.append(nozzle) 
+    outer_right_turbojet.append(nozzle) 
     
     # design turbojet 
-    design_turbojet(turbojet)  
+    design_turbojet(outer_right_turbojet)  
     
-    # append turbojet 
-    outer_right_propulsor.turbojet = turbojet   
-    fuel_line.propulsors.append(outer_right_propulsor) 
+    # append turbojet    
+    fuel_line.propulsors.append(outer_right_turbojet) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Inner Right Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    inner_right_propulsor           = RCAIDE.Energy.Propulsion.Propulsor()  
-    inner_right_propulsor.tag       = 'turbojet_2'      
-    inner_right_turbojet            = deepcopy(turbojet) 
-    inner_right_turbojet.origin     = [[37.,5.3,-1.3]] 
-    inner_right_propulsor.turbojet  = inner_right_turbojet  
-    fuel_line.propulsors.append(inner_right_propulsor) 
+    inner_right_turbojet                     = deepcopy(outer_right_turbojet) 
+    inner_right_turbojet.tag                 = 'inner_right_turbojet'      
+    inner_right_turbojet.origin              = [[37.,5.3,-1.3]]   
+    inner_right_turbojet.active_fuel_tanks   = ['tank_6_and_7','tank_5A_and_7A','tank_2_and_3','tank_11']    
+    fuel_line.propulsors.append(inner_right_turbojet) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Inner Right Propulsor
-    #------------------------------------------------------------------------------------------------------------------------------------   
-    inner_left_propulsor           = RCAIDE.Energy.Propulsion.Propulsor()       
-    inner_left_propulsor.tag       = 'turbojet_3'  
-    inner_left_turbojet            = deepcopy(turbojet)
-    inner_left_turbojet.origin     = [[37.,-5.3,-1.3]] 
-    inner_left_propulsor.turbojet  = inner_left_turbojet 
-    fuel_line.propulsors.append(inner_left_propulsor) 
+    #------------------------------------------------------------------------------------------------------------------------------------    
+    inner_left_turbojet                     = deepcopy(outer_right_turbojet)    
+    inner_left_turbojet.tag                 = 'inner_left_turbojet'  
+    inner_left_turbojet.origin              = [[37.,-5.3,-1.3]]  
+    inner_left_turbojet.active_fuel_tanks   = ['tank_9','tank_10','tank_1_and_4','tank_5_and_8'] 
+    fuel_line.propulsors.append(inner_left_turbojet) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Inner Left Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    outer_left_propulsor           = RCAIDE.Energy.Propulsion.Propulsor()    
-    outer_left_propulsor.tag       = 'turbojet_4'     
-    outer_left_turbojet            = deepcopy(turbojet)
-    outer_left_turbojet.origin     = [[37.,-6.,-1.3]] 
-    outer_left_propulsor.turbojet  = outer_left_turbojet 
+    outer_left_propulsor                    = RCAIDE.Energy.Propulsion.Propulsor()    
+    outer_left_turbojet                     = deepcopy(outer_right_turbojet)
+    outer_left_turbojet.tag                 = 'outer_left_turbojet'     
+    outer_left_turbojet.active_fuel_tanks   = ['tank_9','tank_10','tank_1_and_4','tank_5_and_8']   
+    outer_left_turbojet.origin              = [[37.,-6.,-1.3]]   
     fuel_line.propulsors.append(outer_left_propulsor) 
 
        
@@ -452,8 +447,7 @@ def vehicle_setup():
     fuel_tank.mass_properties.center_of_gravity    = np.array([[26.5,0,0]])
     fuel_tank.mass_properties.fuel_mass_when_full  = 11096
     fuel_tank.fuel_selector_ratio                  = 1/8
-    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
-    fuel_tank.assigned_propulsors                  = ['turbojet_1','turbojet_2','turbojet_3','turbojet_4']
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
     fuel_tank                                      = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
@@ -461,8 +455,7 @@ def vehicle_setup():
     fuel_tank.mass_properties.center_of_gravity    = np.array([[28.7,0,0]])
     fuel_tank.mass_properties.fuel_mass_when_full  = 11943
     fuel_tank.fuel_selector_ratio                  = 1/8
-    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
-    fuel_tank.assigned_propulsors                  = ['turbojet_1','turbojet_2','turbojet_3','turbojet_4']
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
     fuel_tank                                      = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
@@ -470,8 +463,7 @@ def vehicle_setup():
     fuel_tank.mass_properties.center_of_gravity    = np.array([[31.0,0,0]])
     fuel_tank.mass_properties.fuel_mass_when_full  = 4198+4198
     fuel_tank.fuel_selector_ratio                  = 1/8
-    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
-    fuel_tank.assigned_propulsors                  = ['turbojet_1','turbojet_2','turbojet_3','turbojet_4']
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
     fuel_tank                                      = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
@@ -479,8 +471,7 @@ def vehicle_setup():
     fuel_tank.mass_properties.center_of_gravity    = np.array([[32.9,0,0]])
     fuel_tank.mass_properties.fuel_mass_when_full  = 7200+12838
     fuel_tank.fuel_selector_ratio                  = 1/8
-    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
-    fuel_tank.assigned_propulsors                  = ['turbojet_1','turbojet_2','turbojet_3','turbojet_4']
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
     fuel_tank                                      = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
@@ -488,8 +479,7 @@ def vehicle_setup():
     fuel_tank.mass_properties.center_of_gravity    = np.array([[37.4,0,0]])
     fuel_tank.mass_properties.fuel_mass_when_full  = 11587+7405
     fuel_tank.fuel_selector_ratio                  = 1/8
-    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
-    fuel_tank.assigned_propulsors                  = ['turbojet_1','turbojet_2','turbojet_3','turbojet_4']
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
     fuel_tank                                      = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
@@ -497,8 +487,7 @@ def vehicle_setup():
     fuel_tank.mass_properties.center_of_gravity    = np.array([[40.2,0,0]])
     fuel_tank.mass_properties.fuel_mass_when_full  = 2225+2225
     fuel_tank.fuel_selector_ratio                  = 1/8
-    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
-    fuel_tank.assigned_propulsors                  = ['turbojet_1','turbojet_2','turbojet_3','turbojet_4']
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
     fuel_tank                                      = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
@@ -506,8 +495,7 @@ def vehicle_setup():
     fuel_tank.mass_properties.center_of_gravity    = np.array([[40.2,0,0]])
     fuel_tank.mass_properties.fuel_mass_when_full  = 4570+4570
     fuel_tank.fuel_selector_ratio                  = 1/8
-    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
-    fuel_tank.assigned_propulsors                  = ['turbojet_1','turbojet_2','turbojet_3','turbojet_4']
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank)  
  
     fuel_tank = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
@@ -515,8 +503,7 @@ def vehicle_setup():
     fuel_tank.mass_properties.center_of_gravity    = np.array([[49.8,0,0]])
     fuel_tank.mass_properties.fuel_mass_when_full  = 10415
     fuel_tank.fuel_selector_ratio                  = 1/8
-    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A()
-    fuel_tank.assigned_propulsors                  = ['turbojet_1','turbojet_2','turbojet_3','turbojet_4']
+    fuel_tank.fuel_type                            = RCAIDE.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank)      
     
      # Append fuel line to network      
