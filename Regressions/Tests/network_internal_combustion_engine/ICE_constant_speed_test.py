@@ -88,8 +88,7 @@ def ICE_CS(vehicle):
     fuel.mass_properties.mass                   = 319 *Units.lbs 
     fuel.mass_properties.center_of_gravity      =  vehicle.wings.main_wing.mass_properties.center_of_gravity
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel 
-    fuel_tank.assigned_propulsors               = ['propulsor']  
+    fuel_tank.fuel                              = fuel  
     fuel_line.fuel_tanks.append(fuel_tank)
 
 
@@ -174,9 +173,9 @@ def configs_setup(vehicle):
     # ------------------------------------------------------------------
     #   Cruise Configuration
     # ------------------------------------------------------------------ 
-    config                                                     = RCAIDE.Components.Configs.Config(base_config)
-    config.tag                                                 = 'cruise' 
-    configs.append(config) 
+    cruise_config                                                     = RCAIDE.Components.Configs.Config(base_config)
+    cruise_config.tag                                                 = 'cruise' 
+    configs.append(cruise_config) 
     
     # done!
     return configs
@@ -209,7 +208,7 @@ def mission_setup(analyses):
 
     segment        = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
     segment.tag    = "cruise"
-    segment.analyses.extend( analyses.base ) 
+    segment.analyses.extend( analyses.cruise) 
     segment.altitude                                = 12000. * Units.feet
     segment.air_speed                               = 119.   * Units.knots
     segment.distance                                = 10 * Units.nautical_mile
@@ -222,7 +221,7 @@ def mission_setup(analyses):
     # define flight controls 
     segment.flight_controls.throttle.active               = True           
     segment.flight_controls.throttle.assigned_propulsors  = [['ice_propeller']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.throttle.initial_values       = [[0.5]].z
     segment.flight_controls.body_angle                   
     segment.flight_controls.body_angle.active             = True               
     segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
