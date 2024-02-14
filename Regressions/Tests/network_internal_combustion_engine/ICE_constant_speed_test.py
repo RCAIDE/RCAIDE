@@ -167,8 +167,7 @@ def configs_setup(vehicle):
     #   Initialize Configurations
     # ------------------------------------------------------------------ 
     configs                                                    = RCAIDE.Components.Configs.Config.Container() 
-    base_config                                                = RCAIDE.Components.Configs.Config(vehicle)
-    base_config.networks.internal_combustion_engine_constant_speed.fuel_lines.fuel_line.active_propulsor_groups = ['propulsor']  # default in network 
+    base_config                                                = RCAIDE.Components.Configs.Config(vehicle) 
     base_config.tag                                            = 'base'
     configs.append(base_config)
     
