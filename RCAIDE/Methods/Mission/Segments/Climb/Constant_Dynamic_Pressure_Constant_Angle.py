@@ -32,8 +32,7 @@ def initialize_conditions_unpack_unknowns(segment):
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
     segment.state.numerics.dimensionless.control_points [unitless]
-    conditions.freestream.density                       [kilograms/meter^3]
-    segment.state.unknowns.throttle                     [unitless]
+    conditions.freestream.density                       [kilograms/meter^3] 
     segment.state.unknowns.body_angle                   [radians]
     segment.state.unknowns.altitudes                    [meter]
 
@@ -54,13 +53,13 @@ def initialize_conditions_unpack_unknowns(segment):
     conditions  = segment.state.conditions
     rho         = conditions.freestream.density[:,0] 
 
-    if 'throttle' in segment.state.unknowns: 
-        throttle = segment.state.unknowns.throttle
-        segment.state.conditions.energy.throttle[:,0] = throttle[:,0]    
+    #if 'throttle' in segment.state.unknowns: 
+        #throttle = segment.state.unknowns.throttle
+        #segment.state.conditions.energy.throttle[:,0] = throttle[:,0]    
     
-    # unpack unknowns 
-    theta    = segment.state.unknowns.body_angle
-    alts     = segment.state.unknowns.altitudes    
+    ## unpack unknowns 
+    #theta    = segment.state.unknowns.body_angle
+    #alts     = segment.state.unknowns.altitudes    
 
     # Update freestream to get density
     RCAIDE.Methods.Mission.Common.Update.atmosphere(segment)

@@ -44,15 +44,7 @@ class Propulsor(Energy_Component):
             Properties Used:
             None
         """          
-        self.tag                          = 'propulsor'
-        self.motor                        = None
-        self.rotor                        = None
-        self.ducted_fan                   = None
-        self.electronic_speed_controller  = None  
-        self.engine                       = None
-        self.turbofan                     = None
-        self.turbojet                     = None 
+        self.tag                          = 'propulsor' 
         self.active                       = True 
-        self.energy_sources               = None 
         
     

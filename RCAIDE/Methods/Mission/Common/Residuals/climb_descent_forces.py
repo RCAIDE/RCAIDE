@@ -32,8 +32,12 @@ def climb_descent_forces(segment):
     FT = segment.state.conditions.frames.inertial.total_force_vector
     a  = segment.state.conditions.frames.inertial.acceleration_vector
     m  = segment.state.conditions.weights.total_mass    
-    
-    segment.state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a[:,0]
-    segment.state.residuals.forces[:,1] = FT[:,2]/m[:,0] - a[:,2]       
+
+    if segment.flight_dynamics.force_x: 
+        segment.state.residuals.force_x[:,0] = FT[:,0]/m[:,0] - a[:,0]
+    if segment.flight_dynamics.force_y: 
+        segment.state.residuals.force_y[:,0] = FT[:,1]/m[:,0] - a[:,1]       
+    if segment.flight_dynamics.force_z: 
+        segment.state.residuals.force_z[:,0] = FT[:,2]/m[:,0] - a[:,2]   
 
     return

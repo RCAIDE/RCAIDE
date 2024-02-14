@@ -9,8 +9,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Mission-Segments-Common
-   
-from .climb_descent     import climb_descent
-from .ground            import ground
-from .level_flight      import level_flight
-from .vertical_flight   import vertical_flight
+    
+from .ground           import ground
+from .orientation      import * 
+from .energy           import *
+from .control_surfaces import control_surfaces

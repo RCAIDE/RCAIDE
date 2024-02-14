@@ -70,20 +70,6 @@ class Optimized(Evaluate):
         self.seed_climb_rate        = 300. * Units['feet/min']
         self.algorithm              = 'SLSQP'
         self.true_course_angle      = 0.0 * Units.degrees    
-         
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Initials and Unknowns  
-        # --------------------------------------------------------------------------------------------------------------           
-        self.throttle_control.active                  = True             
-        self.throttle_control.assigned_propulsors     = None       
-        self.throttle_control.initial_values          = [[0.5]]       
-        self.flight_path_angle_control.active         = True                 
-        self.flight_path_angle_control.initial_values = [[3.0 * Units.degrees]]    
-        self.body_angle_control.active                = True        
-        self.body_angle_control.initial_values        = [[5.0 * Units.degrees]]    
-        self.velocity_control.active                  = True          
-        self.velocity_control.initial_values          = [[100]]     
         
         # -------------------------------------------------------------------------------------------------------------- 
         # Optimization Problem

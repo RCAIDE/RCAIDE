@@ -8,9 +8,9 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE Imports
+from RCAIDE.Core import Data
 from RCAIDE.Analyses                    import Analysis, Settings, Process   
-from RCAIDE.Analyses.Mission.Common     import State
-#from RCAIDE.Methods.Mission.Common.Segments import  expand_segments,sequential_segments 
+from RCAIDE.Analyses.Mission.Common     import State 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ANALYSES
@@ -162,9 +162,77 @@ class Segment(Analysis):
             state = self.state
         self.process(self)
         return self
+    
+    def flight_dynamics_and_controls(self): 
+        self.flight_dynamics                                             = Data()
+        self.flight_dynamics.force_x                                     = False 
+        self.flight_dynamics.force_y                                     = False 
+        self.flight_dynamics.force_z                                     = False 
+        self.flight_dynamics.moment_x                                    = False 
+        self.flight_dynamics.moment_y                                    = False 
+        self.flight_dynamics.moment_z                                    = False    
         
+        
+        self.flight_controls                                              = Data()   
+        
+        self.flight_controls.body_angle                                   = Data()
+        self.flight_controls.body_angle.active                            = False                 
+        self.flight_controls.body_angle.initial_values                    = None  
     
+        self.flight_controls.wind_angle                                   = Data()
+        self.flight_controls.wind_angle.active                            = False                 
+        self.flight_controls.wind_angle.initial_values                    = None   
     
+        self.flight_controls.velocity                                     = Data()
+        self.flight_controls.velocity.active                              = False                 
+        self.flight_controls.velocity.initial_values                      = None    
+    
+        self.flight_controls.altitude                                     = Data()
+        self.flight_controls.altitude.active                              = False                 
+        self.flight_controls.altitude.initial_values                      = None         
+    
+        self.flight_controls.throttle                                     = Data() 
+        self.flight_controls.throttle.active                              = False                
+        self.flight_controls.throttle.assigned_propulsors                 = None      
+        self.flight_controls.throttle.initial_values                      = None      
+    
+        self.flight_controls.elevator_deflection                          = Data() 
+        self.flight_controls.elevator_deflection.active                   = False      
+        self.flight_controls.elevator_deflection.assigned_surfaces        = None
+        self.flight_controls.elevator_deflection.initial_values           = None  
+    
+        self.flight_controls.flap_deflection                              = Data() 
+        self.flight_controls.flap_deflection.active                       = False          
+        self.flight_controls.flap_deflection.assigned_surfaces            = None
+        self.flight_controls.flap_deflection.initial_values               = None  
+
+        self.flight_controls.slat_deflection                              = Data() 
+        self.flight_controls.slat_deflection.active                       = False          
+        self.flight_controls.slat_deflection.assigned_surfaces            = None
+        self.flight_controls.slat_deflection.initial_values               = None          
+    
+        self.flight_controls.aileron_deflection                           = Data() 
+        self.flight_controls.aileron_deflection.active                    = False      
+        self.flight_controls.aileron_deflection.assigned_surfaces         = None
+        self.flight_controls.aileron_deflection.initial_values            = None  
+    
+        self.flight_controls.thrust_vector_angle                          = Data() 
+        self.flight_controls.thrust_vector_angle.active                   = False        
+        self.flight_controls.thrust_vector_angle.assigned_propulsors      = None
+        self.flight_controls.thrust_vector_angle.initial_values           = None  
+    
+        self.flight_controls.blade_pitch_angle                            = Data() 
+        self.flight_controls.blade_pitch_angle.active                     = False          
+        self.flight_controls.blade_pitch_angle.assigned_propulsors        = None
+        self.flight_controls.blade_pitch_angle.initial_values             = None  
+    
+        self.flight_controls.RPM                                          = Data() 
+        self.flight_controls.RPM.active                                   = False              
+        self.flight_controls.RPM.assigned_propulsors                      = None
+        self.flight_controls.RPM.initial_values                           = None  
+    
+        return     
+           
 # ----------------------------------------------------------------------
 #  Container
 # ----------------------------------------------------------------------

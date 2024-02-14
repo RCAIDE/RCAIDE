@@ -45,7 +45,9 @@ def ground(segment):
     
     if vf == 0.0: vf = 0.01
 
-    segment.state.residuals.forces[:,0]          = FT[1:,0]/m[1:,0] - acceleration[1:,0]
+    if segment.flight_dynamics.force_x: 
+        segment.state.residuals.force_x[:,0] = FT[1:,0]/m[1:,0] - acceleration[1:,0]
+        
     segment.state.residuals.final_velocity_error = (v[-1,0] - vf)
     
     return

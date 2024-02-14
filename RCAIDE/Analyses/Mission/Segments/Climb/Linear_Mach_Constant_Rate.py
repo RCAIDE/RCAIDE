@@ -56,16 +56,7 @@ class Linear_Mach_Constant_Rate(Evaluate):
         self.mach_number_end   = 0.7
         self.mach_number_start = 0.8
         self.true_course_angle = 0.0 * Units.degrees    
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------  
-        self.body_angle_control.active             = True            
-        self.body_angle_control.initial_values     = [[3.0 * Units.degrees]]  
-        self.throttle_control.active               = True
-        self.throttle_control.propulsor_list       = None
-        self.throttle_control.initial_values       = [[0.5]]       
-        
+      
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   

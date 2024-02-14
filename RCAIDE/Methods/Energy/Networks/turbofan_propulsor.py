@@ -29,7 +29,7 @@ def turbofan_propulsor(fuel_line,state):
     state                - operating data structure                                     [-] 
                      
     Outputs:                      
-    outputs              - propulsor operating outputs                                  [-]
+    outputs              - turbofan operating outputs                                   [-]
     total_thrust         - thrust of turbofans                                          [N]
     total_power          - power of turbofans                                           [W] 
     
@@ -42,23 +42,23 @@ def turbofan_propulsor(fuel_line,state):
     conditions      = state.conditions
     stored_results_flag  = False  
     
-    for propulsor in fuel_line.propulsors:  
-        if propulsor.active == True:  
+    for turbofan in fuel_line.propulsors:  
+        if turbofan.active == True:  
             if fuel_line.identical_propulsors == False:
                 # run analysis  
-                total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power)
+                total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power)
             else:             
                 if stored_results_flag == False: 
                     # run analysis 
-                    total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power)
+                    total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power)
                 else:
                     # use old results 
-                    total_thrust,total_power  = reuse_stored_data(conditions,fuel_line,propulsor,stored_propulsor_tag,total_thrust,total_power)
+                    total_thrust,total_power  = reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_thrust,total_power)
                 
     return total_thrust,total_power
 
-def compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power):  
-    ''' Computes the perfomrance of one propulsor
+def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):  
+    ''' Computes the perfomrance of one turbofan
     
     Assumptions: 
     N/A
@@ -67,25 +67,24 @@ def compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power)
     N/A
 
     Inputs:  
-    conditions           - operating conditions data structure    [-]  
-    fuel_line            - fuelline                               [-] 
-    propulsor            - propulsor data structure               [-] 
-    total_thrust         - thrust of propulsor group              [N]
-    total_power          - power of propulsor group               [W] 
+    conditions           - operating conditions data structure   [-]  
+    fuel_line            - fuelline                              [-] 
+    turbofan             - turbofan data structure               [-] 
+    total_thrust         - thrust of turbofan group              [N]
+    total_power          - power of turbofan group               [W] 
 
     Outputs:  
-    total_thrust         - thrust of propulsor group              [N]
-    total_power          - power of propulsor group               [W] 
-    stored_results_flag  - boolean for stored results             [-]     
-    stored_propulsor_tag - name of propulsor with stored results  [-]
+    total_thrust         - thrust of turbofan group              [N]
+    total_power          - power of turbofan group               [W] 
+    stored_results_flag  - boolean for stored results            [-]     
+    stored_propulsor_tag - name of turbofan with stored results  [-]
     
     Properties Used: 
     N.A.        
     ''' 
-    noise_results             = conditions.noise[fuel_line.tag][propulsor.tag] 
+    noise_results             = conditions.noise[fuel_line.tag][turbofan.tag] 
     fuel_line_results         = conditions.energy[fuel_line.tag]
-    turbofan_results          = fuel_line_results[propulsor.tag]
-    turbofan                  = propulsor.turbofan 
+    turbofan_results          = fuel_line_results[turbofan.tag] 
     ram                       = turbofan.ram
     inlet_nozzle              = turbofan.inlet_nozzle
     low_pressure_compressor   = turbofan.low_pressure_compressor
@@ -259,16 +258,16 @@ def compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power)
     noise_results.turbofan.fan_nozzle    = fan_nozzle_res
     noise_results.turbofan.core_nozzle   = core_nozzle_res  
     noise_results.turbofan.fan           = None
-    stored_results_flag                       = True
-    stored_propulsor_tag                 = propulsor.tag
+    stored_results_flag                  = True
+    stored_propulsor_tag                 = turbofan.tag
                  
     
     return total_thrust,total_power ,stored_results_flag,stored_propulsor_tag
     
     
     
-def reuse_stored_data(conditions,fuel_line,propulsor,stored_propulsor_tag,total_thrust,total_power):
-    '''Reuses results from one propulsor for identical propulsors
+def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_thrust,total_power):
+    '''Reuses results from one turbofan for identical turbofans
     
     Assumptions: 
     N/A
@@ -277,23 +276,23 @@ def reuse_stored_data(conditions,fuel_line,propulsor,stored_propulsor_tag,total_
     N/A
 
     Inputs:  
-    conditions           - operating conditions data structure    [-]  
-    fuel_line            - fuelline                               [-] 
-    propulsor            - propulsor data structure               [-] 
-    total_thrust         - thrust of propulsor group              [N]
-    total_power          - power of propulsor group               [W] 
+    conditions           - operating conditions data structure   [-]  
+    fuel_line            - fuelline                              [-] 
+    turbofan            - turbofan data structure                [-] 
+    total_thrust         - thrust of turbofan group              [N]
+    total_power          - power of turbofan group               [W] 
 
     Outputs:  
-    total_thrust         - thrust of propulsor group              [N]
-    total_power          - power of propulsor group               [W] 
+    total_thrust         - thrust of turbofan group              [N]
+    total_power          - power of turbofan group               [W] 
     
     Properties Used: 
     N.A.        
     ''' 
     turbofan_results_0                   = conditions.energy[fuel_line.tag][stored_propulsor_tag]
     noise_results_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
-    turbofan_results                     = conditions.energy[fuel_line.tag][propulsor.tag]  
-    noise_results                        = conditions.noise[fuel_line.tag][propulsor.tag] 
+    turbofan_results                     = conditions.energy[fuel_line.tag][turbofan.tag]  
+    noise_results                        = conditions.noise[fuel_line.tag][turbofan.tag] 
     turbofan_results.turbofan.thrust     = turbofan_results_0.turbofan.thrust 
     turbofan_results.turbofan.power      = turbofan_results_0.turbofan.power  
     turbofan_results.fuel_flow_rate      = turbofan_results_0.fuel_flow_rate 

@@ -54,17 +54,7 @@ class Constant_Acceleration_Constant_Altitude(Evaluate):
         self.acceleration      = 1.  * Units['m/s/s']
         self.air_speed_start   = None
         self.air_speed_end     = 1.0 * Units['m/s']
-        self.true_course_angle = 0.0 * Units.degrees      
-        
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------  
-        self.body_angle_control.active             = True            
-        self.body_angle_control.initial_values     = [[0.0 * Units.degrees]]  
-        self.throttle_control.active               = True
-        self.throttle_control.propulsor_list       = None
-        self.throttle_control.initial_values       = [[0.5]]         
+        self.true_course_angle = 0.0 * Units.degrees       
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

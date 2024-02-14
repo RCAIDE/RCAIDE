@@ -12,3 +12,8 @@
 from .          import Converters 
 from .          import Modulators 
 from .Propulsor import Propulsor
+
+from .Electric_Rotor                             import Electric_Rotor
+from .Turbofan                                   import Turbofan
+from .Turbojet                                   import Turbojet
+from Legacy.trunk.S.Components.Energy.Converters import Turboelectric

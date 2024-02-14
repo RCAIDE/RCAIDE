@@ -36,7 +36,4 @@ from Legacy.trunk.S.Components.Energy.Converters import Shaft_Power_Off_Take
 from Legacy.trunk.S.Components.Energy.Converters import Solar_Panel
 from Legacy.trunk.S.Components.Energy.Converters import Supersonic_Nozzle
 from Legacy.trunk.S.Components.Energy.Converters import Turbine
-from .Turbofan                                   import Turbofan
-from .Turbojet                                   import Turbojet
-from Legacy.trunk.S.Components.Energy.Converters import Turboelectric
 

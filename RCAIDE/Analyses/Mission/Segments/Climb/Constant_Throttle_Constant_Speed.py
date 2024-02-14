@@ -55,15 +55,7 @@ class Constant_Throttle_Constant_Speed(Evaluate):
         self.altitude_end      = 10. * Units.km
         self.throttle          = 0.5
         self.air_speed         = None
-        self.true_course_angle = 0.0 * Units.degrees      
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------   
-        self.body_angle_control.active             = True            
-        self.body_angle_control.initial_values     = [[5.0 * Units.degrees]]  
-        self.wind_angle.active                     = True 
-        self.wind_angle.initial_values             = [[1.0 * Units.deg]]               
+        self.true_course_angle = 0.0 * Units.degrees       
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

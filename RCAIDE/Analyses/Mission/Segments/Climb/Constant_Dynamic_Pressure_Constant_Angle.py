@@ -60,14 +60,7 @@ class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
         # --------------------------------------------------------------------------------------------------------------    
-        ones_row = self.state.ones_row         
-        self.altitude_control.active               = True            
-        self.altitude_control.initial_values       = [[0.0 * Units.degrees]]   
-        self.body_angle_control.active             = True            
-        self.body_angle_control.initial_values     = [[5.0 * Units.degrees]]  
-        self.throttle_control.active               = True
-        self.throttle_control.propulsor_list       = None
-        self.throttle_control.initial_values       = [[0.5]]              
+        ones_row = self.state.ones_row             
         self.state.residuals.altitude              = ones_row(1) * 0.0                                         
         
         # -------------------------------------------------------------------------------------------------------------- 

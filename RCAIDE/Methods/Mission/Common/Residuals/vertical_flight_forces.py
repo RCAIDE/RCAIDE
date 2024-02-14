@@ -27,10 +27,13 @@ def vertical_flight_forces(segment):
     """            
     
     FT = segment.state.conditions.frames.inertial.total_force_vector
-
-    # vertical
-    segment.state.residuals.forces[:,0] = FT[:,2]
-
+ 
+    if segment.flight_dynamics.force_x: 
+        segment.state.residuals.force_x[:,0] = FT[:,0] 
+    if segment.flight_dynamics.force_y: 
+        segment.state.residuals.force_y[:,0] = FT[:,1]      
+    if segment.flight_dynamics.force_z: 
+        segment.state.residuals.force_z[:,0] = FT[:,2] 
     return
     
     

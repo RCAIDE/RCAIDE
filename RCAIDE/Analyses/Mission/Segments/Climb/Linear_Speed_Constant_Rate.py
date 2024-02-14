@@ -56,15 +56,6 @@ class Linear_Speed_Constant_Rate(Evaluate):
         self.air_speed_start   = None
         self.air_speed_end     = 200 * Units.m / Units.s
         self.true_course_angle = 0.0 * Units.degrees    
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------   
-        self.body_angle_control.active             = True            
-        self.body_angle_control.initial_values     = [[3.0 * Units.degrees]]  
-        self.throttle_control.active               = True
-        self.throttle_control.propulsor_list       = None
-        self.throttle_control.initial_values       = [[0.5]] 
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

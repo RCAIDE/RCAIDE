@@ -113,33 +113,5 @@ def residual_total_forces(segment):
     segment.state.residuals.forces[:,1] = FT[:,2]  - a[:,2]
 
     return
-## @ingroup Methods-Missions-Segments-Cruise
-def unpack_unknowns(segment):
-    """ Unpacks the throttle setting and velocity from the solver to the mission
-    
-        Assumptions:
-        N/A
-        
-        Inputs:
-            state.unknowns:
-                throttle    [Unitless]
-                velocity    [meters/second]
-            
-        Outputs:
-            state.conditions:
-                propulsion.throttle             [Unitless]
-                frames.inertial.velocity_vector [meters/second]
-
-        Properties Used:
-        N/A
-                                
-    """       
-      
-    if 'throttle' in segment.state.unknowns: 
-        throttle = segment.state.unknowns.throttle
-        segment.state.conditions.energy.throttle[:,0]  = throttle[:,0]
-        
-    air_speed = segment.state.unknowns.velocity 
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed[:,0]
     
     

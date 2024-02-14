@@ -54,18 +54,8 @@ class Constant_Speed_Linear_Altitude(Evaluate):
         self.distance          = 10. * Units.km
         self.altitude_start    = None
         self.altitude_end      = None
-        self.true_course_angle = 0.0 * Units.degrees    
+        self.true_course_angle = 0.0 * Units.degrees     
         
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------     
-        self.body_angle_control.active             = True            
-        self.body_angle_control.initial_values     = [[5.0 * Units.degrees]]  
-        self.throttle_control.active               = True
-        self.throttle_control.propulsor_list       = None
-        self.throttle_control.initial_values       = [[0.5]]               
-  
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   

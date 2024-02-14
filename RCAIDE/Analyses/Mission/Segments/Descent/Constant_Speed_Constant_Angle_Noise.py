@@ -60,16 +60,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         self.air_speed         = 100 * Units.m / Units.s
         self.true_course_angle = 0.0 * Units.degrees 
         
-        self.state.numerics.discretization_method = RCAIDE.Methods.Utilities.Chebyshev.linear_data
-        
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------    
-        self.body_angle_control.active             = True            
-        self.body_angle_control.initial_values     = [[3.0 * Units.degrees]]  
-        self.throttle_control.active               = True
-        self.throttle_control.propulsor_list       = None
-        self.throttle_control.initial_values       = [[0.5]]       
+        self.state.numerics.discretization_method = RCAIDE.Methods.Utilities.Chebyshev.linear_data 
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
