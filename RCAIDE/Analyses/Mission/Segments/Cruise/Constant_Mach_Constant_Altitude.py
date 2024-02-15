@@ -60,9 +60,9 @@ class Constant_Mach_Constant_Altitude(Evaluate):
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize  
         initialize.conditions              = Segments.Cruise.Constant_Mach_Constant_Altitude.initialize_conditions
-        iterate                            = self.process.iterate   
+        iterate                            = self.process.iterate       
         iterate.residuals.total_forces     = Common.Residuals.level_flight_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight       
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
 
         return
 

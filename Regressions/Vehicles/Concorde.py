@@ -430,13 +430,12 @@ def vehicle_setup():
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Inner Left Propulsor
-    #------------------------------------------------------------------------------------------------------------------------------------   
-    outer_left_propulsor                    = RCAIDE.Energy.Propulsion.Propulsor()    
+    #------------------------------------------------------------------------------------------------------------------------------------    
     outer_left_turbojet                     = deepcopy(outer_right_turbojet)
     outer_left_turbojet.tag                 = 'outer_left_turbojet'     
     outer_left_turbojet.active_fuel_tanks   = ['tank_9','tank_10','tank_1_and_4','tank_5_and_8']   
     outer_left_turbojet.origin              = [[37.,-6.,-1.3]]   
-    fuel_line.propulsors.append(outer_left_propulsor) 
+    fuel_line.propulsors.append(outer_left_turbojet) 
 
        
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -543,7 +542,7 @@ def configs_setup(vehicle):
     config                                      = RCAIDE.Components.Configs.Config(base_config)
     config.tag                                  = 'climb' 
     for propulsor in config.networks.turbojet_engine.fuel_lines.fuel_line.propulsors:
-        propulsor.turbojet.afterburner_active = True 
+        propulsor.afterburner_active = True 
     configs.append(config)    
     
     
@@ -555,7 +554,7 @@ def configs_setup(vehicle):
     config.V2_VS_ratio                          = 1.21
     config.maximum_lift_coefficient             = 2.  
     for propulsor in config.networks.turbojet_engine.fuel_lines.fuel_line.propulsors:
-        propulsor.turbojet.afterburner_active = True 
+        propulsor.afterburner_active = True 
     configs.append(config) 
     
     # ------------------------------------------------------------------

@@ -17,7 +17,7 @@ import numpy as np
 # internal_combustion_engine_constant_speed_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsion-Networks
-def internal_combustion_engine_cs_propulsor(fuel_line,assigned_propulsors,state): 
+def internal_combustion_engine_cs_propulsor(fuel_line,state): 
     ''' Computes the perfomrance of all constant-speed internal combustion engine-propellers 
     connected to a fuel tank
     
@@ -28,12 +28,11 @@ def internal_combustion_engine_cs_propulsor(fuel_line,assigned_propulsors,state)
     N/A
 
     Inputs:   
-    fuel_line            - data structure containing turbofans on distrubution network  [-]  
-    assigned_propulsors  - list of propulsors that are powered by energy source         [-]
+    fuel_line            - data structure containing turbofans on distrubution network  [-]   
     state                - operating data structure                                     [-] 
                      
     Outputs:                      
-    outputs              - propulsor operating outputs                                  [-]
+    outputs              - ice_propeller operating outputs                                  [-]
     total_thrust         - thrust of internal combustion engine propellers              [N]
     total_power          - power of internal combustion engine propellers               [W]
     total_mdot           - mass flow rate of fuel                                       [kg/s]
@@ -47,25 +46,24 @@ def internal_combustion_engine_cs_propulsor(fuel_line,assigned_propulsors,state)
     total_thrust    = 0*state.ones_row(3) 
     conditions      = state.conditions
     stored_results_flag  = False 
-    
-    for i in range(len(assigned_propulsors)):
-        propulsor = fuel_line.propulsors[assigned_propulsors[i]]  
-        if propulsor.active == True:  
+     
+    for ice_propeller in fuel_line.propulsors:  
+        if ice_propeller.active == True:  
             if fuel_line.identical_propulsors == False:
                 # run analysis  
-                total_thrust,total_power,total_mdot ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power,total_mdot)
+                total_thrust,total_power,total_mdot ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_power,total_mdot)
             else:             
                 if stored_results_flag == False: 
                     # run analysis 
-                    total_thrust,total_power,total_mdot ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power,total_mdot)
+                    total_thrust,total_power,total_mdot ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_power,total_mdot)
                 else:
                     # use old results 
-                    total_thrust,total_power,total_mdot  = reuse_stored_data(conditions,fuel_line,propulsor,stored_propulsor_tag,total_thrust,total_power,total_mdot)
+                    total_thrust,total_power,total_mdot  = reuse_stored_data(conditions,fuel_line,ice_propeller,stored_propulsor_tag,total_thrust,total_power,total_mdot)
                 
     return total_thrust,total_power,total_mdot 
     
-def compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power,total_mdot):  
-    ''' Computes the perfomrance of one propulsor
+def compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_power,total_mdot):  
+    ''' Computes the perfomrance of one ice_propeller
     
     Assumptions: 
     N/A
@@ -76,26 +74,25 @@ def compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power,
     Inputs:  
     conditions           - operating conditions data structure    [-]  
     fuel_line            - fuelline                               [-] 
-    propulsor            - propulsor data structure               [-] 
-    total_thrust         - thrust of propulsor group              [N]
-    total_power          - power of propulsor group               [W]
-    total_mdot           - mass flow rate of propulsor group      [kg/s]
+    ice_propeller        - ice_propeller data structure               [-] 
+    total_thrust         - thrust of ice_propeller group              [N]
+    total_power          - power of ice_propeller group               [W]
+    total_mdot           - mass flow rate of ice_propeller group      [kg/s]
 
     Outputs:  
-    total_thrust         - thrust of propulsor group              [N]
-    total_power          - power of propulsor group               [W]
-    total_mdot           - mass flow rate of propulsor group      [kg/s]
+    total_thrust         - thrust of ice_propeller group              [N]
+    total_power          - power of ice_propeller group               [W]
+    total_mdot           - mass flow rate of ice_propeller group      [kg/s]
     stored_results_flag  - boolean for stored results             [-]     
-    stored_propulsor_tag - name of propulsor with stored results  [-]
+    stored_propulsor_tag - name of ice_propeller with stored results  [-]
     
     Properties Used: 
     N.A.        
-    ''' 
-    fuel_line_results       = conditions.energy[fuel_line.tag]
-    ice_cs_results          = fuel_line_results[propulsor.tag]
-    noise_results           = conditions.noise[fuel_line.tag][propulsor.tag] 
-    engine                  = propulsor.engine 
-    rotor                   = propulsor.rotor 
+    '''  
+    ice_cs_results          = conditions.energy[fuel_line.tag][ice_propeller.tag]
+    noise_results           = conditions.noise[fuel_line.tag][ice_propeller.tag] 
+    engine                  = ice_propeller.engine 
+    rotor                   = ice_propeller.rotor 
 
     ## Run the rotor to get the power
     #rotor.inputs.pitch_command = ice_cs_results.rotor.pitch_command
@@ -130,14 +127,14 @@ def compute_performance(conditions,fuel_line,propulsor,total_thrust,total_power,
     total_power                          += P
     total_thrust                         += F 
     total_mdot                           += ice_cs_results.fuel_flow_rate   
-    stored_results_flag                       = True
-    stored_propulsor_tag                 = propulsor.tag   
+    stored_results_flag                  = True
+    stored_propulsor_tag                 = ice_propeller.tag   
     
  
     return total_thrust,total_power,total_mdot ,stored_results_flag,stored_propulsor_tag 
     
-def reuse_stored_data(conditions,fuel_line,propulsor,stored_propulsor_tag,total_thrust,total_power,total_mdot):
-    '''Reuses results from one propulsor for identical propulsors
+def reuse_stored_data(conditions,fuel_line,ice_propeller,stored_propulsor_tag,total_thrust,total_power,total_mdot):
+    '''Reuses results from one ice_propeller for identical propulsors
     
     Assumptions: 
     N/A
@@ -147,24 +144,24 @@ def reuse_stored_data(conditions,fuel_line,propulsor,stored_propulsor_tag,total_
 
     Inputs:  
     conditions           - operating conditions data structure    [-]  
-    fuel_line            - fuelline                               [-] 
-    propulsor            - propulsor data structure               [-] 
-    total_thrust         - thrust of propulsor group              [N]
-    total_power          - power of propulsor group               [W]
-    total_mdot           - mass flow rate of propulsor group      [kg/s]
+    fuel_line            - fuel_line                              [-] 
+    ice_propeller        - ice_propeller data structure           [-] 
+    total_thrust         - thrust of ice_propeller group          [N]
+    total_power          - power of ice_propeller group           [W]
+    total_mdot           - mass flow rate of ice_propeller group  [kg/s]
 
     Outputs:  
-    total_thrust         - thrust of propulsor group              [N]
-    total_power          - power of propulsor group               [W]
-    total_mdot           - mass flow rate of propulsor group      [kg/s]
+    total_thrust         - thrust of ice_propeller group          [N]
+    total_power          - power of ice_propeller group           [W]
+    total_mdot           - mass flow rate of ice_propeller group  [kg/s]
     
     Properties Used: 
     N.A.        
     ''' 
     ice_cs_results_0                         = conditions.energy[fuel_line.tag][stored_propulsor_tag]
     noise_results_0                          = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
-    ice_cs_results                           = conditions.energy[fuel_line.tag][propulsor.tag]  
-    noise_results                            = conditions.noise[fuel_line.tag][propulsor.tag]  
+    ice_cs_results                           = conditions.energy[fuel_line.tag][ice_propeller.tag]  
+    noise_results                            = conditions.noise[fuel_line.tag][ice_propeller.tag]  
     ice_cs_results.mass_flow_rate            = ice_cs_results_0.mass_flow_rate          
     ice_cs_results.engine.power              = ice_cs_results_0.engine.power            
     ice_cs_results.engine.torque             = ice_cs_results_0.engine.torque           

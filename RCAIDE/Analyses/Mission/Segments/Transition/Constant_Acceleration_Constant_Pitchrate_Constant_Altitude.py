@@ -55,14 +55,7 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Evaluate):
         self.air_speed_end      = 1.0 * Units['m/s']        
         self.pitch_initial      = None
         self.pitch_final        = 0.0 * Units['rad']
-        self.true_course_angle  = 0.0 * Units.degrees  
-        
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # -------------------------------------------------------------------------------------------------------------- 
-        ones_row = self.state.ones_row
-        self.state.residuals.forces   = ones_row(2) * 0.0  
+        self.true_course_angle  = 0.0 * Units.degrees   
          
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
@@ -70,6 +63,6 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Evaluate):
         initialize                         = self.process.initialize 
         initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.initialize_conditions      
         iterate                            = self.process.iterate    
-        iterate.residuals.total_forces     = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.residual_total_forces
+        iterate.residuals.total_forces     = Common.Residuals.level_flight_forces  
         
         return

@@ -52,7 +52,7 @@ def initialize_conditions_unpack_unknowns(segment):
     rho         = conditions.freestream.density[:,0]  
     
     # unpack unknowns  
-    alts     = -conditions.frames.inertial.position_vector[:,2]
+    alts     = conditions.frames.inertial.position_vector[:,2]
 
     # Update freestream to get density
     RCAIDE.Methods.Mission.Common.Update.atmosphere(segment)
@@ -64,7 +64,7 @@ def initialize_conditions_unpack_unknowns(segment):
         alt0 = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
     
     # pack conditions    
-    conditions.freestream.altitude[:,0]             =  alts[:,0] # positive altitude in this context    
+    conditions.freestream.altitude[:,0] =  -alts  # positive altitude in this context    
     
 
     # check for initial velocity
@@ -87,8 +87,8 @@ def initialize_conditions_unpack_unknowns(segment):
     conditions.frames.inertial.velocity_vector[:,2] = v_z   
     
 ## @ingroup Methods-Missions-Segments-Climb
-def residual_total_forces(segment):
-    """Takes the summation of forces and makes a residual from the accelerations and altitude.
+def residual_altitude(segment):
+    """Computes the altitude residual
 
     Assumptions:
     No higher order terms.
@@ -103,22 +103,15 @@ def residual_total_forces(segment):
     segment.state.conditions.freestream.altitude                  [meter]
 
     Outputs:
-    segment.state.residuals.forces                                [Unitless]
+    segment.state.residuals.altitude                              [meters] 
 
     Properties Used:
     N/A
     """     
     
-    # Unpack results
-    FT      = segment.state.conditions.frames.inertial.total_force_vector
-    a       = segment.state.conditions.frames.inertial.acceleration_vector
-    m       = segment.state.conditions.weights.total_mass    
-    alt_in  = segment.state.unknowns.altitudes[:,0] 
-    alt_out = segment.state.conditions.freestream.altitude[:,0] 
-    
-    # Residual in X and Z, as well as a residual on the guess altitude
-    segment.state.residuals.forces[:,0]   = FT[:,0]/m[:,0] - a[:,0]
-    segment.state.residuals.forces[:,1]   = FT[:,2]/m[:,0] - a[:,2]
+    # Unpack results 
+    alt_in  = segment.state.unknowns.altitude[:,0] 
+    alt_out = segment.state.conditions.freestream.altitude[:,0]  
     segment.state.residuals.altitude[:,0] = (alt_in - alt_out)/alt_out[-1]
 
     return

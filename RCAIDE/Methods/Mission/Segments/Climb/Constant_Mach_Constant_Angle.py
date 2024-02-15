@@ -49,7 +49,7 @@ def initialize_conditions(segment):
     conditions  = segment.state.conditions  
         
     # unpack unknowns  
-    alts     = -conditions.frames.inertial.position_vector[:,2]
+    alts     = conditions.frames.inertial.position_vector[:,2]
     
     # check for initial altitude
     if alt0 is None:
@@ -57,7 +57,7 @@ def initialize_conditions(segment):
         alt0 = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
     
     # pack conditions   
-    conditions.freestream.altitude[:,0]             =  alts[:,0]  
+    conditions.freestream.altitude[:,0]   = -alts 
 
     # check for initial velocity
     if mach_number is None: 
@@ -84,15 +84,20 @@ def initialize_conditions(segment):
 def residual_total_forces(segment):
     
     # Unpack results
-    FT = segment.state.conditions.frames.inertial.total_force_vector
-    a  = segment.state.conditions.frames.inertial.acceleration_vector
-    m  = segment.state.conditions.weights.total_mass    
-    alt_in  = segment.state.unknowns.altitudes[:,0] 
+    FT      = segment.state.conditions.frames.inertial.total_force_vector
+    a       = segment.state.conditions.frames.inertial.acceleration_vector
+    m       = segment.state.conditions.weights.total_mass    
+    alt_in  = segment.state.unknowns.altitude[:,0] 
     alt_out = segment.state.conditions.freestream.altitude[:,0] 
     
     # Residual in X and Z, as well as a residual on the guess altitude
-    segment.state.residuals.forces[:,0]   = FT[:,0]/m[:,0] - a[:,0]
-    segment.state.residuals.forces[:,1]   = FT[:,2]/m[:,0] - a[:,2]
+    if segment.flight_dynamics.force_x: 
+        segment.state.residuals.force_x[:,0] = FT[:,0]/m[:,0] - a[:,0]
+    if segment.flight_dynamics.force_y: 
+        segment.state.residuals.force_y[:,0] = FT[:,1]/m[:,0] - a[:,1]       
+    if segment.flight_dynamics.force_z: 
+        segment.state.residuals.force_z[:,0] = FT[:,2]/m[:,0] - a[:,2]    
+          
     segment.state.residuals.altitude[:,0] = (alt_in - alt_out)/alt_out[-1]
 
     return    

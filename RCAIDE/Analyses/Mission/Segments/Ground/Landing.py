@@ -67,6 +67,15 @@ class Landing(Evaluate):
         self.throttle             = 0.0
         self.altitude             = 0.0
         self.true_course_angle    = 0.0 * Units.degrees 
+        
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  Unique Mission Unknowns and Residuals
+        # -------------------------------------------------------------------------------------------------------------- 
+        ones_row_m1                               = self.state.ones_row_m1
+        self.state.residuals.final_velocity_error = 0.0
+        self.state.residuals.force_x              = ones_row_m1(1) * 0.0    
+        self.state.unknowns.elapsed_ground_time   = 30.                        
+        self.state.unknowns.ground_velocity       = ones_row_m1(1) * 0  
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Conditions 

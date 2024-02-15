@@ -56,6 +56,13 @@ class Constant_Mach_Constant_Angle(Evaluate):
         self.climb_angle       = 3.  * Units.deg
         self.mach_number       = None
         self.true_course_angle = 0.0 * Units.degrees 
+
+        # -------------------------------------------------------------------------------------------------------------- 
+        #  Unique Mission Unknowns and Residuals
+        # --------------------------------------------------------------------------------------------------------------  
+        ones_row = self.state.ones_row        
+        self.state.unknowns.altitude   = ones_row(1) * 0.0   
+        self.state.residuals.altitude  = ones_row(1) * 0.0   
     
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

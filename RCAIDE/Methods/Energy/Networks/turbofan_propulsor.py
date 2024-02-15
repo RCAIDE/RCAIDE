@@ -83,8 +83,7 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     N.A.        
     ''' 
     noise_results             = conditions.noise[fuel_line.tag][turbofan.tag] 
-    fuel_line_results         = conditions.energy[fuel_line.tag]
-    turbofan_results          = fuel_line_results[turbofan.tag] 
+    turbofan_results          = conditions.energy[fuel_line.tag][turbofan.tag] 
     ram                       = turbofan.ram
     inlet_nozzle              = turbofan.inlet_nozzle
     low_pressure_compressor   = turbofan.low_pressure_compressor

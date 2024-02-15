@@ -1,5 +1,5 @@
 ## @ingroup Methods-Missions-Segments-Transition
-# RCAIDE/Methods/Missions/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.p
+# RCAIDE/Methods/Missions/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -80,46 +80,3 @@ def initialize_conditions(segment):
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = vx[:,0]
     segment.state.conditions.frames.inertial.time[:,0] = time[:,0]
-    
-    
-# ----------------------------------------------------------------------------------------------------------------------  
-#  Residual Total Forces
-# ----------------------------------------------------------------------------------------------------------------------  
-    
-## @ingroup Methods-Missions-Segments-Cruise    
-def residual_total_forces(segment):
-    """ Calculates a residual based on forces
-    
-        Assumptions:
-        The vehicle is not accelerating, doesn't use gravity
-        
-        Inputs:
-            segment.acceleration                   [meters/second^2]
-            segment.state.ones_row                 [vector]
-            state.conditions:
-                frames.inertial.total_force_vector [Newtons]
-                weights.total_mass                 [kg]
-            
-        Outputs:
-            state.conditions:
-                state.residuals.forces [meters/second^2]
-
-        Properties Used:
-        N/A
-                                
-    """      
-    
-    # Unpack
-    FT      = segment.state.conditions.frames.inertial.total_force_vector
-    ax      = segment.acceleration 
-    m       = segment.state.conditions.weights.total_mass  
-    one_row = segment.state.ones_row
-    
-    a_x    = ax*one_row(1)
-    
-    # horizontal
-    segment.state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a_x[:,0]
-    # vertical
-    segment.state.residuals.forces[:,1] = FT[:,2]/m[:,0] 
-
-    return

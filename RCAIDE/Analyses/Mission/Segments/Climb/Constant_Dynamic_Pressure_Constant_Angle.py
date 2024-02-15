@@ -61,7 +61,8 @@ class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
         #  Mission Specific Unknowns and Residuals 
         # --------------------------------------------------------------------------------------------------------------    
         ones_row = self.state.ones_row             
-        self.state.residuals.altitude              = ones_row(1) * 0.0                                         
+        self.state.residuals.altitude      = ones_row(1) * 0.0
+        self.state.unknowns.altitude       = ones_row(1) * 0.0                                         
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
@@ -72,7 +73,7 @@ class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
         iterate.unknowns.kinematics        = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns 
         iterate.conditions.differentials   = Segments.Climb.Optimized.update_differentials 
-        iterate.residuals.total_forces     = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.residual_total_forces    
-    
+        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces    
+        iterate.residuals.altitude         = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.residual_altitude
         return
        

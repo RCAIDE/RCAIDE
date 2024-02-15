@@ -118,7 +118,7 @@ class All_Electric(Network):
                 else:       
                     # compute energy consumption of each battery on bus  
                     for battery in batteries:  
-                        T,P,I            = all_electric_propulsor(bus,battery.assigned_propulsors,state,bus_voltage)  
+                        T,P,I            = all_electric_propulsor(bus,state,bus_voltage)  
                         total_thrust    += T
                         total_power     += P    
                         

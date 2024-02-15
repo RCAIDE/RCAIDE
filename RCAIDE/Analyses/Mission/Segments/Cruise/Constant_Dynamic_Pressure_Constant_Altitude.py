@@ -62,7 +62,7 @@ class Constant_Dynamic_Pressure_Constant_Altitude(Evaluate):
         initialize.conditions              = Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude.initialize_conditions 
         iterate                            = self.process.iterate   
         iterate.residuals.total_forces     = Common.Residuals.level_flight_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight  
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation  
 
         return
 

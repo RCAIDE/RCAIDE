@@ -54,17 +54,8 @@ class Constant_Dynamic_Pressure_Constant_Altitude_Loiter(Evaluate):
         self.altitude          = 0.0
         self.dynamic_pressure  = None
         self.time              = 1.0 * Units.sec
-        self.true_course_angle = 0.0 * Units.degrees
+        self.true_course_angle = 0.0 * Units.degrees 
         
-        
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------      
-        ones_row                           = self.state.ones_row
-        self.state.unknowns.throttle       = ones_row(1) * 0.5
-        self.state.unknowns.body_angle     = ones_row(1) * 1.0 * Units.deg
-        self.state.residuals.forces        = ones_row(2) * 0.0
-    
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------    
@@ -72,9 +63,6 @@ class Constant_Dynamic_Pressure_Constant_Altitude_Loiter(Evaluate):
         initialize.conditions              = Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude_Loiter.initialize_conditions
         iterate                            = self.process.iterate   
         iterate.residuals.total_forces     = Common.Residuals.level_flight_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight      
-        
-
-
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation        
         return
 

@@ -100,7 +100,7 @@ class Turbojet_Engine(Network):
                 fuel_tanks   = fuel_line.fuel_tanks      
             
                 for fuel_tank in fuel_tanks:  
-                    fuel_line_T , fuel_line_P, fuel_tank_mdot        = turbojet_propulsor(fuel_line,fuel_tank.assigned_propulsors,state)    
+                    fuel_line_T , fuel_line_P, fuel_tank_mdot        = turbojet_propulsor(fuel_line,state)    
                     fuel_line_results                                = conditions.energy[fuel_line.tag]   
                     fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_tank_mdot + fuel_tank.secondary_fuel_flow 
                         

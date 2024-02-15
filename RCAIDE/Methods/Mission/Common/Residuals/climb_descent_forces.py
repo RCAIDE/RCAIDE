@@ -3,7 +3,14 @@
 # 
 # 
 # Created:  Jul 2023, M. Clarke
- 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
+import RCAIDE
+import numpy as np 
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  Residual Total Forces
 # ----------------------------------------------------------------------------------------------------------------------
@@ -28,10 +35,15 @@ def climb_descent_forces(segment):
     Properties Used:
     N/A
     """        
-    
+
+    if type(segment) == RCAIDE.Analyses.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb: 
+        v       = segment.state.conditions.frames.inertial.velocity_vector
+        D       = segment.state.numerics.time.differentiate 
+        segment.state.conditions.frames.inertial.acceleration_vector = np.dot(D,v)
+        
     FT = segment.state.conditions.frames.inertial.total_force_vector
     a  = segment.state.conditions.frames.inertial.acceleration_vector
-    m  = segment.state.conditions.weights.total_mass    
+    m  = segment.state.conditions.weights.total_mass  
 
     if segment.flight_dynamics.force_x: 
         segment.state.residuals.force_x[:,0] = FT[:,0]/m[:,0] - a[:,0]

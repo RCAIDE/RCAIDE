@@ -40,8 +40,8 @@ def fuel_line_unknowns(segment,fuel_lines):
                     fuel_line_results[propulsor_tag].inputs.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]       
                                                                                       
         # RPM Control
-        if segment.RPM_control.active: 
-            num_rpm_ctrls = len(segment.RPM_control.assigned_propulsors) 
+        if flight_controls.RPM.active: 
+            num_rpm_ctrls = len(flight_controls.RPM.assigned_propulsors) 
             for i in range(num_rpm_ctrls):   
                 for j in range(len(flight_controls.RPM_control.assigned_propulsors[i])): 
                     propulsor_tag = flight_controls.RPM_control.assigned_propulsors[i][j]

@@ -73,30 +73,42 @@ class Internal_Combustion_Engine(Network):
             Properties Used:
             Defaulted values
         """           
-        
-        #Unpack
-        conditions  = state.conditions 
+        # Step 1: Unpack
+        conditions  = state.conditions  
         fuel_lines  = self.fuel_lines 
     
         total_thrust  = 0. * state.ones_row(3) 
         total_power   = 0. * state.ones_row(1) 
-        total_mdot    = 0. * state.ones_row(1) 
-
+        total_mdot    = 0. * state.ones_row(1)   
+    
+        # Step 2: loop through compoments of network and determine performance
         for fuel_line in fuel_lines:
             if fuel_line.active:   
-                fuel_tanks   = fuel_line.fuel_tanks  
-                for fuel_tank in fuel_tanks:  
-                    fuel_line_T , fuel_line_P, fuel_tank_mdot        = internal_combustion_engine_propulsor(fuel_line,fuel_tank.assigned_propulsors,state)  
-                    fuel_line_results                                = conditions.energy[fuel_line.tag]   
-                    fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_tank_mdot + fuel_tank.secondary_fuel_flow 
-                        
-                    total_thrust += fuel_line_T   
-                    total_power  += fuel_line_P    
-                    total_mdot   += fuel_line_results[fuel_tank.tag].mass_flow_rate    
     
+                # Step 2.1: Compute and store perfomrance of all propulsors 
+                fuel_line_T,fuel_line_P = internal_combustion_engine_propulsor(fuel_line,state)  
+                total_thrust += fuel_line_T   
+                total_power  += fuel_line_P  
+    
+                # Step 2.2: Link each turbofan the its respective fuel tank(s)
+                for fuel_tank in fuel_line.fuel_tanks:
+                    mdot = 0. * state.ones_row(1)   
+                    for turbofan in fuel_line.propulsors:
+                        for source in (turbofan.active_fuel_tanks):
+                            if fuel_tank.tag == source:  
+                                mdot += conditions.energy[fuel_line.tag][turbofan.tag].fuel_flow_rate 
+    
+                    # Step 2.3 : Determine cumulative fuel flow from fuel tank 
+                    fuel_tank_mdot = fuel_tank.fuel_selector_ratio*mdot + fuel_tank.secondary_fuel_flow 
+    
+                    # Step 2.4: Store mass flow results 
+                    conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate  = fuel_tank_mdot  
+                    total_mdot += fuel_tank_mdot                    
+    
+        # Step 3: Pack results 
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
-        conditions.energy.vehicle_mass_rate    = total_mdot           
+        conditions.energy.vehicle_mass_rate    = total_mdot        
     
         # A PATCH TO BE DELETED IN RCAIDE
         results = Data()

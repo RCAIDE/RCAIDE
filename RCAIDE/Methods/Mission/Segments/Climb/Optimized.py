@@ -114,6 +114,11 @@ def update_differentials(segment):
     alt0       = segment.altitude_start
     altf       = segment.altitude_end    
 
+    # check for initial altitude
+    if alt0 is None:
+        if not segment.state.initials: raise AttributeError('initial altitude not set')
+        alt0 = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
+        
     dz = altf - alt0
     vz = -v[:,2,None] # maintain column array
 
@@ -126,7 +131,7 @@ def update_differentials(segment):
     I = I * dt
     
     # Calculate the altitudes
-    alt = np.dot(I,vz) + segment.altitude_start
+    alt = np.dot(I,vz) + alt0
     
     # pack
     t_initial                                       = segment.state.conditions.frames.inertial.time[0,0]

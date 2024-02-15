@@ -70,13 +70,22 @@ class Takeoff(Evaluate):
         self.true_course_angle    = 0.0 * Units.degrees 
 
         # -------------------------------------------------------------------------------------------------------------- 
+        #  Mission Unknowns and Residuals
+        # -------------------------------------------------------------------------------------------------------------- 
+        ones_row_m1                               = self.state.ones_row_m1
+        self.state.residuals.final_velocity_error = 0.0
+        self.state.residuals.force_x              = ones_row_m1(1) * 0.0    
+        self.state.unknowns.elapsed_ground_time   = 30.                        
+        self.state.unknowns.ground_velocity       = ones_row_m1(1) * 0  
+
+        # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Conditions 
         # --------------------------------------------------------------------------------------------------------------          
         ones_row = self.state.ones_row  
         self.state.conditions.ground                              = Data()
         self.state.conditions.ground.incline                      = ones_row(1) * 0.0
         self.state.conditions.ground.friction_coefficient         = ones_row(1) * 0.0
-        self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0       
+        self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0  
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
