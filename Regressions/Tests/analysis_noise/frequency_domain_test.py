@@ -84,6 +84,7 @@ def Hararmonic_Noise_Validation(PP):
     conditions.frames.inertial.velocity_vector             = np.array([[77.2, 0. ,0.],[ 77.0,0.,0.], [ 77.2, 0. ,0.]]) 
     conditions.energy.throttle                             = np.ones((ctrl_pts,1))*1.0 
     rotor.inputs.omega                                     = np.atleast_2d(test_omega).T   
+    rotor.inputs.pitch_command                             = np.ones((ctrl_pts,1))*0.0 
     conditions.frames.planet.true_course_angle             = np.zeros((ctrl_pts,3,3)) 
     conditions.frames.planet.true_course_angle[:,0,0]      = np.cos(true_course_angle),
     conditions.frames.planet.true_course_angle[:,0,1]      = - np.sin(true_course_angle)
@@ -107,7 +108,7 @@ def Hararmonic_Noise_Validation(PP):
     F, Q, P, Cp , noise_data , etap                        = rotor.spin(conditions) 
 
     # Prepare Inputs for Noise Model   
-    conditions.noise.relative_microphone_locations            = np.repeat(positions[ np.newaxis,:,: ],1,axis=0)
+    conditions.noise.relative_microphone_locations         = np.repeat(positions[ np.newaxis,:,: ],1,axis=0)
     conditions.aerodynamics.angle_of_attack                = np.ones((ctrl_pts,1))* 0. * Units.degrees 
     segment                                                = Segment() 
     segment.state.conditions                               = conditions
@@ -244,7 +245,8 @@ def Broadband_Noise_Validation(PP):
             positions[i][:] = [S*np.sin(theta[i]*Units.degrees- np.pi/2),-S*np.cos(theta[i]*Units.degrees - np.pi/2), 0.0] 
 
     # Define conditions  
-    rotor.inputs.omega                                    = np.atleast_2d(APC_SF_omega_vector).T
+    rotor.inputs.omega                                     = np.atleast_2d(APC_SF_omega_vector).T
+    rotor.inputs.pitch_command                             = np.ones((ctrl_pts,1))*0.0
     conditions                                             = Results() 
     conditions.freestream.density                          = np.ones((ctrl_pts,1)) * density
     conditions.freestream.dynamic_viscosity                = np.ones((ctrl_pts,1)) * dynamic_viscosity   
