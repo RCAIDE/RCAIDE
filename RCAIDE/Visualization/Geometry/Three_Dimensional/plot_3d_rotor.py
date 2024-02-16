@@ -123,7 +123,7 @@ def get_3d_blade_coordinates(rotor,n_points,dim,i,aircraftRefFrame=True):
     # unpack 
     num_B        = rotor.number_of_blades
     airfoils     = rotor.Airfoils 
-    beta         = rotor.twist_distribution + rotor.inputs.pitch_command  
+    beta         = rotor.twist_distribution + rotor.inputs.pitch_command[0][0]  
     a_o          = rotor.start_angle
     b            = rotor.chord_distribution
     r            = rotor.radius_distribution

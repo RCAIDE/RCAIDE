@@ -75,7 +75,7 @@ class Takeoff(Evaluate):
         ones_row_m1                               = self.state.ones_row_m1
         self.state.residuals.final_velocity_error = 0.0
         self.state.residuals.force_x              = ones_row_m1(1) * 0.0    
-        self.state.unknowns.elapsed_ground_time   = 30.                        
+        self.state.unknowns.elapsed_time          = 30.                        
         self.state.unknowns.ground_velocity       = ones_row_m1(1) * 0  
 
         # -------------------------------------------------------------------------------------------------------------- 

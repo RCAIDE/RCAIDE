@@ -173,9 +173,10 @@ class Segment(Analysis):
         self.flight_dynamics.moment_z                                    = False    
         
         self.flight_controls                                              = Data() 
+        
         self.flight_controls.body_angle                                   = Data()
         self.flight_controls.body_angle.active                            = False                 
-        self.flight_controls.body_angle.initial_values                    = None  
+        self.flight_controls.body_angle.initial_values                    = None   
     
         self.flight_controls.wind_angle                                   = Data()
         self.flight_controls.wind_angle.active                            = False                 
@@ -188,7 +189,7 @@ class Segment(Analysis):
         self.flight_controls.velocity                                     = Data()
         self.flight_controls.velocity.active                              = False                 
         self.flight_controls.velocity.initial_values                      = None    
-
+        
         self.flight_controls.acceleration                                 = Data()
         self.flight_controls.acceleration.active                          = False                 
         self.flight_controls.acceleration.initial_values                  = None   

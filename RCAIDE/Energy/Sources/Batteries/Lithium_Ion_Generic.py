@@ -41,7 +41,7 @@ class Lithium_Ion_Generic(Battery):
     """  
     def __defaults__(self):
             
-        self.tag                                                      = 'Generic_Lithium_Ion_Battery_Cell'  
+        self.tag                                                      = 'lithium_ion_generic'  
         self.cell                                                     = Data()  
         self.pack                                                     = Data()
         self.module                                                   = Data()  

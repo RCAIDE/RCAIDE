@@ -46,7 +46,7 @@ def level_flight_forces(segment):
         
     FT = segment.state.conditions.frames.inertial.total_force_vector
     a  = segment.state.conditions.frames.inertial.acceleration_vector
-    m  = segment.state.conditions.weights.total_mass[:,0]
+    m  = segment.state.conditions.weights.total_mass 
     
     if segment.flight_dynamics.force_x: 
         segment.state.residuals.force_x[:,0] = FT[:,0]/m[:,0] - a[:,0]

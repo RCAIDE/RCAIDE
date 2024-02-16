@@ -32,13 +32,10 @@ def turbojet_propulsor(fuel_line,state):
     outputs              - turbojet operating outputs                                   [-]
     total_thrust         - thrust of turbojets                                          [N]
     total_power          - power of turbojets                                           [W]
-    total_mdot           - mass flow rate of fuel                                       [kg/s]
     
     Properties Used: 
     N.A.        
-    '''
-  
-    total_mdot      = 0*state.ones_row(1) 
+    '''  
     total_power     = 0*state.ones_row(1) 
     total_thrust    = 0*state.ones_row(3) 
     conditions      = state.conditions
@@ -48,18 +45,18 @@ def turbojet_propulsor(fuel_line,state):
         if turbojet.active == True:  
             if fuel_line.identical_propulsors == False:
                 # run analysis  
-                total_thrust,total_power,total_mdot ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power,total_mdot)
+                total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power)
             else:             
                 if stored_results_flag == False: 
                     # run analysis 
-                    total_thrust,total_power,total_mdot ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power,total_mdot)
+                    total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power)
                 else:
                     # use old results 
-                    total_thrust,total_power,total_mdot  = reuse_stored_data(conditions,fuel_line,turbojet,stored_propulsor_tag,total_thrust,total_power,total_mdot)
+                    total_thrust,total_power  = reuse_stored_data(conditions,fuel_line,turbojet,stored_propulsor_tag,total_thrust,total_power)
                 
-    return total_thrust,total_power,total_mdot
+    return total_thrust,total_power
 
-def compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power,total_mdot):  
+def compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power):  
     ''' Computes the perfomrance of one turbojet
     
     Assumptions: 
@@ -73,13 +70,11 @@ def compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power,t
     fuel_line            - fuelline                              [-] 
     turbojet             - turbojet data structure               [-] 
     total_thrust         - thrust of turbojet group              [N]
-    total_power          - power of turbojet group               [W]
-    total_mdot           - mass flow rate of turbojet group      [kg/s]
+    total_power          - power of turbojet group               [W] 
 
     Outputs:  
     total_thrust         - thrust of turbojet group              [N]
-    total_power          - power of turbojet group               [W]
-    total_mdot           - mass flow rate of turbojet group      [kg/s]
+    total_power          - power of turbojet group               [W] 
     stored_results_flag  - boolean for stored results            [-]     
     stored_propulsor_tag - name of turbojet with stored results  [-]
     
@@ -204,8 +199,7 @@ def compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power,t
     # getting the network outputs from the thrust outputs  
     turbojet_results.turbojet.thrust = turbojet.outputs.thrust
     turbojet_results.turbojet.power  = turbojet.outputs.power  
-    turbojet_results.fuel_flow_rate  = turbojet.outputs.fuel_flow_rate
-    total_mdot                       += turbojet_results.fuel_flow_rate
+    turbojet_results.fuel_flow_rate  = turbojet.outputs.fuel_flow_rate 
     total_power                      += turbojet_results.turbojet.power
     total_thrust[:,0]                += turbojet_results.turbojet.thrust[:,0]
 
@@ -224,9 +218,9 @@ def compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power,t
     stored_results_flag                  = True
     stored_propulsor_tag                 = turbojet.tag
     
-    return total_thrust,total_power,total_mdot ,stored_results_flag,stored_propulsor_tag
+    return total_thrust,total_power ,stored_results_flag,stored_propulsor_tag
 
-def reuse_stored_data(conditions,fuel_line,turbojet,stored_propulsor_tag,total_thrust,total_power,total_mdot):
+def reuse_stored_data(conditions,fuel_line,turbojet,stored_propulsor_tag,total_thrust,total_power):
     '''Reuses results from one turbojet for identical propulsors
     
     Assumptions: 
@@ -240,13 +234,11 @@ def reuse_stored_data(conditions,fuel_line,turbojet,stored_propulsor_tag,total_t
     fuel_line            - fuelline                              [-] 
     turbojet            - turbojet data structure                [-] 
     total_thrust         - thrust of turbojet group              [N]
-    total_power          - power of turbojet group               [W]
-    total_mdot           - mass flow rate of turbojet group      [kg/s]
+    total_power          - power of turbojet group               [W] 
 
     Outputs:  
     total_thrust         - thrust of turbojet group              [N]
-    total_power          - power of turbojet group               [W]
-    total_mdot           - mass flow rate of turbojet group      [kg/s]
+    total_power          - power of turbojet group               [W] 
     
     Properties Used: 
     N.A.        
@@ -259,9 +251,8 @@ def reuse_stored_data(conditions,fuel_line,turbojet,stored_propulsor_tag,total_t
     turbojet_results.turbojet.power      = turbojet_results_0.turbojet.power   
     noise_results.turbojet.fan_nozzle    = None  
     noise_results.turbojet.core_nozzle   = noise_results_0.turbojet.core_nozzle 
-    noise_results.turbojet.fan           = None  
-    total_mdot                           += turbojet_results_0.fuel_flow_rate 
+    noise_results.turbojet.fan           = None   
     total_power                          += turbojet_results.turbojet.power
     total_thrust[:,0]                    += turbojet_results.turbojet.thrust[:,0]
  
-    return total_thrust,total_power,total_mdot
+    return total_thrust,total_power

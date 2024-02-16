@@ -174,7 +174,6 @@ def mission_setup(analyses):
     
     # base segment
     base_segment = Segments.Segment()
-    ones_row     = base_segment.state.ones_row
     base_segment.state.numerics.number_control_points  = 4       
     
     flights_per_day = 1 
@@ -212,8 +211,7 @@ def mission_setup(analyses):
             # define flight controls 
             segment.flight_controls.throttle.active               = True           
             segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-            segment.flight_controls.throttle.initial_values       = [[0.5]]
-            segment.flight_controls.body_angle                   
+            segment.flight_controls.throttle.initial_values       = [[0.5]] 
             segment.flight_controls.body_angle.active             = True               
             segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
      
@@ -241,8 +239,7 @@ def mission_setup(analyses):
             # define flight controls 
             segment.flight_controls.throttle.active               = True           
             segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-            segment.flight_controls.throttle.initial_values       = [[0.5]]
-            segment.flight_controls.body_angle                   
+            segment.flight_controls.throttle.initial_values       = [[0.5]] 
             segment.flight_controls.body_angle.active             = True               
             segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
        
@@ -255,21 +252,20 @@ def mission_setup(analyses):
             segment = Segments.Descent.Linear_Speed_Constant_Rate(base_segment) 
             segment.tag = "decent"   + "_flight_no_" + str(flight_no+ 1) + "_day_" + str (day+ 1) 
             segment.analyses.extend( analyses.base )       
-            segment.altitude_start                                   = 8012 * Units.feet  
-            segment.altitude_end                                     = 2500.0 * Units.feet
-            segment.air_speed_start                                  = 150.* Units['mph']  
-            segment.air_speed_end                                    = 90 * Units['mph']   
-            segment.descent_rate                                     = 200 * Units['ft/min'] 
+            segment.altitude_start                                = 8012 * Units.feet  
+            segment.altitude_end                                  = 2500.0 * Units.feet
+            segment.air_speed_start                               = 150.* Units['mph']  
+            segment.air_speed_end                                 = 90 * Units['mph']   
+            segment.descent_rate                                  = 200 * Units['ft/min'] 
             
             # define flight dynamics to model 
-            segment.flight_dynamics.force_x                      = True  
-            segment.flight_dynamics.force_z                      = True     
+            segment.flight_dynamics.force_x                       = True  
+            segment.flight_dynamics.force_z                       = True     
             
             # define flight controls 
             segment.flight_controls.throttle.active               = True           
             segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-            segment.flight_controls.throttle.initial_values       = [[0.5]]
-            segment.flight_controls.body_angle                   
+            segment.flight_controls.throttle.initial_values       = [[0.5]] 
             segment.flight_controls.body_angle.active             = True               
             segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
           
@@ -279,13 +275,13 @@ def mission_setup(analyses):
             #  Charge Segment: 
             # ------------------------------------------------------------------     
             # Charge Model 
-            segment                                                 = Segments.Ground.Battery_Recharge(base_segment)     
-            segment.tag                                             = 'Recharge'  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
-            segment.current                                         = 100
-            segment.analyses.extend(analyses.base)                       
-            segment.time                                            = 1.5 * Units.hr
+            segment                                               = Segments.Ground.Battery_Recharge(base_segment)     
+            segment.tag                                           = 'Recharge'  + "_F_" + str(flight_no+ 1) + "_D" + str (day+ 1) 
+            segment.current                                       = 100
+            segment.analyses.extend(analyses.base)                     
+            segment.time                                          = 1.5 * Units.hr
             if flight_no  == flights_per_day:  
-                segment.increment_battery_age_by_one_day            =True                            
+                segment.increment_battery_age_by_one_day          =True                            
             mission.append_segment(segment)        
 
     return mission
@@ -306,6 +302,8 @@ def plot_results(results):
     
     # Plot arcraft trajectory
     plot_flight_trajectory(results)   
+
+    plot_propulsor_throttles(results)
     
     # Plot Aircraft Electronics
     plot_battery_pack_conditions(results) 

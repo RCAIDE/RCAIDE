@@ -59,9 +59,7 @@ class Set_Speed_Set_Throttle(Evaluate):
         self.air_speed                               = 10. * Units['km/hr']
         self.throttle                                = 1.
         self.acceleration_z                          = 0. # note that down is positive
-        self.state.numerics.number_of_control_points = 1
-         
-        self.state.unknowns.acceleration_x    = np.array([[0.0]]) 
+        self.state.numerics.number_of_control_points = 1 
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

@@ -37,7 +37,7 @@ def differentials_dimensionless(segment):
     """     
     
     # unpack
-    numerics = segment.state.numerics
+    numerics              = segment.state.numerics
     N                     = numerics.number_of_control_points
     discretization_method = numerics.discretization_method
     

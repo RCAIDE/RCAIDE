@@ -30,16 +30,7 @@ def plot_fuel_consumption(results,
     Assumptions:
     None
 
-    Source:
-
-    Depricated RCAIDE Mission Plots Functions
-
-    Created:    Mar 2020, M. Clarke
-    Modified:   Apr 2020, M. Clarke
-                Sep 2020, M. Clarke
-                Apr 2021, M. Clarke
-                Dec 2021, S. Claridge
-
+    Source: 
   
     Inputs:
     results.segments.condtions.

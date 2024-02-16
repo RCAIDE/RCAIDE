@@ -412,6 +412,7 @@ def vehicle_setup():
     # Battery
     #------------------------------------------------------------------------------------------------------------------------------------  
     bat                                                    = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_NMC()
+    bat.tag                                                = 'li_ion_battery'
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 100
     initialize_from_circuit_configuration(bat)  
@@ -430,7 +431,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------   
     starboard_propulsor                              = RCAIDE.Energy.Propulsion.Electric_Rotor()  
     starboard_propulsor.tag                          = 'starboard_propulsor'
-    starboard_propulsor.active_batteries             = [bat.tag]   
+    starboard_propulsor.active_batteries             = ['li_ion_battery']   
   
     # Electronic Speed Controller       
     esc                                              = RCAIDE.Energy.Propulsion.Modulators.Electronic_Speed_Controller()
@@ -485,7 +486,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------   
     port_propulsor                             = RCAIDE.Energy.Propulsion.Electric_Rotor() 
     port_propulsor.tag                         = "port_propulsor"
-    port_propulsor.active_batteries            = [bat.tag]   
+    port_propulsor.active_batteries            = ['li_ion_battery']   
             
     esc_2                                      = deepcopy(esc)
     esc_2.origin                               = [[2., -2.5, 0.95]]      

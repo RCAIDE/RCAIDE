@@ -66,7 +66,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
     """       
     
     def __defaults__(self):    
-        self.tag                              = 'Lithium_Ion_NMC'  
+        self.tag                              = 'lithium_ion_nmc'  
 
         self.cell.diameter                    = 0.0185                                                   # [m]
         self.cell.height                      = 0.0653                                                   # [m]

@@ -86,13 +86,13 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
                 total_thrust += fuel_line_T   
                 total_power  += fuel_line_P  
     
-                # Step 2.2: Link each turbofan the its respective fuel tank(s)
+                # Step 2.2: Link each ice constant speed propeller the its respective fuel tank(s)
                 for fuel_tank in fuel_line.fuel_tanks:
                     mdot = 0. * state.ones_row(1)   
-                    for turbofan in fuel_line.propulsors:
-                        for source in (turbofan.active_fuel_tanks):
+                    for ice_propeller in fuel_line.propulsors:
+                        for source in (ice_propeller.active_fuel_tanks):
                             if fuel_tank.tag == source:  
-                                mdot += conditions.energy[fuel_line.tag][turbofan.tag].fuel_flow_rate 
+                                mdot += conditions.energy[fuel_line.tag][ice_propeller.tag].fuel_flow_rate 
     
                     # Step 2.3 : Determine cumulative fuel flow from fuel tank 
                     fuel_tank_mdot = fuel_tank.fuel_selector_ratio*mdot + fuel_tank.secondary_fuel_flow 
@@ -123,14 +123,9 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
         Source:
         N/A
         
-        Inputs:
-        state.unknowns.rpm                   [rpm] 
-        state.unknowns.throttle              [-] 
+        Inputs: 
         
-        Outputs:
-        state.conditions.energy.rotor.rpm    [rpm] 
-        state.conditions.energy.throttle     [-] 
-
+        Outputs: 
         
         Properties Used:
         N/A
@@ -186,6 +181,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
                 fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].engine                  = RCAIDE.Analyses.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions()  
+                fuel_line_results[propulsor.tag].throttle                = 0. * ones_row(1)
                 fuel_line_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)   
                 fuel_line_results[propulsor.tag].engine.efficiency       = 0. * ones_row(1)
                 fuel_line_results[propulsor.tag].engine.torque           = 0. * ones_row(1) 
@@ -194,6 +190,7 @@ class Internal_Combustion_Engine_Constant_Speed(Network):
                 fuel_line_results[propulsor.tag].engine.rpm              = segment.state.conditions.energy.rpm * ones_row(1)                 
                 fuel_line_results[propulsor.tag].rotor.thrust            = 0. * ones_row(1)
                 fuel_line_results[propulsor.tag].rotor.rpm               = 0. * ones_row(1)
+                fuel_line_results[propulsor.tag].rotor.pitch_command     = 0. * ones_row(1)
                 fuel_line_results[propulsor.tag].rotor.disc_loading      = 0. * ones_row(1)                 
                 fuel_line_results[propulsor.tag].rotor.power_loading     = 0. * ones_row(1)
                 fuel_line_results[propulsor.tag].rotor.tip_mach          = 0. * ones_row(1)

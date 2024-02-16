@@ -307,13 +307,15 @@ class All_Electric(Network):
                     segment.state.residuals.network[ bus.tag  + '_rotor_motor_torque'] = 0. * ones_row(1)            
                     
                 # Results data structure for each propulsor group     
-                bus_results.throttle                               = 0. * ones_row(1)
                 bus_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
                 bus_results[propulsor.tag].motor                   = RCAIDE.Analyses.Mission.Common.Conditions()
                 bus_results[propulsor.tag].rotor                   = RCAIDE.Analyses.Mission.Common.Conditions() 
-                bus_results[propulsor.tag].esc                     = RCAIDE.Analyses.Mission.Common.Conditions()  
+                bus_results[propulsor.tag].esc                     = RCAIDE.Analyses.Mission.Common.Conditions() 
+                bus_results[propulsor.tag].throttle                = 0. * ones_row(1) 
                 bus_results[propulsor.tag].motor.efficiency        = 0. * ones_row(1)
+                bus_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1) 
                 bus_results[propulsor.tag].motor.torque            = 0. * ones_row(1) 
+                bus_results[propulsor.tag].rotor.pitch_command     = 0. * ones_row(1)
                 bus_results[propulsor.tag].rotor.torque            = 0. * ones_row(1)
                 bus_results[propulsor.tag].rotor.thrust            = 0. * ones_row(1)
                 bus_results[propulsor.tag].rotor.rpm               = 0. * ones_row(1)

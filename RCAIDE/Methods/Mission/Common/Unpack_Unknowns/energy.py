@@ -29,7 +29,7 @@ def fuel_line_unknowns(segment,fuel_lines):
             for i in range(num_tv_ctrls):   
                 for j in range(len(flight_controls.thrust_vector_angle.assigned_propulsors[i])): 
                     propulsor_tag = flight_controls.thrust_vector_angle.assigned_propulsors[i][j]
-                    fuel_line_results[propulsor_tag].inputs.y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]      
+                    fuel_line_results[propulsor_tag].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]      
             
         # Blade Pitch Control
         if flight_controls.blade_pitch_angle.active: 
@@ -37,15 +37,15 @@ def fuel_line_unknowns(segment,fuel_lines):
             for i in range(num_bpa_ctrls):   
                 for j in range(len(flight_controls.blade_pitch_angle.assigned_propulsors[i])): 
                     propulsor_tag = flight_controls.throttle.assigned_propulsors[i][j]
-                    fuel_line_results[propulsor_tag].inputs.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]       
+                    fuel_line_results[propulsor_tag].rotor.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]       
                                                                                       
         # RPM Control
         if flight_controls.RPM.active: 
             num_rpm_ctrls = len(flight_controls.RPM.assigned_propulsors) 
             for i in range(num_rpm_ctrls):   
-                for j in range(len(flight_controls.RPM_control.assigned_propulsors[i])): 
-                    propulsor_tag = flight_controls.RPM_control.assigned_propulsors[i][j]
-                    fuel_line_results[propulsor_tag].inputs.omega = state.unknowns["rpm_control_" + str(i)]  
+                for j in range(len(flight_controls.RPM.assigned_propulsors[i])): 
+                    propulsor_tag = flight_controls.RPM.assigned_propulsors[i][j]
+                    fuel_line_results[propulsor_tag].engine.rpm = state.unknowns["rpm_" + str(i)]  
     return 
 
 def bus_unknowns(segment,busses): 
@@ -69,7 +69,7 @@ def bus_unknowns(segment,busses):
             for i in range(num_tv_ctrls):   
                 for j in range(len(flight_controls.thrust_vector_angle.assigned_propulsors[i])): 
                     propulsor_tag = flight_controls.thrust_vector_angle.assigned_propulsors[i][j]
-                    bus_results[propulsor_tag].inputs.y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]      
+                    bus_results[propulsor_tag].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]      
             
         # Blade Pitch Control
         if flight_controls.blade_pitch_angle.active: 
@@ -77,16 +77,7 @@ def bus_unknowns(segment,busses):
             for i in range(num_bpa_ctrls):   
                 for j in range(len(flight_controls.blade_pitch_angle.assigned_propulsors[i])): 
                     propulsor_tag = flight_controls.throttle.assigned_propulsors[i][j]
-                    bus_results[propulsor_tag].inputs.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]       
-                                                                                      
-        # RPM Control
-        if segment.RPM_control.active: 
-            num_rpm_ctrls = len(segment.RPM_control.assigned_propulsors) 
-            for i in range(num_rpm_ctrls):   
-                for j in range(len(flight_controls.RPM_control.assigned_propulsors[i])): 
-                    propulsor_tag = flight_controls.RPM_control.assigned_propulsors[i][j]
-                    bus_results[propulsor_tag].inputs.omega = state.unknowns["rpm_control_" + str(i)]  
-    
+                    bus_results[propulsor_tag].rotor.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]     
     return 
      
  

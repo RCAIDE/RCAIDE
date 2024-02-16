@@ -17,9 +17,8 @@ import numpy as np
 def unpack_unknowns(segment):
     
     # unpack unknowns
-    unknowns   = segment.state.unknowns
-    theta      = unknowns.body_angle
-    accel_x    = unknowns.acceleration_x
+    unknowns   = segment.state.unknowns 
+    accel_x    = unknowns.acceleration 
     time       = unknowns.elapsed_time
      
     # rescale time
@@ -34,8 +33,7 @@ def unpack_unknowns(segment):
     a[:, 0]    = accel_x[:,0]
     
     # apply unknowns
-    conditions = segment.state.conditions
-    conditions.frames.body.inertial_rotations[:,1]  = theta[:,0]  
+    conditions = segment.state.conditions 
     conditions.frames.inertial.acceleration_vector  = a
     conditions.frames.inertial.time[:,0]            = time[:,0]
     

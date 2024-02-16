@@ -221,6 +221,7 @@ def vehicle_setup():
     # Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
     ice_prop    = RCAIDE.Energy.Propulsion.ICE_Propeller()     
+    ice_prop.active_fuel_tanks                 = ['fuel_tank']   
                                                      
     # Engine                     
     engine                                     = RCAIDE.Energy.Propulsion.Converters.Engine()
@@ -233,7 +234,6 @@ def vehicle_setup():
     # Propeller 
     prop = RCAIDE.Energy.Propulsion.Converters.Propeller()
     prop.tag                                = 'propeller'
-    prop.active_fuel_tanks                  = ['fuel_tank']   
     prop.number_of_blades                   = 2.0
     prop.tip_radius                         = 76./2. * Units.inches
     prop.hub_radius                         = 8.     * Units.inches

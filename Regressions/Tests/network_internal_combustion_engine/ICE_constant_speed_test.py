@@ -48,7 +48,7 @@ def main():
     P_truth     = 53595.133552791885
     mdot_truth  = 0.004708991132231039
     
-    P    = results.segments.cruise.state.conditions.energy.fuel_line.propulsor.engine.power[-1,0]
+    P    = results.segments.cruise.state.conditions.energy.fuel_line.ice_constant_speed_propeller.engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]     
 
     # Check the errors
@@ -95,11 +95,11 @@ def ICE_CS(vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    propulsor  = RCAIDE.Energy.Propulsion.Propulsor()    
-    
-    #------------------------------------------------------------------------------------------------------------------------------------                                                  
-    # Engine                    
-    #------------------------------------------------------------------------------------------------------------------------------------  
+    propulsor                                  = RCAIDE.Energy.Propulsion.ICE_Constant_Speed_Propeller()
+    propulsor.tag                              = 'ice_constant_speed_propeller'
+    propulsor.active_fuel_tanks                = ['fuel_tank']
+                                                   
+    # Engine                     
     engine                                     = RCAIDE.Energy.Propulsion.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
@@ -107,10 +107,8 @@ def ICE_CS(vehicle):
     engine.rated_power                         = 180.  * Units.hp   
     engine.power_specific_fuel_consumption     = 0.52 
     propulsor.engine                           = engine 
-
-    #------------------------------------------------------------------------------------------------------------------------------------     
-    # Prop
-    #------------------------------------------------------------------------------------------------------------------------------------  
+    
+    # Prop  
     prop                                   = RCAIDE.Energy.Propulsion.Converters.Propeller()
     prop.number_of_blades                  = 2.0
     prop.variable_pitch                    = True 
@@ -131,7 +129,7 @@ def ICE_CS(vehicle):
     prop.append_airfoil(airfoil)  
     prop.airfoil_polar_stations            = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     prop                                   = design_propeller(prop)   
-    propulsor.rotor                        = prop
+    propulsor.propeller                    = prop
     
     fuel_line.propulsors.append(propulsor)
     net.fuel_lines.append(fuel_line) 
@@ -212,7 +210,7 @@ def mission_setup(analyses):
     segment.altitude                                = 12000. * Units.feet
     segment.air_speed                               = 119.   * Units.knots
     segment.distance                                = 10 * Units.nautical_mile
-    segment.state.conditions.energy.rpm             = 2650.  * Units.rpm *  ones_row(1)
+    segment.state.conditions.energy.rpm             = 2650. *  ones_row(1)
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                       = True  
@@ -220,8 +218,8 @@ def mission_setup(analyses):
     
     # define flight controls 
     segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['ice_propeller']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]].z
+    segment.flight_controls.throttle.assigned_propulsors  = [['ice_constant_speed_propeller']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
     segment.flight_controls.body_angle                   
     segment.flight_controls.body_angle.active             = True               
     segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    

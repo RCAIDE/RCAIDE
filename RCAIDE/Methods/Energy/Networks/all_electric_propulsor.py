@@ -94,21 +94,22 @@ def compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_powe
     motor                = propulsor.motor 
     rotor                = propulsor.rotor 
     esc                  = propulsor.electronic_speed_controller 
+    eta                  = conditions.energy[bus.tag][propulsor.tag].throttle
 
     esc.inputs.voltage   = voltage
-    esc.calculate_voltage_out_from_throttle(conditions.energy[bus.tag].throttle) 
+    esc.calculate_voltage_out_from_throttle(eta) 
 
     # Assign conditions to the rotor
     motor.inputs.voltage         = esc.outputs.voltage
     motor.inputs.rotor_CP        = energy_results.rotor.power_coefficient  
     motor.calculate_omega_out_from_power_coefficient(conditions)
     rotor.inputs.omega           = motor.outputs.omega 
+    rotor.inputs.pitch_command   += energy_results.rotor.pitch_command
 
     # Spin the rotor 
     F, Q, P, Cp, outputs, etap = rotor.spin(conditions)  
 
     # Check to see if magic thrust is needed, the ESC caps throttle at 1.1 already
-    eta                = conditions.energy[bus.tag].throttle
     F[eta[:,0]  <=0.0] = 0.0
     P[eta[:,0]  <=0.0] = 0.0
     Q[eta[:,0]  <=0.0] = 0.0 

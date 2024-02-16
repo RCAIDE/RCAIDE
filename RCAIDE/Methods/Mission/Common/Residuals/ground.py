@@ -23,8 +23,7 @@ def ground(segment):
             segment.velocity_end                      [meters/second]
             
         Outputs:
-            segment.state:
-                residuals.acceleration_x           [meters/second^2]
+            segment.state: 
                 residuals.final_velocity_error     [meters/second]
         Properties Used:
         N/A

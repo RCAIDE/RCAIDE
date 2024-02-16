@@ -85,7 +85,7 @@ def plot_battery_cell_conditions(results,
                     cell_volts_oc       = battery_conditions.cell.voltage_open_circuit[:,0]
                     cell_current        = battery_conditions.cell.current[:,0]
                     cell_SOC            = battery_conditions.cell.state_of_charge[:,0]   
-                    throttle            = results.segments[i].conditions.energy[bus.tag].throttle
+                    cell_temperature    = battery_conditions.cell.temperature[:,0]  
             
                     segment_tag  = results.segments[i].tag
                     segment_name = segment_tag.replace('_', ' ') 
@@ -114,8 +114,8 @@ def plot_battery_cell_conditions(results,
                     axis_5.set_ylabel(r'Voltage (V)')
                     set_axes(axis_5) 
              
-                    axis_6.plot(time, throttle, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-                    axis_6.set_ylabel(r'Throttle, $\eta$')
+                    axis_6.plot(time, cell_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
+                    axis_6.set_ylabel(r'Temperature, $\degree$C')
                     set_axes(axis_6)  
                 b_i += 1 
             

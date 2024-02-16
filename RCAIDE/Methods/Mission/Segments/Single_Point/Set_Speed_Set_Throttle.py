@@ -28,7 +28,7 @@ def initialize_conditions(segment):
     segment.air_speed                              [meters/second]
     segment.throttle                               [unitless]
     segment.acceleration_z                         [meters/second^2]
-    segment.state.unknowns.acceleration_x          [meters/second^2]
+    segment.state.unknowns.acceleration            [meters/second^2]
 
     Outputs:
     conditions.frames.inertial.acceleration_vector [meters/second^2]
@@ -45,7 +45,7 @@ def initialize_conditions(segment):
     alt              = segment.altitude
     air_speed        = segment.air_speed 
     acceleration_z   = segment.acceleration_z
-    acceleration_x   = segment.state.unknowns.acceleration_x 
+    acceleration     = segment.state.unknowns.acceleration  
     
     # check for initial altitude
     if alt is None:
@@ -56,7 +56,7 @@ def initialize_conditions(segment):
     segment.state.conditions.freestream.altitude[:,0]             = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed
-    segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[acceleration_x,0.0,acceleration_z]]) 
+    segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[acceleration,0.0,acceleration_z]]) 
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Unpack Unknowns 
@@ -70,7 +70,7 @@ def unpack_unknowns(segment):
         
         Inputs:
             segment.state.unknowns:
-                acceleration_x                             [meters/second^2]
+                acceleration                        [meters/second^2]
                 body_angle                          [radians]
             
         Outputs:
@@ -84,9 +84,9 @@ def unpack_unknowns(segment):
     """      
     
     # unpack unknowns
-    acceleration_x    = segment.state.unknowns.acceleration_x
-    body_angle = segment.state.unknowns.body_angle
+    acceleration  = segment.state.unknowns.acceleration
+    body_angle    = segment.state.unknowns.body_angle
     
     # apply unknowns
-    segment.state.conditions.frames.inertial.acceleration_vector[0,0] = acceleration_x
+    segment.state.conditions.frames.inertial.acceleration_vector[0,0] = acceleration
     segment.state.conditions.frames.body.inertial_rotations[:,1]      = body_angle[:,0]      

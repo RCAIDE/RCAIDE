@@ -48,7 +48,7 @@ def main():
     P_truth     = 53537.3966546438
     mdot_truth  = 0.004703918236179497
     
-    P    = results.segments.cruise.state.conditions.energy.fuel_line.propulsor.engine.power[-1,0]
+    P    = results.segments.cruise.state.conditions.energy.fuel_line.ice_propeller.engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]
 
     # Check the errors
@@ -106,7 +106,7 @@ def mission_setup(analyses):
     # define flight controls 
     segment.flight_controls.RPM.active                    = True           
     segment.flight_controls.RPM.assigned_propulsors       = [['ice_propeller']]
-    segment.flight_controls.RPM.initial_values            = [[2500*Units.rpm]] 
+    segment.flight_controls.RPM.initial_values            = [[2500]] 
     segment.flight_controls.throttle.active               = True           
     segment.flight_controls.throttle.assigned_propulsors  = [['ice_propeller']]
     segment.flight_controls.throttle.initial_values       = [[0.5]] 

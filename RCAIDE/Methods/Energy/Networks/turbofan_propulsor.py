@@ -258,8 +258,7 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     noise_results.turbofan.core_nozzle   = core_nozzle_res  
     noise_results.turbofan.fan           = None
     stored_results_flag                  = True
-    stored_propulsor_tag                 = turbofan.tag
-                 
+    stored_propulsor_tag                 = turbofan.tag 
     
     return total_thrust,total_power ,stored_results_flag,stored_propulsor_tag
     
