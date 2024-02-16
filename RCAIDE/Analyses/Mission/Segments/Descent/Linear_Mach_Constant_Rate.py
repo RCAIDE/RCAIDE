@@ -55,16 +55,7 @@ class Linear_Mach_Constant_Rate(Evaluate):
         self.descent_rate      = 3.  * Units.m / Units.s
         self.mach_number_end   = 0.7
         self.mach_number_start = None
-        self.true_course_angle = 0.0 * Units.degrees 
-        
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------    
-        ones_row = self.state.ones_row
-        self.state.unknowns.throttle   = ones_row(1) * 0.5
-        self.state.unknowns.body_angle = ones_row(1) * 0.0
-        self.state.residuals.forces    = ones_row(2) * 0.0
+        self.true_course_angle = 0.0 * Units.degrees  
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
@@ -74,7 +65,7 @@ class Linear_Mach_Constant_Rate(Evaluate):
         initialize.conditions              = Segments.Descent.Linear_Mach_Constant_Rate.initialize_conditions
         iterate                            = self.process.iterate   
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.climb_descent        
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation        
 
         return
 

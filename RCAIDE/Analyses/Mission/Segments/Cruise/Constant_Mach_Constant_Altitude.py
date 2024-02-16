@@ -53,25 +53,16 @@ class Constant_Mach_Constant_Altitude(Evaluate):
         self.altitude           = None
         self.mach_number        = None
         self.distance           = 10. * Units.km
-        self.true_course_angle  = 0.0 * Units.degrees 
-        
-        
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------      
-        ones_row                           = self.state.ones_row
-        self.state.unknowns.throttle       = ones_row(1) * 0.5
-        self.state.unknowns.body_angle     = ones_row(1) * 1.0 * Units.deg
-        self.state.residuals.forces        = ones_row(2) * 0.0
+        self.true_course_angle  = 0.0 * Units.degrees     
     
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize  
         initialize.conditions              = Segments.Cruise.Constant_Mach_Constant_Altitude.initialize_conditions
-        iterate                            = self.process.iterate   
+        iterate                            = self.process.iterate       
         iterate.residuals.total_forces     = Common.Residuals.level_flight_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight       
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
 
         return
 

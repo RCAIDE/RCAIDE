@@ -3,7 +3,14 @@
 # 
 # 
 # Created:  Jul 2023, M. Clarke
- 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
+import RCAIDE
+import numpy as np 
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  Residual Total Forces
 # ----------------------------------------------------------------------------------------------------------------------
@@ -28,12 +35,21 @@ def climb_descent_forces(segment):
     Properties Used:
     N/A
     """        
-    
+
+    if type(segment) == RCAIDE.Analyses.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb: 
+        v       = segment.state.conditions.frames.inertial.velocity_vector
+        D       = segment.state.numerics.time.differentiate 
+        segment.state.conditions.frames.inertial.acceleration_vector = np.dot(D,v)
+        
     FT = segment.state.conditions.frames.inertial.total_force_vector
     a  = segment.state.conditions.frames.inertial.acceleration_vector
-    m  = segment.state.conditions.weights.total_mass    
-    
-    segment.state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a[:,0]
-    segment.state.residuals.forces[:,1] = FT[:,2]/m[:,0] - a[:,2]       
+    m  = segment.state.conditions.weights.total_mass  
+
+    if segment.flight_dynamics.force_x: 
+        segment.state.residuals.force_x[:,0] = FT[:,0]/m[:,0] - a[:,0]
+    if segment.flight_dynamics.force_y: 
+        segment.state.residuals.force_y[:,0] = FT[:,1]/m[:,0] - a[:,1]       
+    if segment.flight_dynamics.force_z: 
+        segment.state.residuals.force_z[:,0] = FT[:,2]/m[:,0] - a[:,2]   
 
     return

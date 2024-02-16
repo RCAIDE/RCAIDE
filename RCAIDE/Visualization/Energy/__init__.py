@@ -10,3 +10,4 @@
 # ----------------------------------------------------------------------------------------------------------------------
 from .Battery import * 
 from .Fuel    import *
+from .plot_propulsor_throttles import plot_propulsor_throttles

@@ -17,7 +17,7 @@ import numpy as np
 # all_electric_propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsion-Networks
-def all_electric_propulsor(bus,assigned_propulsors,state,voltage):
+def all_electric_propulsor(bus,state,voltage):
     ''' Computes the perfomrance of all electric propulsors, comprising 
     of rotors, motors and electronic speed controllers, connected to a battery
     
@@ -28,8 +28,7 @@ def all_electric_propulsor(bus,assigned_propulsors,state,voltage):
     N/A
 
     Inputs:  
-    bus                   - bus                                   [string] 
-    assigned_propulsors   - list of propulsors powered by battery [-] 
+    bus                   - bus                                   [string]  
     state                 - operating conditions data structure   [-] 
     voltage               - system voltage                        [V]
 
@@ -46,9 +45,8 @@ def all_electric_propulsor(bus,assigned_propulsors,state,voltage):
     total_current   = 0*state.ones_row(1) 
     total_thrust    = 0*state.ones_row(3) 
     stored_results_flag  = False 
-    
-    for i in range(len(assigned_propulsors)):
-        propulsor = bus.propulsors[assigned_propulsors[i]]  
+
+    for propulsor in bus.propulsors:        
         if propulsor.active == True:  
             if bus.identical_propulsors == False:
                 # run analysis  
@@ -96,21 +94,22 @@ def compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_powe
     motor                = propulsor.motor 
     rotor                = propulsor.rotor 
     esc                  = propulsor.electronic_speed_controller 
+    eta                  = conditions.energy[bus.tag][propulsor.tag].throttle
 
     esc.inputs.voltage   = voltage
-    esc.calculate_voltage_out_from_throttle(conditions.energy[bus.tag].throttle) 
+    esc.calculate_voltage_out_from_throttle(eta) 
 
     # Assign conditions to the rotor
     motor.inputs.voltage         = esc.outputs.voltage
     motor.inputs.rotor_CP        = energy_results.rotor.power_coefficient  
     motor.calculate_omega_out_from_power_coefficient(conditions)
     rotor.inputs.omega           = motor.outputs.omega 
+    rotor.inputs.pitch_command   += energy_results.rotor.pitch_command
 
     # Spin the rotor 
     F, Q, P, Cp, outputs, etap = rotor.spin(conditions)  
 
     # Check to see if magic thrust is needed, the ESC caps throttle at 1.1 already
-    eta                = conditions.energy[bus.tag].throttle
     F[eta[:,0]  <=0.0] = 0.0
     P[eta[:,0]  <=0.0] = 0.0
     Q[eta[:,0]  <=0.0] = 0.0 
@@ -148,7 +147,7 @@ def compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_powe
     total_thrust                 += energy_results.rotor.thrust 
     total_power                  += energy_results.esc.power
     total_current                += energy_results.esc.current  
-    stored_results_flag               = True
+    stored_results_flag          = True
     stored_propulsor_tag         = propulsor.tag   
     
     return total_thrust,total_power,total_current,stored_results_flag,stored_propulsor_tag

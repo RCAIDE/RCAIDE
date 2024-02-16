@@ -55,16 +55,14 @@ class Constant_Mach_Constant_Angle(Evaluate):
         self.altitude_end      = 10. * Units.km
         self.climb_angle       = 3.  * Units.deg
         self.mach_number       = None
-        self.true_course_angle = 0.0 * Units.degrees
-        
+        self.true_course_angle = 0.0 * Units.degrees 
+
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------      
-        ones_row                           = self.state.ones_row 
-        self.state.unknowns.altitudes      = ones_row(1) * 0.0
-        self.state.unknowns.body_angle     = ones_row(1) * 3.0 * Units.degrees 
-        self.state.residuals.forces        = ones_row(2) * 0.0      
-        self.state.residuals.altitude      = ones_row(1) * 0.0   
+        #  Unique Mission Unknowns and Residuals
+        # --------------------------------------------------------------------------------------------------------------  
+        ones_row = self.state.ones_row        
+        self.state.unknowns.altitude   = ones_row(1) * 0.0   
+        self.state.residuals.altitude  = ones_row(1) * 0.0   
     
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
@@ -74,8 +72,9 @@ class Constant_Mach_Constant_Angle(Evaluate):
         initialize.conditions              = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions  
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Segments.Climb.Constant_Mach_Constant_Angle.residual_total_forces 
-        iterate.conditions.differentials   = Segments.Climb.Optimized.update_differentials 
-        iterate.unknowns.mission           = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions 
+        iterate.conditions.differentials   = Segments.Climb.Constant_Mach_Constant_Angle.update_differentials 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
+        iterate.unknowns.kinematics        = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions 
           
         return
 

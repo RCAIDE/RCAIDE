@@ -69,7 +69,7 @@ def lithium_ion_battery_test(Ereq,Preq):
     battery_li_ion.energy_calc(state,bus) 
     plot_battery_ragone_diagram(battery_li_ion, save_filename =  'lithium_ion')
      
-    battery_chemistry     = ['Lithium_Ion_NMC','Lithium_Ion_LFP'] 
+    battery_chemistry     = ['lithium_ion_nmc','lithium_ion_lfp'] 
     marker                = ['s' ,'o' ,'P']
     linestyles            = ['-','--',':']
     linecolors            = cm.inferno(np.linspace(0.2,0.8,3))    
@@ -133,7 +133,7 @@ def lithium_ion_battery_test(Ereq,Preq):
                 cell_temp     = segment.conditions.energy.bus[battery_chemistry[i]].cell.temperature[:,0]   
                 Amp_Hrs       = segment.conditions.energy.bus[battery_chemistry[i]].cell.charge_throughput[:,0]                   
                   
-                if battery_chemistry[i] == 'Lithium_Ion_NMC':
+                if battery_chemistry[i] == 'lithium_ion_nmc':
                     axes1.plot(Amp_Hrs , volts , marker= marker[i], linestyle = linestyles[i],  color= linecolors[j]  , markersize=marker_size   ,label = battery_chemistry[i] + ': '+ str(C_rat[j]) + ' C') 
                     axes3.plot(Amp_Hrs , SOC   , marker= marker[i] , linestyle = linestyles[i],  color= linecolors[j], markersize=marker_size   ,label = battery_chemistry[i] + ': '+ str(C_rat[j]) + ' C') 
                     axes5.plot(Amp_Hrs , cell_temp, marker= marker[i] , linestyle = linestyles[i],  color= linecolors[j] , markersize=marker_size,label = battery_chemistry[i] + ': '+ str(C_rat[j]) + ' C')              

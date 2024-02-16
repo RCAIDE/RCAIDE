@@ -43,4 +43,4 @@ class Residuals(Conditions):
             Properties Used:
             None
         """           
-        self.tag = 'residuals'
+        self.tag      = 'residuals'

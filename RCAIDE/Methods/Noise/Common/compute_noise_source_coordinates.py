@@ -56,9 +56,8 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
     theta       = rotor.twist_distribution   # blade pitch 
     theta_0     = rotor.inputs.pitch_command # collective
     MCA         = rotor.mid_chord_alignment
-    theta_tot   = theta + theta_0
  
-    # dimension of matrices [control point, microphone , rotor, number of blades, number of sections , x,y,z coords]  
+    # dimension of matrices [control point, microphone , rotor, number of blades, number of sections , x,y,z coords]    
 
     # -----------------------------------------------------------------------------------------------------------------------------
     # translation matrix of rotor blade
@@ -81,13 +80,14 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
 
     # -----------------------------------------------------------------------------------------------------------------------------
     # rotation matrix of rotor blade twist
-    # -----------------------------------------------------------------------------------------------------------------------------    
-
+    # -----------------------------------------------------------------------------------------------------------------------------     
+    theta_tot             = theta + theta_0    
+    theta_total           = np.tile(theta_tot[:,None,None,None,:],(1,num_mic,num_rot,num_blades,1)) 
     Rotation_blade_twist  = np.tile(I[None,None,None,None,:,:,:],(num_cpt,num_mic,num_rot,num_blades,num_sec,1,1))     
-    Rotation_blade_twist[:,:,:,:,:,0,0] = np.cos(theta_tot)
-    Rotation_blade_twist[:,:,:,:,:,0,2] = np.sin(theta_tot)
-    Rotation_blade_twist[:,:,:,:,:,2,0] = -np.sin(theta_tot)
-    Rotation_blade_twist[:,:,:,:,:,2,2] = np.cos(theta_tot) 
+    Rotation_blade_twist[:,:,:,:,:,0,0] = np.cos(theta_total)
+    Rotation_blade_twist[:,:,:,:,:,0,2] = np.sin(theta_total)
+    Rotation_blade_twist[:,:,:,:,:,2,0] = -np.sin(theta_total)
+    Rotation_blade_twist[:,:,:,:,:,2,2] = np.cos(theta_total) 
     rev_Rotation_blade_twist            =  np.linalg.inv(Rotation_blade_twist) 
 
     # -----------------------------------------------------------------------------------------------------------------------------

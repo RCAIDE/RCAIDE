@@ -58,7 +58,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         N/A
         """ 
     def __defaults__(self):
-        self.tag                              = 'Lithium_Ion_LFP' 
+        self.tag                              = 'lithium_ion_lfp' 
          
         self.cell.diameter                    = 0.0185                                                   # [m]
         self.cell.height                      = 0.0653                                                   # [m]

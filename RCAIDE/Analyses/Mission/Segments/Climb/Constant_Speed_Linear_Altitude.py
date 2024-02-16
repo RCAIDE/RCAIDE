@@ -54,17 +54,8 @@ class Constant_Speed_Linear_Altitude(Evaluate):
         self.distance          = 10. * Units.km
         self.altitude_start    = None
         self.altitude_end      = None
-        self.true_course_angle = 0.0 * Units.degrees    
+        self.true_course_angle = 0.0 * Units.degrees     
         
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------    
-        ones_row = self.state.ones_row
-        self.state.unknowns.throttle   = ones_row(1) * 0.5
-        self.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees
-        self.state.residuals.forces    = ones_row(2) * 0.0
-  
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   
@@ -73,5 +64,5 @@ class Constant_Speed_Linear_Altitude(Evaluate):
         initialize.conditions              = Segments.Climb.Constant_Speed_Linear_Altitude.initialize_conditions  
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.climb_descent  
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation  
         return

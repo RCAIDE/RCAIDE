@@ -17,10 +17,9 @@ import numpy as np
 def unpack_unknowns(segment):
     
     # unpack unknowns
-    unknowns   = segment.state.unknowns
-    theta      = unknowns.body_angle
-    accel_x    = unknowns.accel_x
-    time       = unknowns.time
+    unknowns   = segment.state.unknowns 
+    accel_x    = unknowns.acceleration 
+    time       = unknowns.elapsed_time
      
     # rescale time
     t_initial  = segment.state.conditions.frames.inertial.time[0,0]
@@ -34,8 +33,7 @@ def unpack_unknowns(segment):
     a[:, 0]    = accel_x[:,0]
     
     # apply unknowns
-    conditions = segment.state.conditions
-    conditions.frames.body.inertial_rotations[:,1]  = theta[:,0]  
+    conditions = segment.state.conditions 
     conditions.frames.inertial.acceleration_vector  = a
     conditions.frames.inertial.time[:,0]            = time[:,0]
     
@@ -78,8 +76,7 @@ def initialize_conditions(segment):
     Inputs:
     segment.altitude                             [meters]
     segment.air_speed_start                      [meters/second]
-    segment.air_speed_end                        [meters/second]
-    segment.throttle	                         [unitless]
+    segment.air_speed_end                        [meters/second] 
     segment.state.numerics.number_of_control_points [int]
 
     Outputs:
@@ -91,8 +88,7 @@ def initialize_conditions(segment):
     N/A
     """   
     
-    state      = segment.state
-    conditions = state.conditions
+    state      = segment.state 
 
     # unpack inputs
     alt      = segment.altitude 
@@ -130,26 +126,22 @@ def initialize_conditions(segment):
 # ----------------------------------------------------------------------    
 
 ## @ingroup Methods-Missions-Segments-Cruise
-def solve_residuals(segment):
-    """ Calculates a residual based on forces
+def solve_velocity(segment):
+    """ Calculates the additional velocity residual
     
         Assumptions:
         The vehicle accelerates, residual on forces and to get it to the final speed
         
         Inputs:
         segment.air_speed_end                  [meters/second]
-        segment.state.conditions:
-            frames.inertial.total_force_vector [Newtons]
-            frames.inertial.velocity_vector    [meters/second]
-            weights.total_mass                 [kg]
+        segment.state.conditions: 
+            frames.inertial.velocity_vector    [meters/second] 
         segment.state.numerics.time.differentiate
             
         Outputs:
         segment.state.residuals:
             forces               [meters/second^2]
-            final_velocity_error [meters/second]
-        segment.state.conditions:
-            conditions.frames.inertial.acceleration_vector [meters/second^2]
+            final_velocity_error [meters/second] 
 
         Properties Used:
         N/A
@@ -157,15 +149,10 @@ def solve_residuals(segment):
     """    
 
     # unpack inputs
-    conditions = segment.state.conditions
-    FT         = conditions.frames.inertial.total_force_vector
+    conditions = segment.state.conditions 
     vf         = segment.air_speed_end
-    v          = conditions.frames.inertial.velocity_vector
-    m          = conditions.weights.total_mass
-    a          = conditions.frames.inertial.acceleration_vector 
-
-    segment.state.residuals.forces[:,0] = FT[:,0]/m[:,0] - a[:,0]
-    segment.state.residuals.forces[:,1] = FT[:,2]/m[:,0] 
+    v          = conditions.frames.inertial.velocity_vector 
+    
     segment.state.residuals.final_velocity_error = (v[-1,0] - vf)
 
     return

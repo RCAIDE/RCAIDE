@@ -12,6 +12,7 @@
 from RCAIDE.Analyses.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Core                                 import Units   
 from RCAIDE.Methods.Mission                      import Common,Segments
+from RCAIDE.Analyses                          import Process  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Throttle_Constant_Altitude
@@ -63,22 +64,35 @@ class Constant_Throttle_Constant_Altitude(Evaluate):
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------          
-        ones_row                                  = self.state.ones_row
-        self.state.unknowns.body_angle            = ones_row(1) * 0.0
-        self.state.unknowns.accel_x               = ones_row(1) * 1.
-        self.state.unknowns.time                  = 100.
-        self.state.residuals.forces               = ones_row(2) * 0.0
+        # --------------------------------------------------------------------------------------------------------------  
         self.state.residuals.final_velocity_error = 0.0
      
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
-        # --------------------------------------------------------------------------------------------------------------   
+        # --------------------------------------------------------------------------------------------------------------    
         initialize                         = self.process.initialize  
         initialize.conditions              = Segments.Cruise.Constant_Throttle_Constant_Altitude.initialize_conditions      
-        iterate                            = self.process.iterate        
-        iterate.conditions.velocity        = Segments.Cruise.Constant_Throttle_Constant_Altitude.integrate_velocity  
-        iterate.residuals.total_forces     = Segments.Cruise.Constant_Throttle_Constant_Altitude.solve_residuals 
-        iterate.unknowns.mission           = Segments.Cruise.Constant_Throttle_Constant_Altitude.unpack_unknowns                  
+        iterate                            = self.process.iterate             
+
+        # Update Conditions
+        iterate.conditions = Process()
+        iterate.conditions.differentials   = Common.Update.differentials_time 
+        iterate.conditions.velocity        = Segments.Cruise.Constant_Throttle_Constant_Altitude.integrate_velocity     
+        iterate.conditions.acceleration    = Common.Update.acceleration   
+        iterate.conditions.altitude        = Common.Update.altitude
+        iterate.conditions.atmosphere      = Common.Update.atmosphere
+        iterate.conditions.gravity         = Common.Update.gravity
+        iterate.conditions.freestream      = Common.Update.freestream
+        iterate.conditions.orientations    = Common.Update.orientations
+        iterate.conditions.energy          = Common.Update.thrust
+        iterate.conditions.aerodynamics    = Common.Update.aerodynamics
+        iterate.conditions.stability       = Common.Update.stability
+        iterate.conditions.weights         = Common.Update.weights
+        iterate.conditions.forces          = Common.Update.forces
+        iterate.conditions.planet_position = Common.Update.planet_position    
+        iterate.residuals.total_forces     = Common.Residuals.level_flight_forces  
+        iterate.residuals.velocity         = Segments.Cruise.Constant_Throttle_Constant_Altitude.solve_velocity
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation  
+        iterate.unknowns.acceleration      = Segments.Cruise.Constant_Throttle_Constant_Altitude.unpack_unknowns  
 
         return

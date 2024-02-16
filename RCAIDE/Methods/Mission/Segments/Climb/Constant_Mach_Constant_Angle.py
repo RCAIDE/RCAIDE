@@ -46,15 +46,10 @@ def initialize_conditions(segment):
     climb_angle = segment.climb_angle
     mach_number = segment.mach_number
     alt0        = segment.altitude_start  
-    conditions  = segment.state.conditions 
-
-    if 'throttle' in segment.state.unknowns: 
-        throttle = segment.state.unknowns.throttle
-        segment.state.conditions.energy.throttle[:,0] = throttle[:,0]
+    conditions  = segment.state.conditions  
         
-    # unpack unknowns 
-    theta    = segment.state.unknowns.body_angle
-    alts     = segment.state.unknowns.altitudes   
+    # unpack unknowns  
+    alts     = conditions.frames.inertial.position_vector[:,2]
     
     # check for initial altitude
     if alt0 is None:
@@ -62,7 +57,7 @@ def initialize_conditions(segment):
         alt0 = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
     
     # pack conditions   
-    conditions.freestream.altitude[:,0]             =  alts[:,0]  
+    conditions.freestream.altitude[:,0]   = -alts 
 
     # check for initial velocity
     if mach_number is None: 
@@ -80,9 +75,7 @@ def initialize_conditions(segment):
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0]              = v_x[:,0]
-    conditions.frames.inertial.velocity_vector[:,2]              = v_z[:,0]
-    conditions.frames.inertial.position_vector[:,2]              = -alts[:,0]  
-    segment.state.conditions.frames.body.inertial_rotations[:,1] = theta[:,0]  
+    conditions.frames.inertial.velocity_vector[:,2]              = v_z[:,0]   
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Residual Total Forces
@@ -91,15 +84,86 @@ def initialize_conditions(segment):
 def residual_total_forces(segment):
     
     # Unpack results
-    FT = segment.state.conditions.frames.inertial.total_force_vector
-    a  = segment.state.conditions.frames.inertial.acceleration_vector
-    m  = segment.state.conditions.weights.total_mass    
-    alt_in  = segment.state.unknowns.altitudes[:,0] 
+    FT      = segment.state.conditions.frames.inertial.total_force_vector
+    a       = segment.state.conditions.frames.inertial.acceleration_vector
+    m       = segment.state.conditions.weights.total_mass    
+    alt_in  = segment.state.unknowns.altitude[:,0] 
     alt_out = segment.state.conditions.freestream.altitude[:,0] 
     
     # Residual in X and Z, as well as a residual on the guess altitude
-    segment.state.residuals.forces[:,0]   = FT[:,0]/m[:,0] - a[:,0]
-    segment.state.residuals.forces[:,1]   = FT[:,2]/m[:,0] - a[:,2]
+    if segment.flight_dynamics.force_x: 
+        segment.state.residuals.force_x[:,0] = FT[:,0]/m[:,0] - a[:,0]
+    if segment.flight_dynamics.force_y: 
+        segment.state.residuals.force_y[:,0] = FT[:,1]/m[:,0] - a[:,1]       
+    if segment.flight_dynamics.force_z: 
+        segment.state.residuals.force_z[:,0] = FT[:,2]/m[:,0] - a[:,2]    
+          
     segment.state.residuals.altitude[:,0] = (alt_in - alt_out)/alt_out[-1]
 
     return    
+
+# ----------------------------------------------------------------------------------------------------------------------  
+# Update Differentials
+# ----------------------------------------------------------------------------------------------------------------------  
+## @ingroup Methods-Missions-Segments-Climb   
+def update_differentials(segment):
+    """ On each iteration creates the differentials and integration functions from knowns about the problem. 
+      Sets the time at each point. Must return in dimensional time, with t[0] = 0.
+      This is different from the common method as it also includes the scaling of operators.
+
+        Assumptions:
+        Works with a segment discretized in vertical position, altitude
+
+        Inputs:
+        state.numerics.dimensionless.control_points      [Unitless]
+        state.numerics.dimensionless.differentiate       [Unitless]
+        state.numerics.dimensionless.integrate           [Unitless]
+        state.conditions.frames.inertial.position_vector [meter]
+        state.conditions.frames.inertial.velocity_vector [meter/second]
+        
+
+        Outputs:
+        state.conditions.frames.inertial.time            [second]
+
+    """    
+
+    # unpack
+    numerics   = segment.state.numerics
+    conditions = segment.state.conditions
+    x          = numerics.dimensionless.control_points
+    D          = numerics.dimensionless.differentiate
+    I          = numerics.dimensionless.integrate 
+    r          = segment.state.conditions.frames.inertial.position_vector
+    v          = segment.state.conditions.frames.inertial.velocity_vector
+    alt0       = segment.altitude_start
+    altf       = segment.altitude_end    
+
+    # check for initial altitude
+    if alt0 is None:
+        if not segment.state.initials: raise AttributeError('initial altitude not set')
+        alt0 = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
+        
+    dz = altf - alt0
+    vz = -v[:,2,None] # maintain column array
+
+    # get overall time step
+    dt = (dz/np.dot(I,vz))[-1]
+
+    # rescale operators
+    x = x * dt
+    D = D / dt
+    I = I * dt
+    
+    # Calculate the altitudes
+    alt = np.dot(I,vz) + alt0
+    
+    # pack
+    t_initial                                       = segment.state.conditions.frames.inertial.time[0,0]
+    numerics.time.control_points                    = x
+    numerics.time.differentiate                     = D
+    numerics.time.integrate                         = I
+    conditions.frames.inertial.time[1:,0]            = t_initial + x[1:,0]
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0]  
+    conditions.freestream.altitude[:,0]             =  alt[:,0]  
+
+    return

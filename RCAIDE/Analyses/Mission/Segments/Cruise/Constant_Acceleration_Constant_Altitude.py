@@ -54,16 +54,7 @@ class Constant_Acceleration_Constant_Altitude(Evaluate):
         self.acceleration      = 1.  * Units['m/s/s']
         self.air_speed_start   = None
         self.air_speed_end     = 1.0 * Units['m/s']
-        self.true_course_angle = 0.0 * Units.degrees      
-        
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------    
-        ones_row                       = self.state.ones_row
-        self.state.unknowns.throttle   = ones_row(1) * 0.5
-        self.state.unknowns.body_angle = ones_row(1) * 0.0
-        self.state.residuals.forces    = ones_row(2) * 0.0 
+        self.true_course_angle = 0.0 * Units.degrees       
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
@@ -71,7 +62,7 @@ class Constant_Acceleration_Constant_Altitude(Evaluate):
         initialize                         = self.process.initialize 
         initialize.conditions              = Segments.Cruise.Constant_Acceleration_Constant_Altitude.initialize_conditions       
         iterate                            = self.process.iterate  
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight 
-        iterate.residuals.total_forces     = Segments.Cruise.Constant_Acceleration_Constant_Altitude.residual_total_forces 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation  
+        iterate.residuals.total_forces     = Common.Residuals.level_flight_forces  
         return
 

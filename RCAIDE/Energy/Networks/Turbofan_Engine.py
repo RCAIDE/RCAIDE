@@ -86,7 +86,7 @@ class Turbofan_Engine(Network):
             Defaulted values
         """           
 
-        #Unpack
+        # Step 1: Unpack
         conditions  = state.conditions  
         fuel_lines  = self.fuel_lines 
          
@@ -94,18 +94,31 @@ class Turbofan_Engine(Network):
         total_power   = 0. * state.ones_row(1) 
         total_mdot    = 0. * state.ones_row(1)   
         
+        # Step 2: loop through compoments of network and determine performance
         for fuel_line in fuel_lines:
             if fuel_line.active:   
-                fuel_tanks   = fuel_line.fuel_tanks    
-                for fuel_tank in fuel_tanks:  
-                    fuel_line_T , fuel_line_P, fuel_tank_mdot        = turbofan_propulsor(fuel_line,fuel_tank.assigned_propulsors,state)    
-                    fuel_line_results                                = conditions.energy[fuel_line.tag]   
-                    fuel_line_results[fuel_tank.tag].mass_flow_rate  = fuel_tank.fuel_selector_ratio*fuel_tank_mdot + fuel_tank.secondary_fuel_flow 
+                
+                # Step 2.1: Compute and store perfomrance of all propulsors 
+                fuel_line_T,fuel_line_P = turbofan_propulsor(fuel_line,state)  
+                total_thrust += fuel_line_T   
+                total_power  += fuel_line_P  
+                
+                # Step 2.2: Link each turbofan the its respective fuel tank(s)
+                for fuel_tank in fuel_line.fuel_tanks:
+                    mdot = 0. * state.ones_row(1)   
+                    for turbofan in fuel_line.propulsors:
+                        for source in (turbofan.active_fuel_tanks):
+                            if fuel_tank.tag == source: 
+                                mdot += conditions.energy[fuel_line.tag][turbofan.tag].fuel_flow_rate 
                         
-                    total_thrust += fuel_line_T   
-                    total_power  += fuel_line_P    
-                    total_mdot   += fuel_line_results[fuel_tank.tag].mass_flow_rate  
-    
+                    # Step 2.3 : Determine cumulative fuel flow from fuel tank 
+                    fuel_tank_mdot = fuel_tank.fuel_selector_ratio*mdot + fuel_tank.secondary_fuel_flow 
+                    
+                    # Step 2.4: Store mass flow results 
+                    conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate  = fuel_tank_mdot  
+                    total_mdot += fuel_tank_mdot                    
+                            
+        # Step 3: Pack results 
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
         conditions.energy.vehicle_mass_rate    = total_mdot           
@@ -153,33 +166,18 @@ class Turbofan_Engine(Network):
         Source:
         N/A
         
-        Inputs:
-        state.unknowns.rpm                   [rpm] 
-        state.unknowns.throttle              [-] 
+        Inputs: 
+            segment   - data structure of mission segment [-]
         
-        Outputs:
-        state.conditions.energy.rotor.rpm    [rpm] 
-        state.conditions.energy.throttle     [-] 
-
+        Outputs: 
         
         Properties Used:
         N/A
         """            
-
-        fuel_lines   = segment.analyses.energy.networks.turbofan_engine.fuel_lines  
-        for fuel_line_i, fuel_line in enumerate(fuel_lines):            
-            if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
-                pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
-                pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) \
-                 or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle)\
-                 or (type(segment) == RCAIDE.Analyses.Mission.Segments.Climb.Constant_Throttle_Constant_Speed):
-                pass    
-            elif fuel_line.active:    
-                fuel_line_results           = segment.state.conditions.energy[fuel_line.tag]  
-                fuel_line_results.throttle  = segment.state.unknowns[fuel_line.tag + '_throttle']  
-        
+         
+        fuel_lines = segment.analyses.energy.networks.turbofan_engine.fuel_lines
+        RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
+            
         return    
      
     def add_unknowns_and_residuals_to_segment(self, segment):
@@ -204,33 +202,16 @@ class Turbofan_Engine(Network):
         """                  
         fuel_lines  = segment.analyses.energy.networks.turbofan_engine.fuel_lines
         ones_row    = segment.state.ones_row 
-        segment.state.residuals.network = Residuals() 
+        segment.state.residuals.network = Residuals()  
         
-        if 'throttle' in segment.state.unknowns: 
-            segment.state.unknowns.pop('throttle')
-        if 'throttle' in segment.state.conditions.energy: 
-            segment.state.conditions.energy.pop('throttle') 
-         
         for fuel_line_i, fuel_line in enumerate(fuel_lines):    
             # ------------------------------------------------------------------------------------------------------            
             # Create fuel_line results data structure  
             # ------------------------------------------------------------------------------------------------------
             segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Analyses.Mission.Common.Conditions()       
-            fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]   
-            fuel_line_results.throttle                           = 0. * ones_row(1) 
+            fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]    
             segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Analyses.Mission.Common.Conditions()  
-            noise_results                                        = segment.state.conditions.noise[fuel_line.tag]
-            
-            if (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Takeoff):
-                pass
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Ground.Landing):   
-                pass 
-            elif (type(segment) == RCAIDE.Analyses.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude)\
-                 or (type(segment) == RCAIDE.Analyses.Mission.Segments.Single_Point.Set_Speed_Set_Throttle)\
-                 or (type(segment) == RCAIDE.Analyses.Mission.Segments.Climb.Constant_Throttle_Constant_Speed):
-                fuel_line_results.throttle = segment.throttle * ones_row(1)            
-            elif fuel_line.active:         
-                segment.state.unknowns[fuel_line.tag + '_throttle']  = segment.estimated_throttles[fuel_line_i]  * ones_row(1) 
+            noise_results                                        = segment.state.conditions.noise[fuel_line.tag]      
      
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = RCAIDE.Analyses.Mission.Common.Conditions()  
@@ -240,14 +221,14 @@ class Turbofan_Engine(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
-            for propulsor in fuel_line.propulsors:               
-                fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
-                fuel_line_results[propulsor.tag].turbofan                = RCAIDE.Analyses.Mission.Common.Conditions()  
-                fuel_line_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)  
-                fuel_line_results[propulsor.tag].turbofan.thrust         = 0. * ones_row(1) 
-                fuel_line_results[propulsor.tag].turbofan.power          = 0. * ones_row(1) 
-                noise_results[propulsor.tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
-                noise_results[propulsor.tag].turbofan                    = RCAIDE.Analyses.Mission.Common.Conditions() 
+            for turbofan in fuel_line.propulsors:               
+                fuel_line_results[turbofan.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
+                fuel_line_results[turbofan.tag].turbofan                = RCAIDE.Analyses.Mission.Common.Conditions()  
+                fuel_line_results[turbofan.tag].y_axis_rotation         = 0. * ones_row(1)  
+                fuel_line_results[turbofan.tag].turbofan.thrust         = 0. * ones_row(1) 
+                fuel_line_results[turbofan.tag].turbofan.power          = 0. * ones_row(1) 
+                noise_results[turbofan.tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
+                noise_results[turbofan.tag].turbofan                    = RCAIDE.Analyses.Mission.Common.Conditions() 
         
         segment.process.iterate.unknowns.network   = self.unpack_unknowns                   
         return segment    

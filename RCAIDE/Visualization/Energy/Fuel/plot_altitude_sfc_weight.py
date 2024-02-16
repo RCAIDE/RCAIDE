@@ -28,16 +28,7 @@ def plot_altitude_sfc_weight(results,
     Assumptions:
     None
 
-    Source:
-
-    Depricated RCAIDE Mission Plots Functions
-
-    Created:    Mar 2020, M. Clarke
-    Modified:   Apr 2020, M. Clarke
-                Sep 2020, M. Clarke
-                Apr 2021, M. Clarke
-                Dec 2021, S. Claridge
-
+    Source: 
 
     Inputs:
     results.segments.conditions.
@@ -85,12 +76,14 @@ def plot_altitude_sfc_weight(results,
         for network in results.segments[i].analyses.energy.networks: 
             busses      = network.busses
             fuel_lines  = network.fuel_lines
-            for bus in busses:   
-                eta = results.segments[i].conditions.energy[bus.tag].throttle[:,0]  
-                axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)               
+            for bus in busses:
+                for propulsor in bus.propulsors: 
+                    eta = results.segments[i].conditions.energy[bus.tag][propulsor.tag].throttle[:,0]  
+                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)               
             for fuel_line in fuel_lines:  
-                eta = results.segments[i].conditions.energy[fuel_line.tag].throttle[:,0]  
-                axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)     
+                for propulsor in fuel_line.propulsors: 
+                    eta = results.segments[i].conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
+                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)     
         
         axis_2 = plt.subplot(2,2,2)
         axis_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 

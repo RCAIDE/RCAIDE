@@ -58,16 +58,9 @@ class Set_Speed_Set_Altitude(Evaluate):
         self.altitude                                = None
         self.air_speed                               = 10. * Units['km/hr']
         self.distance                                = 10. * Units.km
-        self.x_accel                                 = 0.
-        self.z_accel                                 = 0. # note that down is positive
-        self.state.numerics.number_of_control_points = 1 
-         
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------  
-        self.state.unknowns.throttle   = np.array([[0.5]])
-        self.state.unknowns.body_angle = np.array([[0.0]])
-        self.state.residuals.forces    = np.array([[0.0,0.0]])
+        self.acceleration_x                          = 0.
+        self.acceleration_z                          = 0. # note that down is positive
+        self.state.numerics.number_of_control_points = 1  
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
@@ -78,7 +71,7 @@ class Set_Speed_Set_Altitude(Evaluate):
         initialize.conditions              = Segments.Single_Point.Set_Speed_Set_Altitude.initialize_conditions 
         iterate                            = self.process.iterate 
         iterate.initials.energy            = skip
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.level_flight   
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
         iterate.conditions.planet_position = skip    
         iterate.conditions.acceleration    = skip
         iterate.conditions.weights         = skip

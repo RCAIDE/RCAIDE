@@ -32,7 +32,7 @@ class Engine(Energy_Component):
         self.tag                             = 'internal_combustion_engine' 
         self.sea_level_power                 = 0.0
         self.flat_rate_altitude              = 0.0
-        self.rated_speed                     = 0.0
+        self.rated_speed                     = 0.0 
         self.inputs.speed                    = 0.0
         self.power_split_ratio               = 0.0
         self.power_specific_fuel_consumption = 0.36
@@ -68,7 +68,7 @@ class Engine(Energy_Component):
         delta_isa                        = conditions.freestream.delta_ISA 
         PSLS                             = self.sea_level_power
         h_flat                           = self.flat_rate_altitude
-        omega                            = self.inputs.omega
+        omega                            = self.inputs.speed
         power_specific_fuel_consumption  = self.power_specific_fuel_consumption
 
         # shift in power lapse due to flat rate

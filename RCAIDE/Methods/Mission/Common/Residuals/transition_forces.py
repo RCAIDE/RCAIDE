@@ -35,11 +35,13 @@ def transition_forces(segment):
     
     FT = segment.state.conditions.frames.inertial.total_force_vector
     m  = segment.state.conditions.weights.total_mass[:,0] 
-    
-    # horizontal
-    segment.state.residuals.forces[:,0] = np.sqrt( FT[:,0]**2. + FT[:,1]**2. )/m
-    # vertical
-    segment.state.residuals.forces[:,1] = FT[:,2]/m
+     
+    if segment.flight_dynamics.force_x: 
+        segment.state.residuals.force_x[:,0] = FT[:,0]/m 
+    if segment.flight_dynamics.force_y: 
+        segment.state.residuals.force_y[:,0] = FT[:,1]/m      
+    if segment.flight_dynamics.force_z: 
+        segment.state.residuals.force_z[:,0] = FT[:,2]/m     
 
     return
     

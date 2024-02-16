@@ -54,14 +54,7 @@ class Descent(Evaluate):
         self.altitude_start    = None # Optional
         self.altitude_end      = 1. * Units.km
         self.descent_rate      = 1.  * Units.m / Units.s
-        self.true_course_angle = 0.0 * Units.degrees 
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------
-        ones_row = self.state.ones_row
-        self.state.unknowns.throttle   = ones_row(1) * 0.5
-        self.state.residuals.forces    = ones_row(1) * 0.0 
+        self.true_course_angle = 0.0 * Units.degrees  
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

@@ -82,7 +82,7 @@ def base_analysis(vehicle):
     
     # ------------------------------------------------------------------
     #  Weights
-    weights         = RCAIDE.Analyses.Weights.Weights_eVTOL()
+    weights         = RCAIDE.Analyses.Weights.Weights_Transport()
     weights.vehicle = vehicle
     analyses.append(weights)
 
@@ -142,6 +142,19 @@ def mission_setup(analyses):
     segment.altitude_end   = 3.0   * Units.km
     segment.air_speed      = 125.0 * Units['m/s']
     segment.climb_rate     = 6.0   * Units['m/s']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+      
     mission.append_segment(segment)
 
 
@@ -154,7 +167,20 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise ) 
     segment.altitude_end   = 8.0   * Units.km
     segment.air_speed      = 190.0 * Units['m/s']
-    segment.climb_rate     = 6.0   * Units['m/s']  
+    segment.climb_rate     = 6.0   * Units['m/s']   
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+     
     mission.append_segment(segment)
 
 
@@ -168,6 +194,19 @@ def mission_setup(analyses):
     segment.altitude_end = 10.5   * Units.km
     segment.air_speed    = 226.0  * Units['m/s']
     segment.climb_rate   = 3.0    * Units['m/s']  
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+      
     mission.append_segment(segment)
 
 
@@ -180,7 +219,20 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.cruise ) 
     segment.altitude  = 10.668 * Units.km  
     segment.air_speed = 230.412 * Units['m/s']
-    segment.distance  = 1000 * Units.nmi  
+    segment.distance  = 1000 * Units.nmi    
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)
 
 
@@ -194,7 +246,20 @@ def mission_setup(analyses):
     segment.altitude_start = 10.5 * Units.km 
     segment.altitude_end   = 8.0   * Units.km
     segment.air_speed      = 220.0 * Units['m/s']
-    segment.descent_rate   = 4.5   * Units['m/s']  
+    segment.descent_rate   = 4.5   * Units['m/s']   
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+     
     mission.append_segment(segment)
 
 
@@ -207,7 +272,20 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.landing ) 
     segment.altitude_end = 6.0   * Units.km
     segment.air_speed    = 195.0 * Units['m/s']
-    segment.descent_rate = 5.0   * Units['m/s']  
+    segment.descent_rate = 5.0   * Units['m/s']   
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+     
     mission.append_segment(segment)
 
 
@@ -220,7 +298,20 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.landing ) 
     segment.altitude_end = 4.0   * Units.km
     segment.air_speed    = 170.0 * Units['m/s']
-    segment.descent_rate = 5.0   * Units['m/s']  
+    segment.descent_rate = 5.0   * Units['m/s']   
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+     
     mission.append_segment(segment)
 
 
@@ -233,7 +324,20 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.landing ) 
     segment.altitude_end = 2.0   * Units.km
     segment.air_speed    = 150.0 * Units['m/s']
-    segment.descent_rate = 5.0   * Units['m/s']  
+    segment.descent_rate = 5.0   * Units['m/s']   
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+     
     mission.append_segment(segment) 
 
 
@@ -246,7 +350,20 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.landing ) 
     segment.altitude_end = 0.0   * Units.km
     segment.air_speed    = 145.0 * Units['m/s']
-    segment.descent_rate = 3.0   * Units['m/s']  
+    segment.descent_rate = 3.0   * Units['m/s']    
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                      = True  
+    segment.flight_dynamics.force_z                      = True     
+    
+    # define flight controls 
+    segment.flight_controls.throttle.active               = True           
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
+    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.body_angle                   
+    segment.flight_controls.body_angle.active             = True               
+    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------

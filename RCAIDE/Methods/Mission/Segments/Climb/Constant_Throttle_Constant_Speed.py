@@ -54,8 +54,7 @@ def initialize_conditions(segment):
     N/A
 
     Inputs:
-    segment.air_speed                                   [meters/second]
-    segment.throttle                                    [Unitless]
+    segment.air_speed                                   [meters/second] 
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
     segment.state.numerics.dimensionless.control_points [Unitless]

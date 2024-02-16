@@ -56,23 +56,15 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
         self.acceleration           = 1.  * Units['m/s/s'] 
         self.pitch_initial          = None
         self.pitch_final            = 0.0 * Units['rad']
-        self.true_course_angle      = 0.0 * Units.degrees 
+        self.true_course_angle      = 0.0 * Units.degrees  
         
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------     
-        # initials and unknowns
-        ones_row = self.state.ones_row
-        self.state.residuals.forces    = ones_row(2) * 0.0  
-         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------  
         initialize                         = self.process.initialize 
         initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.initialize_conditions  
         iterate                            = self.process.iterate  
-        iterate.residuals.total_forces     = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.residual_total_forces 
+        iterate.residuals.total_forces     = Common.Residuals.level_flight_forces 
         
         return
 

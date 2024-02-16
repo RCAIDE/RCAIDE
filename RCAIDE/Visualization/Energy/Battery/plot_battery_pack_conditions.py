@@ -87,7 +87,7 @@ def plot_battery_pack_conditions(results,
                     pack_volts          = battery_conditions.pack.voltage_under_load[:,0] 
                     pack_current        = battery_conditions.pack.current[:,0]
                     pack_SOC            = battery_conditions.cell.state_of_charge[:,0] 
-                    throttle            = bus_results.throttle
+                    pack_temperature    = battery_conditions.pack.temperature[:,0]  
             
                     segment_tag  =  results.segments[i].tag
                     segment_name = segment_tag.replace('_', ' ')  
@@ -116,8 +116,8 @@ def plot_battery_pack_conditions(results,
                     axis_5.set_xlabel('Time (mins)')
                     set_axes(axis_5) 
              
-                    axis_6.plot(time, throttle, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-                    axis_6.set_ylabel(r'Throttle, $\eta$')
+                    axis_6.plot(time, pack_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
+                    axis_6.set_ylabel(r'Temperature, $\degree$C')
                     set_axes(axis_6)   
 
                 b_i += 1 

@@ -10,7 +10,7 @@
 # RCAIDE imports   
 import RCAIDE
 from RCAIDE.Methods.Mission.Common.Segments    import  sequential_segments
-from RCAIDE.Methods.Mission.Common.Pre_Process import  aerodynamics, energy
+from RCAIDE.Methods.Mission.Common.Pre_Process import  aerodynamics, energy,flight_dynamics_and_controls
 from RCAIDE.Core                               import Container as ContainerBase
 from RCAIDE.Analyses                           import Process 
 from . import Segments
@@ -51,9 +51,10 @@ class Sequential_Segments(Segments.Segment.Container):
         self.tag = 'mission'
         
         #   Initialize   
-        self.process.initialize          = Process() 
-        self.process.initialize.aero     = aerodynamics
-        self.process.initialize.energy   = energy
+        self.process.initialize                                = Process() 
+        self.process.initialize.aero                           = aerodynamics
+        self.process.initialize.energy                         = energy
+        self.process.initialize.flight_dynamics_and_controls   = flight_dynamics_and_controls
  
         #   Converge 
         self.process.converge    = sequential_segments

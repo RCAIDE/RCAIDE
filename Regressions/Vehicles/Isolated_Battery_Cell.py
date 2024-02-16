@@ -33,9 +33,9 @@ def vehicle_setup(current,cell_chemistry,fixed_bus_voltage):
     bus                              = RCAIDE.Energy.Networks.Distribution.Electrical_Bus() 
  
     # Battery    
-    if cell_chemistry == 'Lithium_Ion_NMC': 
+    if cell_chemistry == 'lithium_ion_nmc': 
         battery = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_NMC()
-    elif cell_chemistry == 'Lithium_Ion_LFP': 
+    elif cell_chemistry == 'lithium_ion_lfp': 
         battery = RCAIDE.Energy.Sources.Batteries.Lithium_Ion_LFP()  
     HAS                 = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air() 
     HAS.convective_heat_transfer_coefficient    = 7.17

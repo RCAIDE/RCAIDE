@@ -57,15 +57,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         self.altitude_end      = 10. * Units.km
         self.climb_angle       = 3.  * Units.deg
         self.air_speed         = 100 * Units.m / Units.s
-        self.true_course_angle = 0.0 * Units.degrees    
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------   
-        ones_row = self.state.ones_row        
-        self.state.unknowns.throttle   = ones_row(1) * 0.5
-        self.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees
-        self.state.residuals.forces    = ones_row(2) * 0.0      
+        self.true_course_angle = 0.0 * Units.degrees            
                 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
@@ -76,7 +68,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         initialize.conditions              = Segments.Climb.Constant_Speed_Constant_Angle_Noise.initialize_conditions  
         iterate                            = self.process.iterate
         iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.climb_descent   
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
         
         return
        

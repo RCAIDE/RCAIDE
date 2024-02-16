@@ -12,6 +12,7 @@
 from RCAIDE.Analyses.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Core                                 import Units   
 from RCAIDE.Methods.Mission.Segments             import Cruise
+from RCAIDE.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Pitch_Rate_Constant_Altitude
@@ -56,23 +57,15 @@ class Constant_Pitch_Rate_Constant_Altitude(Evaluate):
         self.pitch_initial     = None
         self.pitch_final       = 0.0 * Units['rad']
         self.true_course_angle = 0.0 * Units.degrees  
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------      
-        ones_row                           = self.state.ones_row
-        self.state.unknowns.throttle       = ones_row(1) * 0.5
-        self.state.unknowns.velocity       = ones_row(1) * 1.0 * Units.deg
-        self.state.residuals.forces        = ones_row(2) * 0.0
-                 
+ 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------       
         initialize                         = self.process.initialize  
         initialize.conditions              = Cruise.Constant_Pitch_Rate_Constant_Altitude.initialize_conditions  
         iterate                            = self.process.iterate 
-        iterate.unknowns.mission           = Cruise.Constant_Pitch_Rate_Constant_Altitude.unpack_unknowns  
-        iterate.residuals.total_forces     = Cruise.Constant_Pitch_Rate_Constant_Altitude.residual_total_forces 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation  
+        iterate.residuals.total_forces     = Common.Residuals.level_flight_forces
         
         return
 

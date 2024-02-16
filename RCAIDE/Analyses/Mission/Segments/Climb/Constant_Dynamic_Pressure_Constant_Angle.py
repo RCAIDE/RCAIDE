@@ -11,7 +11,7 @@
 # RCAIDE imports  
 from RCAIDE.Core                                     import Units 
 from RCAIDE.Analyses.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Methods.Mission                          import Segments
+from RCAIDE.Methods.Mission                          import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_Dynamic_Pressure_Constant_Angle
@@ -60,21 +60,20 @@ class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
         # --------------------------------------------------------------------------------------------------------------    
-        ones_row = self.state.ones_row        
-        self.state.unknowns.altitudes  = ones_row(1) * 0.0
-        self.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees
-        self.state.residuals.forces    = ones_row(2) * 0.0  
-        self.state.residuals.altitude  = ones_row(1) * 0.0              
+        ones_row = self.state.ones_row             
+        self.state.residuals.altitude      = ones_row(1) * 0.0
+        self.state.unknowns.altitude       = ones_row(1) * 0.0                                         
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize
         initialize.conditions              = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns 
-        iterate                            = self.process.iterate
-        iterate.unknowns.mission           = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns 
-        iterate.conditions.differentials   = Segments.Climb.Optimized.update_differentials 
-        iterate.residuals.total_forces     = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.residual_total_forces    
-    
+        iterate                            = self.process.iterate 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
+        iterate.unknowns.kinematics        = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns 
+        iterate.conditions.differentials   = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.update_differentials 
+        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces    
+        iterate.residuals.altitude         = Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.residual_altitude
         return
        

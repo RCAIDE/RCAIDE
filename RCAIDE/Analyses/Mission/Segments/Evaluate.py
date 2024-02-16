@@ -19,7 +19,22 @@ from RCAIDE.Analyses                          import Process
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Analyses-Mission-Segments
 class Evaluate(Segment):
-    """  
+    """ Base process class used to analyze a vehicle in each flight segment  
+    
+    Assumptions:
+    None
+
+    Source:
+    N/A
+
+    Inputs:
+    None
+
+    Outputs:
+    None
+
+    Properties Used:
+    None
     """     
     
     def __defaults__(self):
@@ -39,23 +54,20 @@ class Evaluate(Segment):
     
             Properties Used:
             None
-        """          
-        self.temperature_deviation          = 0.0
-        self.estimated_rotor_pitch_commands = [[0.1]]
-        self.estimated_throttles            = [[0.5]]
-        self.estimated_RPMs                 = [[2500]]
-        
+        """           
         
         # --------------------------------------------------------------
         #   State
         # --------------------------------------------------------------
         
         # conditions
+        self.temperature_deviation                                = 0.0     
         self.state.conditions.update(Results())
         
-        # --------------------------------------------------------------
-        #   The Solving Process
-        # --------------------------------------------------------------
+        # ---------------------------------------------------------------
+        # Define Flight Controls and Residuals 
+        # ---------------------------------------------------------------     
+        self.flight_dynamics_and_controls()    
         
         # --------------------------------------------------------------
         #   Initialize - before iteration

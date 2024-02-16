@@ -23,5 +23,4 @@ from . import Constant_EAS_Constant_Rate
 from . import Constant_CAS_Constant_Rate
 from . import Constant_Mach_Linear_Altitude
 from . import Constant_Dynamic_Pressure_Constant_Angle
-from . import Constant_Speed_Linear_Altitude
-from . import Optimized
+from . import Constant_Speed_Linear_Altitude 
