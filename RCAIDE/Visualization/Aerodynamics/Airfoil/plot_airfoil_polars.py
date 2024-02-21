@@ -41,7 +41,7 @@ def plot_airfoil_polars(polar_data,
  
     # Get raw data polars
     CL           = polar_data.cl[0]
-    CD           = polar_data.cd[0]
+    CD           = polar_data.cd_visc[0]
     CM           = polar_data.cm[0]
     alpha        = polar_data.AoA[0]/Units.degrees
     Re_raw       = polar_data.Re[0]  
