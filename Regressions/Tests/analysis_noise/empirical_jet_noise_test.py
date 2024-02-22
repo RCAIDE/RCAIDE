@@ -41,7 +41,7 @@ def main():
     analyses          = analyses_setup(configs) 
     
     mission           = baseline_mission_setup(analyses)
-    basline_missions  = baseline_missions_setup(mission )     
+    basline_missions  = baseline_missions_setup(mission)     
     baseline_results  = basline_missions.base_mission.evaluate()   
      
     # SPL of rotor check during hover 
@@ -132,13 +132,13 @@ def baseline_mission_setup(analyses):
     # -------------------   -----------------------------------------------
     #   Mission for Landing Noise
     # ------------------------------------------------------------------     
-    segment                           = Segments.Descent.Constant_Speed_Constant_Angle(base_segment)
-    segment.tag                       = "descent"
+    segment                                               = Segments.Descent.Constant_Speed_Constant_Angle(base_segment)
+    segment.tag                                           = "descent"
     segment.analyses.extend(analyses.base )   
-    segment.altitude_start            = 120.5
-    segment.altitude_end              = 0.
-    segment.air_speed                 = 67. * Units['m/s']
-    segment.descent_angle             = 3.0   * Units.degrees   
+    segment.altitude_start                                = 120.5
+    segment.altitude_end                                  = 0.
+    segment.air_speed                                     = 67. * Units['m/s']
+    segment.descent_angle                                 = 3.0   * Units.degrees   
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                       = True  
@@ -146,44 +146,44 @@ def baseline_mission_setup(analyses):
     
     # define flight controls 
     segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]] 
-    segment.flight_controls.body_angle.active             = True               
-    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']] 
+    segment.flight_controls.body_angle.active             = True                
     
     mission.append_segment(segment) 
 
     # ------------------------------------------------------------------
     #   First Climb Segment: constant Mach, constant segment angle 
     # ------------------------------------------------------------------  
-    segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
-    segment.tag                       = "takeoff"    
+    segment                                                   = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
+    segment.tag                                               = "takeoff"    
     segment.analyses.extend(analyses.base )  
-    segment.altitude_start            =  35.  *  Units.fts
-    segment.altitude_end              = 304.8 *  Units.meter
-    segment.air_speed                 = 85.4 * Units['m/s']
-    segment.throttle                  = 1.    
+    segment.altitude_start                                    =  35. *  Units.fts
+    segment.altitude_end                                      = 304.8 *  Units.meter
+    segment.air_speed                                         = 85.4 * Units['m/s']
+    segment.throttle                                          = 1.    
     
     # define flight dynamics to model 
-    segment.flight_dynamics.force_x                      = True  
-    segment.flight_dynamics.force_z                      = True     
+    segment.flight_dynamics.force_x                           = True  
+    segment.flight_dynamics.force_z                           = True     
     
     # define flight controls 
-    segment.flight_controls.wind_angle.active           = True            
-    segment.flight_controls.wind_angle.initial_values   = [[ 1.0 * Units.deg]] 
-    segment.flight_controls.body_angle.active           = True               
-    segment.flight_controls.body_angle.initial_values   = [[ 5.0 * Units.deg]]
+    segment.flight_controls.wind_angle.active                 = True         
+    segment.flight_controls.wind_angle.initial_guess          = True 
+    segment.flight_controls.wind_angle.initial_guess_values   = [[ 1.0 * Units.deg]] 
+    segment.flight_controls.body_angle.active                 = True               
+    segment.flight_controls.body_angle.initial_guess          = True 
+    segment.flight_controls.body_angle.initial_guess_values   = [[ 5.0 * Units.deg]]
      
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------  
     # Cutback Segment: Constant speed, constant segment angle
-    # ------------------------------------------------------------------  
-    segment                           = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
-    segment.tag                       = "cutback"     
+    # ------------------------------------------------------------------   
+    segment                                              = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
+    segment.tag                                          = "cutback"     
     segment.analyses.extend(analyses.base )
-    segment.air_speed                 = 85.4 * Units['m/s']
-    segment.climb_angle               = 2.86  * Units.degrees  
+    segment.air_speed                                    = 85.4 * Units['m/s']
+    segment.climb_angle                                  = 2.86  * Units.degrees
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                      = True  
@@ -191,11 +191,8 @@ def baseline_mission_setup(analyses):
     
     # define flight controls 
     segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]]
-    segment.flight_controls.body_angle                   
-    segment.flight_controls.body_angle.active             = True               
-    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']] 
+    segment.flight_controls.body_angle.active             = True                
        
     mission.append_segment(segment)   
 
@@ -205,109 +202,23 @@ def baseline_mission_setup(analyses):
     segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
     segment.tag = "climb_1" 
     segment.analyses.extend( analyses.takeoff )  
-    segment.altitude_end   = 3.0   * Units.km
-    segment.air_speed      = 125.0 * Units['m/s']
-    segment.climb_rate     = 6.0   * Units['m/s']  
+    segment.altitude_end                                  = 3.0   * Units.km
+    segment.air_speed                                     = 125.0 * Units['m/s']
+    segment.climb_rate                                    = 6.0   * Units['m/s']  
     
     # define flight dynamics to model 
-    segment.flight_dynamics.force_x                      = True  
-    segment.flight_dynamics.force_z                      = True     
+    segment.flight_dynamics.force_x                       = True  
+    segment.flight_dynamics.force_z                       = True     
     
     # define flight controls 
     segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]]
-    segment.flight_controls.body_angle                   
-    segment.flight_controls.body_angle.active             = True               
-    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]  
+    segment.flight_controls.body_angle.active             = True                 
        
     mission.append_segment(segment) 
 
     return mission 
- 
-    
-def flyover_mission_setup(analyses):
-
-    # ------------------------------------------------------------------
-    #   Initialize the Mission
-    # ------------------------------------------------------------------ 
-    mission      = RCAIDE.Analyses.Mission.Sequential_Segments()
-    mission.tag  = 'base_mission' 
-    Segments     = RCAIDE.Analyses.Mission.Segments 
-    base_segment = Segments.Segment() 
-    
-
-    # ------------------------------------------------------------------ 
-    # Approach Noise 
-    # ------------------------------------------------------------------     
-    segment                           = Segments.Descent.Constant_Speed_Constant_Angle(base_segment)
-    segment.tag                       = "descent"
-    segment.analyses.extend(analyses.base )   
-    segment.altitude_start            = 2.0   * Units.km
-    segment.altitude_end              = 0.
-    segment.air_speed                 = 67. * Units['m/s']
-    segment.descent_angle             = 3.0   * Units.degrees 
-    
-    # define flight dynamics to model 
-    segment.flight_dynamics.force_x                      = True  
-    segment.flight_dynamics.force_z                      = True     
-    
-    # define flight controls 
-    segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]]
-    segment.flight_controls.body_angle                   
-    segment.flight_controls.body_angle.active             = True               
-    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
-       
-    mission.append_segment(segment) 
-
-    # ------------------------------------------------------------------     
-    # Takeoff Noise 
-    # ------------------------------------------------------------------ 
-    segment                           = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
-    segment.tag                       = "takeoff"    
-    segment.analyses.extend(analyses.base )  
-    segment.altitude_start            =  35. *  Units.fts
-    segment.altitude_end              = 304.8 *  Units.meter
-    segment.air_speed                 = 85.4 * Units['m/s']
-    segment.throttle                  = 1.    
-    
-    # define flight dynamics to model 
-    segment.flight_dynamics.force_x                      = True  
-    segment.flight_dynamics.force_z                      = True     
-    
-    # define flight controls 
-    segment.flight_controls.wind_angle.active           = True            
-    segment.flight_controls.wind_angle.initial_values   = [[ 1.0 * Units.deg]] 
-    segment.flight_controls.body_angle.active           = True               
-    segment.flight_controls.body_angle.initial_values   = [[ 5.0 * Units.deg]]
-     
-    mission.append_segment(segment)
-
-    # Cutback Segment: Constant speed, constant segment angle
-    segment                           = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
-    segment.tag                       = "cutback"     
-    segment.analyses.extend(analyses.base )
-    segment.air_speed                 = 85.4 * Units['m/s']
-    segment.climb_angle               = 2.86  * Units.degrees
-    
-    # define flight dynamics to model 
-    segment.flight_dynamics.force_x                      = True  
-    segment.flight_dynamics.force_z                      = True     
-    
-    # define flight controls 
-    segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]]
-    segment.flight_controls.body_angle                   
-    segment.flight_controls.body_angle.active             = True               
-    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
-       
-    mission.append_segment(segment)   
-
-   
-    return mission 
+  
 
 def baseline_missions_setup(base_mission):
 

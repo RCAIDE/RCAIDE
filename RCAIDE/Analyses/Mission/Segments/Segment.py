@@ -176,67 +176,81 @@ class Segment(Analysis):
         
         self.flight_controls.body_angle                                   = Data()
         self.flight_controls.body_angle.active                            = False                 
-        self.flight_controls.body_angle.initial_values                    = None   
+        self.flight_controls.body_angle.initial_guess                     = False             
+        self.flight_controls.body_angle.initial_guess_values              = None   
     
         self.flight_controls.wind_angle                                   = Data()
         self.flight_controls.wind_angle.active                            = False                 
-        self.flight_controls.wind_angle.initial_values                    = None    
+        self.flight_controls.wind_angle.initial_guess                     = False           
+        self.flight_controls.wind_angle.initial_guess_values              = None   
 
         self.flight_controls.elapsed_time                                 = Data()
         self.flight_controls.elapsed_time.active                          = False                 
-        self.flight_controls.elapsed_time.initial_values                  = None   
+        self.flight_controls.elapsed_time.initial_guess                   = False               
+        self.flight_controls.elapsed_time.initial_guess_values            = None  
     
         self.flight_controls.velocity                                     = Data()
         self.flight_controls.velocity.active                              = False                 
-        self.flight_controls.velocity.initial_values                      = None    
+        self.flight_controls.velocity.initial_guess                       = False                
+        self.flight_controls.velocity.initial_guess_values                = None
         
         self.flight_controls.acceleration                                 = Data()
         self.flight_controls.acceleration.active                          = False                 
-        self.flight_controls.acceleration.initial_values                  = None   
+        self.flight_controls.acceleration.initial_guess                   = False                
+        self.flight_controls.acceleration.initial_guess_values            = None
         
         self.flight_controls.altitude                                     = Data()
         self.flight_controls.altitude.active                              = False                 
-        self.flight_controls.altitude.initial_values                      = None         
+        self.flight_controls.altitude.initial_guess                       = False               
+        self.flight_controls.altitude.initial_guess_values                = None
     
         self.flight_controls.throttle                                     = Data() 
         self.flight_controls.throttle.active                              = False                
         self.flight_controls.throttle.assigned_propulsors                 = None      
-        self.flight_controls.throttle.initial_values                      = None      
+        self.flight_controls.throttle.initial_guess                       = False    
+        self.flight_controls.throttle.initial_guess_values                = None
     
         self.flight_controls.elevator_deflection                          = Data() 
         self.flight_controls.elevator_deflection.active                   = False      
         self.flight_controls.elevator_deflection.assigned_surfaces        = None
-        self.flight_controls.elevator_deflection.initial_values           = None  
+        self.flight_controls.elevator_deflection.initial_guess            = False 
+        self.flight_controls.elevator_deflection.initial_guess_values     = None
     
         self.flight_controls.flap_deflection                              = Data() 
         self.flight_controls.flap_deflection.active                       = False          
         self.flight_controls.flap_deflection.assigned_surfaces            = None
-        self.flight_controls.flap_deflection.initial_values               = None  
+        self.flight_controls.flap_deflection.initial_guess                = False 
+        self.flight_controls.flap_deflection.initial_guess_values         = None
 
         self.flight_controls.slat_deflection                              = Data() 
         self.flight_controls.slat_deflection.active                       = False          
         self.flight_controls.slat_deflection.assigned_surfaces            = None
-        self.flight_controls.slat_deflection.initial_values               = None          
+        self.flight_controls.slat_deflection.initial_guess                = False 
+        self.flight_controls.slat_deflection.initial_guess_values         = None            
     
         self.flight_controls.aileron_deflection                           = Data() 
         self.flight_controls.aileron_deflection.active                    = False      
         self.flight_controls.aileron_deflection.assigned_surfaces         = None
-        self.flight_controls.aileron_deflection.initial_values            = None  
+        self.flight_controls.aileron_deflection.initial_guess             = False 
+        self.flight_controls.aileron_deflection.initial_guess_false       = None
     
         self.flight_controls.thrust_vector_angle                          = Data() 
         self.flight_controls.thrust_vector_angle.active                   = False        
         self.flight_controls.thrust_vector_angle.assigned_propulsors      = None
-        self.flight_controls.thrust_vector_angle.initial_values           = None  
+        self.flight_controls.thrust_vector_angle.initial_guess            = False 
+        self.flight_controls.thrust_vector_angle.initial_guess_values     = None
     
         self.flight_controls.blade_pitch_angle                            = Data() 
         self.flight_controls.blade_pitch_angle.active                     = False          
         self.flight_controls.blade_pitch_angle.assigned_propulsors        = None
-        self.flight_controls.blade_pitch_angle.initial_values             = None  
+        self.flight_controls.blade_pitch_angle.initial_guess              = False 
+        self.flight_controls.blade_pitch_angle.initial_guess_values       = None
     
         self.flight_controls.RPM                                          = Data() 
         self.flight_controls.RPM.active                                   = False              
         self.flight_controls.RPM.assigned_propulsors                      = None
-        self.flight_controls.RPM.initial_values                           = None  
+        self.flight_controls.RPM.initial_guess                            = False 
+        self.flight_controls.RPM.initial_guess_values                     = None
     
         return     
            

@@ -78,8 +78,7 @@ def plot_aircraft_velocities(results,
         set_axes(axis_1)    
         
         axis_2 = plt.subplot(2,2,2)
-        axis_2.plot(time, EAS, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
-        axis_2.set_xlabel('Time (mins)')
+        axis_2.plot(time, EAS, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
         axis_2.set_ylabel(r'Equiv. Airspeed (kts)')
         set_axes(axis_2) 
 

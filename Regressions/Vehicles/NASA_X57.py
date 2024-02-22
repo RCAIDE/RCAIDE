@@ -81,14 +81,14 @@ def vehicle_setup():
     wing.high_lift                        = True 
     wing.winglet_fraction                 = 0.0  
     wing.dynamic_pressure_ratio           = 1.0  
+    ospath                                = os.path.abspath(__file__)
+    separator                             = os.path.sep
+    rel_path                              = os.path.dirname(ospath) + separator 
     airfoil                               = RCAIDE.Components.Airfoils.Airfoil()
-    
-
-    base = os.path.dirname(os.path.abspath(__file__))    
-    airfoil.coordinate_file               = base+'/Airfoils/NACA_63_412.txt'
-    
-    cg_x = wing.origin[0][0] + 0.25*wing.chords.mean_aerodynamic
-    cg_z = wing.origin[0][2] - 0.2*wing.chords.mean_aerodynamic
+    airfoil.tag                           = 'NACA_63_412.txt' 
+    airfoil.coordinate_file               = rel_path + 'Airfoils' + separator + 'NACA_63_412.txt'   # absolute path     
+    cg_x                                  = wing.origin[0][0] + 0.25*wing.chords.mean_aerodynamic
+    cg_z                                  = wing.origin[0][2] - 0.2*wing.chords.mean_aerodynamic
     vehicle.mass_properties.center_of_gravity = [[cg_x,   0.  ,  cg_z ]]  # SOURCE: Design and aerodynamic analysis of a twin-engine commuter aircraft
 
     # Wing Segments
@@ -452,15 +452,16 @@ def vehicle_setup():
     propeller.cruise.design_thrust                   = 2000   
     propeller.clockwise_rotation                     = False
     propeller.variable_pitch                         = True  
-    propeller.origin                                 = [[2.,2.5,0.95]] 
-    airfoil                                          = RCAIDE.Components.Airfoils.Airfoil()    
-    airfoil.coordinate_file                          = '../../Vehicles/Airfoils/NACA_4412.txt'
-    airfoil.polar_files                              = ['../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
-                                                     '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
-                                                     '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_200000.txt' ,
-                                                     '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_500000.txt' ,
-                                                     '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
-    propeller.append_airfoil(airfoil)              
+    propeller.origin                                 = [[2.,2.5,0.95]]   
+    airfoil                                          = RCAIDE.Components.Airfoils.Airfoil()
+    airfoil.tag                                      = 'NACA_4412' 
+    airfoil.coordinate_file                          =  rel_path + 'Airfoils' + separator + 'NACA_4412.txt'   # absolute path   
+    airfoil.polar_files                              =[ rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_50000.txt',
+                                                        rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_100000.txt',
+                                                        rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_200000.txt',
+                                                        rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_500000.txt',
+                                                        rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_1000000.txt']   
+    propeller.append_airfoil(airfoil)                       
     propeller.airfoil_polar_stations                 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] 
     propeller                                        = design_propeller(propeller)    
     starboard_propulsor.rotor                        = propeller   

@@ -60,115 +60,122 @@ def flight_dynamics_and_controls(mission):
         
         # Body Angle  
         if ctrls.body_angle.active:
-            try:
-                segment.state.unknowns.body_angle = ones_row(1) * ctrls.body_angle.initial_values[0][0]
-            except:
+            if ctrls.body_angle.initial_guess:
+                segment.state.unknowns.body_angle = ones_row(1) * ctrls.body_angle.initial_guess_values[0][0]
+            else:
                 segment.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees 
             num_ctrls += 1    
                 
         # Wing Angle  
         if ctrls.wind_angle.active:
-            try: 
-                segment.state.unknowns.wind_angle = ones_row(1) * ctrls.wind_angle.initial_values[0][0]
-            except:
+            if ctrls.wind_angle.initial_guess:
+                segment.state.unknowns.wind_angle = ones_row(1) * ctrls.wind_angle.initial_guess_values[0][0]
+            else:
                 segment.state.unknowns.wind_angle = ones_row(1) * 1.0 * Units.degrees 
             num_ctrls += 1            
             
         # Throttle 
         if ctrls.throttle.active: 
-            for i in range(len(ctrls.throttle.assigned_propulsors)):   
-                try:    
-                    segment.state.unknowns["throttle_" + str(i)] = ones_row(1) * ctrls.throttle.initial_values[i][0] 
-                except:
+            for i in range(len(ctrls.throttle.assigned_propulsors)): 
+                if ctrls.throttle.initial_guess: 
+                    for j in range(len(ctrls.throttle.assigned_propulsors[i])):   
+                        segment.state.unknowns["throttle_" + str(i)] = ones_row(1) * ctrls.throttle.initial_guess_values[i][j] 
+                else:
                     segment.state.unknowns["throttle_" + str(i)] = ones_row(1) *  0.5
                 num_ctrls += 1    
         
         # Velocity 
         if ctrls.velocity.active:  
-            try:    
-                segment.state.unknowns.velocity = ones_row(1) * ctrls.velocity.initial_values[0][0] 
-            except:
+            if ctrls.velocity.initial_guess:
+                segment.state.unknowns.velocity = ones_row(1) * ctrls.velocity.initial_guess_values[0][0] 
+            else:
                 segment.state.unknowns.velocity = ones_row(1) *  100
             num_ctrls += 1    
                         
                 
         # Acceleration 
         if ctrls.acceleration.active:  
-            try:    
-                segment.state.unknowns.acceleration = ones_row(1) * ctrls.acceleration.initial_values[0][0] 
-            except:
+            if ctrls.acceleration.initial_guess:
+                segment.state.unknowns.acceleration = ones_row(1) * ctrls.acceleration.initial_guess_values[0][0] 
+            else:
                 segment.state.unknowns.acceleration = ones_row(1) *  1.
             num_ctrls += 1   
 
         # Time
         if ctrls.elapsed_time.active:  
-            try:    
-                segment.state.unknowns.elapsed_time = ctrls.elapsed_time.initial_values[0][0] 
-            except:
+            if ctrls.elapsed_time.initial_guess:    
+                segment.state.unknowns.elapsed_time = ctrls.elapsed_time.initial_guess_values[0][0] 
+            else:
                 segment.state.unknowns.elapsed_time = 10
-            num_ctrls += 1   
-                                                     
+            num_ctrls += 1                         
                                 
         # Elevator 
-        if ctrls.elevator_deflection.active:  
-            for i in range(len(ctrls.elevator_deflection.assigned_surfaces)):   
-                try:    
-                    segment.state.unknowns["elevator_" + str(i)] = ones_row(1) * ctrls.elevator_deflection.initial_values[i][0]
-                except:
+        if ctrls.elevator_deflection.active:     
+            for i in range(len(ctrls.elevator_deflection.assigned_surfaces)): 
+                if ctrls.elevator_deflection.initial_guess:  
+                    for j in range(len(ctrls.elevator_deflection.assigned_surfaces[i])): 
+                        segment.state.unknowns["elevator_" + str(i)] = ones_row(1) * ctrls.elevator_deflection.initial_guess_values[i][j]
+                else:
                     segment.state.unknowns["elevator_" + str(i)] = ones_row(1) * 0.0 * Units.degrees  
                 num_ctrls += 1   
                     
         # Flap  
         if ctrls.flap_deflection.active:  
-            for i in range(len(ctrls.flap_deflection.assigned_surfaces)):  
-                try:     
-                    segment.state.unknowns["flap_" + str(i)] = ones_row(1) * ctrls.flap_deflection.initial_values[i][0]
-                except:
+            for i in range(len(ctrls.flap_deflection.assigned_surfaces)):
+                if ctrls.flap_deflection.initial_guess:       
+                    for j in range(len(ctrls.flap_deflection.assigned_surfaces[i])):
+                        segment.state.unknowns["flap_" + str(i)] = ones_row(1) * ctrls.flap_deflection.initial_guess_values[i][j]
+                else:
                     segment.state.unknowns["flap_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
                 num_ctrls += 1    
         # Slat  
         if ctrls.slat_deflection.active:  
             for i in range(len(ctrls.slat_deflection.assigned_surfaces)):  
-                try:     
-                    segment.state.unknowns["slat_" + str(i)] = ones_row(1) * ctrls.slat_deflection.initial_values[i][0]
-                except:
+                if ctrls.slat_deflection.initial_guess:     
+                    for j in range(len(ctrls.slat_deflection.assigned_surfaces[i])):
+                        segment.state.unknowns["slat_" + str(i)] = ones_row(1) * ctrls.slat_deflection.initial_guess_values[i][j]
+                else:
                     segment.state.unknowns["slat_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
                 num_ctrls += 1   
                 
         # Aileron  
         if ctrls.aileron_deflection.active:  
             for i in range(len(ctrls.aileron_deflection.assigned_surfaces)):   
-                try:    
-                    segment.state.unknowns["aileron_" + str(i)] = ones_row(1) * ctrls.aileron_deflection.initial_values[i][0] 
-                except: 
+                if ctrls.aileron_deflection.initial_guess:    
+                    for j in range(len(ctrls.aileron_deflection.assigned_surfaces[i])): 
+                        segment.state.unknowns["aileron_" + str(i)] = ones_row(1) * ctrls.aileron_deflection.initial_guess_values[i][j] 
+                else: 
                     segment.state.unknowns["aileron_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
                 num_ctrls += 1       
             
         # Thrust 
         if ctrls.thrust_vector_angle.active:  
             for i in range(len(ctrls.thrust_vector_angle.assigned_propulsors)):  
-                try:     
-                    segment.state.unknowns["thrust_vector_" + str(i)] = ones_row(1) * ctrls.thrust_vector_angle.initial_values[i][0]
-                except:
+                if ctrls.thrust_vector_angle.initial_guess:     
+                    for j in range(len(ctrls.thrust_vector_angle.assigned_surfaces[i])): 
+                        segment.state.unknowns["thrust_vector_" + str(i)] = ones_row(1) * ctrls.thrust_vector_angle.initial_guess_values[i][j]
+                else:
                     segment.state.unknowns["thrust_vector_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
                 num_ctrls += 1       
             
         # Blade Pitch 
         if ctrls.blade_pitch_angle.active:  
-            for i in range(ctrls.blade_pitch_angle.assigned_propulsors):   
-                try:    
-                    segment.state.unknowns["blade_pitch_angle_" + str(i)] = ones_row(1) * ctrls.blade_pitch_angle.initial_values[i][0]
-                except:
+            for i in range(len(ctrls.blade_pitch_angle.assigned_propulsors)):   
+                if ctrls.blade_pitch_angle.initial_guess:    
+                    for j in range(len(ctrls.blade_pitch_angle.assigned_propulsors[i])):   
+                        segment.state.unknowns["blade_pitch_angle_" + str(i)] = ones_row(1) * ctrls.blade_pitch_angle.initial_guess_values[i][j]
+                else:
                     segment.state.unknowns["blade_pitch_angle_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
                 num_ctrls += 1      
                                                                                       
         # RPM  
         if ctrls.RPM.active:  
-            for i in range(len(ctrls.RPM.assigned_propulsors) ):   
-                try:    
-                    segment.state.unknowns["rpm_" + str(i)] = ones_row(1) * ctrls.RPM.initial_values[i][0]
-                except:
-                    segment.state.unknowns["rpm_" + str(i)] = ones_row(1) * 2400 * Units.rpm
+            for i in range(len(ctrls.RPM.assigned_propulsors)):   
+                if ctrls.RPM.initial_guess:    
+                    for j in range(len(ctrls.RPM.assigned_propulsors[i])):
+                        segment.state.unknowns["rpm_" + str(i)] = ones_row(1) * ctrls.RPM.initial_guess_values[i][j]
+                else:
+                    segment.state.unknowns["rpm_" + str(i)] = ones_row(1) * 2400 
                 num_ctrls += 1
                 
                 
