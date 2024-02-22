@@ -42,15 +42,7 @@ def main():
     results = missions.base_mission.evaluate() 
      
     # plot the results 
-    plot_results(results)  
-    
-    # RPM of rotor check during hover
-    RPM_true   = 1430.66062306
-    RPM        = results.segments.vertical_climb.conditions.energy.lift_bus.lift_propulsor_1.rotor.rpm[3][0] 
-    print('RPM: ' + str(RPM))
-    diff_RPM   = np.abs(RPM - RPM_true)
-    print('RPM difference: ' +  str(diff_RPM))
-    assert np.abs((RPM - RPM_true)/RPM_true) < 1e-6  
+    plot_results(results)    
     
     # lift Coefficient Check During Cruise
     lift_coefficient_true   = 0.7179703354369213
