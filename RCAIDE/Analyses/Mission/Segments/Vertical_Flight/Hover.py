@@ -53,15 +53,7 @@ class Hover(Evaluate):
         
         self.altitude           = None
         self.time               = 1.0 * Units.seconds
-        self.true_course_angle  = 0.0 * Units.degrees 
-
-        # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
-        # --------------------------------------------------------------------------------------------------------------    
-        self.degrees_of_freedom                    = 1 
-        self.throttle_control.active               = True
-        self.throttle_control.propulsor_list       = None
-        self.throttle_control.initial_values       = [[0.5]]               
+        self.true_course_angle  = 0.0 * Units.degrees            
              
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

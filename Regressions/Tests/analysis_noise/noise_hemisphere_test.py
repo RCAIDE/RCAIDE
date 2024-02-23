@@ -127,25 +127,22 @@ def mission_setup(analyses,vehicle):
     # ------------------------------------------------------------------
     #   Constant Altitude Cruises 
     # ------------------------------------------------------------------   
-    segment                                          = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
-    segment.tag                                      = "Cruise" 
-    segment.analyses.extend( analyses.base)            
-    segment.initial_battery_state_of_charge          = 0.89         
-    segment.altitude                                 = 1000. * Units.ft 
-    segment.air_speed                                = Vstall*1.2       
-    segment.distance                                 = 1000    
+    segment                                               = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+    segment.tag                                           = "Cruise" 
+    segment.analyses.extend( analyses.base)                 
+    segment.initial_battery_state_of_charge               = 0.89         
+    segment.altitude                                      = 1000. * Units.ft 
+    segment.air_speed                                     = Vstall*1.2       
+    segment.distance                                      = 1000    
     
     # define flight dynamics to model 
-    segment.flight_dynamics.force_x                      = True  
-    segment.flight_dynamics.force_z                      = True     
+    segment.flight_dynamics.force_x                       = True  
+    segment.flight_dynamics.force_z                       = True     
     
     # define flight controls 
     segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]]
-    segment.flight_controls.body_angle                   
-    segment.flight_controls.body_angle.active             = True               
-    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']] 
+    segment.flight_controls.body_angle.active             = True                 
            
     mission.append_segment(segment)  
      

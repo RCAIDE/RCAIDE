@@ -178,8 +178,8 @@ def reuse_stored_data(conditions,bus,propulsor,stored_propulsor_tag,total_thrust
     Properties Used: 
     N.A.        
     ''' 
-    energy_results_0                       = conditions.energy[bus.tag][bus.propulsors[stored_propulsor_tag]]
-    noise_results_0                        = conditions.noise[bus.tag][bus.propulsors[stored_propulsor_tag]]  
+    energy_results_0                       = conditions.energy[bus.tag][stored_propulsor_tag]
+    noise_results_0                        = conditions.noise[bus.tag][stored_propulsor_tag]  
     energy_results                         = conditions.energy[bus.tag][propulsor.tag] 
     noise_results                          = conditions.noise[bus.tag][propulsor.tag]
     energy_results.motor.efficiency        = energy_results_0.motor.efficiency      

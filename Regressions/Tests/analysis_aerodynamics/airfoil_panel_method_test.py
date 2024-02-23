@@ -41,6 +41,7 @@ def single_airfoil():
     
      # Plots    
     plot_airfoil_surface_forces(airfoil_properties_1)   
+    plot_airfoil_polars(airfoil_properties_1)
     plot_airfoil_boundary_layer_properties(airfoil_properties_1,show_legend = True )   
     
     # XFOIL Validation  

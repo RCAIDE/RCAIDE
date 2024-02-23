@@ -163,13 +163,13 @@ def mission_setup(analyses,geospacial_data):
     segment = Segments.Climb.Linear_Speed_Constant_Rate(base_segment) 
     segment.tag = "climb"   
     segment.analyses.extend( analyses.base ) 
-    segment.initial_battery_state_of_charge     = 0.89         
-    segment.altitude_start                      = 10.0    * Units.feet  
-    segment.altitude_end                        = 500.0   * Units.feet 
-    segment.air_speed_start                     = 100.    * Units['mph'] 
-    segment.air_speed_end                       = 120.    * Units['mph'] 
-    segment.climb_rate                          = 50.     * Units['ft/min']         
-    segment.true_course_angle                   = geospacial_data.true_course_angle
+    segment.initial_battery_state_of_charge              = 0.89         
+    segment.altitude_start                               = 10.0    * Units.feet  
+    segment.altitude_end                                 = 500.0   * Units.feet 
+    segment.air_speed_start                              = 100.    * Units['mph'] 
+    segment.air_speed_end                                = 120.    * Units['mph'] 
+    segment.climb_rate                                   = 50.     * Units['ft/min']         
+    segment.true_course_angle                            = geospacial_data.true_course_angle
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                      = True  
@@ -177,11 +177,8 @@ def mission_setup(analyses,geospacial_data):
     
     # define flight controls 
     segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]]
-    segment.flight_controls.body_angle                   
-    segment.flight_controls.body_angle.active             = True               
-    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    segment.flight_controls.throttle.assigned_propulsors  = [['starboard_propulsor','port_propulsor']] 
+    segment.flight_controls.body_angle.active             = True                
        
     mission.append_segment(segment)  
      

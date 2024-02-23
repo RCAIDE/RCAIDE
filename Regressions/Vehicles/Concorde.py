@@ -96,7 +96,7 @@ def vehicle_setup():
     ospath                         = os.path.abspath(__file__)
     separator                      = os.path.sep
     rel_path                       = os.path.dirname(ospath) + separator   
-    wing_airfoil.coordinate_file   = rel_path + 'Airfoils' + separator + 'NACA65-203.txt' 
+    wing_airfoil.coordinate_file   = rel_path + 'Airfoils' + separator + 'NACA65_203.txt' 
     wing.append_airfoil(wing_airfoil)  
     
     # set root sweep with inner section

@@ -207,10 +207,10 @@ def mission_setup(analyses):
     segment        = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
     segment.tag    = "cruise"
     segment.analyses.extend( analyses.cruise) 
-    segment.altitude                                = 12000. * Units.feet
-    segment.air_speed                               = 119.   * Units.knots
-    segment.distance                                = 10 * Units.nautical_mile
-    segment.state.conditions.energy.rpm             = 2650. *  ones_row(1)
+    segment.altitude                                      = 12000. * Units.feet
+    segment.air_speed                                     = 119.   * Units.knots
+    segment.distance                                      = 10 * Units.nautical_mile
+    segment.state.conditions.energy.rpm                   = 2650. *  ones_row(1)
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                       = True  
@@ -218,11 +218,9 @@ def mission_setup(analyses):
     
     # define flight controls 
     segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['ice_constant_speed_propeller']]
-    segment.flight_controls.throttle.initial_values       = [[0.5]]
+    segment.flight_controls.throttle.assigned_propulsors  = [['ice_constant_speed_propeller']] 
     segment.flight_controls.body_angle                   
-    segment.flight_controls.body_angle.active             = True               
-    segment.flight_controls.body_angle.initial_values     = [[3*Units.degrees]]    
+    segment.flight_controls.body_angle.active             = True                
                 
     mission.append_segment(segment)
 

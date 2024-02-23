@@ -48,11 +48,11 @@ class Battery_Recharge(Evaluate):
         # --------------------------------------------------------------
         #   User Inputs
         # --------------------------------------------------------------
-        self.altitude               = None
-        self.time                   = 1.0 * Units.seconds
-        self.current                = 0
-        self.overcharge_contingency = 1.10
-        self.true_course_angle      = 0.0 * Units.degrees  
+        self.altitude                      = None
+        self.time                          = 1.0 * Units.seconds
+        self.current                       = 0
+        self.overcharge_contingency        = 1.10
+        self.true_course_angle             = 0.0 * Units.degrees  
          
         initialize                         = self.process.initialize  
         initialize.conditions              = Ground.Battery_Charge_Discharge.initialize_conditions  
