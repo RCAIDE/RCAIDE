@@ -10,13 +10,13 @@
 # ---------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Core import Units, Data   
-from RCAIDE.Energy.Networks.All_Electric                                       import All_Electric 
+from RCAIDE.Energy.Networks.All_Electric_Network                               import All_Electric_Network 
 from RCAIDE.Methods.Performance.estimate_cruise_drag                           import estimate_cruise_drag
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform                          import segment_properties 
 from RCAIDE.Methods.Energy.Sources.Battery.Sizing                              import  initialize_from_circuit_configuration 
 from RCAIDE.Methods.Weights.Correlation_Buildups.Propulsion                    import nasa_motor
-from RCAIDE.Methods.Energy.Propulsion.Converters.Motor                         import size_optimal_motor
-from RCAIDE.Methods.Energy.Propulsion.Converters.Rotor                         import design_propeller ,design_lift_rotor 
+from RCAIDE.Methods.Energy.Propulsors.Converters.Motor                         import design_motor
+from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor                         import design_propeller ,design_lift_rotor 
 from RCAIDE.Methods.Weights.Physics_Based_Buildups.Electric                    import compute_weight , converge_weight
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform                          import wing_segmented_planform   
 from RCAIDE.Visualization                                                      import *       
@@ -655,7 +655,7 @@ def vehicle_setup() :
     # ########################################################  Energy Network  ######################################################### 
     #------------------------------------------------------------------------------------------------------------------------------------
     # define network
-    network                                                = All_Electric()   
+    network                                                = All_Electric_Network()   
     
     #==================================================================================================================================== 
     # Forward Bus
@@ -683,12 +683,12 @@ def vehicle_setup() :
     # Forward Bus Propulsors  
     #------------------------------------------------------------------------------------------------------------------------------------       
     # Define Forward Propulsor Container 
-    cruise_propulsor_1                                     = RCAIDE.Energy.Propulsion.Electric_Rotor()
+    cruise_propulsor_1                                     = RCAIDE.Energy.Propulsors.Electric_Rotor()
     cruise_propulsor_1.tag                                 = 'cruise_propulsor_1' 
     cruise_propulsor_1.active_batteries                    = ['cruise_bus_battery']   
                  
     # Electronic Speed Controller                     
-    propeller_esc                                          = RCAIDE.Energy.Propulsion.Modulators.Electronic_Speed_Controller() 
+    propeller_esc                                          = RCAIDE.Energy.Propulsors.Modulators.Electronic_Speed_Controller() 
     propeller_esc.efficiency                               = 0.95  
     propeller_esc.origin                                   = [[6.583, 1.300,  1.092 ]] 
     propeller_esc.tag                                      = 'propeller_esc_1' 
@@ -700,7 +700,7 @@ def vehicle_setup() :
     Drag                                                   = estimate_cruise_drag(vehicle,altitude = 1500. * Units.ft,speed= 130.* Units['mph'] ,lift_coefficient = 0.5 ,profile_drag = 0.06)
     Hover_Load                                             = vehicle.mass_properties.takeoff*g      # hover load   
             
-    propeller                                              = RCAIDE.Energy.Propulsion.Converters.Propeller()
+    propeller                                              = RCAIDE.Energy.Propulsors.Converters.Propeller()
     propeller.number_of_blades                             = 3
     propeller.tag                                          = 'propeller_1'  
     propeller.origin                                       = [[6.583, 1.300,  1.092 ]] 
@@ -730,7 +730,7 @@ def vehicle_setup() :
     cruise_propulsor_1.rotor                               = propeller    
                 
     # Propeller Motor              
-    propeller_motor                                        = RCAIDE.Energy.Propulsion.Converters.Motor()
+    propeller_motor                                        = RCAIDE.Energy.Propulsors.Converters.Motor()
     propeller_motor.efficiency                             = 0.95
     propeller_motor.tag                                    = 'propeller_motor_1'  
     propeller_motor.origin                                 = [[6.583, 1.300,  1.092 ]] 
@@ -743,7 +743,7 @@ def vehicle_setup() :
     propeller_motor.rotor_radius                           = propeller.tip_radius
     propeller_motor.design_torque                          = propeller.cruise.design_torque
     propeller_motor.angular_velocity                       = propeller.cruise.design_angular_velocity/propeller_motor.gear_ratio  
-    propeller_motor                                        = size_optimal_motor(propeller_motor)  
+    propeller_motor                                        = design_motor(propeller_motor)  
     propeller_motor.mass_properties.mass                   = nasa_motor(propeller_motor.design_torque)  
     cruise_propulsor_1.motor                               = propeller_motor 
     
@@ -805,19 +805,19 @@ def vehicle_setup() :
     #------------------------------------------------------------------------------------------------------------------------------------    
      
     # Define Lift Propulsor Container 
-    lift_propulsor_1                                       = RCAIDE.Energy.Propulsion.Electric_Rotor()
+    lift_propulsor_1                                       = RCAIDE.Energy.Propulsors.Electric_Rotor()
     lift_propulsor_1.tag                                   = 'lift_propulsor_1'     
     lift_propulsor_1.active_batteries                      = ['lift_bus_battery']          
               
     # Electronic Speed Controller           
-    lift_rotor_esc                                         = RCAIDE.Energy.Propulsion.Modulators.Electronic_Speed_Controller()
+    lift_rotor_esc                                         = RCAIDE.Energy.Propulsors.Modulators.Electronic_Speed_Controller()
     lift_rotor_esc.efficiency                              = 0.95    
     lift_rotor_esc.tag                                     = 'lift_rotor_esc_1' 
     lift_rotor_esc.origin                                  = [[-0.073 ,  1.950 , 1.2]] 
     lift_propulsor_1.electronic_speed_controller           = lift_rotor_esc 
            
     # Lift Rotor Design              
-    lift_rotor                                             = RCAIDE.Energy.Propulsion.Converters.Lift_Rotor()   
+    lift_rotor                                             = RCAIDE.Energy.Propulsors.Converters.Lift_Rotor()   
     lift_rotor.tag                                         = 'lift_rotor_1'  
     lift_rotor.origin                                      = [[-0.073 ,  1.950 , 1.2]] 
     lift_rotor.active                                      = True          
@@ -849,7 +849,7 @@ def vehicle_setup() :
     #------------------------------------------------------------------------------------------------------------------------------------               
     # Lift Rotor Motor  
     #------------------------------------------------------------------------------------------------------------------------------------    
-    lift_rotor_motor                                       = RCAIDE.Energy.Propulsion.Converters.Motor()
+    lift_rotor_motor                                       = RCAIDE.Energy.Propulsors.Converters.Motor()
     lift_rotor_motor.efficiency                            = 0.9
     lift_rotor_motor.nominal_voltage                       = bat.pack.maximum_voltage*3/4  
     lift_rotor_motor.origin                                = [[-0.073 ,  1.950 , 1.2]]
@@ -861,7 +861,7 @@ def vehicle_setup() :
     lift_rotor_motor.rotor_radius                          = lift_rotor.tip_radius
     lift_rotor_motor.design_torque                         = lift_rotor.hover.design_torque
     lift_rotor_motor.angular_velocity                      = lift_rotor.hover.design_angular_velocity/lift_rotor_motor.gear_ratio  
-    lift_rotor_motor                                       = size_optimal_motor(lift_rotor_motor)
+    lift_rotor_motor                                       = design_motor(lift_rotor_motor)
     lift_rotor_motor.mass_properties.mass                  = nasa_motor(lift_rotor_motor.design_torque)     
     lift_propulsor_1.motor                                 = lift_rotor_motor  
     lift_bus.propulsors.append(lift_propulsor_1)   

@@ -13,6 +13,6 @@ from .Energy_Component import Energy_Component
 from . import Networks
 from . import Peripherals
 from . import Processes
-from . import Propulsion
+from . import Propulsors
 from . import Sources
 from . import Thermal_Management

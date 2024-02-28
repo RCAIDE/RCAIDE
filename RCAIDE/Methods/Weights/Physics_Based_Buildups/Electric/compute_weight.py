@@ -172,7 +172,7 @@ def compute_weight(config,
     #-------------------------------------------------------------------------------
     for network in config.networks:
 
-        if not isinstance(network, RCAIDE.Energy.Networks.All_Electric):
+        if not isinstance(network, RCAIDE.Energy.Networks.All_Electric_Network):
             raise NotImplementedError("""eVTOL weight buildup only supports the Battery Electric Rotor energy network.\n
             Weight buildup will not return information on propulsion system.""",RuntimeWarning)
                 
@@ -212,7 +212,7 @@ def compute_weight(config,
             for propulsor in bus.propulsors: 
                 # Rotor 
                 rotor = propulsor.rotor   
-                if type(rotor) == RCAIDE.Energy.Propulsion.Converters.Propeller:
+                if type(rotor) == RCAIDE.Energy.Propulsors.Converters.Propeller:
                     ''' Propeller Weight '''  
                     number_of_propellers       += 1   
                     rTip_ref                   = rotor.tip_radius
@@ -224,7 +224,7 @@ def compute_weight(config,
                     weight.servos              += prop_servo_weight
                     weight.hubs                += prop_hub_weight
                     
-                if (type(rotor) == RCAIDE.Energy.Propulsion.Converters.Lift_Rotor or type(rotor) == RCAIDE.Energy.Propulsion.Converters.Prop_Rotor) or type(rotor) == RCAIDE.Energy.Propulsion.Converters.Rotor:
+                if (type(rotor) == RCAIDE.Energy.Propulsors.Converters.Lift_Rotor or type(rotor) == RCAIDE.Energy.Propulsors.Converters.Prop_Rotor) or type(rotor) == RCAIDE.Energy.Propulsors.Converters.Rotor:
                     ''' Lift Rotor, Prop-Rotor or Rotor Weight '''  
                     number_of_lift_rotors       += 1  
                     rTip_ref                    = rotor.tip_radius

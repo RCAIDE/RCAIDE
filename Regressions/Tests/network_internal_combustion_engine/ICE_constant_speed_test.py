@@ -18,7 +18,7 @@ import numpy as np
 import sys 
 sys.path.append('../../Vehicles') 
 from Cessna_172                       import vehicle_setup  
-from RCAIDE.Methods.Energy.Propulsion.Converters.Rotor import design_propeller
+from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
 
 # ----------------------------------------------------------------------
 #   Main
@@ -72,7 +72,7 @@ def ICE_CS(vehicle):
     vehicle.networks.pop('internal_combustion_engine')
 
     # ########################################################  Energy Network  #########################################################  
-    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Engine_Constant_Speed()  
+    net                                         = RCAIDE.Energy.Networks.Constant_Speed_Internal_Combustion_Engine_Network()  
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
@@ -95,12 +95,12 @@ def ICE_CS(vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    propulsor                                  = RCAIDE.Energy.Propulsion.ICE_Constant_Speed_Propeller()
+    propulsor                                  = RCAIDE.Energy.Propulsors.Constant_Speed_ICE_Propeller()
     propulsor.tag                              = 'ice_constant_speed_propeller'
     propulsor.active_fuel_tanks                = ['fuel_tank']
                                                    
     # Engine                     
-    engine                                     = RCAIDE.Energy.Propulsion.Converters.Engine()
+    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
@@ -109,7 +109,7 @@ def ICE_CS(vehicle):
     propulsor.engine                           = engine 
     
     # Prop  
-    prop                                   = RCAIDE.Energy.Propulsion.Converters.Propeller()
+    prop                                   = RCAIDE.Energy.Propulsors.Converters.Propeller()
     prop.number_of_blades                  = 2.0
     prop.variable_pitch                    = True 
     prop.tip_radius                        = 76./2. * Units.inches

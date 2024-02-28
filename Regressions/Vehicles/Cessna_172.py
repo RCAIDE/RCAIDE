@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
 from RCAIDE.Core import Units   
-from RCAIDE.Methods.Energy.Propulsion.Converters.Rotor import design_propeller
+from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
 import os 
 
 # python imports 
@@ -195,7 +195,7 @@ def vehicle_setup():
     vehicle.landing_gear                        = landing_gear
 
     # ########################################################  Energy Network  #########################################################  
-    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Engine()   
+    net                                         = RCAIDE.Energy.Networks.Internal_Combustion_Engine_Network()   
 
     # add the network to the vehicle
     vehicle.append_energy_network(net) 
@@ -221,11 +221,11 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    ice_prop    = RCAIDE.Energy.Propulsion.ICE_Propeller()     
+    ice_prop    = RCAIDE.Energy.Propulsors.ICE_Propeller()     
     ice_prop.active_fuel_tanks                 = ['fuel_tank']   
                                                      
     # Engine                     
-    engine                                     = RCAIDE.Energy.Propulsion.Converters.Engine()
+    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
@@ -233,7 +233,7 @@ def vehicle_setup():
     ice_prop.engine                            = engine 
      
     # Propeller 
-    prop = RCAIDE.Energy.Propulsion.Converters.Propeller()
+    prop = RCAIDE.Energy.Propulsors.Converters.Propeller()
     prop.tag                                = 'propeller'
     prop.number_of_blades                   = 2.0
     prop.tip_radius                         = 76./2. * Units.inches

@@ -9,9 +9,9 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Core import Units  
-from RCAIDE.Energy.Networks.All_Electric                    import All_Electric
-from RCAIDE.Methods.Energy.Propulsion.Converters.Rotor      import design_propeller 
-from RCAIDE.Methods.Energy.Propulsion.Converters.Motor      import size_optimal_motor 
+from RCAIDE.Energy.Networks.All_Electric_Network            import All_Electric_Network
+from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor      import design_propeller 
+from RCAIDE.Methods.Energy.Propulsors.Converters.Motor      import design_motor 
 from RCAIDE.Methods.Weights.Correlation_Buildups.Propulsion import nasa_motor
 from RCAIDE.Methods.Energy.Sources.Battery.Sizing           import initialize_from_circuit_configuration
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform       import wing_segmented_planform 
@@ -400,13 +400,13 @@ def vehicle_setup():
     vehicle.append_component(nacelle_2)    
  
     # ########################################################  Energy Network  #########################################################  
-    net                              = All_Electric()   
+    net                              = All_Electric_Network()   
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
     bus                              = RCAIDE.Energy.Networks.Distribution.Electrical_Bus() 
-    bus.identical_propulsors        = False # only for regression 
+    bus.identical_propulsors         = False # only for regression 
 
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Battery
@@ -429,18 +429,18 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Starboard Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    starboard_propulsor                              = RCAIDE.Energy.Propulsion.Electric_Rotor()  
+    starboard_propulsor                              = RCAIDE.Energy.Propulsors.Electric_Rotor()  
     starboard_propulsor.tag                          = 'starboard_propulsor'
     starboard_propulsor.active_batteries             = ['li_ion_battery']   
   
     # Electronic Speed Controller       
-    esc                                              = RCAIDE.Energy.Propulsion.Modulators.Electronic_Speed_Controller()
+    esc                                              = RCAIDE.Energy.Propulsors.Modulators.Electronic_Speed_Controller()
     esc.tag                                          = 'esc_1'
     esc.efficiency                                   = 0.95 
     starboard_propulsor.electronic_speed_controller  = esc   
      
     # Propeller              
-    propeller                                        = RCAIDE.Energy.Propulsion.Converters.Propeller() 
+    propeller                                        = RCAIDE.Energy.Propulsors.Converters.Propeller() 
     propeller.tag                                    = 'propeller_1'  
     propeller.tip_radius                             = 1.72/2   
     propeller.number_of_blades                       = 3
@@ -467,7 +467,7 @@ def vehicle_setup():
     starboard_propulsor.rotor                        = propeller   
               
     # Motor       
-    motor                                            = RCAIDE.Energy.Propulsion.Converters.Motor()
+    motor                                            = RCAIDE.Energy.Propulsors.Converters.Motor()
     motor.efficiency                                 = 0.98
     motor.origin                                     = [[2.,  2.5, 0.95]]
     motor.nominal_voltage                            = bat.pack.maximum_voltage*0.5
@@ -475,7 +475,7 @@ def vehicle_setup():
     motor.rotor_radius                               = propeller.tip_radius
     motor.design_torque                              = propeller.cruise.design_torque
     motor.angular_velocity                           = propeller.cruise.design_angular_velocity 
-    motor                                            = size_optimal_motor(motor)  
+    motor                                            = design_motor(motor)  
     motor.mass_properties.mass                       = nasa_motor(motor.design_torque) 
     starboard_propulsor.motor                        = motor 
  
@@ -485,7 +485,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Port Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    port_propulsor                             = RCAIDE.Energy.Propulsion.Electric_Rotor() 
+    port_propulsor                             = RCAIDE.Energy.Propulsors.Electric_Rotor() 
     port_propulsor.tag                         = "port_propulsor"
     port_propulsor.active_batteries            = ['li_ion_battery']   
             

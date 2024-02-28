@@ -10,7 +10,7 @@
 import RCAIDE
 from RCAIDE.Core import Units       
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform      import segment_properties  , segment_properties 
-from RCAIDE.Methods.Energy.Propulsion.Converters.Turbofan  import design_turbofan 
+from RCAIDE.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan 
 from RCAIDE.Methods.Stability.Center_of_Gravity            import compute_component_centers_of_gravity
 from RCAIDE.Visualization                                  import *     
 
@@ -548,7 +548,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------- 
     #  Turbofan Network
     #-------------------------------------------------------------------------------------------------------------------------   
-    net                                         = RCAIDE.Energy.Networks.Turbofan_Engine() 
+    net                                         = RCAIDE.Energy.Networks.Turbofan_Engine_Network() 
 
     # Append energy network to aircraft 
     vehicle.append_energy_network(net)   
@@ -561,7 +561,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor: Starboard Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------         
-    turbofan                                    = RCAIDE.Energy.Propulsion.Turbofan() 
+    turbofan                                    = RCAIDE.Energy.Propulsors.Turbofan() 
     turbofan.tag                                = 'starboard_propulsor'
     turbofan.active_fuel_tanks                  = ['fuel_tank']   
     turbofan.origin                             = [[13.72, 4.86,-1.1]] 
@@ -572,7 +572,7 @@ def vehicle_setup():
     turbofan.design_thrust                      = 35000.0* Units.N    
              
     # fan                
-    fan                                         = RCAIDE.Energy.Propulsion.Converters.Fan()   
+    fan                                         = RCAIDE.Energy.Propulsors.Converters.Fan()   
     fan.tag                                     = 'fan'
     fan.polytropic_efficiency                   = 0.93
     fan.pressure_ratio                          = 1.7   
@@ -580,47 +580,47 @@ def vehicle_setup():
                    
     # working fluid                   
     turbofan.working_fluid                      = RCAIDE.Attributes.Gases.Air() 
-    ram                                         = RCAIDE.Energy.Propulsion.Converters.Ram()
+    ram                                         = RCAIDE.Energy.Propulsors.Converters.Ram()
     ram.tag                                     = 'ram' 
     turbofan.ram                                = ram 
           
     # inlet nozzle          
-    inlet_nozzle                                = RCAIDE.Energy.Propulsion.Converters.Compression_Nozzle()
+    inlet_nozzle                                = RCAIDE.Energy.Propulsors.Converters.Compression_Nozzle()
     inlet_nozzle.tag                            = 'inlet nozzle'
     inlet_nozzle.polytropic_efficiency          = 0.98
     inlet_nozzle.pressure_ratio                 = 0.98 
     turbofan.inlet_nozzle                       = inlet_nozzle 
 
     # low pressure compressor    
-    low_pressure_compressor                       = RCAIDE.Energy.Propulsion.Converters.Compressor()    
+    low_pressure_compressor                       = RCAIDE.Energy.Propulsors.Converters.Compressor()    
     low_pressure_compressor.tag                   = 'lpc'
     low_pressure_compressor.polytropic_efficiency = 0.91
     low_pressure_compressor.pressure_ratio        = 1.9   
     turbofan.low_pressure_compressor              = low_pressure_compressor
 
     # high pressure compressor  
-    high_pressure_compressor                       = RCAIDE.Energy.Propulsion.Converters.Compressor()    
+    high_pressure_compressor                       = RCAIDE.Energy.Propulsors.Converters.Compressor()    
     high_pressure_compressor.tag                   = 'hpc'
     high_pressure_compressor.polytropic_efficiency = 0.91
     high_pressure_compressor.pressure_ratio        = 10.0    
     turbofan.high_pressure_compressor              = high_pressure_compressor
 
     # low pressure turbine  
-    low_pressure_turbine                           = RCAIDE.Energy.Propulsion.Converters.Turbine()   
+    low_pressure_turbine                           = RCAIDE.Energy.Propulsors.Converters.Turbine()   
     low_pressure_turbine.tag                       ='lpt'
     low_pressure_turbine.mechanical_efficiency     = 0.99
     low_pressure_turbine.polytropic_efficiency     = 0.93 
     turbofan.low_pressure_turbine                  = low_pressure_turbine
    
     # high pressure turbine     
-    high_pressure_turbine                          = RCAIDE.Energy.Propulsion.Converters.Turbine()   
+    high_pressure_turbine                          = RCAIDE.Energy.Propulsors.Converters.Turbine()   
     high_pressure_turbine.tag                      ='hpt'
     high_pressure_turbine.mechanical_efficiency    = 0.99
     high_pressure_turbine.polytropic_efficiency    = 0.93 
     turbofan.high_pressure_turbine                 = high_pressure_turbine 
 
     # combustor  
-    combustor                                      = RCAIDE.Energy.Propulsion.Converters.Combustor()   
+    combustor                                      = RCAIDE.Energy.Propulsors.Converters.Combustor()   
     combustor.tag                                  = 'Comb'
     combustor.efficiency                           = 0.99 
     combustor.alphac                               = 1.0     
@@ -630,14 +630,14 @@ def vehicle_setup():
     turbofan.combustor                             = combustor
 
     # core nozzle
-    core_nozzle                                    = RCAIDE.Energy.Propulsion.Converters.Expansion_Nozzle()   
+    core_nozzle                                    = RCAIDE.Energy.Propulsors.Converters.Expansion_Nozzle()   
     core_nozzle.tag                                = 'core nozzle'
     core_nozzle.polytropic_efficiency              = 0.95
     core_nozzle.pressure_ratio                     = 0.99  
     turbofan.core_nozzle                           = core_nozzle
              
     # fan nozzle             
-    fan_nozzle                                     = RCAIDE.Energy.Propulsion.Converters.Expansion_Nozzle()   
+    fan_nozzle                                     = RCAIDE.Energy.Propulsors.Converters.Expansion_Nozzle()   
     fan_nozzle.tag                                 = 'fan nozzle'
     fan_nozzle.polytropic_efficiency               = 0.95
     fan_nozzle.pressure_ratio                      = 0.99 
