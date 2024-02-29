@@ -24,11 +24,11 @@ from Legacy.trunk.S.Components.Energy.Networks import Turbofan                  
 from Legacy.trunk.S.Components.Energy.Networks import Turbojet_Super                               as legacy_turbojet
 from Legacy.trunk.S.Components.Energy.Networks import Solar                                        as legacy_solar
 
-from .                                              import Distribution   
-from .All_Electric                                  import All_Electric 
-from .Internal_Combustion_Engine                    import Internal_Combustion_Engine
-from .Internal_Combustion_Engine_Constant_Speed     import Internal_Combustion_Engine_Constant_Speed  
-from .Isolated_Battery_Cell                         import Isolated_Battery_Cell  
-from .Turbofan_Engine                               import Turbofan_Engine
-from .Turbojet_Engine                               import Turbojet_Engine 
-from .Network                                       import Network  
+from .                                                   import Distribution   
+from .All_Electric_Network                               import All_Electric_Network 
+from .Internal_Combustion_Engine_Network                 import Internal_Combustion_Engine_Network
+from .Constant_Speed_Internal_Combustion_Engine_Network  import Constant_Speed_Internal_Combustion_Engine_Network  
+from .Isolated_Battery_Cell_Network                      import Isolated_Battery_Cell_Network  
+from .Turbofan_Engine_Network                            import Turbofan_Engine_Network
+from .Turbojet_Engine_Network                            import Turbojet_Engine_Network 
+from .Network                                            import Network  

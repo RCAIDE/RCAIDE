@@ -9,7 +9,7 @@
 # RCAIDE imports 
 import RCAIDE  
 from RCAIDE.Core                                    import Units 
-from RCAIDE.Methods.Energy.Sources.Battery.Sizing   import initialize_from_circuit_configuration  
+from RCAIDE.Methods.Energy.Sources.Battery.Common   import initialize_from_circuit_configuration  
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Build the Vehicle
@@ -26,7 +26,7 @@ def vehicle_setup(current,cell_chemistry,fixed_bus_voltage):
     vehicle.mass_properties.takeoff         = 1 * Units.kg 
     vehicle.mass_properties.max_takeoff     = 1 * Units.kg 
          
-    net                              = RCAIDE.Energy.Networks.Isolated_Battery_Cell() 
+    net                              = RCAIDE.Energy.Networks.Isolated_Battery_Cell_Network() 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  

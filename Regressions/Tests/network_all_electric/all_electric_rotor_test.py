@@ -260,7 +260,7 @@ def mission_setup(analyses):
             segment.time                                    = 1 * Units.hr
             segment.current                                 = 100 
             if flight_no  == flights_per_day:  
-                segment.increment_battery_age_by_one_day          =True     
+                segment.increment_battery_age_by_one_day    =True     
             mission.append_segment(segment)                
 
     return mission

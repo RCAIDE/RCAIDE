@@ -11,4 +11,4 @@
 # @ingroup Methods-Geometry-Two_Dimensional
 
 from . import Airfoil
-from . import Propulsion
+from . import Propulsors

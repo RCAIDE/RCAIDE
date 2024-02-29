@@ -9,8 +9,7 @@
 # RCAIDE imports 
 import RCAIDE  
 from RCAIDE.Core                                    import Units, Data 
-from RCAIDE.Methods.Energy.Sources.Battery.Sizing   import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, initialize_from_circuit_configuration, find_mass_gain_rate, find_total_mass_gain
-from RCAIDE.Methods.Energy.Sources.Battery.Ragone   import find_ragone_properties, find_ragone_optimum 
+from RCAIDE.Methods.Energy.Sources.Battery.Common   import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, find_mass_gain_rate, find_total_mass_gain, find_ragone_properties, find_ragone_optimum  
 from RCAIDE.Analyses.Mission.Common                 import Conditions
 from RCAIDE.Visualization                           import * 
 
