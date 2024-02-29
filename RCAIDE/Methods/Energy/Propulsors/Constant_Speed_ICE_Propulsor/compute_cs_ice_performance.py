@@ -9,6 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 from RCAIDE.Core import Units  
+from RCAIDE.Methods.Energy.Propulsors.Converters.Engine import compute_throttle_from_power
 
 # pacakge imports  
 import numpy as np 
@@ -97,7 +98,7 @@ def compute_performance(conditions,fuel_line,ice_cs_propeller,total_thrust,total
 
     # Run the engine to calculate the throttle setting and the fuel burn
     engine.inputs.power = P
-    engine.calculate_throttle_out_from_power(conditions)
+    compute_throttle_from_power(engine,conditions)
 
     # Create the outputs 
     R                   = propeller.tip_radius    

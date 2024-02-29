@@ -9,6 +9,14 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 from RCAIDE.Core import Data   
+from RCAIDE.Methods.Energy.Propulsors.Converters.Ram                import compute_ram_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Combustor          import compute_combustor_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Compressor         import compute_compressor_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Fan                import compute_fan_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
+from RCAIDE.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
+from RCAIDE.Methods.Energy.Propulsors.Turbofan_Propulsor            import compute_thrust
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_performance
@@ -102,42 +110,42 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     ram.inputs.working_fluid                               = turbofan.working_fluid
 
     #Flow through the ram , this computes the necessary flow quantities and stores it into conditions
-    ram(conditions) 
+    compute_ram_performance(ram,conditions)
 
     #link inlet nozzle to ram 
     inlet_nozzle.inputs.stagnation_temperature             = ram.outputs.stagnation_temperature 
     inlet_nozzle.inputs.stagnation_pressure                = ram.outputs.stagnation_pressure
 
     #Flow through the inlet nozzle
-    inlet_nozzle(conditions)
+    compute_compression_nozzle_performance(inlet_nozzle,conditions)
 
     #--link low pressure compressor to the inlet nozzle
     low_pressure_compressor.inputs.stagnation_temperature  = inlet_nozzle.outputs.stagnation_temperature
     low_pressure_compressor.inputs.stagnation_pressure     = inlet_nozzle.outputs.stagnation_pressure
 
     #Flow through the low pressure compressor
-    low_pressure_compressor(conditions)
+    compute_compressor_performance(low_pressure_compressor,conditions)
 
     #link the high pressure compressor to the low pressure compressor
     high_pressure_compressor.inputs.stagnation_temperature = low_pressure_compressor.outputs.stagnation_temperature
     high_pressure_compressor.inputs.stagnation_pressure    = low_pressure_compressor.outputs.stagnation_pressure
 
     #Flow through the high pressure compressor
-    high_pressure_compressor(conditions)
+    compute_compressor_performance(high_pressure_compressor,conditions)
 
     #Link the fan to the inlet nozzle
     fan.inputs.stagnation_temperature                      = inlet_nozzle.outputs.stagnation_temperature
     fan.inputs.stagnation_pressure                         = inlet_nozzle.outputs.stagnation_pressure
 
     #flow through the fan
-    fan(conditions)
+    compute_fan_performance(fan,conditions)
 
     #link the combustor to the high pressure compressor
     combustor.inputs.stagnation_temperature                = high_pressure_compressor.outputs.stagnation_temperature
     combustor.inputs.stagnation_pressure                   = high_pressure_compressor.outputs.stagnation_pressure
 
     #flow through the high pressor comprresor
-    combustor(conditions)
+    compute_combustor_performance(combustor,conditions)
 
     # link the shaft power output to the low pressure compressor
     try:
@@ -165,7 +173,7 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     high_pressure_turbine.inputs.bypass_ratio              = 0.0 #set to zero to ensure that fan not linked here
 
     #flow through the high pressure turbine
-    high_pressure_turbine(conditions)
+    compute_turbine_performance(high_pressure_turbine,conditions)
 
     #link the low pressure turbine to the high pressure turbine
     low_pressure_turbine.inputs.stagnation_temperature     = high_pressure_turbine.outputs.stagnation_temperature
@@ -190,21 +198,21 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     low_pressure_turbine.inputs.bypass_ratio               = bypass_ratio
 
     #flow through the low pressure turbine
-    low_pressure_turbine(conditions)
+    compute_turbine_performance(low_pressure_turbine,conditions)
 
     #link the core nozzle to the low pressure turbine
     core_nozzle.inputs.stagnation_temperature              = low_pressure_turbine.outputs.stagnation_temperature
     core_nozzle.inputs.stagnation_pressure                 = low_pressure_turbine.outputs.stagnation_pressure
 
     #flow through the core nozzle
-    core_nozzle(conditions)
+    compute_expansion_nozzle_performance(core_nozzle,conditions)
 
     #link the dan nozzle to the fan
     fan_nozzle.inputs.stagnation_temperature               = fan.outputs.stagnation_temperature
     fan_nozzle.inputs.stagnation_pressure                  = fan.outputs.stagnation_pressure
 
     # flow through the fan nozzle
-    fan_nozzle(conditions)
+    compute_expansion_nozzle_performance(fan_nozzle,conditions)
 
     # compute the thrust using the thrust component
     #link the thrust component to the fan nozzle
@@ -228,7 +236,7 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     turbofan.inputs.flow_through_fan                         = bypass_ratio/(1.+bypass_ratio) #scaled constant to turn on fan thrust computation        
 
     # compute the thrust
-    turbofan.compute_thrust(conditions,throttle = turbofan_results.throttle )
+    compute_thrust(turbofan,conditions,throttle = turbofan_results.throttle )
 
     # getting the network outputs from the thrust outputs  
     turbofan_results.turbofan.thrust = turbofan.outputs.thrust

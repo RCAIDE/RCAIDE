@@ -7,6 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+from RCAIDE.Methods.Energy.Propulsors.Turbofan_Propulsor            import compute_thrust
 
 # Python package imports
 import numpy as np
@@ -54,7 +55,7 @@ def size_core(turbofan,conditions):
     total_pressure_reference    = turbofan.inputs.total_pressure_reference 
 
     #compute nondimensional thrust
-    turbofan.compute_thrust(conditions)
+    compute_thrust(turbofan,conditions)
 
     #unpack results 
     Fsp                         = turbofan.outputs.non_dimensional_thrust

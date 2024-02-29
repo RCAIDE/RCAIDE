@@ -8,7 +8,7 @@
 #  compute_turbine_performance
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Methods-Energy-Propulsors-Converters-Turbine 
-def compute_turbine_performance(self,conditions):
+def compute_turbine_performance(turbine,conditions):
     """This computes the output values from the input values according to
     equations from the source.
 
@@ -22,7 +22,7 @@ def compute_turbine_performance(self,conditions):
     conditions.freestream.
       isentropic_expansion_factor         [-]
       specific_heat_at_constant_pressure  [J/(kg K)]
-    self.inputs.
+    turbine.inputs.
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
       bypass_ratio                        [-]
@@ -32,13 +32,13 @@ def compute_turbine_performance(self,conditions):
       shaft_power_off_take.work_done      [J/kg]
 
     Outputs:
-    self.outputs.
+    turbine.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]
       stagnation_enthalpy                 [J/kg]
 
     Properties Used:
-    self.
+    turbine.
       mechanical_efficiency               [-]
       polytropic_efficiency               [-]
     """           
@@ -49,21 +49,21 @@ def compute_turbine_performance(self,conditions):
     Cp              = conditions.freestream.specific_heat_at_constant_pressure
     
     #unpack from inputs
-    Tt_in           = self.inputs.stagnation_temperature
-    Pt_in           = self.inputs.stagnation_pressure
-    alpha           = self.inputs.bypass_ratio
-    f               = self.inputs.fuel_to_air_ratio
-    compressor_work = self.inputs.compressor.work_done
-    fan_work        = self.inputs.fan.work_done
+    Tt_in           = turbine.inputs.stagnation_temperature
+    Pt_in           = turbine.inputs.stagnation_pressure
+    alpha           = turbine.inputs.bypass_ratio
+    f               = turbine.inputs.fuel_to_air_ratio
+    compressor_work = turbine.inputs.compressor.work_done
+    fan_work        = turbine.inputs.fan.work_done
 
-    if self.inputs.shaft_power_off_take is not None:
-        shaft_takeoff = self.inputs.shaft_power_off_take.work_done
+    if turbine.inputs.shaft_power_off_take is not None:
+        shaft_takeoff = turbine.inputs.shaft_power_off_take.work_done
     else:
         shaft_takeoff = 0.
 
-    #unpack from self
-    eta_mech        =  self.mechanical_efficiency
-    etapolt         =  self.polytropic_efficiency
+    #unpack from turbine
+    eta_mech        =  turbine.mechanical_efficiency
+    etapolt         =  turbine.polytropic_efficiency
     
     #method to compute turbine properties
     
@@ -77,9 +77,6 @@ def compute_turbine_performance(self,conditions):
     
     
     #pack the computed values into outputs
-    self.outputs.stagnation_temperature  = Tt_out
-    self.outputs.stagnation_pressure     = Pt_out
-    self.outputs.stagnation_enthalpy     = ht_out
-
-
-__call__ = compute
+    turbine.outputs.stagnation_temperature  = Tt_out
+    turbine.outputs.stagnation_pressure     = Pt_out
+    turbine.outputs.stagnation_enthalpy     = ht_out 

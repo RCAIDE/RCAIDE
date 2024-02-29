@@ -11,9 +11,9 @@ import RCAIDE
 from RCAIDE.Core import Units  
 from RCAIDE.Energy.Networks.All_Electric_Network            import All_Electric_Network
 from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor      import design_propeller 
-from RCAIDE.Methods.Energy.Propulsors.Converters.Motor      import design_motor 
+from RCAIDE.Methods.Energy.Propulsors.Converters.DC_Motor   import design_motor 
 from RCAIDE.Methods.Weights.Correlation_Buildups.Propulsion import nasa_motor
-from RCAIDE.Methods.Energy.Sources.Battery.Sizing           import initialize_from_circuit_configuration
+from RCAIDE.Methods.Energy.Sources.Battery.Common           import initialize_from_circuit_configuration
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform       import wing_segmented_planform 
 
 # python imports 
@@ -466,8 +466,8 @@ def vehicle_setup():
     propeller                                        = design_propeller(propeller)    
     starboard_propulsor.rotor                        = propeller   
               
-    # Motor       
-    motor                                            = RCAIDE.Energy.Propulsors.Converters.Motor()
+    # DC_Motor       
+    motor                                            = RCAIDE.Energy.Propulsors.Converters.DC_Motor()
     motor.efficiency                                 = 0.98
     motor.origin                                     = [[2.,  2.5, 0.95]]
     motor.nominal_voltage                            = bat.pack.maximum_voltage*0.5

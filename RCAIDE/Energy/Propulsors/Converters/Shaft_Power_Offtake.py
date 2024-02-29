@@ -1,23 +1,20 @@
-## @ingroup Components-Energy-Converters
-# Shaft_Power_Off_Take.py
-#
-# Created:  Jun 2016, L. Kulik
+## @ingroup Energy-Propulsors-Shaft_Power_Offtake
+# RCAIDE/Energy/Propulsors/Converters/Shaft_Power_Offtake.py
+# 
+# 
+# Created:  Feb 2024, M. Clarke
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
+ # RCAIDE imports   
+from RCAIDE.Energy.Energy_Component                      import Energy_Component  
 
-# SUAVE imports
-from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
-
-# package imports
-import numpy as np
-
-# ----------------------------------------------------------------------
-#  Shaft Power component
-# ----------------------------------------------------------------------
-## @ingroup Components-Energy-Converters
-class Shaft_Power_Off_Take(Energy_Component):
+# ---------------------------------------------------------------------------------------------------------------------- 
+# Shaft_Power_Offtake
+# ---------------------------------------------------------------------------------------------------------------------- 
+## @ingroup Energy-Propulsors-Converters 
+class Shaft_Power_Offtake(Energy_Component):
     """This is a component representing the power draw from the shaft.
     
     Assumptions:
@@ -44,6 +41,6 @@ class Shaft_Power_Off_Take(Energy_Component):
         Properties Used:
         None
         """          
-        self.power_draw = 0.0
+        self.power_draw            = 0.0
         self.reference_temperature = 288.15
-        self.reference_pressure = 1.01325 * 10 ** 5 
+        self.reference_pressure    = 1.01325 * 10 ** 5 

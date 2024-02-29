@@ -8,7 +8,7 @@
 # compute_combustor_performance
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Energy-Propulsors-Converters-Combustor  
-def compute_combustor_performance(self,conditions):
+def compute_combustor_performance(combustor,conditions):
     """ This computes the output values from the input values according to
     equations from the source.
 
@@ -24,20 +24,20 @@ def compute_combustor_performance(self,conditions):
       specific_heat_at_constant_pressure  [J/(kg K)]
       temperature                         [K]
       stagnation_temperature              [K]
-    self.inputs.
+    combustor.inputs.
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
       nondim_mass_ratio                   [-]
 
     Outputs:
-    self.outputs.
+    combustor.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]
       stagnation_enthalpy                 [J/kg]
       fuel_to_air_ratio                   [-]
 
     Properties Used:
-    self.
+    combustor.
       turbine_inlet_temperature           [K]
       pressure_ratio                      [-]
       efficiency                          [-]
@@ -53,16 +53,16 @@ def compute_combustor_performance(self,conditions):
     Tto    = conditions.freestream.stagnation_temperature
     
     # unpacking the values form inputs
-    Tt_in    = self.inputs.stagnation_temperature
-    Pt_in    = self.inputs.stagnation_pressure
-    Tt4      = self.turbine_inlet_temperature
-    pib      = self.pressure_ratio
-    eta_b    = self.efficiency
-    nondim_r = self.inputs.nondim_mass_ratio
+    Tt_in    = combustor.inputs.stagnation_temperature
+    Pt_in    = combustor.inputs.stagnation_pressure
+    Tt4      = combustor.turbine_inlet_temperature
+    pib      = combustor.pressure_ratio
+    eta_b    = combustor.efficiency
+    nondim_r = combustor.inputs.nondim_mass_ratio
     
-    # unpacking values from self
-    htf    = self.fuel_data.specific_energy
-    ar     = self.area_ratio
+    # unpacking values from combustor
+    htf    = combustor.fuel_data.specific_energy
+    ar     = combustor.area_ratio
     
     # compute pressure
     Pt_out = Pt_in*pib
@@ -82,7 +82,9 @@ def compute_combustor_performance(self,conditions):
     ht_out  = Cp*Tt4
     
     # pack computed quantities into outputs
-    self.outputs.stagnation_temperature  = Tt4
-    self.outputs.stagnation_pressure     = Pt_out
-    self.outputs.stagnation_enthalpy     = ht_out
-    self.outputs.fuel_to_air_ratio       = f 
+    combustor.outputs.stagnation_temperature  = Tt4
+    combustor.outputs.stagnation_pressure     = Pt_out
+    combustor.outputs.stagnation_enthalpy     = ht_out
+    combustor.outputs.fuel_to_air_ratio       = f 
+    
+    return 

@@ -10,9 +10,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from . import Common
-from . import Converters 
 from . import Constant_Speed_ICE_Propulsor
+from . import Converters 
 from . import ICE_Propulsor
-from . import Electric_Rotor_Propulsor 
+from . import Electric_Rotor_Propulsor
+from . import Modulators
 from . import Turbofan_Propulsor
 from . import Turbojet_Propulsor

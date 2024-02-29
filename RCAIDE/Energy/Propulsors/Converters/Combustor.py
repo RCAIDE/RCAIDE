@@ -44,10 +44,7 @@ class Combustor(Energy_Component):
         None
         """         
         
-        self.tag = 'Combustor'
-        
-        #-----setting the default values for the different components
-        self.fuel_data                       = SUAVE.Attributes.Propellants.Jet_A()
+        self.tag                             = 'Combustor' 
         self.alphac                          = 0.0
         self.turbine_inlet_temperature       = 1.0
         self.inputs.stagnation_temperature   = 1.0
@@ -58,8 +55,7 @@ class Combustor(Energy_Component):
         self.outputs.stagnation_pressure     = 1.0
         self.outputs.static_pressure         = 1.0
         self.outputs.stagnation_enthalpy     = 1.0
-        self.outputs.fuel_to_air_ratio       = 1.0
-        self.fuel_data                       = Data()
+        self.outputs.fuel_to_air_ratio       = 1.0 
         self.area_ratio                      = 1.0
         self.axial_fuel_velocity_ratio       = 0.0
         self.fuel_velocity_ratio             = 0.0

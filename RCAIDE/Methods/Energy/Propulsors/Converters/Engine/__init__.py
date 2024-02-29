@@ -9,6 +9,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
         
-from .calculate_throttle_from_power        import calculate_throttle_from_power
-from .calculate_power_from_throttle        import calculate_power_from_throttle
-from .calculate_fuel_flow_rate_from_torque import calculate_fuel_flow_rate_from_torque
+from .compute_throttle_from_power        import compute_throttle_from_power
+from .compute_power_from_throttle        import compute_power_from_throttle
+from .compute_fuel_flow_rate_from_torque import compute_fuel_flow_rate_from_torque

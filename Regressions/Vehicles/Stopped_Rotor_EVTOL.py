@@ -13,9 +13,9 @@ from RCAIDE.Core import Units, Data
 from RCAIDE.Energy.Networks.All_Electric_Network                               import All_Electric_Network 
 from RCAIDE.Methods.Performance.estimate_cruise_drag                           import estimate_cruise_drag
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform                          import segment_properties 
-from RCAIDE.Methods.Energy.Sources.Battery.Sizing                              import  initialize_from_circuit_configuration 
+from RCAIDE.Methods.Energy.Sources.Battery.Common                              import initialize_from_circuit_configuration 
 from RCAIDE.Methods.Weights.Correlation_Buildups.Propulsion                    import nasa_motor
-from RCAIDE.Methods.Energy.Propulsors.Converters.Motor                         import design_motor
+from RCAIDE.Methods.Energy.Propulsors.Converters.DC_Motor                      import design_motor
 from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor                         import design_propeller ,design_lift_rotor 
 from RCAIDE.Methods.Weights.Physics_Based_Buildups.Electric                    import compute_weight , converge_weight
 from RCAIDE.Methods.Geometry.Two_Dimensional.Planform                          import wing_segmented_planform   
@@ -730,7 +730,7 @@ def vehicle_setup() :
     cruise_propulsor_1.rotor                               = propeller    
                 
     # Propeller Motor              
-    propeller_motor                                        = RCAIDE.Energy.Propulsors.Converters.Motor()
+    propeller_motor                                        = RCAIDE.Energy.Propulsors.Converters.DC_Motor()
     propeller_motor.efficiency                             = 0.95
     propeller_motor.tag                                    = 'propeller_motor_1'  
     propeller_motor.origin                                 = [[6.583, 1.300,  1.092 ]] 
@@ -849,7 +849,7 @@ def vehicle_setup() :
     #------------------------------------------------------------------------------------------------------------------------------------               
     # Lift Rotor Motor  
     #------------------------------------------------------------------------------------------------------------------------------------    
-    lift_rotor_motor                                       = RCAIDE.Energy.Propulsors.Converters.Motor()
+    lift_rotor_motor                                       = RCAIDE.Energy.Propulsors.Converters.DC_Motor()
     lift_rotor_motor.efficiency                            = 0.9
     lift_rotor_motor.nominal_voltage                       = bat.pack.maximum_voltage*3/4  
     lift_rotor_motor.origin                                = [[-0.073 ,  1.950 , 1.2]]

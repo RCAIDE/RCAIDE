@@ -11,6 +11,13 @@
 # RCAIDE Imports     
 import RCAIDE
 from RCAIDE.Core import Data
+from RCAIDE.Methods.Energy.Propulsors.Converters.Ram                import compute_ram_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Combustor          import compute_combustor_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Compressor         import compute_compressor_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
+from RCAIDE.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
+from RCAIDE.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
+from RCAIDE.Methods.Energy.Propulsors.Turbojet_Propulsor            import size_core
 
 # Python package imports   
 import numpy as np
@@ -70,35 +77,35 @@ def design_turbojet(turbojet):
     ram.inputs.working_fluid                             = turbojet.working_fluid
     
      #Flow through the ram , this computes the necessary flow quantities and stores it into conditions
-    ram(conditions)
+    compute_ram_performance(ram,conditions)
     
     # link inlet nozzle to ram 
     inlet_nozzle.inputs.stagnation_temperature             = ram.outputs.stagnation_temperature #conditions.freestream.stagnation_temperature
     inlet_nozzle.inputs.stagnation_pressure                = ram.outputs.stagnation_pressure #conditions.freestream.stagnation_pressure
     
     # Flow through the inlet nozzle
-    inlet_nozzle(conditions)
+    compute_compression_nozzle_performance(inlet_nozzle,conditions)
                     
     # link low pressure compressor to the inlet nozzle
     low_pressure_compressor.inputs.stagnation_temperature  = inlet_nozzle.outputs.stagnation_temperature
     low_pressure_compressor.inputs.stagnation_pressure     = inlet_nozzle.outputs.stagnation_pressure
     
     # Flow through the low pressure compressor
-    low_pressure_compressor(conditions)
+    compute_compressor_performance(low_pressure_compressor,conditions)
 
     # link the high pressure compressor to the low pressure compressor
     high_pressure_compressor.inputs.stagnation_temperature = low_pressure_compressor.outputs.stagnation_temperature
     high_pressure_compressor.inputs.stagnation_pressure    = low_pressure_compressor.outputs.stagnation_pressure
     
     # Flow through the high pressure compressor
-    high_pressure_compressor(conditions)
+    compute_compressor_performance(high_pressure_compressor,conditions)
 
     # link the combustor to the high pressure compressor
     combustor.inputs.stagnation_temperature                = high_pressure_compressor.outputs.stagnation_temperature
     combustor.inputs.stagnation_pressure                   = high_pressure_compressor.outputs.stagnation_pressure
     
     # flow through the high pressor comprresor
-    combustor(conditions)
+    compute_combustor_performance(combustor,conditions)
 
     #link the high pressure turbione to the combustor
     high_pressure_turbine.inputs.stagnation_temperature    = combustor.outputs.stagnation_temperature
@@ -108,7 +115,7 @@ def design_turbojet(turbojet):
     high_pressure_turbine.inputs.bypass_ratio              = 0.0
     high_pressure_turbine.inputs.fan                       = Data()
     high_pressure_turbine.inputs.fan.work_done             = 0.0
-    high_pressure_turbine(conditions)
+    compute_turbine_performance(high_pressure_turbine,conditions)
             
     #link the low pressure turbine to the high pressure turbine
     low_pressure_turbine.inputs.stagnation_temperature     = high_pressure_turbine.outputs.stagnation_temperature
@@ -124,14 +131,14 @@ def design_turbojet(turbojet):
     low_pressure_turbine.inputs.bypass_ratio               = 0.0
     low_pressure_turbine.inputs.fan                        = Data()
     low_pressure_turbine.inputs.fan.work_done              = 0.0    
-    low_pressure_turbine(conditions)
+    compute_turbine_performance(low_pressure_turbine,conditions)
     
     #link the core nozzle to the low pressure turbine
     core_nozzle.inputs.stagnation_temperature              = low_pressure_turbine.outputs.stagnation_temperature
     core_nozzle.inputs.stagnation_pressure                 = low_pressure_turbine.outputs.stagnation_pressure
     
     #flow through the core nozzle
-    core_nozzle(conditions)
+    compute_expansion_nozzle_performance(core_nozzle,conditions)
 
     # compute the thrust using the thrust component
     #link the thrust component to the core nozzle
@@ -155,7 +162,10 @@ def design_turbojet(turbojet):
     turbojet.inputs.fan_nozzle.static_pressure               = 0.0
     turbojet.inputs.bypass_ratio                             = 0.0
     turbojet.inputs.flow_through_core                        =  1.0 #scaled constant to turn on core thrust computation
-    turbojet.inputs.flow_through_fan                         =  0.0 #scaled constant to turn on fan thrust computation     
-    turbojet.size_core(conditions) 
-    test = 0
+    turbojet.inputs.flow_through_fan                         =  0.0 #scaled constant to turn on fan thrust computation      
+    
+    # compute the thrust
+    size_core(turbojet,conditions)
+    
+    return      
   

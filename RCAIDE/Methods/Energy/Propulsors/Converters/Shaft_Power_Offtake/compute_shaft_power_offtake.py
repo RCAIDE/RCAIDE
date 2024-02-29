@@ -1,7 +1,21 @@
+## @ingroup Methods-Energy-Propulsors-Converters-Shaft_Power_Offtake
+# RCAIDE/Methods/Energy/Propulsors/Converters/Shaft_Power_Offtake/compute_shaft_power_offtaker.py
+# 
+# 
+# Created:  Jul 2023, M. Clarke 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 
 # package imports
 import numpy as np
-def compute_shaft_off_take_power(self, state):
+
+# ----------------------------------------------------------------------------------------------------------------------
+# compute_shaft_power_offtake
+# ----------------------------------------------------------------------------------------------------------------------    
+## @ingroup Methods-Energy-Propulsors-Converters-Shaft_Power_Offtake
+def compute_shaft_power_offtake(self, state):
     """ This computes the work done from the power draw.
 
     Assumptions:
@@ -43,3 +57,5 @@ def compute_shaft_off_take_power(self, state):
         self.outputs.work_done = self.outputs.power / mdot_core
 
         self.outputs.work_done[mdot_core == 0] = 0
+        
+    return 

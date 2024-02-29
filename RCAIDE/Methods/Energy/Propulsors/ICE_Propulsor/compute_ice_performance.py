@@ -9,6 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 from RCAIDE.Core import Units  
+from RCAIDE.Methods.Energy.Propulsors.Converters.Engine import compute_power_from_throttle
 
 # pacakge imports  
 import numpy as np 
@@ -93,7 +94,7 @@ def compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_po
 
     # Throttle the engine
     engine.inputs.speed    = RPM * Units.rpm   
-    engine.calculate_power_out_from_throttle(conditions,eta)    
+    compute_power_from_throttle(engine,conditions,eta)    
     torque                 = engine.outputs.torque     
     
     # link engine RPM to propeller 

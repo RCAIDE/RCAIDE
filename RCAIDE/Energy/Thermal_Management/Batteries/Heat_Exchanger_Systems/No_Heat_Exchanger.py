@@ -1,7 +1,6 @@
 ## @ingroup Energy-Thermal_Management-Batteries-Heat_Acquisition_Systems
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/No_Removal_System.py
-# (c) Copyright 2023 Aerospace Research Community LLC
-# 
+# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/No_Removal_System.py 
+
 # Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------

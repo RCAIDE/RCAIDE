@@ -9,7 +9,14 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import Fan 
+from . import Combustor
+from . import Compression_Nozzle
+from . import Compressor
+from . import DC_Motor
 from . import Engine
-from . import Motor
+from . import Expansion_Nozzle
+from . import Fan 
+from . import Ram
 from . import Rotor 
+from . import Shaft_Power_Offtake
+from . import Turbine

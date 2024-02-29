@@ -7,6 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+from RCAIDE.Methods.Energy.Propulsors.Turbojet_Propulsor import compute_thrust
 
 # Python package imports
 import numpy as np
@@ -15,7 +16,7 @@ import numpy as np
 #  size_core
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Energy-Propulsors-Turbojet_Propulsor 
-def size_core(self,conditions):
+def size_core(turbojet,conditions):
     """Sizes the core flow for the design condition.
 
     Assumptions:
@@ -25,18 +26,18 @@ def size_core(self,conditions):
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
     Inputs:
-    conditions.freestream.speed_of_sound [m/s] (conditions is also passed to self.compute(..))
-    self.inputs.
+    conditions.freestream.speed_of_sound [m/s] (conditions is also passed to turbojet.compute(..))
+    turbojet.inputs.
       bypass_ratio                       [-]
       total_temperature_reference        [K]
       total_pressure_reference           [Pa]
       number_of_engines                  [-]
 
     Outputs:
-    self.outputs.non_dimensional_thrust  [-]
+    turbojet.outputs.non_dimensional_thrust  [-]
 
     Properties Used:
-    self.
+    turbojet.
       reference_temperature              [K]
       reference_pressure                 [Pa]
       total_design                       [N] - Design thrust
@@ -45,26 +46,26 @@ def size_core(self,conditions):
     a0                   = conditions.freestream.speed_of_sound
     throttle             = 1.0
 
-    #unpack from self
-    bypass_ratio                = self.inputs.bypass_ratio
-    Tref                        = self.reference_temperature
-    Pref                        = self.reference_pressure 
+    #unpack from turbojet
+    bypass_ratio                = turbojet.inputs.bypass_ratio
+    Tref                        = turbojet.reference_temperature
+    Pref                        = turbojet.reference_pressure 
 
-    total_temperature_reference = self.inputs.total_temperature_reference  # low pressure turbine output for turbofan
-    total_pressure_reference    = self.inputs.total_pressure_reference 
+    total_temperature_reference = turbojet.inputs.total_temperature_reference  # low pressure turbine output for turbofan
+    total_pressure_reference    = turbojet.inputs.total_pressure_reference 
 
     #compute nondimensional thrust
-    self.compute_thrust(conditions)
+    compute_thrust(turbojet,conditions)
 
     #unpack results 
-    Fsp                         = self.outputs.non_dimensional_thrust
+    Fsp                         = turbojet.outputs.non_dimensional_thrust
 
     #compute dimensional mass flow rates
-    mdot_core                   = self.design_thrust/(Fsp*a0*(1+bypass_ratio)*throttle)  
+    mdot_core                   = turbojet.design_thrust/(Fsp*a0*(1+bypass_ratio)*throttle)  
     mdhc                        = mdot_core/ (np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref))
 
     #pack outputs
-    self.mass_flow_rate_design               = mdot_core
-    self.compressor_nondimensional_massflow  = mdhc
+    turbojet.mass_flow_rate_design               = mdot_core
+    turbojet.compressor_nondimensional_massflow  = mdhc
 
     return    

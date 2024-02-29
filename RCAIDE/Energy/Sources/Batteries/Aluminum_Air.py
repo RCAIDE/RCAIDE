@@ -33,11 +33,3 @@ class Aluminum_Air(Battery):
         self.ragone.const_2         = -4.8647e-004/(Units.Wh/Units.kg)
         self.ragone.lower_bound     = 1100.*Units.Wh/Units.kg
         self.ragone.upper_bound     = 1600.*Units.Wh/Units.kg
-        
-    def find_water_mass(self, energy):
-        water_mass = energy*self.water_mass_gain_factor
-        return water_mass
-        
-    def find_aluminum_mass(self, energy):
-        aluminum_mass = energy*self.aluminum_mass_factor
-        return aluminum_mass

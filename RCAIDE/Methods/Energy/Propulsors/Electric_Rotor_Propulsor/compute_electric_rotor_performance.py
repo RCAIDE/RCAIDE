@@ -9,6 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 from RCAIDE.Core import Units
+from RCAIDE.Methods.Energy.Propulsors.Modulators  import compute_voltage_out_from_throttle ,compute_current_in_from_throttle
 
 # pacakge imports  
 import numpy as np 
@@ -97,12 +98,12 @@ def compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_powe
     eta                  = conditions.energy[bus.tag][propulsor.tag].throttle
 
     esc.inputs.voltage   = voltage
-    esc.calculate_voltage_out_from_throttle(eta) 
+    compute_voltage_out_from_throttle(esc,eta) 
 
     # Assign conditions to the rotor
     motor.inputs.voltage         = esc.outputs.voltage
     motor.inputs.rotor_CP        = energy_results.rotor.power_coefficient  
-    motor.calculate_omega_out_from_power_coefficient(conditions)
+    motor.compute_omega(conditions)
     rotor.inputs.omega           = motor.outputs.omega 
     rotor.inputs.pitch_command   += energy_results.rotor.pitch_command
 
@@ -117,7 +118,7 @@ def compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_powe
     F[eta[:,0]>1.0,:]  = F[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:]
 
     # Run the motor for current
-    compute_current_out_from_omega(motor)
+    motor.compute_current_draw()
 
     # Determine Conditions specific to this instantation of motor and rotors
     R                   = rotor.tip_radius
@@ -140,7 +141,7 @@ def compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_powe
 
     # Detemine esc current 
     esc.outputs.current          = motor.outputs.current
-    esc.calculate_current_in_from_throttle(eta)
+    compute_current_in_from_throttle(esc,eta)
     energy_results.esc.current   = esc.inputs.current  
     energy_results.esc.power     = esc.inputs.power
 

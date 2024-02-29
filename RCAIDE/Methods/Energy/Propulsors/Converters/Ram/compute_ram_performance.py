@@ -8,7 +8,7 @@
 # compute_ram_performance
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Methods-Energy-Propulsors-Converters-Ram 
-def compute_ram_performance(self,conditions):
+def compute_ram_performance(ram,conditions):
     """ This computes the output values from the input values according to
     equations from the source.
 
@@ -23,10 +23,10 @@ def compute_ram_performance(self,conditions):
       pressure
       temperature
       mach_number
-    self.inputs.working_fluid
+    ram.inputs.working_fluid
 
     Outputs:
-    self.outputs.
+    ram.outputs.
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
       isentropic_expansion_factor         [-]
@@ -49,7 +49,7 @@ def compute_ram_performance(self,conditions):
     M  = conditions.freestream.mach_number
 
     #unpack from inputs
-    working_fluid          = self.inputs.working_fluid
+    working_fluid          = ram.inputs.working_fluid
 
     #method to compute the ram properties
 
@@ -64,11 +64,11 @@ def compute_ram_performance(self,conditions):
 
     #pack computed outputs
     #pack the values into conditions
-    self.outputs.stagnation_temperature              = stagnation_temperature
-    self.outputs.stagnation_pressure                 = stagnation_pressure
-    self.outputs.isentropic_expansion_factor         = gamma
-    self.outputs.specific_heat_at_constant_pressure  = Cp
-    self.outputs.gas_specific_constant               = R
+    ram.outputs.stagnation_temperature              = stagnation_temperature
+    ram.outputs.stagnation_pressure                 = stagnation_pressure
+    ram.outputs.isentropic_expansion_factor         = gamma
+    ram.outputs.specific_heat_at_constant_pressure  = Cp
+    ram.outputs.gas_specific_constant               = R
 
     #pack the values into outputs
     conditions.freestream.stagnation_temperature               = stagnation_temperature
@@ -76,3 +76,5 @@ def compute_ram_performance(self,conditions):
     conditions.freestream.isentropic_expansion_factor          = gamma
     conditions.freestream.specific_heat_at_constant_pressure   = Cp
     conditions.freestream.gas_specific_constant                = R
+    
+    return 

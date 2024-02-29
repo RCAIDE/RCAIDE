@@ -17,7 +17,7 @@ import numpy as np
 #  compute_thrust
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Energy-Propulsors-Turbojet_Propulsor
-def compute_thrust(self,conditions,throttle = 1.0):
+def compute_thrust(turbojet,conditions,throttle = 1.0):
     """Computes thrust and other properties as below.
 
     Assumptions:
@@ -36,7 +36,7 @@ def compute_thrust(self,conditions,throttle = 1.0):
       pressure                           [Pa]
       gravity                            [m/s^2]
     conditions.throttle                  [-] (.1 is 10%)
-    self.inputs.
+    turbojet.inputs.
       fuel_to_air_ratio                  [-]
       total_temperature_reference        [K]
       total_pressure_reference           [Pa]
@@ -54,7 +54,7 @@ def compute_thrust(self,conditions,throttle = 1.0):
       flow_through_fan                   [-] percentage of total flow (.1 is 10%)
 
     Outputs:
-    self.outputs.
+    turbojet.outputs.
       thrust                             [N]
       thrust_specific_fuel_consumption   [N/N-s]
       non_dimensional_thrust             [-]
@@ -64,7 +64,7 @@ def compute_thrust(self,conditions,throttle = 1.0):
       Specific Impulse                   [s]
 
     Properties Used:
-    self.
+    turbojet.
       reference_temperature              [K]
       reference_pressure                 [Pa]
       compressor_nondimensional_massflow [-]
@@ -82,24 +82,24 @@ def compute_thrust(self,conditions,throttle = 1.0):
     g                    = conditions.freestream.gravity        
 
     #unpacking from inputs
-    f                           = self.inputs.fuel_to_air_ratio
-    total_temperature_reference = self.inputs.total_temperature_reference
-    total_pressure_reference    = self.inputs.total_pressure_reference
-    core_nozzle                 = self.inputs.core_nozzle
-    fan_nozzle                  = self.inputs.fan_nozzle
-    fan_exit_velocity           = self.inputs.fan_nozzle.velocity
-    core_exit_velocity          = self.inputs.core_nozzle.velocity
-    fan_area_ratio              = self.inputs.fan_nozzle.area_ratio
-    core_area_ratio             = self.inputs.core_nozzle.area_ratio                   
-    bypass_ratio                = self.inputs.bypass_ratio  
-    flow_through_core           = self.inputs.flow_through_core #scaled constant to turn on core thrust computation
-    flow_through_fan            = self.inputs.flow_through_fan #scaled constant to turn on fan thrust computation
+    f                           = turbojet.inputs.fuel_to_air_ratio
+    total_temperature_reference = turbojet.inputs.total_temperature_reference
+    total_pressure_reference    = turbojet.inputs.total_pressure_reference
+    core_nozzle                 = turbojet.inputs.core_nozzle
+    fan_nozzle                  = turbojet.inputs.fan_nozzle
+    fan_exit_velocity           = turbojet.inputs.fan_nozzle.velocity
+    core_exit_velocity          = turbojet.inputs.core_nozzle.velocity
+    fan_area_ratio              = turbojet.inputs.fan_nozzle.area_ratio
+    core_area_ratio             = turbojet.inputs.core_nozzle.area_ratio                   
+    bypass_ratio                = turbojet.inputs.bypass_ratio  
+    flow_through_core           = turbojet.inputs.flow_through_core #scaled constant to turn on core thrust computation
+    flow_through_fan            = turbojet.inputs.flow_through_fan #scaled constant to turn on fan thrust computation
 
-    #unpacking from self
-    Tref                 = self.reference_temperature
-    Pref                 = self.reference_pressure
-    mdhc                 = self.compressor_nondimensional_massflow
-    SFC_adjustment       = self.SFC_adjustment 
+    #unpacking from turbojet
+    Tref                 = turbojet.reference_temperature
+    Pref                 = turbojet.reference_pressure
+    mdhc                 = turbojet.compressor_nondimensional_massflow
+    SFC_adjustment       = turbojet.SFC_adjustment 
 
     #computing the non dimensional thrust
     core_thrust_nondimensional  = flow_through_core*(gamma*M0*M0*(core_nozzle.velocity/u0-1.) + core_area_ratio*(core_nozzle.static_pressure/p0-1.))
@@ -131,12 +131,12 @@ def compute_thrust(self,conditions,throttle = 1.0):
 
     #pack outputs
 
-    self.outputs.thrust                            = FD2 
-    self.outputs.thrust_specific_fuel_consumption  = TSFC
-    self.outputs.non_dimensional_thrust            = Fsp 
-    self.outputs.core_mass_flow_rate               = mdot_core
-    self.outputs.fuel_flow_rate                    = fuel_flow_rate    
-    self.outputs.power                             = power  
-    self.outputs.specific_impulse                  = Isp
+    turbojet.outputs.thrust                            = FD2 
+    turbojet.outputs.thrust_specific_fuel_consumption  = TSFC
+    turbojet.outputs.non_dimensional_thrust            = Fsp 
+    turbojet.outputs.core_mass_flow_rate               = mdot_core
+    turbojet.outputs.fuel_flow_rate                    = fuel_flow_rate    
+    turbojet.outputs.power                             = power  
+    turbojet.outputs.specific_impulse                  = Isp
 
     return 
