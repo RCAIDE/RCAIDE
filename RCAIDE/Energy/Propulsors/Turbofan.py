@@ -29,6 +29,17 @@ class Turbofan(Propulsor):
     def __defaults__(self):    
         # setting the default values
         self.tag                                      = 'Turbofan'  
+        self.nacelle                                  = None 
+        self.fan                                      = None 
+        self.ram                                      = None 
+        self.inlet_nozzle                             = None 
+        self.low_pressure_compressor                  = None 
+        self.high_pressure_compressor                 = None 
+        self.low_pressure_turbine                     = None 
+        self.high_pressure_turbine                    = None 
+        self.combustor                                = None 
+        self.core_nozzle                              = None 
+        self.fan_nozzle                               = None  
         self.active_fuel_tanks                        = None         
         self.engine_length                            = 0.0
         self.engine_height                            = 0.5     # Engine centerline heigh above the ground plane
@@ -46,8 +57,7 @@ class Turbofan(Propulsor):
         self.reference_pressure                       = 1.01325*10**5 
         self.design_thrust                            = 0.0
         self.mass_flow_rate_design                    = 0.0
-        self.OpenVSP_flow_through                     = False 
-        
+        self.OpenVSP_flow_through                     = False
         
         #areas needed for drag; not in there yet
         self.areas                                    = Data()
