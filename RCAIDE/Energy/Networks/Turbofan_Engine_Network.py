@@ -222,11 +222,11 @@ class Turbofan_Engine_Network(Network):
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
             for turbofan in fuel_line.propulsors:               
-                fuel_line_results[turbofan.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
-                fuel_line_results[turbofan.tag].turbofan                = RCAIDE.Analyses.Mission.Common.Conditions()  
+                fuel_line_results[turbofan.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions() 
+                fuel_line_results[turbofan.tag].throttle                = 0. * ones_row(1)      
                 fuel_line_results[turbofan.tag].y_axis_rotation         = 0. * ones_row(1)  
-                fuel_line_results[turbofan.tag].turbofan.thrust         = 0. * ones_row(1) 
-                fuel_line_results[turbofan.tag].turbofan.power          = 0. * ones_row(1) 
+                fuel_line_results[turbofan.tag].thrust                  = 0. * ones_row(1) 
+                fuel_line_results[turbofan.tag].power                   = 0. * ones_row(1) 
                 noise_results[turbofan.tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
                 noise_results[turbofan.tag].turbofan                    = RCAIDE.Analyses.Mission.Common.Conditions() 
         

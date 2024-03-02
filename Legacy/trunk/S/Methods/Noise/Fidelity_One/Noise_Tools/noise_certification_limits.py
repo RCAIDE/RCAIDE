@@ -40,8 +40,8 @@ def noise_certification_limits(results,vehicle):
     """
     
     #unpack
-    weight_approach     = np.float(results.approach.segments.descent.conditions.weights.total_mass[-1]) / Units.lbs
-    weight_tow_mission  = np.float(results.flyover.segments.climb.conditions.weights.total_mass[-1])     / Units.lbs
+    weight_approach     = results.approach.segments.descent.conditions.weights.total_mass[-1] / Units.lbs
+    weight_tow_mission  = results.flyover.segments.climb.conditions.weights.total_mass[-1]     / Units.lbs
     n_engines           = np.int(vehicle.networks.turbofan.number_of_engines)
     
     #Determination of the number of engines

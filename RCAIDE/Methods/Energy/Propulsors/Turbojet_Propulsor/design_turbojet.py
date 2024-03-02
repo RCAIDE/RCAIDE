@@ -17,7 +17,7 @@ from RCAIDE.Methods.Energy.Propulsors.Converters.Compressor         import compu
 from RCAIDE.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
 from RCAIDE.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
 from RCAIDE.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
-from RCAIDE.Methods.Energy.Propulsors.Turbojet_Propulsor            import size_core
+from RCAIDE.Methods.Energy.Propulsors.Turbojet_Propulsor            import size_core, compute_thrust
 
 # Python package imports   
 import numpy as np
@@ -165,7 +165,39 @@ def design_turbojet(turbojet):
     turbojet.inputs.flow_through_fan                         =  0.0 #scaled constant to turn on fan thrust computation      
     
     # compute the thrust
-    size_core(turbojet,conditions)
+    size_core(turbojet,conditions) 
+    
+    # Static Sea Level Thrust  
+    atmosphere_sls = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmo_data = atmosphere_sls.compute_values(0.0,0.0)
+    
+    p   = atmo_data.pressure          
+    T   = atmo_data.temperature       
+    rho = atmo_data.density          
+    a   = atmo_data.speed_of_sound    
+    mu  = atmo_data.dynamic_viscosity      
+
+
+    # setup conditions
+    conditions_sls = RCAIDE.Analyses.Mission.Common.Results()
+
+    # freestream conditions    
+    conditions_sls.freestream.altitude                    = np.atleast_1d(0)
+    conditions_sls.freestream.mach_number                 = np.atleast_1d(0.01)
+    conditions_sls.freestream.pressure                    = np.atleast_1d(p)
+    conditions_sls.freestream.temperature                 = np.atleast_1d(T)
+    conditions_sls.freestream.density                     = np.atleast_1d(rho)
+    conditions_sls.freestream.dynamic_viscosity           = np.atleast_1d(mu)
+    conditions_sls.freestream.gravity                     = np.atleast_2d(planet.sea_level_gravity)
+    conditions_sls.freestream.isentropic_expansion_factor = np.atleast_1d(turbojet.working_fluid.compute_gamma(T,p))
+    conditions_sls.freestream.Cp                          = np.atleast_1d(turbojet.working_fluid.compute_cp(T,p))
+    conditions_sls.freestream.R                           = np.atleast_1d(turbojet.working_fluid.gas_specific_constant)
+    conditions_sls.freestream.speed_of_sound              = np.atleast_1d(a)
+    conditions_sls.freestream.velocity                    = np.atleast_1d(a*0.01)   
+     
+    compute_thrust(turbojet,conditions_sls,throttle = 1.0) 
+    turbojet.sealevel_static_thrust = turbojet.outputs.thrust
+        
     
     return      
   

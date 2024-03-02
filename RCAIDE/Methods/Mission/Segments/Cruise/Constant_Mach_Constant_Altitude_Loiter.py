@@ -54,7 +54,7 @@ def initialize_conditions(segment):
     segment.state.conditions.freestream.altitude[:,0] = alt
         
     # Update freestream to get speed of sound
-    atmosphere(segment)
+    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment)  
     a          = conditions.freestream.speed_of_sound         
     
     # check for initial velocity

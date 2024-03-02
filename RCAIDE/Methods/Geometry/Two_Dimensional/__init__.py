@@ -12,4 +12,3 @@
 
 from . import Airfoil
 from . import Planform
-from . import Propulsion

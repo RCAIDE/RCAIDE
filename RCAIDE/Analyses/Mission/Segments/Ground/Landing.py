@@ -94,6 +94,6 @@ class Landing(Evaluate):
         iterate                            = self.process.iterate   
         iterate.conditions.forces_ground   = Update.ground_forces    
         iterate.unknowns.mission           = Unpack_Unknowns.ground
-        iterate.residuals.total_forces     = Residuals.ground        
+        iterate.residuals.total_forces     = Residuals.ground_forces        
 
         return

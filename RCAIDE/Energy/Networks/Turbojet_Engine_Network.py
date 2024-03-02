@@ -226,14 +226,14 @@ class Turbojet_Engine_Network(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
-            for propulsor in fuel_line.propulsors:               
-                fuel_line_results[propulsor.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions()
-                fuel_line_results[propulsor.tag].turbojet                = RCAIDE.Analyses.Mission.Common.Conditions()  
-                fuel_line_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)   # NEED TO REMOVE
-                fuel_line_results[propulsor.tag].turbojet.thrust         = 0. * ones_row(1) 
-                fuel_line_results[propulsor.tag].turbojet.power          = 0. * ones_row(1) 
-                noise_results[propulsor.tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
-                noise_results[propulsor.tag].turbojet                    = RCAIDE.Analyses.Mission.Common.Conditions() 
+            for turbojet in fuel_line.propulsors:               
+                fuel_line_results[turbojet.tag]                         = RCAIDE.Analyses.Mission.Common.Conditions() 
+                fuel_line_results[turbojet.tag].throttle                = 0. * ones_row(1)    
+                fuel_line_results[turbojet.tag].y_axis_rotation         = 0. * ones_row(1)   # NEED TO REMOVE
+                fuel_line_results[turbojet.tag].thrust                  = 0. * ones_row(1) 
+                fuel_line_results[turbojet.tag].power                   = 0. * ones_row(1) 
+                noise_results[turbojet.tag]                             = RCAIDE.Analyses.Mission.Common.Conditions() 
+                noise_results[turbojet.tag].turbojet                    = RCAIDE.Analyses.Mission.Common.Conditions() 
         
         segment.process.iterate.unknowns.network                  = self.unpack_unknowns                   
         return segment    

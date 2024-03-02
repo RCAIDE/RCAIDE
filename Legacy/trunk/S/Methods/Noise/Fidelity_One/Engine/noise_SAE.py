@@ -99,7 +99,7 @@ def noise_SAE(turbofan,segment,analyses,config,settings,ioprint = 0, filename = 
     Ye                     = turbofan.geometry_ye
     Ce                     = turbofan.geometry_Ce
 
-    Velocity_aircraft      = np.float(segment.conditions.freestream.velocity[0,0]) 
+    Velocity_aircraft      = segment.conditions.freestream.velocity[0,0]
     Altitude               = segment.conditions.freestream.altitude[:,0] 
     AOA                    = np.mean(segment.conditions.aerodynamics.angle_of_attack / Units.deg)
 

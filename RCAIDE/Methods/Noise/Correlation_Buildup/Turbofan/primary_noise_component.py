@@ -40,8 +40,8 @@ def primary_noise_component(Velocity_primary,Temperature_primary,R_gas,theta_p,D
     """      
 
     # Flow parameters of the primary jet
-    sound_primary    = np.float(np.sqrt(1.4*R_gas*Temperature_primary))
-    Mach_primary_jet = np.float(Velocity_primary/sound_primary) 
+    sound_primary    = np.sqrt(1.4*R_gas*Temperature_primary) 
+    Mach_primary_jet = Velocity_primary/sound_primary  
     
     # Calculation of the velocity exponent 
     velocity_exponent = 1.5*np.exp(-10*(theta_p - 2.2)**2)
@@ -49,8 +49,8 @@ def primary_noise_component(Velocity_primary,Temperature_primary,R_gas,theta_p,D
         velocity_exponent = 1.56
 
     # Calculation of the Source Strengh Function (FV)
-    FV = Mach_primary_jet*(np.float(DVPS)/sound_ambient)**0.6*(np.float((Velocity_primary+Velocity_secondary))/sound_ambient)**0.4* \
-    (np.float(np.abs(Velocity_primary-Velocity_aircraft)/Velocity_primary))**velocity_exponent
+    FV = Mach_primary_jet*(DVPS/sound_ambient)**0.6*((Velocity_primary+Velocity_secondary)/sound_ambient)**0.4* \
+    (np.abs(Velocity_primary-Velocity_aircraft)/Velocity_primary)**velocity_exponent
 
     # Determination of the noise model coefficients
     Z1 = -18*((1.8*theta_p/np.pi)-0.6)**2

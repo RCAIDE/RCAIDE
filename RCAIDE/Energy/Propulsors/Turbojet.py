@@ -29,7 +29,18 @@ class Turbojet(Propulsor):
     def __defaults__(self):
         # setting the default values
         self.tag                                      = 'Turbojet' 
-        self.active_fuel_tanks                        = None        
+        self.active_fuel_tanks                        = None
+        self.nacelle                                  = None  
+        self.ram                                      = None 
+        self.inlet_nozzle                             = None 
+        self.low_pressure_compressor                  = None 
+        self.high_pressure_compressor                 = None 
+        self.low_pressure_turbine                     = None 
+        self.high_pressure_turbine                    = None 
+        self.combustor                                = None 
+        self.afterburner                              = None
+        self.core_nozzle                              = None      
+        
         self.engine_length                            = 0.0
         self.bypass_ratio                             = 0.0 
         self.design_isa_deviation                     = 0.0

@@ -93,7 +93,7 @@ def noise_geometric(noise_segment,analyses,config):
         S_0 = estimate_tofl(config,analyses,takeoff_airport)           
 
         # Microphone position from the brake release point
-        x0 = np.float(6500. - S_0)
+        x0 = 6500. - S_0
         
         # Calculation of the distance vector and emission angle
         dist        = np.sqrt(altitude**2+(s-x0)**2)

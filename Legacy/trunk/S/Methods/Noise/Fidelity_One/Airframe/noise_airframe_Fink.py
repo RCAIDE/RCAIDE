@@ -107,7 +107,7 @@ def noise_airframe_Fink(segment,analyses,config,settings,ioprint = 0, filename=0
     nose_wheels  = config.landing_gear.nose_wheels                      # Number of wheels   
     main_wheels  = config.landing_gear.main_wheels                      # Number of wheels   
     main_units   = config.landing_gear.main_units                       # Number of main units   
-    velocity     = np.float(segment.conditions.freestream.velocity[0,0])# aircraft velocity 
+    velocity     = segment.conditions.freestream.velocity[0,0]          # aircraft velocity 
     altitude     = segment.conditions.freestream.altitude[:,0]          # aircraft altitude
     noise_time   = segment.conditions.frames.inertial.time[:,0]         # time discretization 
 
