@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports 
-
+import RCAIDE
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ def initialize_conditions(segment):
     # use the common initialization # unpack inputs
     alt      = segment.altitude 
     v0       = segment.velocity_start
-    vf       = segment.velocity_end
+    vf       = segment.velocity_end 
     
     # check for initial altitude
     if alt is None:
@@ -77,4 +77,10 @@ def initialize_conditions(segment):
     conditions.frames.inertial.position_vector[:,2] = -alt   
     conditions.weights.total_mass[:,0]              = segment.analyses.weights.vehicle.mass_properties.takeoff
     conditions.frames.inertial.position_vector[:,:] = conditions.frames.inertial.position_vector[0,:][None,:][:,:] 
+    
+    for network in segment.analyses.energy.networks:
+        if 'fuel_lines' in network: 
+            RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,network.fuel_lines)  
+        if 'busses' in network: 
+            RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,network.busses)  
      

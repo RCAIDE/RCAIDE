@@ -73,8 +73,7 @@ def compute_thrust(turbofan,conditions,throttle = 1.0):
     #unpack the values
 
     #unpacking from conditions
-    gamma                       = conditions.freestream.isentropic_expansion_factor
-    Cp                          = conditions.freestream.specific_heat_at_constant_pressure
+    gamma                       = conditions.freestream.isentropic_expansion_factor 
     u0                          = conditions.freestream.velocity
     a0                          = conditions.freestream.speed_of_sound
     M0                          = conditions.freestream.mach_number
@@ -86,9 +85,7 @@ def compute_thrust(turbofan,conditions,throttle = 1.0):
     total_temperature_reference = turbofan.inputs.total_temperature_reference
     total_pressure_reference    = turbofan.inputs.total_pressure_reference
     core_nozzle                 = turbofan.inputs.core_nozzle
-    fan_nozzle                  = turbofan.inputs.fan_nozzle
-    fan_exit_velocity           = turbofan.inputs.fan_nozzle.velocity
-    core_exit_velocity          = turbofan.inputs.core_nozzle.velocity
+    fan_nozzle                  = turbofan.inputs.fan_nozzle 
     fan_area_ratio              = turbofan.inputs.fan_nozzle.area_ratio
     core_area_ratio             = turbofan.inputs.core_nozzle.area_ratio                   
     bypass_ratio                = turbofan.inputs.bypass_ratio  

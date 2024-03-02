@@ -16,7 +16,7 @@ def fuel_line_unknowns(segment,fuel_lines):
     if 'throttle' in segment:
         for fuel_line in fuel_lines:
             for propulsor in fuel_line.propulsors: 
-                state.conditions.energy[fuel_line.tag][propulsor.tag].throttle = segment.throttle 
+                state.conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0] = segment.throttle 
     elif flight_controls.throttle.active:                
         for i in range(len(flight_controls.throttle.assigned_propulsors)):
             for j in range(len(flight_controls.throttle.assigned_propulsors[i])): 

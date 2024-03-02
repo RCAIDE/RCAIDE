@@ -204,11 +204,11 @@ def compute_performance(conditions,fuel_line,turbojet,total_thrust,total_power):
     compute_thrust(turbojet,conditions,throttle = turbojet_results.throttle )
 
     # getting the network outputs from the thrust outputs  
-    turbojet_results.turbojet.thrust = turbojet.outputs.thrust
-    turbojet_results.turbojet.power  = turbojet.outputs.power  
+    turbojet_results.thrust          = turbojet.outputs.thrust
+    turbojet_results.power           = turbojet.outputs.power  
     turbojet_results.fuel_flow_rate  = turbojet.outputs.fuel_flow_rate 
-    total_power                      += turbojet_results.turbojet.power
-    total_thrust[:,0]                += turbojet_results.turbojet.thrust[:,0]
+    total_power                      += turbojet_results.power
+    total_thrust[:,0]                += turbojet_results.thrust[:,0]
 
     # store data
     core_nozzle_res = Data(
@@ -254,12 +254,12 @@ def reuse_stored_data(conditions,fuel_line,turbojet,stored_propulsor_tag,total_t
     noise_results_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
     turbojet_results                     = conditions.energy[fuel_line.tag][turbojet.tag]  
     noise_results                        = conditions.noise[fuel_line.tag][turbojet.tag]  
-    turbojet_results.turbojet.thrust     = turbojet_results_0.turbojet.thrust 
-    turbojet_results.turbojet.power      = turbojet_results_0.turbojet.power   
+    turbojet_results.thrust              = turbojet_results_0.thrust 
+    turbojet_results.power               = turbojet_results_0.power   
     noise_results.turbojet.fan_nozzle    = None  
     noise_results.turbojet.core_nozzle   = noise_results_0.turbojet.core_nozzle 
     noise_results.turbojet.fan           = None   
-    total_power                          += turbojet_results.turbojet.power
-    total_thrust[:,0]                    += turbojet_results.turbojet.thrust[:,0]
+    total_power                          += turbojet_results.power
+    total_thrust[:,0]                    += turbojet_results.thrust[:,0]
  
     return total_thrust,total_power

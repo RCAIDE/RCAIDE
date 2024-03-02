@@ -1,5 +1,5 @@
 ## @ingroup Methods-Missions-Common-Residuals
-# RCAIDE/Methods/Missions/Common/Residuals/ground.py
+# RCAIDE/Methods/Missions/Common/Residuals/ground_forces.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -9,7 +9,7 @@ import numpy as np
 #  Residual Total Forces
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Missions-Common-Residuals 
-def ground(segment):
+def ground_forces(segment):
     """ Calculates a residual based on forces
     
         Assumptions:

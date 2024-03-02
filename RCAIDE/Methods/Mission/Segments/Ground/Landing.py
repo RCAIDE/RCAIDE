@@ -3,7 +3,12 @@
 # 
 # 
 # Created:  Jul 2023, M. Clarke  
- 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE Imports 
+import RCAIDE 
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -37,7 +42,7 @@ def initialize_conditions(segment):
     # unpack inputs
     alt      = segment.altitude 
     v0       = segment.velocity_start
-    vf       = segment.velocity_end
+    vf       = segment.velocity_end 
     
     # check for initial altitude
     if alt is None:
@@ -70,10 +75,11 @@ def initialize_conditions(segment):
     conditions.ground.incline[:,0]                  = segment.ground_incline
     conditions.ground.friction_coefficient[:,0]     = segment.friction_coefficient 
     conditions.freestream.altitude[:,0]             = alt
-    conditions.frames.inertial.position_vector[:,2] = -alt
-    
-    # Unpack 
-    m_initial = segment.analyses.weights.vehicle.mass_properties.landing
-          
-    # apply initials
-    conditions.weights.total_mass[:,0]  = m_initial 
+    conditions.frames.inertial.position_vector[:,2] = -alt 
+     
+    for network in segment.analyses.energy.networks:
+        if 'fuel_lines' in network: 
+            RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,network.fuel_lines)  
+        if 'busses' in network: 
+            RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,network.busses)     
+        

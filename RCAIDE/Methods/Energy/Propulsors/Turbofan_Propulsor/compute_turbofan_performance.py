@@ -239,11 +239,11 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     compute_thrust(turbofan,conditions,throttle = turbofan_results.throttle )
 
     # getting the network outputs from the thrust outputs  
-    turbofan_results.turbofan.thrust = turbofan.outputs.thrust
-    turbofan_results.turbofan.power  = turbofan.outputs.power  
+    turbofan_results.thrust = turbofan.outputs.thrust
+    turbofan_results.power  = turbofan.outputs.power  
     turbofan_results.fuel_flow_rate  = turbofan.outputs.fuel_flow_rate 
-    total_power                     += turbofan_results.turbofan.power
-    total_thrust[:,0]               += turbofan_results.turbofan.thrust[:,0]
+    total_power                     += turbofan_results.power
+    total_thrust[:,0]               += turbofan_results.thrust[:,0]
 
     # store data
     core_nozzle_res = Data(
@@ -299,13 +299,13 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     noise_results_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
     turbofan_results                     = conditions.energy[fuel_line.tag][turbofan.tag]  
     noise_results                        = conditions.noise[fuel_line.tag][turbofan.tag] 
-    turbofan_results.turbofan.thrust     = turbofan_results_0.turbofan.thrust 
-    turbofan_results.turbofan.power      = turbofan_results_0.turbofan.power  
+    turbofan_results.thrust              = turbofan_results_0.thrust   
+    turbofan_results.power               = turbofan_results_0.power  
     turbofan_results.fuel_flow_rate      = turbofan_results_0.fuel_flow_rate 
     noise_results.turbofan.fan_nozzle    = noise_results_0.turbofan.fan_nozzle 
     noise_results.turbofan.core_nozzle   = noise_results_0.turbofan.core_nozzle 
     noise_results.turbofan.fan           = None   
-    total_power                          += turbofan_results.turbofan.power
-    total_thrust[:,0]                    += turbofan_results.turbofan.thrust[:,0] 
+    total_power                          += turbofan_results.power
+    total_thrust[:,0]                    += turbofan_results.thrust[:,0] 
  
     return total_thrust,total_power    

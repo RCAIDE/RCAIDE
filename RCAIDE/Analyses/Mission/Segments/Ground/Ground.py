@@ -80,12 +80,12 @@ class Ground(Evaluate):
         #  Mission Specific Unknowns and Residuals 
         # --------------------------------------------------------------------------------------------------------------       
         iterate.unknowns.mission           = Unpack_Unknowns.ground
-        iterate.residuals.total_forces     = Residuals.ground
+        iterate.residuals.total_forces     = Residuals.ground_forces 
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # -------------------------------------------------------------------------------------------------------------- 
-        iterate                            = self.process.iterate   
+        iterate                            = self.process.iterate    
         iterate.conditions.forces_ground   = Update.ground_forces    
     
         return
