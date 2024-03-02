@@ -100,7 +100,7 @@ def airframe_noise(segment,analyses,config,settings):
     nose_wheels  = config.landing_gear.nose_wheels                          # Number of wheels   
     main_wheels  = config.landing_gear.main_wheels                          # Number of wheels   
     main_units   = config.landing_gear.main_units                           # Number of main units   
-    velocity     = np.float(segment.conditions.freestream.velocity[0,0])    # aircraft velocity  
+    velocity     = segment.conditions.freestream.velocity[0,0]              # aircraft velocity  
     noise_time   = segment.conditions.frames.inertial.time[:,0]             # time discretization 
 
     # determining flap slot number
