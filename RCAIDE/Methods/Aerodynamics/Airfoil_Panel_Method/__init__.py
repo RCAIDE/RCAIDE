@@ -13,6 +13,7 @@
 from .aero_coeff                        import aero_coeff    
 from .airfoil_analysis                  import airfoil_analysis 
 from .heads_method                      import heads_method       
+from .heads_method_new                  import heads_method_new      
 from .hess_smith                        import hess_smith               
 from .infl_coeff                        import infl_coeff       
 from .panel_geometry                    import panel_geometry   

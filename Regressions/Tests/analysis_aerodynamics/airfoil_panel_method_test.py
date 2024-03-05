@@ -33,7 +33,7 @@ def single_airfoil():
     # Batch analysis of single airfoil - NACA 2410 
     # -----------------------------------------------
     AoA_deg              = np.linspace(-5,10,16)
-    Re_vals              = np.atleast_2d(np.ones(len(AoA_deg)))* 1E5 
+    Re_vals              = np.atleast_2d(np.ones(len(AoA_deg)))* 1E6 
     AoA_rad              = np.atleast_2d(AoA_deg*Units.degrees)   
     airfoil_file_1       = '2412'
     airfoil_geometry_1   = compute_naca_4series(airfoil_file_1,npoints = 200)

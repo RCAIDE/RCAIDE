@@ -12,7 +12,8 @@ from RCAIDE.Core      import Data
 from .hess_smith      import hess_smith
 from .thwaites_method import thwaites_method
 from .heads_method    import heads_method
-from .aero_coeff      import aero_coeff 
+from .heads_method_new import heads_method_new
+from .aero_coeff       import aero_coeff 
 
 # pacakge imports  
 import numpy as np  
@@ -153,13 +154,20 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     DELTA_STAR_TR_BOT = DELTA_STAR_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts)
     THETA_TR_BOT      = THETA_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts)    
     DELTA_TR_BOT      = DELTA_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts) 
+    H_TR_BOT          = H_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts)    
+    CF_TR_BOT         = CF_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts) 
     
     TURBULENT_SURF    = L_BOT.data  - X_TR_BOT
     TURBULENT_COORD   = np.ma.masked_less(X_BOT.data  - X_TR_BOT,0) 
     
     # turbulent boundary layer properties using heads method 
-    BOT_H_RESULTS     = heads_method(npanel,ncases,ncpts,DELTA_TR_BOT ,THETA_TR_BOT , DELTA_STAR_TR_BOT,
-                                   TURBULENT_SURF, RE_L_VALS,TURBULENT_COORD, VE_BOT, DVE_BOT,tolerance)
+    #BOT_H_RESULTS     = heads_method(npanel,ncases,ncpts,DELTA_TR_BOT ,THETA_TR_BOT , DELTA_STAR_TR_BOT,
+                                   #TURBULENT_SURF, RE_L_VALS,TURBULENT_COORD, VE_BOT, DVE_BOT,tolerance)
+
+    BOT_H_RESULTS     = heads_method_new(npanel,ncases,ncpts,DELTA_TR_BOT ,THETA_TR_BOT , DELTA_STAR_TR_BOT,
+                                   CF_TR_BOT, H_TR_BOT, TURBULENT_SURF, RE_L_VALS,TURBULENT_COORD, VE_BOT, DVE_BOT,tolerance)    
+    
+    
     
     X_H_BOT          = BOT_H_RESULTS.X_H      
     THETA_H_BOT      = BOT_H_RESULTS.THETA_H   
@@ -294,13 +302,20 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     DELTA_STAR_TR_TOP = DELTA_STAR_T_TOP[transition_panel,aoas,res].reshape(ncases,ncpts)
     THETA_TR_TOP      = THETA_T_TOP[transition_panel,aoas,res].reshape(ncases,ncpts)    
     DELTA_TR_TOP      = DELTA_T_TOP[transition_panel,aoas,res].reshape(ncases,ncpts) 
+    H_TR_TOP          = H_TR_TOP[transition_panel,aoas,res].reshape(ncases,ncpts)    
+    CF_TR_TOP         = CF_TR_TOP[transition_panel,aoas,res].reshape(ncases,ncpts) 
    
     TURBULENT_SURF    = L_TOP.data  - X_TR_TOP
     TURBULENT_COORD   = np.ma.masked_less( X_TOP.data  - X_TR_TOP,0)
 
     # turbulent boundary layer properties using heads method 
-    TOP_H_RESULTS     = heads_method(npanel,ncases,ncpts,DELTA_TR_TOP ,THETA_TR_TOP , DELTA_STAR_TR_TOP,
-                                   TURBULENT_SURF, RE_L_VALS,TURBULENT_COORD, VE_TOP, DVE_TOP,tolerance)
+    #TOP_H_RESULTS     = heads_method(npanel,ncases,ncpts,DELTA_TR_TOP ,THETA_TR_TOP , DELTA_STAR_TR_TOP,
+                                   #TURBULENT_SURF, RE_L_VALS,TURBULENT_COORD, VE_TOP, DVE_TOP,tolerance)
+    
+
+    TOP_H_RESULTS     = heads_method_new(npanel,ncases,ncpts,DELTA_TR_TOP ,THETA_TR_TOP , DELTA_STAR_TR_TOP,
+                                   CF_TR_TOP,H_TR_TOP, TURBULENT_SURF, RE_L_VALS,TURBULENT_COORD, VE_TOP, DVE_TOP,tolerance)
+    
 
     X_H_TOP          = TOP_H_RESULTS.X_H      
     THETA_H_TOP      = TOP_H_RESULTS.THETA_H   
