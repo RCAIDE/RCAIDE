@@ -1,6 +1,6 @@
 ## @defgroup Vehicle
 # Vehicle.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 #
 # Created:  Jul 2023, E. Botero
 # Modified:  
@@ -9,9 +9,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S   import Vehicle as VH
-from RCAIDE.Core      import Data
-from RCAIDE           import Components , Energy 
+from Legacy.trunk.S       import Vehicle as VH
+from RCAIDE.Core          import Data
+from .Frameworks.Networks import Network
+from RCAIDE               import Components , Energy 
 from Legacy.trunk.S.Components.Energy.Networks import Network as legacy_net
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -150,3 +151,4 @@ class Vehicle(VH):
             raise Exception("Unable to place energy_network type %s" % energy_network.typestring())
 
         return energy_network_root
+    
