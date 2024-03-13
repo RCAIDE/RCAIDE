@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Descent
-# RCAIDE/Methods/Missions/Segments/Descent/Constant_CAS_Constant_Rate.py
+## @ingroup Library-Methods-Mission-Segments-Descent
+# RCAIDE/Library/Methods/Missions/Segments/Descent/Constant_CAS_Constant_Rate.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Units
+from RCAIDE.Frameworks.Core import Units
 
 # package imports 
 import numpy as np
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Descent
+## @ingroup Library-Methods-Mission-Segments-Descent
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -61,7 +61,7 @@ def initialize_conditions(segment):
     alt = t_nondim * (altf-alt0) + alt0
     
     # determine airspeed from calibrated airspeed
-    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment) # get density for airspeed
+    RCAIDE.Library.Methods.Mission.Common.Update.atmosphere(segment) # get density for airspeed
 
     alt_data = segment.analyses.atmosphere.compute_values(alt,segment.temperature_deviation)
     density  = alt_data.density[:,0]  

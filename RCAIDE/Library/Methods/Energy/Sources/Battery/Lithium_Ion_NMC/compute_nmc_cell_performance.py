@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC
-# RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/compute_nmc_cell_performance.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/compute_nmc_cell_performance.py
 # 
 # 
 # Created:  Feb 2024, M. Clarke 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Core                       import Units 
+from RCAIDE.Frameworks.Core                       import Units 
 import numpy as np  
  
 # ----------------------------------------------------------------------------------------------------------------------

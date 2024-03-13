@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Update 
-# RCAIDE/Methods/Missions/Common/Update/aerodynamics.py
+## @ingroup Library-Methods-Mission-Common-Update 
+# RCAIDE/Library/Methods/Missions/Common/Update/aerodynamics.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Update
+## @ingroup Library-Methods-Mission-Common-Update
 def aerodynamics(segment):
     """ Gets aerodynamics conditions
     

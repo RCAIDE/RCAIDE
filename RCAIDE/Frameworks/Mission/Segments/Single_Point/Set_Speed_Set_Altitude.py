@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Core                                     import Units 
+from RCAIDE.Frameworks.Core                                     import Units 
 from RCAIDE.Frameworks.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Methods.Mission                          import Common,Segments
-from RCAIDE.Methods.skip                             import skip 
+from RCAIDE.Library.Methods.Mission                          import Common,Segments
+from RCAIDE.Library.Methods.skip                             import skip 
 
 # package imports 
 import numpy as np

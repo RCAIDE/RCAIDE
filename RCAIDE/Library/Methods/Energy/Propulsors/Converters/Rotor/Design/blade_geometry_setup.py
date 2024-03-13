@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Rotor_Design  
-# RCAIDE/Methods/Energy/Propulsors/Rotor_Design/optimization_setup.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/optimization_setup.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -11,7 +11,7 @@
 
 # RCAIDE Imports 
 import RCAIDE   
-from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil  import compute_airfoil_properties, compute_naca_4series, import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil  import compute_airfoil_properties, compute_naca_4series, import_airfoil_geometry
 
 # Python package imports   
 import numpy as np  
@@ -103,15 +103,15 @@ def blade_geometry_setup(rotor,number_of_stations):
     net.busses.append(bus)
     vehicle.append_energy_network(net)
     
-    configs                             = RCAIDE.Components.Configs.Config.Container()
-    base_config                         = RCAIDE.Components.Configs.Config(vehicle) 
+    configs                             = RCAIDE.Library.Components.Configs.Config.Container()
+    base_config                         = RCAIDE.Library.Components.Configs.Config(vehicle) 
     
-    config                              = RCAIDE.Components.Configs.Config(base_config)
+    config                              = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag                          = 'hover' 
     config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
     configs.append(config)        
 
-    config                              = RCAIDE.Components.Configs.Config(base_config)
+    config                              = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag                          = 'oei' 
     config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
     configs.append(config)       
@@ -124,7 +124,7 @@ def blade_geometry_setup(rotor,number_of_stations):
         elif (design_thrust_cruise!= None) and (design_power_cruise!= None):
             raise AssertionError('Specify either design thrust or design power at cruise!') 
         
-        config                          = RCAIDE.Components.Configs.Config(base_config)
+        config                          = RCAIDE.Library.Components.Configs.Config(base_config)
         config.tag                      = 'cruise'
         config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0] 
         configs.append(config)

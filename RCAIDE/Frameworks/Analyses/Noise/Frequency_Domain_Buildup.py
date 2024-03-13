@@ -8,13 +8,13 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 from .Noise      import Noise  
-from RCAIDE.Components.Component import Container 
+from RCAIDE.Library.Components.Component import Container 
 
 # noise imports    
-from RCAIDE.Methods.Noise.Common.decibel_arithmetic                           import SPL_arithmetic
-from RCAIDE.Methods.Noise.Common.generate_microphone_locations                import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
-from RCAIDE.Methods.Noise.Common.compute_relative_noise_evaluation_locations  import compute_relative_noise_evaluation_locations  
-from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor.rotor_noise          import rotor_noise 
+from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic                           import SPL_arithmetic
+from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations                import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
+from RCAIDE.Library.Methods.Noise.Common.compute_relative_noise_evaluation_locations  import compute_relative_noise_evaluation_locations  
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.rotor_noise          import rotor_noise 
 
 # package imports
 import numpy as np

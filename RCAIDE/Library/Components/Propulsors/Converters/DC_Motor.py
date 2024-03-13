@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors-Converters
-# RCAIDE/Components/Propulsors/Converters/DC_Motor.py
+# RCAIDE/Library/Components/Propulsors/Converters/DC_Motor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -8,8 +8,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Components import Component
-from RCAIDE.Methods.Energy.Propulsors.Converters.DC_Motor import compute_omega_and_Q_from_Cp_and_V , compute_I_from_omega_and_V
+from RCAIDE.Library.Components import Component
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor import compute_omega_and_Q_from_Cp_and_V , compute_I_from_omega_and_V
 
 
 # ----------------------------------------------------------------------------------------------------------------------

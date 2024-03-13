@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Ragone
-# RCAIDE/Methods/Energy/Sources/Battery/Ragone/find_ragone_optimum.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Ragone/find_ragone_optimum.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

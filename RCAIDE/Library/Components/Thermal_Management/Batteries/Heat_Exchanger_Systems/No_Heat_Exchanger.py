@@ -1,5 +1,5 @@
 ## @ingroup Energy-Thermal_Management-Batteries-Heat_Acquisition_Systems
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/No_Removal_System.py 
+# RCAIDE/Library/Compoments/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/No_Removal_System.py 
 
 # Created:  Mar 2024, M. Clarke 
 
@@ -7,8 +7,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
   
-from RCAIDE.Components import Component   
-from RCAIDE.Methods.Energy.Thermal_Management.Batteries.Heat_Exchanger_Systems.No_Heat_Exchanger import no_heat_exchanger_model
+from RCAIDE.Library.Components import Component   
+from RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Exchanger_Systems.No_Heat_Exchanger import no_heat_exchanger_model
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  No_Heat_Exchanger

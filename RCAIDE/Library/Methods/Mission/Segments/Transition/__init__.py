@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions-Segments-Transition Transition
-# RCAIDE/Methods/Mission/Segments/Transition/__init__.py
+## @defgroup Library-Methods-Mission-Segments-Transition Transition
+# RCAIDE/Library/Methods/Mission/Segments/Transition/__init__.py
 # 
 
 """ RCAIDE Package Setup

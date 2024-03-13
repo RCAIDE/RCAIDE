@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Core        import DataOrdered
+from RCAIDE.Frameworks.Core        import DataOrdered
 from .Conditions        import Conditions
 from .Unknowns          import Unknowns
 from .Residuals         import Residuals

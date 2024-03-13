@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Descent
-# RCAIDE/Methods/Missions/Segments/Descent/Constant_EAS_Constant_Rate.py
+## @ingroup Library-Methods-Mission-Segments-Descent
+# RCAIDE/Library/Methods/Missions/Segments/Descent/Constant_EAS_Constant_Rate.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Descent
+## @ingroup Library-Methods-Mission-Segments-Descent
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -64,7 +64,7 @@ def initialize_conditions(segment):
     conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
     
     # determine airspeed from equivalent airspeed
-    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment) # get density for airspeed
+    RCAIDE.Library.Methods.Mission.Common.Update.atmosphere(segment) # get density for airspeed
     density   = conditions.freestream.density[:,0]   
     MSL_data  = segment.analyses.atmosphere.compute_values(0.0,0.0)
 

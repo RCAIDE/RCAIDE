@@ -1,5 +1,5 @@
-## @ingroup Methods-Aerodynamics-Common-Drag
-# RCAIDE/Methods/Aerodynamics/Common/Drag/compressibility_drag_total.py 
+## @ingroup Library-Methods-Aerodynamics-Common-Drag
+# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/compressibility_drag_total.py 
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports   
-from RCAIDE.Core import Data 
+from RCAIDE.Frameworks.Core import Data 
 from .wave_drag  import wave_drag 
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_volume_raymer import wave_drag_volume_raymer
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_volume_sears_haack import wave_drag_volume_sears_haack
@@ -22,7 +22,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 #  Compressibility Drag Total
 # ----------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Common-Drag
+## @ingroup Library-Methods-Aerodynamics-Common-Drag
 def compressibility_drag_total(state,settings,geometry):
     """Computes compressibility drag for full aircraft including volume drag
 
@@ -146,7 +146,7 @@ def compressibility_drag_total(state,settings,geometry):
 
     return cd_c
 
-## @ingroup Methods-Aerodynamics-Supersonic_Zero-Drag
+## @ingroup Library-Methods-Aerodynamics-Supersonic_Zero-Drag
 def lift_wave_drag(conditions,configuration,wing,Sref_main):
     """Determine lift wave drag for supersonic speeds
 
@@ -188,7 +188,7 @@ def lift_wave_drag(conditions,configuration,wing,Sref_main):
 
     return cd_c_l
 
-## @ingroup Methods-Aerodynamics-Supersonic_Zero-Drag
+## @ingroup Library-Methods-Aerodynamics-Supersonic_Zero-Drag
 def drag_div(Mc_ii,wing,cl,Sref_main):
     """Use drag divergence mach number to determine drag for subsonic speeds
 

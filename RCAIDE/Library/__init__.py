@@ -1,12 +1,14 @@
-## @defgroup Library-Components-Booms Booms
-# RCAIDE/Library/Components/Booms/__init__.py
+# RCAIDE/Library__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
-"""RCAIDE Package Setup
+""" RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from .Boom import Boom 
+ 
+from . import Attributes
+from . import Components 
+from . import Methods 
+from . import Plots

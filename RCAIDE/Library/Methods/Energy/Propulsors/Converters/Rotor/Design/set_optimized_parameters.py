@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Rotor_Design 
-# RCAIDE/Methods/Energy/Propulsors/Rotor_Design/set_optimized_parameters.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/set_optimized_parameters.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Update
-# RCAIDE/Methods/Missions/Common/Update/orientations.py
+## @ingroup Library-Methods-Mission-Segments-Common-Update
+# RCAIDE/Library/Methods/Missions/Common/Update/orientations.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Core  import  angles_to_dcms, orientation_product, orientation_transpose
+from RCAIDE.Frameworks.Core  import  angles_to_dcms, orientation_product, orientation_transpose
 
 # package imports 
 import numpy as np
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Orientations
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Update
+## @ingroup Library-Methods-Mission-Common-Update
 def orientations(segment):
     
     """ Updates the orientation of the vehicle throughout the mission for each relevant axis

@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Climb
-# RCAIDE/Methods/Missions/Segments/Climb/Constant_CAS_Constant_Rate.py
+## @ingroup Library-Methods-Mission-Segments-Climb
+# RCAIDE/Library/Methods/Missions/Segments/Climb/Constant_CAS_Constant_Rate.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,8 +8,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE 
-from RCAIDE.Methods.Mission.Common.Update.atmosphere import atmosphere
-from RCAIDE.Core import Units
+from RCAIDE.Library.Methods.Mission.Common.Update.atmosphere import atmosphere
+from RCAIDE.Frameworks.Core import Units
 
 # Package imports  
 import numpy as np
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Climb
+## @ingroup Library-Methods-Mission-Segments-Climb
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
     

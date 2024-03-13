@@ -1,5 +1,5 @@
 ## @ingroup Energy-Thermal_Management-Batteries-Heat_Acquisition_Systems
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/Direct_Air.py
+# RCAIDE/Library/Compoments/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/Direct_Air.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -8,8 +8,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
   
-from RCAIDE.Components import Component  
-from RCAIDE.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air_Heat_Aquistion import direct_convection_model
+from RCAIDE.Library.Components import Component  
+from RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air_Heat_Aquistion import direct_convection_model
 from RCAIDE.Attributes.Gases import Air 
 
 # ----------------------------------------------------------------------------------------------------------------------

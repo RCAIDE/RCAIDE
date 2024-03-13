@@ -1,5 +1,5 @@
 ## @defgroup Components Components
-# RCAIDE/Components/__init__.py
+# RCAIDE/Library/Components/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup

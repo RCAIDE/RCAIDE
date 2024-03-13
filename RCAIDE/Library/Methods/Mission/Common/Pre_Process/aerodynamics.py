@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Pre_Process
-# RCAIDE/Methods/Missions/Common/Pre_Process/aerodynamics.py
+## @ingroup Library-Methods-Mission-Segments-Common-Pre_Process
+# RCAIDE/Library/Methods/Missions/Common/Pre_Process/aerodynamics.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -13,7 +13,7 @@ import RCAIDE
 # ----------------------------------------------------------------------------------------------------------------------
 #  aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Common-Pre_Process
+## @ingroup Library-Methods-Mission-Segments-Common-Pre_Process
 def aerodynamics(mission):
     """ Runs aerdoynamics model and build surrogate
     

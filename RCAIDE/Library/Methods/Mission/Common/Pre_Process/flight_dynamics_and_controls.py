@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Pre_Process
-# RCAIDE/Methods/Missions/Common/Pre_Process/flight_dynamics_and_controls.py
+## @ingroup Library-Methods-Mission-Segments-Common-Pre_Process
+# RCAIDE/Library/Methods/Missions/Common/Pre_Process/flight_dynamics_and_controls.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -7,12 +7,12 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Core import Units
+from RCAIDE.Frameworks.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  flight_dynamics_and_controls
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Common-Pre_Process
+## @ingroup Library-Methods-Mission-Segments-Common-Pre_Process
 def flight_dynamics_and_controls(mission):
     """ Sets the flight dynamics residuals and fligth controls of the aircraft   
 

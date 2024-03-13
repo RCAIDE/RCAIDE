@@ -1,5 +1,5 @@
 ## @defgroup Components-Propulsors-Modulators
-# RCAIDE/Components/Propulsors/Modulators/__init__.py
+# RCAIDE/Library/Components/Propulsors/Modulators/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup

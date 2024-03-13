@@ -1,5 +1,5 @@
 ## @defgroup Attributes-Propellants Propellants
-# RCAIDE/Attributes/Propellants/__init__.py
+# RCAIDE/Library/Attributes/Propellants/__init__.py
 # 
 
 """RCAIDE Package Setup

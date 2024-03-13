@@ -1,5 +1,5 @@
 ## @ingroup Energy-Sources-Batteries
-# RCAIDE/Energy/Sources/Batteries/Lithium_Ion_LiFePO4_18650.py
+# RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Ion_LiFePO4_18650.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -9,9 +9,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports 
-from RCAIDE.Core          import Units  
+from RCAIDE.Frameworks.Core          import Units  
 from .Lithium_Ion_Generic import Lithium_Ion_Generic 
-from RCAIDE.Methods.Energy.Sources.Battery.Lithium_Ion_LFP  import compute_lfp_cell_performance 
+from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_LFP  import compute_lfp_cell_performance 
 
 # package imports 
 import numpy as np  

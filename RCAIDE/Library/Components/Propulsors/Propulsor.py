@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors
-# RCAIDE/Components/Propulsors/Propusor.py
+# RCAIDE/Library/Components/Propulsors/Propusor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # 
@@ -10,7 +10,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
-from RCAIDE.Components                   import Component 
+from RCAIDE.Library.Components                   import Component 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Propusor

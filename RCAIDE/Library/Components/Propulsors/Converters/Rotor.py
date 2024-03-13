@@ -1,5 +1,5 @@
 ## @ingroup Energy-Propulsion-Converters
-# RCAIDE/Energy/Propulsion/Converters/Rotor.py
+# RCAIDE/Library/Compoments/Energy/Propulsion/Converters/Rotor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke
@@ -8,11 +8,11 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports 
-from RCAIDE.Core                                         import Data , Units, ContainerOrdered,orientation_product, orientation_transpose
-from RCAIDE.Components                                   import Component 
+from RCAIDE.Frameworks.Core                                         import Data , Units, ContainerOrdered,orientation_product, orientation_transpose
+from RCAIDE.Library.Components                                   import Component 
 from RCAIDE.Frameworks.Analyses.Propulsion               import Rotor_Wake_Fidelity_Zero
 from RCAIDE.Frameworks.Analyses.Propulsion               import Rotor_Wake_Fidelity_One
-from RCAIDE.Methods.Aerodynamics.Common.Lift             import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss 
+from RCAIDE.Library.Methods.Aerodynamics.Common.Lift             import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss 
 
 # package imports
 import numpy as np
@@ -691,7 +691,7 @@ class Rotor(Component):
         return self.prop_vel_to_body()
 
  
-## @ingroup Components-Wings
+## @ingroup Library-Components-Wings
 class Airfoil_Container(ContainerOrdered):
     """ Container for rotor airfoil  
     

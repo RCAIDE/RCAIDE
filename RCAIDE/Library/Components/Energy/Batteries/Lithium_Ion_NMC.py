@@ -1,5 +1,5 @@
 ## @ingroup Energy-Sources-Batteries
-# RCAIDE/Energy/Sources/Batteries/Lithium_Ion_LiNiMnCoO2_18650.py
+# RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Ion_LiNiMnCoO2_18650.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke
@@ -9,9 +9,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports
 import RCAIDE
-from RCAIDE.Core                                            import Units , Data
+from RCAIDE.Frameworks.Core                                            import Units , Data
 from .Lithium_Ion_Generic                                   import Lithium_Ion_Generic   
-from RCAIDE.Methods.Energy.Sources.Battery.Lithium_Ion_NMC  import compute_nmc_cell_performance, update_nmc_cell_age
+from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_NMC  import compute_nmc_cell_performance, update_nmc_cell_age
 
 # package imports 
 import numpy as np

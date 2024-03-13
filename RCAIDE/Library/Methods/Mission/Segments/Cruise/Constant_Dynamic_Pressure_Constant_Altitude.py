@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Cruise
-# RCAIDE/Methods/Missions/Segments/Cruise/Constant_Dynamic_Pressure_Constant_Altitude.py
+## @ingroup Library-Methods-Mission-Segments-Cruise
+# RCAIDE/Library/Methods/Missions/Segments/Cruise/Constant_Dynamic_Pressure_Constant_Altitude.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Cruise
+## @ingroup Library-Methods-Mission-Segments-Cruise
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -48,7 +48,7 @@ def initialize_conditions(segment):
     conditions = segment.state.conditions   
     
     # Update freestream to get density
-    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment)
+    RCAIDE.Library.Methods.Mission.Common.Update.atmosphere(segment)
     rho        = conditions.freestream.density[:,0]   
     
     # check for initial altitude

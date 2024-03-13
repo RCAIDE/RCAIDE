@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from .Conditions import Conditions 
-from RCAIDE.Methods.Utilities.Chebyshev  import chebyshev_data 
+from RCAIDE.Library.Methods.Utilities.Chebyshev  import chebyshev_data 
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------

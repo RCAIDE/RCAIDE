@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions-Common-Residuals Residuals
-# RCAIDE/Methods/Mission/Common/Residuals/__init__.py
+## @defgroup Library-Methods-Mission-Common-Residuals Residuals
+# RCAIDE/Library/Methods/Mission/Common/Residuals/__init__.py
 # 
 
 """ RCAIDE Package Setup

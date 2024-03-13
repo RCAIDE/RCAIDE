@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Update
-# RCAIDE/Methods/Missions/Common/Update/forces.py
+## @ingroup Library-Methods-Mission-Segments-Common-Update
+# RCAIDE/Library/Methods/Missions/Common/Update/forces.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -9,12 +9,12 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Core  import  orientation_product  
+from RCAIDE.Frameworks.Core  import  orientation_product  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Forces
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Common-Update
+## @ingroup Library-Methods-Mission-Segments-Common-Update
 def forces(segment): 
     """ Updates the total resultant force on the vehicle 
         

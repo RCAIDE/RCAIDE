@@ -1,5 +1,5 @@
-# @ingroup Attributes-Solids 
-# RCAIDE/Attributes/Solids/Aluminum.py
+# @ingroup Library-Attributes-Solids 
+# RCAIDE/Library/Attributes/Solids/Aluminum.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 

@@ -1,5 +1,5 @@
 ## @ingroup Energy-Sources-Batteries
-# RCAIDE/Energy/Sources/Batteries/Battery.py
+# RCAIDE/Library/Compoments/Energy/Sources/Batteries/Battery.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke
@@ -10,13 +10,13 @@
 
  # RCAIDE imports
 import RCAIDE
-from RCAIDE.Core          import Data 
-from RCAIDE.Components    import Component   
+from RCAIDE.Frameworks.Core          import Data 
+from RCAIDE.Library.Components    import Component   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Components-Energy-Sources-Batteries
+## @ingroup Library-Components-Energy-Sources-Batteries
 class Battery(Component):
     """
     Energy Component object that stores energy. Contains values

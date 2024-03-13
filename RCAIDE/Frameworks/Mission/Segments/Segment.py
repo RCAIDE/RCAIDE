@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE Imports
-from RCAIDE.Core import Data
+from RCAIDE.Frameworks.Core import Data
 from RCAIDE.Frameworks.Analyses                    import Analysis, Settings, Process   
 from RCAIDE.Frameworks.Mission.Common     import State 
 

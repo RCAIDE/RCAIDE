@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Modulators
-# RCAIDE/Methods/Energy/Propulsors/Modulators/compute_esc_performance.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Modulators/compute_esc_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke

@@ -1,5 +1,5 @@
-## @defgroup Energy-Thermal_Management-Batteries-Heat_Exchanger_Systems  Heat_Exchanger_Systems 
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Exchanger_Systems/__init__.py  
+## @defgroup Library-Compoments-Thermal_Management-Batteries-Heat_Exchanger_Systems  Heat_Exchanger_Systems 
+# RCAIDE/Library/Compoments/Thermal_Management/Batteries/Heat_Exchanger_Systems/__init__.py  
 
 """ RCAIDE Package Setup
 """

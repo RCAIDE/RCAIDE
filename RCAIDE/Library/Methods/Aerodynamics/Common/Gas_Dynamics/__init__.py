@@ -1,5 +1,5 @@
-# @ingroup Methods-Aerodynamics-Common
-# RCAIDE/Methods/Aerodynamics/Common/Gas_Dymamics/__init__.py
+# @ingroup Library-Methods-Aerodynamics-Common
+# RCAIDE/Library/Methods/Aerodynamics/Common/Gas_Dymamics/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup

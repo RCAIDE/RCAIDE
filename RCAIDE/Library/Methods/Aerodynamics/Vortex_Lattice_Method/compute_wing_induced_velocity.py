@@ -1,4 +1,4 @@
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 # compute_wing_induced_velocity.py
 # 
 # Created:  Dec 2020, E. Botero
@@ -12,7 +12,7 @@
 # package imports 
 import numpy as np 
 
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     """ This computes the induced velocities at each control point of the vehicle vortex lattice 
 

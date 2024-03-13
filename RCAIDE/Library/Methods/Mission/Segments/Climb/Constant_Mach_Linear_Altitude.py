@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Climb
-# RCAIDE/Methods/Missions/Segments/Climb/Constant_Mach_Linear_Altitude.py
+## @ingroup Library-Methods-Mission-Segments-Climb
+# RCAIDE/Library/Methods/Missions/Segments/Climb/Constant_Mach_Linear_Altitude.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE  
-from RCAIDE.Methods.Mission.Common.Update.atmosphere import atmosphere
+from RCAIDE.Library.Methods.Mission.Common.Update.atmosphere import atmosphere
 
 # Package imports  
 import numpy as np
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Climb
+## @ingroup Library-Methods-Mission-Segments-Climb
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

@@ -1,5 +1,5 @@
 ## @ingroup Energy-Sources-Batteries
-# RCAIDE/Energy/Sources/Batteries/Aluminum_Air.py
+# RCAIDE/Library/Compoments/Energy/Sources/Batteries/Aluminum_Air.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
  # RCAIDE imports
-from RCAIDE.Core import Units
+from RCAIDE.Frameworks.Core import Units
 from .Battery    import Battery
 
 # ----------------------------------------------------------------------------------------------------------------------

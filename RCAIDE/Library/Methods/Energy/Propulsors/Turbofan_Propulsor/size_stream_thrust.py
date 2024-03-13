@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-# RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_thrust.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_thrust.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 

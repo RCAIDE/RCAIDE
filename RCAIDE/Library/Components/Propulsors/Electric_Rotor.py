@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors-Electric_Rotor
-# RCAIDE/Components/Propulsors/Electric_Rotor.py
+# RCAIDE/Library/Components/Propulsors/Electric_Rotor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # 

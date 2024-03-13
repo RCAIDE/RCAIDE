@@ -7,12 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from . import Core 
-from . import Attributes
-from . import Components 
-from . import Frameworks
-from . import Methods 
-from . import Plots
+ 
+from . import Library
+from . import Frameworks 
 
 from .Vehicle import Vehicle

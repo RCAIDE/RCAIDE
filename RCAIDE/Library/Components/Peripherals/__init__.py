@@ -1,5 +1,5 @@
 ## @defgroup Energy-Peripherals Peripherals
-# RCAIDE/Energy/Peripherals/__init__.py
+# RCAIDE/Library/Compoments/Energy/Peripherals/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup

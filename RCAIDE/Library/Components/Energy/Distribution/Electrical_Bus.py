@@ -1,5 +1,5 @@
 ## @defgroup Energy-Networks-Distribution
-# RCAIDE/Energy/Networks/Distribution/Electrical_Bus.py
+# RCAIDE/Library/Compoments/Energy/Networks/Distribution/Electrical_Bus.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -10,8 +10,8 @@
 
 # RCAIDE imports  
 import RCAIDE 
-from RCAIDE.Components                                import Component
-from RCAIDE.Components.Component                      import Container    
+from RCAIDE.Library.Components                                import Component
+from RCAIDE.Library.Components.Component                      import Container    
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Electrical_Bus

@@ -1,5 +1,5 @@
-## @defgroup Attributes-Cryogens Cryogens
-# RCAIDE/Attributes/Cryogens/__init__.py
+## @defgroup Library-Attributes-Cryogens Cryogens
+# RCAIDE/Library/Attributes/Cryogens/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup

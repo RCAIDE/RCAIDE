@@ -1,5 +1,5 @@
-## @defgroup Energy-Thermal_Management-Batteries Batteries
-# RCAIDE/Energy/Thermal_Management/Batteries/__init__.py
+## @defgroup Library-Compoments-Energy-Thermal_Management-Batteries Batteries
+# RCAIDE/Library/Compoments/Energy/Thermal_Management/Batteries/__init__.py
 # 
 
 """ RCAIDE Package Setup

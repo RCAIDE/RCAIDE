@@ -1,11 +1,12 @@
-## @ingroup Attributes-Solids
-
+## @ingroup Library-Attributes-Solids 
+# RCAIDE/Library/Attributes/Solids/Solid.py
+# (c) Copyright 2023 Aerospace Research Community LLC 
  
 #-------------------------------------------------------------------------------
 # Imports
 #-------------------------------------------------------------------------------
 
-from RCAIDE.Core import Data 
+from RCAIDE.Frameworks.Core import Data 
 
 #-------------------------------------------------------------------------------
 # Solid Data Class

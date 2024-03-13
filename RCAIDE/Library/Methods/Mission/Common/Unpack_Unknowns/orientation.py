@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Unpack_Unknowns
-# RCAIDE/Methods/Missions/Common/Unpack_Unknowns/orientation.py
+## @ingroup Library-Methods-Mission-Common-Unpack_Unknowns
+# RCAIDE/Library/Methods/Missions/Common/Unpack_Unknowns/orientation.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unpack Unknowns
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Unpack_Unknowns
+## @ingroup Library-Methods-Mission-Common-Unpack_Unknowns
 def orientation(segment): 
         
     # Body Angle Control

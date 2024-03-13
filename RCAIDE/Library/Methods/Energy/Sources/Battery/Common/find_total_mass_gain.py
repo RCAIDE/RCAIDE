@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Common
-# RCAIDE/Methods/Energy/Sources/Battery/Common/find_total_mass_gain.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/find_total_mass_gain.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

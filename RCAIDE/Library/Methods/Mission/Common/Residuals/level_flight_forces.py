@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Residuals
-# RCAIDE/Methods/Missions/Common/Residuals/level_flight_forces.py
+## @ingroup Library-Methods-Mission-Common-Residuals
+# RCAIDE/Library/Methods/Missions/Common/Residuals/level_flight_forces.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Residual Total Forces
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Residuals
+## @ingroup Library-Methods-Mission-Common-Residuals
 def level_flight_forces(segment):
     """ Calculates a force residuals
     

@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors 
-# RCAIDE/Components/Propulsors/ICE_Propeller.py
+# RCAIDE/Library/Components/Propulsors/ICE_Propeller.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # 

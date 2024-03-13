@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Climb
-# RCAIDE/Methods/Missions/Segments/Climb/Constant_Mach_Constant_Angle.py
+## @ingroup Library-Methods-Mission-Segments-Climb
+# RCAIDE/Library/Methods/Missions/Segments/Climb/Constant_Mach_Constant_Angle.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,7 +8,7 @@
 #  IMPORT 
 # ----------------------------------------------------------------------------------------------------------------------  
 # import RCAIDE 
-from RCAIDE.Methods.Mission.Common.Update.atmosphere import atmosphere
+from RCAIDE.Library.Methods.Mission.Common.Update.atmosphere import atmosphere
 
 # package imports 
 import numpy as np
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Climb
+## @ingroup Library-Methods-Mission-Segments-Climb
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
     
@@ -80,7 +80,7 @@ def initialize_conditions(segment):
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Residual Total Forces
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Climb
+## @ingroup Library-Methods-Mission-Segments-Climb
 def residual_total_forces(segment):
     
     # Unpack results
@@ -105,7 +105,7 @@ def residual_total_forces(segment):
 # ----------------------------------------------------------------------------------------------------------------------  
 # Update Differentials
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Climb   
+## @ingroup Library-Methods-Mission-Segments-Climb   
 def update_differentials(segment):
     """ On each iteration creates the differentials and integration functions from knowns about the problem. 
       Sets the time at each point. Must return in dimensional time, with t[0] = 0.

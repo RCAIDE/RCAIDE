@@ -8,13 +8,13 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE 
-from RCAIDE.Core import Units 
-from RCAIDE.Methods.Noise.Common.decibel_arithmetic                                 import SPL_arithmetic  
-from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor.BPM_boundary_layer_properties import BPM_boundary_layer_properties
-from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise        import LBL_VS_broadband_noise
-from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor.TBL_TE_broadband_noise        import TBL_TE_broadband_noise
-from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor.TIP_broadband_noise           import TIP_broadband_noise 
-from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor.noise_directivities           import noise_directivities
+from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic                                 import SPL_arithmetic  
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.BPM_boundary_layer_properties import BPM_boundary_layer_properties
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise        import LBL_VS_broadband_noise
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.TBL_TE_broadband_noise        import TBL_TE_broadband_noise
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.TIP_broadband_noise           import TIP_broadband_noise 
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.noise_directivities           import noise_directivities
 
 # Python Package imports 
 import numpy as np  

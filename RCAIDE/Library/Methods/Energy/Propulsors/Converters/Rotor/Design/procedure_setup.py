@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Rotor_Design 
-# RCAIDE/Methods/Energy/Propulsors/Rotor_Design/procedure_setup.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/procedure_setup.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke  
@@ -10,8 +10,8 @@
 
 # RCAIDE Imports 
 import RCAIDE 
-from RCAIDE.Core                                                  import Units  
-from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor          import rotor_noise 
+from RCAIDE.Frameworks.Core                                                  import Units  
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor          import rotor_noise 
 from RCAIDE.Frameworks.Analyses.Process                                      import Process   
 
 # Python package imports   

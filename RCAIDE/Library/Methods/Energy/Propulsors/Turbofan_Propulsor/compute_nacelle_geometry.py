@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-# RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_nacelle_geometry.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_nacelle_geometry.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Feb 2024, M. Clarke
@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports  
-from RCAIDE.Core      import Units 
+from RCAIDE.Frameworks.Core      import Units 
 
 # Python package imports
 import numpy as np

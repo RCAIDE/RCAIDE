@@ -1,5 +1,5 @@
 ## @ingroup Compoments-Energy-Fuel_Tanks 
-# RCAIDE/Energy/Sources/Fuel_Tanks/Fuel_Tanks.py
+# RCAIDE/Library/Compoments/Energy/Sources/Fuel_Tanks/Fuel_Tanks.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Components    import Component   
+from RCAIDE.Library.Components    import Component   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Tank

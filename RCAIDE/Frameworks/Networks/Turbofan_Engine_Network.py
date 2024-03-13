@@ -1,5 +1,5 @@
 ## @ingroup Networks
-# RCAIDE/Energy/Networks/Turbofan_Engine_Network.py
+# RCAIDE/Library/Compoments/Energy/Networks/Turbofan_Engine_Network.py
 # 
 #
 # Created:  Oct 2023, M. Clarke
@@ -10,10 +10,10 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Core                                                                       import Data 
-from RCAIDE.Frameworks.Mission.Common                                                  import Residuals    
-from RCAIDE.Methods.Energy.Propulsors.Turbofan_Propulsor.compute_turbofan_performance  import compute_turbofan_performance
-from .Network                                                                          import Network  
+from RCAIDE.Frameworks.Core                                                                    import Data 
+from RCAIDE.Frameworks.Mission.Common                                                          import Residuals    
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor.compute_turbofan_performance  import compute_turbofan_performance
+from .Network                                                                                  import Network  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Turbofan
@@ -176,7 +176,7 @@ class Turbofan_Engine_Network(Network):
         """            
          
         fuel_lines = segment.analyses.energy.networks.turbofan_engine.fuel_lines
-        RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
+        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
             
         return    
      

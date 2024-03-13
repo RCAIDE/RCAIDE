@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from Legacy.trunk.S       import Vehicle as VH
-from RCAIDE.Core          import Data
+from RCAIDE.Frameworks.Core          import Data
 from .Frameworks.Networks import Network
 from RCAIDE               import Components , Energy 
 from Legacy.trunk.S.Components.Energy.Networks import Network as legacy_net

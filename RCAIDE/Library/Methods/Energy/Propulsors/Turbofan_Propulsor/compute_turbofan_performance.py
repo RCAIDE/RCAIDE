@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-# RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_turbofan_performance.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_turbofan_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,15 +8,15 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core import Data   
-from RCAIDE.Methods.Energy.Propulsors.Converters.Ram                import compute_ram_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Combustor          import compute_combustor_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Compressor         import compute_compressor_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Fan                import compute_fan_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
-from RCAIDE.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
-from RCAIDE.Methods.Energy.Propulsors.Turbofan_Propulsor            import compute_thrust
+from RCAIDE.Frameworks.Core import Data   
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Ram                import compute_ram_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Combustor          import compute_combustor_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compressor         import compute_compressor_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Fan                import compute_fan_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor            import compute_thrust
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_performance

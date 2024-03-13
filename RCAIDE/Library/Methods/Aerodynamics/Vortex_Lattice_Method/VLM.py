@@ -1,4 +1,4 @@
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 # VLM.py
 # 
 # Created:  Oct 2020, E. Botero
@@ -11,7 +11,7 @@
 
 # package imports 
 import numpy as np 
-from RCAIDE.Core import Data
+from RCAIDE.Frameworks.Core import Data
 from .compute_wing_induced_velocity      import compute_wing_induced_velocity
 from .generate_vortex_distribution       import generate_vortex_distribution 
 from .compute_RHS_matrix                 import compute_RHS_matrix 
@@ -20,7 +20,7 @@ from .compute_RHS_matrix                 import compute_RHS_matrix
 #  Vortex Lattice
 # ----------------------------------------------------------------------
 
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def VLM(conditions,settings,geometry):
     """Uses the vortex lattice method to compute the lift, induced drag and moment coefficients.
     

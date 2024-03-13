@@ -1,5 +1,5 @@
 ## @defgroup Energy-Sources Sources
-# RCAIDE/Energy/Sources/__init__.py
+# RCAIDE/Library/Compoments/Energy/Sources/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup

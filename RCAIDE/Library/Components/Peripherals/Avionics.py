@@ -1,5 +1,5 @@
-## @ingroup Energy-Peripherals
-# RCAIDE/Energy/Peripherals/Avionics.py
+## @ingroup Library-Compoments-Peripherals
+# RCAIDE/Compoments/Peripherals/Avionics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Components import Component
+from RCAIDE.Library.Components import Component
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Avionics

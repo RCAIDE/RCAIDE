@@ -1,13 +1,14 @@
-## @ingroup Attributes-Coolants
-# Coolant.py
+## @ingroup Library-Attributes-Coolants 
+# RCAIDE/Library/Attributes/Coolants/Coolant.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 #
-# Created:  Dec. 2022  C.R. Zhao
+# Created:  Mar 2024, M. Clarke
 
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
 
-from RCAIDE.Core import Data
+from RCAIDE.Frameworks.Core import Data
 
 # ----------------------------------------------------------------------
 #  Class

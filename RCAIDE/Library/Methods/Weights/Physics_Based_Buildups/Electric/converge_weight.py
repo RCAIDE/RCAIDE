@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE
-from RCAIDE.Methods.Weights.Physics_Based_Buildups.Electric import compute_weight
-from RCAIDE.Core import Data
+from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric import compute_weight
+from RCAIDE.Frameworks.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
 # converge_evtol_weight

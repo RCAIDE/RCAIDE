@@ -8,9 +8,9 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
-from RCAIDE.Core import Units 
-from RCAIDE.Methods.Noise.Common.decibel_arithmetic   import SPL_arithmetic
-from RCAIDE.Methods.Noise.Common.background_noise     import background_noise
+from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic   import SPL_arithmetic
+from RCAIDE.Library.Methods.Noise.Common.background_noise     import background_noise
 
 # Python package imports   
 import numpy as np  

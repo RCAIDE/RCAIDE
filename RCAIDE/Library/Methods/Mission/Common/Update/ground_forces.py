@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Update
-# RCAIDE/Methods/Missions/Common/Update/ground_forces.py
+## @ingroup Library-Methods-Mission-Segments-Common-Update
+# RCAIDE/Library/Methods/Missions/Common/Update/ground_forces.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,13 +8,13 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE  
-from RCAIDE.Core import   orientation_product 
-from RCAIDE.Methods.Mission.Common.Update.forces import forces
+from RCAIDE.Frameworks.Core import   orientation_product 
+from RCAIDE.Library.Methods.Mission.Common.Update.forces import forces
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Ground Forces
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Ground
+## @ingroup Library-Methods-Mission-Segments-Ground
 def ground_forces(segment):
     """ Compute the rolling friction on the aircraft 
     

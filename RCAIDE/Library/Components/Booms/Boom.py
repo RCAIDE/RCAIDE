@@ -1,4 +1,4 @@
-## @ingroup Components-Booms
+## @ingroup Library-Components-Booms
 # RCAIDE/Compoments/Booms/Boom.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -8,8 +8,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
-from RCAIDE.Core       import Data, Container, ContainerOrdered
-from RCAIDE.Components import Component, Lofted_Body 
+from RCAIDE.Frameworks.Core       import Data, Container, ContainerOrdered
+from RCAIDE.Library.Components import Component, Lofted_Body 
 
 # package imports 
 import numpy as np
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  BOOM
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Booms
+## @ingroup Library-Components-Booms
 class Boom(Lofted_Body):
     """ This is a standard boom for a rotor.
     

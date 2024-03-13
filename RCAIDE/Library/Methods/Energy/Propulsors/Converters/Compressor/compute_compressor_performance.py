@@ -1,5 +1,5 @@
 ## @ingroup Methods-Components-Propulsors-Converters-Compressor
-# RCAIDE/Methods/Energy/Propulsors/Converters/Compressor/compute_compressor_performance.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compressor/compute_compressor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke     

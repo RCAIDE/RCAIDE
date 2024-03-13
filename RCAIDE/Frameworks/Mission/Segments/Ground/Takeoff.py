@@ -10,9 +10,9 @@
 
 # RCAIDE imports 
 from RCAIDE.Frameworks.Mission.Segments.Evaluate        import Evaluate
-from RCAIDE.Core                                      import Units, Data 
-from RCAIDE.Methods.Mission.Segments                  import Ground  
-from RCAIDE.Methods.Mission.Common                    import Residuals , Unpack_Unknowns, Update
+from RCAIDE.Frameworks.Core                                      import Units, Data 
+from RCAIDE.Library.Methods.Mission.Segments                  import Ground  
+from RCAIDE.Library.Methods.Mission.Common                    import Residuals , Unpack_Unknowns, Update
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Takeoff

@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Core import Data
+from RCAIDE.Frameworks.Core import Data
 from RCAIDE.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 import numpy as np  
 import plotly.graph_objects as go 

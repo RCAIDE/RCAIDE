@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions-Segments-Descent Descent
-# RCAIDE/Methods/Mission/Segments/Descent/__init__.py
+## @defgroup Library-Methods-Mission-Segments-Descent Descent
+# RCAIDE/Library/Methods/Mission/Segments/Descent/__init__.py
 # 
 
 """ RCAIDE Package Setup

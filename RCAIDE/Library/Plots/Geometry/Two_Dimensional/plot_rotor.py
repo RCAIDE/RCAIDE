@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Core import Units
+from RCAIDE.Frameworks.Core import Units
 
 from plotly.subplots import make_subplots
 import pandas as pd
@@ -27,7 +27,7 @@ def plot_rotor(prop, face_color = 'red', edge_color = 'black' ,show_figure = Tru
     None
 
     Inputs:
-    RCAIDE.Components.Energy.Converters.Propeller()
+    RCAIDE.Library.Components.Energy.Converters.Propeller()
 
     Outputs:
     Plots

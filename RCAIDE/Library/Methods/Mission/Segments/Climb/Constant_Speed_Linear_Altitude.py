@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Climb
-# RCAIDE/Methods/Missions/Segments/Climb/Constant_Speed_Linear_Altitude.py 
+## @ingroup Library-Methods-Mission-Segments-Climb
+# RCAIDE/Library/Methods/Missions/Segments/Climb/Constant_Speed_Linear_Altitude.py 
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Climb
+## @ingroup Library-Methods-Mission-Segments-Climb
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

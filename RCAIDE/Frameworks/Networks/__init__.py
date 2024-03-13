@@ -1,5 +1,5 @@
 ## @defgroup Energy-Networks Networks
-# RCAIDE/Energy/Networks/__init__.py
+# RCAIDE/Library/Compoments/Energy/Networks/__init__.py
 # 
 
 """ RCAIDE Package Setup
@@ -23,11 +23,6 @@ from Legacy.trunk.S.Components.Energy.Networks import Turboelectric_HTS_Dynamo_D
 from Legacy.trunk.S.Components.Energy.Networks import Turbofan                                     as legacy_turbofan
 from Legacy.trunk.S.Components.Energy.Networks import Turbojet_Super                               as legacy_turbojet
 from Legacy.trunk.S.Components.Energy.Networks import Solar                                        as legacy_solar
-
-#from .All_Electric_Network                               import All_Electric_Network 
-#from .Internal_Combustion_Engine_Network                 import Internal_Combustion_Engine_Network
-#from .Constant_Speed_Internal_Combustion_Engine_Network  import Constant_Speed_Internal_Combustion_Engine_Network  
-#from .Isolated_Battery_Cell_Network                      import Isolated_Battery_Cell_Network  
-from .Turbofan_Engine_Network                            import Turbofan_Engine_Network
-#from .Turbojet_Engine_Network                            import Turbojet_Engine_Network 
+ 
+from .Turbofan_Engine_Network                            import Turbofan_Engine_Network 
 from .Network                                            import Network  

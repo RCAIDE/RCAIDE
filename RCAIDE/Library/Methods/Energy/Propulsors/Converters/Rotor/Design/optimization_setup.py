@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Rotor_Design  
-# RCAIDE/Methods/Energy/Propulsors/Rotor_Design/optimization_setup.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/optimization_setup.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -10,10 +10,10 @@
  
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Core                                                                      import Units, Data   
+from RCAIDE.Frameworks.Core                                                           import Units, Data   
 from RCAIDE.Frameworks.Optimization.Common                                            import Nexus       
-from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor.Design.blade_geometry_setup    import blade_geometry_setup
-from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor.Design.procedure_setup         import procedure_setup
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.blade_geometry_setup    import blade_geometry_setup
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.procedure_setup         import procedure_setup
 
 # Python package imports   
 import numpy as np  

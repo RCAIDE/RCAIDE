@@ -1,6 +1,6 @@
-## @defgroup Methods-Aerodynamics-Fidelity_Zero Fidelity_Zero
-# @ingroup Methods-Aerodynamics
-# RCAIDE/Methods/Aerodynamics/Fidelity_Zero/__init__.py
+## @defgroup Library-Methods-Aerodynamics-Fidelity_Zero Fidelity_Zero
+# @ingroup Library-Methods-Aerodynamics
+# RCAIDE/Library/Methods/Aerodynamics/Fidelity_Zero/__init__.py
 # 
 
 """ RCAIDE Package Setup

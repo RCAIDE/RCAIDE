@@ -1,5 +1,5 @@
 ## @ingroup Energy-Thermal_Management-Batteries-Heat_Acquisition_Systems
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/No_Heat_Acquisition.py
+# RCAIDE/Library/Compoments/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/No_Heat_Acquisition.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -8,8 +8,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
   
-from RCAIDE.Components import Component   
-from RCAIDE.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition import no_heat_acquisition_model
+from RCAIDE.Library.Components import Component   
+from RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition import no_heat_acquisition_model
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  No_Heat_Exchanger

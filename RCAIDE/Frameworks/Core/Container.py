@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------        
 
-from RCAIDE.Core     import Data
+from RCAIDE.Frameworks.Core     import Data
 from warnings        import warn
 import random
 

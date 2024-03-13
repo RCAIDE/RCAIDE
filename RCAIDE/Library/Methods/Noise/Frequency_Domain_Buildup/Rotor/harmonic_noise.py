@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE    
-from RCAIDE.Methods.Noise.Common                         import convert_to_third_octave_band
+from RCAIDE.Library.Methods.Noise.Common                         import convert_to_third_octave_band
 
 # Python Package imports  
 import numpy as np

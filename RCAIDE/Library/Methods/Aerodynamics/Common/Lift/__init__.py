@@ -1,6 +1,6 @@
-## @defgroup Methods-Aerodynamics-Common-Lift Lift
-# @ingroup Methods-Aerodynamics-Common
-# RCAIDE/Methods/Aerodynamics/Common/Lift/__init__.py
+## @defgroup Library-Methods-Aerodynamics-Common-Lift Lift
+# @ingroup Library-Methods-Aerodynamics-Common
+# RCAIDE/Library/Methods/Aerodynamics/Common/Lift/__init__.py
 # 
 
 """ RCAIDE Package Setup

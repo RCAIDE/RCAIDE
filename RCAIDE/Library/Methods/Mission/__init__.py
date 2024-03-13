@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions Missions
-# RCAIDE/Methods/Missions/__init__.py
+## @defgroup Library-Methods-Mission Missions
+# RCAIDE/Library/Methods/Missions/__init__.py
 # 
 
 """ RCAIDE Package Setup

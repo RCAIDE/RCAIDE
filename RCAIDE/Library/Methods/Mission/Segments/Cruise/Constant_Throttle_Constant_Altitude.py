@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Cruise
-# RCAIDE/Methods/Missions/Segments/Cruise/Constant_Throttle_Constant_Altitude.py
+## @ingroup Library-Methods-Mission-Segments-Cruise
+# RCAIDE/Library/Methods/Missions/Segments/Cruise/Constant_Throttle_Constant_Altitude.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -13,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Cruise
+## @ingroup Library-Methods-Mission-Segments-Cruise
 def unpack_unknowns(segment):
     
     # unpack unknowns
@@ -63,7 +63,7 @@ def integrate_velocity(segment):
 #  Initialize Conditions
 # ----------------------------------------------------------------------    
 
-## @ingroup Methods-Missions-Segments-Cruise
+## @ingroup Library-Methods-Mission-Segments-Cruise
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -125,7 +125,7 @@ def initialize_conditions(segment):
 #  Solve Residuals
 # ----------------------------------------------------------------------    
 
-## @ingroup Methods-Missions-Segments-Cruise
+## @ingroup Library-Methods-Mission-Segments-Cruise
 def solve_velocity(segment):
     """ Calculates the additional velocity residual
     

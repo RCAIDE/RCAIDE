@@ -10,10 +10,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Methods                                  import skip   
-from RCAIDE.Core                                     import Units 
+from RCAIDE.Library.Methods                                  import skip   
+from RCAIDE.Frameworks.Core                                     import Units 
 from RCAIDE.Frameworks.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Methods.Mission                          import Common,Segments
+from RCAIDE.Library.Methods.Mission                          import Common,Segments
 
 
 # Package imports 

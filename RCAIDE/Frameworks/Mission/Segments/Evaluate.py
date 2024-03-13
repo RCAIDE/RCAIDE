@@ -12,7 +12,7 @@
 # RCAIDE imports  
 from RCAIDE.Frameworks.Mission.Segments         import Segment
 from RCAIDE.Frameworks.Mission.Common.Results   import Results
-from RCAIDE.Methods.Mission                   import Common , Solver 
+from RCAIDE.Library.Methods.Mission                   import Common , Solver 
 from RCAIDE.Frameworks.Analyses                          import Process  
 
 # ----------------------------------------------------------------------------------------------------------------------

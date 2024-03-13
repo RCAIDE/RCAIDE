@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors-Converters
-# RCAIDE/Components/Propulsors/Converters/Fan.py
+# RCAIDE/Library/Components/Propulsors/Converters/Fan.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # 
@@ -9,7 +9,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## RCAIDE imports   
-from RCAIDE.Core      import Data 
+from RCAIDE.Frameworks.Core      import Data 
 from .                import Propulsor
 
 import numpy as np 

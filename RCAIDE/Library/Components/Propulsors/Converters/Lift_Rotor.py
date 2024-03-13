@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors-Converters
-# RCAIDE/Components/Propulsors/Converters/Lift_Rotor.py
+# RCAIDE/Library/Components/Propulsors/Converters/Lift_Rotor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports 
-from RCAIDE.Core import Data
+from RCAIDE.Frameworks.Core import Data
 from .Rotor import Rotor
 
 # package imports 

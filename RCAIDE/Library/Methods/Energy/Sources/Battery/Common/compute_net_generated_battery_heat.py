@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Common
-# RCAIDE/Methods/Energy/Sources/Battery/Common/compute_net_generated_battery_heat.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/compute_net_generated_battery_heat.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke

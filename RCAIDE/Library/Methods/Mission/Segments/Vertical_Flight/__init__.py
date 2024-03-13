@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions-Segments-Hover Hover
-# RCAIDE/Methods/Mission/Segments/Hover/__init__.py
+## @defgroup Library-Methods-Mission-Segments-Hover Hover
+# RCAIDE/Library/Methods/Mission/Segments/Hover/__init__.py
 # 
 
 """ RCAIDE Package Setup

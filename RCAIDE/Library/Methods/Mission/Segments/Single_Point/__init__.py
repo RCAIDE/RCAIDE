@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions-Segments-Single_Point Single Point
-# RCAIDE/Methods/Mission/Segments/Single_Point/__init__.py
+## @defgroup Library-Methods-Mission-Segments-Single_Point Single Point
+# RCAIDE/Library/Methods/Mission/Segments/Single_Point/__init__.py
 # 
 
 """ RCAIDE Package Setup

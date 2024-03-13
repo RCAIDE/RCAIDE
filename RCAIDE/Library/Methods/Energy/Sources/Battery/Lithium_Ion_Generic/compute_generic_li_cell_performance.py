@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_Generic
-# RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_Generic/compute_generic_li_cell_performance.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_Generic/compute_generic_li_cell_performance.py
 # 
 # 
 # Created:  Feb 2024, M. Clarke 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Core     import Units 
+from RCAIDE.Frameworks.Core     import Units 
 import numpy as np    
  
 # ----------------------------------------------------------------------------------------------------------------------

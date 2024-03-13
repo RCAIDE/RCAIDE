@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Core                                 import Units 
+from RCAIDE.Frameworks.Core                                 import Units 
 from RCAIDE.Frameworks.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Methods.Mission                      import Common,Segments
+from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Linear_Speed_Constant_Rate

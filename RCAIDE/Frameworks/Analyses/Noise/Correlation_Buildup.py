@@ -10,11 +10,11 @@
 from .Noise      import Noise   
 
 # noise imports 
-from RCAIDE.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise                              import airframe_noise
-from RCAIDE.Methods.Noise.Correlation_Buildup.Turbofan.turbofan_engine_noise                       import turbofan_engine_noise   
-from RCAIDE.Methods.Noise.Common.decibel_arithmetic                                                import SPL_arithmetic
-from RCAIDE.Methods.Noise.Common.generate_microphone_locations                                     import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
-from RCAIDE.Methods.Noise.Common.compute_relative_noise_evaluation_locations                       import compute_relative_noise_evaluation_locations  
+from RCAIDE.Library.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise                              import airframe_noise
+from RCAIDE.Library.Methods.Noise.Correlation_Buildup.Turbofan.turbofan_engine_noise                       import turbofan_engine_noise   
+from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic                                                import SPL_arithmetic
+from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations                                     import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
+from RCAIDE.Library.Methods.Noise.Common.compute_relative_noise_evaluation_locations                       import compute_relative_noise_evaluation_locations  
 
 # package imports
 import numpy as np

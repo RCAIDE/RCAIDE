@@ -1,7 +1,8 @@
-## @ingroup Attributes-Coolants
-# Glycol_Water
+## @ingroup Library-Attributes-Coolants 
+# RCAIDE/Library/Attributes/Coolants/Glycol_Water.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 #
-# Created:  Dec. 2022,  C.R. Zhao
+# Created:  Mar 2024, M. Clarke
 
 # ----------------------------------------------------------------------
 #  Imports

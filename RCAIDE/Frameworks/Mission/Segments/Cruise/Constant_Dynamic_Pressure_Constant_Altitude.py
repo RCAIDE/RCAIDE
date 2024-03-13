@@ -11,8 +11,8 @@
 
 # RCAIDE imports 
 from RCAIDE.Frameworks.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Core                                 import Units   
-from RCAIDE.Methods.Mission                      import Common,Segments
+from RCAIDE.Frameworks.Core                                 import Units   
+from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Dynamic_Pressure_Constant_Altitude

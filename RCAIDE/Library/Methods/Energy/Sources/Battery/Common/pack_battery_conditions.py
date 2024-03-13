@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery 
-# RCAIDE/Methods/Energy/Sources/Battery/Common/pack_battery_conditions.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/pack_battery_conditions.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

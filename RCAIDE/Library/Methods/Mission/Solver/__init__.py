@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions-Solver Solver
-# RCAIDE/Methods/Mission/Solver/__init__.py
+## @defgroup Library-Methods-Mission-Solver Solver
+# RCAIDE/Library/Methods/Mission/Solver/__init__.py
 # 
 
 """ RCAIDE Package Setup

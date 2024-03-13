@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Initialize
-# RCAIDE/Methods/Missions/Common/Initialize/differentials_dimensionless.py
+## @ingroup Library-Methods-Mission-Common-Initialize
+# RCAIDE/Library/Methods/Missions/Common/Initialize/differentials_dimensionless.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,12 +8,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports 
-from RCAIDE.Core.Arrays  import atleast_2d_col 
+from RCAIDE.Frameworks.Core.Arrays  import atleast_2d_col 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Differentials
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Initialize
+## @ingroup Library-Methods-Mission-Common-Initialize
 def differentials_dimensionless(segment):
     """ Discretizes the differential operators
     

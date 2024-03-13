@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions-Segments-Cruise Cruise
-# RCAIDE/Methods/Mission/Segments/Cruise/__init__.py
+## @defgroup Library-Methods-Mission-Segments-Cruise Cruise
+# RCAIDE/Library/Methods/Mission/Segments/Cruise/__init__.py
 # 
 
 """ RCAIDE Package Setup

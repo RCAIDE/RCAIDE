@@ -1,5 +1,5 @@
-# @ingroup Methods-Aerodynamics-Common-Drag
-# RCAIDE/Methods/Aerodynamics/Common/Drag/__init__.py
+# @ingroup Library-Methods-Aerodynamics-Common-Drag
+# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup

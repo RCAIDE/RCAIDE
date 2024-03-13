@@ -1,5 +1,5 @@
-## @ingroup Methods-Aerodynamics-Common-Drag
-# RCAIDE/Methods/Aerodynamics/Common/Drag/miscellaneous_drag_aircraft_ESDU.py
+## @ingroup Library-Methods-Aerodynamics-Common-Drag
+# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/miscellaneous_drag_aircraft_ESDU.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,12 +8,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
  
-from RCAIDE.Core import Data  
+from RCAIDE.Frameworks.Core import Data  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  miscellaneous_drag_aircraft_ESDU
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Aerodynamics-Common-Drag
+## @ingroup Library-Methods-Aerodynamics-Common-Drag
 def miscellaneous_drag_aircraft_ESDU(state,settings,geometry):
     """Computes the miscellaneous drag associated with an aircraft
 

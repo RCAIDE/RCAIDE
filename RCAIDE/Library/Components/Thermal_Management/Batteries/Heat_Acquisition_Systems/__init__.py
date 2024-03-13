@@ -1,5 +1,5 @@
-## @defgroup Energy-Thermal_Management-Batteries-Heat_Acquisition_Systems  Heat_Acquisition_Systems 
-# RCAIDE/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/__init__.py 
+## @defgroup Library-Compoments-Thermal_Management-Batteries-Heat_Acquisition_Systems  Heat_Acquisition_Systems 
+# RCAIDE/Library/Compoments/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/__init__.py 
 
 """ RCAIDE Package Setup
 """

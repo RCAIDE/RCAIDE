@@ -1,5 +1,5 @@
-## @defgroup Methods-Missions-Segments-Ground Ground
-# RCAIDE/Methods/Mission/Segments/Ground/__init__.py
+## @defgroup Library-Methods-Mission-Segments-Ground Ground
+# RCAIDE/Library/Methods/Mission/Segments/Ground/__init__.py
 # 
 
 """ RCAIDE Package Setup

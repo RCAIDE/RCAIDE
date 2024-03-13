@@ -1,5 +1,5 @@
 ## @ingroup Energy-Sources-Batteries
-# RCAIDE/Energy/Sources/Batteries/Lithium_Ion.py
+# RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Ion.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke
@@ -9,9 +9,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
  # RCAIDE imports
-from RCAIDE.Core                      import Units, Data 
+from RCAIDE.Frameworks.Core                      import Units, Data 
 from RCAIDE.Energy.Sources.Batteries  import Battery  
-from RCAIDE.Methods.Energy.Sources.Battery.Lithium_Ion_Generic  import compute_generic_li_cell_performance 
+from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_Generic  import compute_generic_li_cell_performance 
 
 # ----------------------------------------------------------------------
 #  Lithium_Ion_Generic

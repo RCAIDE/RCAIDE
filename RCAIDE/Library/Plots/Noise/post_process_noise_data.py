@@ -8,8 +8,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
-from RCAIDE.Core import Data  
-from RCAIDE.Methods.Noise.Common.background_noise     import background_noise
+from RCAIDE.Frameworks.Core import Data  
+from RCAIDE.Library.Methods.Noise.Common.background_noise     import background_noise
 
 import numpy as np    
 from scipy.interpolate import RegularGridInterpolator 

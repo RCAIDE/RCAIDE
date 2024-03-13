@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Common
-# RCAIDE/Methods/Energy/Sources/Battery/Common/initialize_from_mass.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/initialize_from_mass.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Converters-Motor
-# RCAIDE/Methods/Energy/Propulsors/Converters/Motor/size_motor_from_Kv.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Motor/size_motor_from_Kv.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
-from RCAIDE.Core import Units  
+from RCAIDE.Frameworks.Core import Units  
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  size_from_kv

@@ -10,9 +10,9 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Core                                       import Data, Units  
-from RCAIDE.Methods.Aerodynamics.Vortex_Lattice_Method import VLM 
-from RCAIDE.Methods.Utilities                          import Cubic_Spline_Blender 
+from RCAIDE.Frameworks.Core                                       import Data, Units  
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import VLM 
+from RCAIDE.Library.Methods.Utilities                          import Cubic_Spline_Blender 
 from RCAIDE.Frameworks.Analyses.Aerodynamics           import Aerodynamics
 
 # package imports

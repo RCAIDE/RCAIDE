@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Descent
-# RCAIDE/Methods/Missions/Segments/Descent/ Constant_Speed_Constant_Angle_noise.py
+## @ingroup Library-Methods-Mission-Segments-Descent
+# RCAIDE/Library/Methods/Missions/Segments/Descent/ Constant_Speed_Constant_Angle_noise.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,7 +8,7 @@
 #  IMPORT 
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports  
-from RCAIDE.Core import Units 
+from RCAIDE.Frameworks.Core import Units 
 
 # pacakge imports 
 import numpy as np
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Expand State
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Missions-Segments-Descent
+## @ingroup Library-Methods-Mission-Segments-Descent
 def expand_state(segment):
     """Makes all vectors in the state the same size.
 
@@ -65,7 +65,7 @@ def expand_state(segment):
 #  Initialize Conditions
 # ----------------------------------------------------------------------
 
-## @ingroup Methods-Missions-Segments-Descent
+## @ingroup Library-Methods-Mission-Segments-Descent
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

@@ -1,5 +1,5 @@
-## @ingroup Methods-Aerodynamics-Common-Lift
-# RCAIDE/Methods/Aerodynamics/Common/Lift/BET_calculations.py
+## @ingroup Library-Methods-Aerodynamics-Common-Lift
+# RCAIDE/Library/Methods/Aerodynamics/Common/Lift/BET_calculations.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # 
@@ -9,7 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
  
-from RCAIDE.Core import interp2d 
+from RCAIDE.Frameworks.Core import interp2d 
 
 # package imports 
 import numpy as np
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_airfoil_aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Aerodynamics-Common-Lift
+## @ingroup Library-Methods-Aerodynamics-Common-Lift
 def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts,Nr,Na,tc,use_2d_analysis):
     """
     Cl, Cdval = compute_airfoil_aerodynamics( beta,c,r,R,B,
@@ -128,7 +128,7 @@ def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_inflow_and_tip_loss
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Aerodynamics-Common-Lift
+## @ingroup Library-Methods-Aerodynamics-Common-Lift
 def compute_inflow_and_tip_loss(r,R,Wa,Wt,B,et1=1,et2=1,et3=1):
     """
     Computes the inflow, lamdaw, and the tip loss factor, F.

@@ -10,12 +10,12 @@
 
 # RCAIDE
 import RCAIDE
-from RCAIDE.Core                                            import Units, Data 
-from RCAIDE.Methods.Weights.Physics_Based_Buildups.Common   import compute_fuselage_weight
-from RCAIDE.Methods.Weights.Physics_Based_Buildups.Common   import compute_boom_weight
-from RCAIDE.Methods.Weights.Physics_Based_Buildups.Common   import compute_rotor_weight
-from RCAIDE.Methods.Weights.Physics_Based_Buildups.Common   import compute_wiring_weight
-from RCAIDE.Methods.Weights.Physics_Based_Buildups.Common   import compute_wing_weight
+from RCAIDE.Frameworks.Core                                            import Units, Data 
+from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_fuselage_weight
+from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_boom_weight
+from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_rotor_weight
+from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_wiring_weight
+from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_wing_weight
 
 # package imports 
 import numpy as np
@@ -96,18 +96,18 @@ def compute_weight(config,
     weight.wings             = Data()
     weight.wings_total       = 0.0
 
-    config.payload.passengers                      = RCAIDE.Components.Component()
-    config.payload.baggage                         = RCAIDE.Components.Component()
-    config.payload.cargo                           = RCAIDE.Components.Component()
-    control_systems                                = RCAIDE.Components.Component()
-    electrical_systems                             = RCAIDE.Components.Component()
-    furnishings                                    = RCAIDE.Components.Component()
-    air_conditioner                                = RCAIDE.Components.Component()
-    fuel                                           = RCAIDE.Components.Component()
-    apu                                            = RCAIDE.Components.Component()
-    hydraulics                                     = RCAIDE.Components.Component()
+    config.payload.passengers                      = RCAIDE.Library.Components.Component()
+    config.payload.baggage                         = RCAIDE.Library.Components.Component()
+    config.payload.cargo                           = RCAIDE.Library.Components.Component()
+    control_systems                                = RCAIDE.Library.Components.Component()
+    electrical_systems                             = RCAIDE.Library.Components.Component()
+    furnishings                                    = RCAIDE.Library.Components.Component()
+    air_conditioner                                = RCAIDE.Library.Components.Component()
+    fuel                                           = RCAIDE.Library.Components.Component()
+    apu                                            = RCAIDE.Library.Components.Component()
+    hydraulics                                     = RCAIDE.Library.Components.Component()
     avionics                                       = RCAIDE.Energy.Peripherals.Avionics()
-    optionals                                      = RCAIDE.Components.Component()
+    optionals                                      = RCAIDE.Library.Components.Component()
 
     # assign components to vehicle
     config.systems.control_systems                 = control_systems
@@ -147,7 +147,7 @@ def compute_weight(config,
  
     if len(config.fuselages) == 0.:
         for w  in config.wings:
-            if isinstance(w ,RCAIDE.Components.Wings.Main_Wing):
+            if isinstance(w ,RCAIDE.Library.Components.Wings.Main_Wing):
                 b = w.chords.root
                 if b>length_scale:
                     length_scale = b
@@ -285,10 +285,10 @@ def compute_weight(config,
     # Landing Gear Weight
     #-------------------------------------------------------------------------------
     if not hasattr(config.landing_gear, 'nose'):
-        config.landing_gear.nose       = RCAIDE.Components.Landing_Gear.Nose_Landing_Gear()
+        config.landing_gear.nose       = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()
     config.landing_gear.nose.mass      = 0.0
     if not hasattr(config.landing_gear, 'main'):
-        config.landing_gear.main       = RCAIDE.Components.Landing_Gear.Main_Landing_Gear()
+        config.landing_gear.main       = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear()
     config.landing_gear.main.mass      = weight.landing_gear
 
     #-------------------------------------------------------------------------------

@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports   
 import RCAIDE
-from RCAIDE.Methods.Mission.Common.Segments    import  sequential_segments
-from RCAIDE.Methods.Mission.Common.Pre_Process import  aerodynamics, energy,flight_dynamics_and_controls
-from RCAIDE.Core                               import Container as ContainerBase
+from RCAIDE.Library.Methods.Mission.Common.Segments    import  sequential_segments
+from RCAIDE.Library.Methods.Mission.Common.Pre_Process import  aerodynamics, energy,flight_dynamics_and_controls
+from RCAIDE.Frameworks.Core                               import Container as ContainerBase
 from RCAIDE.Frameworks.Analyses                           import Process 
 from . import Segments
 
@@ -145,7 +145,7 @@ class Container(ContainerBase):
             Properties Used:
             None
         """         
-        results = RCAIDE.Core.Data()
+        results = RCAIDE.Frameworks.Core.Data()
         
         for key,mission in self.items():
             result = mission.evaluate(state)

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports        
 from . import Segments
-from RCAIDE.Core import Container , Data 
+from RCAIDE.Frameworks.Core import Container , Data 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Mission

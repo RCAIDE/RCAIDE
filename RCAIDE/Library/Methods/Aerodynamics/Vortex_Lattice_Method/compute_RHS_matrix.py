@@ -1,5 +1,5 @@
-## @ingroup Methods-Aerodynamics-Common-Lift
-# RCAIDE/Methods/Aerodynamics/Common/Lift/compute_RHS_matrix.py
+## @ingroup Library-Methods-Aerodynamics-Common-Lift
+# RCAIDE/Library/Methods/Aerodynamics/Common/Lift/compute_RHS_matrix.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
  
-from RCAIDE.Core import Data, interp2d 
+from RCAIDE.Frameworks.Core import Data, interp2d 
 
 # package imports 
 import numpy as np
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_airfoil_aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Aerodynamics-Common-Lift 
+## @ingroup Library-Methods-Aerodynamics-Common-Lift 
 def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_model):
 
     """ This computes the right hand side matrix for the VLM. In this

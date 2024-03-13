@@ -1,5 +1,5 @@
-## @ingroup Methods-Aerodynamics-Common-Drag
-# RCAIDE/Methods/Aerodynamics/Common/Drag/compressibility_drag_total.py
+## @ingroup Library-Methods-Aerodynamics-Common-Drag
+# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/compressibility_drag_total.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,12 +10,12 @@
 
 # RCAIDE imports   
 import numpy as np
-from RCAIDE.Components.Wings import Main_Wing
+from RCAIDE.Library.Components.Wings import Main_Wing
 
 # ----------------------------------------------------------------------
 #  Wave Drag 
 # ----------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Common-Drag
+## @ingroup Library-Methods-Aerodynamics-Common-Drag
 def wave_drag(conditions,configuration,wing):
     """Computes wave drag due to lift
 

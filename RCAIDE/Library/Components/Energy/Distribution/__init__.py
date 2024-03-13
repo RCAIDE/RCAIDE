@@ -1,5 +1,5 @@
 ## @defgroup Energy-Networks-Distribution Distribution
-# RCAIDE/Energy/Networks/Distribution/__init__.py
+# RCAIDE/Library/Compoments/Energy/Networks/Distribution/__init__.py
 # 
 
 """ RCAIDE Package Setup

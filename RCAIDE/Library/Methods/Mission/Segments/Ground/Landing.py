@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Ground
-# RCAIDE/Methods/Missions/Segments/Ground/Landing.py
+## @ingroup Library-Methods-Mission-Segments-Ground
+# RCAIDE/Library/Methods/Missions/Segments/Ground/Landing.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke  
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # unpack unknowns
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Ground
+## @ingroup Library-Methods-Mission-Segments-Ground
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -79,7 +79,7 @@ def initialize_conditions(segment):
      
     for network in segment.analyses.energy.networks:
         if 'fuel_lines' in network: 
-            RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,network.fuel_lines)  
+            RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,network.fuel_lines)  
         if 'busses' in network: 
-            RCAIDE.Methods.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,network.busses)     
+            RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,network.busses)     
         

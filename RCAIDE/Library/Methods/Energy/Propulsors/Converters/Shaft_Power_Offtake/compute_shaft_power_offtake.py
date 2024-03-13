@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Converters-Shaft_Power_Offtake
-# RCAIDE/Methods/Energy/Propulsors/Converters/Shaft_Power_Offtake/compute_shaft_power_offtaker.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Shaft_Power_Offtake/compute_shaft_power_offtaker.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 

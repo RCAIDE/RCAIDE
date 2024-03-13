@@ -1,5 +1,5 @@
 ## @ingroup Energy-Peripherals
-# RCAIDE/Energy/Peripherals/Payload.py
+# RCAIDE/Library/Compoments/Energy/Peripherals/Payload.py
 # 
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Components import Component
+from RCAIDE.Library.Components import Component
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Avionics

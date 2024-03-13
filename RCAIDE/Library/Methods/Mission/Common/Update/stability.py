@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Update
-# RCAIDE/Methods/Missions/Common/Update/stability.py
+## @ingroup Library-Methods-Mission-Common-Update
+# RCAIDE/Library/Methods/Missions/Common/Update/stability.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Stability
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Update
+## @ingroup Library-Methods-Mission-Common-Update
 def stability(segment): 
     """ Updates the stability of the aircraft 
         

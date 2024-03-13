@@ -1,5 +1,5 @@
-## @defgroup Components-Landing_Gear Landing_Gear
-# RCAIDE/Components/Landing_Gear/__init__.py
+## @defgroup Library-Components-Landing_Gear Landing_Gear
+# RCAIDE/Library/Components/Landing_Gear/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup

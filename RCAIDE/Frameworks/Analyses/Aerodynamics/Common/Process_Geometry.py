@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Core import Data
+from RCAIDE.Frameworks.Core import Data
 from RCAIDE.Frameworks.Analyses import Process
 
 # ----------------------------------------------------------------------------------------------------------------------

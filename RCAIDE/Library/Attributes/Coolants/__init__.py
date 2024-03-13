@@ -1,5 +1,5 @@
-## @defgroup Attributes-Coolants Coolants
-# RCAIDE/Attributes/Coolants/__init__.py
+## @defgroup Library-Attributes-Coolants Coolants
+# RCAIDE/Library/Attributes/Coolants/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup

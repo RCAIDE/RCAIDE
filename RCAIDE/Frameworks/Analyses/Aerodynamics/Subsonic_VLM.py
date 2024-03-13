@@ -10,9 +10,9 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Core                                                     import Data
+from RCAIDE.Frameworks.Core                                                     import Data
 from RCAIDE.Frameworks.Analyses                                      import Process 
-from RCAIDE.Methods.Aerodynamics                                     import Common
+from RCAIDE.Library.Methods.Aerodynamics                                     import Common
 from .Aerodynamics                                                   import Aerodynamics 
 from RCAIDE.Frameworks.Analyses.Aerodynamics.Common.Process_Geometry import Process_Geometry
 from RCAIDE.Frameworks.Analyses.Aerodynamics.Common.Vortex_Lattice   import Vortex_Lattice
@@ -93,7 +93,7 @@ class Subsonic_VLM(Aerodynamics):
         compute                                    = Process() 
         compute.lift                               = Process() 
         compute.lift.inviscid_wings                = Vortex_Lattice() 
-        compute.lift.vortex                        = RCAIDE.Methods.skip
+        compute.lift.vortex                        = RCAIDE.Library.Methods.skip
         compute.lift.fuselage                      = Common.Lift.fuselage_correction
         compute.lift.total                         = Common.Lift.aircraft_total  
         compute.drag                               = Process()

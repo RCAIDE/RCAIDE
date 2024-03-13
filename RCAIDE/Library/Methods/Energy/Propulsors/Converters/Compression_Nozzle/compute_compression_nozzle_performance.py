@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Converters-Compression_Nozzle
-# RCAIDE/Methods/Energy/Propulsors/Converters/Compression_Nozzle/compute_compression_nozzle_performance.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compression_Nozzle/compute_compression_nozzle_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 

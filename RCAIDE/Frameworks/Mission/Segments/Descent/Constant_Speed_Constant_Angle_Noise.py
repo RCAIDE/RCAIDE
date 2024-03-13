@@ -10,9 +10,9 @@
 
 # RCAIDE imports
 import RCAIDE
-from RCAIDE.Core                                 import Units 
+from RCAIDE.Frameworks.Core                                 import Units 
 from RCAIDE.Frameworks.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Methods.Mission                      import Common,Segments
+from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_Speed_Constant_Angle_Noise
@@ -60,7 +60,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         self.air_speed         = 100 * Units.m / Units.s
         self.true_course_angle = 0.0 * Units.degrees 
         
-        self.state.numerics.discretization_method = RCAIDE.Methods.Utilities.Chebyshev.linear_data 
+        self.state.numerics.discretization_method = RCAIDE.Library.Methods.Utilities.Chebyshev.linear_data 
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Converters-Engine
-# RCAIDE/Methods/Energy/Propulsors/Converters/Engine/compute_fuel_flow_rate_from_torque.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Engine/compute_fuel_flow_rate_from_torque.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------    
  # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core                                         import Units  
+from RCAIDE.Frameworks.Core                                         import Units  
 
 # package imports
 import numpy as np 

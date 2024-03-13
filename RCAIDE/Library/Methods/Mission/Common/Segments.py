@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common  
-# RCAIDE/Methods/Missions/Common/helper_functions.py
+## @ingroup Library-Methods-Mission-Common  
+# RCAIDE/Library/Methods/Missions/Common/helper_functions.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
 import RCAIDE 
-from RCAIDE.Core  import Data 
+from RCAIDE.Frameworks.Core  import Data 
 
 def pre_process(mission): 
     for tag,segment in mission.segments.items():     
@@ -24,7 +24,7 @@ def sequential_segments(mission):
         last_tag = tag        
         
         segment.process.initialize.expand_state(segment) 
-        segment.process.initialize.expand_state = RCAIDE.Methods.skip        
+        segment.process.initialize.expand_state = RCAIDE.Library.Methods.skip        
         segment.evaluate()
         
 def update_segments(mission):   

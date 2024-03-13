@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Converters-Combustor
-# RCAIDE/Methods/Energy/Propulsors/Converters/Combustor/compute_rayleigh.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Combustor/compute_rayleigh.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 

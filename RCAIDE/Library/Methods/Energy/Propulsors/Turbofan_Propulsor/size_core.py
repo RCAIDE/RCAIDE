@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-# RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/size_core.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/size_core.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from RCAIDE.Methods.Energy.Propulsors.Turbofan_Propulsor            import compute_thrust
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor            import compute_thrust
 
 # Python package imports
 import numpy as np

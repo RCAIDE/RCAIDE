@@ -10,9 +10,9 @@
 
 # RCAIDE 
 import RCAIDE
-from RCAIDE.Methods.Geometry.Three_Dimensional import compute_span_location_from_chord_length
-from RCAIDE.Methods.Geometry.Three_Dimensional import compute_chord_length_from_span_location
-from RCAIDE.Methods.Stability.Static_Stability.Approximations.Supporting_Functions import convert_sweep
+from RCAIDE.Library.Methods.Geometry.Three_Dimensional import compute_span_location_from_chord_length
+from RCAIDE.Library.Methods.Geometry.Three_Dimensional import compute_chord_length_from_span_location
+from RCAIDE.Library.Methods.Stability.Static_Stability.Approximations.Supporting_Functions import convert_sweep
 # package imports 
 import numpy as np 
 
@@ -41,7 +41,7 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     N/A
     """  
     
-    C =  RCAIDE.Components
+    C =  RCAIDE.Library.Components
     
     # Go through all wings
     for wing in vehicle.wings:

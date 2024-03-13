@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
 from RCAIDE.Plots.Common import plot_style
-from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil  import import_airfoil_geometry  
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil  import import_airfoil_geometry  
 
 # package imports 
 import matplotlib.pyplot as plt 

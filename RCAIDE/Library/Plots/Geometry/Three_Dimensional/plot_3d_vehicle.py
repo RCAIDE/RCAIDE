@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Methods.Aerodynamics.Fidelity_Zero                        import generate_vortex_distribution 
+from RCAIDE.Library.Methods.Aerodynamics.Fidelity_Zero                        import generate_vortex_distribution 
 from RCAIDE.Frameworks.Analyses.Aerodynamics.Common.Vortex_Lattice               import Vortex_Lattice
 from RCAIDE.Plots.Geometry.Three_Dimensional.plot_3d_fuselage import plot_3d_fuselage
 from RCAIDE.Plots.Geometry.Three_Dimensional.plot_3d_wing     import plot_3d_wing 

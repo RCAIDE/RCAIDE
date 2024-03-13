@@ -1,4 +1,4 @@
-# RCAIDE/Methods/Missions/Segments/Single_Point/Set_Speed_Set_Altitude.py
+# RCAIDE/Library/Methods/Missions/Segments/Single_Point/Set_Speed_Set_Altitude.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -13,7 +13,7 @@ import numpy as np
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
 
-## @ingroup Methods-Missions-Segments-Single_Point
+## @ingroup Library-Methods-Mission-Segments-Single_Point
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

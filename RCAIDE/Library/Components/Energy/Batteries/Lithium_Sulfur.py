@@ -1,5 +1,5 @@
 ## @ingroup Energy-Sources-Batteries
-# RCAIDE/Energy/Sources/Batteries/Lithium_Sulfur.py
+# RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Sulfur.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # package imports
-from RCAIDE.Core import Units
+from RCAIDE.Frameworks.Core import Units
 from . import Battery
 
 # ----------------------------------------------------------------------------------------------------------------------

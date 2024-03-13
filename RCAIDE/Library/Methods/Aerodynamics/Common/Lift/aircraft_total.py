@@ -1,5 +1,5 @@
-## @ingroup Methods-Aerodynamics-Common-Lift
-# RCAIDE/Methods/Aerodynamics/Common/Lift/aircraft_total.py
+## @ingroup Library-Methods-Aerodynamics-Common-Lift
+# RCAIDE/Library/Methods/Aerodynamics/Common/Lift/aircraft_total.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Mar 2024 M. Carke     
@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------
 #  Aircraft Total
 # ----------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift 
+## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift 
 def aircraft_total(state,settings,geometry):
     """Returns the total aircraft lift of the aircraft 
 

@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Cruise
-# RCAIDE/Methods/Missions/Segments/Cruise/Constant_Mach_Constant_Altitude_Loiter.py
+## @ingroup Library-Methods-Mission-Segments-Cruise
+# RCAIDE/Library/Methods/Missions/Segments/Cruise/Constant_Mach_Constant_Altitude_Loiter.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Cruise
+## @ingroup Library-Methods-Mission-Segments-Cruise
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -54,7 +54,7 @@ def initialize_conditions(segment):
     segment.state.conditions.freestream.altitude[:,0] = alt
         
     # Update freestream to get speed of sound
-    RCAIDE.Methods.Mission.Common.Update.atmosphere(segment)  
+    RCAIDE.Library.Methods.Mission.Common.Update.atmosphere(segment)  
     a          = conditions.freestream.speed_of_sound         
     
     # check for initial velocity

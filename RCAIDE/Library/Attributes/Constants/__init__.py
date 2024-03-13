@@ -1,5 +1,5 @@
-## @defgroup Attribtutes-Constants Constants
-# RCAIDE/Attributes/Constants/__init__.py
+## @defgroup Library-Attribtutes-Constants Constants
+# RCAIDE/Library/Attributes/Constants/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 

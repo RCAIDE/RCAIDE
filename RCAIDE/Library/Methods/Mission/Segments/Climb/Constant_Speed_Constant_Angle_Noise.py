@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Climb
-# RCAIDE/Methods/Missions/Segments/Climb/Constant_Speed_Constant_Angle_Noise.py
+## @ingroup Library-Methods-Mission-Segments-Climb
+# RCAIDE/Library/Methods/Missions/Segments/Climb/Constant_Speed_Constant_Angle_Noise.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Climb
+## @ingroup Library-Methods-Mission-Segments-Climb
 def expand_state(segment):
     
     """Makes all vectors in the state the same size. Determines the minimum amount of points needed to get data for noise certification.
@@ -60,7 +60,7 @@ def expand_state(segment):
 # ----------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------
-## @ingroup methods-missions-segments-climb
+## @ingroup Library-Methods-Mission-segments-climb
 def initialize_conditions(segment):
     """Gets the overall time step for the segment type.
     

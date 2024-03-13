@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors-Converters
-# RCAIDE/Components/Propulsors/Converters/Engine.py
+# RCAIDE/Library/Components/Propulsors/Converters/Engine.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke
@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports  
-from RCAIDE.Components                      import Component   
+from RCAIDE.Library.Components                      import Component   
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Engine Class

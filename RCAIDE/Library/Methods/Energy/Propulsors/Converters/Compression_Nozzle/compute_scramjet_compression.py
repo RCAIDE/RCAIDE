@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Converters-Compression_Nozzle
-# RCAIDE/Methods/Energy/Propulsors/Converters/Compression_Nozzle/compute_scramjet_compression.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compression_Nozzle/compute_scramjet_compression.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 

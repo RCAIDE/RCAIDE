@@ -9,18 +9,18 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE Imports
-from RCAIDE.Core                      import Data , Units
+from RCAIDE.Frameworks.Core                      import Data , Units
 
 from .clean_wing_noise             import clean_wing_noise
 from .landing_gear_noise           import landing_gear_noise
 from .leading_edge_slat_noise      import leading_edge_slat_noise
 from .trailing_edge_flap_noise     import trailing_edge_flap_noise 
-from RCAIDE.Methods.Noise.Metrics  import PNL_noise_metric
-from RCAIDE.Methods.Noise.Metrics  import EPNL_noise_metric 
-from RCAIDE.Methods.Noise.Metrics  import A_weighting_metric 
-from RCAIDE.Methods.Noise.Common   import noise_tone_correction
-from RCAIDE.Methods.Noise.Common   import atmospheric_attenuation
-from RCAIDE.Methods.Noise.Common   import SPL_arithmetic 
+from RCAIDE.Library.Methods.Noise.Metrics  import PNL_noise_metric
+from RCAIDE.Library.Methods.Noise.Metrics  import EPNL_noise_metric 
+from RCAIDE.Library.Methods.Noise.Metrics  import A_weighting_metric 
+from RCAIDE.Library.Methods.Noise.Common   import noise_tone_correction
+from RCAIDE.Library.Methods.Noise.Common   import atmospheric_attenuation
+from RCAIDE.Library.Methods.Noise.Common   import SPL_arithmetic 
 
 # python imports 
 import numpy as np

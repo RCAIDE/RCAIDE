@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-# RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/design_turbofan.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/design_turbofan.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,14 +10,14 @@
 
 # RCAIDE Imports
 import RCAIDE
-from RCAIDE.Methods.Energy.Propulsors.Converters.Ram                import compute_ram_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Combustor          import compute_combustor_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Compressor         import compute_compressor_performance 
-from RCAIDE.Methods.Energy.Propulsors.Converters.Fan                import compute_fan_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
-from RCAIDE.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
-from RCAIDE.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
-from RCAIDE.Methods.Energy.Propulsors.Turbofan_Propulsor            import size_core , compute_thrust
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Ram                import compute_ram_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Combustor          import compute_combustor_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compressor         import compute_compressor_performance 
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Fan                import compute_fan_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor            import size_core , compute_thrust
 
 # Python package imports
 import numpy as np

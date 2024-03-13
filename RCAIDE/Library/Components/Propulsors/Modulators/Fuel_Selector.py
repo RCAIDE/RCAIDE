@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors-Modulators
-# RCAIDE/Components/Propulsors/Modulators/Fuel_Selector.py
+# RCAIDE/Library/Components/Propulsors/Modulators/Fuel_Selector.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # 
@@ -10,7 +10,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
-from RCAIDE.Components import Component
+from RCAIDE.Library.Components import Component
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel_Selector

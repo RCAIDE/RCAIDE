@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
  # RCAIDE imports 
-from RCAIDE.Core                import Units , Data  
+from RCAIDE.Frameworks.Core                import Units , Data  
 from .angle_of_attack_effect    import angle_of_attack_effect
 from .external_plug_effect      import external_plug_effect
 from .ground_proximity_effect   import ground_proximity_effect
@@ -18,12 +18,12 @@ from .mixed_noise_component     import mixed_noise_component
 from .primary_noise_component   import primary_noise_component
 from .secondary_noise_component import secondary_noise_component
 
-from RCAIDE.Methods.Noise.Common  import noise_tone_correction
-from RCAIDE.Methods.Noise.Common  import atmospheric_attenuation 
-from RCAIDE.Methods.Noise.Common  import SPL_arithmetic
-from RCAIDE.Methods.Noise.Metrics import PNL_noise_metric
-from RCAIDE.Methods.Noise.Metrics import EPNL_noise_metric
-from RCAIDE.Methods.Noise.Metrics import A_weighting_metric  
+from RCAIDE.Library.Methods.Noise.Common  import noise_tone_correction
+from RCAIDE.Library.Methods.Noise.Common  import atmospheric_attenuation 
+from RCAIDE.Library.Methods.Noise.Common  import SPL_arithmetic
+from RCAIDE.Library.Methods.Noise.Metrics import PNL_noise_metric
+from RCAIDE.Library.Methods.Noise.Metrics import EPNL_noise_metric
+from RCAIDE.Library.Methods.Noise.Metrics import A_weighting_metric  
 
 # Python package imports   
 import numpy as np   

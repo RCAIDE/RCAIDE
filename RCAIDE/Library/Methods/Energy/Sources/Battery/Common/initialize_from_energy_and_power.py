@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Common
-# RCAIDE/Methods/Energy/Sources/Battery/Common/initialize_from_energy_and_power.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/initialize_from_energy_and_power.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from RCAIDE.Methods.Utilities import soft_max
+from RCAIDE.Library.Methods.Utilities import soft_max
 
 # package imports 
 import numpy as np

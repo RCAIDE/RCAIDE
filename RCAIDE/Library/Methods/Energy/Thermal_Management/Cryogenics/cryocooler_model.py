@@ -12,7 +12,7 @@
 import RCAIDE
 
 # package imports
-from RCAIDE.Core import Data 
+from RCAIDE.Frameworks.Core import Data 
 import numpy as np
 
 # ----------------------------------------------------------------------

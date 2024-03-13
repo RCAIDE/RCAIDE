@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Ragone
-# RCAIDE/Methods/Energy/Sources/Battery/Ragone/find_specific_power.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Ragone/find_specific_power.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

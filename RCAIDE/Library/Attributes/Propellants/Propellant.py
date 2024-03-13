@@ -1,5 +1,5 @@
-## @ingroup Attributes-Propellants 
-# RCAIDE/Attributes/Propellants.py
+## @ingroup Library-Attributes-Propellants 
+# RCAIDE/Library/Attributes/Propellants.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Sep 2023, M. Clarke
@@ -9,8 +9,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-from RCAIDE.Core import Data
-from RCAIDE.Components.Mass_Properties import Mass_Properties
+from RCAIDE.Frameworks.Core import Data
+from RCAIDE.Library.Components.Mass_Properties import Mass_Properties
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Propellant

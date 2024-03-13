@@ -10,9 +10,9 @@
 
 # RCAIDE imports  
 from RCAIDE.Frameworks.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Core                                 import Units   
-from RCAIDE.Methods.Mission.Segments             import Cruise
-from RCAIDE.Methods.Mission                      import Common,Segments
+from RCAIDE.Frameworks.Core                                 import Units   
+from RCAIDE.Library.Methods.Mission.Segments             import Cruise
+from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Pitch_Rate_Constant_Altitude

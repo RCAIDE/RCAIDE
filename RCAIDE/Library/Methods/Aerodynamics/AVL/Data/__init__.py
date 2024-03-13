@@ -1,5 +1,5 @@
-## @defgroup Methods-Aerodynamics-AVL-Data Data  
-# RCAIDE/Methods/Aerodynamics/AVL/Data/__init__.py
+## @defgroup Library-Methods-Aerodynamics-AVL-Data Data  
+# RCAIDE/Library/Methods/Aerodynamics/AVL/Data/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup

@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery-Common
-# RCAIDE/Methods/Energy/Sources/Battery/Common/initialize_from_circuit_configuration.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/initialize_from_circuit_configuration.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from RCAIDE.Core import Units 
+from RCAIDE.Frameworks.Core import Units 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD

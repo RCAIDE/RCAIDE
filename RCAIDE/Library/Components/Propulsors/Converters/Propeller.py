@@ -1,5 +1,5 @@
 ## @ingroup Components-Propulsors-Converters
-# RCAIDE/Components/Propulsors/Converters/Propeller.py
+# RCAIDE/Library/Components/Propulsors/Converters/Propeller.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 

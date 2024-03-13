@@ -1,5 +1,5 @@
 ## @ingroup Networks
-# RCAIDE/Energy/Networks/Network.py
+# RCAIDE/Library/Compoments/Energy/Networks/Network.py
 # 
 #
 # Created:  Jul 2023, M. Clarke
@@ -9,16 +9,15 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from RCAIDE.Energy import Energy_Component
-from RCAIDE.Core import Data
-from RCAIDE.Components import Component
+ 
+from RCAIDE.Frameworks.Core import Data
+from RCAIDE.Library.Components import Component
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  NETWORK
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Networks
-class Network(Energy_Component):
+class Network(Component):
     """ RCAIDE.Energy.Networks.Network()
         The Top Level Network Class
             Assumptions:
@@ -49,7 +48,7 @@ class Network(Energy_Component):
 # ----------------------------------------------------------------------
 ## @ingroup Energy-Network
 class Container(Component.Container):
-    """ RCAIDE.Components.Energy.Networks.Network.Container()
+    """ RCAIDE.Library.Components.Energy.Networks.Network.Container()
         The Network Container Class
             Assumptions:
             None

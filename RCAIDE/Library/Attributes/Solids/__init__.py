@@ -1,5 +1,5 @@
 ## @defgroup Attributes-Solids Solids
-# RCAIDE/Attributes/Solids/__init__.py
+# RCAIDE/Library/Attributes/Solids/__init__.py
 # 
 
 """RCAIDE Package Setup

@@ -1,5 +1,5 @@
-## @ingroup Attributes-Propellants 
-# RCAIDE/Attributes/Aviation_Gasoline.py
+## @ingroup Library-Attributes-Propellants 
+# RCAIDE/Library/Attributes/Aviation_Gasoline.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Sep 2023, M. Clarke
