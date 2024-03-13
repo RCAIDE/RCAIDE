@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Core import Units  
-from RCAIDE.Plots            import *       
+from RCAIDE.Frameworks.Core import Units  
+from RCAIDE.Library.Plots   import *       
 
 # python imports     
 import numpy as np  

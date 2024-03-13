@@ -9,9 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import VLM
-from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_vortex_distribution       import generate_vortex_distribution 
-
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import VLM 
 # Python package imports   
 import numpy as np  
     
