@@ -1,5 +1,6 @@
-## @ingroup Methods-Thermal_Management-Batteries-Heat_Acquisition_System-Direct_Air_Heat_Acquisition
-# RCAIDE/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/Direct_Air_Heat_Acquisition/direct_convection_model.py
+## @ingroup Library-Methods-Thermal_Management-Batteries-Heat_Acquisition_System-Direct_Air_Heat_Acquisition
+# RCAIDE/Library/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/Direct_Air_Heat_Acquisition/direct_convection_model.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -13,7 +14,7 @@ from RCAIDE.Frameworks.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Net Convected Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
+## @ingroup Library-Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
 def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
     '''Computes the net heat removed by direct air heat acquisition system.
 

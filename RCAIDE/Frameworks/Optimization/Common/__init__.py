@@ -1,7 +1,6 @@
-## @defgroup Optimization-Common Common 
-# @ingroup Optimization 
+## @defgroup Optimization-Common Common  
 # RCAIDE/Optimization/Common/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

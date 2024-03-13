@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
-# RCAIDE/Methods/Noise/Frequency_Domain_Buildup/Rotor/rotor_noise.py
-# 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor
+# RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/rotor_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -24,7 +24,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------    
 #  Rotor Noise 
 # ----------------------------------------------------------------------------------------------------------------------    
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor
 def rotor_noise(rotor,aeroacoustic_data,segment,settings):
     ''' This is a collection medium-fidelity frequency domain methods for rotor acoustic noise prediction which 
     computes the acoustic signature (sound pressure level, weighted sound pressure levels,

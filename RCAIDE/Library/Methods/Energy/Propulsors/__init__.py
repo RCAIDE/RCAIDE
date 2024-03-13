@@ -1,4 +1,4 @@
-## @defgroup Methods-Components-Propulsors Propulsors
+## @defgroup Library-Methods-Energy-Propulsors Propulsors
 # RCAIDE/Library/Methods/Energy/Propulsors/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

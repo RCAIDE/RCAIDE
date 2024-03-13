@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Common Common-Update
 # RCAIDE/Library/Methods/Missions/Common/Update/inertial_horizontal_position.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 

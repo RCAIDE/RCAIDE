@@ -8,12 +8,11 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-# RCAIDE imports  
-import RCAIDE
+# RCAIDE imports   
+from .Aerodynamics                                                   import Aerodynamics 
 from RCAIDE.Frameworks.Core                                          import Data
 from RCAIDE.Frameworks.Analyses                                      import Process 
-from RCAIDE.Library.Methods.Aerodynamics                          import Common
-from .Aerodynamics                                        import Aerodynamics 
+from RCAIDE.Library.Methods.Aerodynamics                             import Common
 from RCAIDE.Frameworks.Analyses.Aerodynamics.Common.Process_Geometry import Process_Geometry
 from RCAIDE.Frameworks.Analyses.Aerodynamics.Common.Vortex_Lattice   import Vortex_Lattice
 

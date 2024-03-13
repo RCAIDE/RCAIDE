@@ -1,4 +1,4 @@
-## @ingroup Methods-Energy-Sources-Battery-Ragone
+## @ingroup Library-Methods-Energy-Battery-Ragone
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Ragone/find_specific_power.py
 # 
 # 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Sources-Battery-Ragone
+## @ingroup Library-Methods-Energy-Battery-Ragone
 def find_specific_power(battery, specific_energy):
     """determines specific specific power from a ragone curve correlation
     Assumptions:

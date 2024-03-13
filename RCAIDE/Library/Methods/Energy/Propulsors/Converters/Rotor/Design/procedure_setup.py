@@ -178,7 +178,7 @@ def run_rotor_OEI(nexus):
     atmosphere_conditions = atmosphere.compute_values(altitude)
 
     # Pack everything up
-    conditions                                          = RCAIDE.Frameworks.Analyses.Mission.Common.Results()
+    conditions                                          = RCAIDE.Frameworks.Mission.Common.Results()
     conditions.freestream.update(atmosphere_conditions)
     conditions.frames.inertial.velocity_vector          = np.array([[0.,0.,speed]]) 
     conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
@@ -232,7 +232,7 @@ def run_rotor_hover(nexus):
     rotor.inputs.omega = np.array(omega)
 
     # Pack everything up
-    conditions                                          = RCAIDE.Frameworks.Analyses.Mission.Common.Results()
+    conditions                                          = RCAIDE.Frameworks.Mission.Common.Results()
     conditions.freestream.update(atmosphere_conditions)  
     conditions.frames.inertial.velocity_vector          = np.array([[0.,0.,speed]])   
     conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
@@ -264,12 +264,12 @@ def run_rotor_hover(nexus):
     mic_positions_hover                              = np.array([[0.0 , S_hover*np.sin(theta)  ,S_hover*np.cos(theta)]])      
     
     # Run noise model  
-    conditions.noise[bus.tag]                        = RCAIDE.Frameworks.Analyses.Mission.Common.Conditions()      
-    conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Frameworks.Analyses.Mission.Common.Conditions() 
+    conditions.noise[bus.tag]                        = RCAIDE.Frameworks.Mission.Common.Conditions()      
+    conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Frameworks.Mission.Common.Conditions() 
     conditions.noise[bus.tag][propulsor.tag].rotor   = outputs
     conditions.noise.relative_microphone_locations      = np.repeat(mic_positions_hover[ np.newaxis,:,: ],1,axis=0)
     conditions.aerodynamics.angles.alpha             = np.ones((ctrl_pts,1))* 0. * Units.degrees 
-    segment                                          = RCAIDE.Frameworks.Analyses.Mission.Segments.Segment() 
+    segment                                          = RCAIDE.Frameworks.Mission.Segments.Segment() 
     segment.state.conditions                         = conditions
     segment.state.conditions.expand_rows(ctrl_pts)  
     noise                                            = RCAIDE.Frameworks.Analyses.Noise.Frequency_Domain_Buildup() 
@@ -311,7 +311,7 @@ def run_rotor_cruise(nexus):
         rotor.inputs.omega    = np.array(omega) 
     
         # Pack everything up
-        conditions                                          = RCAIDE.Frameworks.Analyses.Mission.Common.Results()
+        conditions                                          = RCAIDE.Frameworks.Mission.Common.Results()
         conditions.freestream.update(atmosphere_conditions)
         conditions.frames.inertial.velocity_vector          = np.array([[0,0.,speed]]) 
         conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
@@ -343,12 +343,12 @@ def run_rotor_cruise(nexus):
         mic_positions_cruise                             = np.array([[0.0 ,S_cruise*np.sin(theta)  ,S_cruise*np.cos(theta)]])      
         
         # Run noise model  
-        conditions.noise[bus.tag]                        = RCAIDE.Frameworks.Analyses.Mission.Common.Conditions()      
-        conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Frameworks.Analyses.Mission.Common.Conditions() 
+        conditions.noise[bus.tag]                        = RCAIDE.Frameworks.Mission.Common.Conditions()      
+        conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Frameworks.Mission.Common.Conditions() 
         conditions.noise[bus.tag][propulsor.tag].rotor   = outputs  
         conditions.noise.relative_microphone_locations   = np.repeat(mic_positions_cruise[ np.newaxis,:,: ],1,axis=0)
         conditions.aerodynamics.angles.alpha             = np.ones((ctrl_pts,1))* 0. * Units.degrees 
-        segment                                          = RCAIDE.Frameworks.Analyses.Mission.Segments.Segment() 
+        segment                                          = RCAIDE.Frameworks.Mission.Segments.Segment() 
         segment.state.conditions                         = conditions
         segment.state.conditions.expand_rows(ctrl_pts)  
         noise                                            = RCAIDE.Frameworks.Analyses.Noise.Frequency_Domain_Buildup() 

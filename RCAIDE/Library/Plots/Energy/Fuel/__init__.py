@@ -1,6 +1,6 @@
-## @defgroup Plots-Performance-Energy-Fuel Fuel
-# RCAIDE/Plots/Performance/Energy/Fuel/__init__.py
-# 
+## @defgroup Library-Plots-Performance-Energy-Fuel Fuel
+# RCAIDE/Library/Plots/Performance/Energy/Fuel/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

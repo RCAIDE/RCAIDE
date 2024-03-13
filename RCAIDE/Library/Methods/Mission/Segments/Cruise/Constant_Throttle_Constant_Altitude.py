@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Segments-Cruise
 # RCAIDE/Library/Methods/Missions/Segments/Cruise/Constant_Throttle_Constant_Altitude.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

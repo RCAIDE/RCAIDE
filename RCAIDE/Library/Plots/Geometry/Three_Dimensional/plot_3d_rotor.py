@@ -1,6 +1,6 @@
-## @ingroup Plots-Geometry-Three_Dimensional  
-# RCAIDE/Plots/Geometry/Three_Dimensional/plot_3d_rotor.py
-# 
+## @ingroup Library-Plots-Geometry-Three_Dimensional  
+# RCAIDE/Library/Plots/Geometry/Three_Dimensional/plot_3d_rotor.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Frameworks.Core import Data
-from RCAIDE.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
+from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import import_airfoil_geometry
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import compute_naca_4series
 
@@ -19,7 +19,7 @@ import plotly.graph_objects as go
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Plots-Geometry-Three_Dimensional  
+## @ingroup Library-Plots-Geometry-Three_Dimensional  
 def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data = None,
                   show_figure  = True, plot_axis = False, cpt=0, number_of_airfoil_points = 21,
                     color_map='turbid',alpha=1):
@@ -100,7 +100,7 @@ def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data 
     else: 
         return plot_data
 
-## @ingroup Plots-Geometry-Three_Dimensional 
+## @ingroup Library-Plots-Geometry-Three_Dimensional 
 def get_3d_blade_coordinates(rotor,n_points,dim,i,aircraftRefFrame=True):
     """ This generates the coordinates of the blade surface for plotting in the aircraft frame (x-back, z-up)
 

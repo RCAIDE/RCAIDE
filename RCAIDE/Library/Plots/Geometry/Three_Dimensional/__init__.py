@@ -1,6 +1,6 @@
-## @defgroup Plots-Geometry-Three_Dimensional Three_Dimensional 
-# RCAIDE/Plots/Geometry/Three_Dimensional/__init__.py
-# 
+## @defgroup Library-Plots-Geometry-Three_Dimensional Three_Dimensional 
+# RCAIDE/Library/Plots/Geometry/Three_Dimensional/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

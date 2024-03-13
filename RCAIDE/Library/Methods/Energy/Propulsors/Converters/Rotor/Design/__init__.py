@@ -1,4 +1,4 @@
-## @defgroup Methods-Components-Propulsors-Rotor_Design Rotor_Design
+## @defgroup Library-Methods-Energy-Propulsors-Rotor_Design Rotor_Design
 # RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

@@ -1,5 +1,5 @@
 ## @defgroup Methods-Stability Stability
-# RCAIDE/Methods/Stability/__init__.py
+# RCAIDE/Library/Methods/Stability/__init__.py
 # 
 
 """RCAIDE Package Setup

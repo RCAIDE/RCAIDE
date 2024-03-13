@@ -1,4 +1,4 @@
-## @defgroup Methods-Energy-Sources-Battery-Lithium_Ion_Generic Lithium_Ion_Generic
+## @defgroup Library-Methods-Energy-Battery-Lithium_Ion_Generic Lithium_Ion_Generic
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_Generic/__init__.py
 # 
 

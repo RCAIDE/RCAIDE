@@ -1,4 +1,4 @@
-## @ingroup Energy-Sources-Batteries
+## @ingroup Library-Compoments-Energy-Batteries
 # RCAIDE/Library/Compoments/Energy/Sources/Batteries/Aluminum_Air.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,7 +15,7 @@ from .Battery    import Battery
 # ----------------------------------------------------------------------------------------------------------------------
 #  Aluminum_Air
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Energy-Sources-Batteries
+## @ingroup Library-Compoments-Energy-Batteries
 class Aluminum_Air(Battery):
     """
     Specifies discharge/specific energy characteristics specific to

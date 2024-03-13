@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Engine 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Engine/secondary_noise_component.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine 
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/secondary_noise_component.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------     
 #  Secondary Noise Component
 # ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Methods-Noise-Correlation_Buildup-Engine 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine 
 def secondary_noise_component(Velocity_primary,theta_s,sound_ambient,Velocity_secondary,Velocity_aircraft,
                               Area_primary,Area_secondary,DSPL_s,EX_s,Str_s):
     """This function calculates the noise contribution of the secondary jet component

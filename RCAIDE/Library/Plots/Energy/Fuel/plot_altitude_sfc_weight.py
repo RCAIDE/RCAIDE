@@ -1,6 +1,6 @@
-## @ingroup Plots-Geometry-Three_Dimensional
-# RCAIDE/Plots/Performance/Energy/Fuel/plot_altitude_sfc_weight.py
-# 
+## @ingroup Library-Plots-Geometry-Three_Dimensional
+# RCAIDE/Library/Plots/Performance/Energy/Fuel/plot_altitude_sfc_weight.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Frameworks.Core import Units
-from RCAIDE.Plots.Common import set_axes, plot_style 
+from RCAIDE.Library.Plots.Common import set_axes, plot_style 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Plots-Performance-Energy-Fuel
+## @ingroup Library-Plots-Performance-Energy-Fuel
 def plot_altitude_sfc_weight(results,
                              save_figure = False,
                              show_legend = True,

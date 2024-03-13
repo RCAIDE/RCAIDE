@@ -1,4 +1,4 @@
-## @ingroup Energy-Sources-Batteries
+## @ingroup Library-Compoments-Energy-Batteries
 # RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Air.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -10,12 +10,12 @@
 
 # RCAIDE imports
 from RCAIDE.Frameworks.Core import Units
-from RCAIDE.Energy.Sources.Batteries  import Battery
+from .Battery import Battery  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Lithium_Air
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Energy-Sources-Batteries 
+## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Air(Battery):
     """
     Specifies specific energy characteristics specific to

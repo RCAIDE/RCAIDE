@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Metrics  
-# RCAIDE/Methods/Noise/Metrics/DNL_noise_metric.py
-# 
+## @ingroup Library-Methods-Noise-Metrics  
+# RCAIDE/Library/Methods/Noise/Metrics/DNL_noise_metric.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -18,7 +18,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  DNL_noise_metric
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Methods-Noise-Metrics 
+## @ingroup Library-Methods-Noise-Metrics 
 def DNL_noise_metric(noise_data, flight_times = ['12:00:00'],time_period = 24*Units.hours):  
 
     """This method calculates the Day-Night noise level between a given time 

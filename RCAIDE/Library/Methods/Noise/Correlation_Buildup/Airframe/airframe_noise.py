@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Airframe/airframe_noise.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe 
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/airframe_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -29,7 +29,7 @@ import numpy as np
 #  Airframe Noise 
 # ----------------------------------------------------------------------
 
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe
 def airframe_noise(segment,analyses,config,settings):  
     """ This computes the noise from different sources of the airframe for a given vehicle for a constant altitude flight. 
 

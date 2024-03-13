@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Common-Unpack_Unknowns
 # RCAIDE/Library/Methods/Missions/Common/Unpack_Unknowns/orientation.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  

@@ -34,7 +34,7 @@ def design_turbofan(turbofan):
         #call the atmospheric model to get the conditions at the specified altitude
         atmosphere = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
         atmo_data  = atmosphere.compute_values(turbofan.design_altitude,turbofan.design_isa_deviation)
-        planet     = RCAIDE.Attributes.Planets.Earth()
+        planet     = RCAIDE.Library.Attributes.Planets.Earth()
         
         p   = atmo_data.pressure          
         T   = atmo_data.temperature       
@@ -43,7 +43,7 @@ def design_turbofan(turbofan):
         mu  = atmo_data.dynamic_viscosity           
     
         # setup conditions
-        conditions = RCAIDE.Frameworks.Analyses.Mission.Common.Results()
+        conditions = RCAIDE.Frameworks.Mission.Common.Results()
     
         # freestream conditions    
         conditions.freestream.altitude                    = np.atleast_1d(turbofan.design_altitude)
@@ -198,7 +198,7 @@ def design_turbofan(turbofan):
 
 
     # setup conditions
-    conditions_sls = RCAIDE.Frameworks.Analyses.Mission.Common.Results()
+    conditions_sls = RCAIDE.Frameworks.Mission.Common.Results()
 
     # freestream conditions    
     conditions_sls.freestream.altitude                    = np.atleast_1d(0)

@@ -1,6 +1,6 @@
-## @defgroup Methods-Utilities Utilities
-# RCAIDE/Methods/Utilities/__init__.py
-# 
+## @defgroup Library-Methods-Utilities Utilities
+# RCAIDE/Library/Methods/Utilities/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

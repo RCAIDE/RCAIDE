@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Segments-Common-Update
 # RCAIDE/Library/Methods/Missions/Common/Update/planet_position.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

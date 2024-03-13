@@ -1,4 +1,4 @@
-## @defgroup Methods-Components-Propulsors-Converters-DC_Motor 
+## @defgroup Library-Methods-Energy-Propulsors-Converters-DC_Motor 
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/DC_Motor/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

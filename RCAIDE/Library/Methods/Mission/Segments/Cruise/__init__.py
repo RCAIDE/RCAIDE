@@ -1,6 +1,6 @@
 ## @defgroup Library-Methods-Mission-Segments-Cruise Cruise
 # RCAIDE/Library/Methods/Mission/Segments/Cruise/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

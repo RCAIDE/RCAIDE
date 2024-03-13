@@ -1,6 +1,6 @@
-## @defgroup Methods-Energy-Propulsion-Converters-Common Common 
+## @defgroup Library-Methods-Energy-Propulsion-Converters-Common Common 
 # RCAIDE/Library/Methods/Energy/Propulsion/Converters/Common/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

@@ -1,4 +1,4 @@
-## @defgroup Methods-Thermal_Management-Cryogenics 
+## @defgroup Library-Methods-Thermal_Management-Cryogenics 
 # RCAIDE/Library/Methods/Energy/Thermal_Management/Cryogenics/__init__.py
 """ RCAIDE Package Setup
 """

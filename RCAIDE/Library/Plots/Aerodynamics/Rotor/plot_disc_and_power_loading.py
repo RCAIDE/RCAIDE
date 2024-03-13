@@ -1,6 +1,6 @@
-## @ingroup Plots-Performance-Aerodynamics-Rotor 
-# RCAIDE/Plots/Performance/Aerodynamics/Rotor/plot_disc_and_power_loading.py
-# 
+## @ingroup Library-Plots-Performance-Aerodynamics-Rotor 
+# RCAIDE/Library/Plots/Performance/Aerodynamics/Rotor/plot_disc_and_power_loading.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Frameworks.Core import Units
-from RCAIDE.Plots.Common import set_axes, plot_style 
+from RCAIDE.Library.Plots.Common import set_axes, plot_style 
 
 # python imports 
 import matplotlib.pyplot as plt
@@ -18,7 +18,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Plots-Performance-Aerodynamics-Rotor 
+## @ingroup Library-Plots-Performance-Aerodynamics-Rotor 
 def plot_disc_and_power_loading(results,
                             save_figure=False,
                             show_legend = True,

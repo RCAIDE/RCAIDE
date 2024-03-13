@@ -1,6 +1,6 @@
-## @ingroup Methods-Weights-Buildups-Common 
-# RCAIDE/Methods/Weights/Buildups/Common/compute_fuselage_weight.py
-# 
+## @ingroup Library-Methods-Weights-Buildups-Common 
+# RCAIDE/Library/Methods/Weights/Buildups/Common/compute_fuselage_weight.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 # RCAIDE imports   
-from RCAIDE.Attributes.Solids import Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Acrylic, Steel
+from RCAIDE.Library.Attributes.Solids import Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Acrylic, Steel
 
 # package imports 
 import numpy as np
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute boom weight
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Weights-Buildups-Common 
+## @ingroup Library-Methods-Weights-Buildups-Common 
 def compute_fuselage_weight(config,
              maximum_g_load = 3.8,
              landing_impact_factor = 3.5,

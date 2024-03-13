@@ -1,6 +1,6 @@
-## @ingroup Plots-Geometry-Common
-# RCAIDE/Plots/Noise/post_process_noise_dat.py
-# 
+## @ingroup Library-Plots-Geometry-Common
+# RCAIDE/Library/Plots/Noise/post_process_noise_dat.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -18,7 +18,7 @@ from scipy.interpolate import RegularGridInterpolator
 #  PLOTS
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Plots-Geometry-Common
+## @ingroup Library-Plots-Geometry-Common
 def post_process_noise_data(results,time_step = 20): 
     """This translates all noise data into metadata for plotting 
     
@@ -52,7 +52,7 @@ def post_process_noise_data(results,time_step = 20):
     # Step 1: Merge data from all segments 
     idx = 0 
     for i in range(N_segs):  
-        if  type(results.segments[i]) == RCAIDE.Frameworks.Analyses.Mission.Segments.Ground.Battery_Recharge:
+        if  type(results.segments[i]) == RCAIDE.Frameworks.Mission.Segments.Ground.Battery_Recharge:
             pass
         else:  
             if i == 0:

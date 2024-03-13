@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Airframe/clean_wing_noise.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe 
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/clean_wing_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -13,7 +13,7 @@ from RCAIDE.Frameworks.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------  
 # main and nose landing gear noise
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe
 def landing_gear_noise(D,H,wheels,M,velocity,phi,theta,distance,frequency):
     """This calculates the Landing gear 1/3 octave band sound pressure level and overall sound pressure level
     for a tyre diameter D, a strut length H and WHEELS number of  wheels per unit.

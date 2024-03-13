@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Segments-Climb
 # RCAIDE/Library/Methods/Missions/Segments/Climb/Constant_Mach_Linear_Altitude.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE  
-from RCAIDE.Library.Methods.Mission.Common.Update.atmosphere import atmosphere
+from RCAIDE.Library.Methods.Mission.Common.Update  import atmosphere
 
 # Package imports  
 import numpy as np

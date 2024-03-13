@@ -1,5 +1,6 @@
-## @ingroup Methods-Thermal_Management-Batteries-Performance-Heat_Exchanger_Systems-No_Heat_Exchanger No_Heat_Exchanger
-# RCAIDE/Methods/Thermal_Management/Batteries/Performance/Heat_Exchanger_Systems/No_Heat_Exchanger/__init__.py 
+## @ingroup Library-Methods-Thermal_Management-Batteries-Performance-Heat_Exchanger_Systems-No_Heat_Exchanger No_Heat_Exchanger
+# RCAIDE/Library/Methods/Thermal_Management/Batteries/Performance/Heat_Exchanger_Systems/No_Heat_Exchanger/__init__.py 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

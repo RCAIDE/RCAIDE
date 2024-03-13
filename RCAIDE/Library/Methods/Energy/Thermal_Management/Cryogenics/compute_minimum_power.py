@@ -15,7 +15,7 @@ from scipy.misc import derivative
 # ----------------------------------------------------------------------
 #  Compute Minimum Power 
 # ----------------------------------------------------------------------
-## @ingroup Methods-Thermal_Management-Cryogenics
+## @ingroup Library-Methods-Thermal_Management-Cryogenics
 def compute_minimum_power(material, cold_temp, hot_temp, current):
     """Calculate minimum electrical power
 
@@ -55,7 +55,7 @@ def compute_minimum_power(material, cold_temp, hot_temp, current):
 # ----------------------------------------------------------------------
 #  compute_optimal_ratio
 # ----------------------------------------------------------------------
-## @ingroup Methods-Thermal_Management-Cryogenics
+## @ingroup Library-Methods-Thermal_Management-Cryogenics
 def compute_optimal_ratio( material, cold_temp, hot_temp, current, minimum_Q):
     """Calculate the optimum length to cross-sectional area ratio
 
@@ -89,7 +89,7 @@ def compute_optimal_ratio( material, cold_temp, hot_temp, current, minimum_Q):
 # ----------------------------------------------------------------------
 #  calc_current
 # ----------------------------------------------------------------------
-## @ingroup Methods-Thermal_Management-Cryogenics
+## @ingroup Library-Methods-Thermal_Management-Cryogenics
 def calc_current(Cryogenic_Lead, current):
 
     """Estimates the heat flow into the cryogenic environment when a current other than the current the lead was optimised for is flowing. Assumes the temperature difference remains constant.

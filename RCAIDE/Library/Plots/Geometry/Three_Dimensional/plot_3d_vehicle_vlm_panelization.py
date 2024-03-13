@@ -1,13 +1,13 @@
-## @ingroup Plots-Geometry
-# RCAIDE/Plots/Geometry/Three_Dimensional/plot_3d_vehicle_vlm_panelization.py
-# 
+## @ingroup Library-Plots-Geometry
+# RCAIDE/Library/Plots/Geometry/Three_Dimensional/plot_3d_vehicle_vlm_panelization.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
+from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 
 import numpy as np  
 import plotly.graph_objects as go 
@@ -15,7 +15,7 @@ import plotly.graph_objects as go
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Plots-Geometry
+## @ingroup Library-Plots-Geometry
 def plot_3d_vehicle_vlm_panelization(vehicle,
                                      alpha = 1.0,
                                      plot_axis = False,

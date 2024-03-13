@@ -1,4 +1,4 @@
-## @ingroup Methods-Components-Propulsors-Converters-Combustor
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Combustor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Combustor/compute_combustor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 

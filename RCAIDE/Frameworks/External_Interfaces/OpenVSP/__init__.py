@@ -1,7 +1,6 @@
-## @defgroup External_Interfaces-OpenVSP OpenVSP  
-# @ingroup External_Interfaces
+## @defgroup External_Interfaces-OpenVSP OpenVSP   
 # RCAIDE/External_Interfaces/OpenVSP/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

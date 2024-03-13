@@ -1,5 +1,5 @@
 ## @defgroup Methods-Stability-Static_Stability-Approximations-Tube_Wing Tube_Wing
-# RCAIDE/Methods/Stability/Static_Stability/Approximations/Tube_Wing/__init__.py
+# RCAIDE/Library/Methods/Stability/Static_Stability/Approximations/Tube_Wing/__init__.py
 # 
 
 """RCAIDE Package Setup

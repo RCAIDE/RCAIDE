@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Segments-Cruise
 # RCAIDE/Library/Methods/Missions/Segments/Cruise/Constant_Mach_Constant_Altitude.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,8 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE  
-import RCAIDE 
-from RCAIDE.Library.Methods.Mission.Common.Update.atmosphere import atmosphere
+import RCAIDE  
 
 # Package imports  
 import numpy as np

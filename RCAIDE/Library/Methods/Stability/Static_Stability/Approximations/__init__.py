@@ -1,5 +1,5 @@
 ## @defgroup Methods-Stability-Static_Stability-Approximations Approximations
-# RCAIDE/Methods/Stability/Static_Stability/Approximations/__init__.py
+# RCAIDE/Library/Methods/Stability/Static_Stability/Approximations/__init__.py
 # 
 
 """RCAIDE Package Setup

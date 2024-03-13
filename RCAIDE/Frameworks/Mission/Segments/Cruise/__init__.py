@@ -1,6 +1,6 @@
 ## @defgroup Frameworks-Mission-Segments-Cruise Cruise
 # RCAIDE/Frameworks/Mission/Segments/Cruise/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

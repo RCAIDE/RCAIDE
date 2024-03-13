@@ -1,4 +1,4 @@
-## @defgroup Methods-Components-Propulsors-Converters-Ram
+## @defgroup Library-Methods-Energy-Propulsors-Converters-Ram
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Ram/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

@@ -1,6 +1,6 @@
 ## @ingroup Methods-Stability-Center_of_Gravity Center_of_Gravity
-# RCAIDE/Methods/Stability/Center_of_Gravity/compute_component_centers_of_gravity.py
-# 
+# RCAIDE/Library/Methods/Stability/Center_of_Gravity/compute_component_centers_of_gravity.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Dec 2023, M. Clarke  
 
@@ -10,6 +10,7 @@
 
 # RCAIDE 
 import RCAIDE
+from RCAIDE.Library.Components import Component
 from RCAIDE.Library.Methods.Geometry.Three_Dimensional import compute_span_location_from_chord_length
 from RCAIDE.Library.Methods.Geometry.Three_Dimensional import compute_chord_length_from_span_location
 from RCAIDE.Library.Methods.Stability.Static_Stability.Approximations.Supporting_Functions import convert_sweep
@@ -75,10 +76,10 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     network_moment = 0.
     network_mass   = 0.
     for net in vehicle.networks:  
-        for key,Comp in net.items(): 
-            network_moment += net[key].mass_properties.mass*(np.sum(np.array(net[key].origin),axis=0) +
-                                                                 net[key].mass_properties.center_of_gravity)
-            network_mass   += net[key].mass_properties.mass*len(net[key].origin)
+        for key,Comp in net.items():  
+            if isinstance(Comp,Component):            
+                network_moment += net[key].mass_properties.mass*(np.sum(np.array(net[key].origin),axis=0) + net[key].mass_properties.center_of_gravity)
+                network_mass   += net[key].mass_properties.mass*len(net[key].origin)
 
     if network_mass!= 0.:
         propulsion_cg = network_moment/network_mass

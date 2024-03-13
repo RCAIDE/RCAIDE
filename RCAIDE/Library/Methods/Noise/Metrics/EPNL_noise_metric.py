@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Metrics  
-# RCAIDE/Methods/Noise/Metrics/EPNL_noise_metric.py
-# 
+## @ingroup Library-Methods-Noise-Metrics  
+# RCAIDE/Library/Methods/Noise/Metrics/EPNL_noise_metric.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  EPNL_noise_metric
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Methods-Noise-Metrics   
+## @ingroup Library-Methods-Noise-Metrics   
 def EPNL_noise_metric(PNLT):
     """This method calculates the effective perceived noise level (EPNL) based on a
     time history Perceived Noise Level with Tone Correction (PNLT).

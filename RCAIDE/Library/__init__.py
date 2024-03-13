@@ -1,4 +1,5 @@
-# RCAIDE/Library__init__.py
+## @defgroup Library Library 
+# RCAIDE/Library/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup

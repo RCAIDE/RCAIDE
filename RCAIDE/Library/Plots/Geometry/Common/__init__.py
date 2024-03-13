@@ -1,6 +1,6 @@
-## @defgroup Plots-Geometry-Common Common 
-# RCAIDE/Plots/Geometry/Common/__init__.py
-# 
+## @defgroup Library-Plots-Geometry-Common Common 
+# RCAIDE/Library/Plots/Geometry/Common/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

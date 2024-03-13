@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor 
-# RCAIDE/Methods/Noise/Frequency_Domain_Buildup/Rotor/TBL_TE_broadband_noise.py
-# 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor 
+# RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/TBL_TE_broadband_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute TBL-TE Broadband Noise 
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor 
 def TBL_TE_broadband_noise(f,r_e,L,U,M,R_c,Dbar_h,Dbar_l,R_delta_star_p,delta_star_p,delta_star_s,alpha_star):
     '''This computes the turbument boundary layer- trailing edge noise compoment of broadband noise using the method outlined by the 
     Brooks, Pope and Marcolini (BPM) Model

@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
-# RCAIDE/Methods/Noise/Frequency_Domain_Buildup/Rotor/BPM_boundary_layer_properties.py
-# 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor
+# RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/BPM_boundary_layer_properties.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------    
 #  BPM_boundary_layer_properties
 # ----------------------------------------------------------------------------------------------------------------------    
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor
 def BPM_boundary_layer_properties(R_c,c,alpha_star):
     '''This computes the boundary layer properties using the method outlined by the 
     Brooks, Pope and Marcolini (BPM) Model

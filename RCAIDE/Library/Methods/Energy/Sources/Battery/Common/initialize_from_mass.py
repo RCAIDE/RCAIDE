@@ -1,4 +1,4 @@
-## @ingroup Methods-Energy-Sources-Battery-Common
+## @ingroup Library-Methods-Energy-Battery-Common
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Common/initialize_from_mass.py
 # 
 # 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Sources-Battery-Common
+## @ingroup Library-Methods-Energy-Battery-Common
 def initialize_from_mass(battery,module_weight_factor = 1.42 ):
     """
     Calculate the max energy and power based of the mass

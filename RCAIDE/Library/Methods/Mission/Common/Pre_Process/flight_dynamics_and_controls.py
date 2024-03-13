@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Segments-Common-Pre_Process
 # RCAIDE/Library/Methods/Missions/Common/Pre_Process/flight_dynamics_and_controls.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

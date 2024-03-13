@@ -1,6 +1,6 @@
 ## @defgroup Methods-Geometry Geometry
-# RCAIDE/Methods/Geometry/Three_Dimensional/__init__.py
-# 
+# RCAIDE/Library/Methods/Geometry/Three_Dimensional/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

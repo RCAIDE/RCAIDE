@@ -1,4 +1,4 @@
-## @ingroup Methods-Energy-Sources-Battery 
+## @ingroup Library-Methods-Energy-Battery 
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Common/pack_battery_conditions.py
 # 
 # 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  pack_battery_conditions
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Sources-Battery 
+## @ingroup Library-Methods-Energy-Battery 
 def pack_battery_conditions(battery_conditions,battery): 
     """ Packs the results from the network into propulsion data structures.
     

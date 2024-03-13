@@ -1,5 +1,5 @@
-## @ingroup Plots-Performance-Energy-Battery
-# RCAIDE/Plots/Performance/Energy/Battery/plot_electric_propulsor_efficiencies.py
+## @ingroup Library-Plots-Performance-Energy-Battery
+# RCAIDE/Library/Plots/Performance/Energy/Battery/plot_electric_propulsor_efficiencies.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 from RCAIDE.Frameworks.Core import Units
-from RCAIDE.Plots.Common import set_axes, plot_style 
+from RCAIDE.Library.Plots.Common import set_axes, plot_style 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Plots-Performance-Energy-Battery
+## @ingroup Library-Plots-Performance-Energy-Battery
 def plot_electric_propulsor_efficiencies(results,
                                   save_figure = False,
                                   show_legend=True,

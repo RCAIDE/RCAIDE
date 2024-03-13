@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor 
-# RCAIDE/Methods/Noise/Frequency_Domain_Buildup/Rotor/harmonic_noise.py
-# 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor 
+# RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/harmonic_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -18,7 +18,7 @@ import scipy as sp
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute Harmonic Noise 
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor 
 def harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,
                            velocity_vector,rotor,aeroacoustic_data,settings,res):
     '''This computes the  harmonic noise (i.e. thickness and loading noise) of a rotor or rotor

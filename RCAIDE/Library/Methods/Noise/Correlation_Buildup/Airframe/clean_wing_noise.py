@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Airframe/clean_wing_noise.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe 
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/clean_wing_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -15,7 +15,7 @@ from RCAIDE.Frameworks.Core import Units
 # Clean Wing Noise
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe
 def clean_wing_noise(S,b,ND,IsHorz,velocity,viscosity,M,phi,theta,distance,frequency):
     """ This computes the 1/3 octave band sound pressure level and the overall sound pressure level from the clean wing,
     for a wing with area S (sq.ft) and span b (ft).  ND is a constant set to 0 for clean wings and set to 1 for propeller

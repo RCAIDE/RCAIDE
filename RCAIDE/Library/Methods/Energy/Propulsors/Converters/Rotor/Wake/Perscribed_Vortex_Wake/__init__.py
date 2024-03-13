@@ -1,5 +1,5 @@
-## @defgroup Methods-Energy-Propulsion-Converters-Rotor-Wake-Perscribed_Vortex_Wake Perscribed_Vortex_Wake
-# @ingroup Methods-Energy-Propulsion-Converters-Rotor-Wake 
+## @defgroup Library-Methods-Energy-Propulsion-Converters-Rotor-Wake-Perscribed_Vortex_Wake Perscribed_Vortex_Wake
+# @ingroup Library-Methods-Energy-Propulsion-Converters-Rotor-Wake 
 
 """ RCAIDE Package Setup for rotor wake methods that are directly specified by analyses.
 """

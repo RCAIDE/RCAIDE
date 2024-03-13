@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Common 
-# RCAIDE/Methods/Noise/Common/generate_microphone_locations.py
-# 
+## @ingroup Library-Methods-Noise-Common 
+# RCAIDE/Library/Methods/Noise/Common/generate_microphone_locations.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -18,7 +18,7 @@ from geopy.distance import geodesic as GD
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  generate_zero_elevation_microphone_locations
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Noise-Common 
+## @ingroup Library-Methods-Noise-Common 
 def generate_zero_elevation_microphone_locations(settings):
     """This computes the absolute microphone/observer locations on level ground. 
             
@@ -67,7 +67,7 @@ def generate_zero_elevation_microphone_locations(settings):
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  generate_terrain_elevated_microphone_locations
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Noise-Common  
+## @ingroup Library-Methods-Noise-Common  
 def generate_terrain_elevated_microphone_locations(topography_file             = None,
                                          departure_coordinates                 = [0.0,0.0],
                                          destination_coordinates               = [0.0,0.0],

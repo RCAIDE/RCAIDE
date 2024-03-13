@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Engine 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Engine/angle_of_attack_effect.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine 
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/angle_of_attack_effect.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------     
 #  Angle of Attack Effect
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Methods-Noise-Correlation_Buildup-Engine
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine
 def angle_of_attack_effect(AoA,Mach_aircraft,theta_m):
     """This calculates the angle of attack effect, in decibels, to be added 
     to the predicted mixed jet noise level. 

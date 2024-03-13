@@ -1,4 +1,4 @@
-## @ingroup Methods-Energy-Sources-Battery 
+## @ingroup Library-Methods-Energy-Battery 
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Common/append_initial_battery_conditions.py
 # 
 # 
@@ -13,7 +13,7 @@ import RCAIDE
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Sources-Battery 
+## @ingroup Library-Methods-Energy-Battery 
 def append_initial_battery_conditions(segment,bus,battery): 
     """ Packs the initial battery conditions
     
@@ -66,7 +66,7 @@ def append_initial_battery_conditions(segment,bus,battery):
     battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag] 
     
     # Set if it is a discharge segment
-    if type(segment) ==  RCAIDE.Frameworks.Analyses.Mission.Segments.Ground.Battery_Recharge:  
+    if type(segment) ==  RCAIDE.Frameworks.Mission.Segments.Ground.Battery_Recharge:  
         segment.state.conditions.energy.recharging  = True 
     else:
         segment.state.conditions.energy.recharging  = False 

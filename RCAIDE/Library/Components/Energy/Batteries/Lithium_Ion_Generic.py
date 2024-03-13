@@ -1,4 +1,4 @@
-## @ingroup Energy-Sources-Batteries
+## @ingroup Library-Compoments-Energy-Batteries
 # RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Ion.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -9,14 +9,14 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
  # RCAIDE imports
+from .Battery import Battery  
 from RCAIDE.Frameworks.Core                      import Units, Data 
-from RCAIDE.Energy.Sources.Batteries  import Battery  
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_Generic  import compute_generic_li_cell_performance 
 
 # ----------------------------------------------------------------------
 #  Lithium_Ion_Generic
 # ----------------------------------------------------------------------    
-## @ingroup Energy-Sources-Batteries 
+## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Ion_Generic(Battery):
     """ Generic lithium ion battery that specifies discharge/specific energy 
     characteristics. 

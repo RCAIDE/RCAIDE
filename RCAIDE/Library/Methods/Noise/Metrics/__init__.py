@@ -1,6 +1,6 @@
-## @defgroup Methods-Noise-Metrics Metrics   
-# RCAIDE/Methods/Noise/Metrics/__init__.py
-# 
+## @defgroup Library-Methods-Noise-Metrics Metrics   
+# RCAIDE/Library/Methods/Noise/Metrics/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

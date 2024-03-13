@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Metrics
-# RCAIDE/Methods/Noise/Metrics/PNL_noise_metric.py
-# 
+## @ingroup Library-Methods-Noise-Metrics
+# RCAIDE/Library/Methods/Noise/Metrics/PNL_noise_metric.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  PNL_noise_metric
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Methods-Noise-Metrics  
+## @ingroup Library-Methods-Noise-Metrics  
 def PNL_noise_metric(SPL):
     """This method calculates de Perceived Noise Level PNL from a 1/3 octave band noise spectra
  

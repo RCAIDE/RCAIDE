@@ -1,6 +1,6 @@
-## @ingroup Plots-Performance-Common
-# RCAIDE/Plots/Performance/Common/plot_style.py
-# 
+## @ingroup Library-Plots-Performance-Common
+# RCAIDE/Library/Plots/Performance/Common/plot_style.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -12,7 +12,7 @@ from RCAIDE.Frameworks.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Plots-Performance-Common
+## @ingroup Library-Plots-Performance-Common
 def plot_style():
     """Helper function for automatically setting the style of plots to the
     RCAIDE standard style.

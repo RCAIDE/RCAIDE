@@ -1,6 +1,6 @@
-## @defgroup Plots-Performance-Aerodynamics-Vehicle Vehicle 
-# RCAIDE/Plots/Performance/Aerodynamics/Vehicle/__init__.py
-# 
+## @defgroup Library-Plots-Performance-Aerodynamics-Vehicle Vehicle 
+# RCAIDE/Library/Plots/Performance/Aerodynamics/Vehicle/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

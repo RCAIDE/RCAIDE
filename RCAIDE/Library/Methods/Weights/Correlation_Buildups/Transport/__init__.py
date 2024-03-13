@@ -1,7 +1,7 @@
-## @defgroup Methods-Weights-Correlations-Transport Transport
-# RCAIDE/Methods/Weights/Correlations/Transport/__init__.py
+## @defgroup Library-Methods-Weights-Correlations-Transport Transport
+# RCAIDE/Library/Methods/Weights/Correlations/Transport/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
-
 """RCAIDE Package Setup
 """
 

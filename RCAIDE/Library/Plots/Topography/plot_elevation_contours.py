@@ -1,6 +1,6 @@
-## @ingroup Plots-Topograpgy
-# RCAIDE/Plots/Topography/plot_elevation_contours.py
-# 
+## @ingroup Library-Plots-Topograpgy
+# RCAIDE/Library/Plots/Topography/plot_elevation_contours.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Frameworks.Core                             import Units
-from RCAIDE.Plots.Common import plot_style
+from RCAIDE.Library.Plots.Common import plot_style
 
 from geopy.distance                          import geodesic as GD 
 import matplotlib.pyplot as plt
@@ -19,7 +19,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Plots-Topograpgy 
+## @ingroup Library-Plots-Topograpgy 
 def plot_elevation_contours(topography_file,
                             number_of_latitudinal_points  = 100,
                             number_of_longitudinal_points = 100, 

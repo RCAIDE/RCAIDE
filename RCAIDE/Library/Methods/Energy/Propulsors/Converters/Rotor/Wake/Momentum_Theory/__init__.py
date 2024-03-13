@@ -1,5 +1,5 @@
-## @defgroup Methods-Energy-Propulsion-Converters-Rotor-Wake-Momentum_Theory Momentum_Theory
-# @ingroup Methods-Energy-Propulsion-Converters-Rotor-Wake 
+## @defgroup Library-Methods-Energy-Propulsion-Converters-Rotor-Wake-Momentum_Theory Momentum_Theory
+# @ingroup Library-Methods-Energy-Propulsion-Converters-Rotor-Wake 
 
 """ RCAIDE Package Setup for rotor wake methods that are directly specified by analyses.
 """

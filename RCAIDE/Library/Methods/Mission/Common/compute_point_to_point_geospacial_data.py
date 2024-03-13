@@ -1,6 +1,6 @@
 ## @ingroup Visualization-Performance-Noise
 # RCAIDE/Library/Methods/Missions/Common/compute_point_to_point_geospacial_data.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -55,7 +55,7 @@ def compute_point_to_point_geospacial_data(topography_file                      
     Lat   = data[:,1]
     Elev  = data[:,2]
     
-    earth = RCAIDE.Attributes.Planets.Earth()
+    earth = RCAIDE.Library.Attributes.Planets.Earth()
     R     = earth.mean_radius      
      
     # Compute distance between departure and destimation points

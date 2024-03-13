@@ -1,6 +1,6 @@
-## @ingroup Plots-Geometry-Three_Dimensional
-# RCAIDE/Plots/Geometry/Three_Dimensional/plot_3d_nacelle.py
-# 
+## @ingroup Library-Plots-Geometry-Three_Dimensional
+# RCAIDE/Library/Plots/Geometry/Three_Dimensional/plot_3d_nacelle.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -9,14 +9,14 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 import numpy as np 
 import plotly.graph_objects as go 
-from RCAIDE.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
+from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import import_airfoil_geometry
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import compute_naca_4series 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Plots-Geometry-Three_Dimensional 
+## @ingroup Library-Plots-Geometry-Three_Dimensional 
 def plot_3d_nacelle(plot_data,nacelle,tessellation = 24,number_of_airfoil_points = 21,color_map= 'darkmint'):
     """ This plots a 3D surface of a nacelle  
 
@@ -56,7 +56,7 @@ def plot_3d_nacelle(plot_data,nacelle,tessellation = 24,number_of_airfoil_points
 
     return plot_data
 
-## @ingroup Plots-Geometry-Three_Dimensional 
+## @ingroup Library-Plots-Geometry-Three_Dimensional 
 def generate_3d_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_points = 21):
     """ This generates the coordinate points on the surface of the nacelle
 

@@ -1,6 +1,6 @@
-## @ingroup Plots-Performance-Aerodynamics-Vehicle
-# RCAIDE/Plots/Performance/Aerodynamics/Vehicle/plot_aerodynamic_forces.py
-# 
+## @ingroup Library-Plots-Performance-Aerodynamics-Vehicle
+# RCAIDE/Library/Plots/Performance/Aerodynamics/Vehicle/plot_aerodynamic_forces.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Frameworks.Core import Units
-from RCAIDE.Plots.Common import set_axes, plot_style
+from RCAIDE.Library.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Plots-Performance-Aerodynamics-Vehicle
+## @ingroup Library-Plots-Performance-Aerodynamics-Vehicle
 def plot_aerodynamic_forces(results,
                              save_figure = False,
                              show_legend = True,

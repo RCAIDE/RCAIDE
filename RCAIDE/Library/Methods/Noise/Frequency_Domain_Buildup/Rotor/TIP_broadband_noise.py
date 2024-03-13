@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
-# RCAIDE/Methods/Noise/Frequency_Domain_Buildup/Rotor/TIP_broadband_noise.py
-# 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor
+# RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/TIP_broadband_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute TIP Broadband Noise 
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor 
 def TIP_broadband_noise(alpha_tip,M,c,c_0,f,Dbar_h,r_e):
     '''This computes the tip noise compoment of broadband noise using the method outlined by the 
     Brooks, Pope and Marcolini (BPM) Model

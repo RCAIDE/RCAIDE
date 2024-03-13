@@ -1,5 +1,5 @@
-## @ingroup Methods-Thermal_Management-Batteries-Heat_Acquisition_System-No_Heat_Acquisition
-# RCAIDE/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/No_Heat_Acquisition/direct_convection_model.py
+## @ingroup Library-Methods-Thermal_Management-Batteries-Heat_Acquisition_System-No_Heat_Acquisition
+# RCAIDE/Library/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/No_Heat_Acquisition/direct_convection_model.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -12,7 +12,7 @@ from RCAIDE.Frameworks.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Net Convected Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
+## @ingroup Library-Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
 def no_heat_acquisition_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
     '''Computes no heat removed by heat acquisition system. Battery simply accumulated heat. 
 

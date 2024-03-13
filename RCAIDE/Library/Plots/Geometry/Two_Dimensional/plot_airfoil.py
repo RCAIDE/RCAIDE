@@ -1,6 +1,6 @@
-## @ingroup Plots-Geometry
-# RCAIDE/Plots/Geometry/Two_Dimensional/plot_airfoil.py
-# 
+## @ingroup Library-Plots-Geometry
+# RCAIDE/Library/Plots/Geometry/Two_Dimensional/plot_airfoil.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
-from RCAIDE.Plots.Common import plot_style
+from RCAIDE.Library.Plots.Common import plot_style
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil  import import_airfoil_geometry  
 
 # package imports 
@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Plots-Geometry
+## @ingroup Library-Plots-Geometry
 def plot_airfoil(airfoil_paths,
                  save_figure = False, 
                  save_filename = "Airfoil_Geometry",

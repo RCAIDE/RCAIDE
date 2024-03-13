@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Engine
-# RCAIDE/Methods/Noise/Correlation_Buildup/Engine/external_plug_effect.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/external_plug_effect.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------     
 #  Ground Proximity Effect
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Methods-Noise-Correlation_Buildup-Engine    
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine    
 def ground_proximity_effect (Velocity_mixed,sound_ambient,theta_m,engine_height,Diameter_mixed,frequency):
     """This function calculates the ground proximity effect, in decibels, and is used for full-scale 
     engine test stand.

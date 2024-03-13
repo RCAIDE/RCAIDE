@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Airframe/leading_edge_slat_noise.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe 
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/leading_edge_slat_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ from .clean_wing_noise import clean_wing_noise
 # ----------------------------------------------------------------------------------------------------------------------  
 #  slat leading edge noise
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe
 def leading_edge_slat_noise(SPL_wing,Sw,bw,velocity,viscosity,M,phi,theta,distance,frequency):
     """ This calculates the noise from the slat leading edge as a 1/3 octave band sound pressure level. 
     

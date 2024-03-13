@@ -1,5 +1,6 @@
-## @ingroup Methods-Thermal_Management-Batteries Batteries 
-# RCAIDE/Methods/Thermal_Management/Batteries/__init__.py 
+## @ingroup Library-Methods-Thermal_Management-Batteries Batteries 
+# RCAIDE/Library/Methods/Thermal_Management/Batteries/__init__.py 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

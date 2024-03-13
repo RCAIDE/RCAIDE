@@ -1,5 +1,5 @@
 ## @defgroup Methods-Stability-Dynamic_Stability Dynamic_Stability
-# RCAIDE/Methods/Stability/Dynamic_Stability/__init__.py
+# RCAIDE/Library/Methods/Stability/Dynamic_Stability/__init__.py
 # 
 
 """RCAIDE Package Setup

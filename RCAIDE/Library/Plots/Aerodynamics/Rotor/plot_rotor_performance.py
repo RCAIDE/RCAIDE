@@ -1,6 +1,6 @@
-## @ingroup Plots-Performance-Aerodynamics-Rotor 
-# RCAIDE/Plots/Performance/Aerodynamics/Rotor/plot_rotor_performance.py
-# 
+## @ingroup Library-Plots-Performance-Aerodynamics-Rotor 
+# RCAIDE/Library/Plots/Performance/Aerodynamics/Rotor/plot_rotor_performance.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -14,7 +14,7 @@ from plotly.subplots import make_subplots
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Plots-Performance-Aerodynamics-Rotor 
+## @ingroup Library-Plots-Performance-Aerodynamics-Rotor 
 def plot_rotor_performance(rotor, title=None, show_figure = True,save_figure=False, save_filename='Rotor_Performance', file_type=".png"):
     """Plots a summary of rotor performance 
     

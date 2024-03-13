@@ -1,6 +1,6 @@
-## @ingroup Plots-Performance-Noise
-# RCAIDE/Plots/Noise/plot_noise_level.py
-# 
+## @ingroup Library-Plots-Performance-Noise
+# RCAIDE/Library/Plots/Noise/plot_noise_level.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Frameworks.Core import Units
-from RCAIDE.Plots.Common import set_axes, plot_style 
+from RCAIDE.Library.Plots.Common import set_axes, plot_style 
 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Plots-Performance-Noise
+## @ingroup Library-Plots-Performance-Noise
 def plot_noise_level(noise_data,
                      noise_level = False,
                      save_figure = False,

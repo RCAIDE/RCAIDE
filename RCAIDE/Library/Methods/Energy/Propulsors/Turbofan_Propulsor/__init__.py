@@ -1,4 +1,4 @@
-## @defgroup Methods-Components-Propulsors-Converters-Turbofan
+## @defgroup Library-Methods-Energy-Propulsors-Converters-Turbofan
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Turbofan/__init__.py
 # 
 

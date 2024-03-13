@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Boom  
-# RCAIDE/Methods/Noise/Boom/lift_equivalent_area.py
-# 
+## @ingroup Library-Methods-Noise-Boom  
+# RCAIDE/Library/Methods/Noise/Boom/lift_equivalent_area.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -18,7 +18,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Equivalent Area from lift for Sonic Boom
 # ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Methods-Noise-Boom  
+## @ingroup Library-Methods-Noise-Boom  
 def lift_equivalent_area(config,analyses,conditions):
     """ This method calculates the lift equivalent area for a vehicle for sonic boom analysis.
     

@@ -1,5 +1,5 @@
-## @defgroup Methods-Energy-Sources-Fuel_Cell Fuel_Cell
-# RCAIDE/Methods/Power/Fuel_Cell/__init__.py
+## @defgroup Library-Methods-Energy-Fuel_Cell Fuel_Cell
+# RCAIDE/Library/Methods/Power/Fuel_Cell/__init__.py
 # 
 
 """ RCAIDE Package Setup

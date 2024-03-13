@@ -1,4 +1,4 @@
-## @defgroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC Lithium_Ion_NMC
+## @defgroup Library-Methods-Energy-Battery-Lithium_Ion_NMC Lithium_Ion_NMC
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/__init__.py
 # 
 

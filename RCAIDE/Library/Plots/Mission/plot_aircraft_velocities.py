@@ -1,6 +1,6 @@
-## @defgroup Plots-Performance-Mission 
-# RCAIDE/Plots/Performance/Mission/plot_aircraft_velocities.py
-# 
+## @defgroup Library-Plots-Performance-Mission 
+# RCAIDE/Library/Plots/Performance/Mission/plot_aircraft_velocities.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Frameworks.Core import Units
-from RCAIDE.Plots.Common import set_axes, plot_style
+from RCAIDE.Library.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @defgroup Plots-Performance-Mission 
+## @defgroup Library-Plots-Performance-Mission 
 def plot_aircraft_velocities(results,
                              save_figure = False,
                              show_legend = True,

@@ -1,7 +1,6 @@
-## @defgroup Plots-Weights Weights
-# @ingroup Plots 
-# RCAIDE/Plots/Weights/__init__.py
-# 
+# @ingroup Library-Plots-Weights Weights
+# RCAIDE/Library/Plots/Weights/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

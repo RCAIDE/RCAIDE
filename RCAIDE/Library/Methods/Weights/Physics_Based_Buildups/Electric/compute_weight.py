@@ -1,6 +1,6 @@
-## @ingroup Methods-Weights-Buildups-eVTOL 
-# RCAIDE/Methods/Weights/Buildups/eVTOL/compute_weight.py
-# 
+## @ingroup Library-Methods-Weights-Buildups-eVTOL 
+# RCAIDE/Library/Methods/Weights/Buildups/eVTOL/compute_weight.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -23,7 +23,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute evtol weight
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Weights-Buildups-eVTOL 
+## @ingroup Library-Methods-Weights-Buildups-eVTOL 
 def compute_weight(config, 
           contingency_factor            = 1.1,
           speed_of_sound                = 340.294,

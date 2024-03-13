@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Segments-Common-Initialize
 # RCAIDE/Library/Methods/Missions/Segments/Common/Initialize/inertial_position.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 

@@ -1,4 +1,4 @@
-## @defgroup Methods-Components-Propulsors-Converters-Compressor
+## @defgroup Library-Methods-Energy-Propulsors-Converters-Compressor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compressor/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

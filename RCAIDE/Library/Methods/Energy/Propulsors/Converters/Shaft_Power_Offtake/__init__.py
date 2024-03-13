@@ -1,4 +1,4 @@
-## @defgroup Methods-Components-Propulsors-Converters-Shaft_Power_OffTake
+## @defgroup Library-Methods-Energy-Propulsors-Converters-Shaft_Power_OffTake
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Shaft_Power_Off_Take/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

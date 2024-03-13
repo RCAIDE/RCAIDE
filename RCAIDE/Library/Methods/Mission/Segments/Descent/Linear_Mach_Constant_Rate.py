@@ -1,14 +1,13 @@
 ## @ingroup Library-Methods-Mission-Segments-Descent
 # RCAIDE/Library/Methods/Missions/Segments/Descent/Linear_Mach_Constant_Rate.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  IMPORT 
 # ----------------------------------------------------------------------------------------------------------------------  
-# RCAIDE imports 
-import RCAIDE
+# RCAIDE imports  
 from RCAIDE.Library.Methods.Mission.Common.Update.atmosphere import atmosphere
 
 # pacakge imports 

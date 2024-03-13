@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
-# RCAIDE/Methods/Noise/Frequency_Domain_Buildup/Rotor/broadband_noise.py
-# 
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor
+# RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/broadband_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -22,7 +22,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute Broadband Noise 
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Noise-Frequency_Domain_Buildup-Rotor
+## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor
 def broadband_noise(freestream,angle_of_attack,coordinates,
                             velocity_vector,rotor,aeroacoustic_data,settings,res):
     '''This computes the trailing edge noise compoment of broadband noise of a propeller or 

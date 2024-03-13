@@ -1,6 +1,6 @@
-## @ingroup Methods-Weights-Buildups-Common 
-# RCAIDE/Methods/Weights/Buildups/Common/compute_boom_weight.py
-# 
+## @ingroup Library-Methods-Weights-Buildups-Common 
+# RCAIDE/Library/Methods/Weights/Buildups/Common/compute_boom_weight.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE 
-from RCAIDE.Attributes.Solids import (
+from RCAIDE.Library.Attributes.Solids import (
     Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Aluminum, Epoxy, Aluminum_Rib)
 
 # package imports 
@@ -19,7 +19,7 @@ import copy as cp
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute wiring weight
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Weights-Buildups-Common  
+## @ingroup Library-Methods-Weights-Buildups-Common  
 def compute_wing_weight(wing,
          config,
          max_thrust,

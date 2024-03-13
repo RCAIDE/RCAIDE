@@ -1,5 +1,5 @@
-## @ingroup Compoments-Energy-Fuel_Tanks 
-# RCAIDE/Library/Compoments/Energy/Sources/Fuel_Tanks/Fuel_Tanks.py
+## @ingroup Compoments-Energy-Fuel_Tanks Fuel_Tanks
+# RCAIDE/Library/Compoments/Energy/Fuel_Tanks/Fuel_Tank.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 

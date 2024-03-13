@@ -1,4 +1,4 @@
-## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC
+## @ingroup Library-Methods-Energy-Battery-Lithium_Ion_NMC
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/compute_nmc_cell_performance.py
 # 
 # 
@@ -13,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_nmc_cell_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
+## @ingroup Library-Compoments-Energy-Batteries-Lithium_Ion_NMC 
 def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag): 
     '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
        battery cells. The model uses experimental data performed
@@ -176,7 +176,7 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
 
     return battery    
 
-## @ingroup Methods-Energy-Sources-Lithium_Ion_NMC
+## @ingroup Library-Methods-Energy-Lithium_Ion_NMC
 def compute_nmc_cell_state(battery_data,SOC,T,I):
     """This computes the electrical state variables of a lithium ion 
     battery cell with a  lithium-nickel-cobalt-aluminum oxide cathode 

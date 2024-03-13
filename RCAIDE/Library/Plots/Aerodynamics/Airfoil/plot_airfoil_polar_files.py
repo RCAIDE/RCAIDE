@@ -1,6 +1,6 @@
-## @ingroup Plots-Performance-Aerodynamics-Airfoil   
-# RCAIDE/Plots/Performance/Aerodynamics/Airfoil/plot_airfoil_polar_files.py
-# 
+## @ingroup Library-Plots-Performance-Aerodynamics-Airfoil   
+# RCAIDE/Library/Plots/Performance/Aerodynamics/Airfoil/plot_airfoil_polar_files.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Frameworks.Core import Units
-from RCAIDE.Plots.Common import set_axes, plot_style
+from RCAIDE.Library.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np 
@@ -18,7 +18,7 @@ import numpy as np
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------     
 
-## @ingroup Plots-Performance-Aerodynamics-Airfoil   
+## @ingroup Library-Plots-Performance-Aerodynamics-Airfoil   
 def plot_airfoil_polar_files(polar_data,
                              save_figure = False,
                              save_filename = "Airfoil_Polars",

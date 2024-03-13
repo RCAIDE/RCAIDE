@@ -1,10 +1,8 @@
-## @ingroup Methods-Weights-Buildups-Common
-
-# rotor.py
+## @ingroup Library-Methods-Weights-Buildups-Common 
+# RCAIDE/Library/Methods/Weights/Buildups/Common/compute_rotor_weight.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 #
-# Created:  Jun 2017, J. Smart
-# Modified: Apr 2018, J. Smart
-#           Mar 2020, M. Clarke
+# Created:  Jun 2017, J. Smart 
 
 #-------------------------------------------------------------------------------
 # Imports
@@ -19,7 +17,7 @@ import copy as cp
 # Prop
 #-------------------------------------------------------------------------------
 
-## @ingroup Methods-Weights-Buildups-Common
+## @ingroup Library-Methods-Weights-Buildups-Common
 def compute_rotor_weight(rotor,
          maximum_lifting_thrust,
          chord_to_radius_ratio = 0.1,

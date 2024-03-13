@@ -1,7 +1,6 @@
-## @defgroup External_Interfaces-RCAIDE RCAIDE
-# @ingroup External_Interfaces
+## @defgroup External_Interfaces-RCAIDE RCAIDE 
 # RCAIDE/External_Interfaces/RCAIDE/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

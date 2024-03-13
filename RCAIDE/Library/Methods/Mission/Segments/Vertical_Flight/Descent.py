@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Segments-Hover
 # RCAIDE/Library/Methods/Missions/Segments/Hover/Descent.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
  

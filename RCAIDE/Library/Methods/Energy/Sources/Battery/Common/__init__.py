@@ -1,4 +1,4 @@
-## @defgroup Methods-Energy-Sources-Battery-Common Common
+## @defgroup Library-Methods-Energy-Battery-Common Common
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Common/__init__.py
 # 
 
@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Energy-Sources-Battery
+# @ingroup Library-Methods-Energy-Battery
 
 from .append_initial_battery_conditions     import append_initial_battery_conditions 
 from .compute_net_generated_battery_heat    import compute_net_generated_battery_heat

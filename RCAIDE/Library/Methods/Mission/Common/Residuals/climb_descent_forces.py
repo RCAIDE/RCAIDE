@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Common-Residuals
 # RCAIDE/Library/Methods/Missions/Common/Residuals/climb_descent_unknowns.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -36,7 +36,7 @@ def climb_descent_forces(segment):
     N/A
     """        
 
-    if type(segment) == RCAIDE.Frameworks.Analyses.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb: 
+    if type(segment) == RCAIDE.Frameworks.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb: 
         v       = segment.state.conditions.frames.inertial.velocity_vector
         D       = segment.state.numerics.time.differentiate 
         segment.state.conditions.frames.inertial.acceleration_vector = np.dot(D,v)

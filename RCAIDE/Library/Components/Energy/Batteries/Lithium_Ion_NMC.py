@@ -1,4 +1,4 @@
-## @ingroup Energy-Sources-Batteries
+## @ingroup Library-Compoments-Energy-Batteries
 # RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Ion_LiNiMnCoO2_18650.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -9,8 +9,8 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports
 import RCAIDE
-from RCAIDE.Frameworks.Core                                            import Units , Data
-from .Lithium_Ion_Generic                                   import Lithium_Ion_Generic   
+from RCAIDE.Frameworks.Core                                         import Units , Data
+from .Lithium_Ion_Generic                                           import Lithium_Ion_Generic   
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_NMC  import compute_nmc_cell_performance, update_nmc_cell_age
 
 # package imports 
@@ -21,7 +21,7 @@ from scipy.interpolate  import RegularGridInterpolator
 # ----------------------------------------------------------------------------------------------------------------------
 #  Lithium_Ion_NMC
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Sources-Batteries 
+## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Ion_NMC(Lithium_Ion_Generic):
     """ Specifies discharge/specific energy characteristics specific 
         18650 lithium-nickel-manganese-cobalt-oxide battery cells     

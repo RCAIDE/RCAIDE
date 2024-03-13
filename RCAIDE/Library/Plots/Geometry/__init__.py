@@ -1,6 +1,6 @@
-## @defgroup Plots-Geometry Geometry
-# RCAIDE/Plots/Geometry/__init__.py
-# 
+## @defgroup Library-Plots-Geometry Geometry
+# RCAIDE/Library/Plots/Geometry/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

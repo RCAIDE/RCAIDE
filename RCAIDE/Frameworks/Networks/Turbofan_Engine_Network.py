@@ -1,6 +1,6 @@
 ## @ingroup Networks
 # RCAIDE/Library/Compoments/Energy/Networks/Turbofan_Engine_Network.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 #
 # Created:  Oct 2023, M. Clarke
 # Modified: 
@@ -127,7 +127,8 @@ class Turbofan_Engine_Network(Network):
         results = Data()
         results.thrust_force_vector       = total_thrust
         results.power                     = total_power
-        results.vehicle_mass_rate         = total_mdot     
+        results.vehicle_mass_rate         = total_mdot      
+        results.network_y_axis_rotation   = conditions.ones_row(1) * 0.0
         # -------------------------------------------------- 
         
         return results 

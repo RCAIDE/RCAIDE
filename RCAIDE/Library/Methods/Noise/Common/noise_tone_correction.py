@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Common 
-# RCAIDE/Methods/Noise/Common/noise_tone_correction.py
-# 
+## @ingroup Library-Methods-Noise-Common 
+# RCAIDE/Library/Methods/Noise/Common/noise_tone_correction.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Noise Tone Correction
 # ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Methods-Noise-Common  
+## @ingroup Library-Methods-Noise-Common  
 def noise_tone_correction(SPL):
     """This method calculates de correction for spectral irregularities by means of
         a correction tone factor

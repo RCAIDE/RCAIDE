@@ -1,4 +1,4 @@
-## @ingroup Energy-Sources-Batteries
+## @ingroup Library-Compoments-Energy-Batteries
 # RCAIDE/Library/Compoments/Energy/Sources/Batteries/Battery.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,7 +16,7 @@ from RCAIDE.Library.Components    import Component
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery
 # ----------------------------------------------------------------------------------------------------------------------     
-## @ingroup Library-Components-Energy-Sources-Batteries
+## @ingroup Library-Components-Energy-Batteries
 class Battery(Component):
     """
     Energy Component object that stores energy. Contains values

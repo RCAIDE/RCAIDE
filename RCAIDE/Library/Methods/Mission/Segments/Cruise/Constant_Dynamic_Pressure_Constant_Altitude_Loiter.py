@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Segments-Cruise
 # RCAIDE/Library/Methods/Missions/Segments/Cruise/Constant_Dynamic_Pressure_Constant_Altitude_Loiter.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

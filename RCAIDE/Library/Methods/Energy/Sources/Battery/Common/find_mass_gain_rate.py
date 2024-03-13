@@ -1,4 +1,4 @@
-## @ingroup Methods-Energy-Sources-Battery-Common
+## @ingroup Library-Methods-Energy-Battery-Common
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Common/find_mass_gain_rate.py
 # 
 # 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Sources-Battery-Common
+## @ingroup Library-Methods-Energy-Battery-Common
 def find_mass_gain_rate(battery,power):
     """finds the mass gain rate of the battery from the ambient air
     Assumptions:

@@ -1,6 +1,6 @@
 ## @ingroup Library-Methods-Mission-Common-Residuals
 # RCAIDE/Library/Methods/Missions/Common/Residuals/vertical_flight_forces.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  

@@ -1,4 +1,4 @@
-## @ingroup Energy-Sources-Batteries
+## @ingroup Library-Compoments-Energy-Batteries
 # RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Ion_LiFePO4_18650.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -19,7 +19,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Lithium_Ion_LFP
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Sources-Batteries 
+## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Ion_LFP(Lithium_Ion_Generic):
     """ Specifies discharge/specific energy characteristics specific 
         18650 lithium-iron-phosphate-oxide battery cells.     

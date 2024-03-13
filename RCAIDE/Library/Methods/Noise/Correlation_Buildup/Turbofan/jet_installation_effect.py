@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Engine 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Engine/jet_installation_effect.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine 
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/jet_installation_effect.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------     
 #  Jet Installation Effect
 # ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Methods-Noise-Correlation_Buildup-Engine
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine
 def jet_installation_effect(Xe,Ye,Ce,theta_s,Diameter_mixed):
     """This calculates the installation effect, in decibels, to be added to the predicted secondary jet noise level.
     

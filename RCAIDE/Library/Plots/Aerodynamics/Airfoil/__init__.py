@@ -1,6 +1,6 @@
-## @defgroup Plots-Performance-Aerodynamics-Airfoil Airfoil 
-# RCAIDE/Plots/Performance/Aerodynamics/Airfoil/__init__.py
-# 
+## @defgroup Library-Plots-Performance-Aerodynamics-Airfoil Airfoil 
+# RCAIDE/Library/Plots/Performance/Aerodynamics/Airfoil/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

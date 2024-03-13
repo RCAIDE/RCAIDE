@@ -1,4 +1,4 @@
-## @ingroup Methods-Energy-Sources-Battery-Common
+## @ingroup Library-Methods-Energy-Battery-Common
 # RCAIDE/Library/Methods/Energy/Sources/Battery/Common/initialize_from_circuit_configuration.py
 # 
 # 
@@ -13,7 +13,7 @@ from RCAIDE.Frameworks.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Sources-Battery-Common
+## @ingroup Library-Methods-Energy-Battery-Common
 def initialize_from_circuit_configuration(battery,module_weight_factor = 1.42):  
     """Calculate pack level properties of battery using cell 
     properties and module configuraton

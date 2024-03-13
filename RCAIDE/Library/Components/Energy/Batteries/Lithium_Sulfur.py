@@ -1,4 +1,4 @@
-## @ingroup Energy-Sources-Batteries
+## @ingroup Library-Compoments-Energy-Batteries
 # RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Sulfur.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,7 +15,7 @@ from . import Battery
 # ----------------------------------------------------------------------------------------------------------------------
 #  Lithium_Sulfur
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Sources-Batteries 
+## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Sulfur(Battery):
     """
     Specifies discharge/specific energy characteristics specific to

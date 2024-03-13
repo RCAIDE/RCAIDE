@@ -1,6 +1,6 @@
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe 
-# RCAIDE/Methods/Noise/Correlation_Buildup/Airframe/trailing_edge_flap_noise.py
-# 
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe 
+# RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/trailing_edge_flap_noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -14,7 +14,7 @@ from RCAIDE.Frameworks.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------  
 # Compute the trailing edge flap noise
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Noise-Correlation_Buildup-Airframe
+## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe
 def trailing_edge_flap_noise(Sf,cf,deltaf,slots,velocity,M,phi,theta,distance,frequency):
     """ This calculates the noise from the flap trailing edge as a 1/3 octave band sound pressure level.
 

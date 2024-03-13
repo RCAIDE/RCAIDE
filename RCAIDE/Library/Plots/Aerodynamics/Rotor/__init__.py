@@ -1,6 +1,6 @@
-## @defgroup Plots-Performance-Aerodynamics-Rotor Rotor 
-# RCAIDE/Plots/Performance/Aerodynamics/Rotor/__init__.py
-# 
+## @defgroup Library-Plots-Performance-Aerodynamics-Rotor Rotor 
+# RCAIDE/Library/Plots/Performance/Aerodynamics/Rotor/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """
