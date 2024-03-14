@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Frameworks.Core import Data   
+from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Ram                import compute_ram_performance
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Combustor          import compute_combustor_performance
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compressor         import compute_compressor_performance

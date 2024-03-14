@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports  
-from RCAIDE.Frameworks.Core import Units, Data
+from RCAIDE.Framework.Core import Units, Data
 
 # package imports 
 from scipy.interpolate import griddata

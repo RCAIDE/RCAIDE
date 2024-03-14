@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE 
-from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic                                 import SPL_arithmetic  
 from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.BPM_boundary_layer_properties import BPM_boundary_layer_properties
 from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise        import LBL_VS_broadband_noise

@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 import RCAIDE
-from RCAIDE.Frameworks.Core import Units, Data
+from RCAIDE.Framework.Core import Units, Data
 from scipy.interpolate import griddata
 import numpy as np
 from geopy.distance import geodesic as GD

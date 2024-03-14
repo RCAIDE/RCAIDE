@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 import RCAIDE
-from RCAIDE.Frameworks.Core   import interp2d
+from RCAIDE.Framework.Core   import interp2d
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil    import compute_airfoil_properties, compute_naca_4series, import_airfoil_geometry
 
 # package imports 
@@ -68,7 +68,7 @@ def design_propeller(prop,number_of_stations=20):
         V = 1E-6 
         
     # Calculate atmospheric properties
-    atmosphere     = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere     = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data      = atmosphere.compute_values(alt) 
     T              = atmo_data.temperature[0]
     rho            = atmo_data.density[0]

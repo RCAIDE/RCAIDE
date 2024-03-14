@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
  # RCAIDE imports 
-from RCAIDE.Frameworks.Core                import Units , Data  
+from RCAIDE.Framework.Core                import Units , Data
 from .angle_of_attack_effect    import angle_of_attack_effect
 from .external_plug_effect      import external_plug_effect
 from .ground_proximity_effect   import ground_proximity_effect

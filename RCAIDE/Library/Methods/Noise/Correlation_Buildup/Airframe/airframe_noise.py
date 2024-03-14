@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE Imports
-from RCAIDE.Frameworks.Core                      import Data , Units
+from RCAIDE.Framework.Core                      import Data , Units
 
 from .clean_wing_noise             import clean_wing_noise
 from .landing_gear_noise           import landing_gear_noise

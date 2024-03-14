@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core import Data
+from RCAIDE.Framework.Core import Data
 from .Rotor import Rotor
 
 # package imports 

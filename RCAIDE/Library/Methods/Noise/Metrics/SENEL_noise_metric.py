@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic   import SPL_arithmetic
 from RCAIDE.Library.Methods.Noise.Common.background_noise     import background_noise
 

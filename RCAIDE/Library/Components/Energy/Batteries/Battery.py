@@ -10,7 +10,7 @@
 
  # RCAIDE imports
 import RCAIDE
-from RCAIDE.Frameworks.Core          import Data 
+from RCAIDE.Framework.Core          import Data
 from RCAIDE.Library.Components    import Component   
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core  import  angles_to_dcms, orientation_product, orientation_transpose
+from RCAIDE.Framework.Core  import  angles_to_dcms, orientation_product, orientation_transpose
 
 # package imports 
 import numpy as np

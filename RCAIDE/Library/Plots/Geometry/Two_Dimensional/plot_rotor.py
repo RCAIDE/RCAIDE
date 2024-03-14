@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Frameworks.Core import Units
+from RCAIDE.Framework.Core import Units
 
 from plotly.subplots import make_subplots
 import pandas as pd

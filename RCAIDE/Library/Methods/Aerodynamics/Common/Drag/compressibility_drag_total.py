@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports   
-from RCAIDE.Frameworks.Core import Data 
+from RCAIDE.Framework.Core import Data
 from .wave_drag  import wave_drag 
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_volume_raymer import wave_drag_volume_raymer
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.wave_drag_volume_sears_haack import wave_drag_volume_sears_haack

@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core       import Data, Container, ContainerOrdered
+from RCAIDE.Framework.Core       import Data, Container, ContainerOrdered
 from RCAIDE.Library.Components import Component, Lofted_Body 
 
 # package imports 

@@ -10,8 +10,8 @@
  
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Frameworks.Core                                                           import Units, Data   
-from RCAIDE.Frameworks.Optimization.Common                                            import Nexus       
+from RCAIDE.Framework.Core                                                           import Units, Data
+from RCAIDE.Framework.Optimization.Common                                            import Nexus
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.blade_geometry_setup    import blade_geometry_setup
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.procedure_setup         import procedure_setup
 

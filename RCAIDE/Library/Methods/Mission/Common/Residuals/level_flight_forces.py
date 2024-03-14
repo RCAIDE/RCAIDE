@@ -39,7 +39,7 @@ def level_flight_forces(segment):
         a       = one_row(3)*0
         a[:,0]  = ax 
         segment.state.conditions.frames.inertial.acceleration_vector = a
-    elif type(segment) == RCAIDE.Frameworks.Mission.Segments.Cruise.Constant_Pitch_Rate_Constant_Altitude:  
+    elif type(segment) == RCAIDE.Framework.Mission.Segments.Cruise.Constant_Pitch_Rate_Constant_Altitude:  
         v  = segment.state.conditions.frames.inertial.velocity_vector
         D  = segment.state.numerics.time.differentiate   
         segment.state.conditions.frames.inertial.acceleration_vector =  np.dot(D,v)

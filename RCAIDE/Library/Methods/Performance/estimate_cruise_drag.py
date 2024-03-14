@@ -39,7 +39,7 @@ def estimate_cruise_drag(vehicle,altitude,speed,lift_coefficient = 0.5 ,profile_
             Drag                            cruise drag              [N]
     """ 
        
-    atmo = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+    atmo = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     rho  = atmo.compute_values(altitude,0.).density[0][0]  
     S    = vehicle.reference_area                     # reference area   
     AR   = vehicle.wings.main_wing.aspect_ratio       # aspect ratio  

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE tmports  
-from RCAIDE.Frameworks.Core  import  Data 
+from RCAIDE.Framework.Core  import  Data
 
 # Python package imports   
 import numpy as np   

@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE  
-from RCAIDE.Frameworks.Core import   orientation_product 
+from RCAIDE.Framework.Core import   orientation_product
 from RCAIDE.Library.Methods.Mission.Common.Update.forces import forces
  
 # ----------------------------------------------------------------------------------------------------------------------

@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports  
-from RCAIDE.Frameworks.Core      import Units 
+from RCAIDE.Framework.Core      import Units
 
 # Python package imports
 import numpy as np

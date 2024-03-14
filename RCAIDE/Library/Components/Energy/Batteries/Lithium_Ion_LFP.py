@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core          import Units  
+from RCAIDE.Framework.Core          import Units
 from .Lithium_Ion_Generic import Lithium_Ion_Generic 
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_LFP  import compute_lfp_cell_performance 
 

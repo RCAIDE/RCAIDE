@@ -9,7 +9,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports  
-from RCAIDE.Frameworks.Core      import Data, Units 
+from RCAIDE.Framework.Core      import Data, Units
 from .                import Propulsor
 
 import numpy as np 

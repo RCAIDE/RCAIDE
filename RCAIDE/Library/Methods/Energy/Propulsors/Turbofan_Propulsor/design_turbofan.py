@@ -32,7 +32,7 @@ def design_turbofan(turbofan):
         raise NameError('The sizing conditions require an altitude and a Mach number') 
     else:
         #call the atmospheric model to get the conditions at the specified altitude
-        atmosphere = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+        atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
         atmo_data  = atmosphere.compute_values(turbofan.design_altitude,turbofan.design_isa_deviation)
         planet     = RCAIDE.Library.Attributes.Planets.Earth()
         
@@ -43,7 +43,7 @@ def design_turbofan(turbofan):
         mu  = atmo_data.dynamic_viscosity           
     
         # setup conditions
-        conditions = RCAIDE.Frameworks.Mission.Common.Results()
+        conditions = RCAIDE.Framework.Mission.Common.Results()
     
         # freestream conditions    
         conditions.freestream.altitude                    = np.atleast_1d(turbofan.design_altitude)
@@ -187,7 +187,7 @@ def design_turbofan(turbofan):
     
     
     # Static Sea Level Thrust  
-    atmosphere_sls = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere_sls = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data = atmosphere_sls.compute_values(0.0,0.0)
     
     p   = atmo_data.pressure          
@@ -198,7 +198,7 @@ def design_turbofan(turbofan):
 
 
     # setup conditions
-    conditions_sls = RCAIDE.Frameworks.Mission.Common.Results()
+    conditions_sls = RCAIDE.Framework.Mission.Common.Results()
 
     # freestream conditions    
     conditions_sls.freestream.altitude                    = np.atleast_1d(0)

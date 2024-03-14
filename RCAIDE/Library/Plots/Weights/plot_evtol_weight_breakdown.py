@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from  RCAIDE.Frameworks.Core import Units   
+from  RCAIDE.Framework.Core import Units
 import numpy as np    
 import matplotlib.pyplot as plt  
 import matplotlib.cm as cm   

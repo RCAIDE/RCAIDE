@@ -55,7 +55,7 @@ def energy(segment):
                     battery_conditions = conditions[bus.tag][battery.tag]
                     if segment.state.initials:  
                         battery_initials                                        = segment.state.initials.conditions.energy[bus.tag][battery.tag]  
-                        if type(segment) ==  RCAIDE.Frameworks.Mission.Segments.Ground.Battery_Recharge:             
+                        if type(segment) ==  RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:             
                             battery_conditions.battery_discharge_flag           = False 
                         else:                   
                             battery_conditions.battery_discharge_flag           = True             

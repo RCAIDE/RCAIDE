@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
 import RCAIDE 
-from RCAIDE.Frameworks.Core  import Data 
+from RCAIDE.Framework.Core  import Data
 
 def pre_process(mission): 
     for tag,segment in mission.segments.items():     

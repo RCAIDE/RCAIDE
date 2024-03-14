@@ -12,7 +12,7 @@
 # package imports 
 import numpy as np
 
-from RCAIDE.Frameworks.Core                                                 import  Data
+from RCAIDE.Framework.Core                                                 import  Data
 from RCAIDE.Library.Components.Wings                                     import All_Moving_Surface
 from RCAIDE.Library.Components.Fuselages                                 import Fuselage
 from RCAIDE.Library.Components.Nacelles                                  import Nacelle

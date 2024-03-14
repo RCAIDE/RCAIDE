@@ -57,7 +57,7 @@ def append_initial_battery_conditions(segment,bus,battery):
         None
     """       
     # compute ambient conditions
-    atmosphere    = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     alt           = -segment.conditions.frames.inertial.position_vector[:,2] 
     if segment.temperature_deviation != None:
         temp_dev = segment.temperature_deviation    
@@ -66,7 +66,7 @@ def append_initial_battery_conditions(segment,bus,battery):
     battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag] 
     
     # Set if it is a discharge segment
-    if type(segment) ==  RCAIDE.Frameworks.Mission.Segments.Ground.Battery_Recharge:  
+    if type(segment) ==  RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:  
         segment.state.conditions.energy.recharging  = True 
     else:
         segment.state.conditions.energy.recharging  = False 

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE Imports 
-from RCAIDE.Frameworks.Core import  Data  
+from RCAIDE.Framework.Core import  Data
 from RCAIDE.Library.Components.Component import Container 
 from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic                        import SPL_arithmetic  
 from RCAIDE.Library.Methods.Noise.Common.compute_noise_source_coordinates          import compute_rotor_point_source_coordinates

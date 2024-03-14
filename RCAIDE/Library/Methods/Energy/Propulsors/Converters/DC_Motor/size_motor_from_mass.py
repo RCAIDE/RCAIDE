@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
-from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Framework.Core import Units
 
 ## @ingroup Methods-Energy-Propulsors-Converters-Motor
 def size_motor_from_mass(motor):

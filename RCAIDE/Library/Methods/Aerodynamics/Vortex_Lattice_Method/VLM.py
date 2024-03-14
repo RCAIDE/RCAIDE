@@ -11,7 +11,7 @@
 
 # package imports 
 import numpy as np 
-from RCAIDE.Frameworks.Core import Data
+from RCAIDE.Framework.Core import Data
 from .compute_wing_induced_velocity      import compute_wing_induced_velocity
 from .generate_vortex_distribution       import generate_vortex_distribution 
 from .compute_RHS_matrix                 import compute_RHS_matrix 

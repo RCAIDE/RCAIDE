@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports 
-from RCAIDE.Frameworks.Core.Arrays  import atleast_2d_col 
+from RCAIDE.Framework.Core.Arrays  import atleast_2d_col
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Differentials

@@ -10,7 +10,7 @@
 
 # RCAIDE
 import RCAIDE
-from RCAIDE.Frameworks.Core                                            import Units, Data 
+from RCAIDE.Framework.Core                                            import Units, Data
 from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_fuselage_weight
 from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_boom_weight
 from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_rotor_weight

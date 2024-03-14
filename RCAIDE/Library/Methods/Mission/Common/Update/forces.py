@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core  import  orientation_product  
+from RCAIDE.Framework.Core  import  orientation_product
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Forces
