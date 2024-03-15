@@ -37,3 +37,21 @@ def gravity(segment):
     segment.state.conditions.freestream.gravity[:,0] = g[:,0]
 
     return 
+
+
+def _gravity(State, Settings, System):
+	'''
+	Framework version of gravity.
+	Wraps gravity with State, Settings, System pack/unpack.
+	Please see gravity documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = gravity('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

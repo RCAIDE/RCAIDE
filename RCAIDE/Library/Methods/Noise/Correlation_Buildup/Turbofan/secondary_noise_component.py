@@ -67,3 +67,31 @@ def secondary_noise_component(Velocity_primary,theta_s,sound_ambient,Velocity_se
 
     return SPL_s 
 
+
+
+
+def _secondary_noise_component(State, Settings, System):
+	'''
+	Framework version of secondary_noise_component.
+	Wraps secondary_noise_component with State, Settings, System pack/unpack.
+	Please see secondary_noise_component documentation for more details.
+	'''
+
+	#TODO: Velocity_primary   = [Replace With State, Settings, or System Attribute]
+	#TODO: theta_s            = [Replace With State, Settings, or System Attribute]
+	#TODO: sound_ambient      = [Replace With State, Settings, or System Attribute]
+	#TODO: Velocity_secondary = [Replace With State, Settings, or System Attribute]
+	#TODO: Velocity_aircraft  = [Replace With State, Settings, or System Attribute]
+	#TODO: Area_primary       = [Replace With State, Settings, or System Attribute]
+	#TODO: Area_secondary     = [Replace With State, Settings, or System Attribute]
+	#TODO: DSPL_s             = [Replace With State, Settings, or System Attribute]
+	#TODO: EX_s               = [Replace With State, Settings, or System Attribute]
+	#TODO: Str_s              = [Replace With State, Settings, or System Attribute]
+
+	results = secondary_noise_component('Velocity_primary', 'theta_s', 'sound_ambient', 'Velocity_secondary', 'Velocity_aircraft', 'Area_primary', 'Area_secondary', 'DSPL_s', 'EX_s', 'Str_s')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

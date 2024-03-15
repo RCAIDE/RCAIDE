@@ -69,3 +69,22 @@ def aerodynamics(segment):
     conditions.aerodynamics.coefficients.drag     = CD
     conditions.frames.wind.lift_force_vector[:,:] = L[:,:] # z-axis
     conditions.frames.wind.drag_force_vector[:,:] = D[:,:] # x-axis
+
+
+
+def _aerodynamics(State, Settings, System):
+	'''
+	Framework version of aerodynamics.
+	Wraps aerodynamics with State, Settings, System pack/unpack.
+	Please see aerodynamics documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = aerodynamics('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

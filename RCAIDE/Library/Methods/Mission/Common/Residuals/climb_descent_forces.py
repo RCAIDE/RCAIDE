@@ -53,3 +53,22 @@ def climb_descent_forces(segment):
         segment.state.residuals.force_z[:,0] = FT[:,2]/m[:,0] - a[:,2]   
 
     return
+
+
+
+def _climb_descent_forces(State, Settings, System):
+	'''
+	Framework version of climb_descent_forces.
+	Wraps climb_descent_forces with State, Settings, System pack/unpack.
+	Please see climb_descent_forces documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = climb_descent_forces('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

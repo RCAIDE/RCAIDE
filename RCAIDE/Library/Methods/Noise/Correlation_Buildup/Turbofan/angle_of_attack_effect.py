@@ -41,3 +41,24 @@ def angle_of_attack_effect(AoA,Mach_aircraft,theta_m):
     ATK_m = 0.5*AoA*Mach_aircraft*((1.8*theta_m/np.pi)-0.6)**2
 
     return ATK_m
+
+
+
+def _angle_of_attack_effect(State, Settings, System):
+	'''
+	Framework version of angle_of_attack_effect.
+	Wraps angle_of_attack_effect with State, Settings, System pack/unpack.
+	Please see angle_of_attack_effect documentation for more details.
+	'''
+
+	#TODO: AoA           = [Replace With State, Settings, or System Attribute]
+	#TODO: Mach_aircraft = [Replace With State, Settings, or System Attribute]
+	#TODO: theta_m       = [Replace With State, Settings, or System Attribute]
+
+	results = angle_of_attack_effect('AoA', 'Mach_aircraft', 'theta_m')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

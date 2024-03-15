@@ -79,3 +79,22 @@ def set_optimized_parameters(rotor,optimization_problem):
     rotor.blade_solidity                    = optimal_hover_rotor.blade_solidity   
     
     return rotor 
+
+
+def _set_optimized_parameters(State, Settings, System):
+	'''
+	Framework version of set_optimized_parameters.
+	Wraps set_optimized_parameters with State, Settings, System pack/unpack.
+	Please see set_optimized_parameters documentation for more details.
+	'''
+
+	#TODO: rotor                = [Replace With State, Settings, or System Attribute]
+	#TODO: optimization_problem = [Replace With State, Settings, or System Attribute]
+
+	results = set_optimized_parameters('rotor', 'optimization_problem')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -112,3 +112,25 @@ def rotor_noise(rotor,aeroacoustic_data,segment,settings):
     
     # A-weighted 
     return Results
+
+
+
+def _rotor_noise(State, Settings, System):
+	'''
+	Framework version of rotor_noise.
+	Wraps rotor_noise with State, Settings, System pack/unpack.
+	Please see rotor_noise documentation for more details.
+	'''
+
+	#TODO: rotor             = [Replace With State, Settings, or System Attribute]
+	#TODO: aeroacoustic_data = [Replace With State, Settings, or System Attribute]
+	#TODO: segment           = [Replace With State, Settings, or System Attribute]
+	#TODO: settings          = [Replace With State, Settings, or System Attribute]
+
+	results = rotor_noise('rotor', 'aeroacoustic_data', 'segment', 'settings')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

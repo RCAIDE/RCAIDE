@@ -147,3 +147,23 @@ def induced_drag_aircraft(state,settings,geometry):
     conditions.aerodynamics.drag_breakdown.induced.viscous_wings_drag       = wing_viscous_induced_drags
     
     return total_induced_drag
+
+
+def _induced_drag_aircraft(State, Settings, System):
+	'''
+	Framework version of induced_drag_aircraft.
+	Wraps induced_drag_aircraft with State, Settings, System pack/unpack.
+	Please see induced_drag_aircraft documentation for more details.
+	'''
+
+	#TODO: state    = [Replace With State, Settings, or System Attribute]
+	#TODO: settings = [Replace With State, Settings, or System Attribute]
+	#TODO: geometry = [Replace With State, Settings, or System Attribute]
+
+	results = induced_drag_aircraft('state', 'settings', 'geometry')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -69,3 +69,23 @@ def size_core(turbofan,conditions):
     turbofan.compressor_nondimensional_massflow  = mdhc
 
     return  
+
+
+
+def _size_core(State, Settings, System):
+	'''
+	Framework version of size_core.
+	Wraps size_core with State, Settings, System pack/unpack.
+	Please see size_core documentation for more details.
+	'''
+
+	#TODO: turbofan   = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+
+	results = size_core('turbofan', 'conditions')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

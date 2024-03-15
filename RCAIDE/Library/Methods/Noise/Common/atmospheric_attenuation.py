@@ -52,3 +52,23 @@ def atmospheric_attenuation(dist,center_frequencies):
     
     return delta_spl
 
+
+
+
+def _atmospheric_attenuation(State, Settings, System):
+	'''
+	Framework version of atmospheric_attenuation.
+	Wraps atmospheric_attenuation with State, Settings, System pack/unpack.
+	Please see atmospheric_attenuation documentation for more details.
+	'''
+
+	#TODO: dist               = [Replace With State, Settings, or System Attribute]
+	#TODO: center_frequencies = [Replace With State, Settings, or System Attribute]
+
+	results = atmospheric_attenuation('dist', 'center_frequencies')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

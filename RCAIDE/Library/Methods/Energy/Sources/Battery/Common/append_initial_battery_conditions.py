@@ -99,3 +99,23 @@ def append_initial_battery_conditions(segment,bus,battery):
     return 
     
  
+
+
+def _append_initial_battery_conditions(State, Settings, System):
+	'''
+	Framework version of append_initial_battery_conditions.
+	Wraps append_initial_battery_conditions with State, Settings, System pack/unpack.
+	Please see append_initial_battery_conditions documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+	#TODO: bus     = [Replace With State, Settings, or System Attribute]
+	#TODO: battery = [Replace With State, Settings, or System Attribute]
+
+	results = append_initial_battery_conditions('segment', 'bus', 'battery')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

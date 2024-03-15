@@ -288,3 +288,46 @@ def objective(x,airfoils,a_loc,RE,Cl,N):
     # compute Cl residual    
     Cl_residuals = Cl_vals - Cl 
     return  Cl_residuals 
+
+
+
+def _design_propeller(State, Settings, System):
+	'''
+	Framework version of design_propeller.
+	Wraps design_propeller with State, Settings, System pack/unpack.
+	Please see design_propeller documentation for more details.
+	'''
+
+	#TODO: prop               = [Replace With State, Settings, or System Attribute]
+	#TODO: number_of_stations = [Replace With State, Settings, or System Attribute]
+
+	results = design_propeller('prop', 'number_of_stations')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _objective(State, Settings, System):
+	'''
+	Framework version of objective.
+	Wraps objective with State, Settings, System pack/unpack.
+	Please see objective documentation for more details.
+	'''
+
+	#TODO: x        = [Replace With State, Settings, or System Attribute]
+	#TODO: airfoils = [Replace With State, Settings, or System Attribute]
+	#TODO: a_loc    = [Replace With State, Settings, or System Attribute]
+	#TODO: RE       = [Replace With State, Settings, or System Attribute]
+	#TODO: Cl       = [Replace With State, Settings, or System Attribute]
+	#TODO: N        = [Replace With State, Settings, or System Attribute]
+
+	results = objective('x', 'airfoils', 'a_loc', 'RE', 'Cl', 'N')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

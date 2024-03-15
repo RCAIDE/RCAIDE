@@ -69,3 +69,21 @@ def EPNL_noise_metric(PNLT):
         EPNL[j] = PNLT_max[j]+duration_correction
     
     return EPNL   
+
+
+def _EPNL_noise_metric(State, Settings, System):
+	'''
+	Framework version of EPNL_noise_metric.
+	Wraps EPNL_noise_metric with State, Settings, System pack/unpack.
+	Please see EPNL_noise_metric documentation for more details.
+	'''
+
+	#TODO: PNLT = [Replace With State, Settings, or System Attribute]
+
+	results = EPNL_noise_metric('PNLT',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -164,3 +164,23 @@ def optimization_setup(rotor,number_of_stations,print_iterations):
     nexus.results.oei    = Data()
     
     return nexus   
+
+
+def _optimization_setup(State, Settings, System):
+	'''
+	Framework version of optimization_setup.
+	Wraps optimization_setup with State, Settings, System pack/unpack.
+	Please see optimization_setup documentation for more details.
+	'''
+
+	#TODO: rotor              = [Replace With State, Settings, or System Attribute]
+	#TODO: number_of_stations = [Replace With State, Settings, or System Attribute]
+	#TODO: print_iterations   = [Replace With State, Settings, or System Attribute]
+
+	results = optimization_setup('rotor', 'number_of_stations', 'print_iterations')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

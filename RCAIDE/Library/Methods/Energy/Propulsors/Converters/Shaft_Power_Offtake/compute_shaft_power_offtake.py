@@ -59,3 +59,22 @@ def compute_shaft_power_offtake(self, state):
         self.outputs.work_done[mdot_core == 0] = 0
         
     return 
+
+
+def _compute_shaft_power_offtake(State, Settings, System):
+	'''
+	Framework version of compute_shaft_power_offtake.
+	Wraps compute_shaft_power_offtake with State, Settings, System pack/unpack.
+	Please see compute_shaft_power_offtake documentation for more details.
+	'''
+
+	#TODO: self  = [Replace With State, Settings, or System Attribute]
+	#TODO: state = [Replace With State, Settings, or System Attribute]
+
+	results = compute_shaft_power_offtake('self', 'state')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -215,3 +215,45 @@ def compute_nmc_cell_state(battery_data,SOC,T,I):
     V_ul           = np.atleast_2d(battery_data.Voltage(pts)[:,1]).T  
     
     return V_ul
+
+
+def _compute_nmc_cell_performance(State, Settings, System):
+	'''
+	Framework version of compute_nmc_cell_performance.
+	Wraps compute_nmc_cell_performance with State, Settings, System pack/unpack.
+	Please see compute_nmc_cell_performance documentation for more details.
+	'''
+
+	#TODO: battery                = [Replace With State, Settings, or System Attribute]
+	#TODO: state                  = [Replace With State, Settings, or System Attribute]
+	#TODO: bus                    = [Replace With State, Settings, or System Attribute]
+	#TODO: battery_discharge_flag = [Replace With State, Settings, or System Attribute]
+
+	results = compute_nmc_cell_performance('battery', 'state', 'bus', 'battery_discharge_flag')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _compute_nmc_cell_state(State, Settings, System):
+	'''
+	Framework version of compute_nmc_cell_state.
+	Wraps compute_nmc_cell_state with State, Settings, System pack/unpack.
+	Please see compute_nmc_cell_state documentation for more details.
+	'''
+
+	#TODO: battery_data = [Replace With State, Settings, or System Attribute]
+	#TODO: SOC          = [Replace With State, Settings, or System Attribute]
+	#TODO: T            = [Replace With State, Settings, or System Attribute]
+	#TODO: I            = [Replace With State, Settings, or System Attribute]
+
+	results = compute_nmc_cell_state('battery_data', 'SOC', 'T', 'I')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

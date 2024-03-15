@@ -182,3 +182,57 @@ def update_differentials(segment):
     conditions.freestream.altitude[:,0]             =  alt[:,0]  
 
     return
+
+
+def _initialize_conditions_unpack_unknowns(State, Settings, System):
+	'''
+	Framework version of initialize_conditions_unpack_unknowns.
+	Wraps initialize_conditions_unpack_unknowns with State, Settings, System pack/unpack.
+	Please see initialize_conditions_unpack_unknowns documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = initialize_conditions_unpack_unknowns('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _residual_altitude(State, Settings, System):
+	'''
+	Framework version of residual_altitude.
+	Wraps residual_altitude with State, Settings, System pack/unpack.
+	Please see residual_altitude documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = residual_altitude('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _update_differentials(State, Settings, System):
+	'''
+	Framework version of update_differentials.
+	Wraps update_differentials with State, Settings, System pack/unpack.
+	Please see update_differentials documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = update_differentials('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

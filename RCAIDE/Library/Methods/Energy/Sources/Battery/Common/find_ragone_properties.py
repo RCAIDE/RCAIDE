@@ -56,3 +56,24 @@ def find_ragone_properties(specific_energy, battery, energy, power):
     
     #can used for a simple optimization
     return battery.mass_properties.mass 
+
+
+def _find_ragone_properties(State, Settings, System):
+	'''
+	Framework version of find_ragone_properties.
+	Wraps find_ragone_properties with State, Settings, System pack/unpack.
+	Please see find_ragone_properties documentation for more details.
+	'''
+
+	#TODO: specific_energy = [Replace With State, Settings, or System Attribute]
+	#TODO: battery         = [Replace With State, Settings, or System Attribute]
+	#TODO: energy          = [Replace With State, Settings, or System Attribute]
+	#TODO: power           = [Replace With State, Settings, or System Attribute]
+
+	results = find_ragone_properties('specific_energy', 'battery', 'energy', 'power')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

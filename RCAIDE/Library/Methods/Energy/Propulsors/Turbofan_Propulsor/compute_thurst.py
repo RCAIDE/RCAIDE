@@ -137,3 +137,23 @@ def compute_thrust(turbofan,conditions,throttle = 1.0):
     turbofan.outputs.specific_impulse                  = Isp
     
     return  
+
+
+def _compute_thrust(State, Settings, System):
+	'''
+	Framework version of compute_thrust.
+	Wraps compute_thrust with State, Settings, System pack/unpack.
+	Please see compute_thrust documentation for more details.
+	'''
+
+	#TODO: turbofan   = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+	#TODO: throttle   = [Replace With State, Settings, or System Attribute]
+
+	results = compute_thrust('turbofan', 'conditions', 'throttle')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

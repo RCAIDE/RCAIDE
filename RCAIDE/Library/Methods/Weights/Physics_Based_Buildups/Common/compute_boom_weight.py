@@ -50,3 +50,23 @@ def compute_boom_weight(boom,
     weight = S_wet *thickness* density 
     
     return weight
+
+
+def _compute_boom_weight(State, Settings, System):
+	'''
+	Framework version of compute_boom_weight.
+	Wraps compute_boom_weight with State, Settings, System pack/unpack.
+	Please see compute_boom_weight documentation for more details.
+	'''
+
+	#TODO: boom           = [Replace With State, Settings, or System Attribute]
+	#TODO: maximum_g_load = [Replace With State, Settings, or System Attribute]
+	#TODO: safety_factor  = [Replace With State, Settings, or System Attribute]
+
+	results = compute_boom_weight('boom', 'maximum_g_load', 'safety_factor')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

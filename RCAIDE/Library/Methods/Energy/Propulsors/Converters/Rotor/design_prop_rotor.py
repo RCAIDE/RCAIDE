@@ -73,3 +73,27 @@ def design_prop_rotor(rotor,number_of_stations = 20,solver_name= 'SLSQP',iterati
      
     return rotor
    
+
+
+def _design_prop_rotor(State, Settings, System):
+	'''
+	Framework version of design_prop_rotor.
+	Wraps design_prop_rotor with State, Settings, System pack/unpack.
+	Please see design_prop_rotor documentation for more details.
+	'''
+
+	#TODO: rotor              = [Replace With State, Settings, or System Attribute]
+	#TODO: number_of_stations = [Replace With State, Settings, or System Attribute]
+	#TODO: solver_name        = [Replace With State, Settings, or System Attribute]
+	#TODO: iterations         = [Replace With State, Settings, or System Attribute]
+	#TODO: solver_sense_step  = [Replace With State, Settings, or System Attribute]
+	#TODO: solver_tolerance   = [Replace With State, Settings, or System Attribute]
+	#TODO: print_iterations   = [Replace With State, Settings, or System Attribute]
+
+	results = design_prop_rotor('rotor', 'number_of_stations', 'solver_name', 'iterations', 'solver_sense_step', 'solver_tolerance', 'print_iterations')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

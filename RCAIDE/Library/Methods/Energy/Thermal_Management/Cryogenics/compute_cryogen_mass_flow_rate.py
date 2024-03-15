@@ -88,3 +88,25 @@ def compute_cryogen_mass_flow_rate(cryogen,cryogen_temp,equipment_temp,cooling_r
 
     # Return mass flow rate of the cryogen         
     return mdot
+
+
+def _compute_cryogen_mass_flow_rate(State, Settings, System):
+	'''
+	Framework version of compute_cryogen_mass_flow_rate.
+	Wraps compute_cryogen_mass_flow_rate with State, Settings, System pack/unpack.
+	Please see compute_cryogen_mass_flow_rate documentation for more details.
+	'''
+
+	#TODO: cryogen          = [Replace With State, Settings, or System Attribute]
+	#TODO: cryogen_temp     = [Replace With State, Settings, or System Attribute]
+	#TODO: equipment_temp   = [Replace With State, Settings, or System Attribute]
+	#TODO: cooling_required = [Replace With State, Settings, or System Attribute]
+	#TODO: pressure         = [Replace With State, Settings, or System Attribute]
+
+	results = compute_cryogen_mass_flow_rate('cryogen', 'cryogen_temp', 'equipment_temp', 'cooling_required', 'pressure')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

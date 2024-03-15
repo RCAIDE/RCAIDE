@@ -36,3 +36,21 @@ def battery_age(segment):
                     increment_day = segment.increment_battery_age_by_one_day
                     battery_conditions  = segment.conditions.energy[bus.tag][battery.tag] 
                     battery.update_battery_age(battery_conditions,increment_battery_age_by_one_day = increment_day) 
+
+
+def _battery_age(State, Settings, System):
+	'''
+	Framework version of battery_age.
+	Wraps battery_age with State, Settings, System pack/unpack.
+	Please see battery_age documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = battery_age('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

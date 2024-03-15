@@ -167,3 +167,76 @@ def update_velocity_vector_from_wind_angle(segment):
     conditions.frames.inertial.velocity_vector[:,2] = v_z[:,0]
 
     return conditions
+
+
+
+def _unpack_body_angle(State, Settings, System):
+	'''
+	Framework version of unpack_body_angle.
+	Wraps unpack_body_angle with State, Settings, System pack/unpack.
+	Please see unpack_body_angle documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = unpack_body_angle('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _initialize_conditions(State, Settings, System):
+	'''
+	Framework version of initialize_conditions.
+	Wraps initialize_conditions with State, Settings, System pack/unpack.
+	Please see initialize_conditions documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = initialize_conditions('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _update_differentials_altitude(State, Settings, System):
+	'''
+	Framework version of update_differentials_altitude.
+	Wraps update_differentials_altitude with State, Settings, System pack/unpack.
+	Please see update_differentials_altitude documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = update_differentials_altitude('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _update_velocity_vector_from_wind_angle(State, Settings, System):
+	'''
+	Framework version of update_velocity_vector_from_wind_angle.
+	Wraps update_velocity_vector_from_wind_angle with State, Settings, System pack/unpack.
+	Please see update_velocity_vector_from_wind_angle documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = update_velocity_vector_from_wind_angle('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

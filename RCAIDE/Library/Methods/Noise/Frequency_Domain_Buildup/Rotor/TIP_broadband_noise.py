@@ -51,3 +51,27 @@ def TIP_broadband_noise(alpha_tip,M,c,c_0,f,Dbar_h,r_e):
     SPL_TIP                = 10*np.log10(((M**2)*(M_max**3)*(l**2)*Dbar_h)/(r_e**2)) -\
                              30.5*(np.log10(St_prime_prime + 0.3))**2 + 126 # eqn 61  
     return SPL_TIP
+
+
+def _TIP_broadband_noise(State, Settings, System):
+	'''
+	Framework version of TIP_broadband_noise.
+	Wraps TIP_broadband_noise with State, Settings, System pack/unpack.
+	Please see TIP_broadband_noise documentation for more details.
+	'''
+
+	#TODO: alpha_tip = [Replace With State, Settings, or System Attribute]
+	#TODO: M         = [Replace With State, Settings, or System Attribute]
+	#TODO: c         = [Replace With State, Settings, or System Attribute]
+	#TODO: c_0       = [Replace With State, Settings, or System Attribute]
+	#TODO: f         = [Replace With State, Settings, or System Attribute]
+	#TODO: Dbar_h    = [Replace With State, Settings, or System Attribute]
+	#TODO: r_e       = [Replace With State, Settings, or System Attribute]
+
+	results = TIP_broadband_noise('alpha_tip', 'M', 'c', 'c_0', 'f', 'Dbar_h', 'r_e')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

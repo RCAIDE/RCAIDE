@@ -298,3 +298,33 @@ def compute_rotor_weight(rotor,
     mass = mass * grace
 
     return mass
+
+
+def _compute_rotor_weight(State, Settings, System):
+	'''
+	Framework version of compute_rotor_weight.
+	Wraps compute_rotor_weight with State, Settings, System pack/unpack.
+	Please see compute_rotor_weight documentation for more details.
+	'''
+
+	#TODO: rotor                    = [Replace With State, Settings, or System Attribute]
+	#TODO: maximum_lifting_thrust   = [Replace With State, Settings, or System Attribute]
+	#TODO: chord_to_radius_ratio    = [Replace With State, Settings, or System Attribute]
+	#TODO: thickness_to_chord       = [Replace With State, Settings, or System Attribute]
+	#TODO: root_to_radius_ratio     = [Replace With State, Settings, or System Attribute]
+	#TODO: moment_to_lift_ratio     = [Replace With State, Settings, or System Attribute]
+	#TODO: spanwise_analysis_points = [Replace With State, Settings, or System Attribute]
+	#TODO: safety_factor            = [Replace With State, Settings, or System Attribute]
+	#TODO: margin_factor            = [Replace With State, Settings, or System Attribute]
+	#TODO: forward_web_locations    = [Replace With State, Settings, or System Attribute]
+	#TODO: shear_center             = [Replace With State, Settings, or System Attribute]
+	#TODO: speed_of_sound           = [Replace With State, Settings, or System Attribute]
+	#TODO: tip_max_mach_number      = [Replace With State, Settings, or System Attribute]
+
+	results = compute_rotor_weight('rotor', 'maximum_lifting_thrust', 'chord_to_radius_ratio', 'thickness_to_chord', 'root_to_radius_ratio', 'moment_to_lift_ratio', 'spanwise_analysis_points', 'safety_factor', 'margin_factor', 'forward_web_locations', 'shear_center', 'speed_of_sound', 'tip_max_mach_number')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

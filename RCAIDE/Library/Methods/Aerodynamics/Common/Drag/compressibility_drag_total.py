@@ -278,3 +278,85 @@ def drag_div(Mc_ii,wing,cl,Sref_main):
         MDiv = np.reshape(MDiv,[0,1]) 
 
     return (cd_c,mcc,MDiv)
+
+
+
+def _compressibility_drag_total(State, Settings, System):
+	'''
+	Framework version of compressibility_drag_total.
+	Wraps compressibility_drag_total with State, Settings, System pack/unpack.
+	Please see compressibility_drag_total documentation for more details.
+	'''
+
+	#TODO: state    = [Replace With State, Settings, or System Attribute]
+	#TODO: settings = [Replace With State, Settings, or System Attribute]
+	#TODO: geometry = [Replace With State, Settings, or System Attribute]
+
+	results = compressibility_drag_total('state', 'settings', 'geometry')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _lift_wave_drag(State, Settings, System):
+	'''
+	Framework version of lift_wave_drag.
+	Wraps lift_wave_drag with State, Settings, System pack/unpack.
+	Please see lift_wave_drag documentation for more details.
+	'''
+
+	#TODO: conditions    = [Replace With State, Settings, or System Attribute]
+	#TODO: configuration = [Replace With State, Settings, or System Attribute]
+	#TODO: wing          = [Replace With State, Settings, or System Attribute]
+	#TODO: Sref_main     = [Replace With State, Settings, or System Attribute]
+
+	results = lift_wave_drag('conditions', 'configuration', 'wing', 'Sref_main')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _drag_div(State, Settings, System):
+	'''
+	Framework version of drag_div.
+	Wraps drag_div with State, Settings, System pack/unpack.
+	Please see drag_div documentation for more details.
+	'''
+
+	#TODO: Mc_ii     = [Replace With State, Settings, or System Attribute]
+	#TODO: wing      = [Replace With State, Settings, or System Attribute]
+	#TODO: cl        = [Replace With State, Settings, or System Attribute]
+	#TODO: Sref_main = [Replace With State, Settings, or System Attribute]
+
+	results = drag_div('Mc_ii', 'wing', 'cl', 'Sref_main')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _CD_v_para(State, Settings, System):
+	'''
+	Framework version of CD_v_para.
+	Wraps CD_v_para with State, Settings, System pack/unpack.
+	Please see CD_v_para documentation for more details.
+	'''
+
+	#TODO: M        = [Replace With State, Settings, or System Attribute]
+	#TODO: a_vertex = [Replace With State, Settings, or System Attribute]
+
+	results = CD_v_para('M', 'a_vertex')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

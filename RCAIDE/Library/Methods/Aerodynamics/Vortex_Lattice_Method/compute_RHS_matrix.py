@@ -257,3 +257,56 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     rhs.SID    = SID
 
     return rhs
+
+
+
+def _compute_RHS_matrix(State, Settings, System):
+	'''
+	Framework version of compute_RHS_matrix.
+	Wraps compute_RHS_matrix with State, Settings, System pack/unpack.
+	Please see compute_RHS_matrix documentation for more details.
+	'''
+
+	#TODO: delta                = [Replace With State, Settings, or System Attribute]
+	#TODO: phi                  = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions           = [Replace With State, Settings, or System Attribute]
+	#TODO: settings             = [Replace With State, Settings, or System Attribute]
+	#TODO: geometry             = [Replace With State, Settings, or System Attribute]
+	#TODO: propeller_wake_model = [Replace With State, Settings, or System Attribute]
+
+	results = compute_RHS_matrix('delta', 'phi', 'conditions', 'settings', 'geometry', 'propeller_wake_model')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _build_RHS(State, Settings, System):
+	'''
+	Framework version of build_RHS.
+	Wraps build_RHS with State, Settings, System pack/unpack.
+	Please see build_RHS documentation for more details.
+	'''
+
+	#TODO: VD               = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions       = [Replace With State, Settings, or System Attribute]
+	#TODO: settings         = [Replace With State, Settings, or System Attribute]
+	#TODO: aoa_distribution = [Replace With State, Settings, or System Attribute]
+	#TODO: delta            = [Replace With State, Settings, or System Attribute]
+	#TODO: phi              = [Replace With State, Settings, or System Attribute]
+	#TODO: PSI_distribution = [Replace With State, Settings, or System Attribute]
+	#TODO: Vx_ind_total     = [Replace With State, Settings, or System Attribute]
+	#TODO: Vy_ind_total     = [Replace With State, Settings, or System Attribute]
+	#TODO: Vz_ind_total     = [Replace With State, Settings, or System Attribute]
+	#TODO: V_distribution   = [Replace With State, Settings, or System Attribute]
+	#TODO: dt               = [Replace With State, Settings, or System Attribute]
+
+	results = build_RHS('VD', 'conditions', 'settings', 'aoa_distribution', 'delta', 'phi', 'PSI_distribution', 'Vx_ind_total', 'Vy_ind_total', 'Vz_ind_total', 'V_distribution', 'dt')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

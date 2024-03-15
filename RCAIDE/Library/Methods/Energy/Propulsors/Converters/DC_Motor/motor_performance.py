@@ -224,3 +224,76 @@ def compute_V_and_I_from_omega_and_Kv(motor):
     motor.outputs.efficiency = (1-io/i)*(1-i*Res/v)
     
     return
+
+
+def _compute_Q_from_omega_and_V(State, Settings, System):
+	'''
+	Framework version of compute_Q_from_omega_and_V.
+	Wraps compute_Q_from_omega_and_V with State, Settings, System pack/unpack.
+	Please see compute_Q_from_omega_and_V documentation for more details.
+	'''
+
+	#TODO: motor = [Replace With State, Settings, or System Attribute]
+
+	results = compute_Q_from_omega_and_V('motor',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _compute_omega_and_Q_from_Cp_and_V(State, Settings, System):
+	'''
+	Framework version of compute_omega_and_Q_from_Cp_and_V.
+	Wraps compute_omega_and_Q_from_Cp_and_V with State, Settings, System pack/unpack.
+	Please see compute_omega_and_Q_from_Cp_and_V documentation for more details.
+	'''
+
+	#TODO: motor      = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+
+	results = compute_omega_and_Q_from_Cp_and_V('motor', 'conditions')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _compute_I_from_omega_and_V(State, Settings, System):
+	'''
+	Framework version of compute_I_from_omega_and_V.
+	Wraps compute_I_from_omega_and_V with State, Settings, System pack/unpack.
+	Please see compute_I_from_omega_and_V documentation for more details.
+	'''
+
+	#TODO: motor = [Replace With State, Settings, or System Attribute]
+
+	results = compute_I_from_omega_and_V('motor',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _compute_V_and_I_from_omega_and_Kv(State, Settings, System):
+	'''
+	Framework version of compute_V_and_I_from_omega_and_Kv.
+	Wraps compute_V_and_I_from_omega_and_Kv with State, Settings, System pack/unpack.
+	Please see compute_V_and_I_from_omega_and_Kv documentation for more details.
+	'''
+
+	#TODO: motor = [Replace With State, Settings, or System Attribute]
+
+	results = compute_V_and_I_from_omega_and_Kv('motor',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

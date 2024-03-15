@@ -318,3 +318,30 @@ def compute_weight(config,
     weight.total      = weight.empty + weight.payload + weight.passengers
 
     return weight
+
+
+
+def _compute_weight(State, Settings, System):
+	'''
+	Framework version of compute_weight.
+	Wraps compute_weight with State, Settings, System pack/unpack.
+	Please see compute_weight documentation for more details.
+	'''
+
+	#TODO: config                     = [Replace With State, Settings, or System Attribute]
+	#TODO: contingency_factor         = [Replace With State, Settings, or System Attribute]
+	#TODO: speed_of_sound             = [Replace With State, Settings, or System Attribute]
+	#TODO: max_tip_mach               = [Replace With State, Settings, or System Attribute]
+	#TODO: disk_area_factor           = [Replace With State, Settings, or System Attribute]
+	#TODO: safety_factor              = [Replace With State, Settings, or System Attribute]
+	#TODO: max_thrust_to_weight_ratio = [Replace With State, Settings, or System Attribute]
+	#TODO: max_g_load                 = [Replace With State, Settings, or System Attribute]
+	#TODO: motor_efficiency           = [Replace With State, Settings, or System Attribute]
+
+	results = compute_weight('config', 'contingency_factor', 'speed_of_sound', 'max_tip_mach', 'disk_area_factor', 'safety_factor', 'max_thrust_to_weight_ratio', 'max_g_load', 'motor_efficiency')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

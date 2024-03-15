@@ -38,3 +38,23 @@ def A_weighting_metric(SPL,f):
     A_f        =  2.0  + 20*np.log10(Ra_f) 
     SPL_dBA    = SPL + A_f
     return SPL_dBA
+
+
+
+def _A_weighting_metric(State, Settings, System):
+	'''
+	Framework version of A_weighting_metric.
+	Wraps A_weighting_metric with State, Settings, System pack/unpack.
+	Please see A_weighting_metric documentation for more details.
+	'''
+
+	#TODO: SPL = [Replace With State, Settings, or System Attribute]
+	#TODO: f   = [Replace With State, Settings, or System Attribute]
+
+	results = A_weighting_metric('SPL', 'f')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

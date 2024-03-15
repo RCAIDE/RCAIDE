@@ -52,3 +52,93 @@ def unpack_segments(mission):
     return
             
             
+
+
+def _pre_process(State, Settings, System):
+	'''
+	Framework version of pre_process.
+	Wraps pre_process with State, Settings, System pack/unpack.
+	Please see pre_process documentation for more details.
+	'''
+
+	#TODO: mission = [Replace With State, Settings, or System Attribute]
+
+	results = pre_process('mission',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _sequential_segments(State, Settings, System):
+	'''
+	Framework version of sequential_segments.
+	Wraps sequential_segments with State, Settings, System pack/unpack.
+	Please see sequential_segments documentation for more details.
+	'''
+
+	#TODO: mission = [Replace With State, Settings, or System Attribute]
+
+	results = sequential_segments('mission',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _update_segments(State, Settings, System):
+	'''
+	Framework version of update_segments.
+	Wraps update_segments with State, Settings, System pack/unpack.
+	Please see update_segments documentation for more details.
+	'''
+
+	#TODO: mission = [Replace With State, Settings, or System Attribute]
+
+	results = update_segments('mission',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _merge_segment_states(State, Settings, System):
+	'''
+	Framework version of merge_segment_states.
+	Wraps merge_segment_states with State, Settings, System pack/unpack.
+	Please see merge_segment_states documentation for more details.
+	'''
+
+	#TODO: mission = [Replace With State, Settings, or System Attribute]
+
+	results = merge_segment_states('mission',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _unpack_segments(State, Settings, System):
+	'''
+	Framework version of unpack_segments.
+	Wraps unpack_segments with State, Settings, System pack/unpack.
+	Please see unpack_segments documentation for more details.
+	'''
+
+	#TODO: mission = [Replace With State, Settings, or System Attribute]
+
+	results = unpack_segments('mission',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

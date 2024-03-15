@@ -67,3 +67,32 @@ def external_plug_effect(Velocity_primary,Velocity_secondary, Velocity_mixed, Di
     jet_plug_effects.PG_m = PG_m 
 
     return jet_plug_effects
+
+
+
+def _external_plug_effect(State, Settings, System):
+	'''
+	Framework version of external_plug_effect.
+	Wraps external_plug_effect with State, Settings, System pack/unpack.
+	Please see external_plug_effect documentation for more details.
+	'''
+
+	#TODO: Velocity_primary   = [Replace With State, Settings, or System Attribute]
+	#TODO: Velocity_secondary = [Replace With State, Settings, or System Attribute]
+	#TODO: Velocity_mixed     = [Replace With State, Settings, or System Attribute]
+	#TODO: Diameter_primary   = [Replace With State, Settings, or System Attribute]
+	#TODO: Diameter_secondary = [Replace With State, Settings, or System Attribute]
+	#TODO: Diameter_mixed     = [Replace With State, Settings, or System Attribute]
+	#TODO: Plug_diameter      = [Replace With State, Settings, or System Attribute]
+	#TODO: sound_ambient      = [Replace With State, Settings, or System Attribute]
+	#TODO: theta_p            = [Replace With State, Settings, or System Attribute]
+	#TODO: theta_s            = [Replace With State, Settings, or System Attribute]
+	#TODO: theta_m            = [Replace With State, Settings, or System Attribute]
+
+	results = external_plug_effect('Velocity_primary', 'Velocity_secondary', 'Velocity_mixed', 'Diameter_primary', 'Diameter_secondary', 'Diameter_mixed', 'Plug_diameter', 'sound_ambient', 'theta_p', 'theta_s', 'theta_m')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

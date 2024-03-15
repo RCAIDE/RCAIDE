@@ -330,3 +330,24 @@ def turbofan_engine_noise(turbofan,aeroacoustic_data,segment,settings):
     engine_noise.SPL_dBA           = SPL_dBA
 
     return engine_noise
+
+
+def _turbofan_engine_noise(State, Settings, System):
+	'''
+	Framework version of turbofan_engine_noise.
+	Wraps turbofan_engine_noise with State, Settings, System pack/unpack.
+	Please see turbofan_engine_noise documentation for more details.
+	'''
+
+	#TODO: turbofan          = [Replace With State, Settings, or System Attribute]
+	#TODO: aeroacoustic_data = [Replace With State, Settings, or System Attribute]
+	#TODO: segment           = [Replace With State, Settings, or System Attribute]
+	#TODO: settings          = [Replace With State, Settings, or System Attribute]
+
+	results = turbofan_engine_noise('turbofan', 'aeroacoustic_data', 'segment', 'settings')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -73,3 +73,33 @@ def mixed_noise_component(Velocity_primary,theta_m,sound_ambient,Velocity_second
     SPL_m = (Z1*np.log10(FV)+Z2)*(np.log10(Str_m)-Z3*np.log10(FV)-Z4)**2 + Z5*np.log10(FV) + Z6
 
     return SPL_m 
+
+
+
+def _mixed_noise_component(State, Settings, System):
+	'''
+	Framework version of mixed_noise_component.
+	Wraps mixed_noise_component with State, Settings, System pack/unpack.
+	Please see mixed_noise_component documentation for more details.
+	'''
+
+	#TODO: Velocity_primary   = [Replace With State, Settings, or System Attribute]
+	#TODO: theta_m            = [Replace With State, Settings, or System Attribute]
+	#TODO: sound_ambient      = [Replace With State, Settings, or System Attribute]
+	#TODO: Velocity_secondary = [Replace With State, Settings, or System Attribute]
+	#TODO: Velocity_aircraft  = [Replace With State, Settings, or System Attribute]
+	#TODO: Area_primary       = [Replace With State, Settings, or System Attribute]
+	#TODO: Area_secondary     = [Replace With State, Settings, or System Attribute]
+	#TODO: DSPL_m             = [Replace With State, Settings, or System Attribute]
+	#TODO: EX_m               = [Replace With State, Settings, or System Attribute]
+	#TODO: Str_m              = [Replace With State, Settings, or System Attribute]
+	#TODO: Velocity_mixed     = [Replace With State, Settings, or System Attribute]
+	#TODO: XBPR               = [Replace With State, Settings, or System Attribute]
+
+	results = mixed_noise_component('Velocity_primary', 'theta_m', 'sound_ambient', 'Velocity_secondary', 'Velocity_aircraft', 'Area_primary', 'Area_secondary', 'DSPL_m', 'EX_m', 'Str_m', 'Velocity_mixed', 'XBPR')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

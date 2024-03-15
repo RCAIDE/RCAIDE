@@ -92,3 +92,42 @@ def bus_unknowns(segment,busses):
      
  
     
+
+
+
+def _fuel_line_unknowns(State, Settings, System):
+	'''
+	Framework version of fuel_line_unknowns.
+	Wraps fuel_line_unknowns with State, Settings, System pack/unpack.
+	Please see fuel_line_unknowns documentation for more details.
+	'''
+
+	#TODO: segment    = [Replace With State, Settings, or System Attribute]
+	#TODO: fuel_lines = [Replace With State, Settings, or System Attribute]
+
+	results = fuel_line_unknowns('segment', 'fuel_lines')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _bus_unknowns(State, Settings, System):
+	'''
+	Framework version of bus_unknowns.
+	Wraps bus_unknowns with State, Settings, System pack/unpack.
+	Please see bus_unknowns documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+	#TODO: busses  = [Replace With State, Settings, or System Attribute]
+
+	results = bus_unknowns('segment', 'busses')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

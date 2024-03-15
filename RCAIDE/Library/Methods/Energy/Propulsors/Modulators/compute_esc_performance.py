@@ -149,3 +149,78 @@ def compute_current_in_from_throttle(esc,eta):
     esc.inputs.power     = esc.inputs.voltage *currentin
     
     return
+
+
+def _compute_voltage_out_from_throttle(State, Settings, System):
+	'''
+	Framework version of compute_voltage_out_from_throttle.
+	Wraps compute_voltage_out_from_throttle with State, Settings, System pack/unpack.
+	Please see compute_voltage_out_from_throttle documentation for more details.
+	'''
+
+	#TODO: esc = [Replace With State, Settings, or System Attribute]
+	#TODO: eta = [Replace With State, Settings, or System Attribute]
+
+	results = compute_voltage_out_from_throttle('esc', 'eta')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _compute_voltage_in_from_throttle(State, Settings, System):
+	'''
+	Framework version of compute_voltage_in_from_throttle.
+	Wraps compute_voltage_in_from_throttle with State, Settings, System pack/unpack.
+	Please see compute_voltage_in_from_throttle documentation for more details.
+	'''
+
+	#TODO: esc = [Replace With State, Settings, or System Attribute]
+	#TODO: eta = [Replace With State, Settings, or System Attribute]
+
+	results = compute_voltage_in_from_throttle('esc', 'eta')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _compute_throttle_from_voltages(State, Settings, System):
+	'''
+	Framework version of compute_throttle_from_voltages.
+	Wraps compute_throttle_from_voltages with State, Settings, System pack/unpack.
+	Please see compute_throttle_from_voltages documentation for more details.
+	'''
+
+	#TODO: esc = [Replace With State, Settings, or System Attribute]
+
+	results = compute_throttle_from_voltages('esc',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _compute_current_in_from_throttle(State, Settings, System):
+	'''
+	Framework version of compute_current_in_from_throttle.
+	Wraps compute_current_in_from_throttle with State, Settings, System pack/unpack.
+	Please see compute_current_in_from_throttle documentation for more details.
+	'''
+
+	#TODO: esc = [Replace With State, Settings, or System Attribute]
+	#TODO: eta = [Replace With State, Settings, or System Attribute]
+
+	results = compute_current_in_from_throttle('esc', 'eta')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
