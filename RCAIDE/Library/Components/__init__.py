@@ -9,9 +9,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Lofted_Body     import Lofted_Body
-from Legacy.trunk.S.Components.Envelope        import Envelope
-
+from .Lofted_Body      import Lofted_Body
+from .Envelope         import Envelope 
 from .Component        import Component
 from .Mass_Properties  import Mass_Properties
  

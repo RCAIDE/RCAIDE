@@ -1,5 +1,5 @@
-## @ingroup Components 
-# RCAIDE/Compoments/Mass_Properties.py
+## @ingroup Library-Components 
+# RCAIDE/Library/Compoments/Mass_Properties.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Mass_Properties
 # ----------------------------------------------------------------------------------------------------------------------        
-## @ingroup Components
+## @ingroup Library-Components
 class Mass_Properties(Data):
     """ Mass properties for a physical component
         

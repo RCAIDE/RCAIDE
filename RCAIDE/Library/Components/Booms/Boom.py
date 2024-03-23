@@ -8,11 +8,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
-from RCAIDE.Framework.Core       import Data, Container, ContainerOrdered
-from RCAIDE.Library.Components import Component, Lofted_Body 
-
-# package imports 
-import numpy as np
+from RCAIDE.Framework.Core     import Data, Container, ContainerOrdered
+from RCAIDE.Library.Components import Component, Lofted_Body  
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  BOOM

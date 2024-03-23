@@ -10,9 +10,9 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Wings.Control_Surfaces.Slat            import Slat
-from Legacy.trunk.S.Components.Wings.Control_Surfaces.Flap            import Flap
-from Legacy.trunk.S.Components.Wings.Control_Surfaces.Aileron         import Aileron
-from Legacy.trunk.S.Components.Wings.Control_Surfaces.Elevator        import Elevator
-from Legacy.trunk.S.Components.Wings.Control_Surfaces.Rudder          import Rudder
-from Legacy.trunk.S.Components.Wings.Control_Surfaces.Control_Surface import Control_Surface
+from .Slat            import Slat
+from .Flap            import Flap
+from .Aileron         import Aileron
+from .Elevator        import Elevator
+from .Rudder          import Rudder
+from .Control_Surface import Control_Surface

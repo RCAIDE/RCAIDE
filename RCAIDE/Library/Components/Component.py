@@ -1,5 +1,5 @@
-## @ingroup Compoments
-# RCAIDE/Compoments/Component.py
+## @ingroup Library-Compoments
+# RCAIDE/Library/Compoments/Component.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -18,7 +18,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Component
 # ----------------------------------------------------------------------------------------------------------------------        
-## @ingroup Components
+## @ingroup Library-Components
 class Component(Data):
     """ the base component class
         Assumptions:

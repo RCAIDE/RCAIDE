@@ -9,4 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Airfoils.Airfoil import Airfoil
+from .Airfoil               import Airfoil
+from .NACA_4_Series_Airfoil import NACA_4_Series_Airfoil

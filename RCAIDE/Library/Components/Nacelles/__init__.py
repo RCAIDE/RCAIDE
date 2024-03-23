@@ -9,4 +9,4 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Nacelles.Nacelle import Nacelle
+from .Nacelle import Nacelle

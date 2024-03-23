@@ -49,7 +49,7 @@ class Turbofan_Engine_Network(Network):
             N/A
         """           
 
-        self.tag                          = 'turbofan_engine'  
+        self.tag                          = 'turbofan_engine_network'  
         self.system_voltage               = None   
         
     # linking the different network components
@@ -131,32 +131,7 @@ class Turbofan_Engine_Network(Network):
         results.network_y_axis_rotation   = conditions.ones_row(1) * 0.0
         # -------------------------------------------------- 
         
-        return results 
-     
-    
-    def size(self,state):  
-        """ Size the turbofan
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            State [state()]
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            N/A
-        """             
-        
-        #Unpack components
-        conditions = state.conditions
-        thrust     = self.thrust
-        thrust.size(conditions) 
+        return results
     
     def unpack_unknowns(self,segment):
         """Unpacks the unknowns set in the mission to be available for the mission.
