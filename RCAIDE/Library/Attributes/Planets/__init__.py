@@ -9,5 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Attributes.Planets.Planet import Planet
-from Legacy.trunk.S.Attributes.Planets.Earth  import Earth
+from .Planet import Planet
+from .Earth  import Earth
