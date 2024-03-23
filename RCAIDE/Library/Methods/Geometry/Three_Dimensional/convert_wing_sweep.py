@@ -78,3 +78,24 @@ def convert_wing_sweep(wing,old_ref_chord_fraction = 0.0,new_ref_chord_fraction 
                                                      #to new chord-fraction
 
     return new_sweep
+
+
+
+def _convert_wing_sweep(State, Settings, System):
+	'''
+	Framework version of convert_wing_sweep.
+	Wraps convert_wing_sweep with State, Settings, System pack/unpack.
+	Please see convert_wing_sweep documentation for more details.
+	'''
+
+	#TODO: wing                   = [Replace With State, Settings, or System Attribute]
+	#TODO: old_ref_chord_fraction = [Replace With State, Settings, or System Attribute]
+	#TODO: new_ref_chord_fraction = [Replace With State, Settings, or System Attribute]
+
+	results = convert_wing_sweep('wing', 'old_ref_chord_fraction', 'new_ref_chord_fraction')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Frameworks.Core import Units      
+from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import wing_planform, segment_properties
 from RCAIDE.Library.Plots                import *     
@@ -395,7 +395,7 @@ def vehicle_setup():
     #  Turbofan Network
     #------------------------------------------------------------------------------------------------------------------------------------  
     #initialize the gas turbine network
-    net                                         = RCAIDE.Frameworks.Networks.Turbofan_Engine_Network() 
+    net                                         = RCAIDE.Framework.Networks.Turbofan_Engine_Network() 
     
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Fuel Distrubition Line 

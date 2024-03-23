@@ -10,8 +10,8 @@
  
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Frameworks.Core                                                           import Units, Data   
-from RCAIDE.Frameworks.Optimization.Common                                            import Nexus       
+from RCAIDE.Framework.Core                                                           import Units, Data
+from RCAIDE.Framework.Optimization.Common                                            import Nexus
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.blade_geometry_setup    import blade_geometry_setup
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.procedure_setup         import procedure_setup
 
@@ -164,3 +164,23 @@ def optimization_setup(rotor,number_of_stations,print_iterations):
     nexus.results.oei    = Data()
     
     return nexus   
+
+
+def _optimization_setup(State, Settings, System):
+	'''
+	Framework version of optimization_setup.
+	Wraps optimization_setup with State, Settings, System pack/unpack.
+	Please see optimization_setup documentation for more details.
+	'''
+
+	#TODO: rotor              = [Replace With State, Settings, or System Attribute]
+	#TODO: number_of_stations = [Replace With State, Settings, or System Attribute]
+	#TODO: print_iterations   = [Replace With State, Settings, or System Attribute]
+
+	results = optimization_setup('rotor', 'number_of_stations', 'print_iterations')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports 
-from RCAIDE.Frameworks.Core.Arrays  import atleast_2d_col 
+from RCAIDE.Framework.Core.Arrays  import atleast_2d_col
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Differentials
@@ -52,3 +52,21 @@ def differentials_dimensionless(segment):
     
     return
  
+
+
+def _differentials_dimensionless(State, Settings, System):
+	'''
+	Framework version of differentials_dimensionless.
+	Wraps differentials_dimensionless with State, Settings, System pack/unpack.
+	Please see differentials_dimensionless documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = differentials_dimensionless('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -84,3 +84,21 @@ def initialize_conditions(segment):
         if 'busses' in network: 
             RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,network.busses)  
      
+
+
+def _initialize_conditions(State, Settings, System):
+	'''
+	Framework version of initialize_conditions.
+	Wraps initialize_conditions with State, Settings, System pack/unpack.
+	Please see initialize_conditions documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = initialize_conditions('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
-from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Framework.Core import Units
 
 ## @ingroup Methods-Energy-Propulsors-Converters-Motor
 def size_motor_from_mass(motor):
@@ -46,3 +46,21 @@ def size_motor_from_mass(motor):
     motor.speed_constant  = kv    
 
     return motor 
+
+
+def _size_motor_from_mass(State, Settings, System):
+	'''
+	Framework version of size_motor_from_mass.
+	Wraps size_motor_from_mass with State, Settings, System pack/unpack.
+	Please see size_motor_from_mass documentation for more details.
+	'''
+
+	#TODO: motor = [Replace With State, Settings, or System Attribute]
+
+	results = size_motor_from_mass('motor',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

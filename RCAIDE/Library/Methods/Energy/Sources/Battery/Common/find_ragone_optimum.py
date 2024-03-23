@@ -59,3 +59,23 @@ def find_ragone_optimum(battery, energy, power): #adds a battery that is optimiz
     
     #now initialize the battery with the new optimum properties
     find_ragone_properties(specific_energy_opt, battery, energy, power)
+
+
+def _find_ragone_optimum(State, Settings, System):
+	'''
+	Framework version of find_ragone_optimum.
+	Wraps find_ragone_optimum with State, Settings, System pack/unpack.
+	Please see find_ragone_optimum documentation for more details.
+	'''
+
+	#TODO: battery = [Replace With State, Settings, or System Attribute]
+	#TODO: energy  = [Replace With State, Settings, or System Attribute]
+	#TODO: power   = [Replace With State, Settings, or System Attribute]
+
+	results = find_ragone_optimum('battery', 'energy', 'power')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

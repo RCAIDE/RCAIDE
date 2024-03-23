@@ -545,3 +545,122 @@ def supersonic_in_plane(RAD1,RAD2,Y1,Y2,TOL,XTY,CPI):
     W[np.abs(XTY)>TOL] = (-F1[np.abs(XTY)>TOL] + F2[np.abs(XTY)>TOL])/(XTY[np.abs(XTY)>TOL]*CPI)
 
     return W
+
+
+
+def _compute_wing_induced_velocity(State, Settings, System):
+	'''
+	Framework version of compute_wing_induced_velocity.
+	Wraps compute_wing_induced_velocity with State, Settings, System pack/unpack.
+	Please see compute_wing_induced_velocity documentation for more details.
+	'''
+
+	#TODO: VD         = [Replace With State, Settings, or System Attribute]
+	#TODO: mach       = [Replace With State, Settings, or System Attribute]
+	#TODO: compute_EW = [Replace With State, Settings, or System Attribute]
+
+	results = compute_wing_induced_velocity('VD', 'mach', 'compute_EW')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _subsonic(State, Settings, System):
+	'''
+	Framework version of subsonic.
+	Wraps subsonic with State, Settings, System pack/unpack.
+	Please see subsonic documentation for more details.
+	'''
+
+	#TODO: Z     = [Replace With State, Settings, or System Attribute]
+	#TODO: XSQ1  = [Replace With State, Settings, or System Attribute]
+	#TODO: RO1   = [Replace With State, Settings, or System Attribute]
+	#TODO: XSQ2  = [Replace With State, Settings, or System Attribute]
+	#TODO: RO2   = [Replace With State, Settings, or System Attribute]
+	#TODO: XTY   = [Replace With State, Settings, or System Attribute]
+	#TODO: T     = [Replace With State, Settings, or System Attribute]
+	#TODO: B2    = [Replace With State, Settings, or System Attribute]
+	#TODO: ZSQ   = [Replace With State, Settings, or System Attribute]
+	#TODO: TOLSQ = [Replace With State, Settings, or System Attribute]
+	#TODO: X1    = [Replace With State, Settings, or System Attribute]
+	#TODO: Y1    = [Replace With State, Settings, or System Attribute]
+	#TODO: X2    = [Replace With State, Settings, or System Attribute]
+	#TODO: Y2    = [Replace With State, Settings, or System Attribute]
+	#TODO: RTV1  = [Replace With State, Settings, or System Attribute]
+	#TODO: RTV2  = [Replace With State, Settings, or System Attribute]
+
+	results = subsonic('Z', 'XSQ1', 'RO1', 'XSQ2', 'RO2', 'XTY', 'T', 'B2', 'ZSQ', 'TOLSQ', 'X1', 'Y1', 'X2', 'Y2', 'RTV1', 'RTV2')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _supersonic(State, Settings, System):
+	'''
+	Framework version of supersonic.
+	Wraps supersonic with State, Settings, System pack/unpack.
+	Please see supersonic documentation for more details.
+	'''
+
+	#TODO: Z      = [Replace With State, Settings, or System Attribute]
+	#TODO: XSQ1   = [Replace With State, Settings, or System Attribute]
+	#TODO: RO1    = [Replace With State, Settings, or System Attribute]
+	#TODO: XSQ2   = [Replace With State, Settings, or System Attribute]
+	#TODO: RO2    = [Replace With State, Settings, or System Attribute]
+	#TODO: XTY    = [Replace With State, Settings, or System Attribute]
+	#TODO: T      = [Replace With State, Settings, or System Attribute]
+	#TODO: B2     = [Replace With State, Settings, or System Attribute]
+	#TODO: ZSQ    = [Replace With State, Settings, or System Attribute]
+	#TODO: TOLSQ  = [Replace With State, Settings, or System Attribute]
+	#TODO: TOL    = [Replace With State, Settings, or System Attribute]
+	#TODO: TOLSQ2 = [Replace With State, Settings, or System Attribute]
+	#TODO: X1     = [Replace With State, Settings, or System Attribute]
+	#TODO: Y1     = [Replace With State, Settings, or System Attribute]
+	#TODO: X2     = [Replace With State, Settings, or System Attribute]
+	#TODO: Y2     = [Replace With State, Settings, or System Attribute]
+	#TODO: RTV1   = [Replace With State, Settings, or System Attribute]
+	#TODO: RTV2   = [Replace With State, Settings, or System Attribute]
+	#TODO: CUTOFF = [Replace With State, Settings, or System Attribute]
+	#TODO: CHORD  = [Replace With State, Settings, or System Attribute]
+	#TODO: RNMAX  = [Replace With State, Settings, or System Attribute]
+	#TODO: n_cp   = [Replace With State, Settings, or System Attribute]
+	#TODO: TE_ind = [Replace With State, Settings, or System Attribute]
+	#TODO: LE_ind = [Replace With State, Settings, or System Attribute]
+
+	results = supersonic('Z', 'XSQ1', 'RO1', 'XSQ2', 'RO2', 'XTY', 'T', 'B2', 'ZSQ', 'TOLSQ', 'TOL', 'TOLSQ2', 'X1', 'Y1', 'X2', 'Y2', 'RTV1', 'RTV2', 'CUTOFF', 'CHORD', 'RNMAX', 'n_cp', 'TE_ind', 'LE_ind')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _supersonic_in_plane(State, Settings, System):
+	'''
+	Framework version of supersonic_in_plane.
+	Wraps supersonic_in_plane with State, Settings, System pack/unpack.
+	Please see supersonic_in_plane documentation for more details.
+	'''
+
+	#TODO: RAD1 = [Replace With State, Settings, or System Attribute]
+	#TODO: RAD2 = [Replace With State, Settings, or System Attribute]
+	#TODO: Y1   = [Replace With State, Settings, or System Attribute]
+	#TODO: Y2   = [Replace With State, Settings, or System Attribute]
+	#TODO: TOL  = [Replace With State, Settings, or System Attribute]
+	#TODO: XTY  = [Replace With State, Settings, or System Attribute]
+	#TODO: CPI  = [Replace With State, Settings, or System Attribute]
+
+	results = supersonic_in_plane('RAD1', 'RAD2', 'Y1', 'Y2', 'TOL', 'XTY', 'CPI')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE Imports 
-from RCAIDE.Frameworks.Core import  Data   
+from RCAIDE.Framework.Core import  Data
 
 # Python package imports   
 import numpy as np    
@@ -114,3 +114,23 @@ def BPM_boundary_layer_properties(R_c,c,alpha_star):
     boundary_layer_data.delta_star_s_tripped         = delta_star_s_div_delta_0_tripped*delta_0_div_c_tripped*c
     boundary_layer_data.delta_star_s_untripped       = delta_star_s_div_delta_0_untripped*delta_0_div_c_untripped*c 
     return boundary_layer_data     
+
+
+def _BPM_boundary_layer_properties(State, Settings, System):
+	'''
+	Framework version of BPM_boundary_layer_properties.
+	Wraps BPM_boundary_layer_properties with State, Settings, System pack/unpack.
+	Please see BPM_boundary_layer_properties documentation for more details.
+	'''
+
+	#TODO: R_c        = [Replace With State, Settings, or System Attribute]
+	#TODO: c          = [Replace With State, Settings, or System Attribute]
+	#TODO: alpha_star = [Replace With State, Settings, or System Attribute]
+
+	results = BPM_boundary_layer_properties('R_c', 'c', 'alpha_star')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

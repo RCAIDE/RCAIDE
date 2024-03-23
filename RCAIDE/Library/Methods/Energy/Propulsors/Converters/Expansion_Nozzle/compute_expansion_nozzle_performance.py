@@ -135,3 +135,23 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
     expansion_nozzle.outputs.area_ratio              = area_ratio
     
     return 
+
+
+
+def _compute_expansion_nozzle_performance(State, Settings, System):
+	'''
+	Framework version of compute_expansion_nozzle_performance.
+	Wraps compute_expansion_nozzle_performance with State, Settings, System pack/unpack.
+	Please see compute_expansion_nozzle_performance documentation for more details.
+	'''
+
+	#TODO: expansion_nozzle = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions       = [Replace With State, Settings, or System Attribute]
+
+	results = compute_expansion_nozzle_performance('expansion_nozzle', 'conditions')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

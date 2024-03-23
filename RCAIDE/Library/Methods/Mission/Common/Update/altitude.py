@@ -27,3 +27,21 @@ def altitude(segment):
     """    
     altitude = -segment.state.conditions.frames.inertial.position_vector[:,2]
     segment.state.conditions.freestream.altitude[:,0] = altitude 
+
+
+def _altitude(State, Settings, System):
+	'''
+	Framework version of altitude.
+	Wraps altitude with State, Settings, System pack/unpack.
+	Please see altitude documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = altitude('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

@@ -110,3 +110,22 @@ def compute_rayleigh(self,conditions):
     self.outputs.stagnation_enthalpy     = ht_out
     self.outputs.fuel_to_air_ratio       = f    
     self.outputs.mach_number             = M_out
+
+
+def _compute_rayleigh(State, Settings, System):
+	'''
+	Framework version of compute_rayleigh.
+	Wraps compute_rayleigh with State, Settings, System pack/unpack.
+	Please see compute_rayleigh documentation for more details.
+	'''
+
+	#TODO: self       = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+
+	results = compute_rayleigh('self', 'conditions')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

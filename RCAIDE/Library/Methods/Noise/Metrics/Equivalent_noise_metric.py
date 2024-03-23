@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic   import SPL_arithmetic
 from RCAIDE.Library.Methods.Noise.Common.background_noise     import background_noise
 
@@ -96,3 +96,24 @@ def Equivalent_noise_metric(noise_data, flight_times = ['12:00:00'],time_period 
     
     
     return noise_data  
+
+
+
+def _Equivalent_noise_metric(State, Settings, System):
+	'''
+	Framework version of Equivalent_noise_metric.
+	Wraps Equivalent_noise_metric with State, Settings, System pack/unpack.
+	Please see Equivalent_noise_metric documentation for more details.
+	'''
+
+	#TODO: noise_data   = [Replace With State, Settings, or System Attribute]
+	#TODO: flight_times = [Replace With State, Settings, or System Attribute]
+	#TODO: time_period  = [Replace With State, Settings, or System Attribute]
+
+	results = Equivalent_noise_metric('noise_data', 'flight_times', 'time_period')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

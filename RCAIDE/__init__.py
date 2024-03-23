@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 from . import Library
-from . import Frameworks 
+from . import Framework
 
 from .Vehicle import Vehicle
 from .load    import json_load, pickle_load

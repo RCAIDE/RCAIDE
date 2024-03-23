@@ -31,7 +31,7 @@ def aerodynamics(mission):
     """      
     last_tag = None
     for tag,segment in mission.segments.items():        
-        if (type(segment.analyses.aerodynamics) == RCAIDE.Frameworks.Analyses.Aerodynamics.Subsonic_VLM) or (type(segment.analyses.aerodynamics) == RCAIDE.Frameworks.Analyses.Aerodynamics.Supersonic_VLM): 
+        if (type(segment.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM) or (type(segment.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Supersonic_VLM): 
             if last_tag: 
                 segment.analyses.aerodynamics.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.aerodynamics.process.compute.lift.inviscid_wings 
             else:
@@ -42,3 +42,21 @@ def aerodynamics(mission):
                 
                 last_tag = tag  
     return 
+
+
+def _aerodynamics(State, Settings, System):
+	'''
+	Framework version of aerodynamics.
+	Wraps aerodynamics with State, Settings, System pack/unpack.
+	Please see aerodynamics documentation for more details.
+	'''
+
+	#TODO: mission = [Replace With State, Settings, or System Attribute]
+
+	results = aerodynamics('mission',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

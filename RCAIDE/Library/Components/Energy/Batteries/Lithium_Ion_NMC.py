@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports
 import RCAIDE
-from RCAIDE.Frameworks.Core                                         import Units , Data
+from RCAIDE.Framework.Core                                         import Units , Data
 from .Lithium_Ion_Generic                                           import Lithium_Ion_Generic   
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_NMC  import compute_nmc_cell_performance, update_nmc_cell_age
 

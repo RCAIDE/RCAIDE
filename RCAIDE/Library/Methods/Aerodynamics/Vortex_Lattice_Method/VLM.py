@@ -11,7 +11,7 @@
 
 # package imports 
 import numpy as np 
-from RCAIDE.Frameworks.Core import Data
+from RCAIDE.Framework.Core import Data
 from .compute_wing_induced_velocity      import compute_wing_induced_velocity
 from .generate_vortex_distribution       import generate_vortex_distribution 
 from .compute_RHS_matrix                 import compute_RHS_matrix 
@@ -593,3 +593,77 @@ def strip_cumsum(arr, chord_breaks, strip_lengths):
     offsets[:,0]  = 0
     offsets = np.repeat(offsets, strip_lengths, axis=1)
     return cumsum - offsets
+
+
+def _VLM(State, Settings, System):
+	'''
+	Framework version of VLM.
+	Wraps VLM with State, Settings, System pack/unpack.
+	Please see VLM documentation for more details.
+	'''
+
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+	#TODO: settings   = [Replace With State, Settings, or System Attribute]
+	#TODO: geometry   = [Replace With State, Settings, or System Attribute]
+
+	results = VLM('conditions', 'settings', 'geometry')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _compute_rotation_effects(State, Settings, System):
+	'''
+	Framework version of compute_rotation_effects.
+	Wraps compute_rotation_effects with State, Settings, System pack/unpack.
+	Please see compute_rotation_effects documentation for more details.
+	'''
+
+	#TODO: VD       = [Replace With State, Settings, or System Attribute]
+	#TODO: settings = [Replace With State, Settings, or System Attribute]
+	#TODO: EW_small = [Replace With State, Settings, or System Attribute]
+	#TODO: GAMMA    = [Replace With State, Settings, or System Attribute]
+	#TODO: len_mach = [Replace With State, Settings, or System Attribute]
+	#TODO: X        = [Replace With State, Settings, or System Attribute]
+	#TODO: CHORD    = [Replace With State, Settings, or System Attribute]
+	#TODO: XLE      = [Replace With State, Settings, or System Attribute]
+	#TODO: XBAR     = [Replace With State, Settings, or System Attribute]
+	#TODO: rhs      = [Replace With State, Settings, or System Attribute]
+	#TODO: COSINP   = [Replace With State, Settings, or System Attribute]
+	#TODO: SINALF   = [Replace With State, Settings, or System Attribute]
+	#TODO: PITCH    = [Replace With State, Settings, or System Attribute]
+	#TODO: ROLL     = [Replace With State, Settings, or System Attribute]
+	#TODO: YAW      = [Replace With State, Settings, or System Attribute]
+	#TODO: STB      = [Replace With State, Settings, or System Attribute]
+	#TODO: RNMAX    = [Replace With State, Settings, or System Attribute]
+
+	results = compute_rotation_effects('VD', 'settings', 'EW_small', 'GAMMA', 'len_mach', 'X', 'CHORD', 'XLE', 'XBAR', 'rhs', 'COSINP', 'SINALF', 'PITCH', 'ROLL', 'YAW', 'STB', 'RNMAX')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _strip_cumsum(State, Settings, System):
+	'''
+	Framework version of strip_cumsum.
+	Wraps strip_cumsum with State, Settings, System pack/unpack.
+	Please see strip_cumsum documentation for more details.
+	'''
+
+	#TODO: arr           = [Replace With State, Settings, or System Attribute]
+	#TODO: chord_breaks  = [Replace With State, Settings, or System Attribute]
+	#TODO: strip_lengths = [Replace With State, Settings, or System Attribute]
+
+	results = strip_cumsum('arr', 'chord_breaks', 'strip_lengths')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

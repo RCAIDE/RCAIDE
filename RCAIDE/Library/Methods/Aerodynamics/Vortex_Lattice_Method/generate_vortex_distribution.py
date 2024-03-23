@@ -12,7 +12,7 @@
 # package imports 
 import numpy as np
 
-from RCAIDE.Frameworks.Core                                                 import  Data
+from RCAIDE.Framework.Core                                                 import  Data
 from RCAIDE.Library.Components.Wings                                     import All_Moving_Surface
 from RCAIDE.Library.Components.Fuselages                                 import Fuselage
 from RCAIDE.Library.Components.Nacelles                                  import Nacelle
@@ -1211,3 +1211,69 @@ def generate_fuselage_and_nacelle_vortex_distribution(VD,fus,n_cw,n_sw,precision
     
     
     return VD
+
+
+
+def _generate_vortex_distribution(State, Settings, System):
+	'''
+	Framework version of generate_vortex_distribution.
+	Wraps generate_vortex_distribution with State, Settings, System pack/unpack.
+	Please see generate_vortex_distribution documentation for more details.
+	'''
+
+	#TODO: geometry = [Replace With State, Settings, or System Attribute]
+	#TODO: settings = [Replace With State, Settings, or System Attribute]
+
+	results = generate_vortex_distribution('geometry', 'settings')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _generate_wing_vortex_distribution(State, Settings, System):
+	'''
+	Framework version of generate_wing_vortex_distribution.
+	Wraps generate_wing_vortex_distribution with State, Settings, System pack/unpack.
+	Please see generate_wing_vortex_distribution documentation for more details.
+	'''
+
+	#TODO: VD        = [Replace With State, Settings, or System Attribute]
+	#TODO: wing      = [Replace With State, Settings, or System Attribute]
+	#TODO: n_cw      = [Replace With State, Settings, or System Attribute]
+	#TODO: n_sw      = [Replace With State, Settings, or System Attribute]
+	#TODO: spc       = [Replace With State, Settings, or System Attribute]
+	#TODO: precision = [Replace With State, Settings, or System Attribute]
+
+	results = generate_wing_vortex_distribution('VD', 'wing', 'n_cw', 'n_sw', 'spc', 'precision')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _generate_fuselage_and_nacelle_vortex_distribution(State, Settings, System):
+	'''
+	Framework version of generate_fuselage_and_nacelle_vortex_distribution.
+	Wraps generate_fuselage_and_nacelle_vortex_distribution with State, Settings, System pack/unpack.
+	Please see generate_fuselage_and_nacelle_vortex_distribution documentation for more details.
+	'''
+
+	#TODO: VD             = [Replace With State, Settings, or System Attribute]
+	#TODO: fus            = [Replace With State, Settings, or System Attribute]
+	#TODO: n_cw           = [Replace With State, Settings, or System Attribute]
+	#TODO: n_sw           = [Replace With State, Settings, or System Attribute]
+	#TODO: precision      = [Replace With State, Settings, or System Attribute]
+	#TODO: model_geometry = [Replace With State, Settings, or System Attribute]
+
+	results = generate_fuselage_and_nacelle_vortex_distribution('VD', 'fus', 'n_cw', 'n_sw', 'precision', 'model_geometry')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

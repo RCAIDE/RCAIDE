@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
@@ -61,3 +61,23 @@ def initialize_from_circuit_configuration(battery,module_weight_factor = 1.42):
     battery.charging_voltage                    = battery.cell.charging_voltage * battery.pack.electrical_configuration.series     
     battery.charging_current                    = battery.cell.charging_current * battery.pack.electrical_configuration.parallel  
     battery.pack.electrical_configuration.total = battery.pack.electrical_configuration.series * battery.pack.electrical_configuration.parallel        
+
+
+
+def _initialize_from_circuit_configuration(State, Settings, System):
+	'''
+	Framework version of initialize_from_circuit_configuration.
+	Wraps initialize_from_circuit_configuration with State, Settings, System pack/unpack.
+	Please see initialize_from_circuit_configuration documentation for more details.
+	'''
+
+	#TODO: battery              = [Replace With State, Settings, or System Attribute]
+	#TODO: module_weight_factor = [Replace With State, Settings, or System Attribute]
+
+	results = initialize_from_circuit_configuration('battery', 'module_weight_factor')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

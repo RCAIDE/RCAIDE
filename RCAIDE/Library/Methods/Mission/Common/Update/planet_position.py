@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core  import Units 
+from RCAIDE.Framework.Core  import Units
 
 # package imports 
 import numpy as np
@@ -78,3 +78,21 @@ def planet_position(segment):
     conditions.frames.planet.true_course_angle    = np.tile(phi[None,:,:],(len(V),1,1))    
 
     return 
+
+
+def _planet_position(State, Settings, System):
+	'''
+	Framework version of planet_position.
+	Wraps planet_position with State, Settings, System pack/unpack.
+	Please see planet_position documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = planet_position('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

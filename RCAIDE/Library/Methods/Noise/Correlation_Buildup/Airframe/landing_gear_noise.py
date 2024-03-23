@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 import numpy as np
-from RCAIDE.Frameworks.Core import Units
+from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------  
 # main and nose landing gear noise
@@ -80,3 +80,30 @@ def landing_gear_noise(D,H,wheels,M,velocity,phi,theta,distance,frequency):
     OASPL = 60.*np.log10(velocity_kts/194.0)+20.*np.log10(D/distance)+10.*np.log10(10.0**12.52+10.0**G3)
 
     return SPL
+
+
+
+def _landing_gear_noise(State, Settings, System):
+	'''
+	Framework version of landing_gear_noise.
+	Wraps landing_gear_noise with State, Settings, System pack/unpack.
+	Please see landing_gear_noise documentation for more details.
+	'''
+
+	#TODO: D         = [Replace With State, Settings, or System Attribute]
+	#TODO: H         = [Replace With State, Settings, or System Attribute]
+	#TODO: wheels    = [Replace With State, Settings, or System Attribute]
+	#TODO: M         = [Replace With State, Settings, or System Attribute]
+	#TODO: velocity  = [Replace With State, Settings, or System Attribute]
+	#TODO: phi       = [Replace With State, Settings, or System Attribute]
+	#TODO: theta     = [Replace With State, Settings, or System Attribute]
+	#TODO: distance  = [Replace With State, Settings, or System Attribute]
+	#TODO: frequency = [Replace With State, Settings, or System Attribute]
+
+	results = landing_gear_noise('D', 'H', 'wheels', 'M', 'velocity', 'phi', 'theta', 'distance', 'frequency')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

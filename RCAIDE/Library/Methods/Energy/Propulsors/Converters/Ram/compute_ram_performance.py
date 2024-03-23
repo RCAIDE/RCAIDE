@@ -78,3 +78,22 @@ def compute_ram_performance(ram,conditions):
     conditions.freestream.gas_specific_constant                = R
     
     return 
+
+
+def _compute_ram_performance(State, Settings, System):
+	'''
+	Framework version of compute_ram_performance.
+	Wraps compute_ram_performance with State, Settings, System pack/unpack.
+	Please see compute_ram_performance documentation for more details.
+	'''
+
+	#TODO: ram        = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+
+	results = compute_ram_performance('ram', 'conditions')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

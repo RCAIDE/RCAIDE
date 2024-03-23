@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Frameworks.Core     import Units 
+from RCAIDE.Framework.Core     import Units
 import numpy as np    
  
 # ----------------------------------------------------------------------------------------------------------------------
@@ -165,3 +165,24 @@ def compute_generic_li_cell_performance(battery,state,bus,battery_discharge_flag
             Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr
                     
     return       
+
+
+def _compute_generic_li_cell_performance(State, Settings, System):
+	'''
+	Framework version of compute_generic_li_cell_performance.
+	Wraps compute_generic_li_cell_performance with State, Settings, System pack/unpack.
+	Please see compute_generic_li_cell_performance documentation for more details.
+	'''
+
+	#TODO: battery                = [Replace With State, Settings, or System Attribute]
+	#TODO: state                  = [Replace With State, Settings, or System Attribute]
+	#TODO: bus                    = [Replace With State, Settings, or System Attribute]
+	#TODO: battery_discharge_flag = [Replace With State, Settings, or System Attribute]
+
+	results = compute_generic_li_cell_performance('battery', 'state', 'bus', 'battery_discharge_flag')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

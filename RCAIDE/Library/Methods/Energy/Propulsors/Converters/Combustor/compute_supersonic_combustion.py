@@ -118,3 +118,23 @@ def compute_supersonic_combustion(self,conditions):
     self.outputs.mach_number                     = M_out 
     self.outputs.specific_heat_constant_pressure = Cpb
     self.outputs.isentropic_expansion_factor     = gamma_b
+
+
+
+def _compute_supersonic_combustion(State, Settings, System):
+	'''
+	Framework version of compute_supersonic_combustion.
+	Wraps compute_supersonic_combustion with State, Settings, System pack/unpack.
+	Please see compute_supersonic_combustion documentation for more details.
+	'''
+
+	#TODO: self       = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+
+	results = compute_supersonic_combustion('self', 'conditions')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

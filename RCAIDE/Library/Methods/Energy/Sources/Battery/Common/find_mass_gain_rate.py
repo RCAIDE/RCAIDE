@@ -26,3 +26,22 @@ def find_mass_gain_rate(battery,power):
     mdot = -(power) *(battery.mass_gain_factor)  
                 
     return mdot
+
+
+def _find_mass_gain_rate(State, Settings, System):
+	'''
+	Framework version of find_mass_gain_rate.
+	Wraps find_mass_gain_rate with State, Settings, System pack/unpack.
+	Please see find_mass_gain_rate documentation for more details.
+	'''
+
+	#TODO: battery = [Replace With State, Settings, or System Attribute]
+	#TODO: power   = [Replace With State, Settings, or System Attribute]
+
+	results = find_mass_gain_rate('battery', 'power')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

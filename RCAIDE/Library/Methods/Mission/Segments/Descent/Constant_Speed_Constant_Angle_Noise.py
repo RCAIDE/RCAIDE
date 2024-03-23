@@ -8,7 +8,7 @@
 #  IMPORT 
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports  
-from RCAIDE.Frameworks.Core import Units 
+from RCAIDE.Framework.Core import Units
 
 # pacakge imports 
 import numpy as np
@@ -126,3 +126,40 @@ def initialize_conditions(segment):
     conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
     conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context    
     
+
+
+
+def _expand_state(State, Settings, System):
+	'''
+	Framework version of expand_state.
+	Wraps expand_state with State, Settings, System pack/unpack.
+	Please see expand_state documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = expand_state('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _initialize_conditions(State, Settings, System):
+	'''
+	Framework version of initialize_conditions.
+	Wraps initialize_conditions with State, Settings, System pack/unpack.
+	Please see initialize_conditions documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = initialize_conditions('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

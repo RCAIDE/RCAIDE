@@ -10,9 +10,9 @@
 
 # RCAIDE Imports 
 import RCAIDE 
-from RCAIDE.Frameworks.Core                                                  import Units  
+from RCAIDE.Framework.Core                                                  import Units
 from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor          import rotor_noise 
-from RCAIDE.Frameworks.Analyses.Process                                      import Process   
+from RCAIDE.Framework.Analyses.Process                                      import Process
 
 # Python package imports   
 import numpy as np 
@@ -174,11 +174,11 @@ def run_rotor_OEI(nexus):
     altitude              = np.array([rotor.oei.design_altitude]) 
     R                     = rotor.tip_radius
     TM                    = rotor.oei.design_tip_mach  
-    atmosphere            = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere            = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere_conditions = atmosphere.compute_values(altitude)
 
     # Pack everything up
-    conditions                                          = RCAIDE.Frameworks.Mission.Common.Results()
+    conditions                                          = RCAIDE.Framework.Mission.Common.Results()
     conditions.freestream.update(atmosphere_conditions)
     conditions.frames.inertial.velocity_vector          = np.array([[0.,0.,speed]]) 
     conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
@@ -225,14 +225,14 @@ def run_rotor_hover(nexus):
     altitude              = np.array([rotor.hover.design_altitude]) 
     R                     = rotor.tip_radius
     TM                    = rotor.hover.design_tip_mach   
-    atmosphere            = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere            = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere_conditions = atmosphere.compute_values(altitude)
     tip_speed             = atmosphere_conditions.speed_of_sound*TM
     omega                 = tip_speed/R
     rotor.inputs.omega = np.array(omega)
 
     # Pack everything up
-    conditions                                          = RCAIDE.Frameworks.Mission.Common.Results()
+    conditions                                          = RCAIDE.Framework.Mission.Common.Results()
     conditions.freestream.update(atmosphere_conditions)  
     conditions.frames.inertial.velocity_vector          = np.array([[0.,0.,speed]])   
     conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
@@ -264,15 +264,15 @@ def run_rotor_hover(nexus):
     mic_positions_hover                              = np.array([[0.0 , S_hover*np.sin(theta)  ,S_hover*np.cos(theta)]])      
     
     # Run noise model  
-    conditions.noise[bus.tag]                        = RCAIDE.Frameworks.Mission.Common.Conditions()      
-    conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Frameworks.Mission.Common.Conditions() 
+    conditions.noise[bus.tag]                        = RCAIDE.Framework.Mission.Common.Conditions()      
+    conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Framework.Mission.Common.Conditions() 
     conditions.noise[bus.tag][propulsor.tag].rotor   = outputs
     conditions.noise.relative_microphone_locations      = np.repeat(mic_positions_hover[ np.newaxis,:,: ],1,axis=0)
     conditions.aerodynamics.angles.alpha             = np.ones((ctrl_pts,1))* 0. * Units.degrees 
-    segment                                          = RCAIDE.Frameworks.Mission.Segments.Segment() 
+    segment                                          = RCAIDE.Framework.Mission.Segments.Segment() 
     segment.state.conditions                         = conditions
     segment.state.conditions.expand_rows(ctrl_pts)  
-    noise                                            = RCAIDE.Frameworks.Analyses.Noise.Frequency_Domain_Buildup() 
+    noise                                            = RCAIDE.Framework.Analyses.Noise.Frequency_Domain_Buildup() 
     settings                                         = noise.settings   
     num_mic                                          = len(conditions.noise.relative_microphone_locations[0])  
     conditions.noise.number_of_microphones           = num_mic   
@@ -304,14 +304,14 @@ def run_rotor_cruise(nexus):
         altitude              = np.array([rotor.cruise.design_altitude]) 
         R                     = rotor.tip_radius
         TM                    = rotor.cruise.design_tip_mach  
-        atmosphere            = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+        atmosphere            = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
         atmosphere_conditions = atmosphere.compute_values(altitude)
         tip_speed             = atmosphere_conditions.speed_of_sound*TM
         omega                 = tip_speed/R
         rotor.inputs.omega    = np.array(omega) 
     
         # Pack everything up
-        conditions                                          = RCAIDE.Frameworks.Mission.Common.Results()
+        conditions                                          = RCAIDE.Framework.Mission.Common.Results()
         conditions.freestream.update(atmosphere_conditions)
         conditions.frames.inertial.velocity_vector          = np.array([[0,0.,speed]]) 
         conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
@@ -343,15 +343,15 @@ def run_rotor_cruise(nexus):
         mic_positions_cruise                             = np.array([[0.0 ,S_cruise*np.sin(theta)  ,S_cruise*np.cos(theta)]])      
         
         # Run noise model  
-        conditions.noise[bus.tag]                        = RCAIDE.Frameworks.Mission.Common.Conditions()      
-        conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Frameworks.Mission.Common.Conditions() 
+        conditions.noise[bus.tag]                        = RCAIDE.Framework.Mission.Common.Conditions()      
+        conditions.noise[bus.tag][propulsor.tag]         = RCAIDE.Framework.Mission.Common.Conditions() 
         conditions.noise[bus.tag][propulsor.tag].rotor   = outputs  
         conditions.noise.relative_microphone_locations   = np.repeat(mic_positions_cruise[ np.newaxis,:,: ],1,axis=0)
         conditions.aerodynamics.angles.alpha             = np.ones((ctrl_pts,1))* 0. * Units.degrees 
-        segment                                          = RCAIDE.Frameworks.Mission.Segments.Segment() 
+        segment                                          = RCAIDE.Framework.Mission.Segments.Segment() 
         segment.state.conditions                         = conditions
         segment.state.conditions.expand_rows(ctrl_pts)  
-        noise                                            = RCAIDE.Frameworks.Analyses.Noise.Frequency_Domain_Buildup() 
+        noise                                            = RCAIDE.Framework.Analyses.Noise.Frequency_Domain_Buildup() 
         settings                                         = noise.settings   
         num_mic                                          = len(conditions.noise.relative_microphone_locations[0])  
         conditions.noise.number_of_microphones           = num_mic    
@@ -498,3 +498,133 @@ def post_process(nexus):
 
    
     return nexus    
+
+
+
+def _procedure_setup(State, Settings, System):
+	'''
+	Framework version of procedure_setup.
+	Wraps procedure_setup with State, Settings, System pack/unpack.
+	Please see procedure_setup documentation for more details.
+	'''
+
+
+	results = procedure_setup()
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _modify_blade_geometry(State, Settings, System):
+	'''
+	Framework version of modify_blade_geometry.
+	Wraps modify_blade_geometry with State, Settings, System pack/unpack.
+	Please see modify_blade_geometry documentation for more details.
+	'''
+
+	#TODO: nexus = [Replace With State, Settings, or System Attribute]
+
+	results = modify_blade_geometry('nexus',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _updated_blade_geometry(State, Settings, System):
+	'''
+	Framework version of updated_blade_geometry.
+	Wraps updated_blade_geometry with State, Settings, System pack/unpack.
+	Please see updated_blade_geometry documentation for more details.
+	'''
+
+	#TODO: chi = [Replace With State, Settings, or System Attribute]
+	#TODO: c_r = [Replace With State, Settings, or System Attribute]
+	#TODO: p   = [Replace With State, Settings, or System Attribute]
+	#TODO: q   = [Replace With State, Settings, or System Attribute]
+	#TODO: c_t = [Replace With State, Settings, or System Attribute]
+
+	results = updated_blade_geometry('chi', 'c_r', 'p', 'q', 'c_t')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _run_rotor_OEI(State, Settings, System):
+	'''
+	Framework version of run_rotor_OEI.
+	Wraps run_rotor_OEI with State, Settings, System pack/unpack.
+	Please see run_rotor_OEI documentation for more details.
+	'''
+
+	#TODO: nexus = [Replace With State, Settings, or System Attribute]
+
+	results = run_rotor_OEI('nexus',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _run_rotor_hover(State, Settings, System):
+	'''
+	Framework version of run_rotor_hover.
+	Wraps run_rotor_hover with State, Settings, System pack/unpack.
+	Please see run_rotor_hover documentation for more details.
+	'''
+
+	#TODO: nexus = [Replace With State, Settings, or System Attribute]
+
+	results = run_rotor_hover('nexus',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _run_rotor_cruise(State, Settings, System):
+	'''
+	Framework version of run_rotor_cruise.
+	Wraps run_rotor_cruise with State, Settings, System pack/unpack.
+	Please see run_rotor_cruise documentation for more details.
+	'''
+
+	#TODO: nexus = [Replace With State, Settings, or System Attribute]
+
+	results = run_rotor_cruise('nexus',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _post_process(State, Settings, System):
+	'''
+	Framework version of post_process.
+	Wraps post_process with State, Settings, System pack/unpack.
+	Please see post_process documentation for more details.
+	'''
+
+	#TODO: nexus = [Replace With State, Settings, or System Attribute]
+
+	results = post_process('nexus',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

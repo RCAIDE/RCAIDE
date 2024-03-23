@@ -45,3 +45,21 @@ def inertial_position(segment):
         segment.state.conditions.frames.inertial.aircraft_range[:,:]  = R_current + (R_initial[-1,None,:] - R_current[0,None,:])
         
     return 
+
+
+def _inertial_position(State, Settings, System):
+	'''
+	Framework version of inertial_position.
+	Wraps inertial_position with State, Settings, System pack/unpack.
+	Please see inertial_position documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = inertial_position('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

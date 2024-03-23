@@ -8,8 +8,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 
-from RCAIDE.Frameworks.Core import Container as ContainerBase
-from RCAIDE.Frameworks.Core import Data
+from RCAIDE.Framework.Core import Container as ContainerBase
+from RCAIDE.Framework.Core import Data
 from .Mass_Properties import Mass_Properties
 
 # package imports 

@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 import numpy as np
-from RCAIDE.Frameworks.Core import Units
+from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------  
 # Compute the trailing edge flap noise
@@ -75,3 +75,31 @@ def trailing_edge_flap_noise(Sf,cf,deltaf,slots,velocity,M,phi,theta,distance,fr
         60*np.log10((velocity/Units.kts)/100.0)+directivity
 
     return SPL 
+
+
+
+def _trailing_edge_flap_noise(State, Settings, System):
+	'''
+	Framework version of trailing_edge_flap_noise.
+	Wraps trailing_edge_flap_noise with State, Settings, System pack/unpack.
+	Please see trailing_edge_flap_noise documentation for more details.
+	'''
+
+	#TODO: Sf        = [Replace With State, Settings, or System Attribute]
+	#TODO: cf        = [Replace With State, Settings, or System Attribute]
+	#TODO: deltaf    = [Replace With State, Settings, or System Attribute]
+	#TODO: slots     = [Replace With State, Settings, or System Attribute]
+	#TODO: velocity  = [Replace With State, Settings, or System Attribute]
+	#TODO: M         = [Replace With State, Settings, or System Attribute]
+	#TODO: phi       = [Replace With State, Settings, or System Attribute]
+	#TODO: theta     = [Replace With State, Settings, or System Attribute]
+	#TODO: distance  = [Replace With State, Settings, or System Attribute]
+	#TODO: frequency = [Replace With State, Settings, or System Attribute]
+
+	results = trailing_edge_flap_noise('Sf', 'cf', 'deltaf', 'slots', 'velocity', 'M', 'phi', 'theta', 'distance', 'frequency')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

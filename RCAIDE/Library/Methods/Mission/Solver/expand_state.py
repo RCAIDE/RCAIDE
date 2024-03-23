@@ -34,3 +34,21 @@ def expand_state(segment):
     
     return
     
+
+
+def _expand_state(State, Settings, System):
+	'''
+	Framework version of expand_state.
+	Wraps expand_state with State, Settings, System pack/unpack.
+	Please see expand_state documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = expand_state('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

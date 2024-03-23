@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE  
-from RCAIDE.Frameworks.Core import   orientation_product 
+from RCAIDE.Framework.Core import   orientation_product
 from RCAIDE.Library.Methods.Mission.Common.Update.forces import forces
  
 # ----------------------------------------------------------------------------------------------------------------------
@@ -69,3 +69,22 @@ def ground_forces(segment):
 
     # pack
     conditions.frames.inertial.total_force_vector[:,:] = F[:,:]
+
+
+
+def _ground_forces(State, Settings, System):
+	'''
+	Framework version of ground_forces.
+	Wraps ground_forces with State, Settings, System pack/unpack.
+	Please see ground_forces documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = ground_forces('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

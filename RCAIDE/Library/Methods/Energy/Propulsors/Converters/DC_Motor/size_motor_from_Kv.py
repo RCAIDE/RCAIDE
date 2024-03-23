@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
-from RCAIDE.Frameworks.Core import Units  
+from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  size_from_kv
@@ -54,3 +54,21 @@ def size_motor_from_Kv(motor):
     motor.mass_properties.mass = mass
     
     return motor
+
+
+def _size_motor_from_Kv(State, Settings, System):
+	'''
+	Framework version of size_motor_from_Kv.
+	Wraps size_motor_from_Kv with State, Settings, System pack/unpack.
+	Please see size_motor_from_Kv documentation for more details.
+	'''
+
+	#TODO: motor = [Replace With State, Settings, or System Attribute]
+
+	results = size_motor_from_Kv('motor',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

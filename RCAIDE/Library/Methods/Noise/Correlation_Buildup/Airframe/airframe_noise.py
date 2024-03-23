@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE Imports
-from RCAIDE.Frameworks.Core                      import Data , Units
+from RCAIDE.Framework.Core                      import Data , Units
 
 from .clean_wing_noise             import clean_wing_noise
 from .landing_gear_noise           import landing_gear_noise
@@ -243,3 +243,25 @@ def airframe_noise(segment,analyses,config,settings):
     airframe_noise.SPL_dBA                = SPL_arithmetic(np.atleast_2d(SPLt_dBA_history), sum_axis= 2) 
     airframe_noise.noise_time             = noise_time 
     return airframe_noise
+
+
+
+def _airframe_noise(State, Settings, System):
+	'''
+	Framework version of airframe_noise.
+	Wraps airframe_noise with State, Settings, System pack/unpack.
+	Please see airframe_noise documentation for more details.
+	'''
+
+	#TODO: segment  = [Replace With State, Settings, or System Attribute]
+	#TODO: analyses = [Replace With State, Settings, or System Attribute]
+	#TODO: config   = [Replace With State, Settings, or System Attribute]
+	#TODO: settings = [Replace With State, Settings, or System Attribute]
+
+	results = airframe_noise('segment', 'analyses', 'config', 'settings')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

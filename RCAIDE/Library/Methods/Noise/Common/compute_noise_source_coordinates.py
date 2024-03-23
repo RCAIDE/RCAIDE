@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
-from RCAIDE.Frameworks.Core import Data  
+from RCAIDE.Framework.Core import Data
 
 # Python package imports   
 import numpy as np  
@@ -304,3 +304,24 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
             theta_hub_r  = theta_hub_r)
         
     return coordinates 
+
+
+def _compute_rotor_point_source_coordinates(State, Settings, System):
+	'''
+	Framework version of compute_rotor_point_source_coordinates.
+	Wraps compute_rotor_point_source_coordinates with State, Settings, System pack/unpack.
+	Please see compute_rotor_point_source_coordinates documentation for more details.
+	'''
+
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+	#TODO: rotor      = [Replace With State, Settings, or System Attribute]
+	#TODO: mls        = [Replace With State, Settings, or System Attribute]
+	#TODO: settings   = [Replace With State, Settings, or System Attribute]
+
+	results = compute_rotor_point_source_coordinates('conditions', 'rotor', 'mls', 'settings')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

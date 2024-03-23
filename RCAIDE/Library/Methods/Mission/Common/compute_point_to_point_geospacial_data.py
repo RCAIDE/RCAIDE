@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 import RCAIDE
-from RCAIDE.Frameworks.Core import Units, Data
+from RCAIDE.Framework.Core import Units, Data
 from scipy.interpolate import griddata
 import numpy as np
 from geopy.distance import geodesic as GD
@@ -114,3 +114,26 @@ def compute_point_to_point_geospacial_data(topography_file                      
         destination_location                    = des_loc)
     
     return geospacial_data
+
+
+
+def _compute_point_to_point_geospacial_data(State, Settings, System):
+	'''
+	Framework version of compute_point_to_point_geospacial_data.
+	Wraps compute_point_to_point_geospacial_data with State, Settings, System pack/unpack.
+	Please see compute_point_to_point_geospacial_data documentation for more details.
+	'''
+
+	#TODO: topography_file         = [Replace With State, Settings, or System Attribute]
+	#TODO: departure_tag           = [Replace With State, Settings, or System Attribute]
+	#TODO: destination_tag         = [Replace With State, Settings, or System Attribute]
+	#TODO: departure_coordinates   = [Replace With State, Settings, or System Attribute]
+	#TODO: destination_coordinates = [Replace With State, Settings, or System Attribute]
+
+	results = compute_point_to_point_geospacial_data('topography_file', 'departure_tag', 'destination_tag', 'departure_coordinates', 'destination_coordinates')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

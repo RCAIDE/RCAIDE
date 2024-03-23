@@ -167,3 +167,202 @@ def amplitude_function_K_2(alpha_star,M,K_1):
     K_2[alpha_star> (gamma_0+gamma)]  = K_1[alpha_star> (gamma_0+gamma)] -12 # eqn 49 
     return K_2
 
+
+
+
+def _TBL_TE_broadband_noise(State, Settings, System):
+	'''
+	Framework version of TBL_TE_broadband_noise.
+	Wraps TBL_TE_broadband_noise with State, Settings, System pack/unpack.
+	Please see TBL_TE_broadband_noise documentation for more details.
+	'''
+
+	#TODO: f              = [Replace With State, Settings, or System Attribute]
+	#TODO: r_e            = [Replace With State, Settings, or System Attribute]
+	#TODO: L              = [Replace With State, Settings, or System Attribute]
+	#TODO: U              = [Replace With State, Settings, or System Attribute]
+	#TODO: M              = [Replace With State, Settings, or System Attribute]
+	#TODO: R_c            = [Replace With State, Settings, or System Attribute]
+	#TODO: Dbar_h         = [Replace With State, Settings, or System Attribute]
+	#TODO: Dbar_l         = [Replace With State, Settings, or System Attribute]
+	#TODO: R_delta_star_p = [Replace With State, Settings, or System Attribute]
+	#TODO: delta_star_p   = [Replace With State, Settings, or System Attribute]
+	#TODO: delta_star_s   = [Replace With State, Settings, or System Attribute]
+	#TODO: alpha_star     = [Replace With State, Settings, or System Attribute]
+
+	results = TBL_TE_broadband_noise('f', 'r_e', 'L', 'U', 'M', 'R_c', 'Dbar_h', 'Dbar_l', 'R_delta_star_p', 'delta_star_p', 'delta_star_s', 'alpha_star')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _spectral_shape_function_A(State, Settings, System):
+	'''
+	Framework version of spectral_shape_function_A.
+	Wraps spectral_shape_function_A with State, Settings, System pack/unpack.
+	Please see spectral_shape_function_A documentation for more details.
+	'''
+
+	#TODO: St      = [Replace With State, Settings, or System Attribute]
+	#TODO: St_peak = [Replace With State, Settings, or System Attribute]
+	#TODO: R_c     = [Replace With State, Settings, or System Attribute]
+
+	results = spectral_shape_function_A('St', 'St_peak', 'R_c')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _spectral_shape_function_B(State, Settings, System):
+	'''
+	Framework version of spectral_shape_function_B.
+	Wraps spectral_shape_function_B with State, Settings, System pack/unpack.
+	Please see spectral_shape_function_B documentation for more details.
+	'''
+
+	#TODO: St_s = [Replace With State, Settings, or System Attribute]
+	#TODO: St_2 = [Replace With State, Settings, or System Attribute]
+	#TODO: R_c  = [Replace With State, Settings, or System Attribute]
+
+	results = spectral_shape_function_B('St_s', 'St_2', 'R_c')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _A_min_function(State, Settings, System):
+	'''
+	Framework version of A_min_function.
+	Wraps A_min_function with State, Settings, System pack/unpack.
+	Please see A_min_function documentation for more details.
+	'''
+
+	#TODO: a = [Replace With State, Settings, or System Attribute]
+
+	results = A_min_function('a',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _A_max_function(State, Settings, System):
+	'''
+	Framework version of A_max_function.
+	Wraps A_max_function with State, Settings, System pack/unpack.
+	Please see A_max_function documentation for more details.
+	'''
+
+	#TODO: a = [Replace With State, Settings, or System Attribute]
+
+	results = A_max_function('a',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _B_min_function(State, Settings, System):
+	'''
+	Framework version of B_min_function.
+	Wraps B_min_function with State, Settings, System pack/unpack.
+	Please see B_min_function documentation for more details.
+	'''
+
+	#TODO: b = [Replace With State, Settings, or System Attribute]
+
+	results = B_min_function('b',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _B_max_function(State, Settings, System):
+	'''
+	Framework version of B_max_function.
+	Wraps B_max_function with State, Settings, System pack/unpack.
+	Please see B_max_function documentation for more details.
+	'''
+
+	#TODO: b = [Replace With State, Settings, or System Attribute]
+
+	results = B_max_function('b',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _amplitude_function_K_1(State, Settings, System):
+	'''
+	Framework version of amplitude_function_K_1.
+	Wraps amplitude_function_K_1 with State, Settings, System pack/unpack.
+	Please see amplitude_function_K_1 documentation for more details.
+	'''
+
+	#TODO: R_c = [Replace With State, Settings, or System Attribute]
+
+	results = amplitude_function_K_1('R_c',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _amplitude_function_delta_K_1(State, Settings, System):
+	'''
+	Framework version of amplitude_function_delta_K_1.
+	Wraps amplitude_function_delta_K_1 with State, Settings, System pack/unpack.
+	Please see amplitude_function_delta_K_1 documentation for more details.
+	'''
+
+	#TODO: alpha_star     = [Replace With State, Settings, or System Attribute]
+	#TODO: R_delta_star_p = [Replace With State, Settings, or System Attribute]
+
+	results = amplitude_function_delta_K_1('alpha_star', 'R_delta_star_p')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
+
+
+def _amplitude_function_K_2(State, Settings, System):
+	'''
+	Framework version of amplitude_function_K_2.
+	Wraps amplitude_function_K_2 with State, Settings, System pack/unpack.
+	Please see amplitude_function_K_2 documentation for more details.
+	'''
+
+	#TODO: alpha_star = [Replace With State, Settings, or System Attribute]
+	#TODO: M          = [Replace With State, Settings, or System Attribute]
+	#TODO: K_1        = [Replace With State, Settings, or System Attribute]
+
+	results = amplitude_function_K_2('alpha_star', 'M', 'K_1')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

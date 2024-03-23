@@ -129,3 +129,22 @@ def blade_geometry_setup(rotor,number_of_stations):
         config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0] 
         configs.append(config)
     return configs 
+
+
+def _blade_geometry_setup(State, Settings, System):
+	'''
+	Framework version of blade_geometry_setup.
+	Wraps blade_geometry_setup with State, Settings, System pack/unpack.
+	Please see blade_geometry_setup documentation for more details.
+	'''
+
+	#TODO: rotor              = [Replace With State, Settings, or System Attribute]
+	#TODO: number_of_stations = [Replace With State, Settings, or System Attribute]
+
+	results = blade_geometry_setup('rotor', 'number_of_stations')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

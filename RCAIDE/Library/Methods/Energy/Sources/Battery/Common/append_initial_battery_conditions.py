@@ -57,7 +57,7 @@ def append_initial_battery_conditions(segment,bus,battery):
         None
     """       
     # compute ambient conditions
-    atmosphere    = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     alt           = -segment.conditions.frames.inertial.position_vector[:,2] 
     if segment.temperature_deviation != None:
         temp_dev = segment.temperature_deviation    
@@ -66,7 +66,7 @@ def append_initial_battery_conditions(segment,bus,battery):
     battery_conditions = segment.state.conditions.energy[bus.tag][battery.tag] 
     
     # Set if it is a discharge segment
-    if type(segment) ==  RCAIDE.Frameworks.Mission.Segments.Ground.Battery_Recharge:  
+    if type(segment) ==  RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:  
         segment.state.conditions.energy.recharging  = True 
     else:
         segment.state.conditions.energy.recharging  = False 
@@ -99,3 +99,23 @@ def append_initial_battery_conditions(segment,bus,battery):
     return 
     
  
+
+
+def _append_initial_battery_conditions(State, Settings, System):
+	'''
+	Framework version of append_initial_battery_conditions.
+	Wraps append_initial_battery_conditions with State, Settings, System pack/unpack.
+	Please see append_initial_battery_conditions documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+	#TODO: bus     = [Replace With State, Settings, or System Attribute]
+	#TODO: battery = [Replace With State, Settings, or System Attribute]
+
+	results = append_initial_battery_conditions('segment', 'bus', 'battery')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

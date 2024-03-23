@@ -34,3 +34,21 @@ def stability(segment):
         conditions.stability.update(results)
     
     return
+
+
+def _stability(State, Settings, System):
+	'''
+	Framework version of stability.
+	Wraps stability with State, Settings, System pack/unpack.
+	Please see stability documentation for more details.
+	'''
+
+	#TODO: segment = [Replace With State, Settings, or System Attribute]
+
+	results = stability('segment',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

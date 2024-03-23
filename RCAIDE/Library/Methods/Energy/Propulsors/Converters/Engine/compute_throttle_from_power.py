@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------    
  # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Frameworks.Core                                         import Units  
+from RCAIDE.Framework.Core                                         import Units
 
 # package imports
 import numpy as np 
@@ -56,7 +56,7 @@ def compute_throttle_from_power(engine,conditions):
     altitude_virtual = altitude - h_flat        
     altitude_virtual[altitude_virtual<0.] = 0.  
     
-    atmo             = RCAIDE.Frameworks.Analyses.Atmospheric.US_Standard_1976()
+    atmo             = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_values      = atmo.compute_values(altitude_virtual,delta_isa) 
     rho              = atmo_values.density
     a                = atmo_values.speed_of_sound 
@@ -87,3 +87,23 @@ def compute_throttle_from_power(engine,conditions):
     engine.outputs.throttle                        = throttle
 
     return
+
+
+
+def _compute_throttle_from_power(State, Settings, System):
+	'''
+	Framework version of compute_throttle_from_power.
+	Wraps compute_throttle_from_power with State, Settings, System pack/unpack.
+	Please see compute_throttle_from_power documentation for more details.
+	'''
+
+	#TODO: engine     = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+
+	results = compute_throttle_from_power('engine', 'conditions')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

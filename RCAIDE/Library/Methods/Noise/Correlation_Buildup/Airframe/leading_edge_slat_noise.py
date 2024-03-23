@@ -49,3 +49,31 @@ def leading_edge_slat_noise(SPL_wing,Sw,bw,velocity,viscosity,M,phi,theta,distan
     SPL        = 10.*np.log10(10.0**(0.1*SPLslat1)+10.0**(0.1*SPLslat2))
 
     return SPL
+
+
+
+def _leading_edge_slat_noise(State, Settings, System):
+	'''
+	Framework version of leading_edge_slat_noise.
+	Wraps leading_edge_slat_noise with State, Settings, System pack/unpack.
+	Please see leading_edge_slat_noise documentation for more details.
+	'''
+
+	#TODO: SPL_wing  = [Replace With State, Settings, or System Attribute]
+	#TODO: Sw        = [Replace With State, Settings, or System Attribute]
+	#TODO: bw        = [Replace With State, Settings, or System Attribute]
+	#TODO: velocity  = [Replace With State, Settings, or System Attribute]
+	#TODO: viscosity = [Replace With State, Settings, or System Attribute]
+	#TODO: M         = [Replace With State, Settings, or System Attribute]
+	#TODO: phi       = [Replace With State, Settings, or System Attribute]
+	#TODO: theta     = [Replace With State, Settings, or System Attribute]
+	#TODO: distance  = [Replace With State, Settings, or System Attribute]
+	#TODO: frequency = [Replace With State, Settings, or System Attribute]
+
+	results = leading_edge_slat_noise('SPL_wing', 'Sw', 'bw', 'velocity', 'viscosity', 'M', 'phi', 'theta', 'distance', 'frequency')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
