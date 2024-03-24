@@ -9,4 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Costs.Costs import Industrial_Costs, Operating_Costs
+from .Industrial_Costs  import Industrial_Costs 
+from .Operating_Costs   import Operating_Costs

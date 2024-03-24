@@ -1,8 +1,8 @@
-## @ingroup Energy-Peripherals
-# RCAIDE/Library/Compoments/Energy/Peripherals/Payload.py
+## @ingroup Library-Compoments-Payload
+# RCAIDE/Compoments/Payload/Payload.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# 
-# Created:  Mar 2024, M. Clarke 
+# Created:  Mar 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -11,9 +11,9 @@
 from RCAIDE.Library.Components import Component
  
 # ----------------------------------------------------------------------------------------------------------------------
-#  Avionics
+#  Payload
 # ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Energy-Peripherals  
+## @ingroup Library-Compoments-Payload
 class Payload(Component):
     """A class representing a payload.
     

@@ -10,13 +10,13 @@
 # RCAIDE imports    
 from RCAIDE.Framework.Core                import Data, ContainerOrdered
 from RCAIDE.Library.Components.Component  import Container
-from RCAIDE.Library.Components            import Lofted_Body    
+from RCAIDE.Library.Components            import Component  
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fuselage
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Fuselages 
-class Fuselage(Lofted_Body):
+class Fuselage(Component):
     """ This is a standard fuselage for a tube and wing aircraft.
     
     Assumptions:

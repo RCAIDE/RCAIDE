@@ -10,4 +10,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Systems.System import System
+from .System import System
+from .Avionics import Avionics

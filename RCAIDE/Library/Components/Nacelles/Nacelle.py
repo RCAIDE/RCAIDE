@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports    
 from RCAIDE.Framework.Core              import Data, ContainerOrdered
-from RCAIDE.Library.Components          import  Lofted_Body  
+from RCAIDE.Library.Components          import Component  
 from RCAIDE.Library.Components.Airfoils import Airfoil
 import scipy as sp
 import numpy as np
@@ -18,7 +18,7 @@ import numpy as np
 #  Nacalle
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Nacelles
-class Nacelle(Lofted_Body):
+class Nacelle(Component):
     """ This is a nacelle for a generic aircraft.
     
     Assumptions:

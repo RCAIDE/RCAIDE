@@ -9,4 +9,4 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Payloads.Payload import Payload
+from .Payload import Payload

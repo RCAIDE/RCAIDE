@@ -9,6 +9,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Attributes.Atmospheres.Atmosphere import Atmosphere
+from .Atmosphere import Atmosphere
 
 from . import Earth

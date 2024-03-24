@@ -8,13 +8,13 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports     
-from RCAIDE.Library.Components import Lofted_Body
+from RCAIDE.Library.Components   import Component 
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Airfoil
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Airfoils 
-class Airfoil(Lofted_Body.Section):
+class Airfoil(Component):
     def __defaults__(self):
         """This sets the default values of a airfoil defined in RCAIDE.
 
@@ -39,5 +39,7 @@ class Airfoil(Lofted_Body.Section):
         self.geometry                   = None
         self.polar_files                = None
         self.polars                     = None
+        self.prev                       = None
+        self.next                       = None
         self.number_of_points           = 200
        

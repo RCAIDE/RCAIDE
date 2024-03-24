@@ -1,5 +1,5 @@
-## @ingroup Library-Compoments-Peripherals
-# RCAIDE/Compoments/Peripherals/Avionics.py
+## @ingroup Library-Compoments-Systems
+# RCAIDE/Compoments/Systems/System.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -11,57 +11,38 @@
 from RCAIDE.Library.Components import Component
  
 # ----------------------------------------------------------------------------------------------------------------------
-#  Avionics
+# System
 # ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Energy-Peripherals 
-class Avionics(Component):
-    """A class representing avionics.
+## @ingroup Library-Components-Systems
+class System(Component):
+    """A class representing an aircraft system/systems.
     
     Assumptions:
     None
     
     Source:
     N/A
-    """        
-    def __defaults__(self):
-        """This sets the default power draw.
-
+    """  
+    def __defaults__(self): 
+        """ This sets the default values for the system.
+        
         Assumptions:
         None
-
+        
         Source:
         N/A
-
+        
         Inputs:
         None
-
+        
         Outputs:
         None
-
+        
         Properties Used:
         N/A
-        """                 
-        self.power_draw = 0.0
-        self.tag        = 'avionics'
+        """        
         
-    def power(self):
-        """This gives the power draw from avionics.
-
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        self.outputs.power_draw          [Watts]
-                                           
-        Properties Used:
-        self.power_draw    
-        """                 
-        self.inputs.power = self.power_draw
-        
-        return self.power_draw
+        self.tag             = 'System'
+        self.origin          = [[0.0,0.0,0.0]]
+        self.control         = None
+        self.accessories     = None 

@@ -8,14 +8,14 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
-from RCAIDE.Framework.Core     import Data, Container, ContainerOrdered
-from RCAIDE.Library.Components import Component, Lofted_Body  
+from RCAIDE.Library.Components import Component 
+from RCAIDE.Framework.Core     import Data, Container, ContainerOrdered 
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  BOOM
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Booms
-class Boom(Lofted_Body):
+class Boom(Component):
     """ This is a standard boom for a rotor.
     
     Assumptions:
