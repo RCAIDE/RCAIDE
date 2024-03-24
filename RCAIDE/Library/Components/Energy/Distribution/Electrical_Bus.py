@@ -1,4 +1,4 @@
-## @defgroup Energy-Networks-Distribution
+## @defgroup Library-Compoments-Energy-Networks-Distribution
 # RCAIDE/Library/Compoments/Energy/Networks/Distribution/Electrical_Bus.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,7 +16,7 @@ from RCAIDE.Library.Components.Component                      import Container
 # ----------------------------------------------------------------------------------------------------------------------
 #  Electrical_Bus
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Networks-Distribution
+## @ingroup Library-Compoments-Energy-Networks-Distribution
 class Electrical_Bus(Component):
     """  This controls the flow of energy into and from a battery-powered nework 
     

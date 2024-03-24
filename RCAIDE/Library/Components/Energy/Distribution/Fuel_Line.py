@@ -1,4 +1,4 @@
-## @defgroup Energy-Networks-Distribution
+## @defgroup Library-Compoments-Energy-Networks-Distribution
 # RCAIDE/Library/Compoments/Energy/Networks/Distribution/Fuel_Line.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,7 +15,7 @@ from RCAIDE.Library.Components.Component                      import Container
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Line
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Networks-Distribution
+## @ingroup Library-Compoments-Energy-Networks-Distribution
 class Fuel_Line(Component):
     """  This controls the flow of energy into and from a fuel-Energy-Sourcesed nework 
     
