@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports    
-from RCAIDE.Framework.Core                import Data, ContainerOrdered
+from RCAIDE.Framework.Core                import Data 
 from RCAIDE.Library.Components.Component  import Container
 from RCAIDE.Library.Components            import Component  
  
@@ -74,7 +74,7 @@ class Fuselage(Component):
         self.vsp_data                               = Data()
         self.vsp_data.xsec_surf_id                  = ''    # There is only one XSecSurf in each VSP geom.
         self.vsp_data.xsec_num                      = None  # Number if XSecs in fuselage geom. 
-        self.Segments                               = ContainerOrdered()
+        self.Segments                               = Container()
         
     def append_segment(self,segment):
         """ Adds a segment to the fuselage. 

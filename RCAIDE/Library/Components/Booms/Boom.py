@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 from RCAIDE.Library.Components import Component 
-from RCAIDE.Framework.Core     import Data, Container, ContainerOrdered 
+from RCAIDE.Framework.Core     import Data, Container 
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  BOOM
@@ -86,7 +86,7 @@ class Boom(Component):
         self.vsp_data.xsec_surf_id                  = ''    # There is only one XSecSurf in each VSP geom.
         self.vsp_data.xsec_num                      = None  # Number if XSecs in rotor_boom geom.
                         
-        self.Segments                               = ContainerOrdered()
+        self.Segments                               = Container()
         
     def append_segment(self,segment):
         """ Adds a segment to the rotor_boom. 

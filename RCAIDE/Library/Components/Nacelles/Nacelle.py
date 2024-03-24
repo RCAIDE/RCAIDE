@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports    
-from RCAIDE.Framework.Core              import Data, ContainerOrdered
+from RCAIDE.Framework.Core              import Data, Container 
 from RCAIDE.Library.Components          import Component  
 from RCAIDE.Library.Components.Airfoils import Airfoil
 import scipy as sp
@@ -62,7 +62,7 @@ class Nacelle(Component):
         self.differential_pressure     = 0.0   
         self.Airfoil                   = Airfoil()
         self.cowling_airfoil_angle     = 0.0  
-        self.Segments                  = ContainerOrdered()
+        self.Segments                  = Container()
         
     def append_segment(self,segment):
         """ Adds a segment to the nacelle. 

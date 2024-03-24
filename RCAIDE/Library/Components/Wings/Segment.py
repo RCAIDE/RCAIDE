@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports   
-from RCAIDE.Framework.Core import Data, ContainerOrdered
+from RCAIDE.Framework.Core import Data, Container
 from RCAIDE.Library.Components import Component  
 
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -56,7 +56,7 @@ class Segment(Component):
         self.areas.exposed           = 0.0
         self.areas.wetted            = 0.0
 
-        self.Airfoil                 = ContainerOrdered()    
+        self.Airfoil                 = Container()    
    
         
         
@@ -87,7 +87,7 @@ class Segment(Component):
 
         
 ## @ingroup Components-Wings
-class Segment_Container(ContainerOrdered):
+class Segment_Container(Container):
     """ Container for wing segment
     
     Assumptions:

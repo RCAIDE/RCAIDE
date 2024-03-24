@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports   
 from .Wing import Wing
-from RCAIDE.Framework.Core import ContainerOrdered
+from RCAIDE.Framework.Core import Container 
 from RCAIDE.Library.Components.Wings.Segment import Segment
 
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -19,7 +19,7 @@ from RCAIDE.Library.Components.Wings.Segment import Segment
 class Main_Wing(Wing):
     """This class is used to define main wings SUAVE
 
-    Assumptions:
+    Assumptions:Container()
     None
 
     Source:
@@ -56,7 +56,7 @@ class Main_Wing(Wing):
         self.Segments            = Segment_Container()
         
 ## @ingroup Library-Components-Wings 
-class Segment_Container(ContainerOrdered):
+class Segment_Container(Container):
     """ Container for wing segment
     
     Assumptions:
@@ -124,4 +124,4 @@ class Segment_Container(ContainerOrdered):
             n_comps = string_of_keys.count(val.tag)
             val.tag = val.tag + str(n_comps+1)    
             
-        ContainerOrdered.append(self,val) 
+        Container.append(self,val) 

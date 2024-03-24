@@ -8,11 +8,11 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports 
-from RCAIDE.Framework.Core                                         import Data , Units, ContainerOrdered,orientation_product, orientation_transpose
-from RCAIDE.Library.Components                                   import Component 
+from RCAIDE.Framework.Core                              import Data , Units, Container,orientation_product, orientation_transpose
+from RCAIDE.Library.Components                          import Component 
 from RCAIDE.Framework.Analyses.Propulsion               import Rotor_Wake_Fidelity_Zero
 from RCAIDE.Framework.Analyses.Propulsion               import Rotor_Wake_Fidelity_One
-from RCAIDE.Library.Methods.Aerodynamics.Common.Lift             import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss 
+from RCAIDE.Library.Methods.Aerodynamics.Common.Lift    import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss 
 
 # package imports
 import numpy as np
@@ -692,7 +692,7 @@ class Rotor(Component):
 
  
 ## @ingroup Library-Components-Wings
-class Airfoil_Container(ContainerOrdered):
+class Airfoil_Container(Container):
     """ Container for rotor airfoil  
     
     Assumptions:

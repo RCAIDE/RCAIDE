@@ -7,14 +7,14 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
-from RCAIDE.Framework.Core import ContainerOrdered
+from RCAIDE.Framework.Core import Container
 from RCAIDE.Framework.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Process
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses
-class Process(ContainerOrdered):
+class Process(Container):
     """ RCAIDE.Framework.Analyses.Process()
     
         The Top Level Process Container Class

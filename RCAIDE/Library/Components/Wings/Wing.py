@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports    
-from RCAIDE.Framework.Core import Data, ContainerOrdered, Container
+from RCAIDE.Framework.Core import Data,Container
 from RCAIDE.Library.Components import Mass_Properties, Component  
 
 import numpy as np
@@ -106,7 +106,7 @@ class Wing(Component):
                                                
         self.Airfoil                           = Data() 
         
-        self.Segments                          = ContainerOrdered()
+        self.Segments                          = Container()
         self.control_surfaces                  = Container()
         self.fuel_tanks                        = Container()
 
