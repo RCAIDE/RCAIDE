@@ -13,9 +13,9 @@ from RCAIDE.Framework.Core import Data
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Class
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Attributes-Coolants
+## @ingroup Library-Attributes-Coolants
 class Coolant(Data):
-    """Holds values for a coolant liquid
+    """Default class of a liquid coolant.
 
     Assumptions:
     None
@@ -25,23 +25,7 @@ class Coolant(Data):
     """
 
     def __defaults__(self):
-        """This sets the default values.
-
-        Assumptions:
-        None
-
-        Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
-        """
+        """This sets the default values."""
         self.tag                       = 'Coolant'
         self.density                   = 0.0                       # kg/m^3
         self.specific_heat_capacity    = 0.0                       # J/kg.K

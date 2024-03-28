@@ -26,21 +26,6 @@ class Atmosphere(Data):
 
     def __defaults__(self):
         """This sets the default values.
-
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
         """          
         self.tag = 'Constant-property atmosphere'
         self.composition           = Data()
