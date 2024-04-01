@@ -16,30 +16,15 @@ from RCAIDE.Framework.Core import Data
 ## @ingroup Library-Attributes-Costs
 class Operating_Costs(Data):
     """A class containing operating cost variables.
-    
-    Assumptions:
-    None
-    
-    Source:
-    N/A
     """    
     def __defaults__(self):
-        """This sets the default values used in the operating cost methods.
-
+        """This sets the default values used in the operating cost methods. 
+        
         Assumptions:
-        None
-
+            None
+        
         Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        N/A
+            None 
         """          
         self.tag = 'operating_costs'
         self.depreciate_years = 0.0

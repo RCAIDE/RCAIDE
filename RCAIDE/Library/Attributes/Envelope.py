@@ -15,31 +15,16 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------   
 class Envelope(Data):
     """ Flight envelope for a vehicle
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
     """    
     
     def __defaults__(self):
         """This sets the default values.
     
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+        Assumptions:
+           None
+        
+        Source:
+           None
         """          
         self.tag = 'Envelope'
 

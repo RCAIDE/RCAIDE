@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Aerodynamics.Common.Lift.BET_calculations &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Aerodynamics.Common.Lift.BET_calculations</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Aerodynamics.Common.Lift.BET_calculations</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Aerodynamics-Common-Lift</span>
+<span class="c1"># RCAIDE/Library/Methods/Aerodynamics/Common/Lift/BET_calculations.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+ 
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">interp2d</span>
+
+<span class="c1"># package imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  compute_airfoil_aerodynamics</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+<span class="c1">## @ingroup Library-Methods-Aerodynamics-Common-Lift</span>
+<div class="viewcode-block" id="compute_airfoil_aerodynamics">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Aerodynamics.Common.Lift.html#RCAIDE.Library.Methods.Aerodynamics.Common.Lift.BET_calculations.compute_airfoil_aerodynamics">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_airfoil_aerodynamics</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">Wa</span><span class="p">,</span><span class="n">Wt</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">airfoils</span><span class="p">,</span><span class="n">a_loc</span><span class="p">,</span><span class="n">ctrl_pts</span><span class="p">,</span><span class="n">Nr</span><span class="p">,</span><span class="n">Na</span><span class="p">,</span><span class="n">tc</span><span class="p">,</span><span class="n">use_2d_analysis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cl, Cdval = compute_airfoil_aerodynamics( beta,c,r,R,B,</span>
+<span class="sd">                                              Wa,Wt,a,nu,</span>
+<span class="sd">                                              airfoils,a_loc</span>
+<span class="sd">                                              ctrl_pts,Nr,Na,tc,use_2d_analysis )</span>
+
+<span class="sd">    Computes the aerodynamic forces at sectional blade locations. If airfoil</span>
+<span class="sd">    geometry and locations are specified, the forces are computed using the</span>
+<span class="sd">    airfoil polar lift and drag surrogates, accounting for the local Reynolds</span>
+<span class="sd">    number and local angle of attack.</span>
+
+<span class="sd">    If the airfoils are not specified, an approximation is used.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">       beta                       blade twist distribution                        [-]</span>
+<span class="sd">       c                          chord distribution                              [-]</span>
+<span class="sd">       r                          radius distribution                             [-]</span>
+<span class="sd">       R                          tip radius                                      [-]</span>
+<span class="sd">       B                          number of rotor blades                          [-]</span>
+
+<span class="sd">       Wa                         axial velocity                                  [-]</span>
+<span class="sd">       Wt                         tangential velocity                             [-]</span>
+<span class="sd">       a                          speed of sound                                  [-]</span>
+<span class="sd">       nu                         viscosity                                       [-]</span>
+<span class="sd">       airfoil_data               Data structure of airfoil polar information     [-]</span>
+<span class="sd">       ctrl_pts                   Number of control points                        [-]</span>
+<span class="sd">       Nr                         Number of radial blade sections                 [-]</span>
+<span class="sd">       Na                         Number of azimuthal blade stations              [-]</span>
+<span class="sd">       tc                         Thickness to chord                              [-]</span>
+<span class="sd">       use_2d_analysis            Specifies 2d disc vs. 1d single angle analysis  [Boolean]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">       Cl                       Lift Coefficients                         [-]</span>
+<span class="sd">       Cdval                    Drag Coefficients  (before scaling)       [-]</span>
+<span class="sd">       alpha                    section local angle of attack             [rad]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">alpha</span>    <span class="o">=</span> <span class="n">beta</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">Wa</span><span class="p">,</span><span class="n">Wt</span><span class="p">)</span>
+    <span class="n">W</span>        <span class="o">=</span> <span class="p">(</span><span class="n">Wa</span><span class="o">*</span><span class="n">Wa</span> <span class="o">+</span> <span class="n">Wt</span><span class="o">*</span><span class="n">Wt</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+    <span class="n">Ma</span>       <span class="o">=</span> <span class="n">W</span><span class="o">/</span><span class="n">a</span>
+    <span class="n">Re</span>       <span class="o">=</span> <span class="p">(</span><span class="n">W</span><span class="o">*</span><span class="n">c</span><span class="p">)</span><span class="o">/</span><span class="n">nu</span>
+
+    <span class="c1"># If propeller airfoils are defined, use airfoil surrogate</span>
+    <span class="k">if</span> <span class="n">a_loc</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>  
+        <span class="c1"># Compute blade Cl and Cd distribution from the airfoil data </span>
+        <span class="k">if</span> <span class="n">use_2d_analysis</span><span class="p">:</span>
+            <span class="c1"># return the 2D Cl and CDval of shape (ctrl_pts, Nr, Na)</span>
+            <span class="n">Cl</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ctrl_pts</span><span class="p">,</span><span class="n">Nr</span><span class="p">,</span><span class="n">Na</span><span class="p">))</span>
+            <span class="n">Cdval</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ctrl_pts</span><span class="p">,</span><span class="n">Nr</span><span class="p">,</span><span class="n">Na</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">jj</span><span class="p">,</span><span class="n">airfoil</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">airfoils</span><span class="p">):</span>
+                <span class="n">pd</span>              <span class="o">=</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">polars</span>
+                <span class="n">Cl_af</span>           <span class="o">=</span> <span class="n">interp2d</span><span class="p">(</span><span class="n">Re</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">reynolds_numbers</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">angle_of_attacks</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">lift_coefficients</span><span class="p">)</span> 
+                <span class="n">Cdval_af</span>        <span class="o">=</span> <span class="n">interp2d</span><span class="p">(</span><span class="n">Re</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">reynolds_numbers</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">angle_of_attacks</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">drag_coefficients</span><span class="p">)</span>
+                <span class="n">locs</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_loc</span><span class="p">)</span> <span class="o">==</span> <span class="n">jj</span> <span class="p">)</span>
+                <span class="n">Cl</span><span class="p">[:,</span><span class="n">locs</span><span class="p">,:]</span>    <span class="o">=</span> <span class="n">Cl_af</span><span class="p">[:,</span><span class="n">locs</span><span class="p">,:]</span>
+                <span class="n">Cdval</span><span class="p">[:,</span><span class="n">locs</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">Cdval_af</span><span class="p">[:,</span><span class="n">locs</span><span class="p">,:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># return the 1D Cl and CDval of shape (ctrl_pts, Nr)</span>
+            <span class="n">Cl</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ctrl_pts</span><span class="p">,</span><span class="n">Nr</span><span class="p">))</span>
+            <span class="n">Cdval</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ctrl_pts</span><span class="p">,</span><span class="n">Nr</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">jj</span><span class="p">,</span><span class="n">airfoil</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">airfoils</span><span class="p">):</span>
+                <span class="n">pd</span>            <span class="o">=</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">polars</span>
+                <span class="n">Cl_af</span>         <span class="o">=</span> <span class="n">interp2d</span><span class="p">(</span><span class="n">Re</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">reynolds_numbers</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">angle_of_attacks</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">lift_coefficients</span><span class="p">)</span>
+                <span class="n">Cdval_af</span>      <span class="o">=</span> <span class="n">interp2d</span><span class="p">(</span><span class="n">Re</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">reynolds_numbers</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">angle_of_attacks</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">drag_coefficients</span><span class="p">)</span>
+                <span class="n">locs</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_loc</span><span class="p">)</span> <span class="o">==</span> <span class="n">jj</span> <span class="p">)</span>
+                <span class="n">Cl</span><span class="p">[:,</span><span class="n">locs</span><span class="p">]</span>    <span class="o">=</span> <span class="n">Cl_af</span><span class="p">[:,</span><span class="n">locs</span><span class="p">]</span>
+                <span class="n">Cdval</span><span class="p">[:,</span><span class="n">locs</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cdval_af</span><span class="p">[:,</span><span class="n">locs</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Estimate Cl max</span>
+        <span class="n">tc_1</span> <span class="o">=</span> <span class="n">tc</span><span class="o">*</span><span class="mi">100</span>
+        <span class="n">Cl_max_ref</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.0009</span><span class="o">*</span><span class="n">tc_1</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="mf">0.0217</span><span class="o">*</span><span class="n">tc_1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">0.0442</span><span class="o">*</span><span class="n">tc_1</span> <span class="o">+</span> <span class="mf">0.7005</span>
+        <span class="n">Cl_max_ref</span><span class="p">[</span><span class="n">Cl_max_ref</span><span class="o">&lt;</span><span class="mf">0.7</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.7</span>
+        <span class="n">Re_ref</span>     <span class="o">=</span> <span class="mf">9.</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
+        <span class="n">Cl1maxp</span>    <span class="o">=</span> <span class="n">Cl_max_ref</span> <span class="o">*</span> <span class="p">(</span> <span class="n">Re</span> <span class="o">/</span> <span class="n">Re_ref</span> <span class="p">)</span> <span class="o">**</span><span class="mf">0.1</span>
+
+        <span class="c1"># If not airfoil polar provided, use 2*pi as lift curve slope</span>
+        <span class="n">Cl</span> <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">alpha</span>
+
+        <span class="c1"># By 90 deg, it&#39;s totally stalled.</span>
+        <span class="n">Cl</span><span class="p">[</span><span class="n">Cl</span><span class="o">&gt;</span><span class="n">Cl1maxp</span><span class="p">]</span>  <span class="o">=</span> <span class="n">Cl1maxp</span><span class="p">[</span><span class="n">Cl</span><span class="o">&gt;</span><span class="n">Cl1maxp</span><span class="p">]</span> <span class="c1"># This line of code is what changed the regression testing</span>
+        <span class="n">Cl</span><span class="p">[</span><span class="n">alpha</span><span class="o">&gt;=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+
+        <span class="c1"># Scale for Mach, this is Karmen_Tsien</span>
+        <span class="n">KT_cond</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">((</span><span class="n">Ma</span><span class="p">[:,:]</span><span class="o">&lt;</span><span class="mf">1.</span><span class="p">),(</span><span class="n">Cl</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">Cl</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cl</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">]</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">Ma</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">]</span><span class="o">*</span><span class="n">Ma</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">])</span><span class="o">**</span><span class="mf">0.5</span><span class="o">+</span><span class="p">((</span><span class="n">Ma</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">]</span><span class="o">*</span><span class="n">Ma</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">Ma</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">]</span><span class="o">*</span><span class="n">Ma</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">])</span><span class="o">**</span><span class="mf">0.5</span><span class="p">))</span><span class="o">*</span><span class="n">Cl</span><span class="p">[</span><span class="n">KT_cond</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># If the blade segments are supersonic, don&#39;t scale</span>
+        <span class="n">Cl</span><span class="p">[</span><span class="n">Ma</span><span class="p">[:,:]</span><span class="o">&gt;=</span><span class="mf">1.</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cl</span><span class="p">[</span><span class="n">Ma</span><span class="p">[:,:]</span><span class="o">&gt;=</span><span class="mf">1.</span><span class="p">]</span>
+
+        <span class="c1">#This is an atrocious fit of DAE51 data at RE=50k for Cd</span>
+        <span class="n">Cdval</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.108</span><span class="o">*</span><span class="p">(</span><span class="n">Cl</span><span class="o">*</span><span class="n">Cl</span><span class="o">*</span><span class="n">Cl</span><span class="o">*</span><span class="n">Cl</span><span class="p">)</span><span class="o">-</span><span class="mf">0.2612</span><span class="o">*</span><span class="p">(</span><span class="n">Cl</span><span class="o">*</span><span class="n">Cl</span><span class="o">*</span><span class="n">Cl</span><span class="p">)</span><span class="o">+</span><span class="mf">0.181</span><span class="o">*</span><span class="p">(</span><span class="n">Cl</span><span class="o">*</span><span class="n">Cl</span><span class="p">)</span><span class="o">-</span><span class="mf">0.0139</span><span class="o">*</span><span class="n">Cl</span><span class="o">+</span><span class="mf">0.0278</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="mf">50000.</span><span class="o">/</span><span class="n">Re</span><span class="p">)</span><span class="o">**</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">Cdval</span><span class="p">[</span><span class="n">alpha</span><span class="o">&gt;=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.</span>
+
+
+    <span class="c1"># prevent zero Cl to keep Cd/Cl from breaking in BET</span>
+    <span class="n">Cl</span><span class="p">[</span><span class="n">Cl</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+    <span class="k">return</span> <span class="n">Cl</span><span class="p">,</span> <span class="n">Cdval</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">Ma</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">Re</span>  </div>
+
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  compute_inflow_and_tip_loss</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+<span class="c1">## @ingroup Library-Methods-Aerodynamics-Common-Lift</span>
+<div class="viewcode-block" id="compute_inflow_and_tip_loss">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Aerodynamics.Common.Lift.html#RCAIDE.Library.Methods.Aerodynamics.Common.Lift.BET_calculations.compute_inflow_and_tip_loss">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_inflow_and_tip_loss</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">Wa</span><span class="p">,</span><span class="n">Wt</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">et1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">et2</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">et3</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the inflow, lamdaw, and the tip loss factor, F.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">       r          radius distribution                                              [m]</span>
+<span class="sd">       R          tip radius                                                       [m]</span>
+<span class="sd">       Wa         axial velocity                                                   [m/s]</span>
+<span class="sd">       Wt         tangential velocity                                              [m/s]</span>
+<span class="sd">       B          number of rotor blades                                           [-]</span>
+<span class="sd">       et1        tuning parameter for tip loss function </span>
+<span class="sd">       et2        tuning parameter for tip loss function </span>
+<span class="sd">       et3        tuning parameter for tip loss function </span>
+<span class="sd">       </span>
+<span class="sd">    Outputs:               </span>
+<span class="sd">       lamdaw     inflow ratio                                                     [-]</span>
+<span class="sd">       F          tip loss factor                                                  [-]</span>
+<span class="sd">       piece      output of a step in tip loss calculation (needed for residual)   [-]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lamdaw</span>             <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="n">Wa</span><span class="o">/</span><span class="p">(</span><span class="n">R</span><span class="o">*</span><span class="n">Wt</span><span class="p">)</span>
+    <span class="n">lamdaw</span><span class="p">[</span><span class="n">lamdaw</span><span class="o">&lt;=</span><span class="mf">0.</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-12</span>
+
+    <span class="n">tipfactor</span> <span class="o">=</span> <span class="n">B</span><span class="o">/</span><span class="mf">2.0</span><span class="o">*</span><span class="p">(</span>  <span class="p">(</span><span class="n">R</span><span class="o">/</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">et1</span> <span class="o">-</span> <span class="mi">1</span>  <span class="p">)</span><span class="o">**</span><span class="n">et2</span><span class="o">/</span><span class="n">lamdaw</span><span class="o">**</span><span class="n">et3</span> 
+
+    <span class="n">piece</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">tipfactor</span><span class="p">)</span>
+    <span class="n">Ftip</span>  <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>  
+
+    <span class="k">return</span> <span class="n">lamdaw</span><span class="p">,</span> <span class="n">Ftip</span><span class="p">,</span> <span class="n">piece</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_compute_airfoil_aerodynamics</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_airfoil_aerodynamics.</span>
+<span class="sd">	Wraps compute_airfoil_aerodynamics with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_airfoil_aerodynamics documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: beta            = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: c               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: r               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: R               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: B               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Wa              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Wt              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: a               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: nu              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: airfoils        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: a_loc           = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: ctrl_pts        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Nr              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Na              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: tc              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: use_2d_analysis = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_airfoil_aerodynamics</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;Wa&#39;</span><span class="p">,</span> <span class="s1">&#39;Wt&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;nu&#39;</span><span class="p">,</span> <span class="s1">&#39;airfoils&#39;</span><span class="p">,</span> <span class="s1">&#39;a_loc&#39;</span><span class="p">,</span> <span class="s1">&#39;ctrl_pts&#39;</span><span class="p">,</span> <span class="s1">&#39;Nr&#39;</span><span class="p">,</span> <span class="s1">&#39;Na&#39;</span><span class="p">,</span> <span class="s1">&#39;tc&#39;</span><span class="p">,</span> <span class="s1">&#39;use_2d_analysis&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_inflow_and_tip_loss</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_inflow_and_tip_loss.</span>
+<span class="sd">	Wraps compute_inflow_and_tip_loss with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_inflow_and_tip_loss documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: r   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: R   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Wa  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Wt  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: B   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: et1 = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: et2 = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: et3 = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_inflow_and_tip_loss</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;Wa&#39;</span><span class="p">,</span> <span class="s1">&#39;Wt&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;et1&#39;</span><span class="p">,</span> <span class="s1">&#39;et2&#39;</span><span class="p">,</span> <span class="s1">&#39;et3&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

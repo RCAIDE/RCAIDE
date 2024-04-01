@@ -15,32 +15,17 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Attributes-Gases 
 class Gas(Data):
-    """Default class for all gases 
-
-    Assumptions:
-    None
-
-    Source:
-    None
+    """Default class for all gases.
     """
 
     def __defaults__(self):
-        """This sets the default values.
+        """This sets the default values. 
     
         Assumptions:
-        None
-    
+            None
+        
         Source:
-        N/A
-    
-        Inputs:
-        None
-    
-        Outputs:
-        None
-    
-        Properties Used:
-        None
+            None
         """    
         self.tag                   ='gas'
         self.molecular_mass        = 0.0    

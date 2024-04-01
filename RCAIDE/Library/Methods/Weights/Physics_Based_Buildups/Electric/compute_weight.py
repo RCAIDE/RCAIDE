@@ -106,7 +106,7 @@ def compute_weight(config,
     fuel                                           = RCAIDE.Library.Components.Component()
     apu                                            = RCAIDE.Library.Components.Component()
     hydraulics                                     = RCAIDE.Library.Components.Component()
-    avionics                                       = RCAIDE.Energy.Peripherals.Avionics()
+    avionics                                       = RCAIDE.Library.Components.Component()
     optionals                                      = RCAIDE.Library.Components.Component()
 
     # assign components to vehicle

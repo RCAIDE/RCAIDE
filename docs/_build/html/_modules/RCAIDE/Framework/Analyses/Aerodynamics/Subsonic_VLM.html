@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Analyses-Aerodynamics</span>
+<span class="c1"># RCAIDE/Analyses/Aerodynamics/Subsonic_VLM.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c1"># RCAIDE imports  </span>
+<span class="kn">import</span> <span class="nn">RCAIDE</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>                                          <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Analyses</span>                                      <span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Aerodynamics</span>                             <span class="kn">import</span> <span class="n">Common</span>
+<span class="kn">from</span> <span class="nn">.Aerodynamics</span>                                                   <span class="kn">import</span> <span class="n">Aerodynamics</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Analyses.Aerodynamics.Common.Process_Geometry</span> <span class="kn">import</span> <span class="n">Process_Geometry</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice</span>   <span class="kn">import</span> <span class="n">Vortex_Lattice</span>
+
+<span class="c1"># package imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  Subsonic_VLM</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Analyses-Aerodynamics</span>
+<div class="viewcode-block" id="Subsonic_VLM">
+<a class="viewcode-back" href="../../../../../RCAIDE.Framework.Analyses.Aerodynamics.html#RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM.Subsonic_VLM">[docs]</a>
+<span class="k">class</span> <span class="nc">Subsonic_VLM</span><span class="p">(</span><span class="n">Aerodynamics</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a subsonic aerodynamic buildup analysis based on the vortex lattice method</span>
+
+<span class="sd">     Assumptions:</span>
+<span class="sd">     Stall effects are negligible </span>
+<span class="sd"> </span>
+<span class="sd">     Source:</span>
+<span class="sd">     N/A</span>
+<span class="sd"> </span>
+<span class="sd">     Inputs:</span>
+<span class="sd">     None</span>
+<span class="sd"> </span>
+<span class="sd">     Outputs:</span>
+<span class="sd">     None</span>
+<span class="sd"> </span>
+<span class="sd">     Properties Used:</span>
+<span class="sd">     N/A </span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This sets the default values and methods for the analysis.</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span>          
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>                                    <span class="o">=</span> <span class="s1">&#39;Subsonic_Zero&#39;</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span>                               <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span>                                <span class="o">=</span> <span class="n">Process</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">initialize</span>                     <span class="o">=</span> <span class="n">Process</span><span class="p">()</span>   
+        
+        <span class="c1"># correction factors</span>
+        <span class="n">settings</span>                                    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">fuselage_lift_correction</span>           <span class="o">=</span> <span class="mf">1.14</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">trim_drag_correction_factor</span>        <span class="o">=</span> <span class="mf">1.02</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">wing_parasite_drag_form_factor</span>     <span class="o">=</span> <span class="mf">1.1</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">fuselage_parasite_drag_form_factor</span> <span class="o">=</span> <span class="mf">2.3</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">maximum_lift_coefficient_factor</span>    <span class="o">=</span> <span class="mf">1.0</span>        
+        <span class="n">settings</span><span class="o">.</span><span class="n">lift_to_drag_adjustment</span>            <span class="o">=</span> <span class="mf">0.</span>  
+        <span class="n">settings</span><span class="o">.</span><span class="n">oswald_efficiency_factor</span>           <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">span_efficiency</span>                    <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">viscous_lift_dependent_drag_factor</span> <span class="o">=</span> <span class="mf">0.38</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">drag_coefficient_increment</span>         <span class="o">=</span> <span class="mf">0.0000</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">spoiler_drag_increment</span>             <span class="o">=</span> <span class="mf">0.00</span> 
+        <span class="n">settings</span><span class="o">.</span><span class="n">maximum_lift_coefficient</span>           <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">number_spanwise_vortices</span>           <span class="o">=</span> <span class="kc">None</span> 
+        <span class="n">settings</span><span class="o">.</span><span class="n">number_chordwise_vortices</span>          <span class="o">=</span> <span class="kc">None</span> 
+        <span class="n">settings</span><span class="o">.</span><span class="n">use_surrogate</span>                      <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">recalculate_total_wetted_area</span>      <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">propeller_wake_model</span>               <span class="o">=</span> <span class="kc">False</span> 
+        <span class="n">settings</span><span class="o">.</span><span class="n">discretize_control_surfaces</span>        <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">model_fuselage</span>                     <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">model_nacelle</span>                      <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># build the evaluation process</span>
+        <span class="n">compute</span>                                    <span class="o">=</span> <span class="n">Process</span><span class="p">()</span> 
+        <span class="n">compute</span><span class="o">.</span><span class="n">lift</span>                               <span class="o">=</span> <span class="n">Process</span><span class="p">()</span> 
+        <span class="n">compute</span><span class="o">.</span><span class="n">lift</span><span class="o">.</span><span class="n">inviscid_wings</span>                <span class="o">=</span> <span class="n">Vortex_Lattice</span><span class="p">()</span> 
+        <span class="n">compute</span><span class="o">.</span><span class="n">lift</span><span class="o">.</span><span class="n">vortex</span>                        <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Methods</span><span class="o">.</span><span class="n">skip</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">lift</span><span class="o">.</span><span class="n">fuselage</span>                      <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Lift</span><span class="o">.</span><span class="n">fuselage_correction</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">lift</span><span class="o">.</span><span class="n">total</span>                         <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Lift</span><span class="o">.</span><span class="n">aircraft_total</span>  
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span>                               <span class="o">=</span> <span class="n">Process</span><span class="p">()</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span>                      <span class="o">=</span> <span class="n">Process</span><span class="p">()</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">wings</span>                <span class="o">=</span> <span class="n">Process_Geometry</span><span class="p">(</span><span class="s1">&#39;wings&#39;</span><span class="p">)</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">wing</span>           <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">parasite_drag_wing</span> 
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">fuselages</span>            <span class="o">=</span> <span class="n">Process_Geometry</span><span class="p">(</span><span class="s1">&#39;fuselages&#39;</span><span class="p">)</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">fuselages</span><span class="o">.</span><span class="n">fuselage</span>   <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">parasite_drag_fuselage</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">booms</span>                <span class="o">=</span> <span class="n">Process_Geometry</span><span class="p">(</span><span class="s1">&#39;booms&#39;</span><span class="p">)</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">booms</span><span class="o">.</span><span class="n">boom</span>           <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">parasite_drag_fuselage</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">nacelles</span>             <span class="o">=</span> <span class="n">Process_Geometry</span><span class="p">(</span><span class="s1">&#39;nacelles&#39;</span><span class="p">)</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">nacelles</span><span class="o">.</span><span class="n">nacelle</span>     <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">parasite_drag_nacelle</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">pylons</span>               <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">parasite_drag_pylon</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">parasite</span><span class="o">.</span><span class="n">total</span>                <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">parasite_total</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">induced</span>                       <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">induced_drag_aircraft</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">compressibility</span>               <span class="o">=</span> <span class="n">Process</span><span class="p">()</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">compressibility</span><span class="o">.</span><span class="n">wings</span>         <span class="o">=</span> <span class="n">Process_Geometry</span><span class="p">(</span><span class="s1">&#39;wings&#39;</span><span class="p">)</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">compressibility</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">wing</span>    <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">compressibility_drag_wing</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">compressibility</span><span class="o">.</span><span class="n">total</span>         <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">compressibility_drag_wing_total</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">miscellaneous</span>                 <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">miscellaneous_drag_aircraft_ESDU</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">untrimmed</span>                     <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">untrimmed</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">trim</span>                          <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">trim</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">spoiler</span>                       <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">spoiler_drag</span>
+        <span class="n">compute</span><span class="o">.</span><span class="n">drag</span><span class="o">.</span><span class="n">total</span>                         <span class="o">=</span> <span class="n">Common</span><span class="o">.</span><span class="n">Drag</span><span class="o">.</span><span class="n">total_aircraft</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">compute</span>                       <span class="o">=</span> <span class="n">compute</span> 
+         
+<div class="viewcode-block" id="Subsonic_VLM.evaluate">
+<a class="viewcode-back" href="../../../../../RCAIDE.Framework.Analyses.Aerodynamics.html#RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM.Subsonic_VLM.evaluate">[docs]</a>
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The default evaluate function.</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        results   &lt;RCAIDE data class&gt;</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        self.settings</span>
+<span class="sd">        self.geometry</span>
+<span class="sd">        &quot;&quot;&quot;</span>          
+        <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> 
+        <span class="n">results</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">geometry</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">results</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

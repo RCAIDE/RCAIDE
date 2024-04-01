@@ -16,32 +16,17 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup  Library-Attributes-Propellants
 class Jet_A1(Propellant):
-    """Jet A1 class propellant 
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Jet A1 class propellant  
     """
 
     def __defaults__(self):
         """This sets the default values.
-
+    
         Assumptions:
-        None
-
+            None
+        
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """    
         self.tag                       = 'Jet A1'
         self.reactant                  = 'O2'

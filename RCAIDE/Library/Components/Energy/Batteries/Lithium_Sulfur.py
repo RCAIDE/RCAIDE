@@ -17,12 +17,17 @@ from . import Battery
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Sulfur(Battery):
-    """
-    Specifies discharge/specific energy characteristics specific to
-    lithium-ion batteries
-    """
-    
+    """Lithium-Sulphur battery.
+    """ 
     def __defaults__(self):
+        """This sets the default values.
+    
+        Assumptions:
+            None
+        
+        Source:
+            None
+        """   
         self.specific_energy    = 500     *Units.Wh/Units.kg
         self.specific_power     = 1       *Units.kW/Units.kg
         self.ragone.const_1     = 245.848 *Units.kW/Units.kg

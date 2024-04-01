@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric.compute_weight &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric.compute_weight</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric.compute_weight</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Weights-Buildups-eVTOL </span>
+<span class="c1"># RCAIDE/Library/Methods/Weights/Buildups/eVTOL/compute_weight.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c1"># RCAIDE</span>
+<span class="kn">import</span> <span class="nn">RCAIDE</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>                                            <span class="kn">import</span> <span class="n">Units</span><span class="p">,</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common</span>   <span class="kn">import</span> <span class="n">compute_fuselage_weight</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common</span>   <span class="kn">import</span> <span class="n">compute_boom_weight</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common</span>   <span class="kn">import</span> <span class="n">compute_rotor_weight</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common</span>   <span class="kn">import</span> <span class="n">compute_wiring_weight</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common</span>   <span class="kn">import</span> <span class="n">compute_wing_weight</span>
+
+<span class="c1"># package imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># Compute evtol weight</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Weights-Buildups-eVTOL </span>
+<div class="viewcode-block" id="compute_weight">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric.html#RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric.compute_weight.compute_weight">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_weight</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> 
+          <span class="n">contingency_factor</span>            <span class="o">=</span> <span class="mf">1.1</span><span class="p">,</span>
+          <span class="n">speed_of_sound</span>                <span class="o">=</span> <span class="mf">340.294</span><span class="p">,</span>
+          <span class="n">max_tip_mach</span>                  <span class="o">=</span> <span class="mf">0.65</span><span class="p">,</span>
+          <span class="n">disk_area_factor</span>              <span class="o">=</span> <span class="mf">1.15</span><span class="p">,</span>
+          <span class="n">safety_factor</span>                 <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span>
+          <span class="n">max_thrust_to_weight_ratio</span>    <span class="o">=</span> <span class="mf">1.1</span><span class="p">,</span>
+          <span class="n">max_g_load</span>                    <span class="o">=</span> <span class="mf">3.8</span><span class="p">,</span>
+          <span class="n">motor_efficiency</span>              <span class="o">=</span> <span class="mf">0.85</span> <span class="o">*</span> <span class="mf">0.98</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculates the empty vehicle mass for an EVTOL-type aircraft including seats,</span>
+<span class="sd">        avionics, servomotors, ballistic recovery system, rotor and hub assembly,</span>
+<span class="sd">        transmission, and landing gear. </span>
+<span class="sd">        </span>
+<span class="sd">        Sources:</span>
+<span class="sd">        Project Vahana Conceptual Trade Study</span>
+<span class="sd">        https://github.com/VahanaOpenSource</span>
+
+
+<span class="sd">        Inputs: </span>
+<span class="sd">            config:                     RCAIDE Config Data Stucture</span>
+<span class="sd">            contingency_factor          Factor capturing uncertainty in vehicle weight [Unitless]</span>
+<span class="sd">            speed_of_sound:             Local Speed of Sound                           [m/s]</span>
+<span class="sd">            max_tip_mach:               Allowable Tip Mach Number                      [Unitless]</span>
+<span class="sd">            disk_area_factor:           Inverse of Disk Area Efficiency                [Unitless]</span>
+<span class="sd">            max_thrust_to_weight_ratio: Allowable Thrust to Weight Ratio               [Unitless]</span>
+<span class="sd">            safety_factor               Safety Factor in vehicle design                [Unitless]</span>
+<span class="sd">            max_g_load                  Maximum g-forces load for certification        [UNitless]</span>
+<span class="sd">            motor_efficiency:           Motor Efficiency                               [Unitless]</span>
+
+<span class="sd">        Outputs: </span>
+<span class="sd">            outputs:                    Data Dictionary of Component Masses [kg]</span>
+
+<span class="sd">        Output data dictionary has the following book-keeping hierarchical structure:</span>
+
+<span class="sd">            Output</span>
+<span class="sd">                Total.</span>
+<span class="sd">                    Empty.</span>
+<span class="sd">                        Structural.</span>
+<span class="sd">                            Fuselage</span>
+<span class="sd">                            Wings</span>
+<span class="sd">                            Landing Gear</span>
+<span class="sd">                            Rotors</span>
+<span class="sd">                            Hubs</span>
+<span class="sd">                        Seats</span>
+<span class="sd">                        Battery</span>
+<span class="sd">                        Motors</span>
+<span class="sd">                        Servo</span>
+<span class="sd">                    Systems.</span>
+<span class="sd">                        Avionics</span>
+<span class="sd">                        ECS               - Environmental Control System</span>
+<span class="sd">                        BRS               - Ballistic Recovery System</span>
+<span class="sd">                        Wiring            - Aircraft Electronic Wiring</span>
+<span class="sd">                    Payload</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set up data structures for RCAIDE weight methods</span>
+    <span class="n">weight</span>                   <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>  
+    <span class="n">weight</span><span class="o">.</span><span class="n">battery</span>           <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">payload</span>           <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">servos</span>            <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">hubs</span>              <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">booms</span>             <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">BRS</span>               <span class="o">=</span> <span class="mf">0.0</span>  
+    <span class="n">weight</span><span class="o">.</span><span class="n">motors</span>            <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">rotors</span>            <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">rotors</span>            <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">wiring</span>            <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">wings</span>             <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">wings_total</span>       <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">config</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">passengers</span>                      <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">baggage</span>                         <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">cargo</span>                           <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">control_systems</span>                                <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">electrical_systems</span>                             <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">furnishings</span>                                    <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">air_conditioner</span>                                <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">fuel</span>                                           <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">apu</span>                                            <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">hydraulics</span>                                     <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">avionics</span>                                       <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+    <span class="n">optionals</span>                                      <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="p">()</span>
+
+    <span class="c1"># assign components to vehicle</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">control_systems</span>                 <span class="o">=</span> <span class="n">control_systems</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">electrical_systems</span>              <span class="o">=</span> <span class="n">electrical_systems</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">avionics</span>                        <span class="o">=</span> <span class="n">avionics</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">furnishings</span>                     <span class="o">=</span> <span class="n">furnishings</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">air_conditioner</span>                 <span class="o">=</span> <span class="n">air_conditioner</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">fuel</span>                            <span class="o">=</span> <span class="n">fuel</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">apu</span>                             <span class="o">=</span> <span class="n">apu</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">hydraulics</span>                      <span class="o">=</span> <span class="n">hydraulics</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">optionals</span>                       <span class="o">=</span> <span class="n">optionals</span>
+
+
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Fixed Weights</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="n">MTOW</span>                <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">max_takeoff</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">seats</span>        <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">passengers</span> <span class="o">*</span> <span class="mf">15.</span>   <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">passengers</span>   <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">passengers</span> <span class="o">*</span> <span class="mf">70.</span>   <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">avionics</span>     <span class="o">=</span> <span class="mf">15.</span>                       <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">landing_gear</span> <span class="o">=</span> <span class="n">MTOW</span> <span class="o">*</span> <span class="mf">0.02</span>               <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">ECS</span>          <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">passengers</span> <span class="o">*</span> <span class="mf">7.</span>    <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+
+    <span class="c1"># Inputs and other constants</span>
+    <span class="n">tipMach</span>        <span class="o">=</span> <span class="n">max_tip_mach</span>
+    <span class="n">k</span>              <span class="o">=</span> <span class="n">disk_area_factor</span>
+    <span class="n">ToverW</span>         <span class="o">=</span> <span class="n">max_thrust_to_weight_ratio</span>
+    <span class="n">eta</span>            <span class="o">=</span> <span class="n">motor_efficiency</span>
+    <span class="n">rho_ref</span>        <span class="o">=</span> <span class="mf">1.225</span>
+    <span class="n">maxVTip</span>        <span class="o">=</span> <span class="n">speed_of_sound</span> <span class="o">*</span> <span class="n">tipMach</span>         <span class="c1"># Prop Tip Velocity</span>
+    <span class="n">maxLift</span>        <span class="o">=</span> <span class="n">MTOW</span> <span class="o">*</span> <span class="n">ToverW</span> <span class="o">*</span> <span class="mf">9.81</span>             <span class="c1"># Maximum Thrust</span>
+    <span class="n">AvgBladeCD</span>     <span class="o">=</span> <span class="mf">0.012</span>                            <span class="c1"># Average Blade CD</span>
+
+    
+    <span class="c1"># Determine length scale </span>
+    <span class="n">length_scale</span> <span class="o">=</span> <span class="mf">1.</span> 
+ 
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">fuselages</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">w</span>  <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">wings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">w</span> <span class="p">,</span><span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Wings</span><span class="o">.</span><span class="n">Main_Wing</span><span class="p">):</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">chords</span><span class="o">.</span><span class="n">root</span>
+                <span class="k">if</span> <span class="n">b</span><span class="o">&gt;</span><span class="n">length_scale</span><span class="p">:</span>
+                    <span class="n">length_scale</span> <span class="o">=</span> <span class="n">b</span>
+                    <span class="n">nose_length</span>  <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">b</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fuse</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">fuselages</span><span class="p">:</span>
+            <span class="n">nose</span>   <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">nose</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">total</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="o">&gt;</span> <span class="n">length_scale</span><span class="p">:</span>
+                <span class="n">length_scale</span> <span class="o">=</span> <span class="n">length</span>
+                <span class="n">nose_length</span>  <span class="o">=</span> <span class="n">nose</span>
+     
+                            
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Environmental Control System</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">air_conditioner</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>          <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">length_scale</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">air_conditioner</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span>  <span class="o">=</span> <span class="n">weight</span><span class="o">.</span><span class="n">ECS</span>
+
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Network Weight</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">networks</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">Networks</span><span class="o">.</span><span class="n">All_Electric_Network</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;eVTOL weight buildup only supports the Battery Electric Rotor energy network.</span><span class="se">\n</span>
+<span class="s2">            Weight buildup will not return information on propulsion system.&quot;&quot;&quot;</span><span class="p">,</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+                
+        <span class="k">for</span> <span class="n">bus</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">busses</span><span class="p">:</span> 
+    
+            
+            <span class="c1">#------------------------------------------------------------------------------- </span>
+            <span class="c1"># Payload Weight</span>
+            <span class="c1">#-------------------------------------------------------------------------------</span>
+            <span class="k">if</span> <span class="n">bus</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bus</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                              <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length_scale</span>
+            <span class="n">weight</span><span class="o">.</span><span class="n">payload</span>                                            <span class="o">+=</span> <span class="n">bus</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+     
+            <span class="c1">#-------------------------------------------------------------------------------</span>
+            <span class="c1"># Avionics Weight</span>
+            <span class="c1">#-------------------------------------------------------------------------------</span>
+            <span class="k">if</span> <span class="n">bus</span><span class="o">.</span><span class="n">avionics</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bus</span><span class="o">.</span><span class="n">avionics</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                          <span class="o">=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">nose_length</span>
+            <span class="n">bus</span><span class="o">.</span><span class="n">avionics</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>   <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">weight</span><span class="o">.</span><span class="n">avionics</span>                                        <span class="o">+=</span> <span class="n">bus</span><span class="o">.</span><span class="n">avionics</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span>      
+ 
+                        
+            <span class="k">for</span> <span class="n">battery</span> <span class="ow">in</span> <span class="n">bus</span><span class="o">.</span><span class="n">batteries</span><span class="p">:</span> 
+                <span class="n">weight</span><span class="o">.</span><span class="n">battery</span>                                            <span class="o">+=</span> <span class="n">battery</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span> 
+        
+            <span class="c1"># Servo, Hub and BRS Weights</span>
+            <span class="n">lift_rotor_hub_weight</span>   <span class="o">=</span> <span class="mf">4.</span>   <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+            <span class="n">prop_hub_weight</span>         <span class="o">=</span> <span class="n">MTOW</span> <span class="o">*</span> <span class="mf">0.04</span>  <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+            <span class="n">lift_rotor_BRS_weight</span>   <span class="o">=</span> <span class="mf">16.</span>  <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+    
+            <span class="c1"># Rotor Weight</span>
+            <span class="n">number_of_propellers</span>    <span class="o">=</span> <span class="mf">0.0</span>  
+            <span class="n">number_of_lift_rotors</span>   <span class="o">=</span> <span class="mf">0.0</span>   
+            <span class="n">total_number_of_rotors</span>  <span class="o">=</span> <span class="mf">0.0</span>      
+            <span class="n">lift_rotor_servo_weight</span> <span class="o">=</span> <span class="mf">0.0</span>  
+            
+            <span class="k">for</span> <span class="n">propulsor</span> <span class="ow">in</span> <span class="n">bus</span><span class="o">.</span><span class="n">propulsors</span><span class="p">:</span> 
+                <span class="c1"># Rotor </span>
+                <span class="n">rotor</span> <span class="o">=</span> <span class="n">propulsor</span><span class="o">.</span><span class="n">rotor</span>   
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">rotor</span><span class="p">)</span> <span class="o">==</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">Propulsors</span><span class="o">.</span><span class="n">Converters</span><span class="o">.</span><span class="n">Propeller</span><span class="p">:</span>
+<span class="w">                    </span><span class="sd">&#39;&#39;&#39; Propeller Weight &#39;&#39;&#39;</span>  
+                    <span class="n">number_of_propellers</span>       <span class="o">+=</span> <span class="mi">1</span>   
+                    <span class="n">rTip_ref</span>                   <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">tip_radius</span>
+                    <span class="n">bladeSol_ref</span>               <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">blade_solidity</span> 
+                    <span class="n">prop_servo_weight</span>          <span class="o">=</span> <span class="mf">5.2</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>  
+                    <span class="n">propeller_mass</span>             <span class="o">=</span> <span class="n">compute_rotor_weight</span><span class="p">(</span><span class="n">rotor</span><span class="p">,</span> <span class="n">maxLift</span><span class="o">/</span><span class="mf">5.</span><span class="p">)</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+                    <span class="n">weight</span><span class="o">.</span><span class="n">rotors</span>              <span class="o">+=</span> <span class="n">propeller_mass</span> 
+                    <span class="n">rotor</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span>  <span class="n">propeller_mass</span> <span class="o">+</span> <span class="n">prop_hub_weight</span> <span class="o">+</span> <span class="n">prop_servo_weight</span>
+                    <span class="n">weight</span><span class="o">.</span><span class="n">servos</span>              <span class="o">+=</span> <span class="n">prop_servo_weight</span>
+                    <span class="n">weight</span><span class="o">.</span><span class="n">hubs</span>                <span class="o">+=</span> <span class="n">prop_hub_weight</span>
+                    
+                <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">rotor</span><span class="p">)</span> <span class="o">==</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">Propulsors</span><span class="o">.</span><span class="n">Converters</span><span class="o">.</span><span class="n">Lift_Rotor</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">rotor</span><span class="p">)</span> <span class="o">==</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">Propulsors</span><span class="o">.</span><span class="n">Converters</span><span class="o">.</span><span class="n">Prop_Rotor</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">rotor</span><span class="p">)</span> <span class="o">==</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">Propulsors</span><span class="o">.</span><span class="n">Converters</span><span class="o">.</span><span class="n">Rotor</span><span class="p">:</span>
+<span class="w">                    </span><span class="sd">&#39;&#39;&#39; Lift Rotor, Prop-Rotor or Rotor Weight &#39;&#39;&#39;</span>  
+                    <span class="n">number_of_lift_rotors</span>       <span class="o">+=</span> <span class="mi">1</span>  
+                    <span class="n">rTip_ref</span>                    <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">tip_radius</span>
+                    <span class="n">bladeSol_ref</span>                <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">blade_solidity</span> 
+                    <span class="n">lift_rotor_servo_weight</span>     <span class="o">=</span> <span class="mf">0.65</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span> 
+                    <span class="k">if</span> <span class="n">rotor</span><span class="o">.</span><span class="n">oei</span><span class="o">.</span><span class="n">design_thrust</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">design_thrust</span> <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">hover</span><span class="o">.</span><span class="n">design_thrust</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">design_thrust</span> <span class="o">=</span><span class="n">rotor</span><span class="o">.</span><span class="n">oei</span><span class="o">.</span><span class="n">design_thrust</span>
+                    <span class="n">lift_rotor_mass</span>             <span class="o">=</span> <span class="n">compute_rotor_weight</span><span class="p">(</span><span class="n">rotor</span><span class="p">,</span><span class="n">design_thrust</span><span class="p">)</span>
+                    <span class="n">weight</span><span class="o">.</span><span class="n">rotors</span>               <span class="o">+=</span> <span class="n">lift_rotor_mass</span> 
+                    <span class="n">rotor</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span>  <span class="o">=</span>  <span class="n">lift_rotor_mass</span> <span class="o">+</span> <span class="n">lift_rotor_hub_weight</span> <span class="o">+</span> <span class="n">lift_rotor_servo_weight</span>
+                    <span class="n">weight</span><span class="o">.</span><span class="n">servos</span>               <span class="o">+=</span> <span class="n">lift_rotor_servo_weight</span>
+                    <span class="n">weight</span><span class="o">.</span><span class="n">hubs</span>                 <span class="o">+=</span> <span class="n">lift_rotor_hub_weight</span> 
+                
+                <span class="c1"># Motor </span>
+                <span class="n">motor</span> <span class="o">=</span> <span class="n">propulsor</span><span class="o">.</span><span class="n">rotor</span>                            
+                <span class="n">weight</span><span class="o">.</span><span class="n">motors</span>              <span class="o">+=</span> <span class="n">motor</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span>  
+               
+        <span class="n">total_number_of_rotors</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number_of_lift_rotors</span> <span class="o">+</span> <span class="n">number_of_propellers</span><span class="p">)</span>  
+        <span class="k">if</span> <span class="n">total_number_of_rotors</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">prop_BRS_weight</span>     <span class="o">=</span> <span class="mf">16.</span>   <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prop_BRS_weight</span>     <span class="o">=</span> <span class="mf">0.</span>   <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+ 
+        <span class="c1"># Add associated weights  </span>
+        <span class="n">weight</span><span class="o">.</span><span class="n">BRS</span>    <span class="o">+=</span> <span class="p">(</span><span class="n">prop_BRS_weight</span> <span class="o">+</span> <span class="n">lift_rotor_BRS_weight</span><span class="p">)</span>  
+        <span class="n">maxLiftPower</span>   <span class="o">=</span> <span class="mf">1.15</span><span class="o">*</span><span class="n">maxLift</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">maxLift</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">rho_ref</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">rTip_ref</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
+                                           <span class="n">bladeSol_ref</span><span class="o">*</span><span class="n">AvgBladeCD</span><span class="o">/</span><span class="mi">8</span><span class="o">*</span><span class="n">maxVTip</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">maxLift</span><span class="o">/</span><span class="p">(</span><span class="n">rho_ref</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">rTip_ref</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+        <span class="c1"># Tail Rotor</span>
+        <span class="k">if</span> <span class="n">number_of_lift_rotors</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># this assumes that the vehicle is an electric helicopter with a tail rotor</span>
+            
+            <span class="n">maxLiftOmega</span>   <span class="o">=</span> <span class="n">maxVTip</span><span class="o">/</span><span class="n">rTip_ref</span>
+            <span class="n">maxLiftTorque</span>  <span class="o">=</span> <span class="n">maxLiftPower</span> <span class="o">/</span> <span class="n">maxLiftOmega</span> 
+    
+            <span class="k">for</span> <span class="n">bus</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">busses</span><span class="p">:</span> 
+                <span class="n">tailrotor</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">bus</span><span class="o">.</span><span class="n">lift_rotors</span><span class="p">))</span>
+                <span class="n">weight</span><span class="o">.</span><span class="n">tail_rotor</span>  <span class="o">=</span> <span class="n">compute_rotor_weight</span><span class="p">(</span><span class="n">tailrotor</span><span class="p">,</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">maxLiftTorque</span><span class="o">/</span><span class="p">(</span><span class="mf">1.25</span><span class="o">*</span><span class="n">rTip_ref</span><span class="p">))</span><span class="o">*</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+                <span class="n">weight</span><span class="o">.</span><span class="n">rotors</span>     <span class="o">+=</span> <span class="n">weight</span><span class="o">.</span><span class="n">tail_rotor</span> 
+
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Wing and Motor Wiring Weight</span>
+    <span class="c1">#-------------------------------------------------------------------------------  </span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">wings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">symbolic</span><span class="p">:</span>
+            <span class="n">wing_weight</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wing_weight</span>            <span class="o">=</span> <span class="n">compute_wing_weight</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">maxLift</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="n">safety_factor</span><span class="o">=</span> <span class="n">safety_factor</span><span class="p">,</span> <span class="n">max_g_load</span> <span class="o">=</span>  <span class="n">max_g_load</span> <span class="p">)</span>
+            <span class="n">wing_tag</span>               <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">tag</span>
+            <span class="n">weight</span><span class="o">.</span><span class="n">wings</span><span class="p">[</span><span class="n">wing_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">wing_weight</span>
+            <span class="n">w</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="n">wing_weight</span> 
+        <span class="n">weight</span><span class="o">.</span><span class="n">wings_total</span>         <span class="o">+=</span> <span class="n">wing_weight</span>
+
+        <span class="c1"># compute_wiring_weight weight</span>
+        <span class="n">weight</span><span class="o">.</span><span class="n">wiring</span>  <span class="o">+=</span> <span class="n">compute_wiring_weight</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">maxLiftPower</span><span class="o">/</span><span class="p">(</span><span class="n">eta</span><span class="o">*</span><span class="n">total_number_of_rotors</span><span class="p">))</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span> 
+
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Landing Gear Weight</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="p">,</span> <span class="s1">&#39;nose&#39;</span><span class="p">):</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">nose</span>       <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Landing_Gear</span><span class="o">.</span><span class="n">Nose_Landing_Gear</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">nose</span><span class="o">.</span><span class="n">mass</span>      <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="p">,</span> <span class="s1">&#39;main&#39;</span><span class="p">):</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">main</span>       <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span><span class="o">.</span><span class="n">Landing_Gear</span><span class="o">.</span><span class="n">Main_Landing_Gear</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">mass</span>      <span class="o">=</span> <span class="n">weight</span><span class="o">.</span><span class="n">landing_gear</span>
+
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Fuselage  Weight</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">fuselage</span> <span class="o">=</span> <span class="n">compute_fuselage_weight</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">fuselages</span><span class="o">.</span><span class="n">fuselage</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.45</span><span class="o">*</span><span class="n">config</span><span class="o">.</span><span class="n">fuselages</span><span class="o">.</span><span class="n">fuselage</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">total</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">fuselages</span><span class="o">.</span><span class="n">fuselage</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span>                    <span class="o">=</span>  <span class="n">weight</span><span class="o">.</span><span class="n">fuselage</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">passengers</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">seats</span> <span class="o">+</span>\
+                                                                         <span class="n">weight</span><span class="o">.</span><span class="n">wiring</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">BRS</span> 
+
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Boom Weight</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">booms</span><span class="p">:</span>
+        <span class="n">boom_weight</span>                                <span class="o">=</span> <span class="n">compute_boom_weight</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+        <span class="n">weight</span><span class="o">.</span><span class="n">booms</span>                               <span class="o">+=</span> <span class="n">boom_weight</span> 
+        <span class="n">b</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span>                     <span class="o">=</span>  <span class="n">boom_weight</span> 
+    
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Pack Up Outputs</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">structural</span> <span class="o">=</span> <span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">rotors</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">hubs</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">booms</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">fuselage</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">landing_gear</span> <span class="o">+</span><span class="n">weight</span><span class="o">.</span><span class="n">wings_total</span><span class="p">)</span><span class="o">*</span><span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+
+    <span class="n">weight</span><span class="o">.</span><span class="n">empty</span>      <span class="o">=</span> <span class="p">(</span><span class="n">contingency_factor</span> <span class="o">*</span> <span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">structural</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">seats</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">avionics</span> <span class="o">+</span><span class="n">weight</span><span class="o">.</span><span class="n">ECS</span> <span class="o">+</span>\
+                        <span class="n">weight</span><span class="o">.</span><span class="n">motors</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">servos</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">wiring</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">BRS</span><span class="p">)</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">battery</span><span class="p">)</span> <span class="o">*</span><span class="n">Units</span><span class="o">.</span><span class="n">kg</span>
+
+    <span class="n">weight</span><span class="o">.</span><span class="n">total</span>      <span class="o">=</span> <span class="n">weight</span><span class="o">.</span><span class="n">empty</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">payload</span> <span class="o">+</span> <span class="n">weight</span><span class="o">.</span><span class="n">passengers</span>
+
+    <span class="k">return</span> <span class="n">weight</span></div>
+
+
+
+
+<span class="k">def</span> <span class="nf">_compute_weight</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_weight.</span>
+<span class="sd">	Wraps compute_weight with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_weight documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: config                     = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: contingency_factor         = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: speed_of_sound             = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: max_tip_mach               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: disk_area_factor           = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: safety_factor              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: max_thrust_to_weight_ratio = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: max_g_load                 = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: motor_efficiency           = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_weight</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;contingency_factor&#39;</span><span class="p">,</span> <span class="s1">&#39;speed_of_sound&#39;</span><span class="p">,</span> <span class="s1">&#39;max_tip_mach&#39;</span><span class="p">,</span> <span class="s1">&#39;disk_area_factor&#39;</span><span class="p">,</span> <span class="s1">&#39;safety_factor&#39;</span><span class="p">,</span> <span class="s1">&#39;max_thrust_to_weight_ratio&#39;</span><span class="p">,</span> <span class="s1">&#39;max_g_load&#39;</span><span class="p">,</span> <span class="s1">&#39;motor_efficiency&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

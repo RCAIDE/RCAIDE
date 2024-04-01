@@ -15,31 +15,16 @@ from .Planet                import Planet
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Attributes-Planets
 class Earth(Planet):
-    """Class for planet Earth with defauk properties 
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Class for planet Earth with defauk properties  
     """
     def __defaults__(self):
         """This sets the default values.
-
+    
         Assumptions:
-        None
-
+            None
+        
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """         
         self.tag = 'Earth'
         self.mass              = 5.98e24  # kg
@@ -49,18 +34,19 @@ class Earth(Planet):
     def compute_gravity(self, H=0.0):
         """Compute the gravitational acceleration at altitude
             
-        Assumptions:      
-
+        Assumptions:       
+            None 
+            
         Source:
+            None 
 
-        Inputs:
-        H     [m] (Altitude)
+        Args:
+            self                     : air           [unitless]
+            H (float)                : altitude      [m]     
 
-        Outputs:
-        g     [m/(s^2)] (Gravity)
-
-        Properties Used:
-        None
+        Returns:
+            g (float)                : acceleration due to gravity [m/s^2] 
+            
         """          
         # Unpack
         g0  = self.sea_level_gravity

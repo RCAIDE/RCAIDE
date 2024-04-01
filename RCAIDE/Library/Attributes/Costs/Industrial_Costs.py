@@ -15,32 +15,17 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Attributes-Costs
 class Industrial_Costs(Data):
-    """A class containing industrial cost variables.
-    
-    Assumptions:
-    None
-    
-    Source:
-    N/A
+    """A class containing industrial cost variables. 
     """     
     def __defaults__(self):
         """This sets the default values used in the industrial cost methods.
-
+        
         Assumptions:
-        None
-
+            None
+        
         Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        N/A
-        """  
+            None 
+        """        
         # inputs
         self.tag                            = 'industrial_costs'
         self.reference_year                 = 0.0

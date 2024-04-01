@@ -16,33 +16,17 @@ from RCAIDE.Framework.Core     import Data, Container
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Booms
 class Boom(Component):
-    """ This is a standard boom for a rotor.
-    
-    Assumptions:
-    Conventional boom
-    
-    Source:
-    N/A
-    """
+    """This is a standard boom for a rotor"""
     
     def __defaults__(self):
-        """ This sets the default values for the component to function.
-        
+        """This sets the default values.
+    
         Assumptions:
-        None
-    
+            None
+        
         Source:
-        N/A
-    
-        Inputs:
-        None
-    
-        Outputs:
-        None
-    
-        Properties Used:
-        None
-        """      
+            None
+        """       
         
         self.tag                                    = 'boom'
         self.origin                                 = [[0.0,0.0,0.0]]
@@ -92,15 +76,17 @@ class Boom(Component):
         """ Adds a segment to the rotor_boom. 
     
         Assumptions:
-        None
+            None
+            
         Source:
-        N/A
-        Inputs:
-        None
+            None
+        
+        Args:
+            self       : boom                  [unitless]
+            segment    : cross-section of boom [unitless]   
+            
         Outputs:
-        None
-        Properties Used:
-        N/A
+            None 
         """ 
 
         # Assert database type
@@ -108,34 +94,29 @@ class Boom(Component):
             raise Exception('input component must be of type Data()')
 
         # Store data
-        self.Segments.append(segment)
-
+        self.Segments.append(segment) 
+        
         return 
 
 class Container(Component.Container):
     def get_children(self):
         """ Returns the components that can go inside
-        
+    
         Assumptions:
-        None
-    
+            None
+            
         Source:
-        N/A
-    
-        Inputs:
-        None
-    
-        Outputs:
-        None
-    
-        Properties Used:
-        N/A
-        """        
+            None
         
+        Args:
+            self       : container of booms [unitless]    
+            
+        Outputs:
+            Boom       : boom               [unitless] 
+        """ 
         return [Boom]
 
 # ------------------------------------------------------------
 #  Handle Linking
-# ------------------------------------------------------------
-
+# ------------------------------------------------------------ 
 Boom.Container = Container

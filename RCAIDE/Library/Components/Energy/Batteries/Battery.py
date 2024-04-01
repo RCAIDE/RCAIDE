@@ -10,7 +10,7 @@
 
  # RCAIDE imports
 import RCAIDE
-from RCAIDE.Framework.Core          import Data
+from RCAIDE.Framework.Core        import Data
 from RCAIDE.Library.Components    import Component   
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -18,12 +18,16 @@ from RCAIDE.Library.Components    import Component
 # ----------------------------------------------------------------------------------------------------------------------     
 ## @ingroup Library-Components-Energy-Batteries
 class Battery(Component):
-    """
-    Energy Component object that stores energy. Contains values
-    used to indicate its discharge characterics, including a model
-    that calculates discharge losses
-    """
+    """Default battery class."""
     def __defaults__(self):
+        """This sets the default values.
+    
+        Assumptions:
+            None
+        
+        Source:
+            None
+        """      
         self.chemistry                                         = None 
         self.assigned_propulsors                               = None
         self.mass_properties.mass                              = 0.0

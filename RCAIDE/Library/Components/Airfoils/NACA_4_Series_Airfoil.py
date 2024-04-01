@@ -15,23 +15,16 @@ from .Airfoil import Airfoil
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Airfoils 
 class NACA_4_Series_Airfoil(Airfoil):
+    """NACA 4-Series airfoil class."""
+    
     def __defaults__(self):
-        """This sets the default values of a airfoil defined in RCAIDE.
-
+        """This sets the default values.
+    
         Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        N/A
-        """       
+            None
         
+        Source:
+            None
+        """        
+        self.tag                    = 'NACA_4_Series'
         return 

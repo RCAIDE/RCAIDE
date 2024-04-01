@@ -23,49 +23,39 @@ from scipy.interpolate  import RegularGridInterpolator
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Ion_NMC(Lithium_Ion_Generic):
-    """ Specifies discharge/specific energy characteristics specific 
-        18650 lithium-nickel-manganese-cobalt-oxide battery cells     
-        
-        Assumptions:
-        Convective Thermal Conductivity Coefficient corresponds to forced
-        air cooling in 35 m/s air 
-        
-        Source:
-        Automotive Industrial Systems Company of Panasonic Group, Technical Information of 
-        NCR18650G, URL https://www.imrbatteries.com/content/panasonic_ncr18650g.pdf
-        
-        convective  heat transfer coefficient, h 
-        Jeon, Dong Hyup, and Seung Man Baek. "Thermal modeling of cylindrical 
-        lithium ion battery during discharge cycle." Energy Conversion and Management
-        52.8-9 (2011): 2973-2981.
-        
-        thermal conductivity, k 
-        Yang, Shuting, et al. "A Review of Lithium-Ion Battery Thermal Management 
-        System Strategies and the Evaluate Criteria." Int. J. Electrochem. Sci 14
-        (2019): 6077-6107.
-        
-        specific heat capacity, Cp
-        (axial and radial)
-        Yang, Shuting, et al. "A Review of Lithium-Ion Battery Thermal Management 
-        System Strategies and the Evaluate Criteria." Int. J. Electrochem. Sci 14
-        (2019): 6077-6107.
-        
-        # Electrode Area
-        Muenzel, Valentin, et al. "A comparative testing study of commercial
-        18650-format lithium-ion battery cells." Journal of The Electrochemical
-        Society 162.8 (2015): A1592.
-        
-        Inputs:
-        None
-        
-        Outputs:
-        None
-        
-        Properties Used:
-        N/A
+    """ 18650 lithium-nickel-manganese-cobalt-oxide battery cellc.
     """       
     
-    def __defaults__(self):    
+    def __defaults__(self):   
+        """This sets the default values.
+    
+        Assumptions:
+            Convective Thermal Conductivity Coefficient corresponds to forced
+            air cooling in 35 m/s air 
+        
+        Source: 
+            convective  heat transfer coefficient, h 
+            Jeon, Dong Hyup, and Seung Man Baek. "Thermal modeling of cylindrical 
+            lithium ion battery during discharge cycle." Energy Conversion and Management
+            52.8-9 (2011): 2973-2981.
+            
+            thermal conductivity, k 
+            Yang, Shuting, et al. "A Review of Lithium-Ion Battery Thermal Management 
+            System Strategies and the Evaluate Criteria." Int. J. Electrochem. Sci 14
+            (2019): 6077-6107.
+            
+            specific heat capacity, Cp
+            (axial and radial)
+            Yang, Shuting, et al. "A Review of Lithium-Ion Battery Thermal Management 
+            System Strategies and the Evaluate Criteria." Int. J. Electrochem. Sci 14
+            (2019): 6077-6107.
+            
+            # Electrode Area
+            Muenzel, Valentin, et al. "A comparative testing study of commercial
+            18650-format lithium-ion battery cells." Journal of The Electrochemical
+            Society 162.8 (2015): A1592.
+        
+        """    
         self.tag                              = 'lithium_ion_nmc'  
 
         self.cell.diameter                    = 0.0185                                                   # [m]
@@ -96,118 +86,87 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
          
         return  
     
-    def energy_calc(self,state,bus,battery_discharge_flag= True): 
-        '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
-           battery cells. 
+    def energy_calc(self,state,bus,discharge= True): 
+        """Computes the state of the NMC battery cell.
            
-           Assumtions: 
-           
-           Inputs: 
-           
-           Outputs: 
-           
-        ''' 
-        compute_nmc_cell_performance(self,state,bus,battery_discharge_flag) 
+        Assumptions:
+            None
+            
+        Source:
+            None
+    
+        Args:
+            self               : battery        [unitless]
+            state              : temperature    [K]
+            bus                : pressure       [Pa]
+            discharge (boolean): discharge flag [unitless]
+            
+        Returns: 
+            None
+        """        
+        compute_nmc_cell_performance(self,state,bus,discharge) 
         
         return 
     
     def compute_voltage(self,battery_conditions):  
-        """ Computes the voltage of a single NMC cell or a battery pack of NMC cells  
-    
-            Assumptions:
+        """ Computes the voltage of a single NMC cell or a battery pack of NMC cells   
+        
+        Assumptions:
+            None
+        
+        Source:
             None
     
-            Source:
-            N/A
-    
-            Inputs:   
+        Args:
+            self               : battery          [unitless] 
+            battery_conditions : state of battery [unitless]
             
-            Outputs 
-             
-            Properties Used:
-            N/A
+        Returns: 
+            None
         """              
         return battery_conditions.pack.voltage_under_load 
     
-    def update_battery_age(self,battery_conditions,increment_battery_age_by_one_day = False):  
-        """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries.  
-          
+    def update_battery_age(self,battery_conditions,increment_day = False):  
+        """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries.   
+        
         Assumptions:
-        None
+            None
+        
+        Source:
+            None
     
-        Inputs: 
-        Outputs: 
-             
-        Properties Used:
-        N/A 
-        """    
-        update_nmc_cell_age(self,battery_conditions,increment_battery_age_by_one_day) 
+        Args:
+            self                   : battery            [unitless] 
+            battery_conditions     : state of battery   [unitless]
+            increment_day (boolean): day increment flag [unitless]  
+            
+        Returns: 
+            None
+        """        
+        update_nmc_cell_age(self,battery_conditions,increment_day) 
         
         return  
 
-def create_discharge_performance_map(battery_raw_data):
-    """ Creates discharge and charge response surface for 
-        LiNiMnCoO2 battery cells 
+def create_discharge_performance_map(raw_data):
+    """ Creates discharge and charge response surface for a LiNiMnCoO2 battery cell   
+        
+        Assumptions:
+            None
         
         Source:
-        N/A
-        
-        Assumptions:
-        N/A
-        
-        Inputs: 
+            None
             
-        Outputs: 
-        battery_data
-
-        Properties Used:
-        N/A
-                                
-    """  
-    
-    # Process raw data 
-    processed_data = process_raw_data(battery_raw_data)
-    
-    # Create performance maps 
-    battery_data = create_response_surface(processed_data) 
-    
-    return battery_data
-
-def create_response_surface(processed_data):
-    
-    battery_map             = Data() 
-    amps                    = np.linspace(0, 8, 5)
-    temp                    = np.linspace(0, 50, 6) +  272.65
-    SOC                     = np.linspace(0, 1, 15)
-    battery_map.Voltage     = RegularGridInterpolator((amps, temp, SOC), processed_data.Voltage,bounds_error=False,fill_value=None)
-    battery_map.Temperature = RegularGridInterpolator((amps, temp, SOC), processed_data.Temperature,bounds_error=False,fill_value=None) 
-     
-    return battery_map 
-
-def process_raw_data(raw_data):
-    """ Takes raw data and formats voltage as a function of SOC, current and temperature
-        
-        Source 
-        N/A
-        
-        Assumptions:
-        N/A
-        
-        Inputs:
-        raw_Data     
+        Args:
+            raw_data     : cell discharge curves                  [unitless]   
             
-        Outputs: 
-        procesed_data 
-
-        Properties Used:
-        N/A
-                                
-    """
-    processed_data = Data()
-     
+        Returns: 
+            battery_data : response surface of battery properties [unitless]  
+        """   
+    # Process raw data   
+    processed_data = Data() 
     processed_data.Voltage        = np.zeros((5,6,15,2)) # current , operating temperature , SOC vs voltage      
     processed_data.Temperature    = np.zeros((5,6,15,2)) # current , operating temperature , SOC vs temperature 
-    
+
     # Reshape  Data          
     raw_data.Voltage 
     for i, Amps in enumerate(raw_data.Voltage):
@@ -220,7 +179,7 @@ def process_raw_data(raw_data):
             vec[:,0] = x/max_x
             vec[:,1] = y
             processed_data.Voltage[i,j,:,:]= vec   
-            
+
     for i, Amps in enumerate(raw_data.Temperature):
         for j , Deg in enumerate(Amps):
             min_x    = 0   
@@ -230,30 +189,35 @@ def process_raw_data(raw_data):
             vec      = np.zeros((15,2))
             vec[:,0] = x/max_x
             vec[:,1] = y
-            processed_data.Temperature[i,j,:,:]= vec     
+            processed_data.Temperature[i,j,:,:]= vec  
     
-    return  processed_data  
+    # Create performance maps  
+    battery_data             = Data() 
+    amps                    = np.linspace(0, 8, 5)
+    temp                    = np.linspace(0, 50, 6) +  272.65
+    SOC                     = np.linspace(0, 1, 15)
+    battery_data.Voltage     = RegularGridInterpolator((amps, temp, SOC), processed_data.Voltage,bounds_error=False,fill_value=None)
+    battery_data.Temperature = RegularGridInterpolator((amps, temp, SOC), processed_data.Temperature,bounds_error=False,fill_value=None) 
+     
+    return battery_data  
 
 def load_battery_results(): 
     '''Load experimental raw data of NMC cells 
-    
-    Source:
-    Automotive Industrial Systems Company of Panasonic Group, Technical Information of 
-    NCR18650G, URL https://www.imrbatteries.com/content/panasonic_ncr18650g.pdf
-    
-    Assumptions:
-    N/A
-    
-    Inputs: 
-    N/A
         
-    Outputs: 
-    battery_data
-
-    Properties Used:
-    N/A  
+       Assumptions:
+           Ideal gas
+           
+       Source:
+           Automotive Industrial Systems Company of Panasonic Group, Technical Information of 
+           NCR18650G, URL https://www.imrbatteries.com/content/panasonic_ncr18650g.pdf
+    
+       Args: 
+           None
+           
+       Returns:
+           battery_data: raw data from battery   [unitless]
     '''    
     ospath    = os.path.abspath(__file__)
     separator = os.path.sep
     rel_path  = os.path.dirname(ospath) + separator     
-    return RCAIDE.External_Interfaces.RCAIDE.load(rel_path+ 'NMC_Raw_Data.res')
+    return RCAIDE.load(rel_path+ 'NMC_Raw_Data.res')

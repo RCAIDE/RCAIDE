@@ -14,42 +14,17 @@ from RCAIDE.Framework.Core import Data
 
 ## @ingroup Attributes-Solids
 class Solid(Data):
-    """ Default Template for Solid Attribute Classes
-    
-        Assumptions:
-        None
-        
-        Source:
-        N/A
-        
-        Inputs:
-        N/A
-        
-        Outputs:
-        N/A
-        
-        Properties Used:
-        None
-    
+    """ Default Template for Solid Attribute Classes  
     """
 
     def __defaults__(self):
         """Default Instantiation of Physical Property Values
         
         Assumptions:
-        None
+            None
         
         Source:
-        N/A
-        
-        Inputs:
-        N/A
-        
-        Outputs:
-        N/A
-        
-        Properties Used:
-        None
+            None
         """
 
         self.ultimate_tensile_strength  = None

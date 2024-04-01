@@ -17,31 +17,16 @@ from RCAIDE.Framework.Core import Units
 ## @ingroup Attributes-Propellants
 class RP1(Propellant):
     """RP1 Rocket Fuel Class
-    
-    Assumptions:
-    Assumes an O/F ratio 2.27 
-    
-    Source:
-    Sutton, Rocket Propulsion Elements
     """
 
     def __defaults__(self):
-        """This sets the default values.
-
+        """This sets the default values. 
+    
         Assumptions:
-        None
-
+            Assumes an O/F ratio 2.27 
+        
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            Sutton, Rocket Propulsion Elements
         """    
         self.tag                         = 'LOX_RP1'
         self.molecular_weight            = 22.193 # [kg/kmol]

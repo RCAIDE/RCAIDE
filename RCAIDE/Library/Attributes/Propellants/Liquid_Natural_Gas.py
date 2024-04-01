@@ -15,31 +15,16 @@ from .Propellant import Propellant
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup  Library-Attributes-Propellants 
 class Liquid_Natural_Gas(Propellant):
-    """Liquid natural gas fuel
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Liquid natural gas fuel class,
     """
 
     def __defaults__(self):
-        """This sets the default values.
-
-        Assumptions:
+        """This sets the default values. 
+    
+    Assumptions:
         None
-
-        Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
+    
+    Source:
         None
         """    
         self.tag             = 'Liquid_Natural_Gas'

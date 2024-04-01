@@ -18,26 +18,18 @@ from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_Generic  import c
 # ----------------------------------------------------------------------    
 ## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Ion_Generic(Battery):
-    """ Generic lithium ion battery that specifies discharge/specific energy 
-    characteristics. 
-    
-    Assumptions
-    1) Default discharge curves correspond to lithium-iron-phosphate cells
-    
-    2) Convective Thermal Conductivity Coefficient corresponds to forced
-    air cooling in 35 m/s air 
-    
-    Inputs:
-    None
-    
-    Outputs:
-    None
-    
-    Properties Used:
-    N/A
+    """ Generic lithium ion battery.  
     """  
     def __defaults__(self):
-            
+        """This sets the default values.
+    
+        Assumptions:
+          Default discharge curves correspond to lithium-iron-phosphate cells 
+          Convective Thermal Conductivity Coefficient corresponds to forced  air cooling in 35 m/s air  
+
+        Source:
+            None
+        """    
         self.tag                                                      = 'lithium_ion_generic'  
         self.cell                                                     = Data()  
         self.pack                                                     = Data()
@@ -81,44 +73,48 @@ class Lithium_Ion_Generic(Battery):
         return           
 
 
-    def energy_calc(self,state,bus,battery_discharge_flag= True): 
-        """This is an electric cycle model for 18650 lithium-iron_phosphate battery cells. It
-           models losses based on an empirical correlation Based on method taken 
-           from Datta and Johnson.
+    def energy_calc(self,state,bus,discharge= True): 
+        """Computes the state of a generic battery cell.
            
-           Assumptions:  
-           
-           Inputs: 
-           
-           Outputs: 
+        Assumptions:
+            Assumes the discharge profile of LFP cell
             
-        """  
-        compute_generic_li_cell_performance(self,state,bus,battery_discharge_flag) 
+        Source:
+            None
+    
+        Args:
+            self               : battery        [unitless]
+            state              : temperature    [K]
+            bus                : pressure       [Pa]
+            discharge (boolean): discharge flag [unitless]
+            
+        Returns: 
+            None
+        """     
+        compute_generic_li_cell_performance(self,state,bus,discharge) 
                         
         return       
     
     def compute_voltage(self,battery_conditions):
-        """ Computes the voltage of a single LFP cell or a battery pack of LFP cells   
+        """ Computes the voltage of a single cell    
     
-            Assumptions:
+        Assumptions:
+            Properties of the LFP cell is used 
+        
+        Source:
             None
     
-            Source:
-            N/A
-    
-            Inputs:  
-                state   - segment unknowns to define voltage [unitless]
+        Args:
+            self               : battery          [unitless] 
+            battery_conditions : state of battery [unitless]
             
-            Outputs
-                V_ul    - under-load voltage                 [volts]
-             
-            Properties Used:
-            N/A
-        """              
-
+        Returns: 
+            None
+        """      
         return battery_conditions.pack.voltage_under_load 
     
-    def update_battery_age(self,segment,increment_battery_age_by_one_day = False):   
+    def update_battery_age(self,segment,increment_battery_age_by_one_day = False): 
+        """ This does nothing. """  
         pass 
         return  
  

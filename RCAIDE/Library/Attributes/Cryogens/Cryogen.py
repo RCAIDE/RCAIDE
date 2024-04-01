@@ -8,7 +8,7 @@
 #  Imports
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-from RCAIDE.Frameworks.Core import Data
+from RCAIDE.Framework.Core import Data
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # Cryogen
@@ -16,31 +16,16 @@ from RCAIDE.Frameworks.Core import Data
 ## @ingroup Attributes-Cryogens
 class Cryogen(Data):
     """Defauly cryogenic liquid class 
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
     """
 
     def __defaults__(self):
         """This sets the default values.
-
+    
         Assumptions:
-        None
-
+            None
+        
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """    
         self.tag                       = 'Cryogen'
         self.density                   = 0.0                       # kg/m^3

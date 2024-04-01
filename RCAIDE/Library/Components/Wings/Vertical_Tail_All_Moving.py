@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports   
-from .Horizontal_Tail    import Vertical_Tail
+from .Vertical_Tail      import Vertical_Tail
 from .All_Moving_Surface import All_Moving_Surface
 
 # ---------------------------------------------------------------------------------------------------------------------- 

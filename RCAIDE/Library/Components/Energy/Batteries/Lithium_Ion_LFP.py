@@ -21,44 +21,37 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Compoments-Energy-Batteries 
 class Lithium_Ion_LFP(Lithium_Ion_Generic):
-    """ Specifies discharge/specific energy characteristics specific 
-        18650 lithium-iron-phosphate-oxide battery cells.     
-        
-        Assumptions: 
-        N/A 
-        
-        Source:
-        # Cell Information 
-        Saw, L. H., Yonghuang Ye, and A. A. O. Tay. "Electrochemical–thermal analysis of 
-        18650 Lithium Iron Phosphate cell." Energy Conversion and Management 75 (2013): 
-        162-174.
-        
-        # Electrode Area
-        Muenzel, Valentin, et al. "A comparative testing study of commercial
-        18650-format lithium-ion battery cells." Journal of The Electrochemical
-        Society 162.8 (2015): A1592.
-        
-        # Cell Thermal Conductivities 
-        (radial)
-        Murashko, Kirill A., Juha Pyrhönen, and Jorma Jokiniemi. "Determination of the 
-        through-plane thermal conductivity and specific heat capacity of a Li-ion cylindrical 
-        cell." International Journal of Heat and Mass Transfer 162 (2020): 120330.
-        
-        (axial)
-        Saw, L. H., Yonghuang Ye, and A. A. O. Tay. "Electrochemical–thermal analysis of 
-        18650 Lithium Iron Phosphate cell." Energy Conversion and Management 75 (2013): 
-        162-174.
-        
-        Inputs:
-        None
-        
-        Outputs:
-        None
-        
-        Properties Used:
-        N/A
+    """ 18650 lithium-iron-phosphate-oxide battery cell.  
         """ 
     def __defaults__(self):
+        """This sets the default values.
+    
+        Assumptions:
+            None
+
+        Source:
+            # Cell Information 
+            Saw, L. H., Yonghuang Ye, and A. A. O. Tay. "Electrochemical–thermal analysis of 
+            18650 Lithium Iron Phosphate cell." Energy Conversion and Management 75 (2013): 
+            162-174.
+            
+            # Electrode Area
+            Muenzel, Valentin, et al. "A comparative testing study of commercial
+            18650-format lithium-ion battery cells." Journal of The Electrochemical
+            Society 162.8 (2015): A1592.
+            
+            # Cell Thermal Conductivities 
+            (radial)
+            Murashko, Kirill A., Juha Pyrhönen, and Jorma Jokiniemi. "Determination of the 
+            through-plane thermal conductivity and specific heat capacity of a Li-ion cylindrical 
+            cell." International Journal of Heat and Mass Transfer 162 (2020): 120330.
+            
+            (axial)
+            Saw, L. H., Yonghuang Ye, and A. A. O. Tay. "Electrochemical–thermal analysis of 
+            18650 Lithium Iron Phosphate cell." Energy Conversion and Management 75 (2013): 
+            162-174.
+        
+        """     
         self.tag                              = 'lithium_ion_lfp' 
          
         self.cell.diameter                    = 0.0185                                                   # [m]
@@ -91,42 +84,49 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         return
     
 
-    def energy_calc(self,state,bus,battery_discharge_flag= True): 
-        """This is an electric cycle model for 18650 lithium-iron_phosphate battery cells. It
-           models losses based on an empirical correlation Based on method taken 
-           from Datta and Johnson.
-            
-           Inputs: 
+    def energy_calc(self,state,bus,discharge= True): 
+        """Computes the state of the LFP battery cell.
            
-           Outputs:   
+        Assumptions:
+            None
             
-        """ 
-        compute_lfp_cell_performance(self,state,bus,battery_discharge_flag) 
+        Source:
+            None
+    
+        Args:
+            self               : battery        [unitless]
+            state              : temperature    [K]
+            bus                : pressure       [Pa]
+            discharge (boolean): discharge flag [unitless]
+            
+        Returns: 
+            None
+        """      
+        compute_lfp_cell_performance(self,state,bus,discharge) 
                         
         return     
     
     def compute_voltage(self,battery_conditions):
-        """ Computes the voltage of a single LFP cell or a battery pack of LFP cells   
+        """ Computes the voltage of a single LFP cell  
     
-            Assumptions:
+        Assumptions:
+            None
+        
+        Source:
             None
     
-            Source:
-            N/A
-    
-            Inputs:  
-                state   - segment unknowns to define voltage [unitless]
+        Args:
+            self               : battery          [unitless] 
+            battery_conditions : state of battery [unitless]
             
-            Outputs
-                V_ul    - under-load voltage                 [volts]
-             
-            Properties Used:
-            N/A
+        Returns: 
+            None
         """              
 
         return battery_conditions.pack.voltage_under_load 
     
     def update_battery_age(self,segment,increment_battery_age_by_one_day = False):   
+        """ This does nothing. """
         pass 
         return  
  

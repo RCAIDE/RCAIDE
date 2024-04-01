@@ -18,40 +18,23 @@ from RCAIDE.Library.Components.Component                      import Container
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Compoments-Energy-Networks-Distribution
 class Electrical_Bus(Component):
-    """  This controls the flow of energy into and from a battery-powered nework 
+    """Electrical bus component.
+    """ 
+    def __defaults__(self):
+        """This sets the default values.
     
         Assumptions:
-        None
+            None
         
         Source:
-        None
-    """
-    
-    
-    def __defaults__(self):
-        """ This sets the default values.
-    
-            Assumptions:
             None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """          
+        """                
         self.tag                           = 'bus' 
         self.batteries                     = Container()
         self.propulsors                    = Container() 
         self.solar_panel                   = None 
-        self.avionics                      = RCAIDE.Energy.Peripherals.Avionics()
-        self.payload                       = RCAIDE.Energy.Peripherals.Payload()        
+        self.avionics                      = RCAIDE.Library.Components.Systems.Avionics()
+        self.payload                       = RCAIDE.Library.Components.Payloads.Payload()        
         self.identical_propulsors          = True  
         self.active                        = True
         self.efficiency                    = 1.0

@@ -11,8 +11,7 @@
 
 from .Component        import Component
 from .Mass_Properties  import Mass_Properties
- 
-from . import Peripherals
+  
 from . import Propulsors
 from . import Energy
 from . import Thermal_Management 

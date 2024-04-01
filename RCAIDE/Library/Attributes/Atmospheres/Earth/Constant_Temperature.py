@@ -19,22 +19,16 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Attributes-Atmospheres-Earth   
 class Constant_Temperature(Atmosphere):
-    """Contains US Standard 1976 values with temperature modified to be constant.
-    
-    Assumptions:
-    Constant temperature
-    
-    Source:
-    U.S. Standard Atmosphere (1976 version)
+    """Contains US Standard 1976 values with temperature modified to be constant. 
     """
     def __defaults__(self):
         """This sets the default values at breaks in the atmosphere.
 
         Assumptions:
-        Constant temperature
+            Constant temperature
 
         Source:
-        U.S. Standard Atmosphere (1976 version)
+            U.S. Standard Atmosphere (1976 version)
 
         Inputs:
         None

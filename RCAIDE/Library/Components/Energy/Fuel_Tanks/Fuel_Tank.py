@@ -16,11 +16,17 @@ from RCAIDE.Library.Components    import Component
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Compoments-Energy-Fuel_Tanks 
 class Fuel_Tank(Component):
-    """
-    Energy Component object that stores fuel. Contains values
-    used to indicate its fuel type.
+    """Fuel tank compoment.
     """
     def __defaults__(self):
+        """This sets the default values.
+    
+        Assumptions:
+            None
+        
+        Source:
+            None
+        """          
         self.tag                         = 'fuel_tank'
         self.fuel_selector_ratio         = 1.0 
         self.mass_properties.empty_mass  = 0.0   

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Noise.Correlation_Buildup.Turbofan.noise_source_location &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Noise.Correlation_Buildup.Turbofan.noise_source_location</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Noise.Correlation_Buildup.Turbofan.noise_source_location</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine </span>
+<span class="c1"># RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/noise_source_location.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c1"># RCAIDE tmports  </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>  <span class="kn">import</span>  <span class="n">Data</span>
+
+<span class="c1"># Python package imports   </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>   
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------     </span>
+<span class="c1">#  Noise Source Location</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------      </span>
+<span class="c1">## @ingroup Library-Methods-Noise-Correlation_Buildup-Engine   </span>
+<div class="viewcode-block" id="noise_source_location">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Correlation_Buildup.Turbofan.html#RCAIDE.Library.Methods.Noise.Correlation_Buildup.Turbofan.noise_source_location.noise_source_location">[docs]</a>
+<span class="k">def</span> <span class="nf">noise_source_location</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">Xo</span><span class="p">,</span><span class="n">zk</span><span class="p">,</span><span class="n">Diameter_primary</span><span class="p">,</span><span class="n">theta_p</span><span class="p">,</span><span class="n">Area_primary</span><span class="p">,</span><span class="n">Area_secondary</span><span class="p">,</span><span class="n">distance_microphone</span><span class="p">,</span>
+                           <span class="n">Diameter_secondary</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">theta_s</span><span class="p">,</span><span class="n">theta_m</span><span class="p">,</span><span class="n">Diameter_mixed</span><span class="p">,</span><span class="n">Velocity_primary</span><span class="p">,</span><span class="n">Velocity_secondary</span><span class="p">,</span>
+                           <span class="n">Velocity_mixed</span><span class="p">,</span><span class="n">Velocity_aircraft</span><span class="p">,</span><span class="n">sound_ambient</span><span class="p">,</span><span class="n">Str_m</span><span class="p">,</span><span class="n">Str_s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function calculates the noise source location</span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Inputs: </span>
+<span class="sd">        B                         [-]</span>
+<span class="sd">        Xo                        [-]</span>
+<span class="sd">        zk                        [-]</span>
+<span class="sd">        Diameter_primary          [m]</span>
+<span class="sd">        theta_p                   [rad]</span>
+<span class="sd">        Area_primary              [m^2]</span>
+<span class="sd">        Area_secondary            [m^2]</span>
+<span class="sd">        distance_microphone       [m]</span>
+<span class="sd">        Diameter_secondary        [m]</span>
+<span class="sd">        theta                     [rad]</span>
+<span class="sd">        theta_s                   [rad]</span>
+<span class="sd">        theta_m                   [rad]</span>
+<span class="sd">        Diameter_mixed            [m]</span>
+<span class="sd">        Velocity_primary          [m/s]</span>
+<span class="sd">        Velocity_secondary        [m/s]</span>
+<span class="sd">        Velocity_mixed            [m/s]</span>
+<span class="sd">        Velocity_aircraft         [m/s]</span>
+<span class="sd">        sound_ambient             [dB]</span>
+<span class="sd">        Str_m                     [-]</span>
+<span class="sd">        Str_s                     [-]</span>
+
+<span class="sd">    Outputs: </span>
+<span class="sd">        theta_p  [rad]</span>
+<span class="sd">        theta_s  [rad]</span>
+<span class="sd">        theta_m  [rad]</span>
+<span class="sd">    </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># P rimary jet source location</span>
+    <span class="n">XJ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">):</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">Diameter_primary</span>
+        <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_primary</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">4.</span><span class="o">+</span><span class="mf">4.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">18.</span><span class="o">*</span><span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">9.</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">Area_secondary</span><span class="o">/</span><span class="n">Area_primary</span><span class="p">))</span>
+        <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>     <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">*</span><span class="p">(((</span><span class="n">Xo</span><span class="o">+</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">distance_microphone</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.</span><span class="p">):</span>
+            <span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_primary</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">4.</span><span class="o">+</span><span class="mf">4.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">18.</span><span class="o">*</span><span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">9.</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">Area_secondary</span><span class="o">/</span><span class="n">Area_primary</span><span class="p">))</span>
+        
+        <span class="k">while</span> <span class="n">residual</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Diameter_primary</span><span class="o">/</span><span class="mf">200.</span><span class="p">):</span>
+            <span class="n">XJ_old</span> <span class="o">=</span> <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">theta1</span> <span class="o">=</span> <span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">*</span><span class="p">(((</span><span class="n">Xo</span><span class="o">+</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">distance_microphone</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+            
+            <span class="k">if</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.</span><span class="p">:</span>
+                <span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+
+            <span class="n">theta2</span>     <span class="o">=</span> <span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta1</span><span class="o">+</span><span class="n">theta2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
+            <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_primary</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">4.</span><span class="o">+</span><span class="mf">4.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">18.</span><span class="o">*</span><span class="n">theta_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">9.</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">Area_secondary</span><span class="o">/</span><span class="n">Area_primary</span><span class="p">))</span>
+            <span class="n">residual</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">XJ_old</span><span class="o">-</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="c1"># Secondary jet source location</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">Diameter_secondary</span>
+        <span class="n">XJ_old</span>   <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>    <span class="o">=</span> <span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_secondary</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">4.5</span><span class="o">*</span><span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">2.25</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="mf">0.5</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Str_s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> \
+            <span class="o">*</span>  <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="p">(</span><span class="mf">0.7</span><span class="o">*</span><span class="n">Velocity_secondary</span><span class="o">/</span><span class="n">sound_ambient</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">Velocity_secondary</span><span class="o">/</span><span class="p">(</span><span class="n">Velocity_secondary</span><span class="o">-</span><span class="n">Velocity_aircraft</span><span class="p">))</span>
+        
+        <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>     <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">*</span><span class="p">(((</span><span class="n">Xo</span><span class="o">+</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">distance_microphone</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.</span><span class="p">:</span>
+            <span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+            
+        <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_mixed</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">4.5</span><span class="o">*</span><span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">2.25</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="mf">0.5</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Str_s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="o">*</span> \
+            <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="p">(</span><span class="mf">0.7</span><span class="o">*</span><span class="n">Velocity_secondary</span><span class="o">/</span><span class="n">sound_ambient</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">Velocity_secondary</span><span class="o">/</span><span class="p">(</span><span class="n">Velocity_secondary</span><span class="o">-</span><span class="n">Velocity_aircraft</span><span class="p">))</span>
+        
+        <span class="k">while</span> <span class="n">residual</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Diameter_mixed</span><span class="o">/</span><span class="mf">200.</span><span class="p">):</span>
+            <span class="n">XJ_old</span> <span class="o">=</span> <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">theta1</span> <span class="o">=</span> <span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">*</span><span class="p">(((</span><span class="n">Xo</span><span class="o">+</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">distance_microphone</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+            
+            <span class="k">if</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.</span><span class="p">:</span>
+                <span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+
+            <span class="n">theta2</span>     <span class="o">=</span> <span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta1</span><span class="o">+</span><span class="n">theta2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
+            <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_mixed</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">4.5</span><span class="o">*</span><span class="n">theta_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">2.25</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="mf">0.5</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Str_s</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="o">*</span> \
+                <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="p">(</span><span class="mf">0.7</span><span class="o">*</span><span class="n">Velocity_secondary</span><span class="o">/</span><span class="n">sound_ambient</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">Velocity_secondary</span><span class="o">/</span><span class="p">(</span><span class="n">Velocity_secondary</span><span class="o">-</span><span class="n">Velocity_aircraft</span><span class="p">))</span>
+            
+            <span class="n">residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">XJ_old</span><span class="o">-</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="c1">#Mixed jet source location</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">Diameter_mixed</span>
+        <span class="n">XJ_old</span>   <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_mixed</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">3.</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Str_m</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">+</span><span class="p">(</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">18.</span><span class="o">*</span><span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">13.</span><span class="p">))</span><span class="o">+</span> \
+            <span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="mf">0.5</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Str_m</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">Velocity_mixed</span><span class="o">/</span><span class="n">sound_ambient</span><span class="p">)</span> <span class="o">*</span> \
+            <span class="p">(</span><span class="n">Velocity_mixed</span><span class="o">/</span><span class="p">(</span><span class="n">Velocity_mixed</span><span class="o">-</span><span class="n">Velocity_aircraft</span><span class="p">))</span>
+        
+        <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">*</span><span class="p">(((</span><span class="n">Xo</span><span class="o">+</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">distance_microphone</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.</span><span class="p">:</span>
+            <span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_mixed</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">3.</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Str_m</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">+</span><span class="p">(</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">18.</span><span class="o">*</span><span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">13.</span><span class="p">))</span><span class="o">+</span>\
+            <span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="mf">0.5</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Str_m</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">Velocity_mixed</span><span class="o">/</span><span class="n">sound_ambient</span><span class="p">)</span> \
+            <span class="o">*</span><span class="p">(</span><span class="n">Velocity_mixed</span><span class="o">/</span><span class="p">(</span><span class="n">Velocity_mixed</span><span class="o">-</span><span class="n">Velocity_aircraft</span><span class="p">))</span>
+        
+        <span class="k">while</span> <span class="n">residual</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Diameter_mixed</span><span class="o">/</span><span class="mf">200.</span><span class="p">):</span>
+            <span class="n">XJ_old</span> <span class="o">=</span> <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">theta1</span> <span class="o">=</span> <span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">*</span><span class="p">(((</span><span class="n">Xo</span><span class="o">+</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="n">distance_microphone</span><span class="p">)</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+            
+            <span class="k">if</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mf">0.</span><span class="p">:</span>
+                <span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(((</span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+                
+            <span class="n">theta2</span>     <span class="o">=</span> <span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta1</span><span class="o">+</span><span class="n">theta2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
+            <span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>      <span class="o">=</span> <span class="p">(</span><span class="n">zk</span><span class="o">*</span><span class="n">Diameter_mixed</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">3.</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Str_m</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">+</span><span class="p">(</span><span class="mf">2.</span><span class="o">+</span><span class="mf">1.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">((</span><span class="mf">18.</span><span class="o">*</span><span class="n">theta_m</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">-</span><span class="mf">13.</span><span class="p">))</span><span class="o">+</span>\
+                <span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="mf">0.5</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Str_m</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">Velocity_mixed</span><span class="o">/</span><span class="n">sound_ambient</span><span class="p">)</span> \
+                <span class="o">*</span><span class="p">(</span><span class="n">Velocity_mixed</span><span class="o">/</span><span class="p">(</span><span class="n">Velocity_mixed</span><span class="o">-</span><span class="n">Velocity_aircraft</span><span class="p">))</span>
+            
+            <span class="n">residual</span>   <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">XJ_old</span><span class="o">-</span><span class="n">XJ</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+   
+   
+    <span class="n">source_location</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+    <span class="n">source_location</span><span class="o">.</span><span class="n">theta_p</span> <span class="o">=</span> <span class="n">theta_p</span>
+    <span class="n">source_location</span><span class="o">.</span><span class="n">theta_s</span> <span class="o">=</span> <span class="n">theta_s</span>
+    <span class="n">source_location</span><span class="o">.</span><span class="n">theta_m</span> <span class="o">=</span> <span class="n">theta_m</span>
+    
+    <span class="k">return</span> <span class="n">source_location</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_noise_source_location</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of noise_source_location.</span>
+<span class="sd">	Wraps noise_source_location with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see noise_source_location documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: B                   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Xo                  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: zk                  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Diameter_primary    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: theta_p             = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Area_primary        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Area_secondary      = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: distance_microphone = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Diameter_secondary  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: theta               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: theta_s             = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: theta_m             = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Diameter_mixed      = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Velocity_primary    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Velocity_secondary  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Velocity_mixed      = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Velocity_aircraft   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: sound_ambient       = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Str_m               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Str_s               = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">noise_source_location</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;Xo&#39;</span><span class="p">,</span> <span class="s1">&#39;zk&#39;</span><span class="p">,</span> <span class="s1">&#39;Diameter_primary&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_p&#39;</span><span class="p">,</span> <span class="s1">&#39;Area_primary&#39;</span><span class="p">,</span> <span class="s1">&#39;Area_secondary&#39;</span><span class="p">,</span> <span class="s1">&#39;distance_microphone&#39;</span><span class="p">,</span> <span class="s1">&#39;Diameter_secondary&#39;</span><span class="p">,</span> <span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_s&#39;</span><span class="p">,</span> <span class="s1">&#39;theta_m&#39;</span><span class="p">,</span> <span class="s1">&#39;Diameter_mixed&#39;</span><span class="p">,</span> <span class="s1">&#39;Velocity_primary&#39;</span><span class="p">,</span> <span class="s1">&#39;Velocity_secondary&#39;</span><span class="p">,</span> <span class="s1">&#39;Velocity_mixed&#39;</span><span class="p">,</span> <span class="s1">&#39;Velocity_aircraft&#39;</span><span class="p">,</span> <span class="s1">&#39;sound_ambient&#39;</span><span class="p">,</span> <span class="s1">&#39;Str_m&#39;</span><span class="p">,</span> <span class="s1">&#39;Str_s&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -17,33 +17,17 @@ from RCAIDE.Vehicle          import Vehicle
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Components-Configs
 class Config(Diffed_Data,Vehicle):
-    """ The Top Level Configuration Class
-        
-            Assumptions:
-            None
-            
-            Source:
-            N/A
-    """
-    
+    """ The top level configuration class.
+    """ 
     def __defaults__(self):
-        """ This sets the default values for the configuration.
+        """This sets the default values.
+    
+        Assumptions:
+            None
         
-                Assumptions:
-                None
-                
-                Source:
-                N/A
-                
-                Inputs:
-                None
-                
-                Outputs:
-                None
-                
-                Properties Used:
-                N/A
-        """
+        Source:
+            None
+        """     
         self.tag    = 'config'
         self._base  = Vehicle()
         self._diff  = Vehicle()

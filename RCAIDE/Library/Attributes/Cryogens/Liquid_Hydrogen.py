@@ -15,33 +15,18 @@ from .Cryogen import Cryogen
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Attributes-Cryogens
 class Liquid_Hydrogen(Cryogen):
-    """Liquid Hydrogen Cryogen
-    
-    Assumptions:
-    None
-    
-    Source:
-    Ekin - Experimental Techniques for Low Temperature Measurements, ISBN 0-19-857054-6
-    NIST Chemistry Webbook
+    """Liquid Hydrogen Cryogen Class 
     """
 
     def __defaults__(self):
         """This sets the default values.
-
         Assumptions:
-        Ambient Pressure
-
+            None
+        
         Source:
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
-        """ 
+            Ekin - Experimental Techniques for Low Temperature Measurements, ISBN 0-19-857054-6
+            NIST Chemistry Webbook
+       """ 
         
         self.tag                        = 'Liquid_Hydrogen'
         self.density                    =    59.9            # [kg/m^3] 

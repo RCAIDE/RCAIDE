@@ -16,32 +16,17 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Attributes-Gases 
 class Air(Gas):
-    """Holds constants and functions that compute gas properties for air.
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Generic class of air gas. 
     """
 
     def __defaults__(self):
         """This sets the default values.
-
+    
         Assumptions:
-        None
-
+            None
+        
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """          
         self.tag                    = 'air'
         self.molecular_mass         = 28.96442        # kg/kmol
@@ -55,46 +40,40 @@ class Air(Gas):
 
     def compute_density(self,T=300.,p=101325.):
         """Computes air density given temperature and pressure
-
+        
         Assumptions:
-        Ideal gas
-
+            Ideal gas
+            
         Source:
-        Common equation
-
-        Inputs:
-        T         [K]  - Temperature
-        p         [Pa] - Pressure
-
-        Outputs:
-        density   [kg/m^3]
-
-        Properties Used:
-        self.gas_specific_constant
-        """          
-
+            None
+    
+        Args:
+            self       : air                   [unitless]
+            T (float)  : temperature           [K]
+            P (float)  : pressure              [Pa]
+            
+        Returns:
+            rho (float): density               [kg/m^3]       
+        """        
         return p/(self.gas_specific_constant*T)
 
     def compute_speed_of_sound(self,T=300.,p=101325.,variable_gamma=False):
-        """Computes speed of sound given temperature and pressure
-
+        """Computes speed of sound given temperature and pressure 
+ 
         Assumptions:
-        Ideal gas with gamma = 1.4 if variable gamma is False
+            Ideal gas with gamma = 1.4 if variable gamma is False
 
         Source:
-        Common equation
+            None 
 
-        Inputs:
-        T              [K]       - Temperature
-        p              [Pa]      - Pressure
-        variable_gamma <boolean> - Determines if gamma is computed
+        Args:
+            self                     : air           [unitless]
+            T (float)                : temperature   [K]    
+            p (float)                : Pressure      [Pa]      
+            variable_gamma (boolean) :               [unitless]
 
-        Outputs:
-        speed of sound [m/s]
-
-        Properties Used:
-        self.compute_gamma() (if variable gamma is True)
-        self.gas_specific_constant
+        Returns:
+            a (float)                : speed of sound [m/s] 
         """                  
 
         if variable_gamma:
@@ -113,23 +92,21 @@ class Air(Gas):
         c2 =    0.001307  (0.0009967, 0.001617)
         c3 =     -0.5558  (-0.6688, -0.4429)
         c4 =        1074  (1061, 1086) 
-            
+             
         Assumptions:
-        123 K < T < 673 K 
-
+            123 K < T < 673 K 
+            
         Source:
-        Unknown, possibly Combustion Technologies for a Clean Environment 
-        (Energy, Combustion and the Environment), Jun 15, 1995, Carvalhoc
-
-        Inputs:
-        T              [K]       - Temperature
-        p              [Pa]      - Pressure
-
-        Outputs:
-        cp             [J/kg-K]
-
-        Properties Used:
-        None
+            Unknown, possibly Combustion Technologies for a Clean Environment 
+            (Energy, Combustion and the Environment), Jun 15, 1995, Carvalhoc
+    
+        Args:
+            self      : air               [unitless]
+            T (float) : temperature       [K]
+            P (float) : pressure          [Pa]
+            
+        Returns:
+            cp (float): specfic heat capacity [J/(kg K)]         
         """   
 
         c = [-7.357e-007, 0.001307, -0.5558, 1074.0]
@@ -145,24 +122,22 @@ class Air(Gas):
         c1 =  1.629e-010  (1.486e-010, 1.773e-010)
         c2 = -3.588e-007  (-3.901e-007, -3.274e-007)
         c3 =   0.0001418  (0.0001221, 0.0001614)
-        c4 =       1.386  (1.382, 1.389)
-            
+        c4 =       1.386  (1.382, 1.389) 
+ 
         Assumptions:
-        233 K < T < 1273 K 
-
+             233 K < T < 1273 K 
+            
         Source:
-        Unknown
-
-        Inputs:
-        T              [K]       - Temperature
-        p              [Pa]      - Pressure
-
-        Outputs:
-        g              [-]
-
-        Properties Used:
-        None
-        """   
+            None
+    
+        Args:
+            self      : air           [unitless]
+            T (float) : temperature   [K]
+            P (float) : pressure      [Pa]
+            
+        Returns: 
+            g  (float): gamma         [unitless] 
+        """     
 
         c = [1.629e-010, -3.588e-007, 0.0001418, 1.386]
         g = c[0]*T*T*T + c[1]*T*T + c[2]*T + c[3]
@@ -170,23 +145,22 @@ class Air(Gas):
         return g
 
     def compute_absolute_viscosity(self,T=300.,p=101325.):
-        """Compute the absolute (dynamic) viscosity
-            
+        """Compute the absolute (dynamic) viscosity 
+        
         Assumptions:
-        Ideal gas
-
+            Ideal gas
+            
         Source:
-        https://www.cfd-online.com/Wiki/Sutherland's_law
-
-        Inputs:
-        T                  [K]       - Temperature
-
-        Outputs:
-        absolute viscosity [kg/(m-s)]
-
-        Properties Used:
-        None
-        """           
+            https://www.cfd-online.com/Wiki/Sutherland's_law
+    
+        Args:
+            self      : air                   [unitless]
+            T (float) : temperature           [K]
+            P (float) : pressure              [Pa]
+            
+        Returns:
+            mu (float): absolute viscosity    [kg/(m-s)]       
+        """ 
 
         S = 110.4                   # constant in deg K (Sutherland's Formula)
         C1 = 1.458e-6               # kg/m-s-sqrt(K), constant (Sutherland's Formula)
@@ -194,45 +168,41 @@ class Air(Gas):
         return C1*(T**(1.5))/(T + S)
     
     def compute_thermal_conductivity(self,T=300.,p=101325.):
-        """Compute the thermal conductivity
-            
+        """Compute the thermal conductivity of air 
+ 
         Assumptions:
-        Properties computed at 1 bar (14.5 psia)
-
+            Properties computed at 1 bar (14.5 psia)
+            
         Source:
-        https://www.engineeringtoolbox.com/air-properties-viscosity-conductivity-heat-capacity-d_1509.html 
-
-        Inputs:
-        T                  [K]       - Temperature
-
-        Outputs:
-        thermal conductivity [W/(m-K)]
-
-        Properties Used:
-        None
+            https://www.engineeringtoolbox.com/air-properties-viscosity-conductivity-heat-capacity-d_1509.html 
+    
+        Args:
+            self      : air                   [unitless]
+            T (float) : temperature           [K]
+            P (float) : pressure              [Pa]
+            
+        Returns:
+            k  (float): thermal conductivity  [W/(m-K)]   
         """ 
         return 3.99E-4 + 9.89E-5*(T) -4.57E-8*(T**2) + 1.4E-11*(T**3)
     
     
     def compute_prandtl_number(self,T=300.):
         """Compute the prandtl number 
+             
+        Assumptions:
+            None
             
-        Assumptions: 
-
         Source:
-        N/A
-
-        Inputs:
-        specific_heat_capacity [J/kgK]
-        absolute viscosity     [kg/(m-s)]
-        thermal conductivity   [W/(m-K)]
-
-        Outputs:
-        prandtl number         [unitless]
-
-        Properties Used:
-        None
-        """   
+            None
+    
+        Args:
+            self      : air                   [unitless]
+            T (float) : temperature           [K] 
+            
+        Returns:
+            Pr  (float): Prandtl Number       [unitless]
+        """ 
         
         Cp = self.specific_heat_capacity 
         mu = self.compute_absolute_viscosity(T)

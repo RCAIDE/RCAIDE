@@ -17,13 +17,19 @@ from .Battery    import Battery
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Compoments-Energy-Batteries
 class Aluminum_Air(Battery):
-    """
-    Specifies discharge/specific energy characteristics specific to
-    aluminum-air batteries. Also includes parameters related to 
-    consumption of aluminum, oxygen, and water
+    """ Aluminum-Air battery cell. Specifies discharge/specific energy characteristics specific to
+    aluminum-air batteries. Also includes parameters related to consumption of aluminum, oxygen, and water
     """ 
     
     def __defaults__(self):
+        """This sets the default values.
+    
+        Assumptions:
+            None
+        
+        Source:
+            None
+        """    
         self.specific_energy        = 1300.*Units.Wh/Units.kg    # convert to Joules/kg
         self.specific_power         = 0.2*Units.kW/Units.kg      # convert to W/kg
         self.mass_gain_factor       = 0.000110145*Units.kg/Units.Wh

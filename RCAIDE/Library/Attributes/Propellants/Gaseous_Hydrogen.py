@@ -16,32 +16,17 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup  Library-Attributes-Propellants 
 class Gaseous_Hydrogen(Propellant):
-    """Holds values for this propellant
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Gaseous hydrogen class
     """
 
     def __defaults__(self):
         """This sets the default values.
-
+    
         Assumptions:
-        None
-
+            None
+        
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """    
         self.tag                       = 'hydrogen_gas'
         self.reactant                  = 'O2'

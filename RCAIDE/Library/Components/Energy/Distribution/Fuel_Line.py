@@ -17,31 +17,16 @@ from RCAIDE.Library.Components.Component                      import Container
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Compoments-Energy-Networks-Distribution
 class Fuel_Line(Component):
-    """  This controls the flow of energy into and from a fuel-Energy-Sourcesed nework 
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ Fuel line class.
     """ 
     
     def __defaults__(self):
-        """ This sets the default values.
+        """This sets the default values.
     
-            Assumptions:
+        Assumptions:
             None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
+        
+        Source:
             None
         """          
         self.tag                           = 'fuel_line'  

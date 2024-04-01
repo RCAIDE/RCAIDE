@@ -9,86 +9,62 @@
 
 import json
 import pickle
-from RCAIDE.Frameworks.Core import Data, DataOrdered
+from RCAIDE.Framework.Core import Data, DataOrdered
 import numpy as np
 from collections import OrderedDict
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  load
 # ----------------------------------------------------------------------------------------------------------------------    
-def json_load(filename):
-    """Converts a JSON file into a RCAIDE data structure.
-
-    Assumptions:
-    JSON file was a previously saved RCAIDE data structure.
-
-    Source:
-    N/A
-
-    Inputs:
-    filename   <string> - file to be loaded
-
-    Outputs:
-    data       RCAIDE data structure
-
-    Properties Used:
-    N/A
+def load(filename,pickle_format = False):
+    """Converts a JSON file into a RCAIDE data structure. 
+    
+        Assumptions:
+            None
+            
+        Source:
+            None
+     
+        Args:
+            filename (string)      : file to be loaded        [unitless] 
+            pickle_format (boolean): pickle file format flag  [unitless]
+            
+        Returns:
+            data  : RCAIDE data structure [unitless]  
     """ 
     
-    # Get JSON string
-    f = open(filename)
-    res_string = f.readline()
-    f.close()    
+    if pickle_format:
+        load_file = filename + '.pkl' 
+        with open(load_file, 'rb') as file:
+            data = pickle.load(file)  
+    else: 
+        # Get JSON string
+        f = open(filename)
+        res_string = f.readline()
+        f.close()    
+        
+        # Convert to dictionary
+        res_dict = json.loads(res_string,object_pairs_hook=OrderedDict)    
+        
+        # Convert to RCAIDE data structure
+        data = read_RCAIDE_json_dict(res_dict) 
     
-    # Convert to dictionary
-    res_dict = json.loads(res_string,object_pairs_hook=OrderedDict)    
-    
-    # Convert to RCAIDE data structure
-    data = read_RCAIDE_json_dict(res_dict) 
-    
-    return data
- 
-def pickle_load(filename):
-    """Converts a  pickle file into a RCAIDE data structure.
-
-    Assumptions:
-    pickle file was a previously saved RCAIDE data structure.
-
-    Source:
-    N/A
-
-    Inputs:
-    filename   <string> - file to be loaded
-
-    Outputs:
-    data       RCAIDE data structure
-
-    Properties Used:
-    N/A
-    """  
-    load_file = filename + '.pkl' 
-    with open(load_file, 'rb') as file:
-        data = pickle.load(file)   
-    
-    return data
+    return data 
 
 def read_RCAIDE_json_dict(res_dict):
     """Builds a RCAIDE data structure based on a dictionary from a JSON file. This is initial case.
 
     Assumptions:
-    Dictionary was created based on a previously saved RCAIDE data structure.
-
+        Dictionary was created based on a previously saved RCAIDE data structure. 
+        
     Source:
-    N/A
+        None
 
-    Inputs:
-    res_dict    Dictionary based on the RCAIDE data structure
-
-    Outputs:
-    RCAIDE_data  RCAIDE data structure
-
-    Properties Used:
-    N/A
+    Args: 
+        res_dict     : Dictionary based on the RCAIDE data structure [unitless] 
+        
+    Returns:
+        RCAIDE_data  : RCAIDE data structure [unitless]   
     """      
     keys = res_dict.keys() # keys from top level
     RCAIDE_data = Data() # initialize RCAIDE data structure
@@ -104,19 +80,16 @@ def build_data_r(v):
     """Builds a RCAIDE data structure based on a dictionary from a JSON file. This is recursive step.
 
     Assumptions:
-    Dictionary was created based on a previously saved RCAIDE data structure.
+        Dictionary was created based on a previously saved RCAIDE data structure. 
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    v     generic value
-
-    Outputs:
-    ret   value converted to needed format
-
-    Properties Used:
-    N/A
+    Args: 
+        v     : generic value [unitless]  
+        
+    Returns:
+        ret  :  value converted to needed format [unitless]   
     """          
     tv = type(v) # Get value type
     

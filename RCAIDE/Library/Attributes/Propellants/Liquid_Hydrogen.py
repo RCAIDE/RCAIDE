@@ -15,33 +15,17 @@ from .Propellant import Propellant
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Attributes-Propellants
 class Liquid_Hydrogen(Propellant):
-    """Liquid hydrogen fuel
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Liquid hydrogen fuel class 
     """
 
     def __defaults__(self):
         """This sets the default values.
 
         Assumptions:
-        None
+            None
 
-        Source:
-        Values commonly available
-        http://arc.uta.edu/publications/td_files/Kristen%20Roberts%20MS.pdf
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+        Source: 
+            http://arc.uta.edu/publications/td_files/Kristen%20Roberts%20MS.pdf 
         """ 
         
         self.tag                        = 'Liquid_H2' 

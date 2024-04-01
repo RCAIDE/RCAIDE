@@ -16,30 +16,15 @@ from RCAIDE.Framework.Core import Data
 ## @ingroup Library-Attributes-Planets 
 class Planet(Data):
     """Default planet class 
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
     """
     def __defaults__(self):
         """This sets the default values.
-
+    
         Assumptions:
-        None
-
+            None
+        
         Source:
-        None
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """           
         self.mass              = 0.0  # kg
         self.mean_radius       = 0.0  # m 

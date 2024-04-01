@@ -15,17 +15,17 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Attributes-Atmospheres 
 class Atmosphere(Data):
-    """Default atmospheric class 
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Default atmosphere class 
     """
 
     def __defaults__(self):
-        """This sets the default values.
+        """This sets the default values. 
+    
+        Assumptions:
+            None
+        
+        Source:
+            None 
         """          
         self.tag = 'Constant-property atmosphere'
         self.composition           = Data()

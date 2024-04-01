@@ -21,34 +21,18 @@ import numpy as np
 ## @ingroup Vehicle
 class Vehicle(Data):
     """RCAIDE Vehicle container class with database + input / output functionality
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
     """    
 
     def __defaults__(self):
         """This sets the default values.
     
-            Assumptions:
+        Assumptions:
             None
-    
-            Source:
-            N/A
-    
-            Inputs:
+        
+        Source:
             None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-            """          
-
-        self.tag = 'vehicle'
+        """    
+        self.tag                    = 'vehicle'
         self.fuselages              = Components.Fuselages.Fuselage.Container()
         self.wings                  = Components.Wings.Wing.Container()
         self.networks               = Framework.Networks.Network.Container()
@@ -66,8 +50,7 @@ class Vehicle(Data):
         self.passengers             = 0.0
         self.performance            = DataOrdered()
          
-    _energy_network_root_map = None
-        
+    _energy_network_root_map = None 
 
     def __init__(self,*args,**kwarg):
         """ Sets up the component hierarchy for a vehicle
@@ -139,22 +122,13 @@ class Vehicle(Data):
 
 
     def append_component(self,component):
-        """ adds a component to vehicle
-            
+        """ Adds a component to vehicle
+        
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+                None
         """  
 
         # assert database type
@@ -180,19 +154,10 @@ class Vehicle(Data):
         """ Regresses through the vehicle and sums the masses
         
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+                None
         """  
 
         total = 0.0
@@ -208,21 +173,12 @@ class Vehicle(Data):
     def center_of_gravity(self):
         """ will recursively search the data tree and sum
             any Comp.Mass_Properties.mass, and return the total sum
-            
+        
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+                None
         """   
         total = np.array([[0.0,0.0,0.0]])
 
@@ -243,22 +199,13 @@ class Vehicle(Data):
     
     
     def append_energy_network(self,energy_network):
-        """ adds an energy network to vehicle
-            
+        """ Adds an energy network to vehicle 
+        
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+                None
         """  
 
         # assert database type
@@ -281,22 +228,13 @@ class Vehicle(Data):
         return    
 
     def find_energy_network_root(self,energy_network):
-        """ find pointer to energy network data root.
+        """ Find pointer to energy network data root.
         
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+                None
         """  
 
         energy_network_type = type(energy_network)
@@ -312,36 +250,24 @@ class Vehicle(Data):
 
 
 ## @ingroup Vehicle
-class Vehicle_Mass_Properties(Components.Mass_Properties):
-
-    """ Vehicle_Mass_Properties():
-        The vehicle's mass properties.
-
+class Vehicle_Mass_Properties(Components.Mass_Properties): 
+    """ The vehicle's mass properties.
+        
+            Assumptions:
+                None
     
-    Assumptions:
-    None
-    
-    Source:
-    None
+            Source:
+                None
     """
 
     def __defaults__(self):
         """This sets the default values.
-    
+        
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+                None
             """         
 
         self.tag                         = 'mass_properties'
@@ -367,20 +293,11 @@ class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Propert
     def append(self,value,key=None):
         """ Appends the vehicle mass, but only let's one ever exist. Keeps the newest one
         
-        Assumptions:
-        None
+            Assumptions:
+                None
     
-        Source:
-        N/A
-    
-        Inputs:
-        None
-    
-        Outputs:
-        None
-    
-        Properties Used:
-        N/A
+            Source:
+                None
         """      
         self.clear()
         for key in value.keys():
@@ -389,20 +306,11 @@ class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Propert
     def get_children(self):
         """ Returns the components that can go inside
         
-        Assumptions:
-        None
+            Assumptions:
+                None
     
-        Source:
-        N/A
-    
-        Inputs:
-        None
-    
-        Outputs:
-        None
-    
-        Properties Used:
-        N/A
+            Source:
+                None
         """       
         
         return [Vehicle_Mass_Properties]

@@ -15,31 +15,16 @@ from .Gas import Gas
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Attributes-Gases 
 class CO2(Gas):
-   """Holds constants for CO2.
-    
-   Assumptions:
-   None
-    
-   Source:
-   None
+   """Generic class for carbon dioxide 
    """
    def __defaults__(self):
       """This sets the default values.
-
-      Assumptions:
-      None
-
-      Source:
-      Values commonly available
-
-      Inputs:
-      None
-
-      Outputs:
-      None
-
-      Properties Used:
-      None
+    
+        Assumptions:
+            None
+        
+        Source:
+            None
       """            
       self.tag                   ='CO2'
       self.molecular_mass        = 44.01           # kg/kmol

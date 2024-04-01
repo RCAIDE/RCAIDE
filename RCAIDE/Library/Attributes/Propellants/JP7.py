@@ -15,33 +15,17 @@ from .Propellant import Propellant
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup  Library-Attributes-Propellants
 class JP7(Propellant):
-    """JP7 Jet fuel class 
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """JP7 Jet fuel class
     """
 
     def __defaults__(self):
         """This sets the default values.
 
         Assumptions:
-        None
+            None
 
-        Source:
-        Values commonly available
-        http://arc.uta.edu/publications/td_files/Kristen%20Roberts%20MS.pdf
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+        Source: 
+            http://arc.uta.edu/publications/td_files/Kristen%20Roberts%20MS.pdf 
         """    
         self.tag                        = 'JP7'
         self.reactant                   = 'O2'

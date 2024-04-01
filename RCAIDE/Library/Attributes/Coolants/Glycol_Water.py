@@ -14,22 +14,19 @@ from .Coolant import Coolant
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Attributes-Coolants
 class Glycol_Water(Coolant):
-    """This sets the default values.
-    
-    Assumptions:
-        Mixture is 50% water-50% ethylene-glycol
-    
-    Source: 
-        Engineering Toolbox: https://www.engineeringtoolbox.com/ethylene-glycol-d_146.html
-        University of Waterloo: http://www.mhtl.uwaterloo.ca/old/onlinetools/airprop/airprop.html
-    
-    Properties Used:
-    None
+    """Generic class of ethelyne glycol-water mixture coolant.
     """
 
     def __defaults__(self):
-        """This sets the default values."""
-
+        """This sets the default values.
+    
+        Assumptions:
+            Mixture is 50% water-50% ethylene-glycol
+        
+        Source: 
+            Engineering Toolbox: https://www.engineeringtoolbox.com/ethylene-glycol-d_146.html
+            University of Waterloo: http://www.mhtl.uwaterloo.ca/old/onlinetools/airprop/airprop.html 
+        """ 
         self.tag                       = 'Glycol_Water'
         self.percent_glycol            = 0.5 
         self.density                   = 1075                       # kg/m^3
@@ -72,7 +69,7 @@ class Glycol_Water(Coolant):
             P (float) : pressure              [Pa]
             
         Returns:
-            mu (float): absolute viscosity    [Pa s]         
+            mu (float): absolute viscosity    [kg/(m-s)] 
         """ 
         return  self.dynamic_viscosity
     

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Components package &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RCAIDE.Library.Components.Airfoils package" href="RCAIDE.Library.Components.Airfoils.html" />
+    <link rel="prev" title="RCAIDE.Library.Attributes.Solids package" href="RCAIDE.Library.Attributes.Solids.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">RCAIDE</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="RCAIDE.html">RCAIDE package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="RCAIDE.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Framework.html">RCAIDE.Framework package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.Vehicle">RCAIDE.Vehicle module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.load">RCAIDE.load module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.save">RCAIDE.save module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.version">RCAIDE.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">RCAIDE</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.html">RCAIDE package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Components package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/RCAIDE.Library.Components.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rcaide-library-components-package">
+<h1>RCAIDE.Library.Components package<a class="headerlink" href="#rcaide-library-components-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Airfoils.html">RCAIDE.Library.Components.Airfoils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Airfoils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Airfoils.html#module-RCAIDE.Library.Components.Airfoils.Airfoil">RCAIDE.Library.Components.Airfoils.Airfoil module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Airfoils.html#RCAIDE.Library.Components.Airfoils.Airfoil.Airfoil"><code class="docutils literal notranslate"><span class="pre">Airfoil</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Airfoils.html#module-RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil">RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Airfoils.html#RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil.NACA_4_Series_Airfoil"><code class="docutils literal notranslate"><span class="pre">NACA_4_Series_Airfoil</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Airfoils.html#module-RCAIDE.Library.Components.Airfoils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html">RCAIDE.Library.Components.Booms package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html#module-RCAIDE.Library.Components.Booms.Boom">RCAIDE.Library.Components.Booms.Boom module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html#RCAIDE.Library.Components.Booms.Boom.Boom"><code class="docutils literal notranslate"><span class="pre">Boom</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html#RCAIDE.Library.Components.Booms.Boom.Boom.Container"><code class="docutils literal notranslate"><span class="pre">Boom.Container</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html#RCAIDE.Library.Components.Booms.Boom.Boom.append_segment"><code class="docutils literal notranslate"><span class="pre">Boom.append_segment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html#RCAIDE.Library.Components.Booms.Boom.Container"><code class="docutils literal notranslate"><span class="pre">Container</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html#RCAIDE.Library.Components.Booms.Boom.Container.get_children"><code class="docutils literal notranslate"><span class="pre">Container.get_children()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Booms.html#module-RCAIDE.Library.Components.Booms">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Configs.html">RCAIDE.Library.Components.Configs package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Configs.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Configs.html#module-RCAIDE.Library.Components.Configs.Config">RCAIDE.Library.Components.Configs.Config module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Configs.html#RCAIDE.Library.Components.Configs.Config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Configs.html#module-RCAIDE.Library.Components.Configs">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Energy.html">RCAIDE.Library.Components.Energy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Energy.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html">RCAIDE.Library.Components.Energy.Batteries package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#module-RCAIDE.Library.Components.Energy.Batteries.Aluminum_Air">RCAIDE.Library.Components.Energy.Batteries.Aluminum_Air module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#module-RCAIDE.Library.Components.Energy.Batteries.Battery">RCAIDE.Library.Components.Energy.Batteries.Battery module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#module-RCAIDE.Library.Components.Energy.Batteries.Lithium_Air">RCAIDE.Library.Components.Energy.Batteries.Lithium_Air module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#module-RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_Generic">RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_Generic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#module-RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_LFP">RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_LFP module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#module-RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_NMC">RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_NMC module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#module-RCAIDE.Library.Components.Energy.Batteries.Lithium_Sulfur">RCAIDE.Library.Components.Energy.Batteries.Lithium_Sulfur module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Batteries.html#module-RCAIDE.Library.Components.Energy.Batteries">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Distribution.html">RCAIDE.Library.Components.Energy.Distribution package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Distribution.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Distribution.html#module-RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus">RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Distribution.html#module-RCAIDE.Library.Components.Energy.Distribution.Fuel_Line">RCAIDE.Library.Components.Energy.Distribution.Fuel_Line module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Distribution.html#module-RCAIDE.Library.Components.Energy.Distribution">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Fuel_Tanks.html">RCAIDE.Library.Components.Energy.Fuel_Tanks package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Fuel_Tanks.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Fuel_Tanks.html#module-RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank">RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Energy.Fuel_Tanks.html#module-RCAIDE.Library.Components.Energy.Fuel_Tanks">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Energy.html#module-RCAIDE.Library.Components.Energy">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html">RCAIDE.Library.Components.Fuselages package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#module-RCAIDE.Library.Components.Fuselages.Blended_Wing_Body_Fuselage">RCAIDE.Library.Components.Fuselages.Blended_Wing_Body_Fuselage module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#RCAIDE.Library.Components.Fuselages.Blended_Wing_Body_Fuselage.Blended_Wing_Body_Fuselage"><code class="docutils literal notranslate"><span class="pre">Blended_Wing_Body_Fuselage</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#module-RCAIDE.Library.Components.Fuselages.Fuselage">RCAIDE.Library.Components.Fuselages.Fuselage module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#RCAIDE.Library.Components.Fuselages.Fuselage.Fuselage"><code class="docutils literal notranslate"><span class="pre">Fuselage</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#RCAIDE.Library.Components.Fuselages.Fuselage.Fuselage.append_fuel_tank"><code class="docutils literal notranslate"><span class="pre">Fuselage.append_fuel_tank()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#RCAIDE.Library.Components.Fuselages.Fuselage.Fuselage.append_segment"><code class="docutils literal notranslate"><span class="pre">Fuselage.append_segment()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#module-RCAIDE.Library.Components.Fuselages.Tube_and_Wing_Fuselage">RCAIDE.Library.Components.Fuselages.Tube_and_Wing_Fuselage module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#RCAIDE.Library.Components.Fuselages.Tube_and_Wing_Fuselage.Tube_and_Wing_Fuselage"><code class="docutils literal notranslate"><span class="pre">Tube_and_Wing_Fuselage</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Fuselages.html#module-RCAIDE.Library.Components.Fuselages">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html">RCAIDE.Library.Components.Landing_Gear package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html#module-RCAIDE.Library.Components.Landing_Gear.Landing_Gear">RCAIDE.Library.Components.Landing_Gear.Landing_Gear module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html#RCAIDE.Library.Components.Landing_Gear.Landing_Gear.Landing_Gear"><code class="docutils literal notranslate"><span class="pre">Landing_Gear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html#module-RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear">RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html#RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear.Main_Landing_Gear"><code class="docutils literal notranslate"><span class="pre">Main_Landing_Gear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html#module-RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear">RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html#RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear.Nose_Landing_Gear"><code class="docutils literal notranslate"><span class="pre">Nose_Landing_Gear</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Landing_Gear.html#module-RCAIDE.Library.Components.Landing_Gear">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html">RCAIDE.Library.Components.Nacelles package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#module-RCAIDE.Library.Components.Nacelles.Nacelle">RCAIDE.Library.Components.Nacelles.Nacelle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle"><code class="docutils literal notranslate"><span class="pre">Nacelle</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.append_airfoil"><code class="docutils literal notranslate"><span class="pre">Nacelle.append_airfoil()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.append_segment"><code class="docutils literal notranslate"><span class="pre">Nacelle.append_segment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.body_to_nac_vel"><code class="docutils literal notranslate"><span class="pre">Nacelle.body_to_nac_vel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.nac_vel_to_body"><code class="docutils literal notranslate"><span class="pre">Nacelle.nac_vel_to_body()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.vec_to_vel"><code class="docutils literal notranslate"><span class="pre">Nacelle.vec_to_vel()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Nacelles.html#module-RCAIDE.Library.Components.Nacelles">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Payloads.html">RCAIDE.Library.Components.Payloads package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Payloads.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Payloads.html#module-RCAIDE.Library.Components.Payloads.Payload">RCAIDE.Library.Components.Payloads.Payload module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Payloads.html#RCAIDE.Library.Components.Payloads.Payload.Payload"><code class="docutils literal notranslate"><span class="pre">Payload</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Payloads.html#RCAIDE.Library.Components.Payloads.Payload.Payload.power"><code class="docutils literal notranslate"><span class="pre">Payload.power()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Payloads.html#module-RCAIDE.Library.Components.Payloads">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html">RCAIDE.Library.Components.Propulsors package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html">RCAIDE.Library.Components.Propulsors.Converters package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Combustor">RCAIDE.Library.Components.Propulsors.Converters.Combustor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Compression_Nozzle">RCAIDE.Library.Components.Propulsors.Converters.Compression_Nozzle module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Compressor">RCAIDE.Library.Components.Propulsors.Converters.Compressor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.DC_Motor">RCAIDE.Library.Components.Propulsors.Converters.DC_Motor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Engine">RCAIDE.Library.Components.Propulsors.Converters.Engine module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Expansion_Nozzle">RCAIDE.Library.Components.Propulsors.Converters.Expansion_Nozzle module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Fan">RCAIDE.Library.Components.Propulsors.Converters.Fan module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Lift_Rotor">RCAIDE.Library.Components.Propulsors.Converters.Lift_Rotor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Prop_Rotor">RCAIDE.Library.Components.Propulsors.Converters.Prop_Rotor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Propeller">RCAIDE.Library.Components.Propulsors.Converters.Propeller module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Ram">RCAIDE.Library.Components.Propulsors.Converters.Ram module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Rotor">RCAIDE.Library.Components.Propulsors.Converters.Rotor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Shaft_Power_Offtake">RCAIDE.Library.Components.Propulsors.Converters.Shaft_Power_Offtake module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters.Turbine">RCAIDE.Library.Components.Propulsors.Converters.Turbine module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Converters.html#module-RCAIDE.Library.Components.Propulsors.Converters">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Modulators.html">RCAIDE.Library.Components.Propulsors.Modulators package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Modulators.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Modulators.html#module-RCAIDE.Library.Components.Propulsors.Modulators.Electronic_Speed_Controller">RCAIDE.Library.Components.Propulsors.Modulators.Electronic_Speed_Controller module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Modulators.html#module-RCAIDE.Library.Components.Propulsors.Modulators.Fuel_Selector">RCAIDE.Library.Components.Propulsors.Modulators.Fuel_Selector module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.Modulators.html#module-RCAIDE.Library.Components.Propulsors.Modulators">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#module-RCAIDE.Library.Components.Propulsors.Constant_Speed_ICE_Propeller">RCAIDE.Library.Components.Propulsors.Constant_Speed_ICE_Propeller module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#RCAIDE.Library.Components.Propulsors.Constant_Speed_ICE_Propeller.Constant_Speed_ICE_Propeller"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_ICE_Propeller</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#module-RCAIDE.Library.Components.Propulsors.Electric_Rotor">RCAIDE.Library.Components.Propulsors.Electric_Rotor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#RCAIDE.Library.Components.Propulsors.Electric_Rotor.Electric_Rotor"><code class="docutils literal notranslate"><span class="pre">Electric_Rotor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#module-RCAIDE.Library.Components.Propulsors.ICE_Propeller">RCAIDE.Library.Components.Propulsors.ICE_Propeller module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#RCAIDE.Library.Components.Propulsors.ICE_Propeller.ICE_Propeller"><code class="docutils literal notranslate"><span class="pre">ICE_Propeller</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#module-RCAIDE.Library.Components.Propulsors.Propulsor">RCAIDE.Library.Components.Propulsors.Propulsor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#RCAIDE.Library.Components.Propulsors.Propulsor.Propulsor"><code class="docutils literal notranslate"><span class="pre">Propulsor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#module-RCAIDE.Library.Components.Propulsors.Turbofan">RCAIDE.Library.Components.Propulsors.Turbofan module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#RCAIDE.Library.Components.Propulsors.Turbofan.Turbofan"><code class="docutils literal notranslate"><span class="pre">Turbofan</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#module-RCAIDE.Library.Components.Propulsors.Turbojet">RCAIDE.Library.Components.Propulsors.Turbojet module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#RCAIDE.Library.Components.Propulsors.Turbojet.Turbojet"><code class="docutils literal notranslate"><span class="pre">Turbojet</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Propulsors.html#module-RCAIDE.Library.Components.Propulsors">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Systems.html">RCAIDE.Library.Components.Systems package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Systems.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Systems.html#module-RCAIDE.Library.Components.Systems.Avionics">RCAIDE.Library.Components.Systems.Avionics module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Systems.html#RCAIDE.Library.Components.Systems.Avionics.Avionics"><code class="docutils literal notranslate"><span class="pre">Avionics</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Systems.html#RCAIDE.Library.Components.Systems.Avionics.Avionics.power"><code class="docutils literal notranslate"><span class="pre">Avionics.power()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Systems.html#module-RCAIDE.Library.Components.Systems.System">RCAIDE.Library.Components.Systems.System module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Systems.html#RCAIDE.Library.Components.Systems.System.System"><code class="docutils literal notranslate"><span class="pre">System</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Systems.html#module-RCAIDE.Library.Components.Systems">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Thermal_Management.html">RCAIDE.Library.Components.Thermal_Management package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Thermal_Management.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Thermal_Management.Batteries.html">RCAIDE.Library.Components.Thermal_Management.Batteries package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Thermal_Management.Batteries.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Thermal_Management.Batteries.html#module-RCAIDE.Library.Components.Thermal_Management.Batteries">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Thermal_Management.html#module-RCAIDE.Library.Components.Thermal_Management">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html">RCAIDE.Library.Components.Wings package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html">RCAIDE.Library.Components.Wings.Control_Surfaces package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron">RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Control_Surface">RCAIDE.Library.Components.Wings.Control_Surfaces.Control_Surface module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator">RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Flap">RCAIDE.Library.Components.Wings.Control_Surfaces.Flap module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder">RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Slat">RCAIDE.Library.Components.Wings.Control_Surfaces.Slat module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings.All_Moving_Surface">RCAIDE.Library.Components.Wings.All_Moving_Surface module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.All_Moving_Surface.All_Moving_Surface"><code class="docutils literal notranslate"><span class="pre">All_Moving_Surface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings.Horizontal_Tail">RCAIDE.Library.Components.Wings.Horizontal_Tail module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Horizontal_Tail.Horizontal_Tail"><code class="docutils literal notranslate"><span class="pre">Horizontal_Tail</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings.Main_Wing">RCAIDE.Library.Components.Wings.Main_Wing module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Main_Wing.Main_Wing"><code class="docutils literal notranslate"><span class="pre">Main_Wing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container"><code class="docutils literal notranslate"><span class="pre">Segment_Container</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container.append"><code class="docutils literal notranslate"><span class="pre">Segment_Container.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container.get_children"><code class="docutils literal notranslate"><span class="pre">Segment_Container.get_children()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings.Segment">RCAIDE.Library.Components.Wings.Segment module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Segment.Segment"><code class="docutils literal notranslate"><span class="pre">Segment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Segment.Segment.append_airfoil"><code class="docutils literal notranslate"><span class="pre">Segment.append_airfoil()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Segment.Segment_Container"><code class="docutils literal notranslate"><span class="pre">Segment_Container</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Segment.Segment_Container.get_children"><code class="docutils literal notranslate"><span class="pre">Segment_Container.get_children()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings.Stabilator">RCAIDE.Library.Components.Wings.Stabilator module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Stabilator.Stabilator"><code class="docutils literal notranslate"><span class="pre">Stabilator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings.Vertical_Tail">RCAIDE.Library.Components.Wings.Vertical_Tail module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Vertical_Tail.Vertical_Tail"><code class="docutils literal notranslate"><span class="pre">Vertical_Tail</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Vertical_Tail.Vertical_Tail.make_x_z_reflection"><code class="docutils literal notranslate"><span class="pre">Vertical_Tail.make_x_z_reflection()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving">RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving.Vertical_Tail_All_Moving"><code class="docutils literal notranslate"><span class="pre">Vertical_Tail_All_Moving</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving.Vertical_Tail_All_Moving.make_x_z_reflection"><code class="docutils literal notranslate"><span class="pre">Vertical_Tail_All_Moving.make_x_z_reflection()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings.Wing">RCAIDE.Library.Components.Wings.Wing module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Wing.Container"><code class="docutils literal notranslate"><span class="pre">Container</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Wing.Container.get_children"><code class="docutils literal notranslate"><span class="pre">Container.get_children()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Wing.Wing"><code class="docutils literal notranslate"><span class="pre">Wing</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Wing.Wing.Container"><code class="docutils literal notranslate"><span class="pre">Wing.Container</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Wing.Wing.append_airfoil"><code class="docutils literal notranslate"><span class="pre">Wing.append_airfoil()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Wing.Wing.append_control_surface"><code class="docutils literal notranslate"><span class="pre">Wing.append_control_surface()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Wing.Wing.append_fuel_tank"><code class="docutils literal notranslate"><span class="pre">Wing.append_fuel_tank()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#RCAIDE.Library.Components.Wings.Wing.Wing.append_segment"><code class="docutils literal notranslate"><span class="pre">Wing.append_segment()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.html#module-RCAIDE.Library.Components.Wings">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-RCAIDE.Library.Components.Component">
+<span id="rcaide-library-components-component-module"></span><h2>RCAIDE.Library.Components.Component module<a class="headerlink" href="#module-RCAIDE.Library.Components.Component" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Component.Component">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Component.</span></span><span class="sig-name descname"><span class="pre">Component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Component.html#Component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Component.Component" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></p>
+<p>the base component class
+Assumptions:
+None</p>
+<p>Source:
+None</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Component.Component.Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RCAIDE.Library.Components.Component.Component.Container" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></p>
+<p>the base component container class</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Component.Component.Container.sum_mass">
+<span class="sig-name descname"><span class="pre">sum_mass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RCAIDE.Library.Components.Component.Component.Container.sum_mass" title="Link to this definition"></a></dt>
+<dd><p>will recursively search the data tree and sum
+any Comp.Mass_Properties.mass, and return the total sum</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+mass  [kg]</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Component.Component.Container.total_moment">
+<span class="sig-name descname"><span class="pre">total_moment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RCAIDE.Library.Components.Component.Component.Container.total_moment" title="Link to this definition"></a></dt>
+<dd><p>will recursively search the data tree and sum
+any Comp.Mass_Properties.mass, and return the total sum of moments</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+total moment [kg*m]</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Component.Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Component.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Component.html#Container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Component.Container" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></p>
+<p>the base component container class</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Component.Container.sum_mass">
+<span class="sig-name descname"><span class="pre">sum_mass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Component.html#Container.sum_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Component.Container.sum_mass" title="Link to this definition"></a></dt>
+<dd><p>will recursively search the data tree and sum
+any Comp.Mass_Properties.mass, and return the total sum</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+mass  [kg]</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Component.Container.total_moment">
+<span class="sig-name descname"><span class="pre">total_moment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Component.html#Container.total_moment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Component.Container.total_moment" title="Link to this definition"></a></dt>
+<dd><p>will recursively search the data tree and sum
+any Comp.Mass_Properties.mass, and return the total sum of moments</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+total moment [kg*m]</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Mass_Properties">
+<span id="rcaide-library-components-mass-properties-module"></span><h2>RCAIDE.Library.Components.Mass_Properties module<a class="headerlink" href="#module-RCAIDE.Library.Components.Mass_Properties" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Mass_Properties.Mass_Properties">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Mass_Properties.</span></span><span class="sig-name descname"><span class="pre">Mass_Properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Mass_Properties.html#Mass_Properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Mass_Properties.Mass_Properties" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Data</span></code></p>
+<p>Mass properties for a physical component</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+None</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RCAIDE.Library.Components" title="Link to this heading"></a></h2>
+<p>RCAIDE Package Setup</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="RCAIDE.Library.Attributes.Solids.html" class="btn btn-neutral float-left" title="RCAIDE.Library.Attributes.Solids package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RCAIDE.Library.Components.Airfoils.html" class="btn btn-neutral float-right" title="RCAIDE.Library.Components.Airfoils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

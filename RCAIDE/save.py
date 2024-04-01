@@ -16,79 +16,56 @@ from collections import OrderedDict
 # ----------------------------------------------------------------------------------------------------------------------
 #  save
 # ----------------------------------------------------------------------------------------------------------------------       
-def json_save(data,filename):
+def save(data,filename,pickle_format = False):
     """Converts a RCAIDE data structure to a JSON file for storage. 
 
     Assumptions:
-    Data must be numpy arrays, strings, booleans, floats, ints, or lists.
-    Functions are ignored and all other data raises an error.
+        Data must be numpy arrays, strings, booleans, floats, ints, or lists.
+        Functions are ignored and all other data raises an error.
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    data       RCAIDE data structure
-    filename   <string> - file to be output
+    Args:
+        data                   : RCAIDE data structure [unitless]
+        filename (string)      : file to be output     [unitless] 
+        pickle_format (boolean): pickle file format flag  [unitless]
 
-    Outputs:
-
-    Properties Used:
-    N/A
+    Returns:
+        None 
     """      
-    # Create a dictionary structure with the results
-    res_dict = build_dict_base(data)
-    
-    # Convert the dictionary to a JSON string
-    res_string = json.dumps(res_dict)
-    
-    # Write results to a file
-    f = open(filename,'w')   
-    f.write(res_string)
-    f.close()  
-    return 
-
-def pickle_save(data,filename):
-    """Converts a RCAIDE data structure to a pickle file for storage. 
-
-    Assumptions:
-    Data must be numpy arrays, strings, booleans, floats, ints, or lists.
-    Functions are ignored and all other data raises an error.
-
-    Source:
-    N/A
-
-    Inputs:
-    data       RCAIDE data structure
-    filename   <string> - file to be output
-
-    Outputs:
-
-    Properties Used:
-    N/A
-    """      
-    pickle_file  =  filename + '.pkl'
-    with open(pickle_file, 'wb') as file:
-        pickle.dump(data, file) 
+    if pickle_format:
+        pickle_file  =  filename + '.pkl'
+        with open(pickle_file, 'wb') as file:
+            pickle.dump(data, file) 
+    else: 
+        # Create a dictionary structure with the results
+        res_dict = build_dict_base(data)
+        
+        # Convert the dictionary to a JSON string
+        res_string = json.dumps(res_dict)
+        
+        # Write results to a file
+        f = open(filename,'w')   
+        f.write(res_string)
+        f.close()  
     return  
         
 def build_dict_base(base):
     """Builds a dictionary based on a RCAIDE data structure. This is initial case.
 
     Assumptions:
-    Data must be numpy arrays, strings, booleans, floats, ints, or lists.
-    Functions are ignored and all other data raises an error.
+        Data must be numpy arrays, strings, booleans, floats, ints, or lists.
+        Functions are ignored and all other data raises an error.
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    data       RCAIDE data structure
+    Args:
+        base  :     RCAIDE data structure [unitless]
 
-    Outputs:
-    base_dict  Dictionary built on the data structure.
-
-    Properties Used:
-    N/A
+    Returns:
+        base_dict :  Dictionary built on the data structure   [unitless]
     """      
     
     keys = base.keys() # keys from top level
@@ -106,20 +83,17 @@ def build_dict_r(v):
     """Builds a dictionary based on a RCAIDE data structure. This the recursive step.
 
     Assumptions:
-    Data must be numpy arrays, strings, booleans, floats, ints, or lists.
-    Functions are ignored and all other data raises an error.
+        Data must be numpy arrays, strings, booleans, floats, ints, or lists.
+        Functions are ignored and all other data raises an error.
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    v       value in a data structure
+    Args:
+        v     :  value in a data structure [unitless]
 
-    Outputs:
-    ret     value based on type of v
-
-    Properties Used:
-    N/A
+    Returns:
+        ret   : value based on type of v [unitless]
     """      
     tv = type(v) # Get value type
     

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Mission.Segments.Cruise.Variable_Cruise_Distance &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Mission.Segments.Cruise.Variable_Cruise_Distance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Mission.Segments.Cruise.Variable_Cruise_Distance</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Mission-Segments-Cruise</span>
+<span class="c1"># RCAIDE/Library/Methods/Missions/Segments/Cruise/Variable_Cruise_Distance.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke   </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># Initialize - for cruise distance</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Library-Methods-Mission-Segments-Cruise</span>
+<div class="viewcode-block" id="initialize_cruise_distance">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Mission.Segments.Cruise.html#RCAIDE.Library.Methods.Mission.Segments.Cruise.Variable_Cruise_Distance.initialize_cruise_distance">[docs]</a>
+<span class="k">def</span> <span class="nf">initialize_cruise_distance</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a method that allows your vehicle to land at prescribed landing weight</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    segment.cruise_tag              [string]</span>
+<span class="sd">    segment.distance                [meters]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    state.unknowns.cruise_distance  [meters]</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>         
+    
+    <span class="c1"># unpack</span>
+    <span class="n">cruise_tag</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">cruise_tag</span>
+    <span class="n">distance</span>   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">cruise_tag</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span>
+    
+    <span class="c1"># apply, make a good first guess</span>
+    <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">cruise_distance</span> <span class="o">=</span> <span class="n">distance</span>
+    
+    <span class="k">return</span></div>
+
+
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">#   Unknowns - for cruise distance</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Library-Methods-Mission-Segments-Cruise</span>
+<div class="viewcode-block" id="unknown_cruise_distance">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Mission.Segments.Cruise.html#RCAIDE.Library.Methods.Mission.Segments.Cruise.Variable_Cruise_Distance.unknown_cruise_distance">[docs]</a>
+<span class="k">def</span> <span class="nf">unknown_cruise_distance</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a method that allows your vehicle to land at prescribed landing weight</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    segment.cruise_tag              [string]</span>
+<span class="sd">    state.unknowns.cruise_distance  [meters]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    segment.distance                [meters]</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    
+    <span class="c1"># unpack</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">cruise_distance</span>
+    <span class="n">cruise_tag</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">cruise_tag</span>
+    
+    <span class="c1"># apply the unknown</span>
+    <span class="n">segment</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="n">cruise_tag</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>
+    
+    <span class="k">return</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">#   Residuals - for Take Off Weight</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Library-Methods-Mission-Segments-Cruise</span>
+<div class="viewcode-block" id="residual_landing_weight">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Mission.Segments.Cruise.html#RCAIDE.Library.Methods.Mission.Segments.Cruise.Variable_Cruise_Distance.residual_landing_weight">[docs]</a>
+<span class="k">def</span> <span class="nf">residual_landing_weight</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a method that allows your vehicle to land at prescribed landing weight.</span>
+<span class="sd">    This takes the final weight and compares it against the prescribed landing weight.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    segment.state.segments[-1].conditions.weights.total_mass [kilogram]</span>
+<span class="sd">    segment.target_landing_weight                            [kilogram]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    segment.state.residuals.landing_weight                   [kilogram]</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    
+    <span class="c1"># unpack</span>
+    <span class="n">landing_weight</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">total_mass</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">target_weight</span>  <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">target_landing_weight</span>
+    
+    <span class="c1"># this needs to go to zero for the solver to complete</span>
+    <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">residuals</span><span class="o">.</span><span class="n">landing_weight</span> <span class="o">=</span> <span class="p">(</span><span class="n">landing_weight</span> <span class="o">-</span> <span class="n">target_weight</span><span class="p">)</span><span class="o">/</span><span class="n">target_weight</span>
+    
+    <span class="k">return</span></div>
+
+
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">#   Residuals - for Take Off Weight</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Library-Methods-Mission-Segments-Cruise</span>
+<div class="viewcode-block" id="residual_state_of_charge">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Mission.Segments.Cruise.html#RCAIDE.Library.Methods.Mission.Segments.Cruise.Variable_Cruise_Distance.residual_state_of_charge">[docs]</a>
+<span class="k">def</span> <span class="nf">residual_state_of_charge</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is a method that allows your vehicle to land at a prescribed state of charge.</span>
+<span class="sd">    This takes the final weight and compares it against the prescribed state of charge.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    segment.state.segments[-1].conditions.energy.battery.cell.state_of_charge [None]</span>
+<span class="sd">    segment.target_state_of_charge                                           [None]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    segment.state.residuals.battery_state_of_charge                          [None]</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    
+    <span class="c1"># unpack</span>
+    <span class="n">end_SOC</span>    <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">battery</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">state_of_charge</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">target_SOC</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">target_state_of_charge</span>
+    
+    <span class="c1"># this needs to go to zero for the solver to complete</span>
+    <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">residuals</span><span class="o">.</span><span class="n">battery_state_of_charge</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_SOC</span> <span class="o">-</span> <span class="n">target_SOC</span><span class="p">)</span><span class="o">/</span><span class="n">target_SOC</span>
+    
+    <span class="k">return</span></div>
+
+    
+
+    
+    
+
+
+<span class="k">def</span> <span class="nf">_initialize_cruise_distance</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of initialize_cruise_distance.</span>
+<span class="sd">	Wraps initialize_cruise_distance with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see initialize_cruise_distance documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">initialize_cruise_distance</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_unknown_cruise_distance</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of unknown_cruise_distance.</span>
+<span class="sd">	Wraps unknown_cruise_distance with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see unknown_cruise_distance documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">unknown_cruise_distance</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_residual_landing_weight</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of residual_landing_weight.</span>
+<span class="sd">	Wraps residual_landing_weight with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see residual_landing_weight documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">residual_landing_weight</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_residual_state_of_charge</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of residual_state_of_charge.</span>
+<span class="sd">	Wraps residual_state_of_charge with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see residual_state_of_charge documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">residual_state_of_charge</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
