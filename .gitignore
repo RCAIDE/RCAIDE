@@ -75,4 +75,4 @@ nosetests.xml
 
 /doc/html
 /doc/latex
-
+/docs/_build/html/
