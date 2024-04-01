@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Framework.Mission.Segments package &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RCAIDE.Framework.Mission.Segments.Climb package" href="RCAIDE.Framework.Mission.Segments.Climb.html" />
+    <link rel="prev" title="RCAIDE.Framework.Mission.Common package" href="RCAIDE.Framework.Mission.Common.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">RCAIDE</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="RCAIDE.html">RCAIDE package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="RCAIDE.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="RCAIDE.Framework.html">RCAIDE.Framework package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.Vehicle">RCAIDE.Vehicle module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.load">RCAIDE.load module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.save">RCAIDE.save module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.version">RCAIDE.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">RCAIDE</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.html">RCAIDE package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Framework.html">RCAIDE.Framework package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Framework.Mission.html">RCAIDE.Framework.Mission package</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Framework.Mission.Segments package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/RCAIDE.Framework.Mission.Segments.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rcaide-framework-mission-segments-package">
+<h1>RCAIDE.Framework.Mission.Segments package<a class="headerlink" href="#rcaide-framework-mission-segments-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html">RCAIDE.Framework.Mission.Segments.Climb package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_CAS_Constant_Rate">RCAIDE.Framework.Mission.Segments.Climb.Constant_CAS_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_CAS_Constant_Rate.Constant_CAS_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Constant_CAS_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle">RCAIDE.Framework.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.Constant_Dynamic_Pressure_Constant_Angle"><code class="docutils literal notranslate"><span class="pre">Constant_Dynamic_Pressure_Constant_Angle</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate">RCAIDE.Framework.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate.Constant_Dynamic_Pressure_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Constant_Dynamic_Pressure_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_EAS_Constant_Rate">RCAIDE.Framework.Mission.Segments.Climb.Constant_EAS_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_EAS_Constant_Rate.Constant_EAS_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Constant_EAS_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Constant_Angle">RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Constant_Angle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Constant_Angle.Constant_Mach_Constant_Angle"><code class="docutils literal notranslate"><span class="pre">Constant_Mach_Constant_Angle</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Constant_Rate">RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Constant_Rate.Constant_Mach_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Constant_Mach_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Linear_Altitude">RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Linear_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Mach_Linear_Altitude.Constant_Mach_Linear_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Mach_Linear_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Angle">RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Angle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Angle.Constant_Speed_Constant_Angle"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Constant_Angle</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise">RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise.Constant_Speed_Constant_Angle_Noise"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Constant_Angle_Noise</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Rate">RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Constant_Rate.Constant_Speed_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Linear_Altitude">RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Linear_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Speed_Linear_Altitude.Constant_Speed_Linear_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Linear_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Constant_Throttle_Constant_Speed">RCAIDE.Framework.Mission.Segments.Climb.Constant_Throttle_Constant_Speed module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.Constant_Throttle_Constant_Speed"><code class="docutils literal notranslate"><span class="pre">Constant_Throttle_Constant_Speed</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Linear_Mach_Constant_Rate">RCAIDE.Framework.Mission.Segments.Climb.Linear_Mach_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Linear_Mach_Constant_Rate.Linear_Mach_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Linear_Mach_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb.Linear_Speed_Constant_Rate">RCAIDE.Framework.Mission.Segments.Climb.Linear_Speed_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#RCAIDE.Framework.Mission.Segments.Climb.Linear_Speed_Constant_Rate.Linear_Speed_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Linear_Speed_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Climb.html#module-RCAIDE.Framework.Mission.Segments.Climb">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html">RCAIDE.Framework.Mission.Segments.Cruise package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Acceleration_Constant_Altitude">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Acceleration_Constant_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Acceleration_Constant_Altitude.Constant_Acceleration_Constant_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Acceleration_Constant_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude.Constant_Dynamic_Pressure_Constant_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Dynamic_Pressure_Constant_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude_Loiter">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude_Loiter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude_Loiter.Constant_Dynamic_Pressure_Constant_Altitude_Loiter"><code class="docutils literal notranslate"><span class="pre">Constant_Dynamic_Pressure_Constant_Altitude_Loiter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude.Constant_Mach_Constant_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Mach_Constant_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude_Loiter">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude_Loiter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Mach_Constant_Altitude_Loiter.Constant_Mach_Constant_Altitude_Loiter"><code class="docutils literal notranslate"><span class="pre">Constant_Mach_Constant_Altitude_Loiter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Pitch_Rate_Constant_Altitude">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Pitch_Rate_Constant_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Pitch_Rate_Constant_Altitude.Constant_Pitch_Rate_Constant_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Pitch_Rate_Constant_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Speed_Constant_Altitude">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Speed_Constant_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Speed_Constant_Altitude.Constant_Speed_Constant_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Constant_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Speed_Constant_Altitude_Loiter">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Speed_Constant_Altitude_Loiter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Speed_Constant_Altitude_Loiter.Constant_Speed_Constant_Altitude_Loiter"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Constant_Altitude_Loiter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude">RCAIDE.Framework.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#RCAIDE.Framework.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude.Constant_Throttle_Constant_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Throttle_Constant_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Cruise.html#module-RCAIDE.Framework.Mission.Segments.Cruise">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html">RCAIDE.Framework.Mission.Segments.Descent package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#module-RCAIDE.Framework.Mission.Segments.Descent.Constant_CAS_Constant_Rate">RCAIDE.Framework.Mission.Segments.Descent.Constant_CAS_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#RCAIDE.Framework.Mission.Segments.Descent.Constant_CAS_Constant_Rate.Constant_CAS_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Constant_CAS_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#module-RCAIDE.Framework.Mission.Segments.Descent.Constant_EAS_Constant_Rate">RCAIDE.Framework.Mission.Segments.Descent.Constant_EAS_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#RCAIDE.Framework.Mission.Segments.Descent.Constant_EAS_Constant_Rate.Constant_EAS_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Constant_EAS_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#module-RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Angle">RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Angle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Angle.Constant_Speed_Constant_Angle"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Constant_Angle</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#module-RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Angle_Noise">RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Angle_Noise module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Angle_Noise.Constant_Speed_Constant_Angle_Noise"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Constant_Angle_Noise</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#module-RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Rate">RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#RCAIDE.Framework.Mission.Segments.Descent.Constant_Speed_Constant_Rate.Constant_Speed_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Constant_Speed_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#module-RCAIDE.Framework.Mission.Segments.Descent.Linear_Mach_Constant_Rate">RCAIDE.Framework.Mission.Segments.Descent.Linear_Mach_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#RCAIDE.Framework.Mission.Segments.Descent.Linear_Mach_Constant_Rate.Linear_Mach_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Linear_Mach_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#module-RCAIDE.Framework.Mission.Segments.Descent.Linear_Speed_Constant_Rate">RCAIDE.Framework.Mission.Segments.Descent.Linear_Speed_Constant_Rate module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#RCAIDE.Framework.Mission.Segments.Descent.Linear_Speed_Constant_Rate.Linear_Speed_Constant_Rate"><code class="docutils literal notranslate"><span class="pre">Linear_Speed_Constant_Rate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Descent.html#module-RCAIDE.Framework.Mission.Segments.Descent">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html">RCAIDE.Framework.Mission.Segments.Ground package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#module-RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge">RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge.Battery_Discharge"><code class="docutils literal notranslate"><span class="pre">Battery_Discharge</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#module-RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge">RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge.Battery_Recharge"><code class="docutils literal notranslate"><span class="pre">Battery_Recharge</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#module-RCAIDE.Framework.Mission.Segments.Ground.Ground">RCAIDE.Framework.Mission.Segments.Ground.Ground module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#RCAIDE.Framework.Mission.Segments.Ground.Ground.Ground"><code class="docutils literal notranslate"><span class="pre">Ground</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#module-RCAIDE.Framework.Mission.Segments.Ground.Landing">RCAIDE.Framework.Mission.Segments.Ground.Landing module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#RCAIDE.Framework.Mission.Segments.Ground.Landing.Landing"><code class="docutils literal notranslate"><span class="pre">Landing</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#module-RCAIDE.Framework.Mission.Segments.Ground.Takeoff">RCAIDE.Framework.Mission.Segments.Ground.Takeoff module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#RCAIDE.Framework.Mission.Segments.Ground.Takeoff.Takeoff"><code class="docutils literal notranslate"><span class="pre">Takeoff</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Ground.html#module-RCAIDE.Framework.Mission.Segments.Ground">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html">RCAIDE.Framework.Mission.Segments.Single_Point package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html#module-RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude">RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html#RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude.Set_Speed_Set_Altitude"><code class="docutils literal notranslate"><span class="pre">Set_Speed_Set_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html#module-RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_No_Propulsion">RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_No_Propulsion module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html#RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_No_Propulsion.Set_Speed_Set_Altitude_No_Propulsion"><code class="docutils literal notranslate"><span class="pre">Set_Speed_Set_Altitude_No_Propulsion</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html#module-RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Throttle">RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Throttle module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html#RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Throttle.Set_Speed_Set_Throttle"><code class="docutils literal notranslate"><span class="pre">Set_Speed_Set_Throttle</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Single_Point.html#module-RCAIDE.Framework.Mission.Segments.Single_Point">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Transition.html">RCAIDE.Framework.Mission.Segments.Transition package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Transition.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Transition.html#module-RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb">RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Transition.html#RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.Constant_Acceleration_Constant_Angle_Linear_Climb"><code class="docutils literal notranslate"><span class="pre">Constant_Acceleration_Constant_Angle_Linear_Climb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Transition.html#module-RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude">RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Transition.html#RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude"><code class="docutils literal notranslate"><span class="pre">Constant_Acceleration_Constant_Pitchrate_Constant_Altitude</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Transition.html#module-RCAIDE.Framework.Mission.Segments.Transition">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html">RCAIDE.Framework.Mission.Segments.Vertical_Flight package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html#module-RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb">RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html#RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb.Climb"><code class="docutils literal notranslate"><span class="pre">Climb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html#module-RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent">RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html#RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent.Descent"><code class="docutils literal notranslate"><span class="pre">Descent</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html#module-RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover">RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html#RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover.Hover"><code class="docutils literal notranslate"><span class="pre">Hover</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Framework.Mission.Segments.Vertical_Flight.html#module-RCAIDE.Framework.Mission.Segments.Vertical_Flight">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-RCAIDE.Framework.Mission.Segments.Evaluate">
+<span id="rcaide-framework-mission-segments-evaluate-module"></span><h2>RCAIDE.Framework.Mission.Segments.Evaluate module<a class="headerlink" href="#module-RCAIDE.Framework.Mission.Segments.Evaluate" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Evaluate.Evaluate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Framework.Mission.Segments.Evaluate.</span></span><span class="sig-name descname"><span class="pre">Evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Evaluate.html#Evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Evaluate.Evaluate" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment" title="RCAIDE.Framework.Mission.Segments.Segment.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a></p>
+<p>Base process class used to analyze a vehicle in each flight segment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Framework.Mission.Segments.Segment">
+<span id="rcaide-framework-mission-segments-segment-module"></span><h2>RCAIDE.Framework.Mission.Segments.Segment module<a class="headerlink" href="#module-RCAIDE.Framework.Mission.Segments.Segment" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Framework.Mission.Segments.Segment.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Container" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment" title="RCAIDE.Framework.Mission.Segments.Segment.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a></p>
+<p>A container for the segment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Container.append_segment">
+<span class="sig-name descname"><span class="pre">append_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Container.append_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Container.append_segment" title="Link to this definition"></a></dt>
+<dd><p>Add a SubSegment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment  [Segment()]</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Framework.Mission.Segments.Segment.</span></span><span class="sig-name descname"><span class="pre">Segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Analysis" title="RCAIDE.Framework.Analyses.Analysis.Analysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Analysis</span></code></a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment.Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment.Container" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment" title="RCAIDE.Framework.Mission.Segments.Segment.Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a></p>
+<p>A container for the segment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment.Container.append_segment">
+<span class="sig-name descname"><span class="pre">append_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment.Container.append_segment" title="Link to this definition"></a></dt>
+<dd><p>Add a SubSegment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment  [Segment()]</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment.converge">
+<span class="sig-name descname"><span class="pre">converge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Segment.converge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment.converge" title="Link to this definition"></a></dt>
+<dd><p>This executes the converge process</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+State  [Data()]</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Segment.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment.evaluate" title="Link to this definition"></a></dt>
+<dd><p>This executes the entire process</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+State  [Data()]</p>
+<p>Outputs:
+State  [Data()]</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment.flight_dynamics_and_controls">
+<span class="sig-name descname"><span class="pre">flight_dynamics_and_controls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Segment.flight_dynamics_and_controls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment.flight_dynamics_and_controls" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Segment.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment.initialize" title="Link to this definition"></a></dt>
+<dd><p>This executes the initialize process</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+State  [Data()]</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment.iterate">
+<span class="sig-name descname"><span class="pre">iterate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Segment.iterate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment.iterate" title="Link to this definition"></a></dt>
+<dd><p>This executes the iterate process</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+State  [Data()]</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Framework.Mission.Segments.Segment.Segment.post_process">
+<span class="sig-name descname"><span class="pre">post_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Framework/Mission/Segments/Segment.html#Segment.post_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Framework.Mission.Segments.Segment.Segment.post_process" title="Link to this definition"></a></dt>
+<dd><p>This executes post processing</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+State  [Data()]</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+None</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Framework.Mission.Segments">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RCAIDE.Framework.Mission.Segments" title="Link to this heading"></a></h2>
+<p>RCAIDE Package Setup</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="RCAIDE.Framework.Mission.Common.html" class="btn btn-neutral float-left" title="RCAIDE.Framework.Mission.Common package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RCAIDE.Framework.Mission.Segments.Climb.html" class="btn btn-neutral float-right" title="RCAIDE.Framework.Mission.Segments.Climb package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

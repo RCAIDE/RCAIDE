@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Mission-Segments-Climb</span>
+<span class="c1"># RCAIDE/Library/Methods/Missions/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># RCAIDE </span>
+<span class="kn">import</span> <span class="nn">RCAIDE</span> 
+
+<span class="c1"># Package imports  </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+ 
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  Initialize Conditions</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Mission-Segments-Climb</span>
+<div class="viewcode-block" id="initialize_conditions_unpack_unknowns">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Mission.Segments.Climb.html#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns">[docs]</a>
+<span class="k">def</span> <span class="nf">initialize_conditions_unpack_unknowns</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets the specified conditions which are given for the segment type.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    Constrant dynamic pressure and constant rate of climb</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    segment.climb_angle                                 [radians]</span>
+<span class="sd">    segment.dynamic_pressure                            [pascals]</span>
+<span class="sd">    segment.altitude_start                              [meters]</span>
+<span class="sd">    segment.altitude_end                                [meters]</span>
+<span class="sd">    segment.state.numerics.dimensionless.control_points [unitless]</span>
+<span class="sd">    conditions.freestream.density                       [kilograms/meter^3]  </span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    conditions.frames.inertial.velocity_vector  [meters/second]</span>
+<span class="sd">    conditions.frames.inertial.position_vector  [meters]</span>
+<span class="sd">    conditions.energy.throttle              [unitless]</span>
+<span class="sd">    conditions.frames.body.inertial_rotations   [radians]</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>           
+    
+    <span class="c1"># unpack</span>
+    <span class="n">climb_angle</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">climb_angle</span>
+    <span class="n">q</span>           <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">dynamic_pressure</span>
+    <span class="n">alt0</span>        <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">altitude_start</span>  
+    <span class="n">conditions</span>  <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span>
+    <span class="n">rho</span>         <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">density</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>  
+    
+    <span class="c1"># unpack unknowns  </span>
+    <span class="n">alts</span>     <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">position_vector</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># Update freestream to get density</span>
+    <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Methods</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Update</span><span class="o">.</span><span class="n">atmosphere</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">density</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>   
+
+    <span class="c1"># check for initial altitude</span>
+    <span class="k">if</span> <span class="n">alt0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">initials</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;initial altitude not set&#39;</span><span class="p">)</span>
+        <span class="n">alt0</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">initials</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">position_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="c1"># pack conditions    </span>
+    <span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">altitude</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span>  <span class="o">-</span><span class="n">alts</span>  <span class="c1"># positive altitude in this context    </span>
+    
+
+    <span class="c1"># check for initial velocity</span>
+    <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">initials</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;dynamic pressure not set&#39;</span><span class="p">)</span>
+        <span class="n">v_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">initials</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">velocity_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="c1"># Update freestream to get density</span>
+        <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Methods</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Update</span><span class="o">.</span><span class="n">atmosphere</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">density</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>       
+    
+        <span class="c1"># process velocity vector</span>
+        <span class="n">v_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">q</span><span class="o">/</span><span class="n">rho</span><span class="p">)</span>
+        
+    <span class="n">v_x</span>   <span class="o">=</span> <span class="n">v_mag</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">climb_angle</span><span class="p">)</span>
+    <span class="n">v_z</span>   <span class="o">=</span> <span class="o">-</span><span class="n">v_mag</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">climb_angle</span><span class="p">)</span>
+    
+    <span class="c1"># pack conditions    </span>
+    <span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">velocity_vector</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_x</span>
+    <span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">velocity_vector</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_z</span>   </div>
+
+    
+<span class="c1">## @ingroup Library-Methods-Mission-Segments-Climb</span>
+<div class="viewcode-block" id="residual_altitude">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Mission.Segments.Climb.html#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.residual_altitude">[docs]</a>
+<span class="k">def</span> <span class="nf">residual_altitude</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the altitude residual</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    No higher order terms.</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    segment.state.conditions.frames.inertial.total_force_vector   [Newtons]</span>
+<span class="sd">    segment.state.conditions.frames.inertial.acceleration_vector  [meter/second^2]</span>
+<span class="sd">    segment.state.conditions.weights.total_mass                   [kilogram]</span>
+<span class="sd">    segment.state.conditions.freestream.altitude                  [meter]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    segment.state.residuals.altitude                              [meters] </span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>     
+    
+    <span class="c1"># Unpack results </span>
+    <span class="n">alt_in</span>  <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">altitude</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> 
+    <span class="n">alt_out</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">altitude</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>  
+    <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">residuals</span><span class="o">.</span><span class="n">altitude</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">alt_in</span> <span class="o">-</span> <span class="n">alt_out</span><span class="p">)</span><span class="o">/</span><span class="n">alt_out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span></div>
+
+
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1"># Update Differentials</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">## @ingroup Library-Methods-Mission-Segments-Climb   </span>
+<div class="viewcode-block" id="update_differentials">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Mission.Segments.Climb.html#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.update_differentials">[docs]</a>
+<span class="k">def</span> <span class="nf">update_differentials</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; On each iteration creates the differentials and integration functions from knowns about the problem. </span>
+<span class="sd">      Sets the time at each point. Must return in dimensional time, with t[0] = 0.</span>
+<span class="sd">      This is different from the common method as it also includes the scaling of operators.</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        Works with a segment discretized in vertical position, altitude</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        state.numerics.dimensionless.control_points      [Unitless]</span>
+<span class="sd">        state.numerics.dimensionless.differentiate       [Unitless]</span>
+<span class="sd">        state.numerics.dimensionless.integrate           [Unitless]</span>
+<span class="sd">        state.conditions.frames.inertial.position_vector [meter]</span>
+<span class="sd">        state.conditions.frames.inertial.velocity_vector [meter/second]</span>
+<span class="sd">        </span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        state.conditions.frames.inertial.time            [second]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>    
+
+    <span class="c1"># unpack</span>
+    <span class="n">numerics</span>   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">numerics</span>
+    <span class="n">conditions</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span>
+    <span class="n">x</span>          <span class="o">=</span> <span class="n">numerics</span><span class="o">.</span><span class="n">dimensionless</span><span class="o">.</span><span class="n">control_points</span>
+    <span class="n">D</span>          <span class="o">=</span> <span class="n">numerics</span><span class="o">.</span><span class="n">dimensionless</span><span class="o">.</span><span class="n">differentiate</span>
+    <span class="n">I</span>          <span class="o">=</span> <span class="n">numerics</span><span class="o">.</span><span class="n">dimensionless</span><span class="o">.</span><span class="n">integrate</span> 
+    <span class="n">r</span>          <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">position_vector</span>
+    <span class="n">v</span>          <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">velocity_vector</span>
+    <span class="n">alt0</span>       <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">altitude_start</span>
+    <span class="n">altf</span>       <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">altitude_end</span>    
+
+    <span class="c1"># check for initial altitude</span>
+    <span class="k">if</span> <span class="n">alt0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">initials</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;initial altitude not set&#39;</span><span class="p">)</span>
+        <span class="n">alt0</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">initials</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">position_vector</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+        
+    <span class="n">dz</span> <span class="o">=</span> <span class="n">altf</span> <span class="o">-</span> <span class="n">alt0</span>
+    <span class="n">vz</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span><span class="p">[:,</span><span class="mi">2</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span> <span class="c1"># maintain column array</span>
+
+    <span class="c1"># get overall time step</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="p">(</span><span class="n">dz</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="n">vz</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># rescale operators</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">dt</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">D</span> <span class="o">/</span> <span class="n">dt</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">I</span> <span class="o">*</span> <span class="n">dt</span>
+    
+    <span class="c1"># Calculate the altitudes</span>
+    <span class="n">alt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="n">vz</span><span class="p">)</span> <span class="o">+</span> <span class="n">alt0</span>
+    
+    <span class="c1"># pack</span>
+    <span class="n">t_initial</span>                                       <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">numerics</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">control_points</span>                    <span class="o">=</span> <span class="n">x</span>
+    <span class="n">numerics</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">differentiate</span>                     <span class="o">=</span> <span class="n">D</span>
+    <span class="n">numerics</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">integrate</span>                         <span class="o">=</span> <span class="n">I</span>
+    <span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span>            <span class="o">=</span> <span class="n">t_initial</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">position_vector</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">alt</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>  
+    <span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">altitude</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>             <span class="o">=</span>  <span class="n">alt</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>  
+
+    <span class="k">return</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_initialize_conditions_unpack_unknowns</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of initialize_conditions_unpack_unknowns.</span>
+<span class="sd">	Wraps initialize_conditions_unpack_unknowns with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see initialize_conditions_unpack_unknowns documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">initialize_conditions_unpack_unknowns</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_residual_altitude</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of residual_altitude.</span>
+<span class="sd">	Wraps residual_altitude with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see residual_altitude documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">residual_altitude</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_update_differentials</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of update_differentials.</span>
+<span class="sd">	Wraps update_differentials with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see update_differentials documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">update_differentials</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

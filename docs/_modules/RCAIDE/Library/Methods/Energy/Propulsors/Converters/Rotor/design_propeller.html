@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_propeller &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_propeller</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_propeller</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Methods-Energy-Propulsors</span>
+<span class="c1"># RCAIDE/Library/Methods/Energy/Propulsors/design_propeller.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="kn">import</span> <span class="nn">RCAIDE</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>   <span class="kn">import</span> <span class="n">interp2d</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil</span>    <span class="kn">import</span> <span class="n">compute_airfoil_properties</span><span class="p">,</span> <span class="n">compute_naca_4series</span><span class="p">,</span> <span class="n">import_airfoil_geometry</span>
+
+<span class="c1"># package imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span> 
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">root</span> 
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">#  Design Propeller</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">## @ingroup Methods-Energy-Propulsors</span>
+<div class="viewcode-block" id="design_propeller">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_propeller.design_propeller">[docs]</a>
+<span class="k">def</span> <span class="nf">design_propeller</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span><span class="n">number_of_stations</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Optimizes propeller chord and twist given input parameters.</span>
+<span class="sd">          </span>
+<span class="sd">          Inputs:</span>
+<span class="sd">          Either design power or thrust</span>
+<span class="sd">          prop_attributes.</span>
+<span class="sd">            hub radius                       [m]</span>
+<span class="sd">            tip radius                       [m]</span>
+<span class="sd">            rotation rate                    [rad/s]</span>
+<span class="sd">            freestream velocity              [m/s]</span>
+<span class="sd">            number of blades               </span>
+<span class="sd">            number of stations</span>
+<span class="sd">            design lift coefficient</span>
+<span class="sd">            design_altitude                  [m]</span>
+<span class="sd">            airfoil data</span>
+<span class="sd">            </span>
+<span class="sd">          Outputs:</span>
+<span class="sd">          Twist distribution                 [array of radians]</span>
+<span class="sd">          Chord distribution                 [array of meters]</span>
+<span class="sd">              </span>
+<span class="sd">          Assumptions/ Source:</span>
+<span class="sd">          Based on Design of Optimum Propellers by Adkins and Liebeck</span>
+<span class="sd">          </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack</span>
+    <span class="n">N</span>            <span class="o">=</span> <span class="n">number_of_stations</span>       <span class="c1"># this number determines the discretization of the propeller into stations</span>
+    <span class="n">B</span>            <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">number_of_blades</span>
+    <span class="n">R</span>            <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">tip_radius</span>
+    <span class="n">Rh</span>           <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">hub_radius</span>
+    <span class="n">omega</span>        <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_angular_velocity</span>    <span class="c1"># Rotation Rate in rad/s</span>
+    <span class="n">V</span>            <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_freestream_velocity</span> <span class="c1"># Freestream Velocity</span>
+    <span class="n">Cl</span>           <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_Cl</span>                  <span class="c1"># Design Lift Coefficient</span>
+    <span class="n">alt</span>          <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_altitude</span>
+    <span class="n">Thrust</span>       <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_thrust</span>
+    <span class="n">Power</span>        <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_power</span>
+    <span class="n">airfoils</span>     <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">Airfoils</span> 
+    <span class="n">a_loc</span>        <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">airfoil_polar_stations</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">Thrust</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Power</span><span class="o">==</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;Specify either design thrust or design power!&#39;</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="p">(</span><span class="n">Thrust</span><span class="o">!=</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Power</span><span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;Specify either design thrust or design power!&#39;</span><span class="p">)</span> 
+    
+    <span class="k">if</span> <span class="n">V</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="mf">1E-6</span> 
+        
+    <span class="c1"># Calculate atmospheric properties</span>
+    <span class="n">atmosphere</span>     <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Framework</span><span class="o">.</span><span class="n">Analyses</span><span class="o">.</span><span class="n">Atmospheric</span><span class="o">.</span><span class="n">US_Standard_1976</span><span class="p">()</span>
+    <span class="n">atmo_data</span>      <span class="o">=</span> <span class="n">atmosphere</span><span class="o">.</span><span class="n">compute_values</span><span class="p">(</span><span class="n">alt</span><span class="p">)</span> 
+    <span class="n">T</span>              <span class="o">=</span> <span class="n">atmo_data</span><span class="o">.</span><span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">rho</span>            <span class="o">=</span> <span class="n">atmo_data</span><span class="o">.</span><span class="n">density</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">speed_of_sound</span> <span class="o">=</span> <span class="n">atmo_data</span><span class="o">.</span><span class="n">speed_of_sound</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mu</span>             <span class="o">=</span> <span class="n">atmo_data</span><span class="o">.</span><span class="n">dynamic_viscosity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nu</span>             <span class="o">=</span> <span class="n">mu</span><span class="o">/</span><span class="n">rho</span>
+    
+    <span class="c1"># Nondimensional thrust</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Thrust</span><span class="o">!=</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Power</span> <span class="o">==</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">Tc</span> <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">Thrust</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">V</span><span class="o">*</span><span class="n">V</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">R</span><span class="o">*</span><span class="n">R</span><span class="p">))</span>     
+        <span class="n">Pc</span> <span class="o">=</span> <span class="mf">0.0</span> 
+    
+    <span class="k">elif</span> <span class="p">(</span><span class="n">Thrust</span><span class="o">==</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Power</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">Tc</span> <span class="o">=</span> <span class="mf">0.0</span>   
+        <span class="n">Pc</span> <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">Power</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">V</span><span class="o">*</span><span class="n">V</span><span class="o">*</span><span class="n">V</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">R</span><span class="o">*</span><span class="n">R</span><span class="p">))</span>  
+    
+    <span class="n">tol</span>   <span class="o">=</span> <span class="mf">1e-10</span> <span class="c1"># Convergence tolerance</span>
+
+    <span class="c1"># Step 1, assume a zeta</span>
+    <span class="n">zeta</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="c1"># Assume to be small initially</span>
+    
+    <span class="c1"># Step 2, determine F and phi at each blade station </span>
+    <span class="n">chi0</span>    <span class="o">=</span> <span class="n">Rh</span><span class="o">/</span><span class="n">R</span> <span class="c1"># Where the propeller blade actually starts</span>
+    <span class="n">chi</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">chi0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Vector of nondimensional radii</span>
+    <span class="n">chi</span>     <span class="o">=</span> <span class="n">chi</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">N</span><span class="p">]</span>
+    <span class="n">lamda</span>   <span class="o">=</span> <span class="n">V</span><span class="o">/</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">R</span><span class="p">)</span>             <span class="c1"># Speed ratio</span>
+    <span class="n">r</span>       <span class="o">=</span> <span class="n">chi</span><span class="o">*</span><span class="n">R</span>                   <span class="c1"># Radial coordinate</span>
+    <span class="n">x</span>       <span class="o">=</span> <span class="n">omega</span><span class="o">*</span><span class="n">r</span><span class="o">/</span><span class="n">V</span>               <span class="c1"># Nondimensional distance</span>
+    <span class="n">diff</span>    <span class="o">=</span> <span class="mf">1.0</span>                     <span class="c1"># Difference between zetas</span>
+    <span class="n">n</span>       <span class="o">=</span> <span class="n">omega</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>         <span class="c1"># Cycles per second</span>
+    <span class="n">D</span>       <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">R</span>  
+    <span class="n">c</span>       <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">chi</span><span class="p">)</span>
+    
+    <span class="c1"># if user defines airfoil, check dimension of stations</span>
+    <span class="n">num_airfoils</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">airfoils</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">num_airfoils</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_loc</span><span class="p">)</span> <span class="o">!=</span> <span class="n">N</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Dimension of airfoil sections must be equal to number of stations on propeller&#39;</span><span class="p">)</span> 
+        
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span><span class="n">airfoil</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">airfoils</span><span class="p">):</span>  
+            <span class="k">if</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">geometry</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># first, if airfoil geometry data not defined, import from geoemtry files</span>
+                <span class="k">if</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">NACA_4_series_flag</span><span class="p">:</span> <span class="c1"># check if naca 4 series of airfoil from datafile</span>
+                    <span class="n">airfoil</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">compute_naca_4series</span><span class="p">(</span><span class="n">airfoil</span><span class="o">.</span><span class="n">coordinate_file</span><span class="p">,</span><span class="n">airfoil</span><span class="o">.</span><span class="n">number_of_points</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">airfoil</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">import_airfoil_geometry</span><span class="p">(</span><span class="n">airfoil</span><span class="o">.</span><span class="n">coordinate_file</span><span class="p">,</span><span class="n">airfoil</span><span class="o">.</span><span class="n">number_of_points</span><span class="p">)</span> 
+    
+            <span class="k">if</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">polars</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># compute airfoil polars for airfoils</span>
+                <span class="n">airfoil</span><span class="o">.</span><span class="n">polars</span> <span class="o">=</span> <span class="n">compute_airfoil_properties</span><span class="p">(</span><span class="n">airfoil</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">airfoil_polar_files</span><span class="o">=</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">polar_files</span><span class="p">)</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Defaulting to scaled DAE51&#39;</span><span class="p">)</span> 
+        
+    <span class="k">while</span> <span class="n">diff</span><span class="o">&gt;</span><span class="n">tol</span><span class="p">:</span>      
+        <span class="c1"># assign chord distribution</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">chord_distribution</span> <span class="o">=</span> <span class="n">c</span>  
+                         
+        <span class="c1">#Things that need a loop</span>
+        <span class="n">Tcnew</span>   <span class="o">=</span> <span class="n">Tc</span>     
+        <span class="n">tanphit</span> <span class="o">=</span> <span class="n">lamda</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">zeta</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>   <span class="c1"># Tangent of the flow angle at the tip</span>
+        <span class="n">phit</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">tanphit</span><span class="p">)</span>   <span class="c1"># Flow angle at the tip</span>
+        <span class="n">tanphi</span>  <span class="o">=</span> <span class="n">tanphit</span><span class="o">/</span><span class="n">chi</span>          <span class="c1"># Flow angle at every station</span>
+        <span class="n">f</span>       <span class="o">=</span> <span class="p">(</span><span class="n">B</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">chi</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phit</span><span class="p">)</span> 
+        <span class="n">F</span>       <span class="o">=</span> <span class="p">(</span><span class="mf">2.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">f</span><span class="p">))</span> <span class="c1">#Prandtl momentum loss factor</span>
+        <span class="n">phi</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">tanphi</span><span class="p">)</span>    <span class="c1"># Flow angle at every station</span>
+        
+        <span class="c1">#Step 3, determine the product Wc, and RE</span>
+        <span class="n">G</span>       <span class="o">=</span> <span class="n">F</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="c1">#Circulation function</span>
+        <span class="n">Wc</span>      <span class="o">=</span> <span class="mf">4.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">lamda</span><span class="o">*</span><span class="n">G</span><span class="o">*</span><span class="n">V</span><span class="o">*</span><span class="n">R</span><span class="o">*</span><span class="n">zeta</span><span class="o">/</span><span class="p">(</span><span class="n">Cl</span><span class="o">*</span><span class="n">B</span><span class="p">)</span>
+        <span class="n">Ma</span>      <span class="o">=</span> <span class="n">Wc</span><span class="o">/</span><span class="n">speed_of_sound</span>
+        <span class="n">RE</span>      <span class="o">=</span> <span class="n">Wc</span><span class="o">/</span><span class="n">nu</span>
+
+        <span class="k">if</span> <span class="n">num_airfoils</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># assign initial values </span>
+            <span class="n">alpha0</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">*</span><span class="mf">0.05</span>
+            
+            <span class="c1"># solve for optimal alpha to meet design Cl target</span>
+            <span class="n">sol</span>      <span class="o">=</span> <span class="n">root</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">alpha0</span> <span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">airfoils</span><span class="p">,</span><span class="n">a_loc</span><span class="p">,</span><span class="n">RE</span><span class="p">,</span><span class="n">Cl</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+            <span class="n">alpha</span>    <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">x</span>
+            
+            <span class="c1"># query surrogate for sectional Cls at stations </span>
+            <span class="n">Cdval</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">RE</span><span class="p">)</span> 
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">airfoil</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">airfoils</span><span class="p">):</span>                   
+                <span class="n">pd</span>          <span class="o">=</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">polars</span>
+                <span class="n">Cdval_af</span>    <span class="o">=</span> <span class="n">interp2d</span><span class="p">(</span><span class="n">RE</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">reynolds_numbers</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">angle_of_attacks</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">drag_coefficients</span><span class="p">)</span>
+                <span class="n">locs</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_loc</span><span class="p">)</span> <span class="o">==</span> <span class="n">j</span> <span class="p">)</span>
+                <span class="n">Cdval</span><span class="p">[</span><span class="n">locs</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cdval_af</span><span class="p">[</span><span class="n">locs</span><span class="p">]</span>    
+                
+        <span class="k">else</span><span class="p">:</span>    
+            <span class="n">Cdval</span>   <span class="o">=</span> <span class="p">(</span><span class="mf">0.108</span><span class="o">*</span><span class="p">(</span><span class="n">Cl</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span><span class="o">-</span><span class="mf">0.2612</span><span class="o">*</span><span class="p">(</span><span class="n">Cl</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="mf">0.181</span><span class="o">*</span><span class="p">(</span><span class="n">Cl</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mf">0.0139</span><span class="o">*</span><span class="n">Cl</span><span class="o">+</span><span class="mf">0.0278</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="mf">50000.</span><span class="o">/</span><span class="n">RE</span><span class="p">)</span><span class="o">**</span><span class="mf">0.2</span><span class="p">)</span>
+            <span class="n">alpha</span>   <span class="o">=</span> <span class="n">Cl</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            
+        <span class="c1">#More Cd scaling from Mach from AA241ab notes for turbulent skin friction</span>
+        <span class="n">Tw_Tinf</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">+</span> <span class="mf">1.78</span><span class="o">*</span><span class="p">(</span><span class="n">Ma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">Tp_Tinf</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">+</span> <span class="mf">0.035</span><span class="o">*</span><span class="p">(</span><span class="n">Ma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.45</span><span class="o">*</span><span class="p">(</span><span class="n">Tw_Tinf</span><span class="o">-</span><span class="mf">1.</span><span class="p">)</span>
+        <span class="n">Tp</span>      <span class="o">=</span> <span class="n">Tp_Tinf</span><span class="o">*</span><span class="n">T</span>
+        <span class="n">Rp_Rinf</span> <span class="o">=</span> <span class="p">(</span><span class="n">Tp_Tinf</span><span class="o">**</span><span class="mf">2.5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">Tp</span><span class="o">+</span><span class="mf">110.4</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mf">110.4</span><span class="p">)</span> 
+        <span class="n">Cd</span>      <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="n">Tp_Tinf</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">Rp_Rinf</span><span class="p">)</span><span class="o">**</span><span class="mf">0.2</span><span class="p">)</span><span class="o">*</span><span class="n">Cdval</span>
+        
+        <span class="c1">#Step 5, change Cl and repeat steps 3 and 4 until epsilon is minimized </span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="n">Cd</span><span class="o">/</span><span class="n">Cl</span>  
+        
+        <span class="c1">#Step 6, determine a and a&#39;, and W </span>
+        <span class="n">a</span>       <span class="o">=</span> <span class="p">(</span><span class="n">zeta</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">epsilon</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span> 
+        <span class="n">W</span>       <span class="o">=</span> <span class="n">V</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+        
+        <span class="c1">#Step 7, compute the chord length and blade twist angle  </span>
+        <span class="n">c</span>       <span class="o">=</span> <span class="n">Wc</span><span class="o">/</span><span class="n">W</span>
+        <span class="n">beta</span>    <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">phi</span> <span class="c1"># Blade twist angle</span>
+    
+        <span class="c1">#Step 8, determine 4 derivatives in I and J </span>
+        <span class="n">Iprime1</span> <span class="o">=</span> <span class="mf">4.</span><span class="o">*</span><span class="n">chi</span><span class="o">*</span><span class="n">G</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">epsilon</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
+        <span class="n">Iprime2</span> <span class="o">=</span> <span class="n">lamda</span><span class="o">*</span><span class="p">(</span><span class="n">Iprime1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">chi</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">epsilon</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+                                            <span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+        <span class="n">Jprime1</span> <span class="o">=</span> <span class="mf">4.</span><span class="o">*</span><span class="n">chi</span><span class="o">*</span><span class="n">G</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">epsilon</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
+        <span class="n">Jprime2</span> <span class="o">=</span> <span class="p">(</span><span class="n">Jprime1</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">epsilon</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span> 
+        <span class="n">dchi</span>    <span class="o">=</span> <span class="p">(</span><span class="n">chi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">chi</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">Jprime1</span><span class="p">)</span>
+        
+        <span class="c1">#Integrate derivatives from chi=chi0 to chi=1 </span>
+        <span class="n">I1</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Iprime1</span><span class="p">,</span><span class="n">dchi</span><span class="p">)</span>
+        <span class="n">I2</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Iprime2</span><span class="p">,</span><span class="n">dchi</span><span class="p">)</span>
+        <span class="n">J1</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Jprime1</span><span class="p">,</span><span class="n">dchi</span><span class="p">)</span>
+        <span class="n">J2</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Jprime2</span><span class="p">,</span><span class="n">dchi</span><span class="p">)</span>        
+
+        <span class="c1">#Step 9, determine zeta and and Pc or zeta and Tc </span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Pc</span><span class="o">==</span><span class="mf">0.</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">Tc</span><span class="o">!=</span><span class="mf">0.</span><span class="p">):</span> 
+            <span class="c1">#First Case, Thrust is given</span>
+            <span class="c1">#Check to see if Tc is feasible, otherwise try a reasonable number</span>
+            <span class="k">if</span> <span class="n">Tcnew</span><span class="o">&gt;=</span><span class="n">I2</span><span class="o">*</span><span class="p">(</span><span class="n">I1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">I2</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span><span class="p">:</span>
+                <span class="n">Tcnew</span> <span class="o">=</span> <span class="n">I2</span><span class="o">*</span><span class="p">(</span><span class="n">I1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">I2</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span>
+            <span class="n">zetan</span>    <span class="o">=</span> <span class="p">(</span><span class="n">I1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">I2</span><span class="p">))</span> <span class="o">-</span> <span class="p">((</span><span class="n">I1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">I2</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span><span class="o">-</span><span class="n">Tcnew</span><span class="o">/</span><span class="n">I2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">Pc</span><span class="o">!=</span><span class="mf">0.</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">Tc</span><span class="o">==</span><span class="mf">0.</span><span class="p">):</span> 
+            <span class="c1">#Second Case, Thrust is given</span>
+            <span class="n">zetan</span>    <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">J1</span><span class="o">/</span><span class="p">(</span><span class="n">J2</span><span class="o">*</span><span class="mf">2.</span><span class="p">))</span> <span class="o">+</span> <span class="p">((</span><span class="n">J1</span><span class="o">/</span><span class="p">(</span><span class="n">J2</span><span class="o">*</span><span class="mf">2.</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="n">Pc</span><span class="o">/</span><span class="n">J2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> 
+    
+        <span class="c1">#Step 10, repeat starting at step 2 with the new zeta</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">zeta</span><span class="o">-</span><span class="n">zetan</span><span class="p">)</span>
+        
+        <span class="n">zeta</span> <span class="o">=</span> <span class="n">zetan</span>
+    
+    <span class="c1"># Step 11, determine propeller efficiency etc...</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Pc</span><span class="o">==</span><span class="mf">0.</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">Tc</span><span class="o">!=</span><span class="mf">0.</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">Tcnew</span><span class="o">&gt;=</span><span class="n">I2</span><span class="o">*</span><span class="p">(</span><span class="n">I1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">I2</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span><span class="p">:</span>
+            <span class="n">Tcnew</span> <span class="o">=</span> <span class="n">I2</span><span class="o">*</span><span class="p">(</span><span class="n">I1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">I2</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Tc infeasible, reset to:&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">Tcnew</span><span class="p">)</span>        
+        <span class="c1">#First Case, Thrust is given</span>
+        <span class="n">zeta</span>    <span class="o">=</span> <span class="p">(</span><span class="n">I1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">I2</span><span class="p">))</span> <span class="o">-</span> <span class="p">((</span><span class="n">I1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">I2</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span><span class="o">-</span><span class="n">Tcnew</span><span class="o">/</span><span class="n">I2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+        <span class="n">Pc</span>      <span class="o">=</span> <span class="n">J1</span><span class="o">*</span><span class="n">zeta</span> <span class="o">+</span> <span class="n">J2</span><span class="o">*</span><span class="p">(</span><span class="n">zeta</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span>
+        <span class="n">Tc</span>      <span class="o">=</span> <span class="n">I1</span><span class="o">*</span><span class="n">zeta</span> <span class="o">-</span> <span class="n">I2</span><span class="o">*</span><span class="p">(</span><span class="n">zeta</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span>
+        
+    <span class="k">elif</span> <span class="p">(</span><span class="n">Pc</span><span class="o">!=</span><span class="mf">0.</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">Tc</span><span class="o">==</span><span class="mf">0.</span><span class="p">):</span> 
+        <span class="c1">#Second Case, Thrust is given</span>
+        <span class="n">zeta</span>    <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">J1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">J2</span><span class="p">))</span> <span class="o">+</span> <span class="p">((</span><span class="n">J1</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">J2</span><span class="p">))</span><span class="o">**</span><span class="mf">2.</span><span class="o">+</span><span class="n">Pc</span><span class="o">/</span><span class="n">J2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+        <span class="n">Tc</span>      <span class="o">=</span> <span class="n">I1</span><span class="o">*</span><span class="n">zeta</span> <span class="o">-</span> <span class="n">I2</span><span class="o">*</span><span class="p">(</span><span class="n">zeta</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span>
+        <span class="n">Pc</span>      <span class="o">=</span> <span class="n">J1</span><span class="o">*</span><span class="n">zeta</span> <span class="o">+</span> <span class="n">J2</span><span class="o">*</span><span class="p">(</span><span class="n">zeta</span><span class="o">**</span><span class="mf">2.</span><span class="p">)</span> 
+        
+    <span class="c1"># Calculate mid-chord alignment angle, MCA</span>
+    <span class="c1"># This is the distance from the mid chord to the line axis out of the center of the blade</span>
+    <span class="c1"># In this case the 1/4 chords are all aligned </span>
+    <span class="n">MCA</span>    <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="mf">4.</span> <span class="o">-</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">4.</span>
+    
+    <span class="n">Thrust</span> <span class="o">=</span> <span class="n">Tc</span><span class="o">*</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">V</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">Power</span>  <span class="o">=</span> <span class="n">Pc</span><span class="o">*</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">V</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> 
+    <span class="n">Ct</span>     <span class="o">=</span> <span class="n">Thrust</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="p">))</span>
+    <span class="n">Cp</span>     <span class="o">=</span> <span class="n">Power</span><span class="o">/</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="n">D</span><span class="p">))</span>  
+    
+    <span class="c1"># compute max thickness distribution  </span>
+    <span class="n">t_max</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>    
+    <span class="n">t_c</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>   
+    <span class="k">if</span> <span class="n">num_airfoils</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">airfoil</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">airfoils</span><span class="p">):</span> 
+            <span class="n">a_geo</span>         <span class="o">=</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">geometry</span>
+            <span class="n">locs</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_loc</span><span class="p">)</span> <span class="o">==</span> <span class="n">j</span> <span class="p">)</span>
+            <span class="n">t_max</span><span class="p">[</span><span class="n">locs</span><span class="p">]</span>   <span class="o">=</span> <span class="n">a_geo</span><span class="o">.</span><span class="n">max_thickness</span><span class="o">*</span><span class="n">c</span><span class="p">[</span><span class="n">locs</span><span class="p">]</span> 
+            <span class="n">t_c</span><span class="p">[</span><span class="n">locs</span><span class="p">]</span>     <span class="o">=</span> <span class="n">a_geo</span><span class="o">.</span><span class="n">thickness_to_chord</span> 
+    <span class="k">else</span><span class="p">:</span>     
+        <span class="n">c_blade</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)),</span><span class="n">N</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">N</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">t</span>       <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">c_blade</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">0.2969</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">c_blade</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.1260</span><span class="o">*</span><span class="n">c_blade</span> <span class="o">-</span> <span class="mf">0.3516</span><span class="o">*</span><span class="p">(</span><span class="n">c_blade</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.2843</span><span class="o">*</span><span class="p">(</span><span class="n">c_blade</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.1015</span><span class="o">*</span><span class="p">(</span><span class="n">c_blade</span><span class="o">**</span><span class="mi">4</span><span class="p">))</span> <span class="c1"># local thickness distribution</span>
+        <span class="n">t_max</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">t_c</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span><span class="n">c</span>  
+            
+    <span class="c1"># Nondimensional thrust</span>
+    <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_power</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_power</span> <span class="o">=</span> <span class="n">Power</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        
+    <span class="k">elif</span> <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_thrust</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_thrust</span> <span class="o">=</span> <span class="n">Thrust</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>       
+    
+    <span class="c1"># blade solidity</span>
+    <span class="n">r</span>          <span class="o">=</span> <span class="n">chi</span><span class="o">*</span><span class="n">R</span>                     
+    <span class="n">blade_area</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">cumtrapz</span><span class="p">(</span><span class="n">B</span><span class="o">*</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="o">-</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">sigma</span>      <span class="o">=</span> <span class="n">blade_area</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>   
+    
+    <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_torque</span>                   <span class="o">=</span> <span class="n">Power</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">omega</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">max_thickness_distribution</span>             <span class="o">=</span> <span class="n">t_max</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">twist_distribution</span>                     <span class="o">=</span> <span class="n">beta</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">chord_distribution</span>                     <span class="o">=</span> <span class="n">c</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">radius_distribution</span>                    <span class="o">=</span> <span class="n">r</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">number_of_blades</span>                       <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_power_coefficient</span>        <span class="o">=</span> <span class="n">Cp</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">cruise</span><span class="o">.</span><span class="n">design_thrust_coefficient</span>       <span class="o">=</span> <span class="n">Ct</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">mid_chord_alignment</span>                    <span class="o">=</span> <span class="n">MCA</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">thickness_to_chord</span>                     <span class="o">=</span> <span class="n">t_c</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">blade_solidity</span>                         <span class="o">=</span> <span class="n">sigma</span>
+
+    <span class="k">return</span> <span class="n">prop</span></div>
+
+
+    
+<div class="viewcode-block" id="objective">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_propeller.objective">[docs]</a>
+<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">airfoils</span><span class="p">,</span><span class="n">a_loc</span><span class="p">,</span><span class="n">RE</span><span class="p">,</span><span class="n">Cl</span><span class="p">,</span><span class="n">N</span><span class="p">):</span>
+    <span class="c1"># query surrogate for sectional Cls at stations </span>
+    <span class="n">Cl_vals</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>       
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">airfoil</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">airfoils</span><span class="p">):</span> 
+        <span class="n">pd</span>            <span class="o">=</span> <span class="n">airfoil</span><span class="o">.</span><span class="n">polars</span>
+        <span class="n">Cl_af</span>         <span class="o">=</span> <span class="n">interp2d</span><span class="p">(</span><span class="n">RE</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">reynolds_numbers</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">angle_of_attacks</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">lift_coefficients</span><span class="p">)</span>
+        <span class="n">locs</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a_loc</span><span class="p">)</span> <span class="o">==</span> <span class="n">j</span> <span class="p">)</span>
+        <span class="n">Cl_vals</span><span class="p">[</span><span class="n">locs</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cl_af</span><span class="p">[</span><span class="n">locs</span><span class="p">]</span> 
+        
+    <span class="c1"># compute Cl residual    </span>
+    <span class="n">Cl_residuals</span> <span class="o">=</span> <span class="n">Cl_vals</span> <span class="o">-</span> <span class="n">Cl</span> 
+    <span class="k">return</span>  <span class="n">Cl_residuals</span> </div>
+
+
+
+
+<span class="k">def</span> <span class="nf">_design_propeller</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of design_propeller.</span>
+<span class="sd">	Wraps design_propeller with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see design_propeller documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: prop               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: number_of_stations = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">design_propeller</span><span class="p">(</span><span class="s1">&#39;prop&#39;</span><span class="p">,</span> <span class="s1">&#39;number_of_stations&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_objective</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of objective.</span>
+<span class="sd">	Wraps objective with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see objective documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: x        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: airfoils = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: a_loc    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: RE       = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Cl       = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: N        = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;airfoils&#39;</span><span class="p">,</span> <span class="s1">&#39;a_loc&#39;</span><span class="p">,</span> <span class="s1">&#39;RE&#39;</span><span class="p">,</span> <span class="s1">&#39;Cl&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

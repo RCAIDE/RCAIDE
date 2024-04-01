@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Noise.Metrics.PNL_noise_metric &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Noise.Metrics.PNL_noise_metric</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Noise.Metrics.PNL_noise_metric</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Noise-Metrics</span>
+<span class="c1"># RCAIDE/Library/Methods/Noise/Metrics/PNL_noise_metric.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c1"># Python package imports   </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  
+    
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">#  PNL_noise_metric</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------     </span>
+<span class="c1">## @ingroup Library-Methods-Noise-Metrics  </span>
+<div class="viewcode-block" id="PNL_noise_metric">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Noise.Metrics.html#RCAIDE.Library.Methods.Noise.Metrics.PNL_noise_metric.PNL_noise_metric">[docs]</a>
+<span class="k">def</span> <span class="nf">PNL_noise_metric</span><span class="p">(</span><span class="n">SPL</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This method calculates de Perceived Noise Level PNL from a 1/3 octave band noise spectra</span>
+<span class="sd"> </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">        None</span>
+<span class="sd"> </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        SPL - Sound Pressure Level in 1/3 octave band  [dB]</span>
+<span class="sd">   </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        PNL - Perceived Noise Level                    [dB]</span>
+<span class="sd">   </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+   
+
+    <span class="c1">#Definition of the noisinees matrix for each octave band</span>
+    <span class="n">noy</span> <span class="o">=</span>  <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mf">0.043478</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.07952</span><span class="p">,</span> <span class="mf">0.058098</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">2</span><span class="p">,</span>	<span class="mi">63</span><span class="p">,</span> <span class="mf">85.9</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mf">0.04057</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.06816</span><span class="p">,</span> <span class="mf">0.058098</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">3</span><span class="p">,</span>	<span class="mi">80</span><span class="p">,</span> <span class="mf">87.3</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span>	<span class="mi">46</span><span class="p">,</span>	<span class="mf">0.036831</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.06816</span><span class="p">,</span> <span class="mf">0.052288</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">4</span><span class="p">,</span>	<span class="mi">100</span><span class="p">,</span> 	<span class="mf">79.9</span><span class="p">,</span>	<span class="mi">53</span><span class="p">,</span>	<span class="mi">47</span><span class="p">,</span>	<span class="mi">34</span><span class="p">,</span>	<span class="mi">42</span><span class="p">,</span>	<span class="mf">0.036831</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.05964</span><span class="p">,</span> <span class="mf">0.047534</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">5</span><span class="p">,</span>	<span class="mi">125</span><span class="p">,</span> 	<span class="mf">79.8</span><span class="p">,</span>	<span class="mi">51</span><span class="p">,</span>	<span class="mi">46</span><span class="p">,</span>	<span class="mi">30</span><span class="p">,</span>	<span class="mi">39</span><span class="p">,</span>	<span class="mf">0.035336</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.043573</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">6</span><span class="p">,</span>	<span class="mi">160</span><span class="p">,</span> 	<span class="mi">76</span><span class="p">,</span>  	<span class="mi">48</span><span class="p">,</span>	<span class="mi">45</span><span class="p">,</span>	<span class="mi">27</span><span class="p">,</span>	<span class="mi">36</span><span class="p">,</span>	<span class="mf">0.033333</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.043573</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">7</span><span class="p">,</span>	<span class="mi">200</span><span class="p">,</span> 	<span class="mi">74</span><span class="p">,</span>  	<span class="mi">46</span><span class="p">,</span>	<span class="mi">43</span><span class="p">,</span>	<span class="mi">24</span><span class="p">,</span>	<span class="mi">33</span><span class="p">,</span>	<span class="mf">0.033333</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.040221</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">8</span><span class="p">,</span>	<span class="mi">250</span><span class="p">,</span> 	<span class="mf">74.9</span><span class="p">,</span>	<span class="mi">44</span><span class="p">,</span>	<span class="mi">42</span><span class="p">,</span>	<span class="mi">21</span><span class="p">,</span>	<span class="mi">30</span><span class="p">,</span>	<span class="mf">0.032051</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.037349</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">9</span><span class="p">,</span>	<span class="mi">315</span><span class="p">,</span> 	<span class="mf">94.6</span><span class="p">,</span>	<span class="mi">42</span><span class="p">,</span>	<span class="mi">41</span><span class="p">,</span>	<span class="mi">18</span><span class="p">,</span>	<span class="mi">27</span><span class="p">,</span>	<span class="mf">0.030675</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mf">0.030103</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span>  <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">40</span><span class="p">,</span>	<span class="mi">40</span><span class="p">,</span>	<span class="mi">16</span><span class="p">,</span>	<span class="mi">25</span><span class="p">,</span>	<span class="mf">0.030103</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">630</span><span class="p">,</span>  <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">40</span><span class="p">,</span>	<span class="mi">40</span><span class="p">,</span>	<span class="mi">16</span><span class="p">,</span>	<span class="mi">25</span><span class="p">,</span>	<span class="mf">0.030103</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">800</span> <span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">40</span><span class="p">,</span>	<span class="mi">40</span><span class="p">,</span>	<span class="mi">16</span><span class="p">,</span>	<span class="mi">25</span><span class="p">,</span>	<span class="mf">0.030103</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">40</span><span class="p">,</span>	<span class="mi">40</span><span class="p">,</span>	<span class="mi">16</span><span class="p">,</span>	<span class="mi">25</span><span class="p">,</span>	<span class="mf">0.030103</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">1250</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">38</span><span class="p">,</span>	<span class="mi">38</span><span class="p">,</span>	<span class="mi">15</span><span class="p">,</span>	<span class="mi">23</span><span class="p">,</span>	<span class="mf">0.030103</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.05964</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">34</span><span class="p">,</span>	<span class="mi">34</span><span class="p">,</span>	<span class="mi">12</span><span class="p">,</span>	<span class="mi">21</span><span class="p">,</span>	<span class="mf">0.02996</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.040221</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">32</span><span class="p">,</span>	<span class="mi">32</span><span class="p">,</span>	<span class="mi">9</span><span class="p">,</span>	<span class="mi">18</span><span class="p">,</span>	<span class="mf">0.02996</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.037349</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">2500</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">30</span><span class="p">,</span>	<span class="mi">30</span><span class="p">,</span>	<span class="mi">5</span><span class="p">,</span>	<span class="mi">15</span><span class="p">,</span>	<span class="mf">0.02996</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.047712</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">3150</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">29</span><span class="p">,</span>	<span class="mi">29</span><span class="p">,</span>	<span class="mi">4</span><span class="p">,</span>	<span class="mi">14</span><span class="p">,</span>	<span class="mf">0.02996</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.047712</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">29</span><span class="p">,</span>	<span class="mi">29</span><span class="p">,</span>	<span class="mi">5</span><span class="p">,</span>	<span class="mi">14</span><span class="p">,</span>	<span class="mf">0.02996</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span>	<span class="mi">30</span><span class="p">,</span>	<span class="mi">30</span><span class="p">,</span>	<span class="mi">6</span><span class="p">,</span>	<span class="mi">15</span><span class="p">,</span>	<span class="mf">0.02996</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.053013</span><span class="p">,</span> <span class="mf">0.034859</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="mi">6300</span><span class="p">,</span> <span class="mi">9999999</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span>	<span class="mi">31</span><span class="p">,</span>	<span class="mi">10</span><span class="p">,</span>	<span class="mi">17</span><span class="p">,</span>	<span class="mf">0.02996</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.06816</span><span class="p">,</span> <span class="mf">0.037349</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="mi">8000</span><span class="p">,</span> <span class="mf">44.3</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mf">0.042285</span><span class="p">,</span> <span class="mf">0.02996</span><span class="p">,</span> <span class="mf">0.07952</span><span class="p">,</span> <span class="mf">0.037349</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mf">50.7</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mf">0.042285</span><span class="p">,</span>	<span class="mf">0.02996</span><span class="p">,</span> <span class="mf">0.05964</span><span class="p">,</span> <span class="mf">0.043573</span><span class="p">]]</span>
+
+    
+    <span class="c1"># Defining the necessary arrays for the calculation</span>
+    <span class="n">n_cpts</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">SPL</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">n_mic</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">SPL</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">SPL_noy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="mi">24</span><span class="p">))</span>
+    <span class="n">PNL</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">))</span>
+    
+    <span class="c1">#-------------------------------------------</span>
+    <span class="c1"># STEP 1 - Convert SPL to Perceived Noisiness</span>
+    <span class="c1">#-------------------------------------------  </span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_mic</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cpts</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">noy</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span>
+                    <span class="n">SPL_noy</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">8</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">4</span><span class="p">]))</span>
+                    
+                <span class="k">if</span> <span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="ow">and</span> <span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span>
+                    <span class="n">SPL_noy</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">7</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]))</span>
+                    
+                <span class="k">if</span> <span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="ow">and</span> <span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">]:</span>
+                    <span class="n">SPL_noy</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3</span><span class="o">*</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">10</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">])))</span>
+                    
+                <span class="k">if</span> <span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="ow">and</span> <span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">]:</span>
+                    <span class="n">SPL_noy</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span><span class="o">*</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">9</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">SPL</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">noy</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">5</span><span class="p">])))</span>
+                
+            <span class="c1">#-------------------------------------------  </span>
+            <span class="c1"># STEP 2 - Combine perceived noiseness values  </span>
+            <span class="c1">#-------------------------------------------</span>
+            <span class="n">max_noy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">SPL_noy</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][:])</span>            
+            <span class="n">Perceived_noisinees</span> <span class="o">=</span> <span class="mf">0.85</span><span class="o">*</span><span class="n">max_noy</span><span class="o">+</span><span class="mf">0.15</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">SPL_noy</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">][:])</span>
+            
+            <span class="c1">#-----------------------------------------------------------------</span>
+            <span class="c1"># STEP 3 - Convert Perceived Noiseness into Perceived Noise Level</span>
+            <span class="c1">#------------------------------------------------------------------    </span>
+            <span class="k">if</span> <span class="n">Perceived_noisinees</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">Perceived_noisinees</span> <span class="o">=</span> <span class="mf">0.0625</span>
+            <span class="n">PNL</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">40</span><span class="o">+</span><span class="p">(</span><span class="mi">10</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">Perceived_noisinees</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">PNL</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_PNL_noise_metric</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of PNL_noise_metric.</span>
+<span class="sd">	Wraps PNL_noise_metric with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see PNL_noise_metric documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: SPL = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="s1">&#39;SPL&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

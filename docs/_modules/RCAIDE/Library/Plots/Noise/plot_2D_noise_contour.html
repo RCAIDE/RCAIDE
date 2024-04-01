@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Plots.Noise.plot_2D_noise_contour &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Plots.Noise.plot_2D_noise_contour</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Plots.Noise.plot_2D_noise_contour</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Plots-Performance-Noise</span>
+<span class="c1"># RCAIDE/Library/Plots/Noise/plot_2D_noise_contour.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">Units</span>
+
+<span class="c1"># python imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>   
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>  
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>  
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  PLOTS</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+ 
+<span class="c1">## @ingroup Library-Plots-Performance-Noise</span>
+<div class="viewcode-block" id="plot_2D_noise_contour">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Plots.Noise.html#RCAIDE.Library.Plots.Noise.plot_2D_noise_contour.plot_2D_noise_contour">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_2D_noise_contour</span><span class="p">(</span><span class="n">noise_data</span><span class="p">,</span>
+                       <span class="n">noise_level</span>              <span class="o">=</span> <span class="kc">None</span> <span class="p">,</span>
+                       <span class="n">min_noise_level</span>          <span class="o">=</span> <span class="mi">35</span><span class="p">,</span>  
+                       <span class="n">max_noise_level</span>          <span class="o">=</span> <span class="mi">90</span><span class="p">,</span> 
+                       <span class="n">noise_scale_label</span>        <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">save_figure</span>              <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                       <span class="n">show_figure</span>              <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                       <span class="n">save_filename</span>            <span class="o">=</span> <span class="s2">&quot;2D_Noise_Contour&quot;</span><span class="p">,</span>
+                       <span class="n">show_elevation</span>           <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                       <span class="n">use_lat_long_coordinates</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  
+                       <span class="n">colormap</span>                 <span class="o">=</span> <span class="s1">&#39;jet&#39;</span><span class="p">,</span>
+                       <span class="n">file_type</span>                <span class="o">=</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span>
+                       <span class="n">width</span>                    <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> 
+                       <span class="n">height</span>                   <span class="o">=</span> <span class="mi">7</span><span class="p">,</span>
+                       <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This plots a 2D noise contour of a noise level </span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Inputs: </span>
+<span class="sd">       noise_data        - noise data structure </span>
+<span class="sd">       noise_level       - noise level (dBA, DNL, SENEL etc)</span>
+<span class="sd">       min_noise_level   - minimal noise level </span>
+<span class="sd">       max_noise_level   - maximum noise level </span>
+<span class="sd">       noise_scale_label - noise level label </span>
+<span class="sd">       save_figure       - save figure </span>
+<span class="sd">       show_figure       - show figure </span>
+<span class="sd">       save_filename     - save file flag</span>
+<span class="sd">       show_trajectory   - plot aircraft trajectory flag</span>
+<span class="sd">       show_microphones  - show microhpone flag </span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">       Plots</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    
+    <span class="n">elevation</span>       <span class="o">=</span> <span class="n">noise_data</span><span class="o">.</span><span class="n">ground_microphone_locations</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">Units</span><span class="o">.</span><span class="n">ft</span>      
+    <span class="n">colors_undersea</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">terrain</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.17</span><span class="p">,</span> <span class="mi">56</span><span class="p">))</span>
+    <span class="n">colors_land</span>     <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">terrain</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>  
+    <span class="n">colors</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">colors_undersea</span><span class="p">,</span> <span class="n">colors_land</span><span class="p">))</span>
+    <span class="n">cut_terrain_map</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s1">&#39;cut_terrain&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="p">)</span> 
+    <span class="n">norm</span> <span class="o">=</span> <span class="n">FixPointNormalize</span><span class="p">(</span><span class="n">sealevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">elevation</span><span class="p">),</span><span class="n">vmin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">elevation</span><span class="p">))</span>  
+     
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">save_filename</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="n">height</span><span class="p">)</span>
+    
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> 
+    
+    <span class="n">noise_levels</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_noise_level</span><span class="p">,</span><span class="n">max_noise_level</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>  
+    <span class="n">noise_cmap</span>     <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;turbo&#39;</span><span class="p">)</span>
+    <span class="n">noise_new_cmap</span> <span class="o">=</span> <span class="n">truncate_colormap</span><span class="p">(</span><span class="n">noise_cmap</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> 
+     
+    <span class="k">if</span> <span class="n">use_lat_long_coordinates</span><span class="p">:</span> 
+        <span class="n">LAT</span>  <span class="o">=</span> <span class="n">noise_data</span><span class="o">.</span><span class="n">ground_microphone_coordinates</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">LONG</span> <span class="o">=</span> <span class="n">noise_data</span><span class="o">.</span><span class="n">ground_microphone_coordinates</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Longitude [°]&#39;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Latitude [°]&#39;</span><span class="p">)</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LAT</span>  <span class="o">=</span> <span class="n">noise_data</span><span class="o">.</span><span class="n">ground_microphone_locations</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">Units</span><span class="o">.</span><span class="n">nmi</span>
+        <span class="n">LONG</span> <span class="o">=</span> <span class="n">noise_data</span><span class="o">.</span><span class="n">ground_microphone_locations</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Units</span><span class="o">.</span><span class="n">nmi</span> 
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x [nmi]&#39;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y [nmi]&#39;</span><span class="p">)</span>  
+    
+    <span class="k">if</span> <span class="n">show_elevation</span><span class="p">:</span>
+        <span class="n">CS_1</span>  <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">LONG</span><span class="p">,</span><span class="n">LAT</span><span class="p">,</span><span class="n">elevation</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span><span class="n">cut_terrain_map</span><span class="p">,</span><span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span><span class="n">levels</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  
+        <span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">CS_1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>     
+        <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Elevation above sea level [ft]&#39;</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span>  <span class="mi">90</span><span class="p">)</span>  
+
+    <span class="c1"># plot aircraft noise levels   </span>
+    <span class="n">CS_2</span>    <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">LONG</span><span class="p">,</span><span class="n">LAT</span><span class="p">,</span><span class="n">noise_level</span> <span class="p">,</span><span class="n">noise_levels</span><span class="p">,</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">noise_new_cmap</span><span class="p">)</span>     
+    <span class="n">cbar</span>    <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">CS_2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>        
+    <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">noise_scale_label</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span>  <span class="mi">90</span><span class="p">)</span> 
+        
+    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>  
+    <span class="k">if</span> <span class="n">save_figure</span><span class="p">:</span> 
+        <span class="n">figure_title</span>  <span class="o">=</span> <span class="n">save_filename</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">figure_title</span> <span class="o">+</span> <span class="n">file_type</span> <span class="p">)</span>     
+         
+    <span class="k">return</span> <span class="n">fig</span>       </div>
+
+
+<span class="c1"># ------------------------------------------------------------------ </span>
+<span class="c1"># Truncate colormaps</span>
+<span class="c1"># ------------------------------------------------------------------  </span>
+<div class="viewcode-block" id="truncate_colormap">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Plots.Noise.html#RCAIDE.Library.Plots.Noise.plot_2D_noise_contour.truncate_colormap">[docs]</a>
+<span class="k">def</span> <span class="nf">truncate_colormap</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">minval</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">new_cmap</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span>
+        <span class="s1">&#39;trunc(</span><span class="si">{n}</span><span class="s1">,</span><span class="si">{a:.2f}</span><span class="s1">,</span><span class="si">{b:.2f}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">minval</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">maxval</span><span class="p">),</span>
+        <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">minval</span><span class="p">,</span> <span class="n">maxval</span><span class="p">,</span> <span class="n">n</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">new_cmap</span></div>
+
+
+
+<div class="viewcode-block" id="FixPointNormalize">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Plots.Noise.html#RCAIDE.Library.Plots.Noise.plot_2D_noise_contour.FixPointNormalize">[docs]</a>
+<span class="k">class</span> <span class="nc">FixPointNormalize</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Inspired by https://stackoverflow.com/questions/20144529/shifted-colorbar-matplotlib</span>
+<span class="sd">    Subclassing Normalize to obtain a colormap with a fixpoint </span>
+<span class="sd">    somewhere in the middle of the colormap.</span>
+<span class="sd">    This may be useful for a `terrain` map, to set the &quot;sea level&quot; </span>
+<span class="sd">    to a color in the blue/turquise range. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sealevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col_val</span> <span class="o">=</span> <span class="mf">0.21875</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># sealevel is the fix point of the colormap (in data units)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sealevel</span> <span class="o">=</span> <span class="n">sealevel</span>
+        <span class="c1"># col_val is the color value in the range [0,1] that should represent the sealevel.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_val</span> <span class="o">=</span> <span class="n">col_val</span>
+        <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">clip</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sealevel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vmax</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">col_val</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>   </div>
+
+
+<div class="viewcode-block" id="colorax">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Plots.Noise.html#RCAIDE.Library.Plots.Noise.plot_2D_noise_contour.colorax">[docs]</a>
+<span class="k">def</span> <span class="nf">colorax</span><span class="p">(</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span><span class="n">cmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

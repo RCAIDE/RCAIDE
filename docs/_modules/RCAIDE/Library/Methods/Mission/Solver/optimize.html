@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Mission.Solver.optimize &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Mission.Solver.optimize</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Mission.Solver.optimize</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Mission-Segments</span>
+<span class="c1"># optimize.py </span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Dec 2016, E. Botero</span>
+<span class="c1"># Modified: Jun 2017, E. Botero</span>
+<span class="c1">#           Mar 2020, M. Clarke</span>
+<span class="c1">#           Apr 2020, M. Clarke</span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">opt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Converge Root</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="c1">## @ingroup Library-Methods-Mission-Segments</span>
+<div class="viewcode-block" id="converge_opt">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Mission.Solver.html#RCAIDE.Library.Methods.Mission.Solver.optimize.converge_opt">[docs]</a>
+<span class="k">def</span> <span class="nf">converge_opt</span><span class="p">(</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interfaces the mission to an optimization algorithm</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    state.unknowns                     [Data]</span>
+<span class="sd">    segment                            [Data]</span>
+<span class="sd">    segment.algorithm                  [string]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    state.unknowns                     [Any]</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>     
+    
+    <span class="c1"># pack up the array</span>
+    <span class="n">unknowns</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">pack_array</span><span class="p">()</span>
+    
+    <span class="c1"># Have the optimizer call the wrapper</span>
+    <span class="n">obj</span>       <span class="o">=</span> <span class="k">lambda</span> <span class="n">unknowns</span><span class="p">:</span><span class="n">get_objective</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span><span class="n">segment</span><span class="p">)</span>   
+    <span class="n">econ</span>      <span class="o">=</span> <span class="k">lambda</span> <span class="n">unknowns</span><span class="p">:</span><span class="n">get_econstraints</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span><span class="n">segment</span><span class="p">)</span> 
+    <span class="n">iecon</span>     <span class="o">=</span> <span class="k">lambda</span> <span class="n">unknowns</span><span class="p">:</span><span class="n">get_ieconstraints</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span><span class="n">segment</span><span class="p">)</span>
+    
+    <span class="c1"># Setup the bnds of the problem</span>
+    <span class="n">bnds</span> <span class="o">=</span> <span class="n">make_bnds</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span> <span class="n">segment</span><span class="p">)</span>
+    
+    <span class="c1"># Solve the problem, based on chosen algorithm</span>
+    <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;SLSQP&#39;</span><span class="p">:</span>
+        <span class="n">unknowns</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">fmin_slsqp</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">unknowns</span><span class="p">,</span><span class="n">f_eqcons</span><span class="o">=</span><span class="n">econ</span><span class="p">,</span><span class="n">f_ieqcons</span><span class="o">=</span><span class="n">iecon</span><span class="p">,</span><span class="n">bounds</span><span class="o">=</span><span class="n">bnds</span><span class="p">,</span><span class="nb">iter</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+        
+    <span class="k">elif</span> <span class="n">segment</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">==</span> <span class="s1">&#39;SNOPT&#39;</span><span class="p">:</span>
+        
+        <span class="c1"># SNOPT imports</span>
+        <span class="kn">import</span> <span class="nn">pyOpt</span>
+        <span class="kn">import</span> <span class="nn">pyOpt.pySNOPT</span>    
+        
+        <span class="c1"># Have the optimizer call the wrapper</span>
+        <span class="n">obj_pyopt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">unknowns</span><span class="p">:</span><span class="n">get_problem_pyopt</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span><span class="n">segment</span><span class="p">)</span> 
+    
+        <span class="n">opt_prob</span> <span class="o">=</span> <span class="n">pyOpt</span><span class="o">.</span><span class="n">Optimization</span><span class="p">(</span><span class="s1">&#39;RCAIDE&#39;</span><span class="p">,</span><span class="n">obj_pyopt</span><span class="p">)</span>
+        <span class="n">opt_prob</span><span class="o">.</span><span class="n">addObj</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">objective</span><span class="p">)</span>
+    
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">unknowns</span><span class="p">)):</span>
+            <span class="n">lbd</span> <span class="o">=</span> <span class="p">(</span><span class="n">bnds</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">ubd</span> <span class="o">=</span> <span class="p">(</span><span class="n">bnds</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">vartype</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span>
+            <span class="n">opt_prob</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">),</span><span class="n">vartype</span><span class="p">,</span><span class="n">lower</span><span class="o">=</span><span class="n">lbd</span><span class="p">,</span><span class="n">upper</span><span class="o">=</span><span class="n">ubd</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="n">unknowns</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>  
+    
+        <span class="c1"># Setup constraints</span>
+        <span class="n">segment_points</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">numerics</span><span class="o">.</span><span class="n">number_of_control_points</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">segment_points</span><span class="p">):</span>
+            <span class="n">opt_prob</span><span class="o">.</span><span class="n">addCon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="n">equal</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="o">*</span><span class="n">segment_points</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">opt_prob</span><span class="o">.</span><span class="n">addCon</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ii</span><span class="o">+</span><span class="n">segment_points</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">upper</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+    
+        <span class="nb">print</span><span class="p">(</span><span class="n">opt_prob</span><span class="p">)</span>
+    
+        <span class="n">snopt</span> <span class="o">=</span> <span class="n">pyOpt</span><span class="o">.</span><span class="n">pySNOPT</span><span class="o">.</span><span class="n">SNOPT</span><span class="p">()</span>    
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">snopt</span><span class="p">(</span><span class="n">opt_prob</span><span class="p">)</span> 
+    
+        <span class="nb">print</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">opt_prob</span><span class="o">.</span><span class="n">solution</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="k">return</span></div>
+
+    
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Helper Functions</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+    
+<span class="c1">## @ingroup Library-Methods-Mission-Segments</span>
+<div class="viewcode-block" id="get_objective">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Mission.Solver.html#RCAIDE.Library.Methods.Mission.Solver.optimize.get_objective">[docs]</a>
+<span class="k">def</span> <span class="nf">get_objective</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Runs the mission if the objective value is needed</span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        state.unknowns      [Data]</span>
+<span class="sd">    </span>
+<span class="sd">        Outputs:</span>
+<span class="sd">        objective           [float]</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">                                </span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">unpack_array</span><span class="p">(</span><span class="n">unknowns</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span> <span class="o">=</span> <span class="n">unknowns</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">inputs_last</span> <span class="o">==</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="p">):</span>       
+        <span class="n">segment</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        
+    <span class="n">objective</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">objective_value</span>
+    
+    <span class="k">return</span> <span class="n">objective</span></div>
+
+
+<span class="c1">## @ingroup Library-Methods-Mission-Segments</span>
+<div class="viewcode-block" id="get_econstraints">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Mission.Solver.html#RCAIDE.Library.Methods.Mission.Solver.optimize.get_econstraints">[docs]</a>
+<span class="k">def</span> <span class="nf">get_econstraints</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Runs the mission if the equality constraint values are needed</span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        state.unknowns      [Data]</span>
+<span class="sd">            </span>
+<span class="sd">        Outputs:</span>
+<span class="sd">        constraints          [array]</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">                                </span>
+<span class="sd">    &quot;&quot;&quot;</span>       
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">unpack_array</span><span class="p">(</span><span class="n">unknowns</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span> <span class="o">=</span> <span class="n">unknowns</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">inputs_last</span> <span class="o">==</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="p">):</span>       
+        <span class="n">segment</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+
+    <span class="n">constraints</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">constraint_values</span>
+    
+    <span class="k">return</span> <span class="n">constraints</span></div>
+
+
+<span class="c1">## @ingroup Library-Methods-Mission-Segments</span>
+<div class="viewcode-block" id="make_bnds">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Mission.Solver.html#RCAIDE.Library.Methods.Mission.Solver.optimize.make_bnds">[docs]</a>
+<span class="k">def</span> <span class="nf">make_bnds</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Automatically sets the bounds of the optimization.</span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        Restricts throttle to between 0 and 100%</span>
+<span class="sd">        Restricts body angle from 0 to pi/2 radians</span>
+<span class="sd">        Restricts flight path angle from 0 to pi/2 radians</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        none</span>
+<span class="sd">            </span>
+<span class="sd">        Outputs:</span>
+<span class="sd">        bnds</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">                                </span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+
+    <span class="n">ones</span>    <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ones_m1</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">ones_row_m1</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">_size</span><span class="p">)</span>
+    <span class="n">ones_m2</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">ones_row_m2</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">_size</span><span class="p">)</span>
+    
+    <span class="n">throttle_bnds</span> <span class="o">=</span> <span class="n">ones</span><span class="o">*</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">)</span>
+    <span class="n">body_angle</span>    <span class="o">=</span> <span class="n">ones</span><span class="o">*</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+    <span class="n">gamma</span>         <span class="o">=</span> <span class="n">ones</span><span class="o">*</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">segment</span><span class="o">.</span><span class="n">air_speed_end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vels</span>      <span class="o">=</span> <span class="n">ones_m1</span><span class="o">*</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">2000.</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">segment</span><span class="o">.</span><span class="n">air_speed_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>    
+        <span class="n">vels</span>      <span class="o">=</span> <span class="n">ones_m2</span><span class="o">*</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">2000.</span><span class="p">)</span>
+    
+    <span class="n">bnds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">throttle_bnds</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">body_angle</span><span class="p">,</span><span class="n">vels</span><span class="p">])</span>
+    
+    <span class="n">bnds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">bnds</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">bnds</span></div>
+
+
+<span class="c1">## @ingroup Library-Methods-Mission-Segments</span>
+<div class="viewcode-block" id="get_ieconstraints">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Mission.Solver.html#RCAIDE.Library.Methods.Mission.Solver.optimize.get_ieconstraints">[docs]</a>
+<span class="k">def</span> <span class="nf">get_ieconstraints</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Runs the mission if the inequality constraint values are needed, these are specific to a climb</span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        Time only goes forward</span>
+<span class="sd">        CL is less than a specified limit</span>
+<span class="sd">        CL is greater than zero</span>
+<span class="sd">        All altitudes are greater than zero</span>
+<span class="sd">        The vehicle accelerates not decelerates</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        state.unknowns      [Data]</span>
+<span class="sd">            </span>
+<span class="sd">        Outputs:</span>
+<span class="sd">        constraints          [array]</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">                                </span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">unpack_array</span><span class="p">(</span><span class="n">unknowns</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span> <span class="o">=</span> <span class="n">unknowns</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">inputs_last</span> <span class="o">==</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="p">):</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+    
+    <span class="c1"># Time goes forward, not backward</span>
+    <span class="n">t_final</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">time_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">t_final</span>
+    
+    <span class="c1"># Less than a specified CL limit</span>
+    <span class="n">lift_coefficient_limit</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">lift_coefficient_limit</span>
+    <span class="n">CL_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">lift_coefficient_limit</span>  <span class="o">-</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">lift</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">lift_coefficient_limit</span>
+    
+    <span class="n">CL_con2</span>   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">lift</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Altitudes are greater than 0</span>
+    <span class="n">alt_con</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">altitude</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">segment</span><span class="o">.</span><span class="n">altitude_end</span>
+    
+    <span class="c1"># Acceleration constraint, go faster not slower</span>
+    <span class="n">acc_con</span>   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">acceleration_vector</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">constraints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">time_con</span><span class="p">,</span><span class="n">CL_con</span><span class="p">,</span><span class="n">CL_con2</span><span class="p">,</span><span class="n">alt_con</span><span class="p">,</span><span class="n">acc_con</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">constraints</span></div>
+
+
+<span class="c1">## @ingroup Library-Methods-Mission-Segments</span>
+<div class="viewcode-block" id="get_problem_pyopt">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Mission.Solver.html#RCAIDE.Library.Methods.Mission.Solver.optimize.get_problem_pyopt">[docs]</a>
+<span class="k">def</span> <span class="nf">get_problem_pyopt</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Runs the mission and obtains the objective and all constraints. This is formatted for pyopt</span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        Time only goes forward</span>
+<span class="sd">        CL is less than a specified limit</span>
+<span class="sd">        All altitudes are greater than zero</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        state.unknowns      [Data]</span>
+<span class="sd">    </span>
+<span class="sd">        Outputs:</span>
+<span class="sd">        obj                 [float]</span>
+<span class="sd">        con                 [array]</span>
+<span class="sd">        fail                [boolean]</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">                                </span>
+<span class="sd">    &quot;&quot;&quot;</span>       
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">unknowns</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">unpack_array</span><span class="p">(</span><span class="n">unknowns</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span> <span class="o">=</span> <span class="n">unknowns</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">inputs_last</span> <span class="o">==</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unknowns</span><span class="p">):</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        
+    <span class="n">obj</span>      <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">objective_value</span>
+    
+    <span class="c1"># Time goes forward, not backward</span>
+    <span class="n">t_final</span>  <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">time_con</span> <span class="o">=</span> <span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">t_final</span>
+    
+    <span class="c1"># Less than a specified CL limit</span>
+    <span class="n">lift_coefficient_limit</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">lift_coefficient_limit</span> 
+    <span class="n">CL_con</span>   <span class="o">=</span> <span class="p">(</span><span class="n">lift_coefficient_limit</span>  <span class="o">-</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">lift</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">lift_coefficient_limit</span>
+    
+    <span class="n">CL_con2</span>   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">lift</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Altitudes are greater than 0</span>
+    <span class="n">alt_con</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">altitude</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">segment</span><span class="o">.</span><span class="n">altitude_end</span>
+    
+    <span class="c1"># Acceleration constraint, go faster not slower</span>
+    <span class="n">acc_con</span>   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">acceleration_vector</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Put the equality and inequality constraints together</span>
+    <span class="n">constraints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">constraint_values</span><span class="p">,</span><span class="n">time_con</span><span class="p">,</span><span class="n">CL_con</span><span class="p">,</span><span class="n">alt_con</span><span class="p">,</span><span class="n">acc_con</span><span class="p">,</span><span class="n">CL_con2</span><span class="p">))</span>
+    
+    
+    <span class="n">obj</span>   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">objective_value</span>
+    <span class="n">const</span> <span class="o">=</span> <span class="n">constraints</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">fail</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">const</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>    
+    
+    <span class="k">return</span> <span class="n">obj</span><span class="p">,</span><span class="n">const</span><span class="p">,</span><span class="n">fail</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_converge_opt</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of converge_opt.</span>
+<span class="sd">	Wraps converge_opt with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see converge_opt documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">converge_opt</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_get_objective</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of get_objective.</span>
+<span class="sd">	Wraps get_objective with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see get_objective documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: unknowns = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: segment  = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">get_objective</span><span class="p">(</span><span class="s1">&#39;unknowns&#39;</span><span class="p">,</span> <span class="s1">&#39;segment&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_get_econstraints</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of get_econstraints.</span>
+<span class="sd">	Wraps get_econstraints with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see get_econstraints documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: unknowns = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: segment  = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">get_econstraints</span><span class="p">(</span><span class="s1">&#39;unknowns&#39;</span><span class="p">,</span> <span class="s1">&#39;segment&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_make_bnds</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of make_bnds.</span>
+<span class="sd">	Wraps make_bnds with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see make_bnds documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: unknowns = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: segment  = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">make_bnds</span><span class="p">(</span><span class="s1">&#39;unknowns&#39;</span><span class="p">,</span> <span class="s1">&#39;segment&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_get_ieconstraints</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of get_ieconstraints.</span>
+<span class="sd">	Wraps get_ieconstraints with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see get_ieconstraints documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: unknowns = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: segment  = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">get_ieconstraints</span><span class="p">(</span><span class="s1">&#39;unknowns&#39;</span><span class="p">,</span> <span class="s1">&#39;segment&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_get_problem_pyopt</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of get_problem_pyopt.</span>
+<span class="sd">	Wraps get_problem_pyopt with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see get_problem_pyopt documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: unknowns = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: segment  = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">get_problem_pyopt</span><span class="p">(</span><span class="s1">&#39;unknowns&#39;</span><span class="p">,</span> <span class="s1">&#39;segment&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

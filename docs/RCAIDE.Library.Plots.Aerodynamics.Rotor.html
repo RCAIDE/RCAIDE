@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Plots.Aerodynamics.Rotor package &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RCAIDE.Library.Plots.Aerodynamics.Vehicle package" href="RCAIDE.Library.Plots.Aerodynamics.Vehicle.html" />
+    <link rel="prev" title="RCAIDE.Library.Plots.Aerodynamics.Airfoil package" href="RCAIDE.Library.Plots.Aerodynamics.Airfoil.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">RCAIDE</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="RCAIDE.html">RCAIDE package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="RCAIDE.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Framework.html">RCAIDE.Framework package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.Vehicle">RCAIDE.Vehicle module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.load">RCAIDE.load module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.save">RCAIDE.save module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.version">RCAIDE.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">RCAIDE</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.html">RCAIDE package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Plots.html">RCAIDE.Library.Plots package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Plots.Aerodynamics.html">RCAIDE.Library.Plots.Aerodynamics package</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Plots.Aerodynamics.Rotor package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/RCAIDE.Library.Plots.Aerodynamics.Rotor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rcaide-library-plots-aerodynamics-rotor-package">
+<h1>RCAIDE.Library.Plots.Aerodynamics.Rotor package<a class="headerlink" href="#rcaide-library-plots-aerodynamics-rotor-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading">
+<span id="rcaide-library-plots-aerodynamics-rotor-plot-disc-and-power-loading-module"></span><h2>RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading module<a class="headerlink" href="#module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading.plot_disc_and_power_loading">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading.</span></span><span class="sig-name descname"><span class="pre">plot_disc_and_power_loading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Disc_And_Power_Loading'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Plots/Aerodynamics/Rotor/plot_disc_and_power_loading.html#plot_disc_and_power_loading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading.plot_disc_and_power_loading" title="Link to this definition"></a></dt>
+<dd><p>Plots rotor disc and power loadings</p>
+<p>Assumptions:
+None</p>
+<p>Source: 
+None</p>
+<p>Inputs
+results.segments.conditions.propulsion.</p>
+<blockquote>
+<div><p>disc_loadings
+power_loading</p>
+</div></blockquote>
+<p>Outputs:
+Plots</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading.plot_propulsor_data">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading.</span></span><span class="sig-name descname"><span class="pre">plot_propulsor_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distributor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propulsor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_colors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Plots/Aerodynamics/Rotor/plot_disc_and_power_loading.html#plot_propulsor_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_disc_and_power_loading.plot_propulsor_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions">
+<span id="rcaide-library-plots-aerodynamics-rotor-plot-rotor-conditions-module"></span><h2>RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions module<a class="headerlink" href="#module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions.plot_propulsor_data">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions.</span></span><span class="sig-name descname"><span class="pre">plot_propulsor_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distributor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propulsor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_colors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Plots/Aerodynamics/Rotor/plot_rotor_conditions.html#plot_propulsor_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions.plot_propulsor_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions.plot_rotor_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions.</span></span><span class="sig-name descname"><span class="pre">plot_rotor_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Rotor_Conditions'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Plots/Aerodynamics/Rotor/plot_rotor_conditions.html#plot_rotor_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_conditions.plot_rotor_conditions" title="Link to this definition"></a></dt>
+<dd><p>This plots the electric driven network propeller efficiencies</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+None</p>
+<p>Inputs:
+results.segments.conditions.propulsion.</p>
+<p>Outputs: 
+Plots</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_inflow">
+<span id="rcaide-library-plots-aerodynamics-rotor-plot-rotor-disc-inflow-module"></span><h2>RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_inflow module<a class="headerlink" href="#module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_inflow" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_inflow.plot_rotor_disc_inflow">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_inflow.</span></span><span class="sig-name descname"><span class="pre">plot_rotor_disc_inflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Plots/Aerodynamics/Rotor/plot_rotor_disc_inflow.html#plot_rotor_disc_inflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_inflow.plot_rotor_disc_inflow" title="Link to this definition"></a></dt>
+<dd><p>Plots rotor disc inflow velocities</p>
+<p>Assumptions:
+None</p>
+<p>Source: 
+None</p>
+<p>Inputs
+velocites  - velocites at rotor plane  [m/s]</p>
+<p>Outputs:
+Plots</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_performance">
+<span id="rcaide-library-plots-aerodynamics-rotor-plot-rotor-disc-performance-module"></span><h2>RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_performance module<a class="headerlink" href="#module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_performance" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_performance.plot_rotor_disc_performance">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_performance.</span></span><span class="sig-name descname"><span class="pre">plot_rotor_disc_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Plots/Aerodynamics/Rotor/plot_rotor_disc_performance.html#plot_rotor_disc_performance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_disc_performance.plot_rotor_disc_performance" title="Link to this definition"></a></dt>
+<dd><p>Plots rotor disc performance</p>
+<p>Assumptions:
+None</p>
+<p>Source: 
+None</p>
+<p>Inputs
+outputs    - rotor outputs data structure</p>
+<p>Outputs:
+Plots</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_performance">
+<span id="rcaide-library-plots-aerodynamics-rotor-plot-rotor-performance-module"></span><h2>RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_performance module<a class="headerlink" href="#module-RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_performance" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_performance.plot_rotor_performance">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_performance.</span></span><span class="sig-name descname"><span class="pre">plot_rotor_performance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_figure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Rotor_Performance'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.png'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Plots/Aerodynamics/Rotor/plot_rotor_performance.html#plot_rotor_performance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Plots.Aerodynamics.Rotor.plot_rotor_performance.plot_rotor_performance" title="Link to this definition"></a></dt>
+<dd><p>Plots a summary of rotor performance</p>
+<p>Assumptions:
+None</p>
+<p>Source: 
+None</p>
+<p>Inputs
+rotor   - rotor data structure</p>
+<p>Outputs:
+Plots</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Plots.Aerodynamics.Rotor">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RCAIDE.Library.Plots.Aerodynamics.Rotor" title="Link to this heading"></a></h2>
+<p>RCAIDE Package Setup</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="RCAIDE.Library.Plots.Aerodynamics.Airfoil.html" class="btn btn-neutral float-left" title="RCAIDE.Library.Plots.Aerodynamics.Airfoil package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RCAIDE.Library.Plots.Aerodynamics.Vehicle.html" class="btn btn-neutral float-right" title="RCAIDE.Library.Plots.Aerodynamics.Vehicle package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.harmonic_noise &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.harmonic_noise</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.harmonic_noise</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor </span>
+<span class="c1"># RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/harmonic_noise.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># RCAIDE    </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Common</span>                         <span class="kn">import</span> <span class="n">convert_to_third_octave_band</span>
+
+<span class="c1"># Python Package imports  </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">jv</span> 
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># Compute Harmonic Noise </span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor </span>
+<div class="viewcode-block" id="harmonic_noise">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.harmonic_noise.harmonic_noise">[docs]</a>
+<span class="k">def</span> <span class="nf">harmonic_noise</span><span class="p">(</span><span class="n">harmonics</span><span class="p">,</span><span class="n">freestream</span><span class="p">,</span><span class="n">angle_of_attack</span><span class="p">,</span><span class="n">coordinates</span><span class="p">,</span>
+                           <span class="n">velocity_vector</span><span class="p">,</span><span class="n">rotor</span><span class="p">,</span><span class="n">aeroacoustic_data</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">res</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This computes the  harmonic noise (i.e. thickness and loading noise) of a rotor or rotor</span>
+<span class="sd">    in the frequency domain</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    Compactness of thrust and torque along blade radius from root to tip</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    1) Hanson, Donald B. &quot;Helicoidal surface theory for harmonic noise of rotors in the far field.&quot;</span>
+<span class="sd">    AIAA Journal 18.10 (1980): 1213-1220.</span>
+
+<span class="sd">    2) Hubbard, Harvey H., ed. Aeroacoustics of flight vehicles: theory and practice. Vol. 1.</span>
+<span class="sd">    NASA Office of Management, Scientific and Technical Information Program, 1991.</span>
+
+
+<span class="sd">    Inputs: </span>
+<span class="sd">        harmonics                     - harmomics                                                                  [Unitless]</span>
+<span class="sd">        freestream                    - freestream data structure                                                  [m/s]</span>
+<span class="sd">        angle_of_attack               - aircraft angle of attack                                                   [rad]</span>
+<span class="sd">        position_vector               - position vector of aircraft                                                [m]</span>
+<span class="sd">        velocity_vector               - velocity vector of aircraft                                                [m/s] </span>
+<span class="sd">        rotors                        - data structure of rotors                                                   [None]</span>
+<span class="sd">        aeroacoustic_data             - data structure of acoustic data                                            [None]</span>
+<span class="sd">        settings                      - accoustic settings                                                         [None] </span>
+<span class="sd">        res                           - results data structure                                                     [None] </span>
+
+<span class="sd">    Outputs </span>
+<span class="sd">        res.                                    *acoustic data is stored and passed in data structures*                                                                            </span>
+<span class="sd">            SPL_prop_harmonic_bpf_spectrum       - harmonic noise in blade passing frequency spectrum              [dB]</span>
+<span class="sd">            SPL_prop_harmonic_bpf_spectrum_dBA   - dBA-Weighted harmonic noise in blade passing frequency spectrum [dbA]                  </span>
+<span class="sd">            SPL_prop_harmonic_1_3_spectrum       - harmonic noise in 1/3 octave spectrum                           [dB]</span>
+<span class="sd">            SPL_prop_harmonic_1_3_spectrum_dBA   - dBA-Weighted harmonic noise in 1/3 octave spectrum              [dBA] </span>
+<span class="sd">            p_pref_harmonic                      - pressure ratio of harmonic noise                                [Unitless]</span>
+<span class="sd">            p_pref_harmonic_dBA                  - pressure ratio of dBA-weighted harmonic noise                   [Unitless]</span>
+
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A   </span>
+<span class="sd">    &#39;&#39;&#39;</span>     
+    <span class="n">num_h</span>        <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">harmonics</span><span class="p">)</span>     
+    <span class="n">num_cpt</span>      <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">angle_of_attack</span><span class="p">)</span> 
+    <span class="n">num_mic</span>      <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X_hub</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">num_rot</span>      <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X_hub</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> 
+    <span class="n">phi_0</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rotor</span><span class="o">.</span><span class="n">phase_offset_angle</span><span class="p">])</span>  <span class="c1"># phase angle offset  </span>
+    <span class="n">num_sec</span>      <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rotor</span><span class="o">.</span><span class="n">radius_distribution</span><span class="p">)</span> 
+    <span class="n">orientation</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rotor</span><span class="o">.</span><span class="n">orientation_euler_angles</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> 
+    <span class="n">body2thrust</span>  <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_rotvec</span><span class="p">(</span><span class="n">orientation</span><span class="p">)</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+    
+    <span class="c1"># ----------------------------------------------------------------------------------</span>
+    <span class="c1"># Rotational Noise  Thickness and Loading Noise</span>
+    <span class="c1"># ----------------------------------------------------------------------------------  </span>
+    <span class="c1"># [control point ,microphones, rotors, radial distribution, harmonics]  </span>
+    <span class="n">m</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">harmonics</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>                 <span class="c1"># harmonic number </span>
+    <span class="n">m_1d</span>           <span class="o">=</span> <span class="n">harmonics</span>                                                                                         
+    <span class="n">p_ref</span>          <span class="o">=</span> <span class="mf">2E-5</span>                                                                                        <span class="c1"># referece atmospheric pressure</span>
+    <span class="n">a</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">freestream</span><span class="o">.</span><span class="n">speed_of_sound</span><span class="p">[:,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>      <span class="c1"># speed of sound</span>
+    <span class="n">rho</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">freestream</span><span class="o">.</span><span class="n">density</span><span class="p">[:,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>             <span class="c1"># air density   </span>
+    <span class="n">alpha</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">((</span><span class="n">angle_of_attack</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">body2thrust</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))[:,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>          
+    <span class="n">B</span>              <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">number_of_blades</span>                                                                      <span class="c1"># number of rotor blades</span>
+    <span class="n">omega</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">omega</span><span class="p">[:,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>        <span class="c1"># angular velocity       </span>
+    <span class="n">dT_dr</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_dT_dr</span><span class="p">[:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>      <span class="c1"># nondimensionalized differential thrust distribution </span>
+    <span class="n">dQ_dr</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_dQ_dr</span><span class="p">[:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>      <span class="c1"># nondimensionalized differential torque distribution</span>
+    <span class="n">R</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">rotor</span><span class="o">.</span><span class="n">radius_distribution</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span> <span class="c1"># radial location     </span>
+    <span class="n">c</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">rotor</span><span class="o">.</span><span class="n">chord_distribution</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>  <span class="c1"># blade chord    </span>
+    <span class="n">R_tip</span>          <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">tip_radius</span>                                                     
+    <span class="n">t_c</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">rotor</span><span class="o">.</span><span class="n">thickness_to_chord</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>  <span class="c1"># thickness to chord ratio</span>
+    <span class="n">MCA</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">rotor</span><span class="o">.</span><span class="n">mid_chord_alignment</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span> <span class="c1"># Mid Chord Alighment  </span>
+    <span class="n">phi_0_vec</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">phi_0</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">f</span>          <span class="o">=</span> <span class="n">B</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="n">m</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> 
+    <span class="n">D</span>              <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span>                                                                             <span class="c1"># rotor diameter    </span>
+    <span class="n">r</span>              <span class="o">=</span> <span class="n">R</span><span class="o">/</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span>                                                                             <span class="c1"># non dimensional radius distribution   </span>
+    <span class="n">Y</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X_hub</span><span class="p">[:,:,:,</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>  <span class="n">coordinates</span><span class="o">.</span><span class="n">X_hub</span><span class="p">[:,:,:,</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span><span class="mi">2</span><span class="p">)[:,:,:,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>                        <span class="c1"># observer distance from rotor axis          </span>
+    <span class="n">V</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">velocity_vector</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="p">[:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>                                                     <span class="c1"># velocity magnitude</span>
+    <span class="n">M_x</span>            <span class="o">=</span> <span class="n">V</span><span class="o">/</span><span class="n">a</span>                                                                                         
+    <span class="n">V_tip</span>          <span class="o">=</span> <span class="n">R_tip</span><span class="o">*</span><span class="n">omega</span>                                                                                 <span class="c1"># blade_tip_speed </span>
+    <span class="n">M_t</span>            <span class="o">=</span> <span class="n">V_tip</span><span class="o">/</span><span class="n">a</span>                                                                                     <span class="c1"># tip Mach number </span>
+    <span class="n">M_r</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">M_x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">M_t</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>                                                           <span class="c1"># section relative Mach number     </span>
+    <span class="n">B_D</span>            <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="n">D</span>     
+     
+    <span class="n">phi</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">phi_hub_r</span><span class="p">[:,:,:,</span><span class="mi">0</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span> <span class="o">+</span> <span class="n">phi_0_vec</span> 
+
+    <span class="c1"># retarted theta angle in the retarded reference frame</span>
+    <span class="n">theta_r</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">theta_hub_r</span><span class="p">[:,:,:,</span><span class="mi">0</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>  
+    <span class="n">theta_r_prime</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_r</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_r</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">S_r</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X_hub_r</span><span class="p">[:,:,:,</span><span class="mi">0</span><span class="p">,:,:],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)[:,:,:,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>  
+
+    <span class="c1"># initialize thickness and loading noise matrices</span>
+    <span class="n">psi_L</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>
+    <span class="n">psi_V</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_h</span><span class="p">))</span>
+
+    <span class="c1"># normalized thickness  and loading shape functions                </span>
+    <span class="n">k_x</span>               <span class="o">=</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">B</span><span class="o">*</span><span class="n">B_D</span><span class="o">*</span><span class="n">M_t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">M_r</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_r</span><span class="p">))))</span>      <span class="c1"># wave number </span>
+    <span class="n">psi_V</span><span class="p">[:,:,:,</span><span class="mi">0</span><span class="p">,:]</span>  <span class="o">=</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span>   
+    <span class="n">psi_L</span><span class="p">[:,:,:,</span><span class="mi">0</span><span class="p">,:]</span>  <span class="o">=</span> <span class="mi">1</span>     
+    <span class="n">psi_V</span><span class="p">[:,:,:,</span><span class="mi">1</span><span class="p">:,:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="o">/</span><span class="p">(</span><span class="n">k_x</span><span class="p">[:,:,:,</span><span class="mi">1</span><span class="p">:,:]</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">((</span><span class="mi">2</span><span class="o">/</span><span class="n">k_x</span><span class="p">[:,:,:,</span><span class="mi">1</span><span class="p">:,:])</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">k_x</span><span class="p">[:,:,:,</span><span class="mi">1</span><span class="p">:,:])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">k_x</span><span class="p">[:,:,:,</span><span class="mi">1</span><span class="p">:,:]))</span>    
+    <span class="n">psi_L</span><span class="p">[:,:,:,</span><span class="mi">1</span><span class="p">:,:]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="n">k_x</span><span class="p">[:,:,:,</span><span class="mi">1</span><span class="p">:,:])</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">k_x</span><span class="p">[:,:,:,</span><span class="mi">1</span><span class="p">:,:])</span>                  
+
+    <span class="c1"># sound pressure for thickness noise   </span>
+    <span class="n">Jmb</span>               <span class="o">=</span> <span class="n">jv</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">B</span><span class="p">,((</span><span class="n">m</span><span class="o">*</span><span class="n">B</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="n">M_t</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_r_prime</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_r</span><span class="p">))))</span>  
+    <span class="n">phi_s</span>             <span class="o">=</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">B</span><span class="o">*</span><span class="n">M_t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">M_r</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_r</span><span class="p">))))</span><span class="o">*</span><span class="p">(</span><span class="n">MCA</span><span class="o">/</span><span class="n">D</span><span class="p">)</span>
+    <span class="n">phi_prime_var</span>     <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_r</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_r_prime</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    <span class="n">phi_prime_var</span><span class="p">[</span><span class="n">phi_prime_var</span><span class="o">&gt;</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">phi_prime</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">phi_prime_var</span><span class="p">)</span>                                                                                
+    <span class="n">exponent_fraction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">m_1d</span><span class="o">*</span><span class="n">B</span><span class="o">*</span><span class="p">((</span><span class="n">omega</span><span class="o">*</span><span class="n">S_r</span><span class="o">/</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span>  <span class="n">phi_prime</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_r</span><span class="p">))</span>
+    <span class="n">p_mT_H_integral</span>   <span class="o">=</span> <span class="o">-</span><span class="p">((</span><span class="n">M_r</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t_c</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi_s</span><span class="p">)</span><span class="o">*</span><span class="n">Jmb</span><span class="o">*</span><span class="p">(</span><span class="n">k_x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">psi_V</span> <span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">B</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_r</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">Y</span><span class="o">/</span><span class="n">D</span><span class="p">)))</span><span class="o">*</span> <span class="n">exponent_fraction</span>
+    <span class="n">p_mT_H</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">p_mT_H_integral</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span><span class="mi">3</span><span class="p">)</span> 
+
+    <span class="n">p_mT_H_abs</span>        <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p_mT_H</span><span class="p">)</span>             
+    <span class="n">p_mL_H_integral</span>   <span class="o">=</span> <span class="p">(((</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_r_prime</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_r</span><span class="p">)))</span><span class="o">*</span><span class="n">dT_dr</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">((</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">M_t</span><span class="o">*</span><span class="n">R_tip</span><span class="p">))</span><span class="o">*</span><span class="n">dQ_dr</span><span class="p">)</span>
+                         <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi_s</span><span class="p">)</span><span class="o">*</span><span class="n">Jmb</span> <span class="o">*</span> <span class="n">psi_L</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">m_1d</span><span class="o">*</span><span class="n">B</span><span class="o">*</span><span class="n">M_t</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_r</span><span class="p">)</span><span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">Y</span><span class="o">*</span><span class="n">R_tip</span><span class="p">))</span> <span class="o">*</span><span class="n">exponent_fraction</span>
+    <span class="n">p_mL_H</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">p_mL_H_integral</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">3</span> <span class="p">)</span> 
+    <span class="n">p_mL_H_abs</span>        <span class="o">=</span>  <span class="nb">abs</span><span class="p">(</span><span class="n">p_mL_H</span><span class="p">)</span>  
+
+    <span class="c1"># sound pressure levels  </span>
+    <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_harmonic_bpf_spectrum</span>     <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="nb">abs</span><span class="p">(</span><span class="n">p_mL_H_abs</span> <span class="o">+</span> <span class="n">p_mT_H_abs</span><span class="p">))</span><span class="o">/</span><span class="n">p_ref</span><span class="p">)</span>  
+    <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_harmonic_1_3_spectrum</span>     <span class="o">=</span> <span class="n">convert_to_third_octave_band</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_harmonic_bpf_spectrum</span><span class="p">,</span><span class="n">res</span><span class="o">.</span><span class="n">f</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:],</span><span class="n">settings</span><span class="p">)</span>          
+    <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_harmonic_1_3_spectrum</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_harmonic_1_3_spectrum</span><span class="p">)]</span>         <span class="o">=</span> <span class="mi">0</span> 
+
+    <span class="k">return</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_harmonic_noise</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of harmonic_noise.</span>
+<span class="sd">	Wraps harmonic_noise with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see harmonic_noise documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: harmonics         = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: freestream        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: angle_of_attack   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: coordinates       = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: velocity_vector   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: rotor             = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: aeroacoustic_data = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: settings          = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: res               = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">harmonic_noise</span><span class="p">(</span><span class="s1">&#39;harmonics&#39;</span><span class="p">,</span> <span class="s1">&#39;freestream&#39;</span><span class="p">,</span> <span class="s1">&#39;angle_of_attack&#39;</span><span class="p">,</span> <span class="s1">&#39;coordinates&#39;</span><span class="p">,</span> <span class="s1">&#39;velocity_vector&#39;</span><span class="p">,</span> <span class="s1">&#39;rotor&#39;</span><span class="p">,</span> <span class="s1">&#39;aeroacoustic_data&#39;</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">,</span> <span class="s1">&#39;res&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

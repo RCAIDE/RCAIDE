@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_lift_rotor &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_lift_rotor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_lift_rotor</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Methods-Energy-Propulsors</span>
+<span class="c1"># RCAIDE/Library/Methods/Energy/Propulsors/design_lift_rotor.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+
+<span class="c1"># RCAIDE Imports   </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Optimization.Packages.scipy</span>                                                <span class="kn">import</span> <span class="n">scipy_setup</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.optimization_setup</span>       <span class="kn">import</span> <span class="n">optimization_setup</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.set_optimized_parameters</span> <span class="kn">import</span> <span class="n">set_optimized_parameters</span>
+
+<span class="c1"># Python package imports   </span>
+<span class="kn">import</span> <span class="nn">time</span> 
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">#  Design Lift-rotor</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">## @ingroup Methods-Energy-Propulsors</span>
+<div class="viewcode-block" id="design_lift_rotor">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.design_lift_rotor.design_lift_rotor">[docs]</a>
+<span class="k">def</span> <span class="nf">design_lift_rotor</span><span class="p">(</span><span class="n">rotor</span><span class="p">,</span><span class="n">number_of_stations</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span><span class="n">solver_name</span><span class="o">=</span> <span class="s1">&#39;SLSQP&#39;</span><span class="p">,</span><span class="n">iterations</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+                      <span class="n">solver_sense_step</span> <span class="o">=</span> <span class="mf">1E-5</span><span class="p">,</span><span class="n">solver_tolerance</span> <span class="o">=</span> <span class="mf">1E-4</span><span class="p">,</span><span class="n">print_iterations</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>  
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Optimizes rotor chord and twist given input parameters to meet either design power or thurst. </span>
+<span class="sd">        This scrip adopts RCAIDE&#39;s native optimization style where the objective function is expressed </span>
+<span class="sd">        as an aeroacoustic function, considering both efficiency and radiated noise.</span>
+<span class="sd">          </span>
+<span class="sd">          Inputs: </span>
+<span class="sd">          prop_attributes.</span>
+<span class="sd">              hub radius                             [m]</span>
+<span class="sd">              tip radius                             [m]</span>
+<span class="sd">              rotation rate                          [rad/s]</span>
+<span class="sd">              freestream velocity                    [m/s]</span>
+<span class="sd">              number of blades                       [None]       </span>
+<span class="sd">              number of stations                     [None]</span>
+<span class="sd">              design lift coefficient                [None]</span>
+<span class="sd">              airfoil data                           [None]</span>
+<span class="sd">              optimization_parameters.         </span>
+<span class="sd">                 slack_constaint                     [None]</span>
+<span class="sd">                 ideal_SPL_dbA                       [dBA]</span>
+<span class="sd">                 multiobjective_aeroacoustic_weight  [None]</span>
+<span class="sd">            </span>
+<span class="sd">          Outputs:</span>
+<span class="sd">          Twist distribution                         [array of radians]</span>
+<span class="sd">          Chord distribution                         [array of meters]</span>
+<span class="sd">              </span>
+<span class="sd">          Assumptions: </span>
+<span class="sd">             Rotor blade design considers one engine inoperative </span>
+<span class="sd">        </span>
+<span class="sd">          Source:</span>
+<span class="sd">             None </span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="c1"># Unpack rotor geometry  </span>
+    <span class="n">rotor_tag</span>     <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">tag</span>
+    <span class="n">rotor</span><span class="o">.</span><span class="n">tag</span>     <span class="o">=</span> <span class="s1">&#39;rotor&#39;</span>
+    
+    <span class="c1"># start optimization </span>
+    <span class="n">ti</span>                   <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>   
+    <span class="n">optimization_problem</span> <span class="o">=</span> <span class="n">optimization_setup</span><span class="p">(</span><span class="n">rotor</span><span class="p">,</span><span class="n">number_of_stations</span><span class="p">,</span><span class="n">print_iterations</span><span class="p">)</span>
+    <span class="n">output</span>               <span class="o">=</span> <span class="n">scipy_setup</span><span class="o">.</span><span class="n">SciPy_Solve</span><span class="p">(</span><span class="n">optimization_problem</span><span class="p">,</span><span class="n">solver</span><span class="o">=</span><span class="n">solver_name</span><span class="p">,</span> <span class="nb">iter</span> <span class="o">=</span> <span class="n">iterations</span> <span class="p">,</span> <span class="n">sense_step</span> <span class="o">=</span> <span class="n">solver_sense_step</span><span class="p">,</span><span class="n">tolerance</span> <span class="o">=</span> <span class="n">solver_tolerance</span><span class="p">)</span>    
+    <span class="n">tf</span>                   <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">elapsed_time</span>         <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">tf</span><span class="o">-</span><span class="n">ti</span><span class="p">)</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lift-rotor Optimization Simulation Time: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; mins&#39;</span><span class="p">)</span>   
+    
+    <span class="c1"># print optimization results </span>
+    <span class="nb">print</span> <span class="p">(</span><span class="n">output</span><span class="p">)</span>  
+    
+    <span class="c1"># set remaining rotor variables using optimized parameters </span>
+    <span class="n">rotor</span>     <span class="o">=</span> <span class="n">set_optimized_parameters</span><span class="p">(</span><span class="n">rotor</span><span class="p">,</span><span class="n">optimization_problem</span><span class="p">)</span>
+    <span class="n">rotor</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">rotor_tag</span>
+    
+    <span class="k">return</span> <span class="n">rotor</span> </div>
+
+
+
+<span class="k">def</span> <span class="nf">_design_lift_rotor</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of design_lift_rotor.</span>
+<span class="sd">	Wraps design_lift_rotor with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see design_lift_rotor documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: rotor              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: number_of_stations = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: solver_name        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: iterations         = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: solver_sense_step  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: solver_tolerance   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: print_iterations   = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">design_lift_rotor</span><span class="p">(</span><span class="s1">&#39;rotor&#39;</span><span class="p">,</span> <span class="s1">&#39;number_of_stations&#39;</span><span class="p">,</span> <span class="s1">&#39;solver_name&#39;</span><span class="p">,</span> <span class="s1">&#39;iterations&#39;</span><span class="p">,</span> <span class="s1">&#39;solver_sense_step&#39;</span><span class="p">,</span> <span class="s1">&#39;solver_tolerance&#39;</span><span class="p">,</span> <span class="s1">&#39;print_iterations&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
