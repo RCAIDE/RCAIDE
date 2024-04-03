@@ -54,7 +54,7 @@ def plot_airfoil_boundary_layer_properties(ap,
     plot_quantity(ap, ap.cf, r'c_f'  ,   'Skin Friction Coefficient',-0.1,1,file_type,show_legend,save_figure,width,height) 
     plot_quantity(ap, ap.Re_theta,  r'Re_theta'  ,'Theta Reynolds Number',-2E2,1E3,file_type,show_legend,save_figure,width,height)  
  
-    n_cpts   = len(ap.AoA[:,0])
+    n_cpts   = len(ap.Re)
     n_cases  = len(ap.AoA[0,:]) 
 
     # create array of colors for difference reynolds numbers        
@@ -116,7 +116,7 @@ def plot_quantity(ap, q, qaxis, qname,ylim_low,ylim_high,file_type,show_legend,s
                   'axes.titlesize': ps.title_font_size}
     plt.rcParams.update(parameters)
     
-    n_cpts   = len(ap.AoA[:,0])
+    n_cpts   = len(ap.Re)
     n_cases  = len(ap.AoA[0,:]) 
     
     fig   = plt.figure(qname.replace(" ", "_"))
@@ -128,7 +128,7 @@ def plot_quantity(ap, q, qaxis, qname,ylim_low,ylim_high,file_type,show_legend,s
     
     for i in range(n_cpts):   
         for j in range(n_cases): 
-            case_label = 'AoA: ' + str(round(ap.AoA[i,j]/Units.degrees, 2)) + ', Re: ' + str(ap.Re[i,j]) 
+            case_label = 'AoA: ' + str(round(ap.AoA[0,j]/Units.degrees, 2)) + ', Re: ' + str(ap.Re[i]) 
             axis.plot( ap.x[i,j], q[i,j], color = line_colors[j], marker = ps.markers[0], linewidth = ps.line_width,  label =case_label)  
             axis.set_ylim([ylim_low,ylim_high]) 
      

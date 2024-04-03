@@ -58,7 +58,7 @@ def hess_smith(x_coord,y_coord,alpha,Re,npanel):
     
     # compute matrix of aerodynamic influence coefficients
     ainfl         = infl_coeff(x_coord,y_coord,xbar,ybar,st,ct,npanel,ncases,ncpts) # ncases x ncpts x npanel+1 x npanel+1
-    
+    ainfl_check   = ainfl[0,:,:,:]
     # compute right hand side vector for the specified angle of attack 
     b_2d          = np.zeros((npanel+1,ncases, ncpts))
     b_2d[:-1,:,:] = st*np.cos(alpha_2d) - np.sin(alpha_2d)*ct
@@ -69,6 +69,6 @@ def hess_smith(x_coord,y_coord,alpha,Re,npanel):
     qg            = np.swapaxes(qg_T.T,1,2) 
     
     # compute the tangential velocity distribution at the midpoint of panels 
-    vt            = velocity_distribution(qg,x_coord,y_coord,xbar,ybar,st,ct,alpha_2d,npanel)
+    vt            = velocity_distribution(qg,x_coord,y_coord,xbar,ybar,st,ct,alpha_2d,npanel,ncases,ncpts)
     
     return  xbar,ybar,vt,norm 

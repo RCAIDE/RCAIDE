@@ -33,14 +33,14 @@ def plot_airfoil_surface_forces(ap, save_figure = False , arrow_color = 'red',sa
         """        
     
     # determine dimension of angle of attack and reynolds number 
-    n_cpts   = len(ap.AoA)
-    nAoA     = len(ap.AoA[0])
+    n_cpts   = len(ap.Re)
+    nAoA     = len(ap.AoA[0,:])
     n_pts    = len(ap.x[0,0,:])- 1 
      
 
     for i in range(n_cpts):     
         for j in range(nAoA): 
-            label =  '_AoA_' + str(round(ap.AoA[i][j]/Units.degrees,2)) + '_deg_Re_' + str(round(ap.Re[i][j]/1000000,2)) + 'E6'
+            label =  '_AoA_' + str(round(ap.AoA[0][j]/Units.degrees,2)) + '_deg_Re_' + str(round(ap.Re[i]/1000000,2)) + 'E6'
             fig   = plt.figure('Airfoil_Pressure_Normals' + label )
             axis = fig.add_subplot(1,1,1) 
             axis.plot(ap.x[0,0,:], ap.y[0,0,:],'k-')   
@@ -52,7 +52,8 @@ def plot_airfoil_surface_forces(ap, save_figure = False , arrow_color = 'red',sa
                               fc=arrow_color, ec=arrow_color,head_width=0.005, head_length=0.01 )   
                 else:
                     plt.arrow(x= ap.x[i,j,k]+dx_val , y= ap.y[i,j,k]+dy_val , dx= -dx_val , dy = -dy_val , 
-                              fc=arrow_color, ec=arrow_color,head_width=0.005, head_length=0.01 )   
+                              fc=arrow_color, ec=arrow_color,head_width=0.005, head_length=0.01 )
+            axis.set_title(label)
     
     
     return fig 

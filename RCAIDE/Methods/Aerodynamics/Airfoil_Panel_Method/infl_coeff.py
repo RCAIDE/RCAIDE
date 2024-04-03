@@ -38,11 +38,49 @@ def infl_coeff(x,y,xbar,ybar,st,ct,npanel,ncases,ncpts):
     Properties Used:
     N/A
     """                          
-   
+    # # This code has been written in an i,j style, where i is the panel where the source is located and j is the location where the effect is measured
     ainfl                = np.zeros((ncases,ncpts,npanel+1,npanel+1))    
     pi2inv               = 1 / (2*np.pi) 
+    r_ij                 = np.zeros((ncases,ncpts,npanel,npanel+1)) #(AOAs, REs, npanels, no. of nodes)
+    beta_ij              = np.zeros((ncases,ncpts,npanel,npanel))
+    rij_dot_rijplus1     = np.zeros((ncases,ncpts,npanel,npanel)) # will be used to define beta_ij
+    st_i_j               = np.zeros((ncases,ncpts,npanel,npanel)) # sin(TH_i - TH_j)
+    ct_i_j               = np.zeros((ncases,ncpts,npanel,npanel)) # cos(TH_i - TH_j)
+    # for case in range(ncases):
+    #     for cpt in range(ncpts):
+    #         # for r_ij
+    #         for i in range(npanel):
+    #             for j in range(npanel+1):
+    #                 r_ij[case,cpt,i,j] = np.sqrt((xbar[i,case,cpt] - x[j,case,cpt])**2 + (ybar[i,case,cpt] - y[j,case,cpt])**2)
+    #             #end
+    #         #end
+            
+    #         # for beta_ij and sin(TH_i - TH_j) and cos(TH_i - TH_j)
+    #         for i in range(npanel):
+    #             for j in range(npanel):
+    #                 rij_dot_rijplus1[case,cpt,i,j] = (xbar[i,case,cpt] - x[j,case,cpt])*(xbar[i,case,cpt] - x[j+1,case,cpt]) + (ybar[i,case,cpt] - y[j,case,cpt])*(ybar[i,case,cpt] - y[j+1,case,cpt])                  
+    #                 st_i_j[case,cpt,i,j] = st[i,case,cpt]*ct[j,case,cpt] - st[j,case,cpt]*ct[i,case,cpt]
+    #                 ct_i_j[case,cpt,i,j] = st[i,case,cpt]*st[j,case,cpt] - ct[i,case,cpt]*ct[j,case,cpt]
+    #                 beta_ij[case,cpt,i,j] = np.arccos(rij_dot_rijplus1[case,cpt,i,j]/(r_ij[case,cpt,i,j]*r_ij[case,cpt,i,j+1]))
+    #                 if i==j:
+    #                     beta_ij[case,cpt,i,j] = np.pi
+    #             #end
+    #         #end
+    #     #end
+    # #end
     
-    # convert 1d matrices to 4d 
+    ainfl[:,:,:-1,:-1] = pi2inv*((st_i_j*np.log(r_ij[:,:,:,1:]/r_ij[:,:,:,:-1])) +  (ct_i_j*beta_ij))
+    
+    mat2               = ((ct_i_j*np.log(r_ij[:,:,:,1:]/r_ij[:,:,:,:-1])) - (st_i_j*beta_ij))
+    ainfl[:,:,:-1,-1]  = pi2inv*np.sum(mat2, axis=3)
+    
+    mat3               = (st_i_j*beta_ij) - (ct_i_j*np.log(r_ij[:,:,:,1:]/r_ij[:,:,:,:-1]))
+    ainfl[:,:,-1,:-1]  = pi2inv*np.sum(mat3, axis=2)
+    
+    mat4               = (st_i_j*np.log(r_ij[:,:,:,1:]/r_ij[:,:,:,:-1])) + (ct_i_j*beta_ij)
+    ainfl[:,:,-1,-1]   = np.sum(np.sum(mat4, axis=3), axis=2)
+        
+    #convert 1d matrices to 4d 
     x_2d                 = np.repeat(np.swapaxes(np.swapaxes(x,0, 2),0,1)[:,:,np.newaxis,:],npanel, axis = 2)
     y_2d                 = np.repeat(np.swapaxes(np.swapaxes(y,0, 2),0,1)[:,:,np.newaxis,:],npanel, axis = 2)
     xbar_2d              = np.repeat(np.swapaxes(np.swapaxes(xbar,0, 2),0,1)[:,:,:,np.newaxis],npanel, axis = 3)

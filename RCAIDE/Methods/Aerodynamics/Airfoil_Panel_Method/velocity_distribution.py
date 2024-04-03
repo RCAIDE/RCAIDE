@@ -15,7 +15,7 @@ import numpy as np
 # velocity_distribution
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
-def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel):
+def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel,ncases,ncpts):
     """Compute the tangential velocity distribution at the       
                  midpoint of each panel   
     
@@ -46,7 +46,7 @@ def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel):
     """  
     
     nalpha           = len(alpha_2d[0,:,0])
-    ncpts            = len(alpha_2d[0,0,:])
+    # ncpts            = len(alpha_2d[0,0,:])
     
     # flow tangency boundary condition - source distribution  
     vt_2d = ct *np.cos(alpha_2d) + st*np.sin(alpha_2d)
@@ -73,17 +73,25 @@ def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel):
     r_ratio              = rij_dot_rij_plus_1/rij/rij_plus_1
     r_ratio[r_ratio>1.0] = 1.0 # numerical noise     
     betaij               = np.real(anglesign*np.arccos(r_ratio))    
-    diag_indices         =  list(np.tile(np.repeat(np.arange(npanel),nalpha),ncpts))
+    diag_indices         = list(np.tile(np.repeat(np.arange(npanel),nalpha),ncpts))
     aoas                 = list(np.tile(np.arange(nalpha),ncpts*npanel))
     res                  = list(np.repeat(np.arange(ncpts),nalpha*npanel))   
-    betaij[aoas,res,diag_indices,diag_indices] = np.pi      
+    # betaij[aoas,res,diag_indices,diag_indices] = np.pi
+    for i in range(ncases):
+        for j in range(ncpts):
+            np.fill_diagonal(betaij[i,j,:,:], np.pi)   
     
     # swap axes 
     sti_minus_j_2d  = np.swapaxes(np.swapaxes(sti_minus_j,0,2),1,3)
+    sti_check = sti_minus_j_2d[:,:,0,:]
     betaij_2d       = np.swapaxes(np.swapaxes(betaij,0,2),1,3)
+    beta_check = betaij_2d[:,:,0,:]
     cti_minus_j_2d  = np.swapaxes(np.swapaxes(cti_minus_j,0,2),1,3)
+    cti_check = cti_minus_j_2d[:,:,0,:]
     rij_2d          = np.swapaxes(np.swapaxes(rij,0,2),1,3)
+    rij_check = rij_2d[:,:,0,:]
     rij_plus_1_2d   = np.swapaxes(np.swapaxes(rij_plus_1,0,2),1,3)
+    r_check = rij_plus_1_2d[:,:,0,:]
      
     vt_2d += np.sum(qg_2d/2/np.pi*(sti_minus_j_2d*betaij_2d - cti_minus_j_2d*np.log(rij_plus_1_2d/rij_2d)),1)  + \
              np.sum(gamma/2/np.pi*(sti_minus_j_2d*np.log(rij_plus_1_2d/rij_2d) + cti_minus_j_2d*betaij_2d),1)

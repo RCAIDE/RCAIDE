@@ -73,7 +73,7 @@ def thwaites_method(npanel,ncases,ncpts,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
             # compute laminar boundary layer properties  
             l           = L[case,cpt]
             theta_0     = THETA_0 
-            Re_L        = RE_L[case,cpt]
+            Re_L        = RE_L[cpt]
             nu          = l/Re_L    
             x_i         = X_I.data[:,case,cpt][X_I.mask[:,case,cpt] ==False]
             Ve_i        = VE_I.data[:,case,cpt][VE_I.mask[:,case,cpt] ==False]
