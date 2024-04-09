@@ -108,22 +108,3 @@ def compute_scramjet_compression(compression_nozzle,conditions):
     compression_nozzle.outputs.static_pressure                    = P_out
     compression_nozzle.outputs.specific_heat_at_constant_pressure = Cp_c
     compression_nozzle.outputs.velocity                           = u_out
-
-
-def _compute_scramjet_compression(State, Settings, System):
-	'''
-	Framework version of compute_scramjet_compression.
-	Wraps compute_scramjet_compression with State, Settings, System pack/unpack.
-	Please see compute_scramjet_compression documentation for more details.
-	'''
-
-	#TODO: compression_nozzle = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions         = [Replace With State, Settings, or System Attribute]
-
-	results = compute_scramjet_compression('compression_nozzle', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

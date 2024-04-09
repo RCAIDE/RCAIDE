@@ -83,31 +83,3 @@ def converge_weight(vehicle,
     print('Converged MTOW = ' + str(round(vehicle.mass_properties.max_takeoff)) + ' kg')
     
     return True 
-
-
-
-def _converge_weight(State, Settings, System):
-	'''
-	Framework version of converge_weight.
-	Wraps converge_weight with State, Settings, System pack/unpack.
-	Please see converge_weight documentation for more details.
-	'''
-
-	#TODO: vehicle                    = [Replace With State, Settings, or System Attribute]
-	#TODO: print_iterations           = [Replace With State, Settings, or System Attribute]
-	#TODO: contingency_factor         = [Replace With State, Settings, or System Attribute]
-	#TODO: speed_of_sound             = [Replace With State, Settings, or System Attribute]
-	#TODO: max_tip_mach               = [Replace With State, Settings, or System Attribute]
-	#TODO: disk_area_factor           = [Replace With State, Settings, or System Attribute]
-	#TODO: safety_factor              = [Replace With State, Settings, or System Attribute]
-	#TODO: max_thrust_to_weight_ratio = [Replace With State, Settings, or System Attribute]
-	#TODO: max_g_load                 = [Replace With State, Settings, or System Attribute]
-	#TODO: motor_efficiency           = [Replace With State, Settings, or System Attribute]
-
-	results = converge_weight('vehicle', 'print_iterations', 'contingency_factor', 'speed_of_sound', 'max_tip_mach', 'disk_area_factor', 'safety_factor', 'max_thrust_to_weight_ratio', 'max_g_load', 'motor_efficiency')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

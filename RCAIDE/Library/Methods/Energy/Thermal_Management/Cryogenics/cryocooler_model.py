@@ -130,22 +130,3 @@ def cryocooler_model(Cryocooler):
     return [input_power, mass]
 
 
-
-
-
-def _cryocooler_model(State, Settings, System):
-	'''
-	Framework version of cryocooler_model.
-	Wraps cryocooler_model with State, Settings, System pack/unpack.
-	Please see cryocooler_model documentation for more details.
-	'''
-
-	#TODO: Cryocooler = [Replace With State, Settings, or System Attribute]
-
-	results = cryocooler_model('Cryocooler',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

@@ -218,21 +218,3 @@ def design_turbofan(turbofan):
     turbofan.sealevel_static_thrust = turbofan.outputs.thrust
     
     return 
-
-
-def _design_turbofan(State, Settings, System):
-	'''
-	Framework version of design_turbofan.
-	Wraps design_turbofan with State, Settings, System pack/unpack.
-	Please see design_turbofan documentation for more details.
-	'''
-
-	#TODO: turbofan = [Replace With State, Settings, or System Attribute]
-
-	results = design_turbofan('turbofan',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

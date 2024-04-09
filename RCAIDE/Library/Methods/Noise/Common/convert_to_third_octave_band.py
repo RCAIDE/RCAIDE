@@ -64,24 +64,3 @@ def convert_to_third_octave_band(SPL,f,settings):
     SPL_third_octave[np.isinf(SPL_third_octave)]  = 0 
     
     return SPL_third_octave
-
-
-
-def _convert_to_third_octave_band(State, Settings, System):
-	'''
-	Framework version of convert_to_third_octave_band.
-	Wraps convert_to_third_octave_band with State, Settings, System pack/unpack.
-	Please see convert_to_third_octave_band documentation for more details.
-	'''
-
-	#TODO: SPL      = [Replace With State, Settings, or System Attribute]
-	#TODO: f        = [Replace With State, Settings, or System Attribute]
-	#TODO: settings = [Replace With State, Settings, or System Attribute]
-
-	results = convert_to_third_octave_band('SPL', 'f', 'settings')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

@@ -87,23 +87,3 @@ def compute_throttle_from_power(engine,conditions):
     engine.outputs.throttle                        = throttle
 
     return
-
-
-
-def _compute_throttle_from_power(State, Settings, System):
-	'''
-	Framework version of compute_throttle_from_power.
-	Wraps compute_throttle_from_power with State, Settings, System pack/unpack.
-	Please see compute_throttle_from_power documentation for more details.
-	'''
-
-	#TODO: engine     = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-
-	results = compute_throttle_from_power('engine', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

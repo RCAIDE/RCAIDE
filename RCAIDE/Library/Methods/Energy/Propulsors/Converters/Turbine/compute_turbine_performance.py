@@ -80,22 +80,3 @@ def compute_turbine_performance(turbine,conditions):
     turbine.outputs.stagnation_temperature  = Tt_out
     turbine.outputs.stagnation_pressure     = Pt_out
     turbine.outputs.stagnation_enthalpy     = ht_out 
-
-
-def _compute_turbine_performance(State, Settings, System):
-	'''
-	Framework version of compute_turbine_performance.
-	Wraps compute_turbine_performance with State, Settings, System pack/unpack.
-	Please see compute_turbine_performance documentation for more details.
-	'''
-
-	#TODO: turbine    = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-
-	results = compute_turbine_performance('turbine', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

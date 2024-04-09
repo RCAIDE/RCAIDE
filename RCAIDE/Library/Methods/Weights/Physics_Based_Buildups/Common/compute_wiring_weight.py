@@ -62,23 +62,3 @@ def compute_wiring_weight(wing, config, cablePower):
     weight += massCables + massWires
     
     return weight
-
-
-def _compute_wiring_weight(State, Settings, System):
-	'''
-	Framework version of compute_wiring_weight.
-	Wraps compute_wiring_weight with State, Settings, System pack/unpack.
-	Please see compute_wiring_weight documentation for more details.
-	'''
-
-	#TODO: wing       = [Replace With State, Settings, or System Attribute]
-	#TODO: config     = [Replace With State, Settings, or System Attribute]
-	#TODO: cablePower = [Replace With State, Settings, or System Attribute]
-
-	results = compute_wiring_weight('wing', 'config', 'cablePower')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

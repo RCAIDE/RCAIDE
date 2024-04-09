@@ -42,25 +42,3 @@ def jet_installation_effect(Xe,Ye,Ce,theta_s,Diameter_mixed):
     INST_s[INST_s>2.5]=2.5 
 
     return INST_s
-
-
-def _jet_installation_effect(State, Settings, System):
-	'''
-	Framework version of jet_installation_effect.
-	Wraps jet_installation_effect with State, Settings, System pack/unpack.
-	Please see jet_installation_effect documentation for more details.
-	'''
-
-	#TODO: Xe             = [Replace With State, Settings, or System Attribute]
-	#TODO: Ye             = [Replace With State, Settings, or System Attribute]
-	#TODO: Ce             = [Replace With State, Settings, or System Attribute]
-	#TODO: theta_s        = [Replace With State, Settings, or System Attribute]
-	#TODO: Diameter_mixed = [Replace With State, Settings, or System Attribute]
-
-	results = jet_installation_effect('Xe', 'Ye', 'Ce', 'theta_s', 'Diameter_mixed')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

@@ -139,29 +139,3 @@ def harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,
     res.SPL_prop_harmonic_1_3_spectrum[np.isinf(res.SPL_prop_harmonic_1_3_spectrum)]         = 0 
 
     return
-
-
-def _harmonic_noise(State, Settings, System):
-	'''
-	Framework version of harmonic_noise.
-	Wraps harmonic_noise with State, Settings, System pack/unpack.
-	Please see harmonic_noise documentation for more details.
-	'''
-
-	#TODO: harmonics         = [Replace With State, Settings, or System Attribute]
-	#TODO: freestream        = [Replace With State, Settings, or System Attribute]
-	#TODO: angle_of_attack   = [Replace With State, Settings, or System Attribute]
-	#TODO: coordinates       = [Replace With State, Settings, or System Attribute]
-	#TODO: velocity_vector   = [Replace With State, Settings, or System Attribute]
-	#TODO: rotor             = [Replace With State, Settings, or System Attribute]
-	#TODO: aeroacoustic_data = [Replace With State, Settings, or System Attribute]
-	#TODO: settings          = [Replace With State, Settings, or System Attribute]
-	#TODO: res               = [Replace With State, Settings, or System Attribute]
-
-	results = harmonic_noise('harmonics', 'freestream', 'angle_of_attack', 'coordinates', 'velocity_vector', 'rotor', 'aeroacoustic_data', 'settings', 'res')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

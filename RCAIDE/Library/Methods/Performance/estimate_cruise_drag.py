@@ -48,25 +48,3 @@ def estimate_cruise_drag(vehicle,altitude,speed,lift_coefficient = 0.5 ,profile_
     Drag = S * (0.5*rho*speed**2 )*Cd                 # cruise drag 
     
     return Drag
-
-
-def _estimate_cruise_drag(State, Settings, System):
-	'''
-	Framework version of estimate_cruise_drag.
-	Wraps estimate_cruise_drag with State, Settings, System pack/unpack.
-	Please see estimate_cruise_drag documentation for more details.
-	'''
-
-	#TODO: vehicle          = [Replace With State, Settings, or System Attribute]
-	#TODO: altitude         = [Replace With State, Settings, or System Attribute]
-	#TODO: speed            = [Replace With State, Settings, or System Attribute]
-	#TODO: lift_coefficient = [Replace With State, Settings, or System Attribute]
-	#TODO: profile_drag     = [Replace With State, Settings, or System Attribute]
-
-	results = estimate_cruise_drag('vehicle', 'altitude', 'speed', 'lift_coefficient', 'profile_drag')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

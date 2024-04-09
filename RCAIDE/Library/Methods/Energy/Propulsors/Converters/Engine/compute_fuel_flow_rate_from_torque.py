@@ -87,23 +87,3 @@ def compute_fuel_flow_rate_from_torque(engine,conditions):
 
     return
 
-
-
-
-def _compute_fuel_flow_rate_from_torque(State, Settings, System):
-	'''
-	Framework version of compute_fuel_flow_rate_from_torque.
-	Wraps compute_fuel_flow_rate_from_torque with State, Settings, System pack/unpack.
-	Please see compute_fuel_flow_rate_from_torque documentation for more details.
-	'''
-
-	#TODO: engine     = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-
-	results = compute_fuel_flow_rate_from_torque('engine', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

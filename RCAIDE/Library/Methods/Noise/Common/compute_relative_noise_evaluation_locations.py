@@ -123,22 +123,3 @@ def compute_relative_noise_evaluation_locations(settings,segment):
      
     return RML,EGML,AGML,num_gm_mic,mic_stencil
  
-
-
-def _compute_relative_noise_evaluation_locations(State, Settings, System):
-	'''
-	Framework version of compute_relative_noise_evaluation_locations.
-	Wraps compute_relative_noise_evaluation_locations with State, Settings, System pack/unpack.
-	Please see compute_relative_noise_evaluation_locations documentation for more details.
-	'''
-
-	#TODO: settings = [Replace With State, Settings, or System Attribute]
-	#TODO: segment  = [Replace With State, Settings, or System Attribute]
-
-	results = compute_relative_noise_evaluation_locations('settings', 'segment')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

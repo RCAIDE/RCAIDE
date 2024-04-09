@@ -47,21 +47,3 @@ def time(segment):
         segment.state.conditions.frames.planet.start_time = segment.start_time
     
     return 
-
-
-def _time(State, Settings, System):
-	'''
-	Framework version of time.
-	Wraps time with State, Settings, System pack/unpack.
-	Please see time documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = time('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

@@ -42,21 +42,3 @@ def aerodynamics(mission):
                 
                 last_tag = tag  
     return 
-
-
-def _aerodynamics(State, Settings, System):
-	'''
-	Framework version of aerodynamics.
-	Wraps aerodynamics with State, Settings, System pack/unpack.
-	Please see aerodynamics documentation for more details.
-	'''
-
-	#TODO: mission = [Replace With State, Settings, or System Attribute]
-
-	results = aerodynamics('mission',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

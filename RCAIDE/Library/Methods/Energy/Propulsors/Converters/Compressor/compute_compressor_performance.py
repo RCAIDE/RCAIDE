@@ -69,23 +69,3 @@ def compute_compressor_performance(compressor,conditions):
     compressor.outputs.stagnation_enthalpy     = ht_out
     compressor.outputs.work_done               = work_done
 
-
-
-
-def _compute_compressor_performance(State, Settings, System):
-	'''
-	Framework version of compute_compressor_performance.
-	Wraps compute_compressor_performance with State, Settings, System pack/unpack.
-	Please see compute_compressor_performance documentation for more details.
-	'''
-
-	#TODO: compressor = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-
-	results = compute_compressor_performance('compressor', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

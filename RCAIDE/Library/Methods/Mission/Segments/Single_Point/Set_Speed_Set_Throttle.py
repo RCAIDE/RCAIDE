@@ -90,39 +90,3 @@ def unpack_unknowns(segment):
     # apply unknowns
     segment.state.conditions.frames.inertial.acceleration_vector[0,0] = acceleration
     segment.state.conditions.frames.body.inertial_rotations[:,1]      = body_angle[:,0]      
-
-
-def _initialize_conditions(State, Settings, System):
-	'''
-	Framework version of initialize_conditions.
-	Wraps initialize_conditions with State, Settings, System pack/unpack.
-	Please see initialize_conditions documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = initialize_conditions('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System
-
-
-def _unpack_unknowns(State, Settings, System):
-	'''
-	Framework version of unpack_unknowns.
-	Wraps unpack_unknowns with State, Settings, System pack/unpack.
-	Please see unpack_unknowns documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = unpack_unknowns('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

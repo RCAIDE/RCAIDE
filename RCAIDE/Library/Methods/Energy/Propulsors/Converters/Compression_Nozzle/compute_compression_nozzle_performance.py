@@ -125,22 +125,3 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
     compression_nozzle.outputs.static_temperature      = T_out
     compression_nozzle.outputs.static_enthalpy         = h_out
     compression_nozzle.outputs.velocity                = u_out
-
-
-def _compute_compression_nozzle_performance(State, Settings, System):
-	'''
-	Framework version of compute_compression_nozzle_performance.
-	Wraps compute_compression_nozzle_performance with State, Settings, System pack/unpack.
-	Please see compute_compression_nozzle_performance documentation for more details.
-	'''
-
-	#TODO: compression_nozzle = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions         = [Replace With State, Settings, or System Attribute]
-
-	results = compute_compression_nozzle_performance('compression_nozzle', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

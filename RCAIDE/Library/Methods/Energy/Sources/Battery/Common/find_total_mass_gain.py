@@ -27,21 +27,3 @@ def find_total_mass_gain(battery):
     mgain=battery.pack.maximum_energy*battery.mass_gain_factor
     
     return mgain
-
-
-def _find_total_mass_gain(State, Settings, System):
-	'''
-	Framework version of find_total_mass_gain.
-	Wraps find_total_mass_gain with State, Settings, System pack/unpack.
-	Please see find_total_mass_gain documentation for more details.
-	'''
-
-	#TODO: battery = [Replace With State, Settings, or System Attribute]
-
-	results = find_total_mass_gain('battery',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

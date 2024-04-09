@@ -56,24 +56,3 @@ def initialize_from_energy_and_power(battery, energy, power, max='hard'):
     battery.pack.maximum_power       = battery.specific_power*mass
     
     return 
-
-
-def _initialize_from_energy_and_power(State, Settings, System):
-	'''
-	Framework version of initialize_from_energy_and_power.
-	Wraps initialize_from_energy_and_power with State, Settings, System pack/unpack.
-	Please see initialize_from_energy_and_power documentation for more details.
-	'''
-
-	#TODO: battery = [Replace With State, Settings, or System Attribute]
-	#TODO: energy  = [Replace With State, Settings, or System Attribute]
-	#TODO: power   = [Replace With State, Settings, or System Attribute]
-	#TODO: max     = [Replace With State, Settings, or System Attribute]
-
-	results = initialize_from_energy_and_power('battery', 'energy', 'power', 'max')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

@@ -112,24 +112,3 @@ def compute_net_generated_battery_heat(n_total,battery,Q_heat_gen,numerics):
     T_current[T_ambient>T_current] = T_ambient[T_ambient>T_current]
     
     return  T_current
-
-
-def _compute_net_generated_battery_heat(State, Settings, System):
-	'''
-	Framework version of compute_net_generated_battery_heat.
-	Wraps compute_net_generated_battery_heat with State, Settings, System pack/unpack.
-	Please see compute_net_generated_battery_heat documentation for more details.
-	'''
-
-	#TODO: n_total    = [Replace With State, Settings, or System Attribute]
-	#TODO: battery    = [Replace With State, Settings, or System Attribute]
-	#TODO: Q_heat_gen = [Replace With State, Settings, or System Attribute]
-	#TODO: numerics   = [Replace With State, Settings, or System Attribute]
-
-	results = compute_net_generated_battery_heat('n_total', 'battery', 'Q_heat_gen', 'numerics')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

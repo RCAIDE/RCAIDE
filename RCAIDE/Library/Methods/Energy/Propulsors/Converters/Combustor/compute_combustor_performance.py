@@ -88,23 +88,3 @@ def compute_combustor_performance(combustor,conditions):
     combustor.outputs.fuel_to_air_ratio       = f 
     
     return 
-
-
-
-def _compute_combustor_performance(State, Settings, System):
-	'''
-	Framework version of compute_combustor_performance.
-	Wraps compute_combustor_performance with State, Settings, System pack/unpack.
-	Please see compute_combustor_performance documentation for more details.
-	'''
-
-	#TODO: combustor  = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-
-	results = compute_combustor_performance('combustor', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

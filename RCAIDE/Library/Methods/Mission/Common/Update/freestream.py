@@ -67,22 +67,3 @@ def freestream(segment):
 
     return
 
-
-
-
-def _freestream(State, Settings, System):
-	'''
-	Framework version of freestream.
-	Wraps freestream with State, Settings, System pack/unpack.
-	Please see freestream documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = freestream('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

@@ -64,24 +64,3 @@ def update_nmc_cell_age(battery,battery_conditions,increment_battery_age_by_one_
         battery_conditions.cell.cycle_in_day += 1 # update battery age by one day 
   
     return  
-
-
-
-def _update_nmc_cell_age(State, Settings, System):
-	'''
-	Framework version of update_nmc_cell_age.
-	Wraps update_nmc_cell_age with State, Settings, System pack/unpack.
-	Please see update_nmc_cell_age documentation for more details.
-	'''
-
-	#TODO: battery                          = [Replace With State, Settings, or System Attribute]
-	#TODO: battery_conditions               = [Replace With State, Settings, or System Attribute]
-	#TODO: increment_battery_age_by_one_day = [Replace With State, Settings, or System Attribute]
-
-	results = update_nmc_cell_age('battery', 'battery_conditions', 'increment_battery_age_by_one_day')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

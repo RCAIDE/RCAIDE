@@ -40,21 +40,3 @@ def thrust(segment):
         conditions.weights.has_additional_fuel             = True
         conditions.weights.vehicle_fuel_rate               = conditions.energy.vehicle_fuel_rate
         conditions.weights.vehicle_additional_fuel_rate    = conditions.energy.vehicle_additional_fuel_rate  
-
-
-def _thrust(State, Settings, System):
-	'''
-	Framework version of thrust.
-	Wraps thrust with State, Settings, System pack/unpack.
-	Please see thrust documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = thrust('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

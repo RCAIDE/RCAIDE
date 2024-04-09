@@ -33,22 +33,3 @@ def find_specific_power(battery, specific_energy):
     specific_power          = const_1*10.**(const_2*specific_energy)
     battery.specific_power  = specific_power
     battery.specific_energy = specific_energy
-
-
-def _find_specific_power(State, Settings, System):
-	'''
-	Framework version of find_specific_power.
-	Wraps find_specific_power with State, Settings, System pack/unpack.
-	Please see find_specific_power documentation for more details.
-	'''
-
-	#TODO: battery         = [Replace With State, Settings, or System Attribute]
-	#TODO: specific_energy = [Replace With State, Settings, or System Attribute]
-
-	results = find_specific_power('battery', 'specific_energy')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

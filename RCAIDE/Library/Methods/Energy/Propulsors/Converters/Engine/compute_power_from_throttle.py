@@ -90,24 +90,3 @@ def compute_power_from_throttle(engine,conditions,throttle):
     engine.outputs.torque                          = torque
 
     return
-
-
-
-def _compute_power_from_throttle(State, Settings, System):
-	'''
-	Framework version of compute_power_from_throttle.
-	Wraps compute_power_from_throttle with State, Settings, System pack/unpack.
-	Please see compute_power_from_throttle documentation for more details.
-	'''
-
-	#TODO: engine     = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-	#TODO: throttle   = [Replace With State, Settings, or System Attribute]
-
-	results = compute_power_from_throttle('engine', 'conditions', 'throttle')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

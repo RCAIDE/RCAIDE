@@ -83,21 +83,3 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,2] = v_z
     conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
-
-
-def _initialize_conditions(State, Settings, System):
-	'''
-	Framework version of initialize_conditions.
-	Wraps initialize_conditions with State, Settings, System pack/unpack.
-	Please see initialize_conditions documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = initialize_conditions('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

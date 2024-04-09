@@ -96,22 +96,3 @@ def pack_battery_conditions(battery_conditions,battery):
     battery_conditions.cell.entropy_heat_fraction           = battery.cell.entropy_heat_fraction 
     
     return 
-
-
-def _pack_battery_conditions(State, Settings, System):
-	'''
-	Framework version of pack_battery_conditions.
-	Wraps pack_battery_conditions with State, Settings, System pack/unpack.
-	Please see pack_battery_conditions documentation for more details.
-	'''
-
-	#TODO: battery_conditions = [Replace With State, Settings, or System Attribute]
-	#TODO: battery            = [Replace With State, Settings, or System Attribute]
-
-	results = pack_battery_conditions('battery_conditions', 'battery')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

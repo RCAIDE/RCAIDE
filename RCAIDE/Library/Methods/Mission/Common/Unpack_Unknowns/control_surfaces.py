@@ -56,22 +56,3 @@ def control_surfaces(segment,wings):
                             control_surface[aileron_name].deflection = segment.state.unknowns["aileron_control_" + str(i)]     
     
     return
-
-
-def _control_surfaces(State, Settings, System):
-	'''
-	Framework version of control_surfaces.
-	Wraps control_surfaces with State, Settings, System pack/unpack.
-	Please see control_surfaces documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-	#TODO: wings   = [Replace With State, Settings, or System Attribute]
-
-	results = control_surfaces('segment', 'wings')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

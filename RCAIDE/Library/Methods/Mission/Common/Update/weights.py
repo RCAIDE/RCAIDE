@@ -64,21 +64,3 @@ def weights(segment):
 
     return
  
-
-
-def _weights(State, Settings, System):
-	'''
-	Framework version of weights.
-	Wraps weights with State, Settings, System pack/unpack.
-	Please see weights documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = weights('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

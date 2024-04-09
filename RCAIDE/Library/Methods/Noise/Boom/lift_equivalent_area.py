@@ -96,23 +96,3 @@ def lift_equivalent_area(config,analyses,conditions):
     AE_x   = np.concatenate([[0],Ae_lift_at_each_x,[Ae_lift_at_each_x[-1]]])
     
     return X_locs, AE_x, CP
-
-
-def _lift_equivalent_area(State, Settings, System):
-	'''
-	Framework version of lift_equivalent_area.
-	Wraps lift_equivalent_area with State, Settings, System pack/unpack.
-	Please see lift_equivalent_area documentation for more details.
-	'''
-
-	#TODO: config     = [Replace With State, Settings, or System Attribute]
-	#TODO: analyses   = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-
-	results = lift_equivalent_area('config', 'analyses', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

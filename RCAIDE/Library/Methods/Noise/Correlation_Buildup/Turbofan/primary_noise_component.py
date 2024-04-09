@@ -67,34 +67,3 @@ def primary_noise_component(Velocity_primary,Temperature_primary,R_gas,theta_p,D
 
     return SPL_p
 
-
-
-
-def _primary_noise_component(State, Settings, System):
-	'''
-	Framework version of primary_noise_component.
-	Wraps primary_noise_component with State, Settings, System pack/unpack.
-	Please see primary_noise_component documentation for more details.
-	'''
-
-	#TODO: Velocity_primary    = [Replace With State, Settings, or System Attribute]
-	#TODO: Temperature_primary = [Replace With State, Settings, or System Attribute]
-	#TODO: R_gas               = [Replace With State, Settings, or System Attribute]
-	#TODO: theta_p             = [Replace With State, Settings, or System Attribute]
-	#TODO: DVPS                = [Replace With State, Settings, or System Attribute]
-	#TODO: sound_ambient       = [Replace With State, Settings, or System Attribute]
-	#TODO: Velocity_secondary  = [Replace With State, Settings, or System Attribute]
-	#TODO: Velocity_aircraft   = [Replace With State, Settings, or System Attribute]
-	#TODO: Area_primary        = [Replace With State, Settings, or System Attribute]
-	#TODO: Area_secondary      = [Replace With State, Settings, or System Attribute]
-	#TODO: DSPL_p              = [Replace With State, Settings, or System Attribute]
-	#TODO: EX_p                = [Replace With State, Settings, or System Attribute]
-	#TODO: Str_p               = [Replace With State, Settings, or System Attribute]
-
-	results = primary_noise_component('Velocity_primary', 'Temperature_primary', 'R_gas', 'theta_p', 'DVPS', 'sound_ambient', 'Velocity_secondary', 'Velocity_aircraft', 'Area_primary', 'Area_secondary', 'DSPL_p', 'EX_p', 'Str_p')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

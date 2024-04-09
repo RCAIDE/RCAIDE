@@ -100,21 +100,3 @@ def PNL_noise_metric(SPL):
             PNL[j,k] = 40+(10/np.log10(2))*np.log10(Perceived_noisinees)
         
     return PNL
-
-
-def _PNL_noise_metric(State, Settings, System):
-	'''
-	Framework version of PNL_noise_metric.
-	Wraps PNL_noise_metric with State, Settings, System pack/unpack.
-	Please see PNL_noise_metric documentation for more details.
-	'''
-
-	#TODO: SPL = [Replace With State, Settings, or System Attribute]
-
-	results = PNL_noise_metric('SPL',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

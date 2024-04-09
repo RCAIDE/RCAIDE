@@ -43,21 +43,3 @@ def kinematics(segment):
     
     # pack conditions
     segment.state.conditions.frames.inertial.acceleration_vector[:,:] = acc[:,:]   
-
-
-def _kinematics(State, Settings, System):
-	'''
-	Framework version of kinematics.
-	Wraps kinematics with State, Settings, System pack/unpack.
-	Please see kinematics documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = kinematics('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

@@ -130,22 +130,3 @@ def compute_stream_thrust(turbofan,conditions):
     turbofan.outputs.specific_impulse                  = Isp
     
     return  
-
-
-def _compute_stream_thrust(State, Settings, System):
-	'''
-	Framework version of compute_stream_thrust.
-	Wraps compute_stream_thrust with State, Settings, System pack/unpack.
-	Please see compute_stream_thrust documentation for more details.
-	'''
-
-	#TODO: turbofan   = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-
-	results = compute_stream_thrust('turbofan', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

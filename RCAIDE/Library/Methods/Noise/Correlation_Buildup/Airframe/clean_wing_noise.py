@@ -74,32 +74,3 @@ def clean_wing_noise(S,b,ND,IsHorz,velocity,viscosity,M,phi,theta,distance,frequ
         SPL   = OASPL+10.0*np.log10(0.613*(frequency/fmax)**4*((frequency/fmax)**1.5+0.5)**(-4))-0.03*np.abs(((frequency/fmax)-1))**1.5
 
     return SPL
-
-
-
-def _clean_wing_noise(State, Settings, System):
-	'''
-	Framework version of clean_wing_noise.
-	Wraps clean_wing_noise with State, Settings, System pack/unpack.
-	Please see clean_wing_noise documentation for more details.
-	'''
-
-	#TODO: S         = [Replace With State, Settings, or System Attribute]
-	#TODO: b         = [Replace With State, Settings, or System Attribute]
-	#TODO: ND        = [Replace With State, Settings, or System Attribute]
-	#TODO: IsHorz    = [Replace With State, Settings, or System Attribute]
-	#TODO: velocity  = [Replace With State, Settings, or System Attribute]
-	#TODO: viscosity = [Replace With State, Settings, or System Attribute]
-	#TODO: M         = [Replace With State, Settings, or System Attribute]
-	#TODO: phi       = [Replace With State, Settings, or System Attribute]
-	#TODO: theta     = [Replace With State, Settings, or System Attribute]
-	#TODO: distance  = [Replace With State, Settings, or System Attribute]
-	#TODO: frequency = [Replace With State, Settings, or System Attribute]
-
-	results = clean_wing_noise('S', 'b', 'ND', 'IsHorz', 'velocity', 'viscosity', 'M', 'phi', 'theta', 'distance', 'frequency')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

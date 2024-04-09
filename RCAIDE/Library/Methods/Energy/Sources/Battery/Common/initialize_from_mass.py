@@ -47,22 +47,3 @@ def initialize_from_mass(battery,module_weight_factor = 1.42 ):
     battery.pack.electrical_configuration.total    = n_parallel*n_series      
     battery.charging_voltage                       = battery.cell.charging_voltage * battery.pack.electrical_configuration.series     
     battery.charging_current                       = battery.cell.charging_current * battery.pack.electrical_configuration.parallel        
-
-
-def _initialize_from_mass(State, Settings, System):
-	'''
-	Framework version of initialize_from_mass.
-	Wraps initialize_from_mass with State, Settings, System pack/unpack.
-	Please see initialize_from_mass documentation for more details.
-	'''
-
-	#TODO: battery              = [Replace With State, Settings, or System Attribute]
-	#TODO: module_weight_factor = [Replace With State, Settings, or System Attribute]
-
-	results = initialize_from_mass('battery', 'module_weight_factor')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

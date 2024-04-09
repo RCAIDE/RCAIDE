@@ -45,26 +45,3 @@ def ground_proximity_effect (Velocity_mixed,sound_ambient,theta_m,engine_height,
         (2+np.abs((engine_height*frequency/sound_ambient)-1))
 
     return GPROX_m
-
-
-def _ground_proximity_effect(State, Settings, System):
-	'''
-	Framework version of ground_proximity_effect.
-	Wraps ground_proximity_effect with State, Settings, System pack/unpack.
-	Please see ground_proximity_effect documentation for more details.
-	'''
-
-	#TODO: Velocity_mixed = [Replace With State, Settings, or System Attribute]
-	#TODO: sound_ambient  = [Replace With State, Settings, or System Attribute]
-	#TODO: theta_m        = [Replace With State, Settings, or System Attribute]
-	#TODO: engine_height  = [Replace With State, Settings, or System Attribute]
-	#TODO: Diameter_mixed = [Replace With State, Settings, or System Attribute]
-	#TODO: frequency      = [Replace With State, Settings, or System Attribute]
-
-	results = ground_proximity_effect('Velocity_mixed', 'sound_ambient', 'theta_m', 'engine_height', 'Diameter_mixed', 'frequency')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

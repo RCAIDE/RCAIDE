@@ -47,22 +47,3 @@ def ground(segment):
     conditions.frames.inertial.velocity_vector[1:,0] = ground_velocity
     conditions.frames.inertial.velocity_vector[0,0]  = v0
     conditions.frames.inertial.time[:,0]             = times[:,0]
-
-
-
-def _ground(State, Settings, System):
-	'''
-	Framework version of ground.
-	Wraps ground with State, Settings, System pack/unpack.
-	Please see ground documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = ground('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

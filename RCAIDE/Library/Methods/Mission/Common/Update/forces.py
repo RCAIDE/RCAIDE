@@ -63,21 +63,3 @@ def forces(segment):
 
     return
  
-
-
-def _forces(State, Settings, System):
-	'''
-	Framework version of forces.
-	Wraps forces with State, Settings, System pack/unpack.
-	Please see forces documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = forces('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

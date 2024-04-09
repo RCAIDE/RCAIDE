@@ -71,22 +71,3 @@ def compute_fan_performance(fan,conditions):
     fan.outputs.work_done               = work_done   
     
     return 
-
-
-def _compute_fan_performance(State, Settings, System):
-	'''
-	Framework version of compute_fan_performance.
-	Wraps compute_fan_performance with State, Settings, System pack/unpack.
-	Please see compute_fan_performance documentation for more details.
-	'''
-
-	#TODO: fan        = [Replace With State, Settings, or System Attribute]
-	#TODO: conditions = [Replace With State, Settings, or System Attribute]
-
-	results = compute_fan_performance('fan', 'conditions')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

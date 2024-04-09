@@ -222,23 +222,3 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     
     return 
     
-
-
-
-def _compute_component_centers_of_gravity(State, Settings, System):
-	'''
-	Framework version of compute_component_centers_of_gravity.
-	Wraps compute_component_centers_of_gravity with State, Settings, System pack/unpack.
-	Please see compute_component_centers_of_gravity documentation for more details.
-	'''
-
-	#TODO: vehicle   = [Replace With State, Settings, or System Attribute]
-	#TODO: nose_load = [Replace With State, Settings, or System Attribute]
-
-	results = compute_component_centers_of_gravity('vehicle', 'nose_load')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

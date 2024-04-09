@@ -66,22 +66,3 @@ def initialize_conditions(segment):
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]
     
-
-
-
-def _initialize_conditions(State, Settings, System):
-	'''
-	Framework version of initialize_conditions.
-	Wraps initialize_conditions with State, Settings, System pack/unpack.
-	Please see initialize_conditions documentation for more details.
-	'''
-
-	#TODO: segment = [Replace With State, Settings, or System Attribute]
-
-	results = initialize_conditions('segment',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

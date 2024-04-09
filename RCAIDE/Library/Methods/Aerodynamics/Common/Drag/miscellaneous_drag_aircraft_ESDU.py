@@ -70,24 +70,3 @@ def miscellaneous_drag_aircraft_ESDU(state,settings,geometry):
         total                     = cd_excrescence *ones_1col, )
 
     return cd_excrescence *ones_1col
-
-
-
-def _miscellaneous_drag_aircraft_ESDU(State, Settings, System):
-	'''
-	Framework version of miscellaneous_drag_aircraft_ESDU.
-	Wraps miscellaneous_drag_aircraft_ESDU with State, Settings, System pack/unpack.
-	Please see miscellaneous_drag_aircraft_ESDU documentation for more details.
-	'''
-
-	#TODO: state    = [Replace With State, Settings, or System Attribute]
-	#TODO: settings = [Replace With State, Settings, or System Attribute]
-	#TODO: geometry = [Replace With State, Settings, or System Attribute]
-
-	results = miscellaneous_drag_aircraft_ESDU('state', 'settings', 'geometry')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

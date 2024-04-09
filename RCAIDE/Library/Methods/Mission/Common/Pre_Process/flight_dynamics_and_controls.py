@@ -181,21 +181,3 @@ def flight_dynamics_and_controls(mission):
                 
         # if the degrees of freedom are greater than the number of control inputs, post problem at optimization  # TO DO
                                                                                                                                                                 
-
-
-def _flight_dynamics_and_controls(State, Settings, System):
-	'''
-	Framework version of flight_dynamics_and_controls.
-	Wraps flight_dynamics_and_controls with State, Settings, System pack/unpack.
-	Please see flight_dynamics_and_controls documentation for more details.
-	'''
-
-	#TODO: mission = [Replace With State, Settings, or System Attribute]
-
-	results = flight_dynamics_and_controls('mission',)
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

@@ -318,32 +318,3 @@ def compute_wing_weight(wing,
     mass = 2*(sum(m[0:-1]*np.diff(x))+nRibs*mRib)*grace
 
     return mass
-
-
-def _compute_wing_weight(State, Settings, System):
-	'''
-	Framework version of compute_wing_weight.
-	Wraps compute_wing_weight with State, Settings, System pack/unpack.
-	Please see compute_wing_weight documentation for more details.
-	'''
-
-	#TODO: wing                  = [Replace With State, Settings, or System Attribute]
-	#TODO: config                = [Replace With State, Settings, or System Attribute]
-	#TODO: max_thrust            = [Replace With State, Settings, or System Attribute]
-	#TODO: num_analysis_points   = [Replace With State, Settings, or System Attribute]
-	#TODO: safety_factor         = [Replace With State, Settings, or System Attribute]
-	#TODO: max_g_load            = [Replace With State, Settings, or System Attribute]
-	#TODO: moment_to_lift_ratio  = [Replace With State, Settings, or System Attribute]
-	#TODO: lift_to_drag_ratio    = [Replace With State, Settings, or System Attribute]
-	#TODO: forward_web_locations = [Replace With State, Settings, or System Attribute]
-	#TODO: rear_web_locations    = [Replace With State, Settings, or System Attribute]
-	#TODO: shear_center_location = [Replace With State, Settings, or System Attribute]
-	#TODO: margin_factor         = [Replace With State, Settings, or System Attribute]
-
-	results = compute_wing_weight('wing', 'config', 'max_thrust', 'num_analysis_points', 'safety_factor', 'max_g_load', 'moment_to_lift_ratio', 'lift_to_drag_ratio', 'forward_web_locations', 'rear_web_locations', 'shear_center_location', 'margin_factor')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

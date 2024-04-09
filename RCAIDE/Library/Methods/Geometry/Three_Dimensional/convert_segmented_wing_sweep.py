@@ -86,27 +86,3 @@ def convert_segmented_wing_sweep(old_sweep, seg_a, seg_b, wing, old_ref_chord_fr
                                                      #to new chord-fraction
 
     return new_sweep
-
-
-
-def _convert_segmented_wing_sweep(State, Settings, System):
-	'''
-	Framework version of convert_segmented_wing_sweep.
-	Wraps convert_segmented_wing_sweep with State, Settings, System pack/unpack.
-	Please see convert_segmented_wing_sweep documentation for more details.
-	'''
-
-	#TODO: old_sweep              = [Replace With State, Settings, or System Attribute]
-	#TODO: seg_a                  = [Replace With State, Settings, or System Attribute]
-	#TODO: seg_b                  = [Replace With State, Settings, or System Attribute]
-	#TODO: wing                   = [Replace With State, Settings, or System Attribute]
-	#TODO: old_ref_chord_fraction = [Replace With State, Settings, or System Attribute]
-	#TODO: new_ref_chord_fraction = [Replace With State, Settings, or System Attribute]
-
-	results = convert_segmented_wing_sweep('old_sweep', 'seg_a', 'seg_b', 'wing', 'old_ref_chord_fraction', 'new_ref_chord_fraction')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

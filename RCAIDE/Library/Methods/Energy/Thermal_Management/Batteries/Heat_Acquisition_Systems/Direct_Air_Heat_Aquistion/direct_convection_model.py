@@ -110,27 +110,3 @@ def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
                                      current_battery_temperature = T_current)    
     
     return  HAS_outputs 
-
-
-def _direct_convection_model(State, Settings, System):
-	'''
-	Framework version of direct_convection_model.
-	Wraps direct_convection_model with State, Settings, System pack/unpack.
-	Please see direct_convection_model documentation for more details.
-	'''
-
-	#TODO: HAS        = [Replace With State, Settings, or System Attribute]
-	#TODO: battery    = [Replace With State, Settings, or System Attribute]
-	#TODO: Q_heat_gen = [Replace With State, Settings, or System Attribute]
-	#TODO: T_cell     = [Replace With State, Settings, or System Attribute]
-	#TODO: state      = [Replace With State, Settings, or System Attribute]
-	#TODO: dt         = [Replace With State, Settings, or System Attribute]
-	#TODO: i          = [Replace With State, Settings, or System Attribute]
-
-	results = direct_convection_model('HAS', 'battery', 'Q_heat_gen', 'T_cell', 'state', 'dt', 'i')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

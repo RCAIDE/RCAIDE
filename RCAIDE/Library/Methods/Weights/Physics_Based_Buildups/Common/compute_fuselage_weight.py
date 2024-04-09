@@ -151,24 +151,3 @@ def compute_fuselage_weight(config,
     weight = skinMass + bulkheadMass + canopyMass + massKeel
 
     return weight
-
-
-def _compute_fuselage_weight(State, Settings, System):
-	'''
-	Framework version of compute_fuselage_weight.
-	Wraps compute_fuselage_weight with State, Settings, System pack/unpack.
-	Please see compute_fuselage_weight documentation for more details.
-	'''
-
-	#TODO: config                = [Replace With State, Settings, or System Attribute]
-	#TODO: maximum_g_load        = [Replace With State, Settings, or System Attribute]
-	#TODO: landing_impact_factor = [Replace With State, Settings, or System Attribute]
-	#TODO: safety_factor         = [Replace With State, Settings, or System Attribute]
-
-	results = compute_fuselage_weight('config', 'maximum_g_load', 'landing_impact_factor', 'safety_factor')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System

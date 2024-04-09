@@ -57,22 +57,3 @@ def compute_nacelle_geometry(turbofan, nacelle):
     nacelle.areas.wetted      = 1.1*np.pi*nacelle.diameter*L_eng_m
     
     return  
-
-
-def _compute_nacelle_geometry(State, Settings, System):
-	'''
-	Framework version of compute_nacelle_geometry.
-	Wraps compute_nacelle_geometry with State, Settings, System pack/unpack.
-	Please see compute_nacelle_geometry documentation for more details.
-	'''
-
-	#TODO: turbofan = [Replace With State, Settings, or System Attribute]
-	#TODO: nacelle  = [Replace With State, Settings, or System Attribute]
-
-	results = compute_nacelle_geometry('turbofan', 'nacelle')
-	#TODO: [Replace results with the output of the original function]
-
-	State, Settings, System = results
-	#TODO: [Replace packing with correct attributes]
-
-	return State, Settings, System
