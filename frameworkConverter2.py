@@ -51,7 +51,7 @@ def create_RCAIDE_method_source(file_path):
                                  'def %s' % new_name,
                                  modified_source)
 
-        framework_function_source = f'def {old_name}(State, Settings, System):\n'
+        framework_function_source = f'{old_name}(State, Settings, System):\n'
 
         unpack_string = ''
         primal_args = [arg.arg for arg in function.args.args]
