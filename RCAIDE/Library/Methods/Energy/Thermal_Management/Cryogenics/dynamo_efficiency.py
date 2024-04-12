@@ -7,14 +7,16 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-# RCAIDE imports 
-import numpy as np 
+# suave imports
+import Legacy.trunk.S as SUAVE
+import numpy as np
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 
 # ----------------------------------------------------------------------
 #  Estimated efficiency of HTS Dynamo 
 # ----------------------------------------------------------------------
 ## @ingroup Methods-Cryogenic-Dynamos
-def efficiency_curve(Dynamo, current):
+def func_efficiency_curve(Dynamo, current):
 
     """ This sets the default values.
 
@@ -45,3 +47,16 @@ def efficiency_curve(Dynamo, current):
     efficiency = -a * (np.square( x - Dynamo.rated_current) ) +  Dynamo.efficiency # y = -a(x - current)^2 + efficieny 
 
     return   efficiency
+
+
+def efficiency_curve(State, Settings, System):
+	#TODO: Dynamo  = [Replace With State, Settings, or System Attribute]
+	#TODO: current = [Replace With State, Settings, or System Attribute]
+
+	results = func_efficiency_curve('Dynamo', 'current')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

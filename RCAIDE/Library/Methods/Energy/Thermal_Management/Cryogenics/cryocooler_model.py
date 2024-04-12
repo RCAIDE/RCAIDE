@@ -8,18 +8,19 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-# RCAIDE imports
-import RCAIDE
+# suave imports
+import Legacy.trunk.S as SUAVE
 
 # package imports
-from RCAIDE.Framework.Core import Data
+from Legacy.trunk.S.Core import Data
+from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 import numpy as np
 
 # ----------------------------------------------------------------------
 #  Cryocooler Model 
 # ----------------------------------------------------------------------    
 ## @ingroup Methods-Cryogenics-Cryocooler
-def cryocooler_model(Cryocooler):
+def func_cryocooler_model(Cryocooler):
 
     """ Calculate the power required by the cryocooler based on the cryocooler type, the required cooling power, and the temperature conditions.
 
@@ -130,3 +131,16 @@ def cryocooler_model(Cryocooler):
     return [input_power, mass]
 
 
+
+
+
+def cryocooler_model(State, Settings, System):
+	#TODO: Cryocooler = [Replace With State, Settings, or System Attribute]
+
+	results = func_cryocooler_model('Cryocooler',)
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System

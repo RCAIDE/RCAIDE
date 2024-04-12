@@ -1,23 +1,22 @@
-## @ingroup Library-Methods-Noise-Boom  
-# RCAIDE/Library/Methods/Noise/Boom/lift_equivalent_area.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Methods-Noise-Boom
+# lift_equivalent_area.py
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Sep 2020, E. Botero
+# Modified: 
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------
+#  Imports
+# ----------------------------------------------------------------------
 
-# RCAIDE
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import VLM 
-# Python package imports   
-import numpy as np  
-    
-# ----------------------------------------------------------------------------------------------------------------------  
-#  Equivalent Area from lift for Sonic Boom
-# ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Library-Methods-Noise-Boom  
-def lift_equivalent_area(config,analyses,conditions):
+import numpy as np
+
+from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift import VLM
+
+# ----------------------------------------------------------------------
+#   Equivalent Area from lift for Sonic Boom
+# ----------------------------------------------------------------------
+## @ingroup Methods-Noise-Boom
+def func_lift_equivalent_area(config,analyses,conditions):
     """ This method calculates the lift equivalent area for a vehicle for sonic boom analysis.
     
         Assumptions:
@@ -34,7 +33,7 @@ def lift_equivalent_area(config,analyses,conditions):
         conditions
               .freestream.dynamic_pressure    [pascals]
               .freestream.mach_number         [-]
-              .aerodynamics.angles.alpha   [radians]
+              .aerodynamics.angle_of_attack   [radians]
         analyses.aerodynamics.settings        [needed for discretization]
         config.total_length                   [m]
 
@@ -50,13 +49,14 @@ def lift_equivalent_area(config,analyses,conditions):
     S            = config.reference_area
     q            = conditions.freestream.dynamic_pressure
     mach         = conditions.freestream.mach_number
-    aoa          = conditions.aerodynamics.angles.alpha
+    aoa          = conditions.aerodynamics.angle_of_attack
     settings     = analyses.aerodynamics.process.compute.lift.inviscid_wings.settings
     length       = config.total_length
     
     results = VLM(conditions, settings, config)
-    CP = results.CP 
-    VD = results.VD
+    CP = results.CP
+    
+    VD = analyses.aerodynamics.geometry.vortex_distribution
     
     areas      = VD.panel_areas
     normal_vec = VD.normals
@@ -96,3 +96,17 @@ def lift_equivalent_area(config,analyses,conditions):
     AE_x   = np.concatenate([[0],Ae_lift_at_each_x,[Ae_lift_at_each_x[-1]]])
     
     return X_locs, AE_x, CP
+
+
+def lift_equivalent_area(State, Settings, System):
+	#TODO: config     = [Replace With State, Settings, or System Attribute]
+	#TODO: analyses   = [Replace With State, Settings, or System Attribute]
+	#TODO: conditions = [Replace With State, Settings, or System Attribute]
+
+	results = func_lift_equivalent_area('config', 'analyses', 'conditions')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
