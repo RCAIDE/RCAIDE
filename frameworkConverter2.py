@@ -51,7 +51,7 @@ def create_RCAIDE_method_source(file_path):
                                  'def %s' % new_name,
                                  modified_source)
 
-        framework_function_source = f'{old_name}(State, Settings, System):\n'
+        framework_function_source = f'def {old_name}(State, Settings, System):\n'
 
         unpack_string = ''
         primal_args = [arg.arg for arg in function.args.args]
@@ -81,7 +81,7 @@ def create_RCAIDE_method_source(file_path):
 
 if __name__ == '__main__':
     old_folder_path = '/home/jordan/git/RCAIDE/Legacy/trunk/S/Methods'
-    new_folder_path = 'home/jordan/git/RCAIDE/RCAIDE/Library/Methods'
+    new_folder_path = '/home/jordan/git/RCAIDE/RCAIDE/Library/Methods'
     # old_folder_path = '/home/jordan/git/archAIDE/tests/frameworkConversionTest'
     # new_folder_path = '/home/jordan/git/archAIDE/tests/frameworkConversionTest_new'
     add_framework_methods(old_folder_path, new_folder_path)
