@@ -1,25 +1,20 @@
-## @ingroup Library-Methods-Performance
-# RCAIDE/Library/Methods/Performance/estimate_stall_speed.py
-# (c) Copyright 2023 Aerospace Research Community LLC
-# 
-# Created:  Jul 2023, M. Clarke
+## @ingroup Methods-Performance
+# estimate_stall_speed.py
+#
+# Created: Jan 2022, M. Clarke
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
-
-# RCAIDE imports 
+#------------------------------------------------------------------------------
+# Imports
+#------------------------------------------------------------------------------
 import RCAIDE
- 
-# Pacakge imports 
-import numpy as np  
+import numpy as np 
 
 #------------------------------------------------------------------------------
-# Stall Speed Estimation
+# Stall Speed Function
 #------------------------------------------------------------------------------
 
-## @ingroup Library-Methods-Performance
-def estimate_stall_speed(vehicle_mass,reference_area,altitude,maximum_lift_coefficient):
+## @ingroup Methods-Performance
+def func_estimate_stall_speed(vehicle_mass,reference_area,altitude,maximum_lift_coefficient):
 
     """Calculates the stall speed of an aircraft at a given altitude and a maximum lift coefficient.
 
@@ -45,3 +40,18 @@ def estimate_stall_speed(vehicle_mass,reference_area,altitude,maximum_lift_coeff
     V_stall = float(np.sqrt(2.*vehicle_mass*g/(rho*reference_area*maximum_lift_coefficient)))  
     
     return V_stall
+
+
+estimate_stall_speed(State, Settings, System):
+	#TODO: vehicle_mass             = [Replace With State, Settings, or System Attribute]
+	#TODO: reference_area           = [Replace With State, Settings, or System Attribute]
+	#TODO: altitude                 = [Replace With State, Settings, or System Attribute]
+	#TODO: maximum_lift_coefficient = [Replace With State, Settings, or System Attribute]
+
+	results = func_estimate_stall_speed('vehicle_mass', 'reference_area', 'altitude', 'maximum_lift_coefficient')
+	#TODO: [Replace results with the output of the original function]
+
+	State, Settings, System = results
+	#TODO: [Replace packing with correct attributes]
+
+	return State, Settings, System
