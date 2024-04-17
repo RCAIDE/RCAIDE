@@ -14,6 +14,7 @@ from .thwaites_method   import thwaites_method
 from .heads_method      import heads_method
 from .heads_method_new  import heads_method_new
 from .aero_coeff        import aero_coeff 
+from .aero_coeff_new    import aero_coeff_new 
 
 # pacakge imports  
 import numpy as np  
@@ -471,21 +472,22 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     CP_BL        = CP_BL_VALS_2.reshape((npanel_mod,ncases,ncpts),order = 'F')    
     DCP_DX       = np.diff(CP_BL,axis=0)/ np.diff(X_BL,axis=0) 
 
-    AERO_RES     = aero_coeff(X,Y,CP,alpha,npanel)     
-    AERO_RES_BL  = aero_coeff(X_BL,Y_BL,CP_BL,alpha,npanel_mod) 
-     
+    # AERO_RES     = aero_coeff(X,Y,CP,alpha,npanel)     
+    # AERO_RES_BL  = aero_coeff(X_BL,Y_BL,CP_BL,alpha,npanel_mod) 
+    # AERO_RES     = aero_coeff_new(x_coord_3d,y_coord_3d,CP,alpha,npanel,CF_TOP_SURF,CF_BOT_SURF)
+    AERO_RES     = aero_coeff(x_coord_3d,y_coord_3d,CP,alpha,npanel)
     # Squire-Young relation for total drag   
     cd      = 2.0*THETA[-1,:,:]*(Ue_wake)**((5+H_wake)/2.) 
        
-    airfoil_properties = Data(
+    airfoil_properties_old = Data(
         AoA            = alpha,
         Re             = Re_L,
-        cl             = AERO_RES.cl, 
-        cl_visc        = AERO_RES_BL.cl, 
-        cdpi           = AERO_RES_BL.cdpi,
-        cd_visc        = cd.T,
-        cm             = AERO_RES.cm,  
-        cm_visc        = AERO_RES_BL.cm,  
+        cl_invisc      = AERO_RES.cl, 
+        # cl_visc        = AERO_RES_BL.cl, 
+        cd_invisc      = AERO_RES.cdpi,
+        # cd_visc        = AERO_RES_BL.cdpi,
+        cm_invisc      = AERO_RES.cm,  
+        # cm_visc        = AERO_RES_BL.cm,  
         normals        = np.transpose(normals,(3,2,0,1)),
         x              = np.transpose(X,(2,1,0)),
         y              = np.transpose(Y,(2,1,0)),
@@ -504,7 +506,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
         cf             = np.transpose(CF,(2,1,0)),    
         )  
         
-    return  airfoil_properties 
+    return  airfoil_properties_old
 
 
 def concatenate_surfaces(X_BOT,X_TOP,FUNC_BOT_SURF,FUNC_TOP_SURF,npanel,ncases,ncpts): 

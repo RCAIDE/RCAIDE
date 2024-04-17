@@ -83,6 +83,7 @@ def thwaites_method(npanel,ncases,ncpts,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
             
             # Compute momentum thickness, theta 
             theta       = np.sqrt(theta2_Ve6[:,0]/ Ve_i**6)
+            # theta       = np.sqrt(abs(theta2_Ve6[:,0]/ Ve_i**6))
             
             # find theta values that do not converge and replace them with neighbor
             idx1        = np.where(abs((theta[1:] - theta[:-1])/theta[:-1]) > tol)[0] 

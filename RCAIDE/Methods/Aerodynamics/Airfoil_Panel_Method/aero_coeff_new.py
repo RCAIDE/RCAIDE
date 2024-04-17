@@ -1,8 +1,8 @@
 ## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
-# RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/aero_coeff.py
+# RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/aero_coeff_new.py
 # 
 # 
-# Created:  Dec 2023, M. Clarke
+# Created:  Apr 2024, Niranjan Nanjappa
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -11,13 +11,14 @@
 from RCAIDE.Core import Data
 
 # pacakge imports  
-import numpy as np  
+import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # aero_coeff
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
-def aero_coeff(x,y,cp,al,npanel):
+
+def aero_coeff_new(x,y,cp,al,npanel,cf_top,cf_bot):
     """Compute airfoil force and moment coefficients about 
                     the quarter chord point          
 
@@ -41,21 +42,25 @@ def aero_coeff(x,y,cp,al,npanel):
      
    Properties Used:
     N/A
-    """    
-     
-    dx      = x[1:]-x[:-1]
-    dy      = y[1:]-y[:-1]
-    xa      = 0.5*(x[1:] +x[:-1])-0.25
-    ya      = 0.5*(y[1:] +y[:-1])
-    # dcn     = -cp[:-1]*dx # needs to be corrected
-    # dca     = cp[:-1]*dy # needs to be corrected
-    dcn     = -cp*dx # corrected
-    dca     = cp*dy # corrected
-    
+    """
+    dx       = x[1:]-x[:-1]
+    dy       = y[1:]-y[:-1]
+    xa       = 0.5*(x[1:] +x[:-1])-0.25
+    ya       = 0.5*(y[1:] +y[:-1])
+    dcn1     = -cp*dx
+    dcn2     = cf_top*dy
+    dcn3     = -cf_bot*dy
+    dca1     = cp*dy
+    dca2     = cf_top*dx 
+    dca3     = -cf_bot*dx
+    cn       = (np.sum(dcn1,axis=0) + np.sum(dcn2,axis=0) + np.sum(dcn3,axis=0)).T
+    ca       = (np.sum(dca1,axis=0) + np.sum(dca2,axis=0) + np.sum(dca3,axis=0)).T
+    cm_qc1   = np.sum(-dcn1*xa,axis=0) + np.sum(-dcn2*xa,axis=0) + np.sum(-dcn3*xa,axis=0)
+    cm_qc2   = np.sum(dca1*ya,axis=0) + np.sum(dca2*ya,axis=0) + np.sum(dca3*ya,axis=0)
+    cm_qc    = (cm_qc1 + cm_qc2).T
     # compute differential forces
-    cn      = np.sum(dcn,axis=0).T
-    ca      = np.sum(dca,axis=0).T
-    cm      = np.sum((-dcn*xa + dca*ya),axis=0).T
+    
+    # cm      = np.sum((-dcn*xa + dca*ya),axis=0).T
     
     # orient normal and axial forces 
     cl      = cn*np.cos(al) - ca*np.sin(al) 
@@ -65,6 +70,16 @@ def aero_coeff(x,y,cp,al,npanel):
     AERO_RES = Data(
         cl   = cl, 
         cdpi = cdpi,
-        cm   = cm)
+        cm   = cm_qc)
     
     return AERO_RES
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

@@ -37,7 +37,10 @@ def compute_naca_4series(airfoil_geometry_file,npoints= 200, leading_and_trailin
 
     Properties Used:
     N/A
-    """         
+    """
+    if npoints%10 != 1:
+        raise AssertionError('Number of points must be of the form [a*(10^b) + 1], where a and b are integers')
+         
     geometry        = Data()
     half_npoints    = npoints/2                                    # number of points per side    
     airfoil_digits  = [int(x) for x in airfoil_geometry_file]
