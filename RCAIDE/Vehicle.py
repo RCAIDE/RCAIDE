@@ -10,9 +10,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from Legacy.trunk.S   import Vehicle as VH
-from RCAIDE.Core      import Data
-from .Energy.Networks import Network
-from RCAIDE           import Components , Energy 
+import RCAIDE
+from RCAIDE.Framework.Core      import Data
+from RCAIDE.Library             import Components  
 from Legacy.trunk.S.Components.Energy.Networks import Network as legacy_net
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ class Vehicle(VH):
             None
             """          
         self.pop('networks')
-        self.networks  = Energy.Networks.Network.Container() 
+        self.networks  = RCAIDE.Framework.Networks.Network.Container() 
         self.booms     = Components.Booms.Boom.Container()
     
     _energy_network_root_map = None
@@ -77,8 +77,8 @@ class Vehicle(VH):
 
         self._component_root_map.pop(legacy_net)
         self._energy_network_root_map= {
-            Energy.Networks.Network         : self['networks'],
-            Components.Booms.Boom           : self['booms']
+            RCAIDE.Framework.Networks.Network : self['networks'],
+            Components.Booms.Boom             : self['booms']
             } 
         return
     

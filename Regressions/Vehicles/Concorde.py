@@ -8,9 +8,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core                                           import Units , Data    
-from RCAIDE.Methods.Energy.Propulsors.Turbojet_Propulsor   import design_turbojet
-from RCAIDE.Methods.Geometry.Two_Dimensional.Planform      import wing_segmented_planform
+from RCAIDE.Framework.Core                                           import Units , Data    
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbojet_Propulsor   import design_turbojet
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import wing_segmented_planform
 from RCAIDE.Visualization                 import *     
 
 # python imports 

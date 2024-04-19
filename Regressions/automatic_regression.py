@@ -10,7 +10,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
  
-from RCAIDE.Core import DataOrdered
+from RCAIDE.Framework.Core import DataOrdered
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')

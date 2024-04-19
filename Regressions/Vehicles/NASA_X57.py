@@ -8,13 +8,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Units  
+from RCAIDE.Framework.Core import Units  
 from RCAIDE.Energy.Networks.All_Electric_Network            import All_Electric_Network
-from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor      import design_propeller 
-from RCAIDE.Methods.Energy.Propulsors.Converters.DC_Motor   import design_motor 
-from RCAIDE.Methods.Weights.Correlation_Buildups.Propulsion import nasa_motor
-from RCAIDE.Methods.Energy.Sources.Battery.Common           import initialize_from_circuit_configuration
-from RCAIDE.Methods.Geometry.Two_Dimensional.Planform       import wing_segmented_planform 
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor      import design_propeller 
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor   import design_motor 
+from RCAIDE.Library.Methods.Weights.Correlation_Buildups.Propulsion import nasa_motor
+from RCAIDE.Library.Methods.Energy.Sources.Battery.Common           import initialize_from_circuit_configuration
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform       import wing_segmented_planform 
 
 # python imports 
 import numpy as np 
@@ -49,7 +49,7 @@ def vehicle_setup():
     
     cruise_speed                          = 135.*Units['mph']    
     altitude                              = 2500. * Units.ft
-    atmo                                  = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmo                                  = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     freestream                            = atmo.compute_values (0.)
     freestream0                           = atmo.compute_values (altitude)
     mach_number                           = (cruise_speed/freestream.speed_of_sound)[0][0] 

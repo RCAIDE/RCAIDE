@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
 import RCAIDE  
-from RCAIDE.Core                                    import Units, Data 
-from RCAIDE.Methods.Energy.Sources.Battery.Common   import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, find_mass_gain_rate, find_total_mass_gain, find_ragone_properties, find_ragone_optimum  
-from RCAIDE.Analyses.Mission.Common                 import Conditions
+from RCAIDE.Framework.Core                                    import Units, Data 
+from RCAIDE.Library.Methods.Energy.Sources.Battery.Common   import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, find_mass_gain_rate, find_total_mass_gain, find_ragone_properties, find_ragone_optimum  
+from RCAIDE.Framework.Mission.Common                 import Conditions
 from RCAIDE.Visualization                           import * 
 
 # package imports  
@@ -218,7 +218,7 @@ def set_up_conditions(battery_li_ion):
  
 def analyses_setup(configs):
 
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
 
     # build a base analysis for each config
     for tag,config in configs.items():
@@ -229,19 +229,19 @@ def analyses_setup(configs):
 
 def base_analysis(vehicle):    
     #   Initialize the Analyses     
-    analyses = RCAIDE.Analyses.Vehicle()  
+    analyses = RCAIDE.Framework.Analyses.Vehicle()  
     
     #  Energy
-    energy          = RCAIDE.Analyses.Energy.Energy()
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks 
     analyses.append(energy)
  
     #  Planet Analysis
-    planet  = RCAIDE.Analyses.Planets.Planet()
+    planet  = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
  
     #  Atmosphere Analysis
-    atmosphere                 = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere                 = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
  
@@ -250,9 +250,9 @@ def base_analysis(vehicle):
 def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
  
     #   Initialize the Mission 
-    mission            = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission            = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag        = 'cell_cycle_test'   
-    Segments           = RCAIDE.Analyses.Mission.Segments 
+    Segments           = RCAIDE.Framework.Mission.Segments 
     base_segment       = Segments.Segment()   
     time               = 0.8 * (mAh/1000)/current * Units.hrs  
         
@@ -286,7 +286,7 @@ def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
 
 def missions_setup(mission): 
  
-    missions         = RCAIDE.Analyses.Mission.Missions()
+    missions         = RCAIDE.Framework.Mission.Missions()
     
     # base mission 
     mission.tag  = 'base_mission'

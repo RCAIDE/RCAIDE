@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
 import RCAIDE  
-from RCAIDE.Core                                    import Units 
-from RCAIDE.Methods.Energy.Sources.Battery.Common   import initialize_from_circuit_configuration  
+from RCAIDE.Framework.Core                                    import Units 
+from RCAIDE.Library.Methods.Energy.Sources.Battery.Common   import initialize_from_circuit_configuration  
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Build the Vehicle

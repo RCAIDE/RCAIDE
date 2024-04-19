@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Units ,Data 
+from RCAIDE.Framework.Core import Units ,Data 
 
 # python imports     
 import numpy as np  
@@ -75,12 +75,12 @@ def mission_setup(analyses):
     #   Initialize the Mission
     # ------------------------------------------------------------------
 
-    mission = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag = 'the_mission'
  
 
     # unpack Segments module
-    Segments = RCAIDE.Analyses.Mission.Segments
+    Segments = RCAIDE.Framework.Mission.Segments
 
     # base segment
     base_segment = Segments.Segment()
@@ -123,35 +123,35 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle() 
 
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Analyses.Weights.Weights_Transport()
+    weights = RCAIDE.Framework.Analyses.Weights.Weights_Transport()
     weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics) 
 
     # ------------------------------------------------------------------
     #  Energy
-    energy= RCAIDE.Analyses.Energy.Energy()
+    energy= RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks  
     analyses.append(energy)
 
     # ------------------------------------------------------------------
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
 
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 
@@ -161,7 +161,7 @@ def base_analysis(vehicle):
 
 def analyses_setup(configs):
 
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
 
     # build a base analysis for each config
     for tag,config in configs.items():
@@ -172,7 +172,7 @@ def analyses_setup(configs):
 
 def missions_setup(mission): 
  
-    missions         = RCAIDE.Analyses.Mission.Missions()
+    missions         = RCAIDE.Framework.Mission.Missions()
     
     # base mission 
     mission.tag  = 'base_mission'

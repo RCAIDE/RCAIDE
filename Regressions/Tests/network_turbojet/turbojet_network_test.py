@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Core                          import Units , Data 
+from RCAIDE.Framework.Core                          import Units , Data 
 from RCAIDE.Visualization                 import *       
-from RCAIDE.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
+from RCAIDE.Library.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
 
 # python imports     
 import numpy as np  
@@ -88,7 +88,7 @@ def equivalent_area(vehicle,analyses,conditions):
 
 def analyses_setup(configs):
     
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
     
     # build a base analysis for each config
     for tag,config in list(configs.items()):
@@ -102,17 +102,17 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle() 
     
     # ------------------------------------------------------------------
     #  Weights
-    weights         = RCAIDE.Analyses.Weights.Weights_Transport()
+    weights         = RCAIDE.Framework.Analyses.Weights.Weights_Transport()
     weights.vehicle = vehicle
     analyses.append(weights)
     
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics                                       = RCAIDE.Analyses.Aerodynamics.Supersonic_VLM()
+    aerodynamics                                       = RCAIDE.Framework.Analyses.Aerodynamics.Supersonic_VLM()
     aerodynamics.geometry                              = vehicle
     aerodynamics.settings.number_spanwise_vortices     = 5
     aerodynamics.settings.number_chordwise_vortices    = 2       
@@ -122,18 +122,18 @@ def base_analysis(vehicle):
     
     # ------------------------------------------------------------------
     #  Energy
-    energy= RCAIDE.Analyses.Energy.Energy()
+    energy= RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks  
     analyses.append(energy)
     
     # ------------------------------------------------------------------
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
     
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
     
@@ -198,11 +198,11 @@ def mission_setup(analyses):
     #   Initialize the Mission
     # ------------------------------------------------------------------
     
-    mission = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag = 'the_mission'
      
     # unpack Segments module
-    Segments = RCAIDE.Analyses.Mission.Segments 
+    Segments = RCAIDE.Framework.Mission.Segments 
     base_segment = Segments.Segment()
     
     # ------------------------------------------------------------------
@@ -496,7 +496,7 @@ def mission_setup(analyses):
 
 def missions_setup(mission):
 
-    missions     = RCAIDE.Analyses.Mission.Missions() 
+    missions     = RCAIDE.Framework.Mission.Missions() 
     mission.tag  = 'base_mission'
     missions.append(mission)
     

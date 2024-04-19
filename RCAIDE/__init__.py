@@ -7,15 +7,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from . import Core
-from . import Analyses
-from . import Attributes
-from . import Components
-from . import Energy
-from . import External_Interfaces
-from . import Methods
-from . import Optimization
-from . import Visualization
+from . import Library
+from . import Framework
 
 from .Vehicle import Vehicle
+from .load    import load 
+from .save    import save 

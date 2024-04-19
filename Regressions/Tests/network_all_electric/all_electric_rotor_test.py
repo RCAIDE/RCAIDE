@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Core import Units  
+from RCAIDE.Framework.Core import Units  
 from RCAIDE.Visualization  import *       
 
 # python imports     
@@ -56,7 +56,7 @@ def main():
  
 def analyses_setup(configs):
 
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
 
     # build a base analysis for each config
     for tag,config in configs.items():
@@ -70,35 +70,35 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle() 
     
     # ------------------------------------------------------------------
     #  Weights
-    weights         = RCAIDE.Analyses.Weights.Weights_eVTOL()
+    weights         = RCAIDE.Framework.Analyses.Weights.Weights_eVTOL()
     weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics          = RCAIDE.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------
     #  Energy
-    energy          = RCAIDE.Analyses.Energy.Energy()
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
 
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 
@@ -113,11 +113,11 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------
     #   Initialize the Mission
     # ------------------------------------------------------------------
-    mission = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag = 'mission'
 
     # unpack Segments module
-    Segments = RCAIDE.Analyses.Mission.Segments 
+    Segments = RCAIDE.Framework.Mission.Segments 
     
     # base segment
     base_segment = Segments.Segment()
@@ -127,7 +127,7 @@ def mission_setup(analyses):
     simulated_days  = 1
     for day in range(simulated_days): 
          
-        atmosphere         = RCAIDE.Analyses.Atmospheric.US_Standard_1976() 
+        atmosphere         = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976() 
         atmo_data          = atmosphere.compute_values(altitude = 0,temperature_deviation= 1.)   
 
         # compute daily temperature in san francisco: link: https://www.usclimatedata.com/climate/san-francisco/california/united-states/usca0987/2019/1
@@ -140,11 +140,11 @@ def mission_setup(analyses):
             #   Initialize the Mission
             # ------------------------------------------------------------------
         
-            mission     = RCAIDE.Analyses.Mission.Sequential_Segments()
+            mission     = RCAIDE.Framework.Mission.Sequential_Segments()
             mission.tag = 'baseline_mission' 
             
             # unpack Segments module
-            Segments = RCAIDE.Analyses.Mission.Segments
+            Segments = RCAIDE.Framework.Mission.Segments
         
             # base segment           
             base_segment  = Segments.Segment()   
@@ -267,7 +267,7 @@ def mission_setup(analyses):
 
 def missions_setup(mission): 
  
-    missions         = RCAIDE.Analyses.Mission.Missions()
+    missions         = RCAIDE.Framework.Mission.Missions()
     
     # base mission 
     mission.tag  = 'base_mission'

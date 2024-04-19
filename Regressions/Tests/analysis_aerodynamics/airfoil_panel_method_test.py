@@ -6,10 +6,10 @@
 #   Imports
 # ----------------------------------------------------------------------
 # RCAIDE Imports 
-from RCAIDE.Core import Units
-from RCAIDE.Methods.Aerodynamics.Airfoil_Panel_Method     import airfoil_analysis 
-from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil      import compute_naca_4series
-from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil      import import_airfoil_geometry
+from RCAIDE.Framework.Core import Units
+from RCAIDE.Library.Methods.Aerodynamics.Airfoil_Panel_Method     import airfoil_analysis 
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil      import compute_naca_4series
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil      import import_airfoil_geometry
 from RCAIDE.Visualization import * 
 
 # Python imports
@@ -147,11 +147,11 @@ def single_airfoil():
     axis_1.plot(AoA_deg,cl_xfoil,label='xfoil')
     axis_1.legend(loc="upper right")
     
-    axis_2.plot(AoA_deg,airfoil_properties_1.cl_visc[0,:],'-ko', label='cl visc')
-    axis_2.set_title('CL viscous')
-    axis_2.plot(AoA_abbot_cl_cd,cl_abbot,label='abbot')
-    axis_2.plot(AoA_deg,cl_xfoil,label='xfoil')
-    axis_2.legend(loc="upper right")
+    #axis_2.plot(AoA_deg,airfoil_properties_1.cl_visc[0,:],'-ko', label='cl visc')
+    #axis_2.set_title('CL viscous')
+    #axis_2.plot(AoA_abbot_cl_cd,cl_abbot,label='abbot')
+    #axis_2.plot(AoA_deg,cl_xfoil,label='xfoil')
+    #axis_2.legend(loc="upper right")
     
     axis_3.plot(AoA_deg,airfoil_properties_1.cd_invisc[0,:],'-ko', label='cd invisc')
     axis_3.set_title('CD inviscid')
@@ -159,11 +159,11 @@ def single_airfoil():
     axis_3.plot(AoA_deg,cd_xfoil,label='xfoil')
     axis_3.legend(loc="upper right")
     
-    axis_4.plot(AoA_deg,airfoil_properties_1.cd_visc[0,:],'-ko', label='cd visc')
-    axis_4.set_title('CD viscous')
-    axis_4.plot(AoA_abbot_cl_cd,cd_abbot,label='abbot')
-    axis_4.plot(AoA_deg,cd_xfoil,label='xfoil')
-    axis_4.legend(loc="upper right")
+    #axis_4.plot(AoA_deg,airfoil_properties_1.cd_visc[0,:],'-ko', label='cd visc')
+    #axis_4.set_title('CD viscous')
+    #axis_4.plot(AoA_abbot_cl_cd,cd_abbot,label='abbot')
+    #axis_4.plot(AoA_deg,cd_xfoil,label='xfoil')
+    #axis_4.legend(loc="upper right")
     
     axis_5.plot(AoA_deg,airfoil_properties_1.cm_invisc[0,:],'-ko', label='cm invisc')
     axis_5.set_title('CM inviscid')
@@ -172,12 +172,12 @@ def single_airfoil():
     axis_5.legend(loc="upper right")
     axis_5.set_xlabel('AoA')
     
-    axis_6.plot(AoA_deg,airfoil_properties_1.cm_visc[0,:],'-ko', label='cm visc')
-    axis_6.set_title('CM viscous')
-    axis_6.plot(AOA_abbot_cm,cm_abbot,label='abbot')
-    axis_6.plot(AoA_deg,cm_xfoil,label='xfoil')
-    axis_6.legend(loc="upper right")
-    axis_5.set_xlabel('AoA')
+    #axis_6.plot(AoA_deg,airfoil_properties_1.cm_visc[0,:],'-ko', label='cm visc')
+    #axis_6.set_title('CM viscous')
+    #axis_6.plot(AOA_abbot_cm,cm_abbot,label='abbot')
+    #axis_6.plot(AoA_deg,cm_xfoil,label='xfoil')
+    #axis_6.legend(loc="upper right")
+    #axis_5.set_xlabel('AoA')
        
     return 
     

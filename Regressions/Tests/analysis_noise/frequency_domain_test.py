@@ -2,10 +2,10 @@
 
 # Imports    
 import RCAIDE
-from RCAIDE.Core import Units, Data  
-from RCAIDE.Methods.Noise.Frequency_Domain_Buildup.Rotor   import rotor_noise
-from RCAIDE.Analyses.Mission.Common                        import Results  
-from RCAIDE.Analyses.Mission.Segments.Segment              import Segment 
+from RCAIDE.Framework.Core import Units, Data  
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor   import rotor_noise
+from RCAIDE.Framework.Mission.Common                        import Results  
+from RCAIDE.Framework.Mission.Segments.Segment              import Segment 
 
 # Python Imports  
 import sys 
@@ -113,7 +113,7 @@ def Hararmonic_Noise_Validation(PP):
     segment                                                = Segment() 
     segment.state.conditions                               = conditions
     segment.state.conditions.expand_rows(ctrl_pts) 
-    noise                                                  = RCAIDE.Analyses.Noise.Frequency_Domain_Buildup() 
+    noise                                                  = RCAIDE.Framework.Analyses.Noise.Frequency_Domain_Buildup() 
     settings                                               = noise.settings   
     num_mic                                                = len(conditions.noise.relative_microphone_locations[0] )  
     conditions.noise.number_of_microphones                 = num_mic

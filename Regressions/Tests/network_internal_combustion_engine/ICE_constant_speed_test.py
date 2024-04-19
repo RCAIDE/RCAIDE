@@ -9,7 +9,7 @@
 #   Imports
 # ---------------------------------------------------------------------- 
 import RCAIDE
-from RCAIDE.Core import Data, Units 
+from RCAIDE.Framework.Core import Data, Units 
 
 # python imports 
 import numpy as np   
@@ -18,7 +18,7 @@ import numpy as np
 import sys 
 sys.path.append('../../Vehicles') 
 from Cessna_172                       import vehicle_setup  
-from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
 
 # ----------------------------------------------------------------------
 #   Main
@@ -143,7 +143,7 @@ def ICE_CS(vehicle):
 
 def analyses_setup(configs):
 
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
 
     # build a base analysis for each config
     for tag,config in configs.items():
@@ -153,7 +153,7 @@ def analyses_setup(configs):
     return analyses
 
 def missions_setup(mission):  
-    missions         = RCAIDE.Analyses.Mission.Missions() 
+    missions         = RCAIDE.Framework.Mission.Missions() 
     mission.tag  = 'base_mission'
     missions.append(mission)
  
@@ -188,11 +188,11 @@ def mission_setup(analyses):
     #   Initialize the Mission
     # ------------------------------------------------------------------
 
-    mission = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag = 'mission'
  
     # unpack Segments module
-    Segments = RCAIDE.Analyses.Mission.Segments
+    Segments = RCAIDE.Framework.Mission.Segments
 
     # base segment
     base_segment = Segments.Segment()
@@ -234,35 +234,35 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle()
+    analyses = RCAIDE.Framework.Analyses.Vehicle()
  
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Analyses.Weights.Weights_Transport()
+    weights = RCAIDE.Framework.Analyses.Weights.Weights_Transport()
     weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
     #  Energy
-    energy= RCAIDE.Analyses.Energy.Energy()
+    energy= RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
 
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 

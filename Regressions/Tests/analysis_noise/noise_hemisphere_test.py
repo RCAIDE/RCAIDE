@@ -6,10 +6,10 @@
 #   Imports
 # ----------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Core import Units , Data 
+from RCAIDE.Framework.Core import Units , Data 
 from RCAIDE.Visualization import *     
-from RCAIDE.Methods.Noise.Metrics import * 
-from RCAIDE.Methods.Performance.estimate_stall_speed                          import estimate_stall_speed  
+from RCAIDE.Library.Methods.Noise.Metrics import * 
+from RCAIDE.Library.Methods.Performance.estimate_stall_speed                          import estimate_stall_speed  
 
 # python import
 import matplotlib.pyplot as plt  
@@ -40,17 +40,17 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle() 
  
     # ------------------------------------------------------------------
     #  Weights
-    weights         = RCAIDE.Analyses.Weights.Weights_eVTOL()
+    weights         = RCAIDE.Framework.Analyses.Weights.Weights_eVTOL()
     weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics          = RCAIDE.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics)   
@@ -59,7 +59,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Noise Analysis 
     # ------------------------------------------------------------------   
-    noise = RCAIDE.Analyses.Noise.Frequency_Domain_Buildup()   
+    noise = RCAIDE.Framework.Analyses.Noise.Frequency_Domain_Buildup()   
     noise.geometry = vehicle
     noise.settings.noise_hemisphere                       = True 
     noise.settings.noise_hemisphere_radius                = 20          
@@ -70,18 +70,18 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Energy
-    energy          = RCAIDE.Analyses.Energy.Energy()
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
 
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 
@@ -93,7 +93,7 @@ def base_analysis(vehicle):
 # ---------------------------------------------------------------------- 
 def analyses_setup(configs):
 
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
 
     # build a base analysis for each config
     for tag,config in configs.items():
@@ -118,9 +118,9 @@ def mission_setup(analyses,vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Mission
     # ------------------------------------------------------------------
-    mission       = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission       = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag   = 'mission' 
-    Segments      = RCAIDE.Analyses.Mission.Segments  
+    Segments      = RCAIDE.Framework.Mission.Segments  
     base_segment  = Segments.Segment()   
     base_segment.state.numerics.number_of_control_points  = 5 
      
@@ -153,7 +153,7 @@ def mission_setup(analyses,vehicle):
 # ---------------------------------------------------------------------- 
 def missions_setup(mission): 
  
-    missions     = RCAIDE.Analyses.Mission.Missions() 
+    missions     = RCAIDE.Framework.Mission.Missions() 
     mission.tag  = 'base_mission'
     missions.append(mission)
  

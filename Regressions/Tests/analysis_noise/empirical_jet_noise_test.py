@@ -10,9 +10,9 @@
 # ----------------------------------------------------------------------
 
 import RCAIDE
-from RCAIDE.Core import Units 
+from RCAIDE.Framework.Core import Units 
 from RCAIDE.Visualization import *      
-from RCAIDE.Methods.Geometry.Two_Dimensional.Planform import wing_planform 
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform import wing_planform 
 
 import sys
 import matplotlib.pyplot as plt 
@@ -59,19 +59,19 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle() 
 
     # ------------------------------------------------------------------
     #  Weights
     # ------------------------------------------------------------------
-    weights = RCAIDE.Analyses.Weights.Weights_Transport()
+    weights = RCAIDE.Framework.Analyses.Weights.Weights_Transport()
     weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     # ------------------------------------------------------------------
-    aerodynamics = RCAIDE.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000 
     analyses.append(aerodynamics)
@@ -79,27 +79,27 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Noise Analysis
     # ------------------------------------------------------------------
-    noise = RCAIDE.Analyses.Noise.Correlation_Buildup()   
+    noise = RCAIDE.Framework.Analyses.Noise.Correlation_Buildup()   
     noise.geometry = vehicle          
     analyses.append(noise)
 
     # ------------------------------------------------------------------
     #  Energy
     # ------------------------------------------------------------------
-    energy= RCAIDE.Analyses.Energy.Energy()
+    energy= RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
     #  Planet Analysis
     # ------------------------------------------------------------------
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
 
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
     # ------------------------------------------------------------------
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
  
@@ -110,7 +110,7 @@ def base_analysis(vehicle):
 
 def analyses_setup(configs):
 
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
 
     # build a base analysis for each config
     for tag,config in configs.items():
@@ -124,9 +124,9 @@ def baseline_mission_setup(analyses):
     # ------------------------------------------------------------------
     #   Initialize the Mission
     # ------------------------------------------------------------------ 
-    mission      = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission      = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag  = 'base_mission' 
-    Segments     = RCAIDE.Analyses.Mission.Segments 
+    Segments     = RCAIDE.Framework.Mission.Segments 
     base_segment = Segments.Segment() 
 
     # -------------------   -----------------------------------------------
@@ -223,7 +223,7 @@ def baseline_mission_setup(analyses):
 def baseline_missions_setup(base_mission):
 
     # the mission container
-    missions     = RCAIDE.Analyses.Mission.Missions() 
+    missions     = RCAIDE.Framework.Mission.Missions() 
 
     # ------------------------------------------------------------------
     #   Base Mission

@@ -7,8 +7,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
-from RCAIDE.Core import Units   
-from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
+from RCAIDE.Framework.Core import Units   
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
 import os 
 
 # python imports 
@@ -36,7 +36,7 @@ def vehicle_setup():
                                                 
     cruise_speed                                = 124. * Units.kts
     altitude                                    = 8500. * Units.ft
-    atmo                                        = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmo                                        = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     freestream                                  = atmo.compute_values (0.)
     freestream0                                 = atmo.compute_values (altitude)
     mach_number                                 = (cruise_speed/freestream.speed_of_sound)[0][0] 
@@ -88,7 +88,7 @@ def vehicle_setup():
     slat.chord_fraction                         = 0.1      
     wing.append_control_surface(slat)  
     
-    RCAIDE.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing) 
+    RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing) 
 
     # add to vehicle
     vehicle.append_component(wing)
