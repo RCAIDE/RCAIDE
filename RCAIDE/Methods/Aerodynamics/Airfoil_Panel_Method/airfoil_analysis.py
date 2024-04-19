@@ -8,13 +8,14 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Core        import Data
-from .hess_smith        import hess_smith
-from .thwaites_method   import thwaites_method
-from .heads_method      import heads_method
-from .heads_method_new  import heads_method_new
-from .aero_coeff        import aero_coeff 
-from .aero_coeff_new    import aero_coeff_new 
+from RCAIDE.Core           import Data
+from .hess_smith           import hess_smith
+from .thwaites_method      import thwaites_method
+from .thwaites_method_new  import thwaites_method_new
+from .heads_method         import heads_method
+from .heads_method_new     import heads_method_new
+from .aero_coeff           import aero_coeff 
+from .aero_coeff_new       import aero_coeff_new 
 
 # pacakge imports  
 import numpy as np  
@@ -133,8 +134,11 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     L_BOT                          = X_BOT[-1,:,:]    
         
     # laminar boundary layer properties using thwaites method 
-    BOT_T_RESULTS  = thwaites_method(npanel,ncases,ncpts, L_BOT , RE_L_VALS, X_BOT, VE_BOT, DVE_BOT,tolerance,
-                                     THETA_0=initial_momentum_thickness) 
+    # BOT_T_RESULTS  = thwaites_method(npanel,ncases,ncpts, L_BOT , RE_L_VALS, X_BOT, VE_BOT, DVE_BOT,tolerance,
+    #                                  THETA_0=initial_momentum_thickness)
+    BOT_T_RESULTS  = thwaites_method_new(npanel,ncases,ncpts, L_BOT , RE_L_VALS, X_BOT, VE_BOT, DVE_BOT,tolerance,
+                                     THETA_0=initial_momentum_thickness)
+    
     X_T_BOT          = BOT_T_RESULTS.X_T      
     THETA_T_BOT      = BOT_T_RESULTS.THETA_T     
     DELTA_STAR_T_BOT = BOT_T_RESULTS.DELTA_STAR_T  
