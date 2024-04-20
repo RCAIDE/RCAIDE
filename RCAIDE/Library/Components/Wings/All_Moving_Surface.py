@@ -43,7 +43,7 @@ class All_Moving_Surface(Component):
     """ 
 
     def __defaults__(self):
-        """This sets the default for All_Moving_Surface objects in SUAVE.
+        """This sets the default for All_Moving_Surface objects in RCAIDE.
         
         Attributes also found in Control_Surface:
             see Control_Surface().__defaults__ for an explanation of attributes. Any

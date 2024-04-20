@@ -15,10 +15,10 @@
 # ---------------------------------------------------------------------- 
 import numpy as np 
 
-# SUAVE Imports
+# RCAIDE Imports
 from Legacy.trunk.S.Core import  Units
 
-# SUAVE-AVL Imports 
+# RCAIDE-AVL Imports 
 from .Data.Wing                                                          import Wing, Section, Control_Surface
 from .Data.Body                                                          import Body 
 from RCAIDE.Library.Components.Wings.Control_Surfaces                    import Aileron , Elevator , Slat , Flap , Rudder 

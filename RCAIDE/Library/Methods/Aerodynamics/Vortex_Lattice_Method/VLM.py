@@ -29,7 +29,7 @@ def VLM(conditions,settings,geometry):
     The user should be forwarned that this will cause very slight differences in results for 0 deflection due to
     the slightly different discretization.
     
-    The user has the option to use the boundary conditions and induced velocities from either SUAVE
+    The user has the option to use the boundary conditions and induced velocities from either RCAIDE
     or VORLAX. See build_RHS in compute_RHS_matrix.py for more details.
     
     By default in Vortex_Lattice, VLM performs calculations based on panel coordinates with float32 precision. 
@@ -275,7 +275,7 @@ def VLM(conditions,settings,geometry):
     # ------------------ --------------------------------------------------------------------   
     #VORLAX subroutine = PRESS
                   
-    # spanwise strip exposure flag, always 0 for SUAVE's infinitely thin airfoils. Needs to change if thick airfoils added
+    # spanwise strip exposure flag, always 0 for RCAIDE's infinitely thin airfoils. Needs to change if thick airfoils added
     RJTS = 0                         
     
     # COMPUTE FREE-STREAM AND ONSET FLOW PARAMETERS. Used throughout the remainder of VLM
@@ -512,7 +512,7 @@ def VLM(conditions,settings,geometry):
     results.CM         =  CM  
     results.CN         =  CN
     
-    #other SUAVE outputs
+    #other RCAIDE outputs
     results.CL_wing        = CL_wing   
     results.CDi_wing       = CDi_wing 
     results.cl_y           = cl_y   

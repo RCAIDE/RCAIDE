@@ -10,9 +10,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-import numpy as np
-
-import RCAIDE
+import numpy as np 
 from RCAIDE.Framework.Core import Data, Units
 from .Data.Cases import Run_Case
 
@@ -93,7 +91,7 @@ def translate_results_to_conditions(cases,results):
     dim       = len(cases)
         
     # set up aerodynamic Conditions object
-    res                             = SUAVE.Analyses.Mission.Segments.Conditions.Aerodynamics() 
+    res                             = RCAIDE.Framework.Mission.Common.Results() 
     res.stability.static            = Data()
     res.stability.dynamic           = Data()
     
@@ -115,7 +113,7 @@ def translate_results_to_conditions(cases,results):
     res.aerodynamics.pitch_moment_coefficient                = np.zeros_like(res.S_ref)
     res.aerodynamics.yaw_moment_coefficient                  = np.zeros_like(res.S_ref)  
     res.aerodynamics.lift_coefficient                        = np.zeros_like(res.S_ref)
-    res.aerodynamics.drag_breakdown.induced                  = SUAVE.Analyses.Mission.Segments.Conditions.Conditions()
+    res.aerodynamics.drag_breakdown.induced                  = RCAIDE.Framework.Mission.Common.Conditions()
     res.aerodynamics.drag_breakdown.induced.total            = np.zeros_like(res.S_ref)
     res.aerodynamics.drag_breakdown.induced.efficiency_factor= np.zeros_like(res.S_ref)
     res.aerodynamics.oswald_efficiency                       = np.zeros_like(res.S_ref)

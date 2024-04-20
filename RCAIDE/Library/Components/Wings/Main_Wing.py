@@ -17,7 +17,7 @@ from RCAIDE.Library.Components.Wings.Segment import Segment
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Wings   
 class Main_Wing(Wing):
-    """This class is used to define main wings SUAVE
+    """This class is used to define main wings RCAIDE
 
     Assumptions:Container()
     None
@@ -35,7 +35,7 @@ class Main_Wing(Wing):
     N/A
     """
     def __defaults__(self):
-        """This sets the default for main wings in SUAVE.
+        """This sets the default for main wings in RCAIDE.
     
         Assumptions:
         None
