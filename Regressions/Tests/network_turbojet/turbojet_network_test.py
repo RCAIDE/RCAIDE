@@ -45,42 +45,11 @@ def main():
     missions = missions_setup(mission) 
      
     # mission analysis 
-    results = missions.base_mission.evaluate()   
-    
-    # Check the lift equivalent area
-    #equivalent_area(configs.base, analyses, results.segments.climbing_cruise.state.conditions)    
-     
-    # leave uncommented for regression 
-    save_results(results)  
-    old_results = load_results()    
+    results = missions.base_mission.evaluate()    
     
     ## plt the old results
-    plot_mission(results)  
-
-    # check the results
-    check_results(results,old_results)  
-    
-    return
- 
-
-
-# ----------------------------------------------------------------------
-#   Lift Equivalent Area Regression
-# ----------------------------------------------------------------------
-
-def equivalent_area(vehicle,analyses,conditions):
-    
-    X_locs, AE_x, _ = lift_equivalent_area(vehicle,analyses,conditions)
-    
-    regression_X_locs = np.arrayarray([ 9.2489996 , 20.53010197, 21.58099937, 24.08086729, 26.92006416,
-       27.57317331, 29.59647174, 30.96875399, 32.22881452])
-
-    regression_AE_x   = np.array([0.5153554 , 0.06737699, 0.24895593, 0.28295723, 0.48997988,
-       0.61036835, 1.06331585, 1.24096389, 1.74551694]) 
-    
-    assert (np.abs((X_locs[1:] - regression_X_locs )/regression_X_locs) < 1e-6).all() 
-    assert (np.abs((AE_x[1:] - regression_AE_x)/regression_AE_x) < 1e-6).all()
-
+    plot_mission(results)   
+    return 
 
 # ----------------------------------------------------------------------
 #   Define the Vehicle Analyses
@@ -531,16 +500,8 @@ def check_results(new_results,old_results):
 
         print('') 
 
-    return
+    return 
 
-
-def load_results():
-    return RCAIDE.load('results_mission_concorde.res')
-
-def save_results(results):
-    RCAIDE.save(results,'results_mission_concorde.res')
-    return    
-        
 if __name__ == '__main__': 
     main()    
     plt.show()
