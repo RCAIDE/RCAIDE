@@ -8,14 +8,14 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
   
-from RCAIDE.Energy.Energy_Component import Energy_Component   
+from RCAIDE.Library.Components import Component   
 from RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition import no_heat_acquisition_model
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  No_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Thermal_Management-Batteries-Heat_Acquisition_Systems
-class No_Heat_Acquisition(Energy_Component):
+class No_Heat_Acquisition(Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
     Assumptions:

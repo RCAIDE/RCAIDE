@@ -14,7 +14,7 @@ def control_surfaces(segment,wings):
     if segment.elevator_deflection_control.active:
         for wing in wings:
             for control_surface in wing.control_surfaces:
-                if type(control_surface == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator()):
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
                     num_elev_ctrls = len(segment.elevator_deflection_control.assigned_surfaces) 
                     for i in range(num_elev_ctrls):   
                         for j in range(len(segment.elevator_deflection_control.assigned_surfaces[i])): 
@@ -25,7 +25,7 @@ def control_surfaces(segment,wings):
     if segment.slat_deflection_control.active:
         for wing in wings:
             for control_surface in wing.control_surfaces:
-                if type(control_surface == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat()):
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
                     num_slat_ctrls = len(segment.slat_deflection_control.assigned_surfaces) 
                     for i in range(num_slat_ctrls):   
                         for j in range(len(segment.slat_deflection_control.assigned_surfaces[i])): 
@@ -37,7 +37,7 @@ def control_surfaces(segment,wings):
     if segment.flap_deflection_control.active:
         for wing in wings:
             for control_surface in wing.control_surfaces:
-                if type(control_surface == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap()):
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:
                     num_flap_ctrls = len(segment.flap_deflection_control.assigned_surfaces) 
                     for i in range(num_flap_ctrls):   
                         for j in range(len(segment.flap_deflection_control.assigned_surfaces[i])): 
@@ -48,7 +48,7 @@ def control_surfaces(segment,wings):
     if segment.aileron_deflection_control.active:
         for wing in wings:
             for control_surface in wing.control_surfaces:
-                if type(control_surface == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron()):
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
                     num_aile_ctrls = len(segment.aileron_deflection_control.assigned_surfaces) 
                     for i in range(num_aile_ctrls):   
                         for j in range(len(segment.aileron_deflection_control.assigned_surfaces[i])): 

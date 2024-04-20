@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Framework.Core import Data
-from RCAIDE.Library.Visualization.Geometry.Common.contour_surface_slice import contour_surface_slice
+from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import import_airfoil_geometry
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import compute_naca_4series
 

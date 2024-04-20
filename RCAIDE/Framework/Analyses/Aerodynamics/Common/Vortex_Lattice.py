@@ -10,10 +10,10 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Framework.Core                               import Data, Units  
-from RCAIDE.Library.Methods.Aerodynamics.Fidelity_Zero import VLM 
-from RCAIDE.Library.Methods.Utilities                  import Cubic_Spline_Blender 
-from RCAIDE.Framework.Analyses.Aerodynamics              import Aerodynamics
+from RCAIDE.Framework.Core                                     import Data, Units  
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import VLM 
+from RCAIDE.Library.Methods.Utilities                          import Cubic_Spline_Blender 
+from RCAIDE.Framework.Analyses.Aerodynamics                    import Aerodynamics
 
 # package imports
 import numpy as np 
@@ -54,8 +54,8 @@ class Vortex_Lattice(Aerodynamics):
         self.tag                                      = 'Vortex_Lattice' 
         self.geometry                                 = Data()
         self.settings                                 = Data()
-        self.settings.number_spanwise_vortices        = 15
-        self.settings.number_chordwise_vortices       = 5
+        self.settings.number_of_spanwise_vortices        = 15
+        self.settings.number_of_chordwise_vortices       = 5
         self.settings.wing_spanwise_vortices          = None
         self.settings.wing_chordwise_vortices         = None
         self.settings.fuselage_spanwise_vortices      = None
@@ -116,8 +116,8 @@ class Vortex_Lattice(Aerodynamics):
         settings                  = self.settings  
         use_surrogate             = settings.use_surrogate
         propeller_wake_model      = settings.propeller_wake_model 
-        n_sw                      = settings.number_spanwise_vortices
-        n_cw                      = settings.number_chordwise_vortices
+        n_sw                      = settings.number_of_spanwise_vortices
+        n_cw                      = settings.number_of_chordwise_vortices
         mf                        = settings.model_fuselage
         mn                        = settings.model_nacelle
         dcs                       = settings.discretize_control_surfaces 
@@ -126,10 +126,10 @@ class Vortex_Lattice(Aerodynamics):
         settings = self.settings      
         
         if n_sw is not None:
-            settings.number_spanwise_vortices  = n_sw
+            settings.number_of_spanwise_vortices  = n_sw
         
         if n_cw is not None:
-            settings.number_chordwise_vortices = n_cw 
+            settings.number_of_chordwise_vortices = n_cw 
             
         settings.use_surrogate              = use_surrogate
         settings.propeller_wake_model       = propeller_wake_model 
@@ -642,15 +642,15 @@ def calculate_VLM(conditions,settings,geometry):
     results = VLM(conditions,settings,geometry)
     total_lift_coeff          = results.CL
     total_induced_drag_coeff  = results.CDi
-    total_side_coef           = results.CYTOT
+    total_side_coef           = results.CY 
     CL_wing                   = results.CL_wing  
     CDi_wing                  = results.CDi_wing 
     cl_y                      = results.cl_y     
     cdi_y                     = results.cdi_y    
     alpha_i                   = results.alpha_i  
     CPi                       = results.CP  
-    CYMTOT                    = results.CYMTOT
-    CRMTOT                    = results.CRMTOT
+    CN                        = results.CN
+    CL_mom                    = results.CL_mom
     CM                        = results.CM
     
     # Dimensionalize the lift and drag for each wing
@@ -673,4 +673,4 @@ def calculate_VLM(conditions,settings,geometry):
             wing_induced_angle[wing.tag] = alpha_i[i]
         i+=1
 
-    return total_lift_coeff, total_induced_drag_coeff, total_side_coef, wing_lifts, wing_drags, cl_y, cdi_y, wing_induced_angle, CPi,CYMTOT,CRMTOT, CM
+    return total_lift_coeff, total_induced_drag_coeff, total_side_coef, wing_lifts, wing_drags, cl_y, cdi_y, wing_induced_angle, CPi,CN,CL_mom, CM

@@ -8,7 +8,7 @@
 # RCAIDE Imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units , Data 
-from RCAIDE.Visualization import *     
+from RCAIDE.Library.Plots import *     
 from RCAIDE.Library.Methods.Noise.Metrics import *  
 from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations                import generate_terrain_elevated_microphone_locations
 from RCAIDE.Library.Methods.Mission.Common.compute_point_to_point_geospacial_data     import compute_point_to_point_geospacial_data

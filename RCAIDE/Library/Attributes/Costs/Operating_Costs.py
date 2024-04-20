@@ -1,5 +1,6 @@
 ## @ingroup Library-Attributes-Costs
-# RCAIDE/Library/Attributes/Costs/Operating_Costs.py 
+# RCAIDE/Library/Attributes/Costs/Operating_Costs.py
+# 
 #
 # Created:  Mar 2024, M. Clarke
 

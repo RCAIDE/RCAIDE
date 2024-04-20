@@ -1,5 +1,5 @@
-## @defgroup Attributes-Gases Gases
-# RCAIDE/Attributes/Gases/__init__.py
+## @defgroup Library-Attributes-Gases Gases
+# RCAIDE/Library/Attributes/Gases/__init__.py
 # 
 
 """RCAIDE Package Setup
@@ -9,7 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Attributes.Gases.Gas    import Gas
-from Legacy.trunk.S.Attributes.Gases.Air    import Air
-from Legacy.trunk.S.Attributes.Gases.CO2    import CO2
-from Legacy.trunk.S.Attributes.Gases.Steam  import Steam
+from .Gas    import Gas
+from .Air    import Air
+from .CO2    import CO2
+from .Steam  import Steam

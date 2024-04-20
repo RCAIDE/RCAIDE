@@ -8,13 +8,13 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Energy.Energy_Component import Energy_Component
+from RCAIDE.Library.Components import Component  
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Avionics
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Energy-Peripherals  
-class Payload(Energy_Component):
+class Payload(Component):
     """A class representing a payload.
     
     Assumptions:

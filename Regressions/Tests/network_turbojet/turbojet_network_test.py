@@ -9,7 +9,7 @@
 # RCAIDE imports  
 import RCAIDE
 from RCAIDE.Framework.Core                          import Units , Data 
-from RCAIDE.Visualization                 import *       
+from RCAIDE.Library.Plots                           import *       
 from RCAIDE.Library.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
 
 # python imports     
@@ -114,8 +114,8 @@ def base_analysis(vehicle):
     #  Aerodynamics Analysis
     aerodynamics                                       = RCAIDE.Framework.Analyses.Aerodynamics.Supersonic_VLM()
     aerodynamics.geometry                              = vehicle
-    aerodynamics.settings.number_spanwise_vortices     = 5
-    aerodynamics.settings.number_chordwise_vortices    = 2       
+    aerodynamics.settings.number_of_spanwise_vortices  = 5
+    aerodynamics.settings.number_of_chordwise_vortices = 2       
     aerodynamics.process.compute.lift.inviscid_wings.settings.model_fuselage = True
     aerodynamics.settings.drag_coefficient_increment   = 0.0000
     analyses.append(aerodynamics) 
@@ -535,10 +535,10 @@ def check_results(new_results,old_results):
 
 
 def load_results():
-    return RCAIDE.External_Interfaces.RCAIDE.load('results_mission_concorde.res')
+    return RCAIDE.load('results_mission_concorde.res')
 
 def save_results(results):
-    RCAIDE.External_Interfaces.RCAIDE.archive(results,'results_mission_concorde.res')
+    RCAIDE.save(results,'results_mission_concorde.res')
     return    
         
 if __name__ == '__main__': 

@@ -8,15 +8,15 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
   
-from RCAIDE.Energy.Energy_Component import Energy_Component  
+from RCAIDE.Library.Components import Component  
 from RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air_Heat_Aquistion import direct_convection_model
-from RCAIDE.Attributes.Gases import Air 
+from RCAIDE.Library.Attributes.Gases import Air 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Atmospheric_Air_Convection_Heat_Exchanger
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Thermal_Management-Batteries-Heat_Acquisition_Systems
-class Direct_Air(Energy_Component):
+class Direct_Air(Component):
     """This provides output values for a direct convention heat exchanger of a bettery pack
     
     Assumptions:

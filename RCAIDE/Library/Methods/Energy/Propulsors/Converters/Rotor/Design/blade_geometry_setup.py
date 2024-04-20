@@ -61,7 +61,7 @@ def blade_geometry_setup(rotor,number_of_stations):
         
         for _,airfoil in enumerate(airfoils):  
             if airfoil.geometry == None: # first, if airfoil geometry data not defined, import from geoemtry files
-                if airfoil.NACA_4_series_flag: # check if naca 4 series of airfoil from datafile
+                if type(airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
                     airfoil.geometry = compute_naca_4series(airfoil.coordinate_file,airfoil.number_of_points)
                 else:
                     airfoil.geometry = import_airfoil_geometry(airfoil.coordinate_file,airfoil.number_of_points) 
@@ -95,9 +95,9 @@ def blade_geometry_setup(rotor,number_of_stations):
             rotor.oei.design_thrust = rotor.hover.design_thrust*1.1
     
     vehicle                            = RCAIDE.Vehicle()  
-    net                                = RCAIDE.Energy.Networks.All_Electric_Network() 
-    bus                                = RCAIDE.Energy.Networks.Distribution.Electrical_Bus()
-    propulsor                          = RCAIDE.Energy.Propulsors.Propulsor()
+    net                                = RCAIDE.Framework.Networks.All_Electric_Network() 
+    bus                                = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus()
+    propulsor                          = RCAIDE.Library.Components.Propulsors.Propulsor()
     propulsor.rotor                    = rotor  
     bus.propulsors.append(propulsor)
     net.busses.append(bus)
@@ -116,7 +116,7 @@ def blade_geometry_setup(rotor,number_of_stations):
     config.networks.all_electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
     configs.append(config)       
     
-    if type(rotor) == RCAIDE.Energy.Propulsors.Converters.Prop_Rotor:  
+    if type(rotor) == RCAIDE.Library.Components.Propulsors.Converters.Prop_Rotor:  
         design_thrust_cruise  = rotor.cruise.design_thrust 
         design_power_cruise   = rotor.cruise.design_power      
         if (design_thrust_cruise == None) and (design_power_cruise== None):

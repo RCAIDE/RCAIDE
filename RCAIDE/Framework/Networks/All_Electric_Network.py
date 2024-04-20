@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------------------------------------------------------  
  # RCAIDE imports 
 import RCAIDE 
-from RCAIDE.Framework.Core                                                                                  import Data 
-from RCAIDE.Framework.Mission.Common                                                               import Residuals 
+from RCAIDE.Framework.Core                                                                                import Data 
+from RCAIDE.Framework.Mission.Common                                                                      import Residuals 
 from RCAIDE.Library.Components.Component                                                                  import Container   
-from RCAIDE.Energy.Propulsors.Converters                                                          import Propeller, Lift_Rotor, Prop_Rotor 
+from RCAIDE.Library.Components.Propulsors.Converters                                                      import Propeller, Lift_Rotor, Prop_Rotor 
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                                                 import append_initial_battery_conditions 
 from RCAIDE.Library.Methods.Energy.Propulsors.Electric_Rotor_Propulsor.compute_electric_rotor_performance import compute_electric_rotor_performance
 from .Network                                                                                     import Network  

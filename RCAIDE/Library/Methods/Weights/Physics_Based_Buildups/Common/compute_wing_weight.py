@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE 
-from RCAIDE.Attributes.Solids import (
-    Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Aluminum, Epoxy, Aluminum_Rib)
+from RCAIDE.Library.Attributes.Materials import Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Aluminum, Epoxy, Aluminum_Rib
 
 # package imports 
 import numpy as np

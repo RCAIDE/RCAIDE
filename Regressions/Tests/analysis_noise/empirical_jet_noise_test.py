@@ -11,7 +11,7 @@
 
 import RCAIDE
 from RCAIDE.Framework.Core import Units 
-from RCAIDE.Visualization import *      
+from RCAIDE.Library.Plots import *      
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform import wing_planform 
 
 import sys

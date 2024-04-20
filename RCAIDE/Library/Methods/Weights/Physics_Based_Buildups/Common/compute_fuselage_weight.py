@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 # RCAIDE imports   
-from RCAIDE.Attributes.Solids import Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Acrylic, Steel
+from RCAIDE.Library.Attributes.Materials import Bidirectional_Carbon_Fiber, Carbon_Fiber_Honeycomb, Paint, Unidirectional_Carbon_Fiber, Acrylic, Steel
 
 # package imports 
 import numpy as np

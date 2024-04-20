@@ -126,7 +126,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         """              
         return battery_conditions.pack.voltage_under_load 
     
-    def update_battery_age(self,battery_conditions,increment_day = False):  
+    def update_battery_age(self,battery_conditions,increment_battery_age_by_one_day = False):  
         """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries.   
         
         Assumptions:
@@ -136,14 +136,14 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             None
     
         Args:
-            self                   : battery            [unitless] 
-            battery_conditions     : state of battery   [unitless]
-            increment_day (boolean): day increment flag [unitless]  
+            self                                      : battery            [unitless] 
+            battery_conditions                        : state of battery   [unitless]
+            increment_battery_age_by_one_day (boolean): day increment flag [unitless]  
             
         Returns: 
             None
         """        
-        update_nmc_cell_age(self,battery_conditions,increment_day) 
+        update_nmc_cell_age(self,battery_conditions,increment_battery_age_by_one_day) 
         
         return  
 

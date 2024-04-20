@@ -1,5 +1,6 @@
 ## @ingroup Library-Attributes-Atmospheres
-# RCAIDE/Library/Attributes/Atmospheres/Atmosphere.py 
+# RCAIDE/Library/Attributes/Atmospheres/Atmosphere.py
+# 
 #
 # Created:  Mar 2024, M. Clarke
 

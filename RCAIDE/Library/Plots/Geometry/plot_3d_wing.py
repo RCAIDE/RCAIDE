@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Library.Visualization.Geometry.Common.contour_surface_slice import contour_surface_slice
+from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 import numpy as np     
 
 # ----------------------------------------------------------------------------------------------------------------------

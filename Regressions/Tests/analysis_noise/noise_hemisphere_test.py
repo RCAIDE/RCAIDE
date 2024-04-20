@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Framework.Core import Units , Data 
-from RCAIDE.Visualization import *     
+from RCAIDE.Library.Plots import *     
 from RCAIDE.Library.Methods.Noise.Metrics import * 
 from RCAIDE.Library.Methods.Performance.estimate_stall_speed                          import estimate_stall_speed  
 

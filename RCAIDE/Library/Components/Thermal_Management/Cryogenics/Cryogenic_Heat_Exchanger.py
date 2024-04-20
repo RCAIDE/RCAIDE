@@ -10,14 +10,14 @@
 
 # RCAIDE imports  
 import RCAIDE 
-from RCAIDE.Energy.Energy_Component                                                     import Energy_Component
+from RCAIDE.Library.Components import Component  
 from RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate import compute_cryogen_mass_flow_rate
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryogenic Heat Exchanger Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Thermal_Management-Cryogenics
-class Cryogenic_Heat_Exchanger(Energy_Component):
+class Cryogenic_Heat_Exchanger(Component):
     """This provides output values for a heat exchanger used to cool cryogenic components
     
     Assumptions:
@@ -49,7 +49,7 @@ class Cryogenic_Heat_Exchanger(Energy_Component):
         self.tag = 'Cryogenic_Heat_Exchanger'
         
         #-----setting the default values for the different components
-        self.cryogen                        = RCAIDE.Attributes.Cryogens.Liquid_H2()
+        self.cryogen                        = RCAIDE.Library.Attributes.Cryogens.Liquid_H2()
         self.cryogen_inlet_temperature      =    300.0      # [K]
         self.cryogen_outlet_temperature     =    300.0      # [K]
         self.cryogen_pressure               = 100000.0      # [Pa]

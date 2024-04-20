@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Visualization.Common import set_axes, plot_style
+from RCAIDE.Library.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 ## @ingroup Visualization-Performance-Aerodynamics   
 def plot_airfoil_polars(polar_data,
-                        save_figure = False, 
+                        save_figure   = False,
                         save_filename = "Airfoil_Polars",
                         file_type = ".png",
                         width = 12, height = 7):
@@ -39,10 +39,10 @@ def plot_airfoil_polars(polar_data,
     N/A	
     """ 
  
-    # Get raw data polars
-    CL           = polar_data.cl[0]
-    CD           = polar_data.cd_visc[0]
-    CM           = polar_data.cm[0]
+    # Get raw data polars 
+    CL           = polar_data.cl_invisc[0]
+    CD           = polar_data.cd_invisc[0]
+    CM           = polar_data.cm_invisc[0]
     alpha        = polar_data.AoA[0]/Units.degrees
     Re_raw       = polar_data.Re[0]  
        
@@ -80,6 +80,7 @@ def plot_airfoil_polars(polar_data,
     axis_4.plot(alpha, CL/CD, color = ps.color, marker = ps.markers[0], linewidth = ps.line_width)
     axis_4.set_xlabel('AoA [deg]')
     axis_4.set_ylabel(r'Cl/Cd')
+    axis_4.set_ylim([-20,20])
     set_axes(axis_4) 
             
     if save_figure:

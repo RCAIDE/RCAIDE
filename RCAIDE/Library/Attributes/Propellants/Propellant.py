@@ -1,6 +1,6 @@
-## @ingroup Attributes-Propellants 
-# RCAIDE/Attributes/Propellants.py
-#  
+## @ingroup Library-Attributes-Propellants 
+# RCAIDE/Library/Attributes/Propellants.py
+# 
 # 
 # Created:  Sep 2023, M. Clarke
 # Modified: 
@@ -17,32 +17,17 @@ from RCAIDE.Library.Components.Mass_Properties import Mass_Properties
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Attributes-Propellants  
 class Propellant(Data):
-    """Holds values for a propellant
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Generic class for propellant
     """
 
     def __defaults__(self):
-        """This sets the default values.
-
+        """This sets the default values. 
+    
         Assumptions:
-        None
-
+            None
+        
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """    
         self.tag                       = 'Propellant'
         self.reactant                  = 'O2'

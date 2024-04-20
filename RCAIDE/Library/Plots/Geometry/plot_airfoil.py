@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports 
-from RCAIDE.Library.Visualization.Common import plot_style
+from RCAIDE.Library.Plots.Common import plot_style
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil  import import_airfoil_geometry  
 
 # package imports 

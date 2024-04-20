@@ -9,7 +9,7 @@
 # RCAIDE imports  
 import RCAIDE
 from RCAIDE.Framework.Core import Units  
-from RCAIDE.Visualization                 import *       
+from RCAIDE.Library.Plots                 import *       
 
 # python imports     
 import numpy as np  
@@ -90,8 +90,8 @@ def base_analysis(vehicle):
     #  Aerodynamics Analysis
     aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry = vehicle
-    aerodynamics.settings.number_spanwise_vortices   = 25
-    aerodynamics.settings.number_chordwise_vortices  = 5     
+    aerodynamics.settings.number_of_spanwise_vortices   = 25
+    aerodynamics.settings.number_of_chordwise_vortices  = 5     
     analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------
@@ -366,10 +366,7 @@ def plot_results(results):
     plot_aerodynamic_forces(results)
     
     # Plot Aerodynamic Coefficients 
-    plot_aerodynamic_coefficients(results)
-    
-    # Plot Static Stability Coefficients 
-    plot_stability_coefficients(results)    
+    plot_aerodynamic_coefficients(results) 
     
     # Drag Components
     plot_drag_components(results)

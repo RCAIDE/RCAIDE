@@ -34,7 +34,7 @@ def design_turbofan(turbofan):
         #call the atmospheric model to get the conditions at the specified altitude
         atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
         atmo_data  = atmosphere.compute_values(turbofan.design_altitude,turbofan.design_isa_deviation)
-        planet     = RCAIDE.Attributes.Planets.Earth()
+        planet     = RCAIDE.Library.Attributes.Planets.Earth()
         
         p   = atmo_data.pressure          
         T   = atmo_data.temperature       

@@ -1,5 +1,6 @@
 ## @defgroup Library-Components-Costs Costs
-# RCAIDE/Library/Components/Costs/__init__.py 
+# RCAIDE/Library/Components/Costs/__init__.py
+# 
 
 """RCAIDE Package Setup
 """

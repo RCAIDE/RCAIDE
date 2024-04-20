@@ -74,8 +74,8 @@ class Supersonic_VLM(Aerodynamics):
         settings.begin_drag_rise_mach_number             = 0.95
         settings.end_drag_rise_mach_number               = 1.2
         settings.transonic_drag_multiplier               = 1.25 
-        settings.number_spanwise_vortices                = None 
-        settings.number_chordwise_vortices               = None 
+        settings.number_of_spanwise_vortices                = None 
+        settings.number_of_chordwise_vortices               = None 
         settings.use_surrogate                           = True 
         settings.propeller_wake_model                    = False
         settings.model_fuselage                          = False
@@ -88,8 +88,8 @@ class Supersonic_VLM(Aerodynamics):
         settings.volume_wave_drag_scaling                = 3.2  
         settings.fuselage_parasite_drag_begin_blend_mach = 0.91
         settings.fuselage_parasite_drag_end_blend_mach   = 0.99 
-        settings.number_spanwise_vortices                = 15
-        settings.number_chordwise_vortices               = 5
+        settings.number_of_spanwise_vortices                = 15
+        settings.number_of_chordwise_vortices               = 5
         
         
         # build the evaluation process

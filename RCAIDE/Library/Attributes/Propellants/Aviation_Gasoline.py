@@ -1,6 +1,6 @@
-## @ingroup Attributes-Propellants 
-# RCAIDE/Attributes/Aviation_Gasoline.py
-#  
+## @ingroup Library-Attributes-Propellants 
+# RCAIDE/Library/Attributes/Aviation_Gasoline.py
+# 
 # 
 # Created:  Sep 2023, M. Clarke
 # Modified: 
@@ -15,32 +15,17 @@ from .Propellant import Propellant
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Attributes-Propellants
 class Aviation_Gasoline(Propellant):
-    """Contains density and specific energy values for this propellant
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """Aviation gasoline class
     """
 
     def __defaults__(self):
-        """This sets the default values.
-
+        """This sets the default values. 
+    
         Assumptions:
-        None
-
+            None
+        
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """    
         self.tag             ='Aviation_Gasoline'
         self.density         = 721.0            # kg/m^3

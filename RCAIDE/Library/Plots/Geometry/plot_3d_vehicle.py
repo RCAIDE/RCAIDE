@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method  import generate_vortex_distribution 
 from RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice import Vortex_Lattice
-from RCAIDE.Library.Visualization.Geometry.plot_3d_fuselage     import plot_3d_fuselage
-from RCAIDE.Library.Visualization.Geometry.plot_3d_wing         import plot_3d_wing 
-from RCAIDE.Library.Visualization.Geometry.plot_3d_nacelle      import plot_3d_nacelle
-from RCAIDE.Library.Visualization.Geometry.plot_3d_rotor        import plot_3d_rotor
+from RCAIDE.Library.Plots.Geometry.plot_3d_fuselage     import plot_3d_fuselage
+from RCAIDE.Library.Plots.Geometry.plot_3d_wing         import plot_3d_wing 
+from RCAIDE.Library.Plots.Geometry.plot_3d_nacelle      import plot_3d_nacelle
+from RCAIDE.Library.Plots.Geometry.plot_3d_rotor        import plot_3d_rotor
 
 # python imports 
 import numpy as np 

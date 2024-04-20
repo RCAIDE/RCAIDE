@@ -7,11 +7,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-import numpy as np 
-import plotly.graph_objects as go 
-from RCAIDE.Library.Visualization.Geometry.Common.contour_surface_slice import contour_surface_slice
+import RCAIDE
+from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import import_airfoil_geometry
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import compute_naca_4series 
+
+import numpy as np 
+import plotly.graph_objects as go 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -83,7 +85,7 @@ def generate_3d_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_points =
         nac_pts      = np.zeros((num_nac_segs,tessellation,3))
         naf          = nac.Airfoil
         
-        if naf.NACA_4_series_flag == True:  
+        if type(naf) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: 
             a_geo        = compute_naca_4series(naf.coordinate_file,num_nac_segs)
             xpts         = np.repeat(np.atleast_2d(a_geo.x_coordinates[0]).T,tessellation,axis = 1)*nac.length
             zpts         = np.repeat(np.atleast_2d(a_geo.y_coordinates[0]).T,tessellation,axis = 1)*nac.length  
@@ -112,16 +114,17 @@ def generate_3d_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_points =
         nac_pts[:,:,2] =  zpts*np.sin(theta_2d)  
                 
     else:
-        nac_pts = np.zeros((num_nac_segs,tessellation,3)) 
-        for i_seg in range(num_nac_segs):
-            a        = nac.Segments[i_seg].width/2
-            b        = nac.Segments[i_seg].height/2 
-            r        = (a*b)/np.sqrt((b*np.sin(theta))**2  + (a*np.cos(theta))**2)
-            nac_zpts = r*np.cos(theta)
-            nac_ypts = r*np.sin(theta) 
-            nac_pts[i_seg,:,0] = nac.Segments[i_seg].percent_x_location*nac.length
-            nac_pts[i_seg,:,1] = nac_ypts + nac.Segments[i_seg].percent_y_location*nac.length 
-            nac_pts[i_seg,:,2] = nac_zpts + nac.Segments[i_seg].percent_z_location*nac.length  
+        nac_pts = np.zeros((num_nac_segs,tessellation,3))  
+        for i_seg, segment in enumerate(nac.Segments):  
+            a = segment.width/2
+            b = segment.height/2
+            n = segment.curvature
+            theta    = np.linspace(0,2*np.pi,tessellation) 
+            nac_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
+            nac_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+            nac_pts[i_seg,:,0] = segment.percent_x_location*nac.length
+            nac_pts[i_seg,:,1] = nac_ypts + segment.percent_y_location*nac.length 
+            nac_pts[i_seg,:,2] = nac_zpts + segment.percent_z_location*nac.length  
             
     # rotation about y to orient propeller/rotor to thrust angle
     rot_trans =  nac.nac_vel_to_body()

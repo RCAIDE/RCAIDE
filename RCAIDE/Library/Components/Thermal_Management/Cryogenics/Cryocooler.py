@@ -9,14 +9,14 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
-from RCAIDE.Energy.Energy_Component                                       import Energy_Component
+from RCAIDE.Library.Components import Component  
 from RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryocooler
 # ----------------------------------------------------------------------------------------------------------------------     
 ## @ingroup Energy-Thermal_Management-Cryogenics
-class Cryocooler(Energy_Component):
+class Cryocooler(Component):
     
     """
     Cryocooler provides cooling power to cryogenic components.

@@ -1,45 +1,31 @@
-## @ingroup Attributes-Coolants
-# Coolant.py
+## @ingroup Library-Attributes-Coolants 
+# RCAIDE/Library/Attributes/Coolants/Coolant.py
+# 
 #
-# Created:  Dec. 2022  C.R. Zhao
+# Created:  Mar 2024, M. Clarke
 
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------- 
 #  Imports
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------- 
 
 from RCAIDE.Framework.Core import Data
 
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------- 
 #  Class
-# ----------------------------------------------------------------------
-## @ingroup Attributes-Coolants
+# ---------------------------------------------------------------------------------------------------------------------- 
+## @ingroup Library-Attributes-Coolants
 class Coolant(Data):
-    """Holds values for a coolant liquid
-
-    Assumptions:
-    None
-
-    Source:
-    None
+    """Default class of a liquid coolant.
     """
 
     def __defaults__(self):
         """This sets the default values.
 
         Assumptions:
-        None
-
+            None
+    
         Source:
-        Values commonly available
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None
         """
         self.tag                       = 'Coolant'
         self.density                   = 0.0                       # kg/m^3

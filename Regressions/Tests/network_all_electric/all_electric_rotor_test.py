@@ -9,7 +9,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units  
-from RCAIDE.Visualization  import *       
+from RCAIDE.Library.Plots  import *       
 
 # python imports     
 import numpy as np  

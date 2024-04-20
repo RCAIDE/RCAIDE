@@ -51,5 +51,5 @@ class Battery(Component):
         self.ragone.i                                          = 0.0 
                       
         self.thermal_management_system                         = Data()    
-        self.thermal_management_system.heat_acquisition_system = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition()
-        self.thermal_management_system.heat_exchanger_system   = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Exchanger_Systems.No_Heat_Exchanger()
+        self.thermal_management_system.heat_acquisition_system = RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition()
+        self.thermal_management_system.heat_exchanger_system   = RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Exchanger_Systems.No_Heat_Exchanger()

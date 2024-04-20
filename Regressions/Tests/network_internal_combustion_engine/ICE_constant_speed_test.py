@@ -72,19 +72,19 @@ def ICE_CS(vehicle):
     vehicle.networks.pop('internal_combustion_engine')
 
     # ########################################################  Energy Network  #########################################################  
-    net                                         = RCAIDE.Energy.Networks.Constant_Speed_Internal_Combustion_Engine_Network()  
+    net                                         = RCAIDE.Framework.Networks.Constant_Speed_Internal_Combustion_Engine_Network()  
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line() 
+    fuel_line                                   = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line() 
     
     #------------------------------------------------------------------------------------------------------------------------------------  
     # uel Tank and Fuel
     #------------------------------------------------------------------------------------------------------------------------------------   
-    fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
+    fuel_tank                                   = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = vehicle.wings.main_wing.origin  
-    fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline() 
+    fuel                                        = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline() 
     fuel.mass_properties.mass                   = 319 *Units.lbs 
     fuel.mass_properties.center_of_gravity      =  vehicle.wings.main_wing.mass_properties.center_of_gravity
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
@@ -95,12 +95,12 @@ def ICE_CS(vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    propulsor                                  = RCAIDE.Energy.Propulsors.Constant_Speed_ICE_Propeller()
+    propulsor                                  = RCAIDE.Library.Components.Propulsors.Constant_Speed_ICE_Propeller()
     propulsor.tag                              = 'ice_constant_speed_propeller'
     propulsor.active_fuel_tanks                = ['fuel_tank']
                                                    
     # Engine                     
-    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
+    engine                                     = RCAIDE.Library.Components.Propulsors.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
@@ -109,7 +109,7 @@ def ICE_CS(vehicle):
     propulsor.engine                           = engine 
     
     # Prop  
-    prop                                   = RCAIDE.Energy.Propulsors.Converters.Propeller()
+    prop                                   = RCAIDE.Library.Components.Propulsors.Converters.Propeller()
     prop.number_of_blades                  = 2.0
     prop.variable_pitch                    = True 
     prop.tip_radius                        = 76./2. * Units.inches
@@ -119,7 +119,7 @@ def ICE_CS(vehicle):
     prop.cruise.design_Cl                  = 0.8
     prop.cruise.design_altitude            = 12000. * Units.feet
     prop.cruise.design_power               = .64 * 180. * Units.horsepower 
-    airfoil                                = RCAIDE.Components.Airfoils.Airfoil()   
+    airfoil                                = RCAIDE.Library.Components.Airfoils.Airfoil()   
     airfoil.coordinate_file                = '../../Vehicles/Airfoils/NACA_4412.txt'
     airfoil.polar_files                    = ['../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
                                            '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
@@ -163,15 +163,15 @@ def configs_setup(vehicle):
      # ------------------------------------------------------------------
     #   Initialize Configurations
     # ------------------------------------------------------------------ 
-    configs                                                    = RCAIDE.Components.Configs.Config.Container() 
-    base_config                                                = RCAIDE.Components.Configs.Config(vehicle) 
+    configs                                                    = RCAIDE.Library.Components.Configs.Config.Container() 
+    base_config                                                = RCAIDE.Library.Components.Configs.Config(vehicle) 
     base_config.tag                                            = 'base'
     configs.append(base_config)
     
     # ------------------------------------------------------------------
     #   Cruise Configuration
     # ------------------------------------------------------------------ 
-    cruise_config                                                     = RCAIDE.Components.Configs.Config(base_config)
+    cruise_config                                                     = RCAIDE.Library.Components.Configs.Config(base_config)
     cruise_config.tag                                                 = 'cruise' 
     configs.append(cruise_config) 
     

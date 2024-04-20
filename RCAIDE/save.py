@@ -96,6 +96,9 @@ def build_dict_r(v):
     """      
     tv = type(v) # Get value type
     
+    if tv == type:
+        return None
+    
     # Transform to basic python data type as appropriate
     if (tv == np.ndarray) or (tv == np.float64):
         ret = v.tolist()

@@ -48,8 +48,8 @@ class Isolated_Battery_Cell_Network(Network):
             N/A
         """      
         self.tag                     = 'isolated_battery_cell' 
-        self.avionics                = RCAIDE.Energy.Peripherals.Avionics()
-        self.payload                 = RCAIDE.Energy.Peripherals.Payload()
+        self.avionics                = RCAIDE.Library.Components.Systems.Avionics()
+        self.payload                 = RCAIDE.Library.Components.Payloads.Payload()
         self.busses                  = Container()
         self.system_voltage          = None          
         

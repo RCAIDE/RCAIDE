@@ -1,5 +1,5 @@
 ## @defgroup Components-Systems Systems
-# RCAIDE/Components/Systems/__init__.py
+# RCAIDE/Library/Components/Systems/__init__.py 
 # 
 
 """RCAIDE Package Setup
@@ -9,5 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Components.Systems.System import System
+from .System   import System
 from .Avionics import Avionics

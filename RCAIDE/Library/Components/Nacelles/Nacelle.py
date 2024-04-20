@@ -179,9 +179,7 @@ class Nacelle(Component):
         
         # Do all the matrix multiplies
         rot1    = np.matmul(body_2_vehicle,vehicle_2_nac_vec)
-        rot_mat = np.matmul(rot1,nac_vec_2_nac_vel)
-
-        
+        rot_mat = np.matmul(rot1,nac_vec_2_nac_vel) 
         return rot_mat    
     
     

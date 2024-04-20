@@ -42,8 +42,8 @@ def main():
 # ------------------------------------------------------------------  
 def Hararmonic_Noise_Validation(PP):
      
-    bus                            = RCAIDE.Energy.Networks.Distribution.Electrical_Bus() 
-    propulsor                      = RCAIDE.Energy.Propulsors.Propulsor() 
+    bus                            = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus() 
+    propulsor                      = RCAIDE.Library.Components.Propulsors.Propulsor() 
     rotor                          = F8745_D4_Propeller() 
     propulsor.rotor                = rotor  
     bus.propulsors.append(propulsor) 
@@ -214,8 +214,8 @@ def Hararmonic_Noise_Validation(PP):
 # Broadband Noise Validation
 # ------------------------------------------------------------------     
 def Broadband_Noise_Validation(PP):   
-    bus                            = RCAIDE.Energy.Networks.Distribution.Electrical_Bus()  
-    propulsor                      = RCAIDE.Energy.Propulsors.Propulsor() 
+    bus                            = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus()  
+    propulsor                      = RCAIDE.Library.Components.Propulsors.Propulsor() 
     rotor                          = APC_11x4_Propeller()  
     propulsor.rotor                = rotor   
     bus.propulsors.append(propulsor)

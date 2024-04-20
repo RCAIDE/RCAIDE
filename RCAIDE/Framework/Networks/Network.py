@@ -10,7 +10,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from RCAIDE.Energy import Energy_Component
+from RCAIDE.Library.Components import Component  
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Components import Component
 
@@ -18,7 +18,7 @@ from RCAIDE.Library.Components import Component
 #  NETWORK
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Networks
-class Network(Energy_Component):
+class Network(Component):
     """ RCAIDE.Energy.Networks.Network()
         The Top Level Network Class
             Assumptions:

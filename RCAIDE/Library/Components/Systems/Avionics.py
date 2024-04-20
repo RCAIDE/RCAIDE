@@ -1,20 +1,19 @@
-## @ingroup Energy-Peripherals
-# RCAIDE/Energy/Peripherals/Avionics.py
+## @ingroup Library-Compoments-Systems  
+# RCAIDE/Library/Compoments/Systems/Avionics.py
 # 
-# 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Mar 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Energy.Energy_Component import Energy_Component
+from RCAIDE.Library.Components import Component
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Avionics
 # ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Energy-Peripherals 
-class Avionics(Energy_Component):
+## @ingroup Library-Components-Systems
+class Avionics(Component):
     """A class representing avionics.
     
     Assumptions:

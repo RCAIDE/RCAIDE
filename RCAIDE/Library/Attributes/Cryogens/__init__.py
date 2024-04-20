@@ -1,5 +1,5 @@
-## @defgroup Attributes-Cryogens Cryogens
-# RCAIDE/Attributes/Cryogens/__init__.py
+## @defgroup Library-Attributes-Cryogens Cryogens
+# RCAIDE/Library/Attributes/Cryogens/__init__.py
 # 
 
 """RCAIDE Package Setup
@@ -9,5 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Attributes.Cryogens.Cryogen import Cryogen
-from Legacy.trunk.S.Attributes.Cryogens.Liquid_H2 import Liquid_H2
+from .Cryogen         import Cryogen
+from .Liquid_Hydrogen import Liquid_Hydrogen

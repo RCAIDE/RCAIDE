@@ -13,7 +13,7 @@ import RCAIDE
 from RCAIDE.Library.Methods.Geometry.Three_Dimensional import compute_span_location_from_chord_length
 from RCAIDE.Library.Methods.Geometry.Three_Dimensional import compute_chord_length_from_span_location
 from RCAIDE.Library.Methods.Stability.Static_Stability.Approximations.Supporting_Functions import convert_sweep
-from RCAIDE.Energy.Energy_Component import Energy_Component
+from RCAIDE.Library.Components import Component  
 
 # package imports 
 import numpy as np 
@@ -78,7 +78,7 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     network_mass   = 0.
     for net in vehicle.networks:  
         for key,Comp in net.items():
-            if isinstance(Comp,Energy_Component):
+            if isinstance(Comp,Component):
                 network_moment += net[key].mass_properties.mass*(np.sum(np.array(net[key].origin),axis=0) +
                                                                      net[key].mass_properties.center_of_gravity)
                 network_mass   += net[key].mass_properties.mass*len(net[key].origin)
