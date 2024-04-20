@@ -6,11 +6,11 @@
 
 
 import RCAIDE
-from RCAIDE.Core import Data, Units
+from RCAIDE.Framework.Core import Data, Units
 import numpy as np
-from RCAIDE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
      import import_airfoil_geometry
-from RCAIDE.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import (
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import (
     compute_airfoil_properties,
 )
 import os
@@ -23,7 +23,7 @@ def propeller_geometry():
     # Propeller Geometry:
     # --------------------------------------------------------------------------------------------------
 
-    prop = RCAIDE.Energy.Propulsors.Converters.Propeller()
+    prop = RCAIDE.Library.Components.Propulsors.Converters.Propeller()
     
     prop.tag              = 'apc_10x7_propeller'
     prop.tip_radius       = 5 * Units.inches
@@ -106,7 +106,7 @@ def propeller_geometry():
     prop.mid_chord_alignment         = prop.chord_distribution/4. - prop.chord_distribution[0]/4.  
     airfoils_path                    = os.path.join(os.path.dirname(__file__), "../Airfoils/")
     polars_path                      = os.path.join(os.path.dirname(__file__), "../Airfoils/Polars/") 
-    airfoil                          = RCAIDE.Components.Airfoils.Airfoil()   
+    airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()   
     airfoil.coordinate_file          = airfoils_path + "Clark_y.txt"
     airfoil.polar_files              = [   polars_path + "Clark_y_polar_Re_50000.txt",
                                          polars_path + "Clark_y_polar_Re_100000.txt",

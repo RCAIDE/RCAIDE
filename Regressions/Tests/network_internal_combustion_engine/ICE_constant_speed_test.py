@@ -9,7 +9,7 @@
 #   Imports
 # ---------------------------------------------------------------------- 
 import RCAIDE
-from RCAIDE.Core import Data, Units 
+from RCAIDE.Framework.Core import Data, Units 
 
 # python imports 
 import numpy as np   
@@ -18,7 +18,7 @@ import numpy as np
 import sys 
 sys.path.append('../../Vehicles') 
 from Cessna_172                       import vehicle_setup  
-from RCAIDE.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
 
 # ----------------------------------------------------------------------
 #   Main
@@ -72,19 +72,19 @@ def ICE_CS(vehicle):
     vehicle.networks.pop('internal_combustion_engine')
 
     # ########################################################  Energy Network  #########################################################  
-    net                                         = RCAIDE.Energy.Networks.Constant_Speed_Internal_Combustion_Engine_Network()  
+    net                                         = RCAIDE.Framework.Networks.Constant_Speed_Internal_Combustion_Engine_Network()  
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                   = RCAIDE.Energy.Networks.Distribution.Fuel_Line() 
+    fuel_line                                   = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line() 
     
     #------------------------------------------------------------------------------------------------------------------------------------  
     # uel Tank and Fuel
     #------------------------------------------------------------------------------------------------------------------------------------   
-    fuel_tank                                   = RCAIDE.Energy.Sources.Fuel_Tanks.Fuel_Tank()
+    fuel_tank                                   = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = vehicle.wings.main_wing.origin  
-    fuel                                        = RCAIDE.Attributes.Propellants.Aviation_Gasoline() 
+    fuel                                        = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline() 
     fuel.mass_properties.mass                   = 319 *Units.lbs 
     fuel.mass_properties.center_of_gravity      =  vehicle.wings.main_wing.mass_properties.center_of_gravity
     fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
@@ -95,12 +95,12 @@ def ICE_CS(vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------   
-    propulsor                                  = RCAIDE.Energy.Propulsors.Constant_Speed_ICE_Propeller()
+    propulsor                                  = RCAIDE.Library.Components.Propulsors.Constant_Speed_ICE_Propeller()
     propulsor.tag                              = 'ice_constant_speed_propeller'
     propulsor.active_fuel_tanks                = ['fuel_tank']
                                                    
     # Engine                     
-    engine                                     = RCAIDE.Energy.Propulsors.Converters.Engine()
+    engine                                     = RCAIDE.Library.Components.Propulsors.Converters.Engine()
     engine.sea_level_power                     = 180. * Units.horsepower
     engine.flat_rate_altitude                  = 0.0
     engine.rated_speed                         = 2700. * Units.rpm
@@ -109,7 +109,7 @@ def ICE_CS(vehicle):
     propulsor.engine                           = engine 
     
     # Prop  
-    prop                                   = RCAIDE.Energy.Propulsors.Converters.Propeller()
+    prop                                   = RCAIDE.Library.Components.Propulsors.Converters.Propeller()
     prop.number_of_blades                  = 2.0
     prop.variable_pitch                    = True 
     prop.tip_radius                        = 76./2. * Units.inches
@@ -119,7 +119,7 @@ def ICE_CS(vehicle):
     prop.cruise.design_Cl                  = 0.8
     prop.cruise.design_altitude            = 12000. * Units.feet
     prop.cruise.design_power               = .64 * 180. * Units.horsepower 
-    airfoil                                = RCAIDE.Components.Airfoils.Airfoil()   
+    airfoil                                = RCAIDE.Library.Components.Airfoils.Airfoil()   
     airfoil.coordinate_file                = '../../Vehicles/Airfoils/NACA_4412.txt'
     airfoil.polar_files                    = ['../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_50000.txt' ,
                                            '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_100000.txt' ,
@@ -143,7 +143,7 @@ def ICE_CS(vehicle):
 
 def analyses_setup(configs):
 
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
 
     # build a base analysis for each config
     for tag,config in configs.items():
@@ -153,7 +153,7 @@ def analyses_setup(configs):
     return analyses
 
 def missions_setup(mission):  
-    missions         = RCAIDE.Analyses.Mission.Missions() 
+    missions         = RCAIDE.Framework.Mission.Missions() 
     mission.tag  = 'base_mission'
     missions.append(mission)
  
@@ -163,15 +163,15 @@ def configs_setup(vehicle):
      # ------------------------------------------------------------------
     #   Initialize Configurations
     # ------------------------------------------------------------------ 
-    configs                                                    = RCAIDE.Components.Configs.Config.Container() 
-    base_config                                                = RCAIDE.Components.Configs.Config(vehicle) 
+    configs                                                    = RCAIDE.Library.Components.Configs.Config.Container() 
+    base_config                                                = RCAIDE.Library.Components.Configs.Config(vehicle) 
     base_config.tag                                            = 'base'
     configs.append(base_config)
     
     # ------------------------------------------------------------------
     #   Cruise Configuration
     # ------------------------------------------------------------------ 
-    cruise_config                                                     = RCAIDE.Components.Configs.Config(base_config)
+    cruise_config                                                     = RCAIDE.Library.Components.Configs.Config(base_config)
     cruise_config.tag                                                 = 'cruise' 
     configs.append(cruise_config) 
     
@@ -188,11 +188,11 @@ def mission_setup(analyses):
     #   Initialize the Mission
     # ------------------------------------------------------------------
 
-    mission = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag = 'mission'
  
     # unpack Segments module
-    Segments = RCAIDE.Analyses.Mission.Segments
+    Segments = RCAIDE.Framework.Mission.Segments
 
     # base segment
     base_segment = Segments.Segment()
@@ -234,35 +234,35 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle()
+    analyses = RCAIDE.Framework.Analyses.Vehicle()
  
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Analyses.Weights.Weights_Transport()
+    weights = RCAIDE.Framework.Analyses.Weights.Weights_Transport()
     weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
     #  Energy
-    energy= RCAIDE.Analyses.Energy.Energy()
+    energy= RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
 
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 

@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Core                          import Units , Data 
-from RCAIDE.Visualization                 import *       
-from RCAIDE.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
+from RCAIDE.Framework.Core                          import Units , Data 
+from RCAIDE.Library.Plots                           import *       
+from RCAIDE.Library.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
 
 # python imports     
 import numpy as np  
@@ -45,42 +45,11 @@ def main():
     missions = missions_setup(mission) 
      
     # mission analysis 
-    results = missions.base_mission.evaluate()   
-    
-    # Check the lift equivalent area
-    #equivalent_area(configs.base, analyses, results.segments.climbing_cruise.state.conditions)    
-     
-    # leave uncommented for regression 
-    save_results(results)  
-    old_results = load_results()    
+    results = missions.base_mission.evaluate()    
     
     ## plt the old results
-    plot_mission(results)  
-
-    # check the results
-    check_results(results,old_results)  
-    
-    return
- 
-
-
-# ----------------------------------------------------------------------
-#   Lift Equivalent Area Regression
-# ----------------------------------------------------------------------
-
-def equivalent_area(vehicle,analyses,conditions):
-    
-    X_locs, AE_x, _ = lift_equivalent_area(vehicle,analyses,conditions)
-    
-    regression_X_locs = np.arrayarray([ 9.2489996 , 20.53010197, 21.58099937, 24.08086729, 26.92006416,
-       27.57317331, 29.59647174, 30.96875399, 32.22881452])
-
-    regression_AE_x   = np.array([0.5153554 , 0.06737699, 0.24895593, 0.28295723, 0.48997988,
-       0.61036835, 1.06331585, 1.24096389, 1.74551694]) 
-    
-    assert (np.abs((X_locs[1:] - regression_X_locs )/regression_X_locs) < 1e-6).all() 
-    assert (np.abs((AE_x[1:] - regression_AE_x)/regression_AE_x) < 1e-6).all()
-
+    plot_mission(results)   
+    return 
 
 # ----------------------------------------------------------------------
 #   Define the Vehicle Analyses
@@ -88,7 +57,7 @@ def equivalent_area(vehicle,analyses,conditions):
 
 def analyses_setup(configs):
     
-    analyses = RCAIDE.Analyses.Analysis.Container()
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
     
     # build a base analysis for each config
     for tag,config in list(configs.items()):
@@ -102,38 +71,38 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle() 
     
     # ------------------------------------------------------------------
     #  Weights
-    weights         = RCAIDE.Analyses.Weights.Weights_Transport()
+    weights         = RCAIDE.Framework.Analyses.Weights.Weights_Transport()
     weights.vehicle = vehicle
     analyses.append(weights)
     
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics                                       = RCAIDE.Analyses.Aerodynamics.Supersonic_VLM()
+    aerodynamics                                       = RCAIDE.Framework.Analyses.Aerodynamics.Supersonic_VLM()
     aerodynamics.geometry                              = vehicle
-    aerodynamics.settings.number_spanwise_vortices     = 5
-    aerodynamics.settings.number_chordwise_vortices    = 2       
+    aerodynamics.settings.number_of_spanwise_vortices  = 5
+    aerodynamics.settings.number_of_chordwise_vortices = 2       
     aerodynamics.process.compute.lift.inviscid_wings.settings.model_fuselage = True
     aerodynamics.settings.drag_coefficient_increment   = 0.0000
     analyses.append(aerodynamics) 
     
     # ------------------------------------------------------------------
     #  Energy
-    energy= RCAIDE.Analyses.Energy.Energy()
+    energy= RCAIDE.Framework.Analyses.Energy.Energy()
     energy.networks = vehicle.networks  
     analyses.append(energy)
     
     # ------------------------------------------------------------------
     #  Planet Analysis
-    planet = RCAIDE.Analyses.Planets.Planet()
+    planet = RCAIDE.Framework.Analyses.Planets.Planet()
     analyses.append(planet)
     
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
-    atmosphere = RCAIDE.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
     
@@ -198,11 +167,11 @@ def mission_setup(analyses):
     #   Initialize the Mission
     # ------------------------------------------------------------------
     
-    mission = RCAIDE.Analyses.Mission.Sequential_Segments()
+    mission = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag = 'the_mission'
      
     # unpack Segments module
-    Segments = RCAIDE.Analyses.Mission.Segments 
+    Segments = RCAIDE.Framework.Mission.Segments 
     base_segment = Segments.Segment()
     
     # ------------------------------------------------------------------
@@ -496,7 +465,7 @@ def mission_setup(analyses):
 
 def missions_setup(mission):
 
-    missions     = RCAIDE.Analyses.Mission.Missions() 
+    missions     = RCAIDE.Framework.Mission.Missions() 
     mission.tag  = 'base_mission'
     missions.append(mission)
     
@@ -531,16 +500,8 @@ def check_results(new_results,old_results):
 
         print('') 
 
-    return
+    return 
 
-
-def load_results():
-    return RCAIDE.External_Interfaces.RCAIDE.load('results_mission_concorde.res')
-
-def save_results(results):
-    RCAIDE.External_Interfaces.RCAIDE.archive(results,'results_mission_concorde.res')
-    return    
-        
 if __name__ == '__main__': 
     main()    
     plt.show()

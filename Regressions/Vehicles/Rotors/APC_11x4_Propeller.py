@@ -4,9 +4,9 @@
 
 # Imports
 import RCAIDE
-from RCAIDE.Core import Units, Data  
-from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil   import compute_airfoil_properties
-from RCAIDE.Methods.Geometry.Two_Dimensional.Airfoil   import import_airfoil_geometry    
+from RCAIDE.Framework.Core import Units, Data  
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil   import compute_airfoil_properties
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil   import import_airfoil_geometry    
 from scipy.interpolate import interp1d
 import os
 import numpy as np  
@@ -14,7 +14,7 @@ import numpy as np
 # design propeller 
 
 def APC_11x4_Propeller():          
-    prop                            = RCAIDE.Energy.Propulsors.Converters.Rotor()
+    prop                            = RCAIDE.Library.Components.Propulsors.Converters.Rotor()
     prop.inputs                     = Data() 
     prop.inputs.pitch_command       = 0 
     prop.inputs.y_axis_rotation     = 0.
@@ -58,7 +58,7 @@ def APC_11x4_Propeller():
     ospath                          = os.path.abspath(__file__)
     separator                       = os.path.sep
     rel_path                        = os.path.dirname(ospath) + separator   
-    airfoil                         = RCAIDE.Components.Airfoils.Airfoil()
+    airfoil                         = RCAIDE.Library.Components.Airfoils.Airfoil()
     airfoil.number_of_points        = 300
     airfoil.coordinate_file         = rel_path +'../Airfoils/Clark_y.txt'
     airfoil.polar_files             = [rel_path +'../Airfoils/Polars/Clark_y_polar_Re_50000.txt',
