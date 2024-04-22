@@ -21,14 +21,15 @@ class ProcessStep:
     name:           str         = field(init=True, default="")
     last_result:    object      = field(init=True, default=None)
 
-    initial_args:   list        = field(init=False, default_factory=list)
-    initial_kwargs: dict        = field(init=False, default_factory=dict)
+    State:          dataclass   = field(init=False)
+    Settings:       dataclass   = field(init=False)
+    System:         dataclass   = field(init=False)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self):
 
-        *step_result_args, step_result_kwargs = self.function(*args, **kwargs)
+        framework_args = (self.State, self.Settings, self.System)
 
-        return step_result_args, step_result_kwargs
+        return self.function(*framework_args)
 
 
 def create_details():
@@ -65,6 +66,10 @@ class Process:
     current_step: int = field(init=False, default=0)
     start_at: int = field(init=False, default=0)
 
+    initial_state: dataclass = field(init=False)
+    initial_settings: dataclass = field(init=False)
+    initial_system: dataclass = field(init=False)
+
     def __getitem__(self, item):
         return self.steps[item]
 
@@ -72,14 +77,16 @@ class Process:
 
         self.update_details()
 
-        next_args   = self.initial_args
-        next_kwargs = self.initial_kwargs
+        framework_args = (self.initial_state,
+                          self.initial_settings,
+                          self.initial_system)
 
         for index, step in enumerate(self.steps[self.start_at:-1]):
-            *next_args,next_kwargs = step(*next_args, **next_kwargs)
-            self.details.at[index, 'Last Result'] = [next_args, next_kwargs]
+            framework_args = step(*framework_args)
+            self.steps[index].last_result = framework_args
+            self.details.at[index, 'Last Result'] = framework_args
 
-        results = self.steps[-1](*next_args, **next_kwargs)
+        results = self.steps[-1](*next_args)
         self.details.at[len(self.steps)-1, 'Last Result'] = results
 
         return results
