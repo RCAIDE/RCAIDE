@@ -21,9 +21,14 @@ class ProcessStep:
     name:           str         = field(init=True, default="")
     last_result:    object      = field(init=True, default=None)
 
+    initial_args:   list        = field(init=False, default_factory=list)
+    initial_kwargs: dict        = field(init=False, default_factory=dict)
+
     def __call__(self, *args, **kwargs):
 
-        return self.function(*args, **kwargs)
+        *step_result_args, step_result_kwargs = self.function(*args, **kwargs)
+
+        return step_result_args, step_result_kwargs
 
 
 def create_details():
@@ -63,9 +68,21 @@ class Process:
     def __getitem__(self, item):
         return self.steps[item]
 
-    def __call__(self):
+    def __call__(self, *args, **kwargs):
 
-        return
+        self.update_details()
+
+        next_args   = self.initial_args
+        next_kwargs = self.initial_kwargs
+
+        for index, step in enumerate(self.steps[self.start_at:-1]):
+            *next_args,next_kwargs = step(*next_args, **next_kwargs)
+            self.details.at[index, 'Last Result'] = [next_args, next_kwargs]
+
+        results = self.steps[-1](*next_args, **next_kwargs)
+        self.details.at[len(self.steps)-1, 'Last Result'] = results
+
+        return results
 
     def append(self, step: ProcessStep):
 
