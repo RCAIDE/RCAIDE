@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-# RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/size_turbofan_nacelle_geometry.py
+# RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/size_turbofan_nacelle.py
 # 
 # 
 # Created:  Feb 2024, M. Clarke
@@ -14,10 +14,10 @@ from RCAIDE.Framework.Core      import Units
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  size_turbofan_nacelle_geometry
+#  size_turbofan_nacelle
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-def size_turbofan_nacelle_geometry(turbofan, nacelle):
+def size_turbofan_nacelle(turbofan, nacelle):
     """Estimates the size of nacelle given turbofan properties and rewrites 
     nacelle geometry parameters.
     

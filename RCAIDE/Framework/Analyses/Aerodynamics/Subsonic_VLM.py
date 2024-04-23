@@ -80,8 +80,8 @@ class Subsonic_VLM(Aerodynamics):
         settings.drag_coefficient_increment         = 0.0000
         settings.spoiler_drag_increment             = 0.00 
         settings.maximum_lift_coefficient           = np.inf
-        settings.number_of_spanwise_vortices           = None 
-        settings.number_of_chordwise_vortices          = None 
+        settings.number_of_spanwise_vortices        = None 
+        settings.number_of_chordwise_vortices       = None 
         settings.use_surrogate                      = True
         settings.recalculate_total_wetted_area      = False
         settings.propeller_wake_model               = False 
