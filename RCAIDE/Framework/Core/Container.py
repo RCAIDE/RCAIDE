@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------        
 
-from .Core     import Data
+from .               import Data
 from warnings        import warn
 import random
 
