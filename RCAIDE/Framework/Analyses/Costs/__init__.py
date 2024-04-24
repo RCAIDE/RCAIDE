@@ -9,4 +9,4 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from Legacy.trunk.S.Analyses.Costs.Costs import Costs
+from .Costs import Costs
