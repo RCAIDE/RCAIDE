@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from RCAIDE.Framework.Core import Process, ProcessStep
-from RCAIDE.
+from RCAIDE.Framework.Methods
 
 class Weights_Transport(Process):
 
