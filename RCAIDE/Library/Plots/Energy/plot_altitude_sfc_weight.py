@@ -17,10 +17,10 @@ import numpy as np
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Plots-Energy
-def plot_propulsor_throttles(results,
+def plot_altitude_sfc_weight(results,
                              save_figure = False,
                              show_legend = True,
-                             save_filename = "Propulsor_Throttles" ,
+                             save_filename = "Altitude_SFC_Weight" ,
                              file_type = ".png",
                              width = 12, height = 7):
     """This plots the altitude, specific fuel consumption and vehicle weight.
@@ -28,7 +28,7 @@ def plot_propulsor_throttles(results,
     Assumptions:
     None
 
-    Source:
+    Source: 
 
     Inputs:
     results.segments.conditions.
@@ -60,7 +60,12 @@ def plot_propulsor_throttles(results,
     fig.set_size_inches(width,height)
     
     for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min  
+        time     = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min
+        Weight   = results.segments[i].conditions.weights.total_mass[:, 0] * 9.81   
+        mdot     = results.segments[i].conditions.weights.vehicle_mass_rate[:, 0]
+        thrust   = results.segments[i].conditions.frames.body.thrust_force_vector[:, 0]
+        sfc      = (mdot / Units.lb) / (thrust / Units.lbf) * Units.hr       
+            
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
         
@@ -78,7 +83,25 @@ def plot_propulsor_throttles(results,
             for fuel_line in fuel_lines:  
                 for propulsor in fuel_line.propulsors: 
                     eta = results.segments[i].conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
-                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)      
+                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)     
+        
+        axis_2 = plt.subplot(2,2,2)
+        axis_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
+        axis_2.set_ylabel(r'Weight (kN)')  
+        set_axes(axis_2) 
+
+        axis_3 = plt.subplot(2,2,3)
+        axis_3.plot(time, sfc, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_3.set_xlabel('Time (mins)')
+        axis_3.set_ylabel(r'SFC (lb/lbf-hr)')
+        set_axes(axis_3) 
+
+        axis_3 = plt.subplot(2,2,4)
+        axis_3.plot(time, mdot, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_3.set_xlabel('Time (mins)')
+        axis_3.set_ylabel(r'Fuel Rate (kg/s)')
+        set_axes(axis_3)         
+        
     
     if show_legend:
         leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
@@ -88,7 +111,7 @@ def plot_propulsor_throttles(results,
     fig.subplots_adjust(top=0.8)
     
     # set title of plot 
-    title_text    = 'Throttle'      
+    title_text    = 'Throttle SFC and Weight'      
     fig.suptitle(title_text)
     
     if save_figure:

@@ -37,6 +37,7 @@ class Vehicle(Data):
         self.wings                  = Components.Wings.Wing.Container()
         self.networks               = Framework.Networks.Network.Container()
         self.nacelles               = Components.Nacelles.Nacelle.Container()
+        self.avionics               = Components.Systems.Avionics.Container()
         self.systems                = Components.Systems.System.Container()
         self.booms                  = Components.Booms.Boom.Container()
         self.mass_properties        = Vehicle_Mass_Container()
