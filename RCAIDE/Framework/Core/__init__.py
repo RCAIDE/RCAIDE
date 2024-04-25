@@ -15,4 +15,5 @@ from Legacy.trunk.S.Core.Diffed_Data   import Diffed_Data, diff
 from Legacy.trunk.S.Core               import ContainerOrdered
 from .Container                        import Container
 from .Utilities                        import *
+from Legacy.trunk.S.Core.redirect      import redirect
 from Legacy.trunk.S.Core.Units         import Units 

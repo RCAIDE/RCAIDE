@@ -16,7 +16,7 @@ import subprocess
 import os
 from RCAIDE.Library.Methods.Aerodynamics.AVL.read_results import read_results
 from RCAIDE.Library.Methods.Aerodynamics.AVL.purge_files  import purge_files
-from RCAIDE.Framework.Core                                  import redirect
+from RCAIDE.Framework.Core                                import redirect
 
 ## @ingroup Methods-Aerodynamics-AVL
 def run_analysis(avl_object,print_output):
