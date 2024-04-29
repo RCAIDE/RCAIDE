@@ -10,7 +10,7 @@
 
 from RCAIDE.Framework.Core import Container as ContainerBase
 from RCAIDE.Framework.Core import Data
-from .Mass_Properties import Mass_Properties
+from .PhysicalComponent import Mass_Properties
 
 # package imports 
 import numpy as np

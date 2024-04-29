@@ -11,11 +11,11 @@
 # RCAIDE
 import RCAIDE
 from RCAIDE.Framework.Core                                            import Units, Data
-from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_fuselage_weight
-from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_boom_weight
-from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_rotor_weight
-from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_wiring_weight
-from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_wing_weight
+from RCAIDE.Library.Methods.Mass.Analytical.Common   import compute_fuselage_weight
+from RCAIDE.Library.Methods.Mass.Analytical.Common   import compute_boom_weight
+from RCAIDE.Library.Methods.Mass.Analytical.Common   import compute_rotor_weight
+from RCAIDE.Library.Methods.Mass.Analytical.Common   import compute_wiring_weight
+from RCAIDE.Library.Methods.Mass.Analytical.Common   import compute_wing_weight
 
 # package imports 
 import numpy as np

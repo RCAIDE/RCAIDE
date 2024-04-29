@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from RCAIDE.Framework.Core import Process, ProcessStep
-from RCAIDE.Framework.Methods
+from RCAIDE.Framework.Methods.Mass import Correlation as Mass
 
-class Weights_Transport(Process):
+class TransportMassAnalysis(Process):
 
     def __post_init__(self):
 
@@ -18,5 +18,11 @@ class Weights_Transport(Process):
 
         Prop_Weight = ProcessStep()
         Prop_Weight.name = 'Propulsion Weight'
-        Prop_Weight.function = Methods.Propulsion.
+        Prop_Weight.function = Mass.Propulsion.jet_mass_from_sls
+
+        #Payload Weight
+
+        Payload_Weight = Payload_Weight = ProcessStep()
+        Payload_Weight.name = 'Payload Weight'
+
 

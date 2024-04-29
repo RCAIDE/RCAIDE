@@ -18,7 +18,7 @@ from . import Noise
 from . import Performance 
 from . import Stability
 from . import Utilities
-from . import Weights
+from . import Mass
 
 from .skip import skip
 

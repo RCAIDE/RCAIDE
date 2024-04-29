@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from .Component        import Component
-from .Mass_Properties  import Mass_Properties
+from .PhysicalComponent  import PhysicalComponent
   
 from . import Propulsors
 from . import Energy

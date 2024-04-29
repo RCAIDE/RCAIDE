@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE
-from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric import compute_weight
+from RCAIDE.Library.Methods.Mass.Analytical.Electric import compute_weight
 from RCAIDE.Framework.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------

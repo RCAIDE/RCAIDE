@@ -1,4 +1,5 @@
-# Jet_Mass_from_SLS.py
+# RCAIDE/RCAIDE/Library/Methods/Weights/Correlation_Buildups/Propulsion/jet_mass_from_sls.py
+# (c) Copyright 2024 Aerospace Research Community LLC
 #
 # Created:  Apr 2024, J. Smart
 # Modified:
@@ -15,7 +16,7 @@ import numpy as np
 # Functional/Library Version
 # -----------------------------------------------------------------------
 
-def func_Jet_Mass_from_SLS(SLS_thrust: np.ndarray,
+def func_jet_mass_from_sls(SLS_thrust: np.ndarray,
                            n_engines: np.ndarray,
                            engine_weight_factor: float = 1.6,
                            *args, **kwargs):
@@ -45,7 +46,7 @@ def func_Jet_Mass_from_SLS(SLS_thrust: np.ndarray,
 # Stateful/Framework Version
 # -----------------------------------------------------------------------
 
-def Jet_Mass_from_SLS(State, Settings, System):
+def jet_mass_from_sls(State, Settings, System):
 
     propulsor_list = [System.networks.propulsor \
                       for propulsor in System.networks \
