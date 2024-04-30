@@ -1,5 +1,5 @@
 ## @ingroup Methods-Weights-Correlations-FLOPS
-# payload.py
+# passenger_payload.py
 #
 # Created:  May 2020, W. Van Gijseghem
 # Modified: Aug 2021, J. Mukhopadhaya

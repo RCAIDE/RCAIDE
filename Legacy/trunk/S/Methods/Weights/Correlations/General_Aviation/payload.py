@@ -1,5 +1,5 @@
 ## @ingroup Methods-Weights-Correlations-General_Aviation
-# payload.py
+# passenger_payload.py
 # 
 # Created:  Feb 2018, M. Vegh
 # Modified:

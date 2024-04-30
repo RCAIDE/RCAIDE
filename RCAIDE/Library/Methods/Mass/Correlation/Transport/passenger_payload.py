@@ -1,4 +1,4 @@
-# payload.py
+# passenger_payload.py
 #
 # Created:  Apr 2024, J. Smart
 # Modified:
@@ -14,10 +14,10 @@ from RCAIDE.Library.Components import PhysicalComponent
 # Functional/Library Version
 # -----------------------------------------------------------------------
 
-def func_payload(n_passengers,
-                 m_passenger = 195. * Units.lbm,
-                 m_baggage = 30. * Units.lbm,
-                 *args, **kwargs):
+def func_passenger_payload(n_passengers,
+                           m_passenger = 195. * Units.lbm,
+                           m_baggage = 30. * Units.lbm,
+                           *args, **kwargs):
     """
     Calculate the total mass of passengers and their baggage.
 
@@ -46,26 +46,39 @@ def func_payload(n_passengers,
 # Stateful/Framework Version
 # -----------------------------------------------------------------------
 
-def payload(State, Settings, System):
+def passenger_payload(State, Settings, System):
 
     n_passengers    = System.number_of_passengers
 
     passenger_mass, baggage_mass = func_payload(n_passengers)
 
-    if not hasattr(System, 'payload'):
-        System.payload = PhysicalComponent()
+    def _build_payload(payload: PhysicalComponent):
 
-    if not hasattr(System.payload, 'passengers'):
-        System.payload.passengers = PhysicalComponent()
-    System.payload.passengers.mass = passenger_mass
+        if hasattr(payload, 'passengers'):
+            payload.passengers.mass_properties.mass = passenger_mass
+        else:
+            passengers = PhysicalComponent(name='passengers')
+            passengers.mass_properties.mass = passenger_mass
+            payload.add_subcomponent(passengers)
 
-    if not hasattr(System.payload, 'baggage'):
-        System.payload.baggage = PhysicalComponent()
-    System.payload.baggage.mass = baggage_mass
+        if hasattr(payload, 'baggage'):
+            payload.baggage.mass_properties.mass = baggage_mass
+        else:
+            baggage = PhysicalComponent(name='baggage')
+            baggage.mass_properties.mass = baggage_mass
+            payload.add_subcomponent(baggage)
 
-    if not hasattr(System.payload, 'cargo'):
-        System.payload.cargo = PhysicalComponent()
+        payload.sum_mass
 
-    System.payload.sum_mass()
+        return payload
+
+    if hasattr(System, 'payload'):
+        _payload = System.payload
+        System.payload = _build_payload(_payload)
+        System.sum_mass()
+    else:
+        _payload = PhysicalComponent(name='payload')
+        payload = _build_payload(_payload)
+        System.add_subcomponent(payload)
 
     return State, Settings, System

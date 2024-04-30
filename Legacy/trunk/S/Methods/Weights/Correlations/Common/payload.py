@@ -1,5 +1,5 @@
 ## @ingroup Methods-Weights-Correlations-Common 
-# payload.py
+# passenger_payload.py
 # 
 # Created:  Jan 2014, A. Wendorff
 # Modified: Feb 2014, A. Wendorff
