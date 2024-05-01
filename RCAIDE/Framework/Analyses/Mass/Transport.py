@@ -9,6 +9,8 @@ class TransportMassAnalysis(Process):
     def __post_init__(self):
 
         # Weight Reduction Factors
+        self.initial_settings.aircraft_type = self.aircraft_type
+
         self.initial_settings.weight_reduction_factors = dataclass()
         self.initial_settings.weight_reduction_factors.main_wing    = 0.
         self.initial_settings.weight_reduction_factors.fuselage     = 0.
