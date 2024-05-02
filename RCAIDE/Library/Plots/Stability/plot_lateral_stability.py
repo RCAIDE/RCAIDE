@@ -47,6 +47,7 @@ def plot_lateral_stability(results,
     for i in range(len(results.segments)): 
         time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
         cn_beta  = results.segments[i].conditions.stability.static.derivatives.dCn_dbeta[:,0] 
+        phi  = results.segments[i].conditions.aerodynamics.angles.phi[:,0] / Units.deg
         dCl_dbeta    = results.segments[i].conditions.stability.static.derivatives.dCl_dbeta[:,0] 
         dCY_dbeta    = results.segments[i].conditions.stability.static.derivatives.dCY_dbeta[:,0]       
         delta_a  = results.segments[i].conditions.control_surfaces.aileron.deflection[:,0] / Units.deg  
@@ -58,25 +59,26 @@ def plot_lateral_stability(results,
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')
         
-        axis_1.plot(time, cn_beta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
-        axis_1.set_ylabel(r'Cn_beta (deg)') 
+        axis_1.plot(time, phi, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
+        axis_1.set_ylabel(r'$Bank Angle \phi$') 
         set_axes(axis_1)     
 
         axis_2.plot(time,delta_a , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
         axis_2.set_xlabel('Time (mins)')
-        axis_2.set_ylabel(r'Aileron Deflection')
+        axis_2.set_ylabel(r'Aileron Defl. (deg)')
         set_axes(axis_2)  
 
         axis_3.plot(time,delta_r , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
         axis_3.set_xlabel('Time (mins)')
-        axis_3.set_ylabel(r'Rudder Deflection')
+        axis_3.set_ylabel(r'Rudder Defl. (deg)')
         set_axes(axis_3)         
          
     if show_legend:
         leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
         leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
     
-    # Adjusting the sub-plots for legend 
+    # Adjusting the sub-plots for legend
+    fig.tight_layout()
     fig.subplots_adjust(top=0.8) 
     
     # set title of plot 

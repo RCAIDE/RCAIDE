@@ -3,7 +3,6 @@
 # 
 # 
 # Created:  Jul 2023, M. Clarke
-from RCAIDE.Framework.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unpack Unknowns
 # ----------------------------------------------------------------------------------------------------------------------
@@ -14,9 +13,8 @@ def orientation(segment):
     if segment.flight_controls.body_angle.active:  
         segment.state.conditions.frames.body.inertial_rotations[:,1] = segment.state.unknowns.body_angle[:,0]
 
-    if segment.flight_controls.bank_angle.active:
-        print(segment.state.unknowns.bank_angle[:,0]/Units.deg)
-        segment.state.conditions.frames.body.inertial_rotations[:,0] = segment.state.unknowns.bank_angle[:,0]*0
+    if segment.flight_controls.bank_angle.active: 
+        segment.state.conditions.frames.body.inertial_rotations[:,0] = segment.state.unknowns.bank_angle[:,0]
     
     # Velocity Control
     if segment.flight_controls.velocity.active:

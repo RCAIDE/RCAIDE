@@ -1,5 +1,5 @@
 ## @defgroup Analyses-Aerodynamics-Common Common
-# RCAIDE.Framework.Analyses/Aerodynamics/Common/__init__.py
+# RCAIDE/Framework/Analyses/Aerodynamics/Common/__init__.py
 # 
 
 """RCAIDE Package Setup

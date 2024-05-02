@@ -1,5 +1,5 @@
 ## @ingroup Analyses-Stability
-# RCAIDE.Framework.Analyses/Stability/Common/Vortex_Lattice.py
+# RCAIDE/Framework/Analyses/Stability/Common/Vortex_Lattice.py
 # 
 # 
 # Created:  Apr 2024, M. Clarke
@@ -66,7 +66,7 @@ class Vortex_Lattice(Stability):
         # conditions table, used for surrogate model training
         self.training                                = Data()
         self.training.angle_of_attack                = np.array([-5.  , 0.  , 5.])  * Units.deg 
-        self.training.Mach                           = np.array([0.   , 0.2 , 0.5 ])       
+        self.training.Mach                           = np.array([0.1 , 0.2 , 0.5 ])       
         self.training.sideslip_angle                 = np.array([-5  , 0   , 5.0])* Units.deg 
         self.training.elevator_deflection            = np.array([-1.  , 0.,  1.0])  * Units.deg   
         self.training.aileron_deflection             = np.array([-1.  , 0.,  1.0])  * Units.deg   
@@ -227,9 +227,9 @@ class Vortex_Lattice(Stability):
         #dCL_dalpha_surrogate   = surrogates.dCL_dalpha
         dCL_delta_e_surrogate  = surrogates.dCL_delta_e
         
-        #dCY_dbeta_surrogate    = surrogates.dCY_dbeta
-        #dCl_dbeta_surrogate    = surrogates.dCl_dbeta
-        #dCn_dbeta_surrogate    = surrogates.dCn_dbeta
+        dCY_dbeta_surrogate    = surrogates.dCY_dbeta
+        dCl_dbeta_surrogate    = surrogates.dCl_dbeta
+        dCn_dbeta_surrogate    = surrogates.dCn_dbeta
         dCY_ddelta_a_surrogate = surrogates.dCY_ddelta_a
         dCl_ddelta_a_surrogate = surrogates.dCl_ddelta_a
         dCn_ddelta_a_surrogate = surrogates.dCn_ddelta_a
@@ -237,7 +237,7 @@ class Vortex_Lattice(Stability):
         dCl_ddelta_r_surrogate = surrogates.dCl_ddelta_r
         dCn_ddelta_r_surrogate = surrogates.dCn_ddelta_r
         
-        dCl_dp_surrogate = surrogates.dCl_dp
+        dCl_dp_surrogate = surrogates.dCl_dp_surrogate
         
         pts          = np.hstack((AoA,Mach))
         CLift        = np.atleast_2d(CLift_surrogate(pts)).T         # this surrogate is basically CLalpha*alpha 
@@ -248,6 +248,10 @@ class Vortex_Lattice(Stability):
         CL_0 = np.atleast_2d(CL_0_surrogate(pts)).T
         CM_0 = np.atleast_2d(CM_0_surrogate(pts)).T        # this surrogate is basically Cm0 and Cmalpha*alpha
         CN_0 = np.atleast_2d(CN_0_surrogate(pts)).T
+
+        dCY_dbeta  = np.atleast_2d(dCY_dbeta_surrogate(pts)).T
+        dCl_dbeta  = np.atleast_2d(dCl_dbeta_surrogate(pts)).T 
+        dCn_dbeta = np.atleast_2d(dCn_dbeta_surrogate(pts)).T
         
         dCM_delta_e  = np.atleast_2d(dCM_delta_e_surrogate(pts)).T
         dCL_delta_e  = np.atleast_2d(dCL_delta_e_surrogate(pts)).T 
@@ -285,16 +289,13 @@ class Vortex_Lattice(Stability):
         conditions.aerodynamics.drag_breakdown.induced.inviscid = CDrag 
         
         conditions.stability.static.coefficients.CX        = CX_0 
-        conditions.stability.static.coefficients.CY        = CY_0 + dCY_ddelta_a * delta_a + dCY_ddelta_r * delta_r
+        conditions.stability.static.coefficients.CY        = CY_0 + dCY_dbeta * Beta + dCY_ddelta_a * delta_a + dCY_ddelta_r * delta_r
         conditions.stability.static.coefficients.CZ        = CZ_0
-        conditions.stability.static.coefficients.CL        = CL_0 + dCl_ddelta_a * delta_a + dCl_ddelta_r * delta_r + dCl_dp * pitch_rate
+        conditions.stability.static.coefficients.CL        = CL_0 + dCl_dbeta * Beta + dCl_ddelta_a * delta_a + dCl_ddelta_r * delta_r #+ dCl_dp *( pitch_rate / conditions.freestream.velocity) # rates are normalized 
         conditions.stability.static.coefficients.CM        = CM_0 + dCM_delta_e*delta_e
-        conditions.stability.static.coefficients.CN        = CN_0 + dCn_ddelta_a * delta_a + dCn_ddelta_r * delta_r
-        #conditions.stability.static_margin                 = np.atleast_2d(static_margin) 
-    
-        #compute_aero_derivatives_longitudinal(conditions)
-        #compute_aero_derivatives_lateral(conditions)  
-         
+        conditions.stability.static.coefficients.CN        = CN_0 + dCn_dbeta * Beta + dCn_ddelta_a * delta_a + dCn_ddelta_r * delta_r
+        #conditions.stability.static_margin                 = np.atleast_2d(static_margin)
+        
         return     
      
     def evaluate_no_surrogate(self,state,settings,geometry):
@@ -625,14 +626,14 @@ class Vortex_Lattice(Stability):
         # reset conditions         
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = AoAs 
-        conditions.freestream.mach_number               = Machs 
+        conditions.freestream.mach_number               = Machs
+        conditions.freestream.velocity                  = Machs * 343 # speed of sound  
         conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
         conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
         conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)         
+        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)        
         
         for roll_i in range(len_roll_rate):  
             conditions.stability.dynamic.roll_rate[:,0]                  = roll_rate[roll_i]             
@@ -686,14 +687,14 @@ class Vortex_Lattice(Stability):
         
         # Lateral Derviatives
         training.dCY_dbeta    = (CY_beta[:,:,0] - CY_beta[:,:,1])   / (Beta[0]-Beta[1])
-        training.dCl_dbeta    = (CL_beta[:,:,0] - CL_beta[:,:,1])   / (Beta[0]-Beta[1]) #
+        training.dCl_dbeta    = -(CL_beta[:,:,0] - CL_beta[:,:,1])   / (Beta[0]-Beta[1])  # negative sign due definition in literature
         training.dCn_dbeta    = (CN_beta[:,:,0] - CN_beta[:,:,1])   / (Beta[0]-Beta[1])
         training.dCY_ddelta_a = (CY_d_a[:,:,0] -  CY_d_a[:,:,1])   / (delta_a[0]-delta_a[1])
-        training.dCl_ddelta_a = (CL_d_a[:,:,0] - CL_d_a[:,:,1])   / (delta_a[0]-delta_a[1]) #
+        training.dCl_ddelta_a = (CL_d_a[:,:,0] - CL_d_a[:,:,1])   / (delta_a[0]-delta_a[1]) 
         training.dCn_ddelta_a = (CN_d_a[:,:,0] - CN_d_a[:,:,1])   / (delta_a[0]-delta_a[1])
         training.dCY_ddelta_r = (CY_d_r[:,:,0] - CY_d_r[:,:,1])   /  (delta_r[0]-delta_r[1])
         training.dCl_ddelta_r = (CL_d_r[:,:,0] - CL_d_r[:,:,1])   / (delta_r[0]-delta_r[1])
-        training.dCn_ddelta_r = (CN_d_r[:,:,0] - CN_d_r[:,:,1])   / (delta_r[0]-delta_r[1]) #
+        training.dCn_ddelta_r = -(CN_d_r[:,:,0] - CN_d_r[:,:,1])   / (delta_r[0]-delta_r[1]) # negative sign due definition in literature
         
         #training.dCY_dp      = np.mean((CY_pitch_rate[:,:,0] - CY_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0]))
         #training.dCY_dr       = np.mean((CL_d_e[:,:,0] - CL_d_e[:,:,1])   / (AoA[1]-AoA[0]))        
@@ -798,8 +799,7 @@ class Vortex_Lattice(Stability):
         dCn_ddelta_a_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCn_ddelta_a_data,method = 'linear',   bounds_error=False, fill_value=None)
         dCY_ddelta_r_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCY_ddelta_r_data,method = 'linear',   bounds_error=False, fill_value=None)
         dCl_ddelta_r_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCl_ddelta_r_data,method = 'linear',   bounds_error=False, fill_value=None)
-        dCn_ddelta_r_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCn_ddelta_r_data,method = 'linear',   bounds_error=False, fill_value=None)
-        
+        dCn_ddelta_r_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCn_ddelta_r_data,method = 'linear',   bounds_error=False, fill_value=None) 
         dCl_dp_surrogate      = RegularGridInterpolator((AoA_data,mach_data),dCl_dp_data,method = 'linear',   bounds_error=False, fill_value=None)
         
         
@@ -826,8 +826,7 @@ class Vortex_Lattice(Stability):
         surrogates.dCn_ddelta_a = dCn_ddelta_a_surrogate
         surrogates.dCY_ddelta_r = dCY_ddelta_r_surrogate
         surrogates.dCl_ddelta_r = dCl_ddelta_r_surrogate
-        surrogates.dCn_ddelta_r = dCn_ddelta_r_surrogate
-        
+        surrogates.dCn_ddelta_r = dCn_ddelta_r_surrogate 
         surrogates.dCl_dp_surrogate = dCl_dp_surrogate
         #surrogates.static_margin= static_margin
         #surrogates.dCY_dp        = dCY_dp_data 

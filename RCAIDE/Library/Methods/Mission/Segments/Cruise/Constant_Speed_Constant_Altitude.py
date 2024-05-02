@@ -38,10 +38,11 @@ def initialize_conditions(segment):
     N/A
     """        
     
-    # unpack
+    # unpack 
     alt        = segment.altitude
     xf         = segment.distance
     air_speed  = segment.air_speed       
+    sideslip   = segment.sideslip_angle
     conditions = segment.state.conditions 
 
     # check for initial velocity
@@ -55,13 +56,16 @@ def initialize_conditions(segment):
         alt = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
     
     # dimensionalize time
-    t_initial = conditions.frames.inertial.time[0,0]
-    t_final   = xf / air_speed + t_initial
-    t_nondim  = segment.state.numerics.dimensionless.control_points
-    time      = t_nondim * (t_final-t_initial) + t_initial
+    air_speed_x = np.cos(sideslip)*air_speed 
+    air_speed_y = np.sin(sideslip)*air_speed 
+    t_initial   = conditions.frames.inertial.time[0,0]
+    t_final     = xf / air_speed_x + t_initial
+    t_nondim    = segment.state.numerics.dimensionless.control_points
+    time        = t_nondim * (t_final-t_initial) + t_initial
     
     # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed
+    segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed_x
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = air_speed_y
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]

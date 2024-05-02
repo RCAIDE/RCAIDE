@@ -122,8 +122,7 @@ class Results(Conditions):
         self.aerodynamics.angles                              = Conditions()
         self.aerodynamics.angles.alpha                        = ones_1col * 0
         self.aerodynamics.angles.beta                         = ones_1col * 0
-        self.aerodynamics.angles.gamma                        = ones_1col * 0
-        self.aerodynamics.angles.phi                          = ones_1col * 0
+        self.aerodynamics.angles.phi                          = ones_1col * 0 
 
         # aerodynamic coefficients 
         self.aerodynamics.coefficients                        = Conditions()

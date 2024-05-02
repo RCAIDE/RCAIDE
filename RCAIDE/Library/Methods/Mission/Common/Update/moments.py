@@ -37,7 +37,7 @@ def moments(segment):
     """    
 
     # unpack
-    conditions        = segment.state.conditions  
+    conditions         = segment.state.conditions  
     wind_moment_vector = conditions.frames.wind.moment_vector
     
     # unpack transformation matrices
