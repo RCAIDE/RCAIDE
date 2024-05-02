@@ -1,4 +1,4 @@
-# Regression/scripts/Vehicles/Concorde.py
+# Regressions/Vehicles/Concorde.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -11,13 +11,13 @@ import RCAIDE
 from RCAIDE.Framework.Core                                           import Units , Data    
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbojet_Propulsor   import design_turbojet
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import wing_segmented_planform
-from RCAIDE.Library.Plots                 import *     
+from RCAIDE.Library.Plots     import *     
 
 # python imports 
 import numpy as np  
 from copy import deepcopy
 import os
-
+ 
 def vehicle_setup():
 
     # ------------------------------------------------------------------
