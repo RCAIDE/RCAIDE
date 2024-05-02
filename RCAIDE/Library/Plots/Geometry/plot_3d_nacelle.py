@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 import RCAIDE
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import import_airfoil_geometry
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil import compute_naca_4series 
+from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series 
 
 import numpy as np 
 import plotly.graph_objects as go 

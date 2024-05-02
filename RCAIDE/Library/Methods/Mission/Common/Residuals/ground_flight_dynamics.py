@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Residuals
-# RCAIDE/Methods/Missions/Common/Residuals/ground_forces.py
+## @ingroup Library-Methods-Missions-Common-Residuals
+# RCAIDE/Library/Methods/Missions/Common/Residuals/ground_flight_dynamics.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,8 +8,8 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Residual Total Forces
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Residuals 
-def ground_forces(segment):
+## @ingroup Library-Methods-Missions-Common-Residuals 
+def ground_flight_dynamics(segment):
     """ Calculates a residual based on forces
     
         Assumptions:

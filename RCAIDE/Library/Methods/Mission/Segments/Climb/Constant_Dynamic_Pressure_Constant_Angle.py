@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Climb
-# RCAIDE/Methods/Missions/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.py
+## @ingroup Library-Methods-Missions-Segments-Climb
+# RCAIDE/Library/Methods/Missions/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Segments-Climb
+## @ingroup Library-Methods-Missions-Segments-Climb
 def initialize_conditions_unpack_unknowns(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -86,7 +86,7 @@ def initialize_conditions_unpack_unknowns(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,2] = v_z   
     
-## @ingroup Methods-Missions-Segments-Climb
+## @ingroup Library-Methods-Missions-Segments-Climb
 def residual_altitude(segment):
     """Computes the altitude residual
 
@@ -120,7 +120,7 @@ def residual_altitude(segment):
 # ----------------------------------------------------------------------------------------------------------------------  
 # Update Differentials
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Climb   
+## @ingroup Library-Methods-Missions-Segments-Climb   
 def update_differentials(segment):
     """ On each iteration creates the differentials and integration functions from knowns about the problem. 
       Sets the time at each point. Must return in dimensional time, with t[0] = 0.

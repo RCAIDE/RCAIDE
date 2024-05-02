@@ -1,5 +1,5 @@
 ## @ingroup Analyses-Mission-Segments-Single_Point
-# RCAIDE/Analyses/Mission/Segments/Single_Point/Set_Speed_Set_Throttle.py
+# RCAIDE/Framework/Analyses/Mission/Segments/Single_Point/Set_Speed_Set_Throttle.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -69,13 +69,14 @@ class Set_Speed_Set_Throttle(Evaluate):
         initialize.differentials           = skip
         initialize.conditions              = Segments.Single_Point.Set_Speed_Set_Throttle.initialize_conditions 
         iterate                            = self.process.iterate 
-        iterate.initials.energy            = skip    
-        iterate.unknowns.mission           = Segments.Single_Point.Set_Speed_Set_Throttle.unpack_unknowns # Common.Unpack_Unknowns.orientation
+        iterate.initials.energy            = skip
         iterate.conditions.differentials   = skip   
         iterate.conditions.planet_position = skip    
         iterate.conditions.acceleration    = skip
         iterate.conditions.weights         = skip 
-        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
+        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
+        iterate.unknowns.mission           = Segments.Single_Point.Set_Speed_Set_Throttle.unpack_unknowns
+        iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
         post_process                       = self.process.post_process 
         post_process.inertial_position     = skip    
                 

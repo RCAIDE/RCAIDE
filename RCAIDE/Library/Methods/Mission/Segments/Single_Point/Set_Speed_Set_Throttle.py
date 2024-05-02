@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Single_Point
-# RCAIDE/Methods/Missions/Segments/Single_Point/Set_Speed_Set_Throttle.py
+## @ingroup Library-Methods-Missions-Segments-Single_Point
+# RCAIDE/Library/Methods/Missions/Segments/Single_Point/Set_Speed_Set_Throttle.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -13,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Single_Point
+## @ingroup Library-Methods-Missions-Segments-Single_Point
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -61,7 +61,7 @@ def initialize_conditions(segment):
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Unpack Unknowns 
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Single_Point
+## @ingroup Library-Methods-Missions-Segments-Single_Point
 def unpack_unknowns(segment):
     """ Unpacks the x accleration and body angle from the solver to the mission
     

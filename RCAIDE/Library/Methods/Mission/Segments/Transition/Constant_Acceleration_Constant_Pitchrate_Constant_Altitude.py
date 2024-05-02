@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Transition
-# RCAIDE/Methods/Missions/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py
+## @ingroup Library-Methods-Missions-Segments-Transition
+# RCAIDE/Library/Methods/Missions/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,7 +8,7 @@
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------   
 
-## @ingroup Methods-Missions-Segments-Transition
+## @ingroup Library-Methods-Missions-Segments-Transition
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

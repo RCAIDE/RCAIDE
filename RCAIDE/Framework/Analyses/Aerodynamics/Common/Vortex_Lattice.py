@@ -1,5 +1,5 @@
 ## @ingroup Analyses-Aerodynamics
-# RCAIDE/Analyses/Aerodynamics/Vortex_Lattice.py
+# RCAIDE.Framework.Analyses/Aerodynamics/Vortex_Lattice.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke

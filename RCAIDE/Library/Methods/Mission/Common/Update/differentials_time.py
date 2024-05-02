@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Update
-# RCAIDE/Methods/Missions/Segments/Common/Update/differentials_time.py
+## @ingroup Library-Methods-Missions-Segments-Common-Update
+# RCAIDE/Library/Methods/Missions/Segments/Common/Update/differentials_time.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -8,7 +8,7 @@
 #  Update Differentials Time
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Methods-Missions-Segments-Common-Update
+## @ingroup Library-Methods-Missions-Segments-Common-Update
 def differentials_time(segment):
     """ Updates the time descretization 
         

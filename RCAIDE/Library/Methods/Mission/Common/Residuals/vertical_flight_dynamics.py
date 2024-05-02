@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Residuals
-# RCAIDE/Methods/Missions/Common/Residuals/vertical_flight_forces.py
+## @ingroup Library-Methods-Missions-Common-Residuals
+# RCAIDE/Library/Methods/Missions/Common/Residuals/vertical_flight_dynamics.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -7,8 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Residual Total Forces
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Residuals  
-def vertical_flight_forces(segment):
+## @ingroup Library-Methods-Missions-Common-Residuals  
+def vertical_flight_dynamics(segment):
     """ Calculates a residual based on forces
     
         Assumptions:

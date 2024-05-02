@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Unpack_Unknowns
-# RCAIDE/Methods/Missions/Common/Unpack_Unknowns/energy.py
+## @ingroup Library-Methods-Missions-Common-Unpack_Unknowns
+# RCAIDE/Library/Methods/Missions/Common/Unpack_Unknowns/energy.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unpack Unknowns
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Unpack_Unknowns
+## @ingroup Library-Methods-Missions-Common-Unpack_Unknowns
 def fuel_line_unknowns(segment,fuel_lines):
     flight_controls = segment.flight_controls
     state           = segment.state 

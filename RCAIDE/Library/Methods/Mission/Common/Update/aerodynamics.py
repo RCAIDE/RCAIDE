@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Common-Update 
-# RCAIDE/Methods/Missions/Common/Update/aerodynamics.py
+## @ingroup Library-Methods-Missions-Common-Update 
+# RCAIDE/Library/Methods/Missions/Common/Update/aerodynamics.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Missions-Common-Update
+## @ingroup Library-Methods-Missions-Common-Update
 def aerodynamics(segment):
     """ Gets aerodynamics conditions
     
@@ -55,17 +55,16 @@ def aerodynamics(segment):
     CL[CL< -CLmax] = -CLmax
         
     # dimensionalize
-    L = segment.state.ones_row(3) * 0.0
-    D = segment.state.ones_row(3) * 0.0
+    F = segment.state.ones_row(3) * 0.0
 
-    L[:,2] = ( -CL * q * Sref )[:,0]
-    D[:,0] = ( -CD * q * Sref )[:,0]
+    F[:,2] = ( -CL * q * Sref )[:,0]
+    F[:,0] = ( -CD * q * Sref )[:,0]
 
-    results.lift_force_vector = L
-    results.drag_force_vector = D    
+    results.force_vector = F
 
     # pack conditions
-    conditions.aerodynamics.coefficients.lift     = CL
-    conditions.aerodynamics.coefficients.drag     = CD
-    conditions.frames.wind.lift_force_vector[:,:] = L[:,:] # z-axis
-    conditions.frames.wind.drag_force_vector[:,:] = D[:,:] # x-axis
+    conditions.aerodynamics.coefficients.lift  = CL
+    conditions.aerodynamics.coefficients.drag  = CD
+    conditions.frames.wind.force_vector[:,:]   = F[:,:]
+
+    return

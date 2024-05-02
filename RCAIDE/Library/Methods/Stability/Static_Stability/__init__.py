@@ -8,7 +8,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.compute_aero_derivatives import compute_aero_derivatives
-
-from . import Approximations
+  
+from . import VLM_Pertubation_Approximations

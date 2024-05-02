@@ -1,5 +1,5 @@
-## @ingroup Methods-Missions-Segments-Common-Pre_Process
-# RCAIDE/Methods/Missions/Common/Pre_Process/flight_dynamics_and_controls.py
+## @ingroup Library-Methods-Missions-Segments-Common-Pre_Process
+# RCAIDE/Library/Methods/Missions/Common/Pre_Process/set_residuals_and_unknowns.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,10 +10,10 @@
 from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  flight_dynamics_and_controls
+#  set_residuals_and_unknowns
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Missions-Segments-Common-Pre_Process
-def flight_dynamics_and_controls(mission):
+## @ingroup Library-Methods-Missions-Segments-Common-Pre_Process
+def set_residuals_and_unknowns(mission):
     """ Sets the flight dynamics residuals and fligth controls of the aircraft   
 
         Assumptions:
@@ -64,7 +64,17 @@ def flight_dynamics_and_controls(mission):
                 segment.state.unknowns.body_angle = ones_row(1) * ctrls.body_angle.initial_guess_values[0][0]
             else:
                 segment.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees 
+            num_ctrls += 1 
+            
+    
+        # Bank Angle  
+        if ctrls.bank_angle.active:
+            if ctrls.bank_angle.initial_guess:
+                segment.state.unknowns.bank_angle = ones_row(1) * ctrls.bank_angle.initial_guess_values[0][0]
+            else:
+                segment.state.unknowns.bank_angle = ones_row(1) * 0.0 * Units.degrees 
             num_ctrls += 1    
+                
                 
         # Wing Angle  
         if ctrls.wind_angle.active:
@@ -118,6 +128,15 @@ def flight_dynamics_and_controls(mission):
                 else:
                     segment.state.unknowns["elevator_" + str(i)] = ones_row(1) * 0.0 * Units.degrees  
                 num_ctrls += 1   
+                
+        # Elevator 
+        if ctrls.rudder_deflection.active:  
+            for i in range(len(ctrls.rudder_deflection.assigned_surfaces)):   
+                try:    
+                    segment.state.unknowns["rudder_" + str(i)] = ones_row(1) * ctrls.rudder_deflection.initial_values[i][0]
+                except:
+                    segment.state.unknowns["rudder_" + str(i)] = ones_row(1) * 0.0 * Units.degrees  
+                num_ctrls += 1    
                     
         # Flap  
         if ctrls.flap_deflection.active:  

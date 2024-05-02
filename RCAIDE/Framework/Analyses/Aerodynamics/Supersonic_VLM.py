@@ -1,5 +1,5 @@
 ## @ingroup Analyses-Aerodynamics
-# RCAIDE/Analyses/Aerodynamics/Supersonic_VLM.py
+# RCAIDE.Framework.Analyses/Aerodynamics/Supersonic_VLM.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke

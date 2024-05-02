@@ -8,8 +8,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability.compute_dynamic_flight_modes import compute_dynamic_flight_modes
-
-from . import Approximations
-from . import Full_Linearized_Equations
+  
+from . import VLM_Pertubation_Approximations

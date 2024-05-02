@@ -1,14 +1,12 @@
-## @defgroup Methods-Geometry-Two_Dimensional Two Dimensional
-# RCAIDE/Methods/Geometry/Two_Dimensional/__init__.py
+## @defgroup Analyses-Aerodynamics-Common Common
+# RCAIDE.Framework.Analyses/Aerodynamics/Common/__init__.py
 # 
 
-""" RCAIDE Package Setup
+"""RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Geometry
-
-from . import Airfoil
-from . import Planform
+ 
+from .Vortex_Lattice     import Vortex_Lattice 
