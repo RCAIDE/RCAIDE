@@ -111,7 +111,7 @@ def design_propeller(prop,number_of_stations=20):
         for _,airfoil in enumerate(airfoils):  
             if airfoil.geometry == None: # first, if airfoil geometry data not defined, import from geoemtry files
                 if type(airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
-                    airfoil.geometry = compute_naca_4series(airfoil.coordinate_file,airfoil.number_of_points)
+                    airfoil.geometry = compute_naca_4series(airfoil.NACA_4_Series_code,airfoil.number_of_points)
                 else:
                     airfoil.geometry = import_airfoil_geometry(airfoil.coordinate_file,airfoil.number_of_points) 
     

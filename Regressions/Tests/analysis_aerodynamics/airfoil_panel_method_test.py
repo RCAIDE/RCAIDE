@@ -8,8 +8,8 @@
 # RCAIDE Imports 
 from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Methods.Aerodynamics.Airfoil_Panel_Method     import airfoil_analysis 
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil      import compute_naca_4series
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil      import import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Airfoil                      import compute_naca_4series
+from RCAIDE.Library.Methods.Geometry.Airfoil                      import import_airfoil_geometry
 from RCAIDE.Library.Plots import * 
 
 # Python imports
@@ -33,8 +33,8 @@ def single_airfoil():
     # Batch analysis of single airfoil - NACA 4412 
     # -----------------------------------------------
     AoA_deg              = np.linspace(-5,10,16)
-    Re_vals              = np.atleast_2d(np.ones(len(AoA_deg)))*1E5 
-    AoA_rad              = np.atleast_2d(AoA_deg*Units.degrees)   
+    Re_vals              = np.atleast_2d(np.ones(len(AoA_deg))).T*1E5 
+    AoA_rad              = np.atleast_2d(AoA_deg*Units.degrees).T  
     airfoil_file_1       = '4412'
     airfoil_geometry_1   = compute_naca_4series(airfoil_file_1,npoints = 201)
     airfoil_properties_1 = airfoil_analysis(airfoil_geometry_1,AoA_rad,Re_vals)  
@@ -50,17 +50,17 @@ def single_airfoil():
     cm_invisc_true        = -0.11066949071512713 
     
     print('\nThis is for single airfoil')
-    diff_CL = np.abs((airfoil_properties_1.cl_invisc[0,10] - cl_invisc_true)/cl_invisc_true)    
+    diff_CL = np.abs((airfoil_properties_1.cl_invisc[10,0] - cl_invisc_true)/cl_invisc_true)    
     print('\ncl_invisc difference')
     print(diff_CL)
     assert diff_CL < 1e-6 
     
-    diff_CD  = np.abs((airfoil_properties_1.cd_invisc[0,10] - cd_invisc_true)/cd_invisc_true)  
+    diff_CD  = np.abs((airfoil_properties_1.cd_invisc[10,0] - cd_invisc_true)/cd_invisc_true)  
     print('\ncd_invisc difference')
     print(diff_CD )
     assert diff_CD  < 1e-6     
 
-    diff_CM = np.abs((airfoil_properties_1.cm_invisc[0,10] - cm_invisc_true)/cm_invisc_true) 
+    diff_CM = np.abs((airfoil_properties_1.cm_invisc[10,0] - cm_invisc_true)/cm_invisc_true) 
     print('\ncm_invisc difference')
     print(diff_CM)
     assert diff_CM < 1e-6
@@ -71,9 +71,9 @@ def single_airfoil():
     Cd_abbot = 0.0064
     Cm_abbot = -0.0885
     
-    CL_invisc_val_diff = np.abs((airfoil_properties_1.cl_invisc[0,10] - Cl_abbot)/Cl_abbot) 
-    CD_invisc_val_diff = np.abs((airfoil_properties_1.cd_invisc[0,10] - Cd_abbot)/Cd_abbot)
-    CM_invisc_val_diff = np.abs((airfoil_properties_1.cm_invisc[0,10] - Cm_abbot)/Cm_abbot)
+    CL_invisc_val_diff = np.abs((airfoil_properties_1.cl_invisc[10,0] - Cl_abbot)/Cl_abbot) 
+    CD_invisc_val_diff = np.abs((airfoil_properties_1.cd_invisc[10,0] - Cd_abbot)/Cd_abbot)
+    CM_invisc_val_diff = np.abs((airfoil_properties_1.cm_invisc[10,0] - Cm_abbot)/Cm_abbot)
     print('\nValidation against Abbot data')
     print('invisc Cl-Cl_abbot/Cl_abbot',CL_invisc_val_diff*100,'%\n') 
     print('invisc Cd-Cd_abbot/Cd_abbot',CD_invisc_val_diff*100,'%\n')
@@ -85,9 +85,9 @@ def single_airfoil():
     Cd_CFD = 0.013989972
     Cm_CFD = -0.64460867
     
-    CL_invisc_CFD_diff = np.abs((airfoil_properties_1.cl_invisc[0,10] - Cl_CFD)/Cl_CFD) 
-    CD_invisc_CFD_diff = np.abs((airfoil_properties_1.cd_invisc[0,10] - Cd_CFD)/Cd_CFD)
-    CM_invisc_CFD_diff = np.abs((airfoil_properties_1.cm_invisc[0,10] - Cm_CFD)/Cm_CFD)
+    CL_invisc_CFD_diff = np.abs((airfoil_properties_1.cl_invisc[10,0] - Cl_CFD)/Cl_CFD) 
+    CD_invisc_CFD_diff = np.abs((airfoil_properties_1.cd_invisc[10,0] - Cd_CFD)/Cd_CFD)
+    CM_invisc_CFD_diff = np.abs((airfoil_properties_1.cm_invisc[10,0] - Cm_CFD)/Cm_CFD)
     print('\nValidation against CFD data')
     print('invisc Cl-Cl_CFD/Cl_CFD',CL_invisc_CFD_diff*100,'%\n') 
     print('invisc Cd-Cd_CFD/Cd_CFD',CD_invisc_CFD_diff*100,'%\n')
@@ -118,17 +118,17 @@ def single_airfoil():
     axis_2 = fig.add_subplot(3,1,2) 
     axis_3 = fig.add_subplot(3,1,3) 
     
-    axis_1.plot(AoA_deg,airfoil_properties_1.cl_invisc[0,:],'-ko', label='cl invisc')
+    axis_1.plot(AoA_deg,airfoil_properties_1.cl_invisc[:,0],'-ko', label='cl invisc')
     axis_1.set_ylabel('CL inviscid')
     axis_1.plot(AoA_abbot_cl_cd,cl_abbot, label='abbot')
     axis_1.plot(AoA_deg,cl_xfoil,label='xfoil')
     axis_1.legend(loc="upper right") 
-    axis_2.plot(AoA_deg,airfoil_properties_1.cd_invisc[0,:],'-ko', label='cd invisc')
+    axis_2.plot(AoA_deg,airfoil_properties_1.cd_invisc[:,0],'-ko', label='cd invisc')
     axis_2.set_ylabel('CD inviscid')
     axis_2.plot(AoA_abbot_cl_cd,cd_abbot,label='abbot')
     axis_2.plot(AoA_deg,cd_xfoil,label='xfoil')
     axis_2.legend(loc="upper right")  
-    axis_3.plot(AoA_deg,airfoil_properties_1.cm_invisc[0,:],'-ko', label='cm invisc')
+    axis_3.plot(AoA_deg,airfoil_properties_1.cm_invisc[:,0],'-ko', label='cm invisc')
     axis_3.set_ylabel('CM inviscid')
     axis_3.plot(AOA_abbot_cm,cm_abbot,label='abbot')
     axis_3.plot(AoA_deg,cm_xfoil,label='xfoil')
@@ -144,15 +144,15 @@ def multi_airfoil():
     ospath                = os.path.abspath(__file__)
     separator             = os.path.sep 
     rel_path              = ospath.split('analysis_aerodynamics' + separator + 'airfoil_panel_method_test.py')[0] + '..' + separator + 'Vehicles' + separator + 'Airfoils' + separator 
-    Re_vals               = np.atleast_1d(np.array([1E5,2E5]))
-    AoA_vals              = np.atleast_2d(np.array([[0,1,2,3,4,5],[0,1,2,3,4,5]])*Units.degrees)   
+    Re_vals               =  np.array([[1E5, 1E5, 1E5, 1E5, 1E5, 1E5], [2E5 ,2E5, 2E5, 2E5, 2E5, 2E5]]) 
+    AoA_vals              =  np.array([[0,1,2,3,4,5],[0,1,2,3,4,5]])*Units.degrees    
     airfoil_file_2        = rel_path + 'NACA_4412.txt'     
-    airfoil_geometry_2    = import_airfoil_geometry(airfoil_file_2,npoints = 200)      
+    airfoil_geometry_2    = import_airfoil_geometry(airfoil_file_2,npoints = 201)      
     airfoil_properties_2  = airfoil_analysis(airfoil_geometry_2,AoA_vals,Re_vals)     
        
-    True_cl_invisc = np.array([0.45692191, 0.56682385, 0.67657043, 0.78612768, 0.89546165, 1.0045384 ])
-    True_cd_invisc = np.array([ 5.47863961e-05, -1.00070485e-04, -2.45090408e-04, -3.79337274e-04,  -5.01907590e-04, -6.11933108e-04])
-    True_cm_invisc = np.array([-0.09706381, -0.09639439, -0.09574306, -0.09511061, -0.0944978 , -0.0939054 ])
+    True_cl_invisc = np.array([0.45707213, 0.56697577, 0.6767239 , 0.78628253, 0.8956177 ,1.0046955 ])
+    True_cd_invisc = np.array([ 5.62827861e-05, -9.72045393e-05, -2.40818475e-04, -3.73629564e-04,-4.94741048e-04, -6.03291489e-04]) 
+    True_cm_invisc = np.array([-0.09711004, -0.09645007, -0.09581086, -0.0951932 , -0.09459784,-0.0940255 ])
     
     print('\n\nThis is for multi airfoil')
     print('\ninvisc CL difference')

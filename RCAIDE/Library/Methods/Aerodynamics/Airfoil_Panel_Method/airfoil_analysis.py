@@ -80,9 +80,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     x_coord      = airfoil_geometry.x_coordinates
     y_coord      = airfoil_geometry.y_coordinates
     npanel       = len(x_coord)-1 
-         
-    # if (ncases !=  len(Re_L[0,:])  ):
-    #     raise AssertionError('Number of angle of attacks and Reynolds numbers must be equal')      
+               
     x_coord_3d = np.tile(x_coord[:,None,None],(1,ncases,ncpts)) # number of points, number of cases, number of control points 
     y_coord_3d = np.tile(y_coord[:,None,None],(1,ncases,ncpts)) # number of points, number of cases, number of control points 
         

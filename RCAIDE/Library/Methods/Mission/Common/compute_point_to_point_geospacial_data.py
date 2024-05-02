@@ -1,4 +1,4 @@
-## @ingroup Visualization-Performance-Noise
+## @ingroup Library-Plots-Noise
 # RCAIDE/Library/Methods/Missions/Common/compute_point_to_point_geospacial_data.py
 # 
 # 

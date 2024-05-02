@@ -11,8 +11,8 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Mission.Segments         import Segment
 from RCAIDE.Framework.Mission.Common.Results   import Results
-from RCAIDE.Library.Methods.Mission                   import Common , Solver 
-from RCAIDE.Framework.Analyses                          import Process  
+from RCAIDE.Library.Methods.Mission            import Common , Solver 
+from RCAIDE.Framework.Analyses                 import Process  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ANALYSES

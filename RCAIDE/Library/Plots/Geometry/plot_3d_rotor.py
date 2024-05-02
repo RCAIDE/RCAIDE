@@ -1,5 +1,5 @@
-## @ingroup Visualization-Geometry  
-# RCAIDE/Visualization/Geometry/plot_3d_rotor.py
+## @ingroup Library-Plots-Geometry  
+# RCAIDE/Library/Plots/Geometry/plot_3d_rotor.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -19,7 +19,7 @@ import plotly.graph_objects as go
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Visualization-Geometry  
+## @ingroup Library-Plots-Geometry  
 def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data = None,
                   show_figure  = True, plot_axis = False, cpt=0, number_of_airfoil_points = 21,
                     color_map='turbid',alpha=1):
@@ -100,7 +100,7 @@ def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data 
     else: 
         return plot_data
 
-## @ingroup Visualization-Geometry 
+## @ingroup Library-Plots-Geometry 
 def get_3d_blade_coordinates(rotor,n_points,dim,i,aircraftRefFrame=True):
     """ This generates the coordinates of the blade surface for plotting in the aircraft frame (x-back, z-up)
 
