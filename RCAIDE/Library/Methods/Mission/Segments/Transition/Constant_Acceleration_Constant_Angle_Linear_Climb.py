@@ -46,6 +46,7 @@ def initialize_conditions(segment):
     altf        = segment.altitude_end 
     climb_angle = segment.climb_angle
     v0          = segment.air_speed_start 
+    beta        = segment.sideslip_angle    
     ax          = segment.acceleration   
     T0          = segment.pitch_initial
     Tf          = segment.pitch_final     
@@ -96,7 +97,8 @@ def initialize_conditions(segment):
     
     # Figure out vx
     V  = (vf_mag-v0_mag) 
-    vx = t_nondim *  V  * np.cos(climb_angle) + v0[0] * np.cos(climb_angle) 
+    vx = t_nondim *  V  * np.cos(beta) * np.cos(climb_angle) + v0[0] * np.cos(climb_angle) 
+    vy = t_nondim *  V  * np.sin(beta) * np.cos(climb_angle) + v0[1] * np.cos(climb_angle) 
     vz = t_nondim *  V  * np.sin(climb_angle) + v0[2] * np.sin(climb_angle)  
     
     # set the body angle
@@ -107,5 +109,6 @@ def initialize_conditions(segment):
     segment.state.conditions.freestream.altitude[:,0]             = alt[:,0]
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = vx[:,0] 
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = vy[:,0] 
     segment.state.conditions.frames.inertial.velocity_vector[:,2] = -vz[:,0] 
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]

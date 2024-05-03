@@ -49,6 +49,7 @@ def initialize_conditions_unpack_unknowns(segment):
     q           = segment.dynamic_pressure
     alt0        = segment.altitude_start  
     conditions  = segment.state.conditions
+    beta        = segment.sideslip_angle
     rho         = conditions.freestream.density[:,0]  
     
     # unpack unknowns  
@@ -79,11 +80,13 @@ def initialize_conditions_unpack_unknowns(segment):
         # process velocity vector
         v_mag = np.sqrt(2*q/rho)
         
-    v_x   = v_mag * np.cos(climb_angle)
+    v_x   = np.cos(beta)*v_mag * np.cos(climb_angle)
+    v_y   = np.sin(beta)*v_mag * np.cos(climb_angle)
     v_z   = -v_mag * np.sin(climb_angle)
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0] = v_x
+    conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z   
     
 ## @ingroup Library-Methods-Missions-Segments-Climb

@@ -47,7 +47,8 @@ def initialize_conditions(segment):
     descent_rate = segment.descent_rate
     eas          = segment.equivalent_air_speed   
     alt0         = segment.altitude_start 
-    altf         = segment.altitude_end
+    altf         = segment.altitude_end 
+    beta         = segment.sideslip_angle
     t_nondim     = segment.state.numerics.dimensionless.control_points
     conditions   = segment.state.conditions  
 
@@ -78,9 +79,12 @@ def initialize_conditions(segment):
     # process velocity vector
     v_mag = air_speed
     v_z   = descent_rate # z points down
-    v_x   = np.sqrt( v_mag**2 - v_z**2 )
+    v_xy  = np.sqrt( v_mag**2 - v_z**2 )
+    v_x   = np.cos(beta)*v_xy
+    v_y   = np.sin(beta)*v_xy
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0] = v_x
+    conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z
     conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down

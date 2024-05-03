@@ -43,7 +43,8 @@ def initialize_conditions(segment):
     
     # unpack
     alt              = segment.altitude
-    air_speed        = segment.air_speed 
+    air_speed        = segment.air_speed
+    beta             = segment.sideslip_angle  
     acceleration_z   = segment.acceleration_z
     acceleration     = segment.state.unknowns.acceleration  
     
@@ -52,10 +53,14 @@ def initialize_conditions(segment):
         if not segment.state.initials: raise AttributeError('altitude not set')
         alt = -1.0 *segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
     
+    v_x  = np.cos(beta)*air_speed 
+    v_y  = np.sin(beta)*air_speed
+        
     # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed
+    segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_x 
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_y 
     segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[acceleration,0.0,acceleration_z]]) 
     
 # ----------------------------------------------------------------------------------------------------------------------  

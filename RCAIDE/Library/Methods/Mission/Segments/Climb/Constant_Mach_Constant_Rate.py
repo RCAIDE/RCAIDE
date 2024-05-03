@@ -49,6 +49,7 @@ def initialize_conditions(segment):
     mach_number = segment.mach_number
     alt0        = segment.altitude_start 
     altf        = segment.altitude_end
+    beta        = segment.sideslip_angle
     t_nondim    = segment.state.numerics.dimensionless.control_points
     conditions  = segment.state.conditions  
 
@@ -74,10 +75,13 @@ def initialize_conditions(segment):
         # process velocity vector
         v_mag = mach_number * a
     v_z   = -climb_rate # z points down
-    v_x   = np.sqrt( v_mag**2 - v_z**2 )
+    v_xy  = np.sqrt( v_mag**2 - v_z**2 )
+    v_x   = np.cos(beta)*v_xy
+    v_y   = np.sin(beta)*v_xy 
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]
+    conditions.frames.inertial.velocity_vector[:,1] = v_y[:,0]
     conditions.frames.inertial.velocity_vector[:,2] = v_z
     conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
     conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context

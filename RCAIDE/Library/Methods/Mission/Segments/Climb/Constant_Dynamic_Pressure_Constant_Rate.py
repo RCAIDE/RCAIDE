@@ -50,6 +50,7 @@ def initialize_conditions(segment):
     altf       = segment.altitude_end
     t_nondim   = segment.state.numerics.dimensionless.control_points
     conditions = segment.state.conditions
+    beta       = segment.sideslip_angle
     rho        = conditions.freestream.density[:,0]
     
     # Update freestream to get density
@@ -73,10 +74,13 @@ def initialize_conditions(segment):
         # process velocity vector
         v_mag = np.sqrt(2*q/rho)
     v_z   = -climb_rate # z points down
-    v_x   = np.sqrt( v_mag**2 - v_z**2 )
+    v_xy  = np.sqrt( v_mag**2 - v_z**2 )
+    v_x   = np.cos(beta)*v_xy 
+    v_y   = np.sin(beta)*v_xy 
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0] = v_x
+    conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z
     conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
     conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
