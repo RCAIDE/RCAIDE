@@ -587,28 +587,41 @@ class Vortex_Lattice(Stability):
                         CM_d_r[:,:,r_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
                         CN_d_r[:,:,r_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T         
                 
-        ## -------------------------------------------------------               
-        ## Pitch Rate 
-        ## -------------------------------------------------------       
-        #CLift_pitch_rate     = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        #CDrag_pitch_rate     = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        #CX_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        #CY_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        #CZ_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        #CL_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        #CM_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        #CN_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate))  
-        #for pitch_i in range(len_pitch_rate):  
-            #conditions.stability.dynamic.pitch_rate[:,0]                 = pitch_rate[pitch_i]  
-            #CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)  
-            #CLift_pitch_rate[:,:,pitch_i]     = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
-            #CDrag_pitch_rate[:,:,pitch_i]     = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
-            #CX_pitch_rate[:,:,pitch_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
-            #CY_pitch_rate[:,:,pitch_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
-            #CZ_pitch_rate[:,:,pitch_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
-            #CL_pitch_rate[:,:,pitch_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
-            #CM_pitch_rate[:,:,pitch_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            #CN_pitch_rate[:,:,pitch_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T      
+        # -------------------------------------------------------               
+        # Pitch Rate 
+        # -------------------------------------------------------       
+        CLift_pitch_rate     = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
+        CDrag_pitch_rate     = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
+        CX_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
+        CY_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
+        CZ_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
+        CL_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
+        CM_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
+        CN_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate))
+        
+        # reset conditions         
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+        conditions.aerodynamics.angles.alpha            = AoAs 
+        conditions.freestream.mach_number               = Machs
+        conditions.freestream.velocity                  = Machs * 343 # speed of sound  
+        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
+        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
+        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
+        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
+        
+        for pitch_i in range(len_pitch_rate):  
+            conditions.stability.dynamic.pitch_rate[:,0]                 = pitch_rate[pitch_i]  
+            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)  
+            CLift_pitch_rate[:,:,pitch_i]     = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
+            CDrag_pitch_rate[:,:,pitch_i]     = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
+            CX_pitch_rate[:,:,pitch_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
+            CY_pitch_rate[:,:,pitch_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
+            CZ_pitch_rate[:,:,pitch_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
+            CL_pitch_rate[:,:,pitch_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
+            CM_pitch_rate[:,:,pitch_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
+            CN_pitch_rate[:,:,pitch_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T      
         
     
     
@@ -622,7 +635,8 @@ class Vortex_Lattice(Stability):
         CZ_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
         CL_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
         CM_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
-        CN_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate))    
+        CN_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate))
+        
         # reset conditions         
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = AoAs 
@@ -649,28 +663,42 @@ class Vortex_Lattice(Stability):
             CN_roll_rate[:,:,roll_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T        
             
 
-        ## -------------------------------------------------------               
-        ## Yaw Rate 
-        ## -------------------------------------------------------           
-        #CLift_yaw_rate     = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
-        #CDrag_yaw_rate     = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
-        #CX_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
-        #CY_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
-        #CZ_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
-        #CL_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
-        #CM_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
-        #CN_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate))
-        #for yaw_i in range(len_yaw_rate): 
-            #conditions.stability.dynamic.yaw_rate[:,0]                  = yaw_rate[yaw_i]             
-            #CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)  
-            #CLift_yaw_rate[:,:,yaw_i]     = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
-            #CDrag_yaw_rate[:,:,yaw_i]     = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
-            #CX_yaw_rate[:,:,yaw_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
-            #CY_yaw_rate[:,:,yaw_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
-            #CZ_yaw_rate[:,:,yaw_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
-            #CL_yaw_rate[:,:,yaw_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
-            #CM_yaw_rate[:,:,yaw_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            #CN_yaw_rate[:,:,yaw_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T
+        # -------------------------------------------------------               
+        # Yaw Rate 
+        # -------------------------------------------------------           
+        CLift_yaw_rate     = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
+        CDrag_yaw_rate     = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
+        CX_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
+        CY_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
+        CZ_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
+        CL_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
+        CM_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate)) 
+        CN_yaw_rate        = np.zeros((len_Beta,len_Mach,len_yaw_rate))
+
+        # reset conditions         
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+        conditions.aerodynamics.angles.alpha            = AoAs 
+        conditions.freestream.mach_number               = Machs
+        conditions.freestream.velocity                  = Machs * 343 # speed of sound  
+        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
+        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
+        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
+        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
+        
+        for yaw_i in range(len_yaw_rate): 
+            conditions.stability.dynamic.yaw_rate[:,0]                  = yaw_rate[yaw_i]             
+            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)  
+            CLift_yaw_rate[:,:,yaw_i]     = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
+            CDrag_yaw_rate[:,:,yaw_i]     = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
+            CX_yaw_rate[:,:,yaw_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
+            CY_yaw_rate[:,:,yaw_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
+            CZ_yaw_rate[:,:,yaw_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
+            CL_yaw_rate[:,:,yaw_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
+            CM_yaw_rate[:,:,yaw_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
+            CN_yaw_rate[:,:,yaw_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T
+            
         # Longitudinal Derviatives    
         training.CLift        = CLift  
         training.CDrag        = CDrag
@@ -725,10 +753,8 @@ class Vortex_Lattice(Stability):
         # unpack data
         surrogates     = self.surrogates
         training       = self.training  
-        AoA_data       = training.angle_of_attack
-        Beta_data      = training.sideslip_angle
-        mach_data      = training.Mach             
-        delta_e_data   = training.elevator_deflection   
+        AoA_data       = training.angle_of_attack 
+        mach_data      = training.Mach               
         geometry       = self.geometry  
               
         CLift_data          = training.CLift    
