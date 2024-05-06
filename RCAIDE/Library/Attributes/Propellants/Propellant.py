@@ -10,7 +10,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 from RCAIDE.Framework.Core import Data
-from RCAIDE.Library.Components.PhysicalComponent import Mass_Properties
+from RCAIDE.Library.Components.Component import Mass_Properties
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Propellant

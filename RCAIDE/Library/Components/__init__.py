@@ -9,8 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Component        import Component
-from .PhysicalComponent  import PhysicalComponent
+from .Component  import Component
   
 from . import Propulsors
 from . import Energy

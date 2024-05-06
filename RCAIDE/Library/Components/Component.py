@@ -1,133 +1,119 @@
-## @ingroup Library-Compoments
-# RCAIDE/Library/Compoments/Component.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# RCAIDE/Library/Compoments/PhysicalComponent.py
+# (c) Copyright 2024 Aerospace Research Community LLC
 # 
-# Created:  Mar 2024, M. Clarke 
+# Created:  Apr 2024, J. Smart
+# Modified:
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------  
+# ----------------------------------------------------------------------------------------------------------------------
 
-from RCAIDE.Framework.Core import Container as ContainerBase
-from RCAIDE.Framework.Core import Data
-from .PhysicalComponent import Mass_Properties
+from dataclasses import dataclass, field
 
 # package imports 
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Component
-# ----------------------------------------------------------------------------------------------------------------------        
-## @ingroup Library-Components
-class Component(Data):
-    """ the base component class
-        Assumptions:
-        None
-        
-        Source:
-        None
-    """
-    def __defaults__(self):
-        """This sets the default values.
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-            """         
-        self.tag             = 'Component' 
-        self.mass_properties = Mass_Properties()
-        self.origin          = np.array([[0.0,0.0,0.0]]) 
-        self.inputs          = Data()
-        self.outputs         = Data()
-    
-        
+#  Mass_Properties
 # ----------------------------------------------------------------------------------------------------------------------
-#  Component Container
-# ----------------------------------------------------------------------------------------------------------------------    
+@dataclass
+class MassProperties:
 
-## @ingroup Components
-class Container(ContainerBase):
-    """ the base component container class
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
-    """
-    pass 
- 
+    mass                : float             = field(init=True, default=0.0)
+    volume              : float             = field(init=True, default=0.0)
+    density             : float             = field(init=True, default=0.0)
+    center_of_gravity   : np.ndarray        = field(init=True,
+                                                    default_factory=lambda: np.zeros(3))
+    moments_of_inertia  : np.ndarray        = field(init=True,
+                                                    default_factory=lambda: np.zeros((3,3)))
+
+    def __post_init__(self):
+        if not np.any(self.density):
+            if np.any(self.mass) and np.any(self.volume):
+                try:
+                    self.density = self.mass/self.volume
+                except:
+                    raise MassPropertiesError("Error in calculating component density. "
+                                              "Check mass and volume specification.")
+
+
+@dataclass
+class MaterialProperties:
+
+    tensile_stress_carrier    : dataclass  = field(init=True,
+                                                   default_factory=dataclass)
+
+    torsional_stress_carrier  : dataclass  = field(init=True,
+                                                   default_factory=dataclass)
+
+    shear_stress_carrier      : dataclass  = field(init=True,
+                                                   default_factory=dataclass)
+
+@dataclass
+class Component:
+
+    name                : str                   = field(init=True)
+
+    origin              : np.ndarray            = field(init=True,
+                                                    default_factory=lambda: np.zeros(3))
+
+    mass_properties     : MassProperties        = field(init=True,
+                                                    default_factory=MassProperties)
+
+    material_properties : MaterialProperties    = field(init=True,
+                                                    default_factory=dataclass)
+
     def sum_mass(self):
-        """ will recursively search the data tree and sum
-            any Comp.Mass_Properties.mass, and return the total sum
-            
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            mass  [kg]
-    
-            Properties Used:
-            None
-        """   
-        total = 0.0
-        for key,Comp in self.items():
-            if isinstance(Comp,Component.Container):
-                total += Comp.sum_mass() # recursive!
-            elif isinstance(Comp,Component):
-                total += Comp.mass_properties.mass
-                
-        return total
-    
-    def total_moment(self):
-        """ will recursively search the data tree and sum
-            any Comp.Mass_Properties.mass, and return the total sum of moments
-            
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            total moment [kg*m]
-    
-            Properties Used:
-            None
-        """   
-        total = np.array([[0.0,0.0,0.0]])
-        for key,Comp in self.items():
-            if isinstance(Comp,Component.Container):
-                total += Comp.total_moment() # recursive!
-            elif isinstance(Comp,Component):
-                total += Comp.mass_properties.mass*(np.sum(np.array(Comp.origin),axis=0)/len(Comp.origin)+Comp.mass_properties.center_of_gravity)
+        self.mass_properties.mass = 0.
 
-        return total
-    
-    
-    
-# ------------------------------------------------------------
-#  Handle Linking
-# ------------------------------------------------------------
+        for k, v in self.__dict__.items():
+            if isinstance(v, Component):
+                self.mass_properties.mass += v.sum_mass()
 
-Component.Container = Container
+    def sum_moments_of_inertia(self):
+
+        self.mass_properties.moments_of_inertia = np.zeros((3, 3))
+
+        for k, v in self.__dict__.items():
+            if isinstance(v, Component):
+                r = np.linalg.norm(
+                    (v.origin + v.mass_properties.center_of_gravity)
+                    - self.origin
+                )
+
+                self.mass_properties.moments_of_inertia += (
+                    v.mass_properties.moments_of_inertia
+                    + v.mass_properties.mass * r**2 * np.eye(3)
+                )
+
+    def sum_center_of_gravity(self):
+
+        self.mass_properties.center_of_gravity = np.zeros(3)
+
+        for k, v in self.__dict__.items():
+            rel_origin = v.origin - self.origin
+            rel_cg = rel_origin + v.mass_properties.center_of_gravity
+
+            mass_fraction = v.mass_properties.mass/self.mass_properties.mass
+            weighted_cg = rel_cg * mass_fraction
+
+            self.mass_properties.center_of_gravity += weighted_cg
+
+    def add_subcomponent(self, subcomponent: Component):
+
+        eval(f"self.{subcomponent.name} = subcomponent")
+        if np.any(subcomponent.mass_properties.mass):
+            self.sum_mass()
+            if np.any(subcomponent.mass_properties.center_of_gravity):
+                self.sum_center_of_gravity()
+            if np.any(subcomponent.mass_properties.moments_of_inertia):
+                self.sum_moments_of_inertia()
+
+        return None
+
+
+
+
+
+
+

@@ -14,3 +14,6 @@ from Legacy.trunk.S.Methods.Weights.Correlations.Transport.tail_vertical      im
 from Legacy.trunk.S.Methods.Weights.Correlations.Transport.tube               import tube
 
 from .passenger_payload import passenger_payload, func_passenger_payload
+from .operating_systems import operating_systems, func_operating_systems
+from .segmented_main_wing import segmented_main_wing, func_segmented_main_wing
+from .horizontal_tail import horizontal_tail, func_horizontal_tail
