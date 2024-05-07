@@ -58,37 +58,39 @@ class Run_Case(Data):
             N/A
         """ 
 
-        self.index                      = 0		 
-        self.tag                        = 'case'
-        self.mass                       = 0.0
-
-        self.conditions                 = Data()
-        self.stability_and_control      = Data()
-        free                            = Data()
-        aero                            = Data()
-
-        free.mach                       = 0.0
-        free.velocity                   = 0.0
-        free.density                    = 1.225
-        free.gravitational_acceleration = 9.81
-
-        aero.parasite_drag              = 0.0
-        aero.angle_of_attack            = None
-        aero.lift_coefficient           = None
-        aero.sideslip_angle             = 0.0
+        self.index                                           = 0		 
+        self.tag                                             = 'case'
+        self.mass                                            = 0.0
+                      
+        self.conditions                                      = Data()
+        self.stability_and_control                           = Data()
+        free                                                 = Data()
+        aero                                                 = Data()
+        aero.angles                                          = Data()
+        aero.coefficients                                    = Data()
+                      
+        free.mach                                            = 0.0
+        free.velocity                                        = 0.0
+        free.density                                         = 1.225
+        free.gravitational_acceleration                      = 9.81
+                      
+        aero.parasite_drag                                   = 0.0
+        aero.angles.alpha                                    = None
+        aero.angles.beta                                     = 0.0
+        aero.coefficients.lift                               = None
 
         self.stability_and_control.control_surface_names     = None
         self.stability_and_control.control_surface_functions = None
         self.stability_and_control.number_control_surfaces   = 0
-        self.conditions.freestream      = free
-        self.conditions.aerodynamics    = aero
-
-        self.aero_result_filename_1     = None
-        self.aero_result_filename_2     = None
-        self.aero_result_filename_3     = None 
-        self.aero_result_filename_4     = None
-        self.eigen_result_filename_1    = None 
-        self.eigen_result_filename_2    = None 
+        self.conditions.freestream                           = free
+        self.conditions.aerodynamics                         = aero
+                     
+        self.aero_result_filename_1                          = None
+        self.aero_result_filename_2                          = None
+        self.aero_result_filename_3                          = None 
+        self.aero_result_filename_4                          = None
+        self.eigen_result_filename_1                         = None 
+        self.eigen_result_filename_2                         = None 
         return
  
 class Container(DataOrdered):

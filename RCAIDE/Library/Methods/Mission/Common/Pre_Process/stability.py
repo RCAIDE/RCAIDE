@@ -39,5 +39,14 @@ def stability(mission):
                 stab.process.compute.lift.inviscid_wings.geometry                = stab.geometry 
                 stab.process.compute.lift.inviscid_wings.settings.model_fuselage = stab.settings.model_fuselage
                 stab.process.compute.lift.inviscid_wings.initialize()    
-                last_tag = tag  
+                last_tag = tag
+        
+        elif type(segment.analyses.stability) == RCAIDE.Framework.Analyses.Stability.AVL:       
+            if last_tag: 
+                segment.analyses.stability.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.stability.process.compute.lift.inviscid_wings  
+            else:
+                stab = segment.analyses.stability 
+                stab.geometry    = stab.geometry  
+                stab.initialize()    
+                last_tag = tag           
     return 

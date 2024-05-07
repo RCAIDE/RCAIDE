@@ -46,15 +46,15 @@ def plot_lateral_stability(results,
     
     for i in range(len(results.segments)): 
         time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-        cn_beta  = results.segments[i].conditions.stability.static.derivatives.dCn_dbeta[:,0] 
+        cn_beta  = results.segments[i].conditions.static_stability.derivatives.CN_beta[:,0] 
         phi  = results.segments[i].conditions.aerodynamics.angles.phi[:,0] / Units.deg
-        dCl_dbeta    = results.segments[i].conditions.stability.static.derivatives.dCl_dbeta[:,0] 
-        dCY_dbeta    = results.segments[i].conditions.stability.static.derivatives.dCY_dbeta[:,0]       
+        CL_beta    = results.segments[i].conditions.static_stability.derivatives.CL_beta[:,0] 
+        CY_beta    = results.segments[i].conditions.static_stability.derivatives.CY_beta[:,0]       
         delta_a  = results.segments[i].conditions.control_surfaces.aileron.deflection[:,0] / Units.deg  
         delta_r  = results.segments[i].conditions.control_surfaces.rudder.deflection[:,0] / Units.deg  
-        dCl_ddelta_a = results.segments[i].conditions.stability.static.derivatives.dCl_ddelta_a[:,0]
-        dCn_ddelta_a = results.segments[i].conditions.stability.static.derivatives.dCn_ddelta_a[:,0]
-        dCn_ddelta_r = results.segments[i].conditions.stability.static.derivatives.dCn_ddelta_r[:,0]
+        CL_delta_a = results.segments[i].conditions.static_stability.derivatives.CL_delta_a[:,0]
+        CN_delta_a = results.segments[i].conditions.static_stability.derivatives.CN_delta_a[:,0]
+        CN_delta_r = results.segments[i].conditions.static_stability.derivatives.CN_delta_r[:,0]
           
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')

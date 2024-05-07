@@ -161,12 +161,12 @@ c1
 {1}
 '''     
     # if Angle of Attack command is specified, write A 
-    if case.conditions.aerodynamics.lift_coefficient is None:
+    if case.conditions.aerodynamics.coefficients.lift is None:
         condition = 'A'
-        val       = case.conditions.aerodynamics.angle_of_attack
-    elif case.conditions.aerodynamics.lift_coefficient > 0:  
+        val       = case.conditions.aerodynamics.angles.alpha
+    elif case.conditions.aerodynamics.coefficients.lift > 0:  
         condition = 'C'
-        val       = case.conditions.aerodynamics.lift_coefficient 
+        val       = case.conditions.aerodynamics.coefficients.lift 
     else:   
         trim_command = ''
         return trim_command
@@ -196,7 +196,7 @@ def make_roll_rate_text_command(case):
 R
 R
 {0}'''      
-    roll_rate_coeff  = case.conditions.aerodynamics.roll_rate_coefficient  
+    roll_rate_coeff  = case.conditions.aerodynamics.coefficients.p
     if  roll_rate_coeff != 0.0:
         roll_command     = base_roll_command.format(roll_rate_coeff)
     else:
@@ -223,7 +223,7 @@ def make_pitch_rate_text_command(case):
 Y
 Y
 {0}'''       
-    pitch_rate_coeff   = case.conditions.aerodynamics.pitch_rate_coefficient  
+    pitch_rate_coeff   = case.conditions.aerodynamics.coefficients.q  
     if pitch_rate_coeff != 0.0:
         pitch_command = base_pitch_command.format(pitch_rate_coeff)
     else:
@@ -250,7 +250,7 @@ def make_beta_text_command(case):
 B
 B
 {0}'''      
-    beta = case.conditions.aerodynamics.sideslip_angle/Units.degrees
+    beta = case.conditions.aerodynamics.angles.beta/Units.degrees
     if  beta != 0.0:
         beta_command     = base_roll_command.format(beta)
     else:

@@ -99,9 +99,9 @@ def VLM(conditions,settings,geometry):
     conditions.aerodynamics.angles.beta   [radians]
     conditions.freestream.mach_number          [Unitless]
     conditions.freestream.velocity             [m/s]
-    conditions.stability.dynamic.pitch_rate    [radians/s]
-    conditions.stability.dynamic.roll_rate     [radians/s]
-    conditions.stability.dynamic.yaw_rate      [radians/s]
+    conditions.static_stability.pitch_rate    [radians/s]
+    conditions.static_stability.roll_rate     [radians/s]
+    conditions.static_stability.yaw_rate      [radians/s]
        
     
     Outputs:    
@@ -168,9 +168,9 @@ def VLM(conditions,settings,geometry):
     #For angular values, VORLAX uses degrees by default to radians via DTR (degrees to rads). 
     #RCAIDE uses radians and its Units system. All algular variables will be in radians or var*Units.degrees
     PSI       = conditions.aerodynamics.angles.beta    
-    PITCHQ    = conditions.stability.dynamic.pitch_rate              
-    ROLLQ     = conditions.stability.dynamic.roll_rate             
-    YAWQ      = conditions.stability.dynamic.yaw_rate 
+    PITCHQ    = conditions.static_stability.pitch_rate              
+    ROLLQ     = conditions.static_stability.roll_rate             
+    YAWQ      = conditions.static_stability.yaw_rate 
     VINF      = conditions.freestream.velocity    
        
     #freestream 0 velocity safeguard

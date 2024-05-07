@@ -13,6 +13,7 @@ import RCAIDE
 from RCAIDE.Framework.Core                                       import Data, Units  
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method   import VLM  
 from RCAIDE.Framework.Analyses.Stability                         import Stability
+from RCAIDE.Library.Methods.Stability.Dynamic_Stability          import compute_dynamic_flight_modes
 
 # package imports
 import numpy                                                     as np 
@@ -91,20 +92,20 @@ class Vortex_Lattice(Stability):
         
         # moment derivatives
         self.training.CM_delta_e                     = None
-        self.training.dCM_dalpha                     = None
-        self.training.dCL_dalpha                     = None
-        self.training.dCY_dbeta                      = None
-        #self.training.dCY_dp                         = None
-        #self.training.dCY_dr                         = None
-        self.training.dCl_dbeta                      = None
-        #self.training.dCl_dr                         = None
-        self.training.dCl_dp                         = None
-        self.training.dCn_dbeta                      = None
-        #self.training.dCn_dr                         = None
-        #self.training.dCn_dp                         = None
-        self.training.dCl_ddelta_a                   = None
-        self.training.dCn_ddelta_a                   = None
-        self.training.dCn_ddelta_r                   = None
+        self.training.CM_alpha                     = None
+        self.training.Clift_alpha                     = None
+        self.training.CY_beta                      = None
+        #self.training.CY_p                         = None
+        #self.training.CY_r                         = None
+        self.training.CL_beta                      = None
+        #self.training.CL_r                         = None
+        self.training.CL_p                         = None
+        self.training.CN_beta                      = None
+        #self.training.CN_r                         = None
+        #self.training.CN_p                         = None
+        self.training.CL_delta_a                   = None
+        self.training.CN_delta_a                   = None
+        self.training.CN_delta_r                   = None
         
         # surrogoate models
         self.surrogates                              = Data()   
@@ -122,47 +123,26 @@ class Vortex_Lattice(Stability):
         self.surrogates.yaw_rate                     = None            
         
         self.surrogates.CM_delta_e                   = None
-        self.surrogates.dCM_dalpha                   = None
-        self.surrogates.dCL_dalpha                   = None
-        self.surrogates.dCY_dbeta                    = None
-        #self.surrogates.dCY_dp                       = None
-        #self.surrogates.dCY_dr                       = None
-        self.surrogates.dCl_dbeta                    = None
-        #self.surrogates.dCl_dr                       = None
-        self.surrogates.dCl_dp                       = None
-        self.surrogates.dCn_dbeta                    = None
-        #self.surrogates.dCn_dr                       = None
-        #self.surrogates.dCn_dp                       = None
-        self.surrogates.dCl_ddelta_a                 = None
-        self.surrogates.dCn_ddelta_a                 = None
-        self.surrogates.dCn_ddelta_r                 = None
+        self.surrogates.CM_alpha                   = None
+        self.surrogates.Clift_alpha                   = None
+        self.surrogates.CY_beta                    = None
+        #self.surrogates.CY_p                       = None
+        #self.surrogates.CY_r                       = None
+        self.surrogates.CL_beta                    = None
+        #self.surrogates.CL_r                       = None
+        self.surrogates.CL_p                       = None
+        self.surrogates.CN_beta                    = None
+        #self.surrogates.CN_r                       = None
+        #self.surrogates.CN_p                       = None
+        self.surrogates.CL_delta_a                 = None
+        self.surrogates.CN_delta_a                 = None
+        self.surrogates.CN_delta_r                 = None
         
         self.evaluate                                = None  
             
     def initialize(self): 
         settings                  = self.settings  
-        use_surrogate             = settings.use_surrogate
-        propeller_wake_model      = settings.propeller_wake_model 
-        n_sw                      = settings.number_of_spanwise_vortices
-        n_cw                      = settings.number_of_chordwise_vortices
-        mf                        = settings.model_fuselage
-        mn                        = settings.model_nacelle
-        dcs                       = settings.discretize_control_surfaces 
-             
-        # Unpack:
-        settings = self.settings      
-        
-        if n_sw is not None:
-            settings.number_of_spanwise_vortices  = n_sw
-        
-        if n_cw is not None:
-            settings.number_of_chordwise_vortices = n_cw 
-            
-        settings.use_surrogate              = use_surrogate
-        settings.propeller_wake_model       = propeller_wake_model 
-        settings.discretize_control_surfaces= dcs
-        settings.model_fuselage             = mf
-        settings.model_nacelle              = mn
+        use_surrogate             = settings.use_surrogate 
         
         # If we are using the surrogate
         if use_surrogate == True: 
@@ -211,91 +191,112 @@ class Vortex_Lattice(Stability):
         delta_r     = np.atleast_2d(conditions.control_surfaces.rudder.deflection)   
         delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)  
         delta_f     = np.atleast_2d(conditions.control_surfaces.flap.deflection)
-        pitch_rate    = np.atleast_2d(conditions.stability.dynamic.pitch_rate)  
+        pitch_rate  = np.atleast_2d(conditions.static_stability.pitch_rate)  
+  
+         
+        # Query surrogates 
+        pts            = np.hstack((AoA,Mach))
+        CLift          = np.atleast_2d(surrogates.CLift(pts)).T         
+        CDrag          = np.atleast_2d(surrogates.CDrag (pts)).T   
+        CX_0           = np.atleast_2d(surrogates.CX_0(pts)).T
+        CY_0           = np.atleast_2d(surrogates.CY_0(pts)).T
+        CZ_0           = np.atleast_2d(surrogates.CZ_0(pts)).T
+        CL_0           = np.atleast_2d(surrogates.CL_0(pts)).T
+        CM_0           = np.atleast_2d(surrogates.CM_0(pts)).T         
+        CN_0           = np.atleast_2d(surrogates.CN_0(pts)).T 
+        CY_beta        = np.atleast_2d(surrogates.CY_beta(pts)).T
+        CL_beta        = np.atleast_2d(surrogates.CL_beta(pts)).T 
+        CN_beta        = np.atleast_2d(surrogates.CN_beta(pts)).T 
+        CM_delta_e     = np.atleast_2d(surrogates.CM_delta_e(pts)).T
+        Clift_delta_e  = np.atleast_2d(surrogates.Clift_delta_e(pts)).T 
+        CY_ddelta_a    = np.atleast_2d(surrogates.CY_ddelta_a(pts)).T
+        CL_delta_a     = np.atleast_2d(surrogates.CL_delta_a(pts)).T
+        CN_delta_a     = np.atleast_2d(surrogates.CN_delta_a(pts)).T
+        CY_ddelta_r    = np.atleast_2d(surrogates.CY_ddelta_r(pts)).T
+        Cl_ddelta_r    = np.atleast_2d(surrogates.Cl_ddelta_r(pts)).T
+        CN_delta_r     = np.atleast_2d(surrogates.CN_delta_r(pts)).T
+        
+        # Stability Results  
+        #conditions.S_ref                                                  = # Need to Update 
+        #conditions.c_ref                                                  = # Need to Update
+        #conditions.b_ref                                                  = # Need to Update
+        #conditions.X_ref                                                  = # Need to Update
+        #conditions.Y_ref                                                  = # Need to Update
+        #conditions.Z_ref                                                  = # Need to Update 
+        #conditions.aerodynamics.oswald_efficiency                         = # Need to Update
+        conditions.static_stability.coefficients.lift                     = CLift + Clift_delta_e*delta_e 
+        conditions.static_stability.coefficients.drag                     = CDrag     
+        conditions.static_stability.coefficients.X                        = CX_0 
+        conditions.static_stability.coefficients.Y                        = CY_0 + CY_beta * Beta + CY_ddelta_a * delta_a + CY_ddelta_r * delta_r
+        conditions.static_stability.coefficients.Z                        = CZ_0
+        conditions.static_stability.coefficients.L                        = CL_0 + CL_beta * Beta + CL_delta_a * delta_a + Cl_ddelta_r * delta_r #+ CL_p *( pitch_rate / conditions.freestream.velocity) # rates are normalized 
+        conditions.static_stability.coefficients.M                        = CM_0 + CM_delta_e*delta_e
+        conditions.static_stability.coefficients.N                        = CN_0 + CN_beta * Beta + CN_delta_a * delta_a + CN_delta_r * delta_r 
+        #conditions.static_stability.derivatives.Clift_alpha               = # Need to Update 
+        #conditions.static_stability.derivatives.CY_alpha                  = # Need to Update
+        #conditions.static_stability.derivatives.CL_alpha                  = # Need to Update
+        #conditions.static_stability.derivatives.CM_alpha                  = # Need to Update
+        #conditions.static_stability.derivatives.CN_alpha                  = # Need to Update
+        #conditions.static_stability.derivatives.Clift_beta                = # Need to Update
+        #conditions.static_stability.derivatives.CY_beta                   = # Need to Update
+        #conditions.static_stability.derivatives.CL_beta                   = # Need to Update
+        #conditions.static_stability.derivatives.CM_beta                   = # Need to Update
+        #conditions.static_stability.derivatives.CN_beta                   = # Need to Update
+        #conditions.static_stability.derivatives.Clift_p                   = # Need to Update
+        #conditions.static_stability.derivatives.Clift_q                   = # Need to Update
+        #conditions.static_stability.derivatives.Clift_r                   = # Need to Update
+        
+        #conditions.static_stability.derivatives.CX_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CX_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CX_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_w                      = # Need to Update
+        
+        #conditions.static_stability.derivatives.CX_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CX_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CX_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_r                      = # Need to Update 
+        #conditions.static_stability.neutral_point                         = # Need to Update
+        #conditions.static_stability.spiral_criteria                       = # Need to Update 
+        
+        conditions.aerodynamics.coefficients.lift               = conditions.static_stability.coefficients.lift # overwrite lift in aerodynamic results 
+        conditions.aerodynamics.lift_breakdown.total            = conditions.static_stability.coefficients.lift # overwrite lift in aerodynamic results 
+        conditions.aerodynamics.drag_breakdown.induced.inviscid = conditions.static_stability.coefficients.drag 
 
-        CLift_surrogate         = surrogates.CLift    
-        CDrag_surrogate         = surrogates.CDrag 
-        CX_0_surrogate          = surrogates.CX_0
-        CY_0_surrogate          = surrogates.CY_0
-        CZ_0_surrogate          = surrogates.CZ_0
-        CL_0_surrogate          = surrogates.CL_0
-        CM_0_surrogate          = surrogates.CM_0
-        CN_0_surrogate          = surrogates.CN_0
-        
-        dCM_delta_e_surrogate  = surrogates.dCM_delta_e
-        #dCM_dalpha_surrogate   = surrogates.dCM_dalpha
-        #dCL_dalpha_surrogate   = surrogates.dCL_dalpha
-        dCL_delta_e_surrogate  = surrogates.dCL_delta_e
-        
-        dCY_dbeta_surrogate    = surrogates.dCY_dbeta
-        dCl_dbeta_surrogate    = surrogates.dCl_dbeta
-        dCn_dbeta_surrogate    = surrogates.dCn_dbeta
-        dCY_ddelta_a_surrogate = surrogates.dCY_ddelta_a
-        dCl_ddelta_a_surrogate = surrogates.dCl_ddelta_a
-        dCn_ddelta_a_surrogate = surrogates.dCn_ddelta_a
-        dCY_ddelta_r_surrogate = surrogates.dCY_ddelta_r
-        dCl_ddelta_r_surrogate = surrogates.dCl_ddelta_r
-        dCn_ddelta_r_surrogate = surrogates.dCn_ddelta_r
-        
-        dCl_dp_surrogate = surrogates.dCl_dp_surrogate
-        
-        pts          = np.hstack((AoA,Mach))
-        CLift        = np.atleast_2d(CLift_surrogate(pts)).T         # this surrogate is basically CLalpha*alpha 
-        CDrag        = np.atleast_2d(CDrag_surrogate(pts)).T   
-        CX_0 = np.atleast_2d(CX_0_surrogate(pts)).T
-        CY_0 = np.atleast_2d(CY_0_surrogate(pts)).T
-        CZ_0 = np.atleast_2d(CZ_0_surrogate(pts)).T
-        CL_0 = np.atleast_2d(CL_0_surrogate(pts)).T
-        CM_0 = np.atleast_2d(CM_0_surrogate(pts)).T        # this surrogate is basically Cm0 and Cmalpha*alpha
-        CN_0 = np.atleast_2d(CN_0_surrogate(pts)).T
-
-        dCY_dbeta  = np.atleast_2d(dCY_dbeta_surrogate(pts)).T
-        dCl_dbeta  = np.atleast_2d(dCl_dbeta_surrogate(pts)).T 
-        dCn_dbeta = np.atleast_2d(dCn_dbeta_surrogate(pts)).T
-        
-        dCM_delta_e  = np.atleast_2d(dCM_delta_e_surrogate(pts)).T
-        dCL_delta_e  = np.atleast_2d(dCL_delta_e_surrogate(pts)).T 
-        dCY_ddelta_a = np.atleast_2d(dCY_ddelta_a_surrogate(pts)).T
-        dCl_ddelta_a = np.atleast_2d(dCl_ddelta_a_surrogate(pts)).T
-        dCn_ddelta_a = np.atleast_2d(dCn_ddelta_a_surrogate(pts)).T
-        dCY_ddelta_r = np.atleast_2d(dCY_ddelta_r_surrogate(pts)).T
-        dCl_ddelta_r = np.atleast_2d(dCl_ddelta_r_surrogate(pts)).T
-        dCn_ddelta_r = np.atleast_2d(dCn_ddelta_r_surrogate(pts)).T
-        dCl_dp = np.atleast_2d(dCl_dp_surrogate(pts)).T
-           
-        #dCM_dalpha   = np.atleast_2d(dCM_dalpha_surrogate(pts)).T    # not needed as we can build a surrogate of CM (which already has in AoA) 
-        #dCL_dalpha   = np.atleast_2d(dCL_dalpha_surrogate(pts)).T    # not needed as we can build a surrogate of CL (which already has in AoA)
-        
-
-        #conditions.stability.static.derivatives.CM_delta_e   = np.atleast_2d(CM_delta_e)
-        #conditions.stability.static.derivatives.dCM_dalpha   = np.atleast_2d(dCM_dalpha)
-        #conditions.stability.static.derivatives.dCL_dalpha   = np.atleast_2d(dCL_dalpha)
-        #conditions.stability.static.derivatives.dCY_dbeta    = np.atleast_2d(dCY_dbeta)
-        #conditions.stability.static.derivatives.dCY_dp       = np.atleast_2d(dCY_dp) 
-        #conditions.stability.static.derivatives.dCY_dr       = np.atleast_2d(dCY_dr)
-        #conditions.stability.static.derivatives.dCl_dbeta    = np.atleast_2d(dCl_dbeta)
-        #conditions.stability.static.derivatives.dCl_dr       = np.atleast_2d(dCl_dr)
-        #conditions.stability.static.derivatives.dCl_dp       = np.atleast_2d(dCl_dp)
-        #conditions.stability.static.derivatives.dCn_dbeta    = np.atleast_2d(dCn_dbeta)
-        #conditions.stability.static.derivatives.dCn_dr       = np.atleast_2d(dCn_dr)
-        #conditions.stability.static.derivatives.dCn_dp       = np.atleast_2d(dCn_dp)        
-        #conditions.stability.static.derivatives.dCl_ddelta_a = np.atleast_2d(dCl_ddelta_a)
-        #conditions.stability.static.derivatives.dCn_ddelta_a = np.atleast_2d(dCn_ddelta_a)
-        #conditions.stability.static.derivatives.dCn_ddelta_r = np.atleast_2d(dCn_ddelta_r) 
-        
-        
-        state.conditions.aerodynamics.coefficients.lift         = CLift + dCL_delta_e*delta_e 
-        conditions.aerodynamics.lift_breakdown.total            = CLift + dCL_delta_e*delta_e
-        conditions.aerodynamics.drag_breakdown.induced.inviscid = CDrag 
-        
-        conditions.stability.static.coefficients.CX        = CX_0 
-        conditions.stability.static.coefficients.CY        = CY_0 + dCY_dbeta * Beta + dCY_ddelta_a * delta_a + dCY_ddelta_r * delta_r
-        conditions.stability.static.coefficients.CZ        = CZ_0
-        conditions.stability.static.coefficients.CL        = CL_0 + dCl_dbeta * Beta + dCl_ddelta_a * delta_a + dCl_ddelta_r * delta_r #+ dCl_dp *( pitch_rate / conditions.freestream.velocity) # rates are normalized 
-        conditions.stability.static.coefficients.CM        = CM_0 + dCM_delta_e*delta_e
-        conditions.stability.static.coefficients.CN        = CN_0 + dCn_dbeta * Beta + dCn_ddelta_a * delta_a + dCn_ddelta_r * delta_r
-        #conditions.stability.static_margin                 = np.atleast_2d(static_margin)
-        
+        # -----------------------------------------------------------------------------------------------------------------------                     
+        # Dynamic Stability & System Identification
+        # -----------------------------------------------------------------------------------------------------------------------      
+        # Dynamic Stability
+        #if np.count_nonzero(geometry.mass_properties.moments_of_inertia.tensor) > 0:  
+            #compute_dynamic_flight_modes(conditions,geometry)   
+            
         return     
      
     def evaluate_no_surrogate(self,state,settings,geometry):
@@ -323,17 +324,17 @@ class Vortex_Lattice(Stability):
         geometry   = self.geometry     
         
         # if in transonic regime, use surrogate
-        CLift,CDrag,CX,CY,CZ,CL_mom,CM,CN = calculate_VLM(conditions,settings,geometry) 
+        CLift,CDrag,CX,CY,CZ,CL_mom,CM,CN = evaluate_VLM(conditions,settings,geometry) 
 
         # compute deriviatives and pack   
-        conditions.stability.static.coefficients.lift    = np.atleast_2d(CLift).T
-        conditions.stability.static.coefficients.drag    = np.atleast_2d(CDrag).T 
-        conditions.stability.static.coefficients.CX      = np.atleast_2d(CX).T # NEED TO CHANGE np.atleast_2d(CX).T
-        conditions.stability.static.coefficients.CY      = np.atleast_2d(CY).T
-        conditions.stability.static.coefficients.CZ      = np.atleast_2d(CZ).T # NEED TO CHANGE np.atleast_2d(CZ).T
-        conditions.stability.static.coefficients.CL      = np.atleast_2d(CL_mom).T
-        conditions.stability.static.coefficients.CM      = np.atleast_2d(CM).T
-        conditions.stability.static.coefficients.CN      = np.atleast_2d(CN).T 
+        conditions.static_stability.coefficients.lift    = np.atleast_2d(CLift).T
+        conditions.static_stability.coefficients.drag    = np.atleast_2d(CDrag).T 
+        conditions.static_stability.coefficients.X      = np.atleast_2d(CX).T # NEED TO CHANGE np.atleast_2d(CX).T
+        conditions.static_stability.coefficients.Y      = np.atleast_2d(CY).T
+        conditions.static_stability.coefficients.Z      = np.atleast_2d(CZ).T # NEED TO CHANGE np.atleast_2d(CZ).T
+        conditions.static_stability.coefficients.L      = np.atleast_2d(CL_mom).T
+        conditions.static_stability.coefficients.M      = np.atleast_2d(CM).T
+        conditions.static_stability.coefficients.N      = np.atleast_2d(CN).T 
         return  
     
     def sample_training(self):
@@ -404,9 +405,9 @@ class Vortex_Lattice(Stability):
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = AoAs
         conditions.freestream.mach_number               = Machs 
-        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
-        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
-        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.static_stability.pitch_rate         = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate          = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate           = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
@@ -414,7 +415,7 @@ class Vortex_Lattice(Stability):
         
         for beta_i in range(len_Beta):               
             conditions.aerodynamics.angles.beta         =  np.ones_like(Machs)*Beta[beta_i]
-            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)     
+            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)     
             CLift_beta[:,:,beta_i] = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
             CDrag_beta[:,:,beta_i] = np.reshape(CDrag_res,(len_Mach,len_AoA)).T                                 
             CX_beta[:,:,beta_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
@@ -441,15 +442,15 @@ class Vortex_Lattice(Stability):
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = AoAs 
         conditions.freestream.mach_number               = Machs 
-        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
-        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
-        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.static_stability.pitch_rate         = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate          = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate           = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs)  
         
-        CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry) 
+        CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry) 
         CLift[:,:]   = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
         CDrag[:,:]   = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
         CX_0[:,:]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
@@ -475,9 +476,9 @@ class Vortex_Lattice(Stability):
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = AoAs 
         conditions.freestream.mach_number               = Machs 
-        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
-        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
-        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.static_stability.pitch_rate         = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate          = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate           = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
@@ -490,7 +491,7 @@ class Vortex_Lattice(Stability):
                     if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
                         control_surface.deflection                                    = delta_e[e_i]
                         conditions.control_surfaces.elevator.deflection[:,0]          = delta_e[e_i]                
-                        CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)     
+                        CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)     
                         CLift_d_e[:,:,e_i] = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
                         CDrag_d_e[:,:,e_i] = np.reshape(CDrag_res,(len_Mach,len_AoA)).T                                 
                         CX_d_e[:,:,e_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
@@ -517,9 +518,9 @@ class Vortex_Lattice(Stability):
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = AoAs 
         conditions.freestream.mach_number               = Machs 
-        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
-        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
-        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.static_stability.pitch_rate         = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate          = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate           = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
@@ -533,7 +534,7 @@ class Vortex_Lattice(Stability):
                         
                         control_surface.deflection                                    = delta_a[a_i]
                         conditions.control_surfaces.aileron.deflection[:,0]           = delta_a[a_i]                
-                        CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)  
+                        CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)  
                         CLift_d_a[:,:,a_i] = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
                         CDrag_d_a[:,:,a_i] = np.reshape(CDrag_res,(len_Mach,len_AoA)).T                                 
                         CX_d_a[:,:,a_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
@@ -561,9 +562,9 @@ class Vortex_Lattice(Stability):
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = AoAs 
         conditions.freestream.mach_number               = Machs 
-        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
-        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
-        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.static_stability.pitch_rate         = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate          = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate           = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
@@ -576,7 +577,7 @@ class Vortex_Lattice(Stability):
                         
                         control_surface.deflection                                    = delta_r[r_i]
                         conditions.control_surfaces.rudder.deflection[:,0]            = delta_r[r_i]                
-                        CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)      
+                        CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
 
                         CLift_d_r[:,:,r_i] = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
                         CDrag_d_r[:,:,r_i] = np.reshape(CDrag_res,(len_Mach,len_AoA)).T                                 
@@ -604,16 +605,16 @@ class Vortex_Lattice(Stability):
         conditions.aerodynamics.angles.alpha            = AoAs 
         conditions.freestream.mach_number               = Machs
         conditions.freestream.velocity                  = Machs * 343 # speed of sound  
-        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
-        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
-        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.static_stability.pitch_rate         = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate          = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate           = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         
         for pitch_i in range(len_pitch_rate):  
-            conditions.stability.dynamic.pitch_rate[:,0]                 = pitch_rate[pitch_i]  
-            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)  
+            conditions.static_stability.pitch_rate[:,0]                 = pitch_rate[pitch_i]  
+            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)  
             CLift_pitch_rate[:,:,pitch_i]     = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
             CDrag_pitch_rate[:,:,pitch_i]     = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
             CX_pitch_rate[:,:,pitch_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
@@ -621,8 +622,7 @@ class Vortex_Lattice(Stability):
             CZ_pitch_rate[:,:,pitch_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
             CL_pitch_rate[:,:,pitch_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
             CM_pitch_rate[:,:,pitch_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            CN_pitch_rate[:,:,pitch_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T      
-        
+            CN_pitch_rate[:,:,pitch_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T  
     
     
         # -------------------------------------------------------               
@@ -642,16 +642,16 @@ class Vortex_Lattice(Stability):
         conditions.aerodynamics.angles.alpha            = AoAs 
         conditions.freestream.mach_number               = Machs
         conditions.freestream.velocity                  = Machs * 343 # speed of sound  
-        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
-        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
-        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.static_stability.pitch_rate         = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate          = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate           = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)        
         
         for roll_i in range(len_roll_rate):  
-            conditions.stability.dynamic.roll_rate[:,0]                  = roll_rate[roll_i]             
-            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)  
+            conditions.static_stability.roll_rate[:,0]                  = roll_rate[roll_i]             
+            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)  
             
             CLift_roll_rate[:,:,roll_i]     = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
             CDrag_roll_rate[:,:,roll_i]     = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
@@ -680,16 +680,16 @@ class Vortex_Lattice(Stability):
         conditions.aerodynamics.angles.alpha            = AoAs 
         conditions.freestream.mach_number               = Machs
         conditions.freestream.velocity                  = Machs * 343 # speed of sound  
-        conditions.stability.dynamic.pitch_rate         = np.zeros_like(Machs)      
-        conditions.stability.dynamic.roll_rate          = np.zeros_like(Machs)
-        conditions.stability.dynamic.yaw_rate           = np.zeros_like(Machs)  
+        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)  
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         
         for yaw_i in range(len_yaw_rate): 
-            conditions.stability.dynamic.yaw_rate[:,0]                  = yaw_rate[yaw_i]             
-            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = calculate_VLM(conditions,settings,geometry)  
+            conditions.static_stability.yaw_rate[:,0]                  = yaw_rate[yaw_i]             
+            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)  
             CLift_yaw_rate[:,:,yaw_i]     = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
             CDrag_yaw_rate[:,:,yaw_i]     = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
             CX_yaw_rate[:,:,yaw_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
@@ -698,8 +698,7 @@ class Vortex_Lattice(Stability):
             CL_yaw_rate[:,:,yaw_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
             CM_yaw_rate[:,:,yaw_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
             CN_yaw_rate[:,:,yaw_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T
-            
-        # Longitudinal Derviatives    
+              
         training.CLift        = CLift  
         training.CDrag        = CDrag
         training.CX_0         = CX_0 
@@ -708,29 +707,60 @@ class Vortex_Lattice(Stability):
         training.CL_0         = CL_0 
         training.CM_0         = CM_0 
         training.CN_0         = CN_0 
-        training.dCM_dalpha   = (CM_d_e[0,:,:] - CM_d_e[1,:,:])   / (AoA[0]-AoA[1]) 
-        training.dCL_dalpha   = (CLift_d_e[0,:,:] - CLift_d_e[1,:,:])   / (AoA[0]-AoA[1])  
-        training.dCL_delta_e  = (CLift_d_e[:,:,0] - CLift_d_e[:,:,1])   /  (delta_e[0]-delta_e[1]) 
-        training.dCM_delta_e  = (CM_d_e[:,:,0] - CM_d_e[:,:,1])   / (delta_e[0]-delta_e[1])   
-        
-        # Lateral Derviatives
-        training.dCY_dbeta    = (CY_beta[:,:,0] - CY_beta[:,:,1])   / (Beta[0]-Beta[1])
-        training.dCl_dbeta    = -(CL_beta[:,:,0] - CL_beta[:,:,1])   / (Beta[0]-Beta[1])  # negative sign due definition in literature
-        training.dCn_dbeta    = (CN_beta[:,:,0] - CN_beta[:,:,1])   / (Beta[0]-Beta[1])
-        training.dCY_ddelta_a = (CY_d_a[:,:,0] -  CY_d_a[:,:,1])   / (delta_a[0]-delta_a[1])
-        training.dCl_ddelta_a = (CL_d_a[:,:,0] - CL_d_a[:,:,1])   / (delta_a[0]-delta_a[1]) 
-        training.dCn_ddelta_a = (CN_d_a[:,:,0] - CN_d_a[:,:,1])   / (delta_a[0]-delta_a[1])
-        training.dCY_ddelta_r = (CY_d_r[:,:,0] - CY_d_r[:,:,1])   /  (delta_r[0]-delta_r[1])
-        training.dCl_ddelta_r = (CL_d_r[:,:,0] - CL_d_r[:,:,1])   / (delta_r[0]-delta_r[1])
-        training.dCn_ddelta_r = -(CN_d_r[:,:,0] - CN_d_r[:,:,1])   / (delta_r[0]-delta_r[1]) # negative sign due definition in literature
-        
-        #training.dCY_dp      = np.mean((CY_pitch_rate[:,:,0] - CY_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0]))
-        #training.dCY_dr       = np.mean((CL_d_e[:,:,0] - CL_d_e[:,:,1])   / (AoA[1]-AoA[0]))        
-        #training.dCl_dr       = np.mean((CL_d_e[:,:,0] - CL_d_e[:,:,1])   / (AoA[1]-AoA[0]))
-        training.dCl_dp       = (CL_roll_rate[:,:,0] - CL_roll_rate[:,:,1])   / (roll_rate[0]-roll_rate[1])
-        #training.dCn_dr       = np.mean((CL_d_e[:,:,0] - CL_d_e[:,:,1])   / (AoA[1]-AoA[0]))
-        #training.dCn_dp       = np.mean((CN_pitch_rate[:,:,0] - CN_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0]))        
-        #training.static_margin = -training.dCM_dalpha / training.dCL_dalpha 
+        training.CM_alpha     = (CM_d_e[0,:,:] - CM_d_e[1,:,:])   / (AoA[0]-AoA[1]) 
+        training.Clift_alpha  = (CLift_d_e[0,:,:] - CLift_d_e[1,:,:])   / (AoA[0]-AoA[1])  
+        training.Clift_delta_e= (CLift_d_e[:,:,0] - CLift_d_e[:,:,1])   /  (delta_e[0]-delta_e[1]) 
+        training.CM_delta_e   = (CM_d_e[:,:,0] - CM_d_e[:,:,1])   / (delta_e[0]-delta_e[1])    
+        training.CY_beta      = (CY_beta[:,:,0] - CY_beta[:,:,1])   / (Beta[0]-Beta[1])
+        training.CL_beta      = -(CL_beta[:,:,0] - CL_beta[:,:,1])   / (Beta[0]-Beta[1])  # negative sign due definition in literature
+        training.CN_beta      = (CN_beta[:,:,0] - CN_beta[:,:,1])   / (Beta[0]-Beta[1])
+        training.CY_ddelta_a  = (CY_d_a[:,:,0] -  CY_d_a[:,:,1])   / (delta_a[0]-delta_a[1])
+        training.CL_delta_a   = (CL_d_a[:,:,0] - CL_d_a[:,:,1])   / (delta_a[0]-delta_a[1]) 
+        training.CN_delta_a   = (CN_d_a[:,:,0] - CN_d_a[:,:,1])   / (delta_a[0]-delta_a[1])
+        training.CY_ddelta_r  = (CY_d_r[:,:,0] - CY_d_r[:,:,1])   /  (delta_r[0]-delta_r[1])
+        training.Cl_ddelta_r  = (CL_d_r[:,:,0] - CL_d_r[:,:,1])   / (delta_r[0]-delta_r[1])
+        training.CN_delta_r   = -(CN_d_r[:,:,0] - CN_d_r[:,:,1])   / (delta_r[0]-delta_r[1]) # negative sign due definition in literature 
+                          
+        training.Clift_p       = (CLift_roll_rate[:,:,0] - CX_roll_rate[:,:,1])   / (roll_rate[0]-roll_rate[1])          
+        training.Clift_q       = (CLift_pitch_rate[:,:,0] - CX_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0])        
+        training.Clift_r       = (CLift_yaw_rate[:,:,0] - CX_yaw_rate[:,:,1])   / (yaw_rate[1]-yaw_rate[0])             
+        training.CX_u          =  0 #    
+        training.CX_v          =  0 #    
+        training.CX_w          =  0 #    
+        training.CY_u          =  0 #    
+        training.CY_v          =  0 #    
+        training.CY_w          =  0 #    
+        training.CZ_u          =  0 #    
+        training.CZ_v          =  0 #    
+        training.CZ_w          =  0 #    
+        training.CL_u          =  0 #    
+        training.CL_v          =  0 #    
+        training.CL_w          =  0 #    
+        training.CM_u          =  0 #    
+        training.CM_v          =  0 #    
+        training.CM_w          =  0 #    
+        training.CN_u          =  0 #    
+        training.CN_v          =  0 #    
+        training.CN_w          =  0 #    
+        training.CX_p          = (CX_roll_rate[:,:,0] - CX_roll_rate[:,:,1])   / (roll_rate[0]-roll_rate[1])      
+        training.CX_q          = (CX_pitch_rate[:,:,0] - CX_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0])     
+        training.CX_r          = (CX_yaw_rate[:,:,0] - CX_yaw_rate[:,:,1])   / (yaw_rate[1]-yaw_rate[0])     
+        training.CY_p          = (CY_roll_rate[:,:,0] - CY_roll_rate[:,:,1])   / (roll_rate[0]-roll_rate[1])    
+        training.CY_q          = (CY_pitch_rate[:,:,0] - CY_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0])    
+        training.CY_r          = (CY_yaw_rate[:,:,0] - CY_yaw_rate[:,:,1])   / (yaw_rate[1]-yaw_rate[0])     
+        training.CZ_p          = (CZ_roll_rate[:,:,0] - CZ_roll_rate[:,:,1])   / (roll_rate[0]-roll_rate[1])     
+        training.CZ_q          = (CZ_pitch_rate[:,:,0] - CZ_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0])    
+        training.CZ_r          = (CZ_yaw_rate[:,:,0] - CZ_yaw_rate[:,:,1])   / (yaw_rate[1]-yaw_rate[0])     
+        training.CL_p          = (CL_roll_rate[:,:,0] - CL_roll_rate[:,:,1])   / (roll_rate[0]-roll_rate[1])     
+        training.CL_q          = (CL_pitch_rate[:,:,0] - CL_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0])     
+        training.CL_r          = (CL_yaw_rate[:,:,0] - CL_yaw_rate[:,:,1])   / (yaw_rate[1]-yaw_rate[0])     
+        training.CM_p          = (CM_roll_rate[:,:,0] - CM_roll_rate[:,:,1])   / (roll_rate[0]-roll_rate[1])     
+        training.CM_q          = (CM_pitch_rate[:,:,0] - CM_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0])     
+        training.CM_r          = (CM_yaw_rate[:,:,0] - CM_yaw_rate[:,:,1])   / (yaw_rate[1]-yaw_rate[0])     
+        training.CN_p          = (CN_roll_rate[:,:,0] - CN_roll_rate[:,:,1])   / (roll_rate[0]-roll_rate[1])      
+        training.CN_q          = (CN_pitch_rate[:,:,0] - CN_pitch_rate[:,:,1])   / (pitch_rate[1]-pitch_rate[0])     
+        training.CN_r          = (CN_yaw_rate[:,:,0] - CN_yaw_rate[:,:,1])   / (yaw_rate[1]-yaw_rate[0])     
+        training.NP            = 0  
         
         
         return
@@ -754,114 +784,38 @@ class Vortex_Lattice(Stability):
         surrogates     = self.surrogates
         training       = self.training  
         AoA_data       = training.angle_of_attack 
-        mach_data      = training.Mach               
-        geometry       = self.geometry  
-              
-        CLift_data          = training.CLift    
-        CDrag_data          = training.CDrag     
-        dCM_delta_e_data    = training.dCM_delta_e
-        dCM_dalpha_data     = training.dCM_dalpha 
-        dCL_dalpha_data     = training.dCL_dalpha
-        dCL_delta_e_data    = training.dCL_delta_e 
-        CX_0_data           = training.CX_0         
-        CY_0_data           = training.CY_0         
-        CZ_0_data           = training.CZ_0         
-        CL_0_data           = training.CL_0         
-        CM_0_data           = training.CM_0         
-        CN_0_data           = training.CN_0   
-        
-        dCY_dbeta_data    = training.dCY_dbeta   
-        dCl_dbeta_data    = training.dCl_dbeta     
-        dCn_dbeta_data    = training.dCn_dbeta     
-        dCY_ddelta_a_data = training.dCY_ddelta_a  
-        dCl_ddelta_a_data = training.dCl_ddelta_a  
-        dCn_ddelta_a_data = training.dCn_ddelta_a  
-        dCY_ddelta_r_data = training.dCY_ddelta_r        
-        dCl_ddelta_r_data = training.dCl_ddelta_r  
-        dCn_ddelta_r_data = training.dCn_ddelta_r 
-        dCl_dp_data       = training.dCl_dp
-        
-
-        #static_margin       = training.static_margin
-        #dCY_dp_data         = training.dCY_dp
-        
-        # Instantiate surrogates 
-        CLift_surrogate       = None 
-        CDrag_surrogate       = None  
-        dCM_delta_e_surrogate = None
-        dCM_dalpha_surrogate  = None
-        dCL_dalpha_surrogate  = None
-        dCL_delta_e_surrogate = None 
-        
-        dCY_dbeta_surrogate    = None
-        dCl_dbeta_surrogate    = None
-        dCn_dbeta_surrogate    = None
-        dCY_ddelta_a_surrogate = None
-        dCl_ddelta_a_surrogate = None
-        dCn_ddelta_a_surrogate = None
-        dCY_ddelta_r_surrogate = None
-        dCl_ddelta_r_surrogate = None
-        dCn_ddelta_r_surrogate = None
-        dCl_dp_surrogate        = None
-        
-        # Do the subsonic surrogates: 
-        CLift_surrogate       = RegularGridInterpolator((AoA_data, mach_data),CLift_data,method = 'linear',   bounds_error=False, fill_value=None)   
-        CDrag_surrogate       = RegularGridInterpolator((AoA_data, mach_data),CDrag_data,method = 'linear',   bounds_error=False, fill_value=None)    
-        dCM_delta_e_surrogate = RegularGridInterpolator((AoA_data, mach_data),dCM_delta_e_data,method = 'linear',   bounds_error=False, fill_value=None)   
-        dCM_dalpha_surrogate  = RegularGridInterpolator((AoA_data, mach_data),dCM_dalpha_data,method = 'linear',   bounds_error=False, fill_value=None)    
-        dCL_dalpha_surrogate  = RegularGridInterpolator((AoA_data, mach_data),dCL_dalpha_data,method = 'linear',   bounds_error=False, fill_value=None)   
-        dCL_delta_e_surrogate = RegularGridInterpolator((AoA_data, mach_data),dCL_delta_e_data ,method = 'linear',   bounds_error=False, fill_value=None)    
-        CX_0_surrogate        = RegularGridInterpolator((AoA_data, mach_data),CX_0_data ,method = 'linear',   bounds_error=False, fill_value=None)     
-        CY_0_surrogate        = RegularGridInterpolator((AoA_data, mach_data),CY_0_data ,method = 'linear',   bounds_error=False, fill_value=None)     
-        CZ_0_surrogate        = RegularGridInterpolator((AoA_data, mach_data),CZ_0_data ,method = 'linear',   bounds_error=False, fill_value=None)     
-        CL_0_surrogate        = RegularGridInterpolator((AoA_data, mach_data),CL_0_data ,method = 'linear',   bounds_error=False, fill_value=None)     
-        CM_0_surrogate        = RegularGridInterpolator((AoA_data, mach_data),CM_0_data ,method = 'linear',   bounds_error=False, fill_value=None)     
-        CN_0_surrogate        = RegularGridInterpolator((AoA_data, mach_data),CN_0_data ,method = 'linear',   bounds_error=False, fill_value=None)
-        dCY_dbeta_surrogate   = RegularGridInterpolator((AoA_data,mach_data),dCY_dbeta_data   ,method = 'linear',   bounds_error=False, fill_value=None)
-        dCl_dbeta_surrogate   = RegularGridInterpolator((AoA_data,mach_data),dCl_dbeta_data   ,method = 'linear',   bounds_error=False, fill_value=None)
-        dCn_dbeta_surrogate   = RegularGridInterpolator((AoA_data,mach_data),dCn_dbeta_data   ,method = 'linear',   bounds_error=False, fill_value=None)
-        dCY_ddelta_a_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCY_ddelta_a_data,method = 'linear',   bounds_error=False, fill_value=None)
-        dCl_ddelta_a_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCl_ddelta_a_data,method = 'linear',   bounds_error=False, fill_value=None)
-        dCn_ddelta_a_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCn_ddelta_a_data,method = 'linear',   bounds_error=False, fill_value=None)
-        dCY_ddelta_r_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCY_ddelta_r_data,method = 'linear',   bounds_error=False, fill_value=None)
-        dCl_ddelta_r_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCl_ddelta_r_data,method = 'linear',   bounds_error=False, fill_value=None)
-        dCn_ddelta_r_surrogate= RegularGridInterpolator((AoA_data,mach_data),dCn_ddelta_r_data,method = 'linear',   bounds_error=False, fill_value=None) 
-        dCl_dp_surrogate      = RegularGridInterpolator((AoA_data,mach_data),dCl_dp_data,method = 'linear',   bounds_error=False, fill_value=None)
-        
+        mach_data      = training.Mach        
         
         # Pack the outputs
-        surrogates.CLift       = CLift_surrogate    
-        surrogates.CDrag       = CDrag_surrogate   
-        surrogates.dCM_delta_e = dCM_delta_e_surrogate
-        surrogates.dCM_dalpha  = dCM_dalpha_surrogate 
-        surrogates.dCL_dalpha  = dCL_dalpha_surrogate 
-        surrogates.dCL_delta_e = dCL_delta_e_surrogate
+        surrogates.CLift          = RegularGridInterpolator((AoA_data,mach_data),training.CLift    ,method = 'linear',   bounds_error=False, fill_value=None)   
+        surrogates.CDrag          = RegularGridInterpolator((AoA_data,mach_data),training.CDrag     ,method = 'linear',   bounds_error=False, fill_value=None)    
+        surrogates.CM_delta_e     = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_e,method = 'linear',   bounds_error=False, fill_value=None)   
+        surrogates.CM_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CM_alpha ,method = 'linear',   bounds_error=False, fill_value=None)    
+        surrogates.Clift_alpha    = RegularGridInterpolator((AoA_data,mach_data),training.Clift_alpha,method = 'linear',   bounds_error=False, fill_value=None)   
+        surrogates.Clift_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_e,method = 'linear',   bounds_error=False, fill_value=None)    
+        surrogates.CX_0           = RegularGridInterpolator((AoA_data,mach_data),training.CX_0        ,method = 'linear',   bounds_error=False, fill_value=None)     
+        surrogates.CY_0           = RegularGridInterpolator((AoA_data,mach_data),training.CY_0        ,method = 'linear',   bounds_error=False, fill_value=None)     
+        surrogates.CZ_0           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_0        ,method = 'linear',   bounds_error=False, fill_value=None)     
+        surrogates.CL_0           = RegularGridInterpolator((AoA_data,mach_data),training.CL_0        ,method = 'linear',   bounds_error=False, fill_value=None)     
+        surrogates.CM_0           = RegularGridInterpolator((AoA_data,mach_data),training.CM_0        ,method = 'linear',   bounds_error=False, fill_value=None)     
+        surrogates.CN_0           = RegularGridInterpolator((AoA_data,mach_data),training.CN_0    ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CY_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CY_beta,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CL_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CL_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CN_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CN_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CY_ddelta_a    = RegularGridInterpolator((AoA_data,mach_data),training.CY_ddelta_a ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CL_delta_a     = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CN_delta_a     = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CY_ddelta_r    = RegularGridInterpolator((AoA_data,mach_data),training.CY_ddelta_r,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.Cl_ddelta_r    = RegularGridInterpolator((AoA_data,mach_data),training.Cl_ddelta_r,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CN_delta_r     = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_r ,method = 'linear',   bounds_error=False, fill_value=None) 
+        surrogates.CL_p_surrogate = RegularGridInterpolator((AoA_data,mach_data),training.CL_p  ,method = 'linear',   bounds_error=False, fill_value=None)
         
-        surrogates.CX_0 = CX_0_surrogate   
-        surrogates.CY_0 = CY_0_surrogate  
-        surrogates.CZ_0 = CZ_0_surrogate  
-        surrogates.CL_0 = CL_0_surrogate  
-        surrogates.CM_0 = CM_0_surrogate  
-        surrogates.CN_0 = CN_0_surrogate      
-        
-        surrogates.dCY_dbeta    = dCY_dbeta_surrogate   
-        surrogates.dCl_dbeta    = dCl_dbeta_surrogate   
-        surrogates.dCn_dbeta    = dCn_dbeta_surrogate   
-        surrogates.dCY_ddelta_a = dCY_ddelta_a_surrogate
-        surrogates.dCl_ddelta_a = dCl_ddelta_a_surrogate
-        surrogates.dCn_ddelta_a = dCn_ddelta_a_surrogate
-        surrogates.dCY_ddelta_r = dCY_ddelta_r_surrogate
-        surrogates.dCl_ddelta_r = dCl_ddelta_r_surrogate
-        surrogates.dCn_ddelta_r = dCn_ddelta_r_surrogate 
-        surrogates.dCl_dp_surrogate = dCl_dp_surrogate
-        #surrogates.static_margin= static_margin
-        #surrogates.dCY_dp        = dCY_dp_data 
         return
 
 # ----------------------------------------------------------------------
 #  Helper Functions
 # ----------------------------------------------------------------------
-def calculate_VLM(conditions,settings,geometry):
+def evaluate_VLM(conditions,settings,geometry):
     """Calculate stability coefficients inluding specific wing coefficients using the VLM
         
     Assumptions:

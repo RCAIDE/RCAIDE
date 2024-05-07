@@ -26,8 +26,8 @@ class Results(Conditions):
         Assumptions:
         None
         
-        Source:
-        None
+        Source:ty.static.coeffici
+        None   ty.static.coeffici
     """
     
     
@@ -35,7 +35,25 @@ class Results(Conditions):
         """This sets the default values.
     
             Assumptions:
-            None
+            Coefficient subscritps:
+                X      - force in X direction
+                Y      - force in Y direction 
+                Z      - force in Z direction
+                
+                lift  - force 
+                drag  - force 
+    
+                L     - moment about X axis 
+                M     - moment about Y axis 
+                N     - moment about Z axis
+                
+                u     - velocity in X drection
+                v     - velocity in Y drection
+                w     - velocity in Z drection
+                   
+                p     - angular rate about X axis
+                q     - angular rate about Y axis
+                r     - angular rate about Z axis
     
             Source:
             N/A
@@ -57,9 +75,20 @@ class Results(Conditions):
         ones_3col                                             = self.ones_row(3)
         
         # ----------------------------------------------------------------------------------------------------------------------         
+        # Reference Values 
+        # ---------------------------------------------------------------------------------------------------------------------- 
+    
+        self.S_ref                                            = ones_1col * 0
+        self.c_ref                                            = ones_1col * 0
+        self.b_ref                                            = ones_1col * 0
+        self.X_ref                                            = ones_1col * 0
+        self.Y_ref                                            = ones_1col * 0
+        self.Z_ref                                            = ones_1col * 0     
+        
+        # ----------------------------------------------------------------------------------------------------------------------         
         # Frames 
         # ---------------------------------------------------------------------------------------------------------------------- 
-        self.frames                                           = Conditions() 
+        self.frames                                           = Conditions()
         
         # inertial conditions
         self.frames.inertial                                  = Conditions()        
@@ -125,81 +154,198 @@ class Results(Conditions):
         self.aerodynamics.angles.phi                          = ones_1col * 0 
 
         # aerodynamic coefficients 
-        self.aerodynamics.coefficients                        = Conditions()
-        self.aerodynamics.coefficients.lift                   = ones_1col * 0
-        self.aerodynamics.coefficients.drag                   = ones_1col * 0
-        
-        # aerodynamic derivatives
-        self.aerodynamics.derivatives                         = Conditions()
-        self.aerodynamics.derivatives.dCL_dAlpha              = ones_1col * 0
-        self.aerodynamics.derivatives.dCD_dAlpha              = ones_1col * 0
-        self.aerodynamics.derivatives.dCL_dBeta               = ones_1col * 0
-        self.aerodynamics.derivatives.dCD_dBeta               = ones_1col * 0
-        self.aerodynamics.derivatives.dCL_dV                  = ones_1col * 0
-        self.aerodynamics.derivatives.dCD_dV                  = ones_1col * 0
-        self.aerodynamics.derivatives.dCL_dThrottle           = ones_1col * 0
-        self.aerodynamics.derivatives.dCD_dThrottle           = ones_1col * 0
-        
-        self.aerodynamics.lift_breakdown                      = Conditions()
-        self.aerodynamics.drag_breakdown                      = Conditions()
-        self.aerodynamics.drag_breakdown.parasite             = Conditions()
-        self.aerodynamics.drag_breakdown.compressible         = Conditions()
-        self.aerodynamics.drag_breakdown.induced              = Conditions()
+        self.aerodynamics.coefficients                             = Conditions()
+        self.aerodynamics.coefficients.lift                        = ones_1col * 0
+        self.aerodynamics.coefficients.drag                        = ones_1col * 0  
+        self.aerodynamics.oswald_efficiency                        = ones_1col * 0    
+             
+        self.aerodynamics.lift_breakdown                           = Conditions()
+        self.aerodynamics.drag_breakdown                           = Conditions()
+        self.aerodynamics.drag_breakdown.parasite                  = Conditions()
+        self.aerodynamics.drag_breakdown.compressible              = Conditions()
+        self.aerodynamics.drag_breakdown.induced                   = Conditions()
+        self.aerodynamics.drag_breakdown.induced.total             = ones_1col * 0
+        self.aerodynamics.drag_breakdown.induced.efficiency_factor = ones_1col * 0
 
         # ----------------------------------------------------------------------------------------------------------------------
-        # Stability
+        # Control Surfaces 
         # ----------------------------------------------------------------------------------------------------------------------
-        self.control_surfaces                                 = Conditions()
-        self.control_surfaces.elevator                        = Conditions()
-        self.control_surfaces.elevator.deflection             = ones_1col * 0
-        self.control_surfaces.rudder                          = Conditions()
-        self.control_surfaces.rudder.deflection               = ones_1col * 0
-        self.control_surfaces.flap                            = Conditions()
-        self.control_surfaces.flap.deflection                 = ones_1col * 0
-        self.control_surfaces.slat                            = Conditions()
-        self.control_surfaces.slat.deflection                 = ones_1col * 0
-        self.control_surfaces.aileron                         = Conditions()
-        self.control_surfaces.aileron.deflection              = ones_1col * 0
+        self.control_surfaces                                                  = Conditions()
+        
+        self.control_surfaces.elevator                                         = Conditions()
+        self.control_surfaces.elevator.deflection                              = ones_1col * 0 
+        self.control_surfaces.elevator.static_stability                        = Conditions()
+        self.control_surfaces.elevator.static_stability.coefficients           = Conditions() 
+        self.control_surfaces.elevator.static_stability.coefficients.lift      = ones_1col * 0        
+        self.control_surfaces.elevator.static_stability.coefficients.drag      = ones_1col * 0           
+        self.control_surfaces.elevator.static_stability.coefficients.Y         = ones_1col * 0         
+        self.control_surfaces.elevator.static_stability.coefficients.L         = ones_1col * 0         
+        self.control_surfaces.elevator.static_stability.coefficients.M         = ones_1col * 0         
+        self.control_surfaces.elevator.static_stability.coefficients.N         = ones_1col * 0           
+        self.control_surfaces.elevator.static_stability.coefficients.e         = ones_1col * 0
+        
+        self.control_surfaces.rudder                                           = Conditions()
+        self.control_surfaces.rudder.deflection                                = ones_1col * 0 
+        self.control_surfaces.rudder.static_stability                          = Conditions()
+        self.control_surfaces.rudder.static_stability.coefficients             = Conditions() 
+        self.control_surfaces.rudder.static_stability.coefficients.lift        = ones_1col * 0         
+        self.control_surfaces.rudder.static_stability.coefficients.drag        = ones_1col * 0          
+        self.control_surfaces.rudder.static_stability.coefficients.Y           = ones_1col * 0         
+        self.control_surfaces.rudder.static_stability.coefficients.L           = ones_1col * 0         
+        self.control_surfaces.rudder.static_stability.coefficients.M           = ones_1col * 0         
+        self.control_surfaces.rudder.static_stability.coefficients.N           = ones_1col * 0           
+        self.control_surfaces.rudder.static_stability.coefficients.e           = ones_1col * 0
+        
+        self.control_surfaces.flap                                             = Conditions()
+        self.control_surfaces.flap.deflection                                  = ones_1col * 0 
+        self.control_surfaces.flap.static_stability                            = Conditions()
+        self.control_surfaces.flap.static_stability.coefficients               = Conditions() 
+        self.control_surfaces.flap.static_stability.coefficients.lift          = ones_1col * 0        
+        self.control_surfaces.flap.static_stability.coefficients.drag          = ones_1col * 0           
+        self.control_surfaces.flap.static_stability.coefficients.Y             = ones_1col * 0         
+        self.control_surfaces.flap.static_stability.coefficients.L             = ones_1col * 0         
+        self.control_surfaces.flap.static_stability.coefficients.M             = ones_1col * 0         
+        self.control_surfaces.flap.static_stability.coefficients.N             = ones_1col * 0           
+        self.control_surfaces.flap.static_stability.coefficients.e             = ones_1col * 0
+        
+        self.control_surfaces.slat                                             = Conditions()
+        self.control_surfaces.slat.deflection                                  = ones_1col * 0 
+        self.control_surfaces.slat.static_stability                            = Conditions()
+        self.control_surfaces.slat.static_stability.coefficients               = Conditions() 
+        self.control_surfaces.slat.static_stability.coefficients.lift          = ones_1col * 0         
+        self.control_surfaces.slat.static_stability.coefficients.drag          = ones_1col * 0          
+        self.control_surfaces.slat.static_stability.coefficients.Y             = ones_1col * 0         
+        self.control_surfaces.slat.static_stability.coefficients.L             = ones_1col * 0         
+        self.control_surfaces.slat.static_stability.coefficients.M             = ones_1col * 0         
+        self.control_surfaces.slat.static_stability.coefficients.N             = ones_1col * 0           
+        self.control_surfaces.slat.static_stability.coefficients.e             = ones_1col * 0
+
+        self.control_surfaces.aileron                                          = Conditions()
+        self.control_surfaces.aileron.deflection                               = ones_1col * 0 
+        self.control_surfaces.aileron.static_stability                         = Conditions()
+        self.control_surfaces.aileron.static_stability.coefficients            = Conditions() 
+        self.control_surfaces.aileron.static_stability.coefficients.lift       = ones_1col * 0        
+        self.control_surfaces.aileron.static_stability.coefficients.draf       = ones_1col * 0           
+        self.control_surfaces.aileron.static_stability.coefficients.Y          = ones_1col * 0         
+        self.control_surfaces.aileron.static_stability.coefficients.L          = ones_1col * 0         
+        self.control_surfaces.aileron.static_stability.coefficients.M          = ones_1col * 0         
+        self.control_surfaces.aileron.static_stability.coefficients.N          = ones_1col * 0           
+        self.control_surfaces.aileron.static_stability.coefficients.e          = ones_1col * 0
+        
+                   
 
         # ----------------------------------------------------------------------------------------------------------------------
         # Stability 
         # ----------------------------------------------------------------------------------------------------------------------  
         self.stability                                 = Conditions()
-        self.stability.static                          = Conditions()
+        self.static_stability                          = Conditions()
+ 
 
-        # static stability
-        self.stability.static_margin                   = ones_1col * 0
+        self.static_stability.forces                   = Conditions()
+        self.static_stability.forces.lift              = ones_1col * 0
+        self.static_stability.forces.drag              = ones_1col * 0
+        self.static_stability.forces.X                 = ones_1col * 0
+        self.static_stability.forces.Y                 = ones_1col * 0
+        self.static_stability.forces.Z                 = ones_1col * 0
+              
+        self.static_stability.moments                  = Conditions()
+        self.static_stability.moments.L                = ones_1col * 0
+        self.static_stability.moments.M                = ones_1col * 0
+        self.static_stability.moments.N                = ones_1col * 0
+        
+        
+        self.static_stability.static_margin            = ones_1col * 0
+        self.static_stability.neutral_point            = ones_1col * 0
+        self.static_stability.spiral_criteria          = ones_1col * 0 
+        self.static_stability.pitch_rate               = ones_1col * 0
+        self.static_stability.roll_rate                = ones_1col * 0
+        self.static_stability.yaw_rate                 = ones_1col * 0 
 
-        self.stability.static.coefficients             = Conditions()
-        self.stability.static.coefficients.lift        = ones_1col * 0
-        self.stability.static.coefficients.drag        = ones_1col * 0
-        self.stability.static.coefficients.CX          = ones_1col * 0
-        self.stability.static.coefficients.CY          = ones_1col * 0
-        self.stability.static.coefficients.CZ          = ones_1col * 0
-        self.stability.static.coefficients.CL          = ones_1col * 0
-        self.stability.static.coefficients.CM          = ones_1col * 0
-        self.stability.static.coefficients.CN          = ones_1col * 0
-        self.stability.static.coefficients.CM0         = ones_1col * 0
-
-        self.stability.static.derivatives              = Conditions()
-        self.stability.static.derivatives.CM_delta_e   = ones_1col * 0
-        self.stability.static.derivatives.dCM_dalpha   = ones_1col * 0
-        self.stability.static.derivatives.dCn_dbeta    = ones_1col * 0
-        self.stability.static.derivatives.dCl_dbeta    = ones_1col * 0
-        self.stability.static.derivatives.dCY_dbeta    = ones_1col * 0
-        self.stability.static.derivatives.dCL_dalpha   = ones_1col * 0
-        self.stability.static.derivatives.dCl_ddelta_a = ones_1col * 0
-        self.stability.static.derivatives.dCn_ddelta_a = ones_1col * 0
-        self.stability.static.derivatives.dCn_ddelta_r = ones_1col * 0
-
+        self.static_stability.coefficients             = Conditions()
+        self.static_stability.coefficients.lift        = ones_1col * 0
+        self.static_stability.coefficients.drag        = ones_1col * 0
+        self.static_stability.coefficients.X           = ones_1col * 0
+        self.static_stability.coefficients.Y           = ones_1col * 0
+        self.static_stability.coefficients.Z           = ones_1col * 0
+        self.static_stability.coefficients.L           = ones_1col * 0
+        self.static_stability.coefficients.M           = ones_1col * 0
+        self.static_stability.coefficients.N           = ones_1col * 0  
+        
+        self.static_stability.derivatives              = Conditions()
+        
+        # stability axis
+        self.static_stability.derivatives.Clift_alpha  = ones_1col * 0
+        self.static_stability.derivatives.CY_alpha     = ones_1col * 0
+        self.static_stability.derivatives.CL_alpha     = ones_1col * 0
+        self.static_stability.derivatives.CM_alpha     = ones_1col * 0
+        self.static_stability.derivatives.CN_alpha     = ones_1col * 0
+        self.static_stability.derivatives.Clift_beta   = ones_1col * 0
+        self.static_stability.derivatives.CY_beta      = ones_1col * 0
+        self.static_stability.derivatives.CL_beta      = ones_1col * 0
+        self.static_stability.derivatives.CM_beta      = ones_1col * 0
+        self.static_stability.derivatives.CN_beta      = ones_1col * 0 
+        self.static_stability.derivatives.CM_delta_e   = ones_1col * 0
+        self.static_stability.derivatives.CL_delta_a   = ones_1col * 0
+        self.static_stability.derivatives.CN_delta_a   = ones_1col * 0
+        self.static_stability.derivatives.CN_delta_r   = ones_1col * 0
+        self.static_stability.derivatives.Clift_p      = ones_1col * 0
+        self.static_stability.derivatives.Clift_q      = ones_1col * 0
+        self.static_stability.derivatives.Clift_r      = ones_1col * 0
+        self.static_stability.derivatives.CY_p         = ones_1col * 0
+        self.static_stability.derivatives.CY_q         = ones_1col * 0
+        self.static_stability.derivatives.CY_r         = ones_1col * 0
+        self.static_stability.derivatives.CL_p         = ones_1col * 0
+        self.static_stability.derivatives.CL_q         = ones_1col * 0
+        self.static_stability.derivatives.CL_r         = ones_1col * 0
+        self.static_stability.derivatives.CM_p         = ones_1col * 0
+        self.static_stability.derivatives.CM_q         = ones_1col * 0
+        self.static_stability.derivatives.CM_r         = ones_1col * 0
+        self.static_stability.derivatives.CN_p         = ones_1col * 0
+        self.static_stability.derivatives.CN_q         = ones_1col * 0
+        self.static_stability.derivatives.CN_r         = ones_1col * 0
+        
+        # body axis derivatives 
+        self.static_stability.derivatives.CX_u         = ones_1col * 0
+        self.static_stability.derivatives.CX_v         = ones_1col * 0
+        self.static_stability.derivatives.CX_w         = ones_1col * 0
+        self.static_stability.derivatives.CY_u         = ones_1col * 0
+        self.static_stability.derivatives.CY_v         = ones_1col * 0
+        self.static_stability.derivatives.CY_w         = ones_1col * 0
+        self.static_stability.derivatives.CZ_u         = ones_1col * 0
+        self.static_stability.derivatives.CZ_v         = ones_1col * 0
+        self.static_stability.derivatives.CZ_w         = ones_1col * 0
+        self.static_stability.derivatives.CL_u         = ones_1col * 0
+        self.static_stability.derivatives.CL_v         = ones_1col * 0
+        self.static_stability.derivatives.CL_w         = ones_1col * 0
+        self.static_stability.derivatives.CM_u         = ones_1col * 0
+        self.static_stability.derivatives.CM_v         = ones_1col * 0
+        self.static_stability.derivatives.CM_w         = ones_1col * 0
+        self.static_stability.derivatives.CN_u         = ones_1col * 0
+        self.static_stability.derivatives.CN_v         = ones_1col * 0
+        self.static_stability.derivatives.CN_w         = ones_1col * 0
+        self.static_stability.derivatives.CX_p         = ones_1col * 0
+        self.static_stability.derivatives.CX_q         = ones_1col * 0
+        self.static_stability.derivatives.CX_r         = ones_1col * 0
+        self.static_stability.derivatives.CY_p         = ones_1col * 0
+        self.static_stability.derivatives.CY_q         = ones_1col * 0
+        self.static_stability.derivatives.CY_r         = ones_1col * 0
+        self.static_stability.derivatives.CZ_p         = ones_1col * 0
+        self.static_stability.derivatives.CZ_q         = ones_1col * 0
+        self.static_stability.derivatives.CZ_r         = ones_1col * 0
+        self.static_stability.derivatives.CL_p         = ones_1col * 0
+        self.static_stability.derivatives.CL_q         = ones_1col * 0
+        self.static_stability.derivatives.CL_r         = ones_1col * 0
+        self.static_stability.derivatives.CM_p         = ones_1col * 0
+        self.static_stability.derivatives.CM_q         = ones_1col * 0
+        self.static_stability.derivatives.CM_r         = ones_1col * 0
+        self.static_stability.derivatives.CN_p         = ones_1col * 0
+        self.static_stability.derivatives.CN_q         = ones_1col * 0
+        self.static_stability.derivatives.CN_r         = ones_1col * 0 
         
         # dynamic stability
-        self.stability.dynamic                         = Conditions()
-        self.stability.dynamic.pitch_rate              = ones_1col * 0
-        self.stability.dynamic.roll_rate               = ones_1col * 0
-        self.stability.dynamic.yaw_rate                = ones_1col * 0
-        #self.stability.dynamic.derivatives.dCY_dp      = ones_1col * 0 # If uncomment this, there is an error. why?
-
+        self.dynamic_stability                         = Conditions()
+        self.dynamic_stability.LongModes               = Conditions()
+        self.dynamic_stability.LatModes                = Conditions()
 
         # ----------------------------------------------------------------------------------------------------------------------         
         # Noise 

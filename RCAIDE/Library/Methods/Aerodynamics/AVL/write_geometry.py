@@ -10,10 +10,7 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-from .purge_files import purge_files
-from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Settings    import Settings
-import numpy as np
-import shutil
+from .purge_files import purge_files  
 from .create_avl_datastructure import translate_avl_wing, translate_avl_body 
 
 ## @ingroup Methods-Aerodynamics-AVL

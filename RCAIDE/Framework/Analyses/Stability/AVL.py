@@ -13,18 +13,15 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units, Data
 from RCAIDE.Framework.Core import redirect
 
-from RCAIDE.Library.Methods.Aerodynamics.AVL.write_geometry                             import write_geometry
-from RCAIDE.Library.Methods.Aerodynamics.AVL.write_mass_file                            import write_mass_file
-from RCAIDE.Library.Methods.Aerodynamics.AVL.write_run_cases                            import write_run_cases
-from RCAIDE.Library.Methods.Aerodynamics.AVL.write_input_deck                           import write_input_deck
-from RCAIDE.Library.Methods.Aerodynamics.AVL.run_analysis                               import run_analysis
-from RCAIDE.Library.Methods.Aerodynamics.AVL.translate_data                             import translate_conditions_to_cases, translate_results_to_conditions
-from RCAIDE.Library.Methods.Aerodynamics.AVL.purge_files                                import purge_files
-from RCAIDE.Library.Methods.Aerodynamics.AVL.Data.Settings                              import Settings
-from RCAIDE.Library.Methods.Aerodynamics.AVL.Data.Cases                                 import Run_Case
-from RCAIDE.Library.Methods.Geometry.Planform  import populate_control_sections  
-from RCAIDE.Library.Methods.Stability.Dynamic_Stability.VLM_Pertubation_Approximations              import compute_dynamic_flight_modes
-from RCAIDE.Library.Components.Wings.Control_Surfaces                                   import Aileron , Elevator , Slat , Flap , Rudder 
+from RCAIDE.Library.Methods.Aerodynamics.AVL.write_geometry         import write_geometry
+from RCAIDE.Library.Methods.Aerodynamics.AVL.write_mass_file        import write_mass_file
+from RCAIDE.Library.Methods.Aerodynamics.AVL.write_run_cases        import write_run_cases
+from RCAIDE.Library.Methods.Aerodynamics.AVL.write_input_deck       import write_input_deck
+from RCAIDE.Library.Methods.Aerodynamics.AVL.run_analysis           import run_analysis
+from RCAIDE.Library.Methods.Aerodynamics.AVL.translate_data         import translate_conditions_to_cases, translate_results_to_conditions 
+from RCAIDE.Library.Methods.Aerodynamics.AVL.Data.Settings          import Settings 
+from RCAIDE.Library.Methods.Stability.Dynamic_Stability             import compute_dynamic_flight_modes
+from RCAIDE.Library.Components.Wings.Control_Surfaces               import Aileron , Elevator , Slat , Flap , Rudder 
 
 # local imports 
 from .Stability import Stability
@@ -34,7 +31,7 @@ import os
 import numpy as np
 import sys  
 from shutil import rmtree 
-from scipy.interpolate import  RectBivariateSpline 
+from scipy.interpolate   import RegularGridInterpolator
 
 # ----------------------------------------------------------------------
 #  Class
@@ -80,10 +77,12 @@ class AVL(Stability):
         self.geometry                               = None   
                                                     
         self.settings                               = Settings()
+        self.settings.use_surrogate                 = True 
         self.settings.filenames.log_filename        = sys.stdout
         self.settings.filenames.err_filename        = sys.stderr        
-        self.settings.number_spanwise_vortices      = 20
-        self.settings.number_chordwise_vortices     = 10
+        self.settings.number_of_spanwise_vortices   = 20
+        self.settings.number_of_chordwise_vortices  = 10
+        self.settings.maximum_lift_coefficient      = np.inf
         self.settings.trim_aircraft                 = False 
         self.settings.print_output                  = False
                                                     
@@ -101,12 +100,7 @@ class AVL(Stability):
         self.settings.sideslip_angle                = 0.0
         self.settings.roll_rate_coefficient         = 0.0
         self.settings.pitch_rate_coefficient        = 0.0 
-        self.settings.lift_coefficient              = None
-        
-        self.training.moment_coefficient            = None
-        self.training.Cm_alpha_moment_coefficient   = None
-        self.training.Cn_beta_moment_coefficient    = None
-        self.training.neutral_point                 = None
+        self.settings.lift_coefficient              = None 
         self.training_file                          = None
                                                     
         # Surrogate model
@@ -120,7 +114,7 @@ class AVL(Stability):
         self.configuration                          = Data()    
         self.geometry                               = Data()
                                                     
-    def finalize(self):
+    def initialize(self):
         """Drives functions to get training samples and build a surrogate.
 
         Assumptions:
@@ -138,18 +132,28 @@ class AVL(Stability):
         Properties Used:
         self.geometry.tag
         """          
-        geometry                                = self.geometry 
-        self.tag                                = 'avl_analysis_of_{}'.format(geometry.tag) 
+        geometry                  = self.geometry 
+        self.tag                  = 'avl_analysis_of_{}'.format(geometry.tag) 
+        settings                  = self.settings  
+        use_surrogate             = settings.use_surrogate   
+
+        # If we are using the surrogate
+        if use_surrogate == True: 
+            # sample training data
+            self.sample_training()
+                        
+            # build surrogate
+            self.build_surrogate()        
             
-        # Sample training data
-        self.sample_training()
-        
-        # Build surrogate
-        self.build_surrogate()
+            self.evaluate = self.evaluate_surrogate
+               
+        else:
+            self.evaluate = self.evaluate_no_surrogate
+            
     
         return
 
-    def __call__(self,conditions):
+    def evaluate_surrogate(self,segment):
         """Evaluates moment coefficient, stability and body axis deriviatives and neutral point using available surrogates.
 
         Assumptions:
@@ -165,7 +169,7 @@ class AVL(Stability):
 
         Outputs:
         results
-            results.stability.static
+            results.static_stability
             results.stability.dynamic
         
 
@@ -179,44 +183,109 @@ class AVL(Stability):
         """          
         
         # Unpack
-        surrogates          = self.surrogates       
+        surrogates          = self.surrogates
+        conditions          = segment.conditions 
         Mach                = conditions.freestream.mach_number
         AoA                 = conditions.aerodynamics.angles.alpha 
-        moment_model        = surrogates.moment_coefficient
-        Cm_alpha_model      = surrogates.Cm_alpha_moment_coefficient
-        Cn_beta_model       = surrogates.Cn_beta_moment_coefficient      
-        neutral_point_model = surrogates.neutral_point
+        Beta                = conditions.aerodynamics.angles.beta
         cg                  = self.geometry.mass_properties.center_of_gravity[0]
         MAC                 = self.geometry.wings.main_wing.chords.mean_aerodynamic
+        delta_e             = np.atleast_2d(conditions.control_surfaces.elevator.deflection) 
+        delta_a             = np.atleast_2d(conditions.control_surfaces.aileron.deflection)   
+        delta_r             = np.atleast_2d(conditions.control_surfaces.rudder.deflection)   
+        delta_s             = np.atleast_2d(conditions.control_surfaces.slat.deflection)  
+        delta_f             = np.atleast_2d(conditions.control_surfaces.flap.deflection)
+        pitch_rate          = np.atleast_2d(conditions.static_stability.pitch_rate)   
         
-        # set up data structures
-        static_stability    = Data()
-        dynamic_stability   = Data()    
+        # Query surrogates  
+        pts            = np.hstack((AoA,Mach))       
+        neutral_point  = np.atleast_2d(surrogates.neutral_point(pts)).T 
+        CM_0           = np.atleast_2d(surrogates.CM_0(pts)).T      
+        CN_beta        = np.atleast_2d(surrogates.CN_beta(pts)).T  
+        
+        
+        # Stability Results  
+        #conditions.S_ref                                                  = # Need to Update 
+        #conditions.c_ref                                                  = # Need to Update
+        #conditions.b_ref                                                  = # Need to Update
+        #conditions.X_ref                                                  = # Need to Update
+        #conditions.Y_ref                                                  = # Need to Update
+        #conditions.Z_ref                                                  = # Need to Update 
+        #conditions.aerodynamics.oswald_efficiency                         = # Need to Update
+        conditions.static_stability.coefficients.lift                     = 0
+        conditions.static_stability.coefficients.drag                     =  0 
+        conditions.static_stability.coefficients.X                        =  0 
+        conditions.static_stability.coefficients.Y                        =  0 
+        conditions.static_stability.coefficients.Z                        =  0 
+        conditions.static_stability.coefficients.L                        =  0 
+        conditions.static_stability.coefficients.M                        =  0 
+        conditions.static_stability.coefficients.N                        =  0 
+        #conditions.static_stability.derivatives.Clift_alpha               = # Need to Update 
+        #conditions.static_stability.derivatives.CY_alpha                  = # Need to Update
+        #conditions.static_stability.derivatives.CL_alpha                  = # Need to Update
+        #conditions.static_stability.derivatives.CM_alpha                  = # Need to Update
+        #conditions.static_stability.derivatives.CN_alpha                  = # Need to Update
+        #conditions.static_stability.derivatives.Clift_beta                = # Need to Update
+        #conditions.static_stability.derivatives.CY_beta                   = # Need to Update
+        #conditions.static_stability.derivatives.CL_beta                   = # Need to Update
+        #conditions.static_stability.derivatives.CM_beta                   = # Need to Update
+        #conditions.static_stability.derivatives.CN_beta                   = # Need to Update
+        #conditions.static_stability.derivatives.Clift_p                   = # Need to Update
+        #conditions.static_stability.derivatives.Clift_q                   = # Need to Update
+        #conditions.static_stability.derivatives.Clift_r                   = # Need to Update
 
-        #Run Analysis
-        data_len            = len(AoA)
-        CM                  = np.zeros([data_len,1])
-        Cm_alpha            = np.zeros([data_len,1])
-        Cn_beta             = np.zeros([data_len,1])
-        NP                  = np.zeros([data_len,1]) 
+        #conditions.static_stability.derivatives.CX_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CX_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CX_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_w                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_u                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_v                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_w                      = # Need to Update
+        
+        #conditions.static_stability.derivatives.CX_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CX_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CX_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CY_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CZ_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CL_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CM_r                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_p                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_q                      = # Need to Update
+        #conditions.static_stability.derivatives.CN_r                      = # Need to Update 
+        #conditions.static_stability.neutral_point                         = # Need to Update
+        #conditions.static_stability.spiral_criteria                       = # Need to Update 
+        
+        conditions.aerodynamics.coefficients.lift               = conditions.static_stability.coefficients.lift # overwrite lift in aerodynamic results 
+        conditions.aerodynamics.lift_breakdown.total            = conditions.static_stability.coefficients.lift # overwrite lift in aerodynamic results 
+        conditions.aerodynamics.drag_breakdown.induced.inviscid = conditions.static_stability.coefficients.drag 
 
-        for i,_ in enumerate(AoA):           
-            CM[i]       = moment_model(AoA[i][0],Mach[i][0])[0]  
-            Cm_alpha[i] = Cm_alpha_model(AoA[i][0],Mach[i][0])[0]  
-            Cn_beta[i]  = Cn_beta_model(AoA[i][0],Mach[i][0])[0]  
-            NP[i]       = neutral_point_model(AoA[i][0],Mach[i][0])[0]    
-                
-        static_stability.CM            = CM
-        static_stability.Cm_alpha      = Cm_alpha 
-        static_stability.Cn_beta       = Cn_beta   
-        static_stability.neutral_point = NP 
-        static_stability.static_margin = (NP - cg)/MAC    
- 
-        results         = Data()
-        results.static  = static_stability
-        results.dynamic = dynamic_stability
-    
-        return results   
+        # -----------------------------------------------------------------------------------------------------------------------                     
+        # Dynamic Stability & System Identification
+        # -----------------------------------------------------------------------------------------------------------------------      
+        # Dynamic Stability
+        #if np.count_nonzero(geometry.mass_properties.moments_of_inertia.tensor) > 0:  
+            #compute_dynamic_flight_modes(conditions,geometry) 
+
+        return  
 
 
     def sample_training(self):
@@ -271,25 +340,81 @@ class AVL(Stability):
         for i,_ in enumerate(Mach):
             # Set training conditions
             run_conditions = RCAIDE.Framework.Mission.Common.Results()
-            run_conditions.freestream.density                  = atmo_data.density[0,0] 
-            run_conditions.freestream.gravity                  = 9.81            
-            run_conditions.freestream.speed_of_sound           = atmo_data.speed_of_sound[0,0]  
-            run_conditions.freestream.velocity                 = Mach[i] * run_conditions.freestream.speed_of_sound
-            run_conditions.freestream.mach_number              = Mach[i] 
-            run_conditions.aerodynamics.sideslip_angle        = sideslip_angle
-            run_conditions.aerodynamics.angle_of_attack        = AoA 
-            run_conditions.aerodynamics.roll_rate_coefficient  = roll_rate_coefficient
-            run_conditions.aerodynamics.lift_coefficient       = lift_coefficient
-            run_conditions.aerodynamics.pitch_rate_coefficient = pitch_rate_coefficient
+            run_conditions.freestream.density                   = atmo_data.density[0,0] 
+            run_conditions.freestream.gravity                   = 9.81            
+            run_conditions.freestream.speed_of_sound            = atmo_data.speed_of_sound[0,0]  
+            run_conditions.freestream.velocity                  = Mach[i] * run_conditions.freestream.speed_of_sound
+            run_conditions.freestream.mach_number               = Mach[i] 
+            run_conditions.aerodynamics.angles.beta             = sideslip_angle
+            run_conditions.aerodynamics.angles.alpha            = AoA 
+            run_conditions.aerodynamics.coefficients.p          = roll_rate_coefficient
+            run_conditions.aerodynamics.coefficients.lift       = lift_coefficient
+            run_conditions.aerodynamics.coefficients.q          = pitch_rate_coefficient
             
-            #Run Analysis at AoA[i] and Mach[i]
-            results =  self.evaluate_conditions(run_conditions, trim_aircraft)
-
-            # Obtain CM Cm_alpha, Cn_beta and the Neutral Point 
-            CM[:,i]       = results.aerodynamics.Cmtot[:,0]
-            Cm_alpha[:,i] = results.stability.static.Cm_alpha[:,0]
-            Cn_beta[:,i]  = results.stability.static.Cn_beta[:,0]
-            NP[:,i]       = results.stability.static.neutral_point[:,0]
+            # Run Analysis  
+            results =  self.evaluate_AVL(run_conditions, trim_aircraft)
+            
+            drag          = results.aerodynamics.drag_breakdown.induced.total         
+            e             = results.aerodynamics.oswald_efficiency                       
+            lift          = results.static_stability.coefficients.lift                 
+            CX_0          = results.static_stability.coefficients.X                      
+            CY_0          = results.static_stability.coefficients.Y                      
+            CZ_0          = results.static_stability.coefficients.Z                      
+            CL_0          = results.static_stability.coefficients.L                      
+            CM_0          = results.static_stability.coefficients.M                      
+            CN_0          = results.static_stability.coefficients.N     
+            Clift_alpha   = results.static_stability.derivatives.Clift_alpha          
+            CY_alpha      = results.static_stability.derivatives.CY_alpha             
+            CL_alpha      = results.static_stability.derivatives.CL_alpha             
+            CM_alpha      = results.static_stability.derivatives.CM_alpha              
+            CN_alpha      = results.static_stability.derivatives.CN_alpha              
+            Clift_beta    = results.static_stability.derivatives.Clift_beta            
+            CY_beta       = results.static_stability.derivatives.CY_beta              
+            CL_beta       = results.static_stability.derivatives.CL_beta              
+            CM_beta       = results.static_stability.derivatives.CM_beta              
+            CN_beta       = results.static_stability.derivatives.CN_beta                    
+            Clift_p       = results.static_stability.derivatives.Clift_p              
+            Clift_q       = results.static_stability.derivatives.Clift_q              
+            Clift_r       = results.static_stability.derivatives.Clift_r                  
+            CX_u          = results.static_stability.derivatives.CX_u                 
+            CX_v          = results.static_stability.derivatives.CX_v                 
+            CX_w          = results.static_stability.derivatives.CX_w                 
+            CY_u          = results.static_stability.derivatives.CY_u                 
+            CY_v          = results.static_stability.derivatives.CY_v                 
+            CY_w          = results.static_stability.derivatives.CY_w                 
+            CZ_u          = results.static_stability.derivatives.CZ_u                 
+            CZ_v          = results.static_stability.derivatives.CZ_v                 
+            CZ_w          = results.static_stability.derivatives.CZ_w                 
+            CL_u          = results.static_stability.derivatives.CL_u                 
+            CL_v          = results.static_stability.derivatives.CL_v                 
+            CL_w          = results.static_stability.derivatives.CL_w                 
+            CM_u          = results.static_stability.derivatives.CM_u                 
+            CM_v          = results.static_stability.derivatives.CM_v                 
+            CM_w          = results.static_stability.derivatives.CM_w                 
+            CN_u          = results.static_stability.derivatives.CN_u                 
+            CN_v          = results.static_stability.derivatives.CN_v                 
+            CN_w          = results.static_stability.derivatives.CN_w                 
+            CX_p          = results.static_stability.derivatives.CX_p                 
+            CX_q          = results.static_stability.derivatives.CX_q                 
+            CX_r          = results.static_stability.derivatives.CX_r                 
+            CY_p          = results.static_stability.derivatives.CY_p                 
+            CY_q          = results.static_stability.derivatives.CY_q                 
+            CY_r          = results.static_stability.derivatives.CY_r                 
+            CZ_p          = results.static_stability.derivatives.CZ_p                 
+            CZ_q          = results.static_stability.derivatives.CZ_q                 
+            CZ_r          = results.static_stability.derivatives.CZ_r                 
+            CL_p          = results.static_stability.derivatives.CL_p                 
+            CL_q          = results.static_stability.derivatives.CL_q                 
+            CL_r          = results.static_stability.derivatives.CL_r                 
+            CM_p          = results.static_stability.derivatives.CM_p                 
+            CM_q          = results.static_stability.derivatives.CM_q                 
+            CM_r          = results.static_stability.derivatives.CM_r                 
+            CN_p          = results.static_stability.derivatives.CN_p                 
+            CN_q          = results.static_stability.derivatives.CN_q                 
+            CN_r          = results.static_stability.derivatives.CN_r                 
+            NP            = results.static_stability.neutral_point            
+            SC            = results.static_stability.spiral_criteria          
+             
         
         if self.training_file:
             # load data 
@@ -300,9 +425,9 @@ class AVL(Stability):
             NP_1D        = np.atleast_2d(data_array[:,3])
             
             # convert from 1D to 2D
-            CM        = np.reshape(CM_1D, (len(AoA),-1))
-            Cm_alpha  = np.reshape(Cm_alpha_1D, (len(AoA),-1))
-            Cn_beta   = np.reshape(Cn_beta_1D , (len(AoA),-1))
+            CM_0      = np.reshape(CM_1D, (len(AoA),-1))
+            CM_alpha  = np.reshape(Cm_alpha_1D, (len(AoA),-1))
+            CN_beta   = np.reshape(Cn_beta_1D , (len(AoA),-1))
             NP        = np.reshape(NP_1D , (len(AoA),-1))
         
         # Save the data for regression 
@@ -314,17 +439,12 @@ class AVL(Stability):
             NP_1D       = Cn_beta.reshape([len(AoA)*len(Mach),1]) 
             np.savetxt(geometry.tag+'_stability_data.txt',np.hstack([CM_1D,Cm_alpha_1D, Cn_beta_1D,NP_1D ]),fmt='%10.8f',header='   CM       Cm_alpha       Cn_beta       NP ')
         
-        # Store training data
-        # Save the data for regression
-        training_data = np.zeros((4,len(AoA),len(Mach)))
-        training_data[0,:,:] = CM       
-        training_data[1,:,:] = Cm_alpha 
-        training_data[2,:,:] = Cn_beta  
-        training_data[3,:,:] = NP      
-            
-        # Store training data
-        training.coefficients = training_data
- 
+        # Store training data   
+        training.CM_0          = CM_0    
+        training.CM_alpha      = CM_alpha 
+        training.CN_beta       = CN_beta
+        training.neutral_point = NP
+        
         return        
 
     def build_surrogate(self):
@@ -353,19 +473,17 @@ class AVL(Stability):
         No others
         """  
         # Unpack data
-        training                                    = self.training
-        AoA_data                                    = training.angle_of_attack
-        mach_data                                   = training.Mach
-        CM_data                                     = training.coefficients[0,:,:]
-        Cm_alpha_data                               = training.coefficients[1,:,:]
-        Cn_beta_data                                = training.coefficients[2,:,:]
-        NP_data                                     = training.coefficients[3,:,:]
+        training       = self.training
+        surrogates     = self.surrogates
+        AoA_data       = training.angle_of_attack
+        mach_data      = training.Mach
         
-        self.surrogates.moment_coefficient          = RectBivariateSpline(AoA_data, mach_data, CM_data      ) 
-        self.surrogates.Cm_alpha_moment_coefficient = RectBivariateSpline(AoA_data, mach_data, Cm_alpha_data) 
-        self.surrogates.Cn_beta_moment_coefficient  = RectBivariateSpline(AoA_data, mach_data, Cn_beta_data ) 
-        self.surrogates.neutral_point               = RectBivariateSpline(AoA_data, mach_data, NP_data      )  
-                                                       
+        # Pack the outputs
+        surrogates.CM_0           = RegularGridInterpolator((AoA_data,mach_data),training.CM_0 ,method = 'linear',   bounds_error=False, fill_value=None)    
+        surrogates.CM_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CM_alpha ,method = 'linear',   bounds_error=False, fill_value=None)    
+        surrogates.CN_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CN_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.neutral_point  = RegularGridInterpolator((AoA_data,mach_data),training.NP  ,method = 'linear',   bounds_error=False, fill_value=None)
+ 
         return
 
     
@@ -373,7 +491,7 @@ class AVL(Stability):
 #  Helper Functions
 # ----------------------------------------------------------------------
         
-    def evaluate_conditions(self,run_conditions, trim_aircraft ):
+    def evaluate_AVL(self,run_conditions, trim_aircraft ):
         """Process vehicle to setup geometry, condititon, and configuration.
 
         Assumptions:
@@ -383,7 +501,7 @@ class AVL(Stability):
         N/A
 
         Inputs:
-        run_conditions <SUAVE data type> aerodynamic conditions; until input
+        run_conditions <RCAIDE data type> aerodynamic conditions; until input
                 method is finalized, will assume mass_properties are always as 
                 defined in self.features
 
@@ -435,7 +553,7 @@ class AVL(Stability):
         for wing in self.geometry.wings: # this parses through the wings to determine how many control surfaces does the vehicle have 
             if wing.control_surfaces:
                 control_surfaces = True 
-                wing = populate_control_sections(wing)     
+                #wing = populate_control_sections(wing)     
                 num_cs_on_wing = len(wing.control_surfaces)
                 num_cs +=  num_cs_on_wing
                 for ctrl_surf in wing.control_surfaces:
@@ -459,7 +577,7 @@ class AVL(Stability):
             case.stability_and_control.control_surface_names   = cs_names
         self.current_status.cases        = cases  
         
-       # write casefile names using the templates defined in MACE/Analyses/AVL/AVL_Data_Classes/Settings.py 
+       # write casefile names using the templates 
         for case in cases:  
             case.aero_result_filename_1     = aero_results_template_1.format(case.tag)      # 'stability_axis_derivatives_{}.dat'  
             case.aero_result_filename_2     = aero_results_template_2.format(case.tag)      # 'surface_forces_{}.dat'
@@ -481,13 +599,6 @@ class AVL(Stability):
         # translate results
         results = translate_results_to_conditions(cases,results_avl)
         
-        # -----------------------------------------------------------------------------------------------------------------------                     
-        # Dynamic Stability & System Matrix Computation
-        # -----------------------------------------------------------------------------------------------------------------------      
-        # Dynamic Stability
-        if np.count_nonzero(self.geometry.mass_properties.moments_of_inertia.tensor) > 0:  
-                results = compute_dynamic_flight_modes(results,self.geometry,run_conditions,cases)        
-             
         if not self.settings.keep_files:
             rmtree( run_folder )           
  

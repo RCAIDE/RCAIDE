@@ -36,14 +36,14 @@ def stability(segment):
         q                  = segment.state.conditions.freestream.dynamic_pressure
         CLmax              = stability_model.settings.maximum_lift_coefficient
 
-        results = stability_model(segment.state)
+        results = stability_model(segment)
 
         # -----------------------------------------------------------------
         # Forces
         # -----------------------------------------------------------------
         CL = results.lift.total
         CD = results.drag.total
-        CY = conditions.stability.static.coefficients.CY
+        CY = conditions.static_stability.coefficients.Y
 
         CL[q<=0.0] = 0.0
         CD[q<=0.0] = 0.0
@@ -69,9 +69,9 @@ def stability(segment):
         # -----------------------------------------------------------------
         # Moments
         # -----------------------------------------------------------------
-        CM = conditions.stability.static.coefficients.CM
-        CL = conditions.stability.static.coefficients.CL
-        CN = conditions.stability.static.coefficients.CN
+        CM = conditions.static_stability.coefficients.M
+        CL = conditions.static_stability.coefficients.L
+        CN = conditions.static_stability.coefficients.N
 
         CM[q<=0.0] = 0.0
 

@@ -343,8 +343,8 @@ class Vortex_Lattice(Aerodynamics):
         conditions.aerodynamics.moment_coefficient   = CM
         
         # Stability
-        conditions.stability.static.yawing_moment_coefficient = CYMTOT
-        conditions.stability.static.rolling_moment_coefficient = CRMTOT
+        conditions.static_stability.yawing_moment_coefficient = CYMTOT
+        conditions.static_stability.rolling_moment_coefficient = CRMTOT
         
         return  
     

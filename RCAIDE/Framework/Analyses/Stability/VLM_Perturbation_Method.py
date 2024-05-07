@@ -81,8 +81,7 @@ class VLM_Perturbation_Method(Stability):
         settings.wave_drag_type                          = 'Raymer'
         settings.volume_wave_drag_scaling                = 3.2  
         settings.fuselage_parasite_drag_begin_blend_mach = 0.91
-        settings.fuselage_parasite_drag_end_blend_mach   = 0.99 
-
+        settings.fuselage_parasite_drag_end_blend_mach   = 0.99  
 
         # build the evaluation process
         compute                                          = Process() 

@@ -3,7 +3,7 @@
 # 
 # Created:   Aug 2021, R. Erhard
 # Modified: 
-# Nov 2022, D. Enriquez - added dCD_dAlpha, dCY_dBeta
+# Nov 2022, D. Enriquez - added Cdrag_alpha, CY_beta
 # Mar 2024, M. Guidotti - added analytical compuation of derivatives of latero-directional stability
 # ----------------------------------------------------------------------
 #  Imports
@@ -31,8 +31,8 @@ def compute_aero_derivatives_lateral(conditions):
       
     Outputs: 
        segment.state.conditions.aero_derivatives
-         .dCL_dAlpha       -   lift-curve slope                                                            [-]  
-         .dCD_dAlpha       -   derivative of inviscid drag with respect to angle of attack                 [-]
+         .Clift_alpha       -   lift-curve slope                                                            [-]  
+         .Cdrag_alpha       -   derivative of inviscid drag with respect to angle of attack                 [-]
          .dCM_dAlpha       -   derivative of pitching moment coefficient with respect to angle of attack   [-] 
          .dCT_dAlpha       -   derivative of rotor thrust coefficient with respect to angle of attack      [-] 
          .dCP_dAlpha       -   derivative of rotor power coefficient with respect to angle of attack       [-] 
@@ -77,7 +77,7 @@ def compute_aero_derivatives_lateral(conditions):
     #dCD    = perturbed_segment.state.conditions.aerodynamics.drag_coefficient - segment.state.conditions.aerodynamics.drag_coefficient #DE added
     
     #if surrogate_used:
-        #dCM_dAlpha = segment.state.conditions.stability.static.Cm_alpha
+        #dCM_dAlpha = segment.state.conditions.static_stability.Cm_alpha
     #else:
         ## use VLM outputs directly
         #dCM    = perturbed_segment.state.conditions.aerodynamics.moment_coefficient - segment.state.conditions.aerodynamics.moment_coefficient
@@ -86,13 +86,13 @@ def compute_aero_derivatives_lateral(conditions):
     ## propeller derivatives
     #dCT, dCP = propeller_derivatives(segment, perturbed_segment, n_cpts)
         
-    #dCL_dAlpha = dCL/dAlpha
-    #dCD_dAlpha = dCD/dAlpha
+    #Clift_alpha = dCL/dAlpha
+    #Cdrag_alpha = dCD/dAlpha
     #dCT_dAlpha = dCT/dAlpha[None,:,:]
     #dCP_dAlpha = dCP/dAlpha[None,:,:]
     
-    #segment.state.conditions.aero_derivatives.dCL_dAlpha = dCL_dAlpha
-    #segment.state.conditions.aero_derivatives.dCD_dAlpha = dCD_dAlpha
+    #segment.state.conditions.aero_derivatives.Clift_alpha = Clift_alpha
+    #segment.state.conditions.aero_derivatives.Cdrag_alpha = Cdrag_alpha
     #segment.state.conditions.aero_derivatives.dCM_dAlpha = dCM_dAlpha
     #segment.state.conditions.aero_derivatives.dCT_dAlpha = dCT_dAlpha
     #segment.state.conditions.aero_derivatives.dCP_dAlpha = dCP_dAlpha
@@ -114,30 +114,30 @@ def compute_aero_derivatives_lateral(conditions):
     ## roll and yaw moment coefficient derivatives
     #if surrogate_used:
         ## check for roll and yaw moment coefficient derivatives in surrogate outputs
-        #if 'Cn_beta' in segment.state.conditions.stability.static.keys():
-            #dCn_dBeta = segment.state.conditions.stability.static.Cn_beta
+        #if 'Cn_beta' in segment.state.conditions.static_stability.keys():
+            #CN_beta = segment.state.conditions.static_stability.Cn_beta
         #else:
-            #print("No dCn_dBeta in surrogate output. dCn_dBeta not included in aerodynamic derivatives.")
-            #dCn_dBeta = None
-        #if 'Cl_beta' in segment.state.conditions.stability.static.keys():
-            #dCl_dBeta = segment.state.conditions.stability.static.Cl_beta 
+            #print("No CN_beta in surrogate output. CN_beta not included in aerodynamic derivatives.")
+            #CN_beta = None
+        #if 'Cl_beta' in segment.state.conditions.static_stability.keys():
+            #CL_beta = segment.state.conditions.static_stability.Cl_beta 
         #else:
-            #print("No dCl_dBeta in surrogate output. dCl_dBeta not included in aerodynamic derivatives.")
-            #dCl_dBeta = None 
+            #print("No CL_beta in surrogate output. CL_beta not included in aerodynamic derivatives.")
+            #CL_beta = None 
             
-        #if 'CY_beta' in segment.state.conditions.stability.static.keys():
-            #dCY_dBeta = segment.state.conditions.stability.static.CY_beta 
+        #if 'CY_beta' in segment.state.conditions.static_stability.keys():
+            #CY_beta = segment.state.conditions.static_stability.CY_beta 
         #else:
-            #print("No dCY_dBeta in surrogate output. dCY_dBeta not included in aerodynamic derivatives.")
-            #dCY_dBeta = None
+            #print("No CY_beta in surrogate output. CY_beta not included in aerodynamic derivatives.")
+            #CY_beta = None
     #else:
         ## use VLM outputs directly
-        #dCn = perturbed_segment.state.conditions.stability.static.yawing_moment_coefficient - segment.state.conditions.stability.static.yawing_moment_coefficient
-        #dCl = perturbed_segment.state.conditions.stability.static.rolling_moment_coefficient - segment.state.conditions.stability.static.rolling_moment_coefficient
+        #dCn = perturbed_segment.state.conditions.static_stability.yawing_moment_coefficient - segment.state.conditions.static_stability.yawing_moment_coefficient
+        #dCl = perturbed_segment.state.conditions.static_stability.rolling_moment_coefficient - segment.state.conditions.static_stability.rolling_moment_coefficient
         #dCY = perturbed_segment.state.conditions.aerodynamics.side_force_coefficient - segment.state.conditions.aerodynamics.side_force_coefficient 
-        #dCn_dBeta = dCn/dBeta
-        #dCl_dBeta = dCl/dBeta
-        #dCY_dBeta = dCY/dBeta 
+        #CN_beta = dCn/dBeta
+        #CL_beta = dCl/dBeta
+        #CY_beta = dCY/dBeta 
         
     ## check for propellers
     #dCT, dCP = propeller_derivatives(segment, perturbed_segment, n_cpts)  
@@ -145,9 +145,9 @@ def compute_aero_derivatives_lateral(conditions):
     #dCT_dBeta = dCT/dBeta
     #dCP_dBeta = dCP/dBeta
     
-    #segment.state.conditions.aero_derivatives.dCn_dBeta = dCn_dBeta
-    #segment.state.conditions.aero_derivatives.dCl_dBeta = dCl_dBeta
-    #segment.state.conditions.aero_derivatives.dCY_dBeta = dCY_dBeta 
+    #segment.state.conditions.aero_derivatives.CN_beta = CN_beta
+    #segment.state.conditions.aero_derivatives.CL_beta = CL_beta
+    #segment.state.conditions.aero_derivatives.CY_beta = CY_beta 
     #segment.state.conditions.aero_derivatives.dCT_dBeta = dCT_dBeta
     #segment.state.conditions.aero_derivatives.dCP_dBeta = dCP_dBeta
     
@@ -207,8 +207,8 @@ def compute_aero_derivatives_lateral(conditions):
                     #dCl = 0
                 #else:
                     ## use VLM outputs directly
-                    #dCn = perturbed_segment.state.conditions.stability.static.yawing_moment_coefficient - segment.state.conditions.stability.static.yawing_moment_coefficient
-                    #dCl = perturbed_segment.state.conditions.stability.static.rolling_moment_coefficient - segment.state.conditions.stability.static.rolling_moment_coefficient              
+                    #dCn = perturbed_segment.state.conditions.static_stability.yawing_moment_coefficient - segment.state.conditions.static_stability.yawing_moment_coefficient
+                    #dCl = perturbed_segment.state.conditions.static_stability.rolling_moment_coefficient - segment.state.conditions.static_stability.rolling_moment_coefficient              
                     #dCM = perturbed_segment.state.conditions.aerodynamics.moment_coefficient - segment.state.conditions.aerodynamics.moment_coefficient
                     
                 ## propeller derivatives 

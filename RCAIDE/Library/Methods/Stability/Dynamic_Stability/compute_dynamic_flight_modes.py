@@ -1,22 +1,27 @@
-## @ingroup Analyses-AVL
-# compute_dynamic_flight_modes.py
+## @ingroup Library-Methods-Stability-Dynamic_Stability 
+# RCAIDE/Library/Methods/Stability/Dynamic_Stability/compute_dynamic_flight_modes.py
 # 
-# Created:  Jun 2019, M. Clarke, UAM Vehicle Convergence Aerodynamics Team 
-# Adapted from: 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-import scipy
+# 
+# Created:  Apr 2024, M. Clarke
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
+# RCAIDE imports 
+from RCAIDE.Framework.Core                            import Data , Units
+from RCAIDE.Library.Methods.Stability.Common          import estimate_wing_CL_alpha
+from RCAIDE.Library.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder
+
+# python imports 
 import numpy as np 
 
-# SUAVE Imports
-from Legacy.trunk.S.Core                                        import Data , Units  
-from Legacy.trunk.S.Methods.Flight_Dynamics.Dynamic_Stability.Full_Linearized_Equations import Supporting_Functions as Supporting_Functions
-from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.datcom import datcom
-from Legacy.trunk.S.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+# ----------------------------------------------------------------------------------------------------------------------
+#  compute_dynamic_flight_modes
+# ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-AVL
-def compute_dynamic_flight_modes(results,aircraft,flight_conditions,cases): 
+## @ingroup Library-Methods-Stability-Dynamic_Stability
+def compute_dynamic_flight_modes(conditions,aircraft): 
     """This function follows the stability axis EOM derivation in Blakelock
     to return the aircraft's dynamic modes and state space 
     
@@ -27,43 +32,40 @@ def compute_dynamic_flight_modes(results,aircraft,flight_conditions,cases):
       Automatic Control of Aircraft and Missiles by J. Blakelock Pg 23 and 117 
 
     Inputs:
-       results.aerodynamics  
-       results.stability.static  
-       results.stability.dynamic 
+       conditions.aerodynamics  
+       conditions.static_stability  
+       conditions.stability.dynamic 
 
     Outputs: 
-       results.dynamic_stability.LatModes
-       results.dynamic_stability.LongModes 
+       conditions.dynamic_stability.LatModes
+       conditions.dynamic_stability.LongModes 
 
     Properties Used:
        N/A
      """
  
     # unpack unit conversions  
-    g    = flight_conditions.freestream.gravity 
-    mach = flight_conditions.freestream.mach_number
-     
-    # Calculate change in downwash with respect to change in angle of attack
-    for surf in aircraft.wings:
-        sref          = surf.areas.reference
-        span          = (surf.aspect_ratio * sref ) ** 0.5
-        surf.CL_alpha = datcom(surf,mach)
-        surf.ep_alpha = Supporting_Functions.ep_alpha(surf.CL_alpha, sref, span) 
-        
+    g      = conditions.freestream.gravity 
+    mach   = conditions.freestream.mach_number 
+    rho    = conditions.freestream.density
+    u0     = conditions.freestream.velocity
+    qDyn0  = conditions.freestream.dynamic_pressure # 0.5 * rho * u0**2 
+      
     # Unpack aircraft Properties
-    theta0 = results.aerodynamics.AoA
-    AoA    = results.aerodynamics.AoA
-    CLtot  = results.aerodynamics.lift_coefficient 
-    CDtot  = results.aerodynamics.drag_coefficient
-    e      = results.aerodynamics.oswald_efficiency
-    st     = results.stability.static 
-    dy     = results.stability.dynamic
+    theta0 = conditions.aerodynamics.angles.alpha
+    AoA    = conditions.aerodynamics.angles.alpha
+    CLtot  = conditions.aerodynamics.coefficients.lift 
+    CDtot  = conditions.aerodynamics.coefficients.drag 
+    e      = conditions.aerodynamics.oswald_efficiency
+    SS     = conditions.static_stability
+    SSD    = SS.derivatives 
+    DS     = conditions.dynamic_stability
              
     num_cases  = len(AoA)
      
-    b_ref  = results.b_ref
-    c_ref  = results.c_ref
-    S_ref  = results.S_ref 
+    b_ref  = conditions.b_ref
+    c_ref  = conditions.c_ref
+    S_ref  = conditions.S_ref 
     AR     = (b_ref**2)/S_ref
     moments_of_inertia = aircraft.mass_properties.moments_of_inertia.tensor
     Ixx    = moments_of_inertia[0][0]
@@ -76,12 +78,9 @@ def compute_dynamic_flight_modes(results,aircraft,flight_conditions,cases):
     else:
         raise AttributeError("Specify Vehicle Mass") 
     
-    # unpack FLight Conditions  
-    rho    = flight_conditions.freestream.density
-    u0     = flight_conditions.freestream.velocity
-    qDyn0  = 0.5 * rho * u0**2
-      
-    st.spiral_stability = st.Cl_beta*st.Cn_r / (st.Cl_r*st.Cn_beta) 
+    if np.all(conditions.static_stability.spiral_criteria) == 0: 
+        conditions.static_stability.spiral_criteria = SSD.CL_beta*SSD.CN_r / (SSD.CL_r*SSD.CN_beta)
+    
       
     ## Build longitudinal EOM A Matrix (stability axis)
     ALon = np.zeros((num_cases,4,4))
@@ -92,46 +91,47 @@ def compute_dynamic_flight_modes(results,aircraft,flight_conditions,cases):
     DLon = np.zeros((num_cases,4,1))
     
     Cw         = m * g / (qDyn0 * S_ref) 
-    Cxu        = st.CX_u
+    Cxu        = SSD.CX_u
     Xu         = rho * u0 * S_ref * Cw * np.sin(theta0) + 0.5 * rho * u0 * S_ref * Cxu
-    Cxalpha    = (CLtot - 2 * CLtot / (np.pi * AR * e ) * st.CL_alpha)
+    Cxalpha    = (CLtot - 2 * CLtot / (np.pi * AR * e ) * SSD.CL_alpha)
     Xw         = 0.5 * rho * u0 * S_ref * Cxalpha
     Xq         = 0  
                
-    Czu        = st.CZ_u
+    Czu        = SSD.CZ_u
     Zu         = -rho * u0 * S_ref * Cw * np.cos(theta0) + 0.5 * rho * u0 * S_ref * Czu
-    Czalpha    = -CDtot - st.CL_alpha
+    Czalpha    = -CDtot - SSD.CL_alpha
     Zw         = 0.5 * rho * u0 * S_ref * Czalpha
-    Czq        = -st.CL_q 
+    Czq        = -SSD.CL_q 
     Zq         = 0.25 * rho * u0 * c_ref * S_ref * Czq
-    Cmu        = st.Cm_q   
+    Cmu        = SSD.CM_q   
     Mu         = 0.5 * rho * u0 * c_ref * S_ref * Cmu
-    Mw         = 0.5 * rho * u0 * c_ref * S_ref * st.Cm_alpha
-    Mq         = 0.25 * rho * u0 * c_ref * c_ref * S_ref * st.Cm_q 
+    Mw         = 0.5 * rho * u0 * c_ref * S_ref * SSD.CM_alpha
+    Mq         = 0.25 * rho * u0 * c_ref * c_ref * S_ref * SSD.CM_q 
     
     # Derivative of pitching rate with respect to d(alpha)/d(t)
     if aircraft.wings['horizontal_stabilizer'] and aircraft.wings['main_wing']:
         l_t             = aircraft.wings['horizontal_stabilizer'].origin[0][0] + aircraft.wings['horizontal_stabilizer'].aerodynamic_center[0] - aircraft.wings['main_wing'].origin[0][0] - aircraft.wings['main_wing'].aerodynamic_center[0] 
         mac             = aircraft.wings['main_wing'].chords.mean_aerodynamic
-        st.Cm_alpha_dot = Supporting_Functions.cm_alphadot(st.Cm_alpha, aircraft.wings['horizontal_stabilizer'].ep_alpha, l_t, mac) 
-        st.Cz_alpha_dot = Supporting_Functions.cz_alphadot(st.Cm_alpha, aircraft.wings['horizontal_stabilizer'].ep_alpha)
+        CL_alpha_mw     = estimate_wing_CL_alpha(aircraft.wings['main_wing'],mach) 
+        ep_alpha        = 2 * CL_alpha_mw/ np.pi / (b_ref ** 2. / S_ref )   # J.H. Blakelock, "AAutomatic Control of Aircraft and Missiles"  Wiley & Sons, Inc. New York, 1991, (pg 34)
+        SSD.Cm_alpha_dot = 2. * SSD.CM_alpha * ep_alpha * l_t / mac #  J.H. Blakelock, "Automatic Control of Aircraft and Missiles   Wiley & Sons, Inc. New York, 1991, (pg 23)
+        SSD.Cz_alpha_dot = 2. * SSD.CM_alpha * ep_alpha
     else:    
-        st.Cm_alpha_dot = 0 
-        st.Cz_alpha_dot = 0
+        SSD.Cm_alpha_dot = 0 
+        SSD.Cz_alpha_dot = 0
         
-    ZwDot      = 0.25 * rho * c_ref * S_ref * st.Cz_alpha_dot    
-    MwDot      = 0.25 * rho * c_ref * S_ref * st.Cm_alpha_dot 
+    ZwDot      = 0.25 * rho * c_ref * S_ref * SSD.Cz_alpha_dot    
+    MwDot      = 0.25 * rho * c_ref * S_ref * SSD.Cm_alpha_dot 
     
     # Elevator effectiveness 
     for wing in aircraft.wings:
         if wing.control_surfaces :
-            for cs in wing.control_surfaces:
-                ctrl_surf =  cs
+            for ctrl_surf in wing.control_surfaces: 
                 if (type(ctrl_surf) ==  Elevator):
-                    ele = st.control_surfaces_cases[cases[i].tag].control_surfaces[cs.tag]
+                    ele = conditions.control_surfaces.elevator.static_stability.coefficients 
                     Xe  = 0 # Neglect
-                    Ze  = 0.5 * rho * u0 * u0 * S_ref * ele.CL
-                    Me  = 0.5 * rho * u0 * u0 * S_ref * c_ref * ele.Cm
+                    Ze  = 0.5 * rho * u0 * u0 * S_ref * ele.lift
+                    Me  = 0.5 * rho * u0 * u0 * S_ref * c_ref * ele.M
                     
                     BLon[:,0,0] = Xe / m
                     BLon[:,1,0] = (Ze / (m - ZwDot)).T[0]
@@ -205,25 +205,25 @@ def compute_dynamic_flight_modes(results,aircraft,flight_conditions,cases):
         Izp[i]  = (IxxStab * IzzStab - IxzStab**2) / IxxStab
         Ixzp[i] = IxzStab / (IxxStab * IzzStab - IxzStab**2) 
         
-    Yv = 0.5 * rho * u0 * S_ref * st.CY_beta
-    Yp = 0.25 * rho * u0 * b_ref * S_ref * st.CY_p
-    Yr = 0.25 * rho * u0 * b_ref * S_ref * st.CY_r
-    Lv = 0.5 * rho * u0 * b_ref * S_ref * st.Cl_beta
-    Lp = 0.25 * rho * u0 * b_ref**2 * S_ref * st.Cl_p
-    Lr = 0.25 * rho * u0 * b_ref**2 * S_ref * st.Cl_r
-    Nv = 0.5 * rho * u0 * b_ref * S_ref * st.Cn_beta
-    Np = 0.25 * rho * u0 * b_ref**2 * S_ref * st.Cn_p
-    Nr = 0.25 * rho * u0 * b_ref**2 * S_ref * st.Cn_r
+    Yv = 0.5 * rho * u0 * S_ref * SSD.CY_beta
+    Yp = 0.25 * rho * u0 * b_ref * S_ref * SSD.CY_p
+    Yr = 0.25 * rho * u0 * b_ref * S_ref * SSD.CY_r
+    Lv = 0.5 * rho * u0 * b_ref * S_ref * SSD.CL_beta
+    Lp = 0.25 * rho * u0 * b_ref**2 * S_ref * SSD.CL_p
+    Lr = 0.25 * rho * u0 * b_ref**2 * S_ref * SSD.CL_r
+    Nv = 0.5 * rho * u0 * b_ref * S_ref * SSD.CN_beta
+    Np = 0.25 * rho * u0 * b_ref**2 * S_ref * SSD.CN_p
+    Nr = 0.25 * rho * u0 * b_ref**2 * S_ref * SSD.CN_r
     
     # Aileron effectiveness 
     for wing in aircraft.wings:
         if wing.control_surfaces :
             for ctrl_surf in wing.control_surfaces:
                 if (type(ctrl_surf) ==  Aileron): 
-                    ail = st.control_surfaces_cases[cases[i].tag].control_surfaces[cs.tag]                      
+                    ail = conditions.control_surfaces.aileron.static_stability.coefficients                  
                     Ya = 0.5 * rho * u0 * u0 * S_ref * ail.CY 
-                    La = 0.5 * rho * u0 * u0 * S_ref * b_ref * ail.Cl 
-                    Na = 0.5 * rho * u0 * u0 * S_ref * b_ref * ail.Cn  
+                    La = 0.5 * rho * u0 * u0 * S_ref * b_ref * ail.L 
+                    Na = 0.5 * rho * u0 * u0 * S_ref * b_ref * ail.N 
                     
                     BLat[:,0,0] = (Ya / m).T[0]
                     BLat[:,1,0] = (La / Ixp + Ixzp * Na).T[0]
@@ -302,35 +302,32 @@ def compute_dynamic_flight_modes(results,aircraft,flight_conditions,cases):
     
     
     # Inertial coupling susceptibility
-    # See Etkin & Reid pg. 118
-    results.dynamic_stability           = Data()
-    results.dynamic_stability.LongModes = Data()
-    results.dynamic_stability.LatModes  = Data()
-    results.dynamic_stability.pMax = min(min(np.sqrt(-Mw * u0 / (Izz - Ixx))), min(np.sqrt(-Nv * u0 / (Iyy - Ixx)))) 
+    # See Etkin & Reid pg. 118 
+    DS.pMax = min(min(np.sqrt(-Mw * u0 / (Izz - Ixx))), min(np.sqrt(-Nv * u0 / (Iyy - Ixx)))) 
     
     # -----------------------------------------------------------------------------------------------------------------------  
     # Store Results
     # ------------------------------------------------------------------------------------------------------------------------  
-    results.dynamic_stability.LongModes.LongModes                    = LonModes
-    #results.dynamic_stability.LongModes.LongSys                      = LonSys    
-    results.dynamic_stability.LongModes.phugoidFreqHz                = phugoidFreqHz
-    results.dynamic_stability.LongModes.phugoidDamp                  = phugoidDamping
-    results.dynamic_stability.LongModes.phugoidTimeDoubleHalf        = phugoidTimeDoubleHalf
-    results.dynamic_stability.LongModes.shortPeriodFreqHz            = shortPeriodFreqHz
-    results.dynamic_stability.LongModes.shortPeriodDamp              = shortPeriodDamping
-    results.dynamic_stability.LongModes.shortPeriodTimeDoubleHalf    = shortPeriodTimeDoubleHalf
+    DS.LongModes.LongModes                    = LonModes
+    #DS.LongModes.LongSys                      = LonSys    
+    DS.LongModes.phugoidFreqHz                = phugoidFreqHz
+    DS.LongModes.phugoidDamp                  = phugoidDamping
+    DS.LongModes.phugoidTimeDoubleHalf        = phugoidTimeDoubleHalf
+    DS.LongModes.shortPeriodFreqHz            = shortPeriodFreqHz
+    DS.LongModes.shortPeriodDamp              = shortPeriodDamping
+    DS.LongModes.shortPeriodTimeDoubleHalf    = shortPeriodTimeDoubleHalf
                                                                     
-    results.dynamic_stability.LatModes.LatModes                      = LatModes  
-    #results.dynamic_stability.LatModes.Latsys                        = LatSys   
-    results.dynamic_stability.LatModes.dutchRollFreqHz               = dutchRollFreqHz
-    results.dynamic_stability.LatModes.dutchRollDamping              = dutchRollDamping
-    results.dynamic_stability.LatModes.dutchRollTimeDoubleHalf       = dutchRollTimeDoubleHalf
-    results.dynamic_stability.LatModes.dutchRoll_mode_real           = dutchRoll_mode_real 
-    results.dynamic_stability.LatModes.rollSubsistenceFreqHz         = rollSubsistenceFreqHz
-    results.dynamic_stability.LatModes.rollSubsistenceTimeConstant   = rollSubsistenceTimeConstant
-    results.dynamic_stability.LatModes.rollSubsistenceDamping        = rollSubsistenceDamping
-    results.dynamic_stability.LatModes.spiralFreqHz                  = spiralFreqHz
-    results.dynamic_stability.LatModes.spiralTimeDoubleHalf          = spiralTimeDoubleHalf 
-    results.dynamic_stability.LatModes.spiralDamping                 = spiralDamping
+    DS.LatModes.LatModes                      = LatModes  
+    #DS.LatModes.Latsys                        = LatSys   
+    DS.LatModes.dutchRollFreqHz               = dutchRollFreqHz
+    DS.LatModes.dutchRollDamping              = dutchRollDamping
+    DS.LatModes.dutchRollTimeDoubleHalf       = dutchRollTimeDoubleHalf
+    DS.LatModes.dutchRoll_mode_real           = dutchRoll_mode_real 
+    DS.LatModes.rollSubsistenceFreqHz         = rollSubsistenceFreqHz
+    DS.LatModes.rollSubsistenceTimeConstant   = rollSubsistenceTimeConstant
+    DS.LatModes.rollSubsistenceDamping        = rollSubsistenceDamping
+    DS.LatModes.spiralFreqHz                  = spiralFreqHz
+    DS.LatModes.spiralTimeDoubleHalf          = spiralTimeDoubleHalf 
+    DS.LatModes.spiralDamping                 = spiralDamping
     
-    return results 
+    return 
