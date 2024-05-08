@@ -291,18 +291,6 @@ class Results(Conditions):
         self.static_stability.derivatives.Clift_p      = ones_1col * 0
         self.static_stability.derivatives.Clift_q      = ones_1col * 0
         self.static_stability.derivatives.Clift_r      = ones_1col * 0
-        self.static_stability.derivatives.CY_p         = ones_1col * 0
-        self.static_stability.derivatives.CY_q         = ones_1col * 0
-        self.static_stability.derivatives.CY_r         = ones_1col * 0
-        self.static_stability.derivatives.CL_p         = ones_1col * 0
-        self.static_stability.derivatives.CL_q         = ones_1col * 0
-        self.static_stability.derivatives.CL_r         = ones_1col * 0
-        self.static_stability.derivatives.CM_p         = ones_1col * 0
-        self.static_stability.derivatives.CM_q         = ones_1col * 0
-        self.static_stability.derivatives.CM_r         = ones_1col * 0
-        self.static_stability.derivatives.CN_p         = ones_1col * 0
-        self.static_stability.derivatives.CN_q         = ones_1col * 0
-        self.static_stability.derivatives.CN_r         = ones_1col * 0
         
         # body axis derivatives 
         self.static_stability.derivatives.CX_u         = ones_1col * 0
@@ -323,6 +311,7 @@ class Results(Conditions):
         self.static_stability.derivatives.CN_u         = ones_1col * 0
         self.static_stability.derivatives.CN_v         = ones_1col * 0
         self.static_stability.derivatives.CN_w         = ones_1col * 0
+        
         self.static_stability.derivatives.CX_p         = ones_1col * 0
         self.static_stability.derivatives.CX_q         = ones_1col * 0
         self.static_stability.derivatives.CX_r         = ones_1col * 0

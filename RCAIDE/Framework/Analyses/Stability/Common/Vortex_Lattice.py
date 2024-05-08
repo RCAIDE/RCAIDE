@@ -67,7 +67,10 @@ class Vortex_Lattice(Stability):
         # conditions table, used for surrogate model training
         self.training                                = Data()
         self.training.angle_of_attack                = np.array([-5.  , 0.  , 5.])  * Units.deg 
-        self.training.Mach                           = np.array([0.1 , 0.2 , 0.5 ])       
+        self.training.Mach                           = np.array([0.1 , 0.2 , 0.5 ])
+        self.training.u                             = np.array([-1,0,1]) 
+        self.training.v                             = np.array([-1,0,1]) 
+        self.training.w                              = np.array([-1,0,1]) 
         self.training.sideslip_angle                 = np.array([-5  , 0   , 5.0])* Units.deg 
         self.training.elevator_deflection            = np.array([-1.  , 0.,  1.0])  * Units.deg   
         self.training.aileron_deflection             = np.array([-1.  , 0.,  1.0])  * Units.deg   
@@ -365,10 +368,17 @@ class Vortex_Lattice(Stability):
         pitch_rate = training.pitch_rate
         roll_rate  = training.roll_rate
         yaw_rate   = training.yaw_rate
+        u          = training.u
+        v          = training.v
+        w          = training.w
+
         
         len_AoA        = len(AoA)   
         len_Mach       = len(Mach) 
-        len_Beta       = len(Beta)     
+        len_Beta       = len(Beta)
+        len_u          = len(u)
+        len_v          = len(v)
+        len_w          = len(w)
         len_pitch_rate = len(pitch_rate)
         len_roll_rate  = len(roll_rate) 
         len_yaw_rate   = len(yaw_rate)
@@ -588,6 +598,48 @@ class Vortex_Lattice(Stability):
                         CM_d_r[:,:,r_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
                         CN_d_r[:,:,r_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T         
                 
+                
+                
+        # -------------------------------------------------------               
+        # Velocity u 
+        # -------------------------------------------------------
+        '''
+        for u velocity, change mach number by 0.1
+        
+        for v velocity, beta
+        
+        for w velocity, alpha  
+        
+        '''
+        CLift_u     = np.zeros((len_AoA,len_Mach,len_u)) 
+        CDrag_u     = np.zeros((len_AoA,len_Mach,len_u)) 
+        CX_u        = np.zeros((len_AoA,len_Mach,len_u)) 
+        CY_u        = np.zeros((len_AoA,len_Mach,len_u)) 
+        CZ_u        = np.zeros((len_AoA,len_Mach,len_u)) 
+        CL_u        = np.zeros((len_AoA,len_Mach,len_u)) 
+        CM_u        = np.zeros((len_AoA,len_Mach,len_u)) 
+        CN_u        = np.zeros((len_AoA,len_Mach,len_u))
+        
+        # reset conditions         
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+        conditions.aerodynamics.angles.alpha            = AoAs   
+        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs)
+        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
+        
+        for u_i in range(len_u): 
+            conditions.freestream.mach_number               = Machs + u[u_i] / 343 
+            CLift_res,CDrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)  
+            CLift_u[:,:,u_i]     = np.reshape(CLift_res,(len_Mach,len_AoA)).T 
+            CDrag_u[:,:,u_i]     = np.reshape(CDrag_res,(len_Mach,len_AoA)).T 
+            CX_u[:,:,u_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
+            CY_u[:,:,u_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
+            CZ_u[:,:,u_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
+            CL_u[:,:,u_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
+            CM_u[:,:,u_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
+            CN_u[:,:,u_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T
+                            
+    
         # -------------------------------------------------------               
         # Pitch Rate 
         # -------------------------------------------------------       
@@ -730,7 +782,7 @@ class Vortex_Lattice(Stability):
         training.CY_u          =  0 #    
         training.CY_v          =  0 #    
         training.CY_w          =  0 #    
-        training.CZ_u          =  0 #    
+        training.CZ_u          =  (CX_u[:,:,0] - CX_u[:,:,1])   / (u[0]-u[1])   
         training.CZ_v          =  0 #    
         training.CZ_w          =  0 #    
         training.CL_u          =  0 #    
