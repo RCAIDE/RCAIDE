@@ -402,7 +402,7 @@ class Vortex_Lattice(Aerodynamics):
         
         # Setup Konditions    
         konditions                              = RCAIDE.Framework.Mission.Common.Results()
-        konditions.aerodynamics.angles.alpha = AoAs
+        konditions.aerodynamics.angles.alpha    = AoAs
         konditions.freestream.mach_number       = Machs
         konditions.freestream.velocity          = zeros
         
