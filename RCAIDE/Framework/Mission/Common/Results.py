@@ -130,9 +130,9 @@ class Results(Conditions):
         # ----------------------------------------------------------------------------------------------------------------------    
         self.freestream                                                        = Conditions()        
         self.freestream.velocity                                               = ones_1col * 0
-        self.freestream.u                                                      = self.freestream.velocity * np.cos(self.aerodynamics.angles.beta)
-        self.freestream.v                                                      = self.freestream.velocity * np.sin(self.aerodynamics.angles.beta)
-        self.freestream.w                                                      = self.freestream.velocity * np.sin(self.aerodynamics.angles.alpha)
+        self.freestream.u                                                      = ones_1col * 0
+        self.freestream.v                                                      = ones_1col * 0
+        self.freestream.w                                                      = ones_1col * 0
         self.freestream.mach_number                                            = ones_1col * 0
         self.freestream.pressure                                               = ones_1col * 0
         self.freestream.temperature                                            = ones_1col * 0

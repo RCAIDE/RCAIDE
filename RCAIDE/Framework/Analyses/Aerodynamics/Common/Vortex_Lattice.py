@@ -401,12 +401,12 @@ class Vortex_Lattice(Aerodynamics):
         zeros  = np.zeros_like(Machs)
         
         # Setup Konditions    
-        konditions                              = RCAIDE.Framework.Mission.Common.Results()
-        konditions.aerodynamics.angles.alpha    = AoAs
-        konditions.freestream.mach_number       = Machs
-        konditions.freestream.velocity          = zeros
+        cons                              = RCAIDE.Framework.Mission.Common.Results()
+        cons.aerodynamics.angles.alpha    = AoAs
+        cons.freestream.mach_number       = Machs
+        cons.freestream.velocity          = zeros
         
-        total_lift, total_drag, total_side, wing_lifts, wing_drags, _, _, _, _, _, _, _ = calculate_VLM(konditions,settings,geometry)     
+        total_lift, total_drag, total_side, wing_lifts, wing_drags, _, _, _, _, _, _, _ = calculate_VLM(cons,settings,geometry)     
     
         # Split subsonic from supersonic
         if np.sum(Machs<1.)==0:
