@@ -71,11 +71,21 @@ class Vortex_Lattice(Stability):
         #self.training.angle_of_attack                 = np.array([-10, -7.5, -5, -2.5, 0, 2.5, 5, 7.5, 10]) * Units.deg
         self.training.angle_of_attack                 = np.array([0, 5]) * Units.deg         
         self.training.sideslip_angle                  = np.array([0, 5]) * Units.deg
-        self.training.aileron_deflection              = np.array([0, 1]) * Units.deg 
-        self.training.elevator_deflection             = np.array([0, 1]) * Units.deg    
-        self.training.rudder_deflection               = np.array([0, 1]) * Units.deg  
-        self.training.flap_deflection                 = np.array([-5, 0])* Units.deg      
-        #self.training.slat_deflection                 = np.array([0, 1]) * Units.deg       
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometrywings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.training.aileron_deflection              = np.array([0, 1]) * Units.deg
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.training.elevator_deflection             = np.array([0, 1]) * Units.deg   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.training.rudder_deflection               = np.array([0, 1]) * Units.deg
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.training.flap_deflection                 = np.array([-5, 0])* Units.deg
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.training.slat_deflection                 = np.array([0, 1]) * Units.deg  
+          
         self.training.u                               = np.array([0, 1]) * Units.meters / Units.sec
         self.training.v                               = np.array([0, 1]) * Units.meters / Units.sec
         self.training.w                               = np.array([0, 1]) * Units.meters / Units.sec  
@@ -96,12 +106,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.static_margin                 = None
         
         self.surrogates.Clift_alpha                   = None    
-        self.surrogates.Clift_beta                    = None    
-        self.surrogates.Clift_delta_a                 = None    
-        self.surrogates.Clift_delta_e                 = None    
-        self.surrogates.Clift_delta_r                 = None    
-        self.surrogates.Clift_delta_f                 = None    
-        #self.surrogates.Clift_delta_s                 = None    
+        self.surrogates.Clift_beta                    = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.Clift_delta_a                 = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.Clift_delta_e                 = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.Clift_delta_r                 = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.Clift_delta_f                 = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.Clift_delta_s                 = None          
+   
         self.surrogates.Clift_u                       = None    
         self.surrogates.Clift_v                       = None    
         self.surrogates.Clift_w                       = None    
@@ -109,12 +129,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.Clift_q                       = None    
         self.surrogates.Clift_r                       = None    
         self.surrogates.Cdrag_alpha                   = None    
-        self.surrogates.Cdrag_beta                    = None    
-        self.surrogates.Cdrag_delta_a                 = None    
-        self.surrogates.Cdrag_delta_e                 = None    
-        self.surrogates.Cdrag_delta_r                 = None    
-        self.surrogates.Cdrag_delta_f                 = None    
-        #self.surrogates.Cdrag_delta_s                 = None    
+        self.surrogates.Cdrag_beta                    = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.Cdrag_delta_a                 = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.Cdrag_delta_e                 = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.Cdrag_delta_r                 = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.Cdrag_delta_f                 = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.Cdrag_delta_s                 = None        
+           
         self.surrogates.Cdrag_u                       = None    
         self.surrogates.Cdrag_v                       = None    
         self.surrogates.Cdrag_w                       = None    
@@ -122,12 +152,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.Cdrag_q                       = None    
         self.surrogates.Cdrag_r                       = None    
         self.surrogates.CX_alpha                      = None    
-        self.surrogates.CX_beta                       = None    
-        self.surrogates.CX_delta_a                    = None    
-        self.surrogates.CX_delta_e                    = None    
-        self.surrogates.CX_delta_r                    = None    
-        self.surrogates.CX_delta_f                    = None    
-        #self.surrogates.CX_delta_s                    = None    
+        self.surrogates.CX_beta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.CX_delta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.CX_delta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.CX_delta_r                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.CX_delta_f                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.CX_delta_s                    = None          
+        
         self.surrogates.CX_u                          = None    
         self.surrogates.CX_v                          = None    
         self.surrogates.CX_w                          = None    
@@ -135,12 +175,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.CX_q                          = None    
         self.surrogates.CX_r                          = None    
         self.surrogates.CY_alpha                      = None    
-        self.surrogates.CY_beta                       = None    
-        self.surrogates.CY_delta_a                    = None    
-        self.surrogates.CY_delta_e                    = None    
-        self.surrogates.CY_delta_r                    = None    
-        self.surrogates.CY_delta_f                    = None    
-        #self.surrogates.CY_delta_s                    = None    
+        self.surrogates.CY_beta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.CY_delta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.CY_delta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.CY_delta_r                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.CY_delta_f                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.CY_delta_s                    = None 
+                    
         self.surrogates.CY_u                          = None    
         self.surrogates.CY_v                          = None    
         self.surrogates.CY_w                          = None    
@@ -148,12 +198,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.CY_q                          = None    
         self.surrogates.CY_r                          = None    
         self.surrogates.CZ_alpha                      = None    
-        self.surrogates.CZ_beta                       = None    
-        self.surrogates.CZ_delta_a                    = None    
-        self.surrogates.CZ_delta_e                    = None    
-        self.surrogates.CZ_delta_r                    = None    
-        self.surrogates.CZ_delta_f                    = None    
-        #self.surrogates.CZ_delta_s                    = None    
+        self.surrogates.CZ_beta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.CZ_delta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.CZ_delta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.CZ_delta_r                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.CZ_delta_f                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.CZ_delta_s                    = None         
+            
         self.surrogates.CZ_u                          = None    
         self.surrogates.CZ_v                          = None    
         self.surrogates.CZ_w                          = None    
@@ -161,12 +221,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.CZ_q                          = None    
         self.surrogates.CZ_r                          = None
         self.surrogates.CL_alpha                      = None     
-        self.surrogates.CL_beta                       = None     
-        self.surrogates.CL_delta_a                    = None     
-        self.surrogates.CL_delta_e                    = None     
-        self.surrogates.CL_delta_r                    = None     
-        self.surrogates.CL_delta_f                    = None     
-        #self.surrogates.CL_delta_s                    = None     
+        self.surrogates.CL_beta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.CL_delta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.CL_delta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.CL_delta_r                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.CL_delta_f                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.CL_delta_s                    = None             
+            
         self.surrogates.CL_u                          = None     
         self.surrogates.CL_v                          = None     
         self.surrogates.CL_w                          = None     
@@ -174,12 +244,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.CL_q                          = None     
         self.surrogates.CL_r                          = None     
         self.surrogates.CM_alpha                      = None     
-        self.surrogates.CM_beta                       = None     
-        self.surrogates.CM_delta_a                    = None     
-        self.surrogates.CM_delta_e                    = None     
-        self.surrogates.CM_delta_r                    = None     
-        self.surrogates.CM_delta_f                    = None     
-        #self.surrogates.CM_delta_s                    = None     
+        self.surrogates.CM_beta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.CM_delta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.CM_delta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.CM_delta_r                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.CM_delta_f                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.CM_delta_s                    = None           
+     
         self.surrogates.CM_u                          = None     
         self.surrogates.CM_v                          = None     
         self.surrogates.CM_w                          = None     
@@ -187,12 +267,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.CM_q                          = None     
         self.surrogates.CM_r                          = None     
         self.surrogates.CN_alpha                      = None     
-        self.surrogates.CN_beta                       = None     
-        self.surrogates.CN_delta_a                    = None     
-        self.surrogates.CN_delta_e                    = None     
-        self.surrogates.CN_delta_r                    = None     
-        self.surrogates.CN_delta_f                    = None     
-        #self.surrogates.CN_delta_s                    = None     
+        self.surrogates.CN_beta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.CN_delta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.CN_delta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.CN_delta_r                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.CN_delta_f                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.CN_delta_s                    = None
+                    
         self.surrogates.CN_u                          = None     
         self.surrogates.CN_v                          = None     
         self.surrogates.CN_w                          = None     
@@ -201,12 +291,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.CN_r                          = None        
         
         self.surrogates.dClift_dalpha                   = None    
-        self.surrogates.dClift_dbeta                    = None    
-        self.surrogates.dClift_ddelta_a                 = None    
-        self.surrogates.dClift_ddelta_e                 = None    
-        self.surrogates.dClift_ddelta_r                 = None    
-        self.surrogates.dClift_ddelta_f                 = None    
-        #self.surrogates.dClift_ddelta_s                 = None    
+        self.surrogates.dClift_dbeta                    = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.dClift_ddelta_a                 = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.dClift_ddelta_e                 = None    
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.dClift_ddelta_r                 = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.dClift_ddelta_f                 = None    
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.dClift_ddelta_s                 = None   
+        
         self.surrogates.dClift_du                       = None    
         self.surrogates.dClift_dv                       = None    
         self.surrogates.dClift_dw                       = None    
@@ -214,12 +314,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.dClift_dq                       = None    
         self.surrogates.dClift_dr                       = None    
         self.surrogates.dCdrag_dalpha                   = None    
-        self.surrogates.dCdrag_dbeta                    = None    
-        self.surrogates.dCdrag_ddelta_a                 = None    
-        self.surrogates.dCdrag_ddelta_e                 = None    
-        self.surrogates.dCdrag_ddelta_r                 = None    
-        self.surrogates.dCdrag_ddelta_f                 = None    
-        #self.surrogates.dCdrag_ddelta_s                 = None    
+        self.surrogates.dCdrag_dbeta                    = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.dCdrag_ddelta_a                 = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.dCdrag_ddelta_e                 = None    
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.dCdrag_ddelta_r                 = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.dCdrag_ddelta_f                 = None    
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.dCdrag_ddelta_s                 = None          
+           
         self.surrogates.dCdrag_du                       = None    
         self.surrogates.dCdrag_dv                       = None    
         self.surrogates.dCdrag_dw                       = None    
@@ -227,12 +337,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.dCdrag_dq                       = None    
         self.surrogates.dCdrag_dr                       = None    
         self.surrogates.dCX_dalpha                      = None    
-        self.surrogates.dCX_dbeta                       = None    
-        self.surrogates.dCX_ddelta_a                    = None    
-        self.surrogates.dCX_ddelta_e                    = None    
-        self.surrogates.dCX_ddelta_r                    = None    
-        self.surrogates.dCX_ddelta_f                    = None    
-        #self.surrogates.dCX_ddelta_s                    = None    
+        self.surrogates.dCX_dbeta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.dCX_ddelta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.dCX_ddelta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.dCX_ddelta_r                    = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.dCX_ddelta_f                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.dCX_ddelta_s                    = None             
+   
         self.surrogates.dCX_du                          = None    
         self.surrogates.dCX_dv                          = None    
         self.surrogates.dCX_dw                          = None    
@@ -240,12 +360,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.dCX_dq                          = None    
         self.surrogates.dCX_dr                          = None    
         self.surrogates.dCY_dalpha                      = None    
-        self.surrogates.dCY_dbeta                       = None    
-        self.surrogates.dCY_ddelta_a                    = None    
-        self.surrogates.dCY_ddelta_e                    = None    
-        self.surrogates.dCY_ddelta_r                    = None    
-        self.surrogates.dCY_ddelta_f                    = None    
-        #self.surrogates.dCY_ddelta_s                    = None    
+        self.surrogates.dCY_dbeta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.dCY_ddelta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.dCY_ddelta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.dCY_ddelta_r                    = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.dCY_ddelta_f                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.dCY_ddelta_s                    = None         
+          
         self.surrogates.dCY_du                          = None    
         self.surrogates.dCY_dv                          = None    
         self.surrogates.dCY_dw                          = None    
@@ -253,12 +383,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.dCY_dq                          = None    
         self.surrogates.dCY_dr                          = None    
         self.surrogates.dCZ_dalpha                      = None    
-        self.surrogates.dCZ_dbeta                       = None    
-        self.surrogates.dCZ_ddelta_a                    = None    
-        self.surrogates.dCZ_ddelta_e                    = None    
-        self.surrogates.dCZ_ddelta_r                    = None    
-        self.surrogates.dCZ_ddelta_f                    = None    
-        #self.surrogates.dCZ_ddelta_s                    = None    
+        self.surrogates.dCZ_dbeta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.dCZ_ddelta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.dCZ_ddelta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.dCZ_ddelta_r                    = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.dCZ_ddelta_f                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.dCZ_ddelta_s                    = None           
+           
         self.surrogates.dCZ_du                          = None    
         self.surrogates.dCZ_dv                          = None    
         self.surrogates.dCZ_dw                          = None    
@@ -266,12 +406,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.dCZ_dq                          = None    
         self.surrogates.dCZ_dr                          = None
         self.surrogates.dCL_dalpha                      = None     
-        self.surrogates.dCL_dbeta                       = None     
-        self.surrogates.dCL_ddelta_a                    = None     
-        self.surrogates.dCL_ddelta_e                    = None     
-        self.surrogates.dCL_ddelta_r                    = None     
-        self.surrogates.dCL_ddelta_f                    = None     
-        #self.surrogates.dCL_ddelta_s                    = None     
+        self.surrogates.dCL_dbeta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.dCL_ddelta_a                    = None
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.dCL_ddelta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.dCL_ddelta_r                    = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.dCL_ddelta_f                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.dCL_ddelta_s                    = None         
+            
         self.surrogates.dCL_du                          = None     
         self.surrogates.dCL_dv                          = None     
         self.surrogates.dCL_dw                          = None     
@@ -279,12 +429,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.dCL_dq                          = None     
         self.surrogates.dCL_dr                          = None     
         self.surrogates.dCM_dalpha                      = None     
-        self.surrogates.dCM_dbeta                       = None     
-        self.surrogates.dCM_ddelta_a                    = None     
-        self.surrogates.dCM_ddelta_e                    = None     
-        self.surrogates.dCM_ddelta_r                    = None     
-        self.surrogates.dCM_ddelta_f                    = None     
-        #self.surrogates.dCM_ddelta_s                    = None     
+        self.surrogates.dCM_dbeta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.dCM_ddelta_a                    = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.dCM_ddelta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.dCM_ddelta_r                    = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.dCM_ddelta_f                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.dCM_ddelta_s                    = None         
+            
         self.surrogates.dCM_du                          = None     
         self.surrogates.dCM_dv                          = None     
         self.surrogates.dCM_dw                          = None     
@@ -292,12 +452,22 @@ class Vortex_Lattice(Stability):
         self.surrogates.dCM_dq                          = None     
         self.surrogates.dCM_dr                          = None     
         self.surrogates.dCN_dalpha                      = None     
-        self.surrogates.dCN_dbeta                       = None     
-        self.surrogates.dCN_ddelta_a                    = None     
-        self.surrogates.dCN_ddelta_e                    = None     
-        self.surrogates.dCN_ddelta_r                    = None     
-        self.surrogates.dCN_ddelta_f                    = None     
-        #self.surrogates.dCN_ddelta_s                    = None     
+        self.surrogates.dCN_dbeta                       = None
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    self.surrogates.dCN_ddelta_a                    = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    self.surrogates.dCN_ddelta_e                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    self.surrogates.dCN_ddelta_r                    = None 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    self.surrogates.dCN_ddelta_f                    = None   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    self.surrogates.dCN_ddelta_s                    = None     
+                    
         self.surrogates.dCN_du                          = None     
         self.surrogates.dCN_dv                          = None     
         self.surrogates.dCN_dw                          = None     
@@ -352,12 +522,22 @@ class Vortex_Lattice(Stability):
 
         AoA         = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
         Beta        = np.atleast_2d(conditions.aerodynamics.angles.beta)    
-        Mach        = np.atleast_2d(conditions.freestream.mach_number)   
-        delta_a     = np.atleast_2d(conditions.control_surfaces.aileron.deflection)
-        delta_e     = np.atleast_2d(conditions.control_surfaces.elevator.deflection)   
-        delta_r     = np.atleast_2d(conditions.control_surfaces.rudder.deflection)  
-        delta_f     = np.atleast_2d(conditions.control_surfaces.flap.deflection)   
-        #delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)
+        Mach        = np.atleast_2d(conditions.freestream.mach_number)
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    delta_a     = np.atleast_2d(conditions.control_surfaces.aileron.deflection)
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    delta_e     = np.atleast_2d(conditions.control_surfaces.elevator.deflection)   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    delta_r     = np.atleast_2d(conditions.control_surfaces.rudder.deflection)
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    delta_f     = np.atleast_2d(conditions.control_surfaces.flap.deflection)   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)      
+    
         u           = np.atleast_2d(conditions.freestream.u)
         v           = np.atleast_2d(conditions.freestream.v)
         w           = np.atleast_2d(conditions.freestream.w)
@@ -369,11 +549,21 @@ class Vortex_Lattice(Stability):
         
         pts_alpha            = np.hstack((AoA,Mach))
         pts_beta             = np.hstack((Beta,Mach))
-        pts_delta_a          = np.hstack((delta_a,Mach))
-        pts_delta_e          = np.hstack((delta_e,Mach))
-        pts_delta_r          = np.hstack((delta_r,Mach))
-        pts_delta_f          = np.hstack((delta_f,Mach))
-        #pts_delta_s          = np.hstack((delta_s,Mach))
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    pts_delta_a          = np.hstack((delta_a,Mach))
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    pts_delta_e          = np.hstack((delta_e,Mach))   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    pts_delta_r          = np.hstack((delta_r,Mach))
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    pts_delta_f          = np.hstack((delta_f,Mach))   
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    pts_delta_s          = np.hstack((delta_s,Mach))          
+        
         pts_u                = np.hstack((u,Mach))
         pts_v                = np.hstack((v,Mach))
         pts_w                = np.hstack((w,Mach))
@@ -383,11 +573,21 @@ class Vortex_Lattice(Stability):
         
         Clift_alpha    = np.atleast_2d(surrogates.Clift_alpha(pts_alpha)).T
         Clift_beta     = np.atleast_2d(surrogates.Clift_beta(pts_beta)).T
-        Clift_delta_a  = np.atleast_2d(surrogates.Clift_delta_a(pts_delta_a)).T
-        Clift_delta_e  = np.atleast_2d(surrogates.Clift_delta_e(pts_delta_e)).T
-        Clift_delta_r  = np.atleast_2d(surrogates.Clift_delta_r(pts_delta_r)).T
-        Clift_delta_f  = np.atleast_2d(surrogates.Clift_delta_f(pts_delta_f)).T
-        #Clift_delta_s  = np.atleast_2d(surrogates.Clift_delta_s(pts_delta_s)).T
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    Clift_delta_a  = np.atleast_2d(surrogates.Clift_delta_a(pts_delta_a)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    Clift_delta_e  = np.atleast_2d(surrogates.Clift_delta_e(pts_delta_e)).T  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    Clift_delta_r  = np.atleast_2d(surrogates.Clift_delta_r(pts_delta_r)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    Clift_delta_f  = np.atleast_2d(surrogates.Clift_delta_f(pts_delta_f)).T  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    Clift_delta_s  = np.atleast_2d(surrogates.Clift_delta_s(pts_delta_s)).T     
+        
         Clift_u        = np.atleast_2d(surrogates.Clift_u(pts_u)).T
         Clift_v        = np.atleast_2d(surrogates.Clift_v(pts_v)).T
         Clift_w        = np.atleast_2d(surrogates.Clift_w(pts_w)).T
@@ -396,11 +596,21 @@ class Vortex_Lattice(Stability):
         Clift_r        = np.atleast_2d(surrogates.Clift_r(pts_r)).T
         Cdrag_alpha    = np.atleast_2d(surrogates.Cdrag_alpha(pts_alpha)).T
         Cdrag_beta     = np.atleast_2d(surrogates.Cdrag_beta(pts_beta)).T
-        Cdrag_delta_a  = np.atleast_2d(surrogates.Cdrag_delta_a(pts_delta_a)).T
-        Cdrag_delta_e  = np.atleast_2d(surrogates.Cdrag_delta_e(pts_delta_e)).T
-        Cdrag_delta_r  = np.atleast_2d(surrogates.Cdrag_delta_r(pts_delta_r)).T
-        Cdrag_delta_f  = np.atleast_2d(surrogates.Cdrag_delta_f(pts_delta_f)).T
-        #Cdrag_delta_s  = np.atleast_2d(surrogates.Cdrag_delta_s(pts_delta_s)).T
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    Cdrag_delta_a  = np.atleast_2d(surrogates.Cdrag_delta_a(pts_delta_a)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    Cdrag_delta_e  = np.atleast_2d(surrogates.Cdrag_delta_e(pts_delta_e)).T 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    Cdrag_delta_r  = np.atleast_2d(surrogates.Cdrag_delta_r(pts_delta_r)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    Cdrag_delta_f  = np.atleast_2d(surrogates.Cdrag_delta_f(pts_delta_f)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    Cdrag_delta_s  = np.atleast_2d(surrogates.Cdrag_delta_s(pts_delta_s)).T     
+
         Cdrag_u        = np.atleast_2d(surrogates.Cdrag_u(pts_u)).T
         Cdrag_v        = np.atleast_2d(surrogates.Cdrag_v(pts_v)).T
         Cdrag_w        = np.atleast_2d(surrogates.Cdrag_w(pts_w)).T
@@ -409,11 +619,21 @@ class Vortex_Lattice(Stability):
         Cdrag_r        = np.atleast_2d(surrogates.Cdrag_r(pts_r)).T
         CX_alpha       = np.atleast_2d(surrogates.CX_alpha(pts_alpha)).T
         CX_beta        = np.atleast_2d(surrogates.CX_beta(pts_beta)).T
-        CX_delta_a     = np.atleast_2d(surrogates.CX_delta_a(pts_delta_a)).T
-        CX_delta_e     = np.atleast_2d(surrogates.CX_delta_e(pts_delta_e)).T
-        CX_delta_r     = np.atleast_2d(surrogates.CX_delta_r(pts_delta_r)).T
-        CX_delta_f     = np.atleast_2d(surrogates.CX_delta_f(pts_delta_f)).T
-        #CX_delta_s     = np.atleast_2d(surrogates.CX_delta_s(pts_delta_s)).T
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    CX_delta_a     = np.atleast_2d(surrogates.CX_delta_a(pts_delta_a)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    CX_delta_e     = np.atleast_2d(surrogates.CX_delta_e(pts_delta_e)).T 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    CX_delta_r     = np.atleast_2d(surrogates.CX_delta_r(pts_delta_r)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    CX_delta_f     = np.atleast_2d(surrogates.CX_delta_f(pts_delta_f)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    CX_delta_s     = np.atleast_2d(surrogates.CX_delta_s(pts_delta_s)).T          
+        
         CX_u           = np.atleast_2d(surrogates.CX_u(pts_u)).T
         CX_v           = np.atleast_2d(surrogates.CX_v(pts_v)).T
         CX_w           = np.atleast_2d(surrogates.CX_w(pts_w)).T
@@ -422,11 +642,21 @@ class Vortex_Lattice(Stability):
         CX_r           = np.atleast_2d(surrogates.CX_r(pts_r)).T
         CY_alpha       = np.atleast_2d(surrogates.CY_alpha(pts_alpha)).T
         CY_beta        = np.atleast_2d(surrogates.CY_beta(pts_beta)).T
-        CY_delta_a     = np.atleast_2d(surrogates.CY_delta_a(pts_delta_a)).T
-        CY_delta_e     = np.atleast_2d(surrogates.CY_delta_e(pts_delta_e)).T
-        CY_delta_r     = np.atleast_2d(surrogates.CY_delta_r(pts_delta_r)).T
-        CY_delta_f     = np.atleast_2d(surrogates.CY_delta_f(pts_delta_f)).T
-        #CY_delta_s     = np.atleast_2d(surrogates.CY_delta_s(pts_delta_s)).T
+
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    CY_delta_a     = np.atleast_2d(surrogates.CY_delta_a(pts_delta_a)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    CY_delta_e     = np.atleast_2d(surrogates.CY_delta_e(pts_delta_e)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    CY_delta_r     = np.atleast_2d(surrogates.CY_delta_r(pts_delta_r)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    CY_delta_f     = np.atleast_2d(surrogates.CY_delta_f(pts_delta_f)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    CY_delta_s     = np.atleast_2d(surrogates.CY_delta_s(pts_delta_s)).T         
+        
         CY_u           = np.atleast_2d(surrogates.CY_u(pts_u)).T
         CY_v           = np.atleast_2d(surrogates.CY_v(pts_v)).T
         CY_w           = np.atleast_2d(surrogates.CY_w(pts_w)).T
@@ -435,11 +665,22 @@ class Vortex_Lattice(Stability):
         CY_r           = np.atleast_2d(surrogates.CY_r(pts_r)).T
         CZ_alpha       = np.atleast_2d(surrogates.CZ_alpha(pts_alpha)).T
         CZ_beta        = np.atleast_2d(surrogates.CZ_beta(pts_beta)).T
-        CZ_delta_a     = np.atleast_2d(surrogates.CZ_delta_a(pts_delta_a)).T
-        CZ_delta_e     = np.atleast_2d(surrogates.CZ_delta_e(pts_delta_e)).T
-        CZ_delta_r     = np.atleast_2d(surrogates.CZ_delta_r(pts_delta_r)).T
-        CZ_delta_f     = np.atleast_2d(surrogates.CZ_delta_f(pts_delta_f)).T
-        #CZ_delta_s     = np.atleast_2d(surrogates.CZ_delta_s(pts_delta_s)).T
+        
+
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    CZ_delta_a     = np.atleast_2d(surrogates.CZ_delta_a(pts_delta_a)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    CZ_delta_e     = np.atleast_2d(surrogates.CZ_delta_e(pts_delta_e)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    CZ_delta_r     = np.atleast_2d(surrogates.CZ_delta_r(pts_delta_r)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    CZ_delta_f     = np.atleast_2d(surrogates.CZ_delta_f(pts_delta_f)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    CZ_delta_s     = np.atleast_2d(surrogates.CZ_delta_s(pts_delta_s)).T        
+        
         CZ_u           = np.atleast_2d(surrogates.CZ_u(pts_u)).T
         CZ_v           = np.atleast_2d(surrogates.CZ_v(pts_v)).T
         CZ_w           = np.atleast_2d(surrogates.CZ_w(pts_w)).T
@@ -448,11 +689,21 @@ class Vortex_Lattice(Stability):
         CZ_r           = np.atleast_2d(surrogates.CZ_r(pts_r)).T
         CL_alpha       = np.atleast_2d(surrogates.CL_alpha(pts_alpha)).T
         CL_beta        = np.atleast_2d(surrogates.CL_beta(pts_beta)).T
-        CL_delta_a     = np.atleast_2d(surrogates.CL_delta_a(pts_delta_a)).T
-        CL_delta_e     = np.atleast_2d(surrogates.CL_delta_e(pts_delta_e)).T
-        CL_delta_r     = np.atleast_2d(surrogates.CL_delta_r(pts_delta_r)).T
-        CL_delta_f     = np.atleast_2d(surrogates.CL_delta_f(pts_delta_f)).T
-        #CL_delta_s     = np.atleast_2d(surrogates.CL_delta_s(pts_delta_s)).T
+
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    CL_delta_a     = np.atleast_2d(surrogates.CL_delta_a(pts_delta_a)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    CL_delta_e     = np.atleast_2d(surrogates.CL_delta_e(pts_delta_e)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    CL_delta_r     = np.atleast_2d(surrogates.CL_delta_r(pts_delta_r)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    CL_delta_f     = np.atleast_2d(surrogates.CL_delta_f(pts_delta_f)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    CL_delta_s     = np.atleast_2d(surrogates.CL_delta_s(pts_delta_s)).T           
+        
         CL_u           = np.atleast_2d(surrogates.CL_u(pts_u)).T
         CL_v           = np.atleast_2d(surrogates.CL_v(pts_v)).T
         CL_w           = np.atleast_2d(surrogates.CL_w(pts_w)).T
@@ -461,11 +712,21 @@ class Vortex_Lattice(Stability):
         CL_r           = np.atleast_2d(surrogates.CL_r(pts_r)).T
         CM_alpha       = np.atleast_2d(surrogates.CM_alpha(pts_alpha)).T
         CM_beta        = np.atleast_2d(surrogates.CM_beta(pts_beta)).T
-        CM_delta_a     = np.atleast_2d(surrogates.CM_delta_a(pts_delta_a)).T
-        CM_delta_e     = np.atleast_2d(surrogates.CM_delta_e(pts_delta_e)).T
-        CM_delta_r     = np.atleast_2d(surrogates.CM_delta_r(pts_delta_r)).T
-        CM_delta_f     = np.atleast_2d(surrogates.CM_delta_f(pts_delta_f)).T
-        #CM_delta_s     = np.atleast_2d(surrogates.CM_delta_s(pts_delta_s)).T
+        
+        # only compute derivative if control surface exists
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    CM_delta_a     = np.atleast_2d(surrogates.CM_delta_a(pts_delta_a)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    CM_delta_e     = np.atleast_2d(surrogates.CM_delta_e(pts_delta_e)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    CM_delta_r     = np.atleast_2d(surrogates.CM_delta_r(pts_delta_r)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    CM_delta_f     = np.atleast_2d(surrogates.CM_delta_f(pts_delta_f)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    CM_delta_s     = np.atleast_2d(surrogates.CM_delta_s(pts_delta_s)).T           
+        
         CM_u           = np.atleast_2d(surrogates.CM_u(pts_u)).T
         CM_v           = np.atleast_2d(surrogates.CM_v(pts_v)).T
         CM_w           = np.atleast_2d(surrogates.CM_w(pts_w)).T
@@ -474,11 +735,20 @@ class Vortex_Lattice(Stability):
         CM_r           = np.atleast_2d(surrogates.CM_r(pts_r)).T
         CN_alpha       = np.atleast_2d(surrogates.CN_alpha(pts_alpha)).T
         CN_beta        = np.atleast_2d(surrogates.CN_beta(pts_beta)).T
-        CN_delta_a     = np.atleast_2d(surrogates.CN_delta_a(pts_delta_a)).T
-        CN_delta_e     = np.atleast_2d(surrogates.CN_delta_e(pts_delta_e)).T
-        CN_delta_r     = np.atleast_2d(surrogates.CN_delta_r(pts_delta_r)).T
-        CN_delta_f     = np.atleast_2d(surrogates.CN_delta_f(pts_delta_f)).T
-        #CN_delta_s     = np.atleast_2d(surrogates.CN_delta_s(pts_delta_s)).T
+        
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    CN_delta_a     = np.atleast_2d(surrogates.CN_delta_a(pts_delta_a)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    CN_delta_e     = np.atleast_2d(surrogates.CN_delta_e(pts_delta_e)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    CN_delta_r     = np.atleast_2d(surrogates.CN_delta_r(pts_delta_r)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    CN_delta_f     = np.atleast_2d(surrogates.CN_delta_f(pts_delta_f)).T
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    CN_delta_s     = np.atleast_2d(surrogates.CN_delta_s(pts_delta_s)).T             
+        
         CN_u           = np.atleast_2d(surrogates.CN_u(pts_u)).T
         CN_v           = np.atleast_2d(surrogates.CN_v(pts_v)).T
         CN_w           = np.atleast_2d(surrogates.CN_w(pts_w)).T
@@ -494,14 +764,14 @@ class Vortex_Lattice(Stability):
         #conditions.Y_ref                                                  = # Need to Update
         #conditions.Z_ref                                                  = # Need to Update 
         #conditions.aerodynamics.oswald_efficiency                         = # Need to Update
-        conditions.static_stability.coefficients.lift                     = Clift_alpha + Clift_beta + Clift_delta_a + Clift_delta_e + Clift_delta_r + Clift_delta_f + Clift_u + Clift_v + Clift_w + Clift_p + Clift_q + Clift_r # + Clift_delta_s
-        conditions.static_stability.coefficients.drag                     = Cdrag_alpha + Cdrag_beta + Cdrag_delta_a + Cdrag_delta_e + Cdrag_delta_r + Cdrag_delta_f + Cdrag_u + Cdrag_v + Cdrag_w + Cdrag_p + Cdrag_q + Cdrag_r # + Cdrag_delta_s     
-        conditions.static_stability.coefficients.X                        = CX_alpha + CX_beta + CX_delta_a + CX_delta_e + CX_delta_r + CX_delta_f + CX_u + CX_v + CX_w + CX_p + CX_q + CX_r # + CX_delta_s     
-        conditions.static_stability.coefficients.Y                        = CY_alpha + CY_beta + CY_delta_a + CY_delta_e + CY_delta_r + CY_delta_f + CY_u + CY_v + CY_w + CY_p + CY_q + CY_r # + CY_delta_s     
-        conditions.static_stability.coefficients.Z                        = CZ_alpha + CZ_beta + CZ_delta_a + CZ_delta_e + CZ_delta_r + CZ_delta_f + CZ_u + CZ_v + CZ_w + CZ_p + CZ_q + CZ_r # + CZ_delta_s     
-        conditions.static_stability.coefficients.L                        = CL_alpha + CL_beta + CL_delta_a + CL_delta_e + CL_delta_r + CL_delta_f + CL_u + CL_v + CL_w + CL_p + CL_q + CL_r # + CL_delta_s
-        conditions.static_stability.coefficients.M                        = CM_alpha + CM_beta + CM_delta_a + CM_delta_e + CM_delta_r + CM_delta_f + CM_u + CM_v + CM_w + CM_p + CM_q + CM_r # + CM_delta_s
-        conditions.static_stability.coefficients.N                        = CN_alpha + CN_beta + CN_delta_a + CN_delta_e + CN_delta_r + CN_delta_f + CN_u + CN_v + CN_w + CN_p + CN_q + CN_r # + CN_delta_s
+        conditions.static_stability.coefficients.lift                     = Clift_alpha + Clift_beta + Clift_u + Clift_v + Clift_w + Clift_p + Clift_q + Clift_r # + Clift_delta_a + Clift_delta_e + Clift_delta_r + Clift_delta_f + Clift_delta_s
+        conditions.static_stability.coefficients.drag                     = Cdrag_alpha + Cdrag_beta + Cdrag_u + Cdrag_v + Cdrag_w + Cdrag_p + Cdrag_q + Cdrag_r # + Cdrag_delta_a + Cdrag_delta_e + Cdrag_delta_r + Cdrag_delta_f + Cdrag_delta_s     
+        conditions.static_stability.coefficients.X                        = CX_alpha + CX_beta + CX_u + CX_v + CX_w + CX_p + CX_q + CX_r # + CX_delta_a + CX_delta_e + CX_delta_r + CX_delta_f + CX_delta_s     
+        conditions.static_stability.coefficients.Y                        = CY_alpha + CY_beta + CY_u + CY_v + CY_w + CY_p + CY_q + CY_r # + CY_delta_a + CY_delta_e + CY_delta_r + CY_delta_f + CY_delta_s     
+        conditions.static_stability.coefficients.Z                        = CZ_alpha + CZ_beta + CZ_u + CZ_v + CZ_w + CZ_p + CZ_q + CZ_r # + CZ_delta_a + CZ_delta_e + CZ_delta_r + CZ_delta_f + CZ_delta_s     
+        conditions.static_stability.coefficients.L                        = CL_alpha + CL_beta + CL_u + CL_v + CL_w + CL_p + CL_q + CL_r # + CL_delta_a + CL_delta_e + CL_delta_r + CL_delta_f + CL_delta_s
+        conditions.static_stability.coefficients.M                        = CM_alpha + CM_beta + CM_u + CM_v + CM_w + CM_p + CM_q + CM_r # + CM_delta_a + CM_delta_e + CM_delta_r + CM_delta_f + CM_delta_s
+        conditions.static_stability.coefficients.N                        = CN_alpha + CN_beta + CN_u + CN_v + CN_w + CN_p + CN_q + CN_r # + CN_delta_a + CN_delta_e + CN_delta_r + CN_delta_f + CN_delta_s
         #conditions.static_stability.derivatives.Clift_alpha               = # Need to Update 
         #conditions.static_stability.derivatives.CY_alpha                  = # Need to Update
         #conditions.static_stability.derivatives.CL_alpha                  = # Need to Update
@@ -622,24 +892,32 @@ class Vortex_Lattice(Stability):
         Returns: 
             None    
         """
-        # unpack
-        geometry       = self.geometry
+
         settings       = self.settings
         training       = self.training
-        Mach           = training.Mach
-        AoA            = training.angle_of_attack                  
-        Beta           = training.sideslip_angle         
-        delta_a        = training.aileron_deflection              
-        delta_e        = training.elevator_deflection                
-        delta_r        = training.rudder_deflection
-        delta_f        = training.flap_deflection
-        #delta_s        = training.slat_deflection          
-        u              = training.u
-        v              = training.v
-        w              = training.w
-        pitch_rate     = training.pitch_rate
-        roll_rate      = training.roll_rate
-        yaw_rate       = training.yaw_rate
+        Mach           = self.training.Mach
+        AoA            = self.training.angle_of_attack                  
+        Beta           = self.training.sideslip_angle
+        
+        for wing in self.geometry.wings: 
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    delta_a        = self.training.aileron_deflection
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    delta_e        = self.training.elevator_deflection
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    delta_r        = self.training.rudder_deflection
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    delta_f        = self.training.flap_deflection
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    delta_s        = self.training.slat_deflection         
+                 
+        u              = self.training.u
+        v              = self.training.v
+        w              = self.training.w
+        pitch_rate     = self.training.pitch_rate
+        roll_rate      = self.training.roll_rate
+        yaw_rate       = self.training.yaw_rate
 
         len_Mach       = len(Mach)        
         len_AoA        = len(AoA)  
@@ -652,8 +930,7 @@ class Vortex_Lattice(Stability):
         len_yaw_rate   = len(yaw_rate)
         
         # only compute derivative if control surface exists
-        for wing in geometry.wings: 
-            # Elevator 
+        for wing in self.geometry.wings:  
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
                     len_d_a        = len(delta_a)
@@ -663,8 +940,8 @@ class Vortex_Lattice(Stability):
                     len_d_r        = len(delta_r) 
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
                     len_d_f        = len(delta_f)  
-                #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    #len_d_s        = len(delta_s)
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    len_d_s        = len(delta_s)
         
         # --------------------------------------------------------------------------------------------------------------
         # Alpha
@@ -684,7 +961,7 @@ class Vortex_Lattice(Stability):
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -718,7 +995,7 @@ class Vortex_Lattice(Stability):
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -736,177 +1013,198 @@ class Vortex_Lattice(Stability):
         CZ_beta = np.reshape(CZ_res,(len_Mach,len_Beta)).T 
         CL_beta = np.reshape(CL_res,(len_Mach,len_Beta)).T 
         CM_beta = np.reshape(CM_res,(len_Mach,len_Beta)).T 
-        CN_beta = np.reshape(CN_res,(len_Mach,len_Beta)).T 
-                     
+        CN_beta = np.reshape(CN_res,(len_Mach,len_Beta)).T
+        
+
         # --------------------------------------------------------------------------------------------------------------
         # Aileron 
-        # --------------------------------------------------------------------------------------------------------------    
-        Delta_a_s     = np.atleast_2d(np.tile(delta_a,len_Mach).T.flatten()).T 
-        Machs         = np.atleast_2d(np.repeat(Mach,len_d_a)).T    
-
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        conditions.control_surfaces.aileron.deflection  = np.ones_like(Machs) *Delta_a_s
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)
-        
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-        
-        Clift_d_a = np.reshape(Clift_res,(len_Mach,len_d_a)).T 
-        Cdrag_d_a = np.reshape(Cdrag_res,(len_Mach,len_d_a)).T                                 
-        CX_d_a    = np.reshape(CX_res,(len_Mach,len_d_a)).T 
-        CY_d_a    = np.reshape(CY_res,(len_Mach,len_d_a)).T 
-        CZ_d_a    = np.reshape(CZ_res,(len_Mach,len_d_a)).T 
-        CL_d_a    = np.reshape(CL_res,(len_Mach,len_d_a)).T 
-        CM_d_a    = np.reshape(CM_res,(len_Mach,len_d_a)).T 
-        CN_d_a    = np.reshape(CN_res,(len_Mach,len_d_a)).T         
+        # --------------------------------------------------------------------------------------------------------------         
+        for wing in self.geometry.wings: 
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:     
+                        
+                    Delta_a_s     = np.atleast_2d(np.tile(delta_a,len_Mach).T.flatten()).T 
+                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_a)).T    
+                
+                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.freestream.mach_number               = Machs
+                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.control_surfaces.aileron.deflection  = np.ones_like(Machs) *Delta_a_s
+                    conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+                    conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
+                    conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+                    #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+                    conditions.freestream.u                         = np.zeros_like(Machs)
+                    conditions.freestream.v                         = np.zeros_like(Machs)
+                    conditions.freestream.w                         = np.zeros_like(Machs)
+                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
+                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
+                    conditions.freestream.velocity                  = np.zeros_like(Machs)
+                    
+                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+                    
+                    Clift_d_a = np.reshape(Clift_res,(len_Mach,len_d_a)).T 
+                    Cdrag_d_a = np.reshape(Cdrag_res,(len_Mach,len_d_a)).T                                 
+                    CX_d_a    = np.reshape(CX_res,(len_Mach,len_d_a)).T 
+                    CY_d_a    = np.reshape(CY_res,(len_Mach,len_d_a)).T 
+                    CZ_d_a    = np.reshape(CZ_res,(len_Mach,len_d_a)).T 
+                    CL_d_a    = np.reshape(CL_res,(len_Mach,len_d_a)).T 
+                    CM_d_a    = np.reshape(CM_res,(len_Mach,len_d_a)).T 
+                    CN_d_a    = np.reshape(CN_res,(len_Mach,len_d_a)).T         
 
         # --------------------------------------------------------------------------------------------------------------
         # Elevator 
-        # --------------------------------------------------------------------------------------------------------------
-        Delta_e_s     = np.atleast_2d(np.tile(delta_e,len_Mach).T.flatten()).T 
-        Machs         = np.atleast_2d(np.repeat(Mach,len_d_e)).T        
-            
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.ones_like(Machs)*Delta_e_s
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)
-        
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-        
-        Clift_d_e = np.reshape(Clift_res,(len_Mach,len_d_e)).T 
-        Cdrag_d_e = np.reshape(Cdrag_res,(len_Mach,len_d_e)).T                                 
-        CX_d_e    = np.reshape(CX_res,(len_Mach,len_d_e)).T 
-        CY_d_e    = np.reshape(CY_res,(len_Mach,len_d_e)).T 
-        CZ_d_e    = np.reshape(CZ_res,(len_Mach,len_d_e)).T 
-        CL_d_e    = np.reshape(CL_res,(len_Mach,len_d_e)).T 
-        CM_d_e    = np.reshape(CM_res,(len_Mach,len_d_e)).T 
-        CN_d_e    = np.reshape(CN_res,(len_Mach,len_d_e)).T       
+        # --------------------------------------------------------------------------------------------------------------       
+        for wing in self.geometry.wings: 
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
+                    
+                    Delta_e_s     = np.atleast_2d(np.tile(delta_e,len_Mach).T.flatten()).T 
+                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_e)).T        
+                        
+                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.freestream.mach_number               = Machs
+                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
+                    conditions.control_surfaces.elevator.deflection = np.ones_like(Machs)*Delta_e_s
+                    conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
+                    conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+                    #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+                    conditions.freestream.u                         = np.zeros_like(Machs)
+                    conditions.freestream.v                         = np.zeros_like(Machs)
+                    conditions.freestream.w                         = np.zeros_like(Machs)
+                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
+                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
+                    conditions.freestream.velocity                  = np.zeros_like(Machs)
+                    
+                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+                    
+                    Clift_d_e = np.reshape(Clift_res,(len_Mach,len_d_e)).T 
+                    Cdrag_d_e = np.reshape(Cdrag_res,(len_Mach,len_d_e)).T                                 
+                    CX_d_e    = np.reshape(CX_res,(len_Mach,len_d_e)).T 
+                    CY_d_e    = np.reshape(CY_res,(len_Mach,len_d_e)).T 
+                    CZ_d_e    = np.reshape(CZ_res,(len_Mach,len_d_e)).T 
+                    CL_d_e    = np.reshape(CL_res,(len_Mach,len_d_e)).T 
+                    CM_d_e    = np.reshape(CM_res,(len_Mach,len_d_e)).T 
+                    CN_d_e    = np.reshape(CN_res,(len_Mach,len_d_e)).T       
                         
         # --------------------------------------------------------------------------------------------------------------
         # Rudder 
-        # --------------------------------------------------------------------------------------------------------------
-        Delta_r_s     = np.atleast_2d(np.tile(delta_r,len_Mach).T.flatten()).T 
-        Machs         = np.atleast_2d(np.repeat(Mach,len_d_r)).T        
+        # --------------------------------------------------------------------------------------------------------------      
+        for wing in self.geometry.wings: 
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:
+                    
+                    Delta_r_s     = np.atleast_2d(np.tile(delta_r,len_Mach).T.flatten()).T 
+                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_r)).T        
+                            
+                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.freestream.mach_number               = Machs
+                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
+                    conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+                    conditions.control_surfaces.rudder.deflection   = np.ones_like(Machs)*Delta_r_s
+                    conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+                    #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+                    conditions.freestream.u                         = np.zeros_like(Machs)
+                    conditions.freestream.v                         = np.zeros_like(Machs)
+                    conditions.freestream.w                         = np.zeros_like(Machs)
+                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
+                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
+                    conditions.freestream.velocity                  = np.zeros_like(Machs)
+                    
+                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
                 
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.ones_like(Machs)*Delta_r_s
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)
-        
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
-    
-        Clift_d_r = np.reshape(Clift_res,(len_Mach,len_d_r)).T 
-        Cdrag_d_r = np.reshape(Cdrag_res,(len_Mach,len_d_r)).T                                 
-        CX_d_r    = np.reshape(CX_res,(len_Mach,len_d_r)).T 
-        CY_d_r    = np.reshape(CY_res,(len_Mach,len_d_r)).T 
-        CZ_d_r    = np.reshape(CZ_res,(len_Mach,len_d_r)).T 
-        CL_d_r    = np.reshape(CL_res,(len_Mach,len_d_r)).T 
-        CM_d_r    = np.reshape(CM_res,(len_Mach,len_d_r)).T 
-        CN_d_r    = np.reshape(CN_res,(len_Mach,len_d_r)).T
+                    Clift_d_r = np.reshape(Clift_res,(len_Mach,len_d_r)).T 
+                    Cdrag_d_r = np.reshape(Cdrag_res,(len_Mach,len_d_r)).T                                 
+                    CX_d_r    = np.reshape(CX_res,(len_Mach,len_d_r)).T 
+                    CY_d_r    = np.reshape(CY_res,(len_Mach,len_d_r)).T 
+                    CZ_d_r    = np.reshape(CZ_res,(len_Mach,len_d_r)).T 
+                    CL_d_r    = np.reshape(CL_res,(len_Mach,len_d_r)).T 
+                    CM_d_r    = np.reshape(CM_res,(len_Mach,len_d_r)).T 
+                    CN_d_r    = np.reshape(CN_res,(len_Mach,len_d_r)).T
                         
         # --------------------------------------------------------------------------------------------------------------
         # Flap 
-        # --------------------------------------------------------------------------------------------------------------
-        Delta_f_s     = np.atleast_2d(np.tile(delta_f, len_Mach).T.flatten()).T 
-        Machs         = np.atleast_2d(np.repeat(Mach,len_d_f)).T          
-
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.ones_like(Machs)*Delta_f_s
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)
-        
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
-
-        Clift_d_f = np.reshape(Clift_res,(len_Mach,len_d_f)).T 
-        Cdrag_d_f = np.reshape(Cdrag_res,(len_Mach,len_d_f)).T                                 
-        CX_d_f    = np.reshape(CX_res,(len_Mach,len_d_f)).T 
-        CY_d_f    = np.reshape(CY_res,(len_Mach,len_d_f)).T 
-        CZ_d_f    = np.reshape(CZ_res,(len_Mach,len_d_f)).T 
-        CL_d_f    = np.reshape(CL_res,(len_Mach,len_d_f)).T 
-        CM_d_f    = np.reshape(CM_res,(len_Mach,len_d_f)).T 
-        CN_d_f    = np.reshape(CN_res,(len_Mach,len_d_f)).T
+        # --------------------------------------------------------------------------------------------------------------    
+        for wing in self.geometry.wings: 
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:
+                    
+                    Delta_f_s     = np.atleast_2d(np.tile(delta_f, len_Mach).T.flatten()).T 
+                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_f)).T          
+            
+                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.freestream.mach_number               = Machs
+                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
+                    conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+                    conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
+                    conditions.control_surfaces.flap.deflection     = np.ones_like(Machs)*Delta_f_s
+                    #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+                    conditions.freestream.u                         = np.zeros_like(Machs)
+                    conditions.freestream.v                         = np.zeros_like(Machs)
+                    conditions.freestream.w                         = np.zeros_like(Machs)
+                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
+                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
+                    conditions.freestream.velocity                  = np.zeros_like(Machs)
+                    
+                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
+            
+                    Clift_d_f = np.reshape(Clift_res,(len_Mach,len_d_f)).T 
+                    Cdrag_d_f = np.reshape(Cdrag_res,(len_Mach,len_d_f)).T                                 
+                    CX_d_f    = np.reshape(CX_res,(len_Mach,len_d_f)).T 
+                    CY_d_f    = np.reshape(CY_res,(len_Mach,len_d_f)).T 
+                    CZ_d_f    = np.reshape(CZ_res,(len_Mach,len_d_f)).T 
+                    CL_d_f    = np.reshape(CL_res,(len_Mach,len_d_f)).T 
+                    CM_d_f    = np.reshape(CM_res,(len_Mach,len_d_f)).T 
+                    CN_d_f    = np.reshape(CN_res,(len_Mach,len_d_f)).T
                         
-        ## --------------------------------------------------------------------------------------------------------------
-        ## Slat 
-        ## --------------------------------------------------------------------------------------------------------------         
-        #Delta_s_s     = np.atleast_2d(np.tile(delta_s, len_Mach).T.flatten()).T 
-        #Machs         = np.atleast_2d(np.repeat(Mach,len_d_s)).T          
-
-        #conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        #conditions.freestream.mach_number               = Machs
-        #conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        #conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        #conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        #conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        #conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        #conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.ones_like(Machs)*Delta_s_s
-        #conditions.freestream.u                         = np.zeros_like(Machs)
-        #conditions.freestream.v                         = np.zeros_like(Machs)
-        #conditions.freestream.w                         = np.zeros_like(Machs)
-        #conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        #conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        #conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        #conditions.freestream.velocity                  = np.zeros_like(Machs)
-        
-        #Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
-    
-        #Clift_d_s = np.reshape(Clift_res,(len_Mach,len_d_s)).T 
-        #Cdrag_d_s = np.reshape(Cdrag_res,(len_Mach,len_d_s)).T                                 
-        #CX_d_s    = np.reshape(CX_res,(len_Mach,len_d_s)).T 
-        #CY_d_s    = np.reshape(CY_res,(len_Mach,len_d_s)).T 
-        #CZ_d_s    = np.reshape(CZ_res,(len_Mach,len_d_s)).T 
-        #CL_d_s    = np.reshape(CL_res,(len_Mach,len_d_s)).T 
-        #CM_d_s    = np.reshape(CM_res,(len_Mach,len_d_s)).T 
-        #CN_d_s    = np.reshape(CN_res,(len_Mach,len_d_s)).T                          
+        # --------------------------------------------------------------------------------------------------------------
+        # Slat 
+        # --------------------------------------------------------------------------------------------------------------    
+        for wing in self.geometry.wings: 
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
+                    
+                    Delta_s_s     = np.atleast_2d(np.tile(delta_s, len_Mach).T.flatten()).T 
+                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_s)).T          
+            
+                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.freestream.mach_number               = Machs
+                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
+                    conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+                    conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
+                    conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+                    conditions.control_surfaces.slat.deflection     = np.ones_like(Machs)*Delta_s_s
+                    conditions.freestream.u                         = np.zeros_like(Machs)
+                    conditions.freestream.v                         = np.zeros_like(Machs)
+                    conditions.freestream.w                         = np.zeros_like(Machs)
+                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
+                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
+                    conditions.freestream.velocity                  = np.zeros_like(Machs)
+                    
+                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
+                
+                    Clift_d_s = np.reshape(Clift_res,(len_Mach,len_d_s)).T 
+                    Cdrag_d_s = np.reshape(Cdrag_res,(len_Mach,len_d_s)).T                                 
+                    CX_d_s    = np.reshape(CX_res,(len_Mach,len_d_s)).T 
+                    CY_d_s    = np.reshape(CY_res,(len_Mach,len_d_s)).T 
+                    CZ_d_s    = np.reshape(CZ_res,(len_Mach,len_d_s)).T 
+                    CL_d_s    = np.reshape(CL_res,(len_Mach,len_d_s)).T 
+                    CM_d_s    = np.reshape(CM_res,(len_Mach,len_d_s)).T 
+                    CN_d_s    = np.reshape(CN_res,(len_Mach,len_d_s)).T                          
                 
         # -------------------------------------------------------               
         # Velocity u 
@@ -921,7 +1219,7 @@ class Vortex_Lattice(Stability):
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.ones_like(Machs)*u_s
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -954,7 +1252,7 @@ class Vortex_Lattice(Stability):
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.ones_like(Machs)*v_s
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -987,7 +1285,7 @@ class Vortex_Lattice(Stability):
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.ones_like(Machs)*w_s
@@ -1024,7 +1322,7 @@ class Vortex_Lattice(Stability):
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -1058,7 +1356,7 @@ class Vortex_Lattice(Stability):
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -1092,7 +1390,7 @@ class Vortex_Lattice(Stability):
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -1344,8 +1642,8 @@ class Vortex_Lattice(Stability):
         # unpack data
         surrogates     = self.surrogates
         training       = self.training  
-        AoA_data       = training.angle_of_attack 
-        mach_data      = training.Mach        
+        AoA_data       = self.training.angle_of_attack 
+        mach_data      = self.training.Mach        
         
         # Pack the outputs    
         
