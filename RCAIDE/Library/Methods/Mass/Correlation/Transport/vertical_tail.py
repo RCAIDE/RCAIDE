@@ -14,6 +14,7 @@
 # Functional/Library Version
 # -----------------------------------------------------------------------
 
+
 def func_vertical_tail(wingspan : float,
                        quarter_chord_sweep : float,
                        thickness_to_chord : float,

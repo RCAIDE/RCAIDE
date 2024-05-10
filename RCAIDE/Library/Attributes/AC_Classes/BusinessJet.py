@@ -88,14 +88,9 @@ class BusinessJet:
 
     # -----------------------------CONTROL TYPE----------------------------------
 
-    full_powered_control            : bool = field(init=True,
-                                                   default=True)
-
-    partially_powered_control       : bool = field(init=True,
-                                                   default=False)
-
-    full_aerodynamic_control        : bool = field(init=True,
-                                                   default=False)
+    full_powered_control            : bool = field(init=True, default=True)
+    partially_powered_control       : bool = field(init=True, default=False)
+    full_aerodynamic_control        : bool = field(init=True, default=False)
 
     # -------------------------------POST-INIT-----------------------------------
     def __post_init__(self):
