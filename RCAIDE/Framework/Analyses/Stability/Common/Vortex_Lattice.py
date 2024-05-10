@@ -68,141 +68,20 @@ class Vortex_Lattice(Stability):
         # conditions table, used for surrogate model training
         self.training                                 = Data()
         self.training.Mach                            = np.array([0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5])        
-        self.training.angle_of_attack                 = np.array([-10, -7.5, -5, -2.5, 0, 2.5, 5, 7.5, 10]) * Units.deg 
+        #self.training.angle_of_attack                 = np.array([-10, -7.5, -5, -2.5, 0, 2.5, 5, 7.5, 10]) * Units.deg
+        self.training.angle_of_attack                 = np.array([0, 5]) * Units.deg         
         self.training.sideslip_angle                  = np.array([0, 5]) * Units.deg
         self.training.aileron_deflection              = np.array([0, 1]) * Units.deg 
         self.training.elevator_deflection             = np.array([0, 1]) * Units.deg    
         self.training.rudder_deflection               = np.array([0, 1]) * Units.deg  
         self.training.flap_deflection                 = np.array([-5, 0])* Units.deg      
-        self.training.slat_deflection                 = np.array([0, 1]) * Units.deg       
+        #self.training.slat_deflection                 = np.array([0, 1]) * Units.deg       
         self.training.u                               = np.array([0, 1]) * Units.meters / Units.sec
         self.training.v                               = np.array([0, 1]) * Units.meters / Units.sec
         self.training.w                               = np.array([0, 1]) * Units.meters / Units.sec  
         self.training.pitch_rate                      = np.array([0, 0.01])  * Units.rad / Units.sec
         self.training.roll_rate                       = np.array([0, 0.3])  * Units.rad / Units.sec
         self.training.yaw_rate                        = np.array([0, 0.01])  * Units.rad / Units.sec        
-
-        # force coefficients 
-        self.training.Clift                           = None
-        self.training.Cdrag                           = None
-        self.training.CX                              = None
-        self.training.CY                              = None 
-        self.training.CZ                              = None  
-                                                      
-        # moment coefficients                         
-        self.training.CL                              = None 
-        self.training.CM                              = None 
-        self.training.CN                              = None
-                                                      
-        self.training.static_margin                   = None 
-        
-        # force derivatives
-        self.training.Clift_alpha                     = None
-        self.training.Clift_beta                      = None
-        self.training.Clift_delta_a                   = None
-        self.training.Clift_delta_e                   = None
-        self.training.Clift_delta_r                   = None
-        self.training.Clift_delta_f                   = None
-        self.training.Clift_delta_s                   = None
-        self.training.Clift_u                         = None
-        self.training.Clift_v                         = None
-        self.training.Clift_w                         = None
-        self.training.Clift_p                         = None
-        self.training.Clift_q                         = None
-        self.training.Clift_r                         = None
-        self.training.Cdrag_alpha                     = None
-        self.training.Cdrag_beta                      = None
-        self.training.Cdrag_delta_a                   = None
-        self.training.Cdrag_delta_e                   = None
-        self.training.Cdrag_delta_r                   = None
-        self.training.Cdrag_delta_f                   = None
-        self.training.Cdrag_delta_s                   = None
-        self.training.Cdrag_u                         = None
-        self.training.Cdrag_v                         = None
-        self.training.Cdrag_w                         = None
-        self.training.Cdrag_p                         = None
-        self.training.Cdrag_q                         = None
-        self.training.Cdrag_r                         = None
-        self.training.CX_alpha                        = None
-        self.training.CX_beta                         = None
-        self.training.CX_delta_a                      = None
-        self.training.CX_delta_e                      = None
-        self.training.CX_delta_r                      = None
-        self.training.CX_delta_f                      = None
-        self.training.CX_delta_s                      = None
-        self.training.CX_u                            = None
-        self.training.CX_v                            = None
-        self.training.CX_w                            = None
-        self.training.CX_p                            = None
-        self.training.CX_q                            = None
-        self.training.CX_r                            = None
-        self.training.CY_alpha                        = None
-        self.training.CY_beta                         = None
-        self.training.CY_delta_a                      = None
-        self.training.CY_delta_e                      = None
-        self.training.CY_delta_r                      = None
-        self.training.CY_delta_f                      = None
-        self.training.CY_delta_s                      = None
-        self.training.CY_u                            = None
-        self.training.CY_v                            = None
-        self.training.CY_w                            = None
-        self.training.CY_p                            = None
-        self.training.CY_q                            = None
-        self.training.CY_r                            = None
-        self.training.CZ_alpha                        = None
-        self.training.CZ_beta                         = None
-        self.training.CZ_delta_a                      = None
-        self.training.CZ_delta_e                      = None
-        self.training.CZ_delta_r                      = None
-        self.training.CZ_delta_f                      = None
-        self.training.CZ_delta_s                      = None
-        self.training.CZ_u                            = None
-        self.training.CZ_v                            = None
-        self.training.CZ_w                            = None
-        self.training.CZ_p                            = None
-        self.training.CZ_q                            = None
-        self.training.CZ_r                            = None
-           
-        # moment derivatives
-        self.training.CL_alpha                        = None
-        self.training.CL_beta                         = None
-        self.training.CL_delta_a                      = None
-        self.training.CL_delta_e                      = None
-        self.training.CL_delta_r                      = None
-        self.training.CL_delta_f                      = None
-        self.training.CL_delta_s                      = None
-        self.training.CL_u                            = None
-        self.training.CL_v                            = None
-        self.training.CL_w                            = None
-        self.training.CL_p                            = None
-        self.training.CL_q                            = None
-        self.training.CL_r                            = None
-        self.training.CM_alpha                        = None
-        self.training.CM_beta                         = None
-        self.training.CM_delta_a                      = None
-        self.training.CM_delta_e                      = None
-        self.training.CM_delta_r                      = None
-        self.training.CM_delta_f                      = None
-        self.training.CM_delta_s                      = None
-        self.training.CM_u                            = None
-        self.training.CM_v                            = None
-        self.training.CM_w                            = None
-        self.training.CM_p                            = None
-        self.training.CM_q                            = None
-        self.training.CM_r                            = None
-        self.training.CN_alpha                        = None
-        self.training.CN_beta                         = None
-        self.training.CN_delta_a                      = None
-        self.training.CN_delta_e                      = None
-        self.training.CN_delta_r                      = None
-        self.training.CN_delta_f                      = None
-        self.training.CN_delta_s                      = None
-        self.training.CN_u                            = None
-        self.training.CN_v                            = None
-        self.training.CN_w                            = None
-        self.training.CN_p                            = None
-        self.training.CN_q                            = None
-        self.training.CN_r                            = None
         
         # surrogoate models
         self.surrogates                               = Data()   
@@ -222,7 +101,7 @@ class Vortex_Lattice(Stability):
         self.surrogates.Clift_delta_e                 = None    
         self.surrogates.Clift_delta_r                 = None    
         self.surrogates.Clift_delta_f                 = None    
-        self.surrogates.Clift_delta_s                 = None    
+        #self.surrogates.Clift_delta_s                 = None    
         self.surrogates.Clift_u                       = None    
         self.surrogates.Clift_v                       = None    
         self.surrogates.Clift_w                       = None    
@@ -235,7 +114,7 @@ class Vortex_Lattice(Stability):
         self.surrogates.Cdrag_delta_e                 = None    
         self.surrogates.Cdrag_delta_r                 = None    
         self.surrogates.Cdrag_delta_f                 = None    
-        self.surrogates.Cdrag_delta_s                 = None    
+        #self.surrogates.Cdrag_delta_s                 = None    
         self.surrogates.Cdrag_u                       = None    
         self.surrogates.Cdrag_v                       = None    
         self.surrogates.Cdrag_w                       = None    
@@ -248,7 +127,7 @@ class Vortex_Lattice(Stability):
         self.surrogates.CX_delta_e                    = None    
         self.surrogates.CX_delta_r                    = None    
         self.surrogates.CX_delta_f                    = None    
-        self.surrogates.CX_delta_s                    = None    
+        #self.surrogates.CX_delta_s                    = None    
         self.surrogates.CX_u                          = None    
         self.surrogates.CX_v                          = None    
         self.surrogates.CX_w                          = None    
@@ -261,7 +140,7 @@ class Vortex_Lattice(Stability):
         self.surrogates.CY_delta_e                    = None    
         self.surrogates.CY_delta_r                    = None    
         self.surrogates.CY_delta_f                    = None    
-        self.surrogates.CY_delta_s                    = None    
+        #self.surrogates.CY_delta_s                    = None    
         self.surrogates.CY_u                          = None    
         self.surrogates.CY_v                          = None    
         self.surrogates.CY_w                          = None    
@@ -274,7 +153,7 @@ class Vortex_Lattice(Stability):
         self.surrogates.CZ_delta_e                    = None    
         self.surrogates.CZ_delta_r                    = None    
         self.surrogates.CZ_delta_f                    = None    
-        self.surrogates.CZ_delta_s                    = None    
+        #self.surrogates.CZ_delta_s                    = None    
         self.surrogates.CZ_u                          = None    
         self.surrogates.CZ_v                          = None    
         self.surrogates.CZ_w                          = None    
@@ -287,7 +166,7 @@ class Vortex_Lattice(Stability):
         self.surrogates.CL_delta_e                    = None     
         self.surrogates.CL_delta_r                    = None     
         self.surrogates.CL_delta_f                    = None     
-        self.surrogates.CL_delta_s                    = None     
+        #self.surrogates.CL_delta_s                    = None     
         self.surrogates.CL_u                          = None     
         self.surrogates.CL_v                          = None     
         self.surrogates.CL_w                          = None     
@@ -300,7 +179,7 @@ class Vortex_Lattice(Stability):
         self.surrogates.CM_delta_e                    = None     
         self.surrogates.CM_delta_r                    = None     
         self.surrogates.CM_delta_f                    = None     
-        self.surrogates.CM_delta_s                    = None     
+        #self.surrogates.CM_delta_s                    = None     
         self.surrogates.CM_u                          = None     
         self.surrogates.CM_v                          = None     
         self.surrogates.CM_w                          = None     
@@ -313,13 +192,118 @@ class Vortex_Lattice(Stability):
         self.surrogates.CN_delta_e                    = None     
         self.surrogates.CN_delta_r                    = None     
         self.surrogates.CN_delta_f                    = None     
-        self.surrogates.CN_delta_s                    = None     
+        #self.surrogates.CN_delta_s                    = None     
         self.surrogates.CN_u                          = None     
         self.surrogates.CN_v                          = None     
         self.surrogates.CN_w                          = None     
         self.surrogates.CN_p                          = None     
         self.surrogates.CN_q                          = None     
-        self.surrogates.CN_r                          = None
+        self.surrogates.CN_r                          = None        
+        
+        self.surrogates.dClift_dalpha                   = None    
+        self.surrogates.dClift_dbeta                    = None    
+        self.surrogates.dClift_ddelta_a                 = None    
+        self.surrogates.dClift_ddelta_e                 = None    
+        self.surrogates.dClift_ddelta_r                 = None    
+        self.surrogates.dClift_ddelta_f                 = None    
+        #self.surrogates.dClift_ddelta_s                 = None    
+        self.surrogates.dClift_du                       = None    
+        self.surrogates.dClift_dv                       = None    
+        self.surrogates.dClift_dw                       = None    
+        self.surrogates.dClift_dp                       = None    
+        self.surrogates.dClift_dq                       = None    
+        self.surrogates.dClift_dr                       = None    
+        self.surrogates.dCdrag_dalpha                   = None    
+        self.surrogates.dCdrag_dbeta                    = None    
+        self.surrogates.dCdrag_ddelta_a                 = None    
+        self.surrogates.dCdrag_ddelta_e                 = None    
+        self.surrogates.dCdrag_ddelta_r                 = None    
+        self.surrogates.dCdrag_ddelta_f                 = None    
+        #self.surrogates.dCdrag_ddelta_s                 = None    
+        self.surrogates.dCdrag_du                       = None    
+        self.surrogates.dCdrag_dv                       = None    
+        self.surrogates.dCdrag_dw                       = None    
+        self.surrogates.dCdrag_dp                       = None    
+        self.surrogates.dCdrag_dq                       = None    
+        self.surrogates.dCdrag_dr                       = None    
+        self.surrogates.dCX_dalpha                      = None    
+        self.surrogates.dCX_dbeta                       = None    
+        self.surrogates.dCX_ddelta_a                    = None    
+        self.surrogates.dCX_ddelta_e                    = None    
+        self.surrogates.dCX_ddelta_r                    = None    
+        self.surrogates.dCX_ddelta_f                    = None    
+        #self.surrogates.dCX_ddelta_s                    = None    
+        self.surrogates.dCX_du                          = None    
+        self.surrogates.dCX_dv                          = None    
+        self.surrogates.dCX_dw                          = None    
+        self.surrogates.dCX_dp                          = None    
+        self.surrogates.dCX_dq                          = None    
+        self.surrogates.dCX_dr                          = None    
+        self.surrogates.dCY_dalpha                      = None    
+        self.surrogates.dCY_dbeta                       = None    
+        self.surrogates.dCY_ddelta_a                    = None    
+        self.surrogates.dCY_ddelta_e                    = None    
+        self.surrogates.dCY_ddelta_r                    = None    
+        self.surrogates.dCY_ddelta_f                    = None    
+        #self.surrogates.dCY_ddelta_s                    = None    
+        self.surrogates.dCY_du                          = None    
+        self.surrogates.dCY_dv                          = None    
+        self.surrogates.dCY_dw                          = None    
+        self.surrogates.dCY_dp                          = None    
+        self.surrogates.dCY_dq                          = None    
+        self.surrogates.dCY_dr                          = None    
+        self.surrogates.dCZ_dalpha                      = None    
+        self.surrogates.dCZ_dbeta                       = None    
+        self.surrogates.dCZ_ddelta_a                    = None    
+        self.surrogates.dCZ_ddelta_e                    = None    
+        self.surrogates.dCZ_ddelta_r                    = None    
+        self.surrogates.dCZ_ddelta_f                    = None    
+        #self.surrogates.dCZ_ddelta_s                    = None    
+        self.surrogates.dCZ_du                          = None    
+        self.surrogates.dCZ_dv                          = None    
+        self.surrogates.dCZ_dw                          = None    
+        self.surrogates.dCZ_dp                          = None    
+        self.surrogates.dCZ_dq                          = None    
+        self.surrogates.dCZ_dr                          = None
+        self.surrogates.dCL_dalpha                      = None     
+        self.surrogates.dCL_dbeta                       = None     
+        self.surrogates.dCL_ddelta_a                    = None     
+        self.surrogates.dCL_ddelta_e                    = None     
+        self.surrogates.dCL_ddelta_r                    = None     
+        self.surrogates.dCL_ddelta_f                    = None     
+        #self.surrogates.dCL_ddelta_s                    = None     
+        self.surrogates.dCL_du                          = None     
+        self.surrogates.dCL_dv                          = None     
+        self.surrogates.dCL_dw                          = None     
+        self.surrogates.dCL_dp                          = None     
+        self.surrogates.dCL_dq                          = None     
+        self.surrogates.dCL_dr                          = None     
+        self.surrogates.dCM_dalpha                      = None     
+        self.surrogates.dCM_dbeta                       = None     
+        self.surrogates.dCM_ddelta_a                    = None     
+        self.surrogates.dCM_ddelta_e                    = None     
+        self.surrogates.dCM_ddelta_r                    = None     
+        self.surrogates.dCM_ddelta_f                    = None     
+        #self.surrogates.dCM_ddelta_s                    = None     
+        self.surrogates.dCM_du                          = None     
+        self.surrogates.dCM_dv                          = None     
+        self.surrogates.dCM_dw                          = None     
+        self.surrogates.dCM_dp                          = None     
+        self.surrogates.dCM_dq                          = None     
+        self.surrogates.dCM_dr                          = None     
+        self.surrogates.dCN_dalpha                      = None     
+        self.surrogates.dCN_dbeta                       = None     
+        self.surrogates.dCN_ddelta_a                    = None     
+        self.surrogates.dCN_ddelta_e                    = None     
+        self.surrogates.dCN_ddelta_r                    = None     
+        self.surrogates.dCN_ddelta_f                    = None     
+        #self.surrogates.dCN_ddelta_s                    = None     
+        self.surrogates.dCN_du                          = None     
+        self.surrogates.dCN_dv                          = None     
+        self.surrogates.dCN_dw                          = None     
+        self.surrogates.dCN_dp                          = None     
+        self.surrogates.dCN_dq                          = None     
+        self.surrogates.dCN_dr                          = None
         
         self.evaluate                                = None  
             
@@ -373,129 +357,134 @@ class Vortex_Lattice(Stability):
         delta_e     = np.atleast_2d(conditions.control_surfaces.elevator.deflection)   
         delta_r     = np.atleast_2d(conditions.control_surfaces.rudder.deflection)  
         delta_f     = np.atleast_2d(conditions.control_surfaces.flap.deflection)   
-        delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)
+        #delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)
         u           = np.atleast_2d(conditions.freestream.u)
         v           = np.atleast_2d(conditions.freestream.v)
-        w           = np.atleast_2d(conditions.freestream.w)         
-        pitch_rate  = np.atleast_2d(conditions.static_stability.pitch_rate)
-        roll_rate   = np.atleast_2d(conditions.static_stability.roll_rate)
-        yaw_rate    = np.atleast_2d(conditions.static_stability.yaw_rate)  
+        w           = np.atleast_2d(conditions.freestream.w)
+        p           = np.atleast_2d(conditions.static_stability.roll_rate)        
+        q           = np.atleast_2d(conditions.static_stability.pitch_rate)
+        r           = np.atleast_2d(conditions.static_stability.yaw_rate)  
   
         # Query surrogates 
-        pts            = np.hstack((AoA,Mach))
-        Clift_0        = np.atleast_2d(surrogates.Clift(pts)).T         
-        Cdrag_0        = np.atleast_2d(surrogates.Cdrag (pts)).T   
-        CX_0           = np.atleast_2d(surrogates.CX_0(pts)).T
-        CY_0           = np.atleast_2d(surrogates.CY_0(pts)).T
-        CZ_0           = np.atleast_2d(surrogates.CZ_0(pts)).T
-        CL_0           = np.atleast_2d(surrogates.CL_0(pts)).T
-        CM_0           = np.atleast_2d(surrogates.CM_0(pts)).T         
-        CN_0           = np.atleast_2d(surrogates.CN_0(pts)).T
         
-        Clift_alpha    = np.atleast_2d(surrogates.Clift_alpha(pts)).T
-        Clift_beta     = np.atleast_2d(surrogates.Clift_beta(pts)).T
-        Clift_delta_a  = np.atleast_2d(surrogates.Clift_delta_a(pts)).T
-        Clift_delta_e  = np.atleast_2d(surrogates.Clift_delta_e(pts)).T
-        Clift_delta_r  = np.atleast_2d(surrogates.Clift_delta_r(pts)).T
-        Clift_delta_f  = np.atleast_2d(surrogates.Clift_delta_f(pts)).T
-        Clift_delta_s  = np.atleast_2d(surrogates.Clift_delta_s(pts)).T
-        Clift_u        = np.atleast_2d(surrogates.Clift_u(pts)).T
-        Clift_v        = np.atleast_2d(surrogates.Clift_v(pts)).T
-        Clift_w        = np.atleast_2d(surrogates.Clift_w(pts)).T
-        Clift_p        = np.atleast_2d(surrogates.Clift_p(pts)).T
-        Clift_q        = np.atleast_2d(surrogates.Clift_q(pts)).T
-        Clift_r        = np.atleast_2d(surrogates.Clift_r(pts)).T
-        Cdrag_alpha    = np.atleast_2d(surrogates.Cdrag_alpha(pts)).T
-        Cdrag_beta     = np.atleast_2d(surrogates.Cdrag_beta(pts)).T
-        Cdrag_delta_a  = np.atleast_2d(surrogates.Cdrag_delta_a(pts)).T
-        Cdrag_delta_e  = np.atleast_2d(surrogates.Cdrag_delta_e(pts)).T
-        Cdrag_delta_r  = np.atleast_2d(surrogates.Cdrag_delta_r(pts)).T
-        Cdrag_delta_f  = np.atleast_2d(surrogates.Cdrag_delta_f(pts)).T
-        Cdrag_delta_s  = np.atleast_2d(surrogates.Cdrag_delta_s(pts)).T
-        Cdrag_u        = np.atleast_2d(surrogates.Cdrag_u(pts)).T
-        Cdrag_v        = np.atleast_2d(surrogates.Cdrag_v(pts)).T
-        Cdrag_w        = np.atleast_2d(surrogates.Cdrag_w(pts)).T
-        Cdrag_p        = np.atleast_2d(surrogates.Cdrag_p(pts)).T
-        Cdrag_q        = np.atleast_2d(surrogates.Cdrag_q(pts)).T
-        Cdrag_r        = np.atleast_2d(surrogates.Cdrag_r(pts)).T
-        CX_alpha       = np.atleast_2d(surrogates.CX_alpha(pts)).T
-        CX_beta        = np.atleast_2d(surrogates.CX_beta(pts)).T
-        CX_delta_a     = np.atleast_2d(surrogates.CX_delta_a(pts)).T
-        CX_delta_e     = np.atleast_2d(surrogates.CX_delta_e(pts)).T
-        CX_delta_r     = np.atleast_2d(surrogates.CX_delta_r(pts)).T
-        CX_delta_f     = np.atleast_2d(surrogates.CX_delta_f(pts)).T
-        CX_delta_s     = np.atleast_2d(surrogates.CX_delta_s(pts)).T
-        CX_u           = np.atleast_2d(surrogates.CX_u(pts)).T
-        CX_v           = np.atleast_2d(surrogates.CX_v(pts)).T
-        CX_w           = np.atleast_2d(surrogates.CX_w(pts)).T
-        CX_p           = np.atleast_2d(surrogates.CX_p(pts)).T
-        CX_q           = np.atleast_2d(surrogates.CX_q(pts)).T
-        CX_r           = np.atleast_2d(surrogates.CX_r(pts)).T
-        CY_alpha       = np.atleast_2d(surrogates.CY_alpha(pts)).T
-        CY_beta        = np.atleast_2d(surrogates.CY_beta(pts)).T
-        CY_delta_a     = np.atleast_2d(surrogates.CY_delta_a(pts)).T
-        CY_delta_e     = np.atleast_2d(surrogates.CY_delta_e(pts)).T
-        CY_delta_r     = np.atleast_2d(surrogates.CY_delta_r(pts)).T
-        CY_delta_f     = np.atleast_2d(surrogates.CY_delta_f(pts)).T
-        CY_delta_s     = np.atleast_2d(surrogates.CY_delta_s(pts)).T
-        CY_u           = np.atleast_2d(surrogates.CY_u(pts)).T
-        CY_v           = np.atleast_2d(surrogates.CY_v(pts)).T
-        CY_w           = np.atleast_2d(surrogates.CY_w(pts)).T
-        CY_p           = np.atleast_2d(surrogates.CY_p(pts)).T
-        CY_q           = np.atleast_2d(surrogates.CY_q(pts)).T
-        CY_r           = np.atleast_2d(surrogates.CY_r(pts)).T
-        CZ_alpha       = np.atleast_2d(surrogates.CZ_alpha(pts)).T
-        CZ_beta        = np.atleast_2d(surrogates.CZ_beta(pts)).T
-        CZ_delta_a     = np.atleast_2d(surrogates.CZ_delta_a(pts)).T
-        CZ_delta_e     = np.atleast_2d(surrogates.CZ_delta_e(pts)).T
-        CZ_delta_r     = np.atleast_2d(surrogates.CZ_delta_r(pts)).T
-        CZ_delta_f     = np.atleast_2d(surrogates.CZ_delta_f(pts)).T
-        CZ_delta_s     = np.atleast_2d(surrogates.CZ_delta_s(pts)).T
-        CZ_u           = np.atleast_2d(surrogates.CZ_u(pts)).T
-        CZ_v           = np.atleast_2d(surrogates.CZ_v(pts)).T
-        CZ_w           = np.atleast_2d(surrogates.CZ_w(pts)).T
-        CZ_p           = np.atleast_2d(surrogates.CZ_p(pts)).T
-        CZ_q           = np.atleast_2d(surrogates.CZ_q(pts)).T
-        CZ_r           = np.atleast_2d(surrogates.CZ_r(pts)).T
-        CL_alpha       = np.atleast_2d(surrogates.CL_alpha(pts)).T
-        CL_beta        = np.atleast_2d(surrogates.CL_beta(pts)).T
-        CL_delta_a     = np.atleast_2d(surrogates.CL_delta_a(pts)).T
-        CL_delta_e     = np.atleast_2d(surrogates.CL_delta_e(pts)).T
-        CL_delta_r     = np.atleast_2d(surrogates.CL_delta_r(pts)).T
-        CL_delta_f     = np.atleast_2d(surrogates.CL_delta_f(pts)).T
-        CL_delta_s     = np.atleast_2d(surrogates.CL_delta_s(pts)).T
-        CL_u           = np.atleast_2d(surrogates.CL_u(pts)).T
-        CL_v           = np.atleast_2d(surrogates.CL_v(pts)).T
-        CL_w           = np.atleast_2d(surrogates.CL_w(pts)).T
-        CL_p           = np.atleast_2d(surrogates.CL_p(pts)).T
-        CL_q           = np.atleast_2d(surrogates.CL_q(pts)).T
-        CL_r           = np.atleast_2d(surrogates.CL_r(pts)).T
-        CM_alpha       = np.atleast_2d(surrogates.CM_alpha(pts)).T
-        CM_beta        = np.atleast_2d(surrogates.CM_beta(pts)).T
-        CM_delta_a     = np.atleast_2d(surrogates.CM_delta_a(pts)).T
-        CM_delta_e     = np.atleast_2d(surrogates.CM_delta_e(pts)).T
-        CM_delta_r     = np.atleast_2d(surrogates.CM_delta_r(pts)).T
-        CM_delta_f     = np.atleast_2d(surrogates.CM_delta_f(pts)).T
-        CM_delta_s     = np.atleast_2d(surrogates.CM_delta_s(pts)).T
-        CM_u           = np.atleast_2d(surrogates.CM_u(pts)).T
-        CM_v           = np.atleast_2d(surrogates.CM_v(pts)).T
-        CM_w           = np.atleast_2d(surrogates.CM_w(pts)).T
-        CM_p           = np.atleast_2d(surrogates.CM_p(pts)).T
-        CM_q           = np.atleast_2d(surrogates.CM_q(pts)).T
-        CM_r           = np.atleast_2d(surrogates.CM_r(pts)).T
-        CN_alpha       = np.atleast_2d(surrogates.CN_alpha(pts)).T
-        CN_beta        = np.atleast_2d(surrogates.CN_beta(pts)).T
-        CN_delta_a     = np.atleast_2d(surrogates.CN_delta_a(pts)).T
-        CN_delta_e     = np.atleast_2d(surrogates.CN_delta_e(pts)).T
-        CN_delta_r     = np.atleast_2d(surrogates.CN_delta_r(pts)).T
-        CN_delta_f     = np.atleast_2d(surrogates.CN_delta_f(pts)).T
-        CN_delta_s     = np.atleast_2d(surrogates.CN_delta_s(pts)).T
-        CN_u           = np.atleast_2d(surrogates.CN_u(pts)).T
-        CN_v           = np.atleast_2d(surrogates.CN_v(pts)).T
-        CN_w           = np.atleast_2d(surrogates.CN_w(pts)).T
-        CN_p           = np.atleast_2d(surrogates.CN_p(pts)).T
-        CN_q           = np.atleast_2d(surrogates.CN_q(pts)).T
-        CN_r           = np.atleast_2d(surrogates.CN_r(pts)).T
+        pts_alpha            = np.hstack((AoA,Mach))
+        pts_beta             = np.hstack((Beta,Mach))
+        pts_delta_a          = np.hstack((delta_a,Mach))
+        pts_delta_e          = np.hstack((delta_e,Mach))
+        pts_delta_r          = np.hstack((delta_r,Mach))
+        pts_delta_f          = np.hstack((delta_f,Mach))
+        #pts_delta_s          = np.hstack((delta_s,Mach))
+        pts_u                = np.hstack((u,Mach))
+        pts_v                = np.hstack((v,Mach))
+        pts_w                = np.hstack((w,Mach))
+        pts_p                = np.hstack((p,Mach))
+        pts_q                = np.hstack((q,Mach))
+        pts_r                = np.hstack((r,Mach))
+        
+        Clift_alpha    = np.atleast_2d(surrogates.Clift_alpha(pts_alpha)).T
+        Clift_beta     = np.atleast_2d(surrogates.Clift_beta(pts_beta)).T
+        Clift_delta_a  = np.atleast_2d(surrogates.Clift_delta_a(pts_delta_a)).T
+        Clift_delta_e  = np.atleast_2d(surrogates.Clift_delta_e(pts_delta_e)).T
+        Clift_delta_r  = np.atleast_2d(surrogates.Clift_delta_r(pts_delta_r)).T
+        Clift_delta_f  = np.atleast_2d(surrogates.Clift_delta_f(pts_delta_f)).T
+        #Clift_delta_s  = np.atleast_2d(surrogates.Clift_delta_s(pts_delta_s)).T
+        Clift_u        = np.atleast_2d(surrogates.Clift_u(pts_u)).T
+        Clift_v        = np.atleast_2d(surrogates.Clift_v(pts_v)).T
+        Clift_w        = np.atleast_2d(surrogates.Clift_w(pts_w)).T
+        Clift_p        = np.atleast_2d(surrogates.Clift_p(pts_p)).T
+        Clift_q        = np.atleast_2d(surrogates.Clift_q(pts_q)).T
+        Clift_r        = np.atleast_2d(surrogates.Clift_r(pts_r)).T
+        Cdrag_alpha    = np.atleast_2d(surrogates.Cdrag_alpha(pts_alpha)).T
+        Cdrag_beta     = np.atleast_2d(surrogates.Cdrag_beta(pts_beta)).T
+        Cdrag_delta_a  = np.atleast_2d(surrogates.Cdrag_delta_a(pts_delta_a)).T
+        Cdrag_delta_e  = np.atleast_2d(surrogates.Cdrag_delta_e(pts_delta_e)).T
+        Cdrag_delta_r  = np.atleast_2d(surrogates.Cdrag_delta_r(pts_delta_r)).T
+        Cdrag_delta_f  = np.atleast_2d(surrogates.Cdrag_delta_f(pts_delta_f)).T
+        #Cdrag_delta_s  = np.atleast_2d(surrogates.Cdrag_delta_s(pts_delta_s)).T
+        Cdrag_u        = np.atleast_2d(surrogates.Cdrag_u(pts_u)).T
+        Cdrag_v        = np.atleast_2d(surrogates.Cdrag_v(pts_v)).T
+        Cdrag_w        = np.atleast_2d(surrogates.Cdrag_w(pts_w)).T
+        Cdrag_p        = np.atleast_2d(surrogates.Cdrag_p(pts_p)).T
+        Cdrag_q        = np.atleast_2d(surrogates.Cdrag_q(pts_q)).T
+        Cdrag_r        = np.atleast_2d(surrogates.Cdrag_r(pts_r)).T
+        CX_alpha       = np.atleast_2d(surrogates.CX_alpha(pts_alpha)).T
+        CX_beta        = np.atleast_2d(surrogates.CX_beta(pts_beta)).T
+        CX_delta_a     = np.atleast_2d(surrogates.CX_delta_a(pts_delta_a)).T
+        CX_delta_e     = np.atleast_2d(surrogates.CX_delta_e(pts_delta_e)).T
+        CX_delta_r     = np.atleast_2d(surrogates.CX_delta_r(pts_delta_r)).T
+        CX_delta_f     = np.atleast_2d(surrogates.CX_delta_f(pts_delta_f)).T
+        #CX_delta_s     = np.atleast_2d(surrogates.CX_delta_s(pts_delta_s)).T
+        CX_u           = np.atleast_2d(surrogates.CX_u(pts_u)).T
+        CX_v           = np.atleast_2d(surrogates.CX_v(pts_v)).T
+        CX_w           = np.atleast_2d(surrogates.CX_w(pts_w)).T
+        CX_p           = np.atleast_2d(surrogates.CX_p(pts_p)).T
+        CX_q           = np.atleast_2d(surrogates.CX_q(pts_q)).T
+        CX_r           = np.atleast_2d(surrogates.CX_r(pts_r)).T
+        CY_alpha       = np.atleast_2d(surrogates.CY_alpha(pts_alpha)).T
+        CY_beta        = np.atleast_2d(surrogates.CY_beta(pts_beta)).T
+        CY_delta_a     = np.atleast_2d(surrogates.CY_delta_a(pts_delta_a)).T
+        CY_delta_e     = np.atleast_2d(surrogates.CY_delta_e(pts_delta_e)).T
+        CY_delta_r     = np.atleast_2d(surrogates.CY_delta_r(pts_delta_r)).T
+        CY_delta_f     = np.atleast_2d(surrogates.CY_delta_f(pts_delta_f)).T
+        #CY_delta_s     = np.atleast_2d(surrogates.CY_delta_s(pts_delta_s)).T
+        CY_u           = np.atleast_2d(surrogates.CY_u(pts_u)).T
+        CY_v           = np.atleast_2d(surrogates.CY_v(pts_v)).T
+        CY_w           = np.atleast_2d(surrogates.CY_w(pts_w)).T
+        CY_p           = np.atleast_2d(surrogates.CY_p(pts_p)).T
+        CY_q           = np.atleast_2d(surrogates.CY_q(pts_q)).T
+        CY_r           = np.atleast_2d(surrogates.CY_r(pts_r)).T
+        CZ_alpha       = np.atleast_2d(surrogates.CZ_alpha(pts_alpha)).T
+        CZ_beta        = np.atleast_2d(surrogates.CZ_beta(pts_beta)).T
+        CZ_delta_a     = np.atleast_2d(surrogates.CZ_delta_a(pts_delta_a)).T
+        CZ_delta_e     = np.atleast_2d(surrogates.CZ_delta_e(pts_delta_e)).T
+        CZ_delta_r     = np.atleast_2d(surrogates.CZ_delta_r(pts_delta_r)).T
+        CZ_delta_f     = np.atleast_2d(surrogates.CZ_delta_f(pts_delta_f)).T
+        #CZ_delta_s     = np.atleast_2d(surrogates.CZ_delta_s(pts_delta_s)).T
+        CZ_u           = np.atleast_2d(surrogates.CZ_u(pts_u)).T
+        CZ_v           = np.atleast_2d(surrogates.CZ_v(pts_v)).T
+        CZ_w           = np.atleast_2d(surrogates.CZ_w(pts_w)).T
+        CZ_p           = np.atleast_2d(surrogates.CZ_p(pts_p)).T
+        CZ_q           = np.atleast_2d(surrogates.CZ_q(pts_q)).T
+        CZ_r           = np.atleast_2d(surrogates.CZ_r(pts_r)).T
+        CL_alpha       = np.atleast_2d(surrogates.CL_alpha(pts_alpha)).T
+        CL_beta        = np.atleast_2d(surrogates.CL_beta(pts_beta)).T
+        CL_delta_a     = np.atleast_2d(surrogates.CL_delta_a(pts_delta_a)).T
+        CL_delta_e     = np.atleast_2d(surrogates.CL_delta_e(pts_delta_e)).T
+        CL_delta_r     = np.atleast_2d(surrogates.CL_delta_r(pts_delta_r)).T
+        CL_delta_f     = np.atleast_2d(surrogates.CL_delta_f(pts_delta_f)).T
+        #CL_delta_s     = np.atleast_2d(surrogates.CL_delta_s(pts_delta_s)).T
+        CL_u           = np.atleast_2d(surrogates.CL_u(pts_u)).T
+        CL_v           = np.atleast_2d(surrogates.CL_v(pts_v)).T
+        CL_w           = np.atleast_2d(surrogates.CL_w(pts_w)).T
+        CL_p           = np.atleast_2d(surrogates.CL_p(pts_p)).T
+        CL_q           = np.atleast_2d(surrogates.CL_q(pts_q)).T
+        CL_r           = np.atleast_2d(surrogates.CL_r(pts_r)).T
+        CM_alpha       = np.atleast_2d(surrogates.CM_alpha(pts_alpha)).T
+        CM_beta        = np.atleast_2d(surrogates.CM_beta(pts_beta)).T
+        CM_delta_a     = np.atleast_2d(surrogates.CM_delta_a(pts_delta_a)).T
+        CM_delta_e     = np.atleast_2d(surrogates.CM_delta_e(pts_delta_e)).T
+        CM_delta_r     = np.atleast_2d(surrogates.CM_delta_r(pts_delta_r)).T
+        CM_delta_f     = np.atleast_2d(surrogates.CM_delta_f(pts_delta_f)).T
+        #CM_delta_s     = np.atleast_2d(surrogates.CM_delta_s(pts_delta_s)).T
+        CM_u           = np.atleast_2d(surrogates.CM_u(pts_u)).T
+        CM_v           = np.atleast_2d(surrogates.CM_v(pts_v)).T
+        CM_w           = np.atleast_2d(surrogates.CM_w(pts_w)).T
+        CM_p           = np.atleast_2d(surrogates.CM_p(pts_p)).T
+        CM_q           = np.atleast_2d(surrogates.CM_q(pts_q)).T
+        CM_r           = np.atleast_2d(surrogates.CM_r(pts_r)).T
+        CN_alpha       = np.atleast_2d(surrogates.CN_alpha(pts_alpha)).T
+        CN_beta        = np.atleast_2d(surrogates.CN_beta(pts_beta)).T
+        CN_delta_a     = np.atleast_2d(surrogates.CN_delta_a(pts_delta_a)).T
+        CN_delta_e     = np.atleast_2d(surrogates.CN_delta_e(pts_delta_e)).T
+        CN_delta_r     = np.atleast_2d(surrogates.CN_delta_r(pts_delta_r)).T
+        CN_delta_f     = np.atleast_2d(surrogates.CN_delta_f(pts_delta_f)).T
+        #CN_delta_s     = np.atleast_2d(surrogates.CN_delta_s(pts_delta_s)).T
+        CN_u           = np.atleast_2d(surrogates.CN_u(pts_u)).T
+        CN_v           = np.atleast_2d(surrogates.CN_v(pts_v)).T
+        CN_w           = np.atleast_2d(surrogates.CN_w(pts_w)).T
+        CN_p           = np.atleast_2d(surrogates.CN_p(pts_p)).T
+        CN_q           = np.atleast_2d(surrogates.CN_q(pts_q)).T
+        CN_r           = np.atleast_2d(surrogates.CN_r(pts_r)).T
  
         # Stability Results  
         #conditions.S_ref                                                  = # Need to Update 
@@ -505,14 +494,14 @@ class Vortex_Lattice(Stability):
         #conditions.Y_ref                                                  = # Need to Update
         #conditions.Z_ref                                                  = # Need to Update 
         #conditions.aerodynamics.oswald_efficiency                         = # Need to Update
-        conditions.static_stability.coefficients.lift                     = Clift_0 + Clift_alpha*AoA + Clift_beta*Beta + Clift_delta_a*delta_a + Clift_delta_e*delta_e + Clift_delta_r*delta_r + Clift_delta_f*delta_f + Clift_delta_s*delta_s + Clift_u*u + Clift_v*v + Clift_w*w + Clift_p*roll_rate + Clift_q*pitch_rate + Clift_r*yaw_rate
-        conditions.static_stability.coefficients.drag                     = Cdrag_0 + Cdrag_alpha*AoA + Cdrag_beta*Beta + Cdrag_delta_a*delta_a + Cdrag_delta_e*delta_e + Cdrag_delta_r*delta_r + Cdrag_delta_f*delta_f + Cdrag_delta_s*delta_s + Cdrag_u*u + Cdrag_v*v + Cdrag_w*w + Cdrag_p*roll_rate + Cdrag_q*pitch_rate + Cdrag_r*yaw_rate     
-        conditions.static_stability.coefficients.X                        = CX_0 + CX_alpha*AoA + CX_beta*Beta + CX_delta_a*delta_a + CX_delta_e*delta_e + CX_delta_r*delta_r + CX_delta_f*delta_f + CX_delta_s*delta_s + CX_u*u + CX_v*v + CX_w*w + CX_p*roll_rate + CX_q*pitch_rate + CX_r*yaw_rate      
-        conditions.static_stability.coefficients.Y                        = CY_0 + CY_alpha*AoA + CY_beta*Beta + CY_delta_a*delta_a + CY_delta_e*delta_e + CY_delta_r*delta_r + CY_delta_f*delta_f + CY_delta_s*delta_s + CY_u*u + CY_v*v + CY_w*w + CY_p*roll_rate + CY_q*pitch_rate + CY_r*yaw_rate      
-        conditions.static_stability.coefficients.Z                        = CZ_0 + CZ_alpha*AoA + CZ_beta*Beta + CZ_delta_a*delta_a + CZ_delta_e*delta_e + CZ_delta_r*delta_r + CZ_delta_f*delta_f + CZ_delta_s*delta_s + CZ_u*u + CZ_v*v + CZ_w*w + CZ_p*roll_rate + CZ_q*pitch_rate + CZ_r*yaw_rate      
-        conditions.static_stability.coefficients.L                        = CL_0 + CL_alpha*AoA + CL_beta*Beta + CL_delta_a*delta_a + CL_delta_e*delta_e + CL_delta_r*delta_r + CL_delta_f*delta_f + CL_delta_s*delta_s + CL_u*u + CL_v*v + CL_w*w + CL_p*roll_rate + CL_q*pitch_rate + CL_r*yaw_rate # CL_p *( pitch_rate / conditions.freestream.velocity) # rates are normalized 
-        conditions.static_stability.coefficients.M                        = CM_0 + CM_alpha*AoA + CM_beta*Beta + CM_delta_a*delta_a + CM_delta_e*delta_e + CM_delta_r*delta_r + CM_delta_f*delta_f + CM_delta_s*delta_s + CM_u*u + CM_v*v + CM_w*w + CM_p*roll_rate + CM_q*pitch_rate + CM_r*yaw_rate
-        conditions.static_stability.coefficients.N                        = CN_0 + CN_alpha*AoA + CN_beta*Beta + CN_delta_a*delta_a + CN_delta_e*delta_e + CN_delta_r*delta_r + CN_delta_f*delta_f + CN_delta_s*delta_s + CN_u*u + CN_v*v + CN_w*w + CN_p*roll_rate + CN_q*pitch_rate + CN_r*yaw_rate
+        conditions.static_stability.coefficients.lift                     = Clift_alpha + Clift_beta + Clift_delta_a + Clift_delta_e + Clift_delta_r + Clift_delta_f + Clift_u + Clift_v + Clift_w + Clift_p + Clift_q + Clift_r # + Clift_delta_s
+        conditions.static_stability.coefficients.drag                     = Cdrag_alpha + Cdrag_beta + Cdrag_delta_a + Cdrag_delta_e + Cdrag_delta_r + Cdrag_delta_f + Cdrag_u + Cdrag_v + Cdrag_w + Cdrag_p + Cdrag_q + Cdrag_r # + Cdrag_delta_s     
+        conditions.static_stability.coefficients.X                        = CX_alpha + CX_beta + CX_delta_a + CX_delta_e + CX_delta_r + CX_delta_f + CX_u + CX_v + CX_w + CX_p + CX_q + CX_r # + CX_delta_s     
+        conditions.static_stability.coefficients.Y                        = CY_alpha + CY_beta + CY_delta_a + CY_delta_e + CY_delta_r + CY_delta_f + CY_u + CY_v + CY_w + CY_p + CY_q + CY_r # + CY_delta_s     
+        conditions.static_stability.coefficients.Z                        = CZ_alpha + CZ_beta + CZ_delta_a + CZ_delta_e + CZ_delta_r + CZ_delta_f + CZ_u + CZ_v + CZ_w + CZ_p + CZ_q + CZ_r # + CZ_delta_s     
+        conditions.static_stability.coefficients.L                        = CL_alpha + CL_beta + CL_delta_a + CL_delta_e + CL_delta_r + CL_delta_f + CL_u + CL_v + CL_w + CL_p + CL_q + CL_r # + CL_delta_s
+        conditions.static_stability.coefficients.M                        = CM_alpha + CM_beta + CM_delta_a + CM_delta_e + CM_delta_r + CM_delta_f + CM_u + CM_v + CM_w + CM_p + CM_q + CM_r # + CM_delta_s
+        conditions.static_stability.coefficients.N                        = CN_alpha + CN_beta + CN_delta_a + CN_delta_e + CN_delta_r + CN_delta_f + CN_u + CN_v + CN_w + CN_p + CN_q + CN_r # + CN_delta_s
         #conditions.static_stability.derivatives.Clift_alpha               = # Need to Update 
         #conditions.static_stability.derivatives.CY_alpha                  = # Need to Update
         #conditions.static_stability.derivatives.CL_alpha                  = # Need to Update
@@ -644,7 +633,7 @@ class Vortex_Lattice(Stability):
         delta_e        = training.elevator_deflection                
         delta_r        = training.rudder_deflection
         delta_f        = training.flap_deflection
-        delta_s        = training.slat_deflection          
+        #delta_s        = training.slat_deflection          
         u              = training.u
         v              = training.v
         w              = training.w
@@ -674,36 +663,28 @@ class Vortex_Lattice(Stability):
                     len_d_r        = len(delta_r) 
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
                     len_d_f        = len(delta_f)  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    len_d_s        = len(delta_s)     
+                #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    #len_d_s        = len(delta_s)
+        
+        # --------------------------------------------------------------------------------------------------------------
+        # Alpha
+        # --------------------------------------------------------------------------------------------------------------
         
         # Setup new array shapes for vectorization 
-        # stakcing 9x9x2 matrices into one horizontal line(162)  
+        # stakcing 9x9 matrices into one horizontal line(81)  
         AoAs       = np.atleast_2d(np.tile(AoA,len_Mach).T.flatten()).T 
-        Machs      = np.atleast_2d(np.repeat(Mach,len_AoA)).T
-        
-        # --------------------------------------------------------------------------------------------------------------
-        # Zero Lift 
-        # --------------------------------------------------------------------------------------------------------------
-        Clift_0          = np.zeros((len_AoA,len_Mach)) 
-        Cdrag_0          = np.zeros((len_AoA,len_Mach)) 
-        CX_0             = np.zeros((len_AoA,len_Mach)) 
-        CY_0             = np.zeros((len_AoA,len_Mach)) 
-        CZ_0             = np.zeros((len_AoA,len_Mach)) 
-        CL_0             = np.zeros((len_AoA,len_Mach)) 
-        CM_0             = np.zeros((len_AoA,len_Mach)) 
-        CN_0             = np.zeros((len_AoA,len_Mach)) 
+        Machs      = np.atleast_2d(np.repeat(Mach,len_AoA)).T        
         
         # reset conditions 
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)   
+        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs)   
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -712,79 +693,32 @@ class Vortex_Lattice(Stability):
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs)  
         
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry) 
-        Clift_0[:,:]   = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-        Cdrag_0[:,:]   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-        CX_0[:,:]      = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-        CY_0[:,:]      = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-        CZ_0[:,:]      = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-        CL_0[:,:]      = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-        CM_0[:,:]      = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-        CN_0[:,:]      = np.reshape(CN_res,(len_Mach,len_AoA)).T
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
         
-        # --------------------------------------------------------------------------------------------------------------
-        # Alpha 
-        # --------------------------------------------------------------------------------------------------------------
-        Clift_alpha      = np.zeros((len_AoA,len_Mach)) 
-        Cdrag_alpha      = np.zeros((len_AoA,len_Mach)) 
-        CX_alpha         = np.zeros((len_AoA,len_Mach)) 
-        CY_alpha         = np.zeros((len_AoA,len_Mach)) 
-        CZ_alpha         = np.zeros((len_AoA,len_Mach)) 
-        CL_alpha         = np.zeros((len_AoA,len_Mach)) 
-        CM_alpha         = np.zeros((len_AoA,len_Mach)) 
-        CN_alpha         = np.zeros((len_AoA,len_Mach)) 
+        Clift_alpha   = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
+        Cdrag_alpha   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
+        CX_alpha      = np.reshape(CX_res,(len_Mach,len_AoA)).T 
+        CY_alpha      = np.reshape(CY_res,(len_Mach,len_AoA)).T 
+        CZ_alpha      = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
+        CL_alpha      = np.reshape(CL_res,(len_Mach,len_AoA)).T 
+        CM_alpha      = np.reshape(CM_res,(len_Mach,len_AoA)).T 
+        CN_alpha      = np.reshape(CN_res,(len_Mach,len_AoA)).T
         
-        # reset conditions 
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)   
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)  
-        
-        for alpha_i in range(len_AoA):
-            
-            conditions.aerodynamics.angles.alpha        =  np.ones_like(Machs)*AoA[alpha_i]
-            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-            
-            Clift_alpha[:,:,alpha_i] = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-            Cdrag_alpha[:,:,alpha_i] = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T                                 
-            CX_alpha[:,:,alpha_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-            CY_alpha[:,:,alpha_i]    = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-            CZ_alpha[:,:,alpha_i]    = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-            CL_alpha[:,:,alpha_i]    = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-            CM_alpha[:,:,alpha_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-            CN_alpha[:,:,alpha_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T        
-     
         # --------------------------------------------------------------------------------------------------------------
         # Beta 
-        # --------------------------------------------------------------------------------------------------------------        
-        Clift_beta     = np.zeros((len_AoA,len_Mach,len_Beta)) 
-        Cdrag_beta     = np.zeros((len_AoA,len_Mach,len_Beta)) 
-        CX_beta        = np.zeros((len_AoA,len_Mach,len_Beta)) 
-        CY_beta        = np.zeros((len_AoA,len_Mach,len_Beta)) 
-        CZ_beta        = np.zeros((len_AoA,len_Mach,len_Beta)) 
-        CL_beta        = np.zeros((len_AoA,len_Mach,len_Beta)) 
-        CM_beta        = np.zeros((len_AoA,len_Mach,len_Beta)) 
-        CN_beta        = np.zeros((len_AoA,len_Mach,len_Beta))
+        # --------------------------------------------------------------------------------------------------------------
+        Betas         = np.atleast_2d(np.tile(Beta,len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_Beta)).T        
 
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+        conditions.freestream.mach_number               = Machs
         conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.freestream.mach_number               = Machs   
+        conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas  
         conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -793,41 +727,32 @@ class Vortex_Lattice(Stability):
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs) 
         
-        for beta_i in range(len_Beta):
-            
-            conditions.aerodynamics.angles.beta         =  np.ones_like(Machs)*Beta[beta_i]
-            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-            
-            Clift_beta[:,:,beta_i] = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-            Cdrag_beta[:,:,beta_i] = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T                                 
-            CX_beta[:,:,beta_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-            CY_beta[:,:,beta_i]    = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-            CZ_beta[:,:,beta_i]    = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-            CL_beta[:,:,beta_i]    = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-            CM_beta[:,:,beta_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-            CN_beta[:,:,beta_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T 
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        
+        Clift_beta = np.reshape(Clift_res,(len_Mach,len_Beta)).T 
+        Cdrag_beta = np.reshape(Cdrag_res,(len_Mach,len_Beta)).T                                 
+        CX_beta = np.reshape(CX_res,(len_Mach,len_Beta)).T 
+        CY_beta = np.reshape(CY_res,(len_Mach,len_Beta)).T 
+        CZ_beta = np.reshape(CZ_res,(len_Mach,len_Beta)).T 
+        CL_beta = np.reshape(CL_res,(len_Mach,len_Beta)).T 
+        CM_beta = np.reshape(CM_res,(len_Mach,len_Beta)).T 
+        CN_beta = np.reshape(CN_res,(len_Mach,len_Beta)).T 
                      
         # --------------------------------------------------------------------------------------------------------------
         # Aileron 
         # --------------------------------------------------------------------------------------------------------------    
-        Clift_d_a      = np.zeros((len_AoA,len_Mach,len_d_a)) 
-        Cdrag_d_a      = np.zeros((len_AoA,len_Mach,len_d_a)) 
-        CX_d_a         = np.zeros((len_AoA,len_Mach,len_d_a)) 
-        CY_d_a         = np.zeros((len_AoA,len_Mach,len_d_a)) 
-        CZ_d_a         = np.zeros((len_AoA,len_Mach,len_d_a)) 
-        CL_d_a         = np.zeros((len_AoA,len_Mach,len_d_a)) 
-        CM_d_a         = np.zeros((len_AoA,len_Mach,len_d_a)) 
-        CN_d_a         = np.zeros((len_AoA,len_Mach,len_d_a))   
+        Delta_a_s     = np.atleast_2d(np.tile(delta_a,len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_d_a)).T    
 
-        # reset conditions         
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
+        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.ones_like(Machs) *Delta_a_s
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -836,92 +761,66 @@ class Vortex_Lattice(Stability):
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs)
         
-        for a_i in range(len_d_a): 
-            for wing in geometry.wings: 
-                for control_surface in wing.control_surfaces:
-                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
-                        
-                        control_surface.deflection                                    = delta_a[a_i]
-                        conditions.control_surfaces.aileron.deflection[:,0]           = delta_a[a_i]                
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-                        
-                        Clift_d_a[:,:,a_i] = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-                        Cdrag_d_a[:,:,a_i] = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T                                 
-                        CX_d_a[:,:,a_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-                        CY_d_a[:,:,a_i]    = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-                        CZ_d_a[:,:,a_i]    = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-                        CL_d_a[:,:,a_i]    = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-                        CM_d_a[:,:,a_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-                        CN_d_a[:,:,a_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T         
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        
+        Clift_d_a = np.reshape(Clift_res,(len_Mach,len_d_a)).T 
+        Cdrag_d_a = np.reshape(Cdrag_res,(len_Mach,len_d_a)).T                                 
+        CX_d_a    = np.reshape(CX_res,(len_Mach,len_d_a)).T 
+        CY_d_a    = np.reshape(CY_res,(len_Mach,len_d_a)).T 
+        CZ_d_a    = np.reshape(CZ_res,(len_Mach,len_d_a)).T 
+        CL_d_a    = np.reshape(CL_res,(len_Mach,len_d_a)).T 
+        CM_d_a    = np.reshape(CM_res,(len_Mach,len_d_a)).T 
+        CN_d_a    = np.reshape(CN_res,(len_Mach,len_d_a)).T         
 
         # --------------------------------------------------------------------------------------------------------------
         # Elevator 
         # --------------------------------------------------------------------------------------------------------------
-        Clift_d_e      = np.zeros((len_AoA,len_Mach,len_d_e)) 
-        Cdrag_d_e      = np.zeros((len_AoA,len_Mach,len_d_e)) 
-        CX_d_e         = np.zeros((len_AoA,len_Mach,len_d_e)) 
-        CY_d_e         = np.zeros((len_AoA,len_Mach,len_d_e)) 
-        CZ_d_e         = np.zeros((len_AoA,len_Mach,len_d_e)) 
-        CL_d_e         = np.zeros((len_AoA,len_Mach,len_d_e)) 
-        CM_d_e         = np.zeros((len_AoA,len_Mach,len_d_e)) 
-        CN_d_e         = np.zeros((len_AoA,len_Mach,len_d_e))
-
-        # reset conditions 
+        Delta_e_s     = np.atleast_2d(np.tile(delta_e,len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_d_e)).T        
+            
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs) 
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
+        conditions.control_surfaces.elevator.deflection = np.ones_like(Machs)*Delta_e_s
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
         conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
         conditions.static_stability.roll_rate           = np.zeros_like(Machs)
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs) 
+        conditions.freestream.velocity                  = np.zeros_like(Machs)
         
-        for e_i in range(len_d_e): 
-            for wing in geometry.wings: 
-                for control_surface in wing.control_surfaces:
-                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                        
-                        control_surface.deflection                                    = delta_e[e_i]
-                        conditions.control_surfaces.elevator.deflection[:,0]          = delta_e[e_i]                
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-                        
-                        Clift_d_e[:,:,e_i] = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-                        Cdrag_d_e[:,:,e_i] = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T                                 
-                        CX_d_e[:,:,e_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-                        CY_d_e[:,:,e_i]    = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-                        CZ_d_e[:,:,e_i]    = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-                        CL_d_e[:,:,e_i]    = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-                        CM_d_e[:,:,e_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-                        CN_d_e[:,:,e_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T       
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        
+        Clift_d_e = np.reshape(Clift_res,(len_Mach,len_d_e)).T 
+        Cdrag_d_e = np.reshape(Cdrag_res,(len_Mach,len_d_e)).T                                 
+        CX_d_e    = np.reshape(CX_res,(len_Mach,len_d_e)).T 
+        CY_d_e    = np.reshape(CY_res,(len_Mach,len_d_e)).T 
+        CZ_d_e    = np.reshape(CZ_res,(len_Mach,len_d_e)).T 
+        CL_d_e    = np.reshape(CL_res,(len_Mach,len_d_e)).T 
+        CM_d_e    = np.reshape(CM_res,(len_Mach,len_d_e)).T 
+        CN_d_e    = np.reshape(CN_res,(len_Mach,len_d_e)).T       
                         
         # --------------------------------------------------------------------------------------------------------------
         # Rudder 
-        # --------------------------------------------------------------------------------------------------------------         
-        Clift_d_r      = np.zeros((len_AoA,len_Mach,len_d_r)) 
-        Cdrag_d_r      = np.zeros((len_AoA,len_Mach,len_d_r)) 
-        CX_d_r         = np.zeros((len_AoA,len_Mach,len_d_r)) 
-        CY_d_r         = np.zeros((len_AoA,len_Mach,len_d_r)) 
-        CZ_d_r         = np.zeros((len_AoA,len_Mach,len_d_r)) 
-        CL_d_r         = np.zeros((len_AoA,len_Mach,len_d_r)) 
-        CM_d_r         = np.zeros((len_AoA,len_Mach,len_d_r)) 
-        CN_d_r         = np.zeros((len_AoA,len_Mach,len_d_r))  
-
-        # reset conditions         
+        # --------------------------------------------------------------------------------------------------------------
+        Delta_r_s     = np.atleast_2d(np.tile(delta_r,len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_d_r)).T        
+                
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs) 
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+        conditions.control_surfaces.rudder.deflection   = np.ones_like(Machs)*Delta_r_s
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -930,92 +829,32 @@ class Vortex_Lattice(Stability):
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs)
         
-        for r_i in range(len_d_r): 
-            for wing in geometry.wings:
-                for control_surface in wing.control_surfaces:
-                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:
-                        
-                        control_surface.deflection                                    = delta_r[r_i]
-                        conditions.control_surfaces.rudder.deflection[:,0]            = delta_r[r_i]                
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
-
-                        Clift_d_r[:,:,r_i] = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-                        Cdrag_d_r[:,:,r_i] = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T                                 
-                        CX_d_r[:,:,r_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-                        CY_d_r[:,:,r_i]    = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-                        CZ_d_r[:,:,r_i]    = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-                        CL_d_r[:,:,r_i]    = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-                        CM_d_r[:,:,r_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-                        CN_d_r[:,:,r_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
+    
+        Clift_d_r = np.reshape(Clift_res,(len_Mach,len_d_r)).T 
+        Cdrag_d_r = np.reshape(Cdrag_res,(len_Mach,len_d_r)).T                                 
+        CX_d_r    = np.reshape(CX_res,(len_Mach,len_d_r)).T 
+        CY_d_r    = np.reshape(CY_res,(len_Mach,len_d_r)).T 
+        CZ_d_r    = np.reshape(CZ_res,(len_Mach,len_d_r)).T 
+        CL_d_r    = np.reshape(CL_res,(len_Mach,len_d_r)).T 
+        CM_d_r    = np.reshape(CM_res,(len_Mach,len_d_r)).T 
+        CN_d_r    = np.reshape(CN_res,(len_Mach,len_d_r)).T
                         
         # --------------------------------------------------------------------------------------------------------------
         # Flap 
-        # --------------------------------------------------------------------------------------------------------------         
-        Clift_d_f      = np.zeros((len_AoA,len_Mach,len_d_f)) 
-        Cdrag_d_f      = np.zeros((len_AoA,len_Mach,len_d_f)) 
-        CX_d_f         = np.zeros((len_AoA,len_Mach,len_d_f)) 
-        CY_d_f         = np.zeros((len_AoA,len_Mach,len_d_f)) 
-        CZ_d_f         = np.zeros((len_AoA,len_Mach,len_d_f)) 
-        CL_d_f         = np.zeros((len_AoA,len_Mach,len_d_f)) 
-        CM_d_f         = np.zeros((len_AoA,len_Mach,len_d_f)) 
-        CN_d_f         = np.zeros((len_AoA,len_Mach,len_d_f))  
-
-        # reset conditions         
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)  
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)
-        
-        for f_i in range(len_d_f): 
-            for wing in geometry.wings:
-                for control_surface in wing.control_surfaces:
-                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:
-                        
-                        control_surface.deflection                                    = delta_f[f_i]
-                        conditions.control_surfaces.flap.deflection[:,0]            = delta_f[f_i]                
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
-
-                        Clift_d_f[:,:,f_i] = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-                        Cdrag_d_f[:,:,f_i] = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T                                 
-                        CX_d_f[:,:,f_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-                        CY_d_f[:,:,f_i]    = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-                        CZ_d_f[:,:,f_i]    = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-                        CL_d_f[:,:,f_i]    = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-                        CM_d_f[:,:,f_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-                        CN_d_f[:,:,f_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T
-                        
         # --------------------------------------------------------------------------------------------------------------
-        # Slat 
-        # --------------------------------------------------------------------------------------------------------------         
-        Clift_d_s      = np.zeros((len_AoA,len_Mach,len_d_s)) 
-        Cdrag_d_s      = np.zeros((len_AoA,len_Mach,len_d_s)) 
-        CX_d_s         = np.zeros((len_AoA,len_Mach,len_d_s)) 
-        CY_d_s         = np.zeros((len_AoA,len_Mach,len_d_s)) 
-        CZ_d_s         = np.zeros((len_AoA,len_Mach,len_d_s)) 
-        CL_d_s         = np.zeros((len_AoA,len_Mach,len_d_s)) 
-        CM_d_s         = np.zeros((len_AoA,len_Mach,len_d_s)) 
-        CN_d_s         = np.zeros((len_AoA,len_Mach,len_d_s))  
+        Delta_f_s     = np.atleast_2d(np.tile(delta_f, len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_d_f)).T          
 
-        # reset conditions         
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs) 
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+        conditions.control_surfaces.flap.deflection     = np.ones_like(Machs)*Delta_f_s
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
@@ -1024,417 +863,464 @@ class Vortex_Lattice(Stability):
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs)
         
-        for s_i in range(len_d_s): 
-            for wing in geometry.wings:
-                for control_surface in wing.control_surfaces:
-                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
-                        
-                        control_surface.deflection                                    = delta_s[s_i]
-                        conditions.control_surfaces.slat.deflection[:,0]            = delta_s[s_i]                
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
 
-                        Clift_d_s[:,:,s_i] = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-                        Cdrag_d_s[:,:,s_i] = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T                                 
-                        CX_d_s[:,:,s_i]    = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-                        CY_d_s[:,:,s_i]    = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-                        CZ_d_s[:,:,s_i]    = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-                        CL_d_s[:,:,s_i]    = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-                        CM_d_s[:,:,s_i]    = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-                        CN_d_s[:,:,s_i]    = np.reshape(CN_res,(len_Mach,len_AoA)).T                          
+        Clift_d_f = np.reshape(Clift_res,(len_Mach,len_d_f)).T 
+        Cdrag_d_f = np.reshape(Cdrag_res,(len_Mach,len_d_f)).T                                 
+        CX_d_f    = np.reshape(CX_res,(len_Mach,len_d_f)).T 
+        CY_d_f    = np.reshape(CY_res,(len_Mach,len_d_f)).T 
+        CZ_d_f    = np.reshape(CZ_res,(len_Mach,len_d_f)).T 
+        CL_d_f    = np.reshape(CL_res,(len_Mach,len_d_f)).T 
+        CM_d_f    = np.reshape(CM_res,(len_Mach,len_d_f)).T 
+        CN_d_f    = np.reshape(CN_res,(len_Mach,len_d_f)).T
+                        
+        ## --------------------------------------------------------------------------------------------------------------
+        ## Slat 
+        ## --------------------------------------------------------------------------------------------------------------         
+        #Delta_s_s     = np.atleast_2d(np.tile(delta_s, len_Mach).T.flatten()).T 
+        #Machs         = np.atleast_2d(np.repeat(Mach,len_d_s)).T          
+
+        #conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+        #conditions.freestream.mach_number               = Machs
+        #conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        #conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        #conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
+        #conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
+        #conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
+        #conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.ones_like(Machs)*Delta_s_s
+        #conditions.freestream.u                         = np.zeros_like(Machs)
+        #conditions.freestream.v                         = np.zeros_like(Machs)
+        #conditions.freestream.w                         = np.zeros_like(Machs)
+        #conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
+        #conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+        #conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
+        #conditions.freestream.velocity                  = np.zeros_like(Machs)
+        
+        #Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
+    
+        #Clift_d_s = np.reshape(Clift_res,(len_Mach,len_d_s)).T 
+        #Cdrag_d_s = np.reshape(Cdrag_res,(len_Mach,len_d_s)).T                                 
+        #CX_d_s    = np.reshape(CX_res,(len_Mach,len_d_s)).T 
+        #CY_d_s    = np.reshape(CY_res,(len_Mach,len_d_s)).T 
+        #CZ_d_s    = np.reshape(CZ_res,(len_Mach,len_d_s)).T 
+        #CL_d_s    = np.reshape(CL_res,(len_Mach,len_d_s)).T 
+        #CM_d_s    = np.reshape(CM_res,(len_Mach,len_d_s)).T 
+        #CN_d_s    = np.reshape(CN_res,(len_Mach,len_d_s)).T                          
                 
         # -------------------------------------------------------               
         # Velocity u 
         # -------------------------------------------------------
-        '''
-        for u velocity, change mach number by 0.1
+        u_s     = np.atleast_2d(np.tile(u, len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_u)).T                  
         
-        for v velocity, beta
-        
-        for w velocity, alpha  
-        
-        '''
-        Clift_u     = np.zeros((len_AoA,len_Mach,len_u)) 
-        Cdrag_u     = np.zeros((len_AoA,len_Mach,len_u)) 
-        CX_u        = np.zeros((len_AoA,len_Mach,len_u)) 
-        CY_u        = np.zeros((len_AoA,len_Mach,len_u)) 
-        CZ_u        = np.zeros((len_AoA,len_Mach,len_u)) 
-        CL_u        = np.zeros((len_AoA,len_Mach,len_u)) 
-        CM_u        = np.zeros((len_AoA,len_Mach,len_u)) 
-        CN_u        = np.zeros((len_AoA,len_Mach,len_u))
-        
-        # reset conditions         
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = self.training.u
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
+        conditions.freestream.u                         = np.ones_like(Machs)*u_s
         conditions.freestream.v                         = np.zeros_like(Machs)
         conditions.freestream.w                         = np.zeros_like(Machs)
         conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
         conditions.static_stability.roll_rate           = np.zeros_like(Machs)
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs)
+        conditions.freestream.mach_number               = Machs + conditions.freestream.u/343
         
-        for u_i in range(len_u):
-            
-            conditions.freestream.mach_number               = Machs + conditions.freestream.u[u_i]/343
-            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-            
-            Clift_u[:,:,u_i]     = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-            Cdrag_u[:,:,u_i]     = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-            CX_u[:,:,u_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
-            CY_u[:,:,u_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
-            CZ_u[:,:,u_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
-            CL_u[:,:,u_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
-            CM_u[:,:,u_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            CN_u[:,:,u_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        
+        Clift_u     = np.reshape(Clift_res,(len_Mach,len_u)).T 
+        Cdrag_u     = np.reshape(Cdrag_res,(len_Mach,len_u)).T 
+        CX_u        = np.reshape(CX_res,(len_Mach,len_u)).T  
+        CY_u        = np.reshape(CY_res,(len_Mach,len_u)).T  
+        CZ_u        = np.reshape(CZ_res,(len_Mach,len_u)).T  
+        CL_u        = np.reshape(CL_res,(len_Mach,len_u)).T  
+        CM_u        = np.reshape(CM_res,(len_Mach,len_u)).T  
+        CN_u        = np.reshape(CN_res,(len_Mach,len_u)).T
         
         # -------------------------------------------------------               
         # Velocity v 
         # -------------------------------------------------------
-        '''
-        for u velocity, change mach number by 0.1
+        v_s     = np.atleast_2d(np.tile(v, len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_v)).T    
         
-        for v velocity, beta
-        
-        for w velocity, alpha  
-        
-        '''
-        Clift_v     = np.zeros((len_AoA,len_Mach,len_v)) 
-        Cdrag_v     = np.zeros((len_AoA,len_Mach,len_v)) 
-        CX_v        = np.zeros((len_AoA,len_Mach,len_v)) 
-        CY_v        = np.zeros((len_AoA,len_Mach,len_v)) 
-        CZ_v        = np.zeros((len_AoA,len_Mach,len_v)) 
-        CL_v        = np.zeros((len_AoA,len_Mach,len_v)) 
-        CM_v        = np.zeros((len_AoA,len_Mach,len_v)) 
-        CN_v        = np.zeros((len_AoA,len_Mach,len_v))
-        
-        # reset conditions         
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = self.training.v
+        conditions.freestream.v                         = np.ones_like(Machs)*v_s
         conditions.freestream.w                         = np.zeros_like(Machs)
         conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
         conditions.static_stability.roll_rate           = np.zeros_like(Machs)
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs)
+        conditions.freestream.mach_number               = Machs
+        conditions.aerodynamics.angles.beta             = np.arcsin(conditions.freestream.v/(conditions.freestream.mach_number*343))         
         
-        for v_i in range(len_v):
-            
-            conditions.aerodynamics.angles.beta         = conditions.aerodynamics.angles.beta + np.arcsin(conditions.freestream.v[v_i]/conditions.freestream.velocity)
-            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-            
-            Clift_v[:,:,v_i]     = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-            Cdrag_v[:,:,v_i]     = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-            CX_v[:,:,v_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
-            CY_v[:,:,v_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
-            CZ_v[:,:,v_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
-            CL_v[:,:,v_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
-            CM_v[:,:,v_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            CN_v[:,:,v_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        
+        Clift_v     = np.reshape(Clift_res,(len_Mach,len_v)).T 
+        Cdrag_v     = np.reshape(Cdrag_res,(len_Mach,len_v)).T 
+        CX_v        = np.reshape(CX_res,(len_Mach,len_v)).T  
+        CY_v        = np.reshape(CY_res,(len_Mach,len_v)).T  
+        CZ_v        = np.reshape(CZ_res,(len_Mach,len_v)).T  
+        CL_v        = np.reshape(CL_res,(len_Mach,len_v)).T  
+        CM_v        = np.reshape(CM_res,(len_Mach,len_v)).T  
+        CN_v        = np.reshape(CN_res,(len_Mach,len_v)).T
         
         # -------------------------------------------------------               
         # Velocity w 
         # -------------------------------------------------------
-        '''
-        for u velocity, change mach number by 0.1
+        w_s     = np.atleast_2d(np.tile(w, len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_w)).T    
         
-        for v velocity, beta
-        
-        for w velocity, alpha  
-        
-        '''
-        Clift_w     = np.zeros((len_AoA,len_Mach,len_w)) 
-        Cdrag_w     = np.zeros((len_AoA,len_Mach,len_w)) 
-        CX_w        = np.zeros((len_AoA,len_Mach,len_w)) 
-        CY_w        = np.zeros((len_AoA,len_Mach,len_w)) 
-        CZ_w        = np.zeros((len_AoA,len_Mach,len_w)) 
-        CL_w        = np.zeros((len_AoA,len_Mach,len_w)) 
-        CM_w        = np.zeros((len_AoA,len_Mach,len_w)) 
-        CN_w        = np.zeros((len_AoA,len_Mach,len_w))
-        
-        # reset conditions         
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = self.training.w
+        conditions.freestream.w                         = np.ones_like(Machs)*w_s
         conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
         conditions.static_stability.roll_rate           = np.zeros_like(Machs)
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
         conditions.freestream.velocity                  = np.zeros_like(Machs)
+        conditions.freestream.mach_number               = Machs
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs)
+        conditions.aerodynamics.angles.alpha            = np.arcsin(conditions.freestream.w/(conditions.freestream.velocity*343))
         
-        for w_i in range(len_w):
-            
-            conditions.aerodynamics.angles.alpha        = AoAs + np.arcsin(conditions.freestream.w[w_i]/conditions.freestream.velocity)
-            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-            
-            Clift_w[:,:,w_i]     = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-            Cdrag_w[:,:,w_i]     = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-            CX_w[:,:,w_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
-            CY_w[:,:,w_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
-            CZ_w[:,:,w_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
-            CL_w[:,:,w_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
-            CM_w[:,:,w_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            CN_w[:,:,w_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T            
-                            
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        
+        Clift_w     = np.reshape(Clift_res,(len_Mach,len_w)).T 
+        Cdrag_w     = np.reshape(Cdrag_res,(len_Mach,len_w)).T 
+        CX_w        = np.reshape(CX_res,(len_Mach,len_w)).T  
+        CY_w        = np.reshape(CY_res,(len_Mach,len_w)).T  
+        CZ_w        = np.reshape(CZ_res,(len_Mach,len_w)).T  
+        CL_w        = np.reshape(CL_res,(len_Mach,len_w)).T  
+        CM_w        = np.reshape(CM_res,(len_Mach,len_w)).T  
+        CN_w        = np.reshape(CN_res,(len_Mach,len_w)).T            
+                        
         # -------------------------------------------------------               
         # Pitch Rate 
-        # -------------------------------------------------------       
-        Clift_pitch_rate     = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        Cdrag_pitch_rate     = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        CX_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        CY_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        CZ_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        CL_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        CM_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate)) 
-        CN_pitch_rate        = np.zeros((len_AoA,len_Mach,len_pitch_rate))
+        # -------------------------------------------------------
+        q_s     = np.atleast_2d(np.tile(pitch_rate, len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_pitch_rate)).T
         
-        # reset conditions         
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()     
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)      
+        conditions.freestream.w                         = np.zeros_like(Machs)
+        conditions.static_stability.pitch_rate          = np.ones_like(Machs)*q_s      
         conditions.static_stability.roll_rate           = np.zeros_like(Machs)
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = Machs * 343 # speed of sound
+        conditions.freestream.velocity                  = Machs * 343 # speed of sound   
         
-        for pitch_i in range(len_pitch_rate):
-            
-            conditions.static_stability.pitch_rate                 = pitch_rate[pitch_i]  
-            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-            
-            Clift_pitch_rate[:,:,pitch_i]     = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-            Cdrag_pitch_rate[:,:,pitch_i]     = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-            CX_pitch_rate[:,:,pitch_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
-            CY_pitch_rate[:,:,pitch_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
-            CZ_pitch_rate[:,:,pitch_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
-            CL_pitch_rate[:,:,pitch_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
-            CM_pitch_rate[:,:,pitch_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            CN_pitch_rate[:,:,pitch_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T  
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        
+        Clift_pitch_rate     = np.reshape(Clift_res,(len_Mach,len_pitch_rate)).T 
+        Cdrag_pitch_rate     = np.reshape(Cdrag_res,(len_Mach,len_pitch_rate)).T 
+        CX_pitch_rate        = np.reshape(CX_res,(len_Mach,len_pitch_rate)).T  
+        CY_pitch_rate        = np.reshape(CY_res,(len_Mach,len_pitch_rate)).T  
+        CZ_pitch_rate        = np.reshape(CZ_res,(len_Mach,len_pitch_rate)).T  
+        CL_pitch_rate        = np.reshape(CL_res,(len_Mach,len_pitch_rate)).T  
+        CM_pitch_rate        = np.reshape(CM_res,(len_Mach,len_pitch_rate)).T  
+        CN_pitch_rate        = np.reshape(CN_res,(len_Mach,len_pitch_rate)).T  
     
         # -------------------------------------------------------               
         # Roll  Rate 
-        # -------------------------------------------------------                                                     
-        Clift_roll_rate     = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
-        Cdrag_roll_rate     = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
-        CX_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
-        CY_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
-        CZ_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
-        CL_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
-        CM_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate)) 
-        CN_roll_rate        = np.zeros((len_AoA,len_Mach,len_roll_rate))
+        # -------------------------------------------------------    
+        p_s     = np.atleast_2d(np.tile(roll_rate, len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_roll_rate)).T
         
-        # reset conditions         
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()     
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)      
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)
+        conditions.freestream.w                         = np.zeros_like(Machs)
+        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
+        conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s
         conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = Machs * 343 # speed of sound        
-        
-        for roll_i in range(len_roll_rate):
+        conditions.freestream.velocity                  = Machs * 343 # speed of sound           
             
-            conditions.static_stability.roll_rate                   = roll_rate[roll_i]             
-            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)  
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)  
             
-            Clift_roll_rate[:,:,roll_i]     = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-            Cdrag_roll_rate[:,:,roll_i]     = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-            CX_roll_rate[:,:,roll_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
-            CY_roll_rate[:,:,roll_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
-            CZ_roll_rate[:,:,roll_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
-            CL_roll_rate[:,:,roll_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
-            CM_roll_rate[:,:,roll_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            CN_roll_rate[:,:,roll_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T        
-            
+        Clift_roll_rate     = np.reshape(Clift_res,(len_Mach,len_roll_rate)).T 
+        Cdrag_roll_rate     = np.reshape(Cdrag_res,(len_Mach,len_roll_rate)).T 
+        CX_roll_rate        = np.reshape(CX_res,(len_Mach,len_roll_rate)).T  
+        CY_roll_rate        = np.reshape(CY_res,(len_Mach,len_roll_rate)).T  
+        CZ_roll_rate        = np.reshape(CZ_res,(len_Mach,len_roll_rate)).T  
+        CL_roll_rate        = np.reshape(CL_res,(len_Mach,len_roll_rate)).T  
+        CM_roll_rate        = np.reshape(CM_res,(len_Mach,len_roll_rate)).T  
+        CN_roll_rate        = np.reshape(CN_res,(len_Mach,len_roll_rate)).T        
 
         # -------------------------------------------------------               
         # Yaw Rate 
-        # -------------------------------------------------------           
-        Clift_yaw_rate     = np.zeros((len_AoA,len_Mach,len_yaw_rate)) 
-        Cdrag_yaw_rate     = np.zeros((len_AoA,len_Mach,len_yaw_rate)) 
-        CX_yaw_rate        = np.zeros((len_AoA,len_Mach,len_yaw_rate)) 
-        CY_yaw_rate        = np.zeros((len_AoA,len_Mach,len_yaw_rate)) 
-        CZ_yaw_rate        = np.zeros((len_AoA,len_Mach,len_yaw_rate)) 
-        CL_yaw_rate        = np.zeros((len_AoA,len_Mach,len_yaw_rate)) 
-        CM_yaw_rate        = np.zeros((len_AoA,len_Mach,len_yaw_rate)) 
-        CN_yaw_rate        = np.zeros((len_AoA,len_Mach,len_yaw_rate))
+        # -------------------------------------------------------        
+        r_s     = np.atleast_2d(np.tile(yaw_rate, len_Mach).T.flatten()).T 
+        Machs         = np.atleast_2d(np.repeat(Mach,len_yaw_rate)).T
 
-        # reset conditions         
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()    
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta            = np.zeros_like(Machs)        
-        conditions.control_surfaces.aileron.deflection = np.zeros_like(Machs) 
+        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
+        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
         conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
         conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
         conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
+        #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
         conditions.freestream.u                         = np.zeros_like(Machs)
         conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)      
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)
+        conditions.freestream.w                         = np.zeros_like(Machs)
+        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
         conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+        conditions.static_stability.yaw_rate            = np.ones_like(Machs)*r_s
         conditions.freestream.velocity                  = Machs * 343 # speed of sound  
         
-        for yaw_i in range(len_yaw_rate):
-            
-            conditions.static_stability.yaw_rate                  = yaw_rate[yaw_i]             
-            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-            
-            Clift_yaw_rate[:,:,yaw_i]     = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-            Cdrag_yaw_rate[:,:,yaw_i]     = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-            CX_yaw_rate[:,:,yaw_i]        = np.reshape(CX_res,(len_Mach,len_AoA)).T  
-            CY_yaw_rate[:,:,yaw_i]        = np.reshape(CY_res,(len_Mach,len_AoA)).T  
-            CZ_yaw_rate[:,:,yaw_i]        = np.reshape(CZ_res,(len_Mach,len_AoA)).T  
-            CL_yaw_rate[:,:,yaw_i]        = np.reshape(CL_res,(len_Mach,len_AoA)).T  
-            CM_yaw_rate[:,:,yaw_i]        = np.reshape(CM_res,(len_Mach,len_AoA)).T  
-            CN_yaw_rate[:,:,yaw_i]        = np.reshape(CN_res,(len_Mach,len_AoA)).T
-              
-        training.Clift_0            = Clift_0  
-        training.Cdrag_0            = Cdrag_0
-        training.CX_0               = CX_0 
-        training.CY_0               = CY_0 
-        training.CZ_0               = CZ_0 
-        training.CL_0               = CL_0 
-        training.CM_0               = CM_0 
-        training.CN_0               = CN_0
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
         
-        training.Clift_alpha = (Clift_alpha[:,:,0] - Clift_alpha[:,:,1]) / (AoA[0] - AoA[1])
-        training.Clift_beta = (Clift_beta[:,:,0] - Clift_beta[:,:,1]) / (Beta[0] - Beta[1])
-        training.Clift_delta_a = (Clift_d_a[:,:,0] - Clift_d_a[:,:,1]) / (delta_a[0] - delta_a[1])
-        training.Clift_delta_e = (Clift_d_e[:,:,0] - Clift_d_e[:,:,1]) / (delta_e[0] - delta_e[1])   
-        training.Clift_delta_r = (Clift_d_r[:,:,0] - Clift_d_r[:,:,1]) / (delta_r[0] - delta_r[1])   
-        training.Clift_delta_f = (Clift_d_f[:,:,0] - Clift_d_f[:,:,1]) / (delta_f[0] - delta_f[1])   
-        training.Clift_delta_s = (Clift_d_s[:,:,0] - Clift_d_s[:,:,1]) / (delta_s[0] - delta_s[1])   
-        training.Clift_u = (Clift_u[:,:,0] - Clift_u[:,:,1]) / (u[0] - u[1])            
-        training.Clift_v = (Clift_v[:,:,0] - Clift_v[:,:,1]) / (v[0] - v[1])          
-        training.Clift_w = (Clift_w[:,:,0] - Clift_w[:,:,1]) / (w[0] - w[1])         
-        training.Clift_p = (Clift_roll_rate[:,:,0] - Clift_roll_rate[:,:,1]) / (roll_rate[0]-roll_rate[1])            
-        training.Clift_q = (Clift_pitch_rate[:,:,0] - Clift_pitch_rate[:,:,1]) / (pitch_rate[0]-pitch_rate[1])        
-        training.Clift_r = (Clift_yaw_rate[:,:,0] - Clift_yaw_rate[:,:,1]) / (yaw_rate[0]-yaw_rate[1])                
-        training.Cdrag_alpha = (Cdrag_alpha[:,:,0] - Cdrag_alpha[:,:,1]) / (AoA[0] - AoA[1])    
-        training.Cdrag_beta = (Cdrag_beta[:,:,0] - Cdrag_beta[:,:,1]) / (Beta[0] - Beta[1])      
-        training.Cdrag_delta_a = (Cdrag_d_a[:,:,0] - Cdrag_d_a[:,:,1]) / (delta_a[0] - delta_a[1])   
-        training.Cdrag_delta_e = (Cdrag_d_e[:,:,0] - Cdrag_d_e[:,:,1]) / (delta_e[0] - delta_e[1])   
-        training.Cdrag_delta_r = (Cdrag_d_r[:,:,0] - Cdrag_d_r[:,:,1]) / (delta_r[0] - delta_r[1])   
-        training.Cdrag_delta_f = (Cdrag_d_f[:,:,0] - Cdrag_d_f[:,:,1]) / (delta_f[0] - delta_f[1])   
-        training.Cdrag_delta_s = (Cdrag_d_s[:,:,0] - Cdrag_d_s[:,:,1]) / (delta_s[0] - delta_s[1])   
-        training.Cdrag_u = (Cdrag_u[:,:,0] - Cdrag_u[:,:,1]) / (u[0] - u[1])                     
-        training.Cdrag_v = (Cdrag_v[:,:,0] - Cdrag_v[:,:,1]) / (v[0] - v[1])                   
-        training.Cdrag_w = (Cdrag_w[:,:,0] - Cdrag_w[:,:,1]) / (w[0] - w[1])                  
-        training.Cdrag_p = (Cdrag_roll_rate[:,:,0] - Cdrag_roll_rate[:,:,1]) / (roll_rate[0]-roll_rate[1])             
-        training.Cdrag_q = (Cdrag_pitch_rate[:,:,0] - Cdrag_pitch_rate[:,:,1]) / (pitch_rate[0]-pitch_rate[1])         
-        training.Cdrag_r = (Cdrag_yaw_rate[:,:,0] - Cdrag_yaw_rate[:,:,1]) / (yaw_rate[0]-yaw_rate[1])                 
-        training.CX_alpha = (CX_alpha[:,:,0] - CX_alpha[:,:,1]) / (AoA[0] - AoA[1])            
-        training.CX_beta = (CX_beta[:,:,0] - CX_beta[:,:,1]) / (Beta[0] - Beta[1])              
-        training.CX_delta_a = (CX_d_a[:,:,0] - CX_d_a[:,:,1]) / (delta_a[0] - delta_a[1])      
-        training.CX_delta_e = (CX_d_e[:,:,0] - CX_d_e[:,:,1]) / (delta_e[0] - delta_e[1])      
-        training.CX_delta_r = (CX_d_r[:,:,0] - CX_d_r[:,:,1]) / (delta_r[0] - delta_r[1])      
-        training.CX_delta_f = (CX_d_f[:,:,0] - CX_d_f[:,:,1]) / (delta_f[0] - delta_f[1])      
-        training.CX_delta_s = (CX_d_s[:,:,0] - CX_d_s[:,:,1]) / (delta_s[0] - delta_s[1])      
-        training.CX_u = (CX_u[:,:,0] - CX_u[:,:,1]) / (u[0] - u[1])                                 
-        training.CX_v = (CX_v[:,:,0] - CX_v[:,:,1]) / (v[0] - v[1])                               
-        training.CX_w = (CX_w[:,:,0] - CX_w[:,:,1]) / (w[0] - w[1])                              
-        training.CX_p = (CX_roll_rate[:,:,0] - CX_roll_rate[:,:,1]) / (roll_rate[0]-roll_rate[1])                
-        training.CX_q = (CX_pitch_rate[:,:,0] - CX_pitch_rate[:,:,1]) / (pitch_rate[0]-pitch_rate[1])            
-        training.CX_r = (CX_yaw_rate[:,:,0] - CX_yaw_rate[:,:,1]) / (yaw_rate[0]-yaw_rate[1])                    
-        training.CY_alpha = (CY_alpha[:,:,0] - CY_alpha[:,:,1]) / (AoA[0] - AoA[1])         
-        training.CY_beta = (CY_beta[:,:,0] - CY_beta[:,:,1]) / (Beta[0] - Beta[1])          
-        training.CY_delta_a = (CY_d_a[:,:,0] - CY_d_a[:,:,1]) / (delta_a[0] - delta_a[1])      
-        training.CY_delta_e = (CY_d_e[:,:,0] - CY_d_e[:,:,1]) / (delta_e[0] - delta_e[1])      
-        training.CY_delta_r = (CY_d_r[:,:,0] - CY_d_r[:,:,1]) / (delta_r[0] - delta_r[1])      
-        training.CY_delta_f = (CY_d_f[:,:,0] - CY_d_f[:,:,1]) / (delta_f[0] - delta_f[1])      
-        training.CY_delta_s = (CY_d_s[:,:,0] - CY_d_s[:,:,1]) / (delta_s[0] - delta_s[1])      
-        training.CY_u = (CY_u[:,:,0] - CY_u[:,:,1]) / (u[0] - u[1])                                             
-        training.CY_v = (CY_v[:,:,0] - CY_v[:,:,1]) / (v[0] - v[1])                                           
-        training.CY_w = (CY_w[:,:,0] - CY_w[:,:,1]) / (w[0] - w[1])                                          
-        training.CY_p = (CY_roll_rate[:,:,0] - CY_roll_rate[:,:,1]) / (roll_rate[0]-roll_rate[1])                 
-        training.CY_q = (CY_pitch_rate[:,:,0] - CY_pitch_rate[:,:,1]) / (pitch_rate[0]-pitch_rate[1])             
-        training.CY_r = (CY_yaw_rate[:,:,0] - CY_yaw_rate[:,:,1]) / (yaw_rate[0]-yaw_rate[1])                     
-        training.CZ_alpha = (CZ_alpha[:,:,0] - CZ_alpha[:,:,1]) / (AoA[0] - AoA[1])             
-        training.CZ_beta = (CZ_beta[:,:,0] - CZ_beta[:,:,1]) / (Beta[0] - Beta[1])              
-        training.CZ_delta_a = (CZ_d_a[:,:,0] - CZ_d_a[:,:,1]) / (delta_a[0] - delta_a[1])      
-        training.CZ_delta_e = (CZ_d_e[:,:,0] - CZ_d_e[:,:,1]) / (delta_e[0] - delta_e[1])      
-        training.CZ_delta_r = (CZ_d_r[:,:,0] - CZ_d_r[:,:,1]) / (delta_r[0] - delta_r[1])      
-        training.CZ_delta_f = (CZ_d_f[:,:,0] - CZ_d_f[:,:,1]) / (delta_f[0] - delta_f[1])      
-        training.CZ_delta_s = (CZ_d_s[:,:,0] - CZ_d_s[:,:,1]) / (delta_s[0] - delta_s[1])      
-        training.CZ_u = (CZ_u[:,:,0] - CZ_u[:,:,1]) / (u[0] - u[1])                                              
-        training.CZ_v = (CZ_v[:,:,0] - CZ_v[:,:,1]) / (v[0] - v[1])                                              
-        training.CZ_w = (CZ_w[:,:,0] - CZ_w[:,:,1]) / (w[0] - w[1])                                              
-        training.CZ_p = (CZ_roll_rate[:,:,0] - CZ_roll_rate[:,:,1]) / (roll_rate[0]-roll_rate[1])                
-        training.CZ_q = (CZ_pitch_rate[:,:,0] - CZ_pitch_rate[:,:,1]) / (pitch_rate[0]-pitch_rate[1])            
-        training.CZ_r = (CZ_yaw_rate[:,:,0] - CZ_yaw_rate[:,:,1]) / (yaw_rate[0]-yaw_rate[1])                    
-        training.CL_alpha = (CL_alpha[:,:,0] - CL_alpha[:,:,1]) / (AoA[0] - AoA[1])         
-        training.CL_beta = (CL_beta[:,:,0] - CL_beta[:,:,1]) / (Beta[0] - Beta[1])          
-        training.CL_delta_a = (CL_d_a[:,:,0] - CL_d_a[:,:,1]) / (delta_a[0] - delta_a[1])      
-        training.CL_delta_e = (CL_d_e[:,:,0] - CL_d_e[:,:,1]) / (delta_e[0] - delta_e[1])      
-        training.CL_delta_r = (CL_d_r[:,:,0] - CL_d_r[:,:,1]) / (delta_r[0] - delta_r[1])      
-        training.CL_delta_f = (CL_d_f[:,:,0] - CL_d_f[:,:,1]) / (delta_f[0] - delta_f[1])      
-        training.CL_delta_s = (CL_d_s[:,:,0] - CL_d_s[:,:,1]) / (delta_s[0] - delta_s[1])      
-        training.CL_u = (CL_u[:,:,0] - CL_u[:,:,1]) / (u[0] - u[1])                                              
-        training.CL_v = (CL_v[:,:,0] - CL_v[:,:,1]) / (v[0] - v[1])                                              
-        training.CL_w = (CL_w[:,:,0] - CL_w[:,:,1]) / (w[0] - w[1])                                              
-        training.CL_p = (CL_roll_rate[:,:,0] - CL_roll_rate[:,:,1]) / (roll_rate[0]-roll_rate[1])                
-        training.CL_q = (CL_pitch_rate[:,:,0] - CL_pitch_rate[:,:,1]) / (pitch_rate[0]-pitch_rate[1])            
-        training.CL_r = (CL_yaw_rate[:,:,0] - CL_yaw_rate[:,:,1]) / (yaw_rate[0]-yaw_rate[1])                    
-        training.CM_alpha = (CM_alpha[:,:,0] - CM_alpha[:,:,1]) / (AoA[0] - AoA[1])          
-        training.CM_beta = (CM_beta[:,:,0] - CM_beta[:,:,1]) / (Beta[0] - Beta[1])           
-        training.CM_delta_a = (CM_d_a[:,:,0] - CM_d_a[:,:,1]) / (delta_a[0] - delta_a[1])      
-        training.CM_delta_e = (CM_d_e[:,:,0] - CM_d_e[:,:,1]) / (delta_e[0] - delta_e[1])      
-        training.CM_delta_r = (CM_d_r[:,:,0] - CM_d_r[:,:,1]) / (delta_r[0] - delta_r[1])      
-        training.CM_delta_f = (CM_d_f[:,:,0] - CM_d_f[:,:,1]) / (delta_f[0] - delta_f[1])      
-        training.CM_delta_s = (CM_d_s[:,:,0] - CM_d_s[:,:,1]) / (delta_s[0] - delta_s[1])      
-        training.CM_u = (CM_u[:,:,0] - CM_u[:,:,1]) / (u[0] - u[1])                                               
-        training.CM_v = (CM_v[:,:,0] - CM_v[:,:,1]) / (v[0] - v[1])                                               
-        training.CM_w = (CM_w[:,:,0] - CM_w[:,:,1]) / (w[0] - w[1])                                               
-        training.CM_p = (CM_roll_rate[:,:,0] - CM_roll_rate[:,:,1]) / (roll_rate[0]-roll_rate[1])                 
-        training.CM_q = (CM_pitch_rate[:,:,0] - CM_pitch_rate[:,:,1]) / (pitch_rate[0]-pitch_rate[1])             
-        training.CM_r = (CM_yaw_rate[:,:,0] - CM_yaw_rate[:,:,1]) / (yaw_rate[0]-yaw_rate[1])                     
-        training.CN_alpha = (CN_alpha[:,:,0] - CN_alpha[:,:,1]) / (AoA[0] - AoA[1])          
-        training.CN_beta = (CN_beta[:,:,0] - CN_beta[:,:,1]) / (Beta[0] - Beta[1])           
-        training.CN_delta_a = (CN_d_a[:,:,0] - CN_d_a[:,:,1]) / (delta_a[0] - delta_a[1])      
-        training.CN_delta_e = (CN_d_e[:,:,0] - CN_d_e[:,:,1]) / (delta_e[0] - delta_e[1])      
-        training.CN_delta_r = (CN_d_r[:,:,0] - CN_d_r[:,:,1]) / (delta_r[0] - delta_r[1])      
-        training.CN_delta_f = (CN_d_f[:,:,0] - CN_d_f[:,:,1]) / (delta_f[0] - delta_f[1])      
-        training.CN_delta_s = (CN_d_s[:,:,0] - CN_d_s[:,:,1]) / (delta_s[0] - delta_s[1])      
-        training.CN_u = (CN_u[:,:,0] - CN_u[:,:,1]) / (u[0] - u[1])                                               
-        training.CN_v = (CN_v[:,:,0] - CN_v[:,:,1]) / (v[0] - v[1])                                               
-        training.CN_w = (CN_w[:,:,0] - CN_w[:,:,1]) / (w[0] - w[1])                                               
-        training.CN_p = (CN_roll_rate[:,:,0] - CN_roll_rate[:,:,1]) / (roll_rate[0]-roll_rate[1])                 
-        training.CN_q = (CN_pitch_rate[:,:,0] - CN_pitch_rate[:,:,1]) / (pitch_rate[0]-pitch_rate[1])             
-        training.CN_r = (CN_yaw_rate[:,:,0] - CN_yaw_rate[:,:,1]) / (yaw_rate[0]-yaw_rate[1])                     
+        Clift_yaw_rate     = np.reshape(Clift_res,(len_Mach,len_yaw_rate)).T 
+        Cdrag_yaw_rate     = np.reshape(Cdrag_res,(len_Mach,len_yaw_rate)).T 
+        CX_yaw_rate        = np.reshape(CX_res,(len_Mach,len_yaw_rate)).T  
+        CY_yaw_rate        = np.reshape(CY_res,(len_Mach,len_yaw_rate)).T  
+        CZ_yaw_rate        = np.reshape(CZ_res,(len_Mach,len_yaw_rate)).T  
+        CL_yaw_rate        = np.reshape(CL_res,(len_Mach,len_yaw_rate)).T  
+        CM_yaw_rate        = np.reshape(CM_res,(len_Mach,len_yaw_rate)).T  
+        CN_yaw_rate        = np.reshape(CN_res,(len_Mach,len_yaw_rate)).T
+            
+        training.Clift_alpha    = Clift_alpha   
+        training.Clift_beta     = Clift_beta    
+        training.Clift_delta_a  = Clift_d_a 
+        training.Clift_delta_e  = Clift_d_e 
+        training.Clift_delta_r  = Clift_d_r 
+        training.Clift_delta_f  = Clift_d_f 
+        #training.Clift_delta_s  = Clift_d_s 
+        training.Clift_u        = Clift_u       
+        training.Clift_v        = Clift_v       
+        training.Clift_w        = Clift_w       
+        training.Clift_p        = Clift_roll_rate       
+        training.Clift_q        = Clift_pitch_rate       
+        training.Clift_r        = Clift_yaw_rate       
+        training.Cdrag_alpha    = Cdrag_alpha   
+        training.Cdrag_beta     = Cdrag_beta    
+        training.Cdrag_delta_a  = Cdrag_d_a 
+        training.Cdrag_delta_e  = Cdrag_d_e 
+        training.Cdrag_delta_r  = Cdrag_d_r 
+        training.Cdrag_delta_f  = Cdrag_d_f 
+        #training.Cdrag_delta_s  = Cdrag_d_s 
+        training.Cdrag_u        = Cdrag_u       
+        training.Cdrag_v        = Cdrag_v       
+        training.Cdrag_w        = Cdrag_w       
+        training.Cdrag_p        = Cdrag_roll_rate        
+        training.Cdrag_q        = Cdrag_pitch_rate       
+        training.Cdrag_r        = Cdrag_yaw_rate         
+        training.CX_alpha       = CX_alpha      
+        training.CX_beta        = CX_beta       
+        training.CX_delta_a     = CX_d_a    
+        training.CX_delta_e     = CX_d_e    
+        training.CX_delta_r     = CX_d_r    
+        training.CX_delta_f     = CX_d_f    
+        #training.CX_delta_s     = CX_d_s    
+        training.CX_u           = CX_u          
+        training.CX_v           = CX_v          
+        training.CX_w           = CX_w          
+        training.CX_p           = CX_roll_rate           
+        training.CX_q           = CX_pitch_rate          
+        training.CX_r           = CX_yaw_rate            
+        training.CY_alpha       = CY_alpha      
+        training.CY_beta        = CY_beta       
+        training.CY_delta_a     = CY_d_a    
+        training.CY_delta_e     = CY_d_e    
+        training.CY_delta_r     = CY_d_r    
+        training.CY_delta_f     = CY_d_f    
+        #training.CY_delta_s     = CY_d_s    
+        training.CY_u           = CY_u          
+        training.CY_v           = CY_v          
+        training.CY_w           = CY_w          
+        training.CY_p           = CY_roll_rate            
+        training.CY_q           = CY_pitch_rate           
+        training.CY_r           = CY_yaw_rate             
+        training.CZ_alpha       = CZ_alpha      
+        training.CZ_beta        = CZ_beta       
+        training.CZ_delta_a     = CZ_d_a    
+        training.CZ_delta_e     = CZ_d_e    
+        training.CZ_delta_r     = CZ_d_r    
+        training.CZ_delta_f     = CZ_d_f    
+        #training.CZ_delta_s     = CZ_d_s    
+        training.CZ_u           = CZ_u          
+        training.CZ_v           = CZ_v          
+        training.CZ_w           = CZ_w          
+        training.CZ_p           = CZ_roll_rate           
+        training.CZ_q           = CZ_pitch_rate          
+        training.CZ_r           = CZ_yaw_rate            
+        training.CL_alpha       = CL_alpha      
+        training.CL_beta        = CL_beta       
+        training.CL_delta_a     = CL_d_a    
+        training.CL_delta_e     = CL_d_e    
+        training.CL_delta_r     = CL_d_r    
+        training.CL_delta_f     = CL_d_f    
+        #training.CL_delta_s     = CL_d_s    
+        training.CL_u           = CL_u          
+        training.CL_v           = CL_v          
+        training.CL_w           = CL_w          
+        training.CL_p           = CL_roll_rate           
+        training.CL_q           = CL_pitch_rate          
+        training.CL_r           = CL_yaw_rate            
+        training.CM_alpha       = CM_alpha      
+        training.CM_beta        = CM_beta       
+        training.CM_delta_a     = CM_d_a    
+        training.CM_delta_e     = CM_d_e    
+        training.CM_delta_r     = CM_d_r    
+        training.CM_delta_f     = CM_d_f    
+        #training.CM_delta_s     = CM_d_s    
+        training.CM_u           = CM_u          
+        training.CM_v           = CM_v          
+        training.CM_w           = CM_w          
+        training.CM_p           = CM_roll_rate             
+        training.CM_q           = CM_pitch_rate            
+        training.CM_r           = CM_yaw_rate              
+        training.CN_alpha       = CN_alpha      
+        training.CN_beta        = CN_beta       
+        training.CN_delta_a     = CN_d_a    
+        training.CN_delta_e     = CN_d_e    
+        training.CN_delta_r     = CN_d_r    
+        training.CN_delta_f     = CN_d_f    
+        #training.CN_delta_s     = CN_d_s    
+        training.CN_u           = CN_u          
+        training.CN_v           = CN_v          
+        training.CN_w           = CN_w          
+        training.CN_p           = CN_roll_rate            
+        training.CN_q           = CN_pitch_rate           
+        training.CN_r           = CN_yaw_rate             
+        
+        training.dClift_dalpha = (Clift_alpha[0,:] - Clift_alpha[1,:]) / (AoA[0] - AoA[1])
+        training.dClift_dbeta = (Clift_beta[0,:] - Clift_beta[1,:]) / (Beta[0] - Beta[1])
+        training.dClift_ddelta_da = (Clift_d_a[0,:] - Clift_d_a[1,:]) / (delta_a[0] - delta_a[1])
+        training.dClift_ddelta_de = (Clift_d_e[0,:] - Clift_d_e[1,:]) / (delta_e[0] - delta_e[1])   
+        training.dClift_ddelta_dr = (Clift_d_r[0,:] - Clift_d_r[1,:]) / (delta_r[0] - delta_r[1])   
+        training.dClift_ddelta_df = (Clift_d_f[0,:] - Clift_d_f[1,:]) / (delta_f[0] - delta_f[1])   
+        #training.dClift_ddelta_ds = (Clift_d_s[0,:] - Clift_d_s[1,:]) / (delta_s[0] - delta_s[1])   
+        training.dClift_du = (Clift_u[0,:] - Clift_u[1,:]) / (u[0] - u[1])            
+        training.dClift_dv = (Clift_v[0,:] - Clift_v[1,:]) / (v[0] - v[1])          
+        training.dClift_dw = (Clift_w[0,:] - Clift_w[1,:]) / (w[0] - w[1])         
+        training.dClift_dp = (Clift_roll_rate[0,:] - Clift_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])            
+        training.dClift_dq = (Clift_pitch_rate[0,:] - Clift_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])        
+        training.dClift_dr = (Clift_yaw_rate[0,:] - Clift_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                
+        training.dCdrag_dalpha = (Cdrag_alpha[0,:] - Cdrag_alpha[1,:]) / (AoA[0] - AoA[1])    
+        training.dCdrag_dbeta = (Cdrag_beta[0,:] - Cdrag_beta[1,:]) / (Beta[0] - Beta[1])      
+        training.dCdrag_ddelta_a = (Cdrag_d_a[0,:] - Cdrag_d_a[1,:]) / (delta_a[0] - delta_a[1])   
+        training.dCdrag_ddelta_e = (Cdrag_d_e[0,:] - Cdrag_d_e[1,:]) / (delta_e[0] - delta_e[1])   
+        training.dCdrag_ddelta_r = (Cdrag_d_r[0,:] - Cdrag_d_r[1,:]) / (delta_r[0] - delta_r[1])   
+        training.dCdrag_ddelta_f = (Cdrag_d_f[0,:] - Cdrag_d_f[1,:]) / (delta_f[0] - delta_f[1])   
+        #training.dCdrag_ddelta_s = (Cdrag_d_s[0,:] - Cdrag_d_s[1,:]) / (delta_s[0] - delta_s[1])   
+        training.dCdrag_du = (Cdrag_u[0,:] - Cdrag_u[1,:]) / (u[0] - u[1])                     
+        training.dCdrag_dv = (Cdrag_v[0,:] - Cdrag_v[1,:]) / (v[0] - v[1])                   
+        training.dCdrag_dw = (Cdrag_w[0,:] - Cdrag_w[1,:]) / (w[0] - w[1])                  
+        training.dCdrag_dp = (Cdrag_roll_rate[0,:] - Cdrag_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])             
+        training.dCdrag_dq = (Cdrag_pitch_rate[0,:] - Cdrag_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])         
+        training.dCdrag_dr = (Cdrag_yaw_rate[0,:] - Cdrag_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                 
+        training.dCX_dalpha = (CX_alpha[0,:] - CX_alpha[1,:]) / (AoA[0] - AoA[1])            
+        training.dCX_dbeta = (CX_beta[0,:] - CX_beta[1,:]) / (Beta[0] - Beta[1])              
+        training.dCX_ddelta_a = (CX_d_a[0,:] - CX_d_a[1,:]) / (delta_a[0] - delta_a[1])      
+        training.dCX_ddelta_e = (CX_d_e[0,:] - CX_d_e[1,:]) / (delta_e[0] - delta_e[1])      
+        training.dCX_ddelta_r = (CX_d_r[0,:] - CX_d_r[1,:]) / (delta_r[0] - delta_r[1])      
+        training.dCX_ddelta_f = (CX_d_f[0,:] - CX_d_f[1,:]) / (delta_f[0] - delta_f[1])      
+        #training.dCX_ddelta_s = (CX_d_s[0,:] - CX_d_s[1,:]) / (delta_s[0] - delta_s[1])      
+        training.dCX_du = (CX_u[0,:] - CX_u[1,:]) / (u[0] - u[1])                                 
+        training.dCX_dv = (CX_v[0,:] - CX_v[1,:]) / (v[0] - v[1])                               
+        training.dCX_dw = (CX_w[0,:] - CX_w[1,:]) / (w[0] - w[1])                              
+        training.dCX_dp = (CX_roll_rate[0,:] - CX_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])                
+        training.dCX_dq = (CX_pitch_rate[0,:] - CX_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])            
+        training.dCX_dr = (CX_yaw_rate[0,:] - CX_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                    
+        training.dCY_dalpha = (CY_alpha[0,:] - CY_alpha[1,:]) / (AoA[0] - AoA[1])         
+        training.dCY_dbeta = (CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])          
+        training.dCY_ddelta_a = (CY_d_a[0,:] - CY_d_a[1,:]) / (delta_a[0] - delta_a[1])      
+        training.dCY_ddelta_e = (CY_d_e[0,:] - CY_d_e[1,:]) / (delta_e[0] - delta_e[1])      
+        training.dCY_ddelta_r = (CY_d_r[0,:] - CY_d_r[1,:]) / (delta_r[0] - delta_r[1])      
+        training.dCY_ddelta_f = (CY_d_f[0,:] - CY_d_f[1,:]) / (delta_f[0] - delta_f[1])      
+        #training.dCY_ddelta_s = (CY_d_s[0,:] - CY_d_s[1,:]) / (delta_s[0] - delta_s[1])      
+        training.dCY_du = (CY_u[0,:] - CY_u[1,:]) / (u[0] - u[1])                                             
+        training.dCY_dv = (CY_v[0,:] - CY_v[1,:]) / (v[0] - v[1])                                           
+        training.dCY_dw = (CY_w[0,:] - CY_w[1,:]) / (w[0] - w[1])                                          
+        training.dCY_dp = (CY_roll_rate[0,:] - CY_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])                 
+        training.dCY_dq = (CY_pitch_rate[0,:] - CY_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])             
+        training.dCY_dr = (CY_yaw_rate[0,:] - CY_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                     
+        training.dCZ_dalpha = (CZ_alpha[0,:] - CZ_alpha[1,:]) / (AoA[0] - AoA[1])             
+        training.dCZ_dbeta = (CZ_beta[0,:] - CZ_beta[1,:]) / (Beta[0] - Beta[1])              
+        training.dCZ_ddelta_a = (CZ_d_a[0,:] - CZ_d_a[1,:]) / (delta_a[0] - delta_a[1])      
+        training.dCZ_ddelta_e = (CZ_d_e[0,:] - CZ_d_e[1,:]) / (delta_e[0] - delta_e[1])      
+        training.dCZ_ddelta_r = (CZ_d_r[0,:] - CZ_d_r[1,:]) / (delta_r[0] - delta_r[1])      
+        training.dCZ_ddelta_f = (CZ_d_f[0,:] - CZ_d_f[1,:]) / (delta_f[0] - delta_f[1])      
+        #training.dCZ_ddelta_s = (CZ_d_s[0,:] - CZ_d_s[1,:]) / (delta_s[0] - delta_s[1])      
+        training.dCZ_du = (CZ_u[0,:] - CZ_u[1,:]) / (u[0] - u[1])                                              
+        training.dCZ_dv = (CZ_v[0,:] - CZ_v[1,:]) / (v[0] - v[1])                                              
+        training.dCZ_dw = (CZ_w[0,:] - CZ_w[1,:]) / (w[0] - w[1])                                              
+        training.dCZ_dp = (CZ_roll_rate[0,:] - CZ_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])                
+        training.dCZ_dq = (CZ_pitch_rate[0,:] - CZ_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])            
+        training.dCZ_dr = (CZ_yaw_rate[0,:] - CZ_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                    
+        training.dCL_dalpha = (CL_alpha[0,:] - CL_alpha[1,:]) / (AoA[0] - AoA[1])         
+        training.dCL_dbeta = (CL_beta[0,:] - CL_beta[1,:]) / (Beta[0] - Beta[1])          
+        training.dCL_ddelta_a = (CL_d_a[0,:] - CL_d_a[1,:]) / (delta_a[0] - delta_a[1])      
+        training.dCL_ddelta_e = (CL_d_e[0,:] - CL_d_e[1,:]) / (delta_e[0] - delta_e[1])      
+        training.dCL_ddelta_r = (CL_d_r[0,:] - CL_d_r[1,:]) / (delta_r[0] - delta_r[1])      
+        training.dCL_ddelta_f = (CL_d_f[0,:] - CL_d_f[1,:]) / (delta_f[0] - delta_f[1])      
+        #training.dCL_ddelta_s = (CL_d_s[0,:] - CL_d_s[1,:]) / (delta_s[0] - delta_s[1])      
+        training.dCL_du = (CL_u[0,:] - CL_u[1,:]) / (u[0] - u[1])                                              
+        training.dCL_dv = (CL_v[0,:] - CL_v[1,:]) / (v[0] - v[1])                                              
+        training.dCL_dw = (CL_w[0,:] - CL_w[1,:]) / (w[0] - w[1])                                              
+        training.dCL_dp = (CL_roll_rate[0,:] - CL_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])                
+        training.dCL_dq = (CL_pitch_rate[0,:] - CL_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])            
+        training.dCL_dr = (CL_yaw_rate[0,:] - CL_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                    
+        training.dCM_dalpha = (CM_alpha[0,:] - CM_alpha[1,:]) / (AoA[0] - AoA[1])          
+        training.dCM_dbeta = (CM_beta[0,:] - CM_beta[1,:]) / (Beta[0] - Beta[1])           
+        training.dCM_ddelta_a = (CM_d_a[0,:] - CM_d_a[1,:]) / (delta_a[0] - delta_a[1])      
+        training.dCM_ddelta_e = (CM_d_e[0,:] - CM_d_e[1,:]) / (delta_e[0] - delta_e[1])      
+        training.dCM_ddelta_r = (CM_d_r[0,:] - CM_d_r[1,:]) / (delta_r[0] - delta_r[1])      
+        training.dCM_ddelta_f = (CM_d_f[0,:] - CM_d_f[1,:]) / (delta_f[0] - delta_f[1])      
+        #training.dCM_ddelta_s = (CM_d_s[0,:] - CM_d_s[1,:]) / (delta_s[0] - delta_s[1])      
+        training.dCM_du = (CM_u[0,:] - CM_u[1,:]) / (u[0] - u[1])                                               
+        training.dCM_dv = (CM_v[0,:] - CM_v[1,:]) / (v[0] - v[1])                                               
+        training.dCM_dw = (CM_w[0,:] - CM_w[1,:]) / (w[0] - w[1])                                               
+        training.dCM_dp = (CM_roll_rate[0,:] - CM_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])                 
+        training.dCM_dq = (CM_pitch_rate[0,:] - CM_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])             
+        training.dCM_dr = (CM_yaw_rate[0,:] - CM_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                     
+        training.dCN_dalpha = (CN_alpha[0,:] - CN_alpha[1,:]) / (AoA[0] - AoA[1])          
+        training.dCN_dbeta = (CN_beta[0,:] - CN_beta[1,:]) / (Beta[0] - Beta[1])           
+        training.dCN_ddelta_a = (CN_d_a[0,:] - CN_d_a[1,:]) / (delta_a[0] - delta_a[1])      
+        training.dCN_ddelta_e = (CN_d_e[0,:] - CN_d_e[1,:]) / (delta_e[0] - delta_e[1])      
+        training.dCN_ddelta_r = (CN_d_r[0,:] - CN_d_r[1,:]) / (delta_r[0] - delta_r[1])      
+        training.dCN_ddelta_f = (CN_d_f[0,:] - CN_d_f[1,:]) / (delta_f[0] - delta_f[1])      
+        #training.dCN_ddelta_s = (CN_d_s[0,:] - CN_d_s[1,:]) / (delta_s[0] - delta_s[1])      
+        training.dCN_du = (CN_u[0,:] - CN_u[1,:]) / (u[0] - u[1])                                               
+        training.dCN_dv = (CN_v[0,:] - CN_v[1,:]) / (v[0] - v[1])                                               
+        training.dCN_dw = (CN_w[0,:] - CN_w[1,:]) / (w[0] - w[1])                                               
+        training.dCN_dp = (CN_roll_rate[0,:] - CN_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])                 
+        training.dCN_dq = (CN_pitch_rate[0,:] - CN_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])             
+        training.dCN_dr = (CN_yaw_rate[0,:] - CN_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                     
             
         training.NP            = 0  
         
@@ -1461,23 +1347,15 @@ class Vortex_Lattice(Stability):
         AoA_data       = training.angle_of_attack 
         mach_data      = training.Mach        
         
-        # Pack the outputs
-        surrogates.Clift_0        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_0 ,method = 'linear',   bounds_error=False, fill_value=None)   
-        surrogates.Cdrag_0        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_0 ,method = 'linear',   bounds_error=False, fill_value=None)
-        surrogates.CX_0           = RegularGridInterpolator((AoA_data,mach_data),training.CX_0    ,method = 'linear',   bounds_error=False, fill_value=None)     
-        surrogates.CY_0           = RegularGridInterpolator((AoA_data,mach_data),training.CY_0    ,method = 'linear',   bounds_error=False, fill_value=None)     
-        surrogates.CZ_0           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_0    ,method = 'linear',   bounds_error=False, fill_value=None)     
-        surrogates.CL_0           = RegularGridInterpolator((AoA_data,mach_data),training.CL_0    ,method = 'linear',   bounds_error=False, fill_value=None)     
-        surrogates.CM_0           = RegularGridInterpolator((AoA_data,mach_data),training.CM_0    ,method = 'linear',   bounds_error=False, fill_value=None)     
-        surrogates.CN_0           = RegularGridInterpolator((AoA_data,mach_data),training.CN_0    ,method = 'linear',   bounds_error=False, fill_value=None)
+        # Pack the outputs    
         
-        surrogates.Clift_alpha    = RegularGridInterpolator((AoA_data,mach_data),training.Clift_alpha    ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Clift_alpha    = RegularGridInterpolator((training.angle_of_attack,mach_data),training.Clift_alpha    ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Clift_beta     = RegularGridInterpolator((AoA_data,mach_data),training.Clift_beta     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Clift_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Clift_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Clift_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Clift_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Clift_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)      
+        #surrogates.Clift_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Clift_u        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_u        ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Clift_v        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_v        ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Clift_w        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_w        ,method = 'linear',   bounds_error=False, fill_value=None)      
@@ -1490,7 +1368,7 @@ class Vortex_Lattice(Stability):
         surrogates.Cdrag_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Cdrag_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Cdrag_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Cdrag_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)      
+        #surrogates.Cdrag_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Cdrag_u        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_u        ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Cdrag_v        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_v        ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.Cdrag_w        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_w        ,method = 'linear',   bounds_error=False, fill_value=None)      
@@ -1503,7 +1381,7 @@ class Vortex_Lattice(Stability):
         surrogates.CX_delta_e     = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_e     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CX_delta_r     = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_r     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CX_delta_f     = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_f     ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CX_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        #surrogates.CX_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CX_u           = RegularGridInterpolator((AoA_data,mach_data),training.CX_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CX_v           = RegularGridInterpolator((AoA_data,mach_data),training.CX_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CX_w           = RegularGridInterpolator((AoA_data,mach_data),training.CX_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
@@ -1516,7 +1394,7 @@ class Vortex_Lattice(Stability):
         surrogates.CY_delta_e     = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_e     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CY_delta_r     = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_r     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CY_delta_f     = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_f     ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CY_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        #surrogates.CY_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CY_u           = RegularGridInterpolator((AoA_data,mach_data),training.CY_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CY_v           = RegularGridInterpolator((AoA_data,mach_data),training.CY_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CY_w           = RegularGridInterpolator((AoA_data,mach_data),training.CY_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
@@ -1529,7 +1407,7 @@ class Vortex_Lattice(Stability):
         surrogates.CZ_delta_e     = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_e     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CZ_delta_r     = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_r     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CZ_delta_f     = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_f     ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CZ_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        #surrogates.CZ_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CZ_u           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CZ_v           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CZ_w           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
@@ -1542,7 +1420,7 @@ class Vortex_Lattice(Stability):
         surrogates.CL_delta_e     = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_e     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CL_delta_r     = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_r     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CL_delta_f     = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_f     ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CL_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        #surrogates.CL_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CL_u           = RegularGridInterpolator((AoA_data,mach_data),training.CL_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CL_v           = RegularGridInterpolator((AoA_data,mach_data),training.CL_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CL_w           = RegularGridInterpolator((AoA_data,mach_data),training.CL_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
@@ -1555,7 +1433,7 @@ class Vortex_Lattice(Stability):
         surrogates.CM_delta_e     = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_e     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CM_delta_r     = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_r     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CM_delta_f     = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_f     ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CM_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        #surrogates.CM_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CM_u           = RegularGridInterpolator((AoA_data,mach_data),training.CM_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CM_v           = RegularGridInterpolator((AoA_data,mach_data),training.CM_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CM_w           = RegularGridInterpolator((AoA_data,mach_data),training.CM_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
@@ -1568,13 +1446,118 @@ class Vortex_Lattice(Stability):
         surrogates.CN_delta_e     = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_e     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CN_delta_r     = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_r     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CN_delta_f     = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_f     ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        #surrogates.CN_delta_s     = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_s     ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CN_u           = RegularGridInterpolator((AoA_data,mach_data),training.CN_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CN_v           = RegularGridInterpolator((AoA_data,mach_data),training.CN_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CN_w           = RegularGridInterpolator((AoA_data,mach_data),training.CN_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CN_p           = RegularGridInterpolator((AoA_data,mach_data),training.CN_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
         surrogates.CN_q           = RegularGridInterpolator((AoA_data,mach_data),training.CN_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_r           = RegularGridInterpolator((AoA_data,mach_data),training.CN_r           ,method = 'linear',   bounds_error=False, fill_value=None)     
+        surrogates.CN_r           = RegularGridInterpolator((AoA_data,mach_data),training.CN_r           ,method = 'linear',   bounds_error=False, fill_value=None)
+        
+        surrogates.dClift_dalpha    = interpolate.interp1d(training.dClift_dalpha    , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_dbeta     = interpolate.interp1d(training.dClift_dbeta     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_ddelta_a  = interpolate.interp1d(training.dClift_ddelta_a  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_ddelta_e  = interpolate.interp1d(training.dClift_ddelta_e  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_ddelta_r  = interpolate.interp1d(training.dClift_ddelta_r  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_ddelta_f  = interpolate.interp1d(training.dClift_ddelta_f  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        #surrogates.dClift_ddelta_s  = interpolate.interp1d(training.dClift_ddelta_s  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_du        = interpolate.interp1d(training.dClift_du        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_dv        = interpolate.interp1d(training.dClift_dv        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_dw        = interpolate.interp1d(training.dClift_dw        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_dp        = interpolate.interp1d(training.dClift_dp        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_dq        = interpolate.interp1d(training.dClift_dq        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dClift_dr        = interpolate.interp1d(training.dClift_dr        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_dalpha    = interpolate.interp1d(training.dCdrag_dalpha    , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_dbeta     = interpolate.interp1d(training.dCdrag_dbeta     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_ddelta_a  = interpolate.interp1d(training.dCdrag_ddelta_a  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_ddelta_e  = interpolate.interp1d(training.dCdrag_ddelta_e  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_ddelta_r  = interpolate.interp1d(training.dCdrag_ddelta_r  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_ddelta_f  = interpolate.interp1d(training.dCdrag_ddelta_f  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        #surrogates.dCdrag_ddelta_s  = interpolate.interp1d(training.dCdrag_ddelta_s  , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_du        = interpolate.interp1d(training.dCdrag_du        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_dv        = interpolate.interp1d(training.dCdrag_dv        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_dw        = interpolate.interp1d(training.dCdrag_dw        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_dp        = interpolate.interp1d(training.dCdrag_dp        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_dq        = interpolate.interp1d(training.dCdrag_dq        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCdrag_dr        = interpolate.interp1d(training.dCdrag_dr        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_dalpha       = interpolate.interp1d(training.dCX_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_dbeta        = interpolate.interp1d(training.dCX_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_ddelta_a     = interpolate.interp1d(training.dCX_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_ddelta_e     = interpolate.interp1d(training.dCX_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_ddelta_r     = interpolate.interp1d(training.dCX_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_ddelta_f     = interpolate.interp1d(training.dCX_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        #surrogates.dCX_ddelta_s     = interpolate.interp1d(training.dCX_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_du           = interpolate.interp1d(training.dCX_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_dv           = interpolate.interp1d(training.dCX_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_dw           = interpolate.interp1d(training.dCX_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_dp           = interpolate.interp1d(training.dCX_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_dq           = interpolate.interp1d(training.dCX_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCX_dr           = interpolate.interp1d(training.dCX_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_dalpha       = interpolate.interp1d(training.dCY_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_dbeta        = interpolate.interp1d(training.dCY_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_ddelta_a     = interpolate.interp1d(training.dCY_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_ddelta_e     = interpolate.interp1d(training.dCY_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_ddelta_r     = interpolate.interp1d(training.dCY_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_ddelta_f     = interpolate.interp1d(training.dCY_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        #surrogates.dCY_ddelta_s     = interpolate.interp1d(training.dCY_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_du           = interpolate.interp1d(training.dCY_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_dv           = interpolate.interp1d(training.dCY_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_dw           = interpolate.interp1d(training.dCY_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_dp           = interpolate.interp1d(training.dCY_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_dq           = interpolate.interp1d(training.dCY_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCY_dr           = interpolate.interp1d(training.dCY_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_dalpha       = interpolate.interp1d(training.dCZ_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_dbeta        = interpolate.interp1d(training.dCZ_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_ddelta_a     = interpolate.interp1d(training.dCZ_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_ddelta_e     = interpolate.interp1d(training.dCZ_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_ddelta_r     = interpolate.interp1d(training.dCZ_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_ddelta_f     = interpolate.interp1d(training.dCZ_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        #surrogates.dCZ_ddelta_s     = interpolate.interp1d(training.dCZ_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_du           = interpolate.interp1d(training.dCZ_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_dv           = interpolate.interp1d(training.dCZ_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_dw           = interpolate.interp1d(training.dCZ_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_dp           = interpolate.interp1d(training.dCZ_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_dq           = interpolate.interp1d(training.dCZ_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCZ_dr           = interpolate.interp1d(training.dCZ_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_dalpha       = interpolate.interp1d(training.dCL_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_dbeta        = interpolate.interp1d(training.dCL_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_ddelta_a     = interpolate.interp1d(training.dCL_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_ddelta_e     = interpolate.interp1d(training.dCL_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_ddelta_r     = interpolate.interp1d(training.dCL_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_ddelta_f     = interpolate.interp1d(training.dCL_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        #surrogates.dCL_ddelta_s     = interpolate.interp1d(training.dCL_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_du           = interpolate.interp1d(training.dCL_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_dv           = interpolate.interp1d(training.dCL_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_dw           = interpolate.interp1d(training.dCL_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_dp           = interpolate.interp1d(training.dCL_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_dq           = interpolate.interp1d(training.dCL_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCL_dr           = interpolate.interp1d(training.dCL_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_dalpha       = interpolate.interp1d(training.dCM_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_dbeta        = interpolate.interp1d(training.dCM_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_ddelta_a     = interpolate.interp1d(training.dCM_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_ddelta_e     = interpolate.interp1d(training.dCM_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_ddelta_r     = interpolate.interp1d(training.dCM_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_ddelta_f     = interpolate.interp1d(training.dCM_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        #surrogates.dCM_ddelta_s     = interpolate.interp1d(training.dCM_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_du           = interpolate.interp1d(training.dCM_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_dv           = interpolate.interp1d(training.dCM_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_dw           = interpolate.interp1d(training.dCM_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_dp           = interpolate.interp1d(training.dCM_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_dq           = interpolate.interp1d(training.dCM_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCM_dr           = interpolate.interp1d(training.dCM_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_dalpha       = interpolate.interp1d(training.dCN_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_dbeta        = interpolate.interp1d(training.dCN_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_ddelta_a     = interpolate.interp1d(training.dCN_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_ddelta_e     = interpolate.interp1d(training.dCN_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_ddelta_r     = interpolate.interp1d(training.dCN_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_ddelta_f     = interpolate.interp1d(training.dCN_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        #surrogates.dCN_ddelta_s     = interpolate.interp1d(training.dCN_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_du           = interpolate.interp1d(training.dCN_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_dv           = interpolate.interp1d(training.dCN_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_dw           = interpolate.interp1d(training.dCN_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_dp           = interpolate.interp1d(training.dCN_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_dq           = interpolate.interp1d(training.dCN_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)      
+        surrogates.dCN_dr           = interpolate.interp1d(training.dCN_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=nan)
         
         return
 
