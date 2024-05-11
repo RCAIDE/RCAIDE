@@ -1,16 +1,18 @@
-## @ingroup Methods-Aerodynamics-AVL
-#purge_files.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/purge_files.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Mar 2024, M. Guidotti, D.J. Lee   
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# 
+# Created:  Jul 2024, M. Clarke 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 import os
 
-## @ingroup Methods-Aerodynamics-AVL
+# ----------------------------------------------------------------------------------------------------------------------
+#  purge_files
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def purge_files(filenames_array,directory=''):
 	""" Purges folder folder of conflicting files
     

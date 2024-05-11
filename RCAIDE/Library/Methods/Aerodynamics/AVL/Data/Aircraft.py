@@ -1,24 +1,22 @@
-## @ingroup Methods-Aerodynamics-AVL-Data
-# Aircraft.py
+## @ingroup Library-Methods-Aerdoynamics-AVL-Data
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/Data/Aircraft.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Jul 2017, M. Clarke
+# 
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 
 from RCAIDE.Framework.Core import Data
 
 from .Wing import Wing
 from .Body import Body
 
-# ------------------------------------------------------------
-#   Aircraft
-# ------------------------------------------------------------
-
-## @ingroup Methods-Aerodynamics-AVL-Data
+# ----------------------------------------------------------------------------------------------------------------------
+#  Aircraft
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL-Data
 class Aircraft(Data):
 	"""A data class defining the entire AVL aircraft geometry
 

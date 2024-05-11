@@ -1,30 +1,25 @@
-## @ingroup Methods-Aerodynamics-AVL
-#create_avl_datastructure.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/create_avl_datastructure.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Apr 2017, M. Clarke
-#           Jul 2017, T. MacDonald
-#           Aug 2019, M. Clarke
-#           Mar 2020, M. Clarke
-#           Dec 2021, M. Clarke
-#           Mar 2024, M. Guidotti, D.J. Lee
+# 
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ---------------------------------------------------------------------- 
-import numpy as np 
-
-# RCAIDE Imports
-from Legacy.trunk.S.Core import  Units
-
-# RCAIDE-AVL Imports 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+from RCAIDE.Framework.Core import  Units 
 from .Data.Wing                                                          import Wing, Section, Control_Surface
 from .Data.Body                                                          import Body 
-from RCAIDE.Library.Components.Wings.Control_Surfaces                    import Aileron , Elevator , Slat , Flap , Rudder 
-from RCAIDE.Library.Methods.Aerodynamics.AVL.write_avl_airfoil_file      import write_avl_airfoil_file   
+from RCAIDE.Library.Components.Wings.Control_Surfaces                             import Aileron , Elevator , Slat , Flap , Rudder 
+from RCAIDE.Library.Methods.Aerodynamics.AVL.write_avl_airfoil_file               import write_avl_airfoil_file   
 
-## @ingroup Methods-Aerodynamics-AVL 
+# python imports 
+import numpy as np
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  translate_avl_wing
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def translate_avl_wing(rcaide_wing):
     """ Translates wing geometry from the vehicle setup to AVL format
 
@@ -54,7 +49,11 @@ def translate_avl_wing(rcaide_wing):
 
     return w
 
-def translate_avl_body(suave_body):
+# ----------------------------------------------------------------------------------------------------------------------
+# translate_avl_body
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
+def translate_avl_body(rcaide_body):
     """ Translates body geometry from the vehicle setup to AVL format
 
     Assumptions:
@@ -66,11 +65,11 @@ def translate_avl_body(suave_body):
     Inputs:
         body.tag                                                       [-]
         rcaide_wing.lengths.total                                       [meters]    
-        suave_body.lengths.nose                                        [meters]
-        suave_body.lengths.tail                                        [meters]
+        rcaide_body.lengths.nose                                        [meters]
+        rcaide_body.lengths.tail                                        [meters]
         rcaide_wing.verical                                             [meters]
-        suave_body.width                                               [meters]
-        suave_body.heights.maximum                                     [meters]
+        rcaide_body.width                                               [meters]
+        rcaide_body.heights.maximum                                     [meters]
         rcaide_wing - passed into the populate_body_sections function   [data stucture]
 
     Outputs:
@@ -80,17 +79,23 @@ def translate_avl_body(suave_body):
         N/A
     """  
     b                 = Body()
-    b.tag             = suave_body.tag
+    b.tag             = rcaide_body.tag
     b.symmetric       = True
-    b.lengths.total   = suave_body.lengths.total
-    b.lengths.nose    = suave_body.lengths.nose
-    b.lengths.tail    = suave_body.lengths.tail
-    b.widths.maximum  = suave_body.width
-    b.heights.maximum = suave_body.heights.maximum
-    b                 = populate_body_sections(b,suave_body)
+    b.lengths.total   = rcaide_body.lengths.total
+    b.lengths.nose    = rcaide_body.lengths.nose
+    b.lengths.tail    = rcaide_body.lengths.tail
+    b.widths.maximum  = rcaide_body.width
+    b.heights.maximum = rcaide_body.heights.maximum
+    b                 = populate_body_sections(b,rcaide_body)
 
     return b
 
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# populate_wing_sections
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def populate_wing_sections(avl_wing,rcaide_wing): 
     """ Creates sections of wing geometry and populates the AVL wing data structure
 
@@ -251,9 +256,14 @@ def populate_wing_sections(avl_wing,rcaide_wing):
         
     return avl_wing
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+# append_avl_wing_control_surfaces
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def append_avl_wing_control_surfaces(rcaide_wing,avl_wing,semispan,root_chord_percent,tip_chord_percent,tip_percent_span,root_percent_span,root_twist,tip_twist,tip_airfoil,seg_tag,dihedral,origin,sweep):
 
-    """ Converts control surfaces on a suave wing to sections in avl wing
+    """ Converts control surfaces on a rcaide wing to sections in avl wing
 
     Assumptions:
         None
@@ -407,8 +417,14 @@ def append_avl_wing_control_surfaces(rcaide_wing,avl_wing,semispan,root_chord_pe
 
         avl_wing.append_section(section)  
                         
-    return 
-def populate_body_sections(avl_body,suave_body):
+    return
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# populate_body_sections
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
+def populate_body_sections(avl_body,rcaide_body):
     """ Creates sections of body geometry and populates the AVL body data structure
 
     Assumptions:
@@ -421,8 +437,8 @@ def populate_body_sections(avl_body,suave_body):
         avl_wing.symmetric                       [boolean]
         avl_body.widths.maximum                  [meters]
         avl_body.heights.maximum                 [meters]
-        suave_body.fineness.nose                 [meters]
-        suave_body.fineness.tail                 [meters]
+        rcaide_body.fineness.nose                 [meters]
+        rcaide_body.fineness.tail                 [meters]
         avl_body.lengths.total                   [meters]
         avl_body.lengths.nose                    [meters] 
         avl_body.lengths.tail                    [meters]  
@@ -437,15 +453,15 @@ def populate_body_sections(avl_body,suave_body):
     symm = avl_body.symmetric   
     semispan_h = avl_body.widths.maximum * 0.5 * (2 - symm)
     semispan_v = avl_body.heights.maximum * 0.5
-    origin = suave_body.origin[0]
+    origin = rcaide_body.origin[0]
 
     # Compute the curvature of the nose/tail given fineness ratio. Curvature is derived from general quadratic equation
     # This method relates the fineness ratio to the quadratic curve formula via a spline fit interpolation
     vec1 = [2 , 1.5, 1.2 , 1]
     vec2 = [1  ,1.57 , 3.2,  8]
     x = np.linspace(0,1,4)
-    fuselage_nose_curvature =  np.interp(np.interp(suave_body.fineness.nose,vec2,x), x , vec1)
-    fuselage_tail_curvature =  np.interp(np.interp(suave_body.fineness.tail,vec2,x), x , vec1) 
+    fuselage_nose_curvature =  np.interp(np.interp(rcaide_body.fineness.nose,vec2,x), x , vec1)
+    fuselage_tail_curvature =  np.interp(np.interp(rcaide_body.fineness.tail,vec2,x), x , vec1) 
 
 
     # Horizontal Sections of Fuselage

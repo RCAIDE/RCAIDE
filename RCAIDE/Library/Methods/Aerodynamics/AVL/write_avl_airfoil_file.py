@@ -1,17 +1,23 @@
-## @ingroup Methods-Aerodynamics-AVL
-# write_avl_airfoil_file.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/write_avl_airfoil_file.py
 # 
-# Created:  Apr 2020, M. Clarke 
+# 
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+
+from RCAIDE.Library.Methods.Aerodynamics.AVL.purge_files       import purge_files
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil.import_airfoil_geometry   import import_airfoil_geometry 
+
+# python imports 
 import os
-from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files       import purge_files
-from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
-     import import_airfoil_geometry 
 
-## @ingroup Analyses-AVL
+# ----------------------------------------------------------------------------------------------------------------------
+# write_avl_airfoil_file
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def write_avl_airfoil_file(suave_airfoil_filename):
     """ This function writes the standard airfoil file format from Airfoil tools 
     to avl file format

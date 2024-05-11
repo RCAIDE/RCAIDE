@@ -1,22 +1,19 @@
-## @ingroup Methods-Aerodynamics-AVL
-#write_geometry.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/write_geometry.py
 # 
-# Created:  Oct 2015, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Oct 2018, M. Clarke
-#           Aug 2019, M. Clarke
-#           Apr 2020, M. Clarke
+# 
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-from .purge_files import purge_files
-from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Settings    import Settings
-import numpy as np
-import shutil
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+from .purge_files import purge_files 
 from .create_avl_datastructure import translate_avl_wing, translate_avl_body 
 
-## @ingroup Methods-Aerodynamics-AVL
+# ----------------------------------------------------------------------------------------------------------------------
+# write_geometry
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def write_geometry(avl_object,run_script_path):
     """This function writes the translated aircraft geometry into text file read 
     by AVL when it is called

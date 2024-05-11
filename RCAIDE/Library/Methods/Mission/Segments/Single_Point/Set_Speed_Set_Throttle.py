@@ -45,7 +45,7 @@ def initialize_conditions(segment):
     alt              = segment.altitude
     air_speed        = segment.air_speed 
     acceleration_z   = segment.acceleration_z
-    acceleration     = segment.state.unknowns.acceleration  
+    acceleration     = segment.state.unknowns.acceleration[0][0]
     
     # check for initial altitude
     if alt is None:
