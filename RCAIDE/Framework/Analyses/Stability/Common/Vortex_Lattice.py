@@ -71,21 +71,11 @@ class Vortex_Lattice(Stability):
         #self.training.angle_of_attack                 = np.array([-10, -7.5, -5, -2.5, 0, 2.5, 5, 7.5, 10]) * Units.deg
         self.training.angle_of_attack                 = np.array([0, 5]) * Units.deg         
         self.training.sideslip_angle                  = np.array([0, 5]) * Units.deg
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometrywings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.training.aileron_deflection              = np.array([0, 1]) * Units.deg
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.training.elevator_deflection             = np.array([0, 1]) * Units.deg   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.training.rudder_deflection               = np.array([0, 1]) * Units.deg
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.training.flap_deflection                 = np.array([-5, 0])* Units.deg
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.training.slat_deflection                 = np.array([0, 1]) * Units.deg  
-          
+        self.training.aileron_deflection              = np.array([0, 1]) * Units.deg
+        self.training.elevator_deflection             = np.array([0, 1]) * Units.deg   
+        self.training.rudder_deflection               = np.array([0, 1]) * Units.deg
+        self.training.flap_deflection                 = np.array([-5, 0])* Units.deg 
+        self.training.slat_deflection                 = np.array([0, 1]) * Units.deg                      
         self.training.u                               = np.array([0, 1]) * Units.meters / Units.sec
         self.training.v                               = np.array([0, 1]) * Units.meters / Units.sec
         self.training.w                               = np.array([0, 1]) * Units.meters / Units.sec  
