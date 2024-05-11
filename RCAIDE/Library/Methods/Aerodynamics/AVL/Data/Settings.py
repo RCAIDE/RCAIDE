@@ -1,23 +1,19 @@
-## @ingroup Methods-Aerodynamics-AVL-Data
-#Settings.py
+## @ingroup Library-Methods-Aerdoynamics-AVL-Data
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/Data/Settings.py
 # 
-# Created:  Dec 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Oct 2018, M. Clarke
-#           Aug 2019, M. Clarke
-#           Dec 2021, M. Clarke
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-import RCAIDE
+# 
+# Created:  Jul 2024, M. Clarke 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 from RCAIDE.Framework.Core import Data
 from .Cases     import Run_Case
 
-# ------------------------------------------------------------
-#   Configuration
-# ------------------------------------------------------------
-
-## @ingroup Methods-Aerodynamics-AVL-Data
+# ----------------------------------------------------------------------------------------------------------------------
+# Settings
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL-Data
 class Settings(Data):
         """ A class that defines important settings that call the AVL executable in addition to the 
         format of the result, batch and geometry filenames

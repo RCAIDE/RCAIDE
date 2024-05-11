@@ -1,23 +1,20 @@
-## @ingroup Methods-Aerodynamics-AVL-Data
-# Cases.py
+## @ingroup Library-Methods-Aerdoynamics-AVL-Data
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/Data/Run_Case.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Jun 2017, M. Clarke
-#           Aug 2019, M. Clarke
-#           Dec 2021, M. Clarke
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# 
+# Created:  Jul 2024, M. Clarke 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Framework.Core import DataOrdered 
 
-# ------------------------------------------------------------
-#  AVL Case
-# ------------------------------------------------------------
-
-## @ingroup Methods-Aerodynamics-AVL-Data
+# ----------------------------------------------------------------------------------------------------------------------
+#  Run_Case
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL-Data
 class Run_Case(Data):
     """ This data class defines the parameters for the analysis cases 
     including angle of attack and mach number 

@@ -1,24 +1,27 @@
-## @ingroup Methods-Aerodynamics-AVL
-#run_analysis.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/run_analysis.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Jul 2017, M. Clarke
-#           Aug 2019, M. Clarke
-#           Dec 2021, M. Clarke
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# 
+# Created:  Jul 2024, M. Clarke 
 
-import sys
-import time
-import subprocess
-import os
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+
 from RCAIDE.Library.Methods.Aerodynamics.AVL.read_results import read_results
 from RCAIDE.Library.Methods.Aerodynamics.AVL.purge_files  import purge_files
 from RCAIDE.Framework.Core                                import redirect
 
-## @ingroup Methods-Aerodynamics-AVL
+# python imports
+import sys
+import time
+import subprocess
+import os
+
+# ----------------------------------------------------------------------------------------------------------------------
+# run_analysis
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def run_analysis(avl_object,print_output):
     """ This calls the AVL executable and runs an analysis
 

@@ -1,22 +1,25 @@
-## @ingroup Methods-Aerodynamics-AVL
-#translate_data.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/translate_conditions_to_cases.py
 # 
-# Created:  Mar 2015, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Apr 2017, M. Clarke
-#           Dec 2021, M. Clarke
+# 
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 
-import numpy as np 
 from RCAIDE.Framework.Core import Data, Units
 from .Data.Cases import Run_Case
 
-## @ingroup Methods-Aerodynamics-AVL
+# python imports 
+import numpy as np 
+
+# ----------------------------------------------------------------------------------------------------------------------
+# translate_conditions_to_cases
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def translate_conditions_to_cases(avl ,conditions):
-    """ Takes SUAVE Conditions() data structure and translates to a Container of
+    """ Takes RCAIDE Conditions() data structure and translates to a Container of
     avl Run_Case()s.
 
     Assumptions:

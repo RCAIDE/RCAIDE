@@ -1,18 +1,20 @@
-## @ingroup Methods-Aerodynamics-AVL
-# write_input_deck.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/write_input_deck.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Apr 2017, M. Clarke
-#           Aug 2019, M. Clarke
-#           Dec 2021, M. Clarke
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-from Legacy.trunk.S.Core import Units
+# 
+# Created:  Jul 2024, M. Clarke 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+
+from RCAIDE.Framework.Core import Units
 from .purge_files import purge_files
 
-## @ingroup Methods-Aerodynamics-AVL
+# ----------------------------------------------------------------------------------------------------------------------
+# write_input_deck
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def write_input_deck(avl_object,trim_aircraft,control_surfaces):
     """ This function writes the execution steps used in the AVL call
     Assumptions:

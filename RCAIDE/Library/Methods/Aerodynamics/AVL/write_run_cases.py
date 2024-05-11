@@ -1,20 +1,20 @@
-## @ingroup Methods-Aerodynamics-AVL
-# write_run_cases.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/write_run_cases.py
 # 
-# Created:  Dec 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Apr 2017, M. Clarke
-#           Aug 2019, M. Clarke
-#           Apr 2020, M. Clarke
-#           Dec 2021, M. Clarke
+# 
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+
 from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files       import purge_files
-from Legacy.trunk.S.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+from Legacy.trunk.S.Components.Wings.Control_Surfaces          import Aileron , Elevator , Slat , Flap , Rudder 
 
-## @ingroup Analyses-AVL
+# ----------------------------------------------------------------------------------------------------------------------
+# write_run_cases
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def write_run_cases(avl_object,trim_aircraft):
     """ This function writes the run cases used in the AVL batch analysis
 

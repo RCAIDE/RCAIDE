@@ -1,19 +1,18 @@
-## @ingroup Methods-Aerodynamics-AVL-Data
-#Wing.py
+## @ingroup Library-Methods-Aerdoynamics-AVL-Data
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/Data/Wing.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Jul 2017, M. Clarke
-#           Aug 2019, M. Clarke
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# 
+# Created:  Jul 2024, M. Clarke 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 from RCAIDE.Framework.Core import Data
 
-# ------------------------------------------------------------
-#   Wing
-# ------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-AVL-Data
+# ----------------------------------------------------------------------------------------------------------------------
+#  Wing
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL-Data
 class Wing(Data):
 	""" This class that defines parameters of the AVL aircraft wing
 
