@@ -754,14 +754,64 @@ class Vortex_Lattice(Stability):
         #conditions.Y_ref                                                  = # Need to Update
         #conditions.Z_ref                                                  = # Need to Update 
         #conditions.aerodynamics.oswald_efficiency                         = # Need to Update
-        conditions.static_stability.coefficients.lift                     = Clift_alpha + Clift_beta + Clift_u + Clift_v + Clift_w + Clift_p + Clift_q + Clift_r # + Clift_delta_a + Clift_delta_e + Clift_delta_r + Clift_delta_f + Clift_delta_s
-        conditions.static_stability.coefficients.drag                     = Cdrag_alpha + Cdrag_beta + Cdrag_u + Cdrag_v + Cdrag_w + Cdrag_p + Cdrag_q + Cdrag_r # + Cdrag_delta_a + Cdrag_delta_e + Cdrag_delta_r + Cdrag_delta_f + Cdrag_delta_s     
-        conditions.static_stability.coefficients.X                        = CX_alpha + CX_beta + CX_u + CX_v + CX_w + CX_p + CX_q + CX_r # + CX_delta_a + CX_delta_e + CX_delta_r + CX_delta_f + CX_delta_s     
-        conditions.static_stability.coefficients.Y                        = CY_alpha + CY_beta + CY_u + CY_v + CY_w + CY_p + CY_q + CY_r # + CY_delta_a + CY_delta_e + CY_delta_r + CY_delta_f + CY_delta_s     
-        conditions.static_stability.coefficients.Z                        = CZ_alpha + CZ_beta + CZ_u + CZ_v + CZ_w + CZ_p + CZ_q + CZ_r # + CZ_delta_a + CZ_delta_e + CZ_delta_r + CZ_delta_f + CZ_delta_s     
-        conditions.static_stability.coefficients.L                        = CL_alpha + CL_beta + CL_u + CL_v + CL_w + CL_p + CL_q + CL_r # + CL_delta_a + CL_delta_e + CL_delta_r + CL_delta_f + CL_delta_s
-        conditions.static_stability.coefficients.M                        = CM_alpha + CM_beta + CM_u + CM_v + CM_w + CM_p + CM_q + CM_r # + CM_delta_a + CM_delta_e + CM_delta_r + CM_delta_f + CM_delta_s
-        conditions.static_stability.coefficients.N                        = CN_alpha + CN_beta + CN_u + CN_v + CN_w + CN_p + CN_q + CN_r # + CN_delta_a + CN_delta_e + CN_delta_r + CN_delta_f + CN_delta_s
+        
+        conditions.static_stability.coefficients.lift                     = Clift_alpha + Clift_beta + Clift_u + Clift_v + Clift_w + Clift_p + Clift_q + Clift_r 
+        conditions.static_stability.coefficients.drag                     = Cdrag_alpha + Cdrag_beta + Cdrag_u + Cdrag_v + Cdrag_w + Cdrag_p + Cdrag_q + Cdrag_r 
+        conditions.static_stability.coefficients.X                        = CX_alpha + CX_beta + CX_u + CX_v + CX_w + CX_p + CX_q + CX_r
+        conditions.static_stability.coefficients.Y                        = CY_alpha + CY_beta + CY_u + CY_v + CY_w + CY_p + CY_q + CY_r
+        conditions.static_stability.coefficients.Z                        = CZ_alpha + CZ_beta + CZ_u + CZ_v + CZ_w + CZ_p + CZ_q + CZ_r
+        conditions.static_stability.coefficients.L                        = CL_alpha + CL_beta + CL_u + CL_v + CL_w + CL_p + CL_q + CL_r
+        conditions.static_stability.coefficients.M                        = CM_alpha + CM_beta + CM_u + CM_v + CM_w + CM_p + CM_q + CM_r
+        conditions.static_stability.coefficients.N                        = CN_alpha + CN_beta + CN_u + CN_v + CN_w + CN_p + CN_q + CN_r
+        
+        for wing in self.geometry.wings:  
+            for control_surface in wing.control_surfaces:  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_a
+                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_a
+                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_a 
+                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_a
+                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_a
+                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_a
+                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_a
+                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_a
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
+                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_e
+                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_e
+                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_e 
+                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_e
+                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_e
+                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_e
+                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_e
+                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_e 
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
+                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_r
+                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_r
+                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_r 
+                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_r
+                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_r
+                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_r
+                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_r
+                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_r     
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
+                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_f
+                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_f
+                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_f 
+                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_f
+                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_f
+                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_f
+                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_f
+                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_f     
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
+                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_s
+                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_s
+                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_s 
+                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_s
+                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_s
+                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_s
+                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_s
+                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_s           
+        
         #conditions.static_stability.derivatives.Clift_alpha               = # Need to Update 
         #conditions.static_stability.derivatives.CY_alpha                  = # Need to Update
         #conditions.static_stability.derivatives.CL_alpha                  = # Need to Update
