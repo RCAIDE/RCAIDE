@@ -1,15 +1,19 @@
-## @ingroup Methods-Aerodynamics-AVL
-# write_mass_file.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/write_mass_file.py
 # 
-# Created: Aug 2019, M. Clarke
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files       import purge_files
-from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Settings     import Settings
-import numpy as np
+# 
+# Created:  Jul 2024, M. Clarke 
 
-## @ingroup Analyses-AVL
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files       import purge_files 
+
+# ----------------------------------------------------------------------------------------------------------------------
+# run_analysis
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def write_mass_file(avl_object,run_conditions):
     """This function writes the translated aircraft mass into text file read 
     by AVL when it is called

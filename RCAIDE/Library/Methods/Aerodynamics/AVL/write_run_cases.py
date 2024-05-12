@@ -1,14 +1,20 @@
-## @ingroup Methods-Aerodynamics-AVL
-# write_run_cases.py
- 
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/write_run_cases.py
+# 
+# 
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
-from RCAIDE.Library.Methods.Aerodynamics.AVL.purge_files       import purge_files
-from RCAIDE.Library.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 
-## @ingroup Analyses-AVL
+from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files       import purge_files
+from Legacy.trunk.S.Components.Wings.Control_Surfaces          import Aileron , Elevator , Slat , Flap , Rudder 
+
+# ----------------------------------------------------------------------------------------------------------------------
+# write_run_cases
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def write_run_cases(avl_object,trim_aircraft):
     """ This function writes the run cases used in the AVL batch analysis
 
@@ -100,12 +106,12 @@ def write_run_cases(avl_object,trim_aircraft):
             # extract flight conditions 
             index = case.index
             name  = case.tag
-            CL    = case.conditions.aerodynamics.coefficients.lift 
+            CL    = case.conditions.aerodynamics.lift_coefficient
             CDp   = 0.
-            AoA   = round(case.conditions.aerodynamics.angles.alpha,4)
-            beta  = round(case.conditions.aerodynamics.angles.beta,4)
-            pb_2V = round(case.conditions.aerodynamics.coefficients.p,4)
-            qc_2V = round(case.conditions.aerodynamics.coefficients.q,4)
+            AoA   = round(case.conditions.aerodynamics.angle_of_attack,4)
+            beta  = round(case.conditions.aerodynamics.sideslip_angle,4)
+            pb_2V = round(case.conditions.aerodynamics.roll_rate_coefficient,4)
+            qc_2V = round(case.conditions.aerodynamics.pitch_rate_coefficient,4)
             mach  = round(case.conditions.freestream.mach,4)
             vel   = round(case.conditions.freestream.velocity,4)
             rho   = round(case.conditions.freestream.density,4)

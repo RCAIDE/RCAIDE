@@ -1,21 +1,22 @@
-## @ingroup Methods-Aerodynamics-AVL
-#read_results.py
+## @ingroup Library-Methods-Aerdoynamics-AVL
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/read_results.py
 # 
-# Created:  Mar 2015, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Dec 2017, M. Clarke
-#           Aug 2019, M. Clarke
-#           Dec 2021, M. Clarke
-#           Mar 2024, M. Guidotti, D.J. Lee
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# 
+# Created:  Jul 2024, M. Clarke 
 
-from Legacy.trunk.S.Core import Data
-from Legacy.trunk.S.Methods.Aerodynamics.AVL.Data.Wing import Control_Surface_Data ,  Control_Surface_Results 
-import numpy as np 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+from RCAIDE.Framework.Core import Data
+from RCAIDE.Library.Methods.Aerodynamics.AVL.Data.Wing import Control_Surface_Data ,  Control_Surface_Results 
 
-## @ingroup Methods-Aerodynamics-AVL
+# python imports 
+import numpy as np
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  read_results
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL
 def read_results(avl_object):
     """ This functions reads the results from the results text file created 
     at the end of an AVL function call

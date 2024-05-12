@@ -93,7 +93,7 @@ def VLM(conditions,settings,geometry):
     settings.propeller_wake_model              [Unitless]
     settings.discretize_control_surfaces       [Boolean], set to True to generate control surface panels
     settings.use_VORLAX_matrix_calculation     [boolean]
-    settings.floating_point_precision          [np.float16/32/64]
+    settings.floating_point_precision          [float16/32/64]
        
     conditions.aerodynamics.angles.alpha    [radians]
     conditions.aerodynamics.angles.beta   [radians]

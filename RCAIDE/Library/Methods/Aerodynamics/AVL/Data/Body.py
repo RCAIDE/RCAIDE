@@ -1,22 +1,18 @@
-## @ingroup Methods-Aerodynamics-AVL-Data
-# Body.py
+## @ingroup Library-Methods-Aerdoynamics-AVL-Data
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/Data/Body.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Jul 2017, M. Clarke
+# 
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
+from RCAIDE.Framework.Core import Data 
 
-from RCAIDE.Framework.Core import Data
-from .Wing        import Section
-
-# ------------------------------------------------------------
-#   Body
-# ------------------------------------------------------------
-
-## @ingroup Methods-Aerodynamics-AVL-Data
+# ----------------------------------------------------------------------------------------------------------------------
+# Body
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL-Data
 class Body(Data):
 	""" A data class defining the parameters of a fuselage or other body modeled
 	by side and planform projections arranged in a plus (+) shape (when viewed from

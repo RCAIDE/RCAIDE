@@ -1,22 +1,20 @@
-## @ingroup Methods-Aerodynamics-AVL-Data
-# Configuration.py
+## @ingroup Library-Methods-Aerdoynamics-AVL-Data
+# RCAIDE/Library/Methods/Aerdoynamics/AVL/Data/Configuration.py
 # 
-# Created:  Oct 2014, T. Momose
-# Modified: Jan 2016, E. Botero
-#           Apr 2017, M. Clarke
-#           Aug 2019, M. Clarke
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# 
+# Created:  Jul 2024, M. Clarke 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------    
 
 from RCAIDE.Framework.Core import Data
 
 
-# ------------------------------------------------------------
-#   Configuration
-# ------------------------------------------------------------
-
-## @ingroup Methods-Aerodynamics-AVL-Data
+# ----------------------------------------------------------------------------------------------------------------------
+#  Configuration
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Aerodynamics-AVL-Data
 class Configuration(Data):
 	"""A data class defining the reference parameters of the aircraft geometry and 
 	flight configuration 

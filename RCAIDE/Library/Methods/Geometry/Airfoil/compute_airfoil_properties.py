@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Geomery-Two_Dimensional-Planform
-# RCAIDE/Library/Methods/Geometry/Two_Dimensional/Planform/wing_segmented_planform.py
+## @ingroup Library-Methods-Geomery-Two_Dimensional-Airfoil
+# RCAIDE/Library/Methods/Geometry/Two_Dimensional/Airfoil/compute_airfoil_properties.py
 # 
 # 
 # Created:  Jul 2024, M. Clarke 
@@ -7,21 +7,23 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
-import RCAIDE
-from Legacy.trunk.S.Core                                                                          import Data , Units
-from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.pre_stall_coefficients                           import pre_stall_coefficients
-from Legacy.trunk.S.Methods.Aerodynamics.AERODAS.post_stall_coefficients                          import post_stall_coefficients  
-from RCAIDE.Library.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis                    import airfoil_analysis
-from RCAIDE.Library.Methods.Geometry.Airfoil  import import_airfoil_polars 
-from RCAIDE.Library.Methods.Geometry.Airfoil  import compute_naca_4series    
 
-# package imports 
+# RCAIDE imports 
+import RCAIDE
+from RCAIDE.Framework.Core                                                          import Data , Units 
+from RCAIDE.Library.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis      import airfoil_analysis
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil.import_airfoil_polars  import import_airfoil_polars 
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil.compute_naca_4series   import compute_naca_4series  
+from RCAIDE.Library.Methods.Aerodynamics.AERODAS.pre_stall_coefficients             import pre_stall_coefficients
+from RCAIDE.Library.Methods.Aerodynamics.AERODAS.post_stall_coefficients            import post_stall_coefficients
+
+# numpy imports 
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  compute_airfoil_aerodynamics
-# ----------------------------------------------------------------------------------------------------------------------    
-## @ingroup Library-Methods-Geometry-Airfoil
+#  compute_airfoil_properties
+# ----------------------------------------------------------------------------------------------------------------------   
+## @ingroup Library-Methods-Geometry-Two_Dimensional-Airfoil
 def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_pre_stall_data=True):
     """This computes the aerodynamic properties and coefficients of an airfoil in stall regimes using pre-stall
     characterstics and AERODAS formation for post stall characteristics. This is useful for 
@@ -286,8 +288,9 @@ def compute_boundary_layer_properties(airfoil_geometry,Airfoil_Data):
     N/A
     '''
     if airfoil_geometry == None:
-        print('No airfoil defined, NACA 0012 surrogates will be used')  
-        airfoil_geometry              = compute_naca_4series('0012', npoints= 201)    
+        print('No airfoil defined, NACA 0012 surrogates will be used') 
+        a_names                       = ['0012']                
+        airfoil_geometry              = compute_naca_4series(a_names, npoints= 100)    
     
     AoA_sweep = np.array([-4,0,2,4,8,10,14])*Units.degrees 
     Re_sweep  = np.array([1,5,10,30,50,75,100])*1E4  
