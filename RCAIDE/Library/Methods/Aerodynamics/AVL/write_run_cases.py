@@ -8,8 +8,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
 
-from Legacy.trunk.S.Methods.Aerodynamics.AVL.purge_files       import purge_files
-from Legacy.trunk.S.Components.Wings.Control_Surfaces          import Aileron , Elevator , Slat , Flap , Rudder 
+from RCAIDE.Library.Methods.Aerodynamics.AVL.purge_files       import purge_files
+from RCAIDE.Library.Components.Wings.Control_Surfaces          import Aileron , Elevator , Slat , Flap , Rudder 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # write_run_cases
