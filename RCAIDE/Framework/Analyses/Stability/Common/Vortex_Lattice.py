@@ -1336,7 +1336,7 @@ class Vortex_Lattice(Stability):
         conditions.freestream.velocity                  = np.zeros_like(Machs)
         conditions.freestream.mach_number               = Machs
         conditions.aerodynamics.angles.beta             = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.alpha            = np.arcsin(conditions.freestream.w/(conditions.freestream.velocity*343))
+        conditions.aerodynamics.angles.alpha            = np.arcsin(conditions.freestream.w/(conditions.freestream.mach_number*343))
         
         Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
         
