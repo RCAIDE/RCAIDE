@@ -93,7 +93,7 @@ class Takeoff(Evaluate):
         initialize                         = self.process.initialize
         initialize.conditions              = Ground.Takeoff.initialize_conditions
         iterate                            = self.process.iterate   
-        iterate.conditions.forces_ground   = Update.ground_flight_dynamics
+        iterate.conditions.forces_ground   = Update.ground_forces
         iterate.unknowns.mission           = Unpack_Unknowns.ground
         iterate.residuals.flight_dynamics  = Residuals.ground_flight_dynamics
         

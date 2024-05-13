@@ -49,10 +49,10 @@ def climb_descent_flight_dynamics(segment):
         D  = segment.state.numerics.time.differentiate   
         segment.state.conditions.frames.inertial.angular_acceleration_vector =  np.dot(D,omega)         
         
-    MT = segment.state.conditions.frames.inertial.total_moment_vector    
+    MT      = segment.state.conditions.frames.inertial.total_moment_vector    
     ang_acc = segment.state.conditions.frames.inertial.angular_acceleration_vector  
-    m  = segment.state.conditions.weights.total_mass
-    I  = segment.analyses.stability.geometry.mass_properties.moments_of_inertia.tensor  
+    m       = segment.state.conditions.weights.total_mass
+    I       = segment.analyses.aerodynamics.geometry.mass_properties.moments_of_inertia.tensor  
 
     if segment.flight_dynamics.force_x: 
         segment.state.residuals.force_x[:,0] = FT[:,0]/m[:,0] - a[:,0]

@@ -62,7 +62,7 @@ def bus_unknowns(segment,busses):
     if 'throttle' in segment:
         for bus in busses:
             for propulsor in bus.propulsors: 
-                state.conditions.energy[bus.tag][propulsor.tag].throttle = segment.throttle 
+                state.conditions.energy[bus.tag][propulsor.tag].throttle[:,0] = segment.throttle 
     elif flight_controls.throttle.active:                
         for i in range(len(flight_controls.throttle.assigned_propulsors)):
             for j in range(len(flight_controls.throttle.assigned_propulsors[i])): 

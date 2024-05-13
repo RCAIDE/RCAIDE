@@ -86,6 +86,6 @@ class Ground(Evaluate):
         #  Mission specific processes 
         # -------------------------------------------------------------------------------------------------------------- 
         iterate                            = self.process.iterate    
-        iterate.conditions.forces_ground   = Update.ground_flight_dynamics
+        iterate.conditions.forces_ground   = Update.ground_forces
     
         return

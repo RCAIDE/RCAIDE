@@ -25,7 +25,7 @@ def aerodynamics(segment):
         Outputs:
             conditions.aerodynamics.coefficients.lift [unitless]
             conditions.aerodynamics.coefficients.drag [unitless]
-            conditions.frames.wind.lift_force_vector [newtons]
+            conditions.frames.wind.force_vector [newtons]
             conditions.frames.wind.drag_force_vector [newtons]
 
         Properties Used:
