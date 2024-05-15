@@ -72,7 +72,7 @@ class VLM_Perturbation_Method(Stability):
         settings.recalculate_total_wetted_area           = False
         settings.propeller_wake_model                    = False 
         settings.discretize_control_surfaces             = False
-        settings.model_fuselage                          = False                 # It's better to include the fuselage
+        settings.model_fuselage                          = False                
         settings.model_nacelle                           = False 
         settings.begin_drag_rise_mach_number             = 0.95
         settings.end_drag_rise_mach_number               = 1.2

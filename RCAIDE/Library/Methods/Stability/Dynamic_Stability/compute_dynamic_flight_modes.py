@@ -49,7 +49,7 @@ def compute_dynamic_flight_modes(conditions,aircraft):
     mach   = conditions.freestream.mach_number 
     rho    = conditions.freestream.density
     u0     = conditions.freestream.velocity
-    qDyn0  = conditions.freestream.dynamic_pressure # 0.5 * rho * u0**2 
+    qDyn0  = conditions.freestream.dynamic_pressure 
       
     # Unpack aircraft Properties
     theta0 = conditions.aerodynamics.angles.alpha
@@ -221,7 +221,7 @@ def compute_dynamic_flight_modes(conditions,aircraft):
             for ctrl_surf in wing.control_surfaces:
                 if (type(ctrl_surf) ==  Aileron): 
                     ail = conditions.control_surfaces.aileron.static_stability.coefficients                  
-                    Ya = 0.5 * rho * u0 * u0 * S_ref * ail.CY 
+                    Ya = 0.5 * rho * u0 * u0 * S_ref * ail.Y 
                     La = 0.5 * rho * u0 * u0 * S_ref * b_ref * ail.L 
                     Na = 0.5 * rho * u0 * u0 * S_ref * b_ref * ail.N 
                     

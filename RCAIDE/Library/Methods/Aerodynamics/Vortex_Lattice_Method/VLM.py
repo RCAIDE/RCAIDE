@@ -282,6 +282,7 @@ def VLM(conditions,settings,geometry):
     B2     = np.tile((mach**2 - 1),n_cp)
     SINALF = np.sin(aoa)
     COSALF = np.cos(aoa)
+    TANALF = np.tan(aoa)
     SINPSI = np.sin(PSI)
     COPSI  = np.cos(PSI)
     COSIN  = COSALF *SINPSI *2.0
@@ -486,6 +487,8 @@ def VLM(conditions,settings,geometry):
     # Now calculate total coefficients
     CL       = np.atleast_2d(np.sum(LIFT,axis=1)/SREF).T          # CLTOT in VORLAX
     CDi      = np.atleast_2d(np.sum(DRAG,axis=1)/SREF).T          # CDTOT in VORLAX
+    CX       =  ( TANALF * CL - CDi)/(COSALF - SINALF*TANALF)
+    CZ       = (CDi+ CX*COSALF)/SINALF 
     CM       = np.atleast_2d(np.sum(MOMENT,axis=1)/SREF).T/c_bar  # CMTOT in VORLAX 1. check deflection is accounted for correctly. 2. check this is right
     CY       = np.atleast_2d(np.sum(FY,axis=1)/SREF).T   # total y force coeff
     CRTOT    = np.atleast_2d(np.sum(RM,axis=1)/SREF).T   # rolling moment coeff (unscaled)
@@ -500,13 +503,20 @@ def VLM(conditions,settings,geometry):
     
     #VORLAX _TOT outputs
     results = Data()
-    # force coefficients 
+    # force coefficients
+    results.S_ref      = Sref
+    results.b_ref      = b_ref
+    results.c_ref      = c_bar  
+    results.X_ref      = x_m
+    results.Y_ref      = 0
+    results.Z_ref      = z_m
+    
     results.CL         =  CL         
     results.CDi        =  CDi  
     
-    results.CX         =  np.zeros_like(CL)  
-    results.CY         =  CY 
-    results.CZ         =  np.zeros_like(CL) # NEED TO UPDATE  
+    results.CX         = CX
+    results.CY         = CY 
+    results.CZ         = CZ
     
     results.CL_mom     =  CL_mom 
     results.CM         =  CM  

@@ -56,7 +56,7 @@ class Vortex_Lattice(Stability):
         
         self.settings.spanwise_cosine_spacing         = True
         self.settings.vortex_distribution             = Data()   
-        self.settings.model_fuselage                  = False            # It's better to model the fuselage
+        self.settings.model_fuselage                  = False             
         self.settings.model_nacelle                   = False
         self.settings.leading_edge_suction_multiplier = 1.0
         self.settings.propeller_wake_model            = False
@@ -68,408 +68,53 @@ class Vortex_Lattice(Stability):
         # conditions table, used for surrogate model training
         self.training                                 = Data()
         self.training.Mach                            = np.array([0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5])        
-        #self.training.angle_of_attack                 = np.array([-10, -7.5, -5, -2.5, 0, 2.5, 5, 7.5, 10]) * Units.deg
-        self.training.angle_of_attack                 = np.array([0, 5]) * Units.deg         
+        self.training.angle_of_attack                 = np.array([-10, -7.5, -5, -2.5, 1E-12, 2.5, 5, 7.5, 10]) * Units.deg     
         self.training.sideslip_angle                  = np.array([0, 5]) * Units.deg
         self.training.aileron_deflection              = np.array([0, 1]) * Units.deg
         self.training.elevator_deflection             = np.array([0, 1]) * Units.deg   
         self.training.rudder_deflection               = np.array([0, 1]) * Units.deg
-        self.training.flap_deflection                 = np.array([-5, 0])* Units.deg 
+        self.training.flap_deflection                 = np.array([0, 1])* Units.deg 
         self.training.slat_deflection                 = np.array([0, 1]) * Units.deg                      
-        self.training.u                               = np.array([0, 1]) * Units.meters / Units.sec
-        self.training.v                               = np.array([0, 1]) * Units.meters / Units.sec
-        self.training.w                               = np.array([0, 1]) * Units.meters / Units.sec  
+        self.training.u                               = np.array([0, 0.1])  
+        self.training.v                               = np.array([0, 0.1])  
+        self.training.w                               = np.array([0, 0.1])    
         self.training.pitch_rate                      = np.array([0, 0.01])  * Units.rad / Units.sec
         self.training.roll_rate                       = np.array([0, 0.3])  * Units.rad / Units.sec
-        self.training.yaw_rate                        = np.array([0, 0.01])  * Units.rad / Units.sec        
+        self.training.yaw_rate                        = np.array([0, 0.01])  * Units.rad / Units.sec
+
+        self.surrogates                               = Data()
         
-        # surrogoate models
-        self.surrogates                               = Data()   
-        self.surrogates.Clift                         = None    
-        self.surrogates.Cdrag                         = None 
-        self.surrogates.CX                            = None 
-        self.surrogates.CY                            = None 
-        self.surrogates.CZ                            = None   
-        self.surrogates.CL                            = None 
-        self.surrogates.CM                            = None   
-        self.surrogates.CN                            = None
-        self.surrogates.static_margin                 = None
-        
-        self.surrogates.Clift_alpha                   = None    
-        self.surrogates.Clift_beta                    = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.Clift_delta_a                 = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.Clift_delta_e                 = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.Clift_delta_r                 = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.Clift_delta_f                 = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.Clift_delta_s                 = None          
-   
-        self.surrogates.Clift_u                       = None    
-        self.surrogates.Clift_v                       = None    
-        self.surrogates.Clift_w                       = None    
-        self.surrogates.Clift_p                       = None    
-        self.surrogates.Clift_q                       = None    
-        self.surrogates.Clift_r                       = None    
-        self.surrogates.Cdrag_alpha                   = None    
-        self.surrogates.Cdrag_beta                    = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.Cdrag_delta_a                 = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.Cdrag_delta_e                 = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.Cdrag_delta_r                 = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.Cdrag_delta_f                 = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.Cdrag_delta_s                 = None        
-           
-        self.surrogates.Cdrag_u                       = None    
-        self.surrogates.Cdrag_v                       = None    
-        self.surrogates.Cdrag_w                       = None    
-        self.surrogates.Cdrag_p                       = None    
-        self.surrogates.Cdrag_q                       = None    
-        self.surrogates.Cdrag_r                       = None    
-        self.surrogates.CX_alpha                      = None    
-        self.surrogates.CX_beta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.CX_delta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.CX_delta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.CX_delta_r                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.CX_delta_f                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.CX_delta_s                    = None          
-        
-        self.surrogates.CX_u                          = None    
-        self.surrogates.CX_v                          = None    
-        self.surrogates.CX_w                          = None    
-        self.surrogates.CX_p                          = None    
-        self.surrogates.CX_q                          = None    
-        self.surrogates.CX_r                          = None    
-        self.surrogates.CY_alpha                      = None    
-        self.surrogates.CY_beta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.CY_delta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.CY_delta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.CY_delta_r                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.CY_delta_f                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.CY_delta_s                    = None 
-                    
-        self.surrogates.CY_u                          = None    
-        self.surrogates.CY_v                          = None    
-        self.surrogates.CY_w                          = None    
-        self.surrogates.CY_p                          = None    
-        self.surrogates.CY_q                          = None    
-        self.surrogates.CY_r                          = None    
-        self.surrogates.CZ_alpha                      = None    
-        self.surrogates.CZ_beta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.CZ_delta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.CZ_delta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.CZ_delta_r                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.CZ_delta_f                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.CZ_delta_s                    = None         
-            
-        self.surrogates.CZ_u                          = None    
-        self.surrogates.CZ_v                          = None    
-        self.surrogates.CZ_w                          = None    
-        self.surrogates.CZ_p                          = None    
-        self.surrogates.CZ_q                          = None    
-        self.surrogates.CZ_r                          = None
-        self.surrogates.CL_alpha                      = None     
-        self.surrogates.CL_beta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.CL_delta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.CL_delta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.CL_delta_r                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.CL_delta_f                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.CL_delta_s                    = None             
-            
-        self.surrogates.CL_u                          = None     
-        self.surrogates.CL_v                          = None     
-        self.surrogates.CL_w                          = None     
-        self.surrogates.CL_p                          = None     
-        self.surrogates.CL_q                          = None     
-        self.surrogates.CL_r                          = None     
-        self.surrogates.CM_alpha                      = None     
-        self.surrogates.CM_beta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.CM_delta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.CM_delta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.CM_delta_r                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.CM_delta_f                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.CM_delta_s                    = None           
-     
-        self.surrogates.CM_u                          = None     
-        self.surrogates.CM_v                          = None     
-        self.surrogates.CM_w                          = None     
-        self.surrogates.CM_p                          = None     
-        self.surrogates.CM_q                          = None     
-        self.surrogates.CM_r                          = None     
-        self.surrogates.CN_alpha                      = None     
-        self.surrogates.CN_beta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.CN_delta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.CN_delta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.CN_delta_r                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.CN_delta_f                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.CN_delta_s                    = None
-                    
-        self.surrogates.CN_u                          = None     
-        self.surrogates.CN_v                          = None     
-        self.surrogates.CN_w                          = None     
-        self.surrogates.CN_p                          = None     
-        self.surrogates.CN_q                          = None     
-        self.surrogates.CN_r                          = None        
-        
-        self.surrogates.dClift_dalpha                   = None    
-        self.surrogates.dClift_dbeta                    = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.dClift_ddelta_a                 = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.dClift_ddelta_e                 = None    
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.dClift_ddelta_r                 = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.dClift_ddelta_f                 = None    
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.dClift_ddelta_s                 = None   
-        
-        self.surrogates.dClift_du                       = None    
-        self.surrogates.dClift_dv                       = None    
-        self.surrogates.dClift_dw                       = None    
-        self.surrogates.dClift_dp                       = None    
-        self.surrogates.dClift_dq                       = None    
-        self.surrogates.dClift_dr                       = None    
-        self.surrogates.dCdrag_dalpha                   = None    
-        self.surrogates.dCdrag_dbeta                    = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.dCdrag_ddelta_a                 = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.dCdrag_ddelta_e                 = None    
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.dCdrag_ddelta_r                 = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.dCdrag_ddelta_f                 = None    
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.dCdrag_ddelta_s                 = None          
-           
-        self.surrogates.dCdrag_du                       = None    
-        self.surrogates.dCdrag_dv                       = None    
-        self.surrogates.dCdrag_dw                       = None    
-        self.surrogates.dCdrag_dp                       = None    
-        self.surrogates.dCdrag_dq                       = None    
-        self.surrogates.dCdrag_dr                       = None    
-        self.surrogates.dCX_dalpha                      = None    
-        self.surrogates.dCX_dbeta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.dCX_ddelta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.dCX_ddelta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.dCX_ddelta_r                    = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.dCX_ddelta_f                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.dCX_ddelta_s                    = None             
-   
-        self.surrogates.dCX_du                          = None    
-        self.surrogates.dCX_dv                          = None    
-        self.surrogates.dCX_dw                          = None    
-        self.surrogates.dCX_dp                          = None    
-        self.surrogates.dCX_dq                          = None    
-        self.surrogates.dCX_dr                          = None    
-        self.surrogates.dCY_dalpha                      = None    
-        self.surrogates.dCY_dbeta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.dCY_ddelta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.dCY_ddelta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.dCY_ddelta_r                    = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.dCY_ddelta_f                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.dCY_ddelta_s                    = None         
-          
-        self.surrogates.dCY_du                          = None    
-        self.surrogates.dCY_dv                          = None    
-        self.surrogates.dCY_dw                          = None    
-        self.surrogates.dCY_dp                          = None    
-        self.surrogates.dCY_dq                          = None    
-        self.surrogates.dCY_dr                          = None    
-        self.surrogates.dCZ_dalpha                      = None    
-        self.surrogates.dCZ_dbeta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.dCZ_ddelta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.dCZ_ddelta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.dCZ_ddelta_r                    = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.dCZ_ddelta_f                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.dCZ_ddelta_s                    = None           
-           
-        self.surrogates.dCZ_du                          = None    
-        self.surrogates.dCZ_dv                          = None    
-        self.surrogates.dCZ_dw                          = None    
-        self.surrogates.dCZ_dp                          = None    
-        self.surrogates.dCZ_dq                          = None    
-        self.surrogates.dCZ_dr                          = None
-        self.surrogates.dCL_dalpha                      = None     
-        self.surrogates.dCL_dbeta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.dCL_ddelta_a                    = None
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.dCL_ddelta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.dCL_ddelta_r                    = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.dCL_ddelta_f                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.dCL_ddelta_s                    = None         
-            
-        self.surrogates.dCL_du                          = None     
-        self.surrogates.dCL_dv                          = None     
-        self.surrogates.dCL_dw                          = None     
-        self.surrogates.dCL_dp                          = None     
-        self.surrogates.dCL_dq                          = None     
-        self.surrogates.dCL_dr                          = None     
-        self.surrogates.dCM_dalpha                      = None     
-        self.surrogates.dCM_dbeta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.dCM_ddelta_a                    = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.dCM_ddelta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.dCM_ddelta_r                    = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.dCM_ddelta_f                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.dCM_ddelta_s                    = None         
-            
-        self.surrogates.dCM_du                          = None     
-        self.surrogates.dCM_dv                          = None     
-        self.surrogates.dCM_dw                          = None     
-        self.surrogates.dCM_dp                          = None     
-        self.surrogates.dCM_dq                          = None     
-        self.surrogates.dCM_dr                          = None     
-        self.surrogates.dCN_dalpha                      = None     
-        self.surrogates.dCN_dbeta                       = None
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    self.surrogates.dCN_ddelta_a                    = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    self.surrogates.dCN_ddelta_e                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    self.surrogates.dCN_ddelta_r                    = None 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    self.surrogates.dCN_ddelta_f                    = None   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    self.surrogates.dCN_ddelta_s                    = None     
-                    
-        self.surrogates.dCN_du                          = None     
-        self.surrogates.dCN_dv                          = None     
-        self.surrogates.dCN_dw                          = None     
-        self.surrogates.dCN_dp                          = None     
-        self.surrogates.dCN_dq                          = None     
-        self.surrogates.dCN_dr                          = None
-        
-        self.evaluate                                = None  
+        self.aileron_flag                             = False 
+        self.flap_flag                                = False 
+        self.rudder_flag                              = False 
+        self.elevator_flag                            = False 
+        self.slat_flag                                = False     
+        self.evaluate                                 = None  
             
     def initialize(self): 
-        settings                                      = self.settings  
-        use_surrogate                                 = settings.use_surrogate 
+        settings                  = self.settings  
+        use_surrogate             = settings.use_surrogate 
+        propeller_wake_model      = settings.propeller_wake_model 
+        n_sw                      = settings.number_of_spanwise_vortices
+        n_cw                      = settings.number_of_chordwise_vortices
+        mf                        = settings.model_fuselage
+        mn                        = settings.model_nacelle
+        dcs                       = settings.discretize_control_surfaces 
+             
+        # Unpack:
+        settings = self.settings      
+        
+        if n_sw is not None:
+            settings.number_of_spanwise_vortices  = n_sw
+        
+        if n_cw is not None:
+            settings.number_of_chordwise_vortices = n_cw 
+            
+        settings.use_surrogate              = use_surrogate
+        settings.propeller_wake_model       = propeller_wake_model 
+        settings.discretize_control_surfaces= dcs
+        settings.model_fuselage             = mf
+        settings.model_nacelle              = mn 
         
         # If we are using the surrogate
         if use_surrogate == True: 
@@ -515,18 +160,65 @@ class Vortex_Lattice(Stability):
         Mach        = np.atleast_2d(conditions.freestream.mach_number)
         
         # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    delta_a     = np.atleast_2d(conditions.control_surfaces.aileron.deflection)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    delta_e     = np.atleast_2d(conditions.control_surfaces.elevator.deflection)   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    delta_r     = np.atleast_2d(conditions.control_surfaces.rudder.deflection)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    delta_f     = np.atleast_2d(conditions.control_surfaces.flap.deflection)   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)      
+        if self.aileron_flag: 
+            delta_a     = np.atleast_2d(conditions.control_surfaces.aileron.deflection)
+            pts_delta_a    = np.hstack((delta_a,Mach))
+            Clift_delta_a  = np.atleast_2d(surrogates.Clift_delta_a(pts_delta_a)).T
+            Cdrag_delta_a  = np.atleast_2d(surrogates.Cdrag_delta_a(pts_delta_a)).T  
+            CX_delta_a     = np.atleast_2d(surrogates.CX_delta_a(pts_delta_a)).T 
+            CY_delta_a     = np.atleast_2d(surrogates.CY_delta_a(pts_delta_a)).T     
+            CZ_delta_a     = np.atleast_2d(surrogates.CZ_delta_a(pts_delta_a)).T     
+            CL_delta_a     = np.atleast_2d(surrogates.CL_delta_a(pts_delta_a)).T     
+            CM_delta_a     = np.atleast_2d(surrogates.CM_delta_a(pts_delta_a)).T     
+            CN_delta_a     = np.atleast_2d(surrogates.CN_delta_a(pts_delta_a)).T  
+            
+        if self.elevator_flag: 
+            delta_e     = np.atleast_2d(conditions.control_surfaces.elevator.deflection)
+            pts_delta_e          = np.hstack((delta_e,Mach))   
+            Clift_delta_e  = np.atleast_2d(surrogates.Clift_delta_e(pts_delta_e)).T  
+            Cdrag_delta_e  = np.atleast_2d(surrogates.Cdrag_delta_e(pts_delta_e)).T 
+            CX_delta_e     = np.atleast_2d(surrogates.CX_delta_e(pts_delta_e)).T
+            CY_delta_e     = np.atleast_2d(surrogates.CY_delta_e(pts_delta_e)).T     
+            CZ_delta_e     = np.atleast_2d(surrogates.CZ_delta_e(pts_delta_e)).T     
+            CL_delta_e     = np.atleast_2d(surrogates.CL_delta_e(pts_delta_e)).T     
+            CM_delta_e     = np.atleast_2d(surrogates.CM_delta_e(pts_delta_e)).T     
+            CN_delta_e     = np.atleast_2d(surrogates.CN_delta_e(pts_delta_e)).T  
+            
+        if self.rudder_flag:
+            delta_r     = np.atleast_2d(conditions.control_surfaces.rudder.deflection)
+            pts_delta_r          = np.hstack((delta_r,Mach))
+            Clift_delta_r  = np.atleast_2d(surrogates.Clift_delta_r(pts_delta_r)).T 
+            Cdrag_delta_r  = np.atleast_2d(surrogates.Cdrag_delta_r(pts_delta_r)).T 
+            CX_delta_r     = np.atleast_2d(surrogates.CX_delta_r(pts_delta_r)).T
+            CY_delta_r     = np.atleast_2d(surrogates.CY_delta_r(pts_delta_r)).T     
+            CZ_delta_r     = np.atleast_2d(surrogates.CZ_delta_r(pts_delta_r)).T     
+            CL_delta_r     = np.atleast_2d(surrogates.CL_delta_r(pts_delta_r)).T     
+            CM_delta_r     = np.atleast_2d(surrogates.CM_delta_r(pts_delta_r)).T     
+            CN_delta_r     = np.atleast_2d(surrogates.CN_delta_r(pts_delta_r)).T  
+            
+        if self.flap_flag:  
+            delta_f     = np.atleast_2d(conditions.control_surfaces.flap.deflection)   
+            pts_delta_f          = np.hstack((delta_f,Mach))   
+            Clift_delta_f  = np.atleast_2d(surrogates.Clift_delta_f(pts_delta_f)).T  
+            Cdrag_delta_f  = np.atleast_2d(surrogates.Cdrag_delta_f(pts_delta_f)).T 
+            CX_delta_f     = np.atleast_2d(surrogates.CX_delta_f(pts_delta_f)).T  
+            CY_delta_f     = np.atleast_2d(surrogates.CY_delta_f(pts_delta_f)).T     
+            CZ_delta_f     = np.atleast_2d(surrogates.CZ_delta_f(pts_delta_f)).T     
+            CL_delta_f     = np.atleast_2d(surrogates.CL_delta_f(pts_delta_f)).T     
+            CM_delta_f     = np.atleast_2d(surrogates.CM_delta_f(pts_delta_f)).T     
+            CN_delta_f     = np.atleast_2d(surrogates.CN_delta_f(pts_delta_f)).T                
+            
+        if self.slat_flag:
+            delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)    
+            pts_delta_s          = np.hstack((delta_s,Mach))        
+            Clift_delta_s  = np.atleast_2d(surrogates.Clift_delta_s(pts_delta_s)).T
+            Cdrag_delta_s  = np.atleast_2d(surrogates.Cdrag_delta_s(pts_delta_s)).T 
+            CX_delta_s     = np.atleast_2d(surrogates.CX_delta_s(pts_delta_s)).T    
+            CY_delta_s     = np.atleast_2d(surrogates.CY_delta_s(pts_delta_s)).T     
+            CZ_delta_s     = np.atleast_2d(surrogates.CZ_delta_s(pts_delta_s)).T     
+            CL_delta_s     = np.atleast_2d(surrogates.CL_delta_s(pts_delta_s)).T     
+            CM_delta_s     = np.atleast_2d(surrogates.CM_delta_s(pts_delta_s)).T     
+            CN_delta_s     = np.atleast_2d(surrogates.CN_delta_s(pts_delta_s)).T   
     
         u           = np.atleast_2d(conditions.freestream.u)
         v           = np.atleast_2d(conditions.freestream.v)
@@ -535,25 +227,9 @@ class Vortex_Lattice(Stability):
         q           = np.atleast_2d(conditions.static_stability.pitch_rate)
         r           = np.atleast_2d(conditions.static_stability.yaw_rate)  
   
-        # Query surrogates 
-        
+        # Query surrogates  
         pts_alpha            = np.hstack((AoA,Mach))
-        pts_beta             = np.hstack((Beta,Mach))
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    pts_delta_a          = np.hstack((delta_a,Mach))
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    pts_delta_e          = np.hstack((delta_e,Mach))   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    pts_delta_r          = np.hstack((delta_r,Mach))
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    pts_delta_f          = np.hstack((delta_f,Mach))   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    pts_delta_s          = np.hstack((delta_s,Mach))          
-        
+        pts_beta             = np.hstack((Beta,Mach))  
         pts_u                = np.hstack((u,Mach))
         pts_v                = np.hstack((v,Mach))
         pts_w                = np.hstack((w,Mach))
@@ -561,23 +237,9 @@ class Vortex_Lattice(Stability):
         pts_q                = np.hstack((q,Mach))
         pts_r                = np.hstack((r,Mach))
         
+        oswald_efficiency = np.atleast_2d(surrogates.oswald_efficiency(pts_alpha)).T  
         Clift_alpha    = np.atleast_2d(surrogates.Clift_alpha(pts_alpha)).T
         Clift_beta     = np.atleast_2d(surrogates.Clift_beta(pts_beta)).T
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    Clift_delta_a  = np.atleast_2d(surrogates.Clift_delta_a(pts_delta_a)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    Clift_delta_e  = np.atleast_2d(surrogates.Clift_delta_e(pts_delta_e)).T  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    Clift_delta_r  = np.atleast_2d(surrogates.Clift_delta_r(pts_delta_r)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    Clift_delta_f  = np.atleast_2d(surrogates.Clift_delta_f(pts_delta_f)).T  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    Clift_delta_s  = np.atleast_2d(surrogates.Clift_delta_s(pts_delta_s)).T     
-        
         Clift_u        = np.atleast_2d(surrogates.Clift_u(pts_u)).T
         Clift_v        = np.atleast_2d(surrogates.Clift_v(pts_v)).T
         Clift_w        = np.atleast_2d(surrogates.Clift_w(pts_w)).T
@@ -585,21 +247,7 @@ class Vortex_Lattice(Stability):
         Clift_q        = np.atleast_2d(surrogates.Clift_q(pts_q)).T
         Clift_r        = np.atleast_2d(surrogates.Clift_r(pts_r)).T
         Cdrag_alpha    = np.atleast_2d(surrogates.Cdrag_alpha(pts_alpha)).T
-        Cdrag_beta     = np.atleast_2d(surrogates.Cdrag_beta(pts_beta)).T
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    Cdrag_delta_a  = np.atleast_2d(surrogates.Cdrag_delta_a(pts_delta_a)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    Cdrag_delta_e  = np.atleast_2d(surrogates.Cdrag_delta_e(pts_delta_e)).T 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    Cdrag_delta_r  = np.atleast_2d(surrogates.Cdrag_delta_r(pts_delta_r)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    Cdrag_delta_f  = np.atleast_2d(surrogates.Cdrag_delta_f(pts_delta_f)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    Cdrag_delta_s  = np.atleast_2d(surrogates.Cdrag_delta_s(pts_delta_s)).T     
+        Cdrag_beta     = np.atleast_2d(surrogates.Cdrag_beta(pts_beta)).T 
 
         Cdrag_u        = np.atleast_2d(surrogates.Cdrag_u(pts_u)).T
         Cdrag_v        = np.atleast_2d(surrogates.Cdrag_v(pts_v)).T
@@ -608,21 +256,7 @@ class Vortex_Lattice(Stability):
         Cdrag_q        = np.atleast_2d(surrogates.Cdrag_q(pts_q)).T
         Cdrag_r        = np.atleast_2d(surrogates.Cdrag_r(pts_r)).T
         CX_alpha       = np.atleast_2d(surrogates.CX_alpha(pts_alpha)).T
-        CX_beta        = np.atleast_2d(surrogates.CX_beta(pts_beta)).T
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    CX_delta_a     = np.atleast_2d(surrogates.CX_delta_a(pts_delta_a)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    CX_delta_e     = np.atleast_2d(surrogates.CX_delta_e(pts_delta_e)).T 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    CX_delta_r     = np.atleast_2d(surrogates.CX_delta_r(pts_delta_r)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    CX_delta_f     = np.atleast_2d(surrogates.CX_delta_f(pts_delta_f)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    CX_delta_s     = np.atleast_2d(surrogates.CX_delta_s(pts_delta_s)).T          
+        CX_beta        = np.atleast_2d(surrogates.CX_beta(pts_beta)).T 
         
         CX_u           = np.atleast_2d(surrogates.CX_u(pts_u)).T
         CX_v           = np.atleast_2d(surrogates.CX_v(pts_v)).T
@@ -632,21 +266,7 @@ class Vortex_Lattice(Stability):
         CX_r           = np.atleast_2d(surrogates.CX_r(pts_r)).T
         CY_alpha       = np.atleast_2d(surrogates.CY_alpha(pts_alpha)).T
         CY_beta        = np.atleast_2d(surrogates.CY_beta(pts_beta)).T
-
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    CY_delta_a     = np.atleast_2d(surrogates.CY_delta_a(pts_delta_a)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    CY_delta_e     = np.atleast_2d(surrogates.CY_delta_e(pts_delta_e)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    CY_delta_r     = np.atleast_2d(surrogates.CY_delta_r(pts_delta_r)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    CY_delta_f     = np.atleast_2d(surrogates.CY_delta_f(pts_delta_f)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    CY_delta_s     = np.atleast_2d(surrogates.CY_delta_s(pts_delta_s)).T         
-        
+ 
         CY_u           = np.atleast_2d(surrogates.CY_u(pts_u)).T
         CY_v           = np.atleast_2d(surrogates.CY_v(pts_v)).T
         CY_w           = np.atleast_2d(surrogates.CY_w(pts_w)).T
@@ -654,22 +274,7 @@ class Vortex_Lattice(Stability):
         CY_q           = np.atleast_2d(surrogates.CY_q(pts_q)).T
         CY_r           = np.atleast_2d(surrogates.CY_r(pts_r)).T
         CZ_alpha       = np.atleast_2d(surrogates.CZ_alpha(pts_alpha)).T
-        CZ_beta        = np.atleast_2d(surrogates.CZ_beta(pts_beta)).T
-        
-
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    CZ_delta_a     = np.atleast_2d(surrogates.CZ_delta_a(pts_delta_a)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    CZ_delta_e     = np.atleast_2d(surrogates.CZ_delta_e(pts_delta_e)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    CZ_delta_r     = np.atleast_2d(surrogates.CZ_delta_r(pts_delta_r)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    CZ_delta_f     = np.atleast_2d(surrogates.CZ_delta_f(pts_delta_f)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    CZ_delta_s     = np.atleast_2d(surrogates.CZ_delta_s(pts_delta_s)).T        
+        CZ_beta        = np.atleast_2d(surrogates.CZ_beta(pts_beta)).T 
         
         CZ_u           = np.atleast_2d(surrogates.CZ_u(pts_u)).T
         CZ_v           = np.atleast_2d(surrogates.CZ_v(pts_v)).T
@@ -678,21 +283,7 @@ class Vortex_Lattice(Stability):
         CZ_q           = np.atleast_2d(surrogates.CZ_q(pts_q)).T
         CZ_r           = np.atleast_2d(surrogates.CZ_r(pts_r)).T
         CL_alpha       = np.atleast_2d(surrogates.CL_alpha(pts_alpha)).T
-        CL_beta        = np.atleast_2d(surrogates.CL_beta(pts_beta)).T
-
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    CL_delta_a     = np.atleast_2d(surrogates.CL_delta_a(pts_delta_a)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    CL_delta_e     = np.atleast_2d(surrogates.CL_delta_e(pts_delta_e)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    CL_delta_r     = np.atleast_2d(surrogates.CL_delta_r(pts_delta_r)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    CL_delta_f     = np.atleast_2d(surrogates.CL_delta_f(pts_delta_f)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    CL_delta_s     = np.atleast_2d(surrogates.CL_delta_s(pts_delta_s)).T           
+        CL_beta        = np.atleast_2d(surrogates.CL_beta(pts_beta)).T   
         
         CL_u           = np.atleast_2d(surrogates.CL_u(pts_u)).T
         CL_v           = np.atleast_2d(surrogates.CL_v(pts_v)).T
@@ -701,21 +292,7 @@ class Vortex_Lattice(Stability):
         CL_q           = np.atleast_2d(surrogates.CL_q(pts_q)).T
         CL_r           = np.atleast_2d(surrogates.CL_r(pts_r)).T
         CM_alpha       = np.atleast_2d(surrogates.CM_alpha(pts_alpha)).T
-        CM_beta        = np.atleast_2d(surrogates.CM_beta(pts_beta)).T
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    CM_delta_a     = np.atleast_2d(surrogates.CM_delta_a(pts_delta_a)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    CM_delta_e     = np.atleast_2d(surrogates.CM_delta_e(pts_delta_e)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    CM_delta_r     = np.atleast_2d(surrogates.CM_delta_r(pts_delta_r)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    CM_delta_f     = np.atleast_2d(surrogates.CM_delta_f(pts_delta_f)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    CM_delta_s     = np.atleast_2d(surrogates.CM_delta_s(pts_delta_s)).T           
+        CM_beta        = np.atleast_2d(surrogates.CM_beta(pts_beta)).T 
         
         CM_u           = np.atleast_2d(surrogates.CM_u(pts_u)).T
         CM_v           = np.atleast_2d(surrogates.CM_v(pts_v)).T
@@ -724,20 +301,7 @@ class Vortex_Lattice(Stability):
         CM_q           = np.atleast_2d(surrogates.CM_q(pts_q)).T
         CM_r           = np.atleast_2d(surrogates.CM_r(pts_r)).T
         CN_alpha       = np.atleast_2d(surrogates.CN_alpha(pts_alpha)).T
-        CN_beta        = np.atleast_2d(surrogates.CN_beta(pts_beta)).T
-        
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    CN_delta_a     = np.atleast_2d(surrogates.CN_delta_a(pts_delta_a)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    CN_delta_e     = np.atleast_2d(surrogates.CN_delta_e(pts_delta_e)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    CN_delta_r     = np.atleast_2d(surrogates.CN_delta_r(pts_delta_r)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    CN_delta_f     = np.atleast_2d(surrogates.CN_delta_f(pts_delta_f)).T
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    CN_delta_s     = np.atleast_2d(surrogates.CN_delta_s(pts_delta_s)).T             
+        CN_beta        = np.atleast_2d(surrogates.CN_beta(pts_beta)).T 
         
         CN_u           = np.atleast_2d(surrogates.CN_u(pts_u)).T
         CN_v           = np.atleast_2d(surrogates.CN_v(pts_v)).T
@@ -747,13 +311,13 @@ class Vortex_Lattice(Stability):
         CN_r           = np.atleast_2d(surrogates.CN_r(pts_r)).T
  
         # Stability Results  
-        #conditions.S_ref                                                  = # Need to Update 
-        #conditions.c_ref                                                  = # Need to Update
-        #conditions.b_ref                                                  = # Need to Update
-        #conditions.X_ref                                                  = # Need to Update
-        #conditions.Y_ref                                                  = # Need to Update
-        #conditions.Z_ref                                                  = # Need to Update 
-        #conditions.aerodynamics.oswald_efficiency                         = # Need to Update
+        conditions.S_ref                                                  = self.S_ref              
+        conditions.c_ref                                                  = self.c_ref              
+        conditions.b_ref                                                  = self.b_ref
+        conditions.X_ref                                                  = self.X_ref
+        conditions.Y_ref                                                  = self.Y_ref
+        conditions.Z_ref                                                  = self.Z_ref
+        conditions.aerodynamics.oswald_efficiency                         = oswald_efficiency 
         
         conditions.static_stability.coefficients.lift                     = Clift_alpha + Clift_beta + Clift_u + Clift_v + Clift_w + Clift_p + Clift_q + Clift_r 
         conditions.static_stability.coefficients.drag                     = Cdrag_alpha + Cdrag_beta + Cdrag_u + Cdrag_v + Cdrag_w + Cdrag_p + Cdrag_q + Cdrag_r 
@@ -764,105 +328,161 @@ class Vortex_Lattice(Stability):
         conditions.static_stability.coefficients.M                        = CM_alpha + CM_beta + CM_u + CM_v + CM_w + CM_p + CM_q + CM_r
         conditions.static_stability.coefficients.N                        = CN_alpha + CN_beta + CN_u + CN_v + CN_w + CN_p + CN_q + CN_r
         
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_a
-                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_a
-                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_a 
-                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_a
-                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_a
-                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_a
-                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_a
-                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_e
-                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_e
-                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_e 
-                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_e
-                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_e
-                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_e
-                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_e
-                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_e 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_r
-                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_r
-                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_r 
-                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_r
-                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_r
-                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_r
-                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_r
-                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_r     
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_f
-                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_f
-                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_f 
-                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_f
-                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_f
-                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_f
-                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_f
-                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_f     
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    conditions.static_stability.coefficients.lift = conditions.static_stability.coefficients.lift + Clift_delta_s
-                    conditions.static_stability.coefficients.drag = conditions.static_stability.coefficients.drag + Cdrag_delta_s
-                    conditions.static_stability.coefficients.X    = conditions.static_stability.coefficients.X    + CX_delta_s 
-                    conditions.static_stability.coefficients.Y    = conditions.static_stability.coefficients.Y    + CY_delta_s
-                    conditions.static_stability.coefficients.Z    = conditions.static_stability.coefficients.Z    + CZ_delta_s
-                    conditions.static_stability.coefficients.L    = conditions.static_stability.coefficients.L    + CL_delta_s
-                    conditions.static_stability.coefficients.M    = conditions.static_stability.coefficients.M    + CM_delta_s
-                    conditions.static_stability.coefficients.N    = conditions.static_stability.coefficients.N    + CN_delta_s           
+        if self.aileron_flag: 
+            conditions.static_stability.coefficients.lift += Clift_delta_a
+            conditions.static_stability.coefficients.drag += Cdrag_delta_a
+            conditions.static_stability.coefficients.X    += CX_delta_a 
+            conditions.static_stability.coefficients.Y    += CY_delta_a
+            conditions.static_stability.coefficients.Z    += CZ_delta_a
+            conditions.static_stability.coefficients.L    += CL_delta_a
+            conditions.static_stability.coefficients.M    += CM_delta_a
+            conditions.static_stability.coefficients.N    += CN_delta_a
+            
+    
+            conditions.control_surfaces.aileron.static_stability.coefficients.lift       = Clift_delta_a         
+            conditions.control_surfaces.aileron.static_stability.coefficients.drag       = Cdrag_delta_a            
+            conditions.control_surfaces.aileron.static_stability.coefficients.X          = CX_delta_a             
+            conditions.control_surfaces.aileron.static_stability.coefficients.Y          = CY_delta_a            
+            conditions.control_surfaces.aileron.static_stability.coefficients.Z          = CZ_delta_a          
+            conditions.control_surfaces.aileron.static_stability.coefficients.L          = CL_delta_a          
+            conditions.control_surfaces.aileron.static_stability.coefficients.M          = CM_delta_a          
+            conditions.control_surfaces.aileron.static_stability.coefficients.N          = CN_delta_a            
+            #conditions.control_surfaces.aileron.static_stability.coefficients.e          = # Need to Update 
+            
+        if self.elevator_flag: 
+            conditions.static_stability.coefficients.lift += Clift_delta_e
+            conditions.static_stability.coefficients.drag += Cdrag_delta_e
+            conditions.static_stability.coefficients.X    += CX_delta_e 
+            conditions.static_stability.coefficients.Y    += CY_delta_e
+            conditions.static_stability.coefficients.Z    += CZ_delta_e
+            conditions.static_stability.coefficients.L    += CL_delta_e
+            conditions.static_stability.coefficients.M    += CM_delta_e
+            conditions.static_stability.coefficients.N    += CN_delta_e
+            
+            conditions.control_surfaces.elevator.static_stability.coefficients.lift       = Clift_delta_e         
+            conditions.control_surfaces.elevator.static_stability.coefficients.drag       = Cdrag_delta_e            
+            conditions.control_surfaces.elevator.static_stability.coefficients.X          = CX_delta_e             
+            conditions.control_surfaces.elevator.static_stability.coefficients.Y          = CY_delta_e            
+            conditions.control_surfaces.elevator.static_stability.coefficients.Z          = CZ_delta_e          
+            conditions.control_surfaces.elevator.static_stability.coefficients.L          = CL_delta_e          
+            conditions.control_surfaces.elevator.static_stability.coefficients.M          = CM_delta_e          
+            conditions.control_surfaces.elevator.static_stability.coefficients.N          = CN_delta_e            
+            #conditions.control_surfaces.elevator.static_stability.coefficients.e          = # Need to Update
+            
+        if self.rudder_flag:  
+            conditions.static_stability.coefficients.lift += Clift_delta_r
+            conditions.static_stability.coefficients.drag += Cdrag_delta_r
+            conditions.static_stability.coefficients.X    += CX_delta_r 
+            conditions.static_stability.coefficients.Y    += CY_delta_r
+            conditions.static_stability.coefficients.Z    += CZ_delta_r
+            conditions.static_stability.coefficients.L    += CL_delta_r
+            conditions.static_stability.coefficients.M    += CM_delta_r
+            conditions.static_stability.coefficients.N    += CN_delta_r
+
+            conditions.control_surfaces.rudder.static_stability.coefficients.lift       = Clift_delta_r         
+            conditions.control_surfaces.rudder.static_stability.coefficients.drag       = Cdrag_delta_r            
+            conditions.control_surfaces.rudder.static_stability.coefficients.X          = CX_delta_r             
+            conditions.control_surfaces.rudder.static_stability.coefficients.Y          = CY_delta_r            
+            conditions.control_surfaces.rudder.static_stability.coefficients.Z          = CZ_delta_r          
+            conditions.control_surfaces.rudder.static_stability.coefficients.L          = CL_delta_r          
+            conditions.control_surfaces.rudder.static_stability.coefficients.M          = CM_delta_r          
+            conditions.control_surfaces.rudder.static_stability.coefficients.N          = CN_delta_r            
+            #conditions.control_surfaces.rudder.static_stability.coefficients.e          =# Need to Update
+            
+        if self.flap_flag:
+            conditions.static_stability.coefficients.lift += Clift_delta_f
+            conditions.static_stability.coefficients.drag += Cdrag_delta_f
+            conditions.static_stability.coefficients.X    += CX_delta_f 
+            conditions.static_stability.coefficients.Y    += CY_delta_f
+            conditions.static_stability.coefficients.Z    += CZ_delta_f
+            conditions.static_stability.coefficients.L    += CL_delta_f
+            conditions.static_stability.coefficients.M    += CM_delta_f
+            conditions.static_stability.coefficients.N    += CN_delta_f
+            
+
+            conditions.control_surfaces.flap.static_stability.coefficients.lift       = Clift_delta_f         
+            conditions.control_surfaces.flap.static_stability.coefficients.drag       = Cdrag_delta_f            
+            conditions.control_surfaces.flap.static_stability.coefficients.X          = CX_delta_f             
+            conditions.control_surfaces.flap.static_stability.coefficients.Y          = CY_delta_f            
+            conditions.control_surfaces.flap.static_stability.coefficients.Z          = CZ_delta_f          
+            conditions.control_surfaces.flap.static_stability.coefficients.L          = CL_delta_f          
+            conditions.control_surfaces.flap.static_stability.coefficients.M          = CM_delta_f          
+            conditions.control_surfaces.flap.static_stability.coefficients.N          = CN_delta_f            
+            #conditions.control_surfaces.flap.static_stability.coefficients.e          =# Need to Update
+            
+  
+        if self.slat_flag: 
+            conditions.static_stability.coefficients.lift += Clift_delta_s
+            conditions.static_stability.coefficients.drag += Cdrag_delta_s
+            conditions.static_stability.coefficients.X    += CX_delta_s 
+            conditions.static_stability.coefficients.Y    += CY_delta_s
+            conditions.static_stability.coefficients.Z    += CZ_delta_s
+            conditions.static_stability.coefficients.L    += CL_delta_s
+            conditions.static_stability.coefficients.M    += CM_delta_s
+            conditions.static_stability.coefficients.N    += CN_delta_s
+
+            conditions.control_surfaces.slat.static_stability.coefficients.lift       = Clift_delta_s         
+            conditions.control_surfaces.slat.static_stability.coefficients.drag       = Cdrag_delta_s            
+            conditions.control_surfaces.slat.static_stability.coefficients.X          = CX_delta_s             
+            conditions.control_surfaces.slat.static_stability.coefficients.Y          = CY_delta_s            
+            conditions.control_surfaces.slat.static_stability.coefficients.Z          = CZ_delta_s          
+            conditions.control_surfaces.slat.static_stability.coefficients.L          = CL_delta_s          
+            conditions.control_surfaces.slat.static_stability.coefficients.M          = CM_delta_s          
+            conditions.control_surfaces.slat.static_stability.coefficients.N          = CN_delta_s            
+            #conditions.control_surfaces.slat.static_stability.coefficients.e          = # Need to Update             
+         
         
-        #conditions.static_stability.derivatives.Clift_alpha               = # Need to Update 
-        #conditions.static_stability.derivatives.CY_alpha                  = # Need to Update
-        #conditions.static_stability.derivatives.CL_alpha                  = # Need to Update
-        #conditions.static_stability.derivatives.CM_alpha                  = # Need to Update
-        #conditions.static_stability.derivatives.CN_alpha                  = # Need to Update
-        #conditions.static_stability.derivatives.Clift_beta                = # Need to Update
-        #conditions.static_stability.derivatives.CY_beta                   = # Need to Update
-        #conditions.static_stability.derivatives.CL_beta                   = # Need to Update
-        #conditions.static_stability.derivatives.CM_beta                   = # Need to Update
-        #conditions.static_stability.derivatives.CN_beta                   = # Need to Update
-        #conditions.static_stability.derivatives.Clift_p                   = # Need to Update
-        #conditions.static_stability.derivatives.Clift_q                   = # Need to Update
-        #conditions.static_stability.derivatives.Clift_r                   = # Need to Update
+        conditions.static_stability.derivatives.Clift_alpha               = surrogates.dClift_dalpha(Mach)
+        conditions.static_stability.derivatives.CY_alpha                  = surrogates.dCY_dalpha(Mach)
+        conditions.static_stability.derivatives.CL_alpha                  = surrogates.dCL_dalpha(Mach)
+        conditions.static_stability.derivatives.CM_alpha                  = surrogates.dCM_dalpha(Mach)
+        conditions.static_stability.derivatives.CN_alpha                  = surrogates.dCN_dalpha(Mach)
+        conditions.static_stability.derivatives.Clift_beta                = surrogates.dClift_dbeta(Mach)
+        conditions.static_stability.derivatives.CY_beta                   = surrogates.dCY_dbeta(Mach)
+        conditions.static_stability.derivatives.CL_beta                   = surrogates.dCL_dbeta(Mach)
+        conditions.static_stability.derivatives.CM_beta                   = surrogates.dCM_dbeta(Mach)
+        conditions.static_stability.derivatives.CN_beta                   = surrogates.dCN_dbeta(Mach)
+        conditions.static_stability.derivatives.Clift_p                   = surrogates.dClift_dp(Mach)
+        conditions.static_stability.derivatives.Clift_q                   = surrogates.dClift_dq(Mach)
+        conditions.static_stability.derivatives.Clift_r                   = surrogates.dClift_dr(Mach)
         
-        #conditions.static_stability.derivatives.CX_u                      = # Need to Update
-        #conditions.static_stability.derivatives.CX_v                      = # Need to Update
-        #conditions.static_stability.derivatives.CX_w                      = # Need to Update
-        #conditions.static_stability.derivatives.CY_u                      = # Need to Update
-        #conditions.static_stability.derivatives.CY_v                      = # Need to Update
-        #conditions.static_stability.derivatives.CY_w                      = # Need to Update
-        #conditions.static_stability.derivatives.CZ_u                      = # Need to Update
-        #conditions.static_stability.derivatives.CZ_v                      = # Need to Update
-        #conditions.static_stability.derivatives.CZ_w                      = # Need to Update
-        #conditions.static_stability.derivatives.CL_u                      = # Need to Update
-        #conditions.static_stability.derivatives.CL_v                      = # Need to Update
-        #conditions.static_stability.derivatives.CL_w                      = # Need to Update
-        #conditions.static_stability.derivatives.CM_u                      = # Need to Update
-        #conditions.static_stability.derivatives.CM_v                      = # Need to Update
-        #conditions.static_stability.derivatives.CM_w                      = # Need to Update
-        #conditions.static_stability.derivatives.CN_u                      = # Need to Update
-        #conditions.static_stability.derivatives.CN_v                      = # Need to Update
-        #conditions.static_stability.derivatives.CN_w                      = # Need to Update
+        conditions.static_stability.derivatives.CX_u                      = surrogates.dCX_du(Mach)
+        conditions.static_stability.derivatives.CX_v                      = surrogates.dCX_dv(Mach)
+        conditions.static_stability.derivatives.CX_w                      = surrogates.dCX_dw(Mach)
+        conditions.static_stability.derivatives.CY_u                      = surrogates.dCY_du(Mach)
+        conditions.static_stability.derivatives.CY_v                      = surrogates.dCY_dv(Mach)
+        conditions.static_stability.derivatives.CY_w                      = surrogates.dCY_dw(Mach)
+        conditions.static_stability.derivatives.CZ_u                      = surrogates.dCZ_du(Mach)
+        conditions.static_stability.derivatives.CZ_v                      = surrogates.dCZ_dv(Mach)
+        conditions.static_stability.derivatives.CZ_w                      = surrogates.dCZ_dw(Mach)
+        conditions.static_stability.derivatives.CL_u                      = surrogates.dCL_du(Mach)
+        conditions.static_stability.derivatives.CL_v                      = surrogates.dCL_dv(Mach)
+        conditions.static_stability.derivatives.CL_w                      = surrogates.dCL_dw(Mach)
+        conditions.static_stability.derivatives.CM_u                      = surrogates.dCM_du(Mach)
+        conditions.static_stability.derivatives.CM_v                      = surrogates.dCM_dv(Mach)
+        conditions.static_stability.derivatives.CM_w                      = surrogates.dCM_dw(Mach)
+        conditions.static_stability.derivatives.CN_u                      = surrogates.dCN_du(Mach)
+        conditions.static_stability.derivatives.CN_v                      = surrogates.dCN_dv(Mach)
+        conditions.static_stability.derivatives.CN_w                      = surrogates.dCN_dw(Mach)
         
-        #conditions.static_stability.derivatives.CX_p                      = # Need to Update
-        #conditions.static_stability.derivatives.CX_q                      = # Need to Update
-        #conditions.static_stability.derivatives.CX_r                      = # Need to Update
-        #conditions.static_stability.derivatives.CY_p                      = # Need to Update
-        #conditions.static_stability.derivatives.CY_q                      = # Need to Update
-        #conditions.static_stability.derivatives.CY_r                      = # Need to Update
-        #conditions.static_stability.derivatives.CZ_p                      = # Need to Update
-        #conditions.static_stability.derivatives.CZ_q                      = # Need to Update
-        #conditions.static_stability.derivatives.CZ_r                      = # Need to Update
-        #conditions.static_stability.derivatives.CL_p                      = # Need to Update
-        #conditions.static_stability.derivatives.CL_q                      = # Need to Update
-        #conditions.static_stability.derivatives.CL_r                      = # Need to Update
-        #conditions.static_stability.derivatives.CM_p                      = # Need to Update
-        #conditions.static_stability.derivatives.CM_q                      = # Need to Update
-        #conditions.static_stability.derivatives.CM_r                      = # Need to Update
-        #conditions.static_stability.derivatives.CN_p                      = # Need to Update
-        #conditions.static_stability.derivatives.CN_q                      = # Need to Update
-        #conditions.static_stability.derivatives.CN_r                      = # Need to Update 
+        conditions.static_stability.derivatives.CX_p                      = surrogates.dCX_dp(Mach)
+        conditions.static_stability.derivatives.CX_q                      = surrogates.dCX_dq(Mach)
+        conditions.static_stability.derivatives.CX_r                      = surrogates.dCX_dr(Mach)
+        conditions.static_stability.derivatives.CY_p                      = surrogates.dCY_dp(Mach)
+        conditions.static_stability.derivatives.CY_q                      = surrogates.dCY_dq(Mach)
+        conditions.static_stability.derivatives.CY_r                      = surrogates.dCY_dr(Mach)
+        conditions.static_stability.derivatives.CZ_p                      = surrogates.dCZ_dp(Mach)
+        conditions.static_stability.derivatives.CZ_q                      = surrogates.dCZ_dq(Mach)
+        conditions.static_stability.derivatives.CZ_r                      = surrogates.dCZ_dr(Mach)
+        conditions.static_stability.derivatives.CL_p                      = surrogates.dCL_dp(Mach)
+        conditions.static_stability.derivatives.CL_q                      = surrogates.dCL_dq(Mach)
+        conditions.static_stability.derivatives.CL_r                      = surrogates.dCL_dr(Mach)
+        conditions.static_stability.derivatives.CM_p                      = surrogates.dCM_dp(Mach)
+        conditions.static_stability.derivatives.CM_q                      = surrogates.dCM_dq(Mach)
+        conditions.static_stability.derivatives.CM_r                      = surrogates.dCM_dr(Mach)
+        conditions.static_stability.derivatives.CN_p                      = surrogates.dCN_dp(Mach)
+        conditions.static_stability.derivatives.CN_q                      = surrogates.dCN_dq(Mach)
+        conditions.static_stability.derivatives.CN_r                      = surrogates.dCN_dr(Mach)
         #conditions.static_stability.neutral_point                         = # Need to Update
         #conditions.static_stability.spiral_criteria                       = # Need to Update 
         
@@ -874,8 +494,8 @@ class Vortex_Lattice(Stability):
         # Dynamic Stability & System Identification
         # -----------------------------------------------------------------------------------------------------------------------      
         # Dynamic Stability
-        #if np.count_nonzero(geometry.mass_properties.moments_of_inertia.tensor) > 0:  
-            #compute_dynamic_flight_modes(conditions,geometry)   
+        if np.count_nonzero(geometry.mass_properties.moments_of_inertia.tensor) > 0:  
+            compute_dynamic_flight_modes(conditions,geometry)   
             
         return     
      
@@ -904,7 +524,7 @@ class Vortex_Lattice(Stability):
         geometry   = self.geometry     
         
         # if in transonic regime, use surrogate
-        Clift,Cdrag,CX,CY,CZ,CL_mom,CM,CN = evaluate_VLM(conditions,settings,geometry) 
+        Clift,Cdrag,CX,CY,CZ,CL_mom,CM,CN, S_ref,b_ref,c_ref,X_ref,Y_ref ,Z_ref = evaluate_VLM(conditions,settings,geometry) 
 
         # compute deriviatives and pack   
         conditions.static_stability.coefficients.lift    = np.atleast_2d(Clift).T
@@ -940,18 +560,29 @@ class Vortex_Lattice(Stability):
         AoA            = self.training.angle_of_attack                  
         Beta           = self.training.sideslip_angle
         
+        # loop through wings to determine what control surfaces are present 
         for wing in self.geometry.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
                     delta_a        = self.training.aileron_deflection
+                    len_d_a        = len(delta_a)
+                    self.aileron_flag   = True 
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
                     delta_e        = self.training.elevator_deflection
+                    len_d_e        = len(delta_e)   
+                    self.elevator_flag = True 
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
                     delta_r        = self.training.rudder_deflection
+                    self.rudder_flag    = True
+                    len_d_r        = len(delta_r)  
+                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
+                    delta_s        = self.training.slat_deflection
+                    len_d_s        = len(delta_s)   
+                    self.slat_flag = True 
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    delta_f        = self.training.flap_deflection
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    delta_s        = self.training.slat_deflection         
+                    delta_f        = self.training.rudder_deflection
+                    self.flap_flag    = True
+                    len_d_f        = len(delta_f)  
                  
         u              = self.training.u
         v              = self.training.v
@@ -968,21 +599,7 @@ class Vortex_Lattice(Stability):
         len_w          = len(w)
         len_pitch_rate = len(pitch_rate)
         len_roll_rate  = len(roll_rate) 
-        len_yaw_rate   = len(yaw_rate)
-        
-        # only compute derivative if control surface exists
-        for wing in self.geometry.wings:  
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                    len_d_a        = len(delta_a)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                    len_d_e        = len(delta_e)   
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                    len_d_r        = len(delta_r) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                    len_d_f        = len(delta_f)  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    len_d_s        = len(delta_s)
+        len_yaw_rate   = len(yaw_rate) 
         
         # --------------------------------------------------------------------------------------------------------------
         # Alpha
@@ -993,25 +610,12 @@ class Vortex_Lattice(Stability):
         AoAs       = np.atleast_2d(np.tile(AoA,len_Mach).T.flatten()).T 
         Machs      = np.atleast_2d(np.repeat(Mach,len_AoA)).T        
         
-        # reset conditions 
+        # reset conditions  
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs)   
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)  
+        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs 
         
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res, S_ref,b_ref,c_ref,X_ref,Y_ref ,Z_ref = evaluate_VLM(conditions,settings,geometry)
         
         Clift_alpha   = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
         Cdrag_alpha   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
@@ -1020,452 +624,188 @@ class Vortex_Lattice(Stability):
         CZ_alpha      = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
         CL_alpha      = np.reshape(CL_res,(len_Mach,len_AoA)).T 
         CM_alpha      = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-        CN_alpha      = np.reshape(CN_res,(len_Mach,len_AoA)).T
+        CN_alpha      = np.reshape(CN_res,(len_Mach,len_AoA)).T 
         
+        
+        # Angle of Attack at 0 Degrees 
+        Clift_alpha_0   =  np.tile(Clift_alpha[4][None,:],(2,1))
+        Cdrag_alpha_0   =  np.tile(Cdrag_alpha[4][None,:],(2,1))
+        CX_alpha_0      =  np.tile(CX_alpha[4][None,:],(2, 1)) 
+        CY_alpha_0      =  np.tile(CY_alpha[4][None,:],(2, 1)) 
+        CZ_alpha_0      =  np.tile(CZ_alpha[4][None,:],(2, 1)) 
+        CL_alpha_0      =  np.tile(CL_alpha[4][None,:],(2, 1)) 
+        CM_alpha_0      =  np.tile(CM_alpha[4][None,:],(2, 1)) 
+        CN_alpha_0      =  np.tile(CN_alpha[4][None,:],(2, 1))
+        
+        
+        self.S_ref = S_ref
+        self.b_ref = b_ref
+        self.c_ref = c_ref
+        self.X_ref = X_ref
+        self.Y_ref = Y_ref
+        self.Z_ref = Z_ref
+        self.aspect_ratio = (b_ref ** 2) / S_ref 
+        oswald_efficiency =  (Clift_res**2)/(np.pi* self.aspect_ratio *Cdrag_res) 
+        oswald_efficiency = np.reshape(oswald_efficiency,(len_Mach,len_AoA)).T 
         # --------------------------------------------------------------------------------------------------------------
         # Beta 
         # --------------------------------------------------------------------------------------------------------------
         Betas         = np.atleast_2d(np.tile(Beta,len_Mach).T.flatten()).T 
         Machs         = np.atleast_2d(np.repeat(Mach,len_Beta)).T        
-
+ 
         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas  
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs) 
+        conditions.expand_rows(rows= len(Machs))
+        conditions.freestream.mach_number               = Machs 
+        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+        conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas   
         
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
         
-        Clift_beta = np.reshape(Clift_res,(len_Mach,len_Beta)).T 
-        Cdrag_beta = np.reshape(Cdrag_res,(len_Mach,len_Beta)).T                                 
-        CX_beta = np.reshape(CX_res,(len_Mach,len_Beta)).T 
-        CY_beta = np.reshape(CY_res,(len_Mach,len_Beta)).T 
-        CZ_beta = np.reshape(CZ_res,(len_Mach,len_Beta)).T 
-        CL_beta = np.reshape(CL_res,(len_Mach,len_Beta)).T 
-        CM_beta = np.reshape(CM_res,(len_Mach,len_Beta)).T 
-        CN_beta = np.reshape(CN_res,(len_Mach,len_Beta)).T
-        
-
-        # --------------------------------------------------------------------------------------------------------------
-        # Aileron 
-        # --------------------------------------------------------------------------------------------------------------         
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:     
-                        
-                    Delta_a_s     = np.atleast_2d(np.tile(delta_a,len_Mach).T.flatten()).T 
-                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_a)).T    
-                
-                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.freestream.mach_number               = Machs
-                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-                    conditions.control_surfaces.aileron.deflection  = np.ones_like(Machs) *Delta_a_s
-                    conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-                    conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-                    conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-                    #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-                    conditions.freestream.u                         = np.zeros_like(Machs)
-                    conditions.freestream.v                         = np.zeros_like(Machs)
-                    conditions.freestream.w                         = np.zeros_like(Machs)
-                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-                    conditions.freestream.velocity                  = np.zeros_like(Machs)
-                    
-                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-                    
-                    Clift_d_a = np.reshape(Clift_res,(len_Mach,len_d_a)).T 
-                    Cdrag_d_a = np.reshape(Cdrag_res,(len_Mach,len_d_a)).T                                 
-                    CX_d_a    = np.reshape(CX_res,(len_Mach,len_d_a)).T 
-                    CY_d_a    = np.reshape(CY_res,(len_Mach,len_d_a)).T 
-                    CZ_d_a    = np.reshape(CZ_res,(len_Mach,len_d_a)).T 
-                    CL_d_a    = np.reshape(CL_res,(len_Mach,len_d_a)).T 
-                    CM_d_a    = np.reshape(CM_res,(len_Mach,len_d_a)).T 
-                    CN_d_a    = np.reshape(CN_res,(len_Mach,len_d_a)).T         
-
-        # --------------------------------------------------------------------------------------------------------------
-        # Elevator 
-        # --------------------------------------------------------------------------------------------------------------       
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    
-                    Delta_e_s     = np.atleast_2d(np.tile(delta_e,len_Mach).T.flatten()).T 
-                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_e)).T        
-                        
-                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.freestream.mach_number               = Machs
-                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-                    conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-                    conditions.control_surfaces.elevator.deflection = np.ones_like(Machs)*Delta_e_s
-                    conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-                    conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-                    #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-                    conditions.freestream.u                         = np.zeros_like(Machs)
-                    conditions.freestream.v                         = np.zeros_like(Machs)
-                    conditions.freestream.w                         = np.zeros_like(Machs)
-                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-                    conditions.freestream.velocity                  = np.zeros_like(Machs)
-                    
-                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-                    
-                    Clift_d_e = np.reshape(Clift_res,(len_Mach,len_d_e)).T 
-                    Cdrag_d_e = np.reshape(Cdrag_res,(len_Mach,len_d_e)).T                                 
-                    CX_d_e    = np.reshape(CX_res,(len_Mach,len_d_e)).T 
-                    CY_d_e    = np.reshape(CY_res,(len_Mach,len_d_e)).T 
-                    CZ_d_e    = np.reshape(CZ_res,(len_Mach,len_d_e)).T 
-                    CL_d_e    = np.reshape(CL_res,(len_Mach,len_d_e)).T 
-                    CM_d_e    = np.reshape(CM_res,(len_Mach,len_d_e)).T 
-                    CN_d_e    = np.reshape(CN_res,(len_Mach,len_d_e)).T       
-                        
-        # --------------------------------------------------------------------------------------------------------------
-        # Rudder 
-        # --------------------------------------------------------------------------------------------------------------      
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:
-                    
-                    Delta_r_s     = np.atleast_2d(np.tile(delta_r,len_Mach).T.flatten()).T 
-                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_r)).T        
-                            
-                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.freestream.mach_number               = Machs
-                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-                    conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-                    conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-                    conditions.control_surfaces.rudder.deflection   = np.ones_like(Machs)*Delta_r_s
-                    conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-                    #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-                    conditions.freestream.u                         = np.zeros_like(Machs)
-                    conditions.freestream.v                         = np.zeros_like(Machs)
-                    conditions.freestream.w                         = np.zeros_like(Machs)
-                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-                    conditions.freestream.velocity                  = np.zeros_like(Machs)
-                    
-                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
-                
-                    Clift_d_r = np.reshape(Clift_res,(len_Mach,len_d_r)).T 
-                    Cdrag_d_r = np.reshape(Cdrag_res,(len_Mach,len_d_r)).T                                 
-                    CX_d_r    = np.reshape(CX_res,(len_Mach,len_d_r)).T 
-                    CY_d_r    = np.reshape(CY_res,(len_Mach,len_d_r)).T 
-                    CZ_d_r    = np.reshape(CZ_res,(len_Mach,len_d_r)).T 
-                    CL_d_r    = np.reshape(CL_res,(len_Mach,len_d_r)).T 
-                    CM_d_r    = np.reshape(CM_res,(len_Mach,len_d_r)).T 
-                    CN_d_r    = np.reshape(CN_res,(len_Mach,len_d_r)).T
-                        
-        # --------------------------------------------------------------------------------------------------------------
-        # Flap 
-        # --------------------------------------------------------------------------------------------------------------    
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:
-                    
-                    Delta_f_s     = np.atleast_2d(np.tile(delta_f, len_Mach).T.flatten()).T 
-                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_f)).T          
-            
-                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.freestream.mach_number               = Machs
-                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-                    conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-                    conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-                    conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-                    conditions.control_surfaces.flap.deflection     = np.ones_like(Machs)*Delta_f_s
-                    #conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-                    conditions.freestream.u                         = np.zeros_like(Machs)
-                    conditions.freestream.v                         = np.zeros_like(Machs)
-                    conditions.freestream.w                         = np.zeros_like(Machs)
-                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-                    conditions.freestream.velocity                  = np.zeros_like(Machs)
-                    
-                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
-            
-                    Clift_d_f = np.reshape(Clift_res,(len_Mach,len_d_f)).T 
-                    Cdrag_d_f = np.reshape(Cdrag_res,(len_Mach,len_d_f)).T                                 
-                    CX_d_f    = np.reshape(CX_res,(len_Mach,len_d_f)).T 
-                    CY_d_f    = np.reshape(CY_res,(len_Mach,len_d_f)).T 
-                    CZ_d_f    = np.reshape(CZ_res,(len_Mach,len_d_f)).T 
-                    CL_d_f    = np.reshape(CL_res,(len_Mach,len_d_f)).T 
-                    CM_d_f    = np.reshape(CM_res,(len_Mach,len_d_f)).T 
-                    CN_d_f    = np.reshape(CN_res,(len_Mach,len_d_f)).T
-                        
-        # --------------------------------------------------------------------------------------------------------------
-        # Slat 
-        # --------------------------------------------------------------------------------------------------------------    
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
-                    
-                    Delta_s_s     = np.atleast_2d(np.tile(delta_s, len_Mach).T.flatten()).T 
-                    Machs         = np.atleast_2d(np.repeat(Mach,len_d_s)).T          
-            
-                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.freestream.mach_number               = Machs
-                    conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-                    conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-                    conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-                    conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-                    conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-                    conditions.control_surfaces.slat.deflection     = np.ones_like(Machs)*Delta_s_s
-                    conditions.freestream.u                         = np.zeros_like(Machs)
-                    conditions.freestream.v                         = np.zeros_like(Machs)
-                    conditions.freestream.w                         = np.zeros_like(Machs)
-                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-                    conditions.freestream.velocity                  = np.zeros_like(Machs)
-                    
-                    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)      
-                
-                    Clift_d_s = np.reshape(Clift_res,(len_Mach,len_d_s)).T 
-                    Cdrag_d_s = np.reshape(Cdrag_res,(len_Mach,len_d_s)).T                                 
-                    CX_d_s    = np.reshape(CX_res,(len_Mach,len_d_s)).T 
-                    CY_d_s    = np.reshape(CY_res,(len_Mach,len_d_s)).T 
-                    CZ_d_s    = np.reshape(CZ_res,(len_Mach,len_d_s)).T 
-                    CL_d_s    = np.reshape(CL_res,(len_Mach,len_d_s)).T 
-                    CM_d_s    = np.reshape(CM_res,(len_Mach,len_d_s)).T 
-                    CN_d_s    = np.reshape(CN_res,(len_Mach,len_d_s)).T                          
-                
-        # -------------------------------------------------------               
+        Clift_beta = np.reshape(Clift_res,(len_Mach,len_Beta)).T - Clift_alpha_0
+        Cdrag_beta = np.reshape(Cdrag_res,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
+        CX_beta    = np.reshape(CX_res,(len_Mach,len_Beta)).T    - CX_alpha_0   
+        CY_beta    = np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0   
+        CZ_beta    = np.reshape(CZ_res,(len_Mach,len_Beta)).T    - CZ_alpha_0   
+        CL_beta    = np.reshape(CL_res,(len_Mach,len_Beta)).T    - CL_alpha_0   
+        CM_beta    = np.reshape(CM_res,(len_Mach,len_Beta)).T    - CM_alpha_0   
+        CN_beta    = np.reshape(CN_res,(len_Mach,len_Beta)).T    - CN_alpha_0 
+     
+        # -------------------------------------------------------      
         # Velocity u 
         # -------------------------------------------------------
         u_s     = np.atleast_2d(np.tile(u, len_Mach).T.flatten()).T 
-        Machs         = np.atleast_2d(np.repeat(Mach,len_u)).T                  
+        Machs   = np.atleast_2d(np.repeat(Mach,len_u)).T                   
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+        conditions.freestream.mach_number               = Machs + Machs*u_s 
         
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.ones_like(Machs)*u_s
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)
-        conditions.freestream.mach_number               = Machs + conditions.freestream.u/343
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
         
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-        
-        Clift_u     = np.reshape(Clift_res,(len_Mach,len_u)).T 
-        Cdrag_u     = np.reshape(Cdrag_res,(len_Mach,len_u)).T 
-        CX_u        = np.reshape(CX_res,(len_Mach,len_u)).T  
-        CY_u        = np.reshape(CY_res,(len_Mach,len_u)).T  
-        CZ_u        = np.reshape(CZ_res,(len_Mach,len_u)).T  
-        CL_u        = np.reshape(CL_res,(len_Mach,len_u)).T  
-        CM_u        = np.reshape(CM_res,(len_Mach,len_u)).T  
-        CN_u        = np.reshape(CN_res,(len_Mach,len_u)).T
+        Clift_u     = np.reshape(Clift_res,(len_Mach,len_u)).T - Clift_alpha_0
+        Cdrag_u     = np.reshape(Cdrag_res,(len_Mach,len_u)).T - Cdrag_alpha_0
+        CX_u        = np.reshape(CX_res,(len_Mach,len_u)).T    - CX_alpha_0   
+        CY_u        = np.reshape(CY_res,(len_Mach,len_u)).T    - CY_alpha_0   
+        CZ_u        = np.reshape(CZ_res,(len_Mach,len_u)).T    - CZ_alpha_0   
+        CL_u        = np.reshape(CL_res,(len_Mach,len_u)).T    - CL_alpha_0   
+        CM_u        = np.reshape(CM_res,(len_Mach,len_u)).T    - CM_alpha_0   
+        CN_u        = np.reshape(CN_res,(len_Mach,len_u)).T    - CN_alpha_0   
         
         # -------------------------------------------------------               
         # Velocity v 
         # -------------------------------------------------------
         v_s     = np.atleast_2d(np.tile(v, len_Mach).T.flatten()).T 
         Machs         = np.atleast_2d(np.repeat(Mach,len_v)).T    
-        
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.ones_like(Machs)*v_s
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)
+ 
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
         conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta             = np.arcsin(conditions.freestream.v/(conditions.freestream.mach_number*343))         
+        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+        conditions.aerodynamics.angles.beta             = np.arcsin(v_s)       
         
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
         
-        Clift_v     = np.reshape(Clift_res,(len_Mach,len_v)).T 
-        Cdrag_v     = np.reshape(Cdrag_res,(len_Mach,len_v)).T 
-        CX_v        = np.reshape(CX_res,(len_Mach,len_v)).T  
-        CY_v        = np.reshape(CY_res,(len_Mach,len_v)).T  
-        CZ_v        = np.reshape(CZ_res,(len_Mach,len_v)).T  
-        CL_v        = np.reshape(CL_res,(len_Mach,len_v)).T  
-        CM_v        = np.reshape(CM_res,(len_Mach,len_v)).T  
-        CN_v        = np.reshape(CN_res,(len_Mach,len_v)).T
+        Clift_v     = np.reshape(Clift_res,(len_Mach,len_v)).T - Clift_alpha_0
+        Cdrag_v     = np.reshape(Cdrag_res,(len_Mach,len_v)).T - Cdrag_alpha_0
+        CX_v        = np.reshape(CX_res,(len_Mach,len_v)).T    - CX_alpha_0   
+        CY_v        = np.reshape(CY_res,(len_Mach,len_v)).T    - CY_alpha_0   
+        CZ_v        = np.reshape(CZ_res,(len_Mach,len_v)).T    - CZ_alpha_0   
+        CL_v        = np.reshape(CL_res,(len_Mach,len_v)).T    - CL_alpha_0   
+        CM_v        = np.reshape(CM_res,(len_Mach,len_v)).T    - CM_alpha_0   
+        CN_v        = np.reshape(CN_res,(len_Mach,len_v)).T    - CN_alpha_0   
         
         # -------------------------------------------------------               
         # Velocity w 
         # -------------------------------------------------------
         w_s     = np.atleast_2d(np.tile(w, len_Mach).T.flatten()).T 
-        Machs         = np.atleast_2d(np.repeat(Mach,len_w)).T    
+        Machs   = np.atleast_2d(np.repeat(Mach,len_w)).T
+         
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
+        conditions.freestream.mach_number               = Machs 
+        conditions.aerodynamics.angles.alpha            = np.arcsin(w_s)
         
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.ones_like(Machs)*w_s
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
-        conditions.freestream.velocity                  = np.zeros_like(Machs)
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.alpha            = np.arcsin(conditions.freestream.w/(conditions.freestream.mach_number*343))
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
         
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
-        
-        Clift_w     = np.reshape(Clift_res,(len_Mach,len_w)).T 
-        Cdrag_w     = np.reshape(Cdrag_res,(len_Mach,len_w)).T 
-        CX_w        = np.reshape(CX_res,(len_Mach,len_w)).T  
-        CY_w        = np.reshape(CY_res,(len_Mach,len_w)).T  
-        CZ_w        = np.reshape(CZ_res,(len_Mach,len_w)).T  
-        CL_w        = np.reshape(CL_res,(len_Mach,len_w)).T  
-        CM_w        = np.reshape(CM_res,(len_Mach,len_w)).T  
-        CN_w        = np.reshape(CN_res,(len_Mach,len_w)).T            
+        Clift_w     = np.reshape(Clift_res,(len_Mach,len_w)).T - Clift_alpha_0
+        Cdrag_w     = np.reshape(Cdrag_res,(len_Mach,len_w)).T - Cdrag_alpha_0
+        CX_w        = np.reshape(CX_res,(len_Mach,len_w)).T    - CX_alpha_0   
+        CY_w        = np.reshape(CY_res,(len_Mach,len_w)).T    - CY_alpha_0   
+        CZ_w        = np.reshape(CZ_res,(len_Mach,len_w)).T    - CZ_alpha_0   
+        CL_w        = np.reshape(CL_res,(len_Mach,len_w)).T    - CL_alpha_0   
+        CM_w        = np.reshape(CM_res,(len_Mach,len_w)).T    - CM_alpha_0   
+        CN_w        = np.reshape(CN_res,(len_Mach,len_w)).T    - CN_alpha_0           
                         
         # -------------------------------------------------------               
         # Pitch Rate 
         # -------------------------------------------------------
         q_s     = np.atleast_2d(np.tile(pitch_rate, len_Mach).T.flatten()).T 
-        Machs         = np.atleast_2d(np.repeat(Mach,len_pitch_rate)).T
-        
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.ones_like(Machs)*q_s      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
+        Machs   = np.atleast_2d(np.repeat(Mach,len_pitch_rate)).T
+ 
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+        conditions.freestream.mach_number               = Machs 
+        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+        conditions.static_stability.pitch_rate          = np.ones_like(Machs)*q_s     
         conditions.freestream.velocity                  = Machs * 343 # speed of sound   
         
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
         
-        Clift_pitch_rate     = np.reshape(Clift_res,(len_Mach,len_pitch_rate)).T 
-        Cdrag_pitch_rate     = np.reshape(Cdrag_res,(len_Mach,len_pitch_rate)).T 
-        CX_pitch_rate        = np.reshape(CX_res,(len_Mach,len_pitch_rate)).T  
-        CY_pitch_rate        = np.reshape(CY_res,(len_Mach,len_pitch_rate)).T  
-        CZ_pitch_rate        = np.reshape(CZ_res,(len_Mach,len_pitch_rate)).T  
-        CL_pitch_rate        = np.reshape(CL_res,(len_Mach,len_pitch_rate)).T  
-        CM_pitch_rate        = np.reshape(CM_res,(len_Mach,len_pitch_rate)).T  
-        CN_pitch_rate        = np.reshape(CN_res,(len_Mach,len_pitch_rate)).T  
+        Clift_pitch_rate     = np.reshape(Clift_res,(len_Mach,len_pitch_rate)).T - Clift_alpha_0
+        Cdrag_pitch_rate     = np.reshape(Cdrag_res,(len_Mach,len_pitch_rate)).T - Cdrag_alpha_0
+        CX_pitch_rate        = np.reshape(CX_res,(len_Mach,len_pitch_rate)).T    - CX_alpha_0   
+        CY_pitch_rate        = np.reshape(CY_res,(len_Mach,len_pitch_rate)).T    - CY_alpha_0   
+        CZ_pitch_rate        = np.reshape(CZ_res,(len_Mach,len_pitch_rate)).T    - CZ_alpha_0   
+        CL_pitch_rate        = np.reshape(CL_res,(len_Mach,len_pitch_rate)).T    - CL_alpha_0   
+        CM_pitch_rate        = np.reshape(CM_res,(len_Mach,len_pitch_rate)).T    - CM_alpha_0   
+        CN_pitch_rate        = np.reshape(CN_res,(len_Mach,len_pitch_rate)).T    - CN_alpha_0   
     
         # -------------------------------------------------------               
         # Roll  Rate 
         # -------------------------------------------------------    
         p_s     = np.atleast_2d(np.tile(roll_rate, len_Mach).T.flatten()).T 
         Machs         = np.atleast_2d(np.repeat(Mach,len_roll_rate)).T
-        
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s
-        conditions.static_stability.yaw_rate            = np.zeros_like(Machs)
+ 
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+        conditions.freestream.mach_number               = Machs  
+        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12 
+        conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s 
         conditions.freestream.velocity                  = Machs * 343 # speed of sound           
             
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)  
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)  
             
-        Clift_roll_rate     = np.reshape(Clift_res,(len_Mach,len_roll_rate)).T 
-        Cdrag_roll_rate     = np.reshape(Cdrag_res,(len_Mach,len_roll_rate)).T 
-        CX_roll_rate        = np.reshape(CX_res,(len_Mach,len_roll_rate)).T  
-        CY_roll_rate        = np.reshape(CY_res,(len_Mach,len_roll_rate)).T  
-        CZ_roll_rate        = np.reshape(CZ_res,(len_Mach,len_roll_rate)).T  
-        CL_roll_rate        = np.reshape(CL_res,(len_Mach,len_roll_rate)).T  
-        CM_roll_rate        = np.reshape(CM_res,(len_Mach,len_roll_rate)).T  
-        CN_roll_rate        = np.reshape(CN_res,(len_Mach,len_roll_rate)).T        
+        Clift_roll_rate     = np.reshape(Clift_res,(len_Mach,len_roll_rate)).T - Clift_alpha_0
+        Cdrag_roll_rate     = np.reshape(Cdrag_res,(len_Mach,len_roll_rate)).T - Cdrag_alpha_0
+        CX_roll_rate        = np.reshape(CX_res,(len_Mach,len_roll_rate)).T    - CX_alpha_0   
+        CY_roll_rate        = np.reshape(CY_res,(len_Mach,len_roll_rate)).T    - CY_alpha_0   
+        CZ_roll_rate        = np.reshape(CZ_res,(len_Mach,len_roll_rate)).T    - CZ_alpha_0   
+        CL_roll_rate        = np.reshape(CL_res,(len_Mach,len_roll_rate)).T    - CL_alpha_0   
+        CM_roll_rate        = np.reshape(CM_res,(len_Mach,len_roll_rate)).T    - CM_alpha_0   
+        CN_roll_rate        = np.reshape(CN_res,(len_Mach,len_roll_rate)).T    - CN_alpha_0       
 
         # -------------------------------------------------------               
         # Yaw Rate 
         # -------------------------------------------------------        
         r_s     = np.atleast_2d(np.tile(yaw_rate, len_Mach).T.flatten()).T 
         Machs         = np.atleast_2d(np.repeat(Mach,len_yaw_rate)).T
-
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-        conditions.freestream.mach_number               = Machs
-        conditions.aerodynamics.angles.alpha            = np.zeros_like(Machs)
-        conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-        conditions.control_surfaces.aileron.deflection  = np.zeros_like(Machs) 
-        conditions.control_surfaces.elevator.deflection = np.zeros_like(Machs)
-        conditions.control_surfaces.rudder.deflection   = np.zeros_like(Machs)
-        conditions.control_surfaces.flap.deflection     = np.zeros_like(Machs)
-        conditions.control_surfaces.slat.deflection     = np.zeros_like(Machs)
-        conditions.freestream.u                         = np.zeros_like(Machs)
-        conditions.freestream.v                         = np.zeros_like(Machs)
-        conditions.freestream.w                         = np.zeros_like(Machs)
-        conditions.static_stability.pitch_rate          = np.zeros_like(Machs)      
-        conditions.static_stability.roll_rate           = np.zeros_like(Machs)
+ 
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+        conditions.freestream.mach_number               = Machs 
         conditions.static_stability.yaw_rate            = np.ones_like(Machs)*r_s
         conditions.freestream.velocity                  = Machs * 343 # speed of sound  
         
-        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res = evaluate_VLM(conditions,settings,geometry)
+        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
         
-        Clift_yaw_rate     = np.reshape(Clift_res,(len_Mach,len_yaw_rate)).T 
-        Cdrag_yaw_rate     = np.reshape(Cdrag_res,(len_Mach,len_yaw_rate)).T 
-        CX_yaw_rate        = np.reshape(CX_res,(len_Mach,len_yaw_rate)).T  
-        CY_yaw_rate        = np.reshape(CY_res,(len_Mach,len_yaw_rate)).T  
-        CZ_yaw_rate        = np.reshape(CZ_res,(len_Mach,len_yaw_rate)).T  
-        CL_yaw_rate        = np.reshape(CL_res,(len_Mach,len_yaw_rate)).T  
-        CM_yaw_rate        = np.reshape(CM_res,(len_Mach,len_yaw_rate)).T  
-        CN_yaw_rate        = np.reshape(CN_res,(len_Mach,len_yaw_rate)).T
+        Clift_yaw_rate     = np.reshape(Clift_res,(len_Mach,len_yaw_rate)).T - Clift_alpha_0
+        Cdrag_yaw_rate     = np.reshape(Cdrag_res,(len_Mach,len_yaw_rate)).T - Cdrag_alpha_0
+        CX_yaw_rate        = np.reshape(CX_res,(len_Mach,len_yaw_rate)).T    - CX_alpha_0   
+        CY_yaw_rate        = np.reshape(CY_res,(len_Mach,len_yaw_rate)).T    - CY_alpha_0   
+        CZ_yaw_rate        = np.reshape(CZ_res,(len_Mach,len_yaw_rate)).T    - CZ_alpha_0   
+        CL_yaw_rate        = np.reshape(CL_res,(len_Mach,len_yaw_rate)).T    - CL_alpha_0   
+        CM_yaw_rate        = np.reshape(CM_res,(len_Mach,len_yaw_rate)).T    - CM_alpha_0   
+        CN_yaw_rate        = np.reshape(CN_res,(len_Mach,len_yaw_rate)).T    - CN_alpha_0   
             
+        # STABILITY COEFFICIENTS 
+        training.oswald_efficiency  = oswald_efficiency
         training.Clift_alpha    = Clift_alpha   
         training.Clift_beta     = Clift_beta
-    
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.Clift_delta_a  = Clift_d_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.Clift_delta_e  = Clift_d_e
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.Clift_delta_r  = Clift_d_r
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.Clift_delta_f  = Clift_d_f 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.Clift_delta_s  = Clift_d_s
                     
         training.Clift_u        = Clift_u       
         training.Clift_v        = Clift_v       
@@ -1474,21 +814,7 @@ class Vortex_Lattice(Stability):
         training.Clift_q        = Clift_pitch_rate       
         training.Clift_r        = Clift_yaw_rate       
         training.Cdrag_alpha    = Cdrag_alpha   
-        training.Cdrag_beta     = Cdrag_beta
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.Cdrag_delta_a  = Cdrag_d_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.Cdrag_delta_e  = Cdrag_d_e
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.Cdrag_delta_r  = Cdrag_d_r
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.Cdrag_delta_f  = Cdrag_d_f 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.Cdrag_delta_s  = Cdrag_d_s
-                    
+        training.Cdrag_beta     = Cdrag_beta 
         training.Cdrag_u        = Cdrag_u       
         training.Cdrag_v        = Cdrag_v       
         training.Cdrag_w        = Cdrag_w       
@@ -1496,20 +822,7 @@ class Vortex_Lattice(Stability):
         training.Cdrag_q        = Cdrag_pitch_rate       
         training.Cdrag_r        = Cdrag_yaw_rate         
         training.CX_alpha       = CX_alpha      
-        training.CX_beta        = CX_beta
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.CX_delta_a  = CX_d_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.CX_delta_e  = CX_d_e
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.CX_delta_r  = CX_d_r
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.CX_delta_f  = CX_d_f 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.CX_delta_s  = CX_d_s
+        training.CX_beta        = CX_beta 
                        
         training.CX_u           = CX_u          
         training.CX_v           = CX_v          
@@ -1519,19 +832,7 @@ class Vortex_Lattice(Stability):
         training.CX_r           = CX_yaw_rate            
         training.CY_alpha       = CY_alpha      
         training.CY_beta        = CY_beta
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.CY_delta_a  = CY_d_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.CY_delta_e  = CY_d_e
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.CY_delta_r  = CY_d_r
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.CY_delta_f  = CY_d_f 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.CY_delta_s  = CY_d_s
+         
                         
         training.CY_u           = CY_u          
         training.CY_v           = CY_v          
@@ -1541,20 +842,7 @@ class Vortex_Lattice(Stability):
         training.CY_r           = CY_yaw_rate             
         training.CZ_alpha       = CZ_alpha      
         training.CZ_beta        = CZ_beta
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.CZ_delta_a  = CZ_d_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.CZ_delta_e  = CZ_d_e
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.CZ_delta_r  = CZ_d_r
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.CZ_delta_f  = CZ_d_f 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.CZ_delta_s  = CZ_d_s
-                                  
+          
         training.CZ_u           = CZ_u          
         training.CZ_v           = CZ_v          
         training.CZ_w           = CZ_w          
@@ -1563,19 +851,6 @@ class Vortex_Lattice(Stability):
         training.CZ_r           = CZ_yaw_rate            
         training.CL_alpha       = CL_alpha      
         training.CL_beta        = CL_beta
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.CL_delta_a  = CL_d_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.CL_delta_e  = CL_d_e
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.CL_delta_r  = CL_d_r
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.CL_delta_f  = CL_d_f 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.CL_delta_s  = CL_d_s
                     
         training.CL_u           = CL_u          
         training.CL_v           = CL_v          
@@ -1584,20 +859,7 @@ class Vortex_Lattice(Stability):
         training.CL_q           = CL_pitch_rate          
         training.CL_r           = CL_yaw_rate            
         training.CM_alpha       = CM_alpha      
-        training.CM_beta        = CM_beta
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.CM_delta_a  = CM_d_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.CM_delta_e  = CM_d_e
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.CM_delta_r  = CM_d_r
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.CM_delta_f  = CM_d_f 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.CM_delta_s  = CM_d_s
+        training.CM_beta        = CM_beta 
                     
         training.CM_u           = CM_u          
         training.CM_v           = CM_v          
@@ -1606,44 +868,19 @@ class Vortex_Lattice(Stability):
         training.CM_q           = CM_pitch_rate            
         training.CM_r           = CM_yaw_rate              
         training.CN_alpha       = CN_alpha      
-        training.CN_beta        = CN_beta
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.CN_delta_a  = CN_d_a
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.CN_delta_e  = CN_d_e
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.CN_delta_r  = CN_d_r
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.CN_delta_f  = CN_d_f 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.CN_delta_s  = CN_d_s
+        training.CN_beta        = CN_beta 
                     
         training.CN_u           = CN_u          
         training.CN_v           = CN_v          
         training.CN_w           = CN_w          
         training.CN_p           = CN_roll_rate            
         training.CN_q           = CN_pitch_rate           
-        training.CN_r           = CN_yaw_rate             
-        
-        training.dClift_dalpha = (Clift_alpha[0,:] - Clift_alpha[1,:]) / (AoA[0] - AoA[1])
-        training.dClift_dbeta = (Clift_beta[0,:] - Clift_beta[1,:]) / (Beta[0] - Beta[1])
+        training.CN_r           = CN_yaw_rate
+          
                 
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.dClift_ddelta_a = (Clift_d_a[0,:] - Clift_d_a[1,:]) / (delta_a[0] - delta_a[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.dClift_ddelta_e = (Clift_d_e[0,:] - Clift_d_e[1,:]) / (delta_e[0] - delta_e[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.dClift_ddelta_r = (Clift_d_r[0,:] - Clift_d_r[1,:]) / (delta_r[0] - delta_r[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.dClift_ddelta_f = (Clift_d_f[0,:] - Clift_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.dClift_ddelta_s = (Clift_d_s[0,:] - Clift_d_s[1,:]) / (delta_s[0] - delta_s[1])
-                    
+        # STABILITY DERIVATIVES 
+        training.dClift_dalpha = (Clift_alpha[0,:] - Clift_alpha[1,:]) / (AoA[0] - AoA[1])
+        training.dClift_dbeta = (Clift_beta[0,:] - Clift_beta[1,:]) / (Beta[0] - Beta[1]) 
         training.dClift_du = (Clift_u[0,:] - Clift_u[1,:]) / (u[0] - u[1])            
         training.dClift_dv = (Clift_v[0,:] - Clift_v[1,:]) / (v[0] - v[1])          
         training.dClift_dw = (Clift_w[0,:] - Clift_w[1,:]) / (w[0] - w[1])         
@@ -1652,19 +889,6 @@ class Vortex_Lattice(Stability):
         training.dClift_dr = (Clift_yaw_rate[0,:] - Clift_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                
         training.dCdrag_dalpha = (Cdrag_alpha[0,:] - Cdrag_alpha[1,:]) / (AoA[0] - AoA[1])    
         training.dCdrag_dbeta = (Cdrag_beta[0,:] - Cdrag_beta[1,:]) / (Beta[0] - Beta[1])
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.dCdrag_ddelta_a = (Cdrag_d_a[0,:] - Cdrag_d_a[1,:]) / (delta_a[0] - delta_a[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.dCdrag_ddelta_e = (Cdrag_d_e[0,:] - Cdrag_d_e[1,:]) / (delta_e[0] - delta_e[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.dCdrag_ddelta_r = (Cdrag_d_r[0,:] - Cdrag_d_r[1,:]) / (delta_r[0] - delta_r[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.dCdrag_ddelta_f = (Cdrag_d_f[0,:] - Cdrag_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.dCdrag_ddelta_s = (Cdrag_d_s[0,:] - Cdrag_d_s[1,:]) / (delta_s[0] - delta_s[1])
                     
         training.dCdrag_du = (Cdrag_u[0,:] - Cdrag_u[1,:]) / (u[0] - u[1])                     
         training.dCdrag_dv = (Cdrag_v[0,:] - Cdrag_v[1,:]) / (v[0] - v[1])                   
@@ -1673,20 +897,7 @@ class Vortex_Lattice(Stability):
         training.dCdrag_dq = (Cdrag_pitch_rate[0,:] - Cdrag_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])         
         training.dCdrag_dr = (Cdrag_yaw_rate[0,:] - Cdrag_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                 
         training.dCX_dalpha = (CX_alpha[0,:] - CX_alpha[1,:]) / (AoA[0] - AoA[1])            
-        training.dCX_dbeta = (CX_beta[0,:] - CX_beta[1,:]) / (Beta[0] - Beta[1])
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.dCX_ddelta_a = (CX_d_a[0,:] - CX_d_a[1,:]) / (delta_a[0] - delta_a[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.dCX_ddelta_e = (CX_d_e[0,:] - CX_d_e[1,:]) / (delta_e[0] - delta_e[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.dCX_ddelta_r = (CX_d_r[0,:] - CX_d_r[1,:]) / (delta_r[0] - delta_r[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.dCX_ddelta_f = (CX_d_f[0,:] - CX_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.dCX_ddelta_s = (CX_d_s[0,:] - CX_d_s[1,:]) / (delta_s[0] - delta_s[1])
+        training.dCX_dbeta = (CX_beta[0,:] - CX_beta[1,:]) / (Beta[0] - Beta[1]) 
                     
         training.dCX_du = (CX_u[0,:] - CX_u[1,:]) / (u[0] - u[1])                                 
         training.dCX_dv = (CX_v[0,:] - CX_v[1,:]) / (v[0] - v[1])                               
@@ -1696,19 +907,7 @@ class Vortex_Lattice(Stability):
         training.dCX_dr = (CX_yaw_rate[0,:] - CX_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                    
         training.dCY_dalpha = (CY_alpha[0,:] - CY_alpha[1,:]) / (AoA[0] - AoA[1])         
         training.dCY_dbeta = (CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1]) 
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.dCY_ddelta_a = (CY_d_a[0,:] - CY_d_a[1,:]) / (delta_a[0] - delta_a[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.dCY_ddelta_e = (CY_d_e[0,:] - CY_d_e[1,:]) / (delta_e[0] - delta_e[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.dCY_ddelta_r = (CY_d_r[0,:] - CY_d_r[1,:]) / (delta_r[0] - delta_r[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.dCY_ddelta_f = (CY_d_f[0,:] - CY_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.dCY_ddelta_s = (CY_d_s[0,:] - CY_d_s[1,:]) / (delta_s[0] - delta_s[1])
+                
                     
         training.dCY_du = (CY_u[0,:] - CY_u[1,:]) / (u[0] - u[1])                                             
         training.dCY_dv = (CY_v[0,:] - CY_v[1,:]) / (v[0] - v[1])                                           
@@ -1719,18 +918,6 @@ class Vortex_Lattice(Stability):
         training.dCZ_dalpha = (CZ_alpha[0,:] - CZ_alpha[1,:]) / (AoA[0] - AoA[1])             
         training.dCZ_dbeta = (CZ_beta[0,:] - CZ_beta[1,:]) / (Beta[0] - Beta[1])
         
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.dCZ_ddelta_a = (CZ_d_a[0,:] - CZ_d_a[1,:]) / (delta_a[0] - delta_a[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.dCZ_ddelta_e = (CZ_d_e[0,:] - CZ_d_e[1,:]) / (delta_e[0] - delta_e[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.dCZ_ddelta_r = (CZ_d_r[0,:] - CZ_d_r[1,:]) / (delta_r[0] - delta_r[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.dCZ_ddelta_f = (CZ_d_f[0,:] - CZ_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.dCZ_ddelta_s = (CZ_d_s[0,:] - CZ_d_s[1,:]) / (delta_s[0] - delta_s[1])
                           
         training.dCZ_du = (CZ_u[0,:] - CZ_u[1,:]) / (u[0] - u[1])                                              
         training.dCZ_dv = (CZ_v[0,:] - CZ_v[1,:]) / (v[0] - v[1])                                              
@@ -1739,20 +926,8 @@ class Vortex_Lattice(Stability):
         training.dCZ_dq = (CZ_pitch_rate[0,:] - CZ_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])            
         training.dCZ_dr = (CZ_yaw_rate[0,:] - CZ_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                    
         training.dCL_dalpha = (CL_alpha[0,:] - CL_alpha[1,:]) / (AoA[0] - AoA[1])         
-        training.dCL_dbeta = (CL_beta[0,:] - CL_beta[1,:]) / (Beta[0] - Beta[1])
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.dCL_ddelta_a = (CL_d_a[0,:] - CL_d_a[1,:]) / (delta_a[0] - delta_a[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.dCL_ddelta_e = (CL_d_e[0,:] - CL_d_e[1,:]) / (delta_e[0] - delta_e[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.dCL_ddelta_r = (CL_d_r[0,:] - CL_d_r[1,:]) / (delta_r[0] - delta_r[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.dCL_ddelta_f = (CL_d_f[0,:] - CL_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.dCL_ddelta_s = (CL_d_s[0,:] - CL_d_s[1,:]) / (delta_s[0] - delta_s[1])
+        training.dCL_dbeta = (CL_beta[0,:] - CL_beta[1,:]) / (Beta[0] - Beta[1])                
+                    
                     
         training.dCL_du = (CL_u[0,:] - CL_u[1,:]) / (u[0] - u[1])                                              
         training.dCL_dv = (CL_v[0,:] - CL_v[1,:]) / (v[0] - v[1])                                              
@@ -1761,20 +936,7 @@ class Vortex_Lattice(Stability):
         training.dCL_dq = (CL_pitch_rate[0,:] - CL_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])            
         training.dCL_dr = (CL_yaw_rate[0,:] - CL_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                    
         training.dCM_dalpha = (CM_alpha[0,:] - CM_alpha[1,:]) / (AoA[0] - AoA[1])          
-        training.dCM_dbeta = (CM_beta[0,:] - CM_beta[1,:]) / (Beta[0] - Beta[1])
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.dCM_ddelta_a = (CM_d_a[0,:] - CM_d_a[1,:]) / (delta_a[0] - delta_a[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.dCM_ddelta_e = (CM_d_e[0,:] - CM_d_e[1,:]) / (delta_e[0] - delta_e[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.dCM_ddelta_r = (CM_d_r[0,:] - CM_d_r[1,:]) / (delta_r[0] - delta_r[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.dCM_ddelta_f = (CM_d_f[0,:] - CM_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.dCM_ddelta_s = (CM_d_s[0,:] - CM_d_s[1,:]) / (delta_s[0] - delta_s[1])
+        training.dCM_dbeta = (CM_beta[0,:] - CM_beta[1,:]) / (Beta[0] - Beta[1])  
                     
         training.dCM_du = (CM_u[0,:] - CM_u[1,:]) / (u[0] - u[1])                                               
         training.dCM_dv = (CM_v[0,:] - CM_v[1,:]) / (v[0] - v[1])                                               
@@ -1784,27 +946,285 @@ class Vortex_Lattice(Stability):
         training.dCM_dr = (CM_yaw_rate[0,:] - CM_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                     
         training.dCN_dalpha = (CN_alpha[0,:] - CN_alpha[1,:]) / (AoA[0] - AoA[1])          
         training.dCN_dbeta = (CN_beta[0,:] - CN_beta[1,:]) / (Beta[0] - Beta[1]) 
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    training.dCN_ddelta_a = (CN_d_a[0,:] - CN_d_a[1,:]) / (delta_a[0] - delta_a[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    training.dCN_ddelta_e = (CN_d_e[0,:] - CN_d_e[1,:]) / (delta_e[0] - delta_e[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    training.dCN_ddelta_r = (CN_d_r[0,:] - CN_d_r[1,:]) / (delta_r[0] - delta_r[1])
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    training.dCN_ddelta_f = (CN_d_f[0,:] - CN_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    training.dCN_ddelta_s = (CN_d_s[0,:] - CN_d_s[1,:]) / (delta_s[0] - delta_s[1])
                          
         training.dCN_du = (CN_u[0,:] - CN_u[1,:]) / (u[0] - u[1])                                               
         training.dCN_dv = (CN_v[0,:] - CN_v[1,:]) / (v[0] - v[1])                                               
         training.dCN_dw = (CN_w[0,:] - CN_w[1,:]) / (w[0] - w[1])                                               
         training.dCN_dp = (CN_roll_rate[0,:] - CN_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])                 
         training.dCN_dq = (CN_pitch_rate[0,:] - CN_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])             
-        training.dCN_dr = (CN_yaw_rate[0,:] - CN_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                     
+        training.dCN_dr = (CN_yaw_rate[0,:] - CN_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])
+
+ 
+        '''  for control surfaces, subtract inflence WITHOUT control surface deflected from coefficients WITH control surfaces'''
+        
+ 
+        # --------------------------------------------------------------------------------------------------------------
+        # Aileron 
+        # --------------------------------------------------------------------------------------------------------------   
+        if self.aileron_flag:  
+            for wing in self.geometry.wings: 
+                for control_surface in wing.control_surfaces:  
+                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
+                        
+                        Clift_d_a      = np.zeros((len_d_a,len_Mach)) 
+                        Cdrag_d_a      = np.zeros((len_d_a,len_Mach)) 
+                        CX_d_a         = np.zeros((len_d_a,len_Mach)) 
+                        CY_d_a         = np.zeros((len_d_a,len_Mach)) 
+                        CZ_d_a         = np.zeros((len_d_a,len_Mach)) 
+                        CL_d_a         = np.zeros((len_d_a,len_Mach)) 
+                        CM_d_a         = np.zeros((len_d_a,len_Mach)) 
+                        CN_d_a         = np.zeros((len_d_a,len_Mach))
+                    
+                        for a_i in range(len_d_a):   
+                            Delta_a_s                                       = np.atleast_2d(np.tile(delta_a[a_i],len_Mach).T.flatten()).T 
+                            Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                            conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                            conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+                            conditions.freestream.mach_number               = Machs 
+                            conditions.control_surfaces.aileron.deflection  = np.ones_like(Machs)*Delta_a_s
+                            control_surface.deflection                      = delta_a[a_i]
+                            
+                            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                            Clift_d_a[a_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
+                            Cdrag_d_a[a_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
+                            CX_d_a[a_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
+                            CY_d_a[a_i,:]    = CY_res[:,0]   - CY_alpha_0[0,:]  
+                            CZ_d_a[a_i,:]    = CZ_res[:,0]   - CZ_alpha_0[0,:]  
+                            CL_d_a[a_i,:]    = CL_res[:,0]   - CL_alpha_0[0,:]  
+                            CM_d_a[a_i,:]    = CM_res[:,0]   - CM_alpha_0[0,:]  
+                            CN_d_a[a_i,:]    = CN_res[:,0]   - CN_alpha_0[0,:]      
+
+         
+            training.Clift_delta_a  = Clift_d_a
+            training.Cdrag_delta_a  = Cdrag_d_a 
+            training.CX_delta_a     = CX_d_a 
+            training.CY_delta_a     = CY_d_a 
+            training.CZ_delta_a     = CZ_d_a 
+            training.CL_delta_a     = CL_d_a 
+            training.CM_delta_a     = CM_d_a 
+            training.CN_delta_a     = CN_d_a
             
+            training.dClift_ddelta_a = (Clift_d_a[0,:] - Clift_d_a[1,:]) / (delta_a[0] - delta_a[1])
+            training.dCdrag_ddelta_a = (Cdrag_d_a[0,:] - Cdrag_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
+            training.dCX_ddelta_a = (CX_d_a[0,:] - CX_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
+            training.dCY_ddelta_a = (CY_d_a[0,:] - CY_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
+            training.dCZ_ddelta_a = (CZ_d_a[0,:] - CZ_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
+            training.dCL_ddelta_a = (CL_d_a[0,:] - CL_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
+            training.dCM_ddelta_a = (CM_d_a[0,:] - CM_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
+            training.dCN_ddelta_a = (CN_d_a[0,:] - CN_d_a[1,:]) / (delta_a[0] - delta_a[1])
+        
+        # --------------------------------------------------------------------------------------------------------------
+        # Elevator 
+        # -------------------------------------------------------------------------------------------------------------- 
+        if self.elevator_flag: 
+            for wing in self.geometry.wings: 
+                for control_surface in wing.control_surfaces:  
+                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                    
+                        Clift_d_e      = np.zeros((len_d_e,len_Mach)) 
+                        Cdrag_d_e      = np.zeros((len_d_e,len_Mach)) 
+                        CX_d_e         = np.zeros((len_d_e,len_Mach)) 
+                        CY_d_e         = np.zeros((len_d_e,len_Mach)) 
+                        CZ_d_e         = np.zeros((len_d_e,len_Mach)) 
+                        CL_d_e         = np.zeros((len_d_e,len_Mach)) 
+                        CM_d_e         = np.zeros((len_d_e,len_Mach)) 
+                        CN_d_e         = np.zeros((len_d_e,len_Mach))
+                    
+                        for e_i in range(len_d_e):   
+                            Delta_e_s                                       = np.atleast_2d(np.tile(delta_e[e_i],len_Mach).T.flatten()).T 
+                            Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                            conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                            conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+                            conditions.freestream.mach_number               = Machs 
+                            conditions.control_surfaces.elevator.deflection = np.ones_like(Machs)*Delta_e_s
+                            control_surface.deflection                      = delta_e[e_i]
+                            
+                            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                            Clift_d_e[e_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
+                            Cdrag_d_e[e_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
+                            CX_d_e[e_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
+                            CY_d_e[e_i,:]    = CY_res[:,0]   - CY_alpha_0[0,:]  
+                            CZ_d_e[e_i,:]    = CZ_res[:,0]   - CZ_alpha_0[0,:]  
+                            CL_d_e[e_i,:]    = CL_res[:,0]   - CL_alpha_0[0,:]  
+                            CM_d_e[e_i,:]    = CM_res[:,0]   - CM_alpha_0[0,:]  
+                            CN_d_e[e_i,:]    = CN_res[:,0]   - CN_alpha_0[0,:]                   
+
+                        
+            training.Clift_delta_e  = Clift_d_e
+            training.Cdrag_delta_e  = Cdrag_d_e  
+            training.CX_delta_e  = CX_d_e   
+            training.CY_delta_e  = CY_d_e   
+            training.CZ_delta_e  = CZ_d_e  
+            training.CL_delta_e  = CL_d_e  
+            training.CM_delta_e  = CM_d_e  
+            training.CN_delta_e  = CN_d_e
+            
+            training.dClift_ddelta_e = (Clift_d_e[0,:] - Clift_d_e[1,:]) / (delta_e[0] - delta_e[1])
+            training.dCdrag_ddelta_e = (Cdrag_d_e[0,:] - Cdrag_d_e[1,:]) / (delta_e[0] - delta_e[1])  
+            training.dCX_ddelta_e = (CX_d_e[0,:] - CX_d_e[1,:]) / (delta_e[0] - delta_e[1])  
+            training.dCY_ddelta_e = (CY_d_e[0,:] - CY_d_e[1,:]) / (delta_e[0] - delta_e[1]) 
+            training.dCZ_ddelta_e = (CZ_d_e[0,:] - CZ_d_e[1,:]) / (delta_e[0] - delta_e[1]) 
+            training.dCL_ddelta_e = (CL_d_e[0,:] - CL_d_e[1,:]) / (delta_e[0] - delta_e[1])  
+            training.dCM_ddelta_e = (CM_d_e[0,:] - CM_d_e[1,:]) / (delta_e[0] - delta_e[1])  
+            training.dCN_ddelta_e = (CN_d_e[0,:] - CN_d_e[1,:]) / (delta_e[0] - delta_e[1])
+            
+        # --------------------------------------------------------------------------------------------------------------
+        # Rudder 
+        # -------------------------------------------------------------------------------------------------------------- 
+        if self.rudder_flag:
+            for wing in self.geometry.wings: 
+                for control_surface in wing.control_surfaces:  
+                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
+                        Clift_d_r      = np.zeros((len_d_r,len_Mach)) 
+                        Cdrag_d_r      = np.zeros((len_d_r,len_Mach)) 
+                        CX_d_r         = np.zeros((len_d_r,len_Mach)) 
+                        CY_d_r         = np.zeros((len_d_r,len_Mach)) 
+                        CZ_d_r         = np.zeros((len_d_r,len_Mach)) 
+                        CL_d_r         = np.zeros((len_d_r,len_Mach)) 
+                        CM_d_r         = np.zeros((len_d_r,len_Mach)) 
+                        CN_d_r         = np.zeros((len_d_r,len_Mach))
+                    
+                        for r_i in range(len_d_r):   
+                            Delta_r_s                                       = np.atleast_2d(np.tile(delta_r[r_i],len_Mach).T.flatten()).T 
+                            Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                            conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                            conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+                            conditions.freestream.mach_number               = Machs 
+                            conditions.control_surfaces.rudder.deflection  = np.ones_like(Machs)*Delta_r_s
+                            control_surface.deflection                      = delta_r[r_i]
+                            
+                            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                            Clift_d_r[r_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
+                            Cdrag_d_r[r_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
+                            CX_d_r[r_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
+                            CY_d_r[r_i,:]    = CY_res[:,0]   - CY_alpha_0[0,:]  
+                            CZ_d_r[r_i,:]    = CZ_res[:,0]   - CZ_alpha_0[0,:]  
+                            CL_d_r[r_i,:]    = CL_res[:,0]   - CL_alpha_0[0,:]  
+                            CM_d_r[r_i,:]    = CM_res[:,0]   - CM_alpha_0[0,:]  
+                            CN_d_r[r_i,:]    = CN_res[:,0]   - CN_alpha_0[0,:]
+                             
+     
+            training.Clift_delta_r  = Clift_d_r
+            training.Cdrag_delta_r  = Cdrag_d_r     
+            training.CX_delta_r  = CX_d_r   
+            training.CY_delta_r  = CY_d_r 
+            training.CZ_delta_r  = CZ_d_r 
+            training.CL_delta_r  = CL_d_r  
+            training.CM_delta_r  = CM_d_r                   
+            training.CN_delta_r  = CN_d_r    
+            training.dClift_ddelta_r = (Clift_d_r[0,:] - Clift_d_r[1,:]) / (delta_r[0] - delta_r[1])
+            training.dCdrag_ddelta_r = (Cdrag_d_r[0,:] - Cdrag_d_r[1,:]) / (delta_r[0] - delta_r[1])  
+            training.dCX_ddelta_r = (CX_d_r[0,:] - CX_d_r[1,:]) / (delta_r[0] - delta_r[1])   
+            training.dCY_ddelta_r = (CY_d_r[0,:] - CY_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
+            training.dCZ_ddelta_r = (CZ_d_r[0,:] - CZ_d_r[1,:]) / (delta_r[0] - delta_r[1])  
+            training.dCL_ddelta_r = (CL_d_r[0,:] - CL_d_r[1,:]) / (delta_r[0] - delta_r[1])  
+            training.dCM_ddelta_r = (CM_d_r[0,:] - CM_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
+            training.dCN_ddelta_r = (CN_d_r[0,:] - CN_d_r[1,:]) / (delta_r[0] - delta_r[1])  
+                            
+        # --------------------------------------------------------------------------------------------------------------
+        # Flap
+        # -------------------------------------------------------------------------------------------------------------- 
+        if self.flap_flag:
+            for wing in self.geometry.wings: 
+                for control_surface in wing.control_surfaces:  
+                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:
+                        Clift_d_f      = np.zeros((len_d_f,len_Mach)) 
+                        Cdrag_d_f      = np.zeros((len_d_f,len_Mach)) 
+                        CX_d_f         = np.zeros((len_d_f,len_Mach)) 
+                        CY_d_f         = np.zeros((len_d_f,len_Mach)) 
+                        CZ_d_f         = np.zeros((len_d_f,len_Mach)) 
+                        CL_d_f         = np.zeros((len_d_f,len_Mach)) 
+                        CM_d_f         = np.zeros((len_d_f,len_Mach)) 
+                        CN_d_f         = np.zeros((len_d_f,len_Mach))
+                    
+                        for f_i in range(len_d_f):   
+                            Delta_f_s                                       = np.atleast_2d(np.tile(delta_f[f_i],len_Mach).T.flatten()).T 
+                            Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                            conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                            conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+                            conditions.freestream.mach_number               = Machs 
+                            conditions.control_surfaces.flap.deflection     = np.ones_like(Machs)*Delta_f_s
+                            control_surface.deflection                      = delta_f[f_i]
+                            
+                            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                            Clift_d_f[f_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
+                            Cdrag_d_f[f_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
+                            CX_d_f[f_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
+                            CY_d_f[f_i,:]    = CY_res[:,0]   - CY_alpha_0[0,:]  
+                            CZ_d_f[f_i,:]    = CZ_res[:,0]   - CZ_alpha_0[0,:]  
+                            CL_d_f[f_i,:]    = CL_res[:,0]   - CL_alpha_0[0,:]  
+                            CM_d_f[f_i,:]    = CM_res[:,0]   - CM_alpha_0[0,:]  
+                            CN_d_f[f_i,:]    = CN_res[:,0]   - CN_alpha_0[0,:]         
+        
+            training.Clift_delta_f  = Clift_d_f    
+            training.Cdrag_delta_f  = Cdrag_d_f    
+            training.CX_delta_f     = CX_d_f  
+            training.CY_delta_f     = CY_d_f  
+            training.CZ_delta_f     = CZ_d_f  
+            training.CL_delta_f     = CL_d_f  
+            training.CM_delta_f     = CM_d_f                   
+            training.CN_delta_f     = CN_d_f 
+            training.dClift_ddelta_f = (Clift_d_f[0,:] - Clift_d_f[1,:]) / (delta_f[0] - delta_f[1])
+            training.dCdrag_ddelta_f = (Cdrag_d_f[0,:] - Cdrag_d_f[1,:]) / (delta_f[0] - delta_f[1])  
+            training.dCX_ddelta_f    = (CX_d_f[0,:] - CX_d_f[1,:]) / (delta_f[0] - delta_f[1])  
+            training.dCY_ddelta_f    = (CY_d_f[0,:] - CY_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
+            training.dCZ_ddelta_f    = (CZ_d_f[0,:] - CZ_d_f[1,:]) / (delta_f[0] - delta_f[1])   
+            training.dCL_ddelta_f    = (CL_d_f[0,:] - CL_d_f[1,:]) / (delta_f[0] - delta_f[1])  
+            training.dCM_ddelta_f    = (CM_d_f[0,:] - CM_d_f[1,:]) / (delta_f[0] - delta_f[1])  
+            training.dCN_ddelta_f    = (CN_d_f[0,:] - CN_d_f[1,:]) / (delta_f[0] - delta_f[1])   
+                        
+        # --------------------------------------------------------------------------------------------------------------
+        # Slat
+        # -------------------------------------------------------------------------------------------------------------- 
+        if self.slat_flag:
+            for wing in self.geometry.wings: 
+                for control_surface in wing.control_surfaces:  
+                    if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
+                        
+                        Clift_d_s      = np.zeros((len_d_s,len_Mach)) 
+                        Cdrag_d_s      = np.zeros((len_d_s,len_Mach)) 
+                        CX_d_s         = np.zeros((len_d_s,len_Mach)) 
+                        CY_d_s         = np.zeros((len_d_s,len_Mach)) 
+                        CZ_d_s         = np.zeros((len_d_s,len_Mach)) 
+                        CL_d_s         = np.zeros((len_d_s,len_Mach)) 
+                        CM_d_s         = np.zeros((len_d_s,len_Mach)) 
+                        CN_d_s         = np.zeros((len_d_s,len_Mach))
+                    
+                        for s_i in range(len_d_s):   
+                            Delta_s_s                                       = np.atleast_2d(np.tile(delta_f[f_i],len_Mach).T.flatten()).T 
+                            Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                            conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                            conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+                            conditions.freestream.mach_number               = Machs 
+                            conditions.control_surfaces.flat.deflection     = np.ones_like(Machs)*Delta_s_s
+                            control_surface.deflection                      = delta_s[s_i]
+                            
+                            Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                            Clift_d_f[s_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
+                            Cdrag_d_f[s_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
+                            CX_d_s[s_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
+                            CY_d_s[s_i,:]    = CY_res[:,0]   - CY_alpha_0[0,:]  
+                            CZ_d_s[s_i,:]    = CZ_res[:,0]   - CZ_alpha_0[0,:]  
+                            CL_d_s[s_i,:]    = CL_res[:,0]   - CL_alpha_0[0,:]  
+                            CM_d_s[s_i,:]    = CM_res[:,0]   - CM_alpha_0[0,:]  
+                            CN_d_s[s_i,:]    = CN_res[:,0]   - CN_alpha_0[0,:]  
+   
+            training.Clift_delta_s  = Clift_d_s
+            training.Cdrag_delta_s  = Cdrag_d_s
+            training.CX_delta_s  = CX_d_s
+            training.CY_delta_s  = CY_d_s 
+            training.CZ_delta_s  = CZ_d_s 
+            training.CL_delta_s  = CL_d_s 
+            training.CM_delta_s  = CM_d_s
+            training.CN_delta_s  = CN_d_s  
+            training.dClift_ddelta_s = (Clift_d_s[0,:] - Clift_d_s[1,:]) / (delta_s[0] - delta_s[1])
+            training.dCdrag_ddelta_s = (Cdrag_d_s[0,:] - Cdrag_d_s[1,:]) / (delta_s[0] - delta_s[1])
+            training.dCX_ddelta_s = (CX_d_s[0,:] - CX_d_s[1,:]) / (delta_s[0] - delta_s[1])
+            training.dCY_ddelta_s = (CY_d_s[0,:] - CY_d_s[1,:]) / (delta_s[0] - delta_s[1])
+            training.dCZ_ddelta_s = (CZ_d_s[0,:] - CZ_d_s[1,:]) / (delta_s[0] - delta_s[1]) 
+            training.dCL_ddelta_s = (CL_d_s[0,:] - CL_d_s[1,:]) / (delta_s[0] - delta_s[1]) 
+            training.dCM_ddelta_s = (CM_d_s[0,:] - CM_d_s[1,:]) / (delta_s[0] - delta_s[1])  
+            training.dCN_ddelta_s = (CN_d_s[0,:] - CN_d_s[1,:]) / (delta_s[0] - delta_s[1])  
         training.NP            = 0  
         
         return
@@ -1828,364 +1248,256 @@ class Vortex_Lattice(Stability):
         surrogates     = self.surrogates
         training       = self.training  
         AoA_data       = self.training.angle_of_attack 
-        mach_data      = self.training.Mach        
+        mach_data      = self.training.Mach                 
+        Beta_data      = self.training.sideslip_angle  
+        u_data         = self.training.u
+        v_data         = self.training.v
+        w_data         = self.training.w
+        p_data         = self.training.roll_rate
+        q_data         = self.training.pitch_rate
+        r_data         = self.training.yaw_rate
+        aileron_data   = self.training.aileron_deflection           
+        elevator_data  = self.training.elevator_deflection          
+        rudder_data    = self.training.rudder_deflection            
+        flap_data      = self.training.flap_deflection              
+        slat_data      = self.training.slat_deflection   
         
-        # Pack the outputs    
-        
-        surrogates.Clift_alpha    = RegularGridInterpolator((training.angle_of_attack,mach_data),training.Clift_alpha    ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Clift_beta     = RegularGridInterpolator((AoA_data,mach_data),training.Clift_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.Clift_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.Clift_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.Clift_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.Clift_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.Clift_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.Clift_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)  
-             
-        surrogates.Clift_u        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_u        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Clift_v        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_v        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Clift_w        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_w        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Clift_p        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_p        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Clift_q        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_q        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Clift_r        = RegularGridInterpolator((AoA_data,mach_data),training.Clift_r        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Cdrag_alpha    = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_alpha    ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Cdrag_beta     = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.Cdrag_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.Cdrag_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.Cdrag_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.Cdrag_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.Cdrag_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)        
-             
-        surrogates.Cdrag_u        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_u        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Cdrag_v        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_v        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Cdrag_w        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_w        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Cdrag_p        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_p        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Cdrag_q        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_q        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.Cdrag_r        = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_r        ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CX_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CX_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CX_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CX_beta        ,method = 'linear',   bounds_error=False, fill_value=None) 
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.CX_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.CX_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.CX_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.CX_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.CX_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.CX_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)        
-                     
-        surrogates.CX_u           = RegularGridInterpolator((AoA_data,mach_data),training.CX_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CX_v           = RegularGridInterpolator((AoA_data,mach_data),training.CX_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CX_w           = RegularGridInterpolator((AoA_data,mach_data),training.CX_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CX_p           = RegularGridInterpolator((AoA_data,mach_data),training.CX_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CX_q           = RegularGridInterpolator((AoA_data,mach_data),training.CX_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CX_r           = RegularGridInterpolator((AoA_data,mach_data),training.CX_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CY_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CY_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CY_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CY_beta        ,method = 'linear',   bounds_error=False, fill_value=None)
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.CY_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.CY_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.CY_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.CY_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.CY_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.CY_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)        
-            
-        surrogates.CY_u           = RegularGridInterpolator((AoA_data,mach_data),training.CY_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CY_v           = RegularGridInterpolator((AoA_data,mach_data),training.CY_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CY_w           = RegularGridInterpolator((AoA_data,mach_data),training.CY_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CY_p           = RegularGridInterpolator((AoA_data,mach_data),training.CY_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CY_q           = RegularGridInterpolator((AoA_data,mach_data),training.CY_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CY_r           = RegularGridInterpolator((AoA_data,mach_data),training.CY_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CZ_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CZ_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CZ_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CZ_beta        ,method = 'linear',   bounds_error=False, fill_value=None)
-        
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.CZ_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.CZ_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.CZ_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.CZ_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.CZ_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.CZ_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)
+        # Pack the outputs 
+        surrogates.oswald_efficiency = RegularGridInterpolator((AoA_data ,mach_data),training.oswald_efficiency  ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Clift_alpha       = RegularGridInterpolator((AoA_data ,mach_data),training.Clift_alpha        ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Clift_beta        = RegularGridInterpolator((Beta_data,mach_data),training.Clift_beta         ,method = 'linear',   bounds_error=False, fill_value=None) 
+        surrogates.Clift_u           = RegularGridInterpolator((u_data,mach_data),training.Clift_u               ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Clift_v           = RegularGridInterpolator((v_data,mach_data),training.Clift_v               ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Clift_w           = RegularGridInterpolator((w_data,mach_data),training.Clift_w               ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Clift_p           = RegularGridInterpolator((p_data,mach_data),training.Clift_p               ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Clift_q           = RegularGridInterpolator((q_data,mach_data),training.Clift_q               ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Clift_r           = RegularGridInterpolator((r_data,mach_data),training.Clift_r               ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Cdrag_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.Cdrag_alpha         ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Cdrag_beta        = RegularGridInterpolator((Beta_data,mach_data),training.Cdrag_beta         ,method = 'linear',   bounds_error=False, fill_value=None)
+         
+                  
+        surrogates.Cdrag_u        = RegularGridInterpolator((u_data,mach_data),training.Cdrag_u        ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Cdrag_v        = RegularGridInterpolator((v_data,mach_data),training.Cdrag_v        ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Cdrag_w        = RegularGridInterpolator((w_data,mach_data),training.Cdrag_w        ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Cdrag_p        = RegularGridInterpolator((p_data,mach_data),training.Cdrag_p        ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Cdrag_q        = RegularGridInterpolator((q_data,mach_data),training.Cdrag_q        ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.Cdrag_r        = RegularGridInterpolator((r_data,mach_data),training.Cdrag_r        ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CX_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CX_alpha     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CX_beta        = RegularGridInterpolator((Beta_data,mach_data),training.CX_beta     ,method = 'linear',   bounds_error=False, fill_value=None) 
+         
+                        
+        surrogates.CX_u           = RegularGridInterpolator((u_data,mach_data),training.CX_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CX_v           = RegularGridInterpolator((v_data,mach_data),training.CX_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CX_w           = RegularGridInterpolator((w_data,mach_data),training.CX_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CX_p           = RegularGridInterpolator((p_data,mach_data),training.CX_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CX_q           = RegularGridInterpolator((q_data,mach_data),training.CX_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CX_r           = RegularGridInterpolator((r_data,mach_data),training.CX_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CY_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CY_alpha     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CY_beta        = RegularGridInterpolator((Beta_data,mach_data),training.CY_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
+         
+                  
+        surrogates.CY_u           = RegularGridInterpolator((u_data,mach_data),training.CY_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CY_v           = RegularGridInterpolator((v_data,mach_data),training.CY_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CY_w           = RegularGridInterpolator((w_data,mach_data),training.CY_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CY_p           = RegularGridInterpolator((p_data,mach_data),training.CY_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CY_q           = RegularGridInterpolator((q_data,mach_data),training.CY_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CY_r           = RegularGridInterpolator((r_data,mach_data),training.CY_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CZ_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CZ_alpha     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CZ_beta        = RegularGridInterpolator((Beta_data,mach_data),training.CZ_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
+         
                     
-        surrogates.CZ_u           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CZ_v           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CZ_w           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CZ_p           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CZ_q           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CZ_r           = RegularGridInterpolator((AoA_data,mach_data),training.CZ_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CL_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CL_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CL_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CL_beta        ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CZ_u           = RegularGridInterpolator((u_data,mach_data),training.CZ_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CZ_v           = RegularGridInterpolator((v_data,mach_data),training.CZ_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CZ_w           = RegularGridInterpolator((w_data,mach_data),training.CZ_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CZ_p           = RegularGridInterpolator((p_data,mach_data),training.CZ_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CZ_q           = RegularGridInterpolator((q_data,mach_data),training.CZ_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CZ_r           = RegularGridInterpolator((r_data,mach_data),training.CZ_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CL_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CL_alpha     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CL_beta        = RegularGridInterpolator((Beta_data,mach_data),training.CL_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
+         
+                   
+        surrogates.CL_u           = RegularGridInterpolator((u_data,mach_data),training.CL_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CL_v           = RegularGridInterpolator((v_data,mach_data),training.CL_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CL_w           = RegularGridInterpolator((w_data,mach_data),training.CL_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CL_p           = RegularGridInterpolator((p_data,mach_data),training.CL_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CL_q           = RegularGridInterpolator((q_data,mach_data),training.CL_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CL_r           = RegularGridInterpolator((r_data,mach_data),training.CL_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CM_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CM_alpha     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CM_beta        = RegularGridInterpolator((Beta_data,mach_data),training.CM_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
         
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.CL_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.CL_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.CL_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.CL_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.CL_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.CL_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)        
-              
-        surrogates.CL_u           = RegularGridInterpolator((AoA_data,mach_data),training.CL_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CL_v           = RegularGridInterpolator((AoA_data,mach_data),training.CL_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CL_w           = RegularGridInterpolator((AoA_data,mach_data),training.CL_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CL_p           = RegularGridInterpolator((AoA_data,mach_data),training.CL_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CL_q           = RegularGridInterpolator((AoA_data,mach_data),training.CL_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CL_r           = RegularGridInterpolator((AoA_data,mach_data),training.CL_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CM_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CM_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CM_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CM_beta        ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.CM_u           = RegularGridInterpolator((u_data,mach_data),training.CM_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CM_v           = RegularGridInterpolator((v_data,mach_data),training.CM_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CM_w           = RegularGridInterpolator((w_data,mach_data),training.CM_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CM_p           = RegularGridInterpolator((p_data,mach_data),training.CM_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CM_q           = RegularGridInterpolator((q_data,mach_data),training.CM_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CM_r           = RegularGridInterpolator((r_data,mach_data),training.CM_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CN_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CN_alpha     ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CN_beta        = RegularGridInterpolator((Beta_data,mach_data),training.CN_beta     ,method = 'linear',   bounds_error=False, fill_value=None)
+                 
+        surrogates.CN_u           = RegularGridInterpolator((u_data,mach_data),training.CN_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CN_v           = RegularGridInterpolator((v_data,mach_data),training.CN_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CN_w           = RegularGridInterpolator((w_data,mach_data),training.CN_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CN_p           = RegularGridInterpolator((p_data,mach_data),training.CN_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CN_q           = RegularGridInterpolator((q_data,mach_data),training.CN_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.CN_r           = RegularGridInterpolator((r_data,mach_data),training.CN_r           ,method = 'linear',   bounds_error=False, fill_value=None)
         
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.CM_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.CM_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.CM_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.CM_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.CM_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.CM_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)        
-              
-        surrogates.CM_u           = RegularGridInterpolator((AoA_data,mach_data),training.CM_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CM_v           = RegularGridInterpolator((AoA_data,mach_data),training.CM_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CM_w           = RegularGridInterpolator((AoA_data,mach_data),training.CM_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CM_p           = RegularGridInterpolator((AoA_data,mach_data),training.CM_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CM_q           = RegularGridInterpolator((AoA_data,mach_data),training.CM_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CM_r           = RegularGridInterpolator((AoA_data,mach_data),training.CM_r           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_alpha       = RegularGridInterpolator((AoA_data,mach_data),training.CN_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_beta        = RegularGridInterpolator((AoA_data,mach_data),training.CN_beta        ,method = 'linear',   bounds_error=False, fill_value=None)
-                
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.CN_delta_a  = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.CN_delta_e  = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.CN_delta_r  = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.CN_delta_f  = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.CN_delta_s  = RegularGridInterpolator((AoA_data,mach_data),training.CN_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)        
-           
-        surrogates.CN_u           = RegularGridInterpolator((AoA_data,mach_data),training.CN_u           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_v           = RegularGridInterpolator((AoA_data,mach_data),training.CN_v           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_w           = RegularGridInterpolator((AoA_data,mach_data),training.CN_w           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_p           = RegularGridInterpolator((AoA_data,mach_data),training.CN_p           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_q           = RegularGridInterpolator((AoA_data,mach_data),training.CN_q           ,method = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.CN_r           = RegularGridInterpolator((AoA_data,mach_data),training.CN_r           ,method = 'linear',   bounds_error=False, fill_value=None)
+        surrogates.dClift_dalpha    = interpolate.interp1d(mach_data,training.dClift_dalpha    ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dClift_dbeta     = interpolate.interp1d(mach_data,training.dClift_dbeta     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+        surrogates.dClift_du        = interpolate.interp1d(mach_data,training.dClift_du        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dClift_dv        = interpolate.interp1d(mach_data,training.dClift_dv        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dClift_dw        = interpolate.interp1d(mach_data,training.dClift_dw        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dClift_dp        = interpolate.interp1d(mach_data,training.dClift_dp        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dClift_dq        = interpolate.interp1d(mach_data,training.dClift_dq        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dClift_dr        = interpolate.interp1d(mach_data,training.dClift_dr        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCdrag_dalpha    = interpolate.interp1d(mach_data,training.dCdrag_dalpha    ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCdrag_dbeta     = interpolate.interp1d(mach_data,training.dCdrag_dbeta     ,kind = 'linear',   bounds_error=False, fill_value=None)   
+        surrogates.dCdrag_du        = interpolate.interp1d(mach_data,training.dCdrag_du        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCdrag_dv        = interpolate.interp1d(mach_data,training.dCdrag_dv        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCdrag_dw        = interpolate.interp1d(mach_data,training.dCdrag_dw        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCdrag_dp        = interpolate.interp1d(mach_data,training.dCdrag_dp        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCdrag_dq        = interpolate.interp1d(mach_data,training.dCdrag_dq        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCdrag_dr        = interpolate.interp1d(mach_data,training.dCdrag_dr        ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCX_dalpha       = interpolate.interp1d(mach_data,training.dCX_dalpha       ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCX_dbeta        = interpolate.interp1d(mach_data,training.dCX_dbeta        ,kind = 'linear',   bounds_error=False, fill_value=None)  
+        surrogates.dCX_du           = interpolate.interp1d(mach_data,training.dCX_du           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCX_dv           = interpolate.interp1d(mach_data,training.dCX_dv           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCX_dw           = interpolate.interp1d(mach_data,training.dCX_dw           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCX_dp           = interpolate.interp1d(mach_data,training.dCX_dp           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCX_dq           = interpolate.interp1d(mach_data,training.dCX_dq           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCX_dr           = interpolate.interp1d(mach_data,training.dCX_dr           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCY_dalpha       = interpolate.interp1d(mach_data,training.dCY_dalpha       ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCY_dbeta        = interpolate.interp1d(mach_data,training.dCY_dbeta        ,kind = 'linear',   bounds_error=False, fill_value=None)  
+        surrogates.dCY_du           = interpolate.interp1d(mach_data,training.dCY_du           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCY_dv           = interpolate.interp1d(mach_data,training.dCY_dv           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCY_dw           = interpolate.interp1d(mach_data,training.dCY_dw           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCY_dp           = interpolate.interp1d(mach_data,training.dCY_dp           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCY_dq           = interpolate.interp1d(mach_data,training.dCY_dq           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCY_dr           = interpolate.interp1d(mach_data,training.dCY_dr           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCZ_dalpha       = interpolate.interp1d(mach_data,training.dCZ_dalpha       ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCZ_dbeta        = interpolate.interp1d(mach_data,training.dCZ_dbeta        ,kind = 'linear',   bounds_error=False, fill_value=None)  
+        surrogates.dCZ_du           = interpolate.interp1d(mach_data,training.dCZ_du           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCZ_dv           = interpolate.interp1d(mach_data,training.dCZ_dv           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCZ_dw           = interpolate.interp1d(mach_data,training.dCZ_dw           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCZ_dp           = interpolate.interp1d(mach_data,training.dCZ_dp           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCZ_dq           = interpolate.interp1d(mach_data,training.dCZ_dq           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCZ_dr           = interpolate.interp1d(mach_data,training.dCZ_dr           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCL_dalpha       = interpolate.interp1d(mach_data,training.dCL_dalpha       ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCL_dbeta        = interpolate.interp1d(mach_data,training.dCL_dbeta        ,kind = 'linear',   bounds_error=False, fill_value=None)  
+        surrogates.dCL_du           = interpolate.interp1d(mach_data,training.dCL_du           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCL_dv           = interpolate.interp1d(mach_data,training.dCL_dv           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCL_dw           = interpolate.interp1d(mach_data,training.dCL_dw           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCL_dp           = interpolate.interp1d(mach_data,training.dCL_dp           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCL_dq           = interpolate.interp1d(mach_data,training.dCL_dq           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCL_dr           = interpolate.interp1d(mach_data,training.dCL_dr           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCM_dalpha       = interpolate.interp1d(mach_data,training.dCM_dalpha       ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCM_dbeta        = interpolate.interp1d(mach_data,training.dCM_dbeta        ,kind = 'linear',   bounds_error=False, fill_value=None)  
+        surrogates.dCM_du           = interpolate.interp1d(mach_data,training.dCM_du           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCM_dv           = interpolate.interp1d(mach_data,training.dCM_dv           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCM_dw           = interpolate.interp1d(mach_data,training.dCM_dw           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCM_dp           = interpolate.interp1d(mach_data,training.dCM_dp           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCM_dq           = interpolate.interp1d(mach_data,training.dCM_dq           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCM_dr           = interpolate.interp1d(mach_data,training.dCM_dr           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCN_dalpha       = interpolate.interp1d(mach_data,training.dCN_dalpha       ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCN_dbeta        = interpolate.interp1d(mach_data,training.dCN_dbeta        ,kind = 'linear',   bounds_error=False, fill_value=None)  
+        surrogates.dCN_du           = interpolate.interp1d(mach_data,training.dCN_du           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCN_dv           = interpolate.interp1d(mach_data,training.dCN_dv           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCN_dw           = interpolate.interp1d(mach_data,training.dCN_dw           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCN_dp           = interpolate.interp1d(mach_data,training.dCN_dp           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCN_dq           = interpolate.interp1d(mach_data,training.dCN_dq           ,kind = 'linear',   bounds_error=False, fill_value=None)      
+        surrogates.dCN_dr           = interpolate.interp1d(mach_data,training.dCN_dr           ,kind = 'linear',   bounds_error=False, fill_value=None)
+       
+    
+        if self.aileron_flag: 
+            surrogates.Clift_delta_a    = RegularGridInterpolator((aileron_data,mach_data),training.Clift_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.Cdrag_delta_a    = RegularGridInterpolator((aileron_data,mach_data),training.Cdrag_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.CX_delta_a       = RegularGridInterpolator((aileron_data,mach_data),training.CX_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CY_delta_a       = RegularGridInterpolator((aileron_data,mach_data),training.CY_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CZ_delta_a       = RegularGridInterpolator((aileron_data,mach_data),training.CZ_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CL_delta_a       = RegularGridInterpolator((aileron_data,mach_data),training.CL_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CM_delta_a       = RegularGridInterpolator((aileron_data,mach_data),training.CM_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CN_delta_a       = RegularGridInterpolator((aileron_data,mach_data),training.CN_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dClift_ddelta_a  = interpolate.interp1d(mach_data,training.dClift_ddelta_a     , kind = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.dCdrag_ddelta_a  = interpolate.interp1d(mach_data,training.dCdrag_ddelta_a     , kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCX_ddelta_a     = interpolate.interp1d(mach_data,training.dCX_ddelta_a        , kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCY_ddelta_a     = interpolate.interp1d(mach_data,training.dCY_ddelta_a        , kind = 'linear',   bounds_error=False, fill_value=None)  
+            surrogates.dCZ_ddelta_a     = interpolate.interp1d(mach_data,training.dCZ_ddelta_a        , kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCL_ddelta_a     = interpolate.interp1d(mach_data,training.dCL_ddelta_a        , kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCM_ddelta_a     = interpolate.interp1d(mach_data,training.dCM_ddelta_a        , kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCN_ddelta_a     = interpolate.interp1d(mach_data,training.dCN_ddelta_a        , kind = 'linear',   bounds_error=False, fill_value=None)             
         
-        surrogates.dClift_dalpha    = interpolate.interp1d(training.dClift_dalpha    , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dClift_dbeta     = interpolate.interp1d(training.dClift_dbeta     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
+        if self.elevator_flag: 
+            surrogates.Clift_delta_e    = RegularGridInterpolator((elevator_data,mach_data),training.Clift_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.Cdrag_delta_e    = RegularGridInterpolator((elevator_data,mach_data),training.Cdrag_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.CX_delta_e       = RegularGridInterpolator((elevator_data,mach_data),training.CX_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CY_delta_e       = RegularGridInterpolator((elevator_data,mach_data),training.CY_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CZ_delta_e       = RegularGridInterpolator((elevator_data,mach_data),training.CZ_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CL_delta_e       = RegularGridInterpolator((elevator_data,mach_data),training.CL_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CM_delta_e       = RegularGridInterpolator((elevator_data,mach_data),training.CM_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CN_delta_e       = RegularGridInterpolator((elevator_data,mach_data),training.CN_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dClift_ddelta_e  = interpolate.interp1d(mach_data,training.dClift_ddelta_e  ,kind = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.dCdrag_ddelta_e  = interpolate.interp1d(mach_data,training.dCdrag_ddelta_e  ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCX_ddelta_e     = interpolate.interp1d(mach_data,training.dCX_ddelta_e     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCY_ddelta_e     = interpolate.interp1d(mach_data,training.dCY_ddelta_e     ,kind = 'linear',   bounds_error=False, fill_value=None)  
+            surrogates.dCZ_ddelta_e     = interpolate.interp1d(mach_data,training.dCZ_ddelta_e     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCL_ddelta_e     = interpolate.interp1d(mach_data,training.dCL_ddelta_e     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCM_ddelta_e     = interpolate.interp1d(mach_data,training.dCM_ddelta_e     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCN_ddelta_e     = interpolate.interp1d(mach_data,training.dCN_ddelta_e     ,kind = 'linear',   bounds_error=False, fill_value=None)   
         
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.dClift_ddelta_a  = interpolate.interp1d(training.dClift_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.dClift_ddelta_e  = interpolate.interp1d(training.dClift_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.dClift_ddelta_r  = interpolate.interp1d(training.dClift_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.dClift_ddelta_f  = interpolate.interp1d(training.dClift_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.dClift_ddelta_s  = interpolate.interp1d(training.dClift_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)        
-              
-        surrogates.dClift_du        = interpolate.interp1d(training.dClift_du        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dClift_dv        = interpolate.interp1d(training.dClift_dv        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dClift_dw        = interpolate.interp1d(training.dClift_dw        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dClift_dp        = interpolate.interp1d(training.dClift_dp        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dClift_dq        = interpolate.interp1d(training.dClift_dq        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dClift_dr        = interpolate.interp1d(training.dClift_dr        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCdrag_dalpha    = interpolate.interp1d(training.dCdrag_dalpha    , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCdrag_dbeta     = interpolate.interp1d(training.dCdrag_dbeta     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.dCdrag_ddelta_a  = interpolate.interp1d(training.dCdrag_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.dCdrag_ddelta_e  = interpolate.interp1d(training.dCdrag_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.dCdrag_ddelta_r  = interpolate.interp1d(training.dCdrag_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.dCdrag_ddelta_f  = interpolate.interp1d(training.dCdrag_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.dCdrag_ddelta_s  = interpolate.interp1d(training.dCdrag_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)        
-             
-        surrogates.dCdrag_du        = interpolate.interp1d(training.dCdrag_du        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCdrag_dv        = interpolate.interp1d(training.dCdrag_dv        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCdrag_dw        = interpolate.interp1d(training.dCdrag_dw        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCdrag_dp        = interpolate.interp1d(training.dCdrag_dp        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCdrag_dq        = interpolate.interp1d(training.dCdrag_dq        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCdrag_dr        = interpolate.interp1d(training.dCdrag_dr        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCX_dalpha       = interpolate.interp1d(training.dCX_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCX_dbeta        = interpolate.interp1d(training.dCX_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.dCX_ddelta_a  = interpolate.interp1d(training.dCX_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.dCX_ddelta_e  = interpolate.interp1d(training.dCX_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.dCX_ddelta_r  = interpolate.interp1d(training.dCX_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.dCX_ddelta_f  = interpolate.interp1d(training.dCX_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.dCX_ddelta_s  = interpolate.interp1d(training.dCX_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                          
-        surrogates.dCX_du           = interpolate.interp1d(training.dCX_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCX_dv           = interpolate.interp1d(training.dCX_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCX_dw           = interpolate.interp1d(training.dCX_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCX_dp           = interpolate.interp1d(training.dCX_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCX_dq           = interpolate.interp1d(training.dCX_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCX_dr           = interpolate.interp1d(training.dCX_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCY_dalpha       = interpolate.interp1d(training.dCY_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCY_dbeta        = interpolate.interp1d(training.dCY_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.dCY_ddelta_a  = interpolate.interp1d(training.dCY_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.dCY_ddelta_e  = interpolate.interp1d(training.dCY_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.dCY_ddelta_r  = interpolate.interp1d(training.dCY_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.dCY_ddelta_f  = interpolate.interp1d(training.dCY_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.dCY_ddelta_s  = interpolate.interp1d(training.dCY_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)        
-             
-        surrogates.dCY_du           = interpolate.interp1d(training.dCY_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCY_dv           = interpolate.interp1d(training.dCY_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCY_dw           = interpolate.interp1d(training.dCY_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCY_dp           = interpolate.interp1d(training.dCY_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCY_dq           = interpolate.interp1d(training.dCY_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCY_dr           = interpolate.interp1d(training.dCY_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCZ_dalpha       = interpolate.interp1d(training.dCZ_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCZ_dbeta        = interpolate.interp1d(training.dCZ_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
         
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.dCZ_ddelta_a  = interpolate.interp1d(training.dCZ_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.dCZ_ddelta_e  = interpolate.interp1d(training.dCZ_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.dCZ_ddelta_r  = interpolate.interp1d(training.dCZ_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.dCZ_ddelta_f  = interpolate.interp1d(training.dCZ_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.dCZ_ddelta_s  = interpolate.interp1d(training.dCZ_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                    
-        surrogates.dCZ_du           = interpolate.interp1d(training.dCZ_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCZ_dv           = interpolate.interp1d(training.dCZ_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCZ_dw           = interpolate.interp1d(training.dCZ_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCZ_dp           = interpolate.interp1d(training.dCZ_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCZ_dq           = interpolate.interp1d(training.dCZ_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCZ_dr           = interpolate.interp1d(training.dCZ_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCL_dalpha       = interpolate.interp1d(training.dCL_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCL_dbeta        = interpolate.interp1d(training.dCL_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
+        if self.rudder_flag: 
+            surrogates.Clift_delta_r    = RegularGridInterpolator((rudder_data,mach_data),training.Clift_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None)  
+            surrogates.Cdrag_delta_r    = RegularGridInterpolator((rudder_data,mach_data),training.Cdrag_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.CX_delta_r       = RegularGridInterpolator((rudder_data,mach_data),training.CX_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CY_delta_r       = RegularGridInterpolator((rudder_data,mach_data),training.CY_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CZ_delta_r       = RegularGridInterpolator((rudder_data,mach_data),training.CZ_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CL_delta_r       = RegularGridInterpolator((rudder_data,mach_data),training.CL_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CM_delta_r       = RegularGridInterpolator((rudder_data,mach_data),training.CM_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CN_delta_r       = RegularGridInterpolator((rudder_data,mach_data),training.CN_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dClift_ddelta_r  = interpolate.interp1d(mach_data,training.dClift_ddelta_r    ,kind = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.dCdrag_ddelta_r  = interpolate.interp1d(mach_data,training.dCdrag_ddelta_r    ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCX_ddelta_r     = interpolate.interp1d(mach_data,training.dCX_ddelta_r       ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCY_ddelta_r     = interpolate.interp1d(mach_data,training.dCY_ddelta_r       ,kind = 'linear',   bounds_error=False, fill_value=None)  
+            surrogates.dCZ_ddelta_r     = interpolate.interp1d(mach_data,training.dCZ_ddelta_r       ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCL_ddelta_r     = interpolate.interp1d(mach_data,training.dCL_ddelta_r       ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCM_ddelta_r     = interpolate.interp1d(mach_data,training.dCM_ddelta_r       ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCN_ddelta_r     = interpolate.interp1d(mach_data,training.dCN_ddelta_r       ,kind = 'linear',   bounds_error=False, fill_value=None)   
         
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.dCL_ddelta_a  = interpolate.interp1d(training.dCL_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.dCL_ddelta_e  = interpolate.interp1d(training.dCL_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.dCL_ddelta_r  = interpolate.interp1d(training.dCL_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.dCL_ddelta_f  = interpolate.interp1d(training.dCL_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.dCL_ddelta_s  = interpolate.interp1d(training.dCL_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                    
-        surrogates.dCL_du           = interpolate.interp1d(training.dCL_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCL_dv           = interpolate.interp1d(training.dCL_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCL_dw           = interpolate.interp1d(training.dCL_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCL_dp           = interpolate.interp1d(training.dCL_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCL_dq           = interpolate.interp1d(training.dCL_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCL_dr           = interpolate.interp1d(training.dCL_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCM_dalpha       = interpolate.interp1d(training.dCM_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCM_dbeta        = interpolate.interp1d(training.dCM_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
+        if self.flap_flag:
+            surrogates.Clift_delta_f    = RegularGridInterpolator((flap_data,mach_data),training.Clift_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.Cdrag_delta_f    = RegularGridInterpolator((flap_data,mach_data),training.Cdrag_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.CX_delta_f       = RegularGridInterpolator((flap_data,mach_data),training.CX_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CY_delta_f       = RegularGridInterpolator((flap_data,mach_data),training.CY_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CZ_delta_f       = RegularGridInterpolator((flap_data,mach_data),training.CZ_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CL_delta_f       = RegularGridInterpolator((flap_data,mach_data),training.CL_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CM_delta_f       = RegularGridInterpolator((flap_data,mach_data),training.CM_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CN_delta_f       = RegularGridInterpolator((flap_data,mach_data),training.CN_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dClift_ddelta_f  = interpolate.interp1d(mach_data,training.dClift_ddelta_f  ,kind = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.dCdrag_ddelta_f  = interpolate.interp1d(mach_data,training.dCdrag_ddelta_f  ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCX_ddelta_f     = interpolate.interp1d(mach_data,training.dCX_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCY_ddelta_f     = interpolate.interp1d(mach_data,training.dCY_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value=None)  
+            surrogates.dCZ_ddelta_f     = interpolate.interp1d(mach_data,training.dCZ_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCL_ddelta_f     = interpolate.interp1d(mach_data,training.dCL_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCM_ddelta_f     = interpolate.interp1d(mach_data,training.dCM_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCN_ddelta_f     = interpolate.interp1d(mach_data,training.dCN_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value=None)   
         
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.dCM_ddelta_a  = interpolate.interp1d(training.dCM_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.dCM_ddelta_e  = interpolate.interp1d(training.dCM_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.dCM_ddelta_r  = interpolate.interp1d(training.dCM_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.dCM_ddelta_f  = interpolate.interp1d(training.dCM_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.dCM_ddelta_s  = interpolate.interp1d(training.dCM_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)        
-              
-        surrogates.dCM_du           = interpolate.interp1d(training.dCM_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCM_dv           = interpolate.interp1d(training.dCM_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCM_dw           = interpolate.interp1d(training.dCM_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCM_dp           = interpolate.interp1d(training.dCM_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCM_dq           = interpolate.interp1d(training.dCM_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCM_dr           = interpolate.interp1d(training.dCM_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCN_dalpha       = interpolate.interp1d(training.dCN_dalpha       , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCN_dbeta        = interpolate.interp1d(training.dCN_dbeta        , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-
-        for wing in self.geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:        
-                    surrogates.dCN_ddelta_a  = interpolate.interp1d(training.dCN_ddelta_a     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:
-                    surrogates.dCN_ddelta_e  = interpolate.interp1d(training.dCN_ddelta_e     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:                    
-                    surrogates.dCN_ddelta_r  = interpolate.interp1d(training.dCN_ddelta_r     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:                     
-                    surrogates.dCN_ddelta_f  = interpolate.interp1d(training.dCN_ddelta_f     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None) 
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                    surrogates.dCN_ddelta_s  = interpolate.interp1d(training.dCN_ddelta_s     , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)          
-            
-        surrogates.dCN_du           = interpolate.interp1d(training.dCN_du           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCN_dv           = interpolate.interp1d(training.dCN_dv           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCN_dw           = interpolate.interp1d(training.dCN_dw           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCN_dp           = interpolate.interp1d(training.dCN_dp           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCN_dq           = interpolate.interp1d(training.dCN_dq           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)      
-        surrogates.dCN_dr           = interpolate.interp1d(training.dCN_dr           , mach_data,kind = 'linear',   bounds_error=False, fill_value=None)
-        
+        if self.slat_flag: 
+            surrogates.Clift_delta_s    = RegularGridInterpolator((slat_data,mach_data),training.Clift_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)         
+            surrogates.Cdrag_delta_s    = RegularGridInterpolator((slat_data,mach_data),training.Cdrag_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)
+            surrogates.CX_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CX_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CY_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CY_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CZ_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CZ_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CL_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CL_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CM_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CM_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.CN_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CN_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dClift_ddelta_s  = interpolate.interp1d(training.dClift_ddelta_s  ,kind = 'linear',   bounds_error=False, fill_value=None)  
+            surrogates.dCdrag_ddelta_s  = interpolate.interp1d(training.dCdrag_ddelta_s  ,kind = 'linear',   bounds_error=False, fill_value=None)   
+            surrogates.dCX_ddelta_s     = interpolate.interp1d(training.dCX_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCY_ddelta_s     = interpolate.interp1d(training.dCY_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None)  
+            surrogates.dCZ_ddelta_s     = interpolate.interp1d(training.dCZ_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCL_ddelta_s     = interpolate.interp1d(training.dCL_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCM_ddelta_s     = interpolate.interp1d(training.dCM_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+            surrogates.dCN_ddelta_s     = interpolate.interp1d(training.dCN_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None)   
+    
         return
 
 # ----------------------------------------------------------------------
@@ -2216,7 +1528,13 @@ def evaluate_VLM(conditions,settings,geometry):
     CZ      = results.CZ       
     CL      = results.CL_mom   
     CM      = results.CM       
-    CN      = results.CN
+    CN      = results.CN 
+    S_ref = results.S_ref    
+    b_ref = results.b_ref    
+    c_ref = results.c_ref    
+    X_ref = results.X_ref    
+    Y_ref = results.Y_ref    
+    Z_ref = results.Z_ref    
 
-    return Clift,Cdrag,CX,CY,CZ,CL,CM,CN
+    return Clift,Cdrag,CX,CY,CZ,CL,CM,CN, S_ref,b_ref,c_ref,X_ref,Y_ref ,Z_ref  
 
