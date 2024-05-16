@@ -60,8 +60,8 @@ class Set_Speed_Set_Altitude(Evaluate):
         self.distance                                = 10. * Units.km
         self.acceleration_x                          = 0.
         self.acceleration_z                          = 0. # note that down is positive
-        self.state.numerics.number_of_control_points = 1  
-        
+        self.state.numerics.number_of_control_points = 1   
+         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------     
@@ -71,14 +71,16 @@ class Set_Speed_Set_Altitude(Evaluate):
         initialize.conditions              = Segments.Single_Point.Set_Speed_Set_Altitude.initialize_conditions 
         iterate                            = self.process.iterate 
         iterate.initials.energy            = skip
+        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation  
         iterate.conditions.planet_position = skip    
         iterate.conditions.acceleration    = skip
         iterate.conditions.weights         = skip
         iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
-        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
         post_process                       = self.process.post_process 
         post_process.inertial_position     = skip   
+        
+                
                 
         return
 
