@@ -35,7 +35,7 @@ def angular_acceleration(segment):
     
     # unpack conditions
     omega = segment.state.conditions.frames.inertial.angular_velocity_vector
-    D = segment.state.numerics.time.differentiate
+    D     = segment.state.numerics.time.differentiate
     
     # accelerations
     ang_acc = np.dot(D,omega)

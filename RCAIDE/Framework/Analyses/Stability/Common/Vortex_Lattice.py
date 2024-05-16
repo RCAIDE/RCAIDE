@@ -210,7 +210,7 @@ class Vortex_Lattice(Stability):
             
         if self.slat_flag:
             delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)    
-            pts_delta_s          = np.hstack((delta_s,Mach))        
+            pts_delta_s    = np.hstack((delta_s,Mach))        
             Clift_delta_s  = np.atleast_2d(surrogates.Clift_delta_s(pts_delta_s)).T
             Cdrag_delta_s  = np.atleast_2d(surrogates.Cdrag_delta_s(pts_delta_s)).T 
             CX_delta_s     = np.atleast_2d(surrogates.CX_delta_s(pts_delta_s)).T    
@@ -346,8 +346,7 @@ class Vortex_Lattice(Stability):
             conditions.control_surfaces.aileron.static_stability.coefficients.Z          = CZ_delta_a          
             conditions.control_surfaces.aileron.static_stability.coefficients.L          = CL_delta_a          
             conditions.control_surfaces.aileron.static_stability.coefficients.M          = CM_delta_a          
-            conditions.control_surfaces.aileron.static_stability.coefficients.N          = CN_delta_a            
-            #conditions.control_surfaces.aileron.static_stability.coefficients.e          = # Need to Update 
+            conditions.control_surfaces.aileron.static_stability.coefficients.N          = CN_delta_a             
             
         if self.elevator_flag: 
             conditions.static_stability.coefficients.lift += Clift_delta_e
@@ -367,7 +366,6 @@ class Vortex_Lattice(Stability):
             conditions.control_surfaces.elevator.static_stability.coefficients.L          = CL_delta_e          
             conditions.control_surfaces.elevator.static_stability.coefficients.M          = CM_delta_e          
             conditions.control_surfaces.elevator.static_stability.coefficients.N          = CN_delta_e            
-            #conditions.control_surfaces.elevator.static_stability.coefficients.e          = # Need to Update
             
         if self.rudder_flag:  
             conditions.static_stability.coefficients.lift += Clift_delta_r
@@ -386,8 +384,7 @@ class Vortex_Lattice(Stability):
             conditions.control_surfaces.rudder.static_stability.coefficients.Z          = CZ_delta_r          
             conditions.control_surfaces.rudder.static_stability.coefficients.L          = CL_delta_r          
             conditions.control_surfaces.rudder.static_stability.coefficients.M          = CM_delta_r          
-            conditions.control_surfaces.rudder.static_stability.coefficients.N          = CN_delta_r            
-            #conditions.control_surfaces.rudder.static_stability.coefficients.e          =# Need to Update
+            conditions.control_surfaces.rudder.static_stability.coefficients.N          = CN_delta_r         
             
         if self.flap_flag:
             conditions.static_stability.coefficients.lift += Clift_delta_f
@@ -407,8 +404,7 @@ class Vortex_Lattice(Stability):
             conditions.control_surfaces.flap.static_stability.coefficients.Z          = CZ_delta_f          
             conditions.control_surfaces.flap.static_stability.coefficients.L          = CL_delta_f          
             conditions.control_surfaces.flap.static_stability.coefficients.M          = CM_delta_f          
-            conditions.control_surfaces.flap.static_stability.coefficients.N          = CN_delta_f            
-            #conditions.control_surfaces.flap.static_stability.coefficients.e          =# Need to Update
+            conditions.control_surfaces.flap.static_stability.coefficients.N          = CN_delta_f           
             
   
         if self.slat_flag: 
@@ -428,8 +424,7 @@ class Vortex_Lattice(Stability):
             conditions.control_surfaces.slat.static_stability.coefficients.Z          = CZ_delta_s          
             conditions.control_surfaces.slat.static_stability.coefficients.L          = CL_delta_s          
             conditions.control_surfaces.slat.static_stability.coefficients.M          = CM_delta_s          
-            conditions.control_surfaces.slat.static_stability.coefficients.N          = CN_delta_s            
-            #conditions.control_surfaces.slat.static_stability.coefficients.e          = # Need to Update             
+            conditions.control_surfaces.slat.static_stability.coefficients.N          = CN_delta_s                     
          
         
         conditions.static_stability.derivatives.Clift_alpha               = surrogates.dClift_dalpha(Mach)
@@ -529,9 +524,9 @@ class Vortex_Lattice(Stability):
         # compute deriviatives and pack   
         conditions.static_stability.coefficients.lift    = np.atleast_2d(Clift).T
         conditions.static_stability.coefficients.drag    = np.atleast_2d(Cdrag).T 
-        conditions.static_stability.coefficients.X      = np.atleast_2d(CX).T # NEED TO CHANGE np.atleast_2d(CX).T
+        conditions.static_stability.coefficients.X      = np.atleast_2d(CX).T  
         conditions.static_stability.coefficients.Y      = np.atleast_2d(CY).T
-        conditions.static_stability.coefficients.Z      = np.atleast_2d(CZ).T # NEED TO CHANGE np.atleast_2d(CZ).T
+        conditions.static_stability.coefficients.Z      = np.atleast_2d(CZ).T  
         conditions.static_stability.coefficients.L      = np.atleast_2d(CL_mom).T
         conditions.static_stability.coefficients.M      = np.atleast_2d(CM).T
         conditions.static_stability.coefficients.N      = np.atleast_2d(CN).T 

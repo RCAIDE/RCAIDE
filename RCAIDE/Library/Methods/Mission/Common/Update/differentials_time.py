@@ -32,9 +32,9 @@ def differentials_time(segment):
     
     # unpack
     numerics = segment.state.numerics
-    x = numerics.dimensionless.control_points
-    D = numerics.dimensionless.differentiate
-    I = numerics.dimensionless.integrate
+    x        = numerics.dimensionless.control_points
+    D        = numerics.dimensionless.differentiate
+    I        = numerics.dimensionless.integrate
     
     # rescale time
     time = segment.state.conditions.frames.inertial.time
