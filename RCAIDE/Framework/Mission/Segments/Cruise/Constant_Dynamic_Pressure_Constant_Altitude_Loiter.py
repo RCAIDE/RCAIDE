@@ -19,8 +19,7 @@ from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 ## @ingroup Analyses-Mission-Segments-Cruise
 class Constant_Dynamic_Pressure_Constant_Altitude_Loiter(Evaluate):
-    """ Vehicle flies at a constant dynamic pressure at a set altitude for a fixed time.
-        This is useful for HALE UAVs like a solar UAV.
+    """ Vehicle flies at a constant dynamic pressure at a set altitude for a fixed time. 
     
         Assumptions:
         Built off of a constant speed constant altitude segment
