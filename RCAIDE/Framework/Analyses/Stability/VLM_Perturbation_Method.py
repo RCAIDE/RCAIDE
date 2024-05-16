@@ -11,11 +11,11 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Framework.Core                                          import Data
+from RCAIDE.Framework.Core                                          import Data , Units
 from RCAIDE.Framework.Analyses                                      import Process  
 from RCAIDE.Library.Methods.Aerodynamics                            import Common
 from .Stability                                                     import Stability 
-from RCAIDE.Framework.Analyses.Stability.Common.Vortex_Lattice      import Vortex_Lattice
+from RCAIDE.Library.Methods.Stability.VLM_Stability import *  
 from RCAIDE.Framework.Analyses.Aerodynamics.Common.Process_Geometry import Process_Geometry   
 
 # package imports 
@@ -26,7 +26,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Framework-Analyses-Aerodynamics
 class VLM_Perturbation_Method(Stability):  
-    """ 
+    """ VLM perturbation method 
     """      
 
     def __defaults__(self):
@@ -65,9 +65,7 @@ class VLM_Perturbation_Method(Stability):
         settings.viscous_lift_dependent_drag_factor      = 0.38
         settings.drag_coefficient_increment              = 0.0000
         settings.spoiler_drag_increment                  = 0.00 
-        settings.maximum_lift_coefficient                = np.inf
-        settings.number_of_spanwise_vortices             = None 
-        settings.number_of_chordwise_vortices            = None 
+        settings.maximum_lift_coefficient                = np.inf 
         settings.use_surrogate                           = True
         settings.recalculate_total_wetted_area           = False
         settings.propeller_wake_model                    = False 
@@ -82,12 +80,57 @@ class VLM_Perturbation_Method(Stability):
         settings.wave_drag_type                          = 'Raymer'
         settings.volume_wave_drag_scaling                = 3.2  
         settings.fuselage_parasite_drag_begin_blend_mach = 0.91
-        settings.fuselage_parasite_drag_end_blend_mach   = 0.99  
+        settings.fuselage_parasite_drag_end_blend_mach   = 0.99
+        
+ 
+        self.settings.number_of_spanwise_vortices     = 25
+        self.settings.number_of_chordwise_vortices    = 5
+        self.settings.wing_spanwise_vortices          = None
+        self.settings.wing_chordwise_vortices         = None
+        self.settings.fuselage_spanwise_vortices      = None
+        self.settings.fuselage_chordwise_vortices     = None 
+        
+        self.settings.spanwise_cosine_spacing         = True
+        self.settings.vortex_distribution             = Data()   
+        self.settings.model_fuselage                  = False             
+        self.settings.model_nacelle                   = False
+        self.settings.leading_edge_suction_multiplier = 1.0
+        self.settings.propeller_wake_model            = False
+        self.settings.discretize_control_surfaces     = True 
+        self.settings.use_VORLAX_matrix_calculation   = False
+        self.settings.floating_point_precision        = np.float32
+        self.settings.use_surrogate                   = True
+
+        # conditions table, used for surrogate model training
+        self.training                                 = Data()
+        self.training.Mach                            = np.array([0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5])        
+        self.training.angle_of_attack                 = np.array([-10, -7.5, -5, -2.5, 1E-12, 2.5, 5, 7.5, 10]) * Units.deg     
+        self.training.sideslip_angle                  = np.array([0, 5]) * Units.deg
+        self.training.aileron_deflection              = np.array([0, 1]) * Units.deg
+        self.training.elevator_deflection             = np.array([0, 1]) * Units.deg   
+        self.training.rudder_deflection               = np.array([0, 1]) * Units.deg
+        self.training.flap_deflection                 = np.array([0, 1])* Units.deg 
+        self.training.slat_deflection                 = np.array([0, 1]) * Units.deg                      
+        self.training.u                               = np.array([0, 0.1])  
+        self.training.v                               = np.array([0, 0.1])  
+        self.training.w                               = np.array([0, 0.1])    
+        self.training.pitch_rate                      = np.array([0, 0.01])  * Units.rad / Units.sec
+        self.training.roll_rate                       = np.array([0, 0.3])  * Units.rad / Units.sec
+        self.training.yaw_rate                        = np.array([0, 0.01])  * Units.rad / Units.sec
+
+        self.surrogates                               = Data()
+        
+        self.aileron_flag                             = False 
+        self.flap_flag                                = False 
+        self.rudder_flag                              = False 
+        self.elevator_flag                            = False 
+        self.slat_flag                                = False     
+        self.evaluate                                 = None 
 
         # build the evaluation process
         compute                                          = Process() 
         compute.lift                                     = Process() 
-        compute.lift.inviscid_wings                      = Vortex_Lattice() 
+        #compute.lift.inviscid_wings                      = self.evaluate()
         compute.lift.vortex                              = RCAIDE.Library.Methods.skip
         compute.lift.fuselage                            = Common.Lift.fuselage_correction
         compute.lift.total                               = Common.Lift.aircraft_total  
@@ -113,29 +156,44 @@ class VLM_Perturbation_Method(Stability):
         compute.drag.trim                                = Common.Drag.trim
         compute.drag.spoiler                             = Common.Drag.spoiler_drag
         compute.drag.total                               = Common.Drag.total_aircraft 
-        self.process.compute                             = compute   
+        self.process.compute                             = compute 
+        
+    def initialize(self): 
+        settings                  = self.settings  
+        use_surrogate             = settings.use_surrogate 
+        propeller_wake_model      = settings.propeller_wake_model 
+        n_sw                      = settings.number_of_spanwise_vortices
+        n_cw                      = settings.number_of_chordwise_vortices
+        mf                        = settings.model_fuselage
+        mn                        = settings.model_nacelle
+        dcs                       = settings.discretize_control_surfaces 
 
-    def evaluate(self,state):
-        """The default evaluate function.
+        # Unpack:
+        settings = self.settings      
 
-        Assumptions:
-        None
+        if n_sw is not None:
+            settings.number_of_spanwise_vortices  = n_sw
 
-        Source:
-        N/A
+        if n_cw is not None:
+            settings.number_of_chordwise_vortices = n_cw 
 
-        Inputs:
-        None
+        settings.use_surrogate              = use_surrogate
+        settings.propeller_wake_model       = propeller_wake_model 
+        settings.discretize_control_surfaces= dcs
+        settings.model_fuselage             = mf
+        settings.model_nacelle              = mn 
 
-        Outputs:
-        results   <RCAIDE data class>
+        # If we are using the surrogate
+        if use_surrogate == True: 
+            # sample training data
+            sample_training()
 
-        Properties Used:
-        self.settings
-        self.geometry
-        """          
-        settings = self.settings
-        geometry = self.geometry 
-        results  = self.process.compute(state,settings,geometry)
+            # build surrogate
+            build_surrogate()        
 
-        return results
+            self.evaluate  = evaluate_surrogate
+
+        else:                                         
+            self.evaluate  = evaluate_no_surrogate
+            
+        return 
