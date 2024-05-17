@@ -1,4 +1,4 @@
-## @defgroup Analyses-Aerodynamics-Common Common
+## @defgroup Framework-Analyses-Common Common
 # RCAIDE/Framework/Analyses/Aerodynamics/Common/__init__.py
 # 
 
@@ -9,5 +9,4 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Process_Geometry                                                 import Process_Geometry 
-from .Vortex_Lattice                                                   import Vortex_Lattice 
+from .Process_Geometry                                                 import Process_Geometry

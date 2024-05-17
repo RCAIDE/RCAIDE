@@ -42,7 +42,7 @@ def main():
     # mission analysis 
     results = missions.base_mission.evaluate() 
 
-    elevator_deflection        =results.segments.climb.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg  
+    elevator_deflection        = results.segments.climb.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg  
     elevator_deflection_true   = -3.1111958662603465
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
     print('Error: ',elevator_deflection_diff)

@@ -6,13 +6,13 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method  import generate_vortex_distribution 
-from RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice import Vortex_Lattice
-from RCAIDE.Library.Plots.Geometry.plot_3d_fuselage     import plot_3d_fuselage
-from RCAIDE.Library.Plots.Geometry.plot_3d_wing         import plot_3d_wing 
-from RCAIDE.Library.Plots.Geometry.plot_3d_nacelle      import plot_3d_nacelle
-from RCAIDE.Library.Plots.Geometry.plot_3d_rotor        import plot_3d_rotor
+# ----------------------------------------------------------------------------------------------------------------------
+import RCAIDE
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method  import generate_vortex_distribution  
+from RCAIDE.Library.Plots.Geometry.plot_3d_fuselage             import plot_3d_fuselage
+from RCAIDE.Library.Plots.Geometry.plot_3d_wing                 import plot_3d_wing 
+from RCAIDE.Library.Plots.Geometry.plot_3d_nacelle              import plot_3d_nacelle
+from RCAIDE.Library.Plots.Geometry.plot_3d_rotor                import plot_3d_rotor
 
 # python imports 
 import numpy as np 
@@ -151,7 +151,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
     try:
         VD = vehicle.vortex_distribution
     except:
-        VL = Vortex_Lattice()  
+        VL = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM()  
         VL.settings.number_of_spanwise_vortices  = 25
         VL.settings.number_of_chordwise_vortices = 5
         VL.settings.spanwise_cosine_spacing      = False

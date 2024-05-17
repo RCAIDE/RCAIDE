@@ -7,4 +7,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from .estimate_wing_CL_alpha import  estimate_wing_CL_alpha
+from .estimate_wing_CL_alpha       import  estimate_wing_CL_alpha
+from .compute_dynamic_flight_modes import  compute_dynamic_flight_modes

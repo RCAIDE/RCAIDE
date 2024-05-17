@@ -32,12 +32,10 @@ def stability(mission):
     last_tag = None
     for tag,segment in mission.segments.items():        
         if type(segment.analyses.stability) == RCAIDE.Framework.Analyses.Stability.VLM_Perturbation_Method: 
-            if last_tag: 
+            if last_tag and  'compute' in mission.segments[last_tag].analyses.stability.process: 
                 segment.analyses.stability.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.stability.process.compute.lift.inviscid_wings  
             else:
-                stab = segment.analyses.stability 
-                stab.process.compute.lift.inviscid_wings.geometry                = stab.geometry 
-                stab.process.compute.lift.inviscid_wings.settings.model_fuselage = stab.settings.model_fuselage
-                stab.process.compute.lift.inviscid_wings.initialize()    
+                stab = segment.analyses.stability
+                stab.initialize() 
                 last_tag = tag 
     return 

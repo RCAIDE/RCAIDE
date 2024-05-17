@@ -1,5 +1,5 @@
-## @ingroup Analyses-Aerodynamics
-# RCAIDE/Framework/Analyses/Aerodynamics/Process_Geometry.py
+## @ingroup Framework-Analyses-Common
+# RCAIDE/Framework/Analyses/Common/Process_Geometry.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -15,7 +15,7 @@ from RCAIDE.Framework.Analyses import Process
 # ----------------------------------------------------------------------------------------------------------------------
 #  Analysis
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Analyses-Aerodynamics
+## @ingroup Framework-Analyses-Common
 class Process_Geometry(Process):
     """A process for evaluate over a component group.
 

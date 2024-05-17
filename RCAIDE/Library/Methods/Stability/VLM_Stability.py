@@ -23,7 +23,7 @@ from scipy import interpolate
 #  Vortex_Lattice
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Methods-Stability  
-def evaluate_surrogate(self,state,settings,geometry):
+def evaluate_surrogate(state,settings,geometry):
     """Evaluates surrogates forces and moments using built surrogates 
     
     Assumptions:
@@ -33,7 +33,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         None
 
     Args:
-        self       : VLM analysis          [unitless]
+        stability       : VLM analysis          [unitless]
         state      : flight conditions     [unitless]
         settings   : VLM analysis settings [unitless]
         geometry   : vehicle configuration [unitless] 
@@ -42,18 +42,17 @@ def evaluate_surrogate(self,state,settings,geometry):
         None  
     """          
     
-    # unpack        
-    conditions  = state.conditions
-    settings    = self.settings
-    geometry    = self.geometry
-    surrogates  = self.surrogates 
+    # unpack
+    stability   = state.analyses.stability
+    conditions  = state.conditions  
+    surrogates  = stability.surrogates 
 
     AoA         = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
     Beta        = np.atleast_2d(conditions.aerodynamics.angles.beta)    
     Mach        = np.atleast_2d(conditions.freestream.mach_number)
     
     # only compute derivative if control surface exists
-    if self.aileron_flag: 
+    if stability.aileron_flag: 
         delta_a     = np.atleast_2d(conditions.control_surfaces.aileron.deflection)
         pts_delta_a    = np.hstack((delta_a,Mach))
         Clift_delta_a  = np.atleast_2d(surrogates.Clift_delta_a(pts_delta_a)).T
@@ -65,7 +64,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         CM_delta_a     = np.atleast_2d(surrogates.CM_delta_a(pts_delta_a)).T     
         CN_delta_a     = np.atleast_2d(surrogates.CN_delta_a(pts_delta_a)).T  
         
-    if self.elevator_flag: 
+    if stability.elevator_flag: 
         delta_e     = np.atleast_2d(conditions.control_surfaces.elevator.deflection)
         pts_delta_e          = np.hstack((delta_e,Mach))   
         Clift_delta_e  = np.atleast_2d(surrogates.Clift_delta_e(pts_delta_e)).T  
@@ -77,7 +76,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         CM_delta_e     = np.atleast_2d(surrogates.CM_delta_e(pts_delta_e)).T     
         CN_delta_e     = np.atleast_2d(surrogates.CN_delta_e(pts_delta_e)).T  
         
-    if self.rudder_flag:
+    if stability.rudder_flag:
         delta_r     = np.atleast_2d(conditions.control_surfaces.rudder.deflection)
         pts_delta_r          = np.hstack((delta_r,Mach))
         Clift_delta_r  = np.atleast_2d(surrogates.Clift_delta_r(pts_delta_r)).T 
@@ -89,7 +88,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         CM_delta_r     = np.atleast_2d(surrogates.CM_delta_r(pts_delta_r)).T     
         CN_delta_r     = np.atleast_2d(surrogates.CN_delta_r(pts_delta_r)).T  
         
-    if self.flap_flag:  
+    if stability.flap_flag:  
         delta_f     = np.atleast_2d(conditions.control_surfaces.flap.deflection)   
         pts_delta_f          = np.hstack((delta_f,Mach))   
         Clift_delta_f  = np.atleast_2d(surrogates.Clift_delta_f(pts_delta_f)).T  
@@ -101,7 +100,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         CM_delta_f     = np.atleast_2d(surrogates.CM_delta_f(pts_delta_f)).T     
         CN_delta_f     = np.atleast_2d(surrogates.CN_delta_f(pts_delta_f)).T                
         
-    if self.slat_flag:
+    if stability.slat_flag:
         delta_s     = np.atleast_2d(conditions.control_surfaces.slat.deflection)    
         pts_delta_s    = np.hstack((delta_s,Mach))        
         Clift_delta_s  = np.atleast_2d(surrogates.Clift_delta_s(pts_delta_s)).T
@@ -204,12 +203,12 @@ def evaluate_surrogate(self,state,settings,geometry):
     CN_r           = np.atleast_2d(surrogates.CN_r(pts_r)).T
 
     # Stability Results  
-    conditions.S_ref                                                  = self.S_ref              
-    conditions.c_ref                                                  = self.c_ref              
-    conditions.b_ref                                                  = self.b_ref
-    conditions.X_ref                                                  = self.X_ref
-    conditions.Y_ref                                                  = self.Y_ref
-    conditions.Z_ref                                                  = self.Z_ref
+    conditions.S_ref                                                  = stability.S_ref              
+    conditions.c_ref                                                  = stability.c_ref              
+    conditions.b_ref                                                  = stability.b_ref
+    conditions.X_ref                                                  = stability.X_ref
+    conditions.Y_ref                                                  = stability.Y_ref
+    conditions.Z_ref                                                  = stability.Z_ref
     conditions.aerodynamics.oswald_efficiency                         = oswald_efficiency 
     
     conditions.static_stability.coefficients.lift                     = Clift_alpha + Clift_beta + Clift_u + Clift_v + Clift_w + Clift_p + Clift_q + Clift_r 
@@ -221,7 +220,7 @@ def evaluate_surrogate(self,state,settings,geometry):
     conditions.static_stability.coefficients.M                        = CM_alpha + CM_beta + CM_u + CM_v + CM_w + CM_p + CM_q + CM_r
     conditions.static_stability.coefficients.N                        = CN_alpha + CN_beta + CN_u + CN_v + CN_w + CN_p + CN_q + CN_r
     
-    if self.aileron_flag: 
+    if stability.aileron_flag: 
         conditions.static_stability.coefficients.lift += Clift_delta_a
         conditions.static_stability.coefficients.drag += Cdrag_delta_a
         conditions.static_stability.coefficients.X    += CX_delta_a 
@@ -241,7 +240,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         conditions.control_surfaces.aileron.static_stability.coefficients.M          = CM_delta_a          
         conditions.control_surfaces.aileron.static_stability.coefficients.N          = CN_delta_a             
         
-    if self.elevator_flag: 
+    if stability.elevator_flag: 
         conditions.static_stability.coefficients.lift += Clift_delta_e
         conditions.static_stability.coefficients.drag += Cdrag_delta_e
         conditions.static_stability.coefficients.X    += CX_delta_e 
@@ -260,7 +259,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         conditions.control_surfaces.elevator.static_stability.coefficients.M          = CM_delta_e          
         conditions.control_surfaces.elevator.static_stability.coefficients.N          = CN_delta_e            
         
-    if self.rudder_flag:  
+    if stability.rudder_flag:  
         conditions.static_stability.coefficients.lift += Clift_delta_r
         conditions.static_stability.coefficients.drag += Cdrag_delta_r
         conditions.static_stability.coefficients.X    += CX_delta_r 
@@ -279,7 +278,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         conditions.control_surfaces.rudder.static_stability.coefficients.M          = CM_delta_r          
         conditions.control_surfaces.rudder.static_stability.coefficients.N          = CN_delta_r         
         
-    if self.flap_flag:
+    if stability.flap_flag:
         conditions.static_stability.coefficients.lift += Clift_delta_f
         conditions.static_stability.coefficients.drag += Cdrag_delta_f
         conditions.static_stability.coefficients.X    += CX_delta_f 
@@ -300,7 +299,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         conditions.control_surfaces.flap.static_stability.coefficients.N          = CN_delta_f           
         
 
-    if self.slat_flag: 
+    if stability.slat_flag: 
         conditions.static_stability.coefficients.lift += Clift_delta_s
         conditions.static_stability.coefficients.drag += Cdrag_delta_s
         conditions.static_stability.coefficients.X    += CX_delta_s 
@@ -387,7 +386,7 @@ def evaluate_surrogate(self,state,settings,geometry):
         
     return     
  
-def evaluate_no_surrogate(self,state,settings,geometry):
+def evaluate_no_surrogate(state,settings,geometry):
     """Evaluates forces and moments directly using VLM.
     
     Assumptions:
@@ -397,7 +396,7 @@ def evaluate_no_surrogate(self,state,settings,geometry):
         None
 
     Args:
-        self       : VLM analysis          [unitless]
+        stability       : VLM analysis          [unitless]
         state      : flight conditions     [unitless]
         settings   : VLM analysis settings [unitless]
         geometry   : vehicle configuration [unitless] 
@@ -406,10 +405,11 @@ def evaluate_no_surrogate(self,state,settings,geometry):
         None  
     """          
 
-    # unpack        
-    conditions = state.conditions
-    settings   = self.settings
-    geometry   = self.geometry     
+    # unpack
+    stability  = state.analyses.stability
+    conditions = state.conditions 
+    settings   = stability.settings
+    geometry   = stability.geometry     
     
     # if in transonic regime, use surrogate
     Clift,Cdrag,CX,CY,CZ,CL_mom,CM,CN, S_ref,b_ref,c_ref,X_ref,Y_ref ,Z_ref = evaluate_VLM(conditions,settings,geometry) 
@@ -425,7 +425,7 @@ def evaluate_no_surrogate(self,state,settings,geometry):
     conditions.static_stability.coefficients.N      = np.atleast_2d(CN).T 
     return  
 
-def sample_training(self):
+def sample_training(stability):
     """Call methods to run VLM for sample point evaluation. 
     
     Assumptions:
@@ -435,49 +435,49 @@ def sample_training(self):
         None
 
     Args:
-        self       : VLM analysis          [unitless] 
+        stability       : VLM analysis          [unitless] 
         
     Returns: 
         None    
     """
 
-    geometry       = self.geometry
-    settings       = self.settings
-    training       = self.training
-    Mach           = self.training.Mach
-    AoA            = self.training.angle_of_attack                  
-    Beta           = self.training.sideslip_angle
+    geometry       = stability.geometry
+    settings       = stability.settings
+    training       = stability.training
+    Mach           = stability.training.Mach
+    AoA            = stability.training.angle_of_attack                  
+    Beta           = stability.training.sideslip_angle
     
     # loop through wings to determine what control surfaces are present 
-    for wing in self.geometry.wings: 
+    for wing in stability.geometry.wings: 
         for control_surface in wing.control_surfaces:  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                delta_a        = self.training.aileron_deflection
+                delta_a        = stability.training.aileron_deflection
                 len_d_a        = len(delta_a)
-                self.aileron_flag   = True 
+                stability.aileron_flag   = True 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                delta_e        = self.training.elevator_deflection
+                delta_e        = stability.training.elevator_deflection
                 len_d_e        = len(delta_e)   
-                self.elevator_flag = True 
+                stability.elevator_flag = True 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
-                delta_r        = self.training.rudder_deflection
-                self.rudder_flag    = True
+                delta_r        = stability.training.rudder_deflection
+                stability.rudder_flag    = True
                 len_d_r        = len(delta_r)  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                delta_s        = self.training.slat_deflection
+                delta_s        = stability.training.slat_deflection
                 len_d_s        = len(delta_s)   
-                self.slat_flag = True 
+                stability.slat_flag = True 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
-                delta_f        = self.training.rudder_deflection
-                self.flap_flag    = True
+                delta_f        = stability.training.rudder_deflection
+                stability.flap_flag    = True
                 len_d_f        = len(delta_f)  
              
-    u              = self.training.u
-    v              = self.training.v
-    w              = self.training.w
-    pitch_rate     = self.training.pitch_rate
-    roll_rate      = self.training.roll_rate
-    yaw_rate       = self.training.yaw_rate
+    u              = stability.training.u
+    v              = stability.training.v
+    w              = stability.training.w
+    pitch_rate     = stability.training.pitch_rate
+    roll_rate      = stability.training.roll_rate
+    yaw_rate       = stability.training.yaw_rate
 
     len_Mach       = len(Mach)        
     len_AoA        = len(AoA)  
@@ -526,14 +526,14 @@ def sample_training(self):
     CN_alpha_0      =  np.tile(CN_alpha[4][None,:],(2, 1))
     
     
-    self.S_ref = S_ref
-    self.b_ref = b_ref
-    self.c_ref = c_ref
-    self.X_ref = X_ref
-    self.Y_ref = Y_ref
-    self.Z_ref = Z_ref
-    self.aspect_ratio = (b_ref ** 2) / S_ref 
-    oswald_efficiency =  (Clift_res**2)/(np.pi* self.aspect_ratio *Cdrag_res) 
+    stability.S_ref = S_ref
+    stability.b_ref = b_ref
+    stability.c_ref = c_ref
+    stability.X_ref = X_ref
+    stability.Y_ref = Y_ref
+    stability.Z_ref = Z_ref
+    stability.aspect_ratio = (b_ref ** 2) / S_ref 
+    oswald_efficiency =  (Clift_res**2)/(np.pi* stability.aspect_ratio *Cdrag_res) 
     oswald_efficiency = np.reshape(oswald_efficiency,(len_Mach,len_AoA)).T 
     # --------------------------------------------------------------------------------------------------------------
     # Beta 
@@ -849,8 +849,8 @@ def sample_training(self):
     # --------------------------------------------------------------------------------------------------------------
     # Aileron 
     # --------------------------------------------------------------------------------------------------------------   
-    if self.aileron_flag:  
-        for wing in self.geometry.wings: 
+    if stability.aileron_flag:  
+        for wing in stability.geometry.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
                     
@@ -904,8 +904,8 @@ def sample_training(self):
     # --------------------------------------------------------------------------------------------------------------
     # Elevator 
     # -------------------------------------------------------------------------------------------------------------- 
-    if self.elevator_flag: 
-        for wing in self.geometry.wings: 
+    if stability.elevator_flag: 
+        for wing in stability.geometry.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
                 
@@ -959,8 +959,8 @@ def sample_training(self):
     # --------------------------------------------------------------------------------------------------------------
     # Rudder 
     # -------------------------------------------------------------------------------------------------------------- 
-    if self.rudder_flag:
-        for wing in self.geometry.wings: 
+    if stability.rudder_flag:
+        for wing in stability.geometry.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
                     Clift_d_r      = np.zeros((len_d_r,len_Mach)) 
@@ -1012,8 +1012,8 @@ def sample_training(self):
     # --------------------------------------------------------------------------------------------------------------
     # Flap
     # -------------------------------------------------------------------------------------------------------------- 
-    if self.flap_flag:
-        for wing in self.geometry.wings: 
+    if stability.flap_flag:
+        for wing in stability.geometry.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:
                     Clift_d_f      = np.zeros((len_d_f,len_Mach)) 
@@ -1064,8 +1064,8 @@ def sample_training(self):
     # --------------------------------------------------------------------------------------------------------------
     # Slat
     # -------------------------------------------------------------------------------------------------------------- 
-    if self.slat_flag:
-        for wing in self.geometry.wings: 
+    if stability.slat_flag:
+        for wing in stability.geometry.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
                     
@@ -1117,7 +1117,7 @@ def sample_training(self):
     
     return
         
-def build_surrogate(self):
+def build_surrogate(stability):
     """Build a surrogate using sample evaluation results.
     
     Assumptions:
@@ -1127,28 +1127,28 @@ def build_surrogate(self):
         None
 
     Args:
-        self       : VLM analysis          [unitless] 
+        stability       : VLM analysis          [unitless] 
         
     Returns: 
         None  
     """        
     # unpack data
-    surrogates     = self.surrogates
-    training       = self.training  
-    AoA_data       = self.training.angle_of_attack 
-    mach_data      = self.training.Mach                 
-    Beta_data      = self.training.sideslip_angle  
-    u_data         = self.training.u
-    v_data         = self.training.v
-    w_data         = self.training.w
-    p_data         = self.training.roll_rate
-    q_data         = self.training.pitch_rate
-    r_data         = self.training.yaw_rate
-    aileron_data   = self.training.aileron_deflection           
-    elevator_data  = self.training.elevator_deflection          
-    rudder_data    = self.training.rudder_deflection            
-    flap_data      = self.training.flap_deflection              
-    slat_data      = self.training.slat_deflection   
+    surrogates     = stability.surrogates
+    training       = stability.training  
+    AoA_data       = stability.training.angle_of_attack 
+    mach_data      = stability.training.Mach                 
+    Beta_data      = stability.training.sideslip_angle  
+    u_data         = stability.training.u
+    v_data         = stability.training.v
+    w_data         = stability.training.w
+    p_data         = stability.training.roll_rate
+    q_data         = stability.training.pitch_rate
+    r_data         = stability.training.yaw_rate
+    aileron_data   = stability.training.aileron_deflection           
+    elevator_data  = stability.training.elevator_deflection          
+    rudder_data    = stability.training.rudder_deflection            
+    flap_data      = stability.training.flap_deflection              
+    slat_data      = stability.training.slat_deflection   
     
     # Pack the outputs 
     surrogates.oswald_efficiency = RegularGridInterpolator((AoA_data ,mach_data),training.oswald_efficiency  ,method = 'linear',   bounds_error=False, fill_value=None)      
@@ -1295,7 +1295,7 @@ def build_surrogate(self):
     surrogates.dCN_dr           = interpolate.interp1d(mach_data,training.dCN_dr           ,kind = 'linear',   bounds_error=False, fill_value=None)
    
 
-    if self.aileron_flag: 
+    if stability.aileron_flag: 
         surrogates.Clift_delta_a    = RegularGridInterpolator((aileron_data,mach_data),training.Clift_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
         surrogates.Cdrag_delta_a    = RegularGridInterpolator((aileron_data,mach_data),training.Cdrag_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None)
         surrogates.CX_delta_a       = RegularGridInterpolator((aileron_data,mach_data),training.CX_delta_a  ,method = 'linear',   bounds_error=False, fill_value=None) 
@@ -1313,7 +1313,7 @@ def build_surrogate(self):
         surrogates.dCM_ddelta_a     = interpolate.interp1d(mach_data,training.dCM_ddelta_a        , kind = 'linear',   bounds_error=False, fill_value=None) 
         surrogates.dCN_ddelta_a     = interpolate.interp1d(mach_data,training.dCN_ddelta_a        , kind = 'linear',   bounds_error=False, fill_value=None)             
     
-    if self.elevator_flag: 
+    if stability.elevator_flag: 
         surrogates.Clift_delta_e    = RegularGridInterpolator((elevator_data,mach_data),training.Clift_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
         surrogates.Cdrag_delta_e    = RegularGridInterpolator((elevator_data,mach_data),training.Cdrag_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None)
         surrogates.CX_delta_e       = RegularGridInterpolator((elevator_data,mach_data),training.CX_delta_e  ,method = 'linear',   bounds_error=False, fill_value=None) 
@@ -1332,7 +1332,7 @@ def build_surrogate(self):
         surrogates.dCN_ddelta_e     = interpolate.interp1d(mach_data,training.dCN_ddelta_e     ,kind = 'linear',   bounds_error=False, fill_value=None)   
     
     
-    if self.rudder_flag: 
+    if stability.rudder_flag: 
         surrogates.Clift_delta_r    = RegularGridInterpolator((rudder_data,mach_data),training.Clift_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None)  
         surrogates.Cdrag_delta_r    = RegularGridInterpolator((rudder_data,mach_data),training.Cdrag_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None)
         surrogates.CX_delta_r       = RegularGridInterpolator((rudder_data,mach_data),training.CX_delta_r  ,method = 'linear',   bounds_error=False, fill_value=None) 
@@ -1350,7 +1350,7 @@ def build_surrogate(self):
         surrogates.dCM_ddelta_r     = interpolate.interp1d(mach_data,training.dCM_ddelta_r       ,kind = 'linear',   bounds_error=False, fill_value=None) 
         surrogates.dCN_ddelta_r     = interpolate.interp1d(mach_data,training.dCN_ddelta_r       ,kind = 'linear',   bounds_error=False, fill_value=None)   
     
-    if self.flap_flag:
+    if stability.flap_flag:
         surrogates.Clift_delta_f    = RegularGridInterpolator((flap_data,mach_data),training.Clift_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
         surrogates.Cdrag_delta_f    = RegularGridInterpolator((flap_data,mach_data),training.Cdrag_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None)
         surrogates.CX_delta_f       = RegularGridInterpolator((flap_data,mach_data),training.CX_delta_f  ,method = 'linear',   bounds_error=False, fill_value=None) 
@@ -1368,7 +1368,7 @@ def build_surrogate(self):
         surrogates.dCM_ddelta_f     = interpolate.interp1d(mach_data,training.dCM_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value=None) 
         surrogates.dCN_ddelta_f     = interpolate.interp1d(mach_data,training.dCN_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value=None)   
     
-    if self.slat_flag: 
+    if stability.slat_flag: 
         surrogates.Clift_delta_s    = RegularGridInterpolator((slat_data,mach_data),training.Clift_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)         
         surrogates.Cdrag_delta_s    = RegularGridInterpolator((slat_data,mach_data),training.Cdrag_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None)
         surrogates.CX_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CX_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 

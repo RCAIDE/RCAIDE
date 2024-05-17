@@ -16,7 +16,7 @@ from RCAIDE.Framework.Analyses                                      import Proce
 from RCAIDE.Library.Methods.Aerodynamics                            import Common
 from .Stability                                                     import Stability 
 from RCAIDE.Library.Methods.Stability.VLM_Stability import *  
-from RCAIDE.Framework.Analyses.Aerodynamics.Common.Process_Geometry import Process_Geometry   
+from RCAIDE.Framework.Analyses.Common.Process_Geometry import Process_Geometry   
 
 # package imports 
 import numpy as np 
@@ -124,13 +124,26 @@ class VLM_Perturbation_Method(Stability):
         self.flap_flag                                = False 
         self.rudder_flag                              = False 
         self.elevator_flag                            = False 
-        self.slat_flag                                = False     
-        self.evaluate                                 = None 
+        self.slat_flag                                = False   
+
+    def initialize(self):  
+        use_surrogate             = self.settings.use_surrogate  
+
+        # If we are using the surrogate
+        if use_surrogate == True: 
+            # sample training data
+            sample_training(self)
+
+            # build surrogate
+            build_surrogate(self) 
 
         # build the evaluation process
         compute                                          = Process() 
-        compute.lift                                     = Process() 
-        #compute.lift.inviscid_wings                      = self.evaluate()
+        compute.lift                                     = Process()
+        if use_surrogate == True:  
+            compute.lift.inviscid_wings  = evaluate_surrogate
+        else:
+            compute.lift.inviscid_wings  = evaluate_no_surrogate
         compute.lift.vortex                              = RCAIDE.Library.Methods.skip
         compute.lift.fuselage                            = Common.Lift.fuselage_correction
         compute.lift.total                               = Common.Lift.aircraft_total  
@@ -156,44 +169,31 @@ class VLM_Perturbation_Method(Stability):
         compute.drag.trim                                = Common.Drag.trim
         compute.drag.spoiler                             = Common.Drag.spoiler_drag
         compute.drag.total                               = Common.Drag.total_aircraft 
-        self.process.compute                             = compute 
-        
-    def initialize(self): 
-        settings                  = self.settings  
-        use_surrogate             = settings.use_surrogate 
-        propeller_wake_model      = settings.propeller_wake_model 
-        n_sw                      = settings.number_of_spanwise_vortices
-        n_cw                      = settings.number_of_chordwise_vortices
-        mf                        = settings.model_fuselage
-        mn                        = settings.model_nacelle
-        dcs                       = settings.discretize_control_surfaces 
-
-        # Unpack:
-        settings = self.settings      
-
-        if n_sw is not None:
-            settings.number_of_spanwise_vortices  = n_sw
-
-        if n_cw is not None:
-            settings.number_of_chordwise_vortices = n_cw 
-
-        settings.use_surrogate              = use_surrogate
-        settings.propeller_wake_model       = propeller_wake_model 
-        settings.discretize_control_surfaces= dcs
-        settings.model_fuselage             = mf
-        settings.model_nacelle              = mn 
-
-        # If we are using the surrogate
-        if use_surrogate == True: 
-            # sample training data
-            sample_training()
-
-            # build surrogate
-            build_surrogate()        
-
-            self.evaluate  = evaluate_surrogate
-
-        else:                                         
-            self.evaluate  = evaluate_no_surrogate
+        self.process.compute                             = compute  
             
-        return 
+        return
+    
+    def evaluate(self,state):
+        """The default evaluate function.
+
+        Assumptions:
+        None
+
+        Source:
+        N/A
+
+        Inputs:
+        None
+
+        Outputs:
+        results   <RCAIDE data class>
+
+        Properties Used:
+        self.settings
+        self.geometry
+        """           
+        settings = self.settings
+        geometry = self.geometry 
+        results  = self.process.compute(state,settings,geometry)
+        
+        return results    

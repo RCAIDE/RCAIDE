@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                            import Data , Units
+from RCAIDE.Framework.Core                            import Units
 from RCAIDE.Library.Methods.Stability.Common          import estimate_wing_CL_alpha
-from RCAIDE.Library.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder
+from RCAIDE.Library.Components.Wings.Control_Surfaces import Aileron , Elevator  
 
 # python imports 
 import numpy as np 

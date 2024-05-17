@@ -29,7 +29,7 @@ def stability(segment):
     stability_model    = segment.analyses.stability
     conditions         = segment.state.conditions
     
-    if stability_model:
+    if stability_model != None:
         Sref               = stability_model.geometry.reference_area
         MAC                = stability_model.geometry.wings.main_wing.chords.mean_aerodynamic
         span               = stability_model.geometry.wings.main_wing.spans.projected
