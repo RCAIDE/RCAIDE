@@ -1,24 +1,19 @@
 ## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-# import_airfoil_geometry.py
+# Library/Methods/Geometry/Two_Dimensional/Cross_Section/Airfoil/import_airfoil_geometry.py
 # 
-# Created:  Mar 2019, M. Clarke
-# Modified: Mar 2020, M. Clarke
-#           Apr 2020, M. Clarke
-#           Apr 2020, M. Clarke
-#           May 2020, B. Dalman
-#           Sep 2020, M. Clarke
-#           May 2021, E. Botero
-#           May 2021, R. Erhard
-#           Jun 2021, E. Botero
-#           Aug 2021, M. Clarke
-
-# ----------------------------------------------------------------------
-#  Imports
-# ---------------------------------------------------------------------- 
-from Legacy.trunk.S.Core import Data  
+# Created:  May 2024, M. Clarke 
+# ---------------------------------------------------------------------------------------------
+# IMPORT
+# --------------------------------------------------------------------------------------------- 
+from RCAIDE.Framework.Core import Data  
 import numpy as np
+
+# python import
 from scipy import interpolate
 
+# ---------------------------------------------------------------------------------------------
+# Import Airfoil Geoemtry
+# --------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
 def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpolation = 'cubic'):
     """This imports an airfoil geometry from a text file  and store
