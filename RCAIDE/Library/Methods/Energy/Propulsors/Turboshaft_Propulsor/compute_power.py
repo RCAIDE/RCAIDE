@@ -57,6 +57,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
       flow_through_fan                         [-] percentage of total flow (.1 is 10
     combustor.outputs.stagnation_temperature   [K]
     compressor.pressure_ratio                  [-]
+    turboshaft.conversion_efficiency           [-]
                                                
     Outputs:                                   
     turboshaft.outputs.                        
@@ -84,7 +85,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     M0                                         = conditions.freestream.mach_number
     p0                                         = conditions.freestream.pressure  
     g                                          = conditions.freestream.gravity 
-    Cp                                         = conditions.freestream.specific_heat_at_constant_pressure    
+    Cp                                         = conditions.freestream.specific_heat_at_constant_pressure 
                                                
     #unpacking from inputs                     
     f                                          = turboshaft.inputs.fuel_to_air_ratio
@@ -97,6 +98,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     bypass_ratio                               = turboshaft.inputs.bypass_ratio  
     flow_through_core                          = turboshaft.inputs.flow_through_core #scaled constant to turn on core thrust computation
     flow_through_fan                           = turboshaft.inputs.flow_through_fan #scaled constant to turn on fan thrust computation
+    eta_c                                      = turboshaft.conversion_efficiency
 
     #unpacking from turboshaft
     Tref                                       = turboshaft.reference_temperature
@@ -105,51 +107,49 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     SFC_adjustment                             = turboshaft.SFC_adjustment 
     Tt4                                        = turboshaft.combustor.outputs.stagnation_temperature
     pi_c                                       = turboshaft.compressor.pressure_ratio
-                                               
-    #computing the non dimensional power       
+                                                     
     tau_lambda                                 = Tt4/total_temperature_reference
     tau_r                                      = 1 + ((gamma - 1)/2)*M0**2
     tau_c                                      = pi_c**((gamma - 1)/gamma)
+    tau_t                                      = (1/(tau_r*tau_c)) + ((gamma - 1)*M0**2)/(2*tau_lambda*eta_c**2)
     Chi                                        = 1.02                                                       # Page 335
     C_shaft                                    = tau_lambda*(1 - Chi/(tau_r*tau_c)) - tau_r*(tau_c - 1)
-    Power_nd                                   = Cp*total_temperature_reference*C_shaft
-    
-    
-    
-    
-    
-    flow_through_core*(gamma*M0*M0*(core_nozzle.velocity/u0-1.) + core_area_ratio*(core_nozzle.static_pressure/p0-1.))
 
+    #Computing Specifc Thrust
+    Tsp                                        = a0*(((2/(gamma - 1))*(tau_lambda/(tau_r*tau_c))*(tau_r*tau_c*tau_t - 1))**(0.5) - M0)
+    
     #Computing Specifc Power
-    Fsp                                        = 1./(gamma*M0)*Thrust_nd
-                                               
-    #Computing the specific impulse            
-    Isp                                        = Fsp*a0*(1.+bypass_ratio)/(f*g)
-                                               
-    #Computing the TSFC                        
-    TSFC                                       = f*g/(Fsp*a0*(1.+bypass_ratio))*(1.-SFC_adjustment) * Units.hour # 1/s is converted to 1/hr here
-                                               
+    Psp                                        = Cp*total_temperature_reference*C_shaft
+    
     #computing the core mass flow              
-    mdot_core                                  = mdhc*np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref)
+    mdot_core                                  = mdhc*np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref)    
+    
+    #Computing Power 
+    Power                                      = Psp*mdot_core
                                                
-    #computing the dimensional thrust          
-    FD2                                        = Fsp*a0*(1.+bypass_ratio)*mdot_core*throttle
+    #Computing the PSFC                        
+    PSFC                                       = (tau_lambda/(C_shaft*h_PR))
                                                
-    #fuel flow rate                            
-    a = np.array([0.])                         
-    fuel_flow_rate                             = np.fmax(FD2*TSFC/g,a)*1./Units.hour
 
-    #computing the power 
-    power                                      = FD2*u0
+                                               
+    ##computing the dimensional thrust          
+    #FD2                                        = Fsp*a0*(1.+bypass_ratio)*mdot_core*throttle
+                                               
+    ##fuel flow rate                            
+    #a = np.array([0.])                         
+    #fuel_flow_rate                             = np.fmax(FD2*TSFC/g,a)*1./Units.hour
 
-    #pack outputs
+    ##computing the power 
+    #power                                      = FD2*u0
 
-    turboshaft.outputs.thrust                            = FD2 
-    turboshaft.outputs.thrust_specific_fuel_consumption  = TSFC
-    turboshaft.outputs.non_dimensional_thrust            = Fsp 
-    turboshaft.outputs.core_mass_flow_rate               = mdot_core
-    turboshaft.outputs.fuel_flow_rate                    = fuel_flow_rate    
-    turboshaft.outputs.power                             = power  
-    turboshaft.outputs.specific_impulse                  = Isp
+    ##pack outputs
+
+    #turboshaft.outputs.thrust                            = FD2 
+    #turboshaft.outputs.thrust_specific_fuel_consumption  = TSFC
+    #turboshaft.outputs.non_dimensional_thrust            = Fsp 
+    #turboshaft.outputs.core_mass_flow_rate               = mdot_core
+    #turboshaft.outputs.fuel_flow_rate                    = fuel_flow_rate    
+    #turboshaft.outputs.power                             = power  
+    #turboshaft.outputs.specific_impulse                  = Isp
 
     return 
