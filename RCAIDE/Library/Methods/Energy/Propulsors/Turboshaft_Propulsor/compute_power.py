@@ -10,7 +10,8 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
-from RCAIDE.Framework.Core  import Units
+from RCAIDE.Framework.Core                 import Units
+from RCAIDE.Library.Attributes.Propellants import Jet_A1 as Propellant
 
 # Python package imports
 import numpy                as np
@@ -77,6 +78,8 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
       SFC_adjustment                           [-]
     """           
     #unpack the values
+    
+    LHV                                        = 1000*Propellant.lower_heating_value  # 1000 to match units from kJ/kg to J/kg
 
     #unpacking from conditions
     gamma                                      = conditions.freestream.isentropic_expansion_factor 
@@ -111,7 +114,8 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     tau_lambda                                 = Tt4/total_temperature_reference
     tau_r                                      = 1 + ((gamma - 1)/2)*M0**2
     tau_c                                      = pi_c**((gamma - 1)/gamma)
-    tau_t                                      = (1/(tau_r*tau_c)) + ((gamma - 1)*M0**2)/(2*tau_lambda*eta_c**2)
+    #tau_t                                      = (1/(tau_r*tau_c)) + ((gamma - 1)*M0**2)/(2*tau_lambda*eta_c**2)
+    tau_t                                      = Chi/(tau_r*tau_c)
     Chi                                        = 1.02                                                       # Page 335
     C_shaft                                    = tau_lambda*(1 - Chi/(tau_r*tau_c)) - tau_r*(tau_c - 1)
 
@@ -125,31 +129,20 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     mdot_core                                  = mdhc*np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref)    
     
     #Computing Power 
-    Power                                      = Psp*mdot_core
-                                               
+    #Power                                      = Psp*mdot_core
+    Power                                      = mdot_core*Cp*total_temperature_reference*(tau_lambda*(1 - tau_t) - tau_r*(tau_c - 1))
+    
     #Computing the PSFC                        
-    PSFC                                       = (tau_lambda/(C_shaft*h_PR))
-                                               
+    PSFC                                       = (tau_lambda/(C_shaft*LHV))
+                                                                                                       
+    #fuel flow rate                             
+    fuel_flow_rate                             = Power*PSFC*1./Units.hour
 
-                                               
-    ##computing the dimensional thrust          
-    #FD2                                        = Fsp*a0*(1.+bypass_ratio)*mdot_core*throttle
-                                               
-    ##fuel flow rate                            
-    #a = np.array([0.])                         
-    #fuel_flow_rate                             = np.fmax(FD2*TSFC/g,a)*1./Units.hour
+    #pack outputs
 
-    ##computing the power 
-    #power                                      = FD2*u0
-
-    ##pack outputs
-
-    #turboshaft.outputs.thrust                            = FD2 
-    #turboshaft.outputs.thrust_specific_fuel_consumption  = TSFC
-    #turboshaft.outputs.non_dimensional_thrust            = Fsp 
-    #turboshaft.outputs.core_mass_flow_rate               = mdot_core
-    #turboshaft.outputs.fuel_flow_rate                    = fuel_flow_rate    
-    #turboshaft.outputs.power                             = power  
-    #turboshaft.outputs.specific_impulse                  = Isp
+    turboshaft.outputs.power_specific_fuel_consumption   = PSFC
+    turboshaft.outputs.core_mass_flow_rate               = mdot_core
+    turboshaft.outputs.fuel_flow_rate                    = fuel_flow_rate    
+    turboshaft.outputs.power                             = Power  
 
     return 
