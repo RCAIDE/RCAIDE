@@ -70,7 +70,7 @@ def jet_mass_from_sls(State, Settings, System):
          or isinstance(propulsor, EN.Propulsor_Surrogate)]
     )
 
-    jet_masses, total_propulsor_masses = func_Jet_Mass_from_SLS(SLS_thrust)
+    jet_masses, total_propulsor_masses = func_Jet_Mass_from_SLS(SLS_thrust, n_engines)
 
     for idx, propulsor in enumerate(propulsor_list):
         propulsor.mass_properties.total_mass = total_propulsor_masses[idx]

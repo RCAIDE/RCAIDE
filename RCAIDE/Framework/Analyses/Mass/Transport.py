@@ -55,13 +55,13 @@ class TransportMassAnalysis(Process):
         # Fuselage Mass
         Fuselages = ProcessStep()
         Fuselages.name = 'Fuselage'
-        Fuselages.function =
+        Fuselages.function = Mass.Transport.fuselage
         self.append(Fuselages)
 
         # Landing Gear Mass
         LG = ProcessStep()
         LG.name = 'Landing Gear'
-        LG.function =
+        LG.function = Mass.Transport.landing_gear
         self.append(LG)
 
 

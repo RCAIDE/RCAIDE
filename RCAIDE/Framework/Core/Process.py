@@ -172,7 +172,7 @@ class Process:
 
         return None
 
-    def remove(self, value: object, mode:str = 'name'):
+    def remove(self, value: object, mode: str = 'name'):
 
         if mode == 'name':
             self.remove_name(value)
