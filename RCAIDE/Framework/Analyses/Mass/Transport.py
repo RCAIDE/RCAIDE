@@ -1,6 +1,6 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from RCAIDE.Framework.Core import Process, ProcessStep
-from RCAIDE.Framework.Methods.Mass import Correlation as Mass
+from RCAIDE.Library.Methods.Mass import Correlation as Mass
 
 class TransportMassAnalysis(Process):
 
