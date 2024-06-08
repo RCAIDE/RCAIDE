@@ -25,9 +25,7 @@ import plotly.graph_objects as go
 def plot_3d_vehicle(vehicle,
                     show_axis                   = False,
                     save_figure                 = False,
-                    alpha                       = 1.0,
-                    show_wing_control_points    = True,
-                    show_rotor_wake_vortex_core = False,
+                    alpha                       = 1.0,  
                     save_filename               = "Vehicle_Geometry",
                     min_x_axis_limit            = None,
                     max_x_axis_limit            = None,
@@ -76,9 +74,7 @@ def plot_3d_vehicle(vehicle,
     
     plot_data,x_min,x_max,y_min,y_max,z_min,z_max  = generate_3d_vehicle_geometry_data(plot_data,
                                                                                        vehicle,
-                                                                                       alpha,
-                                                                                       show_wing_control_points,
-                                                                                       show_rotor_wake_vortex_core,
+                                                                                       alpha,  
                                                                                        min_x_axis_limit,
                                                                                        max_x_axis_limit,
                                                                                        min_y_axis_limit,
@@ -117,9 +113,7 @@ def plot_3d_vehicle(vehicle,
 ## @ingroup Library-Plots-Geometry
 def generate_3d_vehicle_geometry_data(plot_data,
                                       vehicle,
-                                      alpha                       = 1.0,
-                                      show_wing_control_points    = False,
-                                      show_rotor_wake_vortex_core = False,
+                                      alpha                       = 1.0,  
                                       min_x_axis_limit            = None,
                                       max_x_axis_limit            = None,
                                       min_y_axis_limit            = None,
@@ -136,9 +130,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
 
     Inputs:
        vehicle                      - vehicle data structure          
-       alpha                        - opacity                   
-       show_wing_control_points     - show control point flag  
-       show_rotor_wake_vortex_core  - show rotor wake flag 
+       alpha                        - opacity  
        save_filename                - filename for saving  
        x_axis_limit                 - limits of axis  
        y_axis_limit                 - limits of axis  
@@ -179,15 +171,10 @@ def generate_3d_vehicle_geometry_data(plot_data,
     # -------------------------------------------------------------------------
     # PLOT WING
     # ------------------------------------------------------------------------- 
-    plot_data       = plot_3d_wing(plot_data,VD,color_map ='greys')
-    if  show_wing_control_points: 
-        ctrl_pts = go.Scatter3d(x=VD.XC, y=VD.YC, z=VD.ZC,
-                                    mode  = 'markers',
-                                    marker= dict(size=6,color='red',opacity=0.8),
-                                    line  = dict(color='red',width=2))
+    number_of_airfoil_points = 21
+    for wing in vehicle.wings:
+        plot_data       = plot_3d_wing(plot_data,wing,number_of_airfoil_points , color_map='greys',alpha=1) 
         
-        plot_data.append(ctrl_pts) 
- 
     # -------------------------------------------------------------------------
     # PLOT FUSELAGE
     # ------------------------------------------------------------------------- 

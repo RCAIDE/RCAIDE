@@ -48,16 +48,15 @@ def main():
     plot_results(results) 
     
     # plot vehicle 
-    plot_3d_vehicle(configs.base,
-                    show_wing_control_points    = False,
-                    show_rotor_wake_vortex_core = False,
+    plot_3d_vehicle(configs.base, 
                     min_x_axis_limit            = 0,
                     max_x_axis_limit            = 40,
                     min_y_axis_limit            = -20,
                     max_y_axis_limit            = 20,
                     min_z_axis_limit            = -20,
                     max_z_axis_limit            = 20,
-                    show_figure                 = False)         
+                    show_figure                 = False
+                    )         
         
     return 
 
