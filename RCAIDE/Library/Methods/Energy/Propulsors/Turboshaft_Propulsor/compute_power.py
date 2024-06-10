@@ -143,6 +143,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     turboshaft.outputs.power_specific_fuel_consumption   = PSFC
     turboshaft.outputs.core_mass_flow_rate               = mdot_core
     turboshaft.outputs.fuel_flow_rate                    = fuel_flow_rate    
-    turboshaft.outputs.power                             = Power  
+    turboshaft.outputs.power                             = Power
+    turboshaft.outputs.non_dimensional_power             = Psp
 
     return 
