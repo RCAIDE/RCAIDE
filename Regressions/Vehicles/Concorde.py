@@ -104,7 +104,7 @@ def vehicle_setup():
     segment.tag                   = 'section_1'
     segment.percent_span_location = 0.
     segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 33.8/33.8
+    segment.root_chord_percent    = 1
     segment.dihedral_outboard     = 0.
     segment.sweeps.quarter_chord  = 67. * Units.deg
     segment.thickness_to_chord    = 0.03
@@ -114,9 +114,9 @@ def vehicle_setup():
     # set section 2 start point
     segment = RCAIDE.Library.Components.Wings.Segment()
     segment.tag                   = 'section_2'
-    segment.percent_span_location = 6.15/(25.6/2) + wing.Segments['section_1'].percent_span_location
+    segment.percent_span_location = (6.15 * 2) /wing.spans.projected
     segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 13.8/33.8
+    segment.root_chord_percent    = 13.8/wing.chords.root
     segment.dihedral_outboard     = 0.
     segment.sweeps.quarter_chord  = 48. * Units.deg
     segment.thickness_to_chord    = 0.03
@@ -127,9 +127,9 @@ def vehicle_setup():
     # set section 3 start point
     segment = RCAIDE.Library.Components.Wings.Segment() 
     segment.tag                   = 'section_3'
-    segment.percent_span_location = 5.95/(25.6/2) + wing.Segments['section_2'].percent_span_location
+    segment.percent_span_location = (12.1 *2) /wing.spans.projected
     segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 4.4/33.8
+    segment.root_chord_percent    = 4.4/wing.chords.root
     segment.dihedral_outboard     = 0.
     segment.sweeps.quarter_chord  = 71. * Units.deg 
     segment.thickness_to_chord    = 0.03
@@ -141,7 +141,7 @@ def vehicle_setup():
     segment.tag                   = 'tip'
     segment.percent_span_location = 1.
     segment.twist                 = 0. * Units.deg
-    segment.root_chord_percent    = 1.1/33.8
+    segment.root_chord_percent    = 1.1/wing.chords.root
     segment.dihedral_outboard     = 0.
     segment.sweeps.quarter_chord  = 0.
     segment.thickness_to_chord    = 0.03
@@ -275,37 +275,88 @@ def vehicle_setup():
     fuselage.OpenVSP_values.tail.top.angle = 0.0
     fuselage.OpenVSP_values.tail.top.strength = 0.0 
     
-    vehicle.append_component(fuselage)
+    
+    # Segment  
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment() 
+    segment.tag                                 = 'segment_0'    
+    segment.percent_x_location                  = 0.0000
+    segment.percent_z_location                  =  -0.61 /fuselage.lengths.total 
+    segment.height                              = 0.00100 
+    segment.width                               = 0.00100  
+    fuselage.Segments.append(segment)   
+     
+    
+    # Segment                                   
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
+    segment.tag                                 = 'segment_1'   
+    segment.percent_x_location                  = 3.02870/fuselage.lengths.total   
+    segment.percent_z_location                  = -0.3583/fuselage.lengths.total     
+    segment.height                              = 1.4502  
+    segment.width                               = 1.567  
+    fuselage.Segments.append(segment)
     
 
-    # ------------------------------------------------------------------        
-    # the nacelle 
-    # ------------------------------------------------------------------    
-    nacelle                  = RCAIDE.Library.Components.Nacelles.Nacelle()
-    nacelle.diameter         = 1.3
-    nacelle.tag              = 'nacelle_1'
-    nacelle.origin           = [[36.56, 22, -1.9]] 
-    nacelle.length           = 12.0 
-    nacelle.inlet_diameter   = 1.1 
-    nacelle.areas.wetted     = 30.
-    vehicle.append_component(nacelle)       
+    
+    # Segment                                   
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
+    segment.tag                                 = 'segment_2'   
+    segment.percent_x_location                  =   5.7742/fuselage.lengths.total   
+    segment.percent_z_location                  =  -0.1500/fuselage.lengths.total    
+    segment.height                              = 2.356  
+    segment.width                               = 2.3429  
+    fuselage.Segments.append(segment)
+    
 
-    nacelle_2               = deepcopy(nacelle)
-    nacelle_2.tag           = 'nacelle_2'
-    nacelle_2.origin        = [[37.,5.3,-1.3]]
-    vehicle.append_component(nacelle_2)     
+    # Segment                                   
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
+    segment.tag                                 = 'segment_3'   
+    segment.percent_x_location                  =  9.0791/fuselage.lengths.total    
+    segment.percent_z_location                  = 0  
+    segment.height                              = 3.0581  
+    segment.width                               = 2.741  
+    fuselage.Segments.append(segment)
+     
+    
+    
+    # Segment  
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment() 
+    segment.tag                                 = 'segment_4'    
+    segment.percent_x_location                  = 12.384/fuselage.lengths.total  
+    segment.percent_z_location                  = 0  
+    segment.height                              = 3.3200 
+    segment.width                               = 2.880  
+    fuselage.Segments.append(segment)
+    
+    # Segment                                   
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
+    segment.tag                                 = 'segment_6'   
+    segment.percent_x_location                  = 43.228 /fuselage.lengths.total    
+    segment.percent_z_location                  = 0 
+    segment.height                              = 3.3200   
+    segment.width                               = 2.8800  
+    fuselage.Segments.append(segment)
 
-    nacelle_3               = deepcopy(nacelle)
-    nacelle_3.tag           = 'nacelle_3'
-    nacelle_3.origin        = [[37.,-5.3,-1.3]]
-    vehicle.append_component(nacelle_3)   
+    # Segment                                   
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
+    segment.tag                                 = 'segment_6'   
+    segment.percent_x_location                  =  47.5354/fuselage.lengths.total     
+    segment.percent_z_location                  =  0.100/fuselage.lengths.total     
+    segment.height                              = 2.952  
+    segment.width                               = 2.8800  
+    fuselage.Segments.append(segment)   
 
-    nacelle_4              = deepcopy(nacelle)
-    nacelle_4.tag          = 'nacelle_4'
-    nacelle_4.origin       = [[37.,-6.,-1.3]]
-    vehicle.append_component(nacelle_4)       
-        
-        
+                 
+    # Segment                                   
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
+    segment.tag                                 = 'segment_7'   
+    segment.percent_x_location                  = 1  
+    segment.percent_z_location                  = 1.2332/fuselage.lengths.total   
+    segment.height                              = 0.00100  
+    segment.width                               = 0.00100  
+    fuselage.Segments.append(segment)
+    
+    
+    vehicle.append_component(fuselage)
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Turbofan Network
@@ -332,7 +383,7 @@ def vehicle_setup():
     outer_right_turbojet.design_altitude              = 60000.0*Units.ft
     outer_right_turbojet.design_mach_number           = 2.02
     outer_right_turbojet.design_thrust                = 40000. * Units.lbf  
-    outer_right_turbojet.origin                       = [[37.,6.,-1.3]] 
+    outer_right_turbojet.origin                       = [[37.,5.5,-1.6]] 
     outer_right_turbojet.working_fluid                = RCAIDE.Library.Attributes.Gases.Air()
     
     # Ram  
@@ -404,7 +455,34 @@ def vehicle_setup():
     outer_right_turbojet.core_nozzle              = nozzle
     
     # design turbojet 
-    design_turbojet(outer_right_turbojet)  
+    design_turbojet(outer_right_turbojet) 
+
+    nacelle                                     = RCAIDE.Library.Components.Nacelles.Stack_Nacelle()
+    nacelle.diameter                            = 1.3
+    nacelle.tag                                 = 'nacelle_1'
+    nacelle.origin                              = [[37.,5.5,-1.6]] 
+    nacelle.length                              = 10
+    nacelle.inlet_diameter                      = 1.1 
+    nacelle.areas.wetted                        = 30.
+    
+    nac_segment                                 = RCAIDE.Library.Components.Nacelles.Segment()
+    nac_segment.tag                             = 'segment_1' 
+    nac_segment.orientation_euler_angles        = [0., -45*Units.degrees,0.]     
+    nac_segment.percent_x_location              = 0.0  
+    nac_segment.height                          = 2.12
+    nac_segment.width                           = 1.5
+    nac_segment.curvature                       = 5
+    nacelle.append_segment(nac_segment)         
+
+    nac_segment                                 = RCAIDE.Library.Components.Nacelles.Segment()
+    nac_segment.tag                             = 'segment_2'
+    nac_segment.percent_x_location              = 1.0
+    nac_segment.height                          = 1.5
+    nac_segment.width                           = 1.5
+    nac_segment.curvature                       = 5
+    nacelle.append_segment(nac_segment)     
+    
+    outer_right_turbojet.nacelle = nacelle 
     
     # append turbojet    
     fuel_line.propulsors.append(outer_right_turbojet) 
@@ -414,8 +492,13 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------   
     inner_right_turbojet                     = deepcopy(outer_right_turbojet) 
     inner_right_turbojet.tag                 = 'inner_right_turbojet'      
-    inner_right_turbojet.origin              = [[37.,5.3,-1.3]]   
-    inner_right_turbojet.active_fuel_tanks   = ['tank_6_and_7','tank_5A_and_7A','tank_2_and_3','tank_11']    
+    inner_right_turbojet.origin              = [[37.,4,-1.6]]   
+    inner_right_turbojet.active_fuel_tanks   = ['tank_6_and_7','tank_5A_and_7A','tank_2_and_3','tank_11']  
+    nacelle_2                                = deepcopy(nacelle)
+    nacelle_2.tag                            = 'nacelle_2'
+    nacelle_2.origin                         = [[37.,4,-1.6]]
+    inner_right_turbojet.nacelle = nacelle_2
+   
     fuel_line.propulsors.append(inner_right_turbojet) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -423,8 +506,13 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------    
     inner_left_turbojet                     = deepcopy(outer_right_turbojet)    
     inner_left_turbojet.tag                 = 'inner_left_turbojet'  
-    inner_left_turbojet.origin              = [[37.,-5.3,-1.3]]  
+    inner_left_turbojet.origin              = [[37.,-4,-1.6]]  
     inner_left_turbojet.active_fuel_tanks   = ['tank_9','tank_10','tank_1_and_4','tank_5_and_8'] 
+    nacelle_3                               = deepcopy(nacelle)
+    nacelle_3.tag                           = 'nacelle_3'
+    nacelle_3.origin                        = [[37.,-4,-1.6]]
+    inner_left_turbojet.nacelle = nacelle_3
+
     fuel_line.propulsors.append(inner_left_turbojet) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -433,7 +521,11 @@ def vehicle_setup():
     outer_left_turbojet                     = deepcopy(outer_right_turbojet)
     outer_left_turbojet.tag                 = 'outer_left_turbojet'     
     outer_left_turbojet.active_fuel_tanks   = ['tank_9','tank_10','tank_1_and_4','tank_5_and_8']   
-    outer_left_turbojet.origin              = [[37.,-6.,-1.3]]   
+    outer_left_turbojet.origin              = [[37.,-5.5,-1.6]]   
+    nacelle_4                               = deepcopy(nacelle)
+    nacelle_4.tag                           = 'nacelle_4'
+    nacelle_4.origin                        = [[37.,-5.5,-1.6]]
+    outer_left_turbojet.nacelle = nacelle_4
     fuel_line.propulsors.append(outer_left_turbojet) 
 
        

@@ -10,7 +10,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units       
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import segment_properties   
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan , size_turbofan_nacelle
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan
 from RCAIDE.Library.Methods.Stability.Center_of_Gravity            import compute_component_centers_of_gravity
 from RCAIDE.Library.Plots                                          import *     
  
@@ -584,52 +584,16 @@ def vehicle_setup():
    
  
     # Nacelle 
-    nacelle                                     = RCAIDE.Library.Components.Nacelles.Nacelle()
+    nacelle                                     = RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle()
     nacelle.diameter                            = 2.05
     nacelle.length                              = 2.71
     nacelle.tag                                 = 'nacelle_1'
     nacelle.inlet_diameter                      = 2.0
     nacelle.origin                              = [[13.5,4.38,-1.5]] 
     nacelle.areas.wetted                        = 1.1*np.pi*nacelle.diameter*nacelle.length
-    nacelle.Airfoil.NACA_4_series_flag          = True 
-    nacelle.Airfoil.coordinate_file             = '2410' 
-           
-         
-    nac_segment                                 = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                             = 'segment_1'
-    nac_segment.percent_x_location              = 0.0  
-    nac_segment.height                          = 2.05
-    nac_segment.width                           = 2.05
-    nacelle.append_segment(nac_segment)         
-           
-    nac_segment                                 = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                             = 'segment_2'
-    nac_segment.percent_x_location              = 0.3
-    nac_segment.height                          = 2.1  
-    nac_segment.width                           = 2.1 
-    nacelle.append_segment(nac_segment)         
-           
-    nac_segment                                 = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                             = 'segment_3'
-    nac_segment.percent_x_location              = 0.4  
-    nac_segment.height                          = 2.05
-    nac_segment.width                           = 2.05 
-    nacelle.append_segment(nac_segment)         
-            
-    nac_segment                                 = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                             = 'segment_4'
-    nac_segment.percent_x_location              = 0.75  
-    nac_segment.height                          = 1.9
-    nac_segment.width                           = 1.9
-    nacelle.append_segment(nac_segment)         
-    
-    nac_segment                                 = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                             = 'segment_5'
-    nac_segment.percent_x_location              = 1.0
-    nac_segment.height                          = 1.7 
-    nac_segment.width                           = 1.7
-    nacelle.append_segment(nac_segment)           
-    size_turbofan_nacelle(turbofan, nacelle)
+    nacelle_airfoil                             = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
+    nacelle_airfoil.NACA_4_Series_code          = '2410'
+    nacelle.append_airfoil(nacelle_airfoil) 
     turbofan.nacelle                            = nacelle
     
     fuel_line.propulsors.append(turbofan)  

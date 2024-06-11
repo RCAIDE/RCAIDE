@@ -43,7 +43,7 @@ def plot_3d_wing(plot_data,wing,number_of_airfoil_points = 21, color_map='greys'
     else:
         dim = 2 
  
-    G = get_3d_wing_coordinates(wing,number_of_airfoil_points,dim)
+    G = generate_3d_wing_points(wing,number_of_airfoil_points,dim)
     # ------------------------------------------------------------------------
     # Plot Rotor Blade
     # ------------------------------------------------------------------------
@@ -85,7 +85,7 @@ def plot_3d_wing(plot_data,wing,number_of_airfoil_points = 21, color_map='greys'
     return plot_data
 
 ## @ingroup Library-Plots-Geometry 
-def get_3d_wing_coordinates(wing,n_points,dim):
+def generate_3d_wing_points(wing,n_points,dim):
     """ This generates the coordinates of the blade surface for plotting in the aircraft frame (x-back, z-up)
 
     Assumptions:
@@ -127,7 +127,7 @@ def get_3d_wing_coordinates(wing,n_points,dim):
         for i in range(n_segments):
             current_seg = list(segments.keys())[i]
             airfoil = wing.Segments[current_seg].Airfoil 
-            if len(airfoil) > 1:
+            if len(list(airfoil.keys())) > 0:
                 af_tag =  list(airfoil.keys())[0]
                 
                 if type(airfoil[af_tag]) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil:
@@ -156,8 +156,8 @@ def get_3d_wing_coordinates(wing,n_points,dim):
             twist    = wing.Segments[current_seg].twist
             
             if wing.vertical: 
-                pts[i,:,0,0]   = geometry.x_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
-                pts[i,:,1,0]   = geometry.y_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
+                pts[i,:,0,0]   = geometry.x_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root 
+                pts[i,:,1,0]   = geometry.y_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root 
                 pts[i,:,2,0]   = np.zeros_like(geometry.y_coordinates) 
               
                 section_twist[i,:,0,0] = np.cos(twist) 
@@ -167,8 +167,8 @@ def get_3d_wing_coordinates(wing,n_points,dim):
             
             else: 
                 pts[i,:,0,0]   = geometry.x_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
-                pts[i,:,1,0]   = np.zeros_like(geometry.y_coordinates)  
-                pts[i,:,2,0]   = geometry.y_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
+                pts[i,:,1,0]   = np.zeros_like(geometry.y_coordinates) 
+                pts[i,:,2,0]   = geometry.y_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root  
                                  
 
                 section_twist[i,:,0,0] = np.cos(twist) 
@@ -241,9 +241,9 @@ def get_3d_wing_coordinates(wing,n_points,dim):
             pts[1,:,1,0]   = geometry.y_coordinates *  wing.chords.tip  
             pts[1,:,2,0]   = np.zeros_like(geometry.y_coordinates)   
             
-            translation[0, :, 0,:] += semispan*np.tan(sweep)
-            translation[0, :, 1,:] += semispan*np.tan(dihedral) 
-            translation[0, :, 2,:] += semispan 
+            translation[1, :, 0,:] += semispan*np.tan(sweep)
+            translation[1, :, 1,:] += semispan*np.tan(dihedral) 
+            translation[1, :, 2,:] += semispan 
 
             section_twist[0,:,0,0] = np.cos(wing.twists.root) 
             section_twist[0,:,0,1] = -np.sin(wing.twists.root)  
