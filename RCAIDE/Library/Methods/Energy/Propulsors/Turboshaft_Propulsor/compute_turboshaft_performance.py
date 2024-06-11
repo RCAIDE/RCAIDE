@@ -126,7 +126,7 @@ def compute_performance(conditions,fuel_line,turboshaft,total_power):
     high_pressure_turbine.inputs.stagnation_pressure       = combustor.outputs.stagnation_pressure
     high_pressure_turbine.inputs.fuel_to_air_ratio         = combustor.outputs.fuel_to_air_ratio
 
-    #link the high pressuer turbine to the high pressure compressor
+    #link the high pressure turbine to the compressor
     high_pressure_turbine.inputs.compressor                = compressor.outputs
 
     #flow through the high pressure turbine

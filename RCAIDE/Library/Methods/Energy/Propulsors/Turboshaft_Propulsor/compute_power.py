@@ -83,31 +83,31 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
 
     #unpacking from conditions
     gamma                                      = conditions.freestream.isentropic_expansion_factor 
-    u0                                         = conditions.freestream.velocity
+    #u0                                         = conditions.freestream.velocity
     a0                                         = conditions.freestream.speed_of_sound
     M0                                         = conditions.freestream.mach_number
-    p0                                         = conditions.freestream.pressure  
-    g                                          = conditions.freestream.gravity 
+    #p0                                         = conditions.freestream.pressure  
+    #g                                          = conditions.freestream.gravity 
     Cp                                         = conditions.freestream.specific_heat_at_constant_pressure 
                                                
     #unpacking from inputs                     
-    f                                          = turboshaft.inputs.fuel_to_air_ratio
+    #f                                          = turboshaft.inputs.fuel_to_air_ratio
     total_temperature_reference                = turboshaft.inputs.total_temperature_reference
     total_pressure_reference                   = turboshaft.inputs.total_pressure_reference
-    core_nozzle                                = turboshaft.inputs.core_nozzle
-    fan_nozzle                                 = turboshaft.inputs.fan_nozzle  
-    fan_area_ratio                             = turboshaft.inputs.fan_nozzle.area_ratio
-    core_area_ratio                            = turboshaft.inputs.core_nozzle.area_ratio                   
-    bypass_ratio                               = turboshaft.inputs.bypass_ratio  
-    flow_through_core                          = turboshaft.inputs.flow_through_core #scaled constant to turn on core thrust computation
-    flow_through_fan                           = turboshaft.inputs.flow_through_fan #scaled constant to turn on fan thrust computation
-    eta_c                                      = turboshaft.conversion_efficiency
+    #core_nozzle                                = turboshaft.inputs.core_nozzle
+    #fan_nozzle                                 = turboshaft.inputs.fan_nozzle  
+    #fan_area_ratio                             = turboshaft.inputs.fan_nozzle.area_ratio
+    #core_area_ratio                            = turboshaft.inputs.core_nozzle.area_ratio                   
+    #bypass_ratio                               = turboshaft.inputs.bypass_ratio  
+    #flow_through_core                          = turboshaft.inputs.flow_through_core #scaled constant to turn on core thrust computation
+    #flow_through_fan                           = turboshaft.inputs.flow_through_fan #scaled constant to turn on fan thrust computation
+    #eta_c                                      = turboshaft.conversion_efficiency
 
     #unpacking from turboshaft
     Tref                                       = turboshaft.reference_temperature
     Pref                                       = turboshaft.reference_pressure
     mdhc                                       = turboshaft.compressor_nondimensional_massflow
-    SFC_adjustment                             = turboshaft.SFC_adjustment 
+    #SFC_adjustment                             = turboshaft.SFC_adjustment 
     Tt4                                        = turboshaft.combustor.outputs.stagnation_temperature
     pi_c                                       = turboshaft.compressor.pressure_ratio
                                                      
@@ -120,7 +120,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     C_shaft                                    = tau_lambda*(1 - Chi/(tau_r*tau_c)) - tau_r*(tau_c - 1)
 
     #Computing Specifc Thrust
-    Tsp                                        = a0*(((2/(gamma - 1))*(tau_lambda/(tau_r*tau_c))*(tau_r*tau_c*tau_t - 1))**(0.5) - M0)
+    #Tsp                                        = a0*(((2/(gamma - 1))*(tau_lambda/(tau_r*tau_c))*(tau_r*tau_c*tau_t - 1))**(0.5) - M0)
     
     #Computing Specifc Power
     Psp                                        = Cp*total_temperature_reference*C_shaft
