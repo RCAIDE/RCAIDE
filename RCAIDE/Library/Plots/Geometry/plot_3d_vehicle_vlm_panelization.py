@@ -7,6 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
+import RCAIDE
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method  import generate_vortex_distribution
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 
 import numpy as np  
@@ -22,9 +24,12 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
                                      save_figure = False,
                                      show_wing_control_points = True,
                                      save_filename = "VLM_Panelization",
-                                     x_axis_limit = None,
-                                     y_axis_limit = None,
-                                     z_axis_limit = None,
+                                     min_x_axis_limit            =  -5,
+                                     max_x_axis_limit            =  40,
+                                     min_y_axis_limit            =  -20,
+                                     max_y_axis_limit            =  20,
+                                     min_z_axis_limit            =  -20,
+                                     max_z_axis_limit            =  20, 
                                      show_figure = True):
                                   
     """This plots vortex lattice panels created when Fidelity Zero  Aerodynamics 
@@ -45,28 +50,21 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
     Properties Used:
     N/A	
     """
-    # unpack vortex distribution 
-    VD = vehicle.vortex_distribution
+
+    # unpack vortex distribution
+    try:
+        VD = vehicle.vortex_distribution
+    except:
+        VL = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM()  
+        VL.settings.number_of_spanwise_vortices  = 25
+        VL.settings.number_of_chordwise_vortices = 5
+        VL.settings.spanwise_cosine_spacing      = False
+        VL.settings.model_fuselage               = False
+        VL.settings.model_nacelle                = False
+        VD = generate_vortex_distribution(vehicle,VL.settings) 
 
     camera        = dict(up=dict(x=0.5, y=0.5, z=1), center=dict(x=0, y=0, z=-.75), eye=dict(x=-1.5, y=-1.5, z=.8))
-    plot_data     = []     
-     
-    
-    # -------------------------------------------------------------------------
-    # DEFINE PLOT LIMITS 
-    # -------------------------------------------------------------------------    
-    if x_axis_limit == None: 
-        x_min,x_max = np.minimum(-1,np.min(VD.XC)*1.2), np.maximum(np.max(VD.XC)*1.2,10)
-    else:
-        x_min,x_max = x_axis_limit,x_axis_limit
-    if y_axis_limit == None: 
-        y_min,y_max = np.min(VD.YC)*1.2, np.max(VD.YC)*1.2
-    else:
-        y_min,y_max = y_axis_limit,y_axis_limit
-    if z_axis_limit == None: 
-        z_min,z_max =  -1*np.max(VD.ZC), 2.5*np.max(VD.ZC)
-    else:
-        z_min,z_max = z_axis_limit,z_axis_limit
+    plot_data     = []      
 
     # -------------------------------------------------------------------------
     # PLOT VORTEX LATTICE
@@ -103,11 +101,11 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
              height    = 1500, 
              scene = dict(
                         xaxis = dict(backgroundcolor="grey", gridcolor="white", showbackground=plot_axis,
-                                     zerolinecolor="white", range=[x_min,x_max]),
+                                     zerolinecolor="white", range=[min_x_axis_limit,max_x_axis_limit]),
                         yaxis = dict(backgroundcolor="grey", gridcolor="white", showbackground=plot_axis, 
-                                     zerolinecolor="white", range=[y_min,y_max]),
+                                     zerolinecolor="white", range=[min_y_axis_limit,max_y_axis_limit]),
                         zaxis = dict(backgroundcolor="grey",gridcolor="white",showbackground=plot_axis,
-                                     zerolinecolor="white", range=[z_min,z_max])),             
+                                     zerolinecolor="white", range=[min_z_axis_limit,max_z_axis_limit])),             
              scene_camera=camera) 
     fig.update_coloraxes(showscale=False)
     fig.update_traces(opacity = alpha)

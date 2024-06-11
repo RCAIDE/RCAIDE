@@ -106,7 +106,7 @@ def vehicle_setup():
     segment.root_chord_percent    = 0.25
     segment.thickness_to_chord    = .11
     segment.dihedral_outboard     = 70. * Units.degrees
-    segment.sweeps.quarter_chord  = 50. * Units.degrees
+    segment.sweeps.quarter_chord  = 40. * Units.degrees
     wing.Segments.append(segment)
 
     segment = RCAIDE.Library.Components.Wings.Segment() 
@@ -160,7 +160,7 @@ def vehicle_setup():
     wing.aspect_ratio            = 5.5
     wing.sweeps.quarter_chord    = 34.5 * Units.deg
     wing.thickness_to_chord      = 0.11
-    wing.taper                   = 0.11
+    wing.taper                   = 0.2
     wing.dihedral                = 8.4 * Units.degrees
     wing.origin                  = [[31,0,1.5]]
     wing.vertical                = False
@@ -430,50 +430,16 @@ def vehicle_setup():
     turbofan.design_thrust                          = 37278.0* Units.N/2 
      
     # Nacelle 
-    nacelle                                         = RCAIDE.Library.Components.Nacelles.Nacelle()
+    nacelle                                         = RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle()
     nacelle.diameter                                = 2.05
     nacelle.length                                  = 2.71
     nacelle.tag                                     = 'nacelle_1'
     nacelle.inlet_diameter                          = 2.0
     nacelle.origin                                  = [[12.0,4.38,-2.1]] 
     nacelle.areas.wetted                            = 1.1*np.pi*nacelle.diameter*nacelle.length
-    nacelle.Airfoil.NACA_4_series_flag              = True 
-    nacelle.Airfoil.coordinate_file                 = '2410' 
-            
-    nac_segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                                 = 'segment_1'
-    nac_segment.percent_x_location                  = 0.0  
-    nac_segment.height                              = 2.05
-    nac_segment.width                               = 2.05
-    nacelle.append_segment(nac_segment)             
-              
-    nac_segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                                 = 'segment_2'
-    nac_segment.percent_x_location                  = 0.3
-    nac_segment.height                              = 2.1  
-    nac_segment.width                               = 2.1 
-    nacelle.append_segment(nac_segment)             
-              
-    nac_segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                                 = 'segment_3'
-    nac_segment.percent_x_location                  = 0.4  
-    nac_segment.height                              = 2.05
-    nac_segment.width                               = 2.05 
-    nacelle.append_segment(nac_segment)            
-               
-    nac_segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                                 = 'segment_4'
-    nac_segment.percent_x_location                  = 0.75  
-    nac_segment.height                              = 1.9
-    nac_segment.width                               = 1.9
-    nacelle.append_segment(nac_segment)            
-              
-    nac_segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
-    nac_segment.tag                                 = 'segment_5'
-    nac_segment.percent_x_location                  = 1.0
-    nac_segment.height                              = 1.7 
-    nac_segment.width                               = 1.7
-    nacelle.append_segment(nac_segment)            
+    nacelle_airfoil                                 = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
+    nacelle_airfoil.NACA_4_Series_code              = '2410'
+    nacelle.append_airfoil(nacelle_airfoil)
     turbofan.nacelle                                = nacelle
                   
     # fan                     

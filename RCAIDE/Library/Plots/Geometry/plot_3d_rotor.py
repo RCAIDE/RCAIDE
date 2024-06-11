@@ -54,7 +54,7 @@ def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data 
     dim       = len(rotor.radius_distribution)
 
     for i in range(num_B):
-        G = get_3d_blade_coordinates(rotor,number_of_airfoil_points,dim,i)
+        G = generate_3d_blade_points(rotor,number_of_airfoil_points,dim,i)
         # ------------------------------------------------------------------------
         # Plot Rotor Blade
         # ------------------------------------------------------------------------
@@ -101,7 +101,7 @@ def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data 
         return plot_data
 
 ## @ingroup Library-Plots-Geometry 
-def get_3d_blade_coordinates(rotor,n_points,dim,i,aircraftRefFrame=True):
+def generate_3d_blade_points(rotor,n_points,dim,i,aircraftRefFrame=True):
     """ This generates the coordinates of the blade surface for plotting in the aircraft frame (x-back, z-up)
 
     Assumptions:

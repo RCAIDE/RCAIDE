@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports   
-from RCAIDE.Framework.Core import Data, Container
+from RCAIDE.Framework.Core import Container
 from RCAIDE.Library.Components import Component  
 
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -34,15 +34,14 @@ class Segment(Component):
         Properties Used:
         N/A
         """ 
-        self.tag                     = 'segment'
-        self.prev                    = None
-        self.next                    = None    
-        self.percent_x_location      = 0  
-        self.percent_y_location      = 0
-        self.percent_z_location      = 0 
-        self.height                  = 0 
-        self.width                   = 0 
-        self.curvature               = 2
+        self.tag                      = 'segment' 
+        self.orientation_euler_angles = [0.,0.,0.]  
+        self.percent_x_location       = 0  
+        self.percent_y_location       = 0
+        self.percent_z_location       = 0 
+        self.height                   = 0 
+        self.width                    = 0 
+        self.curvature                = 2 # super ellipse 
         
 ## @ingroup Components-Wings
 class Segment_Container(Container):
