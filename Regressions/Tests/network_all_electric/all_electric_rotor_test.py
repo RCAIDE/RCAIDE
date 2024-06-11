@@ -56,7 +56,7 @@ def main():
     plot_results(results)    
     
     # lift Coefficient Check During Cruise
-    lift_coefficient_true   = 0.7179703354369213
+    lift_coefficient_true   = 0.717970335436922
     lift_coefficient        = results.segments.high_speed_climbing_transition.conditions.aerodynamics.coefficients.lift[2][0] 
     print('CL: ' + str(lift_coefficient)) 
     diff_CL                 = np.abs(lift_coefficient  - lift_coefficient_true) 

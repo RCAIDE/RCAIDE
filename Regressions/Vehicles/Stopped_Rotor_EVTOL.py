@@ -48,7 +48,7 @@ def vehicle_setup() :
     vehicle.mass_properties.operating_empty   = vehicle.mass_properties.max_takeoff
     vehicle.envelope.ultimate_load            = 5.7   
     vehicle.envelope.limit_load               = 3.  
-    vehicle.passengers                        = 6 
+    vehicle.passengers                        = 5 
         
     #------------------------------------------------------------------------------------------------------------------------------------
     # ##########################################################  Wings ################################################################  
@@ -636,7 +636,7 @@ def vehicle_setup() :
     lift_rotor.hover.design_thrust                         = Hover_Load/8
     lift_rotor.hover.design_freestream_velocity            = np.sqrt(lift_rotor.hover.design_thrust/(2*1.2*np.pi*(lift_rotor.tip_radius**2)))  
     lift_rotor.oei.design_altitude                         = 40 * Units.feet  
-    lift_rotor.oei.design_thrust                           = Hover_Load/6  
+    lift_rotor.oei.design_thrust                           = Hover_Load/7  
     lift_rotor.oei.design_freestream_velocity              = np.sqrt(lift_rotor.oei.design_thrust/(2*1.2*np.pi*(lift_rotor.tip_radius**2)))  
     airfoil                                                = RCAIDE.Library.Components.Airfoils.Airfoil()   
     airfoil.coordinate_file                                = rel_path + 'Airfoils' + separator + 'NACA_4412.txt'
@@ -650,7 +650,7 @@ def vehicle_setup() :
                                                               rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
     lift_rotor.append_airfoil(airfoil)                         
     lift_rotor.airfoil_polar_stations                      = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]  
-    lift_rotor                                             = design_lift_rotor(lift_rotor,iterations = 2) 
+    lift_rotor                                             = design_lift_rotor(lift_rotor) 
     lift_propulsor_1.rotor                                 = lift_rotor      
     
     #------------------------------------------------------------------------------------------------------------------------------------               
