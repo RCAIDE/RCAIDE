@@ -79,7 +79,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
       SFC_adjustment                           [-]
     """           
     #unpack the values
-    LHV                                        = 1000*Propellant.lower_heating_value                                                                    # Source [1] 1000 to match units from kJ/kg to J/kg
+    LHV                                        = 1000*Propellant.lower_heating_value                                                                        # Source [1] 1000 to match units from kJ/kg to J/kg
     gamma                                      = conditions.freestream.isentropic_expansion_factor                                                      
     a0                                         = conditions.freestream.speed_of_sound                                                                   
     M0                                         = conditions.freestream.mach_number                                                                      

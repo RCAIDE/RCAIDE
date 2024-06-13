@@ -113,13 +113,17 @@ def design_turboshaft(turboshaft):
     low_pressure_turbine.inputs.stagnation_temperature    = high_pressure_turbine.outputs.stagnation_temperature
     low_pressure_turbine.inputs.stagnation_pressure       = high_pressure_turbine.outputs.stagnation_pressure
     
+    #link the low pressure turbine to the low_pressure_compresor
+    low_pressure_turbine.inputs.compressor                 = Data()
+    low_pressure_turbine.inputs.compressor.work_done       = 0.0
+    
     #link the low pressure turbine to the combustor
     low_pressure_turbine.inputs.fuel_to_air_ratio         = combustor.outputs.fuel_to_air_ratio
     
     #flow through the low pressure turbine
     low_pressure_turbine.inputs.bypass_ratio              = 0.0
     low_pressure_turbine.inputs.fan                       = Data()
-    low_pressure_turbine.inputs.fan.work_done             = 0.0    
+    low_pressure_turbine.inputs.fan.work_done             = 0.0
     compute_turbine_performance(low_pressure_turbine,conditions)
     
     #link the core nozzle to the low pressure turbine

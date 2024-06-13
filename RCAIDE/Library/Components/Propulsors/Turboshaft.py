@@ -33,8 +33,7 @@ class Turboshaft(Propulsor):
         self.nacelle                                          = None  
         self.ram                                              = None 
         self.inlet_nozzle                                     = None 
-        self.low_pressure_compressor                          = None 
-        self.high_pressure_compressor                         = None 
+        self.compressor                                       = None 
         self.low_pressure_turbine                             = None 
         self.high_pressure_turbine                            = None 
         self.combustor                                        = None 
