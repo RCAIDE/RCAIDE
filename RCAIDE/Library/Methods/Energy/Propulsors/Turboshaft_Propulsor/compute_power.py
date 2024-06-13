@@ -102,12 +102,12 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     tau_r                                      = 1 + ((gamma - 1)/2)*M0**2                                                                              
     tau_c                                      = pi_c**((gamma - 1)/gamma)                                                                              
     tau_t                                      = (1/(tau_r*tau_c)) + ((gamma - 1)*M0**2)/(2*tau_lambda*eta_c**2)                                        # Source [2]
-    #tau_t                                      = Chi/(tau_r*tau_c)                                                                                     # Source [1]
+    #tau_t                                      = x/(tau_r*tau_c)                                                                                     # Source [1]
     tau_tH                                     = 1 - (tau_r/tau_lambda)*(tau_c - 1)                                                                     # Source [2]
     tau_tL                                     = tau_t/tau_tH                                                                                           # Source [2]
-    #Chi                                        = 1.02                                                                                                  # Source [1] Page 335
-    #Chi                                        = tau_t*tau_r*tau_c                                                                                     # Source [1] 
-    #C_shaft                                    = tau_lambda*(1 - Chi/(tau_r*tau_c)) - tau_r*(tau_c - 1)                                                # Source [1]
+    #x                                        = 1.02                                                                                                  # Source [1] Page 335
+    #x                                        = tau_t*tau_r*tau_c                                                                                     # Source [1] 
+    #C_shaft                                    = tau_lambda*(1 - x/(tau_r*tau_c)) - tau_r*(tau_c - 1)                                                # Source [1]
     #C_shaft                                    = tau_lambda*(1 - tau_t) - tau_r*(tau_c - 1)                                                            # Source [1]    
 
     #Computing Specifc Thrust
