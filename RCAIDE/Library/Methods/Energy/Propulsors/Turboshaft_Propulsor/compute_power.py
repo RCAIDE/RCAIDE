@@ -11,7 +11,7 @@
 
 # RCAIDE imports  
 from RCAIDE.Framework.Core                 import Units
-from RCAIDE.Library.Attributes.Propellants import Jet_A1 as Propellant
+from RCAIDE.Library.Attributes.Propellants.Jet_A1 import Jet_A1 as Propellant
 
 # Python package imports
 import numpy                               as np
@@ -79,7 +79,8 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
       SFC_adjustment                           [-]
     """           
     #unpack the values
-    LHV                                        = 1000*Propellant.lower_heating_value                                                                        # Source [1] 1000 to match units from kJ/kg to J/kg
+    Jet_A1                                     = Propellant()
+    LHV                                        = 1000*Jet_A1.lower_heating_value                                                                    # Source [1] 1000 to match units from kJ/kg to J/kg
     gamma                                      = conditions.freestream.isentropic_expansion_factor                                                      
     a0                                         = conditions.freestream.speed_of_sound                                                                   
     M0                                         = conditions.freestream.mach_number                                                                      
