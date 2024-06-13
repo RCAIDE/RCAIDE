@@ -47,20 +47,20 @@ def size_core(turboshaft,conditions):
     """             
     
     #unpack from turboshaft
-    Tref                        = turboshaft.reference_temperature
-    Pref                        = turboshaft.reference_pressure 
-    total_temperature_reference = turboshaft.inputs.total_temperature_reference  
-    total_pressure_reference    = turboshaft.inputs.total_pressure_reference 
+    Tref                                           = turboshaft.reference_temperature
+    Pref                                           = turboshaft.reference_pressure 
+    total_temperature_reference                    = turboshaft.inputs.total_temperature_reference  
+    total_pressure_reference                       = turboshaft.inputs.total_pressure_reference 
 
     #compute nondimensional power
     compute_power(turboshaft,conditions)
 
     #unpack results 
-    Psp                         = turboshaft.outputs.non_dimensional_power
+    Psp                                            = turboshaft.outputs.non_dimensional_power
     
     #compute dimensional mass flow rates
-    mdot_core                   = turboshaft.design_power/Psp
-    mdhc                        = mdot_core/ (np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref))
+    mdot_core                                      = turboshaft.design_power/Psp
+    mdhc                                           = mdot_core/ (np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref))
 
     #pack outputs
     turboshaft.mass_flow_rate_design               = mdot_core
