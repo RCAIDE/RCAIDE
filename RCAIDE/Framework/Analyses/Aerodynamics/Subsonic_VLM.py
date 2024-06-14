@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Aerodynamics
 # RCAIDE/Framework/Analyses/Aerodynamics/Subsonic_VLM.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -25,71 +25,46 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Aerodynamics
 class Subsonic_VLM(Aerodynamics):
-    """This is a subsonic aerodynamic buildup analysis based on the vortex lattice method
-
-     Assumptions:
-     Stall effects are negligible 
- 
-     Source:
-     N/A
- 
-     Inputs:
-     None
- 
-     Outputs:
-     None
- 
-     Properties Used:
-     N/A 
+    """This is a subsonic aerodynamic buildup analysis based on the vortex lattice method 
     """      
     
     def __defaults__(self):
-        """This sets the default values and methods for the analysis.
+        """This sets the default values for the analysis.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        N/A
+            N/A 
         """          
-        self.tag                                    = 'Subsonic_Zero_VLM'  
-        self.geometry                               = Data()  
-        self.process                                = Process()
-        self.process.initialize                     = Process()   
-        
-        # correction factors
-        settings                                    = self.settings
-        settings.fuselage_lift_correction           = 1.14
-        settings.trim_drag_correction_factor        = 1.02
-        settings.wing_parasite_drag_form_factor     = 1.1
-        settings.fuselage_parasite_drag_form_factor = 2.3
-        settings.maximum_lift_coefficient_factor    = 1.0        
-        settings.lift_to_drag_adjustment            = 0.  
-        settings.oswald_efficiency_factor           = None
-        settings.span_efficiency                    = None
-        settings.viscous_lift_dependent_drag_factor = 0.38
-        settings.drag_coefficient_increment         = 0.0000
-        settings.spoiler_drag_increment             = 0.00 
-        settings.maximum_lift_coefficient           = np.inf 
-        settings.use_surrogate                      = True
-        settings.recalculate_total_wetted_area      = False
-        settings.propeller_wake_model               = False 
-        settings.discretize_control_surfaces        = False
-        settings.model_fuselage                     = False
-        settings.model_nacelle                      = False
-        
+        self.tag                                      = 'Subsonic_Zero_VLM'  
+        self.geometry                                 = Data()  
+        self.process                                  = Process()
+        self.process.initialize                       = Process()   
+           
+        # correction factors   
+        settings                                      = self.settings
+        settings.fuselage_lift_correction             = 1.14
+        settings.trim_drag_correction_factor          = 1.02
+        settings.wing_parasite_drag_form_factor       = 1.1
+        settings.fuselage_parasite_drag_form_factor   = 2.3
+        settings.maximum_lift_coefficient_factor      = 1.0        
+        settings.lift_to_drag_adjustment              = 0.  
+        settings.oswald_efficiency_factor             = None
+        settings.span_efficiency                      = None
+        settings.viscous_lift_dependent_drag_factor   = 0.38
+        settings.drag_coefficient_increment           = 0.0000
+        settings.spoiler_drag_increment               = 0.00 
+        settings.maximum_lift_coefficient             = np.inf 
+        settings.use_surrogate                        = True
+        settings.recalculate_total_wetted_area        = False
+        settings.propeller_wake_model                 = False 
+        settings.discretize_control_surfaces          = False
+        settings.model_fuselage                       = False
+        settings.model_nacelle                        = False 
       
-        self.settings.number_of_spanwise_vortices        = 15
-        self.settings.number_of_chordwise_vortices       = 5
+        self.settings.number_of_spanwise_vortices     = 15
+        self.settings.number_of_chordwise_vortices    = 5
         self.settings.wing_spanwise_vortices          = None
         self.settings.wing_chordwise_vortices         = None
         self.settings.fuselage_spanwise_vortices      = None
@@ -140,6 +115,20 @@ class Subsonic_VLM(Aerodynamics):
         
 
     def initialize(self):  
+        """Initalizes the subsonic VLM analysis method.
+
+        Assumptions:
+            None
+
+        Source:
+            N/A
+
+        Args:
+            self     : aerodynamics analysis  [unitless] 
+
+        Returs:
+             N/A
+        """          
         use_surrogate             = self.settings.use_surrogate  
 
         # If we are using the surrogate
@@ -188,23 +177,20 @@ class Subsonic_VLM(Aerodynamics):
     
          
     def evaluate(self,state):
-        """The default evaluate function.
+        """Subsonic VLM evaluate function which calls listed processes in the analysis method.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            N/A
 
-        Inputs:
-        None
+        Args:
+            self     : aerodynamics analysis  [unitless]
+            state    : flight conditions      [unitless]
 
-        Outputs:
-        results   <RCAIDE data class>
-
-        Properties Used:
-        self.settings
-        self.geometry
+        Returs:
+             results : aerodynamic results    [unitless]
         """          
         settings = self.settings
         geometry = self.geometry 

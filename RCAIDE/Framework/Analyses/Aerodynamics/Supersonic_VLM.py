@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Aerodynamics
 # RCAIDE/Framework/Analyses/Aerodynamics/Supersonic_VLM.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -24,38 +24,25 @@ import numpy as np
 # ----------------------------------------------------------------------
 ## @ingroup Analyses-Aerodynamics
 class Supersonic_VLM(Aerodynamics):
-    """This is a supersonic aerodynamic buildup analysis based on the vortex lattice method
-
-    Assumptions:
-    None
-
-    Source:
-    Primarily based on adg.stanford.edu, see methods for details
+    """This is a supersonic aerodynamic buildup analysis based on the vortex lattice method 
     """ 
     def __defaults__(self):
-        """This sets the default values and methods for the analysis.
-
+    
+        """This sets the default values for the analysis.
+    
         Assumptions:
-        None
-
+            Defaul supersonic values take from experimental data (see ref. below)
+    
         Source:
-        Concorde data used for determining defaults can be found in "Supersonic drag reduction technology in the 
-        scaled supersonic experimental airplane project by JAXA" by Kenji Yoshida
-        https://www.sciencedirect.com/science/article/pii/S0376042109000177
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        N/A
-        """         
-        self.tag = 'Supersonic_Zero'
-        self.geometry                               = Data()  
-        self.process                                = Process()
-        self.process.initialize                     = Process()   
+             "Supersonic drag reduction technology in the 
+              scaled supersonic experimental airplane project by JAXA" by Kenji Yoshida
+              https://www.sciencedirect.com/science/article/pii/S0376042109000177
+        """
+        
+        self.tag                                         = 'Supersonic_Zero'
+        self.geometry                                    = Data()  
+        self.process                                     = Process()
+        self.process.initialize                          = Process()   
         
         # correction factors
         settings                                         = self.settings
@@ -141,6 +128,20 @@ class Supersonic_VLM(Aerodynamics):
         self.surrogates.wing_drag_coefficient_trans  = None          
 
     def initialize(self):  
+        """Initalizes the supersonic VLM analysis method.
+
+        Assumptions:
+            None
+
+        Source:
+            N/A
+
+        Args:
+            self     : aerodynamics analysis  [unitless] 
+
+        Returs:
+             N/A
+        """    
         use_surrogate             = self.settings.use_surrogate  
     
     
@@ -191,23 +192,20 @@ class Supersonic_VLM(Aerodynamics):
         
          
     def evaluate(self,state):
-        """The default evaluate function.
+        """Supersonic VLM evaluate function which calls listed processes in the analysis method.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            N/A
 
-        Inputs:
-        None
+        Args:
+            self     : aerodynamics analysis  [unitless]
+            state    : flight conditions      [unitless]
 
-        Outputs:
-        results   <RCAIDE data class>
-
-        Properties Used:
-        self.settings
-        self.geometry
+        Returs:
+             results : aerodynamic results    [unitless]
         """          
         settings = self.settings
         geometry = self.geometry 
