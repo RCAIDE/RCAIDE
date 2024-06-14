@@ -1,6 +1,6 @@
-## @defgroup Library-Plots-Performance-Mission 
+## @defgroup Library-Plots-Mission  
 # RCAIDE/Library/Plots/Performance/Mission/plot_aircraft_velocities.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @defgroup Library-Plots-Performance-Mission 
+## @defgroup Library-Plots-Mission  
 def plot_aircraft_velocities(results,
                              save_figure = False,
                              show_legend = True,

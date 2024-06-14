@@ -59,63 +59,8 @@ class Nacelle(Component):
         self.length                    = 0.0   
         self.orientation_euler_angles  = [0.,0.,0.]    
         self.flow_through              = True 
-        self.differential_pressure     = 0.0   
-        self.Airfoil                   = Airfoil()
-        self.cowling_airfoil_angle     = 0.0  
-        self.Segments                  = Container()
-        
-    def append_segment(self,segment):
-        """ Adds a segment to the nacelle. 
-    
-        Assumptions:
-        None
-        Source:
-        N/A
-        Inputs:
-        None
-        Outputs:
-        None
-        Properties Used:
-        N/A
-        """ 
-
-        # Assert database type
-        if not isinstance(segment,Data):
-            raise Exception('input component must be of type Data()')
-
-        # Store data
-        self.Segments.append(segment)
-
-        return 
-    
-    def append_airfoil(self,airfoil):
-        """ Adds an airfoil to the segment 
-    
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        N/A
-        """ 
-
-        # Assert database type
-        if not isinstance(airfoil,Data):
-            raise Exception('input component must be of type Data()')
-
-        # Store data
-        self.Airfoil.append(airfoil)
-
-        return           
-    
+        self.differential_pressure     = 0.0    
+        self.cowling_airfoil_angle     = 0.0    
 
     def nac_vel_to_body(self):
         """This rotates from the systems body frame to the nacelles velocity frame
@@ -179,9 +124,7 @@ class Nacelle(Component):
         
         # Do all the matrix multiplies
         rot1    = np.matmul(body_2_vehicle,vehicle_2_nac_vec)
-        rot_mat = np.matmul(rot1,nac_vec_2_nac_vel)
-
-        
+        rot_mat = np.matmul(rot1,nac_vec_2_nac_vel) 
         return rot_mat    
     
     

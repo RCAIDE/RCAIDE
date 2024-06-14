@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Plots   import *       
+from RCAIDE.Framework.Core import Units  
+from RCAIDE.Library.Plots                 import *       
 
 # python imports     
 import numpy as np  
@@ -27,7 +27,18 @@ from Embraer_190    import configs_setup as configs_setup
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():      
     # vehicle data
-    vehicle  = vehicle_setup() 
+    vehicle  = vehicle_setup()
+
+    # plot vehicle 
+    plot_3d_vehicle(vehicle, 
+                    min_x_axis_limit            = 0,
+                    max_x_axis_limit            = 40,
+                    min_y_axis_limit            = -20,
+                    max_y_axis_limit            = 20,
+                    min_z_axis_limit            = -20,
+                    max_z_axis_limit            = 20,
+                    show_figure                 = False 
+                    )        
     
     # Set up vehicle configs
     configs  = configs_setup(vehicle)
@@ -45,19 +56,7 @@ def main():
     results = missions.base_mission.evaluate()  
     
     # plot the results
-    plot_results(results) 
-    
-    # plot vehicle 
-    plot_3d_vehicle(configs.base,
-                    show_wing_control_points    = False,
-                    show_rotor_wake_vortex_core = False,
-                    min_x_axis_limit            = 0,
-                    max_x_axis_limit            = 40,
-                    min_y_axis_limit            = -20,
-                    max_y_axis_limit            = 20,
-                    min_z_axis_limit            = -20,
-                    max_z_axis_limit            = 20,
-                    show_figure                 = False)         
+    plot_results(results)  
         
     return 
 
@@ -90,8 +89,8 @@ def base_analysis(vehicle):
     #  Aerodynamics Analysis
     aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
     aerodynamics.geometry = vehicle
-    aerodynamics.settings.number_spanwise_vortices   = 25
-    aerodynamics.settings.number_chordwise_vortices  = 5     
+    aerodynamics.settings.number_of_spanwise_vortices   = 25
+    aerodynamics.settings.number_of_chordwise_vortices  = 5     
     analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------
@@ -366,10 +365,7 @@ def plot_results(results):
     plot_aerodynamic_forces(results)
     
     # Plot Aerodynamic Coefficients 
-    plot_aerodynamic_coefficients(results)
-    
-    # Plot Static Stability Coefficients 
-    plot_stability_coefficients(results)    
+    plot_aerodynamic_coefficients(results) 
     
     # Drag Components
     plot_drag_components(results)

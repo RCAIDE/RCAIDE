@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Single_Point
-# RCAIDE/Framework/Mission/Segments/Single_Point/Set_Speed_Set_Altitude.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Single_Point
+# RCAIDE/Framework/Analyses/Mission/Segments/Single_Point/Set_Speed_Set_Altitude.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Framework.Core                                     import Units
+from RCAIDE.Framework.Core                                     import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Library.Methods.Mission                          import Common,Segments
 from RCAIDE.Library.Methods.skip                             import skip 
@@ -21,7 +21,7 @@ import numpy as np
 #  Set_Speed_Set_Altitude
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Segments-Single_Point
+## @ingroup Analyses-Mission-Segments-Single_Point
 class Set_Speed_Set_Altitude(Evaluate):
     """ This is a segment that is solved using a single point. A snapshot in time.
         We fix the speed and altitude. Throttle is solved from those.
@@ -60,24 +60,28 @@ class Set_Speed_Set_Altitude(Evaluate):
         self.distance                                = 10. * Units.km
         self.acceleration_x                          = 0.
         self.acceleration_z                          = 0. # note that down is positive
-        self.state.numerics.number_of_control_points = 1  
-        
+        self.state.numerics.number_of_control_points = 1   
+         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------     
-        initialize                         = self.process.initialize 
-        initialize.expand_state            = skip
-        initialize.differentials           = skip
-        initialize.conditions              = Segments.Single_Point.Set_Speed_Set_Altitude.initialize_conditions 
-        iterate                            = self.process.iterate 
-        iterate.initials.energy            = skip
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
-        iterate.conditions.planet_position = skip    
-        iterate.conditions.acceleration    = skip
-        iterate.conditions.weights         = skip
-        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces
-        post_process                       = self.process.post_process 
-        post_process.inertial_position     = skip   
+        initialize                               = self.process.initialize 
+        initialize.expand_state                  = skip
+        initialize.differentials                 = skip
+        initialize.conditions                    = Segments.Single_Point.Set_Speed_Set_Altitude.initialize_conditions 
+        iterate                                  = self.process.iterate 
+        iterate.initials.energy                  = skip
+        iterate.unknowns.controls                = Common.Unpack_Unknowns.control_surfaces
+        iterate.unknowns.mission                 = Common.Unpack_Unknowns.orientation  
+        iterate.conditions.planet_position       = skip    
+        iterate.conditions.acceleration          = skip
+        iterate.conditions.angular_acceleration  = skip 
+        iterate.conditions.weights               = skip
+        iterate.residuals.flight_dynamics        = Common.Residuals.climb_descent_flight_dynamics
+        post_process                             = self.process.post_process 
+        post_process.inertial_position           = skip   
+        
+                
                 
         return
 

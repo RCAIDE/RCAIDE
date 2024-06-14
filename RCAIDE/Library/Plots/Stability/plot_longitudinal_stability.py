@@ -1,5 +1,5 @@
-## @ingroup Visualization-Performance-Stability  
-# RCAIDE/Visualization/Performance/Stability/plot_longitudinal_stability.py
+## @ingroup Library-Plots-Performance-Stability  
+# RCAIDE/Library/Plots/Performance/Stability/plot_longitudinal_stability.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Visualization-Performance-Stability
+## @ingroup Library-Plots-Performance-Stability
 def plot_longitudinal_stability(results,
                              save_figure = False,
                              show_legend=True,
@@ -46,54 +46,59 @@ def plot_longitudinal_stability(results,
     axis_2 = plt.subplot(3,2,2) 
     axis_3 = plt.subplot(3,2,3)  
     axis_4 = plt.subplot(3,2,4)  
-    axis_5 = plt.subplot(3,2,5)    
+    axis_5 = plt.subplot(3,2,5)
+    axis_6 = plt.subplot(3,2,6) 
     
     for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        c_m      = results.segments[i].conditions.stability.static.coefficients.CM[:,0]  
-        cm_alpha = results.segments[i].conditions.stability.static.derivatives.dCM_dAlpha[:,0] 
-        SM       = results.segments[i].conditions.stability.static_margin[:,0] 
-        aoa      = results.segments[i].conditions.aerodynamics.angles.alpha[:,0] / Units.deg  
-        delta_e  = results.segments[i].conditions.control_surfaces.elevator.deflection[:,0] / Units.deg
-        CM_delta_e = results.segments[i].conditions.stability.static.derivatives.CM_delta_e
-        CL_alpha = results.segments[i].conditions.stability.static.derivatives.dCL_dalpha
-        
+        time       = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
+        c_m        = results.segments[i].conditions.static_stability.coefficients.M[:,0]   
+        SM         = results.segments[i].conditions.static_stability.static_margin[:,0]  
+        delta_e    = results.segments[i].conditions.control_surfaces.elevator.deflection[:,0] / Units.deg
+        CM_delta_e = results.segments[i].conditions.static_stability.derivatives.CM_delta_e[:,0]
+        Cm_alpha   = results.segments[i].conditions.static_stability.derivatives.CM_alpha[:,0]
+        CL_alpha   = results.segments[i].conditions.static_stability.derivatives.Clift_alpha[:,0] 
           
         segment_tag  =  results.segments[i].tag
-        segment_name = segment_tag.replace('_', ' ') 
-        axis_1.plot(time, aoa, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
-        axis_1.set_ylabel(r'AoA (deg)')
-        axis_1.set_ylim([-5,20])
-        set_axes(axis_1)    
+        segment_name = segment_tag.replace('_', ' ')  
         
-        axis_2.plot(time, c_m, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
-        axis_2.set_ylabel(r'$C_M$')
-        axis_2.set_ylim([-1,1])
+        axis_1.plot(time, c_m, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name) 
+        axis_1.set_ylabel(r'$C_M$')
+        axis_1.set_ylim([-1, 1])  
+        set_axes(axis_1) 
+
+        axis_2.plot(time, Cm_alpha, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
+        axis_2.set_ylabel(r'$C_M\alpha$')
+        axis_2.set_ylim([-1, 1]) 
         set_axes(axis_2) 
-
-        axis_3.plot(time, cm_alpha, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
-        axis_3.set_ylabel(r'$C_M \alpha$')
-        axis_3.set_ylim([-1,1])
-        set_axes(axis_3) 
         
-        axis_4.plot(time,SM , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
-        axis_4.set_xlabel('Time (mins)')
-        axis_4.set_ylabel(r'Static Margin (%)')
-        set_axes(axis_4)  
+        axis_3.plot(time,SM , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_3.set_xlabel('Time (mins)')
+        axis_3.set_ylabel(r'Static Margin (%)')
+        set_axes(axis_3)  
 
-        axis_5.plot(time,delta_e , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_4.plot(time,delta_e , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_4.set_xlabel('Time (mins)')
+        axis_4.set_ylabel(r'Elevator Defl.n') 
+        axis_4.set_ylim([-15, 15]) 
+        set_axes(axis_4) 
+        
+        axis_5.plot(time,CM_delta_e , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
         axis_5.set_xlabel('Time (mins)')
-        axis_5.set_ylabel(r'Elevator Deflection')
-        axis_4.set_ylim([-15,15])
-        set_axes(axis_5) 
+        axis_5.set_ylabel(r'$C_M\delta_e$')
+        axis_5.set_ylim([-1, 1]) 
+        set_axes(axis_5)
+        
+        axis_6.plot(time,CL_alpha, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_6.set_xlabel('Time (mins)')
+        axis_6.set_ylabel(r'$C_L\alpha$')
+        axis_6.set_ylim([-5, 5]) 
+        set_axes(axis_6)    
         
     if show_legend:
         leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
-        leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
+        leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})     
     
-    print(f'CM_delta_e:\n{CM_delta_e}'
-          f'\nCL_alpha:\n{CL_alpha}') # Delete this, plot delta_e against mission
-    
+          
     # Adjusting the sub-plots for legend 
     fig.subplots_adjust(top=0.8)
     

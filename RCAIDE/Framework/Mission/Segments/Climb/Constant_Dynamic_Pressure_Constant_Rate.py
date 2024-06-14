@@ -1,6 +1,5 @@
-## @ingroup Framework-Mission-Segments-Climb
-# RCAIDE/Framework/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Rate.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Climb
+# RCAIDE/Framework/Analyses/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Rate.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                     import Units
+from RCAIDE.Framework.Core                                     import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Library.Methods.Mission                          import Common,Segments
 
@@ -18,7 +17,7 @@ from RCAIDE.Library.Methods.Mission                          import Common,Segme
 #  Constant_Dynamic_Pressure_Constant_Rate
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Framework-Mission-Segments-Climb
+## @ingroup Analyses-Mission-Segments-Climb
 class Constant_Dynamic_Pressure_Constant_Rate(Evaluate):
     """ Climb at a constant dynamic pressure at a constant rate.
     

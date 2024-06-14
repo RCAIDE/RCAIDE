@@ -1,6 +1,6 @@
-## @ingroup Library-Plots-Aerodynamics
-# RCAIDE/Library/Plots/Aerodynamics/plot_aerodynamic_coefficients.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Library-Plots-Performance-Aerodynamics
+# RCAIDE/Library/Plots/Performance/Aerodynamics/plot_aerodynamic_coefficients.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Aerodynamics
+## @ingroup Library-Plots-Performance-Aerodynamics
 def plot_aerodynamic_coefficients(results,
                              save_figure = False,  
                              show_legend = True,
@@ -58,6 +58,11 @@ def plot_aerodynamic_coefficients(results,
      
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
+
+    axis_1 = plt.subplot(2,2,1)
+    axis_2 = plt.subplot(2,2,2)
+    axis_3 = plt.subplot(2,2,3)
+    axis_4 = plt.subplot(2,2,4)
     
     for i in range(len(results.segments)): 
         time = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
@@ -68,24 +73,20 @@ def plot_aerodynamic_coefficients(results,
                        
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')
-        axis_1 = plt.subplot(2,2,1)
         axis_1.plot(time, aoa, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
         axis_1.set_ylabel(r'AoA (deg)')
         axis_1.set_ylim([-5,20])
         set_axes(axis_1)    
         
-        axis_2 = plt.subplot(2,2,2)
         axis_2.plot(time, l_d, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
         axis_2.set_ylabel(r'L/D')
         set_axes(axis_2) 
 
-        axis_3 = plt.subplot(2,2,3)
         axis_3.plot(time, cl, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
         axis_3.set_xlabel('Time (mins)')
         axis_3.set_ylabel(r'$C_L$')
         set_axes(axis_3) 
         
-        axis_4 = plt.subplot(2,2,4)
         axis_4.plot(time, cd, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
         axis_4.set_xlabel('Time (mins)')
         axis_4.set_ylabel(r'$C_D$')

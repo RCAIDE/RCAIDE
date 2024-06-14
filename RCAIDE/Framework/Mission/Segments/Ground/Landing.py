@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Ground
-# RCAIDE/Framework/Mission/Segments/Ground/Landing.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Ground
+# RCAIDE/Framework/Analyses/Mission/Segments/Ground/Landing.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,16 +9,16 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Framework.Mission.Segments.Evaluate        import Evaluate
-from RCAIDE.Framework.Core                                      import Units , Data
+from RCAIDE.Framework.Mission.Segments.Evaluate        import Evaluate 
+from RCAIDE.Framework.Core                                      import Units , Data 
 from RCAIDE.Library.Methods.Mission.Segments                  import Ground  
-from RCAIDE.Library.Methods.Mission.Common                    import Residuals , Unpack_Unknowns, Update
+from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_Unknowns, Update
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Landing
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Segments-Ground
+## @ingroup Analyses-Mission-Segments-Ground
 class Landing(Evaluate):
     """ Segment for landing. Integrates equations of motion
         including rolling friction.
@@ -92,8 +92,8 @@ class Landing(Evaluate):
         initialize                         = self.process.initialize
         initialize.conditions              = Ground.Landing.initialize_conditions  
         iterate                            = self.process.iterate   
-        iterate.conditions.forces_ground   = Update.ground_forces    
+        iterate.conditions.forces_ground   = Update.ground_forces
         iterate.unknowns.mission           = Unpack_Unknowns.ground
-        iterate.residuals.total_forces     = Residuals.ground_forces        
+        iterate.residuals.flight_dynamics  = Residuals.ground_flight_dynamics
 
         return

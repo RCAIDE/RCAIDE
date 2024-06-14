@@ -13,7 +13,7 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 #  miscellaneous_drag_aircraft_ESDU
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
+## @ingroup Methods-Aerodynamics-Common-Drag
 def miscellaneous_drag_aircraft_ESDU(state,settings,geometry):
     """Computes the miscellaneous drag associated with an aircraft
 

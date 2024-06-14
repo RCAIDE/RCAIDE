@@ -1,6 +1,6 @@
-## @defgroup Library-Methods-Weights-Buildups-eVTOL eVTOL
-# RCAIDE/Library/Methods/Weights/Buildups/eVTOL/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Methods-Weights-Buildups-eVTOL eVTOL
+# RCAIDE/Methods/Weights/Buildups/eVTOL/__init__.py
+# 
 
 """RCAIDE Package Setup
 """

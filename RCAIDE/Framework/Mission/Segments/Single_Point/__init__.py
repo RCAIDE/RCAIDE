@@ -1,6 +1,6 @@
-## @defgroup Framework-Mission-Segments-Single_Point Single_Point
-# RCAIDE/Framework/Mission/Segments/Single_Point/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Analyses-Mission-Segments-Single_Point Single_Point
+# RCAIDE/Framework/Analyses/Mission/Segments/Single_Point/__init__.py
+# 
 
 """RCAIDE Package Setup
 """

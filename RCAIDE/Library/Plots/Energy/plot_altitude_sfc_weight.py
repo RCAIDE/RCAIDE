@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Energy
 # RCAIDE/Library/Plots/Energy/plot_altitude_sfc_weight.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Energy
+## @ingroup Library-Plots-Performance-Energy-Fuel
 def plot_altitude_sfc_weight(results,
                              save_figure = False,
                              show_legend = True,
@@ -57,7 +57,11 @@ def plot_altitude_sfc_weight(results,
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))      
      
     fig   = plt.figure(save_filename)
-    fig.set_size_inches(width,height)
+    fig.set_size_inches(width,height) 
+    axis_1 = plt.subplot(2,2,1)
+    axis_2 = plt.subplot(2,2,2)
+    axis_3 = plt.subplot(2,2,3)
+    axis_4 = plt.subplot(2,2,4)
     
     for i in range(len(results.segments)): 
         time     = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min
@@ -69,8 +73,6 @@ def plot_altitude_sfc_weight(results,
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
         
-        # power 
-        axis_1 = plt.subplot(2,2,1)
         axis_1.set_ylabel(r'Throttle')
         set_axes(axis_1)               
         for network in results.segments[i].analyses.energy.networks: 
@@ -79,28 +81,28 @@ def plot_altitude_sfc_weight(results,
             for bus in busses:
                 for propulsor in bus.propulsors: 
                     eta = results.segments[i].conditions.energy[bus.tag][propulsor.tag].throttle[:,0]  
-                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)               
+                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)               
             for fuel_line in fuel_lines:  
                 for propulsor in fuel_line.propulsors: 
                     eta = results.segments[i].conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
-                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)     
+                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)     
         
-        axis_2 = plt.subplot(2,2,2)
-        axis_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
+        if i == 0:
+            axis_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name) 
+        else:
+            axis_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
         axis_2.set_ylabel(r'Weight (kN)')  
         set_axes(axis_2) 
 
-        axis_3 = plt.subplot(2,2,3)
         axis_3.plot(time, sfc, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
         axis_3.set_xlabel('Time (mins)')
         axis_3.set_ylabel(r'SFC (lb/lbf-hr)')
         set_axes(axis_3) 
 
-        axis_3 = plt.subplot(2,2,4)
-        axis_3.plot(time, mdot, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
-        axis_3.set_xlabel('Time (mins)')
-        axis_3.set_ylabel(r'Fuel Rate (kg/s)')
-        set_axes(axis_3)         
+        axis_4.plot(time, mdot, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+        axis_4.set_xlabel('Time (mins)')
+        axis_4.set_ylabel(r'Fuel Rate (kg/s)')
+        set_axes(axis_4)         
         
     
     if show_legend:
@@ -111,7 +113,7 @@ def plot_altitude_sfc_weight(results,
     fig.subplots_adjust(top=0.8)
     
     # set title of plot 
-    title_text    = 'Throttle SFC and Weight'      
+    title_text    = 'Throttle, Fuel Consumption  and Weight'      
     fig.suptitle(title_text)
     
     if save_figure:

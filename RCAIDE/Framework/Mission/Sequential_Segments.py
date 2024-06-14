@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission
-# RCAIDE/Framework/Mission/Sequential_Segments.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission
+# RCAIDE/Framework/Analyses/Mission/Sequential_Segments.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -9,16 +9,16 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports   
 import RCAIDE
-from RCAIDE.Library.Methods.Mission.Common.Segments    import  sequential_segments
-from RCAIDE.Library.Methods.Mission.Common.Pre_Process import  aerodynamics, energy,flight_dynamics_and_controls
+from RCAIDE.Library.Mission.Common.Segments    import  sequential_segments
+from RCAIDE.Library.Mission.Common.Pre_Process import  aerodynamics,stability, energy,set_residuals_and_unknowns
 from RCAIDE.Framework.Core                               import Container as ContainerBase
-from RCAIDE.Framework.Analyses                           import Process
+from RCAIDE.Framework.Analyses                           import Process 
 from . import Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ANALYSIS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Framework-Mission
+## @ingroup Analyses-Mission
 class Sequential_Segments(Segments.Segment.Container):
     """ Solves each segment one at time
     
@@ -53,8 +53,9 @@ class Sequential_Segments(Segments.Segment.Container):
         #   Initialize   
         self.process.initialize                                = Process() 
         self.process.initialize.aero                           = aerodynamics
+        self.process.initialize.stability                      = stability
         self.process.initialize.energy                         = energy
-        self.process.initialize.flight_dynamics_and_controls   = flight_dynamics_and_controls
+        self.process.initialize.set_residuals_and_unknowns     = set_residuals_and_unknowns
  
         #   Converge 
         self.process.converge    = sequential_segments
@@ -116,7 +117,7 @@ class Sequential_Segments(Segments.Segment.Container):
 #   Container Class
 # ----------------------------------------------------------------------
 
-## @ingroup Framework-Mission
+## @ingroup Analyses-Mission
 class Container(ContainerBase):
     """ Container for mission
     

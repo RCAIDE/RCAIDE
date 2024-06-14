@@ -1,5 +1,5 @@
-## @ingroup Visualization-Performance-Stability  
-# RCAIDE/Visualization/Performance/Stability/plot_lateral_stability.py
+## @ingroup Library-Plots-Performance-Stability  
+# RCAIDE/Library/Plots/Performance/Stability/plot_lateral_stability.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Visualization-Performance-Stability
+## @ingroup Library-Plots-Performance-Stability
 def plot_lateral_stability(results,
                              save_figure = False,
                              show_legend=True,
@@ -45,33 +45,34 @@ def plot_lateral_stability(results,
     axis_3 = plt.subplot(2,2,3)    
     
     for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-        cn_beta  = results.segments[i].conditions.stability.static.derivatives.dCN_dBeta[:,0] 
+        time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min  
+        phi      = results.segments[i].conditions.aerodynamics.angles.phi[:,0] / Units.deg          
         delta_a  = results.segments[i].conditions.control_surfaces.aileron.deflection[:,0] / Units.deg  
-        delta_r  = results.segments[i].conditions.control_surfaces.rudder.deflection[:,0] / Units.deg  
+        delta_r  = results.segments[i].conditions.control_surfaces.rudder.deflection[:,0] / Units.deg   
           
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')
         
-        axis_1.plot(time, cn_beta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
-        axis_1.set_ylabel(r'Cn_beta (deg)') 
+        axis_1.plot(time, phi, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
+        axis_1.set_ylabel(r'$Bank Angle \phi$') 
         set_axes(axis_1)     
 
         axis_2.plot(time,delta_a , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
         axis_2.set_xlabel('Time (mins)')
-        axis_2.set_ylabel(r'Aileron Deflection')
+        axis_2.set_ylabel(r'Aileron Defl. (deg)')
         set_axes(axis_2)  
 
         axis_3.plot(time,delta_r , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
         axis_3.set_xlabel('Time (mins)')
-        axis_3.set_ylabel(r'Rudder Deflection')
+        axis_3.set_ylabel(r'Rudder Defl. (deg)')
         set_axes(axis_3)         
          
     if show_legend:
         leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
         leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})    
     
-    # Adjusting the sub-plots for legend 
+    # Adjusting the sub-plots for legend
+    fig.tight_layout()
     fig.subplots_adjust(top=0.8) 
     
     # set title of plot 

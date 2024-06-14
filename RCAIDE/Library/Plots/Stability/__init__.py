@@ -1,5 +1,5 @@
-## @defgroup Plots-Stability Stability 
-# RCAIDE/Visualization/Stability/__init__.py
+## @defgroup Library-Plots-Stability Stability 
+# RCAIDE/Library/Plots/Stability/__init__.py
 # 
 
 """RCAIDE Package Setup

@@ -1,6 +1,7 @@
-# @ingroup Library-Methods-Aerodynamics-Common-Drag
-# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Methods-Aerodynamics-Common-Drag Drag 
+# @ingroup Methods-Aerodynamics-Common
+# RCAIDE/Methods/Aerodynamics/Common/Drag/__init__.py
+# 
 
 """ RCAIDE Package Setup
 """
@@ -9,7 +10,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Drag.parasite_drag_wing                    import parasite_drag_wing
+from .parasite_drag_wing                    import parasite_drag_wing
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Drag.parasite_drag_fuselage                import parasite_drag_fuselage
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Drag.parasite_drag_nacelle                 import parasite_drag_nacelle
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Drag.parasite_drag_pylon                   import parasite_drag_pylon

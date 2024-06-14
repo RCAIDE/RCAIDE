@@ -22,7 +22,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 #  Compressibility Drag Total
 # ----------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
+## @ingroup Methods-Aerodynamics-Common-Drag
 def compressibility_drag_total(state,settings,geometry):
     """Computes compressibility drag for full aircraft including volume drag
 
@@ -146,7 +146,7 @@ def compressibility_drag_total(state,settings,geometry):
 
     return cd_c
 
-## @ingroup Library-Methods-Aerodynamics-Supersonic_Zero-Drag
+## @ingroup Methods-Aerodynamics-Supersonic_Zero-Drag
 def lift_wave_drag(conditions,configuration,wing,Sref_main):
     """Determine lift wave drag for supersonic speeds
 
@@ -188,7 +188,7 @@ def lift_wave_drag(conditions,configuration,wing,Sref_main):
 
     return cd_c_l
 
-## @ingroup Library-Methods-Aerodynamics-Supersonic_Zero-Drag
+## @ingroup Methods-Aerodynamics-Supersonic_Zero-Drag
 def drag_div(Mc_ii,wing,cl,Sref_main):
     """Use drag divergence mach number to determine drag for subsonic speeds
 

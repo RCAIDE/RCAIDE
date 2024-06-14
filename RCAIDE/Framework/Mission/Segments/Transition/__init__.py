@@ -1,6 +1,5 @@
-## @defgroup Framework-Mission-Segments-Transition Transition
-# RCAIDE/Framework/Mission/Segments/Transition/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Analyses-Mission-Segments-Transition Transition
+# RCAIDE/Framework/Analyses/Mission/Segments/Transition/__init__.py
 # 
 
 """RCAIDE Package Setup

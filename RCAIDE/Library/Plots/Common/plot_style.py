@@ -1,13 +1,13 @@
 ## @ingroup Library-Plots-Performance-Common
 # RCAIDE/Library/Plots/Performance/Common/plot_style.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Framework.Core import Data 
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS

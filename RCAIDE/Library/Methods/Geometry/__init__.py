@@ -1,6 +1,6 @@
 ## @defgroup Methods-Geometry Geometry
-# RCAIDE/Library/Methods/Geometry/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# RCAIDE/Methods/Geometry/__init__.py
+# 
 
 """ RCAIDE Package Setup
 """
@@ -10,5 +10,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods
 
-from . import Two_Dimensional
-from . import Three_Dimensional
+from . import Airfoil
+from . import Planform

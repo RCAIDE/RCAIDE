@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Ground
-# RCAIDE/Framework/Mission/Segments/Ground/Battery_Disharge.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Ground
+# RCAIDE/Framework/Analyses/Mission/Segments/Ground/Battery_Disharge.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Framework.Mission.Segments.Evaluate        import Evaluate
+from RCAIDE.Framework.Mission.Segments.Evaluate        import Evaluate    
 from RCAIDE.Framework.Core                                      import Units
 from RCAIDE.Library.Methods.Mission.Segments                  import Ground  
 from RCAIDE.Library.Methods.skip                              import skip 
@@ -17,7 +17,7 @@ from RCAIDE.Library.Methods.skip                              import skip
 # ----------------------------------------------------------------------------------------------------------------------
 #  SEGMENT
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Framework-Mission-Segments-Ground
+## @ingroup Analyses-Mission-Segments-Ground
 class Battery_Discharge(Evaluate): 
 
     # ------------------------------------------------------------------

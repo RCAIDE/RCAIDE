@@ -1,6 +1,6 @@
-## @ingroup Library-Plots-Aerodynamics
-# RCAIDE/Library/Plots/Aerodynamics/plot_lift_distribution.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Library-Plots-Performance-Aerodynamics
+# RCAIDE/Library/Plots/Performance/Aerodynamics/plot_lift_distribution.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Aerodynamics
+## @ingroup Library-Plots-Performance-Aerodynamics
 def plot_lift_distribution(results,vehicle,
                            save_figure = False,
                            save_filename = "Lift_Distribution",

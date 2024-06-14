@@ -1,6 +1,5 @@
-## @defgroup Library-Methods-Weights-Correlations-Human_Powered Human_Powered
-# RCAIDE/Library/Methods/Weights/Correlations/Human_Powered/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Methods-Weights-Correlations-Human_Powered Human_Powered
+# RCAIDE/Methods/Weights/Correlations/Human_Powered/__init__.py
 # 
 
 """RCAIDE Package Setup

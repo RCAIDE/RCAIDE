@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Energy
 # RCAIDE/Library/Plots/Energy/plot_fuel_consumption.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Energy
+## @ingroup Library-Plots-Performance-Energy-Fuel
 def plot_fuel_consumption(results,
                     save_figure = False,
                     show_legend=True,

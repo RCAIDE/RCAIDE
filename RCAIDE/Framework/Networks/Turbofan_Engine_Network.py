@@ -7,11 +7,11 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Imports
-# ---------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Framework.Core                                                                    import Data
-from RCAIDE.Framework.Mission.Common                                                          import Residuals
+from RCAIDE.Framework.Core                                                                     import Data 
+from RCAIDE.Framework.Mission.Common                                                           import Residuals    
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor.compute_turbofan_performance  import compute_turbofan_performance
 from .Network                                                                                  import Network  
 
@@ -49,7 +49,7 @@ class Turbofan_Engine_Network(Network):
             N/A
         """           
 
-        self.tag                          = 'turbofan_engine_network'  
+        self.tag                          = 'turbofan_engine'  
         self.system_voltage               = None   
         
     # linking the different network components
@@ -127,11 +127,35 @@ class Turbofan_Engine_Network(Network):
         results = Data()
         results.thrust_force_vector       = total_thrust
         results.power                     = total_power
-        results.vehicle_mass_rate         = total_mdot      
-        results.network_y_axis_rotation   = conditions.ones_row(1) * 0.0
+        results.vehicle_mass_rate         = total_mdot     
         # -------------------------------------------------- 
         
-        return results
+        return results 
+     
+    
+    def size(self,state):  
+        """ Size the turbofan
+    
+            Assumptions:
+            None
+    
+            Source:
+            N/A
+    
+            Inputs:
+            State [state()]
+    
+            Outputs:
+            None
+    
+            Properties Used:
+            N/A
+        """             
+        
+        #Unpack components
+        conditions = state.conditions
+        thrust     = self.thrust
+        thrust.size(conditions) 
     
     def unpack_unknowns(self,segment):
         """Unpacks the unknowns set in the mission to be available for the mission.
@@ -152,7 +176,7 @@ class Turbofan_Engine_Network(Network):
         """            
          
         fuel_lines = segment.analyses.energy.networks.turbofan_engine.fuel_lines
-        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
             
         return    
      

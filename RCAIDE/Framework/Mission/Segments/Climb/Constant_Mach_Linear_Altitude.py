@@ -1,6 +1,5 @@
-## @ingroup Framework-Mission-Segments-Climb
-# RCAIDE/Framework/Mission/Segments/Climb/Constant_Mach_Linear_Altitude.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Climb
+# RCAIDE/Framework/Analyses/Mission/Segments/Climb/Constant_Mach_Linear_Altitude.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                     import Units
+from RCAIDE.Framework.Core                                     import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Library.Methods.Mission                          import Common,Segments
 
@@ -19,7 +18,7 @@ from RCAIDE.Library.Methods.Mission                          import Common,Segme
 # Constant_Mach_Linear_Altitude
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Framework-Mission-Segments-Climb
+## @ingroup Analyses-Mission-Segments-Climb
 class Constant_Mach_Linear_Altitude(Evaluate):
     """ Climb at a constant mach number but linearly change altitudes over a distance.
     
@@ -65,9 +64,10 @@ class Constant_Mach_Linear_Altitude(Evaluate):
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Constant_Mach_Linear_Altitude.initialize_conditions  
         iterate                            = self.process.iterate
-        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
-        
+        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
+        iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
+
 
         return
 

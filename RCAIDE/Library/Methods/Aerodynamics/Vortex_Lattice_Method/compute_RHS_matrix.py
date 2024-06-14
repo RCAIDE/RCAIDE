@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Lift
-# RCAIDE/Library/Methods/Aerodynamics/Common/Lift/compute_RHS_matrix.py
+## @ingroup Methods-Aerodynamics-Common-Lift
+# RCAIDE/Methods/Aerodynamics/Common/Lift/compute_RHS_matrix.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
  
-from RCAIDE.Framework.Core import Data, interp2d
+from RCAIDE.Framework.Core import Data, interp2d 
 
 # package imports 
 import numpy as np
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_airfoil_aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Aerodynamics-Common-Lift 
+## @ingroup Methods-Aerodynamics-Common-Lift 
 def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_model):
 
     """ This computes the right hand side matrix for the VLM. In this
@@ -37,9 +37,9 @@ def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_mod
     conditions.aerodynamics.angles.alpha      [radians]
     conditions.aerodynamics.angles.beta     [radians]
     conditions.freestream.velocity               [m/s]
-    conditions.stability.dynamic.pitch_rate      [radians/s]
-    conditions.stability.dynamic.roll_rate       [radians/s]
-    conditions.stability.dynamic.yaw_rate        [radians/s]
+    conditions.static_stability.pitch_rate      [radians/s]
+    conditions.static_stability.roll_rate       [radians/s]
+    conditions.static_stability.yaw_rate        [radians/s]
 
     sur_flag    - use_surrogate flag             [Unitless]
     slipstream  - propeller_wake_model flag      [Unitless]
@@ -143,9 +143,9 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
 
     Inputs:
     settings.use_VORLAX_matrix_calculation  - RHS equation switch               [boolean]
-    conditions.stability.dynamic.pitch_rate -                                   [radians/s]
-    conditions.stability.dynamic.roll_rate  -                                   [radians/s]
-    conditions.stability.dynamic.yaw_rate   -                                   [radians/s]
+    conditions.static_stability.pitch_rate -                                   [radians/s]
+    conditions.static_stability.roll_rate  -                                   [radians/s]
+    conditions.static_stability.yaw_rate   -                                   [radians/s]
     aoa_distribution                        - angle of attack                   [radians]
     PSI_distribution                        - sideslip angle                    [radians]
     V[]_ind_total                           - component induced wake velocities [m/s]
@@ -167,9 +167,9 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     #unpack conditions
     ALFA   = aoa_distribution
     PSIRAD = PSI_distribution
-    PITCHQ = conditions.stability.dynamic.pitch_rate
-    ROLLQ  = conditions.stability.dynamic.roll_rate
-    YAWQ   = conditions.stability.dynamic.yaw_rate
+    PITCHQ = conditions.static_stability.pitch_rate
+    ROLLQ  = conditions.static_stability.roll_rate
+    YAWQ   = conditions.static_stability.yaw_rate
     VINF   = conditions.freestream.velocity
 
     SINALF = np.sin(ALFA)

@@ -1,7 +1,7 @@
-## @ingroup Framework-Mission-Common
-# RCAIDE/Framework/Mission/Common/State.py
-# (c) Copyright 2023 Aerospace Research Community LLC 
-
+## @ingroup Analyses-Mission-Segments-Conditions 
+# RCAIDE/Framework/Analyses/Mission/Segments/Conditions/State.py
+# 
+# 
 # Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ import numpy as np
 #  State
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Common
+## @ingroup Analyses-Mission-Segments-Conditions
 class State(Conditions):
     """ Creates the State data structure for storing daata that solved in a mission
     
@@ -105,7 +105,7 @@ class State(Conditions):
 # Container
 # ----------------------------------------------------------------------------------------------------------------------        
         
-## @ingroup Framework-Mission-Segments-Conditions        
+## @ingroup Analyses-Mission-Segments-Conditions        
 class Container(State):
     def __defaults__(self):
         """ This sets the default values.
@@ -163,7 +163,7 @@ State.Container = Container
 # append_array
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Framework-Mission-Segments-Conditions
+## @ingroup Analyses-Mission-Segments-Conditions
 def append_array(A,B=None):
     """ A stacking operation used by merged to put together data structures
 

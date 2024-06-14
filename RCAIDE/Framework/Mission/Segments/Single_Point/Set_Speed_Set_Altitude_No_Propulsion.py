@@ -1,6 +1,5 @@
-## @ingroup Framework-Mission-Segments-Single_Point
-# RCAIDE/Framework/Mission/Segments/Single_Point/Set_Speed_Set_Altitude_No_Propulsion.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Single_Point
+# RCAIDE/Framework/Analyses/Mission/Segments/Single_Point/Set_Speed_Set_Altitude_No_Propulsion.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -11,7 +10,7 @@
 
 # RCAIDE imports  
 from RCAIDE.Library.Methods                                  import skip   
-from RCAIDE.Framework.Core                                     import Units
+from RCAIDE.Framework.Core                                     import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Library.Methods.Mission                          import Common,Segments
 
@@ -23,7 +22,7 @@ import numpy as np
 #  Set_Speed_Set_Altitude_No_Propulsion
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Segments-Single_Point
+## @ingroup Analyses-Mission-Segments-Single_Point
 class Set_Speed_Set_Altitude_No_Propulsion(Evaluate):
     """ This is a segment that is solved using a single point. A snapshot in time.
         We fix the speed and altitude. Throttle is solved from those.
@@ -70,12 +69,13 @@ class Set_Speed_Set_Altitude_No_Propulsion(Evaluate):
         initialize.expand_state            = skip
         initialize.differentials           = skip
         initialize.conditions              = Segments.Single_Point.Set_Speed_Set_Altitude_No_Propulsion.initialize_conditions 
-        iterate                            = self.process.iterate  
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation    
+        iterate                            = self.process.iterate
         iterate.conditions.differentials   = skip 
         iterate.conditions.weights         = Common.Update.weights
         iterate.conditions.planet_position = skip 
-        iterate.residuals.total_forces     = Common.Residuals.level_flight_forces
+        iterate.residuals.flight_dynamics  = Common.Residuals.level_flight_dynamics
+        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
         
         return
 

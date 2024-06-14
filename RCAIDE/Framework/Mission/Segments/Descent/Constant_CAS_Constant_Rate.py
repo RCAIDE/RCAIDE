@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Descent
-# RCAIDE/Framework/Mission/Segments/Descent/Constant_CAS_Constant_Rate.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Descent
+# RCAIDE/Framework/Analyses/Mission/Segments/Descent/Constant_CAS_Constant_Rate.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,15 +9,15 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports
-from RCAIDE.Framework.Core                                 import Units
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate
+from RCAIDE.Framework.Core                                 import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_CAS_Constant_Rate
 # ----------------------------------------------------------------------------------------------------------------------  
 
-## @ingroup Framework-Mission-Segments-Descent
+## @ingroup Analyses-Mission-Segments-Descent
 class Constant_CAS_Constant_Rate(Evaluate):
     
     def __defaults__(self):

@@ -1,6 +1,6 @@
-## @defgroup Plots
+## @defgroup Visualization
 # RCAIDE/Library/Plots/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """ RCAIDE Package Setup
 """
@@ -16,4 +16,5 @@ from .Energy       import *
 from .Mission      import *  
 from .Noise        import * 
 from .Topography   import * 
+from .Stability    import * 
 from .Weights      import * 

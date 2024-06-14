@@ -1,6 +1,5 @@
-## @defgroup Library-Methods-Weights-Correlations-Common Common
-# RCAIDE/Library/Methods/Weights/Correlations/Common/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Methods-Weights-Correlations-Common Common
+# RCAIDE/Methods/Weights/Correlations/Common/__init__.py
 # 
 
 """RCAIDE Package Setup

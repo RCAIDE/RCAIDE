@@ -1,4 +1,5 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+
+## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 # VLM.py
 # 
 # Created:  Oct 2020, E. Botero
@@ -20,7 +21,7 @@ from .compute_RHS_matrix                 import compute_RHS_matrix
 #  Vortex Lattice
 # ----------------------------------------------------------------------
 
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def VLM(conditions,settings,geometry):
     """Uses the vortex lattice method to compute the lift, induced drag and moment coefficients.
     
@@ -28,7 +29,7 @@ def VLM(conditions,settings,geometry):
     The user should be forwarned that this will cause very slight differences in results for 0 deflection due to
     the slightly different discretization.
     
-    The user has the option to use the boundary conditions and induced velocities from either SUAVE
+    The user has the option to use the boundary conditions and induced velocities from either RCAIDE
     or VORLAX. See build_RHS in compute_RHS_matrix.py for more details.
     
     By default in Vortex_Lattice, VLM performs calculations based on panel coordinates with float32 precision. 
@@ -80,8 +81,8 @@ def VLM(conditions,settings,geometry):
         fineness.nose                          [Unitless]
         fineness.tail                          [Unitless]
         
-    settings.number_spanwise_vortices          [Unitless]  <---|
-    settings.number_chordwise_vortices         [Unitless]  <---|
+    settings.number_of_spanwise_vortices       [Unitless]  <---|
+    settings.number_of_chordwise_vortices      [Unitless]  <---|
                                                                |--Either/or; see generate_vortex_distribution() for more details
     settings.wing_spanwise_vortices            [Unitless]  <---|
     settings.wing_chordwise_vortices           [Unitless]  <---|
@@ -92,15 +93,15 @@ def VLM(conditions,settings,geometry):
     settings.propeller_wake_model              [Unitless]
     settings.discretize_control_surfaces       [Boolean], set to True to generate control surface panels
     settings.use_VORLAX_matrix_calculation     [boolean]
-    settings.floating_point_precision          [np.float16/32/64]
+    settings.floating_point_precision          [float16/32/64]
        
     conditions.aerodynamics.angles.alpha    [radians]
     conditions.aerodynamics.angles.beta   [radians]
     conditions.freestream.mach_number          [Unitless]
     conditions.freestream.velocity             [m/s]
-    conditions.stability.dynamic.pitch_rate    [radians/s]
-    conditions.stability.dynamic.roll_rate     [radians/s]
-    conditions.stability.dynamic.yaw_rate      [radians/s]
+    conditions.static_stability.pitch_rate    [radians/s]
+    conditions.static_stability.roll_rate     [radians/s]
+    conditions.static_stability.yaw_rate      [radians/s]
        
     
     Outputs:    
@@ -108,11 +109,11 @@ def VLM(conditions,settings,geometry):
         CL                                     [Unitless], CLTOT in VORLAX
         CDi                                    [Unitless], CDTOT in VORLAX
         CM                                     [Unitless], CMTOT in VORLAX
-        CYTOT                                  [Unitless], Total y force coeff
+        CY                                  [Unitless], Total y force coeff
         CRTOT                                  [Unitless], Rolling moment coeff (unscaled)
-        CRMTOT                                 [Unitless], Rolling moment coeff (scaled by w_span)
+        CL_mom                                 [Unitless], Rolling moment coeff (scaled by b_ref)
         CNTOT                                  [Unitless], Yawing  moment coeff (unscaled)
-        CYMTOT                                 [Unitless], Yawing  moment coeff (scaled by w_span)
+        CN                                 [Unitless], Yawing  moment coeff (scaled by b_ref)
         CL_wing                                [Unitless], CL  of each wing
         CDi_wing                               [Unitless], CDi of each wing
         cl_y                                   [Unitless], CL  of each strip
@@ -136,18 +137,18 @@ def VLM(conditions,settings,geometry):
         c_bar      = geometry.wings['main_wing'].chords.mean_aerodynamic
         x_mac      = geometry.wings['main_wing'].aerodynamic_center[0] + geometry.wings['main_wing'].origin[0][0]
         z_mac      = geometry.wings['main_wing'].aerodynamic_center[2] + geometry.wings['main_wing'].origin[0][2]
-        w_span     = geometry.wings['main_wing'].spans.projected
+        b_ref      = geometry.wings['main_wing'].spans.projected
     else:
         c_bar  = 0.
         x_mac  = 0.
-        w_span = 0.
+        b_ref = 0.
         for wing in geometry.wings:
             if wing.vertical == False:
                 if c_bar <= wing.chords.mean_aerodynamic:
                     c_bar  = wing.chords.mean_aerodynamic
                     x_mac  = wing.aerodynamic_center[0] + wing.origin[0][0]
                     z_mac  = wing.aerodynamic_center[2] + wing.origin[0][2]
-                    w_span = wing.spans.projected
+                    b_ref  = wing.spans.projected
 
     x_cg       = geometry.mass_properties.center_of_gravity[0][0]
     z_cg       = geometry.mass_properties.center_of_gravity[0][2]
@@ -165,11 +166,11 @@ def VLM(conditions,settings,geometry):
     len_mach = len(mach)
     
     #For angular values, VORLAX uses degrees by default to radians via DTR (degrees to rads). 
-    #SUAVE uses radians and its Units system. All algular variables will be in radians or var*Units.degrees
+    #RCAIDE uses radians and its Units system. All algular variables will be in radians or var*Units.degrees
     PSI       = conditions.aerodynamics.angles.beta    
-    PITCHQ    = conditions.stability.dynamic.pitch_rate              
-    ROLLQ     = conditions.stability.dynamic.roll_rate             
-    YAWQ      = conditions.stability.dynamic.yaw_rate 
+    PITCHQ    = conditions.static_stability.pitch_rate              
+    ROLLQ     = conditions.static_stability.roll_rate             
+    YAWQ      = conditions.static_stability.yaw_rate 
     VINF      = conditions.freestream.velocity    
        
     #freestream 0 velocity safeguard
@@ -274,13 +275,14 @@ def VLM(conditions,settings,geometry):
     # ------------------ --------------------------------------------------------------------   
     #VORLAX subroutine = PRESS
                   
-    # spanwise strip exposure flag, always 0 for SUAVE's infinitely thin airfoils. Needs to change if thick airfoils added
+    # spanwise strip exposure flag, always 0 for RCAIDE's infinitely thin airfoils. Needs to change if thick airfoils added
     RJTS = 0                         
     
     # COMPUTE FREE-STREAM AND ONSET FLOW PARAMETERS. Used throughout the remainder of VLM
     B2     = np.tile((mach**2 - 1),n_cp)
     SINALF = np.sin(aoa)
     COSALF = np.cos(aoa)
+    TANALF = np.tan(aoa)
     SINPSI = np.sin(PSI)
     COPSI  = np.cos(PSI)
     COSIN  = COSALF *SINPSI *2.0
@@ -485,12 +487,14 @@ def VLM(conditions,settings,geometry):
     # Now calculate total coefficients
     CL       = np.atleast_2d(np.sum(LIFT,axis=1)/SREF).T          # CLTOT in VORLAX
     CDi      = np.atleast_2d(np.sum(DRAG,axis=1)/SREF).T          # CDTOT in VORLAX
-    CM       = np.atleast_2d(np.sum(MOMENT,axis=1)/SREF).T/c_bar  # CMTOT in VORLAX
-    CYTOT    = np.atleast_2d(np.sum(FY,axis=1)/SREF).T   # total y force coeff
+    CX       =  ( TANALF * CL - CDi)/(COSALF - SINALF*TANALF)
+    CZ       = (CDi+ CX*COSALF)/SINALF 
+    CM       = np.atleast_2d(np.sum(MOMENT,axis=1)/SREF).T/c_bar  # CMTOT in VORLAX 1. check deflection is accounted for correctly. 2. check this is right
+    CY       = np.atleast_2d(np.sum(FY,axis=1)/SREF).T   # total y force coeff
     CRTOT    = np.atleast_2d(np.sum(RM,axis=1)/SREF).T   # rolling moment coeff (unscaled)
-    CRMTOT   = CRTOT/w_span*(-1)                         # rolling moment coeff
+    CL_mom   = CRTOT/b_ref*(-1)                         # rolling moment coeff
     CNTOT    = np.atleast_2d(np.sum(YM,axis=1)/SREF).T   # yawing  moment coeff (unscaled)
-    CYMTOT   = CNTOT/w_span*(-1)                         # yawing  moment coeff
+    CN       = CNTOT/b_ref*(-1)                         # yawing  moment coeff
 
     # ---------------------------------------------------------------------------------------
     # STEP 13: Pack outputs
@@ -499,23 +503,33 @@ def VLM(conditions,settings,geometry):
     
     #VORLAX _TOT outputs
     results = Data()
-    results.CL         =  CL         
-    results.CDi        =  CDi        
-    results.CM         =  CM  
-    results.CYTOT      =  CYTOT
-    results.CRTOT      =  CRTOT
-    results.CRMTOT     =  CRMTOT
-    results.CNTOT      =  CNTOT
-    results.CYMTOT     =  CYMTOT
+    # force coefficients
+    results.S_ref      = Sref
+    results.b_ref      = b_ref
+    results.c_ref      = c_bar  
+    results.X_ref      = x_m
+    results.Y_ref      = 0
+    results.Z_ref      = z_m
     
-    #other SUAVE outputs
-    results.CL_wing        =  CL_wing   
-    results.CDi_wing       =  CDi_wing 
-    results.cl_y           =  cl_y   
-    results.cdi_y          =  cdi_y       
-    results.alpha_i        =  alpha_i  
-    results.CP             =  np.array(CP    , dtype=precision)
-    results.gamma          =  np.array(GAMMA , dtype=precision)
+    results.CL         =  CL         
+    results.CDi        =  CDi  
+    
+    results.CX         = CX
+    results.CY         = CY 
+    results.CZ         = CZ
+    
+    results.CL_mom     =  CL_mom 
+    results.CM         =  CM  
+    results.CN         =  CN
+    
+    #other RCAIDE outputs
+    results.CL_wing        = CL_wing   
+    results.CDi_wing       = CDi_wing 
+    results.cl_y           = cl_y   
+    results.cdi_y          = cdi_y       
+    results.alpha_i        = alpha_i  
+    results.CP             = np.array(CP    , dtype=precision)
+    results.gamma          = np.array(GAMMA , dtype=precision)
     results.VD             = VD
     results.V_distribution = rhs.V_distribution
     results.V_x            = rhs.Vx_ind_total

@@ -1,6 +1,5 @@
-## @defgroup Library-Methods-Weights-Correlations-UAV UAV
-# RCAIDE/Library/Methods/Weights/Correlations/UAV/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Methods-Weights-Correlations-UAV UAV
+# RCAIDE/Methods/Weights/Correlations/UAV/__init__.py
 # 
 
 """RCAIDE Package Setup

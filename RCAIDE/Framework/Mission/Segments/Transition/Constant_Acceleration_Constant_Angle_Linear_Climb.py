@@ -1,6 +1,5 @@
-## @ingroup Framework-Mission-Segments-Transition
-# RCAIDE/Framework/Mission/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Transition
+# RCAIDE/Framework/Analyses/Mission/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,14 +9,14 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                     import Units
+from RCAIDE.Framework.Core                            import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
+from RCAIDE.Library.Methods.Mission                   import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Acceleration_Constant_Angle_Linear_Climb
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Framework-Mission-Segments-Transition
+## @ingroup Analyses-Mission-Segments-Transition
 class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
     """ Vehicle accelerates at a constant rate between two airspeeds.
     
@@ -65,7 +64,9 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
         initialize                         = self.process.initialize 
         initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.initialize_conditions  
         iterate                            = self.process.iterate  
-        iterate.residuals.total_forces     = Common.Residuals.level_flight_forces 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
+        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
+        iterate.residuals.flight_dynamics  = Common.Residuals.level_flight_dynamics
         
         return
 

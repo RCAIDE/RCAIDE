@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Ground
-# RCAIDE/Framework/Mission/Segments/Ground/Battery_Charge.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Ground
+# RCAIDE/Framework/Analyses/Mission/Segments/Ground/Battery_Charge.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -18,7 +18,7 @@ from RCAIDE.Library.Methods.skip                             import skip
 #  SEGMENT
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Segments-Ground
+## @ingroup Analyses-Mission-Segments-Ground
 class Battery_Recharge(Evaluate): 
 
     # ------------------------------------------------------------------

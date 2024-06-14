@@ -1,6 +1,6 @@
 ## @ingroup Methods-Stability-Center_of_Gravity Center_of_Gravity
-# RCAIDE/Library/Methods/Stability/Center_of_Gravity/compute_component_centers_of_gravity.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# RCAIDE/Methods/Stability/Center_of_Gravity/compute_component_centers_of_gravity.py
+# 
 # 
 # Created:  Dec 2023, M. Clarke  
 
@@ -10,10 +10,11 @@
 
 # RCAIDE 
 import RCAIDE
-from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Methods.Geometry.Three_Dimensional import compute_span_location_from_chord_length
-from RCAIDE.Library.Methods.Geometry.Three_Dimensional import compute_chord_length_from_span_location
-from RCAIDE.Library.Methods.Geometry.Three_Dimensional import convert_wing_sweep
+from RCAIDE.Library.Methods.Geometry.Planform import compute_span_location_from_chord_length
+from RCAIDE.Library.Methods.Geometry.Planform import compute_chord_length_from_span_location
+from RCAIDE.Library.Methods.Geometry.Planform import convert_sweep
+from RCAIDE.Library.Components import  Component
+
 # package imports 
 import numpy as np 
 
@@ -48,7 +49,7 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     for wing in vehicle.wings:
     
         if wing.sweeps.leading_edge == None:
-            wing.sweeps.leading_edge = convert_wing_sweep(wing,old_ref_chord_fraction = 0.25 ,new_ref_chord_fraction = 0.0)
+            wing.sweeps.leading_edge = convert_sweep(wing,old_ref_chord_fraction = 0.25 ,new_ref_chord_fraction = 0.0)
         
         if isinstance(wing,C.Wings.Main_Wing):
                 wing.mass_properties.center_of_gravity[0][0] = .05*wing.chords.mean_aerodynamic +wing.aerodynamic_center[0]             
@@ -76,9 +77,10 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     network_moment = 0.
     network_mass   = 0.
     for net in vehicle.networks:  
-        for key,Comp in net.items():  
-            if isinstance(Comp,Component):            
-                network_moment += net[key].mass_properties.mass*(np.sum(np.array(net[key].origin),axis=0) + net[key].mass_properties.center_of_gravity)
+        for key,Comp in net.items():
+            if isinstance(Comp,Component):
+                network_moment += net[key].mass_properties.mass*(np.sum(np.array(net[key].origin),axis=0) +
+                                                                     net[key].mass_properties.center_of_gravity)
                 network_mass   += net[key].mass_properties.mass*len(net[key].origin)
 
     if network_mass!= 0.:
@@ -141,9 +143,7 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
         passengers.origin[0][0]                                    = 0.51 * length_scale  
         passengers.mass_properties.center_of_gravity[0][0]         = 0.0
     except:
-        pass         
-    
-    
+        pass      
 
     try:  
         baggage                                                    = vehicle.payload.baggage

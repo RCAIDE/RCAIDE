@@ -1,5 +1,5 @@
-## @defgroup Framework-Mission Mission
-# RCAIDE/Framework/Mission/__init__.py
+## @defgroup Analyses-Mission Mission
+# RCAIDE/Framework/Analyses/Mission/__init__.py
 # 
 
 """RCAIDE Package Setup

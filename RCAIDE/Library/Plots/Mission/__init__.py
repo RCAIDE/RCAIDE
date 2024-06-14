@@ -1,6 +1,6 @@
-## @defgroup Library-Plots-Performance-Mission Mission 
+## @defgroup Library-Plots-Mission  Mission 
 # RCAIDE/Library/Plots/Performance/Mission/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """

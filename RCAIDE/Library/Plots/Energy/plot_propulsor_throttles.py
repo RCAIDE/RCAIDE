@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Energy
 # RCAIDE/Library/Plots/Energy/plot_altitude_sfc_weight.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Energy
+## @ingroup Library-Plots-Performance-Energy-Fuel
 def plot_propulsor_throttles(results,
                              save_figure = False,
                              show_legend = True,
@@ -65,7 +65,7 @@ def plot_propulsor_throttles(results,
         segment_name = segment_tag.replace('_', ' ') 
         
         # power 
-        axis_1 = plt.subplot(2,2,1)
+        axis_1 = plt.subplot(1,1,1)
         axis_1.set_ylabel(r'Throttle')
         set_axes(axis_1)               
         for network in results.segments[i].analyses.energy.networks: 

@@ -1,4 +1,4 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 # generate_vortex_distribution.py
 # 
 # Created:  May 2018, M. Clarke
@@ -12,18 +12,18 @@
 # package imports 
 import numpy as np
 
-from RCAIDE.Framework.Core                                                 import  Data
-from RCAIDE.Library.Components.Wings                                     import All_Moving_Surface
-from RCAIDE.Library.Components.Fuselages                                 import Fuselage
-from RCAIDE.Library.Components.Nacelles                                  import Nacelle
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method           import postprocess_VD, make_VLM_wings , deflect_control_surface
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil             import import_airfoil_geometry
+from RCAIDE.Framework.Core                                       import  Data
+from RCAIDE.Library.Components.Wings                             import All_Moving_Surface
+from RCAIDE.Library.Components.Fuselages                         import Fuselage
+from RCAIDE.Library.Components.Nacelles                          import Nacelle
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method   import postprocess_VD, make_VLM_wings , deflect_control_surface
+from RCAIDE.Library.Methods.Geometry.Airfoil     import import_airfoil_geometry
  
 
 # ----------------------------------------------------------------------
 #  Generate Vortex Distribution
 # ----------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def generate_vortex_distribution(geometry,settings):
     ''' Compute the coordinates of panels, vortices , control points
     and geometry used to build the influence coefficient matrix. A 
@@ -69,8 +69,8 @@ def generate_vortex_distribution(geometry,settings):
     settings.floating_point_precision             [np.dtype]
     
     Of the following settings, the user should define either the number_ atrributes or the wing_ and fuse_ attributes.
-    settings.number_spanwise_vortices             - a base number of vortices to be applied to both wings and fuselages
-    settings.number_chordwise_vortices            - a base number of vortices to be applied to both wings and fuselages
+    settings.number_of_spanwise_vortices             - a base number of vortices to be applied to both wings and fuselages
+    settings.number_of_chordwise_vortices            - a base number of vortices to be applied to both wings and fuselages
     settings.wing_spanwise_vortices               - the number of vortices to be applied to only the wings
     settings.wing_chordwise_vortices              - the number of vortices to be applied to only the wings
     settings.fuselage_spanwise_vortices           - the number of vortices to be applied to only the fuslages
@@ -95,8 +95,8 @@ def generate_vortex_distribution(geometry,settings):
     show_prints    = settings.verbose if ('verbose' in settings.keys()) else False
     
     # unpack discretization settings------------------------------------------
-    n_sw_global    = settings.number_spanwise_vortices  
-    n_cw_global    = settings.number_chordwise_vortices
+    n_sw_global    = settings.number_of_spanwise_vortices
+    n_cw_global    = settings.number_of_chordwise_vortices
     n_sw_wing      = settings.wing_spanwise_vortices  
     n_cw_wing      = settings.wing_chordwise_vortices
     n_sw_fuse      = settings.fuselage_spanwise_vortices  
@@ -202,7 +202,7 @@ def generate_vortex_distribution(geometry,settings):
     VD.exposed_leading_edge_flag = np.array([], dtype=np.int16)  # 0 or 1 per strip. 0 turns off leading edge suction for non-slat control surfaces
     
     # ---------------------------------------------------------------------------------------
-    # STEP 2: Unpack aircraft wing geometry 
+    # Unpack aircraft wing geometry 
     # ---------------------------------------------------------------------------------------    
     VD.wing_areas  = [] # instantiate wing areas
     VD.vortex_lift = []
@@ -225,26 +225,17 @@ def generate_vortex_distribution(geometry,settings):
             
             
     # ---------------------------------------------------------------------------------------
-    # STEP 8: Unpack aircraft nacelle geometry
+    # Unpack aircraft fuselage geometry
     # ---------------------------------------------------------------------------------------      
     VD.wing_areas = np.array(VD.wing_areas, dtype=precision)
-    VD.n_fus      = 0
-    for nac in geometry.nacelles:
-        if show_prints: print('discretizing ' + nac.tag)
-        VD = generate_fuselage_and_nacelle_vortex_distribution(VD,nac,n_cw_fuse,n_sw_fuse,precision,model_nacelle)
-
-
-    # ---------------------------------------------------------------------------------------
-    # STEP 9: Unpack aircraft fuselage geometry
-    # ---------------------------------------------------------------------------------------
-    VD.wing_areas = np.array(VD.wing_areas, dtype=precision)
+    VD.n_fus      = 0   
     for fus in geometry.fuselages:
         if show_prints: print('discretizing ' + fus.tag)
         VD = generate_fuselage_and_nacelle_vortex_distribution(VD,fus,n_cw_fuse,n_sw_fuse,precision,model_fuselage)
 
 
     # ---------------------------------------------------------------------------------------
-    # STEP 10: Deflect Control Surfaces
+    # Deflect Control Surfaces
     # ---------------------------------------------------------------------------------------      
     for wing in VD.VLM_wings:
         wing_is_all_moving = (not wing.is_a_control_surface) and issubclass(wing.wing_type, All_Moving_Surface)        
@@ -253,7 +244,7 @@ def generate_vortex_distribution(geometry,settings):
             VD, wing = deflect_control_surface(VD, wing)
             
     # ---------------------------------------------------------------------------------------
-    # STEP 11: Postprocess VD information
+    # Postprocess VD information
     # ---------------------------------------------------------------------------------------  
     
     VD = postprocess_VD(VD, settings)
@@ -269,7 +260,7 @@ def generate_vortex_distribution(geometry,settings):
 # ----------------------------------------------------------------------
 #  Discretize Wings
 # ----------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     """ This generates vortex distribution points for the given wing 
 
@@ -380,7 +371,8 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
 
         # Get airfoil section VD  
         if span_breaks[i_break].Airfoil: 
-            airfoil_geo_data = import_airfoil_geometry(span_breaks[i_break].Airfoil[span_breaks[i_break].Airfoil.keys()[0]].coordinate_file) 
+            airfoil_tag      = list(span_breaks[i_break].Airfoil.keys())[0] 
+            airfoil_geo_data = import_airfoil_geometry(span_breaks[i_break].Airfoil[airfoil_tag].coordinate_file) 
             break_camber_zs.append(airfoil_geo_data.camber_coordinates)
             break_camber_xs.append(airfoil_geo_data.x_lower_surface) 
         else:
@@ -834,7 +826,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
 # ----------------------------------------------------------------------
 #  Discretize Fuselage
 # ----------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def generate_fuselage_and_nacelle_vortex_distribution(VD,fus,n_cw,n_sw,precision,model_geometry=False):
     """ This generates the vortex distribution points on a fuselage or nacelle component
     Assumptions: 
@@ -946,34 +938,6 @@ def generate_fuselage_and_nacelle_vortex_distribution(VD,fus,n_cw,n_sw,precision
 
         fhs.sweep[:] = np.concatenate([np.arctan((fhs.origin[:,0][1:] - fhs.origin[:,0][:-1])/(fhs.origin[:,1][1:]  - fhs.origin[:,1][:-1])) ,np.zeros(1)])
         fvs.sweep[:] = np.concatenate([np.arctan((fvs.origin[:,0][1:] - fvs.origin[:,0][:-1])/(fvs.origin[:,2][1:]  - fvs.origin[:,2][:-1])) ,np.zeros(1)])
-
-    elif isinstance(fus, Nacelle):
-        num_nac_segs = len(fus.Segments.keys())
-        if num_nac_segs>1:
-            widths  = np.zeros(num_nac_segs)
-            heights = np.zeros(num_nac_segs)
-            for i_seg in range(num_nac_segs):
-                widths[i_seg]  = fus.Segments[i_seg].width
-                heights[i_seg] = fus.Segments[i_seg].height
-            mean_width   = np.mean(widths)
-            mean_height  = np.mean(heights)
-        else:
-            mean_width   = fus.diameter
-            mean_height  = fus.diameter
-        length = fus.length
-
-        # geometry values
-        semispan_h = mean_width * 0.5
-        semispan_v = mean_height * 0.5
-
-        si         = np.arange(1,((n_sw*2)+2))
-        spacing    = np.cos((2*si - 1)/(2*len(si))*np.pi)
-        h_array    = semispan_h*spacing[0:int((len(si)+1)/2)][::-1]
-        v_array    = semispan_v*spacing[0:int((len(si)+1)/2)][::-1]
-
-        for i in range(n_sw+1):
-            fhs.chord[i]      = length
-            fvs.chord[i]      = length
 
     # ---------------------------------------------------------------------------------------
     # STEP 9: Define coordinates of panels horseshoe vortices and control points  

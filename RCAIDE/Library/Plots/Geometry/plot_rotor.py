@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Geometry
-# RCAIDE/Library/Plots/Geometry/Two_Dimensional/plot_rotor.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# RCAIDE/Library/Plots/Geometry/plot_rotor.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 

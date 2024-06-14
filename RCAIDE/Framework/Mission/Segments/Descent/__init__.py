@@ -1,6 +1,6 @@
-## @defgroup Framework-Mission-Segments-Descent Descent
-# RCAIDE/Framework/Mission/Segments/Descent/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Analyses-Mission-Segments-Descent Descent
+# RCAIDE/Framework/Analyses/Mission/Segments/Descent/__init__.py
+# 
 
 """RCAIDE Package Setup
 """

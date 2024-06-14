@@ -1,6 +1,6 @@
 ## @defgroup Methods-Weights Weights
-# RCAIDE/Library/Methods/Weights/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# RCAIDE/Methods/Weights/__init__.py
+# 
 
 """RCAIDE Package Setup
 """
@@ -11,3 +11,4 @@
 
 from . import Physics_Based_Buildups 
 from . import Correlation_Buildups 
+from .mass_and_intertia_functions import *

@@ -1,6 +1,6 @@
-## @ingroup Library-Plots-Geometry-Three_Dimensional
+## @ingroup Library-Plots-Geometry
 # RCAIDE/Library/Plots/Energy/plot_battery_ragone_diagram.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -10,7 +10,8 @@
 
 from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Plots.Common import set_axes, plot_style
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import numpy as np  
 
 # ----------------------------------------------------------------------------------------------------------------------

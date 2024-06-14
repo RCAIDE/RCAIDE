@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Descent
-# RCAIDE/Framework/Mission/Segments/Descent/Constant_Speed_Constant_Angle_Noise.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Descent
+# RCAIDE/Framework/Analyses/Mission/Segments/Descent/Constant_Speed_Constant_Angle_Noise.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -10,15 +10,15 @@
 
 # RCAIDE imports
 import RCAIDE
-from RCAIDE.Framework.Core                                 import Units
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate
+from RCAIDE.Framework.Core                                 import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_Speed_Constant_Angle_Noise
 # ----------------------------------------------------------------------------------------------------------------------   
 
-## @ingroup Framework-Mission-Segments-Descent
+## @ingroup Analyses-Mission-Segments-Descent
 class Constant_Speed_Constant_Angle_Noise(Evaluate):
     """ Fixed at a true airspeed the vehicle will descend at a constant angle. This is a specific segment for Noise.
         A vehicle performs a descent to landing in accordance with a certification points for landing noise.
@@ -70,7 +70,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         initialize.expand_state            = Segments.Descent.Constant_Speed_Constant_Angle_Noise.expand_state
         initialize.conditions              = Segments.Descent.Constant_Speed_Constant_Angle_Noise.initialize_conditions
         iterate                            = self.process.iterate   
-        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
+        iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation          
         
         return

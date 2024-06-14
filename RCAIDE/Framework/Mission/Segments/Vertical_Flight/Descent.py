@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Vertical_Flight
-# RCAIDE/Framework/Mission/Segments/Vertical_Flight/Descent.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Vertical_Flight
+# RCAIDE/Framework/Analyses/Mission/Segments/Vertical_Flight/Descent.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,15 +9,15 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                 import Units
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate
+from RCAIDE.Framework.Core                                 import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Descent
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Segments-Vertical_Flight
+## @ingroup Analyses-Mission-Segments-Vertical_Flight
 class Descent(Evaluate):
     """ A vertically descending hover for VTOL aircraft. Although the vehicle moves, no aerodynamic drag and lift are used.
     
@@ -62,6 +62,6 @@ class Descent(Evaluate):
         initialize                         = self.process.initialize
         iterate                            = self.process.iterate 
         initialize.conditions              = Segments.Vertical_Flight.Descent.initialize_conditions
-        iterate.residuals.total_forces     = Common.Residuals.vertical_flight_forces
+        iterate.residuals.flight_dynamics  = Common.Residuals.vertical_flight_dynamics
         return
        

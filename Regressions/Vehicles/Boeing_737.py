@@ -1,4 +1,4 @@
-# Regression/scripts/Vehicles/Embraer_E190.py
+# Regressions/Vehicles/Embraer_E190.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,12 +8,12 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import segment_properties  , segment_properties 
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan , compute_nacelle_geometry
+from RCAIDE.Framework.Core import Units       
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import segment_properties   
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan
 from RCAIDE.Library.Methods.Stability.Center_of_Gravity            import compute_component_centers_of_gravity
 from RCAIDE.Library.Plots                                          import *     
-
+ 
 # python imports 
 import numpy as np  
 from copy import deepcopy 
@@ -172,8 +172,6 @@ def vehicle_setup():
     aileron.deflection            = 0.0 * Units.degrees
     aileron.chord_fraction        = 0.16
     wing.append_control_surface(aileron)
-    
-
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -318,8 +316,7 @@ def vehicle_setup():
 
     # ################################################# Fuselage ################################################################ 
     
-    fuselage                                    = RCAIDE.Library.Components.Fuselages.Fuselage()
-    fuselage.tag                                = 'fuselage' 
+    fuselage                                    = RCAIDE.Library.Components.Fuselages.Tube_Fuselage() 
     fuselage.number_coach_seats                 = vehicle.passengers 
     fuselage.seats_abreast                      = 6
     fuselage.seat_pitch                         = 1     * Units.meter 
@@ -342,7 +339,7 @@ def vehicle_setup():
     fuselage.heights.at_wing_root_quarter_chord = 3.74 * Units.meter
 
     # Segment  
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment() 
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment() 
     segment.tag                                 = 'segment_0'    
     segment.percent_x_location                  = 0.0000
     segment.percent_z_location                  = -0.00144 
@@ -351,7 +348,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)   
     
     # Segment  
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment() 
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment() 
     segment.tag                                 = 'segment_1'    
     segment.percent_x_location                  = 0.00576 
     segment.percent_z_location                  = -0.00144 
@@ -360,7 +357,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)   
     
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_2'   
     segment.percent_x_location                  = 0.02017 
     segment.percent_z_location                  = 0.00000 
@@ -369,7 +366,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)      
     
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_3'   
     segment.percent_x_location                  = 0.03170 
     segment.percent_z_location                  = 0.00000 
@@ -378,7 +375,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)   
 
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_4'   
     segment.percent_x_location                  = 0.04899 	
     segment.percent_z_location                  = 0.00431 
@@ -387,7 +384,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)   
     
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_5'   
     segment.percent_x_location                  = 0.07781 
     segment.percent_z_location                  = 0.00861 
@@ -396,7 +393,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)     
     
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_6'   
     segment.percent_x_location                  = 0.10375 
     segment.percent_z_location                  = 0.01005 
@@ -405,7 +402,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)             
      
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_7'   
     segment.percent_x_location                  = 0.16427 
     segment.percent_z_location                  = 0.01148 
@@ -414,7 +411,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)    
     
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_8'   
     segment.percent_x_location                  = 0.22478 
     segment.percent_z_location                  = 0.01148 
@@ -423,7 +420,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)   
     
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_9'     
     segment.percent_x_location                  = 0.69164 
     segment.percent_z_location                  = 0.01292
@@ -432,7 +429,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)     
         
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_10'     
     segment.percent_x_location                  = 0.71758 
     segment.percent_z_location                  = 0.01292
@@ -441,7 +438,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)   
         
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_11'     
     segment.percent_x_location                  = 0.78098 
     segment.percent_z_location                  = 0.01722
@@ -450,7 +447,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)    
         
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_12'     
     segment.percent_x_location                  = 0.85303
     segment.percent_z_location                  = 0.02296
@@ -459,7 +456,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)             
         
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_13'     
     segment.percent_x_location                  = 0.91931 
     segment.percent_z_location                  = 0.03157
@@ -468,7 +465,7 @@ def vehicle_setup():
     fuselage.Segments.append(segment)               
         
     # Segment                                   
-    segment                                     = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
+    segment                                     = RCAIDE.Library.Components.Fuselages.Segment()
     segment.tag                                 = 'segment_14'     
     segment.percent_x_location                  = 1.00 
     segment.percent_z_location                  = 0.04593
@@ -490,9 +487,6 @@ def vehicle_setup():
     #  Turbofan Network
     #-------------------------------------------------------------------------------------------------------------------------   
     net                                         = RCAIDE.Framework.Networks.Turbofan_Engine_Network() 
-
-    # Append energy network to aircraft 
-    vehicle.append_energy_network(net)   
     
     #------------------------------------------------------------------------------------------------------------------------- 
     # Fuel Distrubition Line 
@@ -586,57 +580,20 @@ def vehicle_setup():
     
     # design turbofan
     design_turbofan(turbofan)  
-    # append propulsor to distribution line 
-    
+    # append propulsor to distribution line  
    
  
     # Nacelle 
-    nacelle                                     = RCAIDE.Library.Components.Nacelles.Nacelle()
+    nacelle                                     = RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle()
     nacelle.diameter                            = 2.05
     nacelle.length                              = 2.71
     nacelle.tag                                 = 'nacelle_1'
     nacelle.inlet_diameter                      = 2.0
     nacelle.origin                              = [[13.5,4.38,-1.5]] 
     nacelle.areas.wetted                        = 1.1*np.pi*nacelle.diameter*nacelle.length
-    nacelle.Airfoil.NACA_4_series_flag          = True 
-    nacelle.Airfoil.coordinate_file             = '2410' 
-           
-         
-    nac_segment                                 = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
-    nac_segment.tag                             = 'segment_1'
-    nac_segment.percent_x_location              = 0.0  
-    nac_segment.height                          = 2.05
-    nac_segment.width                           = 2.05
-    nacelle.append_segment(nac_segment)         
-           
-    nac_segment                                 = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
-    nac_segment.tag                             = 'segment_2'
-    nac_segment.percent_x_location              = 0.3
-    nac_segment.height                          = 2.1  
-    nac_segment.width                           = 2.1 
-    nacelle.append_segment(nac_segment)         
-           
-    nac_segment                                 = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
-    nac_segment.tag                             = 'segment_3'
-    nac_segment.percent_x_location              = 0.4  
-    nac_segment.height                          = 2.05
-    nac_segment.width                           = 2.05 
-    nacelle.append_segment(nac_segment)         
-            
-    nac_segment                                 = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
-    nac_segment.tag                             = 'segment_4'
-    nac_segment.percent_x_location              = 0.75  
-    nac_segment.height                          = 1.9
-    nac_segment.width                           = 1.9
-    nacelle.append_segment(nac_segment)         
-    
-    nac_segment                                 = RCAIDE.Library.Components.Lofted_Body_Segment.Segment()
-    nac_segment.tag                             = 'segment_5'
-    nac_segment.percent_x_location              = 1.0
-    nac_segment.height                          = 1.7 
-    nac_segment.width                           = 1.7
-    nacelle.append_segment(nac_segment)           
-    compute_nacelle_geometry(turbofan, nacelle)
+    nacelle_airfoil                             = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
+    nacelle_airfoil.NACA_4_Series_code          = '2410'
+    nacelle.append_airfoil(nacelle_airfoil) 
     turbofan.nacelle                            = nacelle
     
     fuel_line.propulsors.append(turbofan)  
@@ -673,7 +630,10 @@ def vehicle_setup():
     fuel_line.fuel_tanks.append(fuel_tank) 
 
     # Append fuel line to Network      
-    net.fuel_lines.append(fuel_line)  
+    net.fuel_lines.append(fuel_line)   
+
+    # Append energy network to aircraft 
+    vehicle.append_energy_network(net)    
     
     #------------------------------------------------------------------------------------------------------------------------- 
     # Compute Center of Gravity of aircraft (Optional)

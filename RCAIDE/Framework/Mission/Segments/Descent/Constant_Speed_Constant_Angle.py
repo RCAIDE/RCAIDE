@@ -1,6 +1,5 @@
-## @ingroup Framework-Mission-Segments-Descent
-# RCAIDE/Framework/Mission/Segments/Descent/Constant_Speed_Constant_Angle.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Descent
+# RCAIDE/Framework/Analyses/Mission/Segments/Descent/Constant_Speed_Constant_Angle.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,15 +9,15 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports
-from RCAIDE.Framework.Core                                 import Units
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate
+from RCAIDE.Framework.Core                                 import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_Speed_Constant_Angle
 # ----------------------------------------------------------------------------------------------------------------------  
 
-## @ingroup Framework-Mission-Segments-Descent
+## @ingroup Analyses-Mission-Segments-Descent
 class Constant_Speed_Constant_Angle(Evaluate):
     """ Fixed at a true airspeed the vehicle will descend at a constant angle.
     
@@ -64,7 +63,7 @@ class Constant_Speed_Constant_Angle(Evaluate):
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Descent.Constant_Speed_Constant_Angle.initialize_conditions
         iterate                            = self.process.iterate   
-        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
+        iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation          
         return
 

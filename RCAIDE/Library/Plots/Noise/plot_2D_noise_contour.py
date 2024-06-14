@@ -1,13 +1,13 @@
-## @ingroup Library-Plots-Performance-Noise
+## @ingroup Library-Plots-Noise
 # RCAIDE/Library/Plots/Noise/plot_2D_noise_contour.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Units
+from RCAIDE.Framework.Core import Units  
 
 # python imports 
 import numpy as np   
@@ -19,7 +19,7 @@ import matplotlib.colors as colors
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
  
-## @ingroup Library-Plots-Performance-Noise
+## @ingroup Library-Plots-Noise
 def plot_2D_noise_contour(noise_data,
                        noise_level              = None ,
                        min_noise_level          = 35,  

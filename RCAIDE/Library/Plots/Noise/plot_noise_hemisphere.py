@@ -1,6 +1,6 @@
-## @ingroup Library-Plots-Performance-Noise
+## @ingroup Library-Plots-Noise
 # RCAIDE/Library/Plots/Noise/plot_noise_hemisphere.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -13,7 +13,7 @@ import plotly.graph_objects as go
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Plots-Performance-Noise
+## @ingroup Library-Plots-Noise
 def plot_noise_hemisphere(noise_data,
                           noise_level              = False,
                           min_noise_level          = 35,  

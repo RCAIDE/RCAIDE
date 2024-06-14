@@ -1,6 +1,5 @@
-## @ingroup Framework-Mission-Segments-Climb
-# RCAIDE/Framework/Mission/Segments/Climb/Constant_Speed_Constant_Angle_Noise.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Climb
+# RCAIDE/Framework/Analyses/Mission/Segments/Climb/Constant_Speed_Constant_Angle_Noise.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                     import Units
+from RCAIDE.Framework.Core                                     import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Library.Methods.Mission                          import Common,Segments
 
@@ -18,7 +17,7 @@ from RCAIDE.Library.Methods.Mission                          import Common,Segme
 #  Constant_Speed_Constant_Angle_Noise
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Framework-Mission-Segments-Climb
+## @ingroup Analyses-Mission-Segments-Climb
 class Constant_Speed_Constant_Angle_Noise(Evaluate):
     """ Fixed at a true airspeed the vehicle will climb at a constant angle. This is a specific segment for Noise.
         A vehicle performs a climb in accordance with a certification points for takeoff noise.
@@ -64,11 +63,11 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------   
         initialize                         = self.process.initialize  
-        initialize.expand_state            = Climb.Constant_Speed_Constant_Angle_Noise.expand_state    
+        initialize.expand_state            = Segments.Climb.Constant_Speed_Constant_Angle_Noise.expand_state
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Constant_Speed_Constant_Angle_Noise.initialize_conditions  
         iterate                            = self.process.iterate
-        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
+        iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
         
         return

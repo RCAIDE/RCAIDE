@@ -1,6 +1,5 @@
-## @defgroup Library-Methods-Weights-Correlations-BWB BWB
-# RCAIDE/Library/Methods/Weights/Correlations/BWB/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @defgroup Methods-Weights-Correlations-BWB BWB
+# RCAIDE/Methods/Weights/Correlations/BWB/__init__.py
 # 
 
 """RCAIDE Package Setup

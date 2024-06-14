@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Cruise 
-# RCAIDE/Framework/Mission/Segments/Cruise/Constant_Mach_Constant_Altitude_Loiter.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Cruise 
+# RCAIDE/Framework/Analyses/Mission/Segments/Cruise/Constant_Mach_Constant_Altitude_Loiter.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,15 +9,15 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate
-from RCAIDE.Framework.Core                                 import Units
+from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
+from RCAIDE.Framework.Core                                 import Units   
 from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Mach_Constant_Altitude_Loiter
 # ----------------------------------------------------------------------------------------------------------------------  
 
-## @ingroup Framework-Mission-Segments-Cruise
+## @ingroup Analyses-Mission-Segments-Cruise
 class Constant_Mach_Constant_Altitude_Loiter(Evaluate):
     """ Vehicle flies at a constant Mach number at a set altitude for a fixed time.
         This is useful aircraft who need to station keep.
@@ -62,8 +62,9 @@ class Constant_Mach_Constant_Altitude_Loiter(Evaluate):
         initialize                         = self.process.initialize  
         initialize.conditions              = Segments.Cruise.Constant_Mach_Constant_Altitude_Loiter.initialize_conditions
         iterate                            = self.process.iterate   
-        iterate.residuals.total_forces     = Common.Residuals.level_flight_forces 
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation      
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
+        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
+        iterate.residuals.flight_dynamics  = Common.Residuals.level_flight_dynamics
 
         return
 

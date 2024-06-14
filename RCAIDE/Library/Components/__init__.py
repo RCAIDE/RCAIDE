@@ -14,7 +14,6 @@ from .Mass_Properties  import Mass_Properties
   
 from . import Propulsors
 from . import Energy
-from . import Thermal_Management 
 from . import Airfoils
 from . import Booms
 from . import Configs

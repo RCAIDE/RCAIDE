@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Descent
-# RCAIDE/Framework/Mission/Segments/Descent/Constant_EAS_Constant_Rate.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Descent
+# RCAIDE/Framework/Analyses/Mission/Segments/Descent/Constant_EAS_Constant_Rate.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,15 +9,15 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports
-from RCAIDE.Framework.Core                                 import Units
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate
+from RCAIDE.Framework.Core                                 import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_EAS_Constant_Rate
 # ----------------------------------------------------------------------------------------------------------------------  
 
-## @ingroup Framework-Mission-Segments-Descent
+## @ingroup Analyses-Mission-Segments-Descent
 class Constant_EAS_Constant_Rate(Evaluate):
     """ Fixed at an Equivalent Airspeed (EAS) the vehicle will descent at a constant rate.
     
@@ -62,9 +62,10 @@ class Constant_EAS_Constant_Rate(Evaluate):
         initialize                         = self.process.initialize  
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Descent.Constant_EAS_Constant_Rate.initialize_conditions  
-        iterate                            = self.process.iterate   
-        iterate.residuals.total_forces     = Common.Residuals.climb_descent_forces 
+        iterate                            = self.process.iterate
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
-        
+        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
+        iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
+
         return
        

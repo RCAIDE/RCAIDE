@@ -1,5 +1,5 @@
 ## @defgroup Methods-Geometry-Two_Dimensional Two Dimensional
-# RCAIDE/Library/Methods/Geometry/Two_Dimensional/__init__.py
+# RCAIDE/Methods/Geometry/Two_Dimensional/__init__.py
 # 
 
 """ RCAIDE Package Setup

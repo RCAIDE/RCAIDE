@@ -1,6 +1,6 @@
-## @ingroup Library-Methods-Weights-Buildups-eVTOL 
-# RCAIDE/Library/Methods/Weights/Buildups/eVTOL/converge_evtol_weight.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Methods-Weights-Buildups-eVTOL 
+# RCAIDE/Methods/Weights/Buildups/eVTOL/converge_evtol_weight.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -15,7 +15,7 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 # converge_evtol_weight
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Weights-Buildups-eVTOL 
+## @ingroup Methods-Weights-Buildups-eVTOL 
 def converge_weight(vehicle,
                     print_iterations              = False,
                     contingency_factor            = 1.1,

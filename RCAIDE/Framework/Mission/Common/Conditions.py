@@ -1,6 +1,5 @@
-## @ingroup Framework-Mission-Segments-Common
-# RCAIDE/Framework/Mission/Common/Conditions.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# RCAIDE/Framework/Analyses/Mission/Segments/Conditions/Conditions.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -8,14 +7,14 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
-from RCAIDE.Framework.Core                    import Data
+from RCAIDE.Framework.Core                    import Data 
 
 # python imports 
 import numpy as np 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Framework-Mission-Common
+## @ingroup Analyses-Mission-Segments-Conditions
 class Conditions(Data):
     """ Conditions are the magic Data that contains the information about the vehicle in flight.
         At this point none of the information really exists. What is here are the methods that allow a mission
@@ -136,7 +135,7 @@ class Conditions(Data):
         
         return
         
-## @ingroup Framework-Mission-Segments-Conditions        
+## @ingroup Analyses-Mission-Segments-Conditions        
 class expanded_array(Data):
     """ This is an array that will expand later when the mission is initialized. It is called specifically by conditions
     

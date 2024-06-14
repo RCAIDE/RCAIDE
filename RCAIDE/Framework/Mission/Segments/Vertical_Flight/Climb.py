@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Segments-Vertical_Flight
-# RCAIDE/Framework/Mission/Segments/Vertical_Flight/Climb.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Vertical_Flight
+# RCAIDE/Framework/Analyses/Mission/Segments/Vertical_Flight/Climb.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,15 +9,15 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Framework.Core                                 import Units
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate
+from RCAIDE.Framework.Core                                 import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Library.Methods.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Climb
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Segments-Vertical_Flight
+## @ingroup Analyses-Mission-Segments-Vertical_Flight
 class Climb(Evaluate):
     """ A vertically climbing hover for VTOL aircraft. Although the vehicle moves, no aerodynamic drag and lift are used.
     
@@ -62,7 +62,7 @@ class Climb(Evaluate):
         initialize                         = self.process.initialize
         iterate                            = self.process.iterate 
         initialize.conditions              = Segments.Vertical_Flight.Climb.initialize_conditions
-        iterate.residuals.total_forces     = Common.Residuals.vertical_flight_forces
+        iterate.residuals.flight_dynamics  = Common.Residuals.vertical_flight_dynamics
     
         return
        

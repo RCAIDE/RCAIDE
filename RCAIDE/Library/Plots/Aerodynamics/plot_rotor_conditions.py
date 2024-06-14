@@ -1,6 +1,6 @@
-## @ingroup Library-Plots-Aerodynamics 
-# RCAIDE/Library/Plots/Aerodynamics/plot_rotor_conditions.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Library-Plots-Performance-Aerodynamics
+# RCAIDE/Library/Plots/Performance/Aerodynamics/plot_rotor_conditions.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Library-Plots-Aerodynamics 
+## @ingroup Library-Plots-Performance-Aerodynamics
 def plot_rotor_conditions(results,
                         save_figure = False,
                         show_legend=True,

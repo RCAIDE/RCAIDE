@@ -1,5 +1,5 @@
-## @defgroup Framework-Mission-Segments-Ground Ground
-# RCAIDE/Framework/Mission/Segments/Ground/__init__.py
+## @defgroup Analyses-Mission-Segments-Ground Ground
+# RCAIDE/Framework/Analyses/Mission/Segments/Ground/__init__.py
 # 
 
 """RCAIDE Package Setup

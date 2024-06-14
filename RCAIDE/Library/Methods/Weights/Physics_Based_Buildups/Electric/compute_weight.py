@@ -1,6 +1,6 @@
-## @ingroup Library-Methods-Weights-Buildups-eVTOL 
-# RCAIDE/Library/Methods/Weights/Buildups/eVTOL/compute_weight.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Methods-Weights-Buildups-eVTOL 
+# RCAIDE/Methods/Weights/Buildups/eVTOL/compute_weight.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -10,7 +10,7 @@
 
 # RCAIDE
 import RCAIDE
-from RCAIDE.Framework.Core                                            import Units, Data
+from RCAIDE.Framework.Core                                            import Units, Data 
 from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_fuselage_weight
 from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_boom_weight
 from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common   import compute_rotor_weight
@@ -23,8 +23,8 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute evtol weight
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Weights-Buildups-eVTOL 
-def compute_weight(config, 
+## @ingroup Methods-Weights-Buildups-eVTOL 
+def compute_weight(vehicle, 
           contingency_factor            = 1.1,
           speed_of_sound                = 340.294,
           max_tip_mach                  = 0.65,
@@ -44,7 +44,7 @@ def compute_weight(config,
 
 
         Inputs: 
-            config:                     RCAIDE Config Data Stucture
+            vehicle:                     RCAIDE Config Data Stucture
             contingency_factor          Factor capturing uncertainty in vehicle weight [Unitless]
             speed_of_sound:             Local Speed of Sound                           [m/s]
             max_tip_mach:               Allowable Tip Mach Number                      [Unitless]
@@ -92,13 +92,14 @@ def compute_weight(config,
     weight.motors            = 0.0
     weight.rotors            = 0.0
     weight.rotors            = 0.0
+    weight.fuselage          = 0.0
     weight.wiring            = 0.0
     weight.wings             = Data()
     weight.wings_total       = 0.0
 
-    config.payload.passengers                      = RCAIDE.Library.Components.Component()
-    config.payload.baggage                         = RCAIDE.Library.Components.Component()
-    config.payload.cargo                           = RCAIDE.Library.Components.Component()
+    vehicle.payload.passengers                      = RCAIDE.Library.Components.Component()
+    vehicle.payload.baggage                         = RCAIDE.Library.Components.Component()
+    vehicle.payload.cargo                           = RCAIDE.Library.Components.Component()
     control_systems                                = RCAIDE.Library.Components.Component()
     electrical_systems                             = RCAIDE.Library.Components.Component()
     furnishings                                    = RCAIDE.Library.Components.Component()
@@ -106,30 +107,31 @@ def compute_weight(config,
     fuel                                           = RCAIDE.Library.Components.Component()
     apu                                            = RCAIDE.Library.Components.Component()
     hydraulics                                     = RCAIDE.Library.Components.Component()
-    avionics                                       = RCAIDE.Library.Components.Component()
+    avionics                                       = RCAIDE.Library.Components.Systems.Avionics()
     optionals                                      = RCAIDE.Library.Components.Component()
 
     # assign components to vehicle
-    config.systems.control_systems                 = control_systems
-    config.systems.electrical_systems              = electrical_systems
-    config.systems.avionics                        = avionics
-    config.systems.furnishings                     = furnishings
-    config.systems.air_conditioner                 = air_conditioner
-    config.systems.fuel                            = fuel
-    config.systems.apu                             = apu
-    config.systems.hydraulics                      = hydraulics
-    config.systems.optionals                       = optionals
+    vehicle.systems.control_systems                 = control_systems
+    vehicle.systems.electrical_systems              = electrical_systems
+    vehicle.systems.avionics                        = avionics
+    vehicle.systems.furnishings                     = furnishings
+    vehicle.systems.air_conditioner                 = air_conditioner
+    vehicle.systems.fuel                            = fuel
+    vehicle.systems.apu                             = apu
+    vehicle.systems.hydraulics                      = hydraulics
+    vehicle.systems.optionals                       = optionals
 
 
     #-------------------------------------------------------------------------------
     # Fixed Weights
     #-------------------------------------------------------------------------------
-    MTOW                = config.mass_properties.max_takeoff
-    weight.seats        = config.passengers * 15.   * Units.kg
-    weight.passengers   = config.passengers * 70.   * Units.kg
+    MTOW                = vehicle.mass_properties.max_takeoff
+    maxSpan             = vehicle.wings["main_wing"].spans.projected  
+    weight.seats        = vehicle.passengers * 15.   * Units.kg
+    weight.passengers   = vehicle.passengers * 70.   * Units.kg
     weight.avionics     = 15.                       * Units.kg
     weight.landing_gear = MTOW * 0.02               * Units.kg
-    weight.ECS          = config.passengers * 7.    * Units.kg
+    weight.ECS          = vehicle.passengers * 7.    * Units.kg
 
     # Inputs and other constants
     tipMach        = max_tip_mach
@@ -145,15 +147,15 @@ def compute_weight(config,
     # Determine length scale 
     length_scale = 1. 
  
-    if len(config.fuselages) == 0.:
-        for w  in config.wings:
+    if len(vehicle.fuselages) == 0.:
+        for w  in vehicle.wings:
             if isinstance(w ,RCAIDE.Library.Components.Wings.Main_Wing):
                 b = w.chords.root
                 if b>length_scale:
                     length_scale = b
                     nose_length  = 0.25*b
     else:
-        for fuse in config.fuselages:
+        for fuse in vehicle.fuselages:
             nose   = fuse.lengths.nose
             length = fuse.lengths.total
             if length > length_scale:
@@ -164,15 +166,17 @@ def compute_weight(config,
     #-------------------------------------------------------------------------------
     # Environmental Control System
     #-------------------------------------------------------------------------------
-    config.systems.air_conditioner.origin[0][0]          = 0.51 * length_scale
-    config.systems.air_conditioner.mass_properties.mass  = weight.ECS
+    vehicle.systems.air_conditioner.origin[0][0]          = 0.51 * length_scale
+    vehicle.systems.air_conditioner.mass_properties.mass  = weight.ECS
 
     #-------------------------------------------------------------------------------
     # Network Weight
     #-------------------------------------------------------------------------------
-    for network in config.networks:
+    maxLiftPower           = 0
+    total_number_of_rotors = 0 
+    for network in vehicle.networks:
 
-        if not isinstance(network, RCAIDE.Energy.Networks.All_Electric_Network):
+        if not isinstance(network, RCAIDE.Framework.Networks.All_Electric_Network):
             raise NotImplementedError("""eVTOL weight buildup only supports the Battery Electric Rotor energy network.\n
             Weight buildup will not return information on propulsion system.""",RuntimeWarning)
                 
@@ -212,7 +216,7 @@ def compute_weight(config,
             for propulsor in bus.propulsors: 
                 # Rotor 
                 rotor = propulsor.rotor   
-                if type(rotor) == RCAIDE.Energy.Propulsors.Converters.Propeller:
+                if type(rotor) == RCAIDE.Library.Components.Propulsors.Converters.Propeller:
                     ''' Propeller Weight '''  
                     number_of_propellers       += 1   
                     rTip_ref                   = rotor.tip_radius
@@ -224,7 +228,7 @@ def compute_weight(config,
                     weight.servos              += prop_servo_weight
                     weight.hubs                += prop_hub_weight
                     
-                if (type(rotor) == RCAIDE.Energy.Propulsors.Converters.Lift_Rotor or type(rotor) == RCAIDE.Energy.Propulsors.Converters.Prop_Rotor) or type(rotor) == RCAIDE.Energy.Propulsors.Converters.Rotor:
+                if (type(rotor) == RCAIDE.Library.Components.Propulsors.Converters.Lift_Rotor or type(rotor) == RCAIDE.Library.Components.Propulsors.Converters.Prop_Rotor) or type(rotor) == RCAIDE.Library.Components.Propulsors.Converters.Rotor:
                     ''' Lift Rotor, Prop-Rotor or Rotor Weight '''  
                     number_of_lift_rotors       += 1  
                     rTip_ref                    = rotor.tip_radius
@@ -268,41 +272,43 @@ def compute_weight(config,
     #-------------------------------------------------------------------------------
     # Wing and Motor Wiring Weight
     #-------------------------------------------------------------------------------  
-    for w in config.wings:
+    for w in vehicle.wings:
         if w.symbolic:
             wing_weight = 0
         else:
-            wing_weight            = compute_wing_weight(w, config, maxLift/5, safety_factor= safety_factor, max_g_load =  max_g_load )
+            wing_weight            = compute_wing_weight(w, vehicle, maxLift/5, safety_factor= safety_factor, max_g_load =  max_g_load )
             wing_tag               = w.tag
             weight.wings[wing_tag] = wing_weight
             w.mass_properties.mass = wing_weight 
         weight.wings_total         += wing_weight
 
         # compute_wiring_weight weight
-        weight.wiring  += compute_wiring_weight(w, config, maxLiftPower/(eta*total_number_of_rotors)) * Units.kg 
+        weight.wiring  += compute_wiring_weight(w, vehicle, maxLiftPower/(eta*total_number_of_rotors)) * Units.kg 
 
     #-------------------------------------------------------------------------------
     # Landing Gear Weight
     #-------------------------------------------------------------------------------
-    if not hasattr(config.landing_gear, 'nose'):
-        config.landing_gear.nose       = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()
-    config.landing_gear.nose.mass      = 0.0
-    if not hasattr(config.landing_gear, 'main'):
-        config.landing_gear.main       = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear()
-    config.landing_gear.main.mass      = weight.landing_gear
+    if not hasattr(vehicle.landing_gear, 'nose'):
+        vehicle.landing_gear.nose       = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()
+    vehicle.landing_gear.nose.mass      = 0.0
+    if not hasattr(vehicle.landing_gear, 'main'):
+        vehicle.landing_gear.main       = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear()
+    vehicle.landing_gear.main.mass      = weight.landing_gear
 
     #-------------------------------------------------------------------------------
-    # Fuselage  Weight
+    # Fuselage  Weight  
     #-------------------------------------------------------------------------------
-    weight.fuselage = compute_fuselage_weight(config) * Units.kg
-    config.fuselages.fuselage.mass_properties.center_of_gravity[0][0] = .45*config.fuselages.fuselage.lengths.total
-    config.fuselages.fuselage.mass_properties.mass                    =  weight.fuselage + weight.passengers + weight.seats +\
-                                                                         weight.wiring + weight.BRS 
+    for fuse in  vehicle.fuselages: 
+        fuselage_weight = compute_fuselage_weight(fuse, maxSpan, MTOW )  
+        fuse.mass_properties.center_of_gravity[0][0] = .45*fuse.lengths.total
+        fuse.mass_properties.mass                    =  fuselage_weight + weight.passengers + weight.seats +\
+                                                                             weight.wiring + weight.BRS
+        weight.fuselage += fuselage_weight  
 
     #-------------------------------------------------------------------------------
     # Boom Weight
     #-------------------------------------------------------------------------------
-    for b in config.booms:
+    for b in vehicle.booms:
         boom_weight                                = compute_boom_weight(b) * Units.kg
         weight.booms                               += boom_weight 
         b.mass_properties.mass                     =  boom_weight 

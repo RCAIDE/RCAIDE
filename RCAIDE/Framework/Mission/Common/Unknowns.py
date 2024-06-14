@@ -1,6 +1,6 @@
-## @ingroup Framework-Mission-Common
-# RCAIDE/Framework/Mission/Common/Unknowns.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Analyses-Mission-Segments-Conditions 
+# RCAIDE/Framework/Analyses/Mission/Segments/Conditions/Unknowns.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -13,7 +13,7 @@ from .Conditions import Conditions
 #  Unknowns
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Common
+## @ingroup Analyses-Mission-Segments-Conditions
 class Unknowns(Conditions):
     """ Creates the data structure for the unknowns that solved in a mission
     

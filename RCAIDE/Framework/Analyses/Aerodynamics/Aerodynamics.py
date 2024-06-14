@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Aerodynamics
-# RCAIDE/Analyses/Aerodynamics/Aerodynamics.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# RCAIDE/Framework/Analyses/Aerodynamics/Aerodynamics.py
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports   
-from RCAIDE.Framework.Core                import Data
-from RCAIDE.Framework.Analyses import Analysis
+from RCAIDE.Framework.Core     import Data
+from RCAIDE.Framework.Analyses import Analysis  
 
 # package imports 
 import numpy as np

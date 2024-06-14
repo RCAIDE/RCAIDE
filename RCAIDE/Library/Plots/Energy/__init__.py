@@ -1,6 +1,6 @@
 ## @defgroup Library-Plots-Energy Battery 
 # RCAIDE/Library/Plots/Energy/__init__.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# 
 
 """RCAIDE Package Setup
 """
@@ -19,3 +19,4 @@ from .plot_battery_ragone_diagram               import plot_battery_ragone_diagr
 from .plot_electric_propulsor_efficiencies      import plot_electric_propulsor_efficiencies
 from .plot_fuel_consumption                     import plot_fuel_consumption
 from .plot_altitude_sfc_weight                  import plot_altitude_sfc_weight
+from .plot_propulsor_throttles                  import plot_propulsor_throttles
