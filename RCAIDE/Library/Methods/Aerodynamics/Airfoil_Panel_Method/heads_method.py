@@ -1,8 +1,6 @@
 ## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/heads_method.py
-# 
-# 
-# Created:  Mar 2024, Niranjan Nanjappa
+#  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

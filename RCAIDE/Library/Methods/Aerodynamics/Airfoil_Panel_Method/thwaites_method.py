@@ -1,8 +1,6 @@
 ## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method  
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/thwaites_method_new.py
-# 
-# 
-# Created:  Apr 2024, Niranjan Nanjappa
+#  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

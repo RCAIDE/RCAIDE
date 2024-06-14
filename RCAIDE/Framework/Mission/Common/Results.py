@@ -2,8 +2,7 @@
 # RCAIDE/Framework/Analyses/Mission/Segments/Conditions/Results.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke
-# Updated:  May 2024, M. Guidotti
+# Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

@@ -2,8 +2,7 @@
 # RCAIDE/Framework/Analyses/Stability/VLM_Perturbation_Method.py
 # 
 # 
-# Created:  Mar 2023, M. Clarke
-# Updated:  May 2024, M. Guidotti
+# Created:  Mar 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

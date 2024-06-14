@@ -2,8 +2,7 @@
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/hess_smith.py
 # 
 # 
-# Created:  Dec 2023, M. Clarke
-# Modified: Apr 2023, N. Nanjappa
+# Created:  Dec 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

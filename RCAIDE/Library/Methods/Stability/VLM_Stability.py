@@ -2,8 +2,7 @@
 # RCAIDE/Library/Methods/Stability/VLM_Stability.py
 # 
 # 
-# Created:  Apr 2024, M. Clarke
-# Updated:  Mat 2024, M. Guidotti
+# Created:  Apr 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
