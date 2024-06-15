@@ -65,9 +65,9 @@ def plot_battery_pack_C_rates(results,
             for battery in bus.batteries:    
                 fig = plt.figure(save_filename + '_' + battery.tag)
                 fig.set_size_inches(width,height)  
-                for i in range(len(results.segments)):
-                    time                = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-                    battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag]   
+                for i, segment in enumerate(results.segments):
+                    time                = segment.conditions.frames.inertial.time[:,0] / Units.min 
+                    battery_conditions  = segment.conditions.energy[bus.tag][battery.tag]   
                     pack_energy         = battery_conditions.pack.energy[:,0]
                     pack_volts          = battery_conditions.pack.voltage_under_load[:,0] 
                     pack_current        = battery_conditions.pack.current[:,0] 
@@ -76,7 +76,7 @@ def plot_battery_pack_C_rates(results,
                     pack_C_instant      = pack_current/pack_battery_amp_hr
                     pack_C_nominal      = pack_current/np.max(pack_battery_amp_hr) 
             
-                    segment_tag  =  results.segments[i].tag
+                    segment_tag  =  segment.tag
                     segment_name = segment_tag.replace('_', ' ') 
                      
                     axis_1 = plt.subplot(2,1,1)

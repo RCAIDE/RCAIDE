@@ -26,10 +26,10 @@ class Container(Data):
         intended to hold a attribute-accessible list of Data(). This is unordered.
         
         Assumptions:
-        N/A
+        None
         
         Source:
-        N/A
+        None
         
     """
             
@@ -41,16 +41,15 @@ class Container(Data):
             None
         
             Source:
-            N/A
+            None
         
-            Inputs:
-            N/A
+            Args:
+            None
         
-            Outputs:
-            N/A
+            Returns:
+            None
             
-            Properties Used:
-            N/A
+            
         """          
         pass
     
@@ -61,16 +60,15 @@ class Container(Data):
             None
         
             Source:
-            N/A
+            None
         
-            Inputs:
+            Args:
             self
         
-            Outputs:
-            N/A
+            Returns:
+            None
             
-            Properties Used:
-            N/A
+            
         """          
         super(Container,self).__init__(*args,**kwarg)
         self.__defaults__()
@@ -84,16 +82,13 @@ class Container(Data):
             None
         
             Source:
-            N/A
+            None
         
-            Inputs:
+            Args:
             self
         
-            Outputs:
-            N/A
-            
-            Properties Used:
-            N/A
+            Returns:
+            None
         """           
         
         # See if the item tag exists, if it does modify the name
@@ -118,19 +113,16 @@ class Container(Data):
             None
         
             Source:
-            N/A
+            None
         
-            Inputs:
+            Args:
             self
         
-            Outputs:
-            N/A
-            
-            Properties Used:
-            N/A
+            Returns:
+            None
         """         
         if isinstance(vals,(list,tuple)):
-            for v in val: self.append(v)
+            for v in vals: self.append(v)
         elif isinstance(vals,dict):
             self.update(vals)
         else:
@@ -143,16 +135,13 @@ class Container(Data):
         None
     
         Source:
-        N/A
-    
-        Inputs:
         None
     
-        Outputs:
+        Args:
         None
     
-        Properties Used:
-        N/A
+        Returns:
+        None 
         """        
         
         return []    

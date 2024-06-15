@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Ground
-# RCAIDE/Framework/Analyses/Mission/Segments/Ground/Battery_Charge.py
-# 
+## @ingroup Framework-Mission-Segments-Ground
+# RCAIDE/Framework/Mission/Segments/Ground/Battery_Charge.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -10,7 +10,7 @@
 
 # RCAIDE imports
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission.Segments                 import Ground   
+from RCAIDE.Library.Mission.Segments                 import Ground   
 from RCAIDE.Framework.Core                                     import Units
 from RCAIDE.Library.Methods.skip                             import skip 
 
@@ -18,32 +18,24 @@ from RCAIDE.Library.Methods.skip                             import skip
 #  SEGMENT
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Ground
-class Battery_Recharge(Evaluate): 
-
-    # ------------------------------------------------------------------
-    #   Data Defaults
-    # ------------------------------------------------------------------  
-
+## @ingroup Framework-Mission-Segments-Ground
+class Battery_Recharge(Evaluate):
+    """Recharging segment for battery""" 
     def __defaults__(self):  
-
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """              
+            Returns:
+                None
+        """         
         
         # --------------------------------------------------------------
         #   User Inputs

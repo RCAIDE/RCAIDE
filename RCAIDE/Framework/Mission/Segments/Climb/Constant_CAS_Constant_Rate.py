@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Climb
-# RCAIDE/Framework/Analyses/Mission/Segments/Climb/Constant_CAS_Constant_Rate.py
-# 
+## @ingroup Framework-Mission-Segments-Climb
+# RCAIDE/Framework/Mission/Segments/Climb/Constant_CAS_Constant_Rate.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,22 +9,16 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                     import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
+from RCAIDE.Framework.Core                           import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate      import Evaluate
+from RCAIDE.Library.Mission                          import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant CAS Constant Rate
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Framework-Mission-Segments-Climb
 class Constant_CAS_Constant_Rate(Evaluate):
-    """ Climb at a constant Calibrated Airspeed (CAS) at a constant rate.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ Climb at a constant Calibrated Airspeed (CAS) at a constant rate. 
     """       
     
     def __defaults__(self): 
@@ -34,15 +28,12 @@ class Constant_CAS_Constant_Rate(Evaluate):
             None
     
             Source:
-            N/A
-    
-            Inputs:
             None
     
-            Outputs:
+            Args:
             None
     
-            Properties Used:
+            Returns:
             None
         """  
         

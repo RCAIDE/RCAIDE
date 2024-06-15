@@ -73,14 +73,14 @@ def plot_battery_temperature(results,
                 axis_0.grid(False)
                 axis_0.axis('off')
                 
-                for i in range(len(results.segments)):  
-                    time                = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min                      
-                    battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag]  
+                for i, segment in enumerate(results.segments):
+                    time                = segment.conditions.frames.inertial.time[:,0] / Units.min                      
+                    battery_conditions  = segment.conditions.energy[bus.tag][battery.tag]  
                     cell_temp           = battery_conditions.cell.temperature[:,0]
                     cell_charge         = battery_conditions.cell.charge_throughput[:,0]
                     pack_Q              = battery_conditions.pack.heat_energy_generated[:,0]
             
-                    segment_tag  =  results.segments[i].tag
+                    segment_tag  =  segment.tag
                     segment_name = segment_tag.replace('_', ' ')   
                     if b_i == 0:
                         axis_1.plot(time,cell_temp, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)

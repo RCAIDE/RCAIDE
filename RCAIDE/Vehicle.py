@@ -87,7 +87,11 @@ class Vehicle(Data):
             Components.Landing_Gear.Landing_Gear       : self['landing_gear']     ,
             Vehicle_Mass_Properties                    : self['mass_properties']  ,
         }
-        
+
+        self._energy_network_root_map= {
+            Framework.Networks.Network                 : self['networks']         , 
+            }    
+                
         self.append_component(Vehicle_Mass_Properties())
          
         return

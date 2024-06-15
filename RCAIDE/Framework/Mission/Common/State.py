@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Conditions 
-# RCAIDE/Framework/Analyses/Mission/Segments/Conditions/State.py
-# 
+## @ingroup Framework-Mission-Segments-Conditions 
+# RCAIDE/Framework/Mission/Segments/Conditions/State.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -9,11 +9,11 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Framework.Core        import DataOrdered
-from .Conditions        import Conditions
-from .Unknowns          import Unknowns
-from .Residuals         import Residuals
-from .Numerics          import Numerics   
+from RCAIDE.Framework.Core import DataOrdered
+from .Conditions           import Conditions
+from .Unknowns             import Unknowns
+from .Residuals            import Residuals
+from .Numerics             import Numerics   
 
 # python imports
 import numpy as np
@@ -22,35 +22,20 @@ import numpy as np
 #  State
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Framework-Mission-Segments-Conditions
 class State(Conditions):
-    """ Creates the State data structure for storing daata that solved in a mission
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ Creates the State data structure for storing daata that solved in a mission.
     """    
     
     
     def __defaults__(self):
         """ This sets the default values.
-    
-            Assumptions:
+        
+        Assumptions:
             None
     
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+        Source:
+            None 
         """           
         
         self.tag        = 'state'
@@ -65,19 +50,16 @@ class State(Conditions):
             right size. Will not overwrite an array if it already exists, unless override is True.
         
             Assumptions:
-            Doesn't expand initials or numerics
+                Doesn't expand initials or numerics
     
             Source:
-            N/A
+                None
+      
+            Args:
+                rows :  [integer]
     
-            Inputs:
-            rows   [int]
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None 
         """         
         
         # store
@@ -97,33 +79,28 @@ class State(Conditions):
                 v.expand_rows(rows,override=override)
             # need arrays here
             elif rank == 2:
-                self[k] = np.resize(v,[rows,v.shape[1]])
-            #: if type
-        #: for each key,value        
+                self[k] = np.resize(v,[rows,v.shape[1]]) 
         
 # ----------------------------------------------------------------------------------------------------------------------
 # Container
 # ----------------------------------------------------------------------------------------------------------------------        
         
-## @ingroup Analyses-Mission-Segments-Conditions        
+## @ingroup Framework-Mission-Segments-Conditions        
 class Container(State):
     def __defaults__(self):
         """ This sets the default values.
     
             Assumptions:
-            Puts the segments in the right order
+               Puts the segments in the right order
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None 
         """         
         self.segments = DataOrdered()
         
@@ -131,19 +108,16 @@ class Container(State):
         """ Combines the states of multiple segments
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            state_out [State()]
-    
-            Properties Used:
-            None
+            Returns:
+                state_out [State()] 
         """              
         
         state_out = State()
@@ -163,25 +137,22 @@ State.Container = Container
 # append_array
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Framework-Mission-Segments-Conditions
 def append_array(A,B=None):
     """ A stacking operation used by merged to put together data structures
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
-        Inputs:
-        A [array]
-        B [array]
+        Args:
+            A [array]
+            B [array]
 
-        Outputs:
-        array
-
-        Properties Used:
-        None
+        Returns:
+             array 
     """       
     if isinstance(A,np.ndarray) and isinstance(B,np.ndarray):
         return np.vstack([A,B])

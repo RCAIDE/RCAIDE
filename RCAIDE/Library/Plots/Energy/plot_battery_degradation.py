@@ -68,8 +68,8 @@ def plot_battery_degradation(results,
                 charge_throughput = np.zeros_like(time_hrs)    
                      
                 for i in range(len(results.segments)): 
-                    time_hrs[i]    = results.segments[i].conditions.frames.inertial.time[-1,0]  / Units.hour   
-                    battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag]    
+                    time_hrs[i]    = segment.conditions.frames.inertial.time[-1,0]  / Units.hour   
+                    battery_conditions  = segment.conditions.energy[bus.tag][battery.tag]    
                     cycle_day[i]          = battery_conditions.cell.cycle_in_day
                     capacity_fade[i]      = battery_conditions.cell.capacity_fade_factor
                     resistance_growth[i]  = battery_conditions.cell.resistance_growth_factor

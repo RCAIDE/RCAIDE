@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Single_Point
-# RCAIDE/Framework/Analyses/Mission/Segments/Single_Point/Set_Speed_Set_Throttle.py
-# 
+## @ingroup Framework-Mission-Segments-Single_Point
+# RCAIDE/Framework/Mission/Segments/Single_Point/Set_Speed_Set_Throttle.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,48 +9,36 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports   
-from RCAIDE.Library.Methods.skip                             import skip 
-from RCAIDE.Framework.Core                                     import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
-
-# package imports 
-import numpy as np
+from RCAIDE.Library.Methods.skip                     import skip 
+from RCAIDE.Framework.Core                           import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate      import Evaluate
+from RCAIDE.Library.Mission                          import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Set_Speed_Set_Throttle
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Single_Point
+## @ingroup Framework-Mission-Segments-Single_Point
 class Set_Speed_Set_Throttle(Evaluate):
     """ This is a segment that is solved using a single point. A snapshot in time.
-        We fix the speed and throttle. Acceleration is solved from those.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+        We fix the speed and throttle. Acceleration is solved from those. 
     """       
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """              
+            Returns:
+                None
+        """                  
         
         # --------------------------------------------------------------------------------------------------------------
         #   User Inputs

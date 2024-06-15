@@ -49,17 +49,17 @@ def plot_flight_forces_and_moments(results,
     axis_5 = plt.subplot(3,2,5)  
     axis_6 = plt.subplot(3,2,6)    
     
-    for i in range(len(results.segments)): 
-        time   = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-        X = results.segments[i].conditions.frames.inertial.total_force_vector[:,0]
-        Y = results.segments[i].conditions.frames.inertial.total_force_vector[:,1]
-        Z = results.segments[i].conditions.frames.inertial.total_force_vector[:,2]
-        L = results.segments[i].conditions.frames.inertial.total_moment_vector[:,0]
-        M = results.segments[i].conditions.frames.inertial.total_moment_vector[:,1]
-        N = results.segments[i].conditions.frames.inertial.total_moment_vector[:,2]
+    for i, segment in enumerate(results.segments):
+        time   = segment.conditions.frames.inertial.time[:,0] / Units.min 
+        X = segment.conditions.frames.inertial.total_force_vector[:,0]
+        Y = segment.conditions.frames.inertial.total_force_vector[:,1]
+        Z = segment.conditions.frames.inertial.total_force_vector[:,2]
+        L = segment.conditions.frames.inertial.total_moment_vector[:,0]
+        M = segment.conditions.frames.inertial.total_moment_vector[:,1]
+        N = segment.conditions.frames.inertial.total_moment_vector[:,2]
         
                        
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ') 
         axis_1.plot(time,X, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name) 
         axis_1.set_ylabel(r'X Moment (N)')

@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Descent
-# RCAIDE/Framework/Analyses/Mission/Segments/Descent/Constant_Speed_Constant_Rate.py
-# 
+## @ingroup Framework-Mission-Segments-Descent
+# RCAIDE/Framework/Mission/Segments/Descent/Constant_Speed_Constant_Rate.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,35 +9,33 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports
-from RCAIDE.Framework.Core                                 import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Framework.Core                       import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_Speed_Constant_Rate
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Framework-Mission-Segments-Descent
 class Constant_Speed_Constant_Rate(Evaluate):
-    
+    """ Descend at a constant true airspeed at a fixed rate of climb between 2 altitudes. 
+    """        
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """            
+            Returns:
+                None
+        """   
          
         # -------------------------------------------------------------------------------------------------------------- 
         #   User Inputs

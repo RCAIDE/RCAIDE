@@ -1,5 +1,6 @@
-# RCAIDE/Framework/Analyses/Mission/Segments/Conditions/Conditions.py
-# 
+## @ingroup Framework-Mission-Segments-Conditions 
+# RCAIDE/Framework/Mission/Segments/Conditions/Conditions.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -14,38 +15,28 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Framework-Mission-Segments-Conditions
 class Conditions(Data):
     """ Conditions are the magic Data that contains the information about the vehicle in flight.
         At this point none of the information really exists. What is here are the methods that allow a mission
-        to collect the information.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None   
-    """ 
-
+        to collect the information. 
+    """  
     _size = 1
     
     def ones_row(self,cols):
         """ returns a row vector of ones with given number of columns 
         
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            cols   [in]
+            Args:
+                cols   : number of columns  [integer]
     
-            Outputs:
-            Vector
-    
-            Properties Used:
-            None
+            Returns:
+                vector : expanded vector    [array] 
         """     
         return np.ones([self._size,cols])
     
@@ -53,120 +44,79 @@ class Conditions(Data):
         """ returns an N-1 row vector of ones with given number of columns
         
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            cols   [in]
+            Args:
+                cols   : number of columns  [integer]
     
-            Outputs:
-            Vector
-    
-            Properties Used:
-            None
+            Returns:
+                vector : expanded vector    [array] 
         """ 
-        return expanded_array(cols, 1)
-    
-    def ones_row_m2(self,cols):
-        """ returns an N-2 row vector of ones with given number of columns
-        
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            cols   [int]
-    
-            Outputs:
-            Vector
-    
-            Properties Used:
-            None
-        """ 
-        return expanded_array(cols, 2)
-    
+        return expanded_array(cols, 1)    
     
     def expand_rows(self,rows,override=False):
         """ Makes a 1-D array the right size. Often used after a mission is initialized to size out the vectors to the
             right size. Will not overwrite an array if it already exists, unless override is True.
-        
+            
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            rows     [int]
-            override [boolean]
+            Args:
+                rows     : number of rows    [integer]
+                override :                   [boolean]
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                vector : expanded vector   [np.array]
+                
         """           
         
         # store
         self._size = rows
         
-        # recursively initialize condition and unknown arrays 
-        # to have given row length
-        
+        # recursively initialize condition and unknown arrays to have given row length 
         for k,v in self.items():
             try:
                 rank = v.ndim
             except:
-                rank = 0
-            # recursion
+                rank = 0 
             if isinstance(v,Conditions):
                 v.expand_rows(rows,override=override)
             elif isinstance(v,expanded_array):
-                self[k] = v.resize(rows)
-            # need arrays here
-            elif rank == 2:
-                #Check if it's already expanded
+                self[k] = v.resize(rows) 
+            elif rank == 2: # Check if it's already expanded
                 if v.shape[0]<=1 or override:
                     self[k] = np.resize(v,[rows,v.shape[1]])
         
         return
         
-## @ingroup Analyses-Mission-Segments-Conditions        
+## @ingroup Framework-Mission-Segments-Conditions        
 class expanded_array(Data):
-    """ This is an array that will expand later when the mission is initialized. It is called specifically by conditions
+    """ This is an array that will expand later when the mission is initialized. It is called specifically by conditions  
+    """  
+    _size = 1
     
-        Assumptions:
-        None
-        
-        Source:
-        None   
-    """ 
-
-    _size = 1  
-        
     def __init__(self, cols, adjustment):
         """ Initialization that sets expansion later
         
             Assumptions:
-            None
+                None
         
             Source:
-            N/A
+                None
         
-            Inputs:
-            self
-            cols       - columns                          [int]
-            adjustment - how much smaller                 [int]
+            Args:
+                self
+                cols       : columns                          [integer]
+                adjustment : how much smaller                 [integer]
         
-            Outputs:
-            N/A
-            
-            Properties Used:
-            N/A
+            Returns:
+                None 
         """          
         
         self._adjustment = adjustment
@@ -179,26 +129,20 @@ class expanded_array(Data):
             doesn't propogate virally. That means if one wishes to resize later the conditions need to be reset.
         
             Assumptions:
-            None
+                None
         
             Source:
-            N/A
+                None
         
-            Inputs:
-            self
-            rows       - rows                             [int]
-            v          - values (really self)             [int]
+            Args:
+                self : 
+                rows :   rows                             [integer]
+                v    :   values (really self)             [integer]
         
-            Outputs:
-            np.array   - properly sized                   [array]
-            
-            Properties Used:
-            N/A
-        """   
-        # unpack
-        adjustment = self._adjustment
-        
-        # pack
+            Returns:
+                np.array : properly sized                   [array] 
+        """    
+        adjustment = self._adjustment 
         self._size = rows
         value      = self._array
         
@@ -208,19 +152,16 @@ class expanded_array(Data):
         """ This returns the value and shape of the array as is
         
             Assumptions:
-            None
+                None
         
             Source:
-            N/A
+                None
         
-            Inputs:
-            self
+            Args:
+                self
 
-            Outputs:
-            np.array   - properly sized                   [array]
-            
-            Properties Used:
-            N/A
+            Returns:
+                np.array   : properly sized                   [array] 
         """           
         
         return self._array
@@ -229,20 +170,17 @@ class expanded_array(Data):
         """ Performs multiplication and returns self
         
             Assumptions:
-            None
+                None
         
             Source:
-            N/A
+                 None
         
-            Inputs:
-            self
-            other      - something can be multiplied      [float]
+            Args:
+                 self
+                 other      - something can be multiplied      [float]
 
-            Outputs:
-            self
-            
-            Properties Used:
-            N/A
+            Returns:
+                 self
         """          
         
         self._array = np.resize(other,[1,1])
@@ -253,20 +191,17 @@ class expanded_array(Data):
         """ Performs multiplication and returns self
         
             Assumptions:
-            None
+                 None
         
             Source:
-            N/A
+                 None
         
-            Inputs:
-            self
-            other      - something can be multiplied      [float]
+            Args:
+                  self
+                  other      : something can be multiplied      [float]
 
-            Outputs:
-            self
-            
-            Properties Used:
-            N/A
+            Returns:
+                  self 
         """                 
         
         self._array = np.resize(other,[1,1])

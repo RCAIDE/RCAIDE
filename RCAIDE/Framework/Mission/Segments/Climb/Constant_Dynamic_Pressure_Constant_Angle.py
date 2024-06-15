@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Climb
-# RCAIDE/Framework/Analyses/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.py
-# 
+## @ingroup Framework-Mission-Segments-Climb
+# RCAIDE/Framework/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,43 +9,34 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Framework.Core                                     import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
+from RCAIDE.Framework.Core                           import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate      import Evaluate
+from RCAIDE.Library.Mission                          import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_Dynamic_Pressure_Constant_Angle
 # ---------------------------------------------------------------------------------------------------------------------- 
  
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Framework-Mission-Segments-Climb
 class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
     """ Climb at a constant dynamic pressure at a constant angle.This segment takes longer to solve than most because 
-        it has extra unknowns and residuals
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+        it has extra unknowns and residuals.
     """       
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None
         """          
         
         # -------------------------------------------------------------------------------------------------------------- 

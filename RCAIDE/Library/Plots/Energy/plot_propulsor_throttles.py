@@ -59,25 +59,25 @@ def plot_propulsor_throttles(results,
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
     
-    for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min  
-        segment_tag  =  results.segments[i].tag
+    for i, segment in enumerate(results.segments):
+        time     = segment.conditions.frames.inertial.time[:, 0] / Units.min  
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ') 
         
         # power 
         axis_1 = plt.subplot(1,1,1)
         axis_1.set_ylabel(r'Throttle')
         set_axes(axis_1)               
-        for network in results.segments[i].analyses.energy.networks: 
+        for network in segment.analyses.energy.networks: 
             busses      = network.busses
             fuel_lines  = network.fuel_lines
             for bus in busses:
                 for propulsor in bus.propulsors: 
-                    eta = results.segments[i].conditions.energy[bus.tag][propulsor.tag].throttle[:,0]  
+                    eta = segment.conditions.energy[bus.tag][propulsor.tag].throttle[:,0]  
                     axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)               
             for fuel_line in fuel_lines:  
                 for propulsor in fuel_line.propulsors: 
-                    eta = results.segments[i].conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
+                    eta = segment.conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
                     axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)      
     
     if show_legend:

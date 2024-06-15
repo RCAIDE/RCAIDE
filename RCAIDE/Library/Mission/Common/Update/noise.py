@@ -1,31 +1,30 @@
 ## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/noise.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  compute_noise
+#  noise
 # ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Library-Missions-Segments-Common-Update
 def noise(segment):
-    """ Updates the noise produced by the vehicle
+    """ Computes the noise using the prescribed method 
         
         Assumptions:
-        N/A
-        
-        Inputs:
-            None 
+            N/A
+            
+        Source:
+            N/A
+            
+        Args:
+            N/A
                  
-        Outputs: 
-            None
-      
-        Properties Used:
-        N/A
-                    
+        Returns: 
+            N/A      
     """   
     noise_model = segment.analyses.noise
     
     if noise_model:
-        noise_model.evaluate_noise(segment)    
+        noise_model.evaluate(segment)    

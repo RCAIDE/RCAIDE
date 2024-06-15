@@ -66,14 +66,14 @@ def plot_flight_conditions(results,
      
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height) 
-    for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        airspeed = results.segments[i].conditions.freestream.velocity[:,0] /   Units['mph']
-        theta    = results.segments[i].conditions.frames.body.inertial_rotations[:,1,None] / Units.deg
-        Range    = results.segments[i].conditions.frames.inertial.aircraft_range[:,0]/ Units.nmi
-        altitude = results.segments[i].conditions.freestream.altitude[:,0]/Units.feet
+    for i, segment in enumerate(results.segments):
+        time     = segment.conditions.frames.inertial.time[:,0] / Units.min
+        airspeed = segment.conditions.freestream.velocity[:,0] /   Units['mph']
+        theta    = segment.conditions.frames.body.inertial_rotations[:,1,None] / Units.deg
+        Range    = segment.conditions.frames.inertial.aircraft_range[:,0]/ Units.nmi
+        altitude = segment.conditions.freestream.altitude[:,0]/Units.feet
               
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')
         
         axis_1 = plt.subplot(2,2,1)

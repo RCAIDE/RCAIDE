@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Vertical_Flight
-# RCAIDE/Framework/Analyses/Mission/Segments/Vertical_Flight/Hover.py
-# 
+## @ingroup Framework-Mission-Segments-Vertical_Flight
+# RCAIDE/Framework/Mission/Segments/Vertical_Flight/Hover.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,44 +9,34 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                 import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Framework.Core                       import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Hover
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Vertical_Flight
+## @ingroup Framework-Mission-Segments-Vertical_Flight
 class Hover(Evaluate):
-    """ A stationary hover for VTOL aircraft. No aerodynamic drag and lift are used, since there is no velocity.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ A stationary hover for VTOL aircraft. No aerodynamic drag and lift are used, since there is no velocity. 
     """     
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """              
-        
+            Returns:
+                None
+        """          
         # -------------------------------------------------------------------------------------------------------------- 
         #   User Inputs
         # -------------------------------------------------------------------------------------------------------------- 

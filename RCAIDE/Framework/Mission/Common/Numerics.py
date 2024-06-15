@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Conditions 
-# RCAIDE/Framework/Analyses/Mission/Segments/Conditions/Numerics.py
-# 
+## @ingroup Framework-Mission-Segments-Conditions 
+# RCAIDE/Framework/Mission/Segments/Conditions/Numerics.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -16,34 +16,19 @@ import numpy as np
 #  Numerics
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Framework-Mission-Segments-Conditions
 class Numerics(Conditions):
     """ Creates the data structure for the numerical solving of a mission.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
     """
     
     def __defaults__(self):
         """This sets the default values.
     
-            Assumptions:
+        Assumptions:
             None
     
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+        Source:
+            None 
         """           
         self.tag                              = 'numerics' 
         self.number_of_control_points         = 16

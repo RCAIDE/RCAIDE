@@ -75,21 +75,16 @@ class Supersonic_VLM(Aerodynamics):
         settings.fuselage_parasite_drag_begin_blend_mach = 0.91
         settings.fuselage_parasite_drag_end_blend_mach   = 0.99 
         settings.number_of_spanwise_vortices             = 15
-        settings.number_of_chordwise_vortices            = 5
-        
-    
-    
-        self.settings.number_of_spanwise_vortices        = 15
-        self.settings.number_of_chordwise_vortices       = 5
-        self.settings.wing_spanwise_vortices          = None
-        self.settings.wing_chordwise_vortices         = None
-        self.settings.fuselage_spanwise_vortices      = None
-        self.settings.fuselage_chordwise_vortices     = None  
-        self.settings.spanwise_cosine_spacing         = True
-        self.settings.vortex_distribution             = Data()  
-        self.settings.leading_edge_suction_multiplier = 1.0  
-        self.settings.use_VORLAX_matrix_calculation   = False
-        self.settings.floating_point_precision        = np.float32 
+        settings.number_of_chordwise_vortices            = 5  
+        settings.wing_spanwise_vortices                  = None
+        settings.wing_chordwise_vortices                 = None
+        settings.fuselage_spanwise_vortices              = None
+        settings.fuselage_chordwise_vortices             = None  
+        settings.spanwise_cosine_spacing                 = True
+        settings.vortex_distribution                     = Data()  
+        settings.leading_edge_suction_multiplier         = 1.0  
+        settings.use_VORLAX_matrix_calculation           = False
+        settings.floating_point_precision                = np.float32 
     
         # conditions table, used for surrogate model training
         self.training                                = Data()
@@ -113,53 +108,12 @@ class Supersonic_VLM(Aerodynamics):
         self.hsup_max                                = 1.25 
     
         # surrogoate models
-        self.surrogates                              = Data() 
-        self.surrogates.lift_coefficient_sub         = None
-        self.surrogates.lift_coefficient_sup         = None
-        self.surrogates.lift_coefficient_trans       = None
-        self.surrogates.wing_lift_coefficient_sub    = None
-        self.surrogates.wing_lift_coefficient_sup    = None
-        self.surrogates.wing_lift_coefficient_trans  = None
-        self.surrogates.drag_coefficient_sub         = None
-        self.surrogates.drag_coefficient_sup         = None
-        self.surrogates.drag_coefficient_trans       = None
-        self.surrogates.wing_drag_coefficient_sub    = None
-        self.surrogates.wing_drag_coefficient_sup    = None
-        self.surrogates.wing_drag_coefficient_trans  = None          
+        self.surrogates                              = Data()  
 
-    def initialize(self):  
-        """Initalizes the supersonic VLM analysis method.
-
-        Assumptions:
-            None
-
-        Source:
-            N/A
-
-        Args:
-            self     : aerodynamics analysis  [unitless] 
-
-        Returs:
-             N/A
-        """    
-        use_surrogate             = self.settings.use_surrogate  
-    
-    
-        # If we are using the surrogate
-        if use_surrogate == True: 
-            # sample training data
-            sample_training(self)
-    
-            # build surrogate
-            build_surrogate(self)  
     
         # build the evaluation process
         compute                                    = Process() 
-        compute.lift                               = Process()
-        if use_surrogate == True: 
-            compute.lift.inviscid_wings                = evaluate_surrogate
-        else:
-            compute.lift.inviscid_wings  = evaluate_no_surrogate
+        compute.lift                               = Process() 
         compute.lift.vortex                        = RCAIDE.Library.Methods.skip
         compute.lift.fuselage                      = Common.Lift.fuselage_correction
         compute.lift.total                         = Common.Lift.aircraft_total  
@@ -185,7 +139,37 @@ class Supersonic_VLM(Aerodynamics):
         compute.drag.trim                          = Common.Drag.trim
         compute.drag.spoiler                       = Common.Drag.spoiler_drag
         compute.drag.total                         = Common.Drag.total_aircraft 
-        self.process.compute                       = compute       
+        self.process.compute                       = compute               
+
+    def initialize(self):  
+        """Initalizes the supersonic VLM analysis method.
+
+        Assumptions:
+            None
+
+        Source:
+            None
+
+        Args:
+            self     : aerodynamics analysis  [-] 
+
+        Returs:
+             None
+        """    
+        use_surrogate             = self.settings.use_surrogate   
+        # If we are using the surrogate
+        if use_surrogate == True: 
+            # sample training data
+            sample_training(self)
+    
+            # build surrogate
+            build_surrogate(self)  
+    
+        # build the evaluation process 
+        if use_surrogate == True: 
+            self.process.compute.lift.inviscid_wings  = evaluate_surrogate
+        else:
+            self.process.compute.lift.inviscid_wings  = evaluate_no_surrogate   
 
         return 
 
@@ -198,17 +182,18 @@ class Supersonic_VLM(Aerodynamics):
             None
 
         Source:
-            N/A
+            None
 
         Args:
-            self     : aerodynamics analysis  [unitless]
-            state    : flight conditions      [unitless]
+            self     : aerodynamics analysis  [-]
+            state    : flight conditions      [-]
 
         Returs:
-             results : aerodynamic results    [unitless]
-        """          
+             results : aerodynamic results    [-]
+        """             
         settings = self.settings
         geometry = self.geometry 
         results  = self.process.compute(state,settings,geometry)
         
         return results 
+         

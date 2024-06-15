@@ -66,14 +66,14 @@ def plot_flight_trajectory(results,
     # get line colors for plots 
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))    
      
-    for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        Range    = results.segments[i].conditions.frames.inertial.aircraft_range[:,0]/Units.nmi
-        x        = results.segments[i].conditions.frames.inertial.position_vector[:,0]  
-        y        = results.segments[i].conditions.frames.inertial.position_vector[:,1] 
-        z        = -results.segments[i].conditions.frames.inertial.position_vector[:,2] 
+    for i, segment in enumerate(results.segments):
+        time     = segment.conditions.frames.inertial.time[:,0] / Units.min
+        Range    = segment.conditions.frames.inertial.aircraft_range[:,0]/Units.nmi
+        x        = segment.conditions.frames.inertial.position_vector[:,0]  
+        y        = segment.conditions.frames.inertial.position_vector[:,1] 
+        z        = -segment.conditions.frames.inertial.position_vector[:,2] 
 
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')
         
         axes = plt.subplot(2,2,1)

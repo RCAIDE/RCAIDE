@@ -68,18 +68,17 @@ def orientation_product(T,Bb):
     None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     T         [-] 3-dimensional array with rotation matrix
                   patterned along dimension zero
     Bb        [-] 3-dimensional vector
 
-    Outputs:
+    Returns:
     C         [-] transformed vector
 
-    Properties Used:
-    N/A
+    
     """            
     
     assert T.ndim == 3
@@ -104,17 +103,16 @@ def orientation_transpose(T):
     None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     T         [-] 3-dimensional array with rotation matrix
                   patterned along dimension zero
 
-    Outputs:
+    Returns:
     Tt        [-] transformed tensor
 
-    Properties Used:
-    N/A
+    
     """   
     
     assert T.ndim == 3
@@ -131,21 +129,20 @@ def angles_to_dcms(rotations,sequence=(2,1,0)):
     """Builds an euler angle rotation matrix
     
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     rotations     [radians]  [r1s r2s r3s], column array of rotations
     sequence      [-]        (2,1,0) (default), (2,1,2), etc.. a combination of three column indices
 
-    Outputs:
+    Returns:
     transform     [-]        3-dimensional array with direction cosine matrices
                              patterned along dimension zero
 
-    Properties Used:
-    N/A
+    
     """         
     # transform map
     Ts = { 0:T0, 1:T1, 2:T2 }
@@ -169,19 +166,16 @@ def T0(a):
     """Rotation matrix about first axis
     
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     a        [radians] angle of rotation
 
-    Outputs:
+    Returns:
     T        [-]       rotation matrix
-
-    Properties Used:
-    N/A
     """      
     # T = np.array([[1,   0,  0],
     #               [0, cos,sin],
@@ -207,19 +201,16 @@ def T1(a):
     """Rotation matrix about second axis
     
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     a        [radians] angle of rotation
 
-    Outputs:
+    Returns:
     T        [-]       rotation matrix
-
-    Properties Used:
-    N/A
     """      
     # T = np.array([[cos,0,-sin],
     #               [0  ,1,   0],
@@ -245,19 +236,18 @@ def T2(a):
     """Rotation matrix about third axis
     
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     a        [radians] angle of rotation
 
-    Outputs:
+    Returns:
     T        [-]       rotation matrix
 
-    Properties Used:
-    N/A
+    
     """      
     # T = np.array([[cos ,sin,0],
     #               [-sin,cos,0],
@@ -283,20 +273,17 @@ def new_tensor(a):
     """Initializes the required tensor. Able to handle imaginary values.
     
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     a        [radians] angle of rotation
 
-    Outputs:
+    Returns:
     T        [-]       3-dimensional array with identity matrix
                        patterned along dimension zero
-
-    Properties Used:
-    N/A
     """      
     assert a.ndim == 1
     n_a = len(a)

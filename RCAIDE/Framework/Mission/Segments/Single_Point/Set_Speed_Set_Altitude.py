@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Single_Point
-# RCAIDE/Framework/Analyses/Mission/Segments/Single_Point/Set_Speed_Set_Altitude.py
-# 
+## @ingroup Framework-Mission-Segments-Single_Point
+# RCAIDE/Framework/Mission/Segments/Single_Point/Set_Speed_Set_Altitude.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,49 +9,35 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Framework.Core                                     import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
-from RCAIDE.Library.Methods.skip                             import skip 
-
-# package imports 
-import numpy as np
-
+from RCAIDE.Framework.Core                           import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate      import Evaluate
+from RCAIDE.Library.Mission                          import Common,Segments
+from RCAIDE.Library.Methods.skip                     import skip  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Set_Speed_Set_Altitude
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Single_Point
+## @ingroup Framework-Mission-Segments-Single_Point
 class Set_Speed_Set_Altitude(Evaluate):
     """ This is a segment that is solved using a single point. A snapshot in time.
-        We fix the speed and altitude. Throttle is solved from those.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+        We fix the speed and altitude. Throttle is solved from those. 
     """        
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """           
-        
+            Returns:
+                None
+        """              
         # --------------------------------------------------------------------------------------------------------------
         #   User Inputs
         # --------------------------------------------------------------------------------------------------------------
@@ -80,8 +66,6 @@ class Set_Speed_Set_Altitude(Evaluate):
         iterate.residuals.flight_dynamics        = Common.Residuals.climb_descent_flight_dynamics
         post_process                             = self.process.post_process 
         post_process.inertial_position           = skip   
-        
-                
-                
+         
         return
 

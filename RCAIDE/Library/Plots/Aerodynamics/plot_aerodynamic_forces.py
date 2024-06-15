@@ -59,15 +59,15 @@ def plot_aerodynamic_forces(results,
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
     
-    for i in range(len(results.segments)): 
-        time   = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        Power  = results.segments[i].conditions.energy.power[:,0] 
-        Thrust = results.segments[i].conditions.frames.body.thrust_force_vector[:,0]
-        Lift   = -results.segments[i].conditions.frames.wind.force_vector[:,2]
-        Drag   = -results.segments[i].conditions.frames.wind.force_vector[:,0]
+    for i, segment in enumerate(results.segments): 
+        time   = segment.conditions.frames.inertial.time[:,0] / Units.min
+        Power  = segment.conditions.energy.power[:,0] 
+        Thrust = segment.conditions.frames.body.thrust_force_vector[:,0]
+        Lift   = -segment.conditions.frames.wind.force_vector[:,2]
+        Drag   = -segment.conditions.frames.wind.force_vector[:,0]
         
                        
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')
         
         # power 

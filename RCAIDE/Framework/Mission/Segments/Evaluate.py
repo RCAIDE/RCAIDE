@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments
-# RCAIDE/Framework/Analyses/Mission/Segment/Evaluate.py
-# 
+## @ingroup Framework-Mission-Segments
+# RCAIDE/Framework/Mission/Segment/Evaluate.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -17,7 +17,7 @@ from RCAIDE.Framework.Analyses                 import Process
 # ----------------------------------------------------------------------------------------------------------------------
 #  ANALYSES
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Analyses-Mission-Segments
+## @ingroup Framework-Mission-Segments
 class Evaluate(Segment):
     """ Base process class used to analyze a vehicle in each flight segment  
     
@@ -25,15 +25,12 @@ class Evaluate(Segment):
     None
 
     Source:
-    N/A
-
-    Inputs:
     None
 
-    Outputs:
+    Args:
     None
 
-    Properties Used:
+    Returns:
     None
     """     
     
@@ -44,15 +41,12 @@ class Evaluate(Segment):
             None
     
             Source:
-            N/A
-    
-            Inputs:
             None
     
-            Outputs:
+            Args:
             None
     
-            Properties Used:
+            Returns:
             None
         """           
         
@@ -63,6 +57,7 @@ class Evaluate(Segment):
         # conditions
         self.temperature_deviation                = 0.0
         self.sideslip_angle                       = 0.0
+        self.reverse_thrust_ratio                 = 0.0
         self.state.conditions.update(Results())
         
         # ---------------------------------------------------------------

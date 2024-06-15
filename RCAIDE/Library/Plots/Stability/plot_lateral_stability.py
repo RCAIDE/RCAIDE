@@ -44,13 +44,13 @@ def plot_lateral_stability(results,
     axis_2 = plt.subplot(2,2,2)  
     axis_3 = plt.subplot(2,2,3)    
     
-    for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min  
-        phi      = results.segments[i].conditions.aerodynamics.angles.phi[:,0] / Units.deg          
-        delta_a  = results.segments[i].conditions.control_surfaces.aileron.deflection[:,0] / Units.deg  
-        delta_r  = results.segments[i].conditions.control_surfaces.rudder.deflection[:,0] / Units.deg   
+    for i, segment in enumerate(results.segments):
+        time     = segment.conditions.frames.inertial.time[:,0] / Units.min  
+        phi      = segment.conditions.aerodynamics.angles.phi[:,0] / Units.deg          
+        delta_a  = segment.conditions.control_surfaces.aileron.deflection[:,0] / Units.deg  
+        delta_r  = segment.conditions.control_surfaces.rudder.deflection[:,0] / Units.deg   
           
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')
         
         axis_1.plot(time, phi, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)

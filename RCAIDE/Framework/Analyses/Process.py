@@ -1,5 +1,5 @@
-## @ingroup Analyses
-# RCAIDE/Analyses/Process.py
+## @ingroup Framework-Analyses
+# RCAIDE/Framework/Analyses/Process.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -15,35 +15,26 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses
 class Process(Container):
-    """ RCAIDE.Framework.Analyses.Process()
-    
-        The Top Level Process Container Class
-        
-            Assumptions:
-            None
-            
-            Source:
-            N/A
+    """The top level process container class 
     """     
     
     def evaluate(self,*args,**kwarg):
-        """This is used to execute the evaluate functions of the analyses
-            stored in the container.
-        
-                Assumptions:
+        """Execute the evaluate functions of the analyses stored in the container.
+                
+            Assumptions:
                 None
-        
-                Source:
-                N/A
-        
-                Inputs:
+                                            
+            Source:
                 None
-        
-                Outputs:
-                Results of the Evaluate Functions
-        
-                Properties Used:
-                N/A
+                                            
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                            
+            Returns:
+                resutls : results of the Evaluate Functions [-]
+                
             """        
         
         results = Data() 
@@ -60,22 +51,21 @@ class Process(Container):
         return results
         
     def __call__(self,*args,**kwarg):
-        """This is used to set the class' call behavior to the evaluate functions.
+        """Set the class' call behavior to the evaluate functions.
         
-                Assumptions:
+            Assumptions:
                 None
-        
-                Source:
-                N/A
-        
-                Inputs:
+    
+            Source:
                 None
-        
-                Outputs:
-                None
-        
-                Properties Used:
-                N/A
+    
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+    
+            Returns:
+                None 
             """                        
         return self.evaluate(*args,**kwarg) 
     

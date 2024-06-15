@@ -59,9 +59,9 @@ def plot_drag_components(results,
     fig   = plt.figure(save_filename)
     fig.set_size_inches(12,height)
     
-    for i in range(len(results.segments)): 
-        time   = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-        drag_breakdown = results.segments[i].conditions.aerodynamics.drag_breakdown
+    for i, segment in enumerate(results.segments):
+        time   = segment.conditions.frames.inertial.time[:,0] / Units.min 
+        drag_breakdown = segment.conditions.aerodynamics.drag_breakdown
         cdp = drag_breakdown.parasite.total[:,0]
         cdi = drag_breakdown.induced.total[:,0]
         cdc = drag_breakdown.compressible.total[:,0]
@@ -70,7 +70,7 @@ def plot_drag_components(results,
         cd  = drag_breakdown.total[:,0]
          
             
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')
         
         axis_1 = plt.subplot(3,2,1)

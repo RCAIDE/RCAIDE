@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments
-# RCAIDE/Framework/Analyses/Mission/Segment/Segment.py
-# 
+## @ingroup Framework-Mission-Segments
+# RCAIDE/Framework/Mission/Segment/Segment.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,34 +9,25 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE Imports
 from RCAIDE.Framework.Core import Data
-from RCAIDE.Framework.Analyses                    import Analysis, Settings, Process   
+from RCAIDE.Framework.Analyses           import Analysis, Settings, Process   
 from RCAIDE.Framework.Mission.Common     import State 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ANALYSES
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Analyses-Mission-Segments
+## @ingroup Framework-Mission-Segments
 class Segment(Analysis):
-    """ 
+    """ Base segment class 
     """    
     
     def __defaults__(self):
         """This sets the default values.
     
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+        Assumptions:
+        None
+
+        Source:
+        None 
         """          
         
         self.settings                      = Settings() 
@@ -64,16 +55,15 @@ class Segment(Analysis):
             None
     
             Source:
-            N/A
+            None
     
-            Inputs:
+            Args:
             State  [Data()]
     
-            Outputs:
+            Returns:
             None
     
-            Properties Used:
-            None
+            
         """        
         self.process.initialize(self)
         return
@@ -85,16 +75,15 @@ class Segment(Analysis):
             None
     
             Source:
-            N/A
+            None
     
-            Inputs:
+            Args:
             State  [Data()]
     
-            Outputs:
+            Returns:
             None
     
-            Properties Used:
-            None
+            
         """             
         self.process.converge(self,state)    
     
@@ -105,15 +94,12 @@ class Segment(Analysis):
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            State  [Data()]
-    
-            Outputs:
             None
     
-            Properties Used:
+            Args:
+            State  [Data()]
+    
+            Returns:
             None
         """        
         self.process.iterate(self)
@@ -126,15 +112,12 @@ class Segment(Analysis):
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            State  [Data()]
-    
-            Outputs:
             None
     
-            Properties Used:
+            Args:
+            State  [Data()]
+    
+            Returns:
             None
         """         
         self.process.post_process(self)
@@ -147,16 +130,15 @@ class Segment(Analysis):
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            State  [Data()]
-    
-            Outputs:
-            State  [Data()]
-    
-            Properties Used:
             None
+    
+            Args:
+            State  [Data()]
+    
+            Returns:
+            State  [Data()]
+    
+            
         """          
         if state is None:
             state = self.state
@@ -269,7 +251,7 @@ class Segment(Analysis):
 #  Container
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments
+## @ingroup Framework-Mission-Segments
 class Container(Segment):
     """ A container for the segment
     
@@ -287,15 +269,12 @@ class Container(Segment):
             None
     
             Source:
-            N/A
-    
-            Inputs:
             None
     
-            Outputs:
+            Args:
             None
     
-            Properties Used:
+            Returns:
             None
         """          
                 
@@ -310,15 +289,12 @@ class Container(Segment):
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            segment  [Segment()]
-    
-            Outputs:
             None
     
-            Properties Used:
+            Args:
+            segment  [Segment()]
+    
+            Returns:
             None
         """          
         self.segments.append(segment)

@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Transition
-# RCAIDE/Framework/Analyses/Mission/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
-# 
+## @ingroup Framework-Mission-Segments-Transition
+# RCAIDE/Framework/Mission/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,42 +9,34 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                            import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                   import Common,Segments
+from RCAIDE.Framework.Core                       import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Acceleration_Constant_Angle_Linear_Climb
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Analyses-Mission-Segments-Transition
+## @ingroup Framework-Mission-Segments-Transition
 class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
-    """ Vehicle accelerates at a constant rate between two airspeeds.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ Vehicle accelerates at a constant rate between two airspeeds. 
     """     
     
     def __defaults__(self):
+
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """           
+            Returns:
+                None
+        """       
         
         # --------------------------------------------------------------
         #   User Inputs

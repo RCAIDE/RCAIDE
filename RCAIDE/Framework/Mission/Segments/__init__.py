@@ -1,6 +1,6 @@
-## @defgroup Analyses-Mission-Segments Segments
-# RCAIDE/Framework/Analyses/Mission/Segments/__init__.py
-# 
+## @defgroup Framework-Mission-Segments Segments
+# RCAIDE/Framework/Mission/Segments/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

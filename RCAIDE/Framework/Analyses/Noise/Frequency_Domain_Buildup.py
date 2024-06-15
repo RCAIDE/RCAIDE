@@ -1,15 +1,13 @@
 ## @ingroup Analyses-Noise
-# RCAIDE/Analyses/Noise/Frequency_Domain_Buildup.py
-# 
+# RCAIDE/Framework/Analyses/Noise/Frequency_Domain_Buildup.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .Noise      import Noise  
-from RCAIDE.Library.Components.Component import Container 
-
+from .Noise      import Noise   
 # noise imports    
 from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic                           import SPL_arithmetic
 from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations                import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
@@ -29,16 +27,14 @@ class Frequency_Domain_Buildup(Noise):
      Assumptions: 
  
      Source:
-     N/A
- 
-     Inputs:
      None
  
-     Outputs:
+     Args:
      None
  
-     Properties Used:
-     N/A 
+     Returns:
+     None
+     
     """    
     
     def __defaults__(self):
@@ -50,16 +46,13 @@ class Frequency_Domain_Buildup(Noise):
             to the starboard wing and around to the tail (180 deg)
             
             Source:
-            N/A
+            None
             
-            Inputs:
+            Args:
             None
             
             Output:
             None
-            
-            Properties Used:
-            N/A
         """
         
         # Initialize quantities
@@ -104,26 +97,22 @@ class Frequency_Domain_Buildup(Noise):
         
         return
             
-    def evaluate_noise(self,segment):
-        """ Process vehicle to setup geometry, condititon and configuration
+    def evaluate(self,segment): 
+        """ Evaluates the noise of an aircraft using a frequency domain-bases buildup
     
         Assumptions:
-        None
+            None
     
         Source:
-        N/4
+            None
     
-        Inputs:
-        self.settings.
-            center_frequencies  - 1/3 octave band frequencies   [unitless]
+        Args:
+            self     : aerodynamics analysis  [-]
+            segment  : current flight segment [-]
     
-        Outputs:
-        None
-    
-        Properties Used:
-        self.geometry
-        """         
-    
+        Returns:
+            None 
+        """ 
         # unpack 
         config        = segment.analyses.noise.geometry 
         settings      = self.settings  

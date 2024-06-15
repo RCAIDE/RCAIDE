@@ -78,9 +78,9 @@ def plot_battery_pack_conditions(results,
                 axis_0.grid(False)
                 axis_0.axis('off')  
                
-                for i in range(len(results.segments)): 
-                    time                = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-                    bus_results         = results.segments[i].conditions.energy[bus.tag] 
+                for i, segment in enumerate(results.segments):
+                    time                = segment.conditions.frames.inertial.time[:,0] / Units.min 
+                    bus_results         = segment.conditions.energy[bus.tag] 
                     battery_conditions  = bus_results[battery.tag] 
                     pack_power          = battery_conditions.pack.power[:,0]
                     pack_energy         = battery_conditions.pack.energy[:,0]
@@ -89,7 +89,7 @@ def plot_battery_pack_conditions(results,
                     pack_SOC            = battery_conditions.cell.state_of_charge[:,0] 
                     pack_temperature    = battery_conditions.pack.temperature[:,0]  
             
-                    segment_tag  =  results.segments[i].tag
+                    segment_tag  =  segment.tag
                     segment_name = segment_tag.replace('_', ' ')  
                     if b_i == 0:
                         axis_1.plot(time, pack_SOC, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)

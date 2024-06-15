@@ -18,25 +18,16 @@ from RCAIDE.Library.Components import Component
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Energy-Networks
 class Network(Component):
-    """ RCAIDE.Energy.Networks.Network()
-        The Top Level Network Class
-            Assumptions:
-            None
-            Source:
-            N/As
+    """ The top-level network class.
     """
     def __defaults__(self):
         """ This sets the default attributes for the network.
-                Assumptions:
+        
+            Assumptions:
                 None
-                Source:
-                N/A
-                Inputs:
-                None
-                Outputs:
-                None
-                Properties Used:
-                N/A
+            
+            Source:
+                None 
         """
         self.tag                    = 'network'  
         self.busses                 = Container()     
@@ -48,37 +39,33 @@ class Network(Component):
 # ----------------------------------------------------------------------
 ## @ingroup Energy-Network
 class Container(Component.Container):
-    """ RCAIDE.Library.Components.Energy.Networks.Network.Container()
-        The Network Container Class
-            Assumptions:
-            None
-            Source:
-            N/A
+    """ The Network container class 
     """
-    def evaluate_thrust(self,state):
+    def evaluate(self,state):
         """ This is used to evaluate the thrust produced by the network.
-                Assumptions:
-                Network has "evaluate_thrust" method
-                If multiple networks are attached their masses will be summed
-                Source:
-                N/A
-                Inputs:
+        
+            Assumptions:  
+                If multiple networks are attached their performances will be summed
+            
+            Source:
+                None
+            
+            Args:
                 State variables
-                Outputs:
-                Results of the "evaluate_thrust" method
-                Properties Used:
-                N/A
+            
+            Returns:
+                Results of the evaluate method 
         """
-        ones_row = state.ones_row
-        results = Data()
+        ones_row                          = state.ones_row
+        results                           = Data()
         results.thrust_force_vector       = 0.*ones_row(3)
         results.vehicle_mass_rate         = 0.*ones_row(1)
         for net in self.values():
             if hasattr(net, 'has_additional_fuel_type'):
-                if net.has_additional_fuel_type: #Check if Network has additional fuel
-                    results.vehicle_additional_fuel_rate  =  0.*ones_row(1) #fuel rate for additional fuel types, eg cryogenic fuel
+                if net.has_additional_fuel_type: 
+                    results.vehicle_additional_fuel_rate  =  0.*ones_row(1)  
                     results.vehicle_fuel_rate             =  0.*ones_row(1)
-            results_p = net.evaluate_thrust(state)
+            results_p = net.evaluate(state)
             for key in results.keys():
                 results[key] += results_p[key]
         return results

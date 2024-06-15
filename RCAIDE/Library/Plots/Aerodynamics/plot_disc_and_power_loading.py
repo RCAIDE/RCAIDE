@@ -112,13 +112,13 @@ def plot_disc_and_power_loading(results,
 
 def plot_propulsor_data(results,distributor,propulsor,axis_1,axis_2,line_colors,ps,pi):
     
-    for i in range(len(results.segments)): 
-        bus_results  = results.segments[i].conditions.energy[distributor.tag] 
-        time         = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
+    for i, segment in enumerate(results.segments):
+        bus_results  = segment.conditions.energy[distributor.tag] 
+        time         = segment.conditions.frames.inertial.time[:,0] / Units.min    
         DL           = bus_results[propulsor.tag].rotor.disc_loading[:,0]
         PL           = bus_results[propulsor.tag].rotor.power_loading[:,0] 
                  
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')
          
         if pi == 0: 

@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Cruise 
-# RCAIDE/Framework/Analyses/Mission/Segments/Cruise/Constant_Pitch_Rate_Constant_Altitude.py
-# 
+## @ingroup Framework-Mission-Segments-Cruise 
+# RCAIDE/Framework/Mission/Segments/Cruise/Constant_Pitch_Rate_Constant_Altitude.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,44 +9,35 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Framework.Core                                 import Units   
-from RCAIDE.Library.Methods.Mission.Segments             import Cruise
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
-
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
+from RCAIDE.Framework.Core                       import Units   
+from RCAIDE.Library.Mission.Segments             import Cruise
+from RCAIDE.Library.Mission                      import Common
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Pitch_Rate_Constant_Altitude
 # ----------------------------------------------------------------------------------------------------------------------  
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Framework-Mission-Segments-Cruise
 class Constant_Pitch_Rate_Constant_Altitude(Evaluate):
     """ Vehicle flies at a constant pitch rate at a set altitude. This is maneuvering flight.
         This is used in VTOL aircraft which need to transition from one pitch attitude to another.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
     """      
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None
+            
         """           
         
         # -------------------------------------------------------------------------------------------------------------- 

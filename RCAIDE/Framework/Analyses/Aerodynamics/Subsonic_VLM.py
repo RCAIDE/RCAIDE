@@ -35,7 +35,7 @@ class Subsonic_VLM(Aerodynamics):
             None
 
         Source:
-            N/A 
+            None 
         """          
         self.tag                                      = 'Subsonic_Zero_VLM'  
         self.geometry                                 = Data()  
@@ -62,34 +62,25 @@ class Subsonic_VLM(Aerodynamics):
         settings.discretize_control_surfaces          = False
         settings.model_fuselage                       = False
         settings.model_nacelle                        = False 
-      
-        self.settings.number_of_spanwise_vortices     = 15
-        self.settings.number_of_chordwise_vortices    = 5
-        self.settings.wing_spanwise_vortices          = None
-        self.settings.wing_chordwise_vortices         = None
-        self.settings.fuselage_spanwise_vortices      = None
-        self.settings.fuselage_chordwise_vortices     = None  
-        self.settings.spanwise_cosine_spacing         = True
-        self.settings.vortex_distribution             = Data()  
-        self.settings.leading_edge_suction_multiplier = 1.0  
-        self.settings.use_VORLAX_matrix_calculation   = False
-        self.settings.floating_point_precision        = np.float32 
+        settings.number_of_spanwise_vortices          = 15
+        settings.number_of_chordwise_vortices         = 5
+        settings.wing_spanwise_vortices               = None
+        settings.wing_chordwise_vortices              = None
+        settings.fuselage_spanwise_vortices           = None
+        settings.fuselage_chordwise_vortices          = None  
+        settings.spanwise_cosine_spacing              = True
+        settings.vortex_distribution                  = Data()  
+        settings.leading_edge_suction_multiplier      = 1.0  
+        settings.use_VORLAX_matrix_calculation        = False
+        settings.floating_point_precision             = np.float32
+        
     
         # conditions table, used for surrogate model training
         self.training                                = Data()
         self.training.angle_of_attack                = np.array([[-5., -2. , 0.0 , 2.0, 5.0, 8.0, 10.0 , 12., 45., 75.]]).T * Units.deg 
         self.training.Mach                           = np.array([[0.0, 0.1  , 0.2 , 0.3,  0.5,  0.75 , 0.85 , 0.9,\
                                                                       1.3, 1.35 , 1.5 , 2.0, 2.25 , 2.5  , 3.0  , 3.5]]).T       
-    
-        self.training.lift_coefficient_sub           = None
-        self.training.lift_coefficient_sup           = None
-        self.training.wing_lift_coefficient_sub      = None
-        self.training.wing_lift_coefficient_sup      = None
-        self.training.drag_coefficient_sub           = None
-        self.training.drag_coefficient_sup           = None
-        self.training.wing_drag_coefficient_sub      = None
-        self.training.wing_drag_coefficient_sup      = None
-    
+     
         # blending function 
         self.hsub_min                                = 0.85
         self.hsub_max                                = 0.95
@@ -97,55 +88,12 @@ class Subsonic_VLM(Aerodynamics):
         self.hsup_max                                = 1.25 
     
         # surrogoate models
-        self.surrogates                              = Data() 
-        self.surrogates.lift_coefficient_sub         = None
-        self.surrogates.lift_coefficient_sup         = None
-        self.surrogates.lift_coefficient_trans       = None
-        self.surrogates.wing_lift_coefficient_sub    = None
-        self.surrogates.wing_lift_coefficient_sup    = None
-        self.surrogates.wing_lift_coefficient_trans  = None
-        self.surrogates.drag_coefficient_sub         = None
-        self.surrogates.drag_coefficient_sup         = None
-        self.surrogates.drag_coefficient_trans       = None
-        self.surrogates.wing_drag_coefficient_sub    = None
-        self.surrogates.wing_drag_coefficient_sup    = None
-        self.surrogates.wing_drag_coefficient_trans  = None  
-        
+        self.surrogates                              = Data()  
 
-        
-
-    def initialize(self):  
-        """Initalizes the subsonic VLM analysis method.
-
-        Assumptions:
-            None
-
-        Source:
-            N/A
-
-        Args:
-            self     : aerodynamics analysis  [unitless] 
-
-        Returs:
-             N/A
-        """          
-        use_surrogate             = self.settings.use_surrogate  
-
-        # If we are using the surrogate
-        if use_surrogate == True: 
-            # sample training data
-            sample_training(self)
-
-            # build surrogate
-            build_surrogate(self)  
-    
         # build the evaluation process
         compute                                    = Process() 
-        compute.lift                               = Process()
-        if use_surrogate == True: 
-            compute.lift.inviscid_wings                = evaluate_surrogate
-        else:
-            compute.lift.inviscid_wings  = evaluate_no_surrogate
+        compute.lift                               = Process() 
+        compute.lift.inviscid_wings                = None
         compute.lift.vortex                        = RCAIDE.Library.Methods.skip
         compute.lift.fuselage                      = Common.Lift.fuselage_correction
         compute.lift.total                         = Common.Lift.aircraft_total  
@@ -166,16 +114,44 @@ class Subsonic_VLM(Aerodynamics):
         compute.drag.compressibility.wings         = Process_Geometry('wings')
         compute.drag.compressibility.wings.wing    = Common.Drag.compressibility_drag_wing
         compute.drag.compressibility.total         = Common.Drag.compressibility_drag_wing_total
-        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag_aircraft_ESDU
+        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag_aircraft_ESDU 
         compute.drag.untrimmed                     = Common.Drag.untrimmed
         compute.drag.trim                          = Common.Drag.trim
         compute.drag.spoiler                       = Common.Drag.spoiler_drag
         compute.drag.total                         = Common.Drag.total_aircraft 
-        self.process.compute                       = compute            
+        self.process.compute                       = compute           
+        
 
-        return 
-    
-         
+    def initialize(self): 
+        """Initalizes the subsonic VLM analysis method.
+
+        Assumptions:
+            None
+
+        Source:
+            None
+
+        Args:
+            self     : aerodynamics analysis  [-] 
+
+        Returs:
+             None
+        """       
+        use_surrogate             = self.settings.use_surrogate  
+
+        # If we are using the surrogate
+        if use_surrogate == True: 
+            # sample training data
+            sample_training(self)
+
+            # build surrogate
+            build_surrogate(self)  
+             
+        if use_surrogate == True: 
+            self.process.compute.lift.inviscid_wings  = evaluate_surrogate
+        else:
+            self.process.compute.lift.inviscid_wings  = evaluate_no_surrogate
+            
     def evaluate(self,state):
         """Subsonic VLM evaluate function which calls listed processes in the analysis method.
 
@@ -183,15 +159,15 @@ class Subsonic_VLM(Aerodynamics):
             None
 
         Source:
-            N/A
+            None
 
         Args:
-            self     : aerodynamics analysis  [unitless]
-            state    : flight conditions      [unitless]
+            self     : aerodynamics analysis  [-]
+            state    : flight conditions      [-]
 
         Returs:
-             results : aerodynamic results    [unitless]
-        """          
+             results : aerodynamic results    [-]
+        """               
         settings = self.settings
         geometry = self.geometry 
         results  = self.process.compute(state,settings,geometry)

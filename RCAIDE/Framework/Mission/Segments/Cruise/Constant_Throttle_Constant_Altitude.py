@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Cruise 
-# RCAIDE/Framework/Analyses/Mission/Segments/Cruise/Constant_Throttle_Constant_Altitude.py
-# 
+## @ingroup Framework-Mission-Segments-Cruise 
+# RCAIDE/Framework/Mission/Segments/Cruise/Constant_Throttle_Constant_Altitude.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -10,47 +10,32 @@
 
 # RCAIDE imports  
 from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Framework.Core                                 import Units   
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
-from RCAIDE.Framework.Analyses                          import Process  
+from RCAIDE.Framework.Core                        import Units   
+from RCAIDE.Framework.Analyses                    import Process  
+from RCAIDE.Library.Mission                       import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Throttle_Constant_Altitude
 # ----------------------------------------------------------------------------------------------------------------------  
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Framework-Mission-Segments-Cruise
 class Constant_Throttle_Constant_Altitude(Evaluate):
-    """ Vehicle flies at a set throttle setting. Allows a vehicle to do a level acceleration.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
-    """           
-    
-    
-    # ------------------------------------------------------------------
-    #   Data Defaults
-    # ------------------------------------------------------------------  
-
+    """ Vehicle flies at a set throttle setting. Allows a vehicle to do a level acceleration. 
+    """            
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None
         """           
         
         # -------------------------------------------------------------------------------------------------------------- 

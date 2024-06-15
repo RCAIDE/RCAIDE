@@ -49,16 +49,16 @@ def plot_longitudinal_stability(results,
     axis_5 = plt.subplot(3,2,5)
     axis_6 = plt.subplot(3,2,6) 
     
-    for i in range(len(results.segments)): 
-        time       = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        c_m        = results.segments[i].conditions.static_stability.coefficients.M[:,0]   
-        SM         = results.segments[i].conditions.static_stability.static_margin[:,0]  
-        delta_e    = results.segments[i].conditions.control_surfaces.elevator.deflection[:,0] / Units.deg
-        CM_delta_e = results.segments[i].conditions.static_stability.derivatives.CM_delta_e[:,0]
-        Cm_alpha   = results.segments[i].conditions.static_stability.derivatives.CM_alpha[:,0]
-        CL_alpha   = results.segments[i].conditions.static_stability.derivatives.Clift_alpha[:,0] 
+    for i, segment in enumerate(results.segments):
+        time       = segment.conditions.frames.inertial.time[:,0] / Units.min
+        c_m        = segment.conditions.static_stability.coefficients.M[:,0]   
+        SM         = segment.conditions.static_stability.static_margin[:,0]  
+        delta_e    = segment.conditions.control_surfaces.elevator.deflection[:,0] / Units.deg
+        CM_delta_e = segment.conditions.static_stability.derivatives.CM_delta_e[:,0]
+        Cm_alpha   = segment.conditions.static_stability.derivatives.CM_alpha[:,0]
+        CL_alpha   = segment.conditions.static_stability.derivatives.Clift_alpha[:,0] 
           
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')  
         
         axis_1.plot(time, c_m, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name) 

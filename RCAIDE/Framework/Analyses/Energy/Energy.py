@@ -25,23 +25,23 @@ class Energy(Analysis):
             None
 
         Source:
-            N/A 
+            None 
         """        
         self.tag      = 'energy'
         self.networks = None
         
-    def evaluate_thrust(self,state): 
+    def evaluate(self,state): 
         """Evaluate the thrust produced by the energy network.
     
         Assumptions:
             None
 
         Source:
-            N/A
+            None
 
-        Inputs:
-            self  : energy network    [unitless]
-            state : flight conditions [unitless]
+        Args:
+            self  : energy network    [-]
+            state : flight conditions [-]
 
         Returns:
             results : results of the thrust evaluation method.
@@ -49,7 +49,7 @@ class Energy(Analysis):
         """ 
             
         networks = self.networks
-        results  = networks.evaluate_thrust(state) 
+        results  = networks.evaluate(state) 
         
         return results
     

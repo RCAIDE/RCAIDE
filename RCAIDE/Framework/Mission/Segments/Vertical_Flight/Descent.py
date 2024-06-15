@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Vertical_Flight
-# RCAIDE/Framework/Analyses/Mission/Segments/Vertical_Flight/Descent.py
-# 
+## @ingroup Framework-Mission-Segments-Vertical_Flight
+# RCAIDE/Framework/Mission/Segments/Vertical_Flight/Descent.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,43 +9,34 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                 import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Framework.Core                       import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Descent
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Vertical_Flight
+## @ingroup Framework-Mission-Segments-Vertical_Flight
 class Descent(Evaluate):
-    """ A vertically descending hover for VTOL aircraft. Although the vehicle moves, no aerodynamic drag and lift are used.
-    
-        Assumptions:
-        Your vehicle creates a negligible drag and lift force during a vertical descent.
-        
-        Source:
-        None
+    """ A vertically descending hover for VTOL aircraft.
     """      
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """              
+            Returns:
+                None
+        """               
         
         # -------------------------------------------------------------------------------------------------------------- 
         #   User Inputs

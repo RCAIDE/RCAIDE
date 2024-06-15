@@ -1,5 +1,5 @@
 ## @ingroup Analyses
-# RCAIDE/Analyses/Analysis.py
+# RCAIDE/Framework/Analyses/Analysis.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -15,118 +15,109 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses
 class Analysis(Data):
-    """ RCAIDE.Framework.Analyses.Analysis()
-    
-        The Top Level Analysis Class
+    """ The Top Level Analysis Class
         
-            Assumptions:
-            None
-            
-            Source:
-            N/A
+        Assumptions:
+           None
+        
+        Source:
+           None
     """
     def __defaults__(self):
         """This sets the default values and methods for the analysis.
         
-                Assumptions:
+            Assumptions:
                 None
-        
-                Source:
-                N/A
-        
-                Inputs:
+    
+            Source:
                 None
-        
-                Outputs:
+    
+            Args:
                 None
-        
-                Properties Used:
-                N/A
+    
+            Returns:
+                None 
             """           
         self.tag    = 'analysis'
         self.features = Data()
         self.settings = Data() 
         
     def initialize(self,*args,**kwarg):
-        """This is used to initialize the analysis' specific algorithms.
-                
-                Assumptions:
+        """Initializes the analysis' specific algorithms.
+        
+            Assumptions:
                 None
-                
-                Source:
-                N/A
-                
-                Inputs:
+                                            
+            Source:
                 None
-                
-                Outputs:
+                                            
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                            
+            Returns:
                 None
-                
-                Properties Used:
-                N/A
             """        
         return
     
     def evaluate(self,*args,**kwarg):
         """This is used to execute the analysis' specific algorithms.
-                
-                Assumptions:
+        
+            Assumptions:
+                None
+                                            
+            Source:
+                None
+                                            
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                            
+            Returns:
                 None
                 
-                Source:
-                N/A
-                
-                Inputs:
-                None
-                
-                Outputs:
-                None
-                
-                Properties Used:
-                N/A
             """             
-        raise NotImplementedError
-        return Data()
+        raise NotImplementedError 
     
     def post_process(self,*args,**kwarg):
-        """This is used to post_process 
-                
-                Assumptions:
+        """Postprocess set of an analysis method
+        
+            Assumptions:
                 None
-                
-                Source:
-                N/A
-                
-                Inputs:
+                                            
+            Source:
                 None
-                
-                Outputs:
+                                            
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                            
+            Returns:
                 None
-                
-                Properties Used:
-                N/A
             """                
         return 
     
     def __call__(self,*args,**kwarg):
         
-        """This is used to set the class' call behavior to the evaluate function.
-                        
-                Assumptions:
+        """This is used to set the class' call behavior to the evaluate function. 
+                                                
+            Assumptions:
                 None
-                        
-                Source:
-                N/A
-                        
-                Inputs:
+                                            
+            Source:
                 None
-                        
-                Outputs:
-                None
-                        
-                Properties Used:
-                N/A
-            """                        
+                                            
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                            
+            Returns:
+                results : results of evaluation function [-]
+            """                 
         
         return self.evaluate(*args,**kwarg)
     
@@ -136,35 +127,32 @@ class Analysis(Data):
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Analyses
 class Container(ContainerBase):
-    """ RCAIDE.Framework.Analyses.Analysis.Container()
-    
-        The Analysis Container Class
+    """The Analysis Container Class
         
-            Assumptions:
+        Assumptions:
             None
-            
-            Source:
-            N/A
+        
+        Source:
+            None
     """ 
         
     def initialize(self,*args,**kwarg):
         """This is used to execute the initialize functions of the analyses
             stored in the container.
                                         
-                Assumptions:
+            Assumptions:
                 None
-                                        
-                Source:
-                N/A
-                                        
-                Inputs:
+                                    
+            Source:
                 None
-                                        
-                Outputs:
-                None
-                                        
-                Properties Used:
-                N/A
+                                    
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                    
+            Returns:
+                None 
             """                    
         for tag,analysis in self.items:
             if hasattr(analysis,'initialize'):
@@ -174,20 +162,19 @@ class Container(ContainerBase):
         """This is used to execute the evaluate functions of the analyses
             stored in the container.
                                                 
-                Assumptions:
+            Assumptions:
                 None
-                                                
-                Source:
-                N/A
-                                                
-                Inputs:
+                                            
+            Source:
                 None
-                                                
-                Outputs:
-                Results of the Evaluate Functions
-                                                
-                Properties Used:
-                N/A
+                                            
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                            
+            Returns:
+                results : results of evaluation function [-]
             """
         results = Data()
         for tag,analysis in self.items(): 
@@ -201,20 +188,18 @@ class Container(ContainerBase):
     def post_process(self,*args,**kwarg):
         """This is used to execute post processing functions 
                                                 
-                Assumptions:
-                None
-                                                
-                Source:
-                N/A
-                                                
-                Inputs:
-                None
-                                                
-                Outputs:
-                None
-                                                
-                Properties Used:
-                N/A
+           Assumptions:
+               None
+                                           
+           Source: 
+                                           
+           Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                           
+           Returns:
+               None 
             """        
         
         for tag,analysis in self.items():
@@ -225,20 +210,20 @@ class Container(ContainerBase):
     def __call__(self,*args,**kwarg): 
         """This is used to set the class' call behavior to the evaluate functions.
                                                         
-                Assumptions:
+            Assumptions:
                 None
-                                                        
-                Source:
-                N/A
-                                                        
-                Inputs:
+                                                    
+            Source:
                 None
-                                                        
-                Outputs:
-                None
-                                                        
-                Properties Used:
-                N/A
+                                                    
+            Args:
+                self  : class                           [-] 
+                args  : arguments of the class          [-]
+                kwarg : keyword arguments of the classs [-]
+                                                    
+            Returns:
+                evaluation function
+              
             """                
         
         return self.evaluate(*args,**kwarg)

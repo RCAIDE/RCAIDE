@@ -57,15 +57,15 @@ def plot_solar_network_conditions(results,
             for battery in bus.batteries:  
                 fig = plt.figure(save_filename + '_' + battery.tag)
                 fig.set_size_inches(width,height)    
-                for i in range(len(results.segments)):  
-                    battery_conditions  = results.segments[i].conditions.energy[bus.tag][battery.tag]  
-                    time                = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-                    flux                = results.segments[i].conditions.energy.solar_flux[:,0]
+                for i, segment in enumerate(results.segments):
+                    battery_conditions  = segment.conditions.energy[bus.tag][battery.tag]  
+                    time                = segment.conditions.frames.inertial.time[:,0] / Units.min 
+                    flux                = segment.conditions.energy.solar_flux[:,0]
                     charge              = battery_conditions.pack.power[:,0]
                     current             = battery_conditions.pack.current[:,0]
                     energy              = battery_conditions.pack.energy[:,0] / Units.MJ 
                 
-                    segment_tag  =  results.segments[i].tag
+                    segment_tag  =  segment.tag
                     segment_name = segment_tag.replace('_', ' ')
                     axis_1 = plt.subplot(2,2,1)
                     axis_1.plot(time, flux, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)

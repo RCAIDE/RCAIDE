@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Conditions
-# RCAIDE/Framework/Analyses/Mission/Segments/Conditions/Results.py
-# 
+## @ingroup Framework-Mission-Segments-Conditions
+# RCAIDE/Framework/Mission/Segments/Conditions/Results.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -18,22 +18,16 @@ import numpy as np
 # Results
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Framework-Mission-Segments-Conditions
 class Results(Conditions):
-    """ This builds upon Basic, which itself builds on conditions, to add the data structure for aerodynamic mission analyses.
-    
-        Assumptions:
-        None
-        
-        Source:ty.static.coeffici
-        None   ty.static.coeffici
+    """ This builds upon Basic, which itself builds on conditions, to add the data structure for aerodynamic mission analyses. 
     """
     
     
     def __defaults__(self):
         """This sets the default values.
     
-            Assumptions:
+        Assumptions:
             Coefficient subscritps:
                 X      - force in X direction
                 Y      - force in Y direction 
@@ -54,17 +48,8 @@ class Results(Conditions):
                 q     - angular rate about Y axis
                 r     - angular rate about Z axis
     
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+        Source:
+            None 
         """ 
         
         self.tag                                              = 'results' 
@@ -412,6 +397,6 @@ class Results(Conditions):
         # ----------------------------------------------------------------------------------------------------------------------     
         self.weights                                          = Conditions() 
         self.weights.total_mass                               = ones_1col * 0
-        self.weights.total_moment_of_inertia                  = ones_3col * 0 # 3 total I(I_xx, I_yy, I_zz)? or 9(including I_xz etc)?
+        self.weights.total_moment_of_inertia                  = ones_3col * 0  
         self.weights.weight_breakdown                         = Conditions()
         self.weights.vehicle_mass_rate                        = ones_1col * 0

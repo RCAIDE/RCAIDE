@@ -1,5 +1,5 @@
-## @ingroup Networks
-# RCAIDE/Library/Compoments/Energy/Networks/Turbofan_Engine_Network.py
+## @ingroup Framework-Networks
+# RCAIDE/Framework/Networks/Turbofan_Engine_Network.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
 # Created:  Oct 2023, M. Clarke
@@ -18,72 +18,39 @@ from .Network                                                                   
 # ----------------------------------------------------------------------------------------------------------------------
 #  Turbofan
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Networks
+## @ingroup Framework-Networks
 class Turbofan_Engine_Network(Network):
-    """ This is a turbofan. 
-    
-        Assumptions:
-        None
-        
-        Source:
-        Most of the componentes come from this book:
-        https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """ This is a turbofan engine network
     """      
     
     def __defaults__(self):
-        """ This sets the default values for the network to function.
+        """ This sets the default values for the turbofan engine network.
     
             Assumptions:
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            N/A
-        """           
-
+            None 
+        """            
         self.tag                          = 'turbofan_engine'  
         self.system_voltage               = None   
         
     # linking the different network components
-    def evaluate_thrust(self,state):
+    def evaluate(self,state):
         """ Calculate thrust given the current state of the vehicle
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            state [state()]
+            Args:
+                self   : network           [-]  
+                state  : flight conditions [-]  
     
-            Outputs:
-            results.thrust_force_vector [newtons]
-            results.vehicle_mass_rate   [kg/s]
-            conditions.noise.sources.turbofan:
-                core:
-                    exit_static_temperature      
-                    exit_static_pressure       
-                    exit_stagnation_temperature 
-                    exit_stagnation_pressure
-                    exit_velocity 
-                fan:
-                    exit_static_temperature      
-                    exit_static_pressure       
-                    exit_stagnation_temperature 
-                    exit_stagnation_pressure
-                    exit_velocity 
-    
-            Properties Used:
-            Defaulted values
+            Returns:
+                None 
         """           
 
         # Step 1: Unpack
@@ -128,28 +95,25 @@ class Turbofan_Engine_Network(Network):
         results.thrust_force_vector       = total_thrust
         results.power                     = total_power
         results.vehicle_mass_rate         = total_mdot     
-        # -------------------------------------------------- 
-        
+        # --------------------------------------------------  
         return results 
      
     
     def size(self,state):  
         """ Size the turbofan
     
-            Assumptions:
+        Assumptions:
             None
     
-            Source:
-            N/A
-    
-            Inputs:
-            State [state()]
-    
-            Outputs:
+        Source:
             None
     
-            Properties Used:
-            N/A
+        Args:
+            self   : network           [-]
+            state  : flight conditions [-]
+     
+        Returns:
+            None 
         """             
         
         #Unpack components
@@ -161,18 +125,17 @@ class Turbofan_Engine_Network(Network):
         """Unpacks the unknowns set in the mission to be available for the mission.
 
         Assumptions:
-        N/A
+            None
         
         Source:
-        N/A
+            None
         
-        Inputs: 
-            segment   - data structure of mission segment [-]
+        Args: 
+            self   : network                           [-]
+            segment: data structure of mission segment [-]
         
-        Outputs: 
-        
-        Properties Used:
-        N/A
+        Returns:
+            None
         """            
          
         fuel_lines = segment.analyses.energy.networks.turbofan_engine.fuel_lines
@@ -183,22 +146,18 @@ class Turbofan_Engine_Network(Network):
     def add_unknowns_and_residuals_to_segment(self, segment):
         """ This function sets up the information that the mission needs to run a mission segment using this network 
          
-            Assumptions:
+        Assumptions:
             None
-    
-            Source:
-            N/A
-    
-            Inputs:
+        
+        Source:
+            None
+        
+        Args: 
+            self   : network                           [-]
+            segment: data structure of mission segment [-]
+        
+        Returns:
             segment
-            eestimated_throttles           [-]
-            estimated_propulsor_group_rpms [-]  
-            
-            Outputs:
-            segment
-    
-            Properties Used:
-            N/A
         """                  
         fuel_lines  = segment.analyses.energy.networks.turbofan_engine.fuel_lines
         ones_row    = segment.state.ones_row 
@@ -233,4 +192,4 @@ class Turbofan_Engine_Network(Network):
         segment.process.iterate.unknowns.network   = self.unpack_unknowns                   
         return segment    
         
-    __call__ = evaluate_thrust
+    __call__ = evaluate

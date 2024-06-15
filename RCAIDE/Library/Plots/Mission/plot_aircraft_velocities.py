@@ -60,17 +60,17 @@ def plot_aircraft_velocities(results,
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
     
-    for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        velocity = results.segments[i].conditions.freestream.velocity[:,0] / Units.kts
-        density  = results.segments[i].conditions.freestream.density[:,0]
+    for i, segment in enumerate(results.segments):
+        time     = segment.conditions.frames.inertial.time[:,0] / Units.min
+        velocity = segment.conditions.freestream.velocity[:,0] / Units.kts
+        density  = segment.conditions.freestream.density[:,0]
         PR       = density/1.225
         EAS      = velocity * np.sqrt(PR)
-        mach     = results.segments[i].conditions.freestream.mach_number[:,0]
+        mach     = segment.conditions.freestream.mach_number[:,0]
         CAS      = EAS * (1+((1/8)*((1-PR)*mach**2))+((3/640)*(1-10*PR+(9*PR**2)*(mach**4))))
 
              
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')
         axis_1 = plt.subplot(2,2,1)
         axis_1.plot(time, velocity, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)

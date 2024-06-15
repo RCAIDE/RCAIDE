@@ -1,5 +1,5 @@
-## @defgroup Analyses-Mission-Segments-Climb Climb
-# RCAIDE/Framework/Analyses/Mission/Segments/Climb/__init__.py
+## @defgroup Framework-Mission-Segments-Climb Climb
+# RCAIDE/Framework/Mission/Segments/Climb/__init__.py
 # 
 
 """RCAIDE Package Setup

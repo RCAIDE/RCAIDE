@@ -37,13 +37,15 @@ def post_process_noise_data(results,time_step = 20):
 
     # unpack 
     background_noise_dbA = background_noise()
+    segment_0_tag = list(results.segments.keys())
+    segment_0 = results.segments[segment_0_tag]
     N_segs               = len(results.segments)
     N_ctrl_pts = 1
-    for i in range(N_segs):  
-        N_ctrl_pts  += len(results.segments[i].conditions.frames.inertial.time[:,0]) - 1  
-    N_gm_x               = results.segments[0].analyses.noise.settings.ground_microphone_x_resolution
-    N_gm_y               = results.segments[0].analyses.noise.settings.ground_microphone_y_resolution    
-    noise_hemisphere_flag= results.segments[0].analyses.noise.settings.noise_hemisphere
+    for i, segment in enumerate(results.segments):
+        N_ctrl_pts  += len(segment.conditions.frames.inertial.time[:,0]) - 1  
+    N_gm_x               = segment_0.analyses.noise.settings.ground_microphone_x_resolution
+    N_gm_y               = segment_0.analyses.noise.settings.ground_microphone_y_resolution    
+    noise_hemisphere_flag= segment_0.analyses.noise.settings.noise_hemisphere
     SPL_dBA_t            = np.zeros((N_ctrl_pts ,N_gm_x,N_gm_y)) 
     time_old             = np.zeros(N_ctrl_pts)
     Aircraft_pos         = np.zeros((N_ctrl_pts,3)) 
@@ -51,28 +53,28 @@ def post_process_noise_data(results,time_step = 20):
       
     # Step 1: Merge data from all segments 
     idx = 0 
-    for i in range(N_segs):  
-        if  type(results.segments[i]) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:
+    for i, segment in enumerate(results.segments):
+        if  type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:
             pass
         else:  
             if i == 0:
                 start = 0 
             else:
                 start = 1                   
-            S_locs      = results.segments[i].conditions.noise.ground_microphone_stencil_locations
-            x0          = results.segments[i].analyses.noise.settings.aircraft_departure_location[0]
-            y0          = results.segments[i].analyses.noise.settings.aircraft_departure_location[1]
-            N_ctrl_pts  = len(results.segments[i].conditions.frames.inertial.time[:,0])  
+            S_locs      = segment.conditions.noise.ground_microphone_stencil_locations
+            x0          = segment.analyses.noise.settings.aircraft_departure_location[0]
+            y0          = segment.analyses.noise.settings.aircraft_departure_location[1]
+            N_ctrl_pts  = len(segment.conditions.frames.inertial.time[:,0])  
             for j in range(start,N_ctrl_pts): 
-                time_old[idx]          = results.segments[i].conditions.frames.inertial.time[j,0]
-                Aircraft_pos[idx,0]    = results.segments[i].conditions.frames.inertial.position_vector[j,0]  + x0
-                Aircraft_pos[idx,1]    = results.segments[i].conditions.frames.inertial.position_vector[j,1]  + y0 
+                time_old[idx]          = segment.conditions.frames.inertial.time[j,0]
+                Aircraft_pos[idx,0]    = segment.conditions.frames.inertial.position_vector[j,0]  + x0
+                Aircraft_pos[idx,1]    = segment.conditions.frames.inertial.position_vector[j,1]  + y0 
                 x_idx                  = abs(Mic_pos_gm[:,0,0] - Aircraft_pos[idx,0]).argmin()
                 y_idx                  = abs(Mic_pos_gm[0,:,1] - Aircraft_pos[idx,1]).argmin() 
-                Aircraft_pos[idx,2]    = -results.segments[i].conditions.frames.inertial.position_vector[j,2] + Mic_pos_gm[x_idx,y_idx,2]
+                Aircraft_pos[idx,2]    = -segment.conditions.frames.inertial.position_vector[j,2] + Mic_pos_gm[x_idx,y_idx,2]
                 stencil_length         = int(S_locs[j,1]-S_locs[j,0] )
                 stencil_width          = int(S_locs[j,3]-S_locs[j,2] )
-                SPL_dBA_t[idx,int(S_locs[j,0]):int(S_locs[j,1]),int(S_locs[j,2]):int(S_locs[j,3])]  = results.segments[i].conditions.noise.total_SPL_dBA[j].reshape(stencil_length ,stencil_width )  
+                SPL_dBA_t[idx,int(S_locs[j,0]):int(S_locs[j,1]),int(S_locs[j,2]):int(S_locs[j,3])]  = segment.conditions.noise.total_SPL_dBA[j].reshape(stencil_length ,stencil_width )  
                 idx  += 1
                 
     # Step 2: Make any readings less that background noise equal to background noise

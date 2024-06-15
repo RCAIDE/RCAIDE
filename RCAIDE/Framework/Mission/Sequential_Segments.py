@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission
-# RCAIDE/Framework/Analyses/Mission/Sequential_Segments.py
-# 
+## @ingroup Framework-Mission
+# RCAIDE/Framework/Mission/Sequential_Segments.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -10,23 +10,17 @@
 # RCAIDE imports   
 import RCAIDE
 from RCAIDE.Library.Mission.Common.Segments    import  sequential_segments
-from RCAIDE.Library.Mission.Common.Pre_Process import  aerodynamics,stability, energy,set_residuals_and_unknowns
-from RCAIDE.Framework.Core                               import Container as ContainerBase
-from RCAIDE.Framework.Analyses                           import Process 
+from RCAIDE.Library.Mission.Common.Pre_Process import  aerodynamics,stability,energy,set_residuals_and_unknowns
+from RCAIDE.Framework.Core                     import Container as ContainerBase
+from RCAIDE.Framework.Analyses                 import Process 
 from . import Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ANALYSIS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Analyses-Mission
+## @ingroup Framework-Mission
 class Sequential_Segments(Segments.Segment.Container):
-    """ Solves each segment one at time
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ Solves each segment sequentially, one at a time
     """
     
     def __defaults__(self):
@@ -36,16 +30,7 @@ class Sequential_Segments(Segments.Segment.Container):
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            None 
         """          
 
         self.tag = 'mission'
@@ -66,22 +51,19 @@ class Sequential_Segments(Segments.Segment.Container):
         return  
 
     def pre_process(self):
-        """ This executes the entire process
+        """ This executes a pre-processing step
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            State  [Data()]
+            Args:
+                self  : RCAIDE data structure of containing process [-]
     
-            Outputs:
-            State  [Data()]
-    
-            Properties Used:
-            None
+            Returns:
+                self  : RCAIDE data structure of containing process [-]
         """   
         self.process.pre_process(self)
          
@@ -92,21 +74,17 @@ class Sequential_Segments(Segments.Segment.Container):
         """ This executes the entire process
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            State  [Data()]
+            Args:
+                self  : RCAIDE data structure of containing process [-]
     
-            Outputs:
-            State  [Data()]
-    
-            Properties Used:
-            None
-        """  
-        
+            Returns:
+                self  : RCAIDE data structure of containing process [-]
+        """           
         if state is None:
             state = self.state
         self.process(self)
@@ -117,62 +95,33 @@ class Sequential_Segments(Segments.Segment.Container):
 #   Container Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission
+## @ingroup Framework-Mission
 class Container(ContainerBase):
-    """ Container for mission
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ Container for mission.
     """    
     
     def evaluate(self,state=None):
-        """ Go through the missions, run through them, save the results
+        """ Go through the missions, run through them, save the results 
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            state   [Data()]
+            Args:
+                self  : RCAIDE data structure of containing process [-]
     
-            Outputs:
-            Results [Data()]
-    
-            Properties Used:
-            None
-        """         
+            Returns:
+                self  : RCAIDE data structure of containing process [-]
+        """   
         results = RCAIDE.Framework.Core.Data()
         
         for key,mission in self.items():
             result = mission.evaluate(state)
             results[key] = result
             
-        return results
-    
-    def finalize(self):
-        """ Stub
-    
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-            """          
-        pass
+        return results 
 
 # Link container
 Sequential_Segments.Container = Container

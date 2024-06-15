@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Ground
-# RCAIDE/Framework/Analyses/Mission/Segments/Ground/Takeoff.py
-# 
+## @ingroup Framework-Mission-Segments-Ground
+# RCAIDE/Framework/Mission/Segments/Ground/Takeoff.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -11,51 +11,48 @@
 # RCAIDE imports 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Framework.Core                            import Units, Data 
-from RCAIDE.Library.Methods.Mission.Segments          import Ground  
+from RCAIDE.Library.Mission.Segments          import Ground  
 from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_Unknowns, Update
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Takeoff
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Ground
+## @ingroup Framework-Mission-Segments-Ground
 class Takeoff(Evaluate):
-    """ Segment for takeoff. Integrates equations of motion
-        including rolling friction.
+    """ Segment for takeoff. Integrates equations of motion including rolling friction.
         
         Assumptions:
-        Notes Regarding Friction Coefficients
-        Dry asphalt or concrete: .04 brakes off, .4 brakes on
-        Wet asphalt or concrete: .05 brakes off, .225 brakes on
-        Icy asphalt or concrete: .02 brakes off, .08 brakes on
-        Hard turf:               .05 brakes off, .4 brakes on
-        Firm dirt:               .04 brakes off, .3 brakes on
-        Soft turf:               .07 brakes off, .2 brakes on
-        Wet grass:               .08 brakes off, .2 brakes on
+            Notes Regarding Friction Coefficients
+            Dry asphalt or concrete: .04 brakes off, .4 brakes on
+            Wet asphalt or concrete: .05 brakes off, .225 brakes on
+            Icy asphalt or concrete: .02 brakes off, .08 brakes on
+            Hard turf:               .05 brakes off, .4 brakes on
+            Firm dirt:               .04 brakes off, .3 brakes on
+            Soft turf:               .07 brakes off, .2 brakes on
+            Wet grass:               .08 brakes off, .2 brakes on
         
-        Source: General Aviation Aircraft Design: Applied Methods and Procedures,
-        by Snorri Gudmundsson, copyright 2014, published by Elsevier, Waltham,
-        MA, USA [p.938]
+        Source: 
+            General Aviation Aircraft Design: Applied Methods and Procedures,
+            by Snorri Gudmundsson, copyright 2014, published by Elsevier, Waltham,
+            MA, USA [p.938] 
     """     
 
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """         
+            Returns:
+                None
+        """    
 
         # -------------------------------------------------------------------------------------------------------------- 
         #   User Inputs

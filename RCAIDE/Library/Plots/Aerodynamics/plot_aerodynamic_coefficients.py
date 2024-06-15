@@ -64,14 +64,14 @@ def plot_aerodynamic_coefficients(results,
     axis_3 = plt.subplot(2,2,3)
     axis_4 = plt.subplot(2,2,4)
     
-    for i in range(len(results.segments)): 
-        time = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        cl   = results.segments[i].conditions.aerodynamics.coefficients.lift[:,0,None]
-        cd   = results.segments[i].conditions.aerodynamics.coefficients.drag[:,0,None]
-        aoa  = results.segments[i].conditions.aerodynamics.angles.alpha[:,0] / Units.deg
+    for i, segment in enumerate(results.segments):
+        time = segment.conditions.frames.inertial.time[:,0] / Units.min
+        cl   = segment.conditions.aerodynamics.coefficients.lift[:,0,None]
+        cd   = segment.conditions.aerodynamics.coefficients.drag[:,0,None]
+        aoa  = segment.conditions.aerodynamics.angles.alpha[:,0] / Units.deg
         l_d  = cl/cd    
                        
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')
         axis_1.plot(time, aoa, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
         axis_1.set_ylabel(r'AoA (deg)')

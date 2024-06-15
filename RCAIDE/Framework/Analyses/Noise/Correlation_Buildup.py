@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Noise
-# RCAIDE/Analyses/Noise/Correlation_Buildup.py
-# 
+# RCAIDE/Framework/Analyses/Noise/Correlation_Buildup.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -24,48 +24,23 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Noise
 class Correlation_Buildup(Noise): 
-    """This is an acoustic analysis based on a collection of correlative modes
-
-     Assumptions: 
- 
-     Source:
-     N/A
- 
-     Inputs:
-     None
- 
-     Outputs:
-     None
- 
-     Properties Used:
-     N/A 
+    """This is an acoustic analysis based on a collection of correlative modes 
     """    
     
-    def __defaults__(self):
-        
+    def __defaults__(self): 
         """ This sets the default values for the analysis.
         
-            Assumptions:
+        Assumptions:
             Ground microphone angles start in front of the aircraft (0 deg) and sweep in a lateral direction 
             to the starboard wing and around to the tail (180 deg)
-            
-            Source:
-            N/A
-            
-            Inputs:
-            None
-            
-            Output:
-            None
-            
-            Properties Used:
-            N/A
+        
+        Source:
+            None 
         """
         
         # Initialize quantities
         settings                                        = self.settings
-        settings.harmonics                              = np.arange(1,30)        
-        settings.print_noise_output                     = False  
+        settings.harmonics                              = np.arange(1,30)  
         settings.mean_sea_level_altitude                = True 
         settings.aircraft_destination_location          = np.array([0,0,0])
         settings.aircraft_departure_location            = np.array([0,0,0])
@@ -86,8 +61,7 @@ class Correlation_Buildup(Noise):
         settings.noise_hemisphere_radius                = 20 
         settings.noise_hemisphere_microphone_resolution = 20
         settings.noise_hemisphere_phi_angle_bounds      = np.array([0,np.pi])
-        settings.noise_hemisphere_theta_angle_bounds    = np.array([0,2*np.pi])
-         
+        settings.noise_hemisphere_theta_angle_bounds    = np.array([0,2*np.pi]) 
                 
         # settings for acoustic frequency resolution
         settings.center_frequencies                   = np.array([16,20,25,31.5,40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, \
@@ -100,31 +74,27 @@ class Correlation_Buildup(Noise):
         
         return
             
-    def evaluate_noise(self,segment):
-        """ Process vehicle to setup geometry, condititon and configuration
+    def evaluate(self,segment):
+        """ Evaluates the noise of an aircraft using an empirical correlation buildup
     
         Assumptions:
-        None
+            None
     
         Source:
-        N/4
+            None
     
-        Inputs:
-        self.settings.
-            center_frequencies  - 1/3 octave band frequencies   [unitless]
+        Args:
+            self     : aerodynamics analysis  [-]
+            segment  : current flight segment [-]
     
-        Outputs:
-        None
-    
-        Properties Used:
-        self.geometry
+        Returns:
+            None 
         """         
     
         # unpack 
         config        = segment.analyses.noise.geometry
         analyses      = segment.analyses
-        settings      = self.settings  
-        print_flag    = settings.print_noise_output  
+        settings      = self.settings   
         conditions    = segment.state.conditions  
         dim_cf        = len(settings.center_frequencies ) 
         ctrl_pts      = int(segment.state.numerics.number_of_control_points) 

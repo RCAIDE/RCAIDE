@@ -1,5 +1,5 @@
 ## @ingroup Analyses
-# RCAIDE/Analyses/Settings.py
+# RCAIDE/Framework/Analyses/Settings.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -14,34 +14,16 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses
 class Settings(Data):
-    """ RCAIDE.Framework.Analyses.Settings()
-    
-        The Top Level Settings Class
-        
-            Assumptions:
-            None
-            
-            Source:
-            N/A
+    """ The top level settings class 
     """
     def __defaults__(self):
         """This sets the default values and methods for the settings.
         
-                Assumptions:
-                None
-        
-                Source:
-                N/A
-        
-                Inputs:
-                None
-        
-                Outputs:
-                None
-        
-                Properties Used:
-                N/A
-            """             
-        self.tag    = 'settings'
-        
+        Assumptions:
+           None
+
+        Source:
+           None 
+        """             
+        self.tag    = 'settings' 
         self.verbose_process = False

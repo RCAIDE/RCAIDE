@@ -1,6 +1,6 @@
 ## @ingroup Framework-Analyses-Stability
 # RCAIDE/Framework/Analyses/Stability/VLM_Perturbation_Method.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Mar 2023, M. Clarke 
 
@@ -10,12 +10,12 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Framework.Core                                          import Data , Units
-from RCAIDE.Framework.Analyses                                      import Process  
-from RCAIDE.Library.Methods.Aerodynamics                            import Common
-from .Stability                                                     import Stability 
-from RCAIDE.Library.Methods.Stability.VLM_Stability import *  
-from RCAIDE.Framework.Analyses.Common.Process_Geometry import Process_Geometry   
+from RCAIDE.Framework.Core                              import Data , Units
+from RCAIDE.Framework.Analyses                          import Process  
+from RCAIDE.Framework.Analyses.Common.Process_Geometry  import Process_Geometry   
+from RCAIDE.Library.Methods.Aerodynamics                import Common
+from RCAIDE.Library.Methods.Stability.VLM_Stability     import *  
+from .Stability                                         import Stability 
 
 # package imports 
 import numpy as np 
@@ -23,28 +23,19 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  VLM_Perturbation_Method
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Framework-Analyses-Aerodynamics
+## @ingroup Framework-Analyses-Stability
 class VLM_Perturbation_Method(Stability):  
-    """ VLM perturbation method 
+    """ This is a subsonic stability buildup analysis based on a pertubation approch of the vortex lattice method.
     """      
 
     def __defaults__(self):
         """This sets the default values and methods for the analysis.         
 
         Assumptions:
-        None
+           None
 
         Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        N/A
+            None 
         """          
         self.tag                                         = 'VLM_Perturbation_Method'  
         self.geometry                                    = Data()  
@@ -79,26 +70,23 @@ class VLM_Perturbation_Method(Stability):
         settings.wave_drag_type                          = 'Raymer'
         settings.volume_wave_drag_scaling                = 3.2  
         settings.fuselage_parasite_drag_begin_blend_mach = 0.91
-        settings.fuselage_parasite_drag_end_blend_mach   = 0.99
-        
- 
-        self.settings.number_of_spanwise_vortices     = 25
-        self.settings.number_of_chordwise_vortices    = 5
-        self.settings.wing_spanwise_vortices          = None
-        self.settings.wing_chordwise_vortices         = None
-        self.settings.fuselage_spanwise_vortices      = None
-        self.settings.fuselage_chordwise_vortices     = None 
-        
-        self.settings.spanwise_cosine_spacing         = True
-        self.settings.vortex_distribution             = Data()   
-        self.settings.model_fuselage                  = False             
-        self.settings.model_nacelle                   = False
-        self.settings.leading_edge_suction_multiplier = 1.0
-        self.settings.propeller_wake_model            = False
-        self.settings.discretize_control_surfaces     = True 
-        self.settings.use_VORLAX_matrix_calculation   = False
-        self.settings.floating_point_precision        = np.float32
-        self.settings.use_surrogate                   = True
+        settings.fuselage_parasite_drag_end_blend_mach   = 0.99  
+        settings.number_of_spanwise_vortices             = 25
+        settings.number_of_chordwise_vortices            = 5
+        settings.wing_spanwise_vortices                  = None
+        settings.wing_chordwise_vortices                 = None
+        settings.fuselage_spanwise_vortices              = None
+        settings.fuselage_chordwise_vortices             = None  
+        settings.spanwise_cosine_spacing                 = True
+        settings.vortex_distribution                     = Data()   
+        settings.model_fuselage                          = False             
+        settings.model_nacelle                           = False
+        settings.leading_edge_suction_multiplier         = 1.0
+        settings.propeller_wake_model                    = False
+        settings.discretize_control_surfaces             = True 
+        settings.use_VORLAX_matrix_calculation           = False
+        settings.floating_point_precision                = np.float32
+        settings.use_surrogate                           = True
 
         # conditions table, used for surrogate model training
         self.training                                 = Data()
@@ -123,9 +111,54 @@ class VLM_Perturbation_Method(Stability):
         self.flap_flag                                = False 
         self.rudder_flag                              = False 
         self.elevator_flag                            = False 
-        self.slat_flag                                = False   
+        self.slat_flag                                = False 
+    
+        # build the evaluation process
+        compute                                    = Process() 
+        compute.lift                               = Process() 
+        compute.lift.inviscid_wings                = None
+        compute.lift.vortex                        = RCAIDE.Library.Methods.skip
+        compute.lift.fuselage                      = Common.Lift.fuselage_correction
+        compute.lift.total                         = Common.Lift.aircraft_total  
+        compute.drag                               = Process()
+        compute.drag.parasite                      = Process()
+        compute.drag.parasite.wings                = Process_Geometry('wings')
+        compute.drag.parasite.wings.wing           = Common.Drag.parasite_drag_wing 
+        compute.drag.parasite.fuselages            = Process_Geometry('fuselages')
+        compute.drag.parasite.fuselages.fuselage   = Common.Drag.parasite_drag_fuselage
+        compute.drag.parasite.booms                = Process_Geometry('booms')
+        compute.drag.parasite.booms.boom           = Common.Drag.parasite_drag_fuselage
+        compute.drag.parasite.nacelles             = Process_Geometry('nacelles')
+        compute.drag.parasite.nacelles.nacelle     = Common.Drag.parasite_drag_nacelle
+        compute.drag.parasite.pylons               = Common.Drag.parasite_drag_pylon
+        compute.drag.parasite.total                = Common.Drag.parasite_total
+        compute.drag.induced                       = Common.Drag.induced_drag_aircraft
+        compute.drag.compressibility               = Process()
+        compute.drag.compressibility.wings         = Process_Geometry('wings')
+        compute.drag.compressibility.wings.wing    = Common.Drag.compressibility_drag_wing
+        compute.drag.compressibility.total         = Common.Drag.compressibility_drag_wing_total
+        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag_aircraft_ESDU 
+        compute.drag.untrimmed                     = Common.Drag.untrimmed
+        compute.drag.trim                          = Common.Drag.trim
+        compute.drag.spoiler                       = Common.Drag.spoiler_drag
+        compute.drag.total                         = Common.Drag.total_aircraft 
+        self.process.compute                       = compute   
+    
+    def initialize(self): 
+        """Initalizes the subsonic VLM stabiltiy method.
 
-    def initialize(self):  
+        Assumptions:
+            None
+
+        Source:
+            None
+
+        Args:
+            self     : stability analysis  [-] 
+
+        Returs:
+            None
+        """           
         use_surrogate             = self.settings.use_surrogate  
 
         # If we are using the surrogate
@@ -134,65 +167,31 @@ class VLM_Perturbation_Method(Stability):
             sample_training(self)
 
             # build surrogate
-            build_surrogate(self) 
+            build_surrogate(self)  
 
-        # build the evaluation process
-        compute                                          = Process() 
-        compute.lift                                     = Process()
-        if use_surrogate == True:  
-            compute.lift.inviscid_wings  = evaluate_surrogate
+        if use_surrogate == True: 
+            self.process.compute.lift.inviscid_wings  = evaluate_surrogate
         else:
-            compute.lift.inviscid_wings  = evaluate_no_surrogate
-        compute.lift.vortex                              = RCAIDE.Library.Methods.skip
-        compute.lift.fuselage                            = Common.Lift.fuselage_correction
-        compute.lift.total                               = Common.Lift.aircraft_total  
-        compute.drag                                     = Process()
-        compute.drag.parasite                            = Process()
-        compute.drag.parasite.wings                      = Process_Geometry('wings')
-        compute.drag.parasite.wings.wing                 = Common.Drag.parasite_drag_wing 
-        compute.drag.parasite.fuselages                  = Process_Geometry('fuselages')
-        compute.drag.parasite.fuselages.fuselage         = Common.Drag.parasite_drag_fuselage
-        compute.drag.parasite.booms                      = Process_Geometry('booms')
-        compute.drag.parasite.booms.boom                 = Common.Drag.parasite_drag_fuselage
-        compute.drag.parasite.nacelles                   = Process_Geometry('nacelles')
-        compute.drag.parasite.nacelles.nacelle           = Common.Drag.parasite_drag_nacelle
-        compute.drag.parasite.pylons                     = Common.Drag.parasite_drag_pylon
-        compute.drag.parasite.total                      = Common.Drag.parasite_total
-        compute.drag.induced                             = Common.Drag.induced_drag_aircraft
-        compute.drag.compressibility                     = Process()
-        compute.drag.compressibility.wings               = Process_Geometry('wings')
-        compute.drag.compressibility.wings.wing          = Common.Drag.compressibility_drag_wing
-        compute.drag.compressibility.total               = Common.Drag.compressibility_drag_wing_total
-        compute.drag.miscellaneous                       = Common.Drag.miscellaneous_drag_aircraft_ESDU
-        compute.drag.untrimmed                           = Common.Drag.untrimmed
-        compute.drag.trim                                = Common.Drag.trim
-        compute.drag.spoiler                             = Common.Drag.spoiler_drag
-        compute.drag.total                               = Common.Drag.total_aircraft 
-        self.process.compute                             = compute  
-            
-        return
-    
+            self.process.compute.lift.inviscid_wings  = evaluate_no_surrogate
+
     def evaluate(self,state):
-        """The default evaluate function.
+        """VLM pertubation evaluate function which calls listed processes in the analysis method.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
-        Inputs:
-        None
+        Args:
+            self     : stability analysis     [-]
+            state    : flight conditions      [-]
 
-        Outputs:
-        results   <RCAIDE data class>
-
-        Properties Used:
-        self.settings
-        self.geometry
-        """           
+        Returs:
+             results : stability results      [-]
+        """                     
         settings = self.settings
         geometry = self.geometry 
         results  = self.process.compute(state,settings,geometry)
-        
-        return results    
+
+        return results

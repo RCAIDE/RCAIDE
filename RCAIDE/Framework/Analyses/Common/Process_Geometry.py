@@ -1,7 +1,6 @@
 ## @ingroup Framework-Analyses-Common
 # RCAIDE/Framework/Analyses/Common/Process_Geometry.py
-# (c) Copyright 2023 Aerospace Research Community LLC
-
+# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -19,7 +18,16 @@ from RCAIDE.Framework.Analyses import Process
 ## @ingroup Framework-Analyses-Common
 class Process_Geometry(Process):
     """A process for evaluate over a component group.
-    """            
+
+    Assumptions:
+    None
+
+    Source:
+    N/A
+    """      
+    
+    geometry_key = None
+    
     def __init__(self,geometry_key):
         """Sets the geometry key for this process.
 
@@ -27,26 +35,38 @@ class Process_Geometry(Process):
         None
 
         Source:
-        N/A 
+        N/A
+
+        Inputs:
+        geometry_key      <string>
+
+        Outputs:
+        None
+
+        Properties Used:
+        self.geometry_key <string>
         """          
-        self.geometry_key = None
+        self.geometry_key = geometry_key
     
     def evaluate(self,state,settings,geometry):
         """Evaluates preset processes for each component.
 
         Assumptions:
-            None
+        None
 
         Source:
-            N/A
+        N/A
 
-        Args:
-            state    : flight conditions [unitless]
-            setting  : geometry settings [unitless]
-            geometry : RCAIDE aircraft   [unitless]
+        Inputs:
+        state     (passed to an evaluation function)
+        setting   (passed to an evaluation function)
+        geometry  (used to get keys and passed to an evaluation function)
 
-        Returns
-            None 
+        Outputs:
+        None
+
+        Properties Used:
+        self.geometry_key <string>
         """             
         geometry_items = geometry.deep_get(self.geometry_key)
         
@@ -57,7 +77,6 @@ class Process_Geometry(Process):
             results[key] = result
             
         return results
-        
         
         
         

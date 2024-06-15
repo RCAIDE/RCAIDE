@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Cruise 
-# RCAIDE/Framework/Analyses/Mission/Segments/Cruise/Constant_Mach_Constant_Altitude_Loiter.py
-# 
+## @ingroup Framework-Mission-Segments-Cruise 
+# RCAIDE/Framework/Mission/Segments/Cruise/Constant_Mach_Constant_Altitude_Loiter.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,43 +9,34 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Framework.Core                                 import Units   
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
+from RCAIDE.Framework.Core                       import Units   
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Mach_Constant_Altitude_Loiter
 # ----------------------------------------------------------------------------------------------------------------------  
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Framework-Mission-Segments-Cruise
 class Constant_Mach_Constant_Altitude_Loiter(Evaluate):
     """ Vehicle flies at a constant Mach number at a set altitude for a fixed time.
-        This is useful aircraft who need to station keep.
-    
-        Assumptions:
-        Built off of a constant speed constant altitude segment
-        
-        Source:
-        None
+        This is useful aircraft who need to station keep. 
     """      
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None
         """           
         
         # -------------------------------------------------------------------------------------------------------------- 

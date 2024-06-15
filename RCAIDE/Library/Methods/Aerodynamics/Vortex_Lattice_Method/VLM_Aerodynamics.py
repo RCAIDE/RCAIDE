@@ -68,7 +68,6 @@ def evaluate_surrogate(state,settings,geometry):
     AoA         = conditions.aerodynamics.angles.alpha.T[0]
     Mach        = conditions.freestream.mach_number.T[0]
     
-    
     # Unapck the surrogates
     CL_surrogate_sub          = surrogates.lift_coefficient_sub  
     CL_surrogate_sup          = surrogates.lift_coefficient_sup  

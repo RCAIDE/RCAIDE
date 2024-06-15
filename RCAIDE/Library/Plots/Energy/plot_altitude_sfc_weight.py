@@ -63,28 +63,28 @@ def plot_altitude_sfc_weight(results,
     axis_3 = plt.subplot(2,2,3)
     axis_4 = plt.subplot(2,2,4)
     
-    for i in range(len(results.segments)): 
-        time     = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min
-        Weight   = results.segments[i].conditions.weights.total_mass[:, 0] * 9.81   
-        mdot     = results.segments[i].conditions.weights.vehicle_mass_rate[:, 0]
-        thrust   = results.segments[i].conditions.frames.body.thrust_force_vector[:, 0]
+    for i, segment in enumerate(results.segments):
+        time     = segment.conditions.frames.inertial.time[:, 0] / Units.min
+        Weight   = segment.conditions.weights.total_mass[:, 0] * 9.81   
+        mdot     = segment.conditions.weights.vehicle_mass_rate[:, 0]
+        thrust   = segment.conditions.frames.body.thrust_force_vector[:, 0]
         sfc      = (mdot / Units.lb) / (thrust / Units.lbf) * Units.hr       
             
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ') 
         
         axis_1.set_ylabel(r'Throttle')
         set_axes(axis_1)               
-        for network in results.segments[i].analyses.energy.networks: 
+        for network in segment.analyses.energy.networks: 
             busses      = network.busses
             fuel_lines  = network.fuel_lines
             for bus in busses:
                 for propulsor in bus.propulsors: 
-                    eta = results.segments[i].conditions.energy[bus.tag][propulsor.tag].throttle[:,0]  
+                    eta = segment.conditions.energy[bus.tag][propulsor.tag].throttle[:,0]  
                     axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)               
             for fuel_line in fuel_lines:  
                 for propulsor in fuel_line.propulsors: 
-                    eta = results.segments[i].conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
+                    eta = segment.conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
                     axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)     
         
         if i == 0:

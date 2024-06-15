@@ -1,6 +1,6 @@
 ## @ingroup Analyses-Noise
-# RCAIDE/Analyses/Noise/Noise.py
-# 
+# RCAIDE/Framework/Analyses/Noise/Noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-from RCAIDE.Framework.Core                import Data
+from RCAIDE.Framework.Core     import Data
 from RCAIDE.Framework.Analyses import Analysis
 
 # ----------------------------------------------------------------------
@@ -16,59 +16,19 @@ from RCAIDE.Framework.Analyses import Analysis
 # ----------------------------------------------------------------------
 ## @ingroup Analyses-Noise
 class Noise(Analysis):
-    """ RCAIDE.Analyses.Noise.Noise()
-    
-        The Top Level Noise Analysis Class
-        
-            Assumptions:
-            None
-            
-            Source:
-            N/A
+    """This is the base class for noise analyses. It contains functions
+    that are built into the default class. 
     """
     def __defaults__(self):
-        """This sets the default values and methods for the analysis.
+        """This sets the default values and methods for the noise analysis.
     
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            N/A
-            """                   
-        self.tag    = 'Noise'        
-  
-        self.geometry = Data()
-        self.settings = Data()
-        
-        
-    def evaluate(self,state):
-        """The default evaluate function.
-
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        results   <Results class> (empty)
-
-        Properties Used:
-        N/A
-        """           
-        
-        results = Data()
-        
-        return results 
+            None 
+            """                   
+        self.tag      = 'Noise'         
+        self.geometry = Data()
+        self.settings = Data()
+         

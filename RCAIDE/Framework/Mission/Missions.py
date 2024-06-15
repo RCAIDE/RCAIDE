@@ -1,28 +1,21 @@
-## @ingroup Analyses-Mission
-# RCAIDE/Framework/Analyses/Mission/Mission.py
-# 
+## @ingroup Framework-Mission
+# RCAIDE/Framework/Mission/Mission.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-# RCAIDE imports        
-from . import Segments
-from RCAIDE.Framework.Core import Container , Data 
+# RCAIDE imports         
+from RCAIDE.Framework.Core import Container 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Mission
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Analyses-Mission
+## @ingroup Framework-Mission
 class Missions(Container):
-    """ Mission.py: Top-level mission class
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """Top-level mission class 
     """ 
     
     def __defaults__(self):
@@ -32,20 +25,26 @@ class Missions(Container):
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            None 
         """         
         self.tag      = 'missions'    
 
-    def append_mission(self,mission): 
+    def append_mission(self,mission):  
+        """ Appends a mission to the list of missions 
+    
+            Assumptions:
+                None
+    
+            Source:
+                None
+    
+            Args:
+                self    : Mission data structure of containing process [-]
+                mission : mission to be appended                       [-]
+    
+            Returns:
+                None
+         """         
         
         self.append(mission)
         return        

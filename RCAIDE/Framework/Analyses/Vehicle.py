@@ -1,5 +1,5 @@
 ## @ingroup Analyses
-# RCAIDE/Analyses/Vehicle.py
+# RCAIDE/Framework/Analyses/Vehicle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -23,7 +23,7 @@ class Vehicle(Analysis.Container):
             None
             
             Source:
-            N/A
+            None
     """
     def __defaults__(self):
         """This sets the default analyses to be applied to the vehicle.
@@ -32,16 +32,13 @@ class Vehicle(Analysis.Container):
                 None
                 
                 Source:
-                N/A
-                
-                Inputs:
                 None
                 
-                Outputs:
+                Args:
                 None
                 
-                Properties Used:
-                N/A
+                Returns:
+                None
         """
         self.aerodynamics = None
         self.atmosphere   = None
@@ -60,16 +57,13 @@ class Vehicle(Analysis.Container):
                 None
                 
                 Source:
-                N/A
-                
-                Inputs:
-                Analysis to be added
-                
-                Outputs:
                 None
                 
-                Properties Used:
-                N/A
+                Args:
+                Analysis to be added
+                
+                Returns:
+                None
         """
 
         key = self.get_root(analysis) 
@@ -84,16 +78,13 @@ class Vehicle(Analysis.Container):
                 None
                 
                 Source:
-                N/A
-                
-                Inputs:
                 None
                 
-                Outputs:
+                Args:
                 None
                 
-                Properties Used:
-                N/A
+                Returns:
+                None
         """
 
         Analysis.Container.__init__(self,*args,**kwarg)
@@ -118,18 +109,13 @@ class Vehicle(Analysis.Container):
                 None
                 
                 Source:
-                N/A
+                None
                 
-                Inputs:
+                Args:
                 Analysis key to be checked
                 
-                Outputs:
-                Path root of analysis
-                
-                Properties Used:
-                N/A
-                
-                
+                Returns:
+                Path root of analysis  
         """
         for analysis_type, analysis_root in self._analyses_map.items():
             if isinstance(analysis,analysis_type):

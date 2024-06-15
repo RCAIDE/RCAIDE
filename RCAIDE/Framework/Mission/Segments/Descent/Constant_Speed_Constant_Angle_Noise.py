@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Descent
-# RCAIDE/Framework/Analyses/Mission/Segments/Descent/Constant_Speed_Constant_Angle_Noise.py
-# 
+## @ingroup Framework-Mission-Segments-Descent
+# RCAIDE/Framework/Mission/Segments/Descent/Constant_Speed_Constant_Angle_Noise.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -10,46 +10,37 @@
 
 # RCAIDE imports
 import RCAIDE
-from RCAIDE.Framework.Core                                 import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Framework.Core                       import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_Speed_Constant_Angle_Noise
 # ----------------------------------------------------------------------------------------------------------------------   
 
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Framework-Mission-Segments-Descent
 class Constant_Speed_Constant_Angle_Noise(Evaluate):
     """ Fixed at a true airspeed the vehicle will descend at a constant angle. This is a specific segment for Noise.
         A vehicle performs a descent to landing in accordance with a certification points for landing noise.
         Don't use this segment unless you're planning on post process for noise. It is slower than the normal constant
-        speed constand angle segment.
-    
-        Assumptions:
-        The points are linearly spaced rather than chebyshev spaced to give the proper "microphone" locations.
-        
-        Source:
-        None
+        speed constand angle segment. 
     """     
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
-        """            
+            Returns:
+                None
+        """  
         
         # -------------------------------------------------------------------------------------------------------------- 
         #   User Inputs

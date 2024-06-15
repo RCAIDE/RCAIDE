@@ -30,7 +30,7 @@ class Aerodynamics(Analysis):
             None
 
         Source:
-            N/A 
+            None 
         """           
         self.tag                               = 'aerodynamics'  
         self.geometry                          = Data()

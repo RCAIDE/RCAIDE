@@ -1,5 +1,5 @@
-## @defgroup Analyses-Mission-Segments-Single_Point Single_Point
-# RCAIDE/Framework/Analyses/Mission/Segments/Single_Point/__init__.py
+## @defgroup Framework-Mission-Segments-Single_Point Single_Point
+# RCAIDE/Framework/Mission/Segments/Single_Point/__init__.py
 # 
 
 """RCAIDE Package Setup

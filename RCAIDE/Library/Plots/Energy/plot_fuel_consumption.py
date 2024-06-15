@@ -65,11 +65,11 @@ def plot_fuel_consumption(results,
 
     axes = plt.subplot(1,1,1)
             
-    for i in range(len(results.segments)):
+    for i, segment in enumerate(results.segments):
 
-        segment  = results.segments[i]
+        segment  = segment
         time     = segment.conditions.frames.inertial.time[:,0] / Units.min  
-        segment_tag  =  results.segments[i].tag
+        segment_tag  =  segment.tag
         segment_name = segment_tag.replace('_', ' ')        
 
         if "has_additional_fuel" in segment.conditions.weights and segment.conditions.weights.has_additional_fuel == True:
@@ -103,9 +103,9 @@ def plot_fuel_consumption(results,
         else:
             
             initial_weight  = results.segments[0].conditions.weights.total_mass[:,0][0] 
-            fuel            = results.segments[i].conditions.weights.total_mass[:,0]
-            time            = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-            total_fuel      = np.negative(results.segments[i].conditions.weights.total_mass[:,0] - initial_weight )
+            fuel            = segment.conditions.weights.total_mass[:,0]
+            time            = segment.conditions.frames.inertial.time[:,0] / Units.min 
+            total_fuel      = np.negative(segment.conditions.weights.total_mass[:,0] - initial_weight )
             axes.plot( time, total_fuel, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
 
     axes.set_ylabel('Fuel (kg)')

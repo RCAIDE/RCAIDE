@@ -21,16 +21,15 @@ def atleast_2d_col(A):
     None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     A      [1-D Array]
 
-    Outputs:
+    Returns:
     A      [2-D Array]
 
-    Properties Used:
-    N/A
+    
     """       
     return atleast_2d(A,'col')
 
@@ -46,16 +45,15 @@ def atleast_2d_row(A):
     None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     A      [1-D Array]
 
-    Outputs:
+    Returns:
     A      [2-D Array]
 
-    Properties Used:
-    N/A
+    
     """       
     return atleast_2d(A,'row')
 
@@ -71,16 +69,15 @@ def atleast_2d(A,oned_as='row'):
     Defaults as row
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     A      [1-D Array]
 
-    Outputs:
+    Returns:
     A      [2-D Array]
 
-    Properties Used:
-    N/A
+    
     """       
     
     # not an array yet
@@ -110,17 +107,14 @@ def append_array(A=None,B=None):
         None
 
         Source:
-        N/A
+        None
 
-        Inputs:
+        Args:
         A [array]
         B [array]
 
-        Outputs:
+        Returns:
         array
-
-        Properties Used:
-        None
     """       
     if isinstance(A,np.ndarray) and isinstance(B,np.ndarray):
         return np.vstack([A,B])

@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Conditions 
-# RCAIDE/Framework/Analyses/Mission/Segments/Conditions/Unknowns.py
-# 
+## @ingroup Framework-Mission-Segments-Conditions 
+# RCAIDE/Framework/Mission/Segments/Conditions/Unknowns.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -13,17 +13,10 @@ from .Conditions import Conditions
 #  Unknowns
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Framework-Mission-Segments-Conditions
 class Unknowns(Conditions):
-    """ Creates the data structure for the unknowns that solved in a mission
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
-    """    
-    
+    """ Creates the data structure for the unknowns that solved in a mission.
+    """     
     
     def __defaults__(self):
         """This sets the default values.
@@ -32,15 +25,6 @@ class Unknowns(Conditions):
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            None 
         """           
         self.tag = 'unknowns'

@@ -1,6 +1,6 @@
-## @ingroup Analyses-Mission-Segments-Climb
-# RCAIDE/Framework/Analyses/Mission/Segments/Climb/Constant_Mach_Linear_Altitude.py
-# 
+## @ingroup Framework-Mission-Segments-Climb
+# RCAIDE/Framework/Mission/Segments/Climb/Constant_Mach_Linear_Altitude.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,43 +9,35 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                                     import Units 
-from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
+from RCAIDE.Framework.Core                           import Units 
+from RCAIDE.Framework.Mission.Segments.Evaluate      import Evaluate
+from RCAIDE.Library.Mission                          import Common,Segments
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_Mach_Linear_Altitude
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Framework-Mission-Segments-Climb
 class Constant_Mach_Linear_Altitude(Evaluate):
-    """ Climb at a constant mach number but linearly change altitudes over a distance.
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ Climb at a constant mach number but linearly change altitudes over a distance. 
     """       
     
     def __defaults__(self):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                self : mission segment [-]
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None
+            
         """          
         
         # -------------------------------------------------------------------------------------------------------------- 
