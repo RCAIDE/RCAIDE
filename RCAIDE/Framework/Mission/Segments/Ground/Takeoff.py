@@ -92,7 +92,7 @@ class Takeoff(Evaluate):
         iterate                            = self.process.iterate   
         iterate.conditions.forces_ground   = Update.ground_forces
         iterate.unknowns.mission           = Unpack_Unknowns.ground
-        iterate.residuals.flight_dynamics  = Residuals.ground_flight_dynamics
+        iterate.residuals.flight_dynamics  = Residuals.flight_dynamics
         
         return
 

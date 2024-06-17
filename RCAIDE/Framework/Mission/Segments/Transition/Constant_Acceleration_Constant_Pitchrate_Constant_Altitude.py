@@ -54,6 +54,6 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Evaluate):
         initialize                         = self.process.initialize 
         initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.initialize_conditions      
         iterate                            = self.process.iterate    
-        iterate.residuals.flight_dynamics  = Common.Residuals.level_flight_dynamics
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         
         return
