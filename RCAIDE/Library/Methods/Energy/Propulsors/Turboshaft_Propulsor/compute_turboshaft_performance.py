@@ -50,16 +50,16 @@ def compute_turboshaft_performance(fuel_line,state):
         if turboshaft.active == True:  
             if fuel_line.identical_propulsors == False:
                 # run analysis  
-                total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turboshaft,total_power)
+                total_power , thermal_efficiency, PSFC, stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turboshaft,total_power)
             else:             
                 if stored_results_flag == False: 
                     # run analysis 
-                    total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turboshaft,total_power)
+                    total_power ,thermal_efficiency, PSFC, stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turboshaft,total_power)
                 else:
                     # use old results 
-                    total_power  = reuse_stored_data(conditions,fuel_line,turboshaft,stored_propulsor_tag,total_power)
+                    total_power, thermal_efficiency, PSFC = reuse_stored_data(conditions,fuel_line,turboshaft,stored_propulsor_tag,total_power)
                 
-    return total_power
+    return total_power, thermal_efficiency, PSFC 
 
 def compute_performance(conditions,fuel_line,turboshaft,total_power):  
     ''' Computes the perfomrance of one turboshaft
@@ -173,7 +173,9 @@ def compute_performance(conditions,fuel_line,turboshaft,total_power):
     # getting the network outputs from the power outputs  
     turboshaft_results.power           = turboshaft.outputs.power  
     turboshaft_results.fuel_flow_rate  = turboshaft.outputs.fuel_flow_rate 
-    total_power                      += turboshaft_results.power
+    total_power                        += turboshaft_results.power
+    thermal_efficiency                 = turboshaft.outputs.thermal_efficiency
+    PSFC                               = turboshaft.outputs.power_specific_fuel_consumption
 
     # store data
     core_nozzle_res = Data(
@@ -190,7 +192,7 @@ def compute_performance(conditions,fuel_line,turboshaft,total_power):
     stored_results_flag                  = True
     stored_propulsor_tag                 = turboshaft.tag
     
-    return total_power ,stored_results_flag,stored_propulsor_tag
+    return total_power, thermal_efficiency, PSFC, stored_results_flag,stored_propulsor_tag
 
 def reuse_stored_data(conditions,fuel_line,turboshaft,stored_propulsor_tag,total_power):
     '''Reuses results from one turboshaft for identical propulsors
@@ -222,5 +224,7 @@ def reuse_stored_data(conditions,fuel_line,turboshaft,stored_propulsor_tag,total
     noise_results.turboshaft.core_nozzle   = noise_results_0.turboshaft.core_nozzle 
     noise_results.turboshaft.fan           = None   
     total_power                            += turboshaft_results.power
+    thermal_efficiency                     = turboshaft.outputs.thermal_efficiency
+    PSFC                                   = turboshaft.outputs.power_specific_fuel_consumption    
  
-    return total_power
+    return total_power, thermal_efficiency, PSFC 

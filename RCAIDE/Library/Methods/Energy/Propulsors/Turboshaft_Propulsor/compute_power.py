@@ -84,7 +84,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     gamma                                      = conditions.freestream.isentropic_expansion_factor                                                      
     a0                                         = conditions.freestream.speed_of_sound                                                                   
     M0                                         = conditions.freestream.mach_number                                                                      
-    Cp                                         = conditions.freestream.specific_heat_at_constant_pressure                                                                                                                               # Source [2]
+    Cp                                         = conditions.freestream.Cp                                                                               # Source [2]
     #f                                          = turboshaft.inputs.fuel_to_air_ratio                                                                   # Source [1]
     total_temperature_reference                = turboshaft.inputs.total_temperature_reference                                                          
     total_pressure_reference                   = turboshaft.inputs.total_pressure_reference                                                             # Source [1]
@@ -107,7 +107,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     tau_tH                                     = 1 - (tau_r/tau_lambda)*(tau_c - 1)                                                                     # Source [2]
     tau_tL                                     = tau_t/tau_tH                                                                                           # Source [2]
     #x                                        = 1.02                                                                                                  # Source [1] Page 335
-    #x                                        = tau_t*tau_r*tau_c                                                                                     # Source [1] 
+    x                                          = tau_t*tau_r*tau_c                                                                                     # Source [1] 
     #C_shaft                                    = tau_lambda*(1 - x/(tau_r*tau_c)) - tau_r*(tau_c - 1)                                                # Source [1]
     #C_shaft                                    = tau_lambda*(1 - tau_t) - tau_r*(tau_c - 1)                                                            # Source [1]    
 
@@ -134,7 +134,10 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     
     #Computing the PSFC                        
     PSFC                                       = f/Psp                                                                                                  # Source [2]
-    #PSFC                                       = (tau_lambda/(C_shaft*LHV))                                                                            # Source [1]   
+    #PSFC                                       = (tau_lambda/(C_shaft*LHV))                                                                            # Source [1]  
+    
+    #Computing the thermal efficiency                       
+    eta_T                                      = 1 - (tau_r*(tau_c - 1))/(tau_lambda*(1 - x/(tau_r*tau_c)))                                             # Source [1]    
 
     #pack outputs
     turboshaft.outputs.power_specific_fuel_consumption   = PSFC
@@ -143,5 +146,6 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     turboshaft.outputs.power                             = Power
     turboshaft.outputs.non_dimensional_power             = Psp
     turboshaft.outputs.non_dimensional_thrust            = Tsp
+    turboshaft.outputs.thermal_efficiency                = eta_T
 
     return 

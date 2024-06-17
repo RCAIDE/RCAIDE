@@ -31,3 +31,4 @@ from .Constant_Speed_Internal_Combustion_Engine_Network  import Constant_Speed_I
 from .Isolated_Battery_Cell_Network                      import Isolated_Battery_Cell_Network  
 from .Turbofan_Engine_Network                            import Turbofan_Engine_Network
 from .Turbojet_Engine_Network                            import Turbojet_Engine_Network 
+from .Turboshaft_Engine_Network                          import Turboshaft_Engine_Network 
