@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Geometry
 # RCAIDE/Library/Plots/Geometry/plot_3d_vehicle.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -12,8 +12,7 @@ from RCAIDE.Library.Plots.Geometry.plot_3d_wing                 import plot_3d_w
 from RCAIDE.Library.Plots.Geometry.plot_3d_nacelle              import plot_3d_nacelle
 from RCAIDE.Library.Plots.Geometry.plot_3d_rotor                import plot_3d_rotor
 
-# python imports 
-import numpy as np 
+# python imports  
 import plotly.graph_objects as go  
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Initialize
 # RCAIDE/Library/Missions/Common/Initialize/energy.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -16,33 +16,17 @@ import RCAIDE
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Missions-Segments-Common-Initialize
 def energy(segment):
-    """ Sets the initial battery energy at the start of the mission
+    """ Sets the initial energy state of the aircraft at the start of the mission
 
         Assumptions:
-        N/A
-
-        Inputs:
-            segment.state.initials.conditions:
-                propulsion.battery.pack.energy               [Joules]
-            segment.initial_battery_state_of_charge          [Joules]
- 
-        Outputs: 
-            segment.state.conditions: 
-                energy.battery.pack.energy                   [Joules]
-                energy.battery.pack.maximum_initial_energy   [Joules]     
-                energy.battery.pack.energy                   [Joules]
-                energy.battery.pack.temperature              [Kelvin]
-                energy.battery.cell.temperature              [Kelvin]            
-                energy.battery.cell.cycle_in_day             [N.A]              
-                energy.battery.cell.charge_throughput        [Amp-Hrs]  
-                energy.battery.cell.resistance_growth_factor [N.A]      
-                energy.battery.cell.capacity_fade_factor     [N.A]      
-                energy.battery.cell.state_of_charge          [N.A] 
-
-        Properties Used:
-        N/A
-
-    """ 
+            None
+        
+        Args: 
+            segment  : flight segment        [-] 
+            
+        Returns:
+            None 
+        """
 
     conditions = segment.state.conditions.energy
     

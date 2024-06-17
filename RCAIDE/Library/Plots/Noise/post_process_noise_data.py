@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Geometry-Common
 # RCAIDE/Library/Plots/Noise/post_process_noise_dat.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -38,8 +38,7 @@ def post_process_noise_data(results,time_step = 20):
     # unpack 
     background_noise_dbA = background_noise()
     segment_0_tag = list(results.segments.keys())
-    segment_0 = results.segments[segment_0_tag]
-    N_segs               = len(results.segments)
+    segment_0     = results.segments[segment_0_tag] 
     N_ctrl_pts = 1
     for i, segment in enumerate(results.segments):
         N_ctrl_pts  += len(segment.conditions.frames.inertial.time[:,0]) - 1  
@@ -54,7 +53,7 @@ def post_process_noise_data(results,time_step = 20):
     # Step 1: Merge data from all segments 
     idx = 0 
     for i, segment in enumerate(results.segments):
-        if  type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:
+        if  type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge or type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge:
             pass
         else:  
             if i == 0:

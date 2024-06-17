@@ -1,16 +1,14 @@
 ## @ingroup Library-Plots-Geometry 
 # RCAIDE/Library/Plots/Geometry/plot_3d_fuselage.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
-import numpy as np  
-import plotly.graph_objects as go 
+import numpy as np   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS

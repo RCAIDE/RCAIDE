@@ -106,8 +106,7 @@ def get_objective(unknowns, segment):
         Outputs:
         objective           [float]
 
-        Properties Used:
-        N/A
+        
                                 
     """      
     
@@ -136,8 +135,7 @@ def get_econstraints(unknowns, segment):
         Outputs:
         constraints          [array]
 
-        Properties Used:
-        N/A
+        
                                 
     """       
     
@@ -168,8 +166,7 @@ def make_bnds(unknowns, segment):
         Outputs:
         bnds
 
-        Properties Used:
-        N/A
+        
                                 
     """      
 
@@ -209,8 +206,7 @@ def get_ieconstraints(unknowns, segment):
         Outputs:
         constraints          [array]
 
-        Properties Used:
-        N/A
+        
                                 
     """      
 
@@ -259,8 +255,7 @@ def get_problem_pyopt(unknowns, segment):
         con                 [array]
         fail                [boolean]
 
-        Properties Used:
-        N/A
+        
                                 
     """       
 

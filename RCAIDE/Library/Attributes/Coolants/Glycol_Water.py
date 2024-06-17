@@ -46,7 +46,7 @@ class Glycol_Water(Coolant):
             Engineering Toolbox: https://www.engineeringtoolbox.com/ethylene-glycol-d_146.html
     
         Args:
-            self      : glycol-water coolant  [unitless]
+            self      : glycol-water coolant  [-]
             T (float) : temperature           [K]
             
         Returns:
@@ -64,7 +64,7 @@ class Glycol_Water(Coolant):
             Engineering Toolbox: https://www.engineeringtoolbox.com/ethylene-glycol-d_146.html
     
         Args:
-            self      : glycol-water coolant  [unitless]
+            self      : glycol-water coolant  [-]
             T (float) : temperature           [K]
             P (float) : pressure              [Pa]
             
@@ -83,7 +83,7 @@ class Glycol_Water(Coolant):
             Engineering Toolbox: https://www.engineeringtoolbox.com/ethylene-glycol-d_146.html
     
         Args:
-            self       : glycol-water coolant  [unitless]
+            self       : glycol-water coolant  [-]
             T (float)  : temperature           [K]
             P (float)  : pressure              [Pa]
             
@@ -102,7 +102,7 @@ class Glycol_Water(Coolant):
             University of Waterrloo: http://www.mhtl.uwaterloo.ca/old/onlinetools/airprop/airprop.html
     
         Args:
-            self       : glycol-water coolant  [unitless]
+            self       : glycol-water coolant  [-]
             T (float)  : temperature           [K]
             P (float)  : pressure              [Pa]
             
@@ -122,11 +122,11 @@ class Glycol_Water(Coolant):
             University of Waterrloo: http://www.mhtl.uwaterloo.ca/old/onlinetools/airprop/airprop.html
     
         Args:
-            self       : glycol-water coolant  [unitless]
+            self       : glycol-water coolant  [-]
             T (float)  : temperature           [K] 
             
         Returns:
-            Pr (float) : Prandtl number        [unitless]         
+            Pr (float) : Prandtl number        [-]         
         """          
         
         Cp = self.compute_cp(T)

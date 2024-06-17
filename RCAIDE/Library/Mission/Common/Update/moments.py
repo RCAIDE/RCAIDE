@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/moments.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -19,21 +19,16 @@ def moments(segment):
     """ Updates the total resultant moment on the vehicle 
         
         Assumptions:
-        N/A
+            None
         
-        Inputs:
+        Args:
             segment.state.conditions.:
                 frames.wind.force_vector          [N] 
                 frames.body.thrust_force_vector        [N]
                 frames.inertial.gravity_force_vector   [N]
-        Outputs:
+        Returns:
             segment.conditions
-                frames.inertial.total_force_vector     [N]
- 
-      
-        Properties Used:
-        N/A
-                    
+                frames.inertial.total_force_vector     [N] 
     """    
 
     # unpack

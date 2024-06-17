@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Transition
 # RCAIDE/Library/Missions/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
  

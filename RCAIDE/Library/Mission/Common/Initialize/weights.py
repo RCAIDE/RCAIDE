@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Initialize
 # RCAIDE/Library/Missions/Common/Initialize/weights.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -15,17 +15,11 @@ def weights(segment):
         Assumptions:   
             Uses max takeoff weight if no weight analysis is performed 
             
-        Inputs: 
-            state.
-                initials.conditions.weights.total_mass  [kg]
-            state.conditions:           
-                conditions.weights.total_mass           [kg]
+        Args: 
+            segment  : flight segment        [-] 
             
-        Outputs: 
-            state.conditions.weights.total_mass         [kg] 
-           
-        Properties Used:
-        N/A 
+        Returns:
+            None  
     """      
  
     if segment.state.initials:

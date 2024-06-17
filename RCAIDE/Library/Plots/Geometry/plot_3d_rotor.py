@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
-from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry
-from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series
+from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry, compute_naca_4series
 
 # python imports 
 import numpy as np 

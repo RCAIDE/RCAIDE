@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update 
 # RCAIDE/Library/Missions/Common/Update/aerodynamics.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -9,27 +9,25 @@
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Update
 def aerodynamics(segment):
-    """ Gets aerodynamics conditions
+    """ Computes the aerodynamic properties of the aircraft 
+            segment.state.conditions.aerodynamics.coefficients.lift        [unitless]
+            segment.state.conditions.aerodynamics.coefficients.drag        [unitless]
+            segment.state.conditions.frames.wind.force_vector              [newtons]
+            segment.state.conditions.frames.wind.drag_force_vector         [newtons]
     
         Assumptions:
-        +X out nose
-        +Y out starboard wing
-        +Z down
+            +X out nose
+            +Y out starboard wing
+            +Z down
 
-        Inputs:
-            segment.analyses.aerodynamics_model                    [Function]
-            aerodynamics_model.settings.maximum_lift_coefficient   [unitless]
-            aerodynamics_model.geometry.reference_area             [meter^2]
-            segment.state.conditions.freestream.dynamic_pressure   [pascals]
+        Args: 
+            segment.analyses.aerodynamics                                     [Function]
+            segment.analyses.aerodynamics.settings.maximum_lift_coefficient   [unitless]
+            segment.analyses.aerodynamics.geometry.reference_area             [meter^2]
+            segment.state.conditions.freestream.dynamic_pressure              [pascals]
 
-        Outputs:
-            conditions.aerodynamics.coefficients.lift [unitless]
-            conditions.aerodynamics.coefficients.drag [unitless]
-            conditions.frames.wind.force_vector [newtons]
-            conditions.frames.wind.drag_force_vector [newtons]
-
-        Properties Used:
-        N/A
+        Returns:
+            None
     """
     
     # unpack
@@ -50,8 +48,7 @@ def aerodynamics(segment):
     CD[q<=0.0] = 0.0
     
     # CL limit
-    CL[CL>CLmax] = CLmax
-    
+    CL[CL>CLmax] = CLmax 
     CL[CL< -CLmax] = -CLmax
         
     # dimensionalize
@@ -59,9 +56,7 @@ def aerodynamics(segment):
 
     F[:,2] = ( -CL * q * Sref )[:,0]
     F[:,0] = ( -CD * q * Sref )[:,0]
-
-    results.force_vector = F
-
+ 
     # pack conditions
     conditions.aerodynamics.coefficients.lift  = CL
     conditions.aerodynamics.coefficients.drag  = CD

@@ -10,6 +10,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units ,  Data
+from RCAIDE.Library.Plots                 import *     
 
 # python imports 
 import numpy as np
@@ -46,7 +47,7 @@ def main():
     missions = missions_setup(mission) 
      
     # mission analysis 
-    results = missions.base_mission.evaluate()   
+    results = missions.base_mission.evaluate() 
  
     # Extract sample values from computation  
     takeoff_thrust     = results.segments.takeoff.conditions.energy['fuel_line']['port_propulsor'].thrust[3][0]
@@ -85,7 +86,7 @@ def main():
             print(val)
     
     # Truth values
-    takeoff_thrust_truth     = 134348.45428474565
+    takeoff_thrust_truth     = 134348.45428474565 
     climb_throttle_1_truth   = 0.7413553797099407
     climb_throttle_2_truth   = 0.6748115013893704
     climb_throttle_3_truth   = 0.36991990390918583
@@ -94,20 +95,20 @@ def main():
     climb_throttle_6_truth   = 0.9803436916140414
     climb_throttle_7_truth   = 1.1363611955655049
     climb_throttle_8_truth   = 0.49170914236889757
-    climb_throttle_9_truth   = 0.5348756860889017
-    cruise_CL_1_truth        = 0.7113049988506612
-    cruise_CL_2_truth        = 0.6997325450989433
-    cruise_CL_3_truth        = 0.7950387284060071
-    descent_throttle_1_truth = 0.3551903455163174
-    descent_throttle_2_truth = 0.27522323817716005
-    single_pt_CL_1_truth     = 0.0006360316610969179 
-    single_pt_CL_2_truth     = 0.00117055548737998
-    loiter_1_CL_truth        = 0.5128644089836707
-    loiter_2_CL_truth        = 0.5128601296259424
-    reserve_1_CL_truth       = 0.35338640127261073
-    reserve_2_CL_truth       = 0.347211561828881
-    descent_throttle_3_truth = 0.12595002276582612
-    landing_thrust_truth     = 0.0
+    climb_throttle_9_truth   = 0.6340601480407473
+    cruise_CL_1_truth        = 0.7107715883115981
+    cruise_CL_2_truth        = 0.6992071676638031
+    cruise_CL_3_truth        = 0.7944627937084894
+    descent_throttle_1_truth = 0.35441271038899674
+    descent_throttle_2_truth = 0.2748806820847249
+    single_pt_CL_1_truth     = 0.0006360316610969802
+    single_pt_CL_2_truth     = 0.0011705554873800844
+    loiter_1_CL_truth        = 0.5124817185383538
+    loiter_2_CL_truth        = 0.5124774418739579
+    reserve_1_CL_truth       = 0.35312223134323845
+    reserve_2_CL_truth       = 0.34694962649789424
+    descent_throttle_3_truth = 0.1257787880408134
+    landing_thrust_truth     = 12727.06142481427
     
     # Store errors 
     error = Data()
@@ -141,7 +142,6 @@ def main():
     for k,v in list(error.items()):
         assert(np.abs(v)<1e-6)  
     
-    plt.show()    
     return 
 # ----------------------------------------------------------------------
 #   Define the Vehicle Analyses
@@ -757,7 +757,7 @@ def mission_setup(analyses):
     
     return mission
 
-
+ 
 def missions_setup(mission): 
  
     missions     = RCAIDE.Framework.Mission.Missions() 
@@ -768,4 +768,4 @@ def missions_setup(mission):
 
 
 if __name__ == '__main__': 
-    main()    
+    main()     

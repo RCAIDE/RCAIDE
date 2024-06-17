@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Residuals
 # RCAIDE/Library/Missions/Common/Residuals/level_flight_dynamics.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -15,7 +15,16 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Residuals
 def level_flight_dynamics(segment):
-    """ Calculates a force and moment residuals 
+    """Computes residuals for the force and moment equations of motion of an aircraft in level flight.
+
+        Assumptions:
+            None
+        
+        Args: 
+            segment  : flight segment        [-] 
+            
+        Returns:
+            None 
                                 
     """        
     if 'acceleration' in segment:
@@ -34,9 +43,9 @@ def level_flight_dynamics(segment):
         
     if 'angular_acceleration' in segment:
         ang_acc_x      = segment.angular_acceleration  
-        one_row = segment.state.ones_row 
+        one_row        = segment.state.ones_row 
         ang_acc        = one_row(3)*0
-        ang_acc[:,0]  = ang_acc_x 
+        ang_acc[:,0]   = ang_acc_x 
         segment.state.conditions.frames.inertial.angular_acceleration_vector = ang_acc
         
     elif type(segment) == RCAIDE.Framework.Mission.Segments.Cruise.Constant_Pitch_Rate_Constant_Altitude:  

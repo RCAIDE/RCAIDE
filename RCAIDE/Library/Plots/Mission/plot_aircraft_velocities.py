@@ -1,6 +1,6 @@
 ## @defgroup Library-Plots-Mission  
 # RCAIDE/Library/Plots/Performance/Mission/plot_aircraft_velocities.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

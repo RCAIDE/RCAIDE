@@ -48,7 +48,7 @@ class Air(Gas):
             None
     
         Args:
-            self       : air                   [unitless]
+            self       : air                   [-]
             T (float)  : temperature           [K]
             P (float)  : pressure              [Pa]
             
@@ -67,10 +67,10 @@ class Air(Gas):
             None 
 
         Args:
-            self                     : air           [unitless]
+            self                     : air           [-]
             T (float)                : temperature   [K]    
             p (float)                : Pressure      [Pa]      
-            variable_gamma (boolean) :               [unitless]
+            variable_gamma (boolean) :               [-]
 
         Returns:
             a (float)                : speed of sound [m/s] 
@@ -101,7 +101,7 @@ class Air(Gas):
             (Energy, Combustion and the Environment), Jun 15, 1995, Carvalhoc
     
         Args:
-            self      : air               [unitless]
+            self      : air               [-]
             T (float) : temperature       [K]
             P (float) : pressure          [Pa]
             
@@ -131,7 +131,7 @@ class Air(Gas):
             None
     
         Args:
-            self      : air           [unitless]
+            self      : air           [-]
             T (float) : temperature   [K]
             P (float) : pressure      [Pa]
             
@@ -154,7 +154,7 @@ class Air(Gas):
             https://www.cfd-online.com/Wiki/Sutherland's_law
     
         Args:
-            self      : air                   [unitless]
+            self      : air                   [-]
             T (float) : temperature           [K]
             P (float) : pressure              [Pa]
             
@@ -177,7 +177,7 @@ class Air(Gas):
             https://www.engineeringtoolbox.com/air-properties-viscosity-conductivity-heat-capacity-d_1509.html 
     
         Args:
-            self      : air                   [unitless]
+            self      : air                   [-]
             T (float) : temperature           [K]
             P (float) : pressure              [Pa]
             
@@ -197,7 +197,7 @@ class Air(Gas):
             None
     
         Args:
-            self      : air                   [unitless]
+            self      : air                   [-]
             T (float) : temperature           [K] 
             
         Returns:

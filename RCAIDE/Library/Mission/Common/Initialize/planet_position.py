@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Initialize
 # RCAIDE/Library/Missions/Segments/Common/Initialize/Frames.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -12,23 +12,13 @@ def planet_position(segment):
     """ Sets the initial location of the vehicle relative to the planet at the start of the segment
     
         Assumptions:
-        Only used if there is an initial condition
-        
-        Inputs:
-            segment.state.initials.conditions:
-                frames.planet.longitude [Radians]
-                frames.planet.latitude  [Radians]
-            segment.longitude           [Radians]
-            segment.latitude            [Radians]
-
-        Outputs:
-            segment.state.conditions:           
-                frames.planet.latitude  [Radians]
-                frames.planet.longitude [Radians]
-
-        Properties Used:
-        N/A
-                                
+            Only used if there is an initial condition
+         
+        Args: 
+            segment  : flight segment        [-] 
+            
+        Returns:
+            None
     """        
     
     if segment.state.initials:

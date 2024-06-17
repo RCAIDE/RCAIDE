@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Segments/Common/Update/differentials_time.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -13,21 +13,17 @@ def differentials_time(segment):
     """ Updates the time descretization 
         
         Assumptions:
-        N/A
+            None
         
-        Inputs:
+        Args:
             segment.state.conditions:
                 .frames.inertial.time         [s]
-        Outputs:
+        Returns:
             segment.state.numerics.time
                 .control_points               [s]
                 .differentiate                [-]
                 .integrate                    [-]
-
-      
-        Properties Used:
-        N/A
-                    
+ 
     """    
     
     # unpack

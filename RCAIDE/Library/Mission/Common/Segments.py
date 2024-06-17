@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common  
 # RCAIDE/Library/Missions/Common/helper_functions.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -15,8 +15,7 @@ def pre_process(mission):
     for tag,segment in mission.segments.items():     
         segment.pre_process()
 
-def sequential_segments(mission):  
-    
+def sequential_segments(mission):   
     last_tag = None
     for tag,segment in mission.segments.items(): 
         if last_tag:
@@ -34,10 +33,8 @@ def update_segments(mission):
 def merge_segment_states(mission): 
     mission.state.update(mission.merged())
     
-def unpack_segments(mission): 
-    # Build a dict with the sections, sections start at 0
-    counter = Data()
-    
+def unpack_segments(mission):  
+    counter = Data() 
     for key in mission.state.unknowns.keys():
         counter[key] = 0
 

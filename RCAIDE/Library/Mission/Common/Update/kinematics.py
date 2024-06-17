@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common Common-Update
 # RCAIDE/Library/Missions/Common/Update/kinematics.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -18,20 +18,16 @@ def kinematics(segment):
     """ Updates the kinematics of the rigid body (aircraft) 
         
         Assumptions:
-        N/A
+            None
         
-        Inputs:
+        Args:
             segment.state.:
                  conditions.frames.inertial.velocity_vector    [m/s]
                  numerics.time.differentiate                   [-]
                  
-        Outputs:
+        Returns:
             segment.conditions 
-                 frames.inertial.acceleration_vector 
-      
-        Properties Used:
-        N/A
-                    
+                 frames.inertial.acceleration_vector  
     """   
     
     # unpack conditions

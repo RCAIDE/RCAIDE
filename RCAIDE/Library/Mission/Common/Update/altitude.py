@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update  
 # RCAIDE/Library/Missions/Common/Update/altitude.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -9,21 +9,17 @@
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Update 
 def altitude(segment):
-    """ Updates freestream altitude from inertial position
+    """ Updates freestream altitude from inertial position. Computes the following variables: 
+            segment.state.conditions.freestream.altitude             [meters] 
         
         Assumptions:
-        N/A
+        None
         
-        Inputs:
-            segment.state.conditions:
-                frames.inertial.position_vector [meters]
-        Outputs:
-            segment.state.conditions:
-                freestream.altitude             [meters]
-      
-        Properties Used:
-        N/A
-                    
+        Args:
+            segment.state.conditions.frames.inertial.position_vector [meters]
+            
+        Returns:
+            None
     """    
     altitude = -segment.state.conditions.frames.inertial.position_vector[:,2]
     segment.state.conditions.freestream.altitude[:,0] = altitude 

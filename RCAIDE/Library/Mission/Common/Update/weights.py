@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update 
 # RCAIDE/Library/Missions/Common/Update/weights.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -17,24 +17,19 @@ def weights(segment):
     """ Updates the weight of the vehicle 
         
         Assumptions:
-        N/A
+            None
         
-        Inputs:
+        Args:
              segment.state.
                  numerics.time.integrate               [-]
                  conditions.weights.total_mass         [kg]
                  conditions.weights.vehicle_mass_rate  [kg/s]
                  conditions.freestream.gravity         [m/s^2]
-
                  
-        Outputs: 
+        Returns: 
             segment.state.conditions.
                  weights.total_mass
-                 frames.inertial.gravity_force_vector
-      
-        Properties Used:
-        N/A
-                    
+                 frames.inertial.gravity_force_vector 
     """ 
     
     # unpack

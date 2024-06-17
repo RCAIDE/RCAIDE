@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Cruise
 # RCAIDE/Library/Missions/Segments/Cruise/Constant_Throttle_Constant_Altitude.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -143,8 +143,7 @@ def solve_velocity(segment):
             forces               [meters/second^2]
             final_velocity_error [meters/second] 
 
-        Properties Used:
-        N/A
+        
                                 
     """    
 

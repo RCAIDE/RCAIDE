@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Ground
-# RCAIDE/Library/Missions/Segments/Ground/Battery_Charge_or_Discharge.py
-# 
+# RCAIDE/Library/Missions/Segments/Ground/Battery_Charge_Discharge.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
  

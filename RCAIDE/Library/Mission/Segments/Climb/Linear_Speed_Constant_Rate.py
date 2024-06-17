@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Climb
 # RCAIDE/Library/Missions/Segments/Climb/Linear_Speed_Constant_Rate.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

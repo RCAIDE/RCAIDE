@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update 
 # RCAIDE/Library/Missions/Common/Update/angular_acceleration.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -19,18 +19,14 @@ def angular_acceleration(segment):
         Assumptions:
         Assumes a flat earth, this is planar motion.
         
-        Inputs:
+        Args:
             segment.state.conditions:
                 frames.inertial.angular_velocity_vector     [rad/second]
             segment.state.numerics.time.differentiate       [float]
             
-        Outputs:
+        Returns:
             segment.state.conditions:           
-                frames.inertial.angular_acceleration_vector [rad/s^2]
-
-        Properties Used:
-        N/A
-                                
+                frames.inertial.angular_acceleration_vector [rad/s^2] 
     """            
     
     # unpack conditions

@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Initialize
 # RCAIDE/Library/Missions/Segments/Common/Initialize/inertial_position.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -13,20 +13,12 @@ def inertial_position(segment):
     
         Assumptions:  
             Only used if there is an initial condition
+        
+        Args: 
+            segment  : flight segment        [-] 
             
-        Inputs: 
-            state.conditions:           
-                numerics.dimensionless.integrate        [i]
-                numerics.dimensionless.control_points   [-]
-                frames.inertial.aircraft_range          [m]
-                inertial.velocity_vector                [m/s]
-            
-        Outputs: 
-            state.conditions.frames.inertial.position_vector  [m]
-            state.conditions.frames.inertial.aircraft_range   [m]
-           
-        Properties Used:
-        N/A 
+        Returns:
+            None 
     """      
     if segment.state.initials:
         r_initial = segment.state.initials.conditions.frames.inertial.position_vector

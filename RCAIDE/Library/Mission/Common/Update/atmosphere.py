@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common/Update
 # RCAIDE/Library/Missions/Common/Update/atmosphere.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -12,14 +12,14 @@ def atmosphere(segment):
     """ Computes conditions of the atmosphere at given altitudes
     
         Assumptions:
-        N/A
+        None
         
-        Inputs:
+        Args:
             state.conditions:
                 freestream.altitude             [meters]
             segment.analyses.atmoshere          [Function]
             
-        Outputs:
+        Returns:
             state.conditions:
                 freestream.pressure             [pascals]
                 freestream.temperature          [kelvin]
@@ -28,11 +28,7 @@ def atmosphere(segment):
                 freestream.dynamic_viscosity    [pascals-seconds]
                 freestream.kinematic_viscosity  [meters^2/second]
                 freestream.thermal_conductivity [Watt/meter-Kelvin]
-                freestream.prandtl_number       [unitless]
-                
-        Properties Used:
-        N/A
-                                
+                freestream.prandtl_number       [unitless] 
     """
     
     # unpack

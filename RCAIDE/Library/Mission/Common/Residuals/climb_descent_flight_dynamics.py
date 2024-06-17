@@ -1,14 +1,15 @@
 ## @ingroup Library-Missions-Common-Residuals
 # RCAIDE/Library/Missions/Common/Residuals/climb_descent_flight_dynamics.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
 import RCAIDE
+
+# Python imports 
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -16,24 +17,16 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Residuals
 def climb_descent_flight_dynamics(segment):
-    """Takes the summation of forces and makes a residual from the accelerations.
+    """Computes residuals for the force and moment equations of motion of aircraft in varying altitude flight.
 
-    Assumptions:
-    No higher order terms.
-
-    Source:
-    N/A
-
-    Inputs:
-    segment.state.conditions.frames.inertial.total_force_vector   [Newtons]
-    segment.state.conditions.frames.inertial.acceleration_vector  [meter/second^2]
-    segment.state.conditions.weights.total_mass                   [kilogram]
-
-    Outputs:
-    segment.state.residuals.forces                                [Unitless]
-
-    Properties Used:
-    N/A
+        Assumptions:
+            None
+        
+        Args: 
+            segment  : flight segment        [-] 
+            
+        Returns:
+            None 
     """        
 
     if type(segment) == RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb: 

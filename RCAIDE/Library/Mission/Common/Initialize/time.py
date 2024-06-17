@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Initialize
 # RCAIDE/Library/Missions/Common/Initialize/time.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -12,24 +12,13 @@ def time(segment):
     """ Sets the initial time of the vehicle at the start of the segment
     
         Assumptions:
-        Only used if there is an initial condition
+            Only used if there is an initial condition 
         
-        Inputs:
-            state.initials.conditions:
-                frames.inertial.time     [seconds]
-                frames.planet.start_time [seconds]
-            state.conditions:           
-                frames.inertial.time     [seconds]
-            segment.start_time           [seconds]
+        Args: 
+            segment  : flight segment        [-] 
             
-        Outputs:
-            state.conditions:           
-                frames.inertial.time     [seconds]
-                frames.planet.start_time [seconds]
-
-        Properties Used:
-        N/A
-                                
+        Returns:
+            None  
     """        
     
     if segment.state.initials:

@@ -1,6 +1,6 @@
 ## @defgroup Library-Plots-Energy Battery 
 # RCAIDE/Library/Plots/Energy/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

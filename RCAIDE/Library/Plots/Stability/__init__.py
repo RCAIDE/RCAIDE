@@ -1,6 +1,6 @@
 ## @defgroup Library-Plots-Stability Stability 
 # RCAIDE/Library/Plots/Stability/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

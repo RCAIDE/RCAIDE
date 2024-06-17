@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Descent
 # RCAIDE/Library/Missions/Segments/Descent/Constant_CAS_Constant_Rate.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 

@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update
 # RCAIDE/Library/Missions/Common/Update/gravity.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -15,15 +15,11 @@ def gravity(segment):
         Assumptions:
         Fixed sea level gravity, doesn't use a gravity model yet
         
-        Inputs:
+        Args:
         segment.analyses.planet.features.sea_level_gravity [Data] 
             
-        Outputs:
-        state.conditions.freestream.gravity [meters/second^2]
-
-        Properties Used:
-        N/A
-                                
+        Returns:
+        state.conditions.freestream.gravity [meters/second^2] 
     """      
 
     # unpack

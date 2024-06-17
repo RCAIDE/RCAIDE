@@ -37,14 +37,12 @@ class Process_Geometry(Process):
         Source:
         N/A
 
-        Inputs:
-        geometry_key      <string>
+        Args:
+            self         : geoemtry data structure [-] 
+            geometry_key : data object             [string]
 
-        Outputs:
-        None
-
-        Properties Used:
-        self.geometry_key <string>
+        Returns:
+            None 
         """          
         self.geometry_key = geometry_key
     
@@ -57,16 +55,14 @@ class Process_Geometry(Process):
         Source:
         N/A
 
-        Inputs:
-        state     (passed to an evaluation function)
-        setting   (passed to an evaluation function)
-        geometry  (used to get keys and passed to an evaluation function)
+        Args:
+            self      : geoemtry data structure             [-] 
+            state     : flight conditions                   [-]
+            setting   : settings of geometry data structure [-]
+            geometry  : geometry data structure             [-]
 
-        Outputs:
-        None
-
-        Properties Used:
-        self.geometry_key <string>
+        Returns:
+            None 
         """             
         geometry_items = geometry.deep_get(self.geometry_key)
         

@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Performance-Aerodynamics
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_lift_distribution.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 
-from RCAIDE.Library.Plots.Common import set_axes, plot_style
+from RCAIDE.Library.Plots.Common import plot_style
 import matplotlib.pyplot as plt 
 import numpy as np 
 # ----------------------------------------------------------------------------------------------------------------------

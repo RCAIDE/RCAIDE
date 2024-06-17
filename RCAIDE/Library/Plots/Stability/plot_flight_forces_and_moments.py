@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Stability
 # RCAIDE/Library/Plots/Stability/plot_stability_forces_and_moments.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

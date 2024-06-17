@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Noise
 # RCAIDE/Library/Plots/Noise/plot_3D_noise_contour.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

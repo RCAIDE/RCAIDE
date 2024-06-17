@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common Common-Update
 # RCAIDE/Library/Missions/Common/Update/inertial_horizontal_position.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -22,19 +22,15 @@ def inertial_horizontal_position(segment):
         Assumptions:
         Assumes a flat earth, this is planar motion.
         
-        Inputs:
+        Args:
             segment.state.conditions:
                 frames.inertial.position_vector [meters]
                 frames.inertial.velocity_vector [meters/second]
             segment.state.numerics.time.integrate       [float]
             
-        Outputs:
+        Returns:
             segment.state.conditions:           
-                frames.inertial.position_vector [meters]
-
-        Properties Used:
-        N/A
-                                
+                frames.inertial.position_vector [meters] 
     """        
 
     conditions = segment.state.conditions

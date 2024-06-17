@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Residuals
 # RCAIDE/Library/Missions/Common/Residuals/ground_flight_dynamics.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 import numpy as np 
@@ -10,24 +10,16 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Residuals 
 def ground_flight_dynamics(segment):
-    """ Calculates a residual based on forces
-    
+    """ Computes residuals for forces during a ground-based segment 
+
         Assumptions:
+            None
         
-        Inputs:
-            segment.state.conditions:
-                frames.inertial.total_force_vector    [Newtons]
-                frames.inertial.velocity_vector       [meters/second]
-                weights.total_mass                    [kg]
-            segment.state.numerics.time.differentiate [vector]
-            segment.velocity_end                      [meters/second]
+        Args: 
+            segment  : flight segment        [-] 
             
-        Outputs:
-            segment.state: 
-                residuals.final_velocity_error     [meters/second]
-        Properties Used:
-        N/A
-                                
+        Returns:
+            None                                 
     """   
 
     # unpack inputs

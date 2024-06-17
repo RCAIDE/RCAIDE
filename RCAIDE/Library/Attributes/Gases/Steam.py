@@ -42,7 +42,7 @@ class Steam(Gas):
             None
     
         Args:
-            self       : steam                 [unitless]
+            self       : steam                 [-]
             T (float)  : temperature           [K]
             P (float)  : pressure              [Pa]
             
@@ -61,7 +61,7 @@ class Steam(Gas):
             None 
 
         Args:
-            self                     : steam         [unitless]
+            self                     : steam         [-]
             T (float)                : temperature   [K]    
             p (float)                : Pressure      [Pa]      
             variable_gamma (boolean) :               [unitless]
@@ -87,7 +87,7 @@ class Steam(Gas):
             (Energy, Combustion and the Environment), Jun 15, 1995, Carvalhoc
     
         Args:
-            self      : steam             [unitless]
+            self      : steam             [-]
             T (float) : temperature       [K]
             P (float) : pressure          [Pa]
             
@@ -109,7 +109,7 @@ class Steam(Gas):
             None
     
         Args:
-            self      : steam         [unitless]
+            self      : steam         [-]
             T (float) : temperature   [K]
             P (float) : pressure      [Pa]
             
@@ -129,7 +129,7 @@ class Steam(Gas):
             None
     
         Args:
-            self      : steam                 [unitless]
+            self      : steam                 [-]
             T (float) : temperature           [K]
             P (float) : pressure              [Pa]
             

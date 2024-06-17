@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Single_Point
 # RCAIDE/Library/Missions/Segments/Single_Point/Set_Speed_Set_Throttle.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
  
@@ -83,8 +83,7 @@ def unpack_unknowns(segment):
                 frames.inertial.acceleration_vector [meters/second^2]
                 frames.body.inertial_rotations      [radians]
 
-        Properties Used:
-        N/A
+        
                                 
     """      
     

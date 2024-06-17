@@ -1,6 +1,6 @@
-## @ingroup Library-Plots-Performance-Stability  
-# RCAIDE/Library/Plots/Performance/Stability/plot_longitudinal_stability.py
-# 
+## @ingroup Library-Plots-Stability  
+# RCAIDE/Library/Plots/Stability/plot_longitudinal_stability.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Performance-Stability
+## @ingroup Library-Plots-Stability
 def plot_longitudinal_stability(results,
                              save_figure = False,
                              show_legend=True,

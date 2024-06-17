@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Climb
 # RCAIDE/Library/Missions/Segments/Climb/Constant_CAS_Constant_Rate.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -46,7 +46,7 @@ def initialize_conditions(segment):
     
     # unpack
     climb_rate = segment.climb_rate
-    cas        = segment.calibrated_air_speed   
+    CAS        = segment.calibrated_air_speed   
     alt0       = segment.altitude_start 
     altf       = segment.altitude_end
     beta       = segment.sideslip_angle
@@ -59,37 +59,29 @@ def initialize_conditions(segment):
         alt0 = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
 
     # discretize on altitude
-    alt = t_nondim * (altf-alt0) + alt0
-    
-    # pack conditions
-    conditions.freestream.altitude[:,0] = alt[:,0] # positive altitude in this context
-    
+    alt = t_nondim * (altf-alt0) + alt0 
 
-    if cas is None:
+    if CAS is None:
         if not segment.state.initials: raise AttributeError('initial equivalent airspeed not set')
         v_mag =  np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])    
     else:  
-        
         # determine airspeed from calibrated airspeed
         atmosphere(segment) # get density for airspeed
-        density  = conditions.freestream.density[:,0]  
-        pressure = conditions.freestream.pressure[:,0] 
-    
-        MSL_data  = segment.analyses.atmosphere.compute_values(0.0,0.0)
-        pressure0 = MSL_data.pressure[0]
-    
-        kcas  = cas / Units.knots
-        delta = pressure / pressure0 
-    
-        mach = 2.236*((((1+4.575e-7*kcas**2)**3.5-1)/delta + 1)**0.2857 - 1)**0.5
-    
-        qc  = pressure * ((1+0.2*mach**2)**3.5 - 1)
-        eas = cas * (pressure/pressure0)**0.5*(((qc/pressure+1)**0.286-1)/((qc/pressure0+1)**0.286-1))**0.5
+        density   = conditions.freestream.density[:,0]  
+        pressure  = conditions.freestream.pressure[:,0]
         
-        v_mag = eas/np.sqrt(density/MSL_data.density[0])    
+        # compute sea level properties 
+        MSL_data  = segment.analyses.atmosphere.compute_values(0.0,0.0) 
+        pressure0 = MSL_data.pressure[0] 
+        kCAS      = CAS / Units.knots
+        delta     = pressure / pressure0  
+        mach      = 2.236*((((1+4.575e-7*kCAS**2)**3.5-1)/delta + 1)**0.2857 - 1)**0.5 
+        qc        = pressure * ((1+0.2*mach**2)**3.5 - 1)
+        EAS       = CAS * (pressure/pressure0)**0.5*(((qc/pressure+1)**0.286-1)/((qc/pressure0+1)**0.286-1))**0.5 
+        v_mag     = EAS/np.sqrt(density/MSL_data.density[0])    
     
     # process velocity vector 
-    v_z   = -climb_rate # z points down
+    v_z   = -climb_rate  
     v_xy  = np.sqrt( v_mag**2 - v_z**2 )
     v_x   = np.cos(beta)*v_xy 
     v_y   = np.sin(beta)*v_xy 
@@ -98,4 +90,5 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0]  
+    conditions.freestream.altitude[:,0]             = alt[:,0]  

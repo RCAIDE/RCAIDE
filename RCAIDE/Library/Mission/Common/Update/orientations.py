@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/orientations.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -25,25 +25,21 @@ def orientations(segment):
         Assumptions:
         This assumes the vehicle has 3 frames: inertial, body, and wind 
         
-        Inputs:
+        Args:
         segment.state.conditions:
             frames.inertial.velocity_vector          [meters/second]
             frames.body.inertial_rotations           [Radians]
         segment.analyses.planet.features.mean_radius [meters]
         state.numerics.time.integrate                [float]
             
-        Outputs:
+        Returns:
             segment.state.conditions:           
                 aerodynamics.angles.alpha         [Radians]
                 aerodynamics.angles.beta          [Radians]
                 aerodynamics.angles.roll          [Radians]
                 frames.body.transform_to_inertial [Radians]
                 frames.wind.body_rotations        [Radians]
-                frames.wind.transform_to_inertial [Radians]
-    
-
-        Properties Used:
-        N/A
+                frames.wind.transform_to_inertial [Radians] 
     """
 
     # unpack

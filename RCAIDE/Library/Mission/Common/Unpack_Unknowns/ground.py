@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Unknowns
 # RCAIDE/Library/Missions/Common/Unknowns/ground.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,25 +9,21 @@
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Unknowns
 def ground(segment):
-    """ Unpacks the times and velocities from the solver to the mission
-    
+    """Assigns the unknowns for the aircraft velocity to the aircraft each iteration of
+       the mission solving process. Computes the following variables:
+          segment.state.conditions.frames.inertial.velocity_vector [meters/second]
+          segment.state.conditions.frames.inertial.time            [second]
+
         Assumptions:
-        Overrides the velocities if they go to zero
+            None
         
-        Inputs:
-            segment.state.unknowns:
-                ground_velocity         [meters/second]
-                time               [second]
-            segment.velocity_start [meters/second]
+        Args: 
+            segment.state.unknowns.ground_velocity    [meters/second]
+            segment.state.unknowns.elapsed_time       [second]
             
-        Outputs:
-            segment.state.conditions:
-                frames.inertial.velocity_vector [meters/second]
-                frames.inertial.time            [second]
-        Properties Used:
-        N/A
-                                
-    """       
+        Returns:
+            None 
+    """          
     
     # unpack unknowns 
     ground_velocity = segment.state.unknowns.ground_velocity
@@ -47,3 +43,5 @@ def ground(segment):
     conditions.frames.inertial.velocity_vector[1:,0] = ground_velocity
     conditions.frames.inertial.velocity_vector[0,0]  = v0
     conditions.frames.inertial.time[:,0]             = times[:,0]
+    
+    return 

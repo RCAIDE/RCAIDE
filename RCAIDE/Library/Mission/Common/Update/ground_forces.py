@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/ground_forces.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -22,19 +22,16 @@ def ground_forces(segment):
         Does a force balance to calculate the load on the wheels using only lift. Uses only a single friction coefficient.
     
     Source:
-        N/A
+        None
     
-    Inputs:
+    Args:
     conditions:
         frames.inertial.gravity_force_vector       [meters/second^2]
         ground.friction_coefficient                [unitless]
         frames.wind.force_vector                   [newtons]
     
-    Outputs:
-        conditions.frames.inertial.ground_force_vector [newtons]
-    
-    Properties Used:
-        N/A
+    Returns:
+        conditions.frames.inertial.ground_force_vector [newtons] 
     """   
 
     # unpack

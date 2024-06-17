@@ -1,14 +1,8 @@
 ## @ingroup Library-Missions-Segments-Cruise
 # RCAIDE/Library/Missions/Segments/Cruise/Constant_Pitch_Rate_Constant_Altitude.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
-
-# ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
-# Package imports 
-import numpy as np
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions

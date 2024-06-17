@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update
 # RCAIDE/Library/Missions/Common/Update/thrust.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -12,17 +12,13 @@ def thrust(segment):
     """ Updates the thrust vector of the vehicle from the propulsors 
         
         Assumptions:
-        N/A
+            None
         
-        Inputs:
+        Args:
             None 
                  
-        Outputs: 
-            None
-      
-        Properties Used:
-        N/A
-                    
+        Returns: 
+            None 
     """ 
 
     # unpack

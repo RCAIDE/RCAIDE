@@ -41,7 +41,7 @@ class Earth(Planet):
             None 
 
         Args:
-            self                     : air           [unitless]
+            self                     : air           [-]
             H (float)                : altitude      [m]     
 
         Returns:

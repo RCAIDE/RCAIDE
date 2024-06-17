@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Performance-Aerodynamics   
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_airfoil_polar_files.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

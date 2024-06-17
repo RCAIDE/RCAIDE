@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Energy
 # RCAIDE/Library/Plots/Energy/plot_battery_pack_conditions.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Plots.Common import set_axes, plot_style
-from matplotlib.lines import Line2D
+from RCAIDE.Library.Plots.Common import set_axes, plot_style 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np  

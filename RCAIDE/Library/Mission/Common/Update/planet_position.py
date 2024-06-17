@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/planet_position.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -24,7 +24,7 @@ def planet_position(segment):
         Assumptions:
         This is valid for small movements and times as it does not account for the rotation of the Planet beneath the vehicle
         
-        Inputs:
+        Args:
         segment.state.conditions:
             freestream.velocity                      [meters/second]
             freestream.altitude                      [meters]
@@ -32,14 +32,10 @@ def planet_position(segment):
         segment.analyses.planet.features.mean_radius [meters]
         segment.state.numerics.time.integrate        [float]
             
-        Outputs:
+        Returns:
             segment.state.conditions:           
                 frames.planet.latitude  [Radians]
-                frames.planet.longitude [Radians]
-
-        Properties Used:
-        N/A
-                                
+                frames.planet.longitude [Radians] 
     """        
     
     # unpack

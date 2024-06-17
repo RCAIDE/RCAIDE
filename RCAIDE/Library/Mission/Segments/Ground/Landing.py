@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Ground
 # RCAIDE/Library/Missions/Segments/Ground/Landing.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke  
 
@@ -35,10 +35,7 @@ def initialize_conditions(segment):
     Properties Used:
     N/A
     """      
-    
-    # use the common initialization
-    conditions = segment.state.conditions
-    
+     
     # unpack inputs
     alt      = segment.altitude 
     v0       = segment.velocity_start

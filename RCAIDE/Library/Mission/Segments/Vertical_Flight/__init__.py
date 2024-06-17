@@ -1,6 +1,6 @@
-## @defgroup Methods-Missions-Segments-Hover Hover
-# RCAIDE/Methods/Mission/Segments/Hover/__init__.py
-# 
+## @defgroup Library-Missions-Segments-Vertical_Flight Vertical_Flight
+# RCAIDE/Library/Missions/Segments/Vertical_Flight/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

@@ -82,8 +82,8 @@ class Boom(Component):
             None
         
         Args:
-            self       : boom                  [unitless]
-            segment    : cross-section of boom [unitless]   
+            self       : boom                  [-]
+            segment    : cross-section of boom [-]   
             
         Outputs:
             None 
@@ -109,10 +109,10 @@ class Container(Component.Container):
             None
         
         Args:
-            self       : container of booms [unitless]    
+            self       : container of booms [-]    
             
         Outputs:
-            Boom       : boom               [unitless] 
+            Boom       : boom               [-] 
         """ 
         return [Boom]
 

@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update
 # RCAIDE/Library/Missions/Common/Update/stability.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -13,17 +13,13 @@ def stability(segment):
     """ Updates the stability of the aircraft 
         
         Assumptions:
-        If stability model is defined, overwrite the aerodynamics calculations
+            If stability model is defined, the aerodynamics calculations are overwritten
         
-        Inputs:
+        Args:
             None 
                  
-        Outputs: 
-            None
-      
-        Properties Used:
-        N/A
-                    
+        Returns: 
+            None  
     """   
     # unpack
     stability_model    = segment.analyses.stability

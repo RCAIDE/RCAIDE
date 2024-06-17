@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Geometry
 # RCAIDE/Library/Plots/Energy/plot_battery_ragone_diagram.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 

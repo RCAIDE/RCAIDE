@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Pre_Process
 # RCAIDE/Library/Missions/Common/Pre_Process/set_residuals_and_unknowns.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -17,17 +17,14 @@ def set_residuals_and_unknowns(mission):
     """ Sets the flight dynamics residuals and fligth controls of the aircraft   
 
         Assumptions:
-        N/A
+            None
 
-        Inputs: 
+        Args: 
             mission     - data structure of mission  [-]
  
-        Outputs:  
-
-        Properties Used:
-        N/A
-
-    """     
+        Returns:
+            None
+            """    
     for segment in mission.segments:  
         ones_row    = segment.state.ones_row 
         ctrls       = segment.flight_controls

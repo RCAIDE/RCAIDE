@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Segments-Common-Pre_Process
 # RCAIDE/Library/Missions/Common/Pre_Process/stability.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -18,16 +18,13 @@ def stability(mission):
     """ Runs stability model and build surrogate
     
         Assumptions:
-            N/A
+            None
         
         Inputs:
             None
             
-        Outputs:
-            None 
-
-        Properties Used:
-        N/A                
+        Returns:
+            None  
     """      
     last_tag = None
     for tag,segment in mission.segments.items():        

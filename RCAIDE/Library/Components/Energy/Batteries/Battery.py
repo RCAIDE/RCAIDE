@@ -48,8 +48,4 @@ class Battery(Component):
         self.ragone.const_1                                    = 0.0     # used for ragone functions; 
         self.ragone.const_2                                    = 0.0     # specific_power=ragone_const_1*10^(specific_energy*ragone_const_2)
         self.ragone.lower_bound                                = 0.0     # lower bound specific energy for which ragone curves no longer make sense
-        self.ragone.i                                          = 0.0 
-                      
-        self.thermal_management_system                         = Data()    
-        self.thermal_management_system.heat_acquisition_system = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition()
-        self.thermal_management_system.heat_exchanger_system   = RCAIDE.Energy.Thermal_Management.Batteries.Heat_Exchanger_Systems.No_Heat_Exchanger()
+        self.ragone.i                                          = 0.0

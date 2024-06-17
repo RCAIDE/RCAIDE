@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Unpack_Unknowns
 # RCAIDE/Library/Missions/Common/Unpack_Unknowns/energy.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -9,6 +9,18 @@
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Unpack_Unknowns
 def fuel_line_unknowns(segment,fuel_lines):
+    """Assigns the unknowns for an fuel-based energy network to the aircraft each iteration of the mission
+       solving process.
+
+        Assumptions:
+            None
+        
+        Args: 
+            segment  : flight segment        [-] 
+            
+        Returns:
+            None 
+    """        
     flight_controls = segment.flight_controls
     state           = segment.state 
 
@@ -55,6 +67,18 @@ def fuel_line_unknowns(segment,fuel_lines):
     return 
 
 def bus_unknowns(segment,busses): 
+    """Assigns the unknowns for an electric-based energy network to the aircraft each iteration of the mission
+       solving process.
+
+        Assumptions:
+            None
+        
+        Args: 
+            segment  : flight segment        [-] 
+            
+        Returns:
+            None 
+    """        
     flight_controls = segment.flight_controls
     state           = segment.state 
 

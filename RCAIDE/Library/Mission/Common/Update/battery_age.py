@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update
 # RCAIDE/Library/Missions/Common/Update/battery_age.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -16,16 +16,13 @@ def battery_age(segment):
        Assumptions:
        Cell specific. See individual battery cell for more details
 
-       Inputs: 
+       Args: 
        segment.
            conditions                         - conditions of battery at each segment  [unitless]
            increment_battery_age_by_one_day   - flag to increment battery cycle day    [boolean]
 
-       Outputs:
-       N/A  
-
-       Properties Used:
-       N/A 
+       Returns:
+       None   
     """  
     # loop throuh networks in vehicle 
     for network in segment.analyses.energy.networks: 

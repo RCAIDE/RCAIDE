@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Geometry
 # RCAIDE/Library/Plots/Geometry/plot_rotor.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -9,6 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Framework.Core import Units
 
+# python imports 
 from plotly.subplots import make_subplots
 import pandas as pd
 import plotly.graph_objects as go

@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Update
 # RCAIDE/Library/Missions/Common/Update/Aerodynamics.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -19,24 +19,20 @@ def freestream(segment):
     """ Updates the freestream conditions 
         
         Assumptions:
-        N/A
+            None
         
-        Inputs:
+        Args:
             segment.state.conditions.:
                  frames.inertial.velocity_vector   [m/s]
                  freestream.density                [kg/m^3]
                  freestream.speed_of_sound         [m/s]
                  freestream.dynamic_viscosity      [Pa-s]
-        Outputs:
+        Returns:
             segment.conditions.freestream
                  velocity                          [m/s]
                  mach_number                       [-]
                  reynolds_number                   [-]
-                 dynamic_pressure                  [Pa] 
-      
-        Properties Used:
-        N/A
-                    
+                 dynamic_pressure                  [Pa]  
     """   
     
     # unpack

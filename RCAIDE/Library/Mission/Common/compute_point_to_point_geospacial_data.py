@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Noise
 # RCAIDE/Library/Missions/Common/compute_point_to_point_geospacial_data.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
 
@@ -28,22 +28,21 @@ def compute_point_to_point_geospacial_data(topography_file                      
         topography_file is a text file obtained from https://topex.ucsd.edu/cgi-bin/get_data.cgi
     
     Source:
-        N/A  
+        None  
 
-    Inputs:   
+    Args:   
         topography_file                        - file of lattide, longitude and elevation points     
         departure_coordinates                  - coordinates of departure location                                              [degrees]
         destination_coordinates                - coordinates of destimation location                                            [degrees]  
         
-    Outputs:                                   
+    Returns:                                   
         latitude_longitude_micrphone_locations - latitude-longitude and elevation coordinates of all microphones in domain      [deg,deg,m]  
         flight_range                           - gound distance between departure and destination location                      [meters]              
         true_course_angle                      - true course angle measured clockwise from true north                     [radians]                      
         departure_location                     - cartesial coordinates of departure location relative to computational domain   [meters]                   
         destination_xyz_location                   - cartesial coordinates of destination location relative to computational domain [meters]    
     
-    Properties Used:
-        N/A       
+           
     """     
     # convert cooordinates to array 
     departure_coordinates   = np.asarray(departure_coordinates)

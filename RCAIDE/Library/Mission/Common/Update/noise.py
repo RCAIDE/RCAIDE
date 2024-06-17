@@ -13,16 +13,16 @@ def noise(segment):
     """ Computes the noise using the prescribed method 
         
         Assumptions:
-            N/A
+            None
             
         Source:
-            N/A
+            None
             
         Args:
-            N/A
+            None
                  
         Returns: 
-            N/A      
+            None      
     """   
     noise_model = segment.analyses.noise
     

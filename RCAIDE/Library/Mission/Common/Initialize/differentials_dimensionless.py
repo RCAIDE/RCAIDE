@@ -1,6 +1,6 @@
 ## @ingroup Library-Missions-Common-Initialize
 # RCAIDE/Library/Missions/Common/Initialize/differentials_dimensionless.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
  
@@ -15,25 +15,16 @@ from RCAIDE.Framework.Core.Arrays  import atleast_2d_col
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Initialize
 def differentials_dimensionless(segment):
-    """ Discretizes the differential operators
+    """ Discretizes the differential operators based on the discretization method chosen
     
         Assumptions:
-        N/A
+            None 
         
-        Inputs:
-            state.numerics:
-                number_of_control_points [int]
-                discretization_method    [function]
+        Args: 
+            segment  : flight segment        [-] 
             
-        Outputs:
-            numerics.dimensionless:            
-                control_points           [array]
-                differentiate            [array]
-                integrate                [array]
-
-        Properties Used:
-        N/A
-                                
+        Returns:
+            None 
     """     
     
     # unpack
