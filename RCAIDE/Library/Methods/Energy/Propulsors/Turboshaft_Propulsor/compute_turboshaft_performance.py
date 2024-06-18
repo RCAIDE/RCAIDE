@@ -186,9 +186,9 @@ def compute_performance(conditions,fuel_line,turboshaft,total_power):
                 exit_velocity                       = core_nozzle.outputs.velocity
             ) 
 
-    noise_results.turboshaft.fan_nozzle    = None 
-    noise_results.turboshaft.core_nozzle   = core_nozzle_res
-    noise_results.turboshaft.fan           = None   
+    #noise_results.turboshaft.fan_nozzle    = None 
+    #noise_results.turboshaft.core_nozzle   = core_nozzle_res
+    #noise_results.turboshaft.fan           = None   
     stored_results_flag                  = True
     stored_propulsor_tag                 = turboshaft.tag
     
