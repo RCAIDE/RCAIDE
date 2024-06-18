@@ -49,7 +49,8 @@ class Energy(Analysis):
         """ 
             
         networks = self.networks
-        results  = networks.evaluate(state) 
-        
-        return results
+        #results  = networks.evaluate(state) 
+        networks.evaluate(state)
+        return 
+        #return results
     

@@ -65,9 +65,9 @@ class Container(Component.Container):
                 if net.has_additional_fuel_type: 
                     results.vehicle_additional_fuel_rate  =  0.*ones_row(1)  
                     results.vehicle_fuel_rate             =  0.*ones_row(1)
-            results_p = net.evaluate(state)
-            for key in results.keys():
-                results[key] += results_p[key]
+            net.evaluate(state)
+            results.thrust_force_vector  += state.conditions.energy.thrust_force_vector
+            results.vehicle_mass_rate    += state.conditions.energy.vehicle_mass_rate    
         return results
     
 # ----------------------------------------------------------------------

@@ -1,5 +1,5 @@
-## @ingroup Framework-Mission-Segments-Conditions 
-# RCAIDE/Framework/Mission/Segments/Conditions/State.py
+## @ingroup Framework-Mission-Segments-Common
+# RCAIDE/Framework/Mission/Segments/Common/State.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
@@ -22,7 +22,7 @@ import numpy as np
 #  State
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Framework-Mission-Segments-Conditions
+## @ingroup Framework-Mission-Segments-Common
 class State(Conditions):
     """ Creates the State data structure for storing daata that solved in a mission.
     """    
