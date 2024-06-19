@@ -12,4 +12,4 @@
 from .compute_power                  import compute_power
 from .size_core                      import size_core
 from .design_turboshaft              import design_turboshaft
-from .compute_turboshaft_performance import compute_turboshaft_performance
+from .compute_turboshaft_performance import compute_turboshaft_performance , compute_performance

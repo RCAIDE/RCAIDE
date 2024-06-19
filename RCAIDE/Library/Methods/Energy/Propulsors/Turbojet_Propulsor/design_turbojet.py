@@ -177,27 +177,51 @@ def design_turbojet(turbojet):
     a   = atmo_data.speed_of_sound    
     mu  = atmo_data.dynamic_viscosity      
 
-
-    # setup conditions
-    conditions_sls = RCAIDE.Framework.Mission.Common.Results()
+    # setup conditions 
+    fuel_line                               = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()    
+    fuel_tank                               = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()  
+    fuel                                    = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()    
+    fuel_tank.fuel                          = fuel  
+    fuel_line.fuel_tanks.append(fuel_tank)  
+    fuel_line.propulsors.append(turbojet)  
+        
+    sls_conditions = RCAIDE.Framework.Mission.Common.Results()
 
     # freestream conditions    
-    conditions_sls.freestream.altitude                    = np.atleast_1d(0)
-    conditions_sls.freestream.mach_number                 = np.atleast_1d(0.01)
-    conditions_sls.freestream.pressure                    = np.atleast_1d(p)
-    conditions_sls.freestream.temperature                 = np.atleast_1d(T)
-    conditions_sls.freestream.density                     = np.atleast_1d(rho)
-    conditions_sls.freestream.dynamic_viscosity           = np.atleast_1d(mu)
-    conditions_sls.freestream.gravity                     = np.atleast_2d(planet.sea_level_gravity)
-    conditions_sls.freestream.isentropic_expansion_factor = np.atleast_1d(turbojet.working_fluid.compute_gamma(T,p))
-    conditions_sls.freestream.Cp                          = np.atleast_1d(turbojet.working_fluid.compute_cp(T,p))
-    conditions_sls.freestream.R                           = np.atleast_1d(turbojet.working_fluid.gas_specific_constant)
-    conditions_sls.freestream.speed_of_sound              = np.atleast_1d(a)
-    conditions_sls.freestream.velocity                    = np.atleast_1d(a*0.01)   
-     
-    compute_thrust(turbojet,conditions_sls,throttle = 1.0) 
-    turbojet.sealevel_static_thrust = turbojet.outputs.thrust
-        
+    sls_conditions.freestream.altitude                    = np.atleast_1d(0)
+    sls_conditions.freestream.mach_number                 = np.atleast_1d(0.01)
+    sls_conditions.freestream.pressure                    = np.atleast_1d(p)
+    sls_conditions.freestream.temperature                 = np.atleast_1d(T)
+    sls_conditions.freestream.density                     = np.atleast_1d(rho)
+    sls_conditions.freestream.dynamic_viscosity           = np.atleast_1d(mu)
+    sls_conditions.freestream.gravity                     = np.atleast_2d(planet.sea_level_gravity)
+    sls_conditions.freestream.isentropic_expansion_factor = np.atleast_1d(turbojet.working_fluid.compute_gamma(T,p))
+    sls_conditions.freestream.Cp                          = np.atleast_1d(turbojet.working_fluid.compute_cp(T,p))
+    sls_conditions.freestream.R                           = np.atleast_1d(turbojet.working_fluid.gas_specific_constant)
+    sls_conditions.freestream.speed_of_sound              = np.atleast_1d(a)
+    sls_conditions.freestream.velocity                    = np.atleast_1d(a*0.01)   
+
+    # initialize data structure for turbofan operating conditions (for energy ) 
+    sls_conditions.energy[fuel_line.tag]                                  = RCAIDE.Framework.Mission.Common.Conditions()  
+    sls_conditions.energy[fuel_line.tag][fuel_tank.tag]                   = RCAIDE.Framework.Mission.Common.Conditions()  
+    sls_conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate    = np.zeros((1,1))     
+    sls_conditions.energy[fuel_line.tag][fuel_tank.tag].mass              = np.zeros((1,1))   
+    sls_conditions.energy[fuel_line.tag][turbojet.tag]                    = RCAIDE.Framework.Mission.Common.Conditions() 
+    sls_conditions.energy[fuel_line.tag][turbojet.tag].throttle           = np.array([[1.0]])
+    sls_conditions.energy[fuel_line.tag][turbojet.tag].y_axis_rotation    = np.zeros((1,1)) 
+    sls_conditions.energy[fuel_line.tag][turbojet.tag].thrust             = np.zeros((1,1))
+    sls_conditions.energy[fuel_line.tag][turbojet.tag].power              = np.zeros((1,1))
+    
+
+    # initialize data structure for turbofan operating conditions (for noise )       
+    sls_conditions.noise[fuel_line.tag]                                 = RCAIDE.Framework.Mission.Common.Conditions()              
+    sls_conditions.noise[fuel_line.tag][turbojet.tag]                   = RCAIDE.Framework.Mission.Common.Conditions() 
+    sls_conditions.noise[fuel_line.tag][turbojet.tag].turbofan          = RCAIDE.Framework.Mission.Common.Conditions()
+    
+    total_power     = np.zeros((3,1))
+    total_thrust    = np.zeros((1,1))
+    compute_performance(sls_conditions,fuel_line,turbojet,total_thrust,total_power) 
+    turbojet.sealevel_static_thrust = turbojet.outputs.thrust    
     
     return      
   
