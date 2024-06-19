@@ -9,10 +9,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-## RCAIDE imports   
-from RCAIDE.Framework.Core  import Data
-from .                      import Propulsor
-import numpy                as np 
+## RCAIDE imports
+import RCAIDE
+from RCAIDE.Framework.Core                  import Data
+from .                                      import Propulsor  
 
 # ----------------------------------------------------------------------
 #  Turboshaft
@@ -28,7 +28,8 @@ class Turboshaft(Propulsor):
     """ 
     def __defaults__(self):
         # setting the default values
-        self.tag                                              = 'Turboshaft' 
+        self.tag                                              = 'Turboshaft'
+        self.fuel_type                                        = RCAIDE.Library.Attributes.Propellants.Jet_A1()
         self.active_fuel_tanks                                = None
         self.nacelle                                          = None  
         self.ram                                              = None 

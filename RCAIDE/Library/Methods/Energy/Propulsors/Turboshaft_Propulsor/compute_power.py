@@ -8,11 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-
-# RCAIDE imports  
-from RCAIDE.Framework.Core                 import Units
-from RCAIDE.Library.Attributes.Propellants.Jet_A1 import Jet_A1 as Propellant
-
+ 
 # Python package imports
 import numpy                               as np
 
@@ -79,8 +75,8 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
       SFC_adjustment                           [-]
     """           
     #unpack the values
-    Jet_A1                                     = Propellant()
-    LHV                                        = 1000*Jet_A1.lower_heating_value                                                                    # Source [1] 1000 to match units from kJ/kg to J/kg
+    fuel_type                                  = turboshaft.fuel_type
+    LHV                                        = 1000*fuel_type.lower_heating_value                                                                    # Source [1] 1000 to match units from kJ/kg to J/kg
     gamma                                      = conditions.freestream.isentropic_expansion_factor                                                      
     a0                                         = conditions.freestream.speed_of_sound                                                                   
     M0                                         = conditions.freestream.mach_number                                                                      
@@ -119,7 +115,8 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     
     #Computing Specifc Power
     #Psp                                        = Cp*total_temperature_reference*C_shaft                                                                # Source [1] 
-    Psp                                        = (Tsp*mdot_core/mdhc)*a0*M0 + Cp*total_temperature_reference*tau_lambda*tau_tH*(1 - tau_tL)*eta_c      # Source [2]    
+    #Psp                                        = (Tsp*mdot_core/mdhc)*a0*M0 + Cp*total_temperature_reference*tau_lambda*tau_tH*(1 - tau_tL)*eta_c      # Source [2]    
+    Psp                                        =  Cp*total_temperature_reference*tau_lambda*tau_tH*(1 - tau_tL)*eta_c      # Source [2]    
     
     #Computing Power 
     Power                                      = Psp*mdot_core                                                                                          # Source [2]

@@ -17,7 +17,8 @@ from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compressor         impo
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
-from RCAIDE.Library.Methods.Energy.Propulsors.Turboshaft_Propulsor          import size_core, compute_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Turboshaft_Propulsor          import size_core  
+from RCAIDE.Library.Methods.Energy.Propulsors.Turboshaft_Propulsor.compute_turboshaft_performance   import   compute_performance
 
 # Python package imports   
 import numpy                                                                as np
@@ -211,10 +212,8 @@ def design_turboshaft(turboshaft):
     sls_conditions.noise[fuel_line.tag][turboshaft.tag]                   = RCAIDE.Framework.Mission.Common.Conditions() 
     sls_conditions.noise[fuel_line.tag][turboshaft.tag].turbofan          = RCAIDE.Framework.Mission.Common.Conditions()
     
-    total_power     = np.zeros((3,1))
-    total_thrust    = np.zeros((1,1))
-    compute_performance(sls_conditions,fuel_line,turboshaft,total_thrust,total_power) 
-    turboshaft.sealevel_static_thrust = turboshaft.outputs.thrust    
-        
+    total_power     = np.zeros((1,1)) 
+    total_power, thermal_efficiency, PSFC,_,_ = compute_performance(sls_conditions,fuel_line,turboshaft,total_power) 
+     
     return      
   
