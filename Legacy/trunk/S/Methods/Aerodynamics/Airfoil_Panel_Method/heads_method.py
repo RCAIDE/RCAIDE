@@ -238,7 +238,7 @@ def odefcn(y,x,ReL_div_L, x_i, Ve_i, dVe_i):
     cf          = getcf(np.atleast_1d(Re_theta),np.atleast_1d(H))
     dydx_1      = 0.5*cf-(theta/getVe(x,x_i,Ve_i))*(2+H)*getdVe(x, x_i, dVe_i)
     dydx_2      = getVe(x,x_i,Ve_i)*0.0306*(H1 - 3)**-0.6169 
-    f           = [dydx_1,dydx_2] 
+    f           = [float(dydx_1),float(dydx_2)] 
     return f 
 
 def getVe(x,x_i,Ve_i):

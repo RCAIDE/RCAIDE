@@ -46,6 +46,7 @@ def converge_root(segment):
         root_finder = segment.settings.root_finder
     except AttributeError:
         root_finder = scipy.optimize.fsolve 
+
     
     unknowns,infodict,ier,msg = root_finder( iterate,
                                          unknowns,
@@ -54,12 +55,37 @@ def converge_root(segment):
                                          maxfev = segment.state.numerics.max_evaluations,
                                          epsfcn = segment.state.numerics.step_size,
                                          full_output = 1)
-    
+                                         
+    #ier = 0
+    #msg = 'Hi'       
+                                  
+                                         
+
     if ier!=1:
         print("Segment did not converge. Segment Tag: " + segment.tag)
         print("Error Message:\n" + msg)
-        segment.state.numerics.converged = False
-        segment.converged = False
+        print('Trying SLSQP')
+        # Run the misson using SLSQP
+        import scipy.optimize as opt
+        econ  = lambda unknowns:iterate(unknowns,segment) 
+        iecon = lambda unknowns:inequality(unknowns,segment)
+        def obj(unknowns): return 0
+        #output = opt.fmin_slsqp(obj,unknowns,f_eqcons=econ,iter=2000, full_output=True)
+        #output = opt.minimize(obj, unknowns,method='SLSQP',constraints={"fun":econ,"type":'eq'},options={'maxiter':2000})
+        #output = opt.minimize(obj, unknowns,method='COBYLA',constraints={"fun":iecon,"type":'ineq'},options={'maxiter':2000})
+        output = opt.minimize(obj, unknowns,method='trust-constr',constraints={"fun":econ,"type":'eq'},options={'maxiter':2000})
+
+        unknowns = output['x']
+        termination = output['success']
+        if termination:
+            print('Reoptimization Worked')
+            segment.state.numerics.converged = True
+            segment.converged = True
+        else:
+            print('Reoptimization Didnt Work')
+            segment.state.numerics.converged = False
+            segment.converged = False              
+
     else:
         segment.state.numerics.converged = True
         segment.converged = True
@@ -101,3 +127,9 @@ def iterate(unknowns, segment):
     residuals = segment.state.residuals.pack_array()
         
     return residuals 
+
+def inequality(unknowns,segment):
+    
+    res = iterate(unknowns, segment)
+    
+    return np.concatenate([res,-res])
