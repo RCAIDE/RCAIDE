@@ -68,4 +68,6 @@ def compute_compressor_performance(compressor,conditions):
     compressor.outputs.stagnation_pressure     = Pt_out
     compressor.outputs.stagnation_enthalpy     = ht_out
     compressor.outputs.work_done               = work_done
+    
+    return 
 

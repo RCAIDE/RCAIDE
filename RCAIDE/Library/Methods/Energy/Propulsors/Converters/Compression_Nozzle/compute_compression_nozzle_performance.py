@@ -125,3 +125,5 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
     compression_nozzle.outputs.static_temperature      = T_out
     compression_nozzle.outputs.static_enthalpy         = h_out
     compression_nozzle.outputs.velocity                = u_out
+    
+    return 

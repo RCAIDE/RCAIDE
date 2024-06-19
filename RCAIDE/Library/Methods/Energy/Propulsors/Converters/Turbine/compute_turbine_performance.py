@@ -73,10 +73,11 @@ def compute_turbine_performance(turbine,conditions):
     #Compute the output stagnation quantities from the inputs and the energy drop computed above
     Tt_out    =  Tt_in+deltah_ht/Cp
     Pt_out    =  Pt_in*(Tt_out/Tt_in)**(gamma/((gamma-1)*etapolt))
-    ht_out    =  Cp*Tt_out   #h(Tt4_5)
-    
+    ht_out    =  Cp*Tt_out   
     
     #pack the computed values into outputs
     turbine.outputs.stagnation_temperature  = Tt_out
     turbine.outputs.stagnation_pressure     = Pt_out
-    turbine.outputs.stagnation_enthalpy     = ht_out 
+    turbine.outputs.stagnation_enthalpy     = ht_out
+    
+    return
