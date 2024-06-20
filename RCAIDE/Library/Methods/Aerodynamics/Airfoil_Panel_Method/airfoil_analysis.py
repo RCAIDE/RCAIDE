@@ -13,7 +13,9 @@ from RCAIDE.Framework.Core import Data
 from .hess_smith           import hess_smith
 from .thwaites_method      import thwaites_method 
 from .heads_method         import heads_method 
-from .aero_coeff           import aero_coeff  
+from .aero_coeff           import aero_coeff
+from .chordwise_distribution import chordwise_distribution
+from .cf_filter            import cf_filter
 
 # pacakge imports  
 import numpy as np  
@@ -131,7 +133,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
         
     # laminar boundary layer properties using thwaites method  
     BOT_T_RESULTS  = thwaites_method(npanel,ncases,ncpts, L_BOT , RE_L_VALS, X_BOT, VE_BOT, DVE_BOT,tolerance,
-                                     THETA_0=initial_momentum_thickness)
+                                      THETA_0=initial_momentum_thickness)
     
     X_T_BOT          = BOT_T_RESULTS.X_T      
     THETA_T_BOT      = BOT_T_RESULTS.THETA_T     
@@ -277,7 +279,8 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
 
     # laminar boundary layer properties using thwaites method 
     TOP_T_RESULTS    = thwaites_method(npanel,ncases,ncpts, L_TOP , RE_L_VALS,X_TOP,VE_TOP, DVE_TOP,tolerance,
-                                     THETA_0=initial_momentum_thickness) 
+                                      THETA_0=initial_momentum_thickness) 
+    
     X_T_TOP          = TOP_T_RESULTS.X_T      
     THETA_T_TOP      = TOP_T_RESULTS.THETA_T     
     DELTA_STAR_T_TOP = TOP_T_RESULTS.DELTA_STAR_T  
@@ -401,6 +404,13 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     VE         = VE_VALS_2.reshape((npanel,ncases,ncpts),order = 'F') 
     DVE        = DVE_VALS_2.reshape((npanel,ncases,ncpts),order = 'F')  
     
+    
+    # ------------------------------------------------------------------------------------------------------
+    # Filter Skin Friction Coeffiecient
+    # ------------------------------------------------------------------------------------------------------
+    CF         = cf_filter(ncpts, ncases, npanel, CF)
+    
+    
     # ------------------------------------------------------------------------------------------------------
     # Compute effective surface of airfoil with boundary layer and recompute aerodynamic properties  
     # ------------------------------------------------------------------------------------------------------   
@@ -409,7 +419,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     x_coord_3d_bl  = X + DELTA*normals[:,0,:,:]
     npanel_mod     = npanel-1 
     
-    X_BL, Y_BL,vt_bl,normals_bl = hess_smith(x_coord_3d_bl,y_coord_3d_bl,alpha,Re_L,npanel_mod)      
+    X_BL,Y_BL,vt_bl,normals_bl = hess_smith(x_coord_3d_bl,y_coord_3d_bl,alpha,Re_L,npanel_mod)      
       
     # ---------------------------------------------------------------------
     # Bottom surface of airfoil with boundary layer 
@@ -430,7 +440,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     res             = list(np.tile(np.arange(ncpts),ncases) )
     X_BL_BOT.mask[first_panel,aoas,res] = False
     
-    # flow velocity and pressure of on botton surface 
+    # flow velocity and pressure of on bottom surface 
     VE_BL_BOT          = -VT_BL[::-1] 
     CP_BL_BOT          = 1 - VE_BL_BOT**2   
          
@@ -472,6 +482,9 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     del2_inf     = del2_inf_u + del2_inf_l
     cd_sqy        = 2*del2_inf.T
     
+    # chordwise distribution of lift and drag
+    fL, fD = chordwise_distribution(x_coord_3d,y_coord_3d,CP,alpha,npanel,CF,vt)
+    
     airfoil_properties_old = Data(
         AoA            = alpha,
         Re             = Re_L,
@@ -494,7 +507,9 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
         Re_theta       = np.transpose(RE_THETA,(2,1,0)),  
         Re_x           = np.transpose(RE_X,(2,1,0)),  
         H              = np.transpose(H,(2,1,0)),            
-        cf             = np.transpose(CF,(2,1,0)),    
+        cf             = np.transpose(CF,(2,1,0)),
+        fL             = fL,
+        fD             = fD
         )  
         
     return  airfoil_properties_old
