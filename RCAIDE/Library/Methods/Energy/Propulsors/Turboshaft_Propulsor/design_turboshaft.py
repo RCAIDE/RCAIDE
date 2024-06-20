@@ -1,5 +1,5 @@
-## @ingroup Methods-Energy-Propulsors-Turbojet_Propulsor
-# RCAIDE/Methods/Energy/Propulsors/Turbojet_Propulsor/design_turboshaft.py
+## @ingroup Library-Methods-Energy-Propulsors-Turboshaft_Propulsor
+# RCAIDE/Library/Methods/Energy/Propulsors/Turboshaft_Propulsor/design_turboshaft.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -115,8 +115,8 @@ def design_turboshaft(turboshaft):
     low_pressure_turbine.inputs.stagnation_pressure       = high_pressure_turbine.outputs.stagnation_pressure
     
     #link the low pressure turbine to the low_pressure_compresor
-    low_pressure_turbine.inputs.compressor                 = Data()
-    low_pressure_turbine.inputs.compressor.work_done       = 0.0
+    low_pressure_turbine.inputs.compressor                = Data()
+    low_pressure_turbine.inputs.compressor.work_done      = 0.0
     
     #link the low pressure turbine to the combustor
     low_pressure_turbine.inputs.fuel_to_air_ratio         = combustor.outputs.fuel_to_air_ratio
@@ -172,10 +172,10 @@ def design_turboshaft(turboshaft):
     mu                                                    = atmo_data.dynamic_viscosity 
 
     # setup conditions 
-    fuel_line                               = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()    
-    fuel_tank                               = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()  
-    fuel                                    = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()    
-    fuel_tank.fuel                          = fuel  
+    fuel_line                                             = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()    
+    fuel_tank                                             = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()  
+    fuel                                                  = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()    
+    fuel_tank.fuel                                        = fuel  
     fuel_line.fuel_tanks.append(fuel_tank)  
     fuel_line.propulsors.append(turboshaft)  
         
@@ -200,15 +200,15 @@ def design_turboshaft(turboshaft):
     sls_conditions.energy[fuel_line.tag][fuel_tank.tag]                   = RCAIDE.Framework.Mission.Common.Conditions()  
     sls_conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate    = np.zeros((1,1))     
     sls_conditions.energy[fuel_line.tag][fuel_tank.tag].mass              = np.zeros((1,1))   
-    sls_conditions.energy[fuel_line.tag][turboshaft.tag]                    = RCAIDE.Framework.Mission.Common.Conditions() 
-    sls_conditions.energy[fuel_line.tag][turboshaft.tag].throttle           = np.array([[1.0]])
-    sls_conditions.energy[fuel_line.tag][turboshaft.tag].y_axis_rotation    = np.zeros((1,1)) 
-    sls_conditions.energy[fuel_line.tag][turboshaft.tag].thrust             = np.zeros((1,1))
-    sls_conditions.energy[fuel_line.tag][turboshaft.tag].power              = np.zeros((1,1))
+    sls_conditions.energy[fuel_line.tag][turboshaft.tag]                  = RCAIDE.Framework.Mission.Common.Conditions() 
+    sls_conditions.energy[fuel_line.tag][turboshaft.tag].throttle         = np.array([[1.0]])
+    sls_conditions.energy[fuel_line.tag][turboshaft.tag].y_axis_rotation  = np.zeros((1,1)) 
+    sls_conditions.energy[fuel_line.tag][turboshaft.tag].thrust           = np.zeros((1,1))
+    sls_conditions.energy[fuel_line.tag][turboshaft.tag].power            = np.zeros((1,1))
     
 
     # initialize data structure for turbofan operating conditions (for noise )       
-    sls_conditions.noise[fuel_line.tag]                                 = RCAIDE.Framework.Mission.Common.Conditions()              
+    sls_conditions.noise[fuel_line.tag]                                   = RCAIDE.Framework.Mission.Common.Conditions()              
     sls_conditions.noise[fuel_line.tag][turboshaft.tag]                   = RCAIDE.Framework.Mission.Common.Conditions() 
     sls_conditions.noise[fuel_line.tag][turboshaft.tag].turbofan          = RCAIDE.Framework.Mission.Common.Conditions()
     

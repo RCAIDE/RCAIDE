@@ -84,70 +84,70 @@ def compute_performance(conditions,fuel_line,turboshaft,total_power):
     Properties Used: 
     N.A.        
     ''' 
-    noise_results             = conditions.noise[fuel_line.tag][turboshaft.tag]  
-    turboshaft_results        = conditions.energy[fuel_line.tag][turboshaft.tag]  
-    ram                       = turboshaft.ram
-    inlet_nozzle              = turboshaft.inlet_nozzle
-    compressor                = turboshaft.compressor
-    combustor                 = turboshaft.combustor
-    high_pressure_turbine     = turboshaft.high_pressure_turbine
-    low_pressure_turbine      = turboshaft.low_pressure_turbine 
-    core_nozzle               = turboshaft.core_nozzle  
+    noise_results                                              = conditions.noise[fuel_line.tag][turboshaft.tag]  
+    turboshaft_results                                         = conditions.energy[fuel_line.tag][turboshaft.tag]  
+    ram                                                        = turboshaft.ram
+    inlet_nozzle                                               = turboshaft.inlet_nozzle
+    compressor                                                 = turboshaft.compressor
+    combustor                                                  = turboshaft.combustor
+    high_pressure_turbine                                      = turboshaft.high_pressure_turbine
+    low_pressure_turbine                                       = turboshaft.low_pressure_turbine 
+    core_nozzle                                                = turboshaft.core_nozzle  
 
     #set the working fluid to determine the fluid properties
-    ram.inputs.working_fluid                               = turboshaft.working_fluid
+    ram.inputs.working_fluid                                   = turboshaft.working_fluid
 
     #Flow through the ram , this computes the necessary flow quantities and stores it into conditions
     compute_ram_performance(ram,conditions)
 
     #link inlet nozzle to ram 
-    inlet_nozzle.inputs.stagnation_temperature             = ram.outputs.stagnation_temperature 
-    inlet_nozzle.inputs.stagnation_pressure                = ram.outputs.stagnation_pressure
+    inlet_nozzle.inputs.stagnation_temperature                 = ram.outputs.stagnation_temperature 
+    inlet_nozzle.inputs.stagnation_pressure                    = ram.outputs.stagnation_pressure
 
     #Flow through the inlet nozzle
     compute_compression_nozzle_performance(inlet_nozzle,conditions)
 
     #link compressor to the inlet nozzle
-    compressor.inputs.stagnation_temperature               = inlet_nozzle.outputs.stagnation_temperature
-    compressor.inputs.stagnation_pressure                  = inlet_nozzle.outputs.stagnation_pressure
-
-    #Flow through the low pressure compressor
-    compute_compressor_performance(compressor,conditions)
-
-    #link the combustor to the compressor
-    combustor.inputs.stagnation_temperature                = compressor.outputs.stagnation_temperature
-    combustor.inputs.stagnation_pressure                   = compressor.outputs.stagnation_pressure
-
-    #flow through the combustor
-    compute_combustor_performance(combustor,conditions)
-
-    #link the high pressure turbine to the combustor
-    high_pressure_turbine.inputs.stagnation_temperature    = combustor.outputs.stagnation_temperature
-    high_pressure_turbine.inputs.stagnation_pressure       = combustor.outputs.stagnation_pressure
-    high_pressure_turbine.inputs.fuel_to_air_ratio         = combustor.outputs.fuel_to_air_ratio
-
-    #link the high pressure turbine to the compressor
-    high_pressure_turbine.inputs.compressor                = compressor.outputs
+    compressor.inputs.stagnation_temperature                   = inlet_nozzle.outputs.stagnation_temperature
+    compressor.inputs.stagnation_pressure                      = inlet_nozzle.outputs.stagnation_pressure
+                                                               
+    #Flow through the low pressure compressor                  
+    compute_compressor_performance(compressor,conditions)      
+                                                               
+    #link the combustor to the compressor                      
+    combustor.inputs.stagnation_temperature                    = compressor.outputs.stagnation_temperature
+    combustor.inputs.stagnation_pressure                       = compressor.outputs.stagnation_pressure
+                                                               
+    #flow through the combustor                                
+    compute_combustor_performance(combustor,conditions)        
+                                                               
+    #link the high pressure turbine to the combustor           
+    high_pressure_turbine.inputs.stagnation_temperature        = combustor.outputs.stagnation_temperature
+    high_pressure_turbine.inputs.stagnation_pressure           = combustor.outputs.stagnation_pressure
+    high_pressure_turbine.inputs.fuel_to_air_ratio             = combustor.outputs.fuel_to_air_ratio
+                                                               
+    #link the high pressure turbine to the compressor          
+    high_pressure_turbine.inputs.compressor                    = compressor.outputs
 
     #flow through the high pressure turbine
     compute_turbine_performance(high_pressure_turbine,conditions)
 
     #link the low pressure turbine to the high pressure turbine
-    low_pressure_turbine.inputs.stagnation_temperature     = high_pressure_turbine.outputs.stagnation_temperature
-    low_pressure_turbine.inputs.stagnation_pressure        = high_pressure_turbine.outputs.stagnation_pressure
-
-    #link the low pressure turbine to the combustor
-    low_pressure_turbine.inputs.fuel_to_air_ratio          = combustor.outputs.fuel_to_air_ratio
-
-    #get the bypass ratio from the thrust component
-    low_pressure_turbine.inputs.bypass_ratio               = 0.0
+    low_pressure_turbine.inputs.stagnation_temperature         = high_pressure_turbine.outputs.stagnation_temperature
+    low_pressure_turbine.inputs.stagnation_pressure            = high_pressure_turbine.outputs.stagnation_pressure
+                                                               
+    #link the low pressure turbine to the combustor            
+    low_pressure_turbine.inputs.fuel_to_air_ratio              = combustor.outputs.fuel_to_air_ratio
+                                                               
+    #get the bypass ratio from the thrust component            
+    low_pressure_turbine.inputs.bypass_ratio                   = 0.0
 
     #flow through the low pressure turbine
     compute_turbine_performance(low_pressure_turbine,conditions)
 
     #link the core nozzle to the low pressure turbine
-    core_nozzle.inputs.stagnation_temperature              = low_pressure_turbine.outputs.stagnation_temperature
-    core_nozzle.inputs.stagnation_pressure                 = low_pressure_turbine.outputs.stagnation_pressure
+    core_nozzle.inputs.stagnation_temperature                  = low_pressure_turbine.outputs.stagnation_temperature
+    core_nozzle.inputs.stagnation_pressure                     = low_pressure_turbine.outputs.stagnation_pressure
 
     #flow through the core nozzle
     compute_expansion_nozzle_performance(core_nozzle,conditions)
@@ -168,29 +168,29 @@ def compute_performance(conditions,fuel_line,turboshaft,total_power):
     turboshaft.inputs.flow_through_fan                         =  0.0 #scaled constant to turn on fan thrust computation        
 
     #compute the power
-    compute_power(turboshaft,conditions,throttle = turboshaft_results.throttle )
+    compute_power(turboshaft,conditions,throttle               = turboshaft_results.throttle )
 
     # getting the network outputs from the power outputs  
-    turboshaft_results.power           = turboshaft.outputs.power  
-    turboshaft_results.fuel_flow_rate  = turboshaft.outputs.fuel_flow_rate 
-    total_power                        += turboshaft_results.power
-    thermal_efficiency                 = turboshaft.outputs.thermal_efficiency
-    PSFC                               = turboshaft.outputs.power_specific_fuel_consumption
+    turboshaft_results.power                                   = turboshaft.outputs.power  
+    turboshaft_results.fuel_flow_rate                          = turboshaft.outputs.fuel_flow_rate 
+    total_power                                                += turboshaft_results.power
+    thermal_efficiency                                         = turboshaft.outputs.thermal_efficiency
+    PSFC                                                       = turboshaft.outputs.power_specific_fuel_consumption
 
     # store data
     core_nozzle_res = Data(
-                exit_static_temperature             = core_nozzle.outputs.static_temperature,
-                exit_static_pressure                = core_nozzle.outputs.static_pressure,
-                exit_stagnation_temperature         = core_nozzle.outputs.stagnation_temperature,
-                exit_stagnation_pressure            = core_nozzle.outputs.static_pressure,
-                exit_velocity                       = core_nozzle.outputs.velocity
+                exit_static_temperature                        = core_nozzle.outputs.static_temperature,
+                exit_static_pressure                           = core_nozzle.outputs.static_pressure,
+                exit_stagnation_temperature                    = core_nozzle.outputs.stagnation_temperature,
+                exit_stagnation_pressure                       = core_nozzle.outputs.static_pressure,
+                exit_velocity                                  = core_nozzle.outputs.velocity
             ) 
 
     #noise_results.turboshaft.fan_nozzle    = None 
     #noise_results.turboshaft.core_nozzle   = core_nozzle_res
     #noise_results.turboshaft.fan           = None   
-    stored_results_flag                  = True
-    stored_propulsor_tag                 = turboshaft.tag
+    stored_results_flag                                        = True
+    stored_propulsor_tag                                       = turboshaft.tag
     
     return total_power, thermal_efficiency, PSFC, stored_results_flag,stored_propulsor_tag
 
