@@ -42,19 +42,21 @@ def compute_turboshaft_performance(fuel_line,state):
     Properties Used: 
     N.A.        
     '''  
-    total_power     = 0*state.ones_row(1)  
-    conditions      = state.conditions
+    total_power         = 0*state.ones_row(1) 
+    thermal_efficiency  = 0*state.ones_row(1) 
+    PSFC                = 0*state.ones_row(1) 
+    conditions          = state.conditions
     stored_results_flag = False 
     
     for turboshaft in fuel_line.propulsors:  
         if turboshaft.active == True:  
             if fuel_line.identical_propulsors == False:
                 # run analysis  
-                total_power , thermal_efficiency, PSFC, stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turboshaft,total_power)
+                total_power, thermal_efficiency, PSFC, stored_results_flag, stored_propulsor_tag = compute_performance(conditions,fuel_line,turboshaft,total_power)
             else:             
                 if stored_results_flag == False: 
                     # run analysis 
-                    total_power ,thermal_efficiency, PSFC, stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turboshaft,total_power)
+                    total_power, thermal_efficiency, PSFC, stored_results_flag, stored_propulsor_tag = compute_performance(conditions,fuel_line,turboshaft,total_power)
                 else:
                     # use old results 
                     total_power, thermal_efficiency, PSFC = reuse_stored_data(conditions,fuel_line,turboshaft,stored_propulsor_tag,total_power)
@@ -166,7 +168,7 @@ def compute_performance(conditions,fuel_line,turboshaft,total_power):
     turboshaft.inputs.total_pressure_reference                 = compressor.inputs.stagnation_pressure 
     turboshaft.inputs.flow_through_core                        =  1.0 #scaled constant to turn on core thrust computation
     turboshaft.inputs.flow_through_fan                         =  0.0 #scaled constant to turn on fan thrust computation        
-
+    
     #compute the power
     compute_power(turboshaft,conditions,throttle               = turboshaft_results.throttle )
 
