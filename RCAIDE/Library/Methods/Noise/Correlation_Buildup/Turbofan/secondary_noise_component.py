@@ -25,7 +25,7 @@ def secondary_noise_component(Velocity_primary,theta_s,sound_ambient,Velocity_se
     Source:
         None
 
-    Inputs:
+    Args:
         SPL_s               [dB]
         Velocity_primary    [m/s]
         theta_s             [rad]
@@ -38,7 +38,7 @@ def secondary_noise_component(Velocity_primary,theta_s,sound_ambient,Velocity_se
         EX_s                [-]
         Str_s               [-]
 
-    Outputs: 
+    Returns: 
         SPL_s               [dB]
 
     Properties Used:

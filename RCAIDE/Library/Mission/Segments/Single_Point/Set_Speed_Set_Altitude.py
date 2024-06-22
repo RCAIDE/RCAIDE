@@ -24,22 +24,21 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.altitude                               [meters]
     segment.air_speed                              [meters/second]
     segment.acceleration_x                         [meters/second^2]
     segment.sideslip_angle                         [radians]
     segment.acceleration_z                         [meters/second^2]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.acceleration_vector [meters/second^2]
     conditions.frames.inertial.velocity_vector     [meters/second]
     conditions.frames.inertial.position_vector     [meters]
     conditions.freestream.altitude                 [meters]
     conditions.frames.inertial.time                [seconds]
 
-    Properties Used:
-    N/A
+
     """      
     
     # unpack
@@ -54,11 +53,9 @@ def initialize_conditions(segment):
         if not segment.state.initials: raise AttributeError('altitude not set')
         alt = -1.0 *segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
     
-    # pack
-    air_speed_x                                                   = np.cos(sideslip)*air_speed 
-    air_speed_y                                                   = np.sin(sideslip)*air_speed 
+    # pack 
     segment.state.conditions.freestream.altitude[:,0]             = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = air_speed_x
-    segment.state.conditions.frames.inertial.velocity_vector[:,1] = air_speed_y
+    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt 
+    segment.state.conditions.frames.inertial.velocity_vector[:,0] = np.cos(sideslip)*air_speed 
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = np.sin(sideslip)*air_speed 
     segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[acceleration_x,0.0,acceleration_z]]) 

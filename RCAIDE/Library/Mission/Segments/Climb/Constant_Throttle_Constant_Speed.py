@@ -24,14 +24,13 @@ def unpack_body_angle(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     state.unknowns.body_angle                      [Radians]
 
-    Outputs:
+    Returns:
     state.conditions.frames.body.inertial_rotation [Radians]
 
-    Properties Used:
-    N/A
+
     """          
 
     # unpack unknowns
@@ -53,19 +52,18 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.air_speed                                   [meters/second] 
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
     segment.state.numerics.dimensionless.control_points [Unitless]
     conditions.freestream.density                       [kilograms/meter^3]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector          [meters/second]
     conditions.energy.throttle                          [Unitless]
 
-    Properties Used:
-    N/A
+
     """         
     
     # unpack 
@@ -91,25 +89,23 @@ def update_differentials_altitude(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.climb_angle                         [radians]
     state.conditions.frames.inertial.velocity_vector [meter/second]
     segment.altitude_start                      [meters]
     segment.altitude_end                        [meters]
 
-    Outputs:
+    Returns:
     state.conditions.frames.inertial.time       [seconds]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
 
-    Properties Used:
-    N/A
+
     """   
 
     # unpack
     t = segment.state.numerics.dimensionless.control_points
-    I = segment.state.numerics.dimensionless.integrate
-
+    I = segment.state.numerics.dimensionless.integrate 
     
     # Unpack segment initials
     alt0       = segment.altitude_start 
@@ -133,11 +129,10 @@ def update_differentials_altitude(segment):
     # rescale operators
     t = t * dt
 
-    # pack
-    t_initial = segment.state.conditions.frames.inertial.time[0,0]
-    segment.state.conditions.frames.inertial.time[:,0] = t_initial + t[:,0]
-    conditions.frames.inertial.position_vector[:,2]    = -alt[:,0] # z points down
-    conditions.freestream.altitude[:,0]                =  alt[:,0] # positive altitude in this context    
+    # pack 
+    segment.state.conditions.frames.inertial.time[:,0] = segment.state.conditions.frames.inertial.time[0,0] + t[:,0]
+    conditions.frames.inertial.position_vector[:,2]    = -alt[:,0] 
+    conditions.freestream.altitude[:,0]                =  alt[:,0]     
 
     return
 
@@ -161,7 +156,7 @@ def update_velocity_vector_from_wind_angle(segment):
     # process
     v_x =   np.cos(beta) *v_mag * np.cos(gamma)
     v_y =   np.sin(beta) *v_mag * np.cos(gamma)
-    v_z = -v_mag * np.sin(gamma) # z points down
+    v_z = -v_mag * np.sin(gamma) 
 
     # pack
     conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]

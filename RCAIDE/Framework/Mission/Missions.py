@@ -39,8 +39,8 @@ class Missions(Container):
                 None
     
             Args:
-                self    : Mission data structure of containing process [-]
-                mission : mission to be appended                       [-]
+                self    (dict): Mission data structure of containing process [-]
+                mission (dict): mission to be appended                       [-]
     
             Returns:
                 None

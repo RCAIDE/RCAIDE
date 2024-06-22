@@ -34,14 +34,13 @@ class Body_of_Revolution_Nacelle(Nacelle):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        None
+
         """      
         
         self.tag                       = 'body_of_revolution_nacelle' 
@@ -56,14 +55,12 @@ class Body_of_Revolution_Nacelle(Nacelle):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
 
         # Assert database type

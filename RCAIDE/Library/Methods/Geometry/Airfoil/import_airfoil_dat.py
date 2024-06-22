@@ -24,14 +24,13 @@ def import_airfoil_dat(filename):
     Source:
     None
 
-    Inputs:
+    Args:
     filename   <string>
 
-    Outputs:
+    Returns:
     data       numpy array with airfoil data
 
-    Properties Used:
-    N/A
+
     """     
     
     filein = open(filename,'r')

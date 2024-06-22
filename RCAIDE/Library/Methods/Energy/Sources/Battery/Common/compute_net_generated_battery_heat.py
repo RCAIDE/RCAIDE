@@ -28,7 +28,7 @@ def compute_net_generated_battery_heat(n_total,battery,Q_heat_gen,numerics):
     David P DeWitt, Theodore L Bergman, Adrienne S Lavine, J. Wiley & Sons, Hoboken
     NJ (2007), 997 pp." (2007): 1683-1684.,  Chapter 7 pg 437-446 
 
-    Inputs:  
+    Args:  
         battery. 
               h                         (heat transfer coefficient)  [W/(m^2*K)] 
               As_cell                   (battery cell surface area)  [meters^2]
@@ -38,7 +38,7 @@ def compute_net_generated_battery_heat(n_total,battery,Q_heat_gen,numerics):
               T_cell                    (battery cell temperature)   [Kelvin] 
               heat_transfer_efficiency                               [unitless]
       
-      Outputs:
+      Returns:
         battery. 
              net_power                                               [Watts] 
  

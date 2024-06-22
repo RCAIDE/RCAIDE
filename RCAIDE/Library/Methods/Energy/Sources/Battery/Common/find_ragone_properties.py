@@ -21,7 +21,7 @@ def find_ragone_properties(specific_energy, battery, energy, power):
     Assumptions:
     None
     
-    Inputs:
+    Args:
     energy            [J]
     power             [W]
     battery.
@@ -36,7 +36,7 @@ def find_ragone_properties(specific_energy, battery, energy, power):
         upper_bound   [J/kg]
         lower_bound   [J/kg]
                 
-    Outputs:
+    Returns:
     battery.
       maximum_energy      [J]
       maximum_power       [W]

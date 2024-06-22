@@ -1,6 +1,6 @@
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/hess_smith.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Dec 2023, M. Clarke 
 
@@ -18,7 +18,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # hess_smith
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def hess_smith(x_coord,y_coord,alpha,Re,npanel):
     """Computes the incompressible, inviscid flow over an airfoil of  arbitrary shape using the Hess-Smith panel method.  
 
@@ -44,9 +44,7 @@ def hess_smith(x_coord,y_coord,alpha,Re,npanel):
     x_bar         -  Vector of x coordinates of the surface nodes     [unitless]           
     y_bar         -  Vector of y coordinates of the surface nodes     [unitless]          
     cp            -  Vector of coefficients of pressure at the nodes  [unitless]         
-
-    Properties Used:
-    N/A
+ 
     """      
     
     ncases    = len(alpha[0,:])

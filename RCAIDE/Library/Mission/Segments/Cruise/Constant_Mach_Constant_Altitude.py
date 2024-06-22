@@ -7,8 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# RCAIDE  
-import RCAIDE  
+# RCAIDE   
+from RCAIDE.Library.Mission.Common.Update.atmosphere import atmosphere
 
 # Package imports  
 import numpy as np
@@ -26,19 +26,18 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.altitude                [meters]
     segment.distance                [meters]
     segment.mach_number             [unitless]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """      
     
     # unpack
@@ -55,14 +54,14 @@ def initialize_conditions(segment):
     segment.state.conditions.freestream.altitude[:,0] = alt
     
     # Update freestream to get speed of sound
-    RCAIDE.Library.Mission.Common.Update.atmosphere(segment)
+    atmosphere(segment)
     a          = conditions.freestream.speed_of_sound       
 
     # check for initial velocity
     if mach is None: 
         if not segment.state.initials: raise AttributeError('airspeed not set')
         air_speed = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])    
-    else:# compute speed, constant with constant altitude
+    else: # compute speed, constant with constant altitude
         air_speed = mach * a
     
     # dimensionalize time
@@ -75,7 +74,7 @@ def initialize_conditions(segment):
     
     # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
+    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt 
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]
     segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_y[:,0]
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]

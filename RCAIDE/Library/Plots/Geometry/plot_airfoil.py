@@ -31,14 +31,13 @@ def plot_airfoil(airfoil_paths,
     Source:
     None
 
-    Inputs:
+    Args:
     airfoil_geometry_files   <list of strings>
 
-    Outputs: 
+    Returns: 
     Plots
 
-    Properties Used:
-    N/A	
+	
     """
     # get airfoil coordinate geometry     
     airfoil_geometry = import_airfoil_geometry(airfoil_paths)

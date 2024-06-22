@@ -34,14 +34,13 @@ def plot_evtol_weight_breakdown(vehicle,
     Source:
     None
 
-    Inputs:
+    Args:
     vehicle
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """
 
     b         =  vehicle.weight_breakdown    

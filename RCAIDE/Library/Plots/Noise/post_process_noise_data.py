@@ -27,12 +27,11 @@ def post_process_noise_data(results,time_step = 20):
     
     Source: 
  
-    Inputs: results 
+    Args: results 
          
-    Outputs: noise_data
+    Returns: noise_data
     
-    Properties Used:
-    N/A
+
     """
 
     # unpack 

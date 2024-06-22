@@ -32,14 +32,12 @@ class Payload(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """            
         self.power_draw = 0.0
         
@@ -52,10 +50,10 @@ class Payload(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         self.outputs.power_draw         [Watts]
 
         Properties Used:

@@ -24,10 +24,10 @@ def pressure_ratio_to_SPL_arithmetic(p_pref_total):
     Source:
         None
 
-    Inputs:
+    Args:
         Pressure Ratios       [unitless]
 
-    Outputs: 
+    Returns: 
         Sound Pressure Level  [decibel]
 
     Properties Used:
@@ -53,10 +53,10 @@ def SPL_arithmetic(SPL, sum_axis = 2):
     Source:
         None
 
-    Inputs:
+    Args:
         SPL  -  Sound Pressure Level        [dB]
 
-    Outputs: 
+    Returns: 
         SPL  -  Sound Pressure Level        [dB]
     
     Properties Used:

@@ -31,12 +31,12 @@ def compute_turbofan_performance(fuel_line,state):
     Source:
     N/A
 
-    Inputs:   
+    Args:   
     fuel_line            - data structure containing turbofans on distrubution network  [-]  
     propulsors           - list of propulsors that are powered by energy source         [-]
     state                - operating data structure                                     [-] 
                      
-    Outputs:                      
+    Returns:                      
     outputs              - turbofan operating outputs                                   [-]
     total_thrust         - thrust of turbofans                                          [N]
     total_power          - power of turbofans                                           [W] 
@@ -74,14 +74,14 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     Source:
     N/A
 
-    Inputs:  
+    Args:  
     conditions           - operating conditions data structure   [-]  
     fuel_line            - fuelline                              [-] 
     turbofan             - turbofan data structure               [-] 
     total_thrust         - thrust of turbofan group              [N]
     total_power          - power of turbofan group               [W] 
 
-    Outputs:  
+    Returns:  
     total_thrust         - thrust of turbofan group              [N]
     total_power          - power of turbofan group               [W] 
     stored_results_flag  - boolean for stored results            [-]     
@@ -281,14 +281,14 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     Source:
     N/A
 
-    Inputs:  
+    Args:  
     conditions           - operating conditions data structure   [-]  
     fuel_line            - fuelline                              [-] 
     turbofan            - turbofan data structure                [-] 
     total_thrust         - thrust of turbofan group              [N]
     total_power          - power of turbofan group               [W] 
 
-    Outputs:  
+    Returns:  
     total_thrust         - thrust of turbofan group              [N]
     total_power          - power of turbofan group               [W] 
     

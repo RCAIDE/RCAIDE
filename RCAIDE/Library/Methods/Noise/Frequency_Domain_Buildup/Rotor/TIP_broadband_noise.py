@@ -26,7 +26,7 @@ def TIP_broadband_noise(alpha_tip,M,c,c_0,f,Dbar_h,r_e):
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs:  
+    Args:  
        alpha_TIP - angle of attack of tip section         [deg]
        M         - Mach number                            [-]
        c         - airfoil section chord                  [m]

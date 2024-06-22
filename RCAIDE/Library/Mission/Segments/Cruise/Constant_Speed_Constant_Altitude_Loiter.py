@@ -23,19 +23,18 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.altitude                [meters]
     segment.time                    [seconds]
     segment.speed                   [meters/second]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """     
     
     # unpack
@@ -65,7 +64,7 @@ def initialize_conditions(segment):
     
     # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
+    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt 
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_x
     segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_y
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]

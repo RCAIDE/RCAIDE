@@ -45,7 +45,7 @@ def plot_3d_vehicle(vehicle,
     Source:
     None
 
-    Inputs:
+    Args:
        vehicle                      - vehicle data structure 
        show_axis                    - plot axis flag          
        save_figure                  - safe figure flag              
@@ -58,11 +58,10 @@ def plot_3d_vehicle(vehicle,
        z_axis_limit                 - limits of axis  
        show_figure                  - show figure flag  
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """
 
     print("\nPlotting vehicle") 
@@ -125,7 +124,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
     Source:
     None
 
-    Inputs:
+    Args:
        vehicle                      - vehicle data structure          
        alpha                        - opacity  
        save_filename                - filename for saving  
@@ -133,8 +132,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
        y_axis_limit                 - limits of axis  
        z_axis_limit                 - limits of axis   
 
-    Properties Used:
-    N/A
+
     """ 
     
     # -------------------------------------------------------------------------
@@ -176,13 +174,12 @@ def plot_3d_energy_network(plot_data,network,number_of_airfoil_points,color_map)
     Source:
     None
 
-    Inputs:
+    Args:
     network            - network data structure
     network_face_color - color of panel
     network_edge_color - color of panel edge 
 
-    Properties Used:
-    N/A
+
     """ 
     show_axis     = False 
     save_figure   = False 

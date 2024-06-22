@@ -29,7 +29,7 @@ def external_plug_effect(Velocity_primary,Velocity_secondary, Velocity_mixed, Di
     Source:
         N/A
 
-    Inputs: 
+    Args: 
         Velocity_primary      [m/s]
         Velocity_secondary    [m/s]
         Velocity_mixed        [m/s]
@@ -42,7 +42,7 @@ def external_plug_effect(Velocity_primary,Velocity_secondary, Velocity_mixed, Di
         theta_s               [rad]
         theta_m               [rad]
     
-    Outputs: 
+    Returns: 
         PG_p        [dB]
         PG_s        [dB]
         PG_m        [dB]

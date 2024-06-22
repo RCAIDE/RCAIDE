@@ -33,14 +33,13 @@ class Prop_Rotor(Rotor):
         Source:
         N/A
         
-        Inputs:
+        Args:
         None
         
-        Outputs:
+        Returns:
         None
         
-        Properties Used:
-        None
+
         """         
 
         self.tag                                 = 'prop_rotor'

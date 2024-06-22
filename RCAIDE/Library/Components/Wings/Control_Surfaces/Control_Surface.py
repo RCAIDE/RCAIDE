@@ -40,14 +40,12 @@ class Control_Surface(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """         
 
         self.tag                   = 'control_surface' 

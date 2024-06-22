@@ -31,14 +31,13 @@ class Blended_Wing_Body_Fuselage(Fuselage):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        None
+
         """      
           
         self.tag                   = 'bwb_fuselage'

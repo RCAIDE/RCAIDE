@@ -18,14 +18,13 @@ def expand_state(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     state.numerics.number_of_control_points  [Unitless]
 
-    Outputs:
+    Returns:
     N/A
 
-    Properties Used:
-    N/A
+
     """       
 
     n_points = segment.state.numerics.number_of_control_points

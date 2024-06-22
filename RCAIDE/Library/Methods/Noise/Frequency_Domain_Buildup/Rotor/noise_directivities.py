@@ -26,7 +26,7 @@ def noise_directivities(Theta_er,Phi_er,cos_zeta_r,M_tot):
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs:  
+    Args:  
        Theta_e      - Radiation angle with respect to free stream x (chordwise) [rad]
        Phi_e        - Radiation angle with respect to free stream y (spanwise)  [rad]
        M_c          - Convection Mach number                                    [-]  

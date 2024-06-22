@@ -29,7 +29,7 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
     Source:
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
+    Args:
     conditions.freestream.
       isentropic_expansion_factor         [-]
       specific_heat_at_constant_pressure  [J/(kg K)]
@@ -42,7 +42,7 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
 
-    Outputs:
+    Returns:
     expansion_nozzle.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]

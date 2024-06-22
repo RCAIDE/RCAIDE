@@ -14,13 +14,13 @@ def initialize_from_mass(battery,module_weight_factor = 1.42 ):
     Assumptions:
     A constant value of specific energy and power
 
-    Inputs:
+    Args:
     mass              [kilograms]
     battery.
       specific_energy [J/kg]               
       specific_power  [W/kg]
 
-    Outputs:
+    Returns:
      battery.
        maximum_energy
        maximum_power

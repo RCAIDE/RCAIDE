@@ -19,35 +19,17 @@ from RCAIDE.Framework.Analyses                 import Process
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Framework-Mission-Segments
 class Evaluate(Segment):
-    """ Base process class used to analyze a vehicle in each flight segment  
-    
-    Assumptions:
-    None
-
-    Source:
-    None
-
-    Args:
-    None
-
-    Returns:
-    None
+    """ Base process class used to analyze a vehicle in each flight segment.
     """     
     
     def __defaults__(self):
         """This sets the default values.
-    
+        
             Assumptions:
-            None
+                None
     
             Source:
-            None
-    
-            Args:
-            None
-    
-            Returns:
-            None
+                None
         """           
         
         # --------------------------------------------------------------

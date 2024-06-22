@@ -51,10 +51,10 @@ def procedure_setup():
 def modify_blade_geometry(nexus): 
     """ Modifies geometry of prop-rotor blade 
           
-          Inputs:  
+          Args:  
              nexus     - RCAIDE optmization framework with prop-rotor blade data structure [None]
               
-          Outputs:   
+          Returns:   
              procedure - optimization methodology                                         [None]
               
           Assumptions: 
@@ -132,14 +132,14 @@ def modify_blade_geometry(nexus):
 def updated_blade_geometry(chi,c_r,p,q,c_t):
     """ Computes planform function of twist and chord distributron using hyperparameters  
           
-          Inputs:  
+          Args:  
              chi - prop-rotor radius distribution [None]
              c_r - hyperparameter no. 1           [None]
              p   - hyperparameter no. 2           [None]
              q   - hyperparameter no. 3           [None]
              c_t - hyperparameter no. 4           [None] 
                    
-          Outputs:       
+          Returns:       
              x_lin  - function distribution       [None]
               
           Assumptions: 

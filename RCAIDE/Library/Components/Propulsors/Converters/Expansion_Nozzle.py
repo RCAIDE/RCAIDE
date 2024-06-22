@@ -36,14 +36,13 @@ class Expansion_Nozzle(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """          
         #set the defaults
         self.tag = 'Nozzle'

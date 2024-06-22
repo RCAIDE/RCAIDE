@@ -1,5 +1,5 @@
 
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
 # VLM.py
 # 
 # Created:  Oct 2020, E. Botero
@@ -21,7 +21,7 @@ from .compute_RHS_matrix                 import compute_RHS_matrix
 #  Vortex Lattice
 # ----------------------------------------------------------------------
 
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
 def VLM(conditions,settings,geometry):
     """Uses the vortex lattice method to compute the lift, induced drag and moment coefficients.
     
@@ -54,7 +54,7 @@ def VLM(conditions,settings,geometry):
     2. VORLAX Source Code
 
     
-    Inputs:
+    Args:
     geometry.
        reference_area                          [m^2]
        wing.
@@ -104,7 +104,7 @@ def VLM(conditions,settings,geometry):
     conditions.static_stability.yaw_rate      [radians/s]
        
     
-    Outputs:    
+    Returns:    
     results.
         CL                                     [Unitless], CLTOT in VORLAX
         CDi                                    [Unitless], CDTOT in VORLAX
@@ -123,8 +123,7 @@ def VLM(conditions,settings,geometry):
         gamma                                  [Unitless], Vortex strengths of each panel
 
     
-    Properties Used:
-    N/A
+
     """ 
     # unpack settings----------------------------------------------------------------
     pwm        = settings.propeller_wake_model

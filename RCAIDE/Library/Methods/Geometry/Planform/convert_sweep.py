@@ -29,7 +29,7 @@ def convert_sweep(wing,old_ref_chord_fraction = 0.0,new_ref_chord_fraction = 0.2
     Source:
         Unknown
     
-    Inputs:
+    Args:
         wing - a data dictionary with the fields:
             apsect_ratio - wing aspect ratio                            [dimensionless]
             sweep        - wing sweep                                   [radians]
@@ -44,7 +44,7 @@ def convert_sweep(wing,old_ref_chord_fraction = 0.0,new_ref_chord_fraction = 0.2
                                  tells what fraction of the local chord
                                  is the new reference for sweep.
 
-    Outputs:
+    Returns:
         output - a single float value, new_sweep, which is the sweep
                  angle referenced to the new_ref_chord_fraction.
 
@@ -101,7 +101,7 @@ def convert_sweep_segments(old_sweep, seg_a, seg_b, wing, old_ref_chord_fraction
     Source:
         Unknown
     
-    Inputs:
+    Args:
         old_sweep - sweep angle to convert
     
         seg_a and seg_b - two Segment() objects with:
@@ -121,7 +121,7 @@ def convert_sweep_segments(old_sweep, seg_a, seg_b, wing, old_ref_chord_fraction
                                  tells what fraction of the local chord
                                  is the new reference for sweep.
 
-    Outputs:
+    Returns:
         output - a single float value, new_sweep, which is the sweep
                  angle referenced to the new_ref_chord_fraction.
 

@@ -27,11 +27,10 @@ def plot_rotor_performance(rotor, title=None, show_figure = True,save_figure=Fal
     Inputs
     rotor   - rotor data structure 
     
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """
     # unpack
     outputs = rotor.outputs

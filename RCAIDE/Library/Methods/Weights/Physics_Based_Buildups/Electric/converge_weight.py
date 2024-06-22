@@ -35,7 +35,7 @@ def converge_weight(vehicle,
     Assumptions:
     None
     
-    Inputs:
+    Args:
     vehicle                     RCAIDE Config Data Stucture
     print_iterations            Boolean Flag      
     contingency_factor          Factor capturing uncertainty in vehicle weight [Unitless]
@@ -47,11 +47,10 @@ def converge_weight(vehicle,
     max_g_load                  Maximum g-forces load for certification        [UNitless]
     motor_efficiency:           Motor Efficiency                               [Unitless]
     
-    Outputs:
+    Returns:
     None
     
-    Properties Used:
-    N/A
+
     '''
     settings       = Data()
     breakdown      = compute_weight(vehicle,contingency_factor,

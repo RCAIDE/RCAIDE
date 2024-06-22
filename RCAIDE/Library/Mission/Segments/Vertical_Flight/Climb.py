@@ -18,21 +18,20 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
     segment.climb_rate                                  [meters/second]
     segment.state.numerics.dimensionless.control_points [Unitless]
     segment.state.conditions.frames.inertial.time       [seconds]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """       
     
     # unpack
@@ -52,7 +51,7 @@ def initialize_conditions(segment):
     alt = t_nondim * (altf-alt0) + alt0
     
     # process velocity vector
-    v_z   = -climb_rate # z points down    
+    v_z   = -climb_rate     
     dt = (altf - alt0)/climb_rate
 
     # rescale operators
@@ -65,6 +64,6 @@ def initialize_conditions(segment):
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0]         = 0.
     conditions.frames.inertial.velocity_vector[:,2]         = v_z
-    conditions.frames.inertial.position_vector[:,2]         = -alt[:,0] # z points down
-    conditions.freestream.altitude[:,0]                     =  alt[:,0] # positive altitude in this context
+    conditions.frames.inertial.position_vector[:,2]         = -alt[:,0] 
+    conditions.freestream.altitude[:,0]                     =  alt[:,0]
     segment.state.conditions.frames.inertial.time[:,0]      = t_initial + t[:,0]

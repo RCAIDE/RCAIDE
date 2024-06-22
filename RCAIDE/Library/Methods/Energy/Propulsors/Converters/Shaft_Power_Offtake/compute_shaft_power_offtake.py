@@ -24,13 +24,13 @@ def compute_shaft_power_offtake(self, state):
     Source:
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
+    Args:
     self.inputs.
       mdhc                  [-] Compressor nondimensional mass flow
       reference_temperature [K]
       reference_pressure    [Pa]
 
-    Outputs:
+    Returns:
     self.outputs.
       power                 [W]
       work_done             [J/kg] (if power draw is not zero)

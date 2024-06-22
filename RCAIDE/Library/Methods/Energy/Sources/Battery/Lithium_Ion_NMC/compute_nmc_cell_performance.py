@@ -34,7 +34,7 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
        Assumtions:
        1) All battery modules exhibit the same themal behaviour. 
 
-       Inputs:
+       Args:
          battery.
                I_bat             (maximum_energy)                      [Joules]
                cell_mass         (battery cell mass)                   [kilograms]
@@ -52,7 +52,7 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
                I_bat             (current)                             [amps]
                P_bat             (power)                               [Watts]
 
-       Outputs:
+       Returns:
          battery.
               current_energy                                           [Joules]
               temperature                                              [Kelvin]
@@ -188,13 +188,13 @@ def compute_nmc_cell_state(battery_data,SOC,T,I):
     Source:  
     N/A 
      
-    Inputs:
+    Args:
         SOC           - state of charge of cell     [unitless]
         battery_data  - look-up data structure      [unitless]
         T             - battery cell temperature    [Kelvin]
         I             - battery cell current        [Amperes]
     
-    Outputs:  
+    Returns:  
         V_ul          - under-load voltage          [Volts] 
         
     """ 

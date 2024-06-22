@@ -32,14 +32,13 @@ class All_Moving_Surface(Component):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
-    Properties Used:
-    N/A
+
     """ 
 
     def __defaults__(self):
@@ -67,14 +66,12 @@ class All_Moving_Surface(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
         self.tag                         = 'All_Moving_Surface_Data_Object' 
         self.sign_duplicate              = 1.0

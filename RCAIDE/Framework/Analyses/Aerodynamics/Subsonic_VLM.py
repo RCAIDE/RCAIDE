@@ -132,7 +132,7 @@ class Subsonic_VLM(Aerodynamics):
             None
 
         Args:
-            self     : aerodynamics analysis  [-] 
+            self: aerodynamics analysis  [-] 
 
         Returs:
              None
@@ -162,11 +162,11 @@ class Subsonic_VLM(Aerodynamics):
             None
 
         Args:
-            self     : aerodynamics analysis  [-]
-            state    : flight conditions      [-]
+            self        : aerodynamics analysis  [-]
+            state (dict): flight conditions      [-]
 
         Returs:
-             results : aerodynamic results    [-]
+             results (dict): aerodynamic results    [-]
         """               
         settings = self.settings
         geometry = self.geometry 

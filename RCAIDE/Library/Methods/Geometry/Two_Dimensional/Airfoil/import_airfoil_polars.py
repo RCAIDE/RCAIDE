@@ -22,12 +22,11 @@ def  import_airfoil_polars(airfoil_polar_files,angel_of_attack_discretization = 
     Input airfoil polars file is obtained from XFOIL or from Airfoiltools.com
     Source:
     http://airfoiltools.com/
-    Inputs:
+    Args:
     airfoil polar files   <list of strings>
-    Outputs:
+    Returns:
     data       numpy array with airfoil data
-    Properties Used:
-    N/A
+
     """      
      
     # number of airfoils   

@@ -24,10 +24,10 @@ def PNL_noise_metric(SPL):
     Source:
         None
  
-    Inputs:
+    Args:
         SPL - Sound Pressure Level in 1/3 octave band  [dB]
    
-    Outputs:
+    Returns:
         PNL - Perceived Noise Level                    [dB]
    
     Properties Used:

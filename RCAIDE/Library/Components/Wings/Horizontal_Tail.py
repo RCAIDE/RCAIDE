@@ -23,10 +23,10 @@ class Horizontal_Tail(Wing):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
         Properties Used:
@@ -42,10 +42,10 @@ class Horizontal_Tail(Wing):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
         Properties Used:

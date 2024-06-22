@@ -21,20 +21,13 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
     """ Vehicle accelerates at a constant rate between two airspeeds. 
     """     
     
-    def __defaults__(self):
-
-        """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
-    
+    def __defaults__(self): 
+        """ Specific flight segment defaults which can be modified after initializing.
+        
             Assumptions:
                 None
     
             Source:
-                self : mission segment [-]
-    
-            Args:
-                None
-    
-            Returns:
                 None
         """       
         

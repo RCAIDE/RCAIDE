@@ -20,11 +20,10 @@ def set_axes(axes):
     Inputs
     axes
 
-    Outputs:
+    Returns:
     axes
 
-    Properties Used:
-    N/A
+
     """
 
     axes.minorticks_on()

@@ -21,7 +21,7 @@ def leading_edge_slat_noise(SPL_wing,Sw,bw,velocity,viscosity,M,phi,theta,distan
      Assumptions:
          Correlation based.
          
-     Inputs:
+     Args:
              SPL_wing                   - Sound Pressure Level of the clean wing                         [dB]
              Sw                         - Wing Area                                                      [sq.ft]
              bw                         - Wing Span                                                      [ft] 
@@ -33,7 +33,7 @@ def leading_edge_slat_noise(SPL_wing,Sw,bw,velocity,viscosity,M,phi,theta,distan
              distance                   - Distance from airplane to observer, evaluated at retarded time [ft]
              frequency                  - Frequency array                                                [Hz]
                                                                                                          
-     Outputs: One Third Octave Band SPL                                                                  [dB]
+     Returns: One Third Octave Band SPL                                                                  [dB]
          SPL                             - Sound Pressure Level of the slat leading edge                 [dB]
     
     Properties Used:

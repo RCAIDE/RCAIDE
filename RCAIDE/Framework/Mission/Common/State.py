@@ -25,9 +25,7 @@ import numpy as np
 ## @ingroup Framework-Mission-Segments-Common
 class State(Conditions):
     """ Creates the State data structure for storing daata that solved in a mission.
-    """    
-    
-    
+    """  
     def __defaults__(self):
         """ This sets the default values.
         
@@ -36,8 +34,7 @@ class State(Conditions):
     
         Source:
             None 
-        """           
-        
+        """   
         self.tag        = 'state'
         self.initials   = Conditions()
         self.numerics   = Numerics()
@@ -56,8 +53,8 @@ class State(Conditions):
                 None
       
             Args:
-                rows :  [integer]
-    
+                rows (int): number of rows
+
             Returns:
                 None 
         """         
@@ -72,8 +69,7 @@ class State(Conditions):
                 rank = 0            
             # don't expand initials or numerics
             if k in ('initials','numerics'):
-                continue
-            
+                continue 
             # recursion
             elif isinstance(v,Conditions):
                 v.expand_rows(rows,override=override)
@@ -94,12 +90,6 @@ class Container(State):
                Puts the segments in the right order
     
             Source:
-                None
-    
-            Args:
-                None
-    
-            Returns:
                 None 
         """         
         self.segments = DataOrdered()
@@ -148,11 +138,11 @@ def append_array(A,B=None):
             None
 
         Args:
-            A [array]
-            B [array]
+            A (float): np.array 
+            B (float): np.array 
 
         Returns:
-             array 
+             (float): np.array
     """       
     if isinstance(A,np.ndarray) and isinstance(B,np.ndarray):
         return np.vstack([A,B])

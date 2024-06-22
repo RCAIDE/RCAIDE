@@ -1,6 +1,8 @@
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/heads_method.py
-#  
+# (c) Copyright 2023 Aerospace Research Community LLC
+
+# Created:  Dec 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -14,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # heads_method
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor_0,RE_L,TURBULENT_COORD,VE_I,DVE_I,TURBULENT_SURF,tol):
     """ Computes the boundary layer characteristics in turbulent
     flow pressure gradients
@@ -26,9 +28,9 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
     Assumptions:
     None  
 
-    Inputs: 
-    ncases         - number of cases                                                               [unitless]
-    ncpts          - number of control points                                                      [unitless]
+    Args: 
+    ncases         - number of cases (angle of attacks)                                            [unitless]
+    ncpts          - number of control points (reynolds numbers)                                   [unitless]
     DEL_0          - intital bounday layer thickness                                               [m]
     DELTA_STAR_0   - initial displacement thickness                                                [m]
     CF_0           - initial value of the skin friction coefficient                                [unitless]
@@ -42,7 +44,7 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
     npanel         - number of points on surface                                                   [unitless]
     tol            - boundary layer error correction tolerance                                     [unitless]
 
-    Outputs: 
+    Returns: 
     RESULTS.
       X_H          - reshaped distance along airfoil surface                    [unitless]
       THETA_H      - momentum thickness                                         [m]
@@ -53,8 +55,7 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
       RE_X_H       - Reynolds number as a function of distance                  [unitless]
       DELTA_H      - boundary layer thickness                                   [m]
        
-    Properties Used:
-    N/A
+
     """    
     # Initialize vectors 
     X_H          = np.zeros((npanel,ncases,ncpts))
@@ -74,20 +75,18 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
                 pass
             else: 
                 def getcf(ind, H, THETA):
-                    ReTheta = (Re_L/l)*Ve_i[ind]*THETA;
-                    cf_var = 0.246*(10**(-0.678*H))*(ReTheta**-0.268);
-                    return cf_var
-
+                    ReTheta = (Re_L/l)*Ve_i[ind]*THETA
+                    cf_var = 0.246*(10**(-0.678*H))*(ReTheta**-0.268)
+                    return cf_var 
 
                 def getH(H1_var):
                     if H1_var<3.3:
                         H_var = 3.0
                     elif H1_var < 5.39142:
-                        H_var = 0.6778 + 1.153793*(H1_var-3.3)**-0.32637;
+                        H_var = 0.6778 + 1.153793*(H1_var-3.3)**-0.32637
                     elif H1_var >= 5.39142:
-                        H_var = 1.1 + 0.8598636*(H1_var - 3.3)**-0.777;
-                    return H_var
-                
+                        H_var = 1.1 + 0.8598636*(H1_var - 3.3)**-0.777
+                    return H_var 
              
                 # define RK4 slope function for Theta
                 def dTheta_by_dx(index, X, THETA, VETHETAH1):
@@ -103,8 +102,7 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
                 Re_L         = RE_L[case,cpt] 
                 nu           = l/Re_L 
                 n            = len(x_i)
-                dx           = np.diff(x_i)
-                
+                dx           = np.diff(x_i) 
                 H            = np.zeros(n) 
                 H[0]         = ShapeFactor_0[case,cpt]
                 Theta        = np.zeros(n)
@@ -121,12 +119,20 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
                 
                 for i in range(1,n):
                     # initialise the variable values at the current grid point using previous grid points (to define the error functions)
-                    H_er = H[i-1];  cf_er = cf[i-1];  H1_er = H1[i-1];  Theta_er = Theta[i-1];
+                    H_er     = H[i-1]
+                    cf_er    = cf[i-1]
+                    H1_er    = H1[i-1]
+                    Theta_er = Theta[i-1]
+                    
                     # assign previous grid point values of H and Cf to start RK4
-                    H[i] = H[i-1]; cf[i] = cf[i-1];
+                    H[i]  = H[i-1]
+                    cf[i] = cf[i-1]
                     
                     #assume some error values
-                    erH = 0.2; erH1 = 0.2; erTheta = 0.2; ercf = 0.2;
+                    erH     = 0.2
+                    erH1    = 0.2
+                    erTheta = 0.2
+                    ercf    = 0.2
                     
                     # iterate to get the variables at the grid point
                     while abs(erH)>0.00001 or abs(erH1)>0.00001 or abs(erTheta)>0.00001 or abs(ercf)>0.00001:
@@ -146,16 +152,16 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
                         cf[i] = getcf(i, H[i], Theta[i])
                         
                         # define errors
-                        erH = (H[i]-H_er)/H[i];
-                        erH1 = (H1[i]-H1_er)/H1[i];
-                        erTheta = (Theta[i]-Theta_er)/Theta[i];
-                        ercf = (cf[i]-cf_er)/cf[i];
+                        erH     = (H[i]-H_er)/H[i]
+                        erH1    = (H1[i]-H1_er)/H1[i]
+                        erTheta = (Theta[i]-Theta_er)/Theta[i]
+                        ercf    = (cf[i]-cf_er)/cf[i]
                         
                         # assign current iteration variable values to the Var_er
-                        H_er = H[i]
-                        H1_er = H1[i]
+                        H_er     = H[i]
+                        H1_er    = H1[i]
                         Theta_er = Theta[i]
-                        cf_er = cf[i]
+                        cf_er    = cf[i]
                 
                 
                 delta_star   = H*Theta
@@ -188,6 +194,27 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
 
 
 def RK4(ind, dx, x, Theta_var, VeThetaH1_var, Theta_slope, VeThetaH1_slope):
+    """4th Order Runge Kutta integration        
+
+    Assumptions:
+        None
+
+    Source:
+        None                                                                    
+                                                                   
+    Args:                                                      
+        ind
+        dx
+        x
+        Theta_var
+        VeThetaH1_var
+        Theta_slope
+        VeThetaH1_slope
+        
+    Returns:
+        Theta_new
+        VeThetaH1_new 
+    """  
     k1 = Theta_slope(ind,  x[ind],  Theta_var[ind],  VeThetaH1_var[ind])
     l1 = VeThetaH1_slope(ind,  x[ind],  Theta_var[ind],  VeThetaH1_var[ind])
     
@@ -200,6 +227,6 @@ def RK4(ind, dx, x, Theta_var, VeThetaH1_var, Theta_slope, VeThetaH1_slope):
     k4 = Theta_slope(ind,  x[ind] + dx[ind],  Theta_var[ind] + (k3*dx[ind]),  VeThetaH1_var[ind] + (l2*dx[ind]))
     l4 = VeThetaH1_slope(ind,  x[ind] + dx[ind],  Theta_var[ind] + (k3*dx[ind]),  VeThetaH1_var[ind] + (l2*dx[ind]))
     
-    Theta_new = Theta_var[ind] + ((dx[ind]/6)*(k1 + 2*k2 + 2*k3 + k4))
+    Theta_new     = Theta_var[ind] + ((dx[ind]/6)*(k1 + 2*k2 + 2*k3 + k4))
     VeThetaH1_new = VeThetaH1_var[ind] + ((dx[ind]/6)*(l1 + 2*l2 + 2*l3 + l4))
     return Theta_new, VeThetaH1_new 

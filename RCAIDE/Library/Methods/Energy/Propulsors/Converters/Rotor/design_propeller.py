@@ -23,7 +23,7 @@ from scipy.optimize import root
 def design_propeller(prop,number_of_stations=20):
     """ Optimizes propeller chord and twist given input parameters.
           
-          Inputs:
+          Args:
           Either design power or thrust
           prop_attributes.
             hub radius                       [m]
@@ -36,7 +36,7 @@ def design_propeller(prop,number_of_stations=20):
             design_altitude                  [m]
             airfoil data
             
-          Outputs:
+          Returns:
           Twist distribution                 [array of radians]
           Chord distribution                 [array of meters]
               

@@ -20,7 +20,7 @@ def stability(mission):
         Assumptions:
             None
         
-        Inputs:
+        Args:
             None
             
         Returns:

@@ -24,10 +24,10 @@ def A_weighting_metric(SPL,f):
     Source:
         IEC 61672-1:2013 Electroacoustics - Sound level meters - Part 1: Specifications. IEC. 2013.
 
-    Inputs:
+    Args:
         SPL     - Sound Pressure Level             [dB] 
 
-    Outputs: [dB]
+    Returns:  
         SPL_dBA - A-weighted Sound Pressure Level  [dBA] 
 
     Properties Used:

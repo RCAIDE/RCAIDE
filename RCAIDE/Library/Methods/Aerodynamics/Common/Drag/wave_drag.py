@@ -26,18 +26,17 @@ def wave_drag(conditions,configuration,wing):
     Yoshida, Kenji. "Supersonic drag reduction technology in the scaled supersonic 
     experimental airplane project by JAXA."
 
-    Inputs:
+    Args:
     conditions.freestream.mach_number        [Unitless]
     conditions.aerodynamics.lift_coefficient [Unitless]
     wing.spans.projected                     [m]
     wing.total_length                        [m]
     wing.aspect_ratio                        [-]
 
-    Outputs:
+    Returns:
     wave_drag_lift                           [Unitless]
 
-    Properties Used:
-    N/A
+
     """  
 
     # Unpack
@@ -78,14 +77,13 @@ def fw(x):
     Yoshida, Kenji. "Supersonic drag reduction technology in the scaled supersonic 
     experimental airplane project by JAXA."
 
-    Inputs:
+    Args:
     x    [Unitless]
 
-    Outputs:
+    Returns:
     ret  [Unitless]
 
-    Properties Used:
-    N/A
+
     """  
     
     ret = np.zeros_like(x)

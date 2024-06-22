@@ -40,7 +40,7 @@ def airframe_noise(segment,analyses,config,settings):
         Fink, Martin R. Airframe noise prediction method. No. UTRC/R77-912607-11. UNITED 
         TECHNOLOGIES RESEARCH CENTER EAST HARTFORD CT, 1977.  
                
-    Inputs:
+    Args:
         vehicle	 - RCAIDE type vehicle
 
         includes these fields:
@@ -66,7 +66,7 @@ def airframe_noise(segment,analyses,config,settings):
             phi                         - azimuthal angle from the source to the observer
 
 
-    Outputs: One Third Octave Band SPL [dB]
+    Returns: One Third Octave Band SPL [dB]
         SPL_wing                        - Sound Pressure Level of the clean wing
         SPLht                           - Sound Pressure Level of the horizontal tail
         SPLvt                           - Sound Pressure Level of the vertical tail

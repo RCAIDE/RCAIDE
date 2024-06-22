@@ -47,7 +47,7 @@ def compute_rotor_weight(rotor,
         Sources:
         Project Vahana Conceptual Trade Study
 
-        Inputs:
+        Args:
 
             rotor                       RCAIDE Rotor Data Structure
             maximum_thrust              Maximum Design Thrust               [N]
@@ -63,7 +63,7 @@ def compute_rotor_weight(rotor,
             speed_of_sound              Local Speed of Sound                [m/s]
             tip_max_mach_number         Allowable Tip Mach Number           [Unitless]
 
-        Outputs:
+        Returns:
 
             weight:                 Propeller Mass                      [kg]
             

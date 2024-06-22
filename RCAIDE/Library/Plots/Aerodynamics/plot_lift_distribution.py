@@ -29,14 +29,14 @@ def plot_lift_distribution(results,vehicle,
      Source:
      None
 
-     Inputs:
+     Args:
      results.segments.aerodynamics.
          inviscid_wings_sectional_lift
      vehicle.vortex_distribution.
         n_sw
         n_w
 
-     Outputs: 
+     Returns: 
      Plots
 
      Properties Used:

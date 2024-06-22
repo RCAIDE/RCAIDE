@@ -25,14 +25,12 @@ class Stabilator(Horizontal_Tail, All_Moving_Surface):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
 
     def __defaults__(self):
@@ -47,14 +45,12 @@ class Stabilator(Horizontal_Tail, All_Moving_Surface):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
         self.tag                = 'stabilator'
         self.sign_duplicate     = 1.0

@@ -33,7 +33,7 @@ def plot_flight_conditions(results,
     Source:
     None
 
-    Inputs:
+    Args:
     results.segments.conditions.
          frames
              body.inertial_rotations
@@ -44,11 +44,10 @@ def plot_flight_conditions(results,
              drag_coefficient
              angle_of_attack
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """
  
 

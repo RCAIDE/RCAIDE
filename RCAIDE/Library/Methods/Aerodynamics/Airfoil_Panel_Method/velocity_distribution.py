@@ -1,24 +1,21 @@
-
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/velocity_distribution.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Dec 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-
-# pacakge imports  
+# Python imports  
 import numpy as np  
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # velocity_distribution
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel,ncases,ncpts):
-    """Compute the tangential velocity distribution at the       
-                 midpoint of each panel   
+    """Compute the tangential velocity distribution at the midpoint of each panel   
     
     Source:
     None
@@ -26,7 +23,7 @@ def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel,ncases,ncpts):
     Assumptions:
     None  
     
-    Inputs:                                                    
+    Args:                                                    
 
      qg          -  Vector of source/sink and vortex strengths    [unitless]          
      x           -  Vector of x coordinates of the surface nodes  [unitless]         
@@ -38,12 +35,11 @@ def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel,ncases,ncpts):
      al          -  Angle of attack in radians                    [radians]             
      npanel      -  Number of panels on the airfoil               [unitless]  
 
-     Outputs:                                                        
+     Returns:                                                        
 
      vt_2d        -  Vector of tangential velocities      
 
-    Properties Used:
-    N/A
+
     """   
     # flow tangency boundary condition - source distribution  
     vt_2d = ct *np.cos(alpha_2d) + st*np.sin(alpha_2d)
@@ -68,9 +64,8 @@ def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel,ncases,ncpts):
     rij_dot_rij_plus_1   = (xbar_2d-x_2d[:,:,:,:-1])*(xbar_2d-x_2d[:,:,:,1:]) + (ybar_2d-y_2d[:,:,:,:-1])*(ybar_2d-y_2d[:,:,:,1:])  
     anglesign            = np.sign((xbar_2d-x_2d[:,:,:,:-1])*(ybar_2d-y_2d[:,:,:,1:]) - (xbar_2d-x_2d[:,:,:,1:])*(ybar_2d-y_2d[:,:,:,:-1]))
     r_ratio              = rij_dot_rij_plus_1/rij/rij_plus_1
-    r_ratio[r_ratio>1.0] = 1.0 # numerical noise     
-    betaij               = np.real(anglesign*np.arccos(r_ratio))     
-    # betaij[aoas,res,diag_indices,diag_indices] = np.pi
+    r_ratio[r_ratio>1.0] = 1.0 # attenuate numerical noise     
+    betaij               = np.real(anglesign*np.arccos(r_ratio)) 
     for i in range(ncases):
         for j in range(ncpts):
             np.fill_diagonal(betaij[i,j,:,:], np.pi)   

@@ -25,10 +25,10 @@ def expand_state(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     state.numerics.number_of_control_points  [Unitless]
 
-    Outputs:
+    Returns:
     N/A
 
     Properties Used:
@@ -37,12 +37,11 @@ def expand_state(segment):
     
     # unpack
     climb_angle  = segment.climb_angle
-    air_speed    = segment.air_speed   
-    conditions   = segment.state.conditions
+    air_speed    = segment.air_speed    
     
-    #Necessary input for determination of noise trajectory    
-    dt = 0.5  #time step in seconds for noise calculation - Certification requirement    
-    x0 = 6500 #Position of the Flyover microphone relatively to the break-release point
+    # Necessary input for determination of noise trajectory    
+    dt = 0.5  # time step in seconds for noise calculation - Certification requirement    
+    x0 = 6500 # Position of the Flyover microphone relatively to the break-release point
     
     # process velocity vector
     v_x=air_speed*np.cos(climb_angle)
@@ -51,8 +50,7 @@ def expand_state(segment):
     total_time=(x0+500)/v_x    
     n_points   = np.int(np.ceil(total_time/dt +1))       
     
-    segment.state.numerics.number_of_control_points = n_points
-    
+    segment.state.numerics.number_of_control_points = n_points 
     segment.state.expand_rows(n_points,override=True)      
     
     return
@@ -70,7 +68,7 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.climb_angle                         [radians]
     segment.air_speed                           [meter/second]
     segment.altitude_start                      [meters]
@@ -78,16 +76,15 @@ def initialize_conditions(segment):
     state.numerics.dimensionless.control_points [Unitless]
     conditions.freestream.density               [kilograms/meter^3]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
 
-    Properties Used:
-    N/A
+
     """     
     
-    dt=0.5  #time step in seconds for noise calculation
+    dt = 0.5  # time step in seconds for noise calculation
     
     # unpack
     climb_angle = segment.climb_angle
@@ -118,5 +115,5 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] 
+    conditions.freestream.altitude[:,0]             =  alt[:,0] 

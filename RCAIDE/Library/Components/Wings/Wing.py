@@ -26,14 +26,13 @@ class Wing(Component):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
-    Properties Used:
-    N/A
+
     """      
     def __defaults__(self):
         """This sets the default values of a wing defined in RCAIDE.
@@ -44,14 +43,12 @@ class Wing(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """         
 
         self.tag                               = 'wing'
@@ -119,14 +116,12 @@ class Wing(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
 
         # Assert database type
@@ -147,14 +142,12 @@ class Wing(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
 
         # Assert database type
@@ -176,14 +169,12 @@ class Wing(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
 
         # Assert database type
@@ -204,14 +195,12 @@ class Wing(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
 
         # Assert database type
@@ -233,14 +222,12 @@ class Container(Component.Container):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        N/A
         """       
         from . import Main_Wing
         from . import Vertical_Tail

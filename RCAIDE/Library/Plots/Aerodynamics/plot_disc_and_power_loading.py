@@ -38,11 +38,10 @@ def plot_disc_and_power_loading(results,
         disc_loadings
         power_loading 
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """
  
     # get plotting style 

@@ -24,20 +24,19 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.air_speed                           [meters/second]
     segment.altitude_start                      [meters]
     segment.altitude_end                        [meters]
     segment.distance                            [meters]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """        
     
     # unpack
@@ -69,7 +68,7 @@ def initialize_conditions(segment):
     
     # pack
     conditions.freestream.altitude[:,0]             = alt[:,0]
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down 
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0]  
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = -v_z  

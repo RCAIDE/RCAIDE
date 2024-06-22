@@ -25,7 +25,7 @@ def generate_interpolated_airfoils(a1, a2, nairfoils, npoints=200, save_filename
     
     Source: None
     
-    Inputs:
+    Args:
     a1                 first airfoil                                [ airfoil ]
     a2                 second airfoil                               [ airfoil ]
     nairfoils          number of airfoils                           [ unitless ]

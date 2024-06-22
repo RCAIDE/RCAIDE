@@ -35,7 +35,7 @@ def compute_generic_li_cell_performance(battery,state,bus,battery_discharge_flag
        Battery Model Capable of Predicting Runtime and I - V Performance" IEEE
        Transactions on Energy Conversion, Vol. 21, No. 2, June 2006, pp. 504-511
        
-       Inputs:
+       Args:
          battery. 
                I_bat             (currnet)                             [Amperes]
                cell_mass         (battery cell mass)                   [kilograms]
@@ -50,7 +50,7 @@ def compute_generic_li_cell_performance(battery,state,bus,battery_discharge_flag
                I_bat             (current)                             [amps]
                P_bat             (power)                               [Watts]
        
-       Outputs:
+       Returns:
          battery.          
               current_energy                                           [Joules]
               heat_energy_generated                                         [Watts] 

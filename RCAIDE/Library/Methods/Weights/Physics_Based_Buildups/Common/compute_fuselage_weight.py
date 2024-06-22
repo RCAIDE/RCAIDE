@@ -32,13 +32,13 @@ def compute_fuselage_weight(fuse,maxSpan, MTOW,
         Sources:
         Project Vahana Conceptual Trade Study
 
-        Inputs:
+        Args:
 
             config                      RCAIDE Vehicle Configuration
             max_g_load                  Max Accelerative Load During Flight [Unitless]
             landing_impact_factor       Maximum Load Multiplier on Landing  [Unitless]
 
-        Outputs:
+        Returns:
 
             weight:                 Estimated Fuselage Mass             [kg]
         

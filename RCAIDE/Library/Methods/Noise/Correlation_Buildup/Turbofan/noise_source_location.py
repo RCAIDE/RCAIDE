@@ -29,7 +29,7 @@ def noise_source_location(B,Xo,zk,Diameter_primary,theta_p,Area_primary,Area_sec
     Source:
         None
 
-    Inputs: 
+    Args: 
         B                         [-]
         Xo                        [-]
         zk                        [-]
@@ -51,7 +51,7 @@ def noise_source_location(B,Xo,zk,Diameter_primary,theta_p,Area_primary,Area_sec
         Str_m                     [-]
         Str_s                     [-]
 
-    Outputs: 
+    Returns: 
         theta_p  [rad]
         theta_s  [rad]
         theta_m  [rad]

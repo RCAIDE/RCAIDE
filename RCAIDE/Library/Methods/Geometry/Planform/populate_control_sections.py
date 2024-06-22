@@ -23,8 +23,7 @@ def populate_control_sections(wing):
        None
  
 
-    Properties Used:
-    N/A
+
     """
     w_cs  = wing.control_surfaces  
     w_seg = wing.Segments

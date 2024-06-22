@@ -18,7 +18,7 @@ def compute_compressor_performance(compressor,conditions):
     Source:
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
+    Args:
     conditions.freestream.
       isentropic_expansion_factor         [-]
       specific_heat_at_constant_pressure  [J/(kg K)]
@@ -26,7 +26,7 @@ def compute_compressor_performance(compressor,conditions):
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
 
-    Outputs:
+    Returns:
     compressor.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]

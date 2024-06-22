@@ -49,7 +49,7 @@ def compute_wing_weight(wing,
         Sources:
         Project Vahana Conceptual Trade Study
 
-        Inputs:
+        Args:
 
             wing                          RCAIDE Wing Data Structure           [None]
                  winglet_fraction         winglet fraction                    [Unitless]
@@ -66,7 +66,7 @@ def compute_wing_weight(wing,
             shear_center                  Location of Shear Center            [m]
             margin_factor                 Allowable Extra Mass Fraction       [Unitless]
 
-        Outputs: 
+        Returns: 
             weight:                       Wing Mass                           [kg]
     """
 

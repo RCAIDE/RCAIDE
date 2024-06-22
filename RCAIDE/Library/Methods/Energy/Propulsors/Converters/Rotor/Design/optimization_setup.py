@@ -25,10 +25,10 @@ import numpy as np
 def optimization_setup(rotor,number_of_stations,print_iterations):
     """ Sets up rotor optimization problem including design variables, constraints and objective function
         using RCAIDE's Nexus optimization framework. Appends methodolody of planform modification to Nexus.
-          Inputs: 
+          Args: 
              rotor     - rotor data structure           [None]
              
-          Outputs: 
+          Returns: 
               nexus    - RCAIDE's optimization framework [None]
               
           Assumptions: 

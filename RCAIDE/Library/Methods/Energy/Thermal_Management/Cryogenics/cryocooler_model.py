@@ -32,13 +32,13 @@ def cryocooler_model(Cryocooler):
     Source: 
         https://www.cryomech.com/cryocoolers/
         
-    Inputs:
+    Args:
         self.inputs
             cryo_temp -         cryogenic output temperature required                                   [kelvin]
             cooling_power -     cooling power required of the cryocooler                                [watts]
             
 
-    Outputs:
+    Returns:
         self.inputs
             rated_power -   electrical input power required by the cryocooler         [watts]
             mass -          mass of the cryocooler and supporting components          [kilogram]

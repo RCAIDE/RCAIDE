@@ -26,7 +26,7 @@ def estimate_wing_CL_alpha(wing,mach):
     Source:
         None
          
-    Inputs:
+    Args:
         wing - a data dictionary with the fields:
             effective_apsect_ratio - wing aspect ratio [dimensionless]. If 
             this variable is not inlcuded in the input, the method will look
@@ -36,11 +36,10 @@ def estimate_wing_CL_alpha(wing,mach):
         mach - flight Mach number [dimensionless]. Should be a numpy array
             with one or more elements.
 
-    Outputs:
+    Returns:
         cL_alpha - The derivative of 3D lift coefficient with respect to AoA
 
-    Properties Used:
-    N/A
+
     """         
     
     #Unpack inputs

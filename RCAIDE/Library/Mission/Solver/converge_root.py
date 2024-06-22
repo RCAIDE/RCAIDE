@@ -24,17 +24,16 @@ def converge_root(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment                            [Data]
     segment.settings.root_finder       [Data]
     state.numerics.tolerance_solution  [Unitless]
 
-    Outputs:
+    Returns:
     state.unknowns                     [Any]
     segment.state.numerics.converged   [Unitless]
 
-    Properties Used:
-    N/A
+
     """       
     
     unknowns = segment.state.unknowns.pack_array()
@@ -77,15 +76,14 @@ def iterate(unknowns, segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     state.unknowns                [Data]
     segment.process.iterate       [Data]
 
-    Outputs:
+    Returns:
     residuals                     [Unitless]
 
-    Properties Used:
-    N/A
+
     """       
     if isinstance(unknowns,np.ndarray):
         segment.state.unknowns.unpack_array(unknowns)

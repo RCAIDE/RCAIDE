@@ -23,22 +23,21 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.altitude                               [meters]
     segment.air_speed                              [meters/second]
     segment.throttle                               [unitless]
     segment.acceleration_z                         [meters/second^2]
     segment.state.unknowns.acceleration            [meters/second^2]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.acceleration_vector [meters/second^2]
     conditions.frames.inertial.velocity_vector     [meters/second]
     conditions.frames.inertial.position_vector     [meters]
     conditions.freestream.altitude                 [meters]
     conditions.frames.inertial.time                [seconds]
 
-    Properties Used:
-    N/A
+
     """      
     
     # unpack
@@ -52,15 +51,12 @@ def initialize_conditions(segment):
     if alt is None:
         if not segment.state.initials: raise AttributeError('altitude not set')
         alt = -1.0 *segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
-    
-    v_x  = np.cos(beta)*air_speed 
-    v_y  = np.sin(beta)*air_speed
-        
+     
     # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_x 
-    segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_y 
+    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt 
+    segment.state.conditions.frames.inertial.velocity_vector[:,0] = np.cos(beta)*air_speed
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = np.sin(beta)*air_speed
     segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[acceleration,0.0,acceleration_z]]) 
     
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -73,18 +69,16 @@ def unpack_unknowns(segment):
         Assumptions:
         N/A
         
-        Inputs:
+        Args:
             segment.state.unknowns:
                 acceleration                        [meters/second^2]
                 body_angle                          [radians]
             
-        Outputs:
+        Returns:
             segment.state.conditions:
                 frames.inertial.acceleration_vector [meters/second^2]
                 frames.body.inertial_rotations      [radians]
-
-        
-                                
+ 
     """      
     
     # unpack unknowns

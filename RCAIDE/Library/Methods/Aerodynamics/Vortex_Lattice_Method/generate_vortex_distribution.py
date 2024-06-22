@@ -1,4 +1,4 @@
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
 # generate_vortex_distribution.py
 # 
 # Created:  May 2018, M. Clarke
@@ -23,7 +23,7 @@ from RCAIDE.Library.Methods.Geometry.Airfoil     import import_airfoil_geometry
 # ----------------------------------------------------------------------
 #  Generate Vortex Distribution
 # ----------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
 def generate_vortex_distribution(geometry,settings):
     ''' Compute the coordinates of panels, vortices , control points
     and geometry used to build the influence coefficient matrix. A 
@@ -64,7 +64,7 @@ def generate_vortex_distribution(geometry,settings):
     Source:  
     None
 
-    Inputs:
+    Args:
     geometry.wings                                [Unitless]  
     settings.floating_point_precision             [np.dtype]
     
@@ -76,11 +76,10 @@ def generate_vortex_distribution(geometry,settings):
     settings.fuselage_spanwise_vortices           - the number of vortices to be applied to only the fuslages
     settings.fuselage_chordwise_vortices          - the number of vortices to be applied to only the fuselages 
        
-    Outputs:                                   
+    Returns:                                   
     VD - vehicle vortex distribution              [Unitless] 
 
-    Properties Used:
-    N/A 
+ 
          
     '''
     # ---------------------------------------------------------------------------------------
@@ -260,7 +259,7 @@ def generate_vortex_distribution(geometry,settings):
 # ----------------------------------------------------------------------
 #  Discretize Wings
 # ----------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
 def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     """ This generates vortex distribution points for the given wing 
 
@@ -276,12 +275,11 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     Source:   
     None
     
-    Inputs:   
+    Args:   
     VD                   - vortex distribution
     wing                 - a Data object made or modified by make_VLM_wings() to mimick a Wing object
     
-    Properties Used:
-    N/A
+
     """ 
     wings = VD.VLM_wings
     
@@ -826,7 +824,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
 # ----------------------------------------------------------------------
 #  Discretize Fuselage
 # ----------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
 def generate_fuselage_and_nacelle_vortex_distribution(VD,fus,n_cw,n_sw,precision,model_geometry=False):
     """ This generates the vortex distribution points on a fuselage or nacelle component
     Assumptions: 
@@ -834,11 +832,10 @@ def generate_fuselage_and_nacelle_vortex_distribution(VD,fus,n_cw,n_sw,precision
     Source:   
     None
     
-    Inputs:   
+    Args:   
     VD                   - vortex distribution
     
-    Properties Used:
-    N/A
+
     """    
     
     fhs_xa1 = np.zeros(n_cw*n_sw)

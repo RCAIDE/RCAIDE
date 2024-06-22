@@ -32,17 +32,16 @@ def plot_electric_propulsor_efficiencies(results,
     Source:
     None
 
-    Inputs:
+    Args:
     results.segments.conditions.propulsion. 
          etap
          etam
          fom
         
-    Outputs: 
+    Returns: 
     Plots
 
-    Properties Used:
-    N/A	
+	
     """	   
     # get plotting style 
     ps      = plot_style()  

@@ -33,14 +33,13 @@ class Tube_Fuselage(Fuselage):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        None
+
         """      
         self.tag                                    = 'tube_fuselage' 
   

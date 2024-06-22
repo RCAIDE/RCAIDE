@@ -13,11 +13,10 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 # Process
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Analyses
+## @ingroup Framework-Analyses
 class Process(Container):
     """The top level process container class 
-    """     
-    
+    """      
     def evaluate(self,*args,**kwarg):
         """Execute the evaluate functions of the analyses stored in the container.
                 

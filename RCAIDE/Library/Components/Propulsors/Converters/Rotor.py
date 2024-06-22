@@ -40,14 +40,13 @@ class Rotor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """
 
         self.tag                               = 'rotor' 
@@ -119,14 +118,12 @@ class Rotor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """  
         # assert database type
         if not isinstance(airfoil,Data):
@@ -156,7 +153,7 @@ class Rotor(Component):
         Leishman, Gordon J. Principles of helicopter aerodynamics
         Cambridge university press, 2006.
 
-        Inputs:
+        Args:
         self.inputs.omega                    [radian/s]
         conditions.freestream.
           density                            [kg/m^3]
@@ -169,7 +166,7 @@ class Rotor(Component):
         conditions.energy.
           throttle                           [-]
 
-        Outputs:
+        Returns:
         conditions.energy.outputs.
            number_radial_stations            [-]
            number_azimuthal_stations         [-]
@@ -600,14 +597,13 @@ class Rotor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """
 
         rot_mat = sp.spatial.transform.Rotation.from_rotvec([0,np.pi,0]).as_matrix()
@@ -626,14 +622,13 @@ class Rotor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """
 
         # Go from velocity to vehicle frame
@@ -669,14 +664,13 @@ class Rotor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """
 
         body2propvel = self.body_to_prop_vel()
@@ -701,14 +695,13 @@ class Airfoil_Container(Container):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
-    Properties Used:
-    N/A
+
     """     
 
     def get_children(self):
@@ -720,14 +713,12 @@ class Airfoil_Container(Container):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        N/A
         """       
         
         return []

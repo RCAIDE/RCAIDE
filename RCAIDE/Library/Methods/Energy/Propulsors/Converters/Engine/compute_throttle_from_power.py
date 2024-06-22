@@ -27,7 +27,7 @@ def compute_throttle_from_power(engine,conditions):
     Assumtions:
     Available power based on Gagg and Ferrar model (ref: S. Gudmundsson, 2014 - eq. 7-16)
     
-    Inputs:
+    Args:
         Engine:
             sea-level power
             flat rate altitude
@@ -37,7 +37,7 @@ def compute_throttle_from_power(engine,conditions):
         Freestream conditions:
             altitude
             delta_isa
-    Outputs:
+    Returns:
         Brake power (or Shaft power)
         Power (brake) specific fuel consumption
         Fuel flow

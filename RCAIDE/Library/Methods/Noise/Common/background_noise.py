@@ -18,10 +18,10 @@ def background_noise():
     Source:
         None
         
-    Inputs:
+    Args:
         None
 
-    Outputs: 
+    Returns: 
         None
         
     Properties Used:

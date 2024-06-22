@@ -1,6 +1,8 @@
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method  
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method  
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/thwaites_method_new.py
-#  
+# (c) Copyright 2023 Aerospace Research Community LLC
+
+# Created:  Dec 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -11,7 +13,11 @@ from RCAIDE.Framework.Core import Data
 # pacakge imports  
 import numpy as np
 
-def thwaites_method(npanel,ncases,ncpts,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
+# ---------------------------------------------------------------------------------------------------------------------- 
+# thwaites_method
+# ----------------------------------------------------------------------------------------------------------------------
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
+def thwaites_method(npanel,ncases,nRe,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
     """ Computes the boundary layer characteristics in laminar 
     flow pressure gradients
     
@@ -22,10 +28,10 @@ def thwaites_method(npanel,ncases,ncpts,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
     Assumptions:
     None  
 
-    Inputs:  
+    Args:  
     npanel         - number of points on surface                                                 [unitless]
-    ncases         - number of cases                                                             [unitless]
-    ncpts          - number of control points                                                    [unitless]
+    ncases         - number of cases (angle of attacks)                                                             [unitless]
+    nRe          - number of control points                                                    [unitless]
     batch_analysis - flag for batch analysis                                                     [boolean]
     THETA_0        - initial momentum thickness                                                  [m]
     L              - normalized length of surface                                                [unitless]
@@ -35,7 +41,7 @@ def thwaites_method(npanel,ncases,ncpts,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
     DVE_I          - initial derivative value of boundary layer velocity at transition location  [m/s-m] 
     tol            - boundary layer error correction tolerance                                   [unitless]
 
-    Outputs: 
+    Returns: 
     RESULTS.
       X_T          - reshaped distance along airfoil surface             [unitless]
       THETA_T      - momentum thickness                                  [m]
@@ -46,11 +52,10 @@ def thwaites_method(npanel,ncases,ncpts,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
       RE_X_T       - Reynolds number as a function of distance           [unitless]
       DELTA_T      - boundary layer thickness                            [m]
 
-    Properties Used:
-    N/A
+
     """ 
     # Initialize vectors
-    X_T          = np.zeros((npanel,ncases,ncpts))
+    X_T          = np.zeros((npanel,ncases,nRe))
     THETA_T      = np.zeros_like(X_T)
     DELTA_STAR_T = np.zeros_like(X_T)
     H_T          = np.zeros_like(X_T)
@@ -60,11 +65,9 @@ def thwaites_method(npanel,ncases,ncpts,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
     DELTA_T      = np.zeros_like(X_T)  
       
     for case in range(ncases):
-        for cpt in range(ncpts):
-            
+        for cpt in range(nRe): 
             def dy_by_dx(index, X, Y):
-                return 0.45*nu*Ve_i[index]**5            
-            
+                return 0.45*nu*Ve_i[index]**5  
             l              = L[case,cpt]
             theta_0        = THETA_0 
             Re_L           = RE_L[case,cpt]
@@ -143,12 +146,9 @@ def thwaites_method(npanel,ncases,ncpts,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
         DELTA_T      = DELTA_T,  
     )    
     
-    return RESULTS
-            
+    return RESULTS 
 
-
-
-def getH(lambda_val ): 
+def getH(lambda_val): 
     """ Computes the shape factor, H
 
     Assumptions:
@@ -157,14 +157,11 @@ def getH(lambda_val ):
     Source:
     None
 
-    Inputs: 
+    Args: 
     lamdda_val  - thwaites separation criteria [unitless]
 
-    Outputs:  
-    H           - shape factor [unitless]
-
-    Properties Used:
-    N/A
+    Returns:  
+    H           - shape factor [unitless] 
     """       
     H       = 0.0731/(0.14 + lambda_val ) + 2.088 
     idx1    = (lambda_val>0.0)  
@@ -181,15 +178,12 @@ def getcf(lambda_val , Re_theta):
     Source:
     None
 
-    Inputs: 
+    Args: 
     lambda_val - thwaites separation criteria                        [unitless]
     Re_theta   - Reynolds Number as a function of momentum thickness [unitless]
 
-    Outputs:  
-    cf         - skin friction coefficient [unitless]
-
-    Properties Used:
-    N/A 
+    Returns:  
+    cf         - skin friction coefficient [unitless] 
     """        
     l       = 0.22 + 1.402*lambda_val  + (0.018*lambda_val)/(0.107 + lambda_val ) 
     idx1    = (lambda_val>0.0)   
@@ -199,11 +193,27 @@ def getcf(lambda_val , Re_theta):
 
 
 def RK4(ind, dx, x, Var1, Slope1):
+    """4th Order Runge Kutta integration        
+
+    Assumptions:
+        None
+
+    Source:
+        None                                                                    
+                                                                   
+    Args:                                                      
+        ind
+        dx
+        x
+        Var1
+        Slope1 
+        
+    Returns:
+        Var1[ind] + change 
+    """  
     m1 = Slope1(ind,  x[ind],  Var1[ind])
     m2 = Slope1(ind,  x[ind] + dx[ind]/2,  Var1[ind] + m1*dx[ind]/2)
     m3 = Slope1(ind,  x[ind] + dx[ind]/2,  Var1[ind] + m2*dx[ind]/2)
-    m4 = Slope1(ind,  x[ind] + dx[ind],  Var1[ind] + m3*dx[ind])
-    
-    change = (dx[ind]/6)*(m1 + 2*m2 + 2*m3 + m4)
-    return Var1[ind] + change            
+    m4 = Slope1(ind,  x[ind] + dx[ind],  Var1[ind] + m3*dx[ind]) 
+    return Var1[ind] +  (dx[ind]/6)*(m1 + 2*m2 + 2*m3 + m4)    
             

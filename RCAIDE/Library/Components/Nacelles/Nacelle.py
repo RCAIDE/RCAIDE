@@ -37,14 +37,13 @@ class Nacelle(Component):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        None
+
         """      
         
         self.tag                       = 'nacelle'
@@ -73,14 +72,13 @@ class Nacelle(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """
         
         body2nacvel = self.body_to_nac_vel()
@@ -102,14 +100,13 @@ class Nacelle(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """
         
         # Go from body to vehicle frame
@@ -140,14 +137,13 @@ class Nacelle(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """
         
         rot_mat = sp.spatial.transform.Rotation.from_rotvec([0,np.pi,0]).as_matrix()

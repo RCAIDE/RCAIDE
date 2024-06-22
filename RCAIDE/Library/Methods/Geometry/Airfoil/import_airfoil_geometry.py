@@ -29,12 +29,12 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
     Works for Selig and Lednicer airfoil formats. Automatically detects which format based off first line of data. Assumes it is one of those two.
     Source:
     airfoiltools.com/airfoil/index - method for determining format and basic error checking
-    Inputs:
+    Args:
     airfoil_geometry_files   <list of strings>
     surface_interpolation   - type of interpolation used in the SciPy function. Preferable options are linear, quardratic and cubic. 
     Full list of options can be found here : 
     https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html#scipy.interpolate.interp1d
-    Outputs:
+    Returns:
     airfoil_data.
         thickness_to_chord 
         x_coordinates 
@@ -44,8 +44,7 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
         y_upper_surface
         y_lower_surface
         camber_coordinates  
-    Properties Used:
-    N/A
+
     """  
     geometry     = Data()
     half_npoints = npoints//2         

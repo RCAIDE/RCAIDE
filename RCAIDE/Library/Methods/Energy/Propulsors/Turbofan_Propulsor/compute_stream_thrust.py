@@ -25,7 +25,7 @@ def compute_stream_thrust(turbofan,conditions):
     "Hypersonic Airbreathing Propulsors", 1994 
     Chapter 4 - pgs. 175-180
     
-    Inputs: 
+    Args: 
     conditions.freestream. 
        isentropic_expansion_factor        [-]  
        specific_heat_at_constant_pressure [J/(kg K)] 
@@ -55,7 +55,7 @@ def compute_stream_thrust(turbofan,conditions):
         flow_through_core                [-] percentage of total flow (.1 is 10%) 
         flow_through_fan                 [-] percentage of total flow (.1 is 10%)
 
-    Outputs: 
+    Returns: 
     turbofan.outputs. 
       thrust                             [N] 
       thrust_specific_fuel_consumption   [N/N-s] 

@@ -26,7 +26,7 @@ def LBL_VS_broadband_noise(R_c,alpha_star,delta_p,r_e,L,M,Dbar_h,f,U):
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs:  
+    Args:  
        R_c          - Reynolds number                        [-]
        alpha_star   - angle of attack blade section          [deg]
        delta_p      - boundary layer of pressure section     [m
@@ -72,7 +72,7 @@ def compute_G_1(e):
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs: 
+    Args: 
         e     [-]
     
     Outputs 
@@ -103,7 +103,7 @@ def compute_G_2(d):
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs: 
+    Args: 
         d     [-]
     
     Outputs 
@@ -131,7 +131,7 @@ def compute_G_3(alpha_star):
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs: 
+    Args: 
         alpha_star    [deg]
     
     Outputs 
@@ -153,7 +153,7 @@ def compute_R_c_0(alpha_star):
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs: 
+    Args: 
         alpha_star    [deg]
     
     Outputs 

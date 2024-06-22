@@ -108,8 +108,7 @@ class Supersonic_VLM(Aerodynamics):
         self.hsup_max                                = 1.25 
     
         # surrogoate models
-        self.surrogates                              = Data()  
-
+        self.surrogates                              = Data()   
     
         # build the evaluation process
         compute                                    = Process() 
@@ -151,7 +150,7 @@ class Supersonic_VLM(Aerodynamics):
             None
 
         Args:
-            self     : aerodynamics analysis  [-] 
+            self : aerodynamics analysis  [-] 
 
         Returs:
              None
@@ -185,11 +184,11 @@ class Supersonic_VLM(Aerodynamics):
             None
 
         Args:
-            self     : aerodynamics analysis  [-]
-            state    : flight conditions      [-]
+            self        : aerodynamics analysis  [-]
+            state (dict): flight conditions      [-]
 
         Returs:
-             results : aerodynamic results    [-]
+             results (dict): aerodynamic results    [-]
         """             
         settings = self.settings
         geometry = self.geometry 

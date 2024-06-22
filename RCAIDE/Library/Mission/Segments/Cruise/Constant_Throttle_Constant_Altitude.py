@@ -77,19 +77,18 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.altitude                             [meters]
     segment.air_speed_start                      [meters/second]
     segment.air_speed_end                        [meters/second] 
     segment.state.numerics.number_of_control_points [int]
 
-    Outputs:
+    Returns:
     state.conditions.energy.throttle        [unitless]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
 
-    Properties Used:
-    N/A
+
     """    
     # unpack inputs
     alt      = segment.altitude 
@@ -119,7 +118,7 @@ def initialize_conditions(segment):
     
     # pack conditions   
     segment.state.conditions.freestream.altitude[:,0] = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down    
+    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt     
     
 # ----------------------------------------------------------------------
 #  Solve Residuals
@@ -132,13 +131,13 @@ def solve_velocity(segment):
         Assumptions:
         The vehicle accelerates, residual on forces and to get it to the final speed
         
-        Inputs:
+        Args:
         segment.air_speed_end                  [meters/second]
         segment.state.conditions: 
             frames.inertial.velocity_vector    [meters/second] 
         segment.state.numerics.time.differentiate
             
-        Outputs:
+        Returns:
         segment.state.residuals:
             forces               [meters/second^2]
             final_velocity_error [meters/second] 

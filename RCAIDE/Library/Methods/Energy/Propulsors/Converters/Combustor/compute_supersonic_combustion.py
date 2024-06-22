@@ -30,7 +30,7 @@ def compute_supersonic_combustion(self,conditions):
     "Hypersonic Airbreathing Propulsion", 1994 
     Chapter 4 - pgs. 175-180
     
-    Inputs: 
+    Args: 
     conditions.freestream. 
        isentropic_expansion_factor          [-] 
        specific_heat_at_constant_pressure   [J/(kg K)] 
@@ -42,7 +42,7 @@ def compute_supersonic_combustion(self,conditions):
        stagnation_pressure                  [Pa] 
        inlet_nozzle                         [-] 
 
-    Outputs: 
+    Returns: 
     self.outputs. 
        stagnation_temperature               [K] 
        stagnation_pressure                  [Pa] 

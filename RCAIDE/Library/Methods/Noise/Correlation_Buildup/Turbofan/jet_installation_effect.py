@@ -24,14 +24,14 @@ def jet_installation_effect(Xe,Ye,Ce,theta_s,Diameter_mixed):
     Source:
         SAE ARP876D: Gas Turbine Jet Exhaust Noise Prediction
 
-    Inputs:
+    Args:
         Ce = wing chord length at the engine location - as figure 7.3 of the SAE ARP 876D                    [m]                          
         Xe = fan exit location downstream of the leading edge (Xe<Ce) - as figure 7.3 of the SAE ARP 876D    [m] 
         Ye = separation distance from the wing chord line to nozzle lip - as figure 7.3 of the SAE ARP 876D  [m] 
         theta_s                                                                                              [rad]
         Diameter_mixed                                                                                       [m] 
 
-    Outputs:
+    Returns:
         INST_s          [-]
 
     Properties Used: 

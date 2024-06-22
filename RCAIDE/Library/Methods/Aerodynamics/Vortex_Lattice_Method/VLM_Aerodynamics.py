@@ -31,12 +31,12 @@ def evaluate_surrogate(state,settings,geometry):
     Source:
     N/A
 
-    Inputs:
+    Args:
     state.conditions.
       freestream.dynamics_pressure       [-]
       angle_of_attack                    [radians]
 
-    Outputs:
+    Returns:
     conditions.aerodynamics.lift_breakdown.
       inviscid_wings[wings.*.tag]             [-] CL (wing specific)
       inviscid_wings_lift.total               [-] CL
@@ -155,11 +155,11 @@ def evaluate_no_surrogate(state,settings,geometry):
     Source:
     N/A
     
-    Inputs:
+    Args:
     state.conditions.
       angle_of_attack                         [radians]
       
-    Outputs:
+    Returns:
     conditions.aerodynamics.lift_breakdown.
       inviscid_wings_lift[wings.*.tag]        [-] CL (wing specific)
       inviscid_wings_lift.total               [-] CL
@@ -230,10 +230,10 @@ def sample_training(aero):
     Source:
     N/A
 
-    Inputs:
+    Args:
     see properties used
 
-    Outputs:
+    Returns:
     aero.training.
       lift_coefficient            [-] 
       wing_lift_coefficient       [-] (wing specific)
@@ -337,10 +337,10 @@ def build_surrogate(aero):
     Source:
     N/A
 
-    Inputs:
+    Args:
     see properties used
 
-    Outputs:
+    Returns:
     aero.surrogates.
       lift_coefficient            
       wing_lift_coefficient       
@@ -491,13 +491,13 @@ def calculate_VLM(conditions,settings,geometry):
     Source:
     N/A
 
-    Inputs:
+    Args:
     conditions                      (passed to vortex lattice method)
     settings                        (passed to vortex lattice method)
     geometry.reference_area         [m^2]
     geometry.wings.*.reference_area (each wing is also passed to the vortex lattice method)
 
-    Outputs:
+    Returns:
     total_lift_coeff                [array]
     total_induced_drag_coeff        [array]
     wing_lifts                      [Data]

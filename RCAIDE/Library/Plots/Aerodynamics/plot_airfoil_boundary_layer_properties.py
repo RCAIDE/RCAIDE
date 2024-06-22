@@ -34,14 +34,13 @@ def plot_airfoil_boundary_layer_properties(ap,
     Source: 
     None
                                                      
-    Inputs:
+    Args:
         ap     : data stucture of airfoil boundary layer properties  
                                                                            
-    Outputs:
+    Returns:
         Figures of quantity distributions
     
-    Properties Used:
-    N/A
+
     """      
     # get plotting style 
     ps      = plot_style()  
@@ -94,17 +93,16 @@ def plot_quantity(ap, q, qaxis, qname,ylim_low,ylim_high,file_type,show_legend,s
     Source: 
     None
                                                      
-    Inputs:
+    Args:
        ap        : data stucture of airfoil boundary layer properties  
        q         : vector of values to plot, on all points (wake too if present)
        qaxis     : name of quantity, for axis labeling
        qname     : name of quantity, for title labeling
                                                                            
-    Outputs:
+    Returns:
        Figure showing q versus x
     
-    Properties Used:
-    N/A
+
     """          
 
     # get plotting style 

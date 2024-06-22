@@ -20,8 +20,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Aerodynamics
 class Aerodynamics(Analysis):
-    """This is the base class for aerodynamics analyses. It contains functions
-    that are built into the default class. 
+    """This is the base class for aerodynamics analyses. 
     """
     def __defaults__(self):
         """This sets the default values and methods for the analysis.

@@ -29,13 +29,13 @@ def estimate_stall_speed(vehicle_mass,reference_area,altitude,maximum_lift_coeff
         Assumptions:
         None 
 
-        Inputs:
+        Args:
             vehicle_mass                    vehicle mass             [kg]
             reference_area                  vehicle reference area   [m^2] 
             altitude                        cruise altitude          [m]
             maximum_lift_coefficient        maximum lift coefficient [unitless] 
             
-        Outputs: 
+        Returns: 
             V_stall                         stall speed              [m/s]
     """ 
       

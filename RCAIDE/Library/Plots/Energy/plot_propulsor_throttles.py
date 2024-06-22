@@ -30,18 +30,17 @@ def plot_propulsor_throttles(results,
 
     Source:
 
-    Inputs:
+    Args:
     results.segments.conditions.
         freestream.altitude
         weights.total_mass
         weights.vehicle_mass_rate
         frames.body.thrust_force_vector
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """
  
     # get plotting style 

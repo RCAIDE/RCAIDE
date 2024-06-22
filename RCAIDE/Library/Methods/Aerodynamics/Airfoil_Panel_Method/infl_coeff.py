@@ -1,7 +1,6 @@
-
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/infl_coeff.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Dec 2023, M. Clarke
 
@@ -14,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # infl_coeff
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def infl_coeff(x,y,xbar,ybar,st,ct,npanel,ncases,ncpts):
     """Compute the matrix of aerodynamic influence  coefficients for later use
 
@@ -34,10 +33,7 @@ def infl_coeff(x,y,xbar,ybar,st,ct,npanel,ncases,ncpts):
     npanel  -  Number of panels on the airfoil               [unitless]       
                                                                                             
     Outputs                                        
-    ainfl   -  Aero influence coefficient matrix             [unitless]
-
-    Properties Used:
-    N/A
+    ainfl   -  Aero influence coefficient matrix             [unitless] 
     """                          
     # This code has been written in an i,j style, where i is the panel where the source is located and j is the location where the effect is measured
     ainfl                = np.zeros((ncases,ncpts,npanel+1,npanel+1))    
@@ -81,8 +77,7 @@ def infl_coeff(x,y,xbar,ybar,st,ct,npanel,ncases,ncpts):
     
     ainfl[:,:,:-1,:-1]   = pi2inv*(sti_minus_j*np.log(rij_plus_1/rij) + cti_minus_j*betaij)
     mat_1                = np.sum(pi2inv*(cti_minus_j*np.log(rij_plus_1/rij)-sti_minus_j*betaij), axis = 3)
-    ainfl[:,:,:-1,-1]    = mat_1  
-    
+    ainfl[:,:,:-1,-1]    = mat_1   
     mat_2                = pi2inv*(sti_minus_j*betaij - cti_minus_j*np.log(rij_plus_1/rij))
     mat_3                = pi2inv*(sti_minus_j*np.log(rij_plus_1/rij) + cti_minus_j*betaij)
     ainfl[:,:,-1,:-1]    = mat_2[:,:,0] + mat_2[:,:,-1]

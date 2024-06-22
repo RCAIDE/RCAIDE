@@ -25,11 +25,11 @@ def compute_relative_noise_evaluation_locations(settings,segment):
     Source:
         N/A  
 
-    Inputs:  
+    Args:  
         settings.ground_microphone_locations                - array of microphone locations on the ground  [meters] 
         segment.conditions.frames.inertial.position_vector  - position of aircraft                         [boolean]                                          
 
-    Outputs: 
+    Returns: 
     GM_THETA   - angle measured from ground microphone in the x-z plane from microphone to aircraft 
     GM_PHI     - angle measured from ground microphone in the y-z plane from microphone to aircraft 
     RML        - relative microphone locations

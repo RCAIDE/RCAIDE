@@ -25,7 +25,7 @@ def landing_gear_noise(D,H,wheels,M,velocity,phi,theta,distance,frequency):
         None
 
 
-    Inputs:
+    Args:
         D         - Landing gear tyre diameter                                     [ft]
         H         - Lading gear strut length                                       [ft]
         wheels    - Number of wheels per unit                                      [-]
@@ -36,7 +36,7 @@ def landing_gear_noise(D,H,wheels,M,velocity,phi,theta,distance,frequency):
         distance  - Distance from airplane to observer, evaluated at retarded time [ft]
         frequemcy - Frequency array                                                [Hz] 
 
-    Outputs: One Third Octave Band SPL [dB]
+    Returns: One Third Octave Band SPL [dB]
         SPL           - Sound Pressure Level of the landing gear         [dB]
         OASPL         - Overall Sound Pressure Level of the landing gear [dB]
 
@@ -44,14 +44,14 @@ def landing_gear_noise(D,H,wheels,M,velocity,phi,theta,distance,frequency):
     Source:
         SAE ARP 876D
 
-    Inputs:
+    Args:
         Ce = wing chord length at the engine location - as figure 7.3 of the SAE ARP 876D                    [m]                          
         Xe = fan exit location downstream of the leading edge (Xe<Ce) - as figure 7.3 of the SAE ARP 876D    [m] 
         Ye = separation distance from the wing chord line to nozzle lip - as figure 7.3 of the SAE ARP 876D  [m] 
         theta_s                                                                                              [rad]
         Diameter_mixed                                                                                       [m] 
 
-    Outputs:
+    Returns:
         INST_s          [-]
 
     Properties Used: 

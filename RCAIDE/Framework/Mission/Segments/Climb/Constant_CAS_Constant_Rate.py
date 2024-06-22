@@ -22,19 +22,13 @@ class Constant_CAS_Constant_Rate(Evaluate):
     """       
     
     def __defaults__(self): 
-        """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
+        """ Specific flight segment defaults which can be modified after initializing.
     
             Assumptions:
-            None
+                None
     
             Source:
-            None
-    
-            Args:
-            None
-    
-            Returns:
-            None
+                None 
         """  
         
         # -------------------------------------------------------------------------------------------------------------- 

@@ -18,14 +18,14 @@ def compute_ram_performance(ram,conditions):
     Source:
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
+    Args:
     conditions.freestream.
       pressure
       temperature
       mach_number
     ram.inputs.working_fluid
 
-    Outputs:
+    Returns:
     ram.outputs.
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]

@@ -34,14 +34,13 @@ class DC_Motor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """           
         self.tag                = 'motor' 
         self.resistance         = 0.0
@@ -67,14 +66,13 @@ class DC_Motor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """                   
          
         compute_omega_and_Q_from_Cp_and_V(self,conditions)    
@@ -90,14 +88,13 @@ class DC_Motor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """             
          
         compute_I_from_omega_and_V(self)        

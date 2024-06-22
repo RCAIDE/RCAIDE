@@ -32,17 +32,16 @@ def plot_battery_degradation(results,
     Source:
     None    
     
-    Inputs:
+    Args:
     results.segments.conditions.propulsion
         solar_flux
         battery_power_draw
         battery_energy
     
-    Outputs:
+    Returns:
     Plots
     
-    Properties Used:
-    N/A
+
     """ 
     # get plotting style 
     ps      = plot_style()  

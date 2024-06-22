@@ -23,14 +23,13 @@ class Elevator(Control_Surface):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
-    Properties Used:
-    N/A
+
     """ 
     def __defaults__(self):
         """This sets the default for slats in RCAIDE.
@@ -43,14 +42,12 @@ class Elevator(Control_Surface):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
         
         self.tag                   = 'elevator'

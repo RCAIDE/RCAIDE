@@ -26,21 +26,20 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.mach_number                         [unitless]
     segment.dynamic_pressure                    [pascals]
     segment.altitude_start                      [meters]
     segment.altitude_end                        [meters]
     segment.distance                            [meters]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """        
     
     # unpack
@@ -59,19 +58,15 @@ def initialize_conditions(segment):
         
     # discretize on altitude
     alt = t_nondim * (altf-alt0) + alt0      
-    segment.state.conditions.freestream.altitude[:,0] = alt[:,0]
 
     # check for initial velocity
     if mach is None: 
         if not segment.state.initials: raise AttributeError('mach not set')
         air_speed = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])   
-    else:
-        
+    else: 
         # Update freestream to get speed of sound
         atmosphere(segment)
         a          = conditions.freestream.speed_of_sound    
-    
-        # compute speed, constant with constant altitude
         air_speed    = mach * a   
         
     climb_angle  = np.arctan((altf-alt0)/xf)
@@ -83,9 +78,9 @@ def initialize_conditions(segment):
     # discretize on altitude
     alt = t_nondim * (altf-alt0) + alt0    
     
-    # pack
-    conditions.freestream.altitude[:,0]             = alt[:,0]
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down 
-    conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]
-    conditions.frames.inertial.velocity_vector[:,1] = v_y[:,0]
-    conditions.frames.inertial.velocity_vector[:,2] = -v_z[:,0]      
+    # pack 
+    conditions.freestream.altitude[:,0]               = alt[:,0]
+    conditions.frames.inertial.position_vector[:,2]   = -alt[:,0]  
+    conditions.frames.inertial.velocity_vector[:,0]   = v_x[:,0]
+    conditions.frames.inertial.velocity_vector[:,1]   = v_y[:,0]
+    conditions.frames.inertial.velocity_vector[:,2]   = -v_z[:,0]      

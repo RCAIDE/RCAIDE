@@ -1,4 +1,4 @@
-## @ingroup Analyses
+## @ingroup Framework-Analyses
 # RCAIDE/Framework/Analyses/Settings.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,7 +12,7 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 # Settings
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Analyses
+## @ingroup Framework-Analyses
 class Settings(Data):
     """ The top level settings class 
     """

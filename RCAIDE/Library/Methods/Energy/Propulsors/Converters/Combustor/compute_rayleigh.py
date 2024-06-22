@@ -27,7 +27,7 @@ def compute_rayleigh(self,conditions):
     Source:
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
+    Args:
     conditions.freestream.
       isentropic_expansion_factor         [-]
       specific_heat_at_constant_pressure  [J/(kg K)]
@@ -37,7 +37,7 @@ def compute_rayleigh(self,conditions):
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
 
-    Outputs:
+    Returns:
     self.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]

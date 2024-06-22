@@ -25,14 +25,14 @@ def initialize_from_energy_and_power(battery, energy, power, max='hard'):
     Assumptions:
     None
     
-    Inputs:
+    Args:
     energy            [J]
     power             [W]
     battery.
       specific_energy [J/kg]               
       specific_power  [W/kg]
     
-    Outputs:
+    Returns:
      battery.
        maximum_energy
        maximum_power

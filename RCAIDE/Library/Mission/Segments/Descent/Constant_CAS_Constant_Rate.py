@@ -8,7 +8,7 @@
 #  IMPORT 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
-import RCAIDE
+from RCAIDE.Library.Mission.Common.Update.atmosphere import atmosphere
 from RCAIDE.Framework.Core import Units
 
 # package imports 
@@ -27,21 +27,20 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.equivalent_air_speed                        [meters/second]
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
     segment.descent_rate                                [meters/second]
     segment.state.numerics.dimensionless.control_points [array]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """       
     
     # unpack
@@ -62,33 +61,28 @@ def initialize_conditions(segment):
     alt = t_nondim * (altf-alt0) + alt0
     
     # determine airspeed from calibrated airspeed
-    RCAIDE.Library.Mission.Common.Update.atmosphere(segment) # get density for airspeed
+    atmosphere(segment)  
 
-    alt_data = segment.analyses.atmosphere.compute_values(alt,segment.temperature_deviation)
-    density  = alt_data.density[:,0]  
-    pressure = alt_data.pressure[:,0] 
-
+    alt_data  = segment.analyses.atmosphere.compute_values(alt,segment.temperature_deviation)
+    density   = alt_data.density[:,0]  
+    pressure  = alt_data.pressure[:,0]  
     MSL_data  = segment.analyses.atmosphere.compute_values(0.0,segment.temperature_deviation)
     pressure0 = MSL_data.pressure[0]
     
-
     if cas is None:
         if not segment.state.initials: raise AttributeError('initial equivalent airspeed not set')
         air_speed =  np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])    
     else:  
-        kcas  = cas / Units.knots
-        delta = pressure / pressure0 
-    
-        mach = 2.236*((((1+4.575e-7*kcas**2)**3.5-1)/delta + 1)**0.2857 - 1)**0.5
-    
-        qc  = pressure * ((1+0.2*mach**2)**3.5 - 1)
-        eas = cas * (pressure/pressure0)**0.5*(((qc/pressure+1)**0.286-1)/((qc/pressure0+1)**0.286-1))**0.5
-        
+        kcas      = cas / Units.knots
+        delta     = pressure / pressure0  
+        mach      = 2.236*((((1+4.575e-7*kcas**2)**3.5-1)/delta + 1)**0.2857 - 1)**0.5 
+        qc        = pressure * ((1+0.2*mach**2)**3.5 - 1)
+        eas       = cas * (pressure/pressure0)**0.5*(((qc/pressure+1)**0.286-1)/((qc/pressure0+1)**0.286-1))**0.5 
         air_speed = eas/np.sqrt(density/MSL_data.density[0])    
     
     # process velocity vector
     v_mag = air_speed
-    v_z   = descent_rate # z points down
+    v_z   = descent_rate 
     v_xy  = np.sqrt( v_mag**2 - v_z**2 )
     v_x   = np.cos(beta)*v_xy
     v_y   = np.sin(beta)*v_xy
@@ -97,5 +91,5 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] 
+    conditions.freestream.altitude[:,0]             =  alt[:,0] 

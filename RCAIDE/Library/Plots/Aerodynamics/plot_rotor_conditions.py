@@ -32,14 +32,13 @@ def plot_rotor_conditions(results,
     Source:
     None
 
-    Inputs:
+    Args:
     results.segments.conditions.propulsion.  
         
-    Outputs: 
+    Returns: 
     Plots
 
-    Properties Used:
-    N/A	
+	
     """	   
     # get plotting style 
     ps      = plot_style()  

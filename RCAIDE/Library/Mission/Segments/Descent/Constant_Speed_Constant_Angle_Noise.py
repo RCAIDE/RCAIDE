@@ -26,16 +26,15 @@ def expand_state(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     state.numerics.number_of_control_points  [Unitless]
     segment.descent_angle                 [Radians]
     segment.air_speed                     [meters/second]
  
-    Outputs:
+    Returns:
     state.numerics.number_of_control_points
 
-    Properties Used:
-    N/A
+
     """         
     dt            = 0.5  # time step in seconds for noise calculation - Certification requirement    
     air_speed     = segment.air_speed  
@@ -65,21 +64,20 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.descent_angle                       [radians]
     segment.altitude_start                      [meters]
     segment.altitude_end                        [meters]
     segment.air_speed                           [meters/second]
     state.numerics.dimensionless.control_points [array]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """     
     
     
@@ -92,11 +90,10 @@ def initialize_conditions(segment):
     
     altf = 50. * Units.feet #(50ft last point for the noise measureament)
     
-    #Linear equation: y-y0=m(x-x0)
+    # Linear equation: y-y0=m(x-x0)
     m_xx0 = 2000 * np.tan(descent_angle)
-    y0    =  m_xx0 + altf  #(Altitude at the microphone X position)
-    
-    alt0 = y0 + m_xx0 #(Initial altitude of the aircraft)
+    y0    =  m_xx0 + altf  #(Altitude at the microphone X position) 
+    alt0  = y0 + m_xx0 #(Initial altitude of the aircraft)
 
     # discretize on altitude
     alt = t_nondim * (altf-alt0) + alt0 
@@ -116,6 +113,6 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context    
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] 
+    conditions.freestream.altitude[:,0]             =  alt[:,0]     
     

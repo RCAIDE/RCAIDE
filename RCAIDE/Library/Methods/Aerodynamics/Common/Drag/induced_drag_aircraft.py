@@ -39,7 +39,7 @@ def induced_drag_aircraft(state,settings,geometry):
     adg.stanford.edu (Stanford AA241 A/B Course Notes)
     http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html
 
-    Inputs:
+    Args:
     state.conditions.aerodynamics.
         lift_coefficient                                               [Unitless]
         lift_breakdown.inviscid_wings[wings.*.tag]                     [Unitless]
@@ -52,7 +52,7 @@ def induced_drag_aircraft(state,settings,geometry):
     settings.span_efficiency                                           [Unitless]
     
 
-    Outputs:
+    Returns:
     conditions.aerodynamics.drag_breakdown.induced.
          total                                                         [Unitless]
          viscous                                                       [Unitless]

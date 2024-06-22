@@ -11,11 +11,11 @@
 def set_optimized_parameters(rotor,optimization_problem):
     """ Append parameters of optimized prop-rotor to input prop-rotor
           
-          Inputs:  
+          Args:  
              rotor                - rotor data structure                        [None]
              optimization_problem      - data struction of optimized parameters [None]
              
-          Outputs: 
+          Returns: 
              rotor                - rotor data structure                        [None]
               
           Assumptions: 

@@ -31,17 +31,16 @@ def plot_aerodynamic_forces(results,
     Source:
     None
     
-    Inputs:
+    Args:
     results.segments.condtions.frames
          body.thrust_force_vector
          wind.force_vector
          wind.force_vector
          
-    Outputs:
+    Returns:
     Plots
     
-    Properties Used:
-    N/A
+
     """ 
 
     # get plotting style 

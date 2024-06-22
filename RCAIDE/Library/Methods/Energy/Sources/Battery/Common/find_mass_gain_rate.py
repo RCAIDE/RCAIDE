@@ -13,12 +13,12 @@ def find_mass_gain_rate(battery,power):
     Assumptions:
     Earth Atmospheric composition
     
-    Inputs:
+    Args:
     power              [W]
     battery.
       mass_gain_factor [kg/W]
       
-    Outputs:
+    Returns:
       mdot             [kg/s]
     """
     

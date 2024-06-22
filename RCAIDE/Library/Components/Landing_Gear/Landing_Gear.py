@@ -35,10 +35,10 @@ class Landing_Gear(Component):
                 Source:
                 N/A
                 
-                Inputs:
+                Args:
                 None
                 
-                Outputs:
+                Returns:
                 None
                 
                 Properties Used:

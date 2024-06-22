@@ -166,24 +166,20 @@ def T0(a):
     """Rotation matrix about first axis
     
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    a        [radians] angle of rotation
+        a (float):  angle of rotation  [radians] 
 
     Returns:
-    T        [-]       rotation matrix
-    """      
-    # T = np.array([[1,   0,  0],
-    #               [0, cos,sin],
-    #               [0,-sin,cos]])
+        T  (float):  rotation matrix  [-]  
+    """       
     
     cos = np.cos(a)
-    sin = np.sin(a)
-                  
+    sin = np.sin(a) 
     T = new_tensor(a)
     
     T[:,1,1] = cos
@@ -201,16 +197,16 @@ def T1(a):
     """Rotation matrix about second axis
     
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    a        [radians] angle of rotation
+        a (float):  angle of rotation  [radians] 
 
     Returns:
-    T        [-]       rotation matrix
+        T  (float):  rotation matrix  [-]  
     """      
     # T = np.array([[cos,0,-sin],
     #               [0  ,1,   0],
@@ -236,17 +232,16 @@ def T2(a):
     """Rotation matrix about third axis
     
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    a        [radians] angle of rotation
+        a (float):  angle of rotation  [radians] 
 
     Returns:
-    T        [-]       rotation matrix
-
+        T  (float):  rotation matrix  [-]  
     
     """      
     # T = np.array([[cos ,sin,0],
@@ -270,29 +265,25 @@ def T2(a):
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Core
 def new_tensor(a):
-    """Initializes the required tensor. Able to handle imaginary values.
-    
+    """Initializes the required tensor. Able to handle imaginary values. 
+  
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    a        [radians] angle of rotation
+        a (float):  angle of rotation  [radians] 
 
     Returns:
-    T        [-]       3-dimensional array with identity matrix
-                       patterned along dimension zero
+        T  (float):  3-dimensional array with identity matrix
+                       patterned along dimension zero  [-]   
     """      
     assert a.ndim == 1
-    n_a = len(a)
+    n_a = len(a) 
+    T   = np.eye(3)
     
-    T = np.eye(3)
-    
-    if a.dtype is np.dtype('complex'):
-        T = T + 0j
-    
-    T = np.resize(T,[n_a,3,3])
-    
+    if a.dtype is np.dtype('complex'):  T = T + 0j 
+    T = np.resize(T,[n_a,3,3]) 
     return T    

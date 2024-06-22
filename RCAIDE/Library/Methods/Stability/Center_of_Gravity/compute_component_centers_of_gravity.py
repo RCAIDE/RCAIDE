@@ -33,14 +33,13 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     Source:
     AA 241 Notes
 
-    Inputs:
+    Args:
     vehicle
 
-    Outputs:
+    Returns:
     None
 
-    Properties Used:
-    N/A
+
     """  
     
     C =  RCAIDE.Library.Components

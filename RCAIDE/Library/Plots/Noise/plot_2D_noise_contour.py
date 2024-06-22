@@ -43,7 +43,7 @@ def plot_2D_noise_contour(noise_data,
     Source:
     None
 
-    Inputs: 
+    Args: 
        noise_data        - noise data structure 
        noise_level       - noise level (dBA, DNL, SENEL etc)
        min_noise_level   - minimal noise level 
@@ -55,11 +55,10 @@ def plot_2D_noise_contour(noise_data,
        show_trajectory   - plot aircraft trajectory flag
        show_microphones  - show microhpone flag 
 
-    Outputs:
+    Returns:
        Plots
 
-    Properties Used:
-    N/A
+
     """      
     
     elevation       = noise_data.ground_microphone_locations[:,:,2]/Units.ft      

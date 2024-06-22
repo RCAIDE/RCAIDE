@@ -60,10 +60,10 @@ class Sequential_Segments(Segments.Segment.Container):
                 None
     
             Args:
-                self  : RCAIDE data structure of containing process [-]
+                self (dict): RCAIDE data structure of containing process [-]
     
             Returns:
-                self  : RCAIDE data structure of containing process [-]
+                self (dict): RCAIDE data structure of containing process [-]
         """   
         self.process.pre_process(self)
          
@@ -80,10 +80,10 @@ class Sequential_Segments(Segments.Segment.Container):
                 None
     
             Args:
-                self  : RCAIDE data structure of containing process [-]
+                self  (dict): RCAIDE data structure of containing process [-]
     
             Returns:
-                self  : RCAIDE data structure of containing process [-]
+                self  (dict): RCAIDE data structure of containing process [-]
         """           
         if state is None:
             state = self.state
@@ -110,10 +110,10 @@ class Container(ContainerBase):
                 None
     
             Args:
-                self  : RCAIDE data structure of containing process [-]
+                self  (dict): RCAIDE data structure of containing process [-]
     
             Returns:
-                self  : RCAIDE data structure of containing process [-]
+                self  (dict): RCAIDE data structure of containing process [-]
         """   
         results = RCAIDE.Framework.Core.Data()
         

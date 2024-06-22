@@ -31,12 +31,12 @@ class Conditions(Data):
     
             Source:
                 None
-    
+        
             Args:
-                cols   : number of columns  [integer]
+                cols   (int) : number of columns  
     
             Returns:
-                vector : expanded vector    [array] 
+                vector (numpy.ndarray): expanded vector  
         """     
         return np.ones([self._size,cols])
     
@@ -50,14 +50,14 @@ class Conditions(Data):
                 None
     
             Args:
-                cols   : number of columns  [integer]
+                cols   (int) : number of columns  
     
             Returns:
-                vector : expanded vector    [array] 
+                vector (numpy.ndarray): expanded vector    
         """ 
         return expanded_array(cols, 1)    
     
-    def expand_rows(self,rows,override=False):
+    def expand_rows(self,rows: int,override=False):
         """ Makes a 1-D array the right size. Often used after a mission is initialized to size out the vectors to the
             right size. Will not overwrite an array if it already exists, unless override is True.
             
@@ -68,12 +68,11 @@ class Conditions(Data):
                 None
     
             Args:
-                rows     : number of rows    [integer]
-                override :                   [boolean]
+                rows (int) : number of rows
+                override (bool):   
     
             Returns:
-                vector : expanded vector   [np.array]
-                
+                vector (numpy.ndarray): expanded vector    
         """           
         
         # store
@@ -101,7 +100,7 @@ class expanded_array(Data):
     """  
     _size = 1
     
-    def __init__(self, cols, adjustment):
+    def __init__(self, cols: int, adjustment: int):
         """ Initialization that sets expansion later
         
             Assumptions:
@@ -112,8 +111,8 @@ class expanded_array(Data):
         
             Args:
                 self
-                cols       : columns                          [integer]
-                adjustment : how much smaller                 [integer]
+                cols       (int): number of columns     
+                adjustment (int): new number of columns                  
         
             Returns:
                 None 
@@ -124,7 +123,7 @@ class expanded_array(Data):
         self._array      = np.array([[1]])
         
         
-    def resize(self,rows):
+    def resize(self,rows: int):
         """ This function actually completes the resizing. After this it's no longer an expanded array. That way it
             doesn't propogate virally. That means if one wishes to resize later the conditions need to be reset.
         
@@ -135,12 +134,11 @@ class expanded_array(Data):
                 None
         
             Args:
-                self : 
-                rows :   rows                             [integer]
-                v    :   values (really self)             [integer]
+                self (numpy.ndarray): array
+                rows (int) : number of rows                        
         
             Returns:
-                np.array : properly sized                   [array] 
+                arg (numpy.ndarray) : properly sized                 
         """    
         adjustment = self._adjustment 
         self._size = rows
@@ -158,15 +156,15 @@ class expanded_array(Data):
                 None
         
             Args:
-                self
+                self (numpy.ndarray): array
 
             Returns:
-                np.array   : properly sized                   [array] 
+                self (numpy.ndarray): array   
         """           
         
         return self._array
     
-    def __mul__(self,other):
+    def __mul__(self,A):
         """ Performs multiplication and returns self
         
             Assumptions:
@@ -176,18 +174,18 @@ class expanded_array(Data):
                  None
         
             Args:
-                 self
-                 other      - something can be multiplied      [float]
+                 self (numpy.ndarray): array
+                 A    (int or tuple of int): Shape of resized array.
 
             Returns:
-                 self
+                 self (numpy.ndarray): array
         """          
         
-        self._array = np.resize(other,[1,1])
+        self._array = np.resize(A,[1,1])
         
         return self
 
-    def __rmul__(self,other):
+    def __rmul__(self,A):
         """ Performs multiplication and returns self
         
             Assumptions:
@@ -197,14 +195,14 @@ class expanded_array(Data):
                  None
         
             Args:
-                  self
-                  other      : something can be multiplied      [float]
+                 self (numpy.ndarray): array
+                 A    (int or tuple of int): Shape of resized array.
 
             Returns:
-                  self 
+                self (numpy.ndarray): array  
         """                 
         
-        self._array = np.resize(other,[1,1])
+        self._array = np.resize(A,[1,1])
         
         return self    
         

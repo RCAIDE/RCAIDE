@@ -23,10 +23,10 @@ import numpy as np
 def blade_geometry_setup(rotor,number_of_stations): 
     """ Defines a dummy vehicle for prop-rotor blade optimization.
           
-          Inputs:  
+          Args:  
              rotor   - rotor data structure             [None] 
               
-          Outputs:  
+          Returns:  
              configs - configuration used in optimization    [None]
               
           Assumptions: 

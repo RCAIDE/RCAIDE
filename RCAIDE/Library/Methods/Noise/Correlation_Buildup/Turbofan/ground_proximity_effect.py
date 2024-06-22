@@ -25,7 +25,7 @@ def ground_proximity_effect (Velocity_mixed,sound_ambient,theta_m,engine_height,
     Source:
         N/A
 
-    Inputs:
+    Args:
         Velocity_mixed  [m/s]
         sound_ambient   [SPL]
         theta_m         [rad]
@@ -33,7 +33,7 @@ def ground_proximity_effect (Velocity_mixed,sound_ambient,theta_m,engine_height,
         Diameter_mixed  [m]
         frequency       [1/s]
 
-    Outputs:
+    Returns:
         GPROX_m         [dB]
 
     Properties Used:

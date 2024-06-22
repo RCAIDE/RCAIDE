@@ -37,7 +37,7 @@ def broadband_noise(freestream,angle_of_attack,coordinates,
         Li, Sicheng Kevin, and Seongkyu Lee. "Prediction of Urban Air Mobility Multirotor VTOL Broadband Noise
         Using UCD-QuietFly." Journal of the American Helicopter Society (2021).
     
-    Inputs:  
+    Args:  
         freestream                                   - freestream data structure                                                          [m/s]
         angle_of_attack                              - aircraft angle of attack                                                           [rad]
         bspv                                         - rotor blade section trailing position edge vectors                                 [m]

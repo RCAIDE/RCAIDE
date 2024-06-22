@@ -1,6 +1,6 @@
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method  
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method  
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/airfoil_analysis.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Dec 2023, M. Clarke 
 
@@ -18,10 +18,10 @@ from .aero_coeff           import aero_coeff
 import numpy as np  
 
 # ----------------------------------------------------------------------------------------------------------------------
-# airfoil_analysis.py
+# airfoil_analysis 
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
-def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5,tolerance = 1E0,H_wake = 1.05,Ue_wake = 0.99):
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
+def airfoil_analysis(airfoil_geometry,alpha,Re_L, batch_analysis = True, airfoil_stations = [0],initial_momentum_thickness=1E-5,tolerance = 1E0,H_wake = 1.05,Ue_wake = 0.99):
     """This computes the aerodynamic polars as well as the boundary layer properties of 
     an airfoil at a defined set of reynolds numbers and angle of attacks
 
@@ -36,10 +36,11 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     Source:
     N/A
 
-    Inputs: 
+    Args: 
     airfoil_geometry   - airfoil geometry points                                                             [unitless]
     alpha              - angle of attacks                                                                    [radians]
     Re_L               - Reynolds numbers                                                                     [unitless]
+    airfoil_stations   - airfoil stations 
     batch_analysis     - boolean : If True: the specified number of angle of attacks and Reynolds            [boolean]
                                   numbers are used to create a table of 2-D results for each combination
                                   Note: Can only accomodate one airfoil
@@ -49,7 +50,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
                                   Note: The number of airfoils, angle of attacks and reynolds numbers must 
                                   all the same dimension                     
     
-    Outputs: 
+    Returns: 
     airfoil_properties.
         AoA            - angle of attack                                                   [radians
         Re             - Reynolds number                                                   [unitless]
@@ -70,24 +71,29 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
         H              - shape factor                                                      [unitless]
         Cf             - local skin friction coefficient                                   [unitless]
         Re_theta_t     - Reynolds Number as a function of theta transition location        [unitless]
-        tr_crit        - critical transition criteria                                      [unitless]
-                        
-    Properties Used:
-    N/A
-    """     
-    ncases       = len(alpha[0,:]) 
-    ncpts        = len(Re_L)  
+        tr_crit        - critical transition criteria                                      [unitless] 
+        """     
+ 
+    ncases       = len(alpha[0,:]) # number of cases or angle of attacks
+    ncpts        = len(Re_L) # number of control points or reynolds numbers
     x_coord      = airfoil_geometry.x_coordinates
     y_coord      = airfoil_geometry.y_coordinates
-    npanel       = len(x_coord)-1 
-               
-    x_coord_3d = np.tile(x_coord[:,None,None],(1,ncases,ncpts)) # number of points, number of cases, number of control points 
-    y_coord_3d = np.tile(y_coord[:,None,None],(1,ncases,ncpts)) # number of points, number of cases, number of control points 
+    
+    if batch_analysis:         
+        npanel       = len(x_coord)-1  
+        x_coord_3d   = np.tile(x_coord[:,None,None],(1,ncases,ncpts))  
+        y_coord_3d   = np.tile(y_coord[:,None,None],(1,ncases,ncpts))   
         
-    # Begin by solving for velocity distribution at airfoil surface using inviscid panel simulation
-    # these are the locations (faces) where things are computed , len = n panel
-    # dimension of vt = npanel x ncases x ncpts
-    X,Y,vt,normals = hess_smith(x_coord_3d,y_coord_3d,alpha,Re_L,npanel)  
+    else:
+        nairfoil = len(airfoil_stations)  
+        if (ncases != ncpts) and ( nairfoil!= ncases):
+            raise AssertionError('Dimension of angle of attacks,Reynolds numbers and airfoil stations must all be equal')      
+        x_coord_3d = np.repeat(x_coord[:,:,np.newaxis],ncpts, axis = 2)
+        y_coord_3d = np.repeat(y_coord[:,:,np.newaxis],ncpts, axis = 2)
+        
+
+    # Solving for velocity distribution  
+    X,Y,vt,normals = hess_smith(ncases,ncpts,x_coord_3d,y_coord_3d,alpha,Re_L,npanel)  
     
     # Reynolds number 
     RE_L_VALS = Re_L.T 
@@ -98,8 +104,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     VT              = np.ma.masked_greater(vt,0 )
     VT_mask         = np.ma.masked_greater(vt,0 ).mask
     X_BOT_VALS      = np.ma.array(X, mask = VT_mask)[::-1]
-    Y_BOT           = np.ma.array(Y, mask = VT_mask)[::-1]
-         
+    Y_BOT           = np.ma.array(Y, mask = VT_mask)[::-1] 
     X_BOT           = np.zeros_like(X_BOT_VALS)
     X_BOT[1:]       = np.cumsum(np.sqrt((X_BOT_VALS[1:] - X_BOT_VALS[:-1])**2 + (Y_BOT[1:] - Y_BOT[:-1])**2),axis = 0)
     first_idx       = np.ma.count_masked(X_BOT,axis = 0)
@@ -155,9 +160,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     THETA_TR_BOT      = THETA_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts)    
     DELTA_TR_BOT      = DELTA_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts) 
     CF_TR_BOT         = CF_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts)
-    H_TR_BOT          = H_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts)
-    
-    # TURBULENT_SURF    = L_BOT.data  - X_TR_BOT
+    H_TR_BOT          = H_T_BOT[transition_panel,aoas,res].reshape(ncases,ncpts) 
     TURBULENT_SURF    = L_BOT.data
     TURBULENT_COORD   = np.ma.masked_less(X_BOT.data  - X_TR_BOT,0) 
     
@@ -377,8 +380,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     CF_TOP_SURF          = CF_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')
     RE_THETA_TOP_SURF    = RE_THETA_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')  
     RE_X_TOP_SURF        = RE_X_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')  
-    DELTA_TOP_SURF       = DELTA_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')          
-
+    DELTA_TOP_SURF       = DELTA_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F') 
     
     # ------------------------------------------------------------------------------------------------------
     # concatenate lower and upper surfaces   
@@ -439,8 +441,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     VT_BL           = np.ma.masked_less(vt_bl,0 )
     VT_BL_mask      = np.ma.masked_less(vt_bl,0 ).mask
     X_BL_TOP_VALS   = np.ma.array(X_BL, mask = VT_BL_mask) 
-    Y_BL_TOP        = np.ma.array(Y_BL, mask = VT_BL_mask)  
- 
+    Y_BL_TOP        = np.ma.array(Y_BL, mask = VT_BL_mask)   
     X_BL_TOP        = np.zeros_like(X_BL_TOP_VALS)
     X_BL_TOP[1:]    = np.cumsum(np.sqrt((X_BL_TOP_VALS[1:] - X_BL_TOP_VALS[:-1])**2 + (Y_BL_TOP[1:] - Y_BL_TOP[:-1])**2),axis = 0)
     first_idx       = np.ma.count_masked(X_BL_TOP,axis = 0)
@@ -456,22 +457,20 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     # flow velocity and pressure of on botton surface 
     VE_BL_TOP    = VT_BL
     CP_BL_TOP    = 1 - VE_BL_TOP**2     
-    
     CP_BL_VALS   = np.ma.concatenate([np.flip(CP_BL_BOT,axis = 0),CP_BL_TOP], axis = 0 )  
     CP_BL_VALS_1 = CP_BL_VALS.flatten('F')  
     CP_BL_VALS_2 = CP_BL_VALS_1.data[~CP_BL_VALS_1.mask] 
     CP_BL        = CP_BL_VALS_2.reshape((npanel_mod,ncases,ncpts),order = 'F')    
     DCP_DX       = np.diff(CP_BL,axis=0)/ np.diff(X_BL,axis=0) 
- 
     AERO_RES     = aero_coeff(x_coord_3d,y_coord_3d,CP,alpha,npanel) 
     
     # Squire-Young relation for total drag
     del2_inf_l   = THETA[0,:,:]*VE[0,:,:]**((5+H[0,:,:])/2)
     del2_inf_u   = THETA[-1,:,:]*VE[-1,:,:]**((5+H[-1,:,:])/2)
     del2_inf     = del2_inf_u + del2_inf_l
-    cd_sqy        = 2*del2_inf.T
+    cd_sqy       = 2*del2_inf.T
     
-    airfoil_properties_old = Data(
+    airfoil_properties = Data(
         AoA            = alpha,
         Re             = Re_L,
         cl_invisc      = AERO_RES.cl,  
@@ -496,7 +495,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
         cf             = np.transpose(CF,(2,1,0)),    
         )  
         
-    return  airfoil_properties_old
+    return  airfoil_properties
 
 
 def concatenate_surfaces(X_BOT,X_TOP,FUNC_BOT_SURF,FUNC_TOP_SURF,npanel,ncases,ncpts): 
@@ -508,7 +507,7 @@ def concatenate_surfaces(X_BOT,X_TOP,FUNC_BOT_SURF,FUNC_TOP_SURF,npanel,ncases,n
     Source:
     None                                                                    
                                                                    
-    Inputs:                                    
+    Args:                                    
     X_BOT          - bottom surface of airfoil                                     [unitless]
     X_TOP          - top surface of airfoil                                        [unitless]
     FUNC_BOT_SURF  - airfoil property computation discretization on bottom surface [multiple units]
@@ -517,15 +516,11 @@ def concatenate_surfaces(X_BOT,X_TOP,FUNC_BOT_SURF,FUNC_TOP_SURF,npanel,ncases,n
     ncases         - number of angle of attacks                                    [unitless]
     ncpts          - number of Reynolds numbers                                    [unitless]
                                                                  
-    Outputs:                                           
+    Returns:                                           
     FUNC           - airfoil property in user specified discretization on entire
-                     surface of airfoil                                            [multiple units]
-      
-    Properties Used:
-    N/A  
+                     surface of airfoil                                            [multiple units] 
     '''  
-    FUNC = np.zeros((npanel,ncases,ncpts))  
-    
+    FUNC = np.zeros((npanel,ncases,ncpts))   
     for case in range(ncases):
         for cpt in range(ncpts):   
             top_func          = FUNC_TOP_SURF[:,case,cpt][X_TOP[:,case,cpt].mask == False] 

@@ -18,17 +18,16 @@ def atleast_2d_col(A):
     """Makes a 2D array in column format
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    A      [1-D Array]
+        A  (numpy.ndarray):  1-D Array 
 
     Returns:
-    A      [2-D Array]
-
+        A  (numpy.ndarray):  2-D Array  
     
     """       
     return atleast_2d(A,'col')
@@ -42,18 +41,17 @@ def atleast_2d_row(A):
     """Makes a 2D array in row format
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    A      [1-D Array]
+        A  (numpy.ndarray):  1-D Array 
 
     Returns:
-    A      [2-D Array]
+        A  (numpy.ndarray):  2-D Array 
 
-    
     """       
     return atleast_2d(A,'row')
 
@@ -66,18 +64,17 @@ def atleast_2d(A,oned_as='row'):
     """ensures A is an array and at least of rank 2
 
     Assumptions:
-    Defaults as row
+        Defaults as row
 
     Source:
-    None
+        None
 
     Args:
-    A      [1-D Array]
+        A  (numpy.ndarray):  1-D Array 
 
     Returns:
-    A      [2-D Array]
+        A  (numpy.ndarray):  2-D Array 
 
-    
     """       
     
     # not an array yet
@@ -104,17 +101,17 @@ def append_array(A=None,B=None):
     """ A stacking operation used by merged to put together data structures
 
         Assumptions:
-        None
+            None
 
         Source:
-        None
+            None
 
         Args:
-        A [array]
-        B [array]
+            A (float)
+            B (float)
 
         Returns:
-        array
+            array
     """       
     if isinstance(A,np.ndarray) and isinstance(B,np.ndarray):
         return np.vstack([A,B])

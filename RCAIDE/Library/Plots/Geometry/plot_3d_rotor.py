@@ -30,15 +30,14 @@ def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data 
     Source:
     None
 
-    Inputs:
+    Args:
     axes                       - plotting axes
     rotor                      - RCAIDE rotor for which to plot the geometry
     cpt                        - control point at which to plot the rotor
     number_of_airfoil_points   - discretization of airfoil geometry 
     
 
-    Properties Used:
-    N/A
+
     """
     plot_propeller_only = False
     if plot_data == None: 
@@ -109,15 +108,14 @@ def generate_3d_blade_points(rotor,n_points,dim,i,aircraftRefFrame=True):
     Source:
     None
 
-    Inputs:
+    Args:
     rotor            - RCAIDE rotor
     n_points         - number of points around airfoils of each blade section
     dim              - number for radial dimension
     i                - blade number
     aircraftRefFrame - boolean to convert the coordinates from rotor frame to aircraft frame 
 
-    Properties Used:
-    N/A
+
     """    
     # unpack 
     num_B        = rotor.number_of_blades

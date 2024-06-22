@@ -24,14 +24,14 @@ def compute_cryogen_mass_flow_rate(cryogen,cryogen_temp,equipment_temp,cooling_r
     constant pressure cryogen system
     perfect mixing and thermal conduction in cryogen
     
-    Inputs:
+    Args:
         cryogen
         cryogen_temp                [K]
         equipment_temp              [K]
         cooling_power               [W]
         pressure                    [Pa]
     
-    Outputs:
+    Returns:
         mdot                        [kg/s]
     
     """

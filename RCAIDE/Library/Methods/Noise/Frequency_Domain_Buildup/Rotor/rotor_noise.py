@@ -36,13 +36,13 @@ def rotor_noise(rotor,aeroacoustic_data,segment,settings):
     Source:
     None
     
-    Inputs:
+    Args:
         rotors                  - data structure of rotors                            [None]
         segment                 - flight segment data structure                       [None] 
         results                 - data structure containing of acoustic data          [None]
         settings                - accoustic settings                                  [None]
                                
-    Outputs:
+    Returns:
         Results.    
             blade_passing_frequencies      - blade passing frequencies                           [Hz]
             SPL                            - total SPL                                           [dB]

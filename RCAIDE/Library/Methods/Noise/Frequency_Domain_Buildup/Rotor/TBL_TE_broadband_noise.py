@@ -26,7 +26,7 @@ def TBL_TE_broadband_noise(f,r_e,L,U,M,R_c,Dbar_h,Dbar_l,R_delta_star_p,delta_st
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs:   
+    Args:   
        R_delta_star_p - Reynolds number correlated to boundary layer thicness [m]
        delta_star_p   - boundary layer thickness of pressure side             [m]
        delta_star_s   - boundary layer thickness of suction side              [m]

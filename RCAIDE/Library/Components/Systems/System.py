@@ -32,14 +32,12 @@ class System(Component):
         Source:
         N/A
         
-        Inputs:
+        Args:
         None
         
-        Outputs:
+        Returns:
         None
         
-        Properties Used:
-        N/A
         """        
         
         self.tag             = 'System'

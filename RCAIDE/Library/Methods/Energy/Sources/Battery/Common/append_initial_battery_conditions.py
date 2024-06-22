@@ -26,7 +26,7 @@ def append_initial_battery_conditions(segment,bus,battery):
         Source:
         N/A
     
-        Inputs:  
+        Args:  
             atmosphere.temperature             [Kelvin]
             
             Optional:
@@ -39,7 +39,7 @@ def append_initial_battery_conditions(segment,bus,battery):
                  battery.discharge                  [boolean]
                  increment_battery_age_by_one_day     [boolean]
                
-        Outputs:
+        Returns:
             segment
                battery_discharge                    [boolean]
                increment_battery_age_by_one_day     [boolean]
@@ -53,8 +53,7 @@ def append_initial_battery_conditions(segment,bus,battery):
                battery.resistance_growth_factor     [unitless]
                battery.capacity_fade_factor         [unitless] 
     
-        Properties Used:
-        None
+
     """       
     # compute ambient conditions
     atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()

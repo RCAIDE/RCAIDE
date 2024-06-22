@@ -13,7 +13,7 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 #  miscellaneous_drag_aircraft_ESDU
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Aerodynamics-Common-Drag
+## @ingroup Library-Methods-Aerdoynamics-Common-Drag
 def miscellaneous_drag_aircraft_ESDU(state,settings,geometry):
     """Computes the miscellaneous drag associated with an aircraft
 
@@ -23,7 +23,7 @@ def miscellaneous_drag_aircraft_ESDU(state,settings,geometry):
     Source:
     ESDU 94044, figure 1
 
-    Inputs:
+    Args:
     state.conditions.freestream.mach_number    [Unitless] (actual values not used)
     geometry.reference_area                    [m^2]
     geometry.wings.areas.wetted                [m^2]
@@ -31,11 +31,10 @@ def miscellaneous_drag_aircraft_ESDU(state,settings,geometry):
     geometry.network.areas.wetted              [m^2]
     geometry.network.number_of_engines         [Unitless]
 
-    Outputs:
+    Returns:
     cd_excrescence (drag)                      [Unitless]
 
-    Properties Used:
-    N/A
+
     """
 
     # unpack inputs 

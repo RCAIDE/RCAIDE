@@ -51,10 +51,10 @@ class Container(Component.Container):
                 None
             
             Args:
-                State variables
+                State (dict): flight conditions 
             
             Returns:
-                Results of the evaluate method 
+                results (dict): Results of the evaluate method 
         """
         ones_row                          = state.ones_row
         results                           = Data()

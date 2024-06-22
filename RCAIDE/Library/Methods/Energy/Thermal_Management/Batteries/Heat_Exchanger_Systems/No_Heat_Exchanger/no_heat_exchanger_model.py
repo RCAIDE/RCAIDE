@@ -20,9 +20,9 @@ def no_heat_exchanger_model(HEX,HAS_outputs,state,dt,i):
     Assumptions:
         None
         
-    Inputs:   
+    Args:   
     
-    Outputs: 
+    Returns: 
 
     Properties Used:
     None 

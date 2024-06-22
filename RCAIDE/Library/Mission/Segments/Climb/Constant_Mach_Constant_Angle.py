@@ -26,7 +26,7 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.climb_angle                                 [radians]
     segment.mach_number                                 [Unitless]
     segment.altitude_start                              [meters]
@@ -34,31 +34,24 @@ def initialize_conditions(segment):
     segment.state.numerics.dimensionless.control_points [Unitless]
     conditions.freestream.density                       [kilograms/meter^3]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
 
-    Properties Used:
-    N/A
+
     """       
     # unpack User Inputs
     climb_angle = segment.climb_angle
     mach_number = segment.mach_number
     alt0        = segment.altitude_start 
     beta        = segment.sideslip_angle 
-    conditions  = segment.state.conditions  
-        
-    # unpack unknowns  
-    alts     = conditions.frames.inertial.position_vector[:,2]
+    conditions  = segment.state.conditions   
     
     # check for initial altitude
     if alt0 is None:
         if not segment.state.initials: raise AttributeError('initial altitude not set')
-        alt0 = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
-    
-    # pack conditions   
-    conditions.freestream.altitude[:,0]   = -alts 
+        alt0 = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2] 
 
     # check for initial velocity
     if mach_number is None: 
@@ -77,31 +70,20 @@ def initialize_conditions(segment):
     v_y   = np.sin(beta)*v_xy
     
     # pack conditions    
-    conditions.frames.inertial.velocity_vector[:,0]              = v_x[:,0]
-    conditions.frames.inertial.velocity_vector[:,1]              = v_y[:,0]
-    conditions.frames.inertial.velocity_vector[:,2]              = v_z[:,0]   
+    conditions.freestream.altitude[:,0]              = -conditions.frames.inertial.position_vector[:,2]  
+    conditions.frames.inertial.velocity_vector[:,0]  = v_x[:,0]
+    conditions.frames.inertial.velocity_vector[:,1]  = v_y[:,0]
+    conditions.frames.inertial.velocity_vector[:,2]  = v_z[:,0]   
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Residual Total Forces
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Library-Missions-Segments-Climb
-def residual_total_forces(segment):
+def altitude_residual(segment):
     
-    # Unpack results
-    FT      = segment.state.conditions.frames.inertial.total_force_vector
-    a       = segment.state.conditions.frames.inertial.acceleration_vector
-    m       = segment.state.conditions.weights.total_mass    
+    # Unpack results   
     alt_in  = segment.state.unknowns.altitude[:,0] 
-    alt_out = segment.state.conditions.freestream.altitude[:,0] 
-    
-    # Residual in X and Z, as well as a residual on the guess altitude
-    if segment.flight_dynamics.force_x: 
-        segment.state.residuals.force_x[:,0] = FT[:,0]/m[:,0] - a[:,0]
-    if segment.flight_dynamics.force_y: 
-        segment.state.residuals.force_y[:,0] = FT[:,1]/m[:,0] - a[:,1]       
-    if segment.flight_dynamics.force_z: 
-        segment.state.residuals.force_z[:,0] = FT[:,2]/m[:,0] - a[:,2]    
-          
+    alt_out = segment.state.conditions.freestream.altitude[:,0]     
     segment.state.residuals.altitude[:,0] = (alt_in - alt_out)/alt_out[-1]
 
     return    
@@ -118,7 +100,7 @@ def update_differentials(segment):
         Assumptions:
         Works with a segment discretized in vertical position, altitude
 
-        Inputs:
+        Args:
         state.numerics.dimensionless.control_points      [Unitless]
         state.numerics.dimensionless.differentiate       [Unitless]
         state.numerics.dimensionless.integrate           [Unitless]
@@ -126,7 +108,7 @@ def update_differentials(segment):
         state.conditions.frames.inertial.velocity_vector [meter/second]
         
 
-        Outputs:
+        Returns:
         state.conditions.frames.inertial.time            [second]
 
     """    

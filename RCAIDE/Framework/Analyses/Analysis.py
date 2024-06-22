@@ -1,4 +1,4 @@
-## @ingroup Analyses
+## @ingroup Framework-Analyses
 # RCAIDE/Framework/Analyses/Analysis.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,15 +13,9 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 # Analysis
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Analyses
+## @ingroup Framework-Analyses
 class Analysis(Data):
-    """ The Top Level Analysis Class
-        
-        Assumptions:
-           None
-        
-        Source:
-           None
+    """ The top level Analysis class 
     """
     def __defaults__(self):
         """This sets the default values and methods for the analysis.
@@ -174,7 +168,7 @@ class Container(ContainerBase):
                 kwarg : keyword arguments of the classs [-]
                                             
             Returns:
-                results : results of evaluation function [-]
+                results (dict): results of evaluation function [-]
             """
         results = Data()
         for tag,analysis in self.items(): 
@@ -222,7 +216,7 @@ class Container(ContainerBase):
                 kwarg : keyword arguments of the classs [-]
                                                     
             Returns:
-                evaluation function
+                evaluation function 
               
             """                
         

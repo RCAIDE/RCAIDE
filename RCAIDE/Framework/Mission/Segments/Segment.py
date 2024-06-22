@@ -52,18 +52,16 @@ class Segment(Analysis):
         """ This executes the initialize process
     
             Assumptions:
-            None
+                None
     
             Source:
-            None
+                None
     
             Args:
-            State  [Data()]
+                State (dict): RCAIDE data structure  
     
             Returns:
-            None
-    
-            
+                None
         """        
         self.process.initialize(self)
         return
@@ -72,18 +70,16 @@ class Segment(Analysis):
         """ This executes the converge process
     
             Assumptions:
-            None
+                None
     
             Source:
-            None
+                None
     
             Args:
-            State  [Data()]
+                State (dict): RCAIDE data structure  
     
             Returns:
-            None
-    
-            
+                None
         """             
         self.process.converge(self,state)    
     
@@ -91,16 +87,16 @@ class Segment(Analysis):
         """ This executes the iterate process
     
             Assumptions:
-            None
+                None
     
             Source:
-            None
+                None
     
             Args:
-            State  [Data()]
+                State (dict): RCAIDE data structure  
     
             Returns:
-            None
+                None
         """        
         self.process.iterate(self)
         return
@@ -109,16 +105,16 @@ class Segment(Analysis):
         """ This executes post processing
     
             Assumptions:
-            None
+                None
     
             Source:
-            None
+                None
     
             Args:
-            State  [Data()]
+                State (dict): RCAIDE data structure  
     
             Returns:
-            None
+                None
         """         
         self.process.post_process(self)
         return
@@ -127,18 +123,17 @@ class Segment(Analysis):
         """ This executes the entire process
     
             Assumptions:
-            None
+                None
     
             Source:
-            None
+                None
     
             Args:
-            State  [Data()]
+                self  (dict): RCAIDE data structure  
+                State (dict): RCAIDE data structure  
     
             Returns:
-            State  [Data()]
-    
-            
+                State (dict): RCAIDE data structure  
         """          
         if state is None:
             state = self.state
@@ -146,6 +141,20 @@ class Segment(Analysis):
         return self
     
     def flight_dynamics_and_controls(self): 
+        """ Defines the flight dynamics and controls to be used/assessed each flight segment.
+    
+            Assumptions:
+                None
+    
+            Source:
+                None
+    
+            Args:
+                self (dict): RCAIDE data structure  
+    
+            Returns:
+                None
+        """         
         self.flight_dynamics                                             = Data()
         self.flight_dynamics.force_x                                     = False 
         self.flight_dynamics.force_y                                     = False 
@@ -266,18 +275,11 @@ class Container(Segment):
         """This sets the default values.
     
             Assumptions:
-            None
+               None
     
             Source:
-            None
-    
-            Args:
-            None
-    
-            Returns:
-            None
-        """          
-                
+               None 
+        """         
         self.segments = Process()
         
         self.state = State.Container()
@@ -286,16 +288,16 @@ class Container(Segment):
         """ Add a SubSegment
     
             Assumptions:
-            None
+                None
     
             Source:
-            None
+                None
     
             Args:
-            segment  [Segment()]
+                segment (dict): fligt segment  
     
             Returns:
-            None
+                None
         """          
         self.segments.append(segment)
         return    

@@ -174,7 +174,7 @@ class VLM_Perturbation_Method(Stability):
         else:
             self.process.compute.lift.inviscid_wings  = evaluate_no_surrogate
 
-    def evaluate(self,state):
+    def evaluate(self,state: dict):
         """VLM pertubation evaluate function which calls listed processes in the analysis method.
 
         Assumptions:
@@ -184,11 +184,11 @@ class VLM_Perturbation_Method(Stability):
             None
 
         Args:
-            self     : stability analysis     [-]
-            state    : flight conditions      [-]
+            self         : stability analysis     [-]
+            state (dict) : flight conditions      [-]
 
         Returs:
-             results : stability results      [-]
+             results (dict): stability results    [-]
         """                     
         settings = self.settings
         geometry = self.geometry 

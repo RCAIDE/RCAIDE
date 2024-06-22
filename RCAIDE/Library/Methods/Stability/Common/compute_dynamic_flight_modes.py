@@ -31,12 +31,12 @@ def compute_dynamic_flight_modes(conditions,aircraft):
     Source:
       Automatic Control of Aircraft and Missiles by J. Blakelock Pg 23 and 117 
 
-    Inputs:
+    Args:
        conditions.aerodynamics  
        conditions.static_stability  
        conditions.stability.dynamic 
 
-    Outputs: 
+    Returns: 
        conditions.dynamic_stability.LatModes
        conditions.dynamic_stability.LongModes 
 

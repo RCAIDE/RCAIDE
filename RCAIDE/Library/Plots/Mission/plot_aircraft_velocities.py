@@ -32,17 +32,16 @@ def plot_aircraft_velocities(results,
     Source:
     None
 
-    Inputs:
+    Args:
     results.segments.condtions.freestream.
         velocity
         density
         mach_number
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """ 
 
     # get plotting style 

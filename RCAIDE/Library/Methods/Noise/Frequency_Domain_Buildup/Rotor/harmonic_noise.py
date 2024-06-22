@@ -35,7 +35,7 @@ def harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,
     NASA Office of Management, Scientific and Technical Information Program, 1991.
 
 
-    Inputs: 
+    Args: 
         harmonics                     - harmomics                                                                  [Unitless]
         freestream                    - freestream data structure                                                  [m/s]
         angle_of_attack               - aircraft angle of attack                                                   [rad]

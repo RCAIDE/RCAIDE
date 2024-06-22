@@ -29,7 +29,7 @@ def BPM_boundary_layer_properties(R_c,c,alpha_star):
         BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.
         Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.
     
-    Inputs:  
+    Args:  
        a lpha_star - adjustd angle of attack    [deg] 
        c          - airfoil section chord       [m]
        R_c        - Reynolds number             [-]

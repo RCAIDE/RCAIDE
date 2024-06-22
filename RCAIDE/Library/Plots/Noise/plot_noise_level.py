@@ -33,18 +33,17 @@ def plot_noise_level(noise_data,
     Source:
     None
 
-    Inputs:
+    Args:
     results.segments.conditions.
         frames.inertial.position_vector   - position vector of aircraft
         noise.
             total_SPL_dBA                 - total SPL (dbA)
             relative_microphone_locations - microphone locations
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """      
     N_gm_y       = noise_data.ground_microphone_y_resolution 
     gm           = noise_data.ground_microphone_locations    

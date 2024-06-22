@@ -7,8 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 #  IMPORT 
 # ----------------------------------------------------------------------------------------------------------------------  
-# RCAIDE imports 
-import RCAIDE
+# RCAIDE imports  
+from RCAIDE.Library.Mission.Common.Update.atmosphere import atmosphere
 
 # pacakge imports 
 import numpy as np
@@ -26,21 +26,20 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.equivalent_air_speed                        [meters/second]
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
     segment.descent_rate                                [meters/second]
     segment.state.numerics.dimensionless.control_points [array]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """       
     
     # unpack
@@ -62,10 +61,9 @@ def initialize_conditions(segment):
     alt = t_nondim * (altf-alt0) + alt0
     
     # Pack altitude before updating atmosphere
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
-    
+    conditions.freestream.altitude[:,0]             =  alt[:,0]     
     # determine airspeed from equivalent airspeed
-    RCAIDE.Library.Mission.Common.Update.atmosphere(segment) # get density for airspeed
+    atmosphere(segment)  
     density   = conditions.freestream.density[:,0]   
     MSL_data  = segment.analyses.atmosphere.compute_values(0.0,0.0)
 
@@ -78,7 +76,7 @@ def initialize_conditions(segment):
     
     # process velocity vector
     v_mag = air_speed
-    v_z   = descent_rate # z points down
+    v_z   = descent_rate 
     v_xy  = np.sqrt( v_mag**2 - v_z**2 )
     v_x   = np.cos(beta)*v_xy
     v_y   = np.sin(beta)*v_xy
@@ -87,4 +85,4 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] 

@@ -32,14 +32,13 @@ class Shaft_Power_Offtake(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """          
         self.power_draw            = 0.0
         self.reference_temperature = 288.15

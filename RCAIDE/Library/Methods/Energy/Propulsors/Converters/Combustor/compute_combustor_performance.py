@@ -18,7 +18,7 @@ def compute_combustor_performance(combustor,conditions):
     Source:
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
+    Args:
     conditions.freestream.
       isentropic_expansion_factor         [-]
       specific_heat_at_constant_pressure  [J/(kg K)]
@@ -29,7 +29,7 @@ def compute_combustor_performance(combustor,conditions):
       stagnation_pressure                 [Pa]
       nondim_mass_ratio                   [-]
 
-    Outputs:
+    Returns:
     combustor.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]

@@ -23,14 +23,13 @@ def plot_3d_fuselage(plot_data,fuselage, tessellation = 24 ,color_map = 'teal'):
     Source:
     None
 
-    Inputs:
+    Args:
     fuselage             - fuselage data structure
     fuselage_points      - coordinates of fuselage points
     color_map            - color of panel 
 
 
-    Properties Used:
-    N/A
+
     """
     fuselage_points      = generate_3d_fuselage_points(fuselage,tessellation = 24 )
     num_fus_segs = len(fuselage_points[:,0,0])
@@ -60,11 +59,10 @@ def generate_3d_fuselage_points(fuselage ,tessellation = 24 ):
     Source:
     None
 
-    Inputs:
+    Args:
     fuselage                  - fuselage data structure
 
-    Properties Used:
-    N/A
+
     """
     num_fus_segs = len(fuselage.Segments.keys())
     fuselage_points      = np.zeros((num_fus_segs,tessellation ,3))

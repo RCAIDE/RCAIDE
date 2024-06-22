@@ -27,7 +27,7 @@ def compute_scramjet_compression(compression_nozzle,conditions):
     "Hypersonic Airbreathing Propulsion", 1994  
     Chapter 4 - pgs. 175-180
     
-    Inputs: 
+    Args: 
        conditions.freestream. 
        isentropic_expansion_factor        [-] 
        specific_heat_at_constant_pressure [J/(kg K)] 
@@ -41,7 +41,7 @@ def compute_scramjet_compression(compression_nozzle,conditions):
        stagnation_temperature             [K] 
        stagnation_pressure                [Pa] 
 
-    Outputs: 
+    Returns: 
     compression_nozzle.outputs. 
        stagnation_temperature             [K] 
        stagnation_pressure                [Pa] 

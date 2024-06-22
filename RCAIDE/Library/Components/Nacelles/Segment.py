@@ -27,14 +27,12 @@ class Segment(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
         self.tag                      = 'segment' 
         self.orientation_euler_angles = [0.,0.,0.]  
@@ -55,14 +53,13 @@ class Segment_Container(Container):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
-    Properties Used:
-    N/A
+
     """     
 
     def get_children(self):
@@ -74,14 +71,12 @@ class Segment_Container(Container):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        N/A
         """       
         
         return []

@@ -25,10 +25,10 @@ def noise_tone_correction(SPL):
     Source:
         None 
 
-    Inputs:
+    Args:
         SPL                     - Sound Pressure Level in 1/3 octave band
 
-    Outputs: 
+    Returns: 
         tone_correction_max     - Maximum tone correction for a time history signal 
         
     Properties Used:

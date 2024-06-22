@@ -28,10 +28,10 @@ def SENEL_noise_metric(noise_data, flight_times = ['12:00:00'],time_period = 24*
     Source:
         None  
     
-    Inputs: 
+    Args: 
         SPL      - Noise level 
         
-    Outputs: 
+    Returns: 
         SENEL    - Single Event Noise Exposure Level            [SENEL]
         
     Properties Used:

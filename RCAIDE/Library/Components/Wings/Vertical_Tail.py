@@ -24,10 +24,10 @@ class Vertical_Tail(Wing):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
     Properties Used:
@@ -42,10 +42,10 @@ class Vertical_Tail(Wing):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
         Properties Used:
@@ -74,10 +74,10 @@ class Vertical_Tail(Wing):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
         Properties Used:

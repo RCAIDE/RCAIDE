@@ -24,18 +24,17 @@ def convert_airfoil_to_meshgrid(airfoil_geometry, *args, **kwargs):
     Source:
     None
 
-    Inputs:
+    Args:
     airfoil_geometry                [RCAIDE Data Structure]
         .x_lower_surface            [Numpy Array, float32]
         .y_lower_surface            [Numpy Array, float32]
         .y_upper_surface            [Numpy Array, float32]
 
-    Outputs: 
+    Returns: 
 
     airfoil_meshgrid                [Numpy Array, bool]
 
-    Properties Used:
-    N/A	
+	
     """
 
     # Unpack Values

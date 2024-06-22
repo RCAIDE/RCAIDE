@@ -23,7 +23,7 @@ def update_nmc_cell_age(battery,battery_conditions,increment_battery_age_by_one_
     Assumptions:
     None
 
-    Inputs:
+    Args:
       segment.conditions.energy. 
          battery.cycle_in_day                                                   [unitless]
          battery.cell.temperature                                               [Kelvin] 
@@ -31,13 +31,12 @@ def update_nmc_cell_age(battery,battery_conditions,increment_battery_age_by_one_
          battery.charge_throughput                                              [Amp-hrs] 
          battery.cell.state_of_charge                                           [unitless] 
     
-    Outputs:
+    Returns:
        segment.conditions.energy.
          battery.capacity_fade_factor     (internal resistance growth factor)   [unitless]
          battery.resistance_growth_factor (capactance (energy) growth factor)   [unitless]  
          
-    Properties Used:
-    N/A 
+ 
     """    
     n_series   = battery.pack.electrical_configuration.series
     SOC        = battery_conditions.cell.state_of_charge

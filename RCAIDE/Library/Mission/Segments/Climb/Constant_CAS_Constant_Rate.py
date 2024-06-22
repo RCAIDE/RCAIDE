@@ -27,7 +27,7 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.climb_rate                                  [meters/second]
     segment.calibrated_air_speed                        [meters/second]
     segment.altitude_start                              [meters]
@@ -35,13 +35,12 @@ def initialize_conditions(segment):
     segment.state.numerics.dimensionless.control_points [Unitless]
     conditions.freestream.density                       [kilograms/meter^3]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
 
-    Properties Used:
-    N/A
+
     """         
     
     # unpack

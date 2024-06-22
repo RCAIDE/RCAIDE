@@ -34,14 +34,13 @@ class Combustor(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """         
         
         self.tag                             = 'Combustor' 

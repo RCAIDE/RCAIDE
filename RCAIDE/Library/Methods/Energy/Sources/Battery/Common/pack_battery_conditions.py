@@ -17,7 +17,7 @@ def pack_battery_conditions(battery_conditions,battery):
         Source:
         N/A
     
-        Inputs: 
+        Args: 
         battery.
                inputs.current                  [Amperes]
                current_energy                  [Joules]
@@ -39,7 +39,7 @@ def pack_battery_conditions(battery_conditions,battery):
                cell.joule_heat_fraction        [unitless]  
                cell.entropy_heat_fraction      [unitless] 
                
-        Outputs:
+        Returns:
             conditions.energy.   
                electronics_efficiency             [unitless]
                payload_efficiency                 [unitless]
@@ -65,8 +65,7 @@ def pack_battery_conditions(battery_conditions,battery):
                        cell.joule_heat_fraction   [unitless]  
                        cell.entropy_heat_fraction [unitless] 
     
-        Properties Used:
-        None
+
     """      
     n_series           = battery.pack.electrical_configuration.series  
     n_parallel         = battery.pack.electrical_configuration.parallel

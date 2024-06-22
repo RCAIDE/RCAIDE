@@ -16,7 +16,7 @@ from RCAIDE.Framework.Analyses import Analysis
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Framework-Analyses-Energy
 class Energy(Analysis):
-    """ RCAIDE.Framework.Analyses.Energy.Energy()
+    """ This is the base class for energy analyses.
     """
     def __defaults__(self):
         """This sets the default values and methods for the analysis.
@@ -40,17 +40,14 @@ class Energy(Analysis):
             None
 
         Args:
-            self  : energy network    [-]
-            state : flight conditions [-]
+            self        : energy network    [-]
+            state (dict): flight conditions [-]
 
         Returns:
-            results : results of the thrust evaluation method.
- 
+            results : results of the thrust evaluation method. 
         """ 
             
-        networks = self.networks
-        #results  = networks.evaluate(state) 
+        networks = self.networks 
         networks.evaluate(state)
-        return 
-        #return results
+        return  
     

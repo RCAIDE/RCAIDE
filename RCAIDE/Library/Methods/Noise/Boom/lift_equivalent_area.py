@@ -29,7 +29,7 @@ def lift_equivalent_area(config,analyses,conditions):
         Source:
         N/A
         
-        Inputs:
+        Args:
         config                                [vehicle]
         conditions
               .freestream.dynamic_pressure    [pascals]
@@ -38,13 +38,11 @@ def lift_equivalent_area(config,analyses,conditions):
         analyses.aerodynamics.settings        [needed for discretization]
         config.total_length                   [m]
 
-        Outputs:
+        Returns:
         X_locs                                [m]
         AE_x                                  [m^2]
         CP                                    [pascals]
         
-        Properties Used:
-        N/A
     """       
     
     S            = config.reference_area

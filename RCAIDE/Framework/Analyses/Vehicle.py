@@ -1,4 +1,4 @@
-## @ingroup Analyses
+## @ingroup Framework-Analyses
 # RCAIDE/Framework/Analyses/Vehicle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,31 +13,23 @@ from .Analysis import Analysis
 # ----------------------------------------------------------------------------------------------------------------------
 # Vehicle
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Analyses
+## @ingroup Framework-Analyses
 class Vehicle(Analysis.Container):
-    """ RCAIDE.Framework.Analyses.Vehicle()
-    
-        The Vehicle Analyses Container Class
-        
-            Assumptions:
-            None
-            
-            Source:
-            None
+    """ The Vehicle Analyses Container Class 
     """
     def __defaults__(self):
         """This sets the default analyses to be applied to the vehicle.
         
-                Assumptions:
+            Assumptions:
                 None
-                
-                Source:
+            
+            Source:
                 None
-                
-                Args:
+            
+            Args:
                 None
-                
-                Returns:
+            
+            Returns:
                 None
         """
         self.aerodynamics = None
@@ -53,16 +45,16 @@ class Vehicle(Analysis.Container):
     def append(self,analysis):
         """This is used to add new analyses to the container.
         
-                Assumptions:
+            Assumptions:
                 None
-                
-                Source:
+            
+            Source:
                 None
-                
-                Args:
+            
+            Args:
                 Analysis to be added
-                
-                Returns:
+            
+            Returns:
                 None
         """
 
@@ -74,16 +66,16 @@ class Vehicle(Analysis.Container):
         """This sets the initialization behavior of the vehicle analysis
            container. Maps analysis paths to string keys.
            
-                Assumptions:
+            Assumptions:
                 None
-                
-                Source:
+            
+            Source:
+               None
+            
+            Args:
                 None
-                
-                Args:
-                None
-                
-                Returns:
+            
+            Returns:
                 None
         """
 
@@ -105,16 +97,16 @@ class Vehicle(Analysis.Container):
         """ This is used to determine the root of the analysis path associated
             with a particular analysis key by the analysis map.
             
-                Assumptions:
+            Assumptions:
                 None
-                
-                Source:
+            
+            Source:
                 None
-                
-                Args:
+            
+            Args:
                 Analysis key to be checked
-                
-                Returns:
+            
+            Returns:
                 Path root of analysis  
         """
         for analysis_type, analysis_root in self._analyses_map.items():

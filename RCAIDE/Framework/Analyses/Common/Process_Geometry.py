@@ -1,6 +1,6 @@
 ## @ingroup Framework-Analyses-Common
 # RCAIDE/Framework/Analyses/Common/Process_Geometry.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -20,26 +20,26 @@ class Process_Geometry(Process):
     """A process for evaluate over a component group.
 
     Assumptions:
-    None
+        None
 
     Source:
-    N/A
+        None
     """      
     
     geometry_key = None
     
-    def __init__(self,geometry_key):
+    def __init__(self,geometry_key: str):
         """Sets the geometry key for this process.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
         Args:
-            self         : geoemtry data structure [-] 
-            geometry_key : data object             [string]
+            self         (dict): geoemtry data structure [-] 
+            geometry_key (dict): data object             [string]
 
         Returns:
             None 
@@ -50,16 +50,16 @@ class Process_Geometry(Process):
         """Evaluates preset processes for each component.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
         Args:
-            self      : geoemtry data structure             [-] 
-            state     : flight conditions                   [-]
-            setting   : settings of geometry data structure [-]
-            geometry  : geometry data structure             [-]
+            self     (dict): geoemtry data structure             [-] 
+            state    (dict): flight conditions                   [-]
+            setting  (dict): settings of geometry data structure [-]
+            geometry (dict): geometry data structure             [-]
 
         Returns:
             None 

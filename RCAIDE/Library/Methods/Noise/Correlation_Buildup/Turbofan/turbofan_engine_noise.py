@@ -42,7 +42,7 @@ def turbofan_engine_noise(turbofan,aeroacoustic_data,segment,settings):
     Assumptions:
         SAE ARP876D: Gas Turbine Jet Exhaust Noise Prediction
 
-    Inputs:
+    Args:
         vehicle	 - RCAIDE type vehicle 
         includes these fields:
             Velocity_primary           - Primary jet flow velocity                           [m/s]
@@ -63,7 +63,7 @@ def turbofan_engine_noise(turbofan,aeroacoustic_data,segment,settings):
             distance_microphone        - Distance from the nozzle exhaust to the microphones [m]
             angles                     - Array containing the desired polar angles           [rad] 
 
-    Outputs: One Third Octave Band SPL [dB]
+    Returns: One Third Octave Band SPL [dB]
         SPL_p                           - Sound Pressure Level of the primary jet            [dB]
         SPL_s                           - Sound Pressure Level of the secondary jet          [dB]
         SPL_m                           - Sound Pressure Level of the mixed jet              [dB]

@@ -23,7 +23,7 @@ def convert_to_third_octave_band(SPL,f,settings):
 
     Source: 
 
-    Inputs:
+    Args:
         SPL                    - sound pressure level                          [dB] 
         f                      - blade passing spectrum frequencies            [Hz]
         settings.    
@@ -32,7 +32,7 @@ def convert_to_third_octave_band(SPL,f,settings):
             upper_frequencies  - upper frequencies of the 1/3 octave spectrum  [dB]
         
 
-    Outputs:
+    Returns:
         SPL_third_octave       - SPL in the 1/3 octave spectrum                [dB] 
 
     Properties Used:

@@ -36,10 +36,10 @@ class Component(Data):
             Source:
             N/A
     
-            Inputs:
+            Args:
             None
     
-            Outputs:
+            Returns:
             None
     
             Properties Used:
@@ -78,10 +78,10 @@ class Container(ContainerBase):
             Source:
             N/A
     
-            Inputs:
+            Args:
             None
     
-            Outputs:
+            Returns:
             mass  [kg]
     
             Properties Used:
@@ -106,10 +106,10 @@ class Container(ContainerBase):
             Source:
             N/A
     
-            Inputs:
+            Args:
             None
     
-            Outputs:
+            Returns:
             total moment [kg*m]
     
             Properties Used:

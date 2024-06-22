@@ -27,14 +27,13 @@ def plot_rotor(prop, face_color = 'red', edge_color = 'black' ,show_figure = Tru
     Source:
     None
 
-    Inputs:
+    Args:
     RCAIDE.Library.Components.Energy.Converters.Propeller()
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """
     # Initialize figure
     fig = make_subplots(rows=2, cols=2)

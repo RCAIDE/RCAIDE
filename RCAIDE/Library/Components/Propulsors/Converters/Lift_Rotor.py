@@ -36,14 +36,13 @@ class Lift_Rotor(Rotor):
         Source:
         N/A
         
-        Inputs:
+        Args:
         None
         
-        Outputs:
+        Returns:
         None
         
-        Properties Used:
-        None
+
         """         
 
 

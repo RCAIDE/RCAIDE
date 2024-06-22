@@ -35,10 +35,9 @@ def differentials_altitude(segment):
     v = segment.state.conditions.frames.inertial.velocity_vector
 
     dz = r[-1,2] - r[0,2]
-    vz = v[:,2,None] # maintain column array
-
+    
     # get overall time step
-    dt = np.dot( I[-1,:] * dz , 1/ vz[:,0] )
+    dt = np.dot( I[-1,:] * dz , 1/v[:,2])
 
     # rescale operators
     t = t * dt

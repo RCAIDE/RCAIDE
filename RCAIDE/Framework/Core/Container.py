@@ -23,52 +23,29 @@ t_table = str.maketrans( chars          + string.ascii_uppercase ,
 ## @ingroup Core
 class Container(Data):
     """ A dict-type container with attribute, item and index style access
-        intended to hold a attribute-accessible list of Data(). This is unordered.
-        
-        Assumptions:
-        None
-        
-        Source:
-        None
-        
+        intended to hold a attribute-accessible list of Data(). This is unordered. 
     """
             
         
     def __defaults__(self):
         """ Defaults function
+        
+        Assumptions:
+            None
     
-            Assumptions:
-            None
-        
-            Source:
-            None
-        
-            Args:
-            None
-        
-            Returns:
-            None
-            
-            
+        Source:
+           None 
         """          
         pass
     
     def __init__(self,*args,**kwarg):
         """ Initialization that builds the container
         
-            Assumptions:
+        Assumptions:
             None
-        
-            Source:
-            None
-        
-            Args:
-            self
-        
-            Returns:
-            None
-            
-            
+    
+        Source:
+           None 
         """          
         super(Container,self).__init__(*args,**kwarg)
         self.__defaults__()
@@ -78,17 +55,17 @@ class Container(Data):
             This overrides the Data class append by allowing for duplicate named components
             The following components will get new names.
         
-            Assumptions:
+        Assumptions:
             None
-        
-            Source:
-            None
-        
-            Args:
-            self
-        
-            Returns:
-            None
+    
+        Source:
+           None
+    
+        Args:
+           None
+    
+        Returns:
+           None 
         """           
         
         # See if the item tag exists, if it does modify the name
@@ -108,18 +85,18 @@ class Container(Data):
         
     def extend(self,vals):
         """ Append things regressively depending on what is inside.
+        
+        Assumptions:
+            None
     
-            Assumptions:
-            None
-        
-            Source:
-            None
-        
-            Args:
-            self
-        
-            Returns:
-            None
+        Source:
+           None
+    
+        Args:
+           None
+    
+        Returns:
+           None 
         """         
         if isinstance(vals,(list,tuple)):
             for v in vals: self.append(v)
@@ -132,16 +109,16 @@ class Container(Data):
         """ Returns the components that can go inside
         
         Assumptions:
-        None
+            None
     
         Source:
-        None
+           None
     
         Args:
-        None
+           None
     
         Returns:
-        None 
+           None 
         """        
         
         return []    

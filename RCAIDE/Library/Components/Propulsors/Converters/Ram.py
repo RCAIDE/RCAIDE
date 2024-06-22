@@ -35,14 +35,13 @@ class Ram(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """
         #set the deafult values
         self.tag = 'Ram'

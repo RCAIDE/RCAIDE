@@ -30,14 +30,13 @@ class Constant_Temperature(Atmosphere):
         Source:
             U.S. Standard Atmosphere (1976 version)
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """          
         self.fluid_properties = Air()
         self.planet = Earth()

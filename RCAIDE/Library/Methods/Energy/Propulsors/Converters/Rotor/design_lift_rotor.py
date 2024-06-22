@@ -26,7 +26,7 @@ def design_lift_rotor(rotor,number_of_stations = 20,solver_name= 'SLSQP',iterati
         This scrip adopts RCAIDE's native optimization style where the objective function is expressed 
         as an aeroacoustic function, considering both efficiency and radiated noise.
           
-          Inputs: 
+          Args: 
           prop_attributes.
               hub radius                             [m]
               tip radius                             [m]
@@ -41,7 +41,7 @@ def design_lift_rotor(rotor,number_of_stations = 20,solver_name= 'SLSQP',iterati
                  ideal_SPL_dbA                       [dBA]
                  multiobjective_aeroacoustic_weight  [None]
             
-          Outputs:
+          Returns:
           Twist distribution                         [array of radians]
           Chord distribution                         [array of meters]
               

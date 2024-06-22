@@ -31,11 +31,10 @@ def plot_rotor_disc_inflow(prop,velocities, grid_points):
     Inputs
     velocites  - velocites at rotor plane  [m/s]
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """    
     
     u = velocities.u_velocities

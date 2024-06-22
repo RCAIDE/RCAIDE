@@ -18,7 +18,7 @@ def compute_turbine_performance(turbine,conditions):
     Source:
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
+    Args:
     conditions.freestream.
       isentropic_expansion_factor         [-]
       specific_heat_at_constant_pressure  [J/(kg K)]
@@ -31,7 +31,7 @@ def compute_turbine_performance(turbine,conditions):
       fan.work_done                       [J/kg]
       shaft_power_off_take.work_done      [J/kg]
 
-    Outputs:
+    Returns:
     turbine.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]

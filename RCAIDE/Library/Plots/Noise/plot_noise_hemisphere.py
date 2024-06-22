@@ -39,7 +39,7 @@ def plot_noise_hemisphere(noise_data,
     Source:
     None
 
-    Inputs: 
+    Args: 
        noise_data        - noise data structure 
        noise_level       - noise level  
        min_noise_level   - minimal noise level 
@@ -48,11 +48,10 @@ def plot_noise_hemisphere(noise_data,
        show_figure       - show figure 
        save_filename     - save file flag 
 
-    Outputs:
+    Returns:
        Plots
 
-    Properties Used:
-    N/A
+
     """         
  
     plot_data   = []     

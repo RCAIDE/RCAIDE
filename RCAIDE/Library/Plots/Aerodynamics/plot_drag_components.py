@@ -31,18 +31,17 @@ def plot_drag_components(results,
     Source:
     None
     
-    Inputs:
+    Args:
     results.segments.condtions.aerodynamics.drag_breakdown
           parasite.total
           induced.total
           compressible.total
           miscellaneous.total
           
-    Outputs:
+    Returns:
     Plots
     
-    Properties Used:
-    N/A
+
     """ 
     # get plotting style 
     ps      = plot_style()  

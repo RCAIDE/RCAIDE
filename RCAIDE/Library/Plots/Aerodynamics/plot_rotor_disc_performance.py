@@ -30,11 +30,10 @@ def plot_rotor_disc_performance(prop,outputs,i=0,title=None,save_figure=False):
     Inputs
     outputs    - rotor outputs data structure 
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     
     """
      

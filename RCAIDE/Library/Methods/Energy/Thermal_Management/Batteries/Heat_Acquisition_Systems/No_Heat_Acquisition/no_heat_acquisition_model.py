@@ -19,7 +19,7 @@ def no_heat_acquisition_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
     Assumptions:
         None
         
-    Inputs:  
+    Args:  
         battery. 
               h                         (heat transfer coefficient)  [W/(m^2*K)] 
               As_cell                   (battery cell surface area)  [meters^2]
@@ -29,7 +29,7 @@ def no_heat_acquisition_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
               T_cell                    (battery cell temperature)   [Kelvin] 
               heat_transfer_efficiency                               [unitless]
       
-      Outputs:
+      Returns:
         battery. 
              net_power                                               [Watts] 
  

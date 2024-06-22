@@ -21,18 +21,17 @@ def fuselage_correction(state,settings,geometry):
     Source:
     adg.stanford.edu (Stanford AA241 A/B Course Notes)
 
-    Inputs:
+    Args:
     settings.fuselage_lift_correction  [Unitless]
     state.conditions.
       freestream.mach_number           [Unitless]
       aerodynamics.angle_of_attack     [radians]
       aerodynamics.coefficients.lift    [Unitless]
 
-    Outputs:
+    Returns:
     aircraft_lift_total                [Unitless]
 
-    Properties Used:
-    N/A
+
     """         
    
     # unpack

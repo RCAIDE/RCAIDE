@@ -31,17 +31,16 @@ def plot_aerodynamic_coefficients(results,
     Source:
     None
     
-    Inputs:
+    Args:
     results.segments.condtions.aerodynamics.
         lift_coefficient
         drag_coefficient
         angle_of_attack
         
-    Outputs:
+    Returns:
     Plots
     
-    Properties Used:
-    N/A
+
     """ 
 
     # get plotting style 

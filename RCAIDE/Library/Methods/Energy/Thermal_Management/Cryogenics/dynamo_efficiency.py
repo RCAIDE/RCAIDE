@@ -24,10 +24,10 @@ def efficiency_curve(Dynamo, current):
     Source:
         "Practical Estimation of HTS Dynamo Losses" - Kent Hamilton, Member, IEEE, Ratu Mataira-Cole, Jianzhao Geng, Chris Bumby, Dale Carnegie, and Rod Badcock, Senior Member, IEEE
 
-    Inputs:
+    Args:
         current        [A]
 
-    Outputs:
+    Returns:
         efficiency      [W/W]
 
     Properties Used:

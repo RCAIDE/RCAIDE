@@ -26,7 +26,7 @@ def find_ragone_optimum(battery, energy, power): #adds a battery that is optimiz
     Assumptions:
     Specific power can be modeled as a curve vs. specific energy of the form c1*10**(c2*specific_energy)
     
-    Inputs:
+    Args:
     energy            [J]
     power             [W]
     battery.
@@ -38,7 +38,7 @@ def find_ragone_optimum(battery, energy, power): #adds a battery that is optimiz
         upper_bound   [J/kg]
         lower_bound   [J/kg]
                 
-    Outputs:
+    Returns:
     battery.
       specific_energy [J/kg]
       specific_power  [W/kg]
@@ -47,8 +47,7 @@ def find_ragone_optimum(battery, energy, power): #adds a battery that is optimiz
                 
            
 
-    Properties Used:
-    N/A  
+  
     """ 
     
     lb = battery.ragone.lower_bound

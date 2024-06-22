@@ -24,10 +24,10 @@ def primary_noise_component(Velocity_primary,Temperature_primary,R_gas,theta_p,D
     Source: 
         None
         
-    Inputs:
+    Args:
         noise_data     - RCAIDE type vehicle
 
-    Outputs:
+    Returns:
         OASPL          - Overall Sound Pressure Level            [dB]
         PNL            - Perceived Noise Level                   [dB]
         PNL_dBA        - Perceived Noise Level A-weighted level  [dBA]

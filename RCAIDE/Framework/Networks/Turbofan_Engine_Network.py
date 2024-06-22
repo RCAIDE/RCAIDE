@@ -10,7 +10,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Framework.Core                                                                     import Data 
 from RCAIDE.Framework.Mission.Common                                                           import Residuals    
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor.compute_turbofan_performance  import compute_turbofan_performance
 from .Network                                                                                  import Network  
@@ -46,8 +45,8 @@ class Turbofan_Engine_Network(Network):
                 None
     
             Args:
-                self   : network           [-]  
-                state  : flight conditions [-]  
+                self  (dict): network           [-]  
+                state (dict): flight conditions [-]  
     
             Returns:
                 None 
@@ -88,15 +87,8 @@ class Turbofan_Engine_Network(Network):
         # Step 3: Pack results 
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
-        conditions.energy.vehicle_mass_rate    = total_mdot           
-        
-        ## A PATCH TO BE DELETED IN RCAIDE
-        #results = Data()
-        #results.thrust_force_vector       = total_thrust
-        #results.power                     = total_power
-        #results.vehicle_mass_rate         = total_mdot     
-        ## --------------------------------------------------  
-        #return results
+        conditions.energy.vehicle_mass_rate    = total_mdot 
+            
         return 
      
     
@@ -132,8 +124,8 @@ class Turbofan_Engine_Network(Network):
             None
         
         Args: 
-            self   : network                           [-]
-            segment: data structure of mission segment [-]
+            self    (dict): network                           [-]
+            segment (dict): data structure of mission segment [-]
         
         Returns:
             None
@@ -154,11 +146,11 @@ class Turbofan_Engine_Network(Network):
             None
         
         Args: 
-            self   : network                           [-]
-            segment: data structure of mission segment [-]
+            self    (dict): network                           [-]
+            segment (dict): data structure of mission segment [-]
         
         Returns:
-            segment
+            segment (dict): data structure of mission segment [-]
         """                  
         fuel_lines  = segment.analyses.energy.networks.turbofan_engine.fuel_lines
         ones_row    = segment.state.ones_row 

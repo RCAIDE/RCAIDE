@@ -34,14 +34,13 @@ class Turbine(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        None
+
         """         
         #set the default values
         self.tag                               ='Turbine'

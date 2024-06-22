@@ -1,6 +1,6 @@
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/aero_coeff.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Dec 2023, M. Clarke
 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # aero_coeff
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
+## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def aero_coeff(x,y,cp,al,npanel):
     """Compute airfoil force and moment coefficients about 
                     the quarter chord point          
@@ -27,22 +27,18 @@ def aero_coeff(x,y,cp,al,npanel):
     Source:
     None                                                                    
                                                                    
-    Inputs:                                                     
+    Args:                                                     
     x       -  Vector of x coordinates of the surface nodes      
     y       -  Vector of y coordinates of the surface nodes       
     cp      -  Vector of coefficients of pressure at the nodes  
     al      -  Angle of attack in radians                             
     npanel  -  Number of panels on the airfoil               
                                                                  
-    Outputs:                                           
+    Returns:                                           
     cl      -  Airfoil lift coefficient                
     cd      -  Airfoil drag coefficient                                 
-    cm      -  Airfoil moment coefficient about the c/4     
-     
-   Properties Used:
-    N/A
-    """    
-     
+    cm      -  Airfoil moment coefficient about the c/4  
+    """  
     dx      = x[1:]-x[:-1]
     dy      = y[1:]-y[:-1]
     xa      = 0.5*(x[1:] +x[:-1])-0.25

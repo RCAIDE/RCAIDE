@@ -22,14 +22,12 @@ def plot_airfoil_surface_forces(ap, save_figure = False , arrow_color = 'red',sa
         Assumptions:
         None
         
-        Inputs: 
+        Args: 
         ap       - data stucture of airfoil boundary layer properties and polars 
          
-        Outputs: 
+        Returns: 
         None 
         
-        Properties Used:
-        N/A
         """        
     
     # determine dimension of angle of attack and reynolds number 

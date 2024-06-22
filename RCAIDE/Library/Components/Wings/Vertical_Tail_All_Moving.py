@@ -25,14 +25,12 @@ class Vertical_Tail_All_Moving(Vertical_Tail, All_Moving_Surface):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
 
     def __defaults__(self):
@@ -47,14 +45,12 @@ class Vertical_Tail_All_Moving(Vertical_Tail, All_Moving_Surface):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """ 
         self.tag = 'vertical_tail_all_moving'
         self.sign_duplicate        = -1.0   
@@ -78,14 +74,12 @@ class Vertical_Tail_All_Moving(Vertical_Tail, All_Moving_Surface):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """       
         wing                  = super().make_x_z_reflection()
         wing.deflection      *= -1*self.sign_duplicate

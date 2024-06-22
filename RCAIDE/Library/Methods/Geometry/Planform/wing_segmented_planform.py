@@ -26,7 +26,7 @@ def wing_segmented_planform(wing, overwrite_reference = False):
     Source:
     None
     
-    Inputs:
+    Args:
     overwrite_reference        <boolean> Determines if reference area, wetted area, and aspect
                                          ratio are overwritten based on the segment values.
     wing.
@@ -34,7 +34,7 @@ def wing_segmented_planform(wing, overwrite_reference = False):
       spans.projected          [m]
       symmetric                <boolean> Determines if wing is symmetric
     
-    Outputs:
+    Returns:
     wing.
       spans.total                [m]
       chords.tip                 [m]
@@ -51,8 +51,7 @@ def wing_segmented_planform(wing, overwrite_reference = False):
 
         
     
-    Properties Used:
-    N/A
+
     """
     
     # Unpack
@@ -190,7 +189,7 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
     Source:
     http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html (Stanford AA241 A/B Course Notes)
 
-    Inputs:
+    Args:
     wing.
       exposed_root_chord_offset [m]
       symmetric                 [-]
@@ -202,7 +201,7 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
         percent_span_location   [-]
         root_chord_percent      [-]
 
-    Outputs:
+    Returns:
     wing.areas.wetted           [m^2]
     wing.areas.reference        [m^2]
     wing.Segments.
@@ -214,8 +213,7 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
         wetted                  [m^2]
         
 
-    Properties Used:
-    N/A
+
     """  
         
     # Unpack wing
@@ -294,7 +292,7 @@ def segment_centroid(le_sweep,seg_span,dx,dy,dz,taper,A,dihedral,root_chord,tip_
     Source:
     None
     
-    Inputs:
+    Args:
     le_sweep      [rad]
     seg_span      [m]
     dx            [m]
@@ -305,11 +303,10 @@ def segment_centroid(le_sweep,seg_span,dx,dy,dz,taper,A,dihedral,root_chord,tip_
     root_chord    [m]
     tip_chord     [m]
 
-    Outputs:
+    Returns:
     cx,cy         [m,m]
 
-    Properties Used:
-    N/A
+
     """    
     
     a = tip_chord

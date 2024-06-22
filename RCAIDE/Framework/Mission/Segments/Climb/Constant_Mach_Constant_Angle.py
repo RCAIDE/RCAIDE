@@ -24,20 +24,13 @@ class Constant_Mach_Constant_Angle(Evaluate):
     """     
     
     def __defaults__(self):
-        """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
-    
+        """ Specific flight segment defaults which can be modified after initializing.
+        
             Assumptions:
                 None
     
             Source:
-                self : mission segment [-]
-    
-            Args:
                 None
-    
-            Returns:
-                None
-            
         """          
         
         # -------------------------------------------------------------------------------------------------------------- 
@@ -63,7 +56,8 @@ class Constant_Mach_Constant_Angle(Evaluate):
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions  
         iterate                            = self.process.iterate
-        iterate.residuals.flight_dynamics  = Segments.Climb.Constant_Mach_Constant_Angle.residual_total_forces
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
+        iterate.residuals.altitude         = Segments.Climb.Constant_Mach_Constant_Angle.altitude_residual
         iterate.conditions.differentials   = Segments.Climb.Constant_Mach_Constant_Angle.update_differentials 
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces

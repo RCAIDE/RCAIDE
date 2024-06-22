@@ -21,7 +21,7 @@ def trailing_edge_flap_noise(Sf,cf,deltaf,slots,velocity,M,phi,theta,distance,fr
     Assumptions:
         Correlation based.
         
-    Inputs:
+    Args:
         Sf         - Flap area                                                      [sq.ft]
         cf         - Flap chord                                                     [ft]
         deltaf     - Flap deflection                                                [rad]
@@ -33,7 +33,7 @@ def trailing_edge_flap_noise(Sf,cf,deltaf,slots,velocity,M,phi,theta,distance,fr
         distance   - Distance from airplane to observer, evaluated at retarded time [ft]
         frequency  - Frequency array                                                [Hz]
         
-    Outputs: One Third Octave Band SPL                                              [dB]
+    Returns: One Third Octave Band SPL                                              [dB]
         SPL                
  
     Properties Used:

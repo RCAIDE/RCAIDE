@@ -24,12 +24,12 @@ def compute_naca_4series(airfoil_geometry_file,npoints= 201, leading_and_trailin
     Source:
     None
 
-    Inputs:
+    Args:
         airfoils                                     <string>
         npoints                                      [unitless]    
         leading_and_trailing_edge_resolution_factor  [unitless]
 
-    Outputs:
+    Returns:
     airfoil_data.
         thickness_to_chord                           [unitless]
         x_coordinates                                [meters]
@@ -40,8 +40,7 @@ def compute_naca_4series(airfoil_geometry_file,npoints= 201, leading_and_trailin
         y_lower_surface                              [meters]
         camber_coordinates                           [meters] 
 
-    Properties Used:
-    N/A
+
     """
     if npoints%2 != 1:
         npoints+= 1

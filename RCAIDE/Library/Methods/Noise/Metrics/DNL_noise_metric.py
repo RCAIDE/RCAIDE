@@ -29,10 +29,10 @@ def DNL_noise_metric(noise_data, flight_times = ['12:00:00'],time_period = 24*Un
     Source:
         None
 
-    Inputs:
+    Args:
        noise_data  - post-processed noise data structure 
 
-    Outputs: [dB]
+    Returns: [dB]
        noise_data  - post-processed noise data structure 
 
     Properties Used:

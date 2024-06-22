@@ -25,10 +25,10 @@ class Main_Wing(Wing):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
     Properties Used:
@@ -43,10 +43,10 @@ class Main_Wing(Wing):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
         Properties Used:
@@ -65,10 +65,10 @@ class Segment_Container(Container):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
     Properties Used:
@@ -84,10 +84,10 @@ class Segment_Container(Container):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
         Properties Used:
@@ -106,10 +106,10 @@ class Segment_Container(Container):
             Source:
             N/A
     
-            Inputs:
+            Args:
             self
     
-            Outputs:
+            Returns:
             N/A
     
             Properties Used:

@@ -39,14 +39,13 @@ def plot_elevation_contours(topography_file,
     Source:
     topography_file
 
-    Inputs:
+    Args:
     vehicle
 
-    Outputs:
+    Returns:
     Plots
 
-    Properties Used:
-    N/A
+
     """
 
     # get plotting style 

@@ -36,12 +36,12 @@ def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_
     Source
         None
         
-    Inputs:
+    Args:
     airfoil_geometry                        <data_structure>
     airfoil_polar_files                     <string>
     boundary_layer_files                    <string>
     use_pre_stall_data                      [Boolean]
-    Outputs:
+    Returns:
     airfoil_data.
         cl_polars                           [unitless]
         cd_polars                           [unitless]      
@@ -67,8 +67,7 @@ def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_
         Ret_upper_surface                   [unitless]
         H_upper_surface                     [unitless] 
     
-    Properties Used:
-    N/A
+
     """     
     Airfoil_Data   = Data()  
    
@@ -135,19 +134,18 @@ def compute_extended_polars(airfoil_cl,airfoil_cd,airfoil_aoa,AoA_sweep_deg,geom
     Models of Lift and Drag Coefficients of Stalled and Unstalled Airfoils in Wind Turbines and Wind Tunnels
     by D Spera, 2008
         
-    Inputs:
+    Args:
     airfoil_cl          [unitless]
     airfoil_cd          [unitless]
     airfoil_aoa         [degrees]
     AoA_sweep_deg       [unitless]
     geometry            [N/A]
     use_pre_stall_data  [boolean]
-    Outputs: 
+    Returns: 
     CL                  [unitless]
     CD                  [unitless]       
     
-    Properties Used:
-    N/A
+
     """    
     
     # Create dummy settings and state
@@ -232,7 +230,7 @@ def apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL,
     Source:
     None
     
-    Inputs:
+    Args:
     AoA_sweep_deg  [degrees]
     airfoil_aoa    [degrees]
     airfoil_cl     [unitless]
@@ -245,8 +243,7 @@ def apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL,
     CD             [unitless] 
     
     
-    Properties Used:
-    N/A
+
     
     '''
 
@@ -277,15 +274,14 @@ def compute_boundary_layer_properties(airfoil_geometry,Airfoil_Data):
     Assumptions:
     None 
     
-    Inputs:
+    Args:
     airfoil_geometry   <data_structure>
     Airfoil_Data       <data_structure>
     
-    Outputs:
+    Returns:
     Airfoil_Data       <data_structure>
     
-    Properties Used:
-    N/A
+
     '''
     if airfoil_geometry == None:
         print('No airfoil defined, NACA 0012 surrogates will be used') 

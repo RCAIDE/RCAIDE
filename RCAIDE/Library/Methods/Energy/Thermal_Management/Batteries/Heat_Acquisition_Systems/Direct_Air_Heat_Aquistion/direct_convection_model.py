@@ -29,7 +29,7 @@ def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
     David P DeWitt, Theodore L Bergman, Adrienne S Lavine, J. Wiley & Sons, Hoboken
     NJ (2007), 997 pp." (2007): 1683-1684.,  Chapter 7 pg 437-446 
 
-    Inputs:  
+    Args:  
         battery. 
               h                         (heat transfer coefficient)  [W/(m^2*K)] 
               As_cell                   (battery cell surface area)  [meters^2]
@@ -39,7 +39,7 @@ def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
               T_cell                    (battery cell temperature)   [Kelvin] 
               heat_transfer_efficiency                               [unitless]
       
-      Outputs:
+      Returns:
         battery. 
              net_power                                               [Watts] 
  

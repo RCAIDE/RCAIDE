@@ -29,7 +29,7 @@ def clean_wing_noise(S,b,ND,IsHorz,velocity,viscosity,M,phi,theta,distance,frequ
     Source:
        SAE Model
        
-    Inputs:
+    Args:
             S                          - Wing Area [sq.ft]
             b                          - Wing Span [ft]
             ND                         - Costant from the method
@@ -45,7 +45,7 @@ def clean_wing_noise(S,b,ND,IsHorz,velocity,viscosity,M,phi,theta,distance,frequ
 
 
 
-    Outputs: One Third Octave Band SPL [dB]
+    Returns: One Third Octave Band SPL [dB]
         SPL                              - Sound Pressure Level of the clean wing [dB]
         OASPL                            - Overall Sound Pressure Level of the clean wing [dB]
 

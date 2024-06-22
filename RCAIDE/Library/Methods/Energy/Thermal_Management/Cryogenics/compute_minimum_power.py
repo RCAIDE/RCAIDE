@@ -25,17 +25,16 @@ def compute_minimum_power(material, cold_temp, hot_temp, current):
     Source:
     N/A
 
-    Inputs:
+    Args:
         material
         cold_temp    [K]
         hot_temp     [K]
         current      [A]
 
-    Outputs:
+    Returns:
         power        [W]    
 
-    Properties Used:
-    N/A
+
     """    
 
     # Estimate the area under the thermal:electrical conductivity vs temperature plot for the temperature range of the current lead.
@@ -65,18 +64,17 @@ def compute_optimal_ratio( material, cold_temp, hot_temp, current, minimum_Q):
     Source:
     N/A
 
-    Inputs:
+    Args:
         material
         cold_temp    [K]
         hot_temp     [K]
         current      [A]
         minimum_Q    [W]
 
-    Outputs:
+    Returns:
         la_ratio
 
-    Properties Used:
-    N/A
+
     """  
     # Calculate the optimum length to cross-sectional area ratio
     # Taken directly from McFee
@@ -100,7 +98,7 @@ def calc_current(Cryogenic_Lead, current):
     Source:
     N/A
 
-    Inputs:
+    Args:
     Cryogenic_Lead. 
         outputs.optimum_current     [A]
         outputs.minimum_Q           [W]
@@ -111,11 +109,10 @@ def calc_current(Cryogenic_Lead, current):
         length                      [m]
         material
 
-    Outputs:
+    Returns:
         [lead cooling power, cryogenic loading due to lead]     [w,w]
 
-    Properties Used:
-    N/A
+
     """  
 
     c_l = Cryogenic_Lead

@@ -32,14 +32,13 @@ def plot_airfoil_polar_files(polar_data,
     Source:
     None
 
-    Inputs:
+    Args:
     airfoil_polar_paths   [list of strings]
 
-    Outputs: 
+    Returns: 
     Plots
 
-    Properties Used:
-    N/A	
+	
     """ 
   
     

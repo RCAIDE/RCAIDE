@@ -1,5 +1,5 @@
-## @defgroup Methods-Aerodynamics-AERODAS AERODAS
-# @ingroup Methods-Aerodynamics
+## @defgroup Library-Methods-Aerdoynamics-AERODAS AERODAS
+# @ingroup Library-Methods-Aerdoynamics
 # RCAIDE/Methods/Aerodynamics/AERODAS/__init__.py
 # 
 

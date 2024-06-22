@@ -29,13 +29,13 @@ def estimate_cruise_drag(vehicle,altitude,speed,lift_coefficient = 0.5 ,profile_
         Assumptions:
         None 
 
-        Inputs:
+        Args:
             vehicle                         vehicle    
             altitude                        cruise altitude          [m] 
             speed                           cruise speed             [m/s] 
             lift_coefficient                cruise lift coefficient  [-] 
             
-        Outputs: 
+        Returns: 
             Drag                            cruise drag              [N]
     """ 
        

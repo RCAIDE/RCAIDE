@@ -24,7 +24,7 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.descent_rate                          [meters/second]
     segment.air_speed_start                     [meters/second]
     segment.air_speed_end                       [meters/second]
@@ -32,13 +32,12 @@ def initialize_conditions(segment):
     state.numerics.dimensionless.control_points [Unitless]
     conditions.freestream.density               [kilograms/meter^3]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
 
-    Properties Used:
-    N/A
+
     """      
      
     # unpack User Inputs
@@ -66,7 +65,7 @@ def initialize_conditions(segment):
     
     # process velocity vector
     v_xy_mag = (vf-v0)*t_nondim + v0
-    v_z   = descent_rate # z points down
+    v_z   = descent_rate 
     v_xy_mag = np.sqrt(v_xy_mag**2 - v_z**2 )
 
     v_x         = np.cos(beta)*v_xy_mag
@@ -76,5 +75,5 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]
     conditions.frames.inertial.velocity_vector[:,1] = v_y[:,0]
     conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] 
+    conditions.freestream.altitude[:,0]             =  alt[:,0] 

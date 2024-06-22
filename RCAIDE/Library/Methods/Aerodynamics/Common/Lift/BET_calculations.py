@@ -38,7 +38,7 @@ def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
     Source:
     N/A
 
-    Inputs:
+    Args:
        beta                       blade twist distribution                        [-]
        c                          chord distribution                              [-]
        r                          radius distribution                             [-]
@@ -56,7 +56,7 @@ def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
        tc                         Thickness to chord                              [-]
        use_2d_analysis            Specifies 2d disc vs. 1d single angle analysis  [Boolean]
 
-    Outputs:
+    Returns:
        Cl                       Lift Coefficients                         [-]
        Cdval                    Drag Coefficients  (before scaling)       [-]
        alpha                    section local angle of attack             [rad]
@@ -139,7 +139,7 @@ def compute_inflow_and_tip_loss(r,R,Wa,Wt,B,et1=1,et2=1,et3=1):
     Source:
     N/A
 
-    Inputs:
+    Args:
        r          radius distribution                                              [m]
        R          tip radius                                                       [m]
        Wa         axial velocity                                                   [m/s]
@@ -149,7 +149,7 @@ def compute_inflow_and_tip_loss(r,R,Wa,Wt,B,et1=1,et2=1,et3=1):
        et2        tuning parameter for tip loss function 
        et3        tuning parameter for tip loss function 
        
-    Outputs:               
+    Returns:               
        lamdaw     inflow ratio                                                     [-]
        F          tip loss factor                                                  [-]
        piece      output of a step in tip loss calculation (needed for residual)   [-]

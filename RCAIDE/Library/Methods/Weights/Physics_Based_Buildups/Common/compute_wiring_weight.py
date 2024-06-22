@@ -25,12 +25,12 @@ def compute_wiring_weight(wing, config, cablePower):
         Sources:
         Project Vahana Conceptual Trade Study
 
-        Inputs:
+        Args:
 
             config                      RCAIDE Config Data Structure 
             max_power_draw              Maximum DC Power Draw           [W]
 
-        Outputs:
+        Returns:
 
             weight:                     Wiring Mass                     [kg]
 

@@ -27,16 +27,15 @@ def converge_opt(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     state.unknowns                     [Data]
     segment                            [Data]
     segment.algorithm                  [string]
 
-    Outputs:
+    Returns:
     state.unknowns                     [Any]
 
-    Properties Used:
-    N/A
+
     """     
     
     # pack up the array
@@ -100,10 +99,10 @@ def get_objective(unknowns, segment):
         Assumptions:
         N/A
         
-        Inputs:
+        Args:
         state.unknowns      [Data]
     
-        Outputs:
+        Returns:
         objective           [float]
 
         
@@ -129,10 +128,10 @@ def get_econstraints(unknowns, segment):
         Assumptions:
         N/A
         
-        Inputs:
+        Args:
         state.unknowns      [Data]
             
-        Outputs:
+        Returns:
         constraints          [array]
 
         
@@ -160,10 +159,10 @@ def make_bnds(unknowns, segment):
         Restricts body angle from 0 to pi/2 radians
         Restricts flight path angle from 0 to pi/2 radians
         
-        Inputs:
+        Args:
         none
             
-        Outputs:
+        Returns:
         bnds
 
         
@@ -200,10 +199,10 @@ def get_ieconstraints(unknowns, segment):
         All altitudes are greater than zero
         The vehicle accelerates not decelerates
         
-        Inputs:
+        Args:
         state.unknowns      [Data]
             
-        Outputs:
+        Returns:
         constraints          [array]
 
         
@@ -247,10 +246,10 @@ def get_problem_pyopt(unknowns, segment):
         CL is less than a specified limit
         All altitudes are greater than zero
         
-        Inputs:
+        Args:
         state.unknowns      [Data]
     
-        Outputs:
+        Returns:
         obj                 [float]
         con                 [array]
         fail                [boolean]

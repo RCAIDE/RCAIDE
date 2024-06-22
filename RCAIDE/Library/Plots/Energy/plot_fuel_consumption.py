@@ -32,17 +32,16 @@ def plot_fuel_consumption(results,
 
     Source: 
   
-    Inputs:
+    Args:
     results.segments.condtions.
         frames.inertial.time
         weights.fuel_mass
         weights.additional_fuel_mass
         weights.total_mass
         
-    Outputs:
+    Returns:
     Plots
-    Properties Used:
-    N/A	"""
+	"""
 
     # get plotting style 
     ps      = plot_style()  

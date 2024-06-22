@@ -35,7 +35,7 @@ class Nose_Landing_Gear(Landing_Gear):
             Source:
             N/A
             
-            Inputs:
+            Args:
             None
             
             Output:

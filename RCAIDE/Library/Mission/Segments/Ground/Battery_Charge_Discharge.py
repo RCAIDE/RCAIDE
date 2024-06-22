@@ -17,15 +17,14 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.overcharge_contingency              [-]
     battery.                                    [-]
 
-    Outputs: 
+    Returns: 
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """    
     t_nondim   = segment.state.numerics.dimensionless.control_points
     conditions = segment.state.conditions   

@@ -26,12 +26,12 @@ def atmospheric_attenuation(dist,center_frequencies):
     Source:
        AEDT Technical Manual Table 11-1 (SAE-AIR-1845) 
         
-    Inputs:
+    Args:
         dist - Array with the distance vector from the aircraft (source) to the 
             microphone position (observer)                                              [m]
         center_frequency - center frequencies of one-third octave band                  [Hz]
 
-    Outputs: 
+    Returns: 
         delta_spl - The delta sound pressure level to be reduced from the lossless SPL 
         condition                                                                       [dB]
     

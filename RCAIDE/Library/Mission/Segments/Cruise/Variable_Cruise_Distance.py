@@ -17,11 +17,11 @@ def initialize_cruise_distance(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.cruise_tag              [string]
     segment.distance                [meters]
 
-    Outputs:
+    Returns:
     state.unknowns.cruise_distance  [meters]
 
     Properties Used:
@@ -50,11 +50,11 @@ def unknown_cruise_distance(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.cruise_tag              [string]
     state.unknowns.cruise_distance  [meters]
 
-    Outputs:
+    Returns:
     segment.distance                [meters]
 
     Properties Used:
@@ -85,11 +85,11 @@ def residual_landing_weight(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.state.segments[-1].conditions.weights.total_mass [kilogram]
     segment.target_landing_weight                            [kilogram]
 
-    Outputs:
+    Returns:
     segment.state.residuals.landing_weight                   [kilogram]
 
     Properties Used:
@@ -119,11 +119,11 @@ def residual_state_of_charge(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.state.segments[-1].conditions.energy.battery.cell.state_of_charge [None]
     segment.target_state_of_charge                                           [None]
 
-    Outputs:
+    Returns:
     segment.state.residuals.battery_state_of_charge                          [None]
 
     Properties Used:

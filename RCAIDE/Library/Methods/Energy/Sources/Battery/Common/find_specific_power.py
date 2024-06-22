@@ -13,14 +13,14 @@ def find_specific_power(battery, specific_energy):
     Assumptions:
     None
     
-    Inputs:
+    Args:
     battery.
       specific_energy [J/kg]               
       ragone.
         constant_1    [W/kg]
         constant_2    [J/kg]
                 
-    Outputs:
+    Returns:
     battery.
       specific_power  [W/kg]   
     

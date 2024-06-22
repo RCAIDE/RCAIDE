@@ -1,5 +1,5 @@
-## @defgroup Methods-Aerodynamics-Common-Drag Drag 
-# @ingroup Methods-Aerodynamics-Common
+## @defgroup Library-Methods-Aerdoynamics-Common-Drag Drag 
+# @ingroup Library-Methods-Aerdoynamics-Common
 # RCAIDE/Methods/Aerodynamics/Common/Drag/__init__.py
 # 
 

@@ -25,7 +25,7 @@ def mixed_noise_component(Velocity_primary,theta_m,sound_ambient,Velocity_second
     Source:
         None
 
-    Inputs:
+    Args:
         SPL_m               [dB]
         Velocity_primary    [m/s]
         theta_m             [rad]
@@ -40,7 +40,7 @@ def mixed_noise_component(Velocity_primary,theta_m,sound_ambient,Velocity_second
         Velocity_mixed      [m/s]
         XBPR                   
 
-    Outputs:
+    Returns:
         SPL_m                [dB]
 
     Properties Used: 

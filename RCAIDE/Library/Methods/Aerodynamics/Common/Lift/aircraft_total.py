@@ -18,14 +18,13 @@ def aircraft_total(state,settings,geometry):
     Source:
     None
 
-    Inputs:
+    Args:
     state.conditions.aerodynamics.coefficients.lift    [Unitless]
 
-    Outputs:
+    Returns:
     aircraft_lift_total (lift coefficient)            [Unitless]
 
-    Properties Used:
-    N/A
+
     """      
     
     aircraft_lift_total = state.conditions.aerodynamics.coefficients.lift

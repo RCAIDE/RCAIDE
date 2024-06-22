@@ -25,7 +25,7 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.climb_rate                                  [meters/second]
     segment.air_speed                                   [meters/second]
     segment.altitude_start                              [meters]
@@ -33,13 +33,12 @@ def initialize_conditions(segment):
     segment.state.numerics.dimensionless.control_points [Unitless]
     conditions.freestream.density                       [kilograms/meter^3]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
 
-    Properties Used:
-    N/A
+
     """            
     
     # unpack
@@ -66,7 +65,7 @@ def initialize_conditions(segment):
     
     # process velocity vector
     v_mag = air_speed
-    v_z   = -climb_rate # z points down
+    v_z   = -climb_rate 
     v_xy  = np.sqrt( v_mag**2 - v_z**2 )
     v_x   = np.cos(beta)*v_xy
     v_y   = np.sin(beta)*v_xy
@@ -75,5 +74,5 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,0] = v_x
     conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] 
+    conditions.freestream.altitude[:,0]             =  alt[:,0] 

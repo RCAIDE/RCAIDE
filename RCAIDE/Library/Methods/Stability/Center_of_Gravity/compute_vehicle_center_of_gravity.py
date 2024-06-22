@@ -33,10 +33,10 @@ def compute_vehicle_center_of_gravity(vehicle):
     Assumtions:
     Assumes simplified shapes 
     
-    Inputs:
+    Args:
     vehicle           - vehicle data structure           [m]
     
-    Outputs:
+    Returns:
     I                 - mass moment of inertia matrix    [kg-m^2]
     
     '''

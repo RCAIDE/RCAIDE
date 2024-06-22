@@ -25,14 +25,12 @@ class Segment(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """         
         self.tag                     = 'segment'
         self.prev                    = None
@@ -69,14 +67,12 @@ class Segment(Component):
         Source:
         N/A
 
-        Inputs:
+        Args:
         None
 
-        Outputs:
+        Returns:
         None
 
-        Properties Used:
-        N/A
         """  
         # assert database type
         if not isinstance(airfoil,Data):
@@ -96,14 +92,13 @@ class Segment_Container(Container):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
-    Properties Used:
-    N/A
+
     """     
 
     def get_children(self):
@@ -115,14 +110,12 @@ class Segment_Container(Container):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        N/A
         """       
         
         return []

@@ -1,4 +1,4 @@
-## @ingroup Analyses-Noise
+## @ingroup Framework-Analyses-Noise
 # RCAIDE/Framework/Analyses/Noise/Frequency_Domain_Buildup.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,12 +7,11 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .Noise      import Noise   
-# noise imports    
 from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic                           import SPL_arithmetic
 from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations                import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
 from RCAIDE.Library.Methods.Noise.Common.compute_relative_noise_evaluation_locations  import compute_relative_noise_evaluation_locations  
 from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.rotor_noise          import rotor_noise 
+from .Noise      import Noise    
 
 # package imports
 import numpy as np
@@ -20,39 +19,26 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Frequency_Domain_Buildup
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Analyses-Noise
+## @ingroup Framework-Analyses-Noise
 class Frequency_Domain_Buildup(Noise):
-    """This is an acoustic analysis based on a collection of frequency domain methods 
-
-     Assumptions: 
- 
-     Source:
-     None
- 
-     Args:
-     None
- 
-     Returns:
-     None
-     
+    """This is an acoustic analysis based on a collection of frequency domain methods  
     """    
     
-    def __defaults__(self):
-        
+    def __defaults__(self): 
         """ This sets the default values for the analysis.
         
             Assumptions:
-            Ground microphone angles start in front of the aircraft (0 deg) and sweep in a lateral direction 
-            to the starboard wing and around to the tail (180 deg)
+                Ground microphone angles start in front of the aircraft (0 deg) and sweep in a lateral direction 
+                to the starboard wing and around to the tail (180 deg)
             
             Source:
-            None
+                None
             
             Args:
-            None
+                None
             
             Output:
-            None
+                None
         """
         
         # Initialize quantities
@@ -107,8 +93,8 @@ class Frequency_Domain_Buildup(Noise):
             None
     
         Args:
-            self     : aerodynamics analysis  [-]
-            segment  : current flight segment [-]
+            self           : aerodynamics analysis  [-]
+            segment  (dict): current flight segment [-]
     
         Returns:
             None 

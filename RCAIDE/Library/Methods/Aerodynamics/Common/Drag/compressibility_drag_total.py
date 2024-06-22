@@ -22,7 +22,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 #  Compressibility Drag Total
 # ----------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Common-Drag
+## @ingroup Library-Methods-Aerdoynamics-Common-Drag
 def compressibility_drag_total(state,settings,geometry):
     """Computes compressibility drag for full aircraft including volume drag
 
@@ -32,7 +32,7 @@ def compressibility_drag_total(state,settings,geometry):
     Source:
     N/A
 
-    Inputs:   
+    Args:   
     settings.
       begin_drag_rise_mach_number                                    [Unitless]
       end_drag_rise_mach_number                                      [Unitless]
@@ -46,11 +46,8 @@ def compressibility_drag_total(state,settings,geometry):
     geometry.reference_area                                          [m^2]
     geometry.wings                             
 
-    Outputs:
+    Returns:
     total_compressibility_drag                                       [Unitless]
-
-    Properties Used:
-    N/A
     """     
 
     # Unpack
@@ -71,8 +68,7 @@ def compressibility_drag_total(state,settings,geometry):
     
     if settings.cross_sectional_area_calculation_type != 'Fixed':
         raise NotImplementedError
-    
-    wings          = geometry.wings
+     
     Mc             = conditions.freestream.mach_number
     drag_breakdown = conditions.aerodynamics.drag_breakdown
 
@@ -94,8 +90,6 @@ def compressibility_drag_total(state,settings,geometry):
     high_cutoff_volume_total = wave_drag_volume(geometry,low_mach_cutoff*np.ones([1]),scaling_factor)
     
     peak_volume_total = high_cutoff_volume_total*peak_factor
-    
-    # fit the drag rise using piecewise parabolas y = a*(x-x_peak)**2+y_peak
     
     # subsonic side
     a1 = (low_cutoff_volume_total-peak_volume_total)/(low_mach_cutoff-peak_mach)/(low_mach_cutoff-peak_mach)
@@ -132,21 +126,16 @@ def compressibility_drag_total(state,settings,geometry):
 
     if peak_mach<1.01:
         print('Warning: a peak mach number of less than 1.01 will cause a small discontinuity in lift wave drag')
-    cd_c_l           = cd_c_l_base*(1-sup_h00(Mc))
-    
-    cd_c = cd_c_v + cd_c_l
-
-    
-    # Save drag breakdown
-
+    cd_c_l = cd_c_l_base*(1-sup_h00(Mc)) 
+    cd_c   = cd_c_v + cd_c_l
+ 
     drag_breakdown.compressible.total        = cd_c
     drag_breakdown.compressible.total_volume = cd_c_v
     drag_breakdown.compressible.total_lift   = cd_c_l
     
-
     return cd_c
 
-## @ingroup Methods-Aerodynamics-Supersonic_Zero-Drag
+## @ingroup Library-Methods-Aerdoynamics-Supersonic_Zero-Drag
 def lift_wave_drag(conditions,configuration,wing,Sref_main):
     """Determine lift wave drag for supersonic speeds
 
@@ -156,17 +145,16 @@ def lift_wave_drag(conditions,configuration,wing,Sref_main):
     Source:
     http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html (Stanford AA241 A/B Course Notes)
 
-    Inputs:
+    Args:
     conditions.freestream.mach_number [-]
     configuration                     (passed to another function)
     wing.areas.reference              [m^2]
     Sref_main                         [m^2] Main reference area
 
-    Outputs:
+    Returns:
     cd_c_l                            [-] Wave drag CD due to lift
 
-    Properties Used:
-    N/A
+
     """       
     # Use wave drag to determine compressibility drag for supersonic speeds
 
@@ -188,7 +176,7 @@ def lift_wave_drag(conditions,configuration,wing,Sref_main):
 
     return cd_c_l
 
-## @ingroup Methods-Aerodynamics-Supersonic_Zero-Drag
+## @ingroup Library-Methods-Aerdoynamics-Supersonic_Zero-Drag
 def drag_div(Mc_ii,wing,cl,Sref_main):
     """Use drag divergence mach number to determine drag for subsonic speeds
 
@@ -200,20 +188,18 @@ def drag_div(Mc_ii,wing,cl,Sref_main):
     Concorde data can be found in "Supersonic drag reduction technology in the scaled supersonic 
     experimental airplane project by JAXA" by Kenji Yoshida
 
-    Inputs:
+    Args:
     wing.
       thickness_to_chord    [-]     
       sweeps.quarter_chord  [radians]
       high_mach             [Boolean]
       areas.reference       [m^2]
 
-    Outputs:
+    Returns:
     cd_c                    [-]
     mcc                     [-]
-    MDiv                    [-]
+    MDiv                    [-] 
 
-    Properties Used:
-    N/A
     """         
     # Use drag divergence mach number to determine drag for subsonic speeds
 
@@ -259,9 +245,7 @@ def drag_div(Mc_ii,wing,cl,Sref_main):
     mo_mc = Mc_ii/mcc
 
     # Compressibility correlation, Shevell
-    dcdc_cos3g = 0.0019*mo_mc**14.641
-
-    # Compressibility drag
+    dcdc_cos3g = 0.0019*mo_mc**14.641 
 
     # Sweep correlation cannot be used if the wing has a high mach design
     if wing.high_mach is True:

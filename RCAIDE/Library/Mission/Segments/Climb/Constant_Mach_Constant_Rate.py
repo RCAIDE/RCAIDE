@@ -26,7 +26,7 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.climb_rate                                  [meters/second]
     segment.mach_number                                 [Unitless]
     segment.altitude_start                              [meters]
@@ -34,17 +34,15 @@ def initialize_conditions(segment):
     segment.state.numerics.dimensionless.control_points [Unitless]
     conditions.freestream.density                       [kilograms/meter^3]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
 
-    Properties Used:
-    N/A
+
     """     
     
-    # unpack
-    # unpack User Inputs
+    # unpack 
     climb_rate  = segment.climb_rate
     mach_number = segment.mach_number
     alt0        = segment.altitude_start 
@@ -60,12 +58,10 @@ def initialize_conditions(segment):
 
     # discretize on altitude
     alt = t_nondim * (altf-alt0) + alt0
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
     
     # Update freestream to get speed of sound
     atmosphere(segment)
     a = conditions.freestream.speed_of_sound    
-    
 
     # check for initial velocity
     if mach_number is None: 
@@ -74,14 +70,15 @@ def initialize_conditions(segment):
     else: 
         # process velocity vector
         v_mag = mach_number * a
-    v_z   = -climb_rate # z points down
+    v_z   = -climb_rate 
     v_xy  = np.sqrt( v_mag**2 - v_z**2 )
     v_x   = np.cos(beta)*v_xy
     v_y   = np.sin(beta)*v_xy 
     
     # pack conditions    
+    conditions.freestream.altitude[:,0]             =  alt[:,0]
     conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]
     conditions.frames.inertial.velocity_vector[:,1] = v_y[:,0]
     conditions.frames.inertial.velocity_vector[:,2] = v_z
-    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
-    conditions.freestream.altitude[:,0]             =  alt[:,0] # positive altitude in this context
+    conditions.frames.inertial.position_vector[:,2] = -alt[:,0] 
+    conditions.freestream.altitude[:,0]             =  alt[:,0] 

@@ -24,9 +24,9 @@ def compute_boom_weight(boom,
             Assumes cylindrical boom
         Sources: 
 
-        Inputs:  
+        Args:  
 
-        Outputs: 
+        Returns: 
             weight:                 Estimated Boom Mass             [kg]
         
         Properties Used:

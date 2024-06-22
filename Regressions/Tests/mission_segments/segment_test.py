@@ -225,7 +225,11 @@ def mission_setup(analyses):
     segment.velocity_start           = 100.* Units.knots
     segment.velocity_end             = 150 * Units.knots
     segment.friction_coefficient     = 0.04
-    segment.altitude                 = 0.0   
+    segment.altitude                 = 0.0
+    
+    segment.flight_controls.elapsed_time.active           = True  
+    segment.flight_controls.elapsed_time.initial_guess_values   = [[30.]]
+    
     mission.append_segment(segment)
     
 

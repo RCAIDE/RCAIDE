@@ -32,11 +32,10 @@ def plot_solar_network_conditions(results,
     Source:
     None
     
-    Outputs:
+    Returns:
     Plots
     
-    Properties Used:
-    N/A
+
     """
     
     # get plotting style 

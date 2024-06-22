@@ -29,7 +29,7 @@ def initialize_from_circuit_configuration(battery,module_weight_factor = 1.42):
     J., Battery Performance Modeling on Maxwell X-57",AIAA Scitech, San Diego, CA,
     2019. URLhttp://openmdao.org/pubs/chin_battery_performance_x57_2019.pdf.     
 
-    Inputs:
+    Args:
     mass              
     battery.cell
       nominal_capacity        [amp-hours]            
@@ -37,7 +37,7 @@ def initialize_from_circuit_configuration(battery,module_weight_factor = 1.42):
       pack_config             [unitless]
       mass                    [kilograms]
                           
-    Outputs:              
+    Returns:              
      battery.             
        maximum_energy         [watt-hours]
        maximum_power              [watts]

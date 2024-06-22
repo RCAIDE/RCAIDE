@@ -35,10 +35,10 @@ class Fuselage(Component):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
         Properties Used:
@@ -99,9 +99,9 @@ class Fuselage(Component):
         None
         Source:
         N/A
-        Inputs:
+        Args:
         None
-        Outputs:
+        Returns:
         None
         Properties Used:
         N/A
@@ -123,9 +123,9 @@ class Fuselage(Component):
         None
         Source:
         N/A
-        Inputs:
+        Args:
         None
-        Outputs:
+        Returns:
         None
         Properties Used:
         N/A

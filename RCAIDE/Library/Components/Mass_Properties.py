@@ -35,10 +35,10 @@ class Mass_Properties(Data):
             Source:
             N/A
     
-            Inputs:
+            Args:
             None
     
-            Outputs:
+            Returns:
             None
     
             Properties Used:

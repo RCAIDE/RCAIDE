@@ -38,24 +38,17 @@ class Ground(Evaluate):
     """
   
     def __defaults__(self):
-        """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
-    
+        """ Specific flight segment defaults which can be modified after initializing.
+        
             Assumptions:
                 None
     
             Source:
-                self : mission segment [-]
-    
-            Args:
-                None
-    
-            Returns:
                 None
         """   
         # -------------------------------------------------------------------------------------------------------------- 
         #   User Inputs
-        # -------------------------------------------------------------------------------------------------------------- 
-        self.ground_incline       = 0.0
+        # --------------------------------------------------------------------------------------------------------------  
         self.friction_coefficient = 0.04
         self.throttle             = None
         self.velocity_start       = 0.0
@@ -67,8 +60,7 @@ class Ground(Evaluate):
         #  Mission Conditions 
         # --------------------------------------------------------------------------------------------------------------          
         ones_row = self.state.ones_row  
-        self.state.conditions.ground                              = Data()
-        self.state.conditions.ground.incline                      = ones_row(1) * 0.0
+        self.state.conditions.ground                              = Data() 
         self.state.conditions.ground.friction_coefficient         = ones_row(1) * 0.0
         self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0 
 

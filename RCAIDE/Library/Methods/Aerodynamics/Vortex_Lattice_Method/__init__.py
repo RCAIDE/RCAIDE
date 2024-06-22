@@ -1,5 +1,5 @@
-## @defgroup Methods-Aerodynamics-Fidelity_Zero Fidelity_Zero
-# @ingroup Methods-Aerodynamics
+## @defgroup Library-Methods-Aerdoynamics-Fidelity_Zero Fidelity_Zero
+# @ingroup Library-Methods-Aerdoynamics
 # RCAIDE/Methods/Aerodynamics/Fidelity_Zero/__init__.py
 # 
 

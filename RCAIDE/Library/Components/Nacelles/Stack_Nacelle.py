@@ -34,14 +34,13 @@ class Stack_Nacelle(Nacelle):
         Source:
         N/A
     
-        Inputs:
+        Args:
         None
     
-        Outputs:
+        Returns:
         None
     
-        Properties Used:
-        None
+
         """      
         
         self.tag                       = 'stack_nacelle'  
@@ -54,12 +53,10 @@ class Stack_Nacelle(Nacelle):
         None
         Source:
         N/A
-        Inputs:
+        Args:
         None
-        Outputs:
+        Returns:
         None
-        Properties Used:
-        N/A
         """ 
 
         # Assert database type

@@ -41,14 +41,13 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
     Source:
     None
 
-    Inputs:
+    Args:
     vehicle.vortex_distribution
 
-    Outputs: 
+    Returns: 
     Plots
 
-    Properties Used:
-    N/A	
+	
     """
 
     # unpack vortex distribution

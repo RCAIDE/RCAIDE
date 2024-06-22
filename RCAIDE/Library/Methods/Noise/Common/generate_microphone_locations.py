@@ -28,7 +28,7 @@ def generate_zero_elevation_microphone_locations(settings):
     Source:
         N/A  
 
-    Inputs:   
+    Args:   
     settings.
         min_x - minimum x coordinate of noise evaluation plane [meters]
         max_x - maximum x coordinate of noise evaluation plane [meters]
@@ -37,7 +37,7 @@ def generate_zero_elevation_microphone_locations(settings):
         N_x   - number of microphones on x-axis 
         N_y   - number of microphones on y-axis 
     
-    Outputs: 
+    Returns: 
         gm_mic_locations   - cartesian coordiates of all microphones defined  [meters] 
     
     Properties Used:
@@ -84,7 +84,7 @@ def generate_terrain_elevated_microphone_locations(topography_file             =
     Source:
         N/A  
 
-    Inputs:  
+    Args:  
         topography_file                        - file of lattide, longitude and elevation points                                [-]
         departure_coordinates                  - coordinates of departure location                                              [degrees]
         destination_coordinates                - coordinates of destimation location                                            [degrees]
@@ -94,7 +94,7 @@ def generate_terrain_elevated_microphone_locations(topography_file             =
         adjusted_cruise_distance                       - distance used to modify cruise to ensure desired range is met                  [-]
         ground_microphone_y_stencil            - number of points in stencil in in longitidinal direction                       [-] 
         
-    Outputs: 
+    Returns: 
     topography_data.
         ground_microphone_x_resolution         - number of points on computational domain in latitudal direction                [-] 
         ground_microphone_y_resolution         - number of points on computational domain in  longitidinal direction            [-]
@@ -198,7 +198,7 @@ def generate_noise_hemisphere_microphone_locations(settings):
     Source:
         N/A  
 
-    Inputs:   
+    Args:   
     settings.
     
         r     - noise hemisphere radius                   [meters]
@@ -206,7 +206,7 @@ def generate_noise_hemisphere_microphone_locations(settings):
         phi   - noise hemisphere phi angle bounds         [radians]
         theta - noise hemisphere theta angle bounds       [radians] 
     
-    Outputs: 
+    Returns: 
         gm_mic_locations   - cartesian coordiates of all microphones defined  [meters] 
     
     Properties Used:

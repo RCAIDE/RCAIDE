@@ -25,7 +25,7 @@ def size_stream_thrust(turbofan,conditions):
        "Hypersonic Airbreathing Propulsors", 1994 
        Chapter 4 - pgs. 175-180
        
-       Inputs: 
+       Args: 
        conditions.freestream.speed_of_sound [m/s]  
        turbofan.inputs. 
           bypass_ratio                       [-] 
@@ -33,7 +33,7 @@ def size_stream_thrust(turbofan,conditions):
           total_pressure_reference           [Pa] 
           number_of_engines                  [-] 
 
-        Outputs: 
+        Returns: 
           turbofan.outputs.non_dimensional_thrust  [-] 
 
         Properties Used: 

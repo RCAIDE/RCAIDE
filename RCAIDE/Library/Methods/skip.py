@@ -9,10 +9,10 @@ def skip(*args,**kwarg):
     Source:
     N/A
 
-    Inputs:
+    Args:
     None
 
-    Outputs:
+    Returns:
     None
 
     Properties Used:

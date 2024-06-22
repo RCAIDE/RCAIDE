@@ -27,14 +27,13 @@ def plot_style():
     Source:
     None
 
-    Inputs:
+    Args:
        None 
 
-    Outputs: 
+    Returns: 
        Plotting style parameters 
 
-    Properties Used:
-    N/A	
+	
     """
 
     # Universal Plot Settings  

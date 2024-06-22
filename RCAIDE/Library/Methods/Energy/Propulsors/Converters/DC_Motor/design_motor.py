@@ -23,14 +23,14 @@ def design_motor(motor):
     Source:
     N/A
     
-    Inputs:
+    Args:
     motor                         [-]  
       
     motor.     
       no_load_current             [amps]
       mass_properties.mass        [kg]
            
-    Outputs:     
+    Returns:     
     motor.     
       speed_constant              [untiless]
       design_torque               [Nm] 
@@ -64,10 +64,10 @@ def optimize_kv(io, v , omeg,  etam ,  Q, kv_lower_bound =  0.01, Res_lower_boun
     Source:
     N/A
     
-    Inputs:
+    Args:
     motor    (to be modified)
     
-    Outputs:
+    Returns:
     motor.
       speed_constant     [untiless]
       no_load_current    [amps]

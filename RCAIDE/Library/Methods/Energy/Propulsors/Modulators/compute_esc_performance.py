@@ -17,17 +17,13 @@ def compute_voltage_out_from_throttle(esc,eta):
         Source:
         N/A
 
-        Inputs:
+        Args:
         conditions.energy.throttle     [0-1] 
         esc.inputs.voltage            [volts]
 
-        Outputs:
+        Returns:
         voltsout                       [volts]
-        esc.outputs.voltageout        [volts]
-
-        Properties Used:
-        None
-       
+        esc.outputs.voltageout        [volts] 
     """ 
     # Negative throttle is bad
     eta[eta<=0.0] = 0.0
@@ -55,16 +51,15 @@ def compute_voltage_in_from_throttle(esc,eta):
         Source:
         N/A
 
-        Inputs:
+        Args:
         conditions.energy.throttle     [0-1]
         esc.inputs.voltage            [volts]
 
-        Outputs:
+        Returns:
         voltsout                       [volts]
         esc.outputs.voltageout        [volts]
 
-        Properties Used:
-        None
+
 
     """
     # Negative throttle is bad
@@ -95,16 +90,15 @@ def compute_throttle_from_voltages(esc):
         Source:
         N/A
 
-        Inputs:
+        Args:
         conditions.energy.throttle     [0-1]
         esc.inputs.voltage            [volts]
 
-        Outputs:
+        Returns:
         voltsout                       [volts]
         esc.outputs.voltageout        [volts]
 
-        Properties Used:
-        None
+
 
     """
     eta  = esc.outputs.voltage/esc.inputs.voltage
@@ -128,10 +122,10 @@ def compute_current_in_from_throttle(esc,eta):
         Assumptions:
             The ESC draws current.
         
-        Inputs:
+        Args:
             esc.inputs.currentout [amps]
            
-        Outputs:
+        Returns:
             outputs.currentin      [amps]
         
         Properties Used:

@@ -1,4 +1,4 @@
-## @ingroup Methods-Aerodynamics-Common-Lift
+## @ingroup Library-Methods-Aerdoynamics-Common-Lift
 # RCAIDE/Methods/Aerodynamics/Common/Lift/compute_RHS_matrix.py
 # 
 # 
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_airfoil_aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Aerodynamics-Common-Lift 
+## @ingroup Library-Methods-Aerdoynamics-Common-Lift 
 def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_model):
 
     """ This computes the right hand side matrix for the VLM. In this
@@ -29,7 +29,7 @@ def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_mod
 
     2. VORLAX Source Code
 
-    Inputs:
+    Args:
     geometry
         networks                                 [Unitless]
         vehicle vortex distribution              [Unitless]
@@ -45,7 +45,7 @@ def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_mod
     slipstream  - propeller_wake_model flag      [Unitless]
     delta, phi  - flow tangency angles           [radians]
 
-    Outputs:
+    Returns:
     rhs.
         RHS
         ONSET
@@ -61,8 +61,7 @@ def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_mod
         COD
         SID
 
-    Properties Used:
-    N/A
+
     """
 
     # unpack
@@ -141,7 +140,7 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
 
     2. VORLAX Source Code
 
-    Inputs:
+    Args:
     settings.use_VORLAX_matrix_calculation  - RHS equation switch               [boolean]
     conditions.static_stability.pitch_rate -                                   [radians/s]
     conditions.static_stability.roll_rate  -                                   [radians/s]
@@ -152,11 +151,10 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     V_distribution                          - freestream velocity magnitude     [m/s]
     delta, phi                              - flow tangency angles              [radians]
 
-    Outputs:
+    Returns:
     rhs  -  a Data object used to hold several values including RHS
 
-    Properties Used:
-    N/A
+
     """
     LE_ind      = VD.leading_edge_indices
     RNMAX       = VD.panels_per_strip

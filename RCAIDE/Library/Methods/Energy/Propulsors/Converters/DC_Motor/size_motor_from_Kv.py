@@ -20,11 +20,11 @@ def size_motor_from_Kv(motor):
     Source:
     Gur, O., Rosen, A, AIAA 2008-5916.
     
-    Inputs:
+    Args:
     motor    (to be modified)
       kv       motor speed constant
     
-    Outputs:
+    Returns:
     motor.
       resistance         [ohms]
       no_load_current    [amps]

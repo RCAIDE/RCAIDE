@@ -20,21 +20,20 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.altitude                [meters]
     segment.air_speed_start         [meters/second]
     segment.air_speed_end           [meters/second]
     segment.acceleration            [meters/second^2]
     conditions.frames.inertial.time [seconds]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """      
     
     # unpack
@@ -77,12 +76,12 @@ def initialize_conditions(segment):
     if Tf > T0:
         body_angle = T0 + time*(Tf-T0)/(t_final-t_initial)
     else:
-        body_angle = T0 - time*(T0-Tf)/(t_final-t_initial)
-    segment.state.conditions.frames.body.inertial_rotations[:,1] = body_angle[:,0]     
+        body_angle = T0 - time*(T0-Tf)/(t_final-t_initial)  
     
     # pack
-    segment.state.conditions.freestream.altitude[:,0] = alt
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
+    segment.state.conditions.freestream.altitude[:,0]             = alt
+    segment.state.conditions.frames.body.inertial_rotations[:,1]  = body_angle[:,0]   
+    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt 
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]
     segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_y[:,0]
-    segment.state.conditions.frames.inertial.time[:,0] = time[:,0]
+    segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]

@@ -25,10 +25,10 @@ def EPNL_noise_metric(PNLT):
     Source:
         N/A
 
-    Inputs:
+    Args:
         PNLT - Perceived Noise Level with Tone Correction  [PNLdB]
      
-     Outputs:
+     Returns:
         EPNL - Effective Perceived Noise Level             [EPNdB]
      
     Properties Used:

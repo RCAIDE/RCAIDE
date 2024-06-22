@@ -7,8 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# RCAIDE Imports 
-import RCAIDE
+# RCAIDE Imports  
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -24,18 +23,17 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.throttle                           [unitless]
     conditions.frames.inertial.position_vector [meters]
     conditions.weights.total_mass              [kilogram]
 
-    Outputs:
+    Returns:
     conditions.weights.total_mass              [kilogram]
     conditions.frames.inertial.position_vector [unitless]
     conditions.propulsion.throttle             [meters]
     
-    Properties Used:
-    N/A
+
     """  
 
     # use the common initialization # unpack inputs
@@ -71,16 +69,8 @@ def initialize_conditions(segment):
     # pack conditions 
     conditions = segment.state.conditions    
     conditions.frames.inertial.velocity_vector[:,0] = initialized_velocity[:,0]
-    conditions.ground.incline[:,0]                  = segment.ground_incline
     conditions.ground.friction_coefficient[:,0]     = segment.friction_coefficient   
     conditions.freestream.altitude[:,0]             = alt
     conditions.frames.inertial.position_vector[:,2] = -alt   
     conditions.weights.total_mass[:,0]              = segment.analyses.weights.vehicle.mass_properties.takeoff
     conditions.frames.inertial.position_vector[:,:] = conditions.frames.inertial.position_vector[0,:][None,:][:,:] 
-    
-    for network in segment.analyses.energy.networks:
-        if 'fuel_lines' in network: 
-            RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,network.fuel_lines)  
-        if 'busses' in network: 
-            RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,network.busses)  
-     

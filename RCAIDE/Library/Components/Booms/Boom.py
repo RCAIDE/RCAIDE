@@ -85,7 +85,7 @@ class Boom(Component):
             self       : boom                  [-]
             segment    : cross-section of boom [-]   
             
-        Outputs:
+        Returns:
             None 
         """ 
 
@@ -111,7 +111,7 @@ class Container(Component.Container):
         Args:
             self       : container of booms [-]    
             
-        Outputs:
+        Returns:
             Boom       : boom               [-] 
         """ 
         return [Boom]

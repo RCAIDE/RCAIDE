@@ -7,7 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
-
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -24,21 +23,20 @@ def initialize_conditions(segment):
     Source:
     N/A
 
-    Inputs:
+    Args:
     segment.altitude                            [meters]
     segment.air_speed_start                     [meters/second]
     segment.air_speed_end                       [meters/second]
     segment.acceleration                        [meters/second^2]
     conditions.frames.inertial.time             [seconds]
 
-    Outputs:
+    Returns:
     conditions.frames.inertial.velocity_vector  [meters/second]
     conditions.frames.inertial.position_vector  [meters]
     conditions.freestream.altitude              [meters]
     conditions.frames.inertial.time             [seconds]
 
-    Properties Used:
-    N/A
+
     """      
     
     # unpack
@@ -103,11 +101,11 @@ def initialize_conditions(segment):
     
     # set the body angle
     body_angle = time*(Tf-T0)/(t_final-t_initial) + T0
-    segment.state.conditions.frames.body.inertial_rotations[:,1] = body_angle[:,0]     
     
     # pack
+    segment.state.conditions.frames.body.inertial_rotations[:,1]  = body_angle[:,0]     
     segment.state.conditions.freestream.altitude[:,0]             = alt[:,0]
-    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt[:,0] # z points down
+    segment.state.conditions.frames.inertial.position_vector[:,2] = -alt[:,0] 
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = vx[:,0] 
     segment.state.conditions.frames.inertial.velocity_vector[:,1] = vy[:,0] 
     segment.state.conditions.frames.inertial.velocity_vector[:,2] = -vz[:,0] 

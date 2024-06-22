@@ -22,9 +22,9 @@ def compute_Q_from_omega_and_V(motor):
     Source:
     N/A
 
-    Inputs:
+    Args:
 
-    Outputs:
+    Returns:
     motor.outputs.torque    [N-m] 
 
     Properties Used:
@@ -70,14 +70,14 @@ def compute_omega_and_Q_from_Cp_and_V(motor,conditions):
     Source:
     N/A
 
-    Inputs:
+    Args:
     conditions.
       freestream.velocity                    [m/s]
       freestream.density                     [kg/m^3]
       propulsion.propeller_power_coefficient [-]
     motor.inputs.voltage                      [V]
 
-    Outputs:
+    Returns:
     motor.outputs.
       torque                                 [Nm]
       omega                                  [radian/s]
@@ -134,10 +134,10 @@ def compute_I_from_omega_and_V(motor):
     Source:
     N/A
 
-    Inputs:
+    Args:
     motor.inputs.voltage   [V]
 
-    Outputs:
+    Returns:
     motor.outputs.current  [A]
     conditions.
       propulsion.etam      [-] 
@@ -187,9 +187,9 @@ def compute_V_and_I_from_omega_and_Kv(motor):
     Source:
     N/A
 
-    Inputs:
+    Args:
 
-    Outputs:
+    Returns:
     motor.outputs.current   [A]
     conditions.
       propulsion.volage    [V]

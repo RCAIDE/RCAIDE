@@ -25,7 +25,7 @@ def size_core(turbofan,conditions):
     Source:
     https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
+    Args:
     conditions.freestream.speed_of_sound [m/s]  
     turbofan.inputs.
       bypass_ratio                       [-]
@@ -33,7 +33,7 @@ def size_core(turbofan,conditions):
       total_pressure_reference           [Pa]
       number_of_engines                  [-]
 
-    Outputs:
+    Returns:
     turbofan.outputs.non_dimensional_thrust  [-]
 
     Properties Used:
