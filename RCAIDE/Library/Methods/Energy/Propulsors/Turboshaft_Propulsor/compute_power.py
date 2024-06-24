@@ -84,12 +84,8 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     #f                                          = turboshaft.inputs.fuel_to_air_ratio                                                                   # Source [1]
     total_temperature_reference                = turboshaft.inputs.total_temperature_reference                                                          
     total_pressure_reference                   = turboshaft.inputs.total_pressure_reference                                                             # Source [1]
-    eta_c                                      = turboshaft.conversion_efficiency                                                                       # Source [2]
                                                                                                                                                         
     #unpacking from turboshaft                                                                                                                          
-    Tref                                       = turboshaft.reference_temperature                                                                       # Source [1]
-    Pref                                       = turboshaft.reference_pressure                                                                          # Source [1]
-    #SFC_adjustment                            = turboshaft.SFC_adjustment                                                                             # Source [1]
     Tt4                                        = turboshaft.combustor.outputs.stagnation_temperature                                                    
     pi_c                                       = turboshaft.compressor.pressure_ratio                                                                   
     m_dot_air                                  = turboshaft.mass_flow_rate_design                                                                       # Source [2]
@@ -99,7 +95,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     tau_r                                      = 1 + ((gamma - 1)/2)*M0**2                                                                              
     tau_c                                      = pi_c**((gamma - 1)/gamma)                                                                              
     #tau_t                                      = (1/(tau_r*tau_c)) + ((gamma - 1)*M0**2)/(2*tau_lambda*eta_c**2)                                        # Source [2]
-    x                                          = 1.02                                                                                                  # Source [1] Page 335    
+    x                                          = 1.02                                                                                                  # Source [1] Page 335 (400 of pdf)    
     tau_t                                      = x/(tau_r*tau_c)                                                                                     # Source [1]
     #tau_tH                                     = 1 - (tau_r/tau_lambda)*(tau_c - 1)                                                                     # Source [2]
     #tau_tL                                     = tau_t/tau_tH                                                                                           # Source [2]
@@ -117,7 +113,7 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     
     #Computing Power 
     Power                                      = Psp*m_dot_air                                                                                          # Source [2]
-    #Power                                      = m_dot_core*Cp*total_temperature_reference*(tau_lambda*(1 - tau_t) - tau_r*(tau_c - 1))                 # Source [2]
+    #Power                                      = m_dot_air*Cp*total_temperature_reference*(tau_lambda*(1 - tau_t) - tau_r*(tau_c - 1))                 # Source [2]
 
     #fuel to air ratio
     f                                          = (Cp*total_temperature_reference*tau_lambda/LHV)*(1 - x/(tau_r*tau_c))                                 # Source [1]    
