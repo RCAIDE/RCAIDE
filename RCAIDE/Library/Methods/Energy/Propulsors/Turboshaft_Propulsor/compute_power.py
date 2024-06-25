@@ -98,8 +98,8 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     tau_c                                      = pi_c**((gamma - 1)/gamma)                                                                              
     tau_t                                      = (1/(tau_r*tau_c)) + ((gamma - 1)*M0**2)/(2*tau_lambda*eta_c**2)                                        # Source [2]
     #tau_t                                      = x/(tau_r*tau_c)                                                                                      # Source [1]
-    #tau_tH                                     = 1 - (tau_r/tau_lambda)*(tau_c - 1)                                                                    # Source [2]
-    #tau_tL                                     = tau_t/tau_tH                                                                                          # Source [2]
+    tau_tH                                     = 1 - (tau_r/tau_lambda)*(tau_c - 1)                                                                    # Source [2]
+    tau_tL                                     = tau_t/tau_tH                                                                                          # Source [2]
     #x                                          = 1.02                                                                                                  # Source [1] Page 335
     x                                          = tau_t*tau_r*tau_c                                                                                     # Source [1] 
     #C_shaft                                    = tau_lambda*(1 - x/(tau_r*tau_c)) - tau_r*(tau_c - 1)                                                  # Source [1]
@@ -112,8 +112,8 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     m_dot_air                                  = m_dot_compressor*np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref)             # Source [1]
     
     #Computing Specifc Power
-    Psp                                        = Cp*total_temperature_reference*C_shaft                                                                 # Source [1] 
-    #Psp                                        =  Cp*total_temperature_reference*tau_lambda*tau_tH*(1 - tau_tL)*eta_c      # Source [2]    
+    #Psp                                        = Cp*total_temperature_reference*C_shaft                                                                 # Source [1] 
+    Psp                                        =  Cp*total_temperature_reference*tau_lambda*tau_tH*(1 - tau_tL)*eta_c                                   # Source [2]    
     
     #Computing Power 
     Power                                      = Psp*m_dot_air                                                                                          
