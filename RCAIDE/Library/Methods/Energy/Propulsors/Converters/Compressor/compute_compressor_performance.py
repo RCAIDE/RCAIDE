@@ -47,9 +47,9 @@ def compute_compressor_performance(compressor,conditions):
     #unpack from inputs
     Tt_in    = compressor.inputs.stagnation_temperature
     Pt_in    = compressor.inputs.stagnation_pressure
+    pid      = compressor.pressure_ratio
     
     #unpack from compressor
-    pid      = compressor.pressure_ratio
     etapold  = compressor.polytropic_efficiency
     
     #Method to compute compressor properties
