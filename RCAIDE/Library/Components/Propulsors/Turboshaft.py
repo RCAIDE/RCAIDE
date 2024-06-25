@@ -53,6 +53,7 @@ class Turboshaft(Propulsor):
         self.design_power                                     = 0.0
         self.mass_flow_rate_design                            = 0.0 
         self.conversion_efficiency                            = 0.5
+        self.compressor_nondimensional_massflow               = 0.0
         self.OpenVSP_flow_through                             = False
                                                               
         #areas needed for drag; not in there yet              
