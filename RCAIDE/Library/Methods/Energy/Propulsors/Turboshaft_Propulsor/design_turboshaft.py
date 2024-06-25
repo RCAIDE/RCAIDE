@@ -160,7 +160,7 @@ def design_turboshaft(turboshaft):
     turboshaft.inputs.flow_through_core                   = 1.0 #scaled constant to turn on core power computation
     turboshaft.inputs.flow_through_fan                    = 0.0 #scaled constant to turn on fan power computation      
     
-    # compute the powert
+    # compute the power
     size_core(turboshaft,conditions) 
     
     ## Static Sea Level Thrust  
