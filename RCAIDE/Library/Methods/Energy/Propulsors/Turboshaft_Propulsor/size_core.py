@@ -59,11 +59,11 @@ def size_core(turboshaft,conditions):
     Psp                                            = turboshaft.outputs.non_dimensional_power
     
     #compute dimensional mass flow rates
-    mdot_core                                      = turboshaft.design_power/Psp
-    mdot_compressor                                = mdot_core/ (np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref))
+    mdot_air                                       = turboshaft.design_power/Psp
+    mdot_compressor                                = mdot_air/ (np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref))
 
     #pack outputs
-    turboshaft.mass_flow_rate_design               = mdot_core
+    turboshaft.mass_flow_rate_design               = mdot_air
     turboshaft.compressor.mass_flow_rate           = mdot_compressor
 
     return    
