@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Metrics/EPNL_noise_metric.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -20,19 +20,16 @@ def EPNL_noise_metric(PNLT):
     time history Perceived Noise Level with Tone Correction (PNLT).
      
     Assumptions:
-        N/A
+        None
 
     Source:
-        N/A
+        None
 
     Args:
         PNLT - Perceived Noise Level with Tone Correction  [PNLdB]
      
      Returns:
-        EPNL - Effective Perceived Noise Level             [EPNdB]
-     
-    Properties Used:
-        N/A  
+        EPNL - Effective Perceived Noise Level             [EPNdB] 
     """           
     # Maximum PNLT on the time history data    
     n_mic    = len(PNLT[0,:])

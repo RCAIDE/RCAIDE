@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/optimization_setup.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@
 
 # RCAIDE Imports 
 import RCAIDE   
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil  import compute_airfoil_properties, compute_naca_4series, import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Airfoil  import compute_airfoil_properties, compute_naca_4series, import_airfoil_geometry
 
 # Python package imports   
 import numpy as np  
@@ -30,7 +30,7 @@ def blade_geometry_setup(rotor,number_of_stations):
              configs - configuration used in optimization    [None]
               
           Assumptions: 
-             N/A 
+             None 
         
           Source:
              None

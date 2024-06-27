@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Turbine/compute_turbine_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke    
+# Created:  Jun 2024, M. Clarke    
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_turbine_performance
@@ -31,16 +31,15 @@ def compute_turbine_performance(turbine,conditions):
       fan.work_done                       [J/kg]
       shaft_power_off_take.work_done      [J/kg]
 
+    turbine.
+      mechanical_efficiency               [-]
+      polytropic_efficiency               [-]
     Returns:
     turbine.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]
       stagnation_enthalpy                 [J/kg]
-
-    Properties Used:
-    turbine.
-      mechanical_efficiency               [-]
-      polytropic_efficiency               [-]
+ 
     """           
     #unpack the values
     

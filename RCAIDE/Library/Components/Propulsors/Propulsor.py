@@ -17,33 +17,16 @@ from RCAIDE.Library.Components                   import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Distributors
 class Propulsor(Component):
-    """  This controls the flow of energy into and from a battery-powered nework 
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
-    """
-    
-    
+    """ Default propulsor compoment class. 
+    """ 
     def __defaults__(self):
         """ This sets the default values.
     
-            Assumptions:
+        Assumptions:
             None
-    
-            Source:
-            N/A
-    
-            Args:
-            None
-    
-            Returns:
-            None
-    
-            Properties Used:
-            None
+
+        Source:
+           None 
         """          
         self.tag                          = 'propulsor' 
         self.active                       = True 

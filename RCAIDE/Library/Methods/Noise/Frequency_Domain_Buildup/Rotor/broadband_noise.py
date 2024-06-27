@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/broadband_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -53,14 +53,12 @@ def broadband_noise(freestream,angle_of_attack,coordinates,
            SPL_prop_broadband_spectrum_dBA           - dBA-Weighted broadband noise in blade passing frequency spectrum                   [dbA]     
            SPL_prop_broadband_1_3_spectrum           - broadband noise in 1/3 octave spectrum                                             [dB]
            SPL_prop_broadband_1_3_spectrum_dBA       - dBA-Weighted broadband noise in 1/3 octave spectrum                                [dBA]                               
-           p_pref_azimuthal_broadband                - azimuthal varying pressure ratio of broadband noise                                [Unitless]       
-           p_pref_azimuthal_broadband_dBA            - azimuthal varying pressure ratio of dBA-weighted broadband noise                   [Unitless]     
+           p_pref_azimuthal_broadband                - azimuthal varying pressure ratio of broadband noise                                [unitless]       
+           p_pref_azimuthal_broadband_dBA            - azimuthal varying pressure ratio of dBA-weighted broadband noise                   [unitless]     
            SPL_prop_azimuthal_broadband_spectrum     - azimuthal varying broadband noise in blade passing frequency spectrum              [dB]      
            SPL_prop_azimuthal_broadband_spectrum_dBA - azimuthal varying dBA-Weighted broadband noise in blade passing frequency spectrum [dbA]   
         
-    Properties Used:
-        N/A   
-    '''     
+     '''     
 
     num_cpt       = len(coordinates.X[:,0,0,0,0,0])
     num_mic       = len(coordinates.X[0,:,0,0,0,0])  

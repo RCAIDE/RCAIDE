@@ -1,8 +1,8 @@
 ## @ingroup Library-Methods-Noise-Common 
-# RCAIDE/Library/Methods/Noise/Common/atmospheric_attenuation.py
+# RCAIDE/Library/Methods/Noise/CommoNonetmospheric_attenuation.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -21,7 +21,7 @@ def atmospheric_attenuation(dist,center_frequencies):
     Attenuation Rates from SAE-AIR-1845
     
     Assumptions:
-       N/A
+       None
 
     Source:
        AEDT Technical Manual Table 11-1 (SAE-AIR-1845) 
@@ -33,10 +33,7 @@ def atmospheric_attenuation(dist,center_frequencies):
 
     Returns: 
         delta_spl - The delta sound pressure level to be reduced from the lossless SPL 
-        condition                                                                       [dB]
-    
-    Properties Used:
-        None 
+        condition                                                                       [dB] 
     """ 
     ctrl_pts  = len(dist)
     # Atmospheric attenuation factor for a 70% humidity and 25 Celsius at 1000ft - Based SAE model 

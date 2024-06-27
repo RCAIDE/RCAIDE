@@ -22,10 +22,10 @@ def converge_opt(segment):
     """Interfaces the mission to an optimization algorithm
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
     state.unknowns                     [Data]
@@ -97,7 +97,7 @@ def get_objective(unknowns, segment):
     """ Runs the mission if the objective value is needed
     
         Assumptions:
-        N/A
+        None
         
         Args:
         state.unknowns      [Data]
@@ -126,7 +126,7 @@ def get_econstraints(unknowns, segment):
     """ Runs the mission if the equality constraint values are needed
     
         Assumptions:
-        N/A
+        None
         
         Args:
         state.unknowns      [Data]
@@ -223,9 +223,8 @@ def get_ieconstraints(unknowns, segment):
     
     # Less than a specified CL limit
     lift_coefficient_limit = segment.lift_coefficient_limit
-    CL_con = (lift_coefficient_limit  - segment.state.conditions.aerodynamics.coefficients.lift[:,0])/lift_coefficient_limit
-    
-    CL_con2   = segment.state.conditions.aerodynamics.coefficients.lift[:,0]
+    CL_con   = (lift_coefficient_limit  - segment.state.conditions.aerodynamics.coefficients.lift.total[:,0])/lift_coefficient_limit 
+    CL_con2  = segment.state.conditions.aerodynamics.coefficients.lift.total[:,0]
     
     # Altitudes are greater than 0
     alt_con = segment.state.conditions.freestream.altitude[:,0]/segment.altitude_end
@@ -274,9 +273,9 @@ def get_problem_pyopt(unknowns, segment):
     
     # Less than a specified CL limit
     lift_coefficient_limit = segment.lift_coefficient_limit 
-    CL_con   = (lift_coefficient_limit  - segment.state.conditions.aerodynamics.coefficients.lift[:,0])/lift_coefficient_limit
+    CL_con   = (lift_coefficient_limit  - segment.state.conditions.aerodynamics.coefficients.lift.total[:,0])/lift_coefficient_limit
     
-    CL_con2   = segment.state.conditions.aerodynamics.coefficients.lift[:,0]
+    CL_con2   = segment.state.conditions.aerodynamics.coefficients.lift.total[:,0]
     
     # Altitudes are greater than 0
     alt_con = segment.state.conditions.freestream.altitude[:,0]/segment.altitude_end

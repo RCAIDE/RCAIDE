@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/DC_Motor/dc_motor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -20,14 +20,9 @@ def compute_Q_from_omega_and_V(motor):
     Assumptions:
 
     Source:
-    N/A
+    None
 
     Args:
-
-    Returns:
-    motor.outputs.torque    [N-m] 
-
-    Properties Used:
     motor.
       gear_ratio           [-]
       speed_constant       [radian/s/V]
@@ -37,6 +32,10 @@ def compute_Q_from_omega_and_V(motor):
       expected_current     [A]
       no_load_current      [A]
       inputs.volage        [V]
+
+    Returns:
+    motor.outputs.torque    [N-m] 
+ 
     """
     
     Res   = motor.resistance
@@ -68,7 +67,7 @@ def compute_omega_and_Q_from_Cp_and_V(motor,conditions):
     Cp (power coefficient) is constant
 
     Source:
-    N/A
+    None
 
     Args:
     conditions.
@@ -77,12 +76,6 @@ def compute_omega_and_Q_from_Cp_and_V(motor,conditions):
       propulsion.propeller_power_coefficient [-]
     motor.inputs.voltage                      [V]
 
-    Returns:
-    motor.outputs.
-      torque                                 [Nm]
-      omega                                  [radian/s]
-
-    Properties Used:
     motor.
       resistance                             [ohms]
       gearbox_efficiency                     [-]
@@ -91,6 +84,11 @@ def compute_omega_and_Q_from_Cp_and_V(motor,conditions):
       gear_ratio                             [-]
       speed_constant                         [radian/s/V]
       propeller_radius                       [m]
+      
+    Returns:
+    motor.outputs.
+      torque                                 [Nm]
+      omega                                  [radian/s] 
     """           
     # Unpack 
     rho   = conditions.freestream.density[:,0,None]
@@ -132,17 +130,9 @@ def compute_I_from_omega_and_V(motor):
     Assumptions:
 
     Source:
-    N/A
+    None
 
     Args:
-    motor.inputs.voltage   [V]
-
-    Returns:
-    motor.outputs.current  [A]
-    conditions.
-      propulsion.etam      [-] 
-
-    Properties Used:
     motor.
       gear_ratio           [-]
       speed_constant       [radian/s/V]
@@ -151,6 +141,12 @@ def compute_I_from_omega_and_V(motor):
       gearbox_efficiency   [-]
       expected_current     [A]
       no_load_current      [A]
+    motor.inputs.voltage   [V]
+
+    Returns:
+    motor.outputs.current  [A]
+    conditions.
+      propulsion.etam      [-]  
     """                      
     
     # Unpack
@@ -185,18 +181,9 @@ def compute_V_and_I_from_omega_and_Kv(motor):
     Assumptions:
 
     Source:
-    N/A
+    None
 
     Args:
-
-    Returns:
-    motor.outputs.current   [A]
-    conditions.
-      propulsion.volage    [V]
-    conditions.
-      propulsion.etam      [-] 
-
-    Properties Used:
     motor.
       gear_ratio           [-]
       speed_constant       [radian/s/V]
@@ -205,6 +192,14 @@ def compute_V_and_I_from_omega_and_Kv(motor):
       gearbox_efficiency   [-]
       expected_current     [A]
       no_load_current      [A]
+
+    Returns:
+    motor.outputs.current   [A]
+    conditions.
+      propulsion.volage    [V]
+    conditions.
+      propulsion.etam      [-] 
+ 
     """                      
            
     Res   = motor.resistance

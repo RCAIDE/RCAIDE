@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/LBL_VS_broadband_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -39,10 +39,7 @@ def LBL_VS_broadband_noise(R_c,alpha_star,delta_p,r_e,L,M,Dbar_h,f,U):
        r_e          - distance from noise source to observer [m] 
     
     Outputs 
-       SPL_LBL_VS   - Sound pressure level of laminar boundary layer [dB]
-       
-    Properties Used:
-        N/A   
+       SPL_LBL_VS   - Sound pressure level of laminar boundary layer [dB] 
     '''       
     
     St_prime              = f*delta_p/U # eqn 54 
@@ -76,10 +73,7 @@ def compute_G_1(e):
         e     [-]
     
     Outputs 
-        G_1   [-]
-       
-    Properties Used:
-        N/A   
+        G_1   [-] 
     '''         
     e     = e * 0.3  
     num_1 = 39.8 *0.5 
@@ -107,10 +101,7 @@ def compute_G_2(d):
         d     [-]
     
     Outputs 
-        G_2   [-]
-       
-    Properties Used:
-        N/A   
+        G_2   [-] 
     '''     
  
     G_2           = -77.852*np.log10(d) + 15.328           # eqn 58 
@@ -135,10 +126,7 @@ def compute_G_3(alpha_star):
         alpha_star    [deg]
     
     Outputs 
-        G_3           [-]
-       
-    Properties Used:
-        N/A   
+        G_3           [-] 
     '''     
     G_3 = 171.04 - 3.03*alpha_star
     return G_3
@@ -157,10 +145,7 @@ def compute_R_c_0(alpha_star):
         alpha_star    [deg]
     
     Outputs 
-        R_c_0         [-]
-       
-    Properties Used:
-        N/A   
+        R_c_0         [-] 
     '''     
     R_c_0               = 10**(0.215*alpha_star + 4.978) # eqn 59
     R_c_0[3<alpha_star] = 10**(0.120*alpha_star[3<alpha_star] + 5.263)  # eqn 59 

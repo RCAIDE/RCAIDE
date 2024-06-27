@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/noise_directivities.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -34,10 +34,7 @@ def noise_directivities(Theta_er,Phi_er,cos_zeta_r,M_tot):
     
     Outputs 
        Dbar_h       - high frequency directivity term                           [-]
-       Dbar_l       - low frequency directivity term                            [-] 
-       
-    Properties Used:
-       N/A   
+       Dbar_l       - low frequency directivity term                            [-]  
     '''      
     Dbar_h   = (2*(np.sin(Theta_er/2)**2)*((np.sin(Phi_er))**2) )/((1 - M_tot*cos_zeta_r)**4)  # eqn 20 Brooks & Burley
     Dbar_l   = ((np.sin(Theta_er)**2)*((np.sin(Phi_er))**2) )/((1 - M_tot*cos_zeta_r)**4)  # eqn 19 Brooks & Burley  

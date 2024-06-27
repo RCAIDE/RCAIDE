@@ -18,32 +18,17 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------        
 ## @ingroup Library-Components
 class Mass_Properties(Data):
-    """ Mass properties for a physical component
-        
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ Mass properties for a physical component.
     """
     def __defaults__(self):
         """This sets the default values.
     
-            Assumptions:
+        Assumptions:
             None
-    
-            Source:
-            N/A
-    
-            Args:
-            None
-    
-            Returns:
-            None
-    
-            Properties Used:
-            None
-        """         
+
+        Source:
+            None 
+        """     
         
         self.mass   = 0.0
         self.volume = 0.0

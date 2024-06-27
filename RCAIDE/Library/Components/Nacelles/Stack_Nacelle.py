@@ -16,31 +16,17 @@ from .Nacelle import Nacelle
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Nacelles
 class Stack_Nacelle(Nacelle):
-    """ This is a stacked nacelle for a generic aircraft.
-    
-    Assumptions:
-    None
-    
-    Source:
-    N/A
+    """ This is a stacked nacelle for a generic aircraft. 
     """
     
     def __defaults__(self):
         """ This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
     
         Source:
-        N/A
-    
-        Args:
-        None
-    
-        Returns:
-        None
-    
-
+            None  
         """      
         
         self.tag                       = 'stack_nacelle'  
@@ -50,13 +36,17 @@ class Stack_Nacelle(Nacelle):
         """ Adds a segment to the nacelle. 
     
         Assumptions:
-        None
+            None
+        
         Source:
-        N/A
-        Args:
-        None
+            None
+            
+        Args: 
+            self    (dict): nacelle data structure 
+            segment (dict): nacelle stucture 
+        
         Returns:
-        None
+            None
         """ 
 
         # Assert database type

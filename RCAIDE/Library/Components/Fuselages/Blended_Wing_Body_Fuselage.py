@@ -9,37 +9,24 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports    
 from .Fuselage import Fuselage
+
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Blended_Wing_Body_Fuselage
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Fuselages 
 class Blended_Wing_Body_Fuselage(Fuselage):
-    """ This is a blended wing body fuselage class 
-    
-    Assumptions: 
-    
-    Source:
-    N/A
+    """ This is a blended wing body fuselage class  
     """
     
     def __defaults__(self):
         """ This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
     
         Source:
-        N/A
-    
-        Args:
-        None
-    
-        Returns:
-        None
-    
-
-        """      
-          
+            None 
+        """       
         self.tag                   = 'bwb_fuselage'
         self.aft_centerbody_area   = 0.0
         self.aft_centerbody_taper  = 0.0

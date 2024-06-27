@@ -34,7 +34,7 @@ class Lift_Rotor(Rotor):
         None
         
         Source:
-        N/A
+        None
         
         Args:
         None

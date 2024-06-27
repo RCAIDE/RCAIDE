@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Modulators/compute_esc_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
  
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_electric_rotor_performance
@@ -15,7 +15,7 @@ def compute_voltage_out_from_throttle(esc,eta):
         The ESC's output voltage is linearly related to throttle setting
 
         Source:
-        N/A
+        None
 
         Args:
         conditions.energy.throttle     [0-1] 
@@ -49,7 +49,7 @@ def compute_voltage_in_from_throttle(esc,eta):
         The ESC's output voltage is linearly related to throttle setting
 
         Source:
-        N/A
+        None
 
         Args:
         conditions.energy.throttle     [0-1]
@@ -88,7 +88,7 @@ def compute_throttle_from_voltages(esc):
         The ESC's output voltage is linearly related to throttle setting
 
         Source:
-        N/A
+        None
 
         Args:
         conditions.energy.throttle     [0-1]
@@ -124,13 +124,10 @@ def compute_current_in_from_throttle(esc,eta):
         
         Args:
             esc.inputs.currentout [amps]
-           
-        Returns:
-            outputs.currentin      [amps]
-        
-        Properties Used:
             esc.efficiency - [0-1] efficiency of the ESC
            
+        Returns:
+            outputs.currentin      [amps]  
     """
     
     # Unpack, don't modify the throttle   

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/size_core.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -32,15 +32,13 @@ def size_core(turbofan,conditions):
       total_temperature_reference        [K]
       total_pressure_reference           [Pa]
       number_of_engines                  [-]
-
-    Returns:
-    turbofan.outputs.non_dimensional_thrust  [-]
-
-    Properties Used:
     turbofan.
       reference_temperature              [K]
       reference_pressure                 [Pa]
       total_design                       [N] - Design thrust
+
+    Returns:
+    turbofan.outputs.non_dimensional_thrust  [-] 
     """             
     #unpack inputs
     a0                   = conditions.freestream.speed_of_sound

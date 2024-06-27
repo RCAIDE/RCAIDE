@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery-Common
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/initialize_from_circuit_configuration.py
+## @ingroup Methods-Energy-Sources-Battery-Common
+# RCAIDE/Methods/Energy/Sources/Battery/Common/initialize_from_circuit_configuration.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -8,12 +8,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from RCAIDE.Framework.Core import Units
+from RCAIDE.Framework.Core import Units 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Energy-Battery-Common
+## @ingroup Methods-Energy-Sources-Battery-Common
 def initialize_from_circuit_configuration(battery,module_weight_factor = 1.42):  
     """Calculate pack level properties of battery using cell 
     properties and module configuraton
@@ -29,7 +29,7 @@ def initialize_from_circuit_configuration(battery,module_weight_factor = 1.42):
     J., Battery Performance Modeling on Maxwell X-57",AIAA Scitech, San Diego, CA,
     2019. URLhttp://openmdao.org/pubs/chin_battery_performance_x57_2019.pdf.     
 
-    Args:
+    Inputs:
     mass              
     battery.cell
       nominal_capacity        [amp-hours]            
@@ -37,7 +37,7 @@ def initialize_from_circuit_configuration(battery,module_weight_factor = 1.42):
       pack_config             [unitless]
       mass                    [kilograms]
                           
-    Returns:              
+    Outputs:              
      battery.             
        maximum_energy         [watt-hours]
        maximum_power              [watts]

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Metrics/PNL_noise_metric.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -28,10 +28,7 @@ def PNL_noise_metric(SPL):
         SPL - Sound Pressure Level in 1/3 octave band  [dB]
    
     Returns:
-        PNL - Perceived Noise Level                    [dB]
-   
-    Properties Used:
-        N/A    
+        PNL - Perceived Noise Level                    [dB] 
     """
    
 

@@ -8,9 +8,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports    
-from RCAIDE.Framework.Core              import Data, Container 
-from RCAIDE.Library.Components          import Component  
-from RCAIDE.Library.Components.Airfoils import Airfoil
+from RCAIDE.Framework.Core              import Data 
+from RCAIDE.Library.Components          import Component   
 import scipy as sp
 import numpy as np
  
@@ -19,31 +18,17 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Nacelles
 class Nacelle(Component):
-    """ This is a nacelle for a generic aircraft.
-    
-    Assumptions:
-    None
-    
-    Source:
-    N/A
+    """ Default nacelle compoment class.
     """
     
     def __defaults__(self):
         """ This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
     
         Source:
-        N/A
-    
-        Args:
-        None
-    
-        Returns:
-        None
-    
-
+            None 
         """      
         
         self.tag                       = 'nacelle'
@@ -55,6 +40,8 @@ class Nacelle(Component):
         self.areas.wetted              = 0.0 
         self.diameter                  = 0.0 
         self.inlet_diameter            = 0.0
+        self.has_pylon                 = True 
+        self.fuselage_integrated       = False 
         self.length                    = 0.0   
         self.orientation_euler_angles  = [0.,0.,0.]    
         self.flow_through              = True 
@@ -65,20 +52,18 @@ class Nacelle(Component):
         """This rotates from the systems body frame to the nacelles velocity frame
 
         Assumptions:
-        There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame
-        velocity frame is X out the nose, Z towards the ground, and Y out the right wing
-        vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing
+            There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame
+            velocity frame is X out the nose, Z towards the ground, and Y out the right wing
+            vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            self  (dict): nacelle data object 
 
         Returns:
-        None
-
-
+            rot_mat (numpy.ndarray) : rotated matrix array 
         """
         
         body2nacvel = self.body_to_nac_vel()
@@ -93,20 +78,18 @@ class Nacelle(Component):
         """This rotates from the systems body frame to the nacelles velocity frame
 
         Assumptions:
-        There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame
-        velocity frame is X out the nose, Z towards the ground, and Y out the right wing
-        vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing
+            There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame
+            velocity frame is X out the nose, Z towards the ground, and Y out the right wing
+            vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing Y out the right wing
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            self  (dict): nacelle data object 
 
         Returns:
-        None
-
-
+            rot_mat (numpy.ndarray) : rotated matrix array 
         """
         
         # Go from body to vehicle frame
@@ -124,26 +107,23 @@ class Nacelle(Component):
         rot_mat = np.matmul(rot1,nac_vec_2_nac_vel) 
         return rot_mat    
     
-    
 
     def vec_to_vel(self):
         """This rotates from the nacelles vehicle frame to the nacelles velocity frame
 
         Assumptions:
-        There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame
-        velocity frame is X out the nose, Z towards the ground, and Y out the right wing
-        vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing
+            There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame
+            velocity frame is X out the nose, Z towards the ground, and Y out the right wing
+            vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            self  (dict): nacelle data object 
 
         Returns:
-        None
-
-
+            rot_mat (numpy.ndarray) : rotated matrix array 
         """
         
         rot_mat = sp.spatial.transform.Rotation.from_rotvec([0,np.pi,0]).as_matrix()

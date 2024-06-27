@@ -17,24 +17,16 @@ from RCAIDE.Library.Components import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Distributors
 class Electronic_Speed_Controller(Component):
+    """Electronic speed controller compoment class"""
     
     def __defaults__(self):
         """ This sets the default values.
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
-    
-            Args:
-            None
-    
-            Returns:
-            None
-    
-            Properties Used:
-            None
+                None 
             """         
 
         self.tag              = 'electronic_speed_controller'  

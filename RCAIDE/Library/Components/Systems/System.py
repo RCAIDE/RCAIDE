@@ -15,32 +15,18 @@ from RCAIDE.Library.Components import Component
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Library-Components-Systems
 class System(Component):
-    """A class representing an aircraft system/systems.
-    
-    Assumptions:
-    None
-    
-    Source:
-    N/A
+    """A class representing an aircraft system/systems. 
     """  
     def __defaults__(self): 
         """ This sets the default values for the system.
         
         Assumptions:
-        None
+            None
         
         Source:
-        N/A
-        
-        Args:
-        None
-        
-        Returns:
-        None
-        
-        """        
-        
-        self.tag             = 'System'
+            None 
+        """     
+        self.tag             = 'system'
         self.origin          = [[0.0,0.0,0.0]]
         self.control         = None
         self.accessories     = None 

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/optimization_setup.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

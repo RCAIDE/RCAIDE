@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/procedure_setup.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -58,7 +58,7 @@ def modify_blade_geometry(nexus):
              procedure - optimization methodology                                         [None]
               
           Assumptions: 
-             N/A 
+             None 
         
           Source:
              None
@@ -143,7 +143,7 @@ def updated_blade_geometry(chi,c_r,p,q,c_t):
              x_lin  - function distribution       [None]
               
           Assumptions: 
-             N/A 
+             None 
         
           Source:
               Traub, Lance W., et al. "Effect of taper ratio at low reynolds number."

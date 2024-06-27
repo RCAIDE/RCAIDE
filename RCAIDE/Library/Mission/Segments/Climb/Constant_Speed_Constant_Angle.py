@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Climb/Constant_Speed_Constant_Angle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -22,14 +22,14 @@ def initialize_conditions(segment):
     Constant true airspeed, with a constant climb angle
 
     Source:
-    N/A
+    None
 
     Args:
     segment.climb_angle                         [radians]
     segment.air_speed                           [meter/second]
     segment.altitude_start                      [meters]
     segment.altitude_end                        [meters]
-    state.numerics.dimensionless.control_points [Unitless]
+    state.numerics.dimensionless.control_points [unitless]
     conditions.freestream.density               [kilograms/meter^3]
 
     Returns:

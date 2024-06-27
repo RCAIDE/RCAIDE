@@ -9,7 +9,6 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Framework.Core import Units
 
-# python imports 
 from plotly.subplots import make_subplots
 import pandas as pd
 import plotly.graph_objects as go
@@ -31,9 +30,7 @@ def plot_rotor(prop, face_color = 'red', edge_color = 'black' ,show_figure = Tru
     RCAIDE.Library.Components.Energy.Converters.Propeller()
 
     Returns:
-    Plots
-
-
+    Plots 
     """
     # Initialize figure
     fig = make_subplots(rows=2, cols=2)

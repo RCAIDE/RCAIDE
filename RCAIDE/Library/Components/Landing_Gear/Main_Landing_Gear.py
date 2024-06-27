@@ -16,33 +16,17 @@ from .Landing_Gear import Landing_Gear
 # ----------------------------------------------------------------------------------------------------------------------    
 ## @ingroup Library-Compoments-Landing_Gear 
 class Main_Landing_Gear(Landing_Gear):
-    """Main landing gear compoment class  
-        
-        Assumptions:
-        None
-        
-        Source:
-        N/A
-        
+    """Main landing gear compoment class   
     """
 
     def __defaults__(self):
         """ This sets the default values for the component attributes.
         
-            Assumptions:
+        Assumptions:
             None
-            
-            Source:
-            N/A
-            
-            Args:
-            None
-            
-            Output:
-            None
-            
-            Properties Used:
-            N/A
+        
+        Source:
+            None 
         """
         self.tag           = 'main_gear'
         self.units         = 0. # number of main landing gear units        

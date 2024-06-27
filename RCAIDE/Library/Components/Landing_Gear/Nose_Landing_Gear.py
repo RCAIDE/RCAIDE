@@ -16,33 +16,18 @@ from .Landing_Gear import Landing_Gear
 # ----------------------------------------------------------------------------------------------------------------------    
 ## @ingroup Library-Compoments-Landing_Gear 
 class Nose_Landing_Gear(Landing_Gear):
-    """ Nose landing gear compoment class 
-    
-        Assumptions:
-        None
-        
-        Source:
-        N/A        
+    """ Nose landing gear compoment class.
     """
 
     def __defaults__(self): 
         
         """ This sets the default values for the component attributes.
         
-            Assumptions:
+        Assumptions:
             None
-            
-            Source:
-            N/A
-            
-            Args:
-            None
-            
-            Output:
-            None
-            
-            Properties Used:
-            N/A
+        
+        Source:
+            None 
         """
         self.tag           = 'nose_gear'
         self.tire_diameter = 0.    

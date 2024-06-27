@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/harmonic_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -36,7 +36,7 @@ def harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,
 
 
     Args: 
-        harmonics                     - harmomics                                                                  [Unitless]
+        harmonics                     - harmomics                                                                  [unitless]
         freestream                    - freestream data structure                                                  [m/s]
         angle_of_attack               - aircraft angle of attack                                                   [rad]
         position_vector               - position vector of aircraft                                                [m]
@@ -52,12 +52,8 @@ def harmonic_noise(harmonics,freestream,angle_of_attack,coordinates,
             SPL_prop_harmonic_bpf_spectrum_dBA   - dBA-Weighted harmonic noise in blade passing frequency spectrum [dbA]                  
             SPL_prop_harmonic_1_3_spectrum       - harmonic noise in 1/3 octave spectrum                           [dB]
             SPL_prop_harmonic_1_3_spectrum_dBA   - dBA-Weighted harmonic noise in 1/3 octave spectrum              [dBA] 
-            p_pref_harmonic                      - pressure ratio of harmonic noise                                [Unitless]
-            p_pref_harmonic_dBA                  - pressure ratio of dBA-weighted harmonic noise                   [Unitless]
-
-
-    Properties Used:
-        N/A   
+            p_pref_harmonic                      - pressure ratio of harmonic noise                                [unitless]
+            p_pref_harmonic_dBA                  - pressure ratio of dBA-weighted harmonic noise           
     '''     
     num_h        = len(harmonics)     
     num_cpt      = len(angle_of_attack) 

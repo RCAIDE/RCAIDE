@@ -38,10 +38,7 @@ def compute_dynamic_flight_modes(conditions,aircraft):
 
     Returns: 
        conditions.dynamic_stability.LatModes
-       conditions.dynamic_stability.LongModes 
-
-    Properties Used:
-       N/A
+       conditions.dynamic_stability.LongModes  
      """
  
     # unpack unit conversions  
@@ -54,8 +51,8 @@ def compute_dynamic_flight_modes(conditions,aircraft):
     # Unpack aircraft Properties
     theta0 = conditions.aerodynamics.angles.alpha
     AoA    = conditions.aerodynamics.angles.alpha
-    CLtot  = conditions.aerodynamics.coefficients.lift 
-    CDtot  = conditions.aerodynamics.coefficients.drag 
+    CLtot  = conditions.aerodynamics.coefficients.lift.total 
+    CDtot  = conditions.aerodynamics.coefficients.drag.total 
     e      = conditions.aerodynamics.oswald_efficiency
     SS     = conditions.static_stability
     SSD    = SS.derivatives 

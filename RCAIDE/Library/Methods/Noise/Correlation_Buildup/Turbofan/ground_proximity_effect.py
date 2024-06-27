@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/external_plug_effect.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -20,10 +20,10 @@ def ground_proximity_effect (Velocity_mixed,sound_ambient,theta_m,engine_height,
     engine test stand.
         
     Assumptions:
-        N/A
+        None
 
     Source:
-        N/A
+        None
 
     Args:
         Velocity_mixed  [m/s]
@@ -34,10 +34,7 @@ def ground_proximity_effect (Velocity_mixed,sound_ambient,theta_m,engine_height,
         frequency       [1/s]
 
     Returns:
-        GPROX_m         [dB]
-
-    Properties Used:
-        N/A 
+        GPROX_m         [dB] 
     """ 
     # Ground proximity is applied only for the mixed jet component
     GPROX_m = (5*Velocity_mixed/sound_ambient)*np.exp(-(9*(theta_m/np.pi)-6.75)**2- \

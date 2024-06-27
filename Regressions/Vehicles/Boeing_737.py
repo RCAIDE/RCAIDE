@@ -9,7 +9,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units       
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import segment_properties   
+from RCAIDE.Library.Methods.Geometry.Planform                      import segment_properties   
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan
 from RCAIDE.Library.Methods.Stability.Center_of_Gravity            import compute_component_centers_of_gravity
 from RCAIDE.Library.Plots                                          import *     
@@ -82,6 +82,7 @@ def vehicle_setup():
     wing.symmetric                        = True
     wing.high_lift                        = True 
     wing.dynamic_pressure_ratio           = 1.0
+    wing.percent_span_root_offset         = 3.74 / wing.spans.projected
 
 
     # Wing Segments
@@ -184,24 +185,25 @@ def vehicle_setup():
     wing     = RCAIDE.Library.Components.Wings.Horizontal_Tail()
     wing.tag = 'horizontal_stabilizer'
 
-    wing.aspect_ratio            = 4.99
-    wing.sweeps.quarter_chord    = 28.2250 * Units.deg  
-    wing.thickness_to_chord      = 0.08
-    wing.taper                   = 0.3333  
-    wing.spans.projected         = 14.4 
-    wing.chords.root             = 4.2731 
-    wing.chords.tip              = 1.4243 
-    wing.chords.mean_aerodynamic = 8.0 
-    wing.areas.reference         = 41.49
-    wing.areas.exposed           = 59.354    # Exposed area of the horizontal tail
-    wing.areas.wetted            = 71.81     # Wetted area of the horizontal tail
-    wing.twists.root             = 3.0 * Units.degrees
-    wing.twists.tip              = 3.0 * Units.degrees 
-    wing.origin                  = [[33.02,0,1.466]]
-    wing.aerodynamic_center      = [0,0,0] 
-    wing.vertical                = False
-    wing.symmetric               = True 
-    wing.dynamic_pressure_ratio  = 0.9
+    wing.aspect_ratio              = 4.99
+    wing.sweeps.quarter_chord      = 28.2250 * Units.deg  
+    wing.thickness_to_chord        = 0.08
+    wing.taper                     = 0.3333  
+    wing.spans.projected           = 14.4 
+    wing.chords.root               = 4.2731 
+    wing.chords.tip                = 1.4243 
+    wing.chords.mean_aerodynamic   = 8.0 
+    wing.areas.reference           = 41.49
+    wing.areas.exposed             = 59.354    # Exposed area of the horizontal tail
+    wing.areas.wetted              = 71.81     # Wetted area of the horizontal tail
+    wing.twists.root               = 3.0 * Units.degrees
+    wing.twists.tip                = 3.0 * Units.degrees 
+    wing.origin                    = [[33.02,0,1.466]]
+    wing.aerodynamic_center        = [0,0,0] 
+    wing.vertical                  = False
+    wing.symmetric                 = True 
+    wing.dynamic_pressure_ratio    = 0.9
+    wing.percent_span_root_offset = 3.74 / wing.spans.projected
 
 
     # Wing Segments

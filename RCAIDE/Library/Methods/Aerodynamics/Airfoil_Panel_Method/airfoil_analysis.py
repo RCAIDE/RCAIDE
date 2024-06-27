@@ -26,53 +26,53 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L, batch_analysis = True, airfoil
     an airfoil at a defined set of reynolds numbers and angle of attacks
 
     Assumptions:
-    Michel Criteria used for transition 
-    
-    Squire-Young relation for total drag (exrapolates theta from end of wake). 
-    However, since we do not have a wake we will assume H_wake = 1.05 and Ue_wake = 0.99
-    The freestream velocity is taken to be 1 m/s.
-    Airfoil has a unit chord length [1 m].
+        - Michel Criteria used for transition  
+        - Squire-Young relation for total drag (exrapolates theta from end of wake). 
+        - However, since we do not have a wake we will assume H_wake = 1.05 and Ue_wake = 0.99
+        - The freestream velocity is taken to be 1 m/s.
+        - Airfoil has a unit chord length [1 m].
+        
+        If batch_analysis is True: the specified number of angle of attacks and Reynolds [boolean]
+        numbers are used to create a table of 2-D results for each combination
+        Note: Can only accomodate one airfoil
+        
+        If batch_analysis is False:The airfoils specified are run and corresponding angle of attacks 
+        and Reynolds numbers. The number of airfoils, angle of attacks and reynolds numbers must 
+        all the same dimension    
 
     Source:
-    N/A
+        None
 
     Args: 
-    airfoil_geometry   - airfoil geometry points                                                             [unitless]
-    alpha              - angle of attacks                                                                    [radians]
-    Re_L               - Reynolds numbers                                                                     [unitless]
-    airfoil_stations   - airfoil stations 
-    batch_analysis     - boolean : If True: the specified number of angle of attacks and Reynolds            [boolean]
-                                  numbers are used to create a table of 2-D results for each combination
-                                  Note: Can only accomodate one airfoil
-                                  
-                                  If False:The airfoils specified are run and corresponding angle of attacks 
-                                  and Reynolds numbers
-                                  Note: The number of airfoils, angle of attacks and reynolds numbers must 
-                                  all the same dimension                     
+         airfoil_geometry            (dict): airfoil geometry points            [-]
+         alpha              (numpy.ndarray): angle of attacks                   [radians]
+         Re_L               (numpy.ndarray): Reynolds numbers                   [unitless]
+         airfoil_stations            (list): airfoil stations                   [-]
+         batch_analysis              (bool): boolean for running batch analysis [boolean]                  
     
-    Returns: 
-    airfoil_properties.
-        AoA            - angle of attack                                                   [radians
-        Re             - Reynolds number                                                   [unitless]
-        Cl             - lift coefficients                                                 [unitless]
-        Cd             - drag coefficients                                                 [unitless]
-        Cm             - moment coefficients                                               [unitless]
-        normals        - surface normals of airfoil                                        [unitless]
-        x              - x coordinate points on airfoil                                    [unitless]
-        y              - y coordinate points on airfoil                                    [unitless]
-        x_bl           - x coordinate points on airfoil adjusted to include boundary layer [unitless]
-        y_bl           - y coordinate points on airfoil adjusted to include boundary layer [unitless]
-        Cp             - pressure coefficient distribution                                 [unitless]
-        Ue_Vinf        - ratio of boundary layer edge velocity to freestream               [unitless]
-        dVe            - derivative of boundary layer velocity                             [m/s-m]
-        theta          - momentum thickness                                                [m]
-        delta_star     - displacement thickness                                            [m]
-        delta          - boundary layer thickness                                          [m]
-        H              - shape factor                                                      [unitless]
-        Cf             - local skin friction coefficient                                   [unitless]
-        Re_theta_t     - Reynolds Number as a function of theta transition location        [unitless]
-        tr_crit        - critical transition criteria                                      [unitless] 
-        """     
+    Returns:  
+         airfoil_properties.AoA        (numpy.ndarray): angle of attack                                                   [radians
+         airfoil_properties.Re         (numpy.ndarray): Reynolds number                                                   [unitless] 
+         airfoil_properties.cl_invisc  (numpy.ndarray): inciscid lift coefficients                                        [unitless]
+         airfoil_properties.cd_invisc  (numpy.ndarray): inciscid drag coefficients                                        [unitless]
+         airfoil_properties.cm_invisc  (numpy.ndarray): inciscid moment coefficients                                      [unitless]
+         airfoil_properties.cd_visc    (numpy.ndarray): viscous drag coefficients                                         [unitless]
+         airfoil_properties.normals    (numpy.ndarray): surface normals of airfoil                                        [unitless]
+         airfoil_properties.x          (numpy.ndarray): x coordinate points on airfoil                                    [unitless]
+         airfoil_properties.y          (numpy.ndarray): y coordinate points on airfoil                                    [unitless]
+         airfoil_properties.x_bl       (numpy.ndarray): x coordinate points on airfoil adjusted to include boundary layer [unitless]
+         airfoil_properties.y_bl       (numpy.ndarray): y coordinate points on airfoil adjusted to include boundary layer [unitless]
+         airfoil_properties.Cp         (numpy.ndarray): pressure coefficient distribution                                 [unitless]
+         airfoil_properties.Ue_Vinf    (numpy.ndarray): ratio of boundary layer edge velocity to freestream               [unitless]
+         airfoil_properties.dVe        (numpy.ndarray): derivative of boundary layer velocity                             [m/s-m]
+         airfoil_properties.theta      (numpy.ndarray): momentum thickness                                                [m]
+         airfoil_properties.delta_star (numpy.ndarray): displacement thickness                                            [m]
+         airfoil_properties.delta      (numpy.ndarray): boundary layer thickness                                          [m]
+         airfoil_properties.H          (numpy.ndarray): shape factor                                                      [unitless]
+         airfoil_properties.Cf         (numpy.ndarray): local skin friction coefficient                                   [unitless]
+         airfoil_properties.Re_theta_t (numpy.ndarray): Reynolds Number as a function of theta transition location        [unitless]
+         airfoil_properties.tr_crit    (numpy.ndarray): critical transition criteria                                      [unitless] 
+    """     
  
     ncases       = len(alpha[0,:]) # number of cases or angle of attacks
     ncpts        = len(Re_L) # number of control points or reynolds numbers
@@ -502,23 +502,22 @@ def concatenate_surfaces(X_BOT,X_TOP,FUNC_BOT_SURF,FUNC_TOP_SURF,npanel,ncases,n
     '''Interpolation of airfoil properties   
     
     Assumptions:
-    None
+        None
 
     Source:
-    None                                                                    
+        None                                                                    
                                                                    
     Args:                                    
-    X_BOT          - bottom surface of airfoil                                     [unitless]
-    X_TOP          - top surface of airfoil                                        [unitless]
-    FUNC_BOT_SURF  - airfoil property computation discretization on bottom surface [multiple units]
-    FUNC_TOP_SURF  - airfoil property computation discretization on top surface    [multiple units]
-    npanel         - number of panels                                              [unitless]
-    ncases         - number of angle of attacks                                    [unitless]
-    ncpts          - number of Reynolds numbers                                    [unitless]
+        X_BOT          (numpy.ndarray): bottom surface of airfoil                                     [unitless]
+        X_TOP          (numpy.ndarray): top surface of airfoil                                        [unitless]
+        FUNC_BOT_SURF  (numpy.ndarray): airfoil property computation discretization on bottom surface [multiple units]
+        FUNC_TOP_SURF  (numpy.ndarray): airfoil property computation discretization on top surface    [multiple units]
+        npanel                   (int): number of panels                                              [unitless]
+        ncases                   (int): number of angle of attacks                                    [unitless]
+        ncpts                    (int): number of Reynolds numbers                                    [unitless]
                                                                  
     Returns:                                           
-    FUNC           - airfoil property in user specified discretization on entire
-                     surface of airfoil                                            [multiple units] 
+        FUNC           (numpy.ndarray): airfoil property in user specified discretization on entire surface of airfoil [multiple units] 
     '''  
     FUNC = np.zeros((npanel,ncases,ncpts))   
     for case in range(ncases):

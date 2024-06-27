@@ -50,7 +50,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             System Strategies and the Evaluate Criteria." Int. J. Electrochem. Sci 14
             (2019): 6077-6107.
             
-            # Electrode Area
+            Electrode Area
             Muenzel, Valentin, et al. "A comparative testing study of commercial
             18650-format lithium-ion battery cells." Journal of The Electrochemical
             Society 162.8 (2015): A1592.
@@ -95,11 +95,11 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         Source:
             None
     
-        Args:
-            self               : battery        [unitless]
-            state              : temperature    [K]
-            bus                : pressure       [Pa]
-            discharge (boolean): discharge flag [unitless]
+        Args: 
+            self         (dict): battery        [-]
+            state        (dict): temperature    [K]
+            bus          (dict): electric bus   [-]
+            discharge (boolean): discharge flag [-]
             
         Returns: 
             None
@@ -118,16 +118,16 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             None
     
         Args:
-            self               : battery          [unitless] 
-            battery_conditions : state of battery [unitless]
+            self               (dict): battery          [-] 
+            battery_conditions (dict): state of battery [-]
             
         Returns: 
             None
         """              
         return battery_conditions.pack.voltage_under_load 
-    
+
     def update_battery_age(self,battery_conditions,increment_day = False):  
-        """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries.   
+        """ Update the state of health of the battery based on an aging model
         
         Assumptions:
             None
@@ -136,16 +136,15 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
             None
     
         Args:
-            self                   : battery            [unitless] 
-            battery_conditions     : state of battery   [unitless]
-            increment_day (boolean): day increment flag [unitless]  
+            self                 (dict): battery            [-] 
+            battery_conditions   (dict): state of battery   [-]
+            increment_day     (boolean): day increment flag [-]  
             
         Returns: 
             None
         """        
-        update_nmc_cell_age(self,battery_conditions,increment_day) 
-        
-        return  
+        update_nmc_cell_age(self,battery_conditions,increment_day)  
+        return 
 
 def create_discharge_performance_map(raw_data):
     """ Creates discharge and charge response surface for a LiNiMnCoO2 battery cell   
@@ -157,10 +156,10 @@ def create_discharge_performance_map(raw_data):
             None
             
         Args:
-            raw_data     : cell discharge curves                  [unitless]   
+            raw_data     (dict): cell discharge curves                  [-]   
             
         Returns: 
-            battery_data : response surface of battery properties [unitless]  
+            battery_data (dict): response surface of battery properties [-]  
         """   
     # Process raw data   
     processed_data = Data() 
@@ -215,7 +214,7 @@ def load_battery_results():
            None
            
        Returns:
-           battery_data: raw data from battery   [unitless]
+           battery_data (dict): raw data from battery   [-]
     '''    
     ospath    = os.path.abspath(__file__)
     separator = os.path.sep

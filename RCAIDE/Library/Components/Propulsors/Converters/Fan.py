@@ -32,7 +32,7 @@ class Fan(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None

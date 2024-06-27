@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/BPM_boundary_layer_properties.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -35,10 +35,7 @@ def BPM_boundary_layer_properties(R_c,c,alpha_star):
        R_c        - Reynolds number             [-]
 
     Outputs 
-       boundary layer properties                [-]
-       
-    Properties Used:
-        N/A   
+       boundary layer properties                [-] 
     '''        
     # eqn 2
     delta_0_div_c_tripped = 10**(1.892- 0.9045*np.log10(R_c) + 0.0596*(np.log10(R_c))**2)

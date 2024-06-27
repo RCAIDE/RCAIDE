@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
  
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -21,7 +21,7 @@ def initialize_conditions(segment):
     Velocities specified in the aircraft velocity frame (x-forward, z-down)
 
     Source:
-    N/A
+    None
 
     Args:
     segment.altitude                            [meters]

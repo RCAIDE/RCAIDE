@@ -33,7 +33,7 @@ class Compression_Nozzle(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None

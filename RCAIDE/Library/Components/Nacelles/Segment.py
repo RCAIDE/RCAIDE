@@ -20,19 +20,18 @@ class Segment(Component):
         """This sets the default for fuselage segments in RCAIDE.
 
         Assumptions:
-        Cross-section of nacelle is a super ellipse defined
-        |x/a|^n + |x/b|^n = 1 where n is the curvature.
-        n = 2 defaulted to give rounded concave edges
+            Cross-section of nacelle is a super ellipse defined
+            |x/a|^n + |x/b|^n = 1 where n is the curvature.
+            n = 2 defaulted to give rounded concave edges
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            None
 
         Returns:
-        None
-
+            None 
         """ 
         self.tag                      = 'segment' 
         self.orientation_euler_angles = [0.,0.,0.]  
@@ -45,38 +44,22 @@ class Segment(Component):
         
 ## @ingroup Components-Nacelles
 class Segment_Container(Container):
-    """ Container for fuselage segment
-    
-    Assumptions:
-    None
-
-    Source:
-    N/A
-
-    Args:
-    None
-
-    Returns:
-    None
-
-
+    """ Container for nacelle segment. 
     """     
 
     def get_children(self):
         """ Returns the components that can go inside
         
         Assumptions:
-        None
+            None
     
         Source:
-        N/A
+            None
     
         Args:
-        None
+            None
     
         Returns:
-        None
-    
-        """       
-        
+            None 
+        """      
         return []

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/external_plug_effect.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -24,10 +24,10 @@ def external_plug_effect(Velocity_primary,Velocity_secondary, Velocity_mixed, Di
     external plugs in coaxial jets.
     
     Assumptions:
-        N/A
+        None
 
     Source:
-        N/A
+        None
 
     Args: 
         Velocity_primary      [m/s]
@@ -45,10 +45,7 @@ def external_plug_effect(Velocity_primary,Velocity_secondary, Velocity_mixed, Di
     Returns: 
         PG_p        [dB]
         PG_s        [dB]
-        PG_m        [dB]
-
-    Properties Used:
-        N/A  
+        PG_m        [dB] 
     """
 
     # Primary jet

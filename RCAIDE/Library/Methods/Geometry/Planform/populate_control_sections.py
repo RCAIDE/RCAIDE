@@ -86,7 +86,7 @@ def populate_control_sections(wing):
                 
                 if append_CS == True:
                     # initialize the data structure for control surfaces , store results, and append to the correct segment 
-                    control_surface = type(cs)() # control_surface takes came type as cs (Slat, Aileron, Data(for VLM), etc)                                             
+                    control_surface = type(cs)()                                        
                     control_surface.tag                   = cs.tag 
                     control_surface.span                  = cs.span*(s_sf[1]-s_sf[0])/(cs.span_fraction_end-cs.span_fraction_start)
                     control_surface.span_fraction_start   = s_sf[0] 

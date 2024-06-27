@@ -12,7 +12,7 @@ from RCAIDE.Framework.Core                              import Data , Units, Con
 from RCAIDE.Library.Components                          import Component 
 from RCAIDE.Framework.Analyses.Propulsion               import Rotor_Wake_Fidelity_Zero
 from RCAIDE.Framework.Analyses.Propulsion               import Rotor_Wake_Fidelity_One
-from RCAIDE.Library.Methods.Aerodynamics.Common.Lift    import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss 
+from RCAIDE.Library.Methods.Aerodynamics.Common.Lift    import compute_section_coefficients,compute_inflow_and_tip_loss 
 
 # package imports
 import numpy as np
@@ -38,7 +38,7 @@ class Rotor(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None
@@ -116,7 +116,7 @@ class Rotor(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None
@@ -165,6 +165,12 @@ class Rotor(Component):
           inertial.velocity_vector           [m/s]
         conditions.energy.
           throttle                           [-]
+        self.
+          number_of_blades                   [-]
+          tip_radius                         [m]
+          twist_distribution                 [radians]
+          chord_distribution                 [m]
+          orientation_euler_angles           [rad, rad, rad]
 
         Returns:
         conditions.energy.outputs.
@@ -197,15 +203,7 @@ class Rotor(Component):
            torque_per_blade                  [Nm]
            torque_coefficient                [-]
            power                             [W]
-           power_coefficient                 [-]
-
-        Properties Used:
-        self.
-          number_of_blades                   [-]
-          tip_radius                         [m]
-          twist_distribution                 [radians]
-          chord_distribution                 [m]
-          orientation_euler_angles           [rad, rad, rad]
+           power_coefficient                 [-] 
         """
 
         # Unpack rotor blade parameters
@@ -409,7 +407,7 @@ class Rotor(Component):
         lamdaw, F, _ = compute_inflow_and_tip_loss(r,R,Wa,Wt,B)
 
         # Compute aerodynamic forces based on specified input airfoil or surrogate
-        Cl, Cdval, alpha, Ma,W, Re = compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts,Nr,Na,tc,use_2d_analysis)
+        Cl, Cdval, alpha, Ma,W, Re = compute_section_coefficients(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts,Nr,Na,tc,use_2d_analysis)
         
         
         # compute HFW circulation at the blade
@@ -595,7 +593,7 @@ class Rotor(Component):
            - The vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing
 
         Source:
-        N/A
+        None
 
         Args:
         None
@@ -620,7 +618,7 @@ class Rotor(Component):
         Vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing
 
         Source:
-        N/A
+        None
 
         Args:
         None
@@ -662,7 +660,7 @@ class Rotor(Component):
         vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing
 
         Source:
-        N/A
+        None
 
         Args:
         None
@@ -693,7 +691,7 @@ class Airfoil_Container(Container):
     None
 
     Source:
-    N/A
+    None
 
     Args:
     None
@@ -711,7 +709,7 @@ class Airfoil_Container(Container):
         None
     
         Source:
-        N/A
+        None
     
         Args:
         None

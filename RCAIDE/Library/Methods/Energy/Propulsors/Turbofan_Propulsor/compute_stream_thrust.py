@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_stream_thrust.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -55,6 +55,11 @@ def compute_stream_thrust(turbofan,conditions):
         flow_through_core                [-] percentage of total flow (.1 is 10%) 
         flow_through_fan                 [-] percentage of total flow (.1 is 10%)
 
+    turbofan. 
+      reference_temperature              [K] 
+      reference_pressure                 [Pa] 
+      compressor_nondimensional_massflow [-]
+      
     Returns: 
     turbofan.outputs. 
       thrust                             [N] 
@@ -63,12 +68,6 @@ def compute_stream_thrust(turbofan,conditions):
       core_mass_flow_rate                [kg/s] 
       fuel_flow_rate                     [kg/s] 
       power                              [W] 
-
-    Properties Used: 
-    turbofan. 
-      reference_temperature              [K] 
-      reference_pressure                 [Pa] 
-      compressor_nondimensional_massflow [-] 
     """            
 
     #unpack the values 

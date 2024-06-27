@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/noise_source_location.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -54,11 +54,7 @@ def noise_source_location(B,Xo,zk,Diameter_primary,theta_p,Area_primary,Area_sec
     Returns: 
         theta_p  [rad]
         theta_s  [rad]
-        theta_m  [rad]
-    
-    Properties Used:
-        N/A 
-    
+        theta_m  [rad]  
     """
     
     # P rimary jet source location

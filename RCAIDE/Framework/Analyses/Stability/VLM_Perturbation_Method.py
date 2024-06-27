@@ -10,12 +10,12 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Framework.Core                              import Data , Units
-from RCAIDE.Framework.Analyses                          import Process  
-from RCAIDE.Framework.Analyses.Common.Process_Geometry  import Process_Geometry   
-from RCAIDE.Library.Methods.Aerodynamics                import Common
-from RCAIDE.Library.Methods.Stability.VLM_Stability     import *  
-from .Stability                                         import Stability 
+from RCAIDE.Framework.Core                                  import Data , Units
+from RCAIDE.Framework.Analyses                              import Process  
+from RCAIDE.Framework.Analyses.Common.Process_Geometry      import Process_Geometry   
+from RCAIDE.Library.Methods.Aerodynamics                    import Common
+from RCAIDE.Library.Methods.Stability.VLM_stability_solver  import *  
+from .Stability                                             import Stability 
 
 # package imports 
 import numpy as np 
@@ -60,8 +60,7 @@ class VLM_Perturbation_Method(Stability):
         settings.recalculate_total_wetted_area           = False
         settings.propeller_wake_model                    = False 
         settings.discretize_control_surfaces             = False
-        settings.model_fuselage                          = False                
-        settings.model_nacelle                           = False 
+        settings.model_fuselage                          = False   
         settings.begin_drag_rise_mach_number             = 0.95
         settings.end_drag_rise_mach_number               = 1.2
         settings.transonic_drag_multiplier               = 1.25   
@@ -79,8 +78,7 @@ class VLM_Perturbation_Method(Stability):
         settings.fuselage_chordwise_vortices             = None  
         settings.spanwise_cosine_spacing                 = True
         settings.vortex_distribution                     = Data()   
-        settings.model_fuselage                          = False             
-        settings.model_nacelle                           = False
+        settings.model_fuselage                          = False    
         settings.leading_edge_suction_multiplier         = 1.0
         settings.propeller_wake_model                    = False
         settings.discretize_control_surfaces             = True 
@@ -119,7 +117,7 @@ class VLM_Perturbation_Method(Stability):
         compute.lift.inviscid_wings                = None
         compute.lift.vortex                        = RCAIDE.Library.Methods.skip
         compute.lift.fuselage                      = Common.Lift.fuselage_correction
-        compute.lift.total                         = Common.Lift.aircraft_total  
+        compute.lift.total                         = Common.Lift.total_lift  
         compute.drag                               = Process()
         compute.drag.parasite                      = Process()
         compute.drag.parasite.wings                = Process_Geometry('wings')
@@ -128,8 +126,7 @@ class VLM_Perturbation_Method(Stability):
         compute.drag.parasite.fuselages.fuselage   = Common.Drag.parasite_drag_fuselage
         compute.drag.parasite.booms                = Process_Geometry('booms')
         compute.drag.parasite.booms.boom           = Common.Drag.parasite_drag_fuselage
-        compute.drag.parasite.nacelles             = Process_Geometry('nacelles')
-        compute.drag.parasite.nacelles.nacelle     = Common.Drag.parasite_drag_nacelle
+        compute.drag.parasite.nacelles             = Common.Drag.parasite_drag_nacelle
         compute.drag.parasite.pylons               = Common.Drag.parasite_drag_pylon
         compute.drag.parasite.total                = Common.Drag.parasite_total
         compute.drag.induced                       = Common.Drag.induced_drag_aircraft
@@ -137,15 +134,15 @@ class VLM_Perturbation_Method(Stability):
         compute.drag.compressibility.wings         = Process_Geometry('wings')
         compute.drag.compressibility.wings.wing    = Common.Drag.compressibility_drag_wing
         compute.drag.compressibility.total         = Common.Drag.compressibility_drag_wing_total
-        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag_aircraft_ESDU 
-        compute.drag.untrimmed                     = Common.Drag.untrimmed
-        compute.drag.trim                          = Common.Drag.trim
+        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag_aircraft 
+        compute.drag.untrimmed                     = Common.Drag.untrimmed_drag
+        compute.drag.trimmed                       = Common.Drag.trimmed_drag
         compute.drag.spoiler                       = Common.Drag.spoiler_drag
-        compute.drag.total                         = Common.Drag.total_aircraft 
+        compute.drag.total                         = Common.Drag.total_drag
         self.process.compute                       = compute   
     
     def initialize(self): 
-        """Initalizes the subsonic VLM stabiltiy method.
+        """Initalizes the subsonic Vortex Lattice Method stabiltiy method.
 
         Assumptions:
             None
@@ -175,7 +172,7 @@ class VLM_Perturbation_Method(Stability):
             self.process.compute.lift.inviscid_wings  = evaluate_no_surrogate
 
     def evaluate(self,state: dict):
-        """VLM pertubation evaluate function which calls listed processes in the analysis method.
+        """Vortex Lattice Method pertubation evaluate function which calls listed processes in the analysis method.
 
         Assumptions:
             None

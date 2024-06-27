@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery-Ragone
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Ragone/find_ragone_optimum.py
+## @ingroup Methods-Energy-Sources-Battery-Ragone
+# RCAIDE/Methods/Energy/Sources/Battery/Ragone/find_ragone_optimum.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -17,7 +17,7 @@ import scipy as sp
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Energy-Battery-Ragone
+## @ingroup Methods-Energy-Sources-Battery-Ragone
 def find_ragone_optimum(battery, energy, power): #adds a battery that is optimized based on power and energy requirements and technology
     """
     Uses Brent's Bracketing Method to find an optimum-mass battery based on the 
@@ -43,11 +43,7 @@ def find_ragone_optimum(battery, energy, power): #adds a battery that is optimiz
       specific_energy [J/kg]
       specific_power  [W/kg]
       mass_properties.
-        mass           [kg]    
-                
-           
-
-  
+        mass           [kg]     
     """ 
     
     lb = battery.ragone.lower_bound

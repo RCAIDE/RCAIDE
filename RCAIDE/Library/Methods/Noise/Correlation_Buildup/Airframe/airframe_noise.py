@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/airframe_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -73,11 +73,7 @@ def airframe_noise(segment,analyses,config,settings):
         SPL_flap                        - Sound Pressure Level of the flaps trailing edge
         SPL_slat                        - Sound Pressure Level of the slat leading edge
         SPL_main_landing_gear           - Sound Pressure Level og the main landing gear
-        SPL_nose_landing_gear           - Sound Pressure Level of the nose landing gear
-
-    Properties Used:
-        N/A      
-        
+        SPL_nose_landing_gear           - Sound Pressure Level of the nose landing gear 
     """  
     # Unpack 
     wing     = config.wings

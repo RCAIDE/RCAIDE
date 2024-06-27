@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Common/noise_tone_correction.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -29,10 +29,7 @@ def noise_tone_correction(SPL):
         SPL                     - Sound Pressure Level in 1/3 octave band
 
     Returns: 
-        tone_correction_max     - Maximum tone correction for a time history signal 
-        
-    Properties Used:
-        N/A     
+        tone_correction_max     - Maximum tone correction for a time history signal  
     """
         
         

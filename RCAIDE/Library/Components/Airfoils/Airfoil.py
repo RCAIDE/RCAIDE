@@ -15,7 +15,7 @@ from RCAIDE.Library.Components   import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Airfoils 
 class Airfoil(Component):
-    """Generic airfoil class."""
+    """Default airfoil component class."""
     
     def __defaults__(self):
         """This sets the default values.

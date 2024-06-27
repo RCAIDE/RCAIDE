@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/clean_wing_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -52,11 +52,7 @@ def landing_gear_noise(D,H,wheels,M,velocity,phi,theta,distance,frequency):
         Diameter_mixed                                                                                       [m] 
 
     Returns:
-        INST_s          [-]
-
-    Properties Used: 
-        N/A 
-        
+        INST_s          [-] 
     """  
     
     velocity_fts = velocity/Units.ft

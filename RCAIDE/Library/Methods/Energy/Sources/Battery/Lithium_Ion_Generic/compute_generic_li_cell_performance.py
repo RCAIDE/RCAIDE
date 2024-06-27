@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery-Lithium_Ion_Generic
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_Generic/compute_generic_li_cell_performance.py
+## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_Generic
+# RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_Generic/compute_generic_li_cell_performance.py
 # 
 # 
 # Created:  Feb 2024, M. Clarke 
@@ -7,13 +7,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Framework.Core     import Units
+from RCAIDE.Framework.Core     import Units 
 import numpy as np    
  
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_generic_li_cell_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Compoments-Energy-Batteries-Lithium_Ion_Generic 
+## @ingroup Energy-Sources-Batteries-Lithium_Ion_Generic 
 def compute_generic_li_cell_performance(battery,state,bus,battery_discharge_flag): 
     """This is an electric cycle model for 18650 lithium-iron_phosphate battery cells. It
        models losses based on an empirical correlation Based on method taken 
@@ -35,7 +35,7 @@ def compute_generic_li_cell_performance(battery,state,bus,battery_discharge_flag
        Battery Model Capable of Predicting Runtime and I - V Performance" IEEE
        Transactions on Energy Conversion, Vol. 21, No. 2, June 2006, pp. 504-511
        
-       Args:
+       Inputs:
          battery. 
                I_bat             (currnet)                             [Amperes]
                cell_mass         (battery cell mass)                   [kilograms]
@@ -50,7 +50,7 @@ def compute_generic_li_cell_performance(battery,state,bus,battery_discharge_flag
                I_bat             (current)                             [amps]
                P_bat             (power)                               [Watts]
        
-       Returns:
+       Outputs:
          battery.          
               current_energy                                           [Joules]
               heat_energy_generated                                         [Watts] 

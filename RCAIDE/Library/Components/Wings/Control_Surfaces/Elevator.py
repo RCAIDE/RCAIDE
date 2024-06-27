@@ -21,7 +21,7 @@ class Elevator(Control_Surface):
     None
 
     Source:
-    N/A
+    None
 
     Args:
     None
@@ -40,7 +40,7 @@ class Elevator(Control_Surface):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None

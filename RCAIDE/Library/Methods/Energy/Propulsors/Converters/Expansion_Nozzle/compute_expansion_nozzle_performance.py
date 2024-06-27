@@ -40,7 +40,10 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
       mach_number                         [-]
     expansion_nozzle.inputs.
       stagnation_temperature              [K]
-      stagnation_pressure                 [Pa]
+      stagnation_pressure              
+    expansion_nozzle.
+      pressure_ratio                      [-]
+      polytropic_efficiency               [-]   [Pa]
 
     Returns:
     expansion_nozzle.outputs.
@@ -53,15 +56,8 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
       velocity                            [m/s]
       static_pressure                     [Pa]
       area_ratio                          [-]
-      denisty                             [kg/m^3]
-
-    Properties Used:
-    expansion_nozzle.
-      pressure_ratio                      [-]
-      polytropic_efficiency               [-]
-    """                   
-#unpack the values
-    
+      denisty                             [kg/m^3] 
+    """                 
     #unpack from conditions
     gamma    = conditions.freestream.isentropic_expansion_factor
     Cp       = conditions.freestream.specific_heat_at_constant_pressure

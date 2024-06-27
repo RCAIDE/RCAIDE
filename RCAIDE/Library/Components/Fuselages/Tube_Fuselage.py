@@ -18,28 +18,20 @@ class Tube_Fuselage(Fuselage):
     """ This is a standard fuselage for a tube and wing aircraft.
     
     Assumptions:
-    Conventional fuselage
+       conventional fuselage properties
     
     Source:
-    N/A
+       None
     """
     
     def __defaults__(self):
         """ This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
     
         Source:
-        N/A
-    
-        Args:
-        None
-    
-        Returns:
-        None
-    
-
+            None 
         """      
         self.tag                                    = 'tube_fuselage' 
   

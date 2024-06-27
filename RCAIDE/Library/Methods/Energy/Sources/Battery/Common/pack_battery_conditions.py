@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery 
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/pack_battery_conditions.py
+## @ingroup Methods-Energy-Sources-Battery 
+# RCAIDE/Methods/Energy/Sources/Battery/Common/pack_battery_conditions.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  pack_battery_conditions
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Energy-Battery 
+## @ingroup Methods-Energy-Sources-Battery 
 def pack_battery_conditions(battery_conditions,battery): 
     """ Packs the results from the network into propulsion data structures.
     
@@ -63,9 +63,7 @@ def pack_battery_conditions(battery_conditions,battery):
                        cell.temperature           [Kelvin]
                        cell.charge_throughput     [Ampere-Hours]
                        cell.joule_heat_fraction   [unitless]  
-                       cell.entropy_heat_fraction [unitless] 
-    
-
+                       cell.entropy_heat_fraction [unitless]  
     """      
     n_series           = battery.pack.electrical_configuration.series  
     n_parallel         = battery.pack.electrical_configuration.parallel

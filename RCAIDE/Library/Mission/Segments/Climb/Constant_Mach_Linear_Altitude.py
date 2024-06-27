@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Climb/Constant_Mach_Linear_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -24,7 +24,7 @@ def initialize_conditions(segment):
     Constrant dynamic pressure and constant rate of climb
 
     Source:
-    N/A
+    None
 
     Args:
     segment.mach_number                         [unitless]

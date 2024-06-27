@@ -1,5 +1,5 @@
-## @defgroup Methods-Geometry-Two_Dimensional/Cross_Section/Airfoil Airfoil
-# RCAIDE/Methods/Geometry/Two_Dimensional/Cross_Section/Airfoil/__init__.py
+## @defgroup Methods-Geometry-Two_Dimensional/Cross_SectioNoneirfoil Airfoil
+# RCAIDE/Methods/Geometry/Two_Dimensional/Cross_SectioNoneirfoil/__init__.py
 # 
 
 """ RCAIDE Package Setup

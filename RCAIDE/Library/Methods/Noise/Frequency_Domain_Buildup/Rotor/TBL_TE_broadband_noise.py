@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/TBL_TE_broadband_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -44,10 +44,7 @@ def TBL_TE_broadband_noise(f,r_e,L,U,M,R_c,Dbar_h,Dbar_l,R_delta_star_p,delta_st
     
     
     Outputs 
-       SPL_TBL_TE   - Sound pressure level of turbument boundary layer        [dB]
-       
-    Properties Used:
-        N/A   
+       SPL_TBL_TE   - Sound pressure level of turbument boundary layer        [dB] 
     '''      
      
     # Strouhal number

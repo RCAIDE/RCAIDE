@@ -22,4 +22,5 @@ from . import Landing_Gear
 from . import Nacelles
 from . import Payloads
 from . import Systems
+from . import Thermal_Management
 from . import Wings

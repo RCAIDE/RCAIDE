@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Descent/Constant_Speed_Constant_Rate.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  IMPORT 
@@ -21,7 +21,7 @@ def initialize_conditions(segment):
     Constant speed and constant descent rate
 
     Source:
-    N/A
+    None
 
     Args:
     segment.descent_rate                                [meters/second]

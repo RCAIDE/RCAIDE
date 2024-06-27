@@ -9,7 +9,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
  # RCAIDE imports
-import RCAIDE
 from RCAIDE.Framework.Core        import Data
 from RCAIDE.Library.Components    import Component   
 
@@ -18,7 +17,8 @@ from RCAIDE.Library.Components    import Component
 # ----------------------------------------------------------------------------------------------------------------------     
 ## @ingroup Library-Components-Energy-Batteries
 class Battery(Component):
-    """Default battery class."""
+    """Default battery component class."""
+    
     def __defaults__(self):
         """This sets the default values.
     
@@ -48,4 +48,23 @@ class Battery(Component):
         self.ragone.const_1                                    = 0.0     # used for ragone functions; 
         self.ragone.const_2                                    = 0.0     # specific_power=ragone_const_1*10^(specific_energy*ragone_const_2)
         self.ragone.lower_bound                                = 0.0     # lower bound specific energy for which ragone curves no longer make sense
-        self.ragone.i                                          = 0.0
+        self.ragone.i                                          = 0.0 
+
+    def update_battery_age(self,battery_conditions,increment_day = False):  
+        """ Update the state of health of the battery based on an aging model
+        
+        Assumptions:
+            None
+        
+        Source:
+            None
+    
+        Args:
+            self                 (dict): battery            [unitless] 
+            battery_conditions   (dict): state of battery   [unitless]
+            increment_day     (boolean): day increment flag [unitless]  
+            
+        Returns: 
+            None
+        """         
+        return          

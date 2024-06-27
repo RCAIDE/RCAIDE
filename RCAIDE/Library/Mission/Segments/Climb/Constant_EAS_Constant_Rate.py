@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Climb/Constant_EAS_Constant_Rate.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -24,14 +24,14 @@ def initialize_conditions(segment):
     Constant true airspeed with a constant rate of climb
 
     Source:
-    N/A
+    None
 
     Args:
     segment.climb_rate                                  [meters/second]
     segment.equivalent_air_speed                        [meters/second]
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
-    segment.state.numerics.dimensionless.control_points [Unitless]
+    segment.state.numerics.dimensionless.control_points [unitless]
     conditions.freestream.density                       [kilograms/meter^3]
 
     Returns:

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Metrics/SENEL_noise_metric.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -32,10 +32,7 @@ def SENEL_noise_metric(noise_data, flight_times = ['12:00:00'],time_period = 24*
         SPL      - Noise level 
         
     Returns: 
-        SENEL    - Single Event Noise Exposure Level            [SENEL]
-        
-    Properties Used:
-        N/A     
+        SENEL    - Single Event Noise Exposure Level            [SENEL] 
     """       
     
 

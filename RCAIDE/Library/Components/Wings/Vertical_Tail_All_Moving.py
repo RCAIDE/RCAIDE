@@ -16,41 +16,19 @@ from .All_Moving_Surface import All_Moving_Surface
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Wings    
 class Vertical_Tail_All_Moving(Vertical_Tail, All_Moving_Surface):
-    """ This class is used to define all-moving vertical tails in RCAIDE. Note that it 
-    inherits from both Horizontal_Tail and All_Moving_Surface
-    
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
+    """ This class is used to define all-moving vertical tails. It 
+    inherits from both Horizontal_Tail and All_Moving_Surface 
         """ 
 
     def __defaults__(self):
-        """This sets the default for all moving-vertical tails in RCAIDE.
-        
-        See All_Moving_Surface().__defaults__ and Wing().__defaults__ for an explanation 
-        of attributes
+        """This sets the default for all moving-vertical tails
     
         Assumptions:
-        None
+           None
 
         Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
+            See All_Moving_Surface().__defaults__ and Wing().__defaults__ for an explanation 
+            of attributes 
         """ 
         self.tag = 'vertical_tail_all_moving'
         self.sign_duplicate        = -1.0   
@@ -69,17 +47,16 @@ class Vertical_Tail_All_Moving(Vertical_Tail, All_Moving_Surface):
         to the other side
     
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            None
 
         Returns:
-        None
-
+            None 
         """       
         wing                  = super().make_x_z_reflection()
         wing.deflection      *= -1*self.sign_duplicate

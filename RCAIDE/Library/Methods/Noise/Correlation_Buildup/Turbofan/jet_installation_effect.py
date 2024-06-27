@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/jet_installation_effect.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -19,7 +19,7 @@ def jet_installation_effect(Xe,Ye,Ce,theta_s,Diameter_mixed):
     """This calculates the installation effect, in decibels, to be added to the predicted secondary jet noise level.
     
     Assumptions:
-        N/A
+        None
 
     Source:
         SAE ARP876D: Gas Turbine Jet Exhaust Noise Prediction
@@ -32,10 +32,7 @@ def jet_installation_effect(Xe,Ye,Ce,theta_s,Diameter_mixed):
         Diameter_mixed                                                                                       [m] 
 
     Returns:
-        INST_s          [-]
-
-    Properties Used: 
-        N/A 
+        INST_s          [-] 
     """ 
     # Instalation effect
     INST_s = 0.5*((Ce-Xe)**2/(Ce*Diameter_mixed))*(np.exp(-Ye/Diameter_mixed)*((1.8*theta_s/np.pi))-0.6)**2  

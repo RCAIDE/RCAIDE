@@ -30,7 +30,7 @@ class Shaft_Power_Offtake(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None

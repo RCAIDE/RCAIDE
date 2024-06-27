@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Common/Update/aerodynamics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Aerodynamics
@@ -58,8 +58,8 @@ def aerodynamics(segment):
     F[:,0] = ( -CD * q * Sref )[:,0]
  
     # pack conditions
-    conditions.aerodynamics.coefficients.lift  = CL
-    conditions.aerodynamics.coefficients.drag  = CD
-    conditions.frames.wind.force_vector[:,:]   = F[:,:]
+    conditions.aerodynamics.coefficients.lift.total  = CL
+    conditions.aerodynamics.coefficients.drag.total  = CD
+    conditions.frames.wind.force_vector[:,:]         = F[:,:]
 
     return

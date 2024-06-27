@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/primary_noise_component.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -32,11 +32,7 @@ def primary_noise_component(Velocity_primary,Temperature_primary,R_gas,theta_p,D
         PNL            - Perceived Noise Level                   [dB]
         PNL_dBA        - Perceived Noise Level A-weighted level  [dBA]
         EPNdB_takeoff  - Takeoff Effective Perceived Noise Level [EPNdB]
-        EPNdB_landing  - Landing Effective Perceived Noise Level [EPNdB]  
-    
-    Properties Used:
-        N/A  
-       
+        EPNdB_landing  - Landing Effective Perceived Noise Level [EPNdB]   
     """      
 
     # Flow parameters of the primary jet

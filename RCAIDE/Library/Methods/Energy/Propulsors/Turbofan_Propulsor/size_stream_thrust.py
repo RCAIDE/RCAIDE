@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_thrust.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -33,14 +33,13 @@ def size_stream_thrust(turbofan,conditions):
           total_pressure_reference           [Pa] 
           number_of_engines                  [-] 
 
-        Returns: 
-          turbofan.outputs.non_dimensional_thrust  [-] 
-
-        Properties Used: 
         turbofan. 
            reference_temperature              [K] 
            reference_pressure                 [Pa] 
-           total_design                       [N] - Design thrust 
+           total_design                       [N] - Design thrust
+           
+        Returns: 
+          turbofan.outputs.non_dimensional_thrust  [-]  
            """              
 
     # Unpack Inputs

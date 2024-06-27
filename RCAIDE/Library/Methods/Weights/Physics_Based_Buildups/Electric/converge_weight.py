@@ -2,7 +2,7 @@
 # RCAIDE/Methods/Weights/Buildups/eVTOL/converge_evtol_weight.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -38,14 +38,14 @@ def converge_weight(vehicle,
     Args:
     vehicle                     RCAIDE Config Data Stucture
     print_iterations            Boolean Flag      
-    contingency_factor          Factor capturing uncertainty in vehicle weight [Unitless]
+    contingency_factor          Factor capturing uncertainty in vehicle weight [unitless]
     speed_of_sound:             Local Speed of Sound                           [m/s]
-    max_tip_mach:               Allowable Tip Mach Number                      [Unitless]
-    disk_area_factor:           Inverse of Disk Area Efficiency                [Unitless]
-    max_thrust_to_weight_ratio: Allowable Thrust to Weight Ratio               [Unitless]
-    safety_factor               Safety Factor in vehicle design                [Unitless]
+    max_tip_mach:               Allowable Tip Mach Number                      [unitless]
+    disk_area_factor:           Inverse of Disk Area Efficiency                [unitless]
+    max_thrust_to_weight_ratio: Allowable Thrust to Weight Ratio               [unitless]
+    safety_factor               Safety Factor in vehicle design                [unitless]
     max_g_load                  Maximum g-forces load for certification        [UNitless]
-    motor_efficiency:           Motor Efficiency                               [Unitless]
+    motor_efficiency:           Motor Efficiency                               [unitless]
     
     Returns:
     None

@@ -16,31 +16,17 @@ from .Nacelle import Nacelle
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Nacelles
 class Body_of_Revolution_Nacelle(Nacelle):
-    """ This is a body of revolution nacelle for a generic aircraft.
-    
-    Assumptions:
-    None
-    
-    Source:
-    N/A
+    """ This is a body of revolution nacelle for a generic aircraft. 
     """
     
     def __defaults__(self):
         """ This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
     
         Source:
-        N/A
-    
-        Args:
-        None
-    
-        Returns:
-        None
-    
-
+            None 
         """      
         
         self.tag                       = 'body_of_revolution_nacelle' 
@@ -50,17 +36,17 @@ class Body_of_Revolution_Nacelle(Nacelle):
         """ Adds an airfoil to the segment 
     
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            self    (dict): nacelle data structure 
+            airfoil (dict): airfoil data structure 
 
         Returns:
-        None
-
+            None 
         """ 
 
         # Assert database type

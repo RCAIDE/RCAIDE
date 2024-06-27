@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/leading_edge_slat_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -35,9 +35,7 @@ def leading_edge_slat_noise(SPL_wing,Sw,bw,velocity,viscosity,M,phi,theta,distan
                                                                                                          
      Returns: One Third Octave Band SPL                                                                  [dB]
          SPL                             - Sound Pressure Level of the slat leading edge                 [dB]
-    
-    Properties Used:
-        None    
+     
     """
      
     #Process

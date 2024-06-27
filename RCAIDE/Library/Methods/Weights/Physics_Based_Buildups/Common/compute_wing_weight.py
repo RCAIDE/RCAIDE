@@ -2,7 +2,7 @@
 # RCAIDE/Methods/Weights/Buildups/Common/compute_boom_weight.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -52,19 +52,19 @@ def compute_wing_weight(wing,
         Args:
 
             wing                          RCAIDE Wing Data Structure           [None]
-                 winglet_fraction         winglet fraction                    [Unitless]
-                 motor_spanwise_locations spanwise fraction location of motor [Unitless]
+                 winglet_fraction         winglet fraction                    [unitless]
+                 motor_spanwise_locations spanwise fraction location of motor [unitless]
             config                        RCAIDE Config Data Structure         [None]
             maxThrust                     Maximum Thrust                      [N]
-            numAnalysisPoints             Analysis Points for Sizing          [Unitless]
-            safety_factor                 Design Safety Factor                [Unitless]
-            max_g_load                    Maximum Accelerative Load           [Unitless]
-            moment_to_lift_ratio          Coeff. of Moment to Coeff. of Lift  [Unitless]
-            lift_to_drag_ratio            Coeff. of Lift to Coeff. of Drag    [Unitless]
+            numAnalysisPoints             Analysis Points for Sizing          [unitless]
+            safety_factor                 Design Safety Factor                [unitless]
+            max_g_load                    Maximum Accelerative Load           [unitless]
+            moment_to_lift_ratio          Coeff. of Moment to Coeff. of Lift  [unitless]
+            lift_to_drag_ratio            Coeff. of Lift to Coeff. of Drag    [unitless]
             forward_web_locations         Location of Forward Spar Webbing    [m]
             rear_web_locations            Location of Rear Spar Webbing       [m]
             shear_center                  Location of Shear Center            [m]
-            margin_factor                 Allowable Extra Mass Fraction       [Unitless]
+            margin_factor                 Allowable Extra Mass Fraction       [unitless]
 
         Returns: 
             weight:                       Wing Mass                           [kg]

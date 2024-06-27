@@ -20,27 +20,24 @@ def post_stall_coefficients(state,settings,wing):
     """Uses the AERODAS method to determine poststall parameters for lift and drag for a single wing
 
     Assumptions:
-    None
+        None
 
     Source:
-    NASA TR: "Models of Lift and Drag Coefficients of Stalled and Unstalled Airfoils in
-      Wind Turbines and Wind Tunnels" by D. A. Spera
+        NASA TR: "Models of Lift and Drag Coefficients of Stalled and Unstalled Airfoils in
+        Wind Turbines and Wind Tunnels" by D. A. Spera
 
     Args:
-    state.conditions.aerodynamics.angle_of_attack   [radians]
-    settings.section_zero_lift_angle_of_attack      [radians]
-    wing.
-      aspect_ratio                                  [Unitless]
-      thickness_to_chord                            [Unitless]
-      section.angle_attack_max_prestall_lift        [radians]
-      pre_stall_maximum_lift_drag_coefficient       [Unitless]
-      pre_stall_maximum_drag_coefficient_angle      [Unitless]
-      
+        state.conditions.aerodynamics.angle_of_attack (numpy.ndarray:  [radians]
+        settings.section_zero_lift_angle_of_attack           (float):  [radians]
+        wing.aspect_ratio                                    (float):  [unitless]
+        wing.thickness_to_chord                              (float):  [unitless]
+        wing.section.angle_attack_max_prestall_lift          (float):  [radians]
+        wing.pre_stall_maximum_lift_drag_coefficient         (float):  [unitless]
+        wing.pre_stall_maximum_drag_coefficient_angle        (float):  [unitless] 
 
     Returns:
-    CL2 (coefficient of lift)                       [Unitless]
-    CD2 (coefficient of drag)                       [Unitless]
-    (packed in state.conditions.aerodynamics.post_stall_coefficients[geometry.tag]) 
+        CL2 (coefficient of lift)                    (numpy.ndarray):  [unitless]
+        CD2 (coefficient of drag)                    (numpy.ndarray):  [unitless] 
     """  
     
     # unpack inputs 
@@ -72,12 +69,10 @@ def post_stall_coefficients(state,settings,wing):
     
     # Eqn 11a,b,c
     if wing.vertical == True:
-        alpha = np.zeros_like(alpha)   
-    #con1      = np.logical_and(0<alpha,alpha<ACL1)
+        alpha = np.zeros_like(alpha)    
     con2      = np.logical_and(ACL1<=alpha,alpha<=(92.0*Units.deg))
     con3      = alpha>=(92.0*Units.deg)
-    CL2       = np.zeros_like(alpha)
-    #CL2[con1] = 0.0
+    CL2       = np.zeros_like(alpha) 
     CL2[con2] = -0.032*(alpha[con2]/Units.deg-92.0) - RCL2*((92.*Units.deg-alpha[con2])/(51.0*Units.deg))**N2
     CL2[con3] = -0.032*(alpha[con3]/Units.deg-92.0) + RCL2*((alpha[con3]-92.*Units.deg)/(51.0*Units.deg))**N2
     
@@ -90,11 +85,9 @@ def post_stall_coefficients(state,settings,wing):
     CL2[con5] = 0.032*(alphan[con5]/Units.deg-92.0) + RCL2*((92.*Units.deg-alphan[con5])/(51.0*Units.deg))**N2
     CL2[con6] = 0.032*(alphan[con6]/Units.deg-92.0) - RCL2*((alphan[con6]-92.*Units.deg)/(51.0*Units.deg))**N2
     
-    # Eqn 12a 
-    #con7      = np.logical_and((2*A0-ACL1)<alpha, alpha<ACL1)
+    # Eqn 12a  
     con8      = alpha>ACD1
-    CD2       = np.zeros_like(alpha)
-    #CD2[con7] = 0.0
+    CD2       = np.zeros_like(alpha) 
     CD2[con8] = CD1max[con8] + (CD2max - CD1max[con8]) * np.sin((alpha[con8]-ACD1[con8])/(np.pi/2-ACD1[con8]))
     
     # Invert drag for negative alpha 

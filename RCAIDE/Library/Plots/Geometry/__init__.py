@@ -1,6 +1,6 @@
 ## @defgroup Library-Plots-Geometry Geometry
 # RCAIDE/Library/Plots/Geometry/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Visualization
 
-from .Common            import * 
+from .Common                           import * 
 from .plot_3d_vehicle                  import plot_3d_vehicle
 from .plot_3d_vehicle                  import plot_3d_energy_network 
 from .plot_3d_vehicle                  import generate_3d_vehicle_geometry_data 

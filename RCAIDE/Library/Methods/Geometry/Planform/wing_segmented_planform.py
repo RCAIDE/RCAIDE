@@ -13,7 +13,7 @@ from RCAIDE.Framework.Core import Data
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  compute_airfoil_aerodynamics
+#  compute_section_coefficients
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Methods-Geometry-Two_Dimensional-Planform
 def wing_segmented_planform(wing, overwrite_reference = False):
@@ -187,11 +187,11 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
     Segments are trapezoids
 
     Source:
-    http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html (Stanford AA241 A/B Course Notes)
+    http://aerodesign.stanford.edu/aircraftdesigNoneircraftdesign.html (Stanford AA241 A/B Course Notes)
 
     Args:
     wing.
-      exposed_root_chord_offset [m]
+      percent_span_root_offset [m]
       symmetric                 [-]
       spans.projected           [m]
       thickness_to_chord        [-]
@@ -217,7 +217,7 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
     """  
         
     # Unpack wing
-    exposed_root_chord_offset = wing.exposed_root_chord_offset
+    percent_span_root_offset = wing.percent_span_root_offset
     symm                      = wing.symmetric
     semispan                  = wing.spans.projected*0.5 * (2 - symm)
     t_c_w                     = wing.thickness_to_chord
@@ -239,11 +239,11 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
             if i_segs == 0:
                 chord_root    = root_chord*segments[segment_names[i_segs]].root_chord_percent
                 chord_tip     = root_chord*segments[segment_names[i_segs+1]].root_chord_percent   
-                wing_root     = chord_root + exposed_root_chord_offset*((chord_tip - chord_root)/span_seg)
+                wing_root     = chord_root + percent_span_root_offset*((chord_tip - chord_root)/span_seg)
                 taper         = chord_tip/wing_root  
                 mac_seg       = wing_root  * 2/3 * (( 1 + taper  + taper**2 )/( 1 + taper))  
                 Sref_seg      = span_seg*(chord_root+chord_tip)*0.5 
-                S_exposed_seg = (span_seg-exposed_root_chord_offset)*(wing_root+chord_tip)*0.5                    
+                S_exposed_seg = (span_seg-percent_span_root_offset)*(wing_root+chord_tip)*0.5                    
             
             else: 
                 chord_root    = root_chord*segments[segment_names[i_segs]].root_chord_percent

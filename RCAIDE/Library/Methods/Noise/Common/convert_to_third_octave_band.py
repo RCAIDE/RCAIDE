@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Common/convert_to_third_octave_band.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -19,7 +19,7 @@ def convert_to_third_octave_band(SPL,f,settings):
     to thrid octave spectrum
     
     Assumptions:
-        N/A
+        None
 
     Source: 
 
@@ -33,11 +33,7 @@ def convert_to_third_octave_band(SPL,f,settings):
         
 
     Returns:
-        SPL_third_octave       - SPL in the 1/3 octave spectrum                [dB] 
-
-    Properties Used:
-        N/A 
-        
+        SPL_third_octave       - SPL in the 1/3 octave spectrum                [dB]  
     """  
     # unpack 
     cf               = settings.center_frequencies

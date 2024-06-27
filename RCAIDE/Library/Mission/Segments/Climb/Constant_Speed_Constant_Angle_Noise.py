@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Climb/Constant_Speed_Constant_Angle_Noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -21,18 +21,16 @@ def expand_state(segment):
 
     Assumptions:
     Half second intervals for certification requirements. Fixed microphone position
+    Position of the flyover microphone is 6500 meters
 
     Source:
-    N/A
+       None
 
     Args:
-    state.numerics.number_of_control_points  [Unitless]
+       state.numerics.number_of_control_points  [unitless]
 
     Returns:
-    N/A
-
-    Properties Used:
-    Position of the flyover microphone is 6500 meters
+       None 
     """          
     
     # unpack
@@ -66,14 +64,14 @@ def initialize_conditions(segment):
     Constant true airspeed, with a constant climb angle. This segment is specically created for noise calculations.
 
     Source:
-    N/A
+    None
 
     Args:
     segment.climb_angle                         [radians]
     segment.air_speed                           [meter/second]
     segment.altitude_start                      [meters]
     segment.altitude_end                        [meters]
-    state.numerics.dimensionless.control_points [Unitless]
+    state.numerics.dimensionless.control_points [unitless]
     conditions.freestream.density               [kilograms/meter^3]
 
     Returns:

@@ -51,24 +51,21 @@ def compute_rotor_weight(rotor,
 
             rotor                       RCAIDE Rotor Data Structure
             maximum_thrust              Maximum Design Thrust               [N]
-            chord_to_radius_ratio       Chord to Blade Radius               [Unitless]
-            thickness_to_chord          Blade Thickness to Chord            [Unitless]
-            root_to_radius_ratio        Root Structure to Blade Radius      [Unitless]
-            moment_to_lift_ratio        Coeff. of Moment to Coeff. of Lift  [Unitless]
-            spanwise_analysis_points    Analysis Points for Sizing          [Unitless]
-            safety_factor               Design Safety Factor                [Unitless]
-            margin_factor               Allowable Extra Mass Fraction       [Unitless]
+            chord_to_radius_ratio       Chord to Blade Radius               [unitless]
+            thickness_to_chord          Blade Thickness to Chord            [unitless]
+            root_to_radius_ratio        Root Structure to Blade Radius      [unitless]
+            moment_to_lift_ratio        Coeff. of Moment to Coeff. of Lift  [unitless]
+            spanwise_analysis_points    Analysis Points for Sizing          [unitless]
+            safety_factor               Design Safety Factor                [unitless]
+            margin_factor               Allowable Extra Mass Fraction       [unitless]
             forward_web_locationss      Location of Forward Spar Webbing    [m]
             shear_center                Location of Shear Center            [m]
             speed_of_sound              Local Speed of Sound                [m/s]
-            tip_max_mach_number         Allowable Tip Mach Number           [Unitless]
+            tip_max_mach_number         Allowable Tip Mach Number           [unitless]
 
         Returns:
 
-            weight:                 Propeller Mass                      [kg]
-            
-        Properties Used:
-        Material properties of imported RCAIDE Solids
+            weight:                 Propeller Mass                      [kg] 
     """
 
     #-------------------------------------------------------------------------------

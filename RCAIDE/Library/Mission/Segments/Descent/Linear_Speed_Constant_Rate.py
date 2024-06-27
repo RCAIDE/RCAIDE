@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Descent/Linear_Speed_Constant_Rate.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -22,14 +22,14 @@ def initialize_conditions(segment):
     Linearly changing airspeed, with a constant rate of descent
 
     Source:
-    N/A
+    None
 
     Args:
     segment.descent_rate                          [meters/second]
     segment.air_speed_start                     [meters/second]
     segment.air_speed_end                       [meters/second]
     segment.altitude_end                        [meters]
-    state.numerics.dimensionless.control_points [Unitless]
+    state.numerics.dimensionless.control_points [unitless]
     conditions.freestream.density               [kilograms/meter^3]
 
     Returns:

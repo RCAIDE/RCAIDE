@@ -83,10 +83,10 @@ class Lithium_Ion_Generic(Battery):
             None
     
         Args:
-            self               : battery        [unitless]
-            state              : temperature    [K]
-            bus                : pressure       [Pa]
-            discharge (boolean): discharge flag [unitless]
+            self         (dict): battery        [-]
+            state        (dict): temperature    [K]
+            bus          (dict): electric bus   [-]
+            discharge (boolean): discharge flag [-]
             
         Returns: 
             None
@@ -105,18 +105,13 @@ class Lithium_Ion_Generic(Battery):
             None
     
         Args:
-            self               : battery          [unitless] 
-            battery_conditions : state of battery [unitless]
+            self               (dict): battery          [-] 
+            battery_conditions (dict): state of battery [-]
             
         Returns: 
             None
         """      
         return battery_conditions.pack.voltage_under_load 
-    
-    def update_battery_age(self,segment,increment_battery_age_by_one_day = False): 
-        """ This does nothing. """  
-        pass 
-        return  
  
  
   

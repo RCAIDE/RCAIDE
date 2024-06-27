@@ -22,40 +22,37 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
     flow pressure gradients
 
     Source:
-    Head, M. R., and P. Bandyopadhyay. "New aspects of turbulent boundary-layer structure."
-    Journal of fluid mechanics 107 (1981): 297-338.
+       Head, M. R., and P. Bandyopadhyay. "New aspects of turbulent boundary-layer structure."
+       Journal of fluid mechanics 107 (1981): 297-338.
 
     Assumptions:
-    None  
+        None  
 
     Args: 
-    ncases         - number of cases (angle of attacks)                                            [unitless]
-    ncpts          - number of control points (reynolds numbers)                                   [unitless]
-    DEL_0          - intital bounday layer thickness                                               [m]
-    DELTA_STAR_0   - initial displacement thickness                                                [m]
-    CF_0           - initial value of the skin friction coefficient                                [unitless]
-    H_0            - initial value of the shape factor                                             [unitless]
-    THETA_0        - initial momentum thickness                                                    [m]
-    TURBULENT_SURF - normalized length of surface                                                  [unitless]
-    RE_L           - Reynolds number                                                               [unitless]
-    TURBULENT_COORD- x coordinate on surface of airfoil                                            [unitless] 
-    VE_I           - boundary layer velocity at all panels                                         [m/s-m] 
-    DVE_I          - derivative of boundary layer velocity at all panels                           [m/s^2] 
-    npanel         - number of points on surface                                                   [unitless]
-    tol            - boundary layer error correction tolerance                                     [unitless]
+        ncases                    (int): number of cases (angle of attacks)                   [unitless]
+        ncpts                     (int): number of control points (reynolds numbers)          [unitless]
+        DEL_0                   (float): intital bounday layer thickness                      [m]
+        DELTA_STAR_0            (float): initial displacement thickness                       [m]
+        CF_0                    (float): initial value of the skin friction coefficient       [unitless]
+        H_0                     (float): initial value of the shape factor                    [unitless]
+        THETA_0                 (float): initial momentum thickness                           [m]
+        TURBULENT_SURF  (numpy.ndarray): normalized length of surface                         [unitless]
+        RE_L            (numpy.ndarray): Reynolds number                                      [unitless]
+        TURBULENT_COORD (numpy.ndarray): x coordinate on surface of airfoil                   [unitless] 
+        VE_I            (numpy.ndarray): boundary layer velocity at all panels                [m/s-m] 
+        DVE_I           (numpy.ndarray): derivative of boundary layer velocity at all panels  [m/s^2] 
+        npanel                    (int): number of points on surface                          [unitless]
+        tol                     (float): boundary layer error correction tolerance            [unitless]
 
-    Returns: 
-    RESULTS.
-      X_H          - reshaped distance along airfoil surface                    [unitless]
-      THETA_H      - momentum thickness                                         [m]
-      DELTA_STAR_H - displacement thickness                                     [m] 
-      H_H          - shape factor                                               [unitless]
-      CF_H         - friction coefficient                                       [unitless]
-      RE_THETA_H   - Reynolds number as a function of momentum thickness        [unitless]
-      RE_X_H       - Reynolds number as a function of distance                  [unitless]
-      DELTA_H      - boundary layer thickness                                   [m]
-       
-
+    Returns:  
+        RESULTS.X_H          (numpy.ndarray): reshaped distance along airfoil surface             [unitless]
+        RESULTS.THETA_H      (numpy.ndarray): momentum thickness                                  [m]
+        RESULTS.DELTA_STAR_H (numpy.ndarray): displacement thickness                              [m] 
+        RESULTS.H_H          (numpy.ndarray): shape factor                                        [unitless]
+        RESULTS.CF_H         (numpy.ndarray): friction coefficient                                [unitless]
+        RESULTS.RE_THETA_H   (numpy.ndarray): Reynolds number as a function of momentum thickness [unitless]
+        RESULTS.RE_X_H       (numpy.ndarray): Reynolds number as a function of distance           [unitless]
+        RESULTS.DELTA_H      (numpy.ndarray): boundary layer thickness                            [m] 
     """    
     # Initialize vectors 
     X_H          = np.zeros((npanel,ncases,ncpts))
@@ -203,17 +200,17 @@ def RK4(ind, dx, x, Theta_var, VeThetaH1_var, Theta_slope, VeThetaH1_slope):
         None                                                                    
                                                                    
     Args:                                                      
-        ind
-        dx
-        x
-        Theta_var
-        VeThetaH1_var
-        Theta_slope
-        VeThetaH1_slope
+        ind             ((int) : index                 [unitless]
+        dx              (float): surface increment     [unitless]
+        x               (float): location on surface   [unitless]
+        Theta_var       (float): Theta                 [unitless]
+        VeThetaH1_var   (float): VeThetaH1             [unitless]
+        Theta_slope     (float): gradient of Theta     [unitless]
+        VeThetaH1_slope (float): gradient of VeThetaH1 [unitless]
         
     Returns:
-        Theta_new
-        VeThetaH1_new 
+        Theta_new     (float): new value of Theta      [unitless]
+        VeThetaH1_new (float): new value of VeThetaH1  [unitless]
     """  
     k1 = Theta_slope(ind,  x[ind],  Theta_var[ind],  VeThetaH1_var[ind])
     l1 = VeThetaH1_slope(ind,  x[ind],  Theta_var[ind],  VeThetaH1_var[ind])

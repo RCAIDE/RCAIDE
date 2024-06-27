@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Common/background_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
  
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Bakcground Noise 
@@ -13,7 +13,7 @@ def background_noise():
     This is sound pressure level of background noise  
     
     Assumptions:
-       N/A
+       None
 
     Source:
         None
@@ -22,9 +22,6 @@ def background_noise():
         None
 
     Returns: 
-        None
-        
-    Properties Used:
         None 
     
     '''

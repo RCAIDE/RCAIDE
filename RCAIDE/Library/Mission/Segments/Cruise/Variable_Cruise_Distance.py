@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Cruise/Variable_Cruise_Distance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke   
+# Created:  Jun 2024, M. Clarke   
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Initialize - for cruise distance
@@ -12,20 +12,17 @@ def initialize_cruise_distance(segment):
     """This is a method that allows your vehicle to land at prescribed landing weight
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
     segment.cruise_tag              [string]
     segment.distance                [meters]
 
     Returns:
-    state.unknowns.cruise_distance  [meters]
-
-    Properties Used:
-    N/A
+    state.unknowns.cruise_distance  [meters] 
     """         
     
     # unpack
@@ -45,20 +42,17 @@ def unknown_cruise_distance(segment):
     """This is a method that allows your vehicle to land at prescribed landing weight
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
     segment.cruise_tag              [string]
     state.unknowns.cruise_distance  [meters]
 
     Returns:
-    segment.distance                [meters]
-
-    Properties Used:
-    N/A
+    segment.distance                [meters] 
     """      
     
     # unpack
@@ -80,20 +74,17 @@ def residual_landing_weight(segment):
     This takes the final weight and compares it against the prescribed landing weight.
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
     segment.state.segments[-1].conditions.weights.total_mass [kilogram]
     segment.target_landing_weight                            [kilogram]
 
     Returns:
-    segment.state.residuals.landing_weight                   [kilogram]
-
-    Properties Used:
-    N/A
+    segment.state.residuals.landing_weight                   [kilogram] 
     """      
     
     # unpack
@@ -114,20 +105,17 @@ def residual_state_of_charge(segment):
     This takes the final weight and compares it against the prescribed state of charge.
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
     segment.state.segments[-1].conditions.energy.battery.cell.state_of_charge [None]
     segment.target_state_of_charge                                           [None]
 
     Returns:
-    segment.state.residuals.battery_state_of_charge                          [None]
-
-    Properties Used:
-    N/A
+    segment.state.residuals.battery_state_of_charge                          [None] 
     """      
     
     # unpack

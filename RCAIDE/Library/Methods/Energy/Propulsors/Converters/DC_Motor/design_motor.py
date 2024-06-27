@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/DC_Motor/design_motor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -21,7 +21,7 @@ def design_motor(motor):
     motor design performance occurs at 90% nominal voltage to account for off design conditions 
     
     Source:
-    N/A
+    None
     
     Args:
     motor                         [-]  
@@ -62,7 +62,7 @@ def optimize_kv(io, v , omeg,  etam ,  Q, kv_lower_bound =  0.01, Res_lower_boun
     ''' Optimizer for compute_optimal_motor_parameters function  
     
     Source:
-    N/A
+    None
     
     Args:
     motor    (to be modified)
@@ -81,7 +81,6 @@ def optimize_kv(io, v , omeg,  etam ,  Q, kv_lower_bound =  0.01, Res_lower_boun
     
     slack_cons = [{'type':'eq', 'fun': slack_constraint_1,'args': args},
                   {'type':'eq', 'fun': slack_constraint_2,'args': args}] 
-   
     
     bnds = ((kv_lower_bound, kv_upper_bound), (Res_lower_bound , Res_upper_bound)) 
     

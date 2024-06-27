@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Single_Point/Set_Speed_Set_Altitude_No_Propulsion.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
  
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -21,7 +21,7 @@ def initialize_conditions(segment):
     A fixed speed and altitude
 
     Source:
-    N/A
+    None
 
     Args:
     segment.altitude                               [meters]

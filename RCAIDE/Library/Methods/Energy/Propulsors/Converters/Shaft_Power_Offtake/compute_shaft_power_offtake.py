@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Shaft_Power_Offtake/compute_shaft_power_offtaker.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -29,14 +29,12 @@ def compute_shaft_power_offtake(self, state):
       mdhc                  [-] Compressor nondimensional mass flow
       reference_temperature [K]
       reference_pressure    [Pa]
+    self.power_draw         [W]
 
     Returns:
     self.outputs.
       power                 [W]
-      work_done             [J/kg] (if power draw is not zero)
-
-    Properties Used:
-    self.power_draw         [W]
+      work_done             [J/kg] (if power draw is not zero) 
     """  
     if self.power_draw == 0.0:
         self.outputs.work_done = np.array([0.0])

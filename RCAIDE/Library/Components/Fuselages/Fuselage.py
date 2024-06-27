@@ -17,32 +17,17 @@ from RCAIDE.Library.Components            import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Fuselages 
 class Fuselage(Component):
-    """ This is a standard fuselage for a tube and wing aircraft.
-    
-    Assumptions:
-    Conventional fuselage
-    
-    Source:
-    N/A
+    """Default fuselage compoment class.
     """
     
     def __defaults__(self):
         """ This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
     
         Source:
-        N/A
-    
-        Args:
-        None
-    
-        Returns:
-        None
-    
-        Properties Used:
-        None
+            None
         """      
         
         self.tag                                    = 'fuselage'
@@ -96,15 +81,16 @@ class Fuselage(Component):
         """ Adds a segment to the fuselage. 
     
         Assumptions:
-        None
+            None
+        
         Source:
-        N/A
+            None
+        
         Args:
-        None
+            None
+        
         Returns:
-        None
-        Properties Used:
-        N/A
+           None 
         """ 
 
         # Assert database type
@@ -118,17 +104,18 @@ class Fuselage(Component):
     
     def append_fuel_tank(self,fuel_tank):
         """ Adds a fuel tank to the fuselage 
-    
+     
         Assumptions:
-        None
+            None
+        
         Source:
-        N/A
+            None
+        
         Args:
-        None
+            None
+        
         Returns:
-        None
-        Properties Used:
-        N/A
+           None 
         """ 
 
         # Assert database type

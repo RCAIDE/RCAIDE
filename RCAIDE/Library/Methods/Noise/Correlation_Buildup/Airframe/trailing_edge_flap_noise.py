@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/trailing_edge_flap_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -27,18 +27,14 @@ def trailing_edge_flap_noise(Sf,cf,deltaf,slots,velocity,M,phi,theta,distance,fr
         deltaf     - Flap deflection                                                [rad]
         slots      - Number of slots                                                (Flap type)
         velocity   - Aircraft speed                                                 [kts]
-        M          - Mach number                                                    [Unitless]
+        M          - Mach number                                                    [unitless]
         phi        - Azimuthal angle                                                [rad]
         theta      - Polar angle                                                    [rad]
         distance   - Distance from airplane to observer, evaluated at retarded time [ft]
         frequency  - Frequency array                                                [Hz]
         
     Returns: One Third Octave Band SPL                                              [dB]
-        SPL                
- 
-    Properties Used:
-        N/A 
-    
+        SPL                 
     """
 
     # Process

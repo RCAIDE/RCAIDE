@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/secondary_noise_component.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -40,10 +40,7 @@ def secondary_noise_component(Velocity_primary,theta_s,sound_ambient,Velocity_se
 
     Returns: 
         SPL_s               [dB]
-
-    Properties Used:
-        N/A 
-    
+ 
     """
 
     # Calculation of the velocity exponent

@@ -32,7 +32,7 @@ class DC_Motor(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None
@@ -64,7 +64,7 @@ class DC_Motor(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None
@@ -86,7 +86,7 @@ class DC_Motor(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None

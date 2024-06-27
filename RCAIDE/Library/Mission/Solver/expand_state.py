@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/expand_state.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke   
+# Created:  Jun 2024, M. Clarke   
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Expand State
@@ -13,16 +13,16 @@ def expand_state(segment):
     """Makes all vectors in the state the same size.
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
-    state.numerics.number_of_control_points  [Unitless]
+    state.numerics.number_of_control_points  [unitless]
 
     Returns:
-    N/A
+    None
 
 
     """       

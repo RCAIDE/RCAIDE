@@ -1,7 +1,7 @@
 ## @ingroup Methods-Stability-Common
 # RCAIDE/Methods/Stability/Common/mass_and_intertia_functions.py 
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

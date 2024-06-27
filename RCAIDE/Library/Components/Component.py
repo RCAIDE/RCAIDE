@@ -30,20 +30,11 @@ class Component(Data):
     def __defaults__(self):
         """This sets the default values.
     
-            Assumptions:
-            None
-    
-            Source:
-            N/A
-    
-            Args:
-            None
-    
-            Returns:
-            None
-    
-            Properties Used:
-            None
+        Assumptions:
+           None
+
+        Source:
+           None 
             """         
         self.tag             = 'Component' 
         self.mass_properties = Mass_Properties()
@@ -58,13 +49,7 @@ class Component(Data):
 
 ## @ingroup Components
 class Container(ContainerBase):
-    """ the base component container class
-    
-        Assumptions:
-        None
-        
-        Source:
-        None
+    """ the base component container class.
     """
     pass 
  
@@ -72,20 +57,18 @@ class Container(ContainerBase):
         """ will recursively search the data tree and sum
             any Comp.Mass_Properties.mass, and return the total sum
             
-            Assumptions:
+        Assumptions:
+           None
+
+        Source:
+           None
+
+        Args:
             None
-    
-            Source:
-            N/A
-    
-            Args:
-            None
-    
-            Returns:
-            mass  [kg]
-    
-            Properties Used:
-            None
+
+        Returns:
+            total (float): total mass of vehicle [kg]
+            
         """   
         total = 0.0
         for key,Comp in self.items():
@@ -101,19 +84,16 @@ class Container(ContainerBase):
             any Comp.Mass_Properties.mass, and return the total sum of moments
             
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
             Args:
-            None
+                None
     
             Returns:
-            total moment [kg*m]
-    
-            Properties Used:
-            None
+                total (float): total moment of vehicle [Nm] 
         """   
         total = np.array([[0.0,0.0,0.0]])
         for key,Comp in self.items():

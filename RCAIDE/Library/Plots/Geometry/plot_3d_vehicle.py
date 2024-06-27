@@ -12,7 +12,8 @@ from RCAIDE.Library.Plots.Geometry.plot_3d_wing                 import plot_3d_w
 from RCAIDE.Library.Plots.Geometry.plot_3d_nacelle              import plot_3d_nacelle
 from RCAIDE.Library.Plots.Geometry.plot_3d_rotor                import plot_3d_rotor
 
-# python imports  
+# python imports 
+import numpy as np 
 import plotly.graph_objects as go  
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -59,9 +60,7 @@ def plot_3d_vehicle(vehicle,
        show_figure                  - show figure flag  
 
     Returns:
-    Plots
-
-
+    Plots 
     """
 
     print("\nPlotting vehicle") 
@@ -130,9 +129,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
        save_filename                - filename for saving  
        x_axis_limit                 - limits of axis  
        y_axis_limit                 - limits of axis  
-       z_axis_limit                 - limits of axis   
-
-
+       z_axis_limit                 - limits of axis    
     """ 
     
     # -------------------------------------------------------------------------
@@ -177,9 +174,7 @@ def plot_3d_energy_network(plot_data,network,number_of_airfoil_points,color_map)
     Args:
     network            - network data structure
     network_face_color - color of panel
-    network_edge_color - color of panel edge 
-
-
+    network_edge_color - color of panel edge  
     """ 
     show_axis     = False 
     save_figure   = False 

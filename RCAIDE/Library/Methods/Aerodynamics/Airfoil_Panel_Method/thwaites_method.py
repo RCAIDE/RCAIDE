@@ -18,41 +18,37 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def thwaites_method(npanel,ncases,nRe,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
-    """ Computes the boundary layer characteristics in laminar 
-    flow pressure gradients
+    """ Computes the boundary layer characteristics in laminar flow pressure gradients
     
     Source:
-    Thwaites, Bryan. "Approximate calculation of the laminar boundary layer." 
-    Aeronautical Quarterly 1.3 (1949): 245-280.
+        Thwaites, Bryan. "Approximate calculation of the laminar boundary layer." 
+        Aeronautical Quarterly 1.3 (1949): 245-280.
     
     Assumptions:
-    None  
+       None  
 
     Args:  
-    npanel         - number of points on surface                                                 [unitless]
-    ncases         - number of cases (angle of attacks)                                                             [unitless]
-    nRe          - number of control points                                                    [unitless]
-    batch_analysis - flag for batch analysis                                                     [boolean]
-    THETA_0        - initial momentum thickness                                                  [m]
-    L              - normalized length of surface                                                [unitless]
-    RE_L           - Reynolds number                                                             [unitless]
-    X_I            - x coordinate on surface of airfoil                                          [unitless]
-    VE_I           - boundary layer velocity at transition location                              [m/s] 
-    DVE_I          - initial derivative value of boundary layer velocity at transition location  [m/s-m] 
-    tol            - boundary layer error correction tolerance                                   [unitless]
+       npanel                   (int): number of points on surface                                                 [unitless]
+       ncases                   (int): number of cases (angle of attacks)                                          [unitless]
+       nRe                      (int): number of control points                                                    [unitless]
+       batch_analysis          (bool): flag for batch analysis                                                     [boolean]
+       THETA_0        (numpy.ndarray): initial momentum thickness                                                  [m]
+       L              (numpy.ndarray): normalized length of surface                                                [unitless]
+       RE_L           (numpy.ndarray): Reynolds number                                                             [unitless]
+       X_I            (numpy.ndarray): x coordinate on surface of airfoil                                          [unitless]
+       VE_I           (numpy.ndarray): boundary layer velocity at transition location                              [m/s] 
+       DVE_I          (numpy.ndarray): initial derivative value of boundary layer velocity at transition location  [m/s-m] 
+       tol                    (float): boundary layer error correction tolerance                                   [unitless]
 
-    Returns: 
-    RESULTS.
-      X_T          - reshaped distance along airfoil surface             [unitless]
-      THETA_T      - momentum thickness                                  [m]
-      DELTA_STAR_T - displacement thickness                              [m] 
-      H_T          - shape factor                                        [unitless]
-      CF_T         - friction coefficient                                [unitless]
-      RE_THETA_T   - Reynolds number as a function of momentum thickness [unitless]
-      RE_X_T       - Reynolds number as a function of distance           [unitless]
-      DELTA_T      - boundary layer thickness                            [m]
-
-
+    Returns:  
+        RESULTS.X_T          (numpy.ndarray): reshaped distance along airfoil surface                              [unitless]
+        RESULTS.THETA_T      (numpy.ndarray): momentum thickness                                                   [m]
+        RESULTS.DELTA_STAR_T (numpy.ndarray): displacement thickness                                               [m] 
+        RESULTS.H_T          (numpy.ndarray): shape factor                                                         [unitless]
+        RESULTS.CF_T         (numpy.ndarray): friction coefficient                                                 [unitless]
+        RESULTS.RE_THETA_T   (numpy.ndarray): Reynolds number as a function of momentum thickness                  [unitless]
+        RESULTS.RE_X_T       (numpy.ndarray): Reynolds number as a function of distance                            [unitless]
+        RESULTS.DELTA_T      (numpy.ndarray): boundary layer thickness                                             [m]  
     """ 
     # Initialize vectors
     X_T          = np.zeros((npanel,ncases,nRe))
@@ -152,16 +148,16 @@ def getH(lambda_val):
     """ Computes the shape factor, H
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args: 
-    lamdda_val  - thwaites separation criteria [unitless]
+        lamdda_val (float): thwaites separation criteria [unitless]
 
     Returns:  
-    H           - shape factor [unitless] 
+        H          (float): shape factor [unitless] 
     """       
     H       = 0.0731/(0.14 + lambda_val ) + 2.088 
     idx1    = (lambda_val>0.0)  
@@ -173,17 +169,17 @@ def getcf(lambda_val , Re_theta):
     """ Computes the skin friction coefficient, cf
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args: 
-    lambda_val - thwaites separation criteria                        [unitless]
-    Re_theta   - Reynolds Number as a function of momentum thickness [unitless]
+        lambda_val (float): thwaites separation criteria                        [unitless]
+        Re_theta   (float): Reynolds Number as a function of momentum thickness [unitless]
 
     Returns:  
-    cf         - skin friction coefficient [unitless] 
+        cf         (float): skin friction coefficient [unitless] 
     """        
     l       = 0.22 + 1.402*lambda_val  + (0.018*lambda_val)/(0.107 + lambda_val ) 
     idx1    = (lambda_val>0.0)   
@@ -202,11 +198,11 @@ def RK4(ind, dx, x, Var1, Slope1):
         None                                                                    
                                                                    
     Args:                                                      
-        ind
-        dx
-        x
-        Var1
-        Slope1 
+        ind      (int) : index on airfoil                           [unitless] 
+        dx     (float) : differential distance on airfoil surface   [unitless] 
+        x      (float) : location on surface                        [unitless] 
+        Var1   (float) : variable of interest                       [unitless] 
+        Slope1 (float) : gradient of variables                      [unitless] 
         
     Returns:
         Var1[ind] + change 

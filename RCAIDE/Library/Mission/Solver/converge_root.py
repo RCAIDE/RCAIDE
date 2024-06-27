@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/converge_root.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -19,19 +19,19 @@ def converge_root(segment):
     """Interfaces the mission to a numerical solver. The solver may be changed by using root_finder.
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
     segment                            [Data]
     segment.settings.root_finder       [Data]
-    state.numerics.tolerance_solution  [Unitless]
+    state.numerics.tolerance_solution  [unitless]
 
     Returns:
     state.unknowns                     [Any]
-    segment.state.numerics.converged   [Unitless]
+    segment.state.numerics.converged   [unitless]
 
 
     """       
@@ -71,17 +71,17 @@ def iterate(unknowns, segment):
     """Runs one iteration of of all analyses for the mission.
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
     state.unknowns                [Data]
     segment.process.iterate       [Data]
 
     Returns:
-    residuals                     [Unitless]
+    residuals                     [unitless]
 
 
     """       

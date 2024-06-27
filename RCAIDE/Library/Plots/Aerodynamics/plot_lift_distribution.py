@@ -2,7 +2,7 @@
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_lift_distribution.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -37,10 +37,7 @@ def plot_lift_distribution(results,vehicle,
         n_w
 
      Returns: 
-     Plots
-
-     Properties Used:
-     N/A	
+         Plots 
      """   
 
     # get plotting style 
@@ -61,7 +58,7 @@ def plot_lift_distribution(results,vehicle,
     for segment in results.segments.values():   	
         num_ctrl_pts = len(segment.conditions.frames.inertial.time)	
         for ti in range(num_ctrl_pts):  
-            cl_y = segment.conditions.aerodynamics.lift_breakdown.inviscid_wings_sectional[ti] 
+            cl_y = segment.conditions.aerodynamics.coefficients.lift.breakdown.inviscid_wings_sectional[ti] 
             line = ['-b','-b','-r','-r','-k']
             fig  = plt.figure(save_filename + '_' + str(img_idx))
             fig.set_size_inches(8,8)  

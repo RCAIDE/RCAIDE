@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compression_Nozzle/compute_compression_nozzle_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -36,6 +36,10 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
     compression_nozzle.inputs.
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
+    compression_nozzle.
+      pressure_ratio                      [-]
+      polytropic_efficiency               [-]
+      pressure_recovery                   [-]
 
     Returns:
     compression_nozzle.outputs.
@@ -45,31 +49,22 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
       mach_number                         [-]
       static_temperature                  [K]
       static_enthalpy                     [J/kg]
-      velocity                            [m/s]
-
-    Properties Used:
-    compression_nozzle.
-      pressure_ratio                      [-]
-      polytropic_efficiency               [-]
-      pressure_recovery                   [-]
+      velocity                            [m/s] 
     """
 
     #unpack from conditions
     gamma   = conditions.freestream.isentropic_expansion_factor
     Cp      = conditions.freestream.specific_heat_at_constant_pressure
     Po      = conditions.freestream.pressure
-    Mo      = conditions.freestream.mach_number
-    R       = conditions.freestream.gas_specific_constant
+    Mo      = conditions.freestream.mach_number 
 
     #unpack from inpust
-    Tt_in   = compression_nozzle.inputs.stagnation_temperature
-    Pt_in   = compression_nozzle.inputs.stagnation_pressure
-
-    #unpack from compression_nozzle
-    pid     =  compression_nozzle.pressure_ratio
-    etapold =  compression_nozzle.polytropic_efficiency
-    eta_rec =  compression_nozzle.pressure_recovery
-    compressibility_effects =  compression_nozzle.compressibility_effects
+    Tt_in                   = compression_nozzle.inputs.stagnation_temperature
+    Pt_in                   = compression_nozzle.inputs.stagnation_pressure
+    pid                     = compression_nozzle.pressure_ratio
+    etapold                 = compression_nozzle.polytropic_efficiency
+    eta_rec                 = compression_nozzle.pressure_recovery
+    compressibility_effects = compression_nozzle.compressibility_effects
 
     #Method to compute the output variables
 
@@ -79,7 +74,6 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
     ht_out  = Cp*Tt_out
 
     if compressibility_effects :
-
         # Checking from Mach numbers below, above 1.0
         i_low  = Mo <= 1.0
         i_high = Mo > 1.0

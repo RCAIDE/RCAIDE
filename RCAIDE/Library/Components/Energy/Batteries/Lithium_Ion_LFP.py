@@ -92,12 +92,12 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
             
         Source:
             None
-    
+     
         Args:
-            self               : battery        [unitless]
-            state              : temperature    [K]
-            bus                : pressure       [Pa]
-            discharge (boolean): discharge flag [unitless]
+            self         (dict): battery        [-]
+            state        (dict): temperature    [K]
+            bus          (dict): electric bus   [-]
+            discharge (boolean): discharge flag [-]
             
         Returns: 
             None
@@ -123,12 +123,4 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
             None
         """              
 
-        return battery_conditions.pack.voltage_under_load 
-    
-    def update_battery_age(self,segment,increment_battery_age_by_one_day = False):   
-        """ This does nothing. """
-        pass 
-        return  
- 
-  
-      
+        return battery_conditions.pack.voltage_under_load

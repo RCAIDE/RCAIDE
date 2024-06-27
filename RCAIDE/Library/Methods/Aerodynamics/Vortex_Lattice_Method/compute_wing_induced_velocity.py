@@ -1,5 +1,6 @@
-## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
-# compute_wing_induced_velocity.py
+## @ingroup Library-Methods-Aerdoynamics-Vortex_Lattice_Method
+# RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_wing_induced_velocity.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Dec 2020, E. Botero
 # Modified: May 2021, E. Botero  
@@ -29,11 +30,11 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     2. VORLAX Source Code
 
     Args: 
-    VD       - vehicle vortex distribution                    [Unitless] 
-    mach                                                      [Unitless] 
+    VD       - vehicle vortex distribution                    [unitless] 
+    mach                                                      [unitless] 
     
     Returns:                                
-    C_mn     - total induced velocity matrix                  [Unitless] 
+    C_mn     - total induced velocity matrix                  [unitless] 
     s        - semispan of the horshoe vortex                 [m] 
     t        - tangent of the horshoe vortex                  [-] 
     CHORD    - chord length for a panel                       [m] 

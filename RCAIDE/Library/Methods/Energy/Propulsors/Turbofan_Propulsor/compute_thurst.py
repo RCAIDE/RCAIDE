@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_thrust.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -52,6 +52,11 @@ def compute_thrust(turbofan,conditions,throttle = 1.0):
       bypass_ratio                       [-]
       flow_through_core                  [-] percentage of total flow (.1 is 10%)
       flow_through_fan                   [-] percentage of total flow (.1 is 10%)
+    turbofan.
+      reference_temperature              [K]
+      reference_pressure                 [Pa]
+      compressor_nondimensional_massflow [-]
+      SFC_adjustment                     [-]
 
     Returns:
     turbofan.outputs.
@@ -61,14 +66,7 @@ def compute_thrust(turbofan,conditions,throttle = 1.0):
       core_mass_flow_rate                [kg/s]
       fuel_flow_rate                     [kg/s]
       power                              [W]
-      Specific Impulse                   [s]
-
-    Properties Used:
-    turbofan.
-      reference_temperature              [K]
-      reference_pressure                 [Pa]
-      compressor_nondimensional_massflow [-]
-      SFC_adjustment                     [-]
+      Specific Impulse                   [s] 
     """           
     #unpack the values
 

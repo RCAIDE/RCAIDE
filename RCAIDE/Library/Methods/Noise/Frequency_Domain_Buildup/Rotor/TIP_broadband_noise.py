@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/TIP_broadband_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -36,10 +36,7 @@ def TIP_broadband_noise(alpha_tip,M,c,c_0,f,Dbar_h,r_e):
        r_e       - distance from noise source to observer [m] 
     
     Outputs 
-       SPL_TIP   - Sound pressure level of tip            [dB]
-       
-    Properties Used:
-        N/A   
+       SPL_TIP   - Sound pressure level of tip            [dB] 
     '''       
     l_div_c                = 0.023 + 0.0169*alpha_tip              # eqn 67 BPM Paper 
     l_div_c[2<alpha_tip]   = 0.0378 + 0.0095*alpha_tip[2<alpha_tip]

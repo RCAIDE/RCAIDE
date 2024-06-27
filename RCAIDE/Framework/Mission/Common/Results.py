@@ -2,7 +2,7 @@
 # RCAIDE/Framework/Mission/Segments/Conditions/Results.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -141,17 +141,22 @@ class Results(Conditions):
                                                                                
         # aerodynamic coefficients                                             
         self.aerodynamics.coefficients                                         = Conditions()
-        self.aerodynamics.coefficients.lift                                    = ones_1col * 0
-        self.aerodynamics.coefficients.drag                                    = ones_1col * 0  
-        self.aerodynamics.oswald_efficiency                                    = ones_1col * 0    
-                                                                               
-        self.aerodynamics.lift_breakdown                                       = Conditions()
-        self.aerodynamics.drag_breakdown                                       = Conditions()
-        self.aerodynamics.drag_breakdown.parasite                              = Conditions()
-        self.aerodynamics.drag_breakdown.compressible                          = Conditions()
-        self.aerodynamics.drag_breakdown.induced                               = Conditions()
-        self.aerodynamics.drag_breakdown.induced.total                         = ones_1col * 0
-        self.aerodynamics.drag_breakdown.induced.efficiency_factor             = ones_1col * 0
+        self.aerodynamics.coefficients.lift                                    = Conditions()
+        self.aerodynamics.coefficients.lift.total                              = ones_1col * 0
+        self.aerodynamics.coefficients.lift.breakdown                          = Conditions()
+        self.aerodynamics.coefficients.lift.breakdown.inviscid_wings           = Conditions()
+        self.aerodynamics.coefficients.lift.breakdown.compressible_wings       = Conditions() 
+        self.aerodynamics.coefficients.drag                                    = Conditions()  
+        self.aerodynamics.coefficients.drag.total                              = ones_1col * 0  
+        self.aerodynamics.coefficients.drag.breakdown                          = Conditions()
+        self.aerodynamics.coefficients.drag.breakdown.parasite                 = Conditions()
+        self.aerodynamics.coefficients.drag.breakdown.compressible             = Conditions()
+        self.aerodynamics.coefficients.drag.breakdown.induced                  = Conditions()
+        self.aerodynamics.coefficients.drag.breakdown.induced.inviscid_wings   = Conditions()
+        self.aerodynamics.coefficients.drag.breakdown.induced.total            = ones_1col * 0
+        self.aerodynamics.coefficients.drag.breakdown.induced.efficiency_factor= ones_1col * 0
+
+        self.aerodynamics.oswald_efficiency                                    = ones_1col * 0   
 
         # ----------------------------------------------------------------------------------------------------------------------
         # Control Surfaces 

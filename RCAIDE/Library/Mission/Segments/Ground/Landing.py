@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Ground/Landing.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -22,7 +22,7 @@ def initialize_conditions(segment):
     Builds on the initialize conditions for common
 
     Source:
-    N/A
+    None
 
     Args:
     segment.throttle                                         [unitless]

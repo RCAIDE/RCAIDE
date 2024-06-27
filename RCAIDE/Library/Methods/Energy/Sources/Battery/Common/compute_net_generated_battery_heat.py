@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery-Common
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/compute_net_generated_battery_heat.py
+## @ingroup Methods-Energy-Sources-Battery-Common
+# RCAIDE/Methods/Energy/Sources/Battery/Common/compute_net_generated_battery_heat.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -13,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Energy-Battery-Common 
+## @ingroup Methods-Energy-Sources-Battery-Common 
 def compute_net_generated_battery_heat(n_total,battery,Q_heat_gen,numerics):
     '''Computes the net heat generated in a battery during cycling. 
 
@@ -40,11 +40,7 @@ def compute_net_generated_battery_heat(n_total,battery,Q_heat_gen,numerics):
       
       Returns:
         battery. 
-             net_power                                               [Watts] 
- 
-
-    Properties Used:
-    None 
+             net_power                                               [Watts]  
     '''
 
     h                        = battery.convective_heat_transfer_coefficient

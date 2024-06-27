@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Common/compute_rotor_point_source_coordinates.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -21,10 +21,10 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
     """This calculated the position vector from a point source to the observer 
             
     Assumptions:
-        N/A
+        None
 
     Source:
-        N/A 
+        None 
         
     Args:  
         conditions        - flight conditions            [None]  
@@ -33,10 +33,7 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
         settings          - noise calculation settings   [None]
         
     Returns: 
-        position vector   - position vector of points    [m]
-        
-    Properties Used:
-        N/A       
+        position vector   - position vector of points    [m]  
     """  
     
     # aquire dimension of matrix

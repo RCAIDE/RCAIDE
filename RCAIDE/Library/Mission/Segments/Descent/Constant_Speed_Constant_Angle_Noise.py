@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Descent/ Constant_Speed_Constant_Angle_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  IMPORT 
@@ -24,10 +24,10 @@ def expand_state(segment):
     A 4 km threshold, this discretizes the mission to take measurements at the right place for certification maneuvers.
 
     Source:
-    N/A
+    None
 
     Args:
-    state.numerics.number_of_control_points  [Unitless]
+    state.numerics.number_of_control_points  [unitless]
     segment.descent_angle                 [Radians]
     segment.air_speed                     [meters/second]
  
@@ -62,7 +62,7 @@ def initialize_conditions(segment):
     Constant speed, constant descent angle. However, this follows a 2000 meter segment. This is a certification maneuver standard. The last point for the noise measurement is 50 feet.
 
     Source:
-    N/A
+    None
 
     Args:
     segment.descent_angle                       [radians]

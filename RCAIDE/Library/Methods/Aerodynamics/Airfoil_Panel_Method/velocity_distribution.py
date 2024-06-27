@@ -18,28 +18,24 @@ def velocity_distribution(qg,x,y,xbar,ybar,st,ct,alpha_2d,npanel,ncases,ncpts):
     """Compute the tangential velocity distribution at the midpoint of each panel   
     
     Source:
-    None
+        None
 
     Assumptions:
-    None  
+        None  
     
-    Args:                                                    
+    Args:  
+        qg          (numpy.ndarray): Vector of source/sink and vortex strengths    [unitless]          
+        x           (numpy.ndarray): Vector of x coordinates of the surface nodes  [unitless]         
+        y           (numpy.ndarray): Vector of y coordinates of the surface nodes  [unitless]            
+        xbar        (numpy.ndarray): x-coordinate of the midpoint of each panel    [unitless]           
+        ybar        (numpy.ndarray): y-coordinate of the midpoint of each panel    [unitless]           
+        st          (numpy.ndarray): np.sin(theta) for each panel                  [radians]                
+        ct          (numpy.ndarray): np.cos(theta) for each panel                  [radians]             
+        al          (numpy.ndarray): Angle of attack in radians                    [radians]             
+        npanel                (int): Number of panels on the airfoil               [unitless]  
 
-     qg          -  Vector of source/sink and vortex strengths    [unitless]          
-     x           -  Vector of x coordinates of the surface nodes  [unitless]         
-     y           -  Vector of y coordinates of the surface nodes  [unitless]            
-     xbar        -  x-coordinate of the midpoint of each panel    [unitless]           
-     ybar        -  y-coordinate of the midpoint of each panel    [unitless]           
-     st          -  np.sin(theta) for each panel                  [radians]                
-     ct          -  np.cos(theta) for each panel                  [radians]             
-     al          -  Angle of attack in radians                    [radians]             
-     npanel      -  Number of panels on the airfoil               [unitless]  
-
-     Returns:                                                        
-
-     vt_2d        -  Vector of tangential velocities      
-
-
+     Returns:        
+        vt_2d       (numpy.ndarray): Vector of tangential velocities               [unitless]
     """   
     # flow tangency boundary condition - source distribution  
     vt_2d = ct *np.cos(alpha_2d) + st*np.sin(alpha_2d)

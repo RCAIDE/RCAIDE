@@ -10,7 +10,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units      
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import wing_planform, segment_properties
+from RCAIDE.Library.Methods.Geometry.Planform      import wing_planform, segment_properties
 from RCAIDE.Library.Plots                 import *     
 
 # python imports 
@@ -58,25 +58,26 @@ def vehicle_setup():
     # ------------------------------------------------------------------
     #   Main Wing
     # ------------------------------------------------------------------
-    wing                         = RCAIDE.Library.Components.Wings.Main_Wing()
-    wing.tag                     = 'main_wing'
-    wing.areas.reference         = 92.0
-    wing.aspect_ratio            = 8.4
-    wing.chords.root             = 6.2
-    wing.chords.tip              = 1.44
-    wing.sweeps.quarter_chord    = 23.0 * Units.deg
-    wing.thickness_to_chord      = 0.11
-    wing.taper                   = 0.28
-    wing.dihedral                = 5.00 * Units.deg
-    wing.spans.projected         = 28.72
-    wing.origin                  = [[13.0,0,-1.]]
-    wing.vertical                = False
-    wing.symmetric               = True       
-    wing.high_lift               = True
-    wing.areas.exposed           = 0.80 * wing.areas.wetted        
-    wing.twists.root             = 2.0 * Units.degrees
-    wing.twists.tip              = 0.0 * Units.degrees    
-    wing.dynamic_pressure_ratio  = 1.0
+    wing                           = RCAIDE.Library.Components.Wings.Main_Wing()
+    wing.tag                       = 'main_wing'
+    wing.areas.reference           = 92.0
+    wing.aspect_ratio              = 8.4
+    wing.chords.root               = 6.2
+    wing.chords.tip                = 1.44
+    wing.sweeps.quarter_chord      = 23.0 * Units.deg
+    wing.thickness_to_chord        = 0.11
+    wing.taper                     = 0.28
+    wing.dihedral                  = 5.00 * Units.deg
+    wing.spans.projected           = 28.72
+    wing.origin                    = [[13.0,0,-1.]]
+    wing.vertical                  = False
+    wing.symmetric                 = True       
+    wing.high_lift                 = True
+    wing.areas.exposed             = 0.80 * wing.areas.wetted        
+    wing.twists.root               = 2.0 * Units.degrees
+    wing.twists.tip                = 0.0 * Units.degrees    
+    wing.dynamic_pressure_ratio    = 1.0
+    wing.percent_span_root_offset = 3.01  / wing.spans.projected
     
     
     segment = RCAIDE.Library.Components.Wings.Segment()
@@ -171,6 +172,7 @@ def vehicle_setup():
     wing.twists.root             = 2.0 * Units.degrees
     wing.twists.tip              = 2.0 * Units.degrees    
     wing.dynamic_pressure_ratio  = 0.90
+    wing.percent_span_root_offset = 3.01  / wing.spans.projected
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -208,20 +210,16 @@ def vehicle_setup():
     fuselage.origin                = [[0,0,0]]
     fuselage.number_coach_seats    = vehicle.passengers
     fuselage.seats_abreast         = 4
-    fuselage.seat_pitch            = 30. * Units.inches
-
+    fuselage.seat_pitch            = 30. * Units.inches 
     fuselage.fineness.nose         = 1.28
-    fuselage.fineness.tail         = 3.48
-
+    fuselage.fineness.tail         = 3.48 
     fuselage.lengths.nose          = 6.0
     fuselage.lengths.tail          = 9.0
     fuselage.lengths.cabin         = 21.24
     fuselage.lengths.total         = 36.24
     fuselage.lengths.fore_space    = 0.
-    fuselage.lengths.aft_space     = 0.
-
-    fuselage.width                 = 3.01 * Units.meters
-
+    fuselage.lengths.aft_space     = 0. 
+    fuselage.width                 = 3.01 * Units.meters 
     fuselage.heights.maximum       = 3.35    
     fuselage.heights.at_quarter_length          = 3.35 
     fuselage.heights.at_three_quarters_length   = 3.35 

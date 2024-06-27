@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery-Lithium_Ion_NMC
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/compute_nmc_cell_performance.py
+## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC
+# RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/compute_nmc_cell_performance.py
 # 
 # 
 # Created:  Feb 2024, M. Clarke 
@@ -7,13 +7,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Framework.Core                       import Units
+from RCAIDE.Framework.Core                       import Units 
 import numpy as np  
  
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_nmc_cell_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Compoments-Energy-Batteries-Lithium_Ion_NMC 
+## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
 def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag): 
     '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
        battery cells. The model uses experimental data performed
@@ -34,7 +34,7 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
        Assumtions:
        1) All battery modules exhibit the same themal behaviour. 
 
-       Args:
+       Inputs:
          battery.
                I_bat             (maximum_energy)                      [Joules]
                cell_mass         (battery cell mass)                   [kilograms]
@@ -52,7 +52,7 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
                I_bat             (current)                             [amps]
                P_bat             (power)                               [Watts]
 
-       Returns:
+       Outputs:
          battery.
               current_energy                                           [Joules]
               temperature                                              [Kelvin]
@@ -176,7 +176,7 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
 
     return battery    
 
-## @ingroup Library-Methods-Energy-Lithium_Ion_NMC
+## @ingroup Methods-Energy-Sources-Lithium_Ion_NMC
 def compute_nmc_cell_state(battery_data,SOC,T,I):
     """This computes the electrical state variables of a lithium ion 
     battery cell with a  lithium-nickel-cobalt-aluminum oxide cathode 
@@ -188,13 +188,13 @@ def compute_nmc_cell_state(battery_data,SOC,T,I):
     Source:  
     N/A 
      
-    Args:
+    Inputs:
         SOC           - state of charge of cell     [unitless]
         battery_data  - look-up data structure      [unitless]
         T             - battery cell temperature    [Kelvin]
         I             - battery cell current        [Amperes]
     
-    Returns:  
+    Outputs:  
         V_ul          - under-load voltage          [Volts] 
         
     """ 

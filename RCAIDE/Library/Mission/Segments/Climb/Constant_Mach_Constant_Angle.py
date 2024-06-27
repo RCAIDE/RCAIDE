@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Climb/Constant_Mach_Constant_Angle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  IMPORT 
@@ -24,14 +24,14 @@ def initialize_conditions(segment):
     Constant Mach number, with a constant angle of climb
 
     Source:
-    N/A
+    None
 
     Args:
     segment.climb_angle                                 [radians]
-    segment.mach_number                                 [Unitless]
+    segment.mach_number                                 [unitless]
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
-    segment.state.numerics.dimensionless.control_points [Unitless]
+    segment.state.numerics.dimensionless.control_points [unitless]
     conditions.freestream.density                       [kilograms/meter^3]
 
     Returns:
@@ -101,9 +101,9 @@ def update_differentials(segment):
         Works with a segment discretized in vertical position, altitude
 
         Args:
-        state.numerics.dimensionless.control_points      [Unitless]
-        state.numerics.dimensionless.differentiate       [Unitless]
-        state.numerics.dimensionless.integrate           [Unitless]
+        state.numerics.dimensionless.control_points      [unitless]
+        state.numerics.dimensionless.differentiate       [unitless]
+        state.numerics.dimensionless.integrate           [unitless]
         state.conditions.frames.inertial.position_vector [meter]
         state.conditions.frames.inertial.velocity_vector [meter/second]
         

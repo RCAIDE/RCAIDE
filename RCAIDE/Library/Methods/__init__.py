@@ -16,6 +16,7 @@ from . import Geometry
 from . import Noise
 from . import Performance 
 from . import Stability
+from . import Thermal_Management
 from . import Utilities
 from . import Weights
 

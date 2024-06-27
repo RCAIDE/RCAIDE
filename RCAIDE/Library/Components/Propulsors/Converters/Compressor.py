@@ -32,7 +32,7 @@ class Compressor(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None

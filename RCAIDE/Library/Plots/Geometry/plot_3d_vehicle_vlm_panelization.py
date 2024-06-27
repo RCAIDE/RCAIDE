@@ -45,9 +45,7 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
     vehicle.vortex_distribution
 
     Returns: 
-    Plots
-
-	
+    Plots 
     """
 
     # unpack vortex distribution
@@ -58,8 +56,7 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
         VL.settings.number_of_spanwise_vortices  = 25
         VL.settings.number_of_chordwise_vortices = 5
         VL.settings.spanwise_cosine_spacing      = False
-        VL.settings.model_fuselage               = False
-        VL.settings.model_nacelle                = False
+        VL.settings.model_fuselage               = False 
         VD = generate_vortex_distribution(vehicle,VL.settings) 
 
     camera        = dict(up=dict(x=0.5, y=0.5, z=1), center=dict(x=0, y=0, z=-.75), eye=dict(x=-1.5, y=-1.5, z=.8))

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compressor/compute_compressor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke     
+# Created:  Jun 2024, M. Clarke     
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_compression_nozzle_performance
@@ -25,20 +25,17 @@ def compute_compressor_performance(compressor,conditions):
     compressor.inputs.
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
+    compressor.
+      pressure_ratio                      [-]
+      polytropic_efficiency               [-]
 
     Returns:
     compressor.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]
       stagnation_enthalpy                 [J/kg]
-      work_done                           [J/kg]
-
-    Properties Used:
-    compressor.
-      pressure_ratio                      [-]
-      polytropic_efficiency               [-]
+      work_done                           [J/kg] 
     """          
-    #unpack the values
     
     #unpack from conditions
     gamma    = conditions.freestream.isentropic_expansion_factor
@@ -46,13 +43,9 @@ def compute_compressor_performance(compressor,conditions):
     
     #unpack from inputs
     Tt_in    = compressor.inputs.stagnation_temperature
-    Pt_in    = compressor.inputs.stagnation_pressure
-    
-    #unpack from compressor
+    Pt_in    = compressor.inputs.stagnation_pressure 
     pid      = compressor.pressure_ratio
     etapold  = compressor.polytropic_efficiency
-    
-    #Method to compute compressor properties
     
     #Compute the output stagnation quantities based on the pressure ratio of the component
     ht_in     = Cp*Tt_in
@@ -60,7 +53,7 @@ def compute_compressor_performance(compressor,conditions):
     Tt_out    = Tt_in*pid**((gamma-1)/(gamma*etapold))
     ht_out    = Cp*Tt_out
     
-    #compute the work done by the compressor(for matching with the turbine)
+    #compute the work done by the compressor
     work_done = ht_out- ht_in
     
     #pack computed quantities into the outputs

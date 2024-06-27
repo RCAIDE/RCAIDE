@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/design_prop_rotor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -46,7 +46,7 @@ def design_prop_rotor(rotor,number_of_stations = 20,solver_name= 'SLSQP',iterati
           Chord distribution                   [array of meters]
               
           Assumptions: 
-             N/A 
+             None 
         
           Source:
              None 

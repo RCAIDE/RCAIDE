@@ -16,40 +16,16 @@ from copy import deepcopy
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Wings    
 class Vertical_Tail(Wing):
-    """This class is used to define vertical tails RCAIDE
-
-    Assumptions:
-    None
-
-    Source:
-    N/A
-
-    Args:
-    None
-
-    Returns:
-    None
-
-    Properties Used:
-    N/A
+    """Vertical tail compoment class. 
     """ 
     def __defaults__(self):
-        """This sets the default for vertical tails in RCAIDE.
+        """This sets the default for vertical tails.
     
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
-        Properties Used:
-        N/A
+            None 
         """ 
         self.tag       = 'vertical_stabilizer'
         self.vertical  = True
@@ -67,22 +43,20 @@ class Vertical_Tail(Wing):
         It is also recommended that the user call this function after they set control surface
         or all moving surface deflections. This way the deflection is also properly reflected 
         to the other side
-    
+     
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+           self (dict): wing data structure
 
         Returns:
-        None
-
-        Properties Used:
-        N/A
-        """    
+           wing (dict): wing data structure
+           
+        """   
         wing = deepcopy(self)
         wing.dihedral     *= -1
         wing.origin[0][1] *= -1

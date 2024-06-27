@@ -34,7 +34,7 @@ class Expansion_Nozzle(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None

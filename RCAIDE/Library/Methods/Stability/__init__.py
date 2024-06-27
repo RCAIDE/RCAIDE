@@ -11,4 +11,4 @@
 
 from . import Common 
 from . import Center_of_Gravity
-from .VLM_Stability import *  
+from .VLM_stability_solver import *  

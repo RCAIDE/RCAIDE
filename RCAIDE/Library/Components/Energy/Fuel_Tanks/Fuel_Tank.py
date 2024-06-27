@@ -16,7 +16,7 @@ from RCAIDE.Library.Components    import Component
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Compoments-Energy-Fuel_Tanks 
 class Fuel_Tank(Component):
-    """Fuel tank compoment.
+    """Fuel tank component class.
     """
     def __defaults__(self):
         """This sets the default values.

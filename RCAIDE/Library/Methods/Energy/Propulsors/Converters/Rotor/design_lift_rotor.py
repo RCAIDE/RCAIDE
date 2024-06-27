@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/design_lift_rotor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

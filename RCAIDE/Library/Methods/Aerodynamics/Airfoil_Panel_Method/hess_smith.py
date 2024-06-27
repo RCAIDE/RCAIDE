@@ -23,30 +23,24 @@ def hess_smith(x_coord,y_coord,alpha,Re,npanel):
     """Computes the incompressible, inviscid flow over an airfoil of  arbitrary shape using the Hess-Smith panel method.  
 
     Assumptions:
-    None
+       None
 
-    Source:  "An introduction to theoretical and computational        
-                    aerodynamics", J. Moran, Wiley, 1984  
+    Source:  An introduction to theoretical and computational aerodynamics", J. Moran, Wiley, 1984  
  
                                                      
     Inputs          
-    x             -  Vector of x coordinates of the surface                  [unitess]     
-    y             -  Vector of y coordinates of the surface                  [unitess]  
-    alpha         -  Airfoil angle of attack                                 [radians] 
-    npanel        -  Number of panels on the airfoil.  The number of nodes   [unitess] 
-                      is equal to npanel+1, and the ith panel goes from node   
-                      i to node i+1                                
+        x_coord  (numpy.ndarray):  Vector of x coordinates of the surface  [unitess]     
+        y_coord  (numpy.ndarray):  Vector of y coordinates of the surface  [unitess]  
+        alpha    (numpy.ndarray):  Angle of attack                         [radians] 
+        Re       (numpy.ndarray):  Reynold's number                        [radians] 
+        npanel             (int):  Number of panels on the airfoil.        [unitess]  
                                                                            
-    Outputs                                                      
-    cl            -  Airfoil lift coefficient                         [unitless]           
-    cd            -  Airfoil drag coefficient                         [unitless]      
-    cm            -  Airfoil moment coefficient about the c/4         [unitless]            
-    x_bar         -  Vector of x coordinates of the surface nodes     [unitless]           
-    y_bar         -  Vector of y coordinates of the surface nodes     [unitless]          
-    cp            -  Vector of coefficients of pressure at the nodes  [unitless]         
- 
-    """      
-    
+    Outputs                                                                   
+        xbar    (numpy.ndarray):  Vector of x coordinates of the surface nodes    [unitless]           
+        ybar    (numpy.ndarray):  Vector of y coordinates of the surface nodes    [unitless]          
+        vt      (numpy.ndarray):  Tangential velocity on surface of airfoil       [unitless]            
+        norm    (numpy.ndarray):  Normal vectors on surface of airfoil            [unitless]  
+    """       
     ncases    = len(alpha[0,:])
     ncpts     = len(Re) 
     alpha_2d  = np.repeat(alpha.T[np.newaxis,:, :], npanel, axis=0) 

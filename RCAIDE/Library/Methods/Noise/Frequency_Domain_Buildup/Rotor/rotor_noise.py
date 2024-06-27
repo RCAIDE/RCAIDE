@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/rotor_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -55,9 +55,7 @@ def rotor_noise(rotor,aeroacoustic_data,segment,settings):
                                              harmonic compoment of SPL                           [dB]
             SPL_harmonic_bpf_spectrum      - blade passing freqency spectrum of harmonic
                                              compoment of SPL                                    [dB] 
-     
-    Properties Used:
-        N/A   
+      
     '''
  
     # unpack 

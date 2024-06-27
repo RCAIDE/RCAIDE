@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Ram/compute_ram_performance.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke    
+# Created:  Jun 2024, M. Clarke    
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_ram_performance
@@ -38,10 +38,7 @@ def compute_ram_performance(ram,conditions):
       isentropic_expansion_factor         [-]
       specific_heat_at_constant_pressure  [J/(kg K)]
       gas_specific_constant               [J/(kg K)]
-      speed_of_sound                      [m/s]
-
-    Properties Used:
-    None
+      speed_of_sound                      [m/s] 
     """
     #unpack from conditions
     Po = conditions.freestream.pressure

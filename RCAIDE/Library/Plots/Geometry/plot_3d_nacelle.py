@@ -9,7 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 import RCAIDE
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
-from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry, compute_naca_4series 
+from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series 
 
 import numpy as np  
 
@@ -31,9 +32,7 @@ def plot_3d_nacelle(plot_data,nacelle,tessellation = 24,number_of_airfoil_points
     nacelle                    - RCAIDE nacelle data structure
     tessellation               - azimuthal discretization of lofted body 
     number_of_airfoil_points   - discretization of airfoil geometry 
-    color_map                  - face color of nacelle  
-
-
+    color_map                  - face color of nacelle   
     """
     
     if type(nacelle) == RCAIDE.Library.Components.Nacelles.Stack_Nacelle: 
@@ -72,9 +71,7 @@ def generate_3d_stack_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_po
     Args:
     nac                        - Nacelle data structure 
     tessellation               - azimuthal discretization of lofted body 
-    number_of_airfoil_points   - discretization of airfoil geometry 
-    
- 
+    number_of_airfoil_points   - discretization of airfoil geometry  
     """ 
     
     num_nac_segs = len(nac.Segments.keys())   
@@ -147,9 +144,7 @@ def generate_3d_BOR_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_poin
     Args:
     nac                        - Nacelle data structure 
     tessellation               - azimuthal discretization of lofted body 
-    number_of_airfoil_points   - discretization of airfoil geometry 
-    
- 
+    number_of_airfoil_points   - discretization of airfoil geometry  
     """ 
      
     theta        = np.linspace(0,2*np.pi,tessellation)  
@@ -202,9 +197,7 @@ def generate_3d_basic_nacelle_points(nac,tessellation,number_of_airfoil_points):
     Args:
     nac                        - Nacelle data structure 
     tessellation               - azimuthal discretization of lofted body 
-    number_of_airfoil_points   - discretization of airfoil geometry 
-    
- 
+    number_of_airfoil_points   - discretization of airfoil geometry  
     """ 
       
 

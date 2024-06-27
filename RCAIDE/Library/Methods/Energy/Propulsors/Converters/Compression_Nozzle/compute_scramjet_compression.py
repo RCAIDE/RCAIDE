@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compression_Nozzle/compute_scramjet_compression.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -41,6 +41,10 @@ def compute_scramjet_compression(compression_nozzle,conditions):
        stagnation_temperature             [K] 
        stagnation_pressure                [Pa] 
 
+    compression_nozzle. 
+       efficiency                         [-] 
+       shock_count                        [-] 
+       theta                              [Rad] 
     Returns: 
     compression_nozzle.outputs. 
        stagnation_temperature             [K] 
@@ -50,17 +54,8 @@ def compute_scramjet_compression(compression_nozzle,conditions):
        static_temperature                 [K] 
        static_enthalpy                    [J/kg] 
        velocity                           [m/s] 
-       specific_heat_at_constant_pressure [J/(kg K)] 
-
-    Properties Used: 
-    compression_nozzle. 
-       efficiency                         [-] 
-       shock_count                        [-] 
-       theta                              [Rad] 
+       specific_heat_at_constant_pressure [J/(kg K)]  
     """ 
-
-    # unpack the values 
-
     # unpack from conditions 
     gamma       = conditions.freestream.isentropic_expansion_factor 
     Cp          = conditions.freestream.specific_heat_at_constant_pressure 
@@ -73,14 +68,11 @@ def compute_scramjet_compression(compression_nozzle,conditions):
     # unpack from inputs 
     Tt_in       = compression_nozzle.inputs.stagnation_temperature 
     Pt_in       = compression_nozzle.inputs.stagnation_pressure 
-    
-    # unpack from compression_nozzle 
     eta         = compression_nozzle.polytropic_efficiency 
     shock_count = compression_nozzle.compression_levels 
     theta       = compression_nozzle.theta
     
-    # compute compressed flow variables  
-    
+    # compute compressed flow variables
     # compute inlet conditions, based on geometry and number of shocks 
     psi, Ptr    = shock_train(M0,gamma,shock_count,theta) 
     
@@ -108,3 +100,5 @@ def compute_scramjet_compression(compression_nozzle,conditions):
     compression_nozzle.outputs.static_pressure                    = P_out
     compression_nozzle.outputs.specific_heat_at_constant_pressure = Cp_c
     compression_nozzle.outputs.velocity                           = u_out
+    
+    return 

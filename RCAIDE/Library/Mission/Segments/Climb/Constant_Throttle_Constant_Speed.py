@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Climb/Constant_Throttle_Constant_Speed.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -19,10 +19,10 @@ def unpack_body_angle(segment):
     """Unpacks and sets the proper value for body angle
 
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:
     state.unknowns.body_angle                      [Radians]
@@ -50,18 +50,18 @@ def initialize_conditions(segment):
     Constant throttle estting, with a constant true airspeed
 
     Source:
-    N/A
+    None
 
     Args:
     segment.air_speed                                   [meters/second] 
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
-    segment.state.numerics.dimensionless.control_points [Unitless]
+    segment.state.numerics.dimensionless.control_points [unitless]
     conditions.freestream.density                       [kilograms/meter^3]
 
     Returns:
     conditions.frames.inertial.velocity_vector          [meters/second]
-    conditions.energy.throttle                          [Unitless]
+    conditions.energy.throttle                          [unitless]
 
 
     """         
@@ -87,7 +87,7 @@ def update_differentials_altitude(segment):
     Constant throttle setting, with a constant true airspeed.
 
     Source:
-    N/A
+    None
 
     Args:
     segment.climb_angle                         [radians]

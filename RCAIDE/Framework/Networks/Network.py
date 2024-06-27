@@ -2,7 +2,7 @@
 # RCAIDE/Library/Compoments/Energy/Networks/Network.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 # Modified: Aug 2023, E. Botero
 
 
@@ -29,10 +29,15 @@ class Network(Component):
             Source:
                 None 
         """
-        self.tag                    = 'network'  
-        self.busses                 = Container()     
-        self.fuel_lines             = Container()    
-        self.wing_mounted           = True
+        self.tag                                         = 'network'  
+        self.busses                                      = Container()     
+        self.fuel_lines                                  = Container() 
+        self.thermal_management                          = Data() 
+        self.thermal_management.heat_acquisition_systems = None
+        self.thermal_management.heat_exchanger_systems   = None  
+        self.thermal_management.heat_addition_systems    = None 
+        self.thermal_management.coolant_reservoirs       = None    
+        self.wing_mounted                                = True
 
 # ----------------------------------------------------------------------
 #  Component Container

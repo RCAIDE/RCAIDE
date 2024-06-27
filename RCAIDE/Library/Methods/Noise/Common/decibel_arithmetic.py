@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Common/decibel_arithmetic.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -28,24 +28,19 @@ def pressure_ratio_to_SPL_arithmetic(p_pref_total):
         Pressure Ratios       [unitless]
 
     Returns: 
-        Sound Pressure Level  [decibel]
-
-    Properties Used:
-        N/A 
+        Sound Pressure Level  [decibel] 
     
     '''
     SPL_total = 10*np.log10(np.nansum(p_pref_total, axis = 3))
     return SPL_total
-
-
+ 
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  SPL_arithmetic
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Methods-Noise-Common
 def SPL_arithmetic(SPL, sum_axis = 2):
-    '''This computes the total SPL from multiple sources 
-    using decibel arithmetic  
+    '''This computes the total SPL from multiple sources using decibel arithmetic  
     
     Assumptions:
         None
@@ -57,11 +52,7 @@ def SPL_arithmetic(SPL, sum_axis = 2):
         SPL  -  Sound Pressure Level        [dB]
 
     Returns: 
-        SPL  -  Sound Pressure Level        [dB]
-    
-    Properties Used:
-        N/A 
-    
+        SPL  -  Sound Pressure Level        [dB]  
     '''
     if SPL.ndim == 1:
         SPL_total = SPL 

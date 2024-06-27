@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_turbofan_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -26,10 +26,10 @@ def compute_turbofan_performance(fuel_line,state):
     ''' Computes the perfomrance of all turbofan engines connected to a fuel tank
     
     Assumptions: 
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:   
     fuel_line            - data structure containing turbofans on distrubution network  [-]  
@@ -40,9 +40,7 @@ def compute_turbofan_performance(fuel_line,state):
     outputs              - turbofan operating outputs                                   [-]
     total_thrust         - thrust of turbofans                                          [N]
     total_power          - power of turbofans                                           [W] 
-    
-    Properties Used: 
-    N.A.        
+     
     '''
       
     total_power     = 0*state.ones_row(1) 
@@ -69,10 +67,10 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     ''' Computes the perfomrance of one turbofan
     
     Assumptions: 
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:  
     conditions           - operating conditions data structure   [-]  
@@ -85,10 +83,7 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     total_thrust         - thrust of turbofan group              [N]
     total_power          - power of turbofan group               [W] 
     stored_results_flag  - boolean for stored results            [-]     
-    stored_propulsor_tag - name of turbofan with stored results  [-]
-    
-    Properties Used: 
-    N.A.        
+    stored_propulsor_tag - name of turbofan with stored results  [-] 
     ''' 
     noise_results             = conditions.noise[fuel_line.tag][turbofan.tag] 
     turbofan_results          = conditions.energy[fuel_line.tag][turbofan.tag] 
@@ -276,10 +271,10 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     '''Reuses results from one turbofan for identical turbofans
     
     Assumptions: 
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
     Args:  
     conditions           - operating conditions data structure   [-]  
@@ -291,9 +286,7 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     Returns:  
     total_thrust         - thrust of turbofan group              [N]
     total_power          - power of turbofan group               [W] 
-    
-    Properties Used: 
-    N.A.        
+     
     ''' 
     turbofan_results_0                   = conditions.energy[fuel_line.tag][stored_propulsor_tag]
     noise_results_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_drag_components.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -32,7 +32,7 @@ def plot_drag_components(results,
     None
     
     Args:
-    results.segments.condtions.aerodynamics.drag_breakdown
+    results.segments.condtions.aerodynamics.coefficients.drag.breakdown
           parasite.total
           induced.total
           compressible.total
@@ -60,13 +60,13 @@ def plot_drag_components(results,
     
     for i, segment in enumerate(results.segments):
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min 
-        drag_breakdown = segment.conditions.aerodynamics.drag_breakdown
-        cdp = drag_breakdown.parasite.total[:,0]
-        cdi = drag_breakdown.induced.total[:,0]
-        cdc = drag_breakdown.compressible.total[:,0]
-        cdm = drag_breakdown.miscellaneous.total[:,0]
-        cde = np.ones_like(cdm)*drag_breakdown.drag_coefficient_increment
-        cd  = drag_breakdown.total[:,0]
+        drag   = segment.conditions.aerodynamics.coefficients.drag.breakdown
+        cdp = drag.parasite.total[:,0]
+        cdi = drag.induced.total[:,0]
+        cdc = drag.compressible.total[:,0]
+        cdm = drag.miscellaneous.total[:,0]
+        cde = np.ones_like(cdm)*drag.drag_coefficient_increment
+        cd  = drag.total[:,0]
          
             
         segment_tag  =  segment.tag

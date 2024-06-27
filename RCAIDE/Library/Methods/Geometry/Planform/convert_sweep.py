@@ -49,10 +49,7 @@ def convert_sweep(wing,old_ref_chord_fraction = 0.0,new_ref_chord_fraction = 0.2
                  angle referenced to the new_ref_chord_fraction.
 
     Defaults:
-        Defaults to converting from leading edge sweep to quater-chord sweep.
-        
-     Properties Used:
-        N/A       
+        Defaults to converting from leading edge sweep to quater-chord sweep. 
     """             
     # Unpack inputs
     sweep = wing.sweeps.quarter_chord
@@ -126,10 +123,7 @@ def convert_sweep_segments(old_sweep, seg_a, seg_b, wing, old_ref_chord_fraction
                  angle referenced to the new_ref_chord_fraction.
 
     Defaults:
-        Defaults to converting from leading edge sweep to quater-chord sweep.
-        
-     Properties Used:
-        N/A       
+        Defaults to converting from leading edge sweep to quater-chord sweep. 
     """            
     if old_ref_chord_fraction==new_ref_chord_fraction:
         return old_sweep

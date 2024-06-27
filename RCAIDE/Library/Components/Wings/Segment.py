@@ -16,21 +16,16 @@ from RCAIDE.Library.Components import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Wings  
 class Segment(Component):
+    """ Wing segment compoment class.
+    """
     def __defaults__(self):
-        """This sets the default for wing segments in RCAIDE.
+        """This sets the default for wing segments.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
+            None 
         """         
         self.tag                     = 'segment'
         self.prev                    = None
@@ -62,16 +57,17 @@ class Segment(Component):
         """ Adds an airfoil to the segment
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            self    (dict): wing data structure
+            airfoil (dict): airfoil data structure
 
         Returns:
-        None
+            None
 
         """  
         # assert database type
@@ -84,38 +80,23 @@ class Segment(Component):
         
 ## @ingroup Components-Wings
 class Segment_Container(Container):
-    """ Container for wing segment
-    
-    Assumptions:
-    None
-
-    Source:
-    N/A
-
-    Args:
-    None
-
-    Returns:
-    None
-
-
+    """ Container for wing segment. 
     """     
 
     def get_children(self):
         """ Returns the components that can go inside
         
         Assumptions:
-        None
+            None
     
         Source:
-        N/A
+            None
     
         Args:
-        None
+            None
     
         Returns:
-        None
-    
+           None 
         """       
         
         return []

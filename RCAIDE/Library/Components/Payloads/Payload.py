@@ -15,50 +15,15 @@ from RCAIDE.Library.Components import Component
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Library-Compoments-Payload
 class Payload(Component):
-    """A class representing a payload.
-    
-    Assumptions:
-    None
-    
-    Source:
-    N/A
+    """Payload component class. 
     """          
     def __defaults__(self):
         """This sets the default power draw.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
+            None 
         """            
         self.power_draw = 0.0
-        
-    def power(self):
-        """This gives the power draw from a payload.
-
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        self.outputs.power_draw         [Watts]
-
-        Properties Used:
-        self.power_draw
-        """          
-        self.inputs.power = self.power_draw
-        
-        return self.power_draw 

@@ -18,26 +18,25 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def aero_coeff(x,y,cp,al,npanel):
-    """Compute airfoil force and moment coefficients about 
-                    the quarter chord point          
+    """Compute airfoil force and moment coefficients about the quarter chord point          
 
     Assumptions:
-    None
+        None
 
     Source:
-    None                                                                    
+        None                                                                    
                                                                    
     Args:                                                     
-    x       -  Vector of x coordinates of the surface nodes      
-    y       -  Vector of y coordinates of the surface nodes       
-    cp      -  Vector of coefficients of pressure at the nodes  
-    al      -  Angle of attack in radians                             
-    npanel  -  Number of panels on the airfoil               
+        x      (numpy.ndarray): Vector of x coordinates of the surface nodes    [unitless]  
+        y      (numpy.ndarray): Vector of y coordinates of the surface nodes    [unitless]    
+        cp     (numpy.ndarray): Vector of coefficients of pressure at the nodes [unitless]  
+        al     (numpy.ndarray): Angle of attack in radians                      [radians]      
+        npanel           (int): Number of panels on the airfoil                 [unitless]
                                                                  
     Returns:                                           
-    cl      -  Airfoil lift coefficient                
-    cd      -  Airfoil drag coefficient                                 
-    cm      -  Airfoil moment coefficient about the c/4  
+        AERO_RES.cl  (numpy.ndarray):  Airfoil lift coefficient                 [unitless]
+        AERO_RES.cd  (numpy.ndarray):  Airfoil drag coefficient                 [unitless]              
+        AERO_RES.cm  (numpy.ndarray):  Airfoil moment coefficient about the c/4 [unitless]
     """  
     dx      = x[1:]-x[:-1]
     dy      = y[1:]-y[:-1]

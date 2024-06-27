@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Performance/estimate_stall_speed.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -24,7 +24,7 @@ def estimate_stall_speed(vehicle_mass,reference_area,altitude,maximum_lift_coeff
     """Calculates the stall speed of an aircraft at a given altitude and a maximum lift coefficient.
 
         Sources:
-        N/A
+        None
 
         Assumptions:
         None 

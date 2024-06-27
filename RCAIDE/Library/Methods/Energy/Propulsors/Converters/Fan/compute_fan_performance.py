@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Fan/compute_fan_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke    
+# Created:  Jun 2024, M. Clarke    
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fan 
@@ -26,19 +26,18 @@ def compute_fan_performance(fan,conditions):
       stagnation_temperature              [K]
       stagnation_pressure                 [Pa]
 
+    fan.
+      pressure_ratio                      [-]
+      polytropic_efficiency               [-]
+      
     Returns:
     fan.outputs.
       stagnation_temperature              [K]  
       stagnation_pressure                 [Pa]
       stagnation_enthalpy                 [J/kg]
       work_done                           [J/kg]
-
-    Properties Used:
-    fan.
-      pressure_ratio                      [-]
-      polytropic_efficiency               [-]
-    """          
-    #unpack the values
+ 
+    """        
     
     #unpack from conditions
     gamma     = conditions.freestream.isentropic_expansion_factor

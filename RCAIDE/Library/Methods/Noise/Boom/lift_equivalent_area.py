@@ -2,14 +2,14 @@
 # RCAIDE/Library/Methods/Noise/Boom/lift_equivalent_area.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import VLM 
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import Vortex_Lattice_Method 
 # Python package imports   
 import numpy as np  
     
@@ -27,7 +27,7 @@ def lift_equivalent_area(config,analyses,conditions):
         
         
         Source:
-        N/A
+        None
         
         Args:
         config                                [vehicle]
@@ -52,7 +52,7 @@ def lift_equivalent_area(config,analyses,conditions):
     settings     = analyses.aerodynamics.process.compute.lift.inviscid_wings.settings
     length       = config.total_length
     
-    results = VLM(conditions, settings, config)
+    results = Vortex_Lattice_Method(conditions, settings, config)
     CP = results.CP 
     VD = results.VD
     

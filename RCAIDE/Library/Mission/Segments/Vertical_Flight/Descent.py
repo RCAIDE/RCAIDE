@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Vertical_Flight/Descent.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
  
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -16,13 +16,13 @@ def initialize_conditions(segment):
     Descent segment with a constant rate.
 
     Source:
-    N/A
+    None
 
     Args:
     segment.altitude_start                              [meters]
     segment.altitude_end                                [meters]
     segment.descent_rate                                [meters/second]
-    segment.state.numerics.dimensionless.control_points [Unitless]
+    segment.state.numerics.dimensionless.control_points [unitless]
     segment.state.conditions.frames.inertial.time       [seconds]
 
     Returns:

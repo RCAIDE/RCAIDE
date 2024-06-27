@@ -2,7 +2,7 @@
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_aerodynamic_coefficients.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -65,8 +65,8 @@ def plot_aerodynamic_coefficients(results,
     
     for i, segment in enumerate(results.segments):
         time = segment.conditions.frames.inertial.time[:,0] / Units.min
-        cl   = segment.conditions.aerodynamics.coefficients.lift[:,0,None]
-        cd   = segment.conditions.aerodynamics.coefficients.drag[:,0,None]
+        cl   = segment.conditions.aerodynamics.coefficients.lift.total[:,0,None]
+        cd   = segment.conditions.aerodynamics.coefficients.drag.total[:,0,None]
         aoa  = segment.conditions.aerodynamics.angles.alpha[:,0] / Units.deg
         l_d  = cl/cd    
                        

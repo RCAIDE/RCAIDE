@@ -32,7 +32,7 @@ class Combustor(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None

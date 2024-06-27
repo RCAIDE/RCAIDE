@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/set_optimized_parameters.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Set Optimized rotor platform paramters

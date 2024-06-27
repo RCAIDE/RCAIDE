@@ -1,5 +1,5 @@
-## @defgroup Library-Methods-Energy-Battery Battery
-# RCAIDE/Library/Methods/Energy/Sources/Battery/__init__.py
+## @defgroup Methods-Energy-Sources-Battery Battery
+# RCAIDE/Methods/Energy/Sources/Battery/__init__.py
 # 
 
 """ RCAIDE Package Setup

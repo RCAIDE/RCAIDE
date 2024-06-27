@@ -29,7 +29,7 @@ class Propeller(Rotor):
         None
         
         Source:
-        N/A
+        None
         
         Args:
         None

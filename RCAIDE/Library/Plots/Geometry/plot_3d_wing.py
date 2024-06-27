@@ -31,8 +31,6 @@ def plot_3d_wing(plot_data,wing,number_of_airfoil_points = 21, color_map='greys'
     VD.
        XA1...ZB2    - coordinates of wing vortex distribution
     color_map       - color of panel 
-
-
     """
      
     af_pts    = number_of_airfoil_points-1 
@@ -98,9 +96,7 @@ def generate_3d_wing_points(wing,n_points,dim):
     n_points         - number of points around airfoils of each blade section
     dim              - number for radial dimension
     i                - blade number
-    aircraftRefFrame - boolean to convert the coordinates from rotor frame to aircraft frame 
-
-
+    aircraftRefFrame - boolean to convert the coordinates from rotor frame to aircraft frame  
     """    
     # unpack  
     # obtain the geometry for each segment in a loop                                            

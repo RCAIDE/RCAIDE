@@ -2,7 +2,7 @@
 # RCAIDE/Library/Compoments/Energy/Networks/Distribution/Fuel_Line.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -17,9 +17,8 @@ from RCAIDE.Library.Components.Component                      import Container
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Compoments-Energy-Networks-Distribution
 class Fuel_Line(Component):
-    """ Fuel line class.
-    """ 
-    
+    """ Fuel line component class.
+    """  
     def __defaults__(self):
         """This sets the default values.
     

@@ -21,21 +21,15 @@ class Fuel_Selector(Component):
     def __defaults__(self):
         """ This sets the default values.
     
-            Assumptions:
+        Assumptions:
             None
-    
-            Source:
-            N/A
-    
-            Args:
+
+        Source:
             None
-    
-            Returns:
-            None
-    
-            Properties Used:
-            None
-            """         
+
+        Args:
+           self 
+        """        
 
         self.tag              = 'fuel_selector'  
         self.efficiency       = 0.0       

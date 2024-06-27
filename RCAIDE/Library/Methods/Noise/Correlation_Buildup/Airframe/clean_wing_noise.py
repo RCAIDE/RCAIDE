@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/clean_wing_noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -47,11 +47,7 @@ def clean_wing_noise(S,b,ND,IsHorz,velocity,viscosity,M,phi,theta,distance,frequ
 
     Returns: One Third Octave Band SPL [dB]
         SPL                              - Sound Pressure Level of the clean wing [dB]
-        OASPL                            - Overall Sound Pressure Level of the clean wing [dB]
-
-    Properties Used:
-        None
-    
+        OASPL                            - Overall Sound Pressure Level of the clean wing [dB] 
     """
  
     delta  = 0.37*(S/b)*(velocity/Units.ft*S/(b*viscosity))**(-0.2)

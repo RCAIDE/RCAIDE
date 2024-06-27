@@ -1,5 +1,5 @@
-## @defgroup Library-Methods-Energy-Fuel_Cell-Discharge Discharge
-# RCAIDE/Library/Methods/Power/Fuel_Cell/Discharge/__init__.py
+## @defgroup Methods-Energy-Sources-Fuel_Cell-Discharge Discharge
+# RCAIDE/Methods/Power/Fuel_Cell/Discharge/__init__.py
 # 
 
 """ RCAIDE Package Setup
@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Library-Methods-Energy-Fuel_Cell
+# @ingroup Methods-Energy-Sources-Fuel_Cell
 
 from Legacy.trunk.S.Methods.Power.Fuel_Cell.Discharge.zero_fidelity            import zero_fidelity
 from Legacy.trunk.S.Methods.Power.Fuel_Cell.Discharge.larminie                 import larminie

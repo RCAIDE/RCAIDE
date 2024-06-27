@@ -1,6 +1,6 @@
 ## @ingroup Library-Plots-Geometry  
 # RCAIDE/Library/Plots/Geometry/plot_3d_rotor.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -9,7 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
-from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry, compute_naca_4series
+from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series
 
 # python imports 
 import numpy as np 
@@ -34,10 +35,7 @@ def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data 
     axes                       - plotting axes
     rotor                      - RCAIDE rotor for which to plot the geometry
     cpt                        - control point at which to plot the rotor
-    number_of_airfoil_points   - discretization of airfoil geometry 
-    
-
-
+    number_of_airfoil_points   - discretization of airfoil geometry  
     """
     plot_propeller_only = False
     if plot_data == None: 
@@ -113,9 +111,7 @@ def generate_3d_blade_points(rotor,n_points,dim,i,aircraftRefFrame=True):
     n_points         - number of points around airfoils of each blade section
     dim              - number for radial dimension
     i                - blade number
-    aircraftRefFrame - boolean to convert the coordinates from rotor frame to aircraft frame 
-
-
+    aircraftRefFrame - boolean to convert the coordinates from rotor frame to aircraft frame  
     """    
     # unpack 
     num_B        = rotor.number_of_blades

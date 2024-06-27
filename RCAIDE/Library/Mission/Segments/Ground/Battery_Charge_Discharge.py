@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Ground/Battery_Charge_Discharge.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
  
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -15,7 +15,7 @@ def initialize_conditions(segment):
     During recharging, the charge time associated with the largest capacity battery pack is used 
     
     Source:
-    N/A
+    None
 
     Args:
     segment.overcharge_contingency              [-]

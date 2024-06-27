@@ -15,40 +15,16 @@ from .Wing import Wing
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Wings   
 class Horizontal_Tail(Wing):
-    """ This is the horizontal stabilizer class  
-    
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
-        Properties Used:
-        N/A
+    """ Horizontal tail compoment class 
         """ 
 
     def __defaults__(self):
         """This sets the default for horizontal tails.
     
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
-        Properties Used:
-        N/A
+            None 
         """ 
         self.tag = 'horizontal_stabilizer'

@@ -2,7 +2,7 @@
 # RCAIDE/Methods/Weights/Buildups/Common/compute_boom_weight.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -27,10 +27,7 @@ def compute_boom_weight(boom,
         Args:  
 
         Returns: 
-            weight:                 Estimated Boom Mass             [kg]
-        
-        Properties Used:
-        Material Properties of Imported RCAIDE Solids
+            weight:                 Estimated Boom Mass             [kg] 
     """
 
     #-------------------------------------------------------------------------------

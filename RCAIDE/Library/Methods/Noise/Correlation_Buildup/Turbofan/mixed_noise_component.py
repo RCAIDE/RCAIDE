@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/mixed_noise_component.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -20,7 +20,7 @@ def mixed_noise_component(Velocity_primary,theta_m,sound_ambient,Velocity_second
     """This function calculates the noise contribution of the mixed jet component
     
     Assumptions:
-        N/A
+        None
 
     Source:
         None
@@ -41,10 +41,7 @@ def mixed_noise_component(Velocity_primary,theta_m,sound_ambient,Velocity_second
         XBPR                   
 
     Returns:
-        SPL_m                [dB]
-
-    Properties Used: 
-        N/A 
+        SPL_m                [dB] 
     """ 
 
     #Calculation of the velocity exponent

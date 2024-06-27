@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Segments/Vertical_Flight/Hover.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
  
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -16,12 +16,12 @@ def initialize_conditions(segment):
     Descent segment with a constant rate.
 
     Source:
-    N/A
+    None
 
     Args:
     segment.altitude                            [meters]
     segment.tim                                 [second]
-    state.numerics.dimensionless.control_points [Unitless]
+    state.numerics.dimensionless.control_points [unitless]
     state.conditions.frames.inertial.time       [seconds]
 
     Returns:

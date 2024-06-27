@@ -18,22 +18,24 @@ def infl_coeff(x,y,xbar,ybar,st,ct,npanel,ncases,ncpts):
     """Compute the matrix of aerodynamic influence  coefficients for later use
 
     Assumptions:
-    None
+        None
 
     Source:
-    None 
+        None 
  
     Inputs
-    x       -  Vector of x coordinates of the surface nodes  [unitless]   
-    y       -  Vector of y coordinates of the surface nodes  [unitless]   
-    xbar    -  x-coordinate of the midpoint of each panel    [unitless]      
-    ybar    -  y-coordinate of the midpoint of each panel    [unitless]     
-    st      -  np.sin(theta) for each panel                  [radians]               
-    ct      -  np.cos(theta) for each panel                  [radians]                 
-    npanel  -  Number of panels on the airfoil               [unitless]       
+        x       (numpy.ndarray):  Vector of x coordinates of the surface nodes  [unitless]   
+        y       (numpy.ndarray):  Vector of y coordinates of the surface nodes  [unitless]   
+        xbar    (numpy.ndarray):  x-coordinate of the midpoint of each panel    [unitless]      
+        ybar    (numpy.ndarray):  y-coordinate of the midpoint of each panel    [unitless]    
+        st      (numpy.ndarray):  np.sin(theta) for each panel                  [radians]               
+        ct      (numpy.ndarray):  np.cos(theta) for each panel                  [radians]                  
+        npanel            (int):  Number of panels on the airfoil               [unitless]                 
+        ncases            (int):  Number of cases                               [unitless]                
+        ncpts             (int):  Number of control points                      [unitless]       
                                                                                             
     Outputs                                        
-    ainfl   -  Aero influence coefficient matrix             [unitless] 
+        ainfl   (numpy.ndarray):  Aero influence coefficient matrix             [unitless] 
     """                          
     # This code has been written in an i,j style, where i is the panel where the source is located and j is the location where the effect is measured
     ainfl                = np.zeros((ncases,ncpts,npanel+1,npanel+1))    

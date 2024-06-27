@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Engine/compute_power_from_throttle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -22,7 +22,7 @@ def compute_power_from_throttle(engine,conditions,throttle):
     """ The internal combustion engine output power and specific power consumption
     
     Source:
-    N/A
+    None
     
     Assumtions:
     Available power based on Gagg and Ferrar model (ref: S. Gudmundsson, 2014 - eq. 7-16)

@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery-Common
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/initialize_from_energy_and_power.py
+## @ingroup Methods-Energy-Sources-Battery-Common
+# RCAIDE/Methods/Energy/Sources/Battery/Common/initialize_from_energy_and_power.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Energy-Battery-Common
+## @ingroup Methods-Energy-Sources-Battery-Common
 def initialize_from_energy_and_power(battery, energy, power, max='hard'):
     """
     Uses a soft_max function to calculate the batter mass, maximum energy, and maximum power
@@ -25,14 +25,14 @@ def initialize_from_energy_and_power(battery, energy, power, max='hard'):
     Assumptions:
     None
     
-    Args:
+    Inputs:
     energy            [J]
     power             [W]
     battery.
       specific_energy [J/kg]               
       specific_power  [W/kg]
     
-    Returns:
+    Outputs:
      battery.
        maximum_energy
        maximum_power

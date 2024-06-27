@@ -16,50 +16,15 @@ from RCAIDE.Library.Components import Component
 ## @ingroup Library-Components-Systems
 class Avionics(Component):
     """A class representing avionics.
-    
-    Assumptions:
-    None
-    
-    Source:
-    N/A
     """        
     def __defaults__(self):
         """This sets the default power draw.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
+            None 
         """                 
         self.power_draw = 0.0
         self.tag        = 'avionics'
-        
-    def power(self):
-        """This gives the power draw from avionics.
-
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        self.outputs.power_draw          [Watts]
-                                           
-        Properties Used:
-        self.power_draw    
-        """                 
-        self.inputs.power = self.power_draw
-        
-        return self.power_draw

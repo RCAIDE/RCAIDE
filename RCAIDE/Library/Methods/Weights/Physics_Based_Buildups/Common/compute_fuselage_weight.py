@@ -2,7 +2,7 @@
 # RCAIDE/Methods/Weights/Buildups/Common/compute_fuselage_weight.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -35,15 +35,12 @@ def compute_fuselage_weight(fuse,maxSpan, MTOW,
         Args:
 
             config                      RCAIDE Vehicle Configuration
-            max_g_load                  Max Accelerative Load During Flight [Unitless]
-            landing_impact_factor       Maximum Load Multiplier on Landing  [Unitless]
+            max_g_load                  Max Accelerative Load During Flight [unitless]
+            landing_impact_factor       Maximum Load Multiplier on Landing  [unitless]
 
         Returns:
 
-            weight:                 Estimated Fuselage Mass             [kg]
-        
-        Properties Used:
-        Material Properties of Imported RCAIDE Solids
+            weight:                 Estimated Fuselage Mass             [kg] 
     """
 
     #-------------------------------------------------------------------------------

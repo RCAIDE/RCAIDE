@@ -7,8 +7,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
+from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
-import numpy as np   
+import numpy as np  
+import plotly.graph_objects as go 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -26,10 +28,7 @@ def plot_3d_fuselage(plot_data,fuselage, tessellation = 24 ,color_map = 'teal'):
     Args:
     fuselage             - fuselage data structure
     fuselage_points      - coordinates of fuselage points
-    color_map            - color of panel 
-
-
-
+    color_map            - color of panel  
     """
     fuselage_points      = generate_3d_fuselage_points(fuselage,tessellation = 24 )
     num_fus_segs = len(fuselage_points[:,0,0])
@@ -60,9 +59,7 @@ def generate_3d_fuselage_points(fuselage ,tessellation = 24 ):
     None
 
     Args:
-    fuselage                  - fuselage data structure
-
-
+    fuselage                  - fuselage data structure 
     """
     num_fus_segs = len(fuselage.Segments.keys())
     fuselage_points      = np.zeros((num_fus_segs,tessellation ,3))

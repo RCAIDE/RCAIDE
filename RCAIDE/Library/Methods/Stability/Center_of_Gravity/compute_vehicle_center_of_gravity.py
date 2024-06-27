@@ -1,7 +1,7 @@
 ## @ingroup Methods-Stability-Center_of_Gravity
 # RCAIDE/Methods/Stability/Center_of_Gravity/compute_vehicle_center_of_gravity.py 
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

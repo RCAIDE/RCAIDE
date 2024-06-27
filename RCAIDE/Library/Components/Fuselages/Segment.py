@@ -16,21 +16,16 @@ from RCAIDE.Library.Components import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Wings  
 class Segment(Component):
+    """Fuselage segment class.
+    """
     def __defaults__(self): 
         """This sets the default for fuselage segments in RCAIDE.
 
         Assumptions:
-        None
+           None
 
         Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
+           None
         """ 
         self.tag                     = 'segment'
         self.prev                    = None
@@ -44,21 +39,7 @@ class Segment(Component):
         
 ## @ingroup Components-Wings
 class Segment_Container(Container):
-    """ Container for fuselage segment
-    
-    Assumptions:
-    None
-
-    Source:
-    N/A
-
-    Args:
-    None
-
-    Returns:
-    None
-
-
+    """ Container for fuselage segment.
     """     
 
     def get_children(self):
@@ -68,14 +49,7 @@ class Segment_Container(Container):
         None
     
         Source:
-        N/A
-    
-        Args:
-        None
-    
-        Returns:
-        None
-    
+        None 
         """       
         
         return []

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Correlation_Buildup/Engine/angle_of_attack_effect.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -20,21 +20,18 @@ def angle_of_attack_effect(AoA,Mach_aircraft,theta_m):
     to the predicted mixed jet noise level. 
         
     Assumptions:
-        N/A
+        None
 
     Source:
         SAE Model
     
     Args:   
         AoA           angle of attack         [rad]
-        Mach_aircraft mach number of aircraft [Unitless]
+        Mach_aircraft mach number of aircraft [unitless]
         theta_m       emission angle          [rad]                
     
     Returns:
-        ATK_m         angle of attack effect  [Unitless]    
-    
-    Properties Used:
-        None 
+        ATK_m         angle of attack effect  [unitless]   
     """
 
     # Angle of attack effect

@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Common/compute_relative_noise_evaluation_locations.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -23,7 +23,7 @@ def compute_relative_noise_evaluation_locations(settings,segment):
         Acoustic scattering is not modeled
 
     Source:
-        N/A  
+        None  
 
     Args:  
         settings.ground_microphone_locations                - array of microphone locations on the ground  [meters] 
@@ -35,10 +35,7 @@ def compute_relative_noise_evaluation_locations(settings,segment):
     RML        - relative microphone locations
     EGML       - evaluation ground microphone locations
     AGML       - absolute ground microphone locations
-    num_gm_mic - number of ground microphones
- 
-    Properties Used:
-        N/A       
+    num_gm_mic - number of ground microphones  
     """       
  
     mic_stencil_x     = settings.ground_microphone_x_stencil      

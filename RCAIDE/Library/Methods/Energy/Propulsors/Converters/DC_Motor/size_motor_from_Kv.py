@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Motor/size_motor_from_Kv.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -29,8 +29,6 @@ def size_motor_from_Kv(motor):
       resistance         [ohms]
       no_load_current    [amps]
       mass               [kg]
-    
-    
     """
     
     # Set the KV     

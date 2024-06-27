@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery-Lithium_Ion_NMC
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/update_nmc_cell_age.py
+## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC
+# RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/update_nmc_cell_age.py
 # 
 # 
 # Created:  Feb 2024, M. Clarke 
@@ -12,7 +12,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # update_nmc_cell_age
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Compoments-Energy-Batteries-Lithium_Ion_NMC 
+## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
 def update_nmc_cell_age(battery,battery_conditions,increment_battery_age_by_one_day):  
     """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries. 
    
@@ -34,9 +34,7 @@ def update_nmc_cell_age(battery,battery_conditions,increment_battery_age_by_one_
     Returns:
        segment.conditions.energy.
          battery.capacity_fade_factor     (internal resistance growth factor)   [unitless]
-         battery.resistance_growth_factor (capactance (energy) growth factor)   [unitless]  
-         
- 
+         battery.resistance_growth_factor (capactance (energy) growth factor)   [unitless]   
     """    
     n_series   = battery.pack.electrical_configuration.series
     SOC        = battery_conditions.cell.state_of_charge

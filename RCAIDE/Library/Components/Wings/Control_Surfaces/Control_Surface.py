@@ -38,7 +38,7 @@ class Control_Surface(Component):
             os cut out from the trailing edge.
 
         Source:
-        N/A
+        None
 
         Args:
         None

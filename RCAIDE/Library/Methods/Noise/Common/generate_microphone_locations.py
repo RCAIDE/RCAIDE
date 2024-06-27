@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Common/generate_microphone_locations.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -26,7 +26,7 @@ def generate_zero_elevation_microphone_locations(settings):
         None
 
     Source:
-        N/A  
+        None  
 
     Args:   
     settings.
@@ -38,10 +38,7 @@ def generate_zero_elevation_microphone_locations(settings):
         N_y   - number of microphones on y-axis 
     
     Returns: 
-        gm_mic_locations   - cartesian coordiates of all microphones defined  [meters] 
-    
-    Properties Used:
-        N/A       
+        gm_mic_locations   - cartesian coordiates of all microphones defined  [meters]  
     """       
 
     N_x                   = settings.ground_microphone_x_resolution 
@@ -82,7 +79,7 @@ def generate_terrain_elevated_microphone_locations(topography_file             =
         topography_file is a text file obtained from https://topex.ucsd.edu/cgi-bin/get_data.cgi
     
     Source:
-        N/A  
+        None  
 
     Args:  
         topography_file                        - file of lattide, longitude and elevation points                                [-]
@@ -105,10 +102,7 @@ def generate_terrain_elevated_microphone_locations(topography_file             =
         ground_microphone_min_y                - y-location of start of computation domain                                      [meters]                
         ground_microphone_max_y                - y-location of end of computation domain                                        [meters]  
         cartesian_micrphone_locations          - cartesian coordinates (x,y,z) of all microphones in domain                     [meters]       
-        latitude_longitude_micrphone_locations - latitude-longitude and elevation coordinates of all microphones in domain      [deg,deg,m]   
-    
-    Properties Used:
-        N/A       
+        latitude_longitude_micrphone_locations - latitude-longitude and elevation coordinates of all microphones in domain      [deg,deg,m]    
     """     
     # convert cooordinates to array 
     departure_coordinates   = np.asarray(departure_coordinates)
@@ -196,7 +190,7 @@ def generate_noise_hemisphere_microphone_locations(settings):
         None
 
     Source:
-        N/A  
+        None  
 
     Args:   
     settings.
@@ -207,10 +201,7 @@ def generate_noise_hemisphere_microphone_locations(settings):
         theta - noise hemisphere theta angle bounds       [radians] 
     
     Returns: 
-        gm_mic_locations   - cartesian coordiates of all microphones defined  [meters] 
-    
-    Properties Used:
-        N/A       
+        gm_mic_locations   - cartesian coordiates of all microphones defined  [meters]  
     """       
     
 

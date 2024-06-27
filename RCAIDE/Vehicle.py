@@ -57,19 +57,16 @@ class Vehicle(Data):
         """ Sets up the component hierarchy for a vehicle
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None 
         """          
         # will set defaults
         super(Vehicle,self).__init__(*args,**kwarg)  
@@ -80,8 +77,7 @@ class Vehicle(Data):
             Components.Systems.System                  : self['systems']          ,
             Components.Systems.Avionics                : self['avionics']         ,
             Components.Payloads.Payload                : self['payload']          , 
-            Framework.Networks.Network                 : self['networks']         , 
-            Components.Nacelles.Nacelle                : self['nacelles']         ,
+            Framework.Networks.Network                 : self['networks']         ,
             Attributes.Envelope                        : self['envelope']         ,
             Components.Booms.Boom                      : self['booms']            ,
             Components.Landing_Gear.Landing_Gear       : self['landing_gear']     ,
@@ -101,19 +97,16 @@ class Vehicle(Data):
         """ find pointer to component data root.
         
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None 
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None 
         """  
 
         # find component root by type, allow subclasses

@@ -16,34 +16,17 @@ from RCAIDE.Library.Components    import Component
 # ----------------------------------------------------------------------------------------------------------------------    
 ## @ingroup Library-Compoments-Landing_Gear
 class Landing_Gear(Component):
-    """ Landing gear default class 
-        
-        Assumptions:
-        None
-        
-        Source:
-        N/A
-    
+    """ Landing gear default class  
         """
 
     def __defaults__(self):
         """ This sets the default values for the component attributes.
         
-                Assumptions:
-                None
-                
-                Source:
-                N/A
-                
-                Args:
-                None
-                
-                Returns:
-                None
-                
-                Properties Used:
-                N/A
-        """
-       
+        Assumptions:
+            None
+        
+        Source:
+            None 
+        """ 
         self.tag = 'landing_gear'
      

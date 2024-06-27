@@ -18,37 +18,16 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Wings  
 class Wing(Component):
-    """This class defines the wing in RCAIDE
-
-    Assumptions:
-    None
-
-    Source:
-    N/A
-
-    Args:
-    None
-
-    Returns:
-    None
-
-
+    """Default wing compoment class. 
     """      
     def __defaults__(self):
         """This sets the default values of a wing defined in RCAIDE.
     
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
+            None 
         """         
 
         self.tag                               = 'wing'
@@ -63,7 +42,7 @@ class Wing(Component):
         self.aspect_ratio                      = 0.0
         self.thickness_to_chord                = 0.0
         self.aerodynamic_center                = [0.0,0.0,0.0]
-        self.exposed_root_chord_offset         = 0.0
+        self.percent_span_root_offset          = 0.0
         self.total_length                      = 0.0
                                                
         self.spans                             = Data()
@@ -104,24 +83,23 @@ class Wing(Component):
         self.Airfoil                           = Data() 
         
         self.Segments                          = Container()
-        self.control_surfaces                  = Container()
-        self.fuel_tanks                        = Container()
+        self.control_surfaces                  = Container() 
 
     def append_segment(self,segment):
         """ Adds a segment to the wing 
     
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            self    (dict): wing data structure
+            segment (dict): wing segment data structure
 
         Returns:
-        None
-
+            None 
         """ 
 
         # Assert database type
@@ -137,16 +115,17 @@ class Wing(Component):
         """ Adds an airfoil to the segment 
     
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
         Args:
-        None
+            self    (dict): wing data structure
+            airfoil (dict): airfoil segment data structure 
 
         Returns:
-        None
+            None
 
         """ 
 
@@ -167,7 +146,7 @@ class Wing(Component):
         None
 
         Source:
-        N/A
+        None
 
         Args:
         None
@@ -184,33 +163,7 @@ class Wing(Component):
         # Store data
         self.control_surfaces.append(control_surface)
 
-        return
-    
-    def append_fuel_tank(self,fuel_tank):
-        """ Adds a fuel tank to the wing 
-    
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Args:
-        None
-
-        Returns:
-        None
-
-        """ 
-
-        # Assert database type
-        if not isinstance(fuel_tank,Data):
-            raise Exception('input component must be of type Data()')
-
-        # Store data
-        self.Fuel_Tanks.append(fuel_tank)
-
-        return    
+        return 
     
 class Container(Component.Container):
     def get_children(self):
@@ -220,7 +173,7 @@ class Container(Component.Container):
         None
     
         Source:
-        N/A
+        None
     
         Args:
         None
@@ -233,8 +186,7 @@ class Container(Component.Container):
         from . import Vertical_Tail
         from . import Horizontal_Tail
         
-        return [Main_Wing,Vertical_Tail,Horizontal_Tail]
-
+        return [Main_Wing,Vertical_Tail,Horizontal_Tail] 
 
 # ------------------------------------------------------------
 #  Handle Linking

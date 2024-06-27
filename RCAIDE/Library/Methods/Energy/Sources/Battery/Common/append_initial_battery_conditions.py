@@ -1,5 +1,5 @@
-## @ingroup Library-Methods-Energy-Battery 
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/append_initial_battery_conditions.py
+## @ingroup Methods-Energy-Sources-Battery 
+# RCAIDE/Methods/Energy/Sources/Battery/Common/append_initial_battery_conditions.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -13,7 +13,7 @@ import RCAIDE
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Energy-Battery 
+## @ingroup Methods-Energy-Sources-Battery 
 def append_initial_battery_conditions(segment,bus,battery): 
     """ Packs the initial battery conditions
     
@@ -51,9 +51,7 @@ def append_initial_battery_conditions(segment,bus,battery):
                battery.cycle_in_day                 [int]
                battery.cell.charge_throughput       [Ampere-Hours] 
                battery.resistance_growth_factor     [unitless]
-               battery.capacity_fade_factor         [unitless] 
-    
-
+               battery.capacity_fade_factor         [unitless]  
     """       
     # compute ambient conditions
     atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()

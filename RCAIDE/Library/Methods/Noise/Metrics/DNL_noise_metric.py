@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Noise/Metrics/DNL_noise_metric.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke  
+# Created:  Jun 2024, M. Clarke  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -33,10 +33,7 @@ def DNL_noise_metric(noise_data, flight_times = ['12:00:00'],time_period = 24*Un
        noise_data  - post-processed noise data structure 
 
     Returns: [dB]
-       noise_data  - post-processed noise data structure 
-
-    Properties Used:
-        N/A  
+       noise_data  - post-processed noise data structure  
     """    
      
     if not hasattr(noise_data,'temporal_noise_exposure'):
