@@ -58,7 +58,7 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
       area_ratio                          [-]
       denisty                             [kg/m^3] 
     """                 
-    #unpack from conditions
+    # Unpack flight conditions 
     gamma    = conditions.freestream.isentropic_expansion_factor
     Cp       = conditions.freestream.specific_heat_at_constant_pressure
     Po       = conditions.freestream.pressure
@@ -67,20 +67,15 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
     R        = conditions.freestream.gas_specific_constant
     Mo       = conditions.freestream.mach_number
     
-    #unpack from inputs
+    # Unpack component inputs
     Tt_in    = expansion_nozzle.inputs.stagnation_temperature
-    Pt_in    = expansion_nozzle.inputs.stagnation_pressure
-    
-    #unpack from expansion_nozzle
-    pid      = expansion_nozzle.pressure_ratio
+    Pt_in    = expansion_nozzle.inputs.stagnation_pressure 
+    PR      = expansion_nozzle.pressure_ratio
     etapold  = expansion_nozzle.polytropic_efficiency
-    
-    
-    #Method for computing the nozzle properties
-    
+     
     #--Getting the output stagnation quantities
-    Pt_out   = Pt_in*pid
-    Tt_out   = Tt_in*pid**((gamma-1)/(gamma)*etapold)
+    Pt_out   = Pt_in*PR
+    Tt_out   = Tt_in*PR**((gamma-1)/(gamma)*etapold)
     ht_out   = Cp*Tt_out
     
     # A cap so pressure doesn't go negative

@@ -9,40 +9,42 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Framework.Core import Units
 
+# ----------------------------------------------------------------------------------------------------------------------  
+# size_motor_from_mass
+# ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Methods-Energy-Propulsors-Converters-Motor
 def size_motor_from_mass(motor):
-    """
-    Sizes motor from mass
+    """ Sizes motor from mass based on correlations. The following perperties
+        are computed  
+        motor.resistance       (float): motor resistance       [ohms]
+        motor.no_load_current  (float): motor no-load current  [A] 
+        motor.speed_constant   (float): motor speed constant   [RPM/V]
     
     Source:
-    Gur, O., Rosen, A, AIAA 2008-5916.
+        Gur, O., Rosen, A, AIAA 2008-5916.
     
     Args:
-    motor.    (to be modified)
-      mass               [kg]
+        motor.mass       (float): motor mass   [kg]
     
     Returns:
-    motor.
-      resistance         [ohms]
-      no_load_current    [amps] 
-    """     
-    mass = motor.mass_properties.mass 
-    
-    # Correlations from Gur:
-    # Gur, O., Rosen, A, AIAA 2008-5916.  
+    None 
+
+    """
+    # unpack 
+    mass = motor.mass_properties.mass  
     
     B_KV = 50.   * Units['rpm*kg/volt']
     B_RA = 60000.* Units['(rpm**2)*ohm/(V**2)']
     B_i0 = 0.2   * Units['amp*(ohm**0.6)']
     
-    # Do the calculations from the regressions
-    kv   = B_KV/mass
-    res  = B_RA/(kv**2.)
+    # compute properties 
+    KV   = B_KV/mass
+    res  = B_RA/(KV**2.)
     i0   = B_i0/(res**0.6) 
 
-    # Unpack the motor
+    # store motor properties 
+    motor.speed_constant  = KV   
     motor.resistance      = res 
-    motor.no_load_current = i0  
-    motor.speed_constant  = kv    
+    motor.no_load_current = i0   
 
-    return motor 
+    return  

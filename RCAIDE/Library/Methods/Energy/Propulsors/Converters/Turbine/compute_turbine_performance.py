@@ -43,11 +43,11 @@ def compute_turbine_performance(turbine,conditions):
     """           
     #unpack the values
     
-    #unpack from conditions
+    # Unpack flight conditions 
     gamma           = conditions.freestream.isentropic_expansion_factor
     Cp              = conditions.freestream.specific_heat_at_constant_pressure
     
-    #unpack from inputs
+    #Unpack component inputs
     Tt_in           = turbine.inputs.stagnation_temperature
     Pt_in           = turbine.inputs.stagnation_pressure
     alpha           = turbine.inputs.bypass_ratio

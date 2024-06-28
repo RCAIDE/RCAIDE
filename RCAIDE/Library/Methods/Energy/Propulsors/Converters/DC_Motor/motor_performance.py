@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
-# RCAIDE/Library/Methods/Energy/Propulsors/Converters/DC_Motor/dc_motor_performance.py
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/DC_Motor/motor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke 
@@ -11,44 +11,49 @@
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  dc_motor_performance
+# compute_Q_from_omega_and_V
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
-def compute_Q_from_omega_and_V(motor):
-    """Calculates the motor's torque
-
+def compute_torque_from_RPM_and_voltage(motor):
+    """Calculates the motor's torque based on RPM (angular velocity) and voltage.  
+    The following perperties of the motor are computed
+    
+    motor.outputs.torque  (numpy.ndarray): torque  [Nm]
+    motor.outputs.omega   (numpy.ndarray): omega   [radian/s]
+      
     Assumptions:
+       None 
 
     Source:
-    None
+       None
 
     Args:
-    motor.
-      gear_ratio           [-]
-      speed_constant       [radian/s/V]
-      resistance           [ohm]
-      outputs.omega        [radian/s]
-      gearbox_efficiency   [-]
-      expected_current     [A]
-      no_load_current      [A]
-      inputs.volage        [V]
+        motor.
+          gear_ratio                  (float): gear ratio                [unitless]
+          speed_constant              (float): motor speed constant      [radian/s/V]
+          resistance                  (float): motor internal resistnace [ohm]
+          outputs.omega       (numpy.ndarray): angular velocity          [radian/s]
+          gearbox_efficiency          (float): gearbox efficiency        [unitless]
+          expected_current            (float): current                   [A]
+          no_load_current             (float): no-load current           [A]
+          inputs.volage       (numpy.ndarray): operating voltage         [V]
 
     Returns:
-    motor.outputs.torque    [N-m] 
+        None 
  
     """
     
     Res   = motor.resistance
-    etaG  = motor.gearbox_efficiency
-    exp_i = motor.expected_current
-    io    = motor.no_load_current + exp_i*(1-etaG)
+    eta_G  = motor.gearbox_efficiency
+    exp_I = motor.expected_current
+    I0    = motor.no_load_current + exp_I*(1-eta_G)
     G     = motor.gear_ratio
-    Kv    = motor.speed_constant/G
+    KV    = motor.speed_constant/G
     v     = motor.inputs.voltage
     omega = motor.inputs.omega
     
     # Torque
-    Q = ((v-omega/Kv)/Res -io)/Kv
+    Q = ((v-omega/KV)/Res -I0)/KV
     
     motor.outputs.torque = Q
     motor.outputs.omega  = omega
@@ -60,62 +65,60 @@ def compute_Q_from_omega_and_V(motor):
 #  compute_omega_and_Q_from_Cp_and_V
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
-def compute_omega_and_Q_from_Cp_and_V(motor,conditions):
-    """Calculates the motor's rotation rate
+def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,conditions):
+    """Calculates the motors RPM and torque using power coefficient and operating voltage.
+    The following perperties of the motor are computed  
+    motor.outputs.torque                    (numpy.ndarray):  torque [Nm]
+    motor.outputs.omega                     (numpy.ndarray):  omega  [radian/s] 
 
-    Assumptions:
-    Cp (power coefficient) is constant
+    Assumptions: 
+      Omega is solved by setting the torque of the motor equal to the torque of the prop
+      It assumes that the Cp is constant 
 
     Source:
-    None
+        None
 
     Args:
-    conditions.
-      freestream.velocity                    [m/s]
-      freestream.density                     [kg/m^3]
-      propulsion.propeller_power_coefficient [-]
-    motor.inputs.voltage                      [V]
-
+    conditions.freestream.density  (numpy.ndarray): density [kg/m^3] 
     motor.
-      resistance                             [ohms]
-      gearbox_efficiency                     [-]
-      expected_current                       [A]
-      no_load_current                        [A]
-      gear_ratio                             [-]
-      speed_constant                         [radian/s/V]
-      propeller_radius                       [m]
-      
+        gear_ratio                                 (float): gear ratio                [unitless]
+        speed_constant                             (float): motor speed constant      [radian/s/V]
+        resistance                                 (float): motor internal resistnace [ohm]
+        outputs.omega                      (numpy.ndarray): angular velocity          [radian/s]
+        gearbox_efficiency                         (float): gearbox efficiency        [unitless]
+        expected_current                           (float): current                   [A]
+        no_load_current                            (float): no-load current           [A]
+        inputs.volage                      (numpy.ndarray): operating voltage         [V]
+        inputs.rotor_power_coefficient     (numpy.ndarray): power coefficient         [unitless]
+        rotor_radius                               (float): rotor radius              [m]
+           
     Returns:
-    motor.outputs.
-      torque                                 [Nm]
-      omega                                  [radian/s] 
+        None
     """           
     # Unpack 
     rho   = conditions.freestream.density[:,0,None]
     Res   = motor.resistance
-    etaG  = motor.gearbox_efficiency
-    exp_i = motor.expected_current
-    io    = motor.no_load_current + exp_i*(1-etaG)
+    eta_G  = motor.gearbox_efficiency
+    exp_I = motor.expected_current
+    I0    = motor.no_load_current + exp_I*(1-eta_G)
     G     = motor.gear_ratio
-    Kv    = motor.speed_constant/G
+    KV    = motor.speed_constant/G
     R     = motor.rotor_radius
     v     = motor.inputs.voltage
-    Cp    = motor.inputs.rotor_CP
-    
+    Cp    = motor.inputs.rotor_power_coefficient 
 
-    # Omega
-    # This is solved by setting the torque of the motor equal to the torque of the prop
-    # It assumes that the Cp is constant
-    omega1  =   ((np.pi**(3./2.))*((- 16.*Cp*io*rho*(Kv*Kv*Kv)*(R*R*R*R*R)*(Res*Res) +
-                16.*Cp*rho*v*(Kv*Kv*Kv)*(R*R*R*R*R)*Res + (np.pi*np.pi*np.pi))**(0.5) - 
-                np.pi**(3./2.)))/(8.*Cp*(Kv*Kv)*(R*R*R*R*R)*Res*rho)
-    omega1[np.isnan(omega1)] = 0.0
+    # compute angular velocity, omega 
+    omega   =   ((np.pi**(3./2.))*((- 16.*Cp*I0*rho*(KV*KV*KV)*(R*R*R*R*R)*(Res*Res) +
+                16.*Cp*rho*v*(KV*KV*KV)*(R*R*R*R*R)*Res + (np.pi*np.pi*np.pi))**(0.5) - 
+                np.pi**(3./2.)))/(8.*Cp*(KV*KV)*(R*R*R*R*R)*Res*rho)
+    omega [np.isnan(omega )] = 0.0
     
-    Q = ((v-omega1/Kv)/Res -io)/Kv
-    # store to outputs 
+    # compute torque 
+    Q = ((v-omega /KV)/Res -I0)/KV 
     
-    motor.outputs.torque = Q
-    motor.outputs.omega = omega1
+    # store values 
+    motor.outputs.torque  = Q
+    motor.outputs.omega   = omega 
 
     return
 
@@ -124,49 +127,49 @@ def compute_omega_and_Q_from_Cp_and_V(motor,conditions):
 # compute_I_from_omega_and_V
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
-def compute_I_from_omega_and_V(motor):
-    """Calculates the motor's current
-
+def compute_current_from_RPM_and_voltage(motor):
+    """Calculates the motor's current from its RPM and voltage. 
+    The following perperties of the motor are computed   
+    motor.outputs.current     (numpy.ndarray): current      [A]
+    motor.outputs.efficiency  (numpy.ndarray): efficiency   [unitless] 
+      
     Assumptions:
-
+        None
+        
     Source:
-    None
+        None
 
-    Args:
-    motor.
-      gear_ratio           [-]
-      speed_constant       [radian/s/V]
-      resistance           [ohm]
-      outputs.omega        [radian/s]
-      gearbox_efficiency   [-]
-      expected_current     [A]
-      no_load_current      [A]
-    motor.inputs.voltage   [V]
+    Args: 
+        gear_ratio                  (float): gear ratio                [unitless]
+        speed_constant              (float): motor speed constant      [radian/s/V]
+        resistance                  (float): motor internal resistnace [ohm]
+        outputs.omega       (numpy.ndarray): angular velocity          [radian/s]
+        gearbox_efficiency          (float): gearbox efficiency        [unitless]
+        expected_current            (float): current                   [A]
+        no_load_current             (float): no-load current           [A]
+        inputs.volage       (numpy.ndarray): operating voltage         [V] 
+        rotor_radius                (float): rotor radius              [m]
 
     Returns:
-    motor.outputs.current  [A]
-    conditions.
-      propulsion.etam      [-]  
+        None 
     """                      
     
     # Unpack
-    G     = motor.gear_ratio
-    Kv    = motor.speed_constant
+    KV    = motor.speed_constant
     Res   = motor.resistance
-    v     = motor.inputs.voltage
-    omeg  = motor.outputs.omega*G
-    etaG  = motor.gearbox_efficiency
-    exp_i = motor.expected_current
-    io    = motor.no_load_current + exp_i*(1-etaG)
+    omega = motor.outputs.omega
+    V     = motor.inputs.voltage
+    G     = motor.gear_ratio
+    eta_G = motor.gearbox_efficiency
+    exp_I = motor.expected_current
+    I0    = motor.no_load_current + exp_I*(1-eta_G)
     
-    i=(v-omeg/Kv)/Res
-    
-    # This line means the motor cannot recharge the battery
-    i[i < 0.0] = 0.0
+    # compute current 
+    I    = (V-(omega*G)/KV)/Res 
 
-    # Pack
-    motor.outputs.current    = i
-    motor.outputs.efficiency = (1-io/i)*(1-i*Res/v)
+    # Pack results 
+    motor.outputs.current    = I
+    motor.outputs.efficiency = (1-I0/I)*(1-I*Res/V)
     return
 
 
@@ -175,47 +178,49 @@ def compute_I_from_omega_and_V(motor):
 # compute_V_and_I_from_omega_and_Kv
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
-def compute_V_and_I_from_omega_and_Kv(motor):
-    """Calculates the motor's voltage and current
-
+def compute_voltage_and_current_from_RPM_and_speed_constant(motor):
+    """Calculates the motor's voltage and current from its RPM and speed constant
+    The following perperties of the motor are computed    
+        motor.outputs.current     (numpy.ndarray): current    [A] 
+        motor.outputs.volage      (numpy.ndarray): volage     [V] 
+        motor.outputs.efficiency  (numpy.ndarray): efficiency [unitless]
+        
     Assumptions:
+        None 
 
     Source:
-    None
+        None
 
     Args:
-    motor.
-      gear_ratio           [-]
-      speed_constant       [radian/s/V]
-      resistance           [ohm]
-      outputs.omega        [radian/s]
-      gearbox_efficiency   [-]
-      expected_current     [A]
-      no_load_current      [A]
+        gear_ratio                  (float): gear ratio                [unitless]
+        speed_constant              (float): motor speed constant      [radian/s/V]
+        resistance                  (float): motor internal resistnace [ohm]
+        inputs.omega        (numpy.ndarray): angular velocity          [radian/s]
+        gearbox_efficiency          (float): gearbox efficiency        [unitless]
+        expected_current            (float): current                   [A]
+        no_load_current             (float): no-load current           [A]
+        inputs.volage       (numpy.ndarray): operating voltage         [V] 
+        rotor_radius                (float): rotor radius              [m]
 
     Returns:
-    motor.outputs.current   [A]
-    conditions.
-      propulsion.volage    [V]
-    conditions.
-      propulsion.etam      [-] 
- 
+       None  
     """                      
            
-    Res   = motor.resistance
-    etaG  = motor.gearbox_efficiency
-    exp_i = motor.expected_current
-    io    = motor.no_load_current + exp_i*(1-etaG)
-    G     = motor.gear_ratio
-    kv    = motor.speed_constant/G
-    Q     = motor.inputs.torque
-    omega = motor.inputs.omega        
+    G      = motor.gear_ratio
+    KV     = motor.speed_constant/G
+    Q      = motor.inputs.torque
+    omega  = motor.inputs.omega   
+    Res    = motor.resistance     
+    eta_G  = motor.gearbox_efficiency
+    exp_I  = motor.expected_current
+    I0     = motor.no_load_current + exp_I*(1-eta_G)
+     
+    V = (Q*KV+I0)*Res + omega/KV
+    I = (V-omega/KV)/Res
     
-    v = (Q*kv+io)*Res + omega/kv
-    i = (v-omega/kv)/Res
-    
-    motor.outputs.voltage    = v
-    motor.outputs.current    = i
-    motor.outputs.efficiency = (1-io/i)*(1-i*Res/v)
+    # Store results 
+    motor.outputs.current    = I
+    motor.outputs.efficiency = (1-I0/I)*(1-I*Res/V)
+    motor.outputs.voltage    = V
     
     return

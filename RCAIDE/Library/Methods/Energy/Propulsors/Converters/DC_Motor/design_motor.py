@@ -7,94 +7,69 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
-
-# package imports 
+# python imports  
 from scipy.optimize import minimize 
 
+# ----------------------------------------------------------------------------------------------------------------------
+#  design motor 
+# ----------------------------------------------------------------------------------------------------------------------    
 ## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
 def design_motor(motor):
-    ''' Optimizes the motor to obtain the best combination of speed constant and resistance values
-    by essentially sizing the motor for a design RPM value. Note that this design RPM 
-    value can be compute from design tip mach  
+    ''' Sizes a DC motor to obtain the best combination of speed constant and resistance values
+    by sizing the motor for a design RPM value. Note that this design RPM value can be compute
+    from design tip mach. The following properties are computed.  
+      motor.speed_constant  (float): speed-constant [untiless] 
+      motor.resistance      (float): resistance     [ohms]        
     
     Assumptions:
-    motor design performance occurs at 90% nominal voltage to account for off design conditions 
+        None 
     
     Source:
-    None
+        None
     
     Args:
-    motor                         [-]  
-      
-    motor.     
-      no_load_current             [amps]
-      mass_properties.mass        [kg]
-           
-    Returns:     
-    motor.     
-      speed_constant              [untiless]
-      design_torque               [Nm] 
-      motor.resistance            [Ohms]
-      motor.angular_velocity      [rad/s]
-      motor.origin                [m]
-    '''    
-      
-    # design conditions for motor 
-    io                          = motor.no_load_current
-    v                           = motor.nominal_voltage
-    omeg                        = motor.angular_velocity     
-    etam                        = motor.efficiency 
-    Q                           = motor.design_torque 
-    
-    # solve for speed constant   
-    opt_params = optimize_kv(io, v , omeg,  etam ,  Q)
-    
-    Kv  =  opt_params[0]
-    Res =  opt_params[1]    
-    
-    motor.speed_constant   = Kv 
-    motor.resistance       = Res 
-    
-    return motor 
-  
-## @ingroup Methods-Energy-Propulsors
-def optimize_kv(io, v , omeg,  etam ,  Q, kv_lower_bound =  0.01, Res_lower_bound = 0.001, kv_upper_bound = 100, Res_upper_bound = 10 ): 
-    ''' Optimizer for compute_optimal_motor_parameters function  
-    
-    Source:
-    None
-    
-    Args:
-    motor    (to be modified)
-    
+        motor.no_load_current  (float): no-load current  [A]
+        motor.nominal_voltage  (float): nominal voltage  [V]
+        motor.angular_velocity (float): angular velocity [radians/s]    
+        motor.efficiency       (float): efficiency       [unitless]
+        motor.design_torque    (float): design torque    [Nm]
+       
     Returns:
-    motor.
-      speed_constant     [untiless]
-      no_load_current    [amps]
-    '''        
-    # objective  
+       None 
     
-    args = (v , omeg,  etam , Q , io )
+    '''     
+    # design properties of the motor 
+    io    = motor.no_load_current
+    v     = motor.nominal_voltage
+    omeg  = motor.angular_velocity     
+    etam  = motor.efficiency 
+    Q     = motor.design_torque 
     
-    hard_cons = [{'type':'eq', 'fun': hard_constraint_1,'args': args},
-                 {'type':'eq', 'fun': hard_constraint_2,'args': args}]
+    # define optimizer bounds 
+    KV_lower_bound  = 0.01
+    Res_lower_bound = 0.001
+    KV_upper_bound  = 100
+    Res_upper_bound = 10
     
-    slack_cons = [{'type':'eq', 'fun': slack_constraint_1,'args': args},
-                  {'type':'eq', 'fun': slack_constraint_2,'args': args}] 
-    
-    bnds = ((kv_lower_bound, kv_upper_bound), (Res_lower_bound , Res_upper_bound)) 
+    args       = (v , omeg,  etam , Q , io ) 
+    hard_cons  = [{'type':'eq', 'fun': hard_constraint_1,'args': args},{'type':'eq', 'fun': hard_constraint_2,'args': args}] 
+    slack_cons = [{'type':'eq', 'fun': slack_constraint_1,'args': args},{'type':'eq', 'fun': slack_constraint_2,'args': args}]  
+    bnds       = ((KV_lower_bound, KV_upper_bound), (Res_lower_bound , Res_upper_bound)) 
     
     # try hard constraints to find optimum motor parameters
     sol = minimize(objective, [0.5, 0.1], args=(v , omeg,  etam , Q , io) , method='SLSQP', bounds=bnds, tol=1e-6, constraints=hard_cons) 
     
     if sol.success == False:
-        # use slack constraints  if optimum motor parameters cannot be found 
+        # use slack constraints if optimizer fails and motor parameters cannot be found 
         print('\n Optimum motor design failed. Using slack constraints')
-        sol = minimize(objective, [0.5, 0.1], args=(v , omeg,  etam , Q , io) , method='SLSQP', bounds=bnds, tol=1e-6, constraints=slack_cons)
-         
+        sol = minimize(objective, [0.5, 0.1], args=(v , omeg,  etam , Q , io) , method='SLSQP', bounds=bnds, tol=1e-6, constraints=slack_cons) 
         if sol.success == False:
-            assert('\n Slack contraints failed') 
-    return sol.x   
+            assert('\n Slack contraints failed')  
+    
+    motor.speed_constant   = sol[0]
+    motor.resistance       = sol[1]    
+    
+    return   
   
 # objective function
 def objective(x, v , omeg,  etam , Q , io ): 

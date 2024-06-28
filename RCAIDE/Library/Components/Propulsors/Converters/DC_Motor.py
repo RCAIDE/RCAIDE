@@ -42,20 +42,20 @@ class DC_Motor(Component):
 
 
         """           
-        self.tag                = 'motor' 
-        self.resistance         = 0.0
-        self.no_load_current    = 0.0
-        self.speed_constant     = 0.0
-        self.rotor_radius       = 0.0
-        self.rotor_Cp           = 0.0
-        self.efficiency         = 1.0
-        self.gear_ratio         = 1.0
-        self.gearbox_efficiency = 1.0
-        self.expected_current   = 0.0
-        self.power_split_ratio  = 0.0
-        self.design_torque      = 0.0
-        self.wing_mounted       = False
-        self.interpolated_func  = None
+        self.tag                     = 'motor' 
+        self.resistance              = 0.0
+        self.no_load_current         = 0.0
+        self.speed_constant          = 0.0
+        self.rotor_radius            = 0.0
+        self.rotor_power_coefficient = 0.0
+        self.efficiency              = 1.0
+        self.gear_ratio              = 1.0
+        self.gearbox_efficiency      = 1.0
+        self.expected_current        = 0.0
+        self.power_split_ratio       = 0.0
+        self.design_torque           = 0.0
+        self.wing_mounted            = False
+        self.interpolated_func       = None
         
     def compute_omega(self,conditions): 
         """Calculates the motor's rotation rate

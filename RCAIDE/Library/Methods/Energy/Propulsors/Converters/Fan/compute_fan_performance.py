@@ -39,16 +39,16 @@ def compute_fan_performance(fan,conditions):
  
     """        
     
-    #unpack from conditions
+    # Unpack flight conditions 
     gamma     = conditions.freestream.isentropic_expansion_factor
     Cp        = conditions.freestream.specific_heat_at_constant_pressure
     
-    #unpack from inputs
+    #Unpack component inputs
     Tt_in     = fan.inputs.stagnation_temperature
     Pt_in     = fan.inputs.stagnation_pressure
     
     #unpack from fan
-    pid       = fan.pressure_ratio
+    PR       = fan.pressure_ratio
     etapold   = fan.polytropic_efficiency
     
     #method to compute the fan properties
@@ -56,8 +56,8 @@ def compute_fan_performance(fan,conditions):
     #Compute the output stagnation quantities 
     ht_in     = Cp*Tt_in
     
-    Pt_out    = Pt_in*pid
-    Tt_out    = Tt_in*pid**((gamma-1)/(gamma*etapold))
+    Pt_out    = Pt_in*PR
+    Tt_out    = Tt_in*PR**((gamma-1)/(gamma*etapold))
     ht_out    = Cp*Tt_out    
     
     #computing the wok done by the fan (for matching with turbine)

@@ -9,5 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
         
-from .compute_scramjet_compression           import  compute_scramjet_compression
+from .compute_scramjet_compression           import compute_scramjet_compression
 from .compute_compression_nozzle_performance import compute_compression_nozzle_performance

@@ -40,12 +40,12 @@ def compute_ram_performance(ram,conditions):
       gas_specific_constant               [J/(kg K)]
       speed_of_sound                      [m/s] 
     """
-    #unpack from conditions
+    # Unpack flight conditions 
     Po = conditions.freestream.pressure
     To = conditions.freestream.temperature
     M  = conditions.freestream.mach_number
 
-    #unpack from inputs
+    #Unpack component inputs
     working_fluid          = ram.inputs.working_fluid
 
     #method to compute the ram properties

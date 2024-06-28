@@ -63,11 +63,7 @@ def compute_rayleigh(combustor,conditions):
     Tt4    = combustor.turbine_inlet_temperature 
     eta_b  = combustor.efficiency 
     htf    = combustor.fuel_data.specific_energy
-    ar     = combustor.area_ratio
-    
-    # Rayleigh flow analysis, constant pressure burner  
-    M_out  = 1*Pt_in/Pt_in
-    Ptr    = 1*Pt_in/Pt_in
+    ar     = combustor.area_ratio 
 
     # Isentropic decceleration through divergent nozzle
     Mach   = np.atleast_2d(fm_solver(ar,Mach[:,0],gamma[:,0])).T
@@ -80,6 +76,8 @@ def compute_rayleigh(combustor,conditions):
     Tt4[Tt4_ray <= Tt4] = Tt4_ray[Tt4_ray <= Tt4]
     
     # Rayleigh calculations
+    M_out                = np.zeros_like(Pt_in)
+    Ptr                  = np.zeros_like(Pt_in)
     M_out[:,0], Ptr[:,0] = rayleigh(gamma[:,0],Mach[:,0],Tt4[:,0]/Tt_in[:,0]) 
     Pt_out               = Ptr*Pt_in
          
