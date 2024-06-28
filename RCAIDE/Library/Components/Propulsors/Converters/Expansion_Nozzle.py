@@ -12,7 +12,7 @@ from RCAIDE.Library.Components                      import Component
  
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  Expansion_Nozzle
+#  Expansion Nozzle
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters
 class Expansion_Nozzle(Component):

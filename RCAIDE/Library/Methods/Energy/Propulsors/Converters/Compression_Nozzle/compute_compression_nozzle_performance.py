@@ -22,11 +22,11 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
         compression_nozzle.outputs.
           stagnation_temperature             (numpy.ndarray): exit stagnation temperature [K]
           stagnation_pressure                (numpy.ndarray): exit stagnation pressure    [Pa]
-          stagnation_enthalpy                (numpy.ndarray): exit stagnation enthalpy         [J/kg]
-          mach_number                        (numpy.ndarray): exit Mach number                 [unitless]
-          static_temperature                 (numpy.ndarray): exit static temperature          [K]
-          static_enthalpy                    (numpy.ndarray): exit static enthalpy             [J/kg]
-          velocity                           (numpy.ndarray): exit nozzle velocity             [m/s]
+          stagnation_enthalpy                (numpy.ndarray): exit stagnation enthalpy    [J/kg]
+          mach_number                        (numpy.ndarray): exit Mach number            [unitless]
+          static_temperature                 (numpy.ndarray): exit static temperature     [K]
+          static_enthalpy                    (numpy.ndarray): exit static enthalpy        [J/kg]
+          velocity                           (numpy.ndarray): exit nozzle velocity        [m/s]
           
 
     Assumptions:  
@@ -44,11 +44,11 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
           pressure                            (numpy.ndarray): pressure                           [Pa]
           gas_specific_constant               (numpy.ndarray): gas_specific_constant              [J/(kg K)]
         compression_nozzle.
-          inputs.stagnation_temperature       (numpy.ndarra): entering stagnation_temperature  [K]
-          inputs.stagnation_pressure          (numpy.ndarra): entering stagnation_pressure     [Pa] 
-          pressure_ratio                             (float): pressure_ratio                   [unitless]
-          polytropic_efficiency                      (float): polytropic_efficiency            [unitless]
-          pressure_recovery                          (float): pressure_recovery                [unitless]
+          inputs.stagnation_temperature       (numpy.ndarra): entering stagnation_temperature     [K]
+          inputs.stagnation_pressure          (numpy.ndarra): entering stagnation_pressure        [Pa] 
+          pressure_ratio                             (float): pressure_ratio                      [unitless]
+          polytropic_efficiency                      (float): polytropic_efficiency               [unitless]
+          pressure_recovery                          (float): pressure_recovery                   [unitless]
 
     Returns:
     """

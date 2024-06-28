@@ -21,28 +21,28 @@ import numpy as np
 def compute_power_from_throttle(engine,conditions,throttle):
     """ The internal combustion engine output power and specific power consumption.
     The following properties are computed:
-    engine
-      .outputs.power                           (numpy.ndarray): Brake power (or Shaft power)              [W]
-      .outputs.power_specific_fuel_consumption (numpy.ndarray): Power (brake) specific fuel consumption   [lbf/(HP· h) 
-      .outputs.fuel_flow_rate                  (numpy.ndarray): Fuel flow                                 [kg/s]
-      .outputs.torque                          (numpy.ndarray): Torque                                    [Q]
+        engine
+          .outputs.power                           (numpy.ndarray): Brake power (or Shaft power)  [W]
+          .outputs.power_specific_fuel_consumption (numpy.ndarray): Power (brake) SFC             [lbf/(HP· h) 
+          .outputs.fuel_flow_rate                  (numpy.ndarray): Fuel flow                     [kg/s]
+          .outputs.torque                          (numpy.ndarray): Torque                        [Q]
     
     Source:
         Gagg and Ferrar model (ref: S. Gudmundsson, 2014 - eq. 7-16)
     
     Assumtions:
-        Available power based on Gagg and Ferrar model (ref: S. Gudmundsson, 2014 - eq. 7-16)
+        None 
     
     Args:
         engine
           .sea_level_power                        (float): sea-level power      [W]
-          .flat_rate_altitude                     (float): flat rate altitude   [meters]
+          .flat_rate_altitude                     (float): flat rate altitude   [m]
           .power_specific_fuel_consumption        (float): PSFC                 [RPM]
           .throttle setting               (numpy.ndarray): throttle             [unitless]
           .inputs.speed                   (numpy.ndarray): angular velocity     [rad/s]
         freestream conditions 
-          .altitude                               (float): altitde              [meters]
-          .delta_isa                              (float): altitude offset      [meters]
+          .altitude                               (float): altitde              [m]
+          .delta_isa                              (float): altitude offset      [m]
             
     Returns:
         None 
@@ -75,19 +75,19 @@ def compute_power_from_throttle(engine,conditions,throttle):
     Pavailable[h_flat > altitude] = PSLS
 
     # Regulate using throttle 
-    output_power                  = Pavailable * throttle 
-    output_power[output_power<0.] = 0. 
-    SFC                           = PSFC * Units['lb/hp/hr']
+    P       = Pavailable * throttle 
+    P[P<0.] = 0. 
+    SFC     = PSFC * Units['lb/hp/hr']
 
     # Compute engine torque
-    torque = output_power/omega
+    torque = P/omega
     
     # Determine fuel flow rate
     alt_0           = np.zeros_like(altitude)
-    fuel_flow_rate  = np.fmax(output_power*SFC,alt_0) 
+    fuel_flow_rate  = np.fmax(P*SFC,alt_0) 
     
     # Store results 
-    engine.outputs.power                           = output_power
+    engine.outputs.power                           = P
     engine.outputs.power_specific_fuel_consumption = PSFC
     engine.outputs.fuel_flow_rate                  = fuel_flow_rate
     engine.outputs.torque                          = torque

@@ -15,11 +15,11 @@ import numpy as np
 # compute_shaft_power_offtake
 # ----------------------------------------------------------------------------------------------------------------------    
 ## @ingroup Methods-Energy-Propulsors-Converters-Shaft_Power_Offtake
-def compute_shaft_power_offtake(self, state):
+def compute_shaft_power_offtake(offtake_shaft, state):
     """ This computes the work done from the power draw. The following properties are computed: 
-    self.outputs.
-      power                 [W]
-      work_done             [J/(kg/s)] 
+    offtake_shaft.outputs.
+      power        (numpy.ndarray): power                              [W]
+      work_done    (numpy.ndarray): work done normalized by mass flow  [J/(kg/s)] 
 
     Assumptions:
         None
@@ -28,31 +28,30 @@ def compute_shaft_power_offtake(self, state):
         https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
     Args:
-    self.inputs.
-      mdhc                  [-] Compressor nondimensional mass flow
-      reference_temperature [K]
-      reference_pressure    [Pa]
-    self.power_draw         [W]
+        offtake_shaft
+          .inputs.mdhc                  (numpy.ndarray): Compressor nondimensional mass flow   [unitless] 
+          .inputs.reference_temperature (numpy.ndarray): Reference temperature                 [K]
+          .inputs.reference_pressure    (numpy.ndarray): Reference pressure                    [Pa]
+          .power_draw                           (float): power draw                            [W]
 
     Returns:
         None 
     """  
-    if self.power_draw == 0.0:
-        self.outputs.work_done = np.array([0.0]) 
+    if offtake_shaft.power_draw == 0.0:
+        offtake_shaft.outputs.work_done = np.array([0.0]) 
     else: 
-        mdhc = self.inputs.mdhc
-        Tref = self.reference_temperature
-        Pref = self.reference_pressure
-
-        total_temperature_reference = self.inputs.total_temperature_reference
-        total_pressure_reference    = self.inputs.total_pressure_reference
-
-        self.outputs.power = self.power_draw
-
+        # unpack 
+        total_temperature_reference = offtake_shaft.inputs.total_temperature_reference
+        total_pressure_reference    = offtake_shaft.inputs.total_pressure_reference
+        mdhc                        = offtake_shaft.inputs.mdhc
+        Tref                        = offtake_shaft.reference_temperature
+        Pref                        = offtake_shaft.reference_pressure
+        
+        # compute core mass flow rate 
         mdot_core = mdhc * np.sqrt(Tref / total_temperature_reference) * (total_pressure_reference / Pref)
 
-        self.outputs.work_done = self.outputs.power / mdot_core
-
-        self.outputs.work_done[mdot_core == 0] = 0
+        offtake_shaft.outputs.power     = offtake_shaft.power_draw
+        offtake_shaft.outputs.work_done = offtake_shaft.outputs.power / mdot_core  # normalize 
+        offtake_shaft.outputs.work_done[mdot_core == 0] = 0
         
     return 

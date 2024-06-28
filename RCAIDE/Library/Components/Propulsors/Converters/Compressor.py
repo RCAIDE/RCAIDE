@@ -15,7 +15,7 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters 
 class Compressor(Component):
-    """This is a compressor component typically used in a turbofan or turbojet
+    """This is a compressor component typically used in a turbofan or turbojet.
     """
     
     def __defaults__(self):

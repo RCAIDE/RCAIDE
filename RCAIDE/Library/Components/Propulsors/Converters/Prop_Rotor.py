@@ -12,7 +12,7 @@ from RCAIDE.Framework.Core import Data
 from .Rotor      import Rotor
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  PROP-ROTOR CLASS
+#  Prop-rotor
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Components-Propulsors-Converters
 class Prop_Rotor(Rotor):

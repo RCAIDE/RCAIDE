@@ -12,7 +12,7 @@ from RCAIDE.Library.Components import Component
 from RCAIDE.Framework.Core     import Data, Container 
  
 # ----------------------------------------------------------------------------------------------------------------------
-#  BOOM
+# Boom 
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Components-Booms
 class Boom(Component):

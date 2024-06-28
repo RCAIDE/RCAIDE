@@ -23,13 +23,7 @@ import scipy as sp
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Propulsion-Converters
 class Rotor(Component):
-    """This is a general rotor component.
-
-    Assumptions:
-    None
-
-    Source:
-    None
+    """This is a general rotor component. 
     """
     def __defaults__(self):
         """This sets the default values for the component to function.

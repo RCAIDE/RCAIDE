@@ -15,13 +15,7 @@ from RCAIDE.Library.Components                      import Component
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Components-Propulsors-Converters
 class Engine(Component):
-    """This is an internal combustion engine component.
-    
-    Assumptions:
-        None
-
-    Source:
-        None
+    """This is an internal combustion engine component. 
     """           
     def __defaults__(self):
         """This sets the default values for the component to function.
