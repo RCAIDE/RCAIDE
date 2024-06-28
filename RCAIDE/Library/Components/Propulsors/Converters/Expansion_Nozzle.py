@@ -16,33 +16,18 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters
 class Expansion_Nozzle(Component):
-    """This is a nozzle component intended for use in expansion.
-    Calling this class calls the compute function.
-    
-    Assumptions:
-    Pressure ratio and efficiency do not change with varying conditions.
-    Subsonic or choked output.
-    
-    Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """This is a nozzle component intended for use in expansion. 
     """
     
     def __defaults__(self):
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            1. Pressure ratio and efficiency do not change with varying conditions.
+            2. Subsonic or choked output.
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+            https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
         """          
         #set the defaults
         self.tag = 'Nozzle'

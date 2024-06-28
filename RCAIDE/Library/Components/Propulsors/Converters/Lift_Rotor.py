@@ -19,35 +19,19 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Components-Propulsors-Converters
 class Lift_Rotor(Rotor):
-    """This is a lift rotor component, and is a sub-class of rotor.
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """This is a lift rotor component, and is a sub-class of rotor. 
     """     
     def __defaults__(self):
         """This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
         
         Source:
-        None
-        
-        Args:
-        None
-        
-        Returns:
-        None
-        
-
-        """         
-
-
+            None 
+        """   
         self.tag                              = 'lift_rotor'
-        self.orientation_euler_angles         = [0.,np.pi/2.,0.] # This is Z-direction thrust up in vehicle frame
+        self.orientation_euler_angles         = [0.,np.pi/2.,0.]  
         self.use_2d_analysis                  = False
         self.variable_pitch                   = False 
 

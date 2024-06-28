@@ -16,34 +16,20 @@ from .Rotor      import Rotor
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Components-Propulsors-Converters
 class Prop_Rotor(Rotor):
-    """This is a prop_rotor component, and is a sub-class of rotor.
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """This is a prop_rotor component, and is a sub-class of rotor. 
     """     
     def __defaults__(self):
         """This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
         
         Source:
-        None
-        
-        Args:
-        None
-        
-        Returns:
-        None
-        
-
+            None  
         """         
 
         self.tag                                 = 'prop_rotor'
-        self.orientation_euler_angles            = [0.,0.,0.] # This is X-direction thrust in vehicle frame
+        self.orientation_euler_angles            = [0.,0.,0.]  
         self.use_2d_analysis                     = False       
         self.variable_pitch                      = True 
         
@@ -59,7 +45,20 @@ class Prop_Rotor(Rotor):
         self.hover.design_SPL_dBA                = None
         self.hover.design_Cl                     = None
         self.hover.design_thrust_coefficient     = None
-        self.hover.design_power_coefficient      = None  
+        self.hover.design_power_coefficient      = None
+
+        self.cruise                              = Data()     
+        self.cruise.design_thrust                = None
+        self.cruise.design_torque                = None
+        self.cruise.design_power                 = None
+        self.cruise.design_angular_velocity      = None
+        self.cruise.design_tip_mach              = None
+        self.cruise.design_acoustics             = None
+        self.cruise.design_performance           = None
+        self.cruise.design_SPL_dBA               = None
+        self.cruise.design_Cl                    = None
+        self.cruise.design_thrust_coefficient    = None
+        self.cruise.design_power_coefficient     = None          
         
         self.oei                                 = Data()   
         self.oei.design_thrust                   = None
@@ -75,18 +74,5 @@ class Prop_Rotor(Rotor):
         self.oei.design_Cl                       = None
         self.oei.design_thrust_coefficient       = None
         self.oei.design_power_coefficient        = None  
-
-        self.cruise                              = Data()     
-        self.cruise.design_thrust                = None
-        self.cruise.design_torque                = None
-        self.cruise.design_power                 = None
-        self.cruise.design_angular_velocity      = None
-        self.cruise.design_tip_mach              = None
-        self.cruise.design_acoustics             = None
-        self.cruise.design_performance           = None
-        self.cruise.design_SPL_dBA               = None
-        self.cruise.design_Cl                    = None
-        self.cruise.design_thrust_coefficient    = None
-        self.cruise.design_power_coefficient     = None       
-        
+      
         self.optimization_parameters.multiobjective_performance_weight  = 0.5

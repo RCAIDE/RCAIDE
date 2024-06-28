@@ -16,13 +16,16 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------    
 ## @ingroup Methods-Energy-Propulsors-Converters-Shaft_Power_Offtake
 def compute_shaft_power_offtake(self, state):
-    """ This computes the work done from the power draw.
+    """ This computes the work done from the power draw. The following properties are computed: 
+    self.outputs.
+      power                 [W]
+      work_done             [J/(kg/s)] 
 
     Assumptions:
-    None
+        None
 
     Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+        https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
     Args:
     self.inputs.
@@ -32,15 +35,11 @@ def compute_shaft_power_offtake(self, state):
     self.power_draw         [W]
 
     Returns:
-    self.outputs.
-      power                 [W]
-      work_done             [J/kg] (if power draw is not zero) 
+        None 
     """  
     if self.power_draw == 0.0:
-        self.outputs.work_done = np.array([0.0])
-
-    else:
-
+        self.outputs.work_done = np.array([0.0]) 
+    else: 
         mdhc = self.inputs.mdhc
         Tref = self.reference_temperature
         Pref = self.reference_pressure

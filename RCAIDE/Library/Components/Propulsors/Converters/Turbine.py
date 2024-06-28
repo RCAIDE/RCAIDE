@@ -15,32 +15,23 @@ from RCAIDE.Library.Components                      import Component
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Components-Propulsors-Converters
 class Turbine(Component):
-    """This is a turbine component typically used in a turbofan.
-    Calling this class calls the compute function.
+    """This is a turbine component typically used in a turbofan or turbojet
     
     Assumptions:
-    Efficiencies do not change with varying conditions.
+        Efficiencies do not change with varying conditions.
 
     Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+         https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
     """
     
     def __defaults__(self):
         """ This sets the default values for the component to function.
 
         Assumptions:
-        None
+            None
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+            None 
         """         
         #set the default values
         self.tag                               ='Turbine'

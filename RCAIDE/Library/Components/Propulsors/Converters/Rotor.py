@@ -35,18 +35,10 @@ class Rotor(Component):
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            None
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+            None 
         """
 
         self.tag                               = 'rotor' 
@@ -56,7 +48,7 @@ class Rotor(Component):
         self.tip_radius                        = 0.0
         self.hub_radius                        = 0.0
         self.twist_distribution                = 0.0
-        self.sweep_distribution                = 0.0         # quarter chord offset from quarter chord of root airfoil
+        self.sweep_distribution                = 0.0          
         self.chord_distribution                = 0.0
         self.thickness_to_chord                = 0.0
         self.radius_distribution               = None

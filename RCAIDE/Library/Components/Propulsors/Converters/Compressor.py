@@ -15,32 +15,17 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters 
 class Compressor(Component):
-    """This is a compressor component typically used in a turbofan.
-    Calling this class calls the compute function.
-    
-    Assumptions:
-    Pressure ratio and efficiency do not change with varying conditions.
-
-    Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """This is a compressor component typically used in a turbofan or turbojet
     """
     
     def __defaults__(self):
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            None
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+            None 
         """          
         #set the default values
         self.tag                             = 'Compressor'

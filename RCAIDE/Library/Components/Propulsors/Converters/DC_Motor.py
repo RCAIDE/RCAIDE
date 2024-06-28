@@ -17,30 +17,16 @@ from RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor import compute
 # ----------------------------------------------------------------------------------------------------------------------           
 ## @ingroup Components-Propulsors-Converters 
 class DC_Motor(Component):
-    """This is a motor component.
-    
-    Assumptions:
-    None
-
-    Source:
-    None
+    """This is a motor component. 
     """      
     def __defaults__(self):
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            None
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+            None 
         """           
         self.tag                     = 'motor' 
         self.resistance              = 0.0
@@ -61,18 +47,16 @@ class DC_Motor(Component):
         """Calculates the motor's rotation rate
         
         Assumptions:
-        None
+            None
 
         Source:
-        None
+            None
 
         Args:
-        None
+            None
 
         Returns:
-        None
-
-
+            None 
         """                   
          
         compute_omega_and_Q_from_Cp_and_V(self,conditions)    
@@ -83,18 +67,16 @@ class DC_Motor(Component):
         """Calculates the current draw from a DC motor 
         
         Assumptions:
-        None
+            None
 
         Source:
-        None
+            None
 
         Args:
-        None
+            None
 
         Returns:
-        None
-
-
+            None 
         """             
          
         compute_I_from_omega_and_V(self)        

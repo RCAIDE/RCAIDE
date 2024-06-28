@@ -15,30 +15,16 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters 
 class Shaft_Power_Offtake(Component):
-    """This is a component representing the power draw from the shaft.
-    
-    Assumptions:
-    None
-
-    Source:
-    None
+    """This is a component representing the power draw from the shaft. 
     """ 
     def __defaults__(self):
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            None
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+            None 
         """          
         self.power_draw            = 0.0
         self.reference_temperature = 288.15

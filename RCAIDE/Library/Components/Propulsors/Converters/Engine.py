@@ -18,12 +18,20 @@ class Engine(Component):
     """This is an internal combustion engine component.
     
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
     """           
     def __defaults__(self):
+        """This sets the default values for the component to function.
+
+        Assumptions:
+            None
+
+        Source:
+            None 
+        """      
         self.tag                             = 'internal_combustion_engine' 
         self.sea_level_power                 = 0.0
         self.flat_rate_altitude              = 0.0

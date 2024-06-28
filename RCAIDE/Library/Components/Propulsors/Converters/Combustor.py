@@ -15,14 +15,7 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters 
 class Combustor(Component):
-    """This provides output values for a combustor
-    Calling this class calls the compute function.
-    
-    Assumptions:
-    None
-    
-    Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """This is a combustor compoment class.
     """
     
     def __defaults__(self):
@@ -32,15 +25,7 @@ class Combustor(Component):
         None
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+        None 
         """         
         
         self.tag                             = 'Combustor' 

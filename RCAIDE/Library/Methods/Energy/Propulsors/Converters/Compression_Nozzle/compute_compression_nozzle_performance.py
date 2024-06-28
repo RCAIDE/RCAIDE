@@ -29,9 +29,10 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
           velocity                           (numpy.ndarray): exit nozzle velocity             [m/s]
           
 
-    Assumptions:
-        1. Constant polytropic efficiency and pressure ratio
+    Assumptions:  
+        1. Pressure ratio and polytropic efficiency do not change with varying conditions.
         2. Adiabatic
+        3. Subsonic or choked output.
 
     Source:
         https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/

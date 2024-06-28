@@ -15,32 +15,17 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters
 class Fan(Component):
-    """This is a fan component typically used in a turbofan.
-    Calling this class calls the compute function.
-    
-    Assumptions:
-    Pressure ratio and efficiency do not change with varying conditions.
-
-    Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """This is a fan component typically used in a turbofan. 
     """
     
     def __defaults__(self):
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            Pressure ratio and efficiency do not change with varying conditions.
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+            https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/ 
         """         
         #set the default values
         self.tag                            = 'Fan'

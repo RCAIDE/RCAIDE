@@ -15,36 +15,20 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters 
 class Compression_Nozzle(Component):
-    """This is a nozzle component intended for use in compression.
-    Calling this class calls the compute function.
-
-    Assumptions:
-    Pressure ratio and efficiency do not change with varying conditions.
-    Subsonic or choked output.
-
-    Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """This is a nozzle component intended for use in compression. 
     """
 
-    def __defaults__(self):
+    def __defaults__(self): 
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            1. Pressure ratio and efficiency do not change with varying conditions.
+            2. Subsonic or choked output.
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
-        """
-        #setting the default values
-        self.tag = 'Nozzle'
+            https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+        """    
+        self.tag                             = 'Nozzle'
         self.polytropic_efficiency           = 1.0
         self.pressure_ratio                  = 1.0
         self.pressure_recovery               = 1.0

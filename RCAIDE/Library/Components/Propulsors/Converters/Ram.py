@@ -16,36 +16,21 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Components-Propulsors-Converters
 class Ram(Component):
-    """This represent the compression of incoming air flow.
-    Calling this class calls the compute function.
-
-    Assumptions:
-    None
-
-    Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """This represent the compression of incoming air flow. 
     """
 
     def __defaults__(self):
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            None
 
         Source:
-        None
-
-        Args:
-        None
-
-        Returns:
-        None
-
-
+            https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/ 
         """
         #set the deafult values
-        self.tag = 'Ram'
+        self.tag                             = 'Ram'
         self.outputs.stagnation_temperature  = 1.0
         self.outputs.stagnation_pressure     = 1.0
-        self.inputs.working_fluid = Data()
+        self.inputs.working_fluid            = Data()
  

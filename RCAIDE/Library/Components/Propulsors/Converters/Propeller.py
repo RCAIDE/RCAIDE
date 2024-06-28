@@ -14,30 +14,16 @@ from .Rotor import Rotor
 # ----------------------------------------------------------------------------------------------------------------------     
 ## @ingroup Components-Propulsors-Converters
 class Propeller(Rotor):
-    """This is a propeller component, and is a sub-class of rotor.
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
+    """This is a propeller component, and is a sub-class of rotor. 
     """     
     def __defaults__(self):
         """This sets the default values for the component to function.
         
         Assumptions:
-        None
+            None
         
         Source:
-        None
-        
-        Args:
-        None
-        
-        Returns:
-        None
-        
-
+            None 
         """         
 
         self.tag                       = 'propeller'
