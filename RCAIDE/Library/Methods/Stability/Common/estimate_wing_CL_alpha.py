@@ -4,7 +4,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
-from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep
+from RCAIDE.Library.Methods.Geometry.Planform  import convert_sweep
 
 # ----------------------------------------------------------------------
 #  Method

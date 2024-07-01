@@ -88,7 +88,7 @@ class Vehicle(Analysis.Container):
             RCAIDE.Framework.Analyses.Energy.Energy             : 'energy'       ,
             RCAIDE.Framework.Analyses.Atmospheric.Atmospheric   : 'atmosphere'   ,
             RCAIDE.Framework.Analyses.Planets.Planet            : 'planet'       ,
-            RCAIDE.Framework.Analyses.Noise.Noise               : 'noise'        ,
+            #RCAIDE.Framework.Analyses.Noise.Noise               : 'noise'        ,
             RCAIDE.Framework.Analyses.Costs.Costs               : 'costs'        ,
         }
 

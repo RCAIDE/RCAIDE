@@ -9,8 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Energy
-from .Electronic_Speed_Controller                  import Electronic_Speed_Controller
+## @ingroup Energy 
 from .Fuel_Selector                                import Fuel_Selector
 from Legacy.trunk.S.Components.Energy.Distributors import HTS_DC_Dynamo_Basic
 from Legacy.trunk.S.Components.Energy.Distributors import HTS_DC_Supply 

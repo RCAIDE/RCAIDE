@@ -16,7 +16,6 @@ from . import DC_Motor
 from . import Engine
 from . import Expansion_Nozzle
 from . import Fan 
-from . import Ram
-from . import Rotor 
+from . import Ram 
 from . import Shaft_Power_Offtake
 from . import Turbine

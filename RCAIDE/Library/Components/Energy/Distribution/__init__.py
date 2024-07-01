@@ -9,8 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-## @ingroup Energy 
-from .Electrical_Bus                       import Electrical_Bus
+## @ingroup Energy  
 from .Fuel_Line                            import Fuel_Line
 
 

@@ -12,11 +12,9 @@
 from . import Aerodynamics
 from . import Costs 
 from . import Energy
-from . import Geometry
-from . import Noise
-from . import Performance 
+from . import Geometry 
+from . import Performance
 from . import Stability
-from . import Thermal_Management
 from . import Utilities
 from . import Weights
 
