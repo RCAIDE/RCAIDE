@@ -1,6 +1,6 @@
-## @ingroup Methods-Energy-Propulsors-Rotor_Design 
-# RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/procedure_setup.py
-# 
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Rotor-Design
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Rotor/Design/procedure_setup.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke  
 
@@ -11,7 +11,7 @@
 # RCAIDE Imports 
 import RCAIDE 
 from RCAIDE.Framework.Core                                                  import Units
-from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor          import rotor_noise 
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor            import rotor_noise 
 from RCAIDE.Framework.Analyses.Process                                      import Process
 
 # Python package imports   
@@ -21,8 +21,23 @@ import scipy as sp
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Procedure Setup 
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Energy-Propulsors-Rotor_Design  
-def procedure_setup(): 
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Rotor-Design
+def procedure_setup():
+    """ Sets up procedure for rotor design
+    
+          Assumptions: 
+             None 
+        
+          Source:
+             None 
+          
+          Args:  
+             None 
+              
+          Returns:   
+             procedure - optimization methodology                                         [None]
+              
+    """        
     
     # size the base config
     procedure = Process()
@@ -49,7 +64,13 @@ def procedure_setup():
 # Update blade geometry 
 # ---------------------------------------------------------------------- 
 def modify_blade_geometry(nexus): 
-    """ Modifies geometry of prop-rotor blade 
+    """ Modifies geometry of prop-rotor blade
+    
+          Assumptions: 
+             None 
+        
+          Source:
+             None 
           
           Args:  
              nexus     - RCAIDE optmization framework with prop-rotor blade data structure [None]
@@ -57,11 +78,6 @@ def modify_blade_geometry(nexus):
           Returns:   
              procedure - optimization methodology                                         [None]
               
-          Assumptions: 
-             None 
-        
-          Source:
-             None
     """        
  
     # Pull out the vehicles

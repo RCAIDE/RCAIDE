@@ -1,6 +1,6 @@
-## @defgroup Methods-Energy-Sources-Battery Battery
-# RCAIDE/Methods/Energy/Sources/Battery/__init__.py
-# 
+## @defgroup Library-Methods-Energy-Sources-Battery Battery
+# RCAIDE/Library/Methods/Energy/Sources/Battery/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

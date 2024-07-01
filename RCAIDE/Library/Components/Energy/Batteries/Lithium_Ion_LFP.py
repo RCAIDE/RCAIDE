@@ -67,9 +67,9 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         self.cell.nominal_voltage             = 3.6                                                      # [V]
         self.cell.charging_voltage            = self.cell.nominal_voltage                                # [V]  
          
-        self.watt_hour_rating                 = self.cell.nominal_capacity  * self.cell.nominal_voltage  # [Watt-hours]      
-        self.specific_energy                  = self.watt_hour_rating*Units.Wh/self.cell.mass            # [J/kg]
-        self.specific_power                   = self.specific_energy/self.cell.nominal_capacity          # [W/kg]   
+        self.cell.watt_hour_rating            = self.cell.nominal_capacity  * self.cell.nominal_voltage  # [Watt-hours]      
+        self.cell.specific_energy             = self.cell.watt_hour_rating*Units.Wh/self.cell.mass       # [J/kg]
+        self.cell.specific_power              = self.cell.specific_energy/self.cell.nominal_capacity     # [W/kg]   
         self.ragone.const_1                   = 88.818  * Units.kW/Units.kg
         self.ragone.const_2                   = -.01533 / (Units.Wh/Units.kg)
         self.ragone.lower_bound               = 60.     * Units.Wh/Units.kg

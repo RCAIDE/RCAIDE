@@ -1,4 +1,4 @@
-## @defgroup Methods-Energy-Sources-Fuel_Cell-Sizing Sizing
+## @defgroup Library-Methods-Energy-Sources-Fuel_Cell-Sizing Sizing
 # RCAIDE/Methods/Power/Fuel_Cell/Sizing/__init__.py
 # 
 

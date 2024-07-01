@@ -1,6 +1,6 @@
-## @ingroup Methods-Energy-Propulsors-Rotor_Design  
-# RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/optimization_setup.py
-# 
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Rotor-Design
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Rotor/Design/optimization_setup.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke 
 
@@ -21,31 +21,33 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Optimization Setuo 
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Energy-Propulsors-Rotor_Design   
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Rotor-Design
 def optimization_setup(rotor,number_of_stations,print_iterations):
     """ Sets up rotor optimization problem including design variables, constraints and objective function
         using RCAIDE's Nexus optimization framework. Appends methodolody of planform modification to Nexus.
-          Args: 
-             rotor     - rotor data structure           [None]
-             
-          Returns: 
-              nexus    - RCAIDE's optimization framework [None]
-              
+        
           Assumptions: 
             1) minimum allowable blade taper : 0.2  
             1) maximum allowable blade taper : 0.7     
         
           Source:
              None
+             
+          Args: 
+             rotor     - rotor data structure           [None]
+             
+          Returns: 
+              nexus    - RCAIDE's optimization framework [None] 
+              
     """    
     nexus                        = Nexus()
     problem                      = Data()
     nexus.optimization_problem   = problem
    
-    if type(rotor) != RCAIDE.Energy.Propulsors.Converters.Prop_Rotor or  type(rotor) != RCAIDE.Energy.Propulsors.Converters.Lift_Rotor:
+    if type(rotor) != RCAIDE.Library.Components.Propulsors.Converters.Prop_Rotor or  type(rotor) != RCAIDE.Library.Components.Propulsors.Converters.Lift_Rotor:
         assert('rotor must be of Lift-Rotor or Prop-Rotor class') 
         
-    if type(rotor) == RCAIDE.Energy.Propulsors.Converters.Prop_Rotor:
+    if type(rotor) == RCAIDE.Library.Components.Propulsors.Converters.Prop_Rotor:
         nexus.prop_rotor_flag = True 
     else:
         nexus.prop_rotor_flag = False 

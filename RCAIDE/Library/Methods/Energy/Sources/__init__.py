@@ -1,5 +1,5 @@
-## @defgroup Methods-Energy-Sources Sources
-# RCAIDE/Methods/Energy/Sources/__init__.py
+## @defgroup Library-Methods-Energy-Sources Sources
+# RCAIDE/Library/Methods/Energy/Sources/__init__.py
 # 
 
 """ RCAIDE Package Setup

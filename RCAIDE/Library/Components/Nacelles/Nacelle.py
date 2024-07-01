@@ -100,7 +100,7 @@ class Nacelle(Component):
         vehicle_2_nac_vec = sp.spatial.transform.Rotation.from_rotvec(rots).as_matrix()        
         
         # GO from the nacelle vehicle frame to the nacelle velocity frame: rot 2
-        nac_vec_2_nac_vel = self.vec_to_vel()
+        nac_vec_2_nac_vel = self.rotor_to_velocity_frame_rotation()
         
         # Do all the matrix multiplies
         rot1    = np.matmul(body_2_vehicle,vehicle_2_nac_vec)
@@ -108,7 +108,7 @@ class Nacelle(Component):
         return rot_mat    
     
 
-    def vec_to_vel(self):
+    def rotor_to_velocity_frame_rotation(self):
         """This rotates from the nacelles vehicle frame to the nacelles velocity frame
 
         Assumptions:

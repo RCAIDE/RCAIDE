@@ -164,8 +164,8 @@ def generate_3d_blade_points(rotor,n_points,dim,i,aircraftRefFrame=True):
     yp      = r_2d*np.ones_like(xp)                          # radial location
     zp      = zpts*(t_2d/max_t2d)                            # former airfoil y coord
 
-    rotor_vel_to_body = rotor.prop_vel_to_body()
-    cpts              = len(rotor_vel_to_body[:,0,0])
+    velocity_to_vehicle_frame_rotation = rotor.velocity_to_vehicle_frame_rotation()
+    cpts              = len(velocity_to_vehicle_frame_rotation[:,0,0])
 
     matrix        = np.zeros((len(zp),n_points,3)) # radial location, airfoil pts (same y)
     matrix[:,:,0] = xp
@@ -192,7 +192,7 @@ def generate_3d_blade_points(rotor,n_points,dim,i,aircraftRefFrame=True):
     trans_2 = np.repeat(trans_2[None,:,:,:], cpts, axis=0)
 
     # rotation about y to orient propeller/rotor to thrust angle (from propeller frame to aircraft frame)
-    trans_3 =  rotor_vel_to_body
+    trans_3 =  velocity_to_vehicle_frame_rotation
     trans_3 =  np.repeat(trans_3[:, None,:,: ],dim,axis=1) 
 
     trans     = np.matmul(trans_2,trans_1)

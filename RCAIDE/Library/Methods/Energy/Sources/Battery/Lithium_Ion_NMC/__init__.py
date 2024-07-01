@@ -1,6 +1,6 @@
-## @defgroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC Lithium_Ion_NMC
-# RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/__init__.py
-# 
+## @defgroup Library-Methods-Energy-Sources-Battery-Lithium_Ion_NMC Lithium_Ion_NMC
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

@@ -71,9 +71,9 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         self.cell.nominal_voltage             = 3.6                                                      # [V] 
         self.cell.charging_voltage            = self.cell.nominal_voltage                                # [V] 
         
-        self.watt_hour_rating                 = self.cell.nominal_capacity  * self.cell.nominal_voltage  # [Watt-hours]      
-        self.specific_energy                  = self.watt_hour_rating*Units.Wh/self.cell.mass            # [J/kg]
-        self.specific_power                   = self.specific_energy/self.cell.nominal_capacity          # [W/kg]   
+        self.cell.watt_hour_rating            = self.cell.nominal_capacity  * self.cell.nominal_voltage  # [Watt-hours]      
+        self.cell.specific_energy             = self.cell.watt_hour_rating*Units.Wh/self.cell.mass       # [J/kg]
+        self.cell.specific_power              = self.cell.specific_energy/self.cell.nominal_capacity     # [W/kg]   
         self.resistance                       = 0.025                                                    # [Ohms]
                                                                                                          
         self.specific_heat_capacity           = 1108                                                     # [J/kgK]  

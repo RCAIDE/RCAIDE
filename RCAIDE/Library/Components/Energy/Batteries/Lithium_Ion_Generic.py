@@ -42,6 +42,8 @@ class Lithium_Ion_Generic(Battery):
         self.cell.charging_voltage                                    = 3       # [Volts]
         self.cell.specific_heat_capacity                              = 1115    # [J/kgK] 
         self.cell.maximum_voltage                                     = 3.6     # [V]   
+        self.cell.specific_energy                                     = 200.    *Units.Wh/Units.kg    
+        self.cell.specific_power                                      = 1.      *Units.kW/Units.kg
                                      
         self.convective_heat_transfer_coefficient                     = 35.     # [W/m^2K] 
         self.heat_transfer_efficiency                                 = 1.0       
@@ -64,8 +66,6 @@ class Lithium_Ion_Generic(Battery):
         self.module.geometrtic_configuration.parallel_spacing         = 0.02 
         
         # defaults that are overwritten if specific cell chemistry is used 
-        self.specific_energy                                          = 200.    *Units.Wh/Units.kg    
-        self.specific_power                                           = 1.      *Units.kW/Units.kg
         self.ragone.const_1                                           = 88.818  *Units.kW/Units.kg
         self.ragone.const_2                                           = -.01533 /(Units.Wh/Units.kg)
         self.ragone.lower_bound                                       = 60.     *Units.Wh/Units.kg

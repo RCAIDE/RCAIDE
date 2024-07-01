@@ -1,13 +1,12 @@
-## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC
-# RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/compute_nmc_cell_performance.py
-# 
+## @ingroup Library-Methods-Energy-Sources-Battery-Lithium_Ion_NMC
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/compute_nmc_cell_performance.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Feb 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Framework.Core                       import Units 
+# ---------------------------------------------------------------------------------------------------------------------- 
 import numpy as np  
  
 # ----------------------------------------------------------------------------------------------------------------------
@@ -15,59 +14,46 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
 def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag): 
-    '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
+    """This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
        battery cells. The model uses experimental data performed
        by the Automotive Industrial Systems Company of Panasonic Group 
 
        Sources:  
-       Internal Resistance Model:
-       Zou, Y., Hu, X., Ma, H., and Li, S. E., "Combined State of Charge and State of
-       Health estimation over lithium-ion battery cellcycle lifespan for electric 
-       vehicles,"Journal of Power Sources, Vol. 273, 2015, pp. 793-803.
-       doi:10.1016/j.jpowsour.2014.09.146,URLhttp://dx.doi.org/10.1016/j.jpowsour.2014.09.146. 
-
-       Battery Heat Generation Model and  Entropy Model:
-       Jeon, Dong Hyup, and Seung Man Baek. "Thermal modeling of cylindrical lithium ion 
-       battery during discharge cycle." Energy Conversion and Management 52.8-9 (2011): 
-       2973-2981. 
+       1) Internal Resistance Model:
+          Zou, Y., Hu, X., Ma, H., and Li, S. E., "Combined State of Charge and State of
+          Health estimation over lithium-ion battery cellcycle lifespan for electric 
+          vehicles,"Journal of Power Sources, Vol. 273, 2015, pp. 793-803.
+          doi:10.1016/j.jpowsour.2014.09.146,URLhttp://dx.doi.org/10.1016/j.jpowsour.2014.09.146. 
+    
+       3) Battery Heat Generation Model and  Entropy Model:
+          Jeon, Dong Hyup, and Seung Man Baek. "Thermal modeling of cylindrical lithium ion 
+          battery during discharge cycle." Energy Conversion and Management 52.8-9 (2011): 
+          2973-2981. 
 
        Assumtions:
        1) All battery modules exhibit the same themal behaviour. 
 
-       Inputs:
-         battery.
-               I_bat             (maximum_energy)                      [Joules]
-               cell_mass         (battery cell mass)                   [kilograms]
-               Cp                (battery cell specific heat capacity) [J/(K kg)] 
-               t                 (battery age in days)                 [days] 
-               T_ambient         (ambient temperature)                 [Kelvin]
-               T_current         (pack temperature)                    [Kelvin]
-               T_cell            (battery cell temperature)            [Kelvin]
-               E_max             (max energy)                          [Joules]
-               E_current         (current energy)                      [Joules]
-               Q_prior           (charge throughput)                   [Amp-hrs]
-               R_growth_factor   (internal resistance growth factor)   [unitless]
-
-         inputs.
-               I_bat             (current)                             [amps]
-               P_bat             (power)                               [Watts]
-
-       Outputs:
-         battery.
-              current_energy                                           [Joules]
-              temperature                                              [Kelvin]
-              heat_energy_generated                                    [Watts]
-              load_power                                               [Watts]
-              current                                                  [Amps]
-              battery_voltage_open_circuit                             [Volts]
-              charge_throughput                                        [Amp-hrs]
-              internal_resistance                                      [Ohms]
-              battery_state_of_charge                                  [unitless]
-              depth_of_discharge                                       [unitless]
-              battery_voltage_under_load                               [Volts]
-
-    '''
-
+       Args:
+            battery.
+                .thermal_management_system (dict): battery thermal management system    [-]
+                .I_bat            (numpy.ndarray): currnet                              [Amperes]
+                .cell_mass                (float): battery cell mass                    [kilograms]
+                .Cp                       (float): battery cell specific heat capacity  [J/(K kg)] 
+                .E_max                    (float): max energy                           [Joules]
+                .E_current                (float): current energy                       [Joules]
+                .Q_prior                  (float): charge throughput                    [Amp-hrs]
+                .R_growth_factor          (float): internal resistance growth factor    [unitless]
+                .E_growth_factor          (float): capactance (energy) growth factor    [unitless]  
+                .inputs.I_bat            (current):                                     [amps]
+                .inputs.P_bat              (power):                                     [Watts]
+            state                           (dict): operating conditions                [-]
+            bus                             (dict): data structure of electric bus      [-]
+            battery_discharge_flag       (boolean): current flow flag                   [unitless] 
+       
+       Returns:
+           None 
+        
+    """ 
 
     # Unpack varibles 
     battery            = battery  
@@ -82,22 +68,22 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
     P_bat              = battery.outputs.power      
     E_max              = battery_conditions.pack.maximum_initial_energy * battery_conditions.cell.capacity_fade_factor
     E_pack             = battery_conditions.pack.energy    
-    I_pack             = battery_conditions.pack.current                        #  battery.outputs.current 
-    V_oc_pack          = battery_conditions.pack.voltage_open_circuit           #  battery.pack.voltage_open_circuit
-    V_ul_pack          = battery_conditions.pack.voltage_under_load             #  battery.pack.voltage_under_load 
-    P_pack             = battery_conditions.pack.power                          #  battery_power_draw   
-    T_pack             = battery_conditions.pack.temperature                    #  battery.pack.temperature  
-    Q_heat_pack        = battery_conditions.pack.heat_energy_generated          #  battery.pack.heat_energy_generated 
-    R_0                = battery_conditions.pack.internal_resistance            #  battery.pack.internal_resistance  
-    Q_heat_cell        = battery_conditions.cell.heat_energy_generated          #  battery.pack.heat_energy_generated
-    SOC                = battery_conditions.cell.state_of_charge                #  battery.cell.state_of_charge 
-    P_cell             = battery_conditions.cell.power                          #  battery.outputs.power/n_series
-    E_cell             = battery_conditions.cell.energy                         #  battery.pack.current_energy/n_total   
-    V_ul               = battery_conditions.cell.voltage_under_load             #  battery.cell.voltage_under_load    
-    V_oc               = battery_conditions.cell.voltage_open_circuit           #  battery.cell.voltage_open_circuit  
-    I_cell             = battery_conditions.cell.current                        #  abs(battery.cell.current)        
-    T_cell             = battery_conditions.cell.temperature                    #  battery.cell.temperature
-    Q_cell             = battery_conditions.cell.charge_throughput              #  battery.cell.charge_throughput  
+    I_pack             = battery_conditions.pack.current                        
+    V_oc_pack          = battery_conditions.pack.voltage_open_circuit           
+    V_ul_pack          = battery_conditions.pack.voltage_under_load             
+    P_pack             = battery_conditions.pack.power                          
+    T_pack             = battery_conditions.pack.temperature                    
+    Q_heat_pack        = battery_conditions.pack.heat_energy_generated           
+    R_0                = battery_conditions.pack.internal_resistance            
+    Q_heat_cell        = battery_conditions.cell.heat_energy_generated          
+    SOC                = battery_conditions.cell.state_of_charge                
+    P_cell             = battery_conditions.cell.power                          
+    E_cell             = battery_conditions.cell.energy                         
+    V_ul               = battery_conditions.cell.voltage_under_load              
+    V_oc               = battery_conditions.cell.voltage_open_circuit            
+    I_cell             = battery_conditions.cell.current                        
+    T_cell             = battery_conditions.cell.temperature                    
+    Q_cell             = battery_conditions.cell.charge_throughput              
     DOD_cell           = battery_conditions.cell.depth_of_discharge  
     time               = state.conditions.frames.inertial.time[:,0] 
 
@@ -176,29 +162,28 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
 
     return battery    
 
-## @ingroup Methods-Energy-Sources-Lithium_Ion_NMC
+## @ingroup Library-Methods-Energy-Sources-Lithium_Ion_NMC
 def compute_nmc_cell_state(battery_data,SOC,T,I):
     """This computes the electrical state variables of a lithium ion 
     battery cell with a  lithium-nickel-cobalt-aluminum oxide cathode 
     chemistry from look-up tables 
      
     Assumtions: 
-    N/A
+       None
     
     Source:  
-    N/A 
+       None  
      
-    Inputs:
-        SOC           - state of charge of cell     [unitless]
-        battery_data  - look-up data structure      [unitless]
-        T             - battery cell temperature    [Kelvin]
-        I             - battery cell current        [Amperes]
+    Args:
+        SOC           (numpy.ndarray): state of charge of cell     [unitless]
+        battery_data           (dict): look-up data structure      [unitless]
+        T             (numpy.ndarray): battery cell temperature    [Kelvin]
+        I             (numpy.ndarray): battery cell current        [Amperes]
     
-    Outputs:  
-        V_ul          - under-load voltage          [Volts] 
+    Returns:  
+        V_ul          (numpy.ndarray): under-load voltage          [Volts] 
         
-    """ 
-
+    """  
     # Make sure things do not break by limiting current, temperature and current 
     SOC[SOC < 0.]   = 0.  
     SOC[SOC > 1.]   = 1.    

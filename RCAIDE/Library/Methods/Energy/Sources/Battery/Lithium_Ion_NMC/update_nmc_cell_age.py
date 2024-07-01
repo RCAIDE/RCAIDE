@@ -1,6 +1,6 @@
-## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC
-# RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/update_nmc_cell_age.py
-# 
+## @ingroup Library-Methods-Energy-Sources-Battery-Lithium_Ion_NMC
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/update_nmc_cell_age.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Feb 2024, M. Clarke 
 
@@ -14,34 +14,37 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
 def update_nmc_cell_age(battery,battery_conditions,increment_battery_age_by_one_day):  
-    """ This is an aging model for 18650 lithium-nickel-manganese-cobalt-oxide batteries. 
+    """ Updates the age of an 18650 lithium-nickel-manganese-cobalt-oxide batteries. 
    
     Source: 
-    Schmalstieg, Johannes, et al. "A holistic aging model for Li (NiMnCo) O2
-    based 18650 lithium-ion batteries." Journal of Power Sources 257 (2014): 325-334.
+       Schmalstieg, Johannes, et al. "A holistic aging model for Li (NiMnCo) O2
+       based 18650 lithium-ion batteries." Journal of Power Sources 257 (2014): 325-334.
       
     Assumptions:
-    None
+        None
 
     Args:
-      segment.conditions.energy. 
-         battery.cycle_in_day                                                   [unitless]
-         battery.cell.temperature                                               [Kelvin] 
-         battery.voltage_open_circuit                                           [Volts] 
-         battery.charge_throughput                                              [Amp-hrs] 
-         battery.cell.state_of_charge                                           [unitless] 
+        battery
+        battery_conditions
+           .cell.cycle_in_day                      (int): cycle                [unitless]
+           .cell.temperature             (numpy.ndarray): battery temperature  [Kelvin] 
+           .cell.voltage_open_circuit    (numpy.ndarray): battery voltage      [Volts] 
+           .cell.charge_throughput       (numpy.ndarray): battery charge       [Amp-hrs] 
+           .cell.state_of_charge         (numpy.ndarray): state of charge      [unitless] 
+        increment_battery_age_by_one_day       (boolean): aging update flat    [unitless]
     
     Returns:
-       segment.conditions.energy.
-         battery.capacity_fade_factor     (internal resistance growth factor)   [unitless]
-         battery.resistance_growth_factor (capactance (energy) growth factor)   [unitless]   
-    """    
-    n_series   = battery.pack.electrical_configuration.series
+        None
+    """
+    
+    # unpack properties and operating stage of battery 
+    E_age      = battery_conditions.cell.capacity_fade_factor
+    R_age      = battery_conditions.cell.resistance_growth_factor 
     SOC        = battery_conditions.cell.state_of_charge
-    V_ul       = battery_conditions.pack.voltage_under_load/n_series
+    V_ul       = battery_conditions.cell.voltage_under_load 
     t          = battery_conditions.cell.cycle_in_day         
     Q_prior    = battery_conditions.cell.charge_throughput[-1,0] 
-    Temp       = np.mean(battery_conditions.cell.temperature) 
+    Temp       = np.mean(battery_conditions.cell.temperature)
     
     # aging model  
     delta_DOD = abs(SOC[0][0] - SOC[-1][0])
@@ -51,13 +54,15 @@ def update_nmc_cell_age(battery,battery_conditions,increment_battery_age_by_one_
     beta_cap  = 7.348E-3 * (rms_V_ul - 3.667)**2 +  7.60E-4 + 4.081E-3*delta_DOD
     beta_res  = 2.153E-4 * (rms_V_ul - 3.725)**2 - 1.521E-5 + 2.798E-4*delta_DOD
     
+    # compute fade factors 
     E_fade_factor   = 1 - alpha_cap*(t**0.75) - beta_cap*np.sqrt(Q_prior)   
     R_growth_factor = 1 + alpha_res*(t**0.75) + beta_res*Q_prior  
     
-    battery_conditions.cell.capacity_fade_factor     = np.minimum(E_fade_factor,battery_conditions.cell.capacity_fade_factor)
-    battery_conditions.cell.resistance_growth_factor = np.maximum(R_growth_factor,battery_conditions.cell.resistance_growth_factor)
+    # update age of battery properties 
+    E_age = np.minimum(E_fade_factor,E_age)
+    R_age = np.maximum(R_growth_factor,R_age)
     
     if increment_battery_age_by_one_day:
-        battery_conditions.cell.cycle_in_day += 1 # update battery age by one day 
+        battery_conditions.cell.cycle_in_day += 1  
   
     return  

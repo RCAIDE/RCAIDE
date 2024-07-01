@@ -1,5 +1,5 @@
-## @ingroup Methods-Energy-Propulsors
-# RCAIDE/Library/Methods/Energy/Propulsors/design_prop_rotor.py
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Rotor-Design
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Rotor/Design/design_prop_rotor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke 
@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 # RCAIDE Imports    
-from RCAIDE.Framework.Optimization.Packages.scipy                                     import scipy_setup
+from RCAIDE.Framework.Optimization.Packages.scipy                                              import scipy_setup
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.optimization_setup       import optimization_setup
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.set_optimized_parameters import set_optimized_parameters
 
@@ -19,7 +19,7 @@ import time
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Design Prop-rotor
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Energy-Propulsors
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Rotor-Design
 def design_prop_rotor(rotor,number_of_stations = 20,solver_name= 'SLSQP',iterations = 200,
                       solver_sense_step = 1E-4,solver_tolerance = 1E-3,print_iterations = False):  
     """ Optimizes prop-rotor chord and twist given input parameters to meet either design power or thurst. 

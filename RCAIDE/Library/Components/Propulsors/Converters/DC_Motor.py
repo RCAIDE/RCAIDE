@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor import compute_omega_and_Q_from_Cp_and_V , compute_I_from_omega_and_V
+from RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor import compute_RPM_and_torque_from_power_coefficent_and_voltage , compute_current_from_RPM_and_voltage
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ class DC_Motor(Component):
             None 
         """                   
          
-        compute_omega_and_Q_from_Cp_and_V(self,conditions)    
+        compute_RPM_and_torque_from_power_coefficent_and_voltage(self,conditions)    
         
         return 
     
@@ -79,6 +79,6 @@ class DC_Motor(Component):
             None 
         """             
          
-        compute_I_from_omega_and_V(self)        
+        compute_current_from_RPM_and_voltage(self)        
         
         return 

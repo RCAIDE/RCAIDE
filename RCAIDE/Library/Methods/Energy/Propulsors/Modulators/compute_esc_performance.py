@@ -8,29 +8,26 @@
 # compute_electric_rotor_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Modulators
-def compute_voltage_out_from_throttle(esc,eta):
-    """ The voltage out of the electronic speed controller
+def compute_voltage_out_from_throttle(esc,throttle):
+    """ Compute output voltage from electronic speed controller based on throttle  
     
         Assumptions:
-        The ESC's output voltage is linearly related to throttle setting
+            The ESC's output voltage is linearly related to throttle setting
 
         Source:
-        None
+            None
 
         Args:
-        conditions.energy.throttle     [0-1] 
-        esc.inputs.voltage            [volts]
+            esc.inputs.voltage   (numpy.ndarray): voltage      [V]
+            throttle             (numpy.ndarray): throttle     [unitless]
 
         Returns:
-        voltsout                       [volts]
-        esc.outputs.voltageout        [volts] 
-    """ 
-    # Negative throttle is bad
-    eta[eta<=0.0] = 0.0
-    
-    # Cap the throttle
-    eta[eta>=1.0] = 1.0
-    voltsout = eta*esc.inputs.voltage
+            None 
+    """  
+    # Cap the throttle, negative throttle is bad
+    throttle[throttle>=1.0] = 1.0
+    throttle[throttle<=0.0] = 0.0
+    voltsout = throttle*esc.inputs.voltage
     
     # Pack the output
     esc.outputs.voltage  = voltsout
@@ -42,35 +39,30 @@ def compute_voltage_out_from_throttle(esc,eta):
 # compute_voltage_in_from_throttle
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Modulators
-def compute_voltage_in_from_throttle(esc,eta):
-    """ The voltage out of the electronic speed controller
-
+def compute_voltage_in_from_throttle(esc,throttle):
+    """ Computes the input voltage from throttle
+    
         Assumptions:
-        The ESC's output voltage is linearly related to throttle setting
+            The ESC's output voltage is linearly related to throttle setting
 
         Source:
-        None
+            None
 
         Args:
-        conditions.energy.throttle     [0-1]
-        esc.inputs.voltage            [volts]
+            esc.outputs.voltage   (numpy.ndarray): voltage     [V]
+            throttle             (numpy.ndarray): throttle     [unitless]
 
         Returns:
-        voltsout                       [volts]
-        esc.outputs.voltageout        [volts]
+            None
+    """ 
 
-
-
-    """
-    # Negative throttle is bad
-    eta[eta<=0.0] = 0.0
-
-    # Cap the throttle
-    eta[eta>=1.0] = 1.0
-    voltsin = esc.outputs.voltage/eta
+    # Cap the throttle, negative throttle is bad
+    throttle[throttle<=0.0] = 0.0
+    throttle[throttle>=1.0] = 1.0
+    voltsin = esc.outputs.voltage/throttle
 
     # Pack the output
-    esc.inputs.throttle = eta
+    esc.inputs.throttle = throttle
     esc.inputs.voltage  = voltsin
 
     return
@@ -80,35 +72,29 @@ def compute_voltage_in_from_throttle(esc,eta):
 # compute_throttle_from_voltages
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Modulators
-def compute_throttle_from_voltages(esc):
-
-    """ The voltage out of the electronic speed controller
+def compute_throttle_from_voltages(esc): 
+    """ Computes ESC throttle from input and output voltages 
 
         Assumptions:
-        The ESC's output voltage is linearly related to throttle setting
+            The ESC's output voltage is linearly related to throttle setting
 
         Source:
-        None
+            None
 
         Args:
-        conditions.energy.throttle     [0-1]
-        esc.inputs.voltage            [volts]
+            esc.inputs.voltage   (numpy.ndarray): voltage     [V]
+            esc.outputs.voltage   (numpy.ndarray): voltage     [V]
 
         Returns:
-        voltsout                       [volts]
-        esc.outputs.voltageout        [volts]
-
-
+            None  
 
     """
-    eta  = esc.outputs.voltage/esc.inputs.voltage
-
-    # Negative throttle is bad
-    eta[eta<=0.0] = 0.0
-
-    # Cap the throttle
-    eta[eta>=1.0] = 1.0
-    esc.inputs.throttle = eta
+    throttle  = esc.outputs.voltage/esc.inputs.voltage
+    
+    # Cap the throttle, negative throttle is bad
+    throttle[throttle<=0.0] = 0.0
+    throttle[throttle>=1.0] = 1.0
+    esc.inputs.throttle = throttle
     return
 
 
@@ -116,27 +102,25 @@ def compute_throttle_from_voltages(esc):
 # compute_current_in_from_throttle
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Modulators
-def compute_current_in_from_throttle(esc,eta):
-    """ The current going into the speed controller
+def compute_current_in_from_throttle(esc,throttle):
+    """ Computes the current going into the electronic speed controller
     
         Assumptions:
             The ESC draws current.
         
-        Args:
-            esc.inputs.currentout [amps]
-            esc.efficiency - [0-1] efficiency of the ESC
+        Args: 
+            esc.inputs.currentout  (numpy.ndarray): current               [A]
+            esc.efficiency         (numpy.ndarray): efficiency of the ESC [unitless] 
            
         Returns:
-            outputs.currentin      [amps]  
+            None 
     """
     
-    # Unpack, don't modify the throttle   
-    eff        = esc.efficiency
-    currentout = esc.outputs.current 
-    currentin  = currentout*eta/eff # The inclusion of eta satisfies a power balance: p_in = p_out/eff
+    # compute current -  the inclusion of throttle satisfies a power balance: p_in = p_out/eff
+    currentin  = esc.outputs.current*throttle/esc.efficiency 
     
-    # Pack 
+    # Pack inputs 
+    esc.inputs.power     = currentin *  esc.inputs.voltage 
     esc.inputs.current   = currentin
-    esc.inputs.power     = esc.inputs.voltage *currentin
     
     return

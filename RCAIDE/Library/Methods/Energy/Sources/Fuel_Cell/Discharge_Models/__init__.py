@@ -1,6 +1,6 @@
-## @defgroup Methods-Energy-Sources-Fuel_Cell-Discharge Discharge
-# RCAIDE/Methods/Power/Fuel_Cell/Discharge/__init__.py
-# 
+## @defgroup Library-Methods-Energy-Sources-Fuel_Cell-Discharge Discharge
+# RCAIDE/Library/Methods/Energy/Sources/Fuel_Cell/Discharge/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

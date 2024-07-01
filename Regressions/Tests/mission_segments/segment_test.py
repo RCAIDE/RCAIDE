@@ -60,17 +60,17 @@ def main():
     climb_throttle_7   = results.segments.climb_7.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0] 
     climb_throttle_8   = results.segments.climb_8.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0] 
     climb_throttle_9   = results.segments.climb_9.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]  
-    cruise_CL_1        = results.segments.cruise_1.conditions.aerodynamics.coefficients.lift[2][0]
-    cruise_CL_2        = results.segments.cruise_2.conditions.aerodynamics.coefficients.lift[2][0]
-    cruise_CL_3        = results.segments.cruise_3.conditions.aerodynamics.coefficients.lift[2][0] 
+    cruise_CL_1        = results.segments.cruise_1.conditions.aerodynamics.coefficients.lift.total[2][0]
+    cruise_CL_2        = results.segments.cruise_2.conditions.aerodynamics.coefficients.lift.total[2][0]
+    cruise_CL_3        = results.segments.cruise_3.conditions.aerodynamics.coefficients.lift.total[2][0] 
     descent_throttle_1 = results.segments.descent_1.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]
     descent_throttle_2 = results.segments.descent_2.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]
-    single_pt_CL_1     = results.segments.single_point_1.conditions.aerodynamics.coefficients.lift[0][0]
-    single_pt_CL_2     = results.segments.single_point_2.conditions.aerodynamics.coefficients.lift[0][0]     
-    loiter_1_CL        = results.segments.loiter_1.conditions.aerodynamics.coefficients.lift[2][0]    
-    loiter_2_CL        = results.segments.loiter_2.conditions.aerodynamics.coefficients.lift[2][0]  
-    reserve_1_CL       = results.segments.reserve_loiter.conditions.aerodynamics.coefficients.lift[2][0]    
-    reserve_2_CL       = results.segments.reserve_cruise.conditions.aerodynamics.coefficients.lift[2][0]
+    single_pt_CL_1     = results.segments.single_point_1.conditions.aerodynamics.coefficients.lift.total[0][0]
+    single_pt_CL_2     = results.segments.single_point_2.conditions.aerodynamics.coefficients.lift.total[0][0]     
+    loiter_1_CL        = results.segments.loiter_1.conditions.aerodynamics.coefficients.lift.total[2][0]    
+    loiter_2_CL        = results.segments.loiter_2.conditions.aerodynamics.coefficients.lift.total[2][0]  
+    reserve_1_CL       = results.segments.reserve_loiter.conditions.aerodynamics.coefficients.lift.total[2][0]    
+    reserve_2_CL       = results.segments.reserve_cruise.conditions.aerodynamics.coefficients.lift.total[2][0]
     descent_throttle_3 = results.segments.descent_3.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]
     landing_thrust     = results.segments.landing.conditions.energy['fuel_line']['port_propulsor'].thrust[3][0]
     
@@ -86,29 +86,29 @@ def main():
             print(val)
     
     # Truth values
-    takeoff_thrust_truth     = 100684.56554902799
-    climb_throttle_1_truth   = 0.9919210085689654
-    climb_throttle_2_truth   = 0.9010832401670925
-    climb_throttle_3_truth   = 0.49575040936312736
-    climb_throttle_4_truth   = 0.7582832734388547
-    climb_throttle_5_truth   = 0.8022808360630981
-    climb_throttle_6_truth   = 1.3151846639348468
-    climb_throttle_7_truth   = 1.5225469526997784
-    climb_throttle_8_truth   = 0.6572348144053356
-    climb_throttle_9_truth   = 0.8439382163296055
-    cruise_CL_1_truth        = 0.7104467528788296
-    cruise_CL_2_truth        = 0.6992587738745367
-    cruise_CL_3_truth        = 0.7946012050406572
-    descent_throttle_1_truth = 0.4707527214163704
-    descent_throttle_2_truth = 0.366451152829091
-    single_pt_CL_1_truth     = 0.0006360316610970496
+    takeoff_thrust_truth     = 100684.23848141269
+    climb_throttle_1_truth   = 0.9927952090074572
+    climb_throttle_2_truth   = 0.9021155609855869
+    climb_throttle_3_truth   = 0.49909609025743934
+    climb_throttle_4_truth   = 0.7628931788575278
+    climb_throttle_5_truth   = 0.8078079628996468
+    climb_throttle_6_truth   = 1.4525368878505112
+    climb_throttle_7_truth   = 1.5322544437345258
+    climb_throttle_8_truth   = 0.7261208808957756
+    climb_throttle_9_truth   = 0.8477259550294989
+    cruise_CL_1_truth        = 0.7102866349724928
+    cruise_CL_2_truth        = 0.6989845411520993
+    cruise_CL_3_truth        = 0.794293008239376
+    descent_throttle_1_truth = 0.4741882796871023
+    descent_throttle_2_truth = 0.3688550316110717
+    single_pt_CL_1_truth     = 0.0006479061715436259
     single_pt_CL_2_truth     = 0.0008666212870429869
-    loiter_1_CL_truth        = 0.5122579591949884
-    loiter_2_CL_truth        = 0.5122536008532782
-    reserve_1_CL_truth       = 0.3529613734561697
-    reserve_2_CL_truth       = 0.34664687251481974
-    descent_throttle_3_truth = 0.16814621690615283
-    landing_thrust_truth     = 9511.62956645034
+    loiter_1_CL_truth        = 0.5119614306308753
+    loiter_2_CL_truth        = 0.5119570236863885
+    reserve_1_CL_truth       = 0.35275723548138754
+    reserve_2_CL_truth       = 0.3463506068966896
+    descent_throttle_3_truth = 0.1695929033874308
+    landing_thrust_truth     = 9511.639304030667
     
     # Store errors 
     error = Data()

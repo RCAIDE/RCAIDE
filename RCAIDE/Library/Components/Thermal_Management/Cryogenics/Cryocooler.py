@@ -51,10 +51,10 @@ class Cryocooler(Component):
         Source:
             None
 
-        Inputs:
+        Args:
             self (dict): cryocooler data structure [-]
 
-        Outputs:
+        Returns:
             self.outputs.input_power (numpy.ndarray): power of cryocooler    [W] 
 
     """ 

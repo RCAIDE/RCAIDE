@@ -1,6 +1,6 @@
-## @ingroup Methods-Energy-Sources-Battery 
-# RCAIDE/Methods/Energy/Sources/Battery/Common/append_initial_battery_conditions.py
-# 
+## @ingroup Library-Methods-Energy-Sources-Battery 
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/append_initial_battery_conditions.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -11,47 +11,34 @@
 import RCAIDE 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  Append Initial Battery Conditions 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Sources-Battery 
+## @ingroup Library-Methods-Energy-Sources-Battery 
 def append_initial_battery_conditions(segment,bus,battery): 
     """ Packs the initial battery conditions
     
         Assumptions:
-        Battery temperature is set to one degree hotter than ambient 
-        temperature for robust convergence. Initial mission energy, maxed aged energy, and 
-        initial segment energy are the same. Cycle day is zero unless specified, resistance_growth_factor and
-        capacity_fade_factor is one unless specified in the segment
+            1. Battery temperature is set to  sligher higher than ambient temperature  to avoid nan's.
+            2. Initial mission energy, maxed aged energy, and initial segment energy are the same.
+            3. Cycle day is zero unless specified, resistance_growth_factor and
+               capacity_fade_factor is one unless specified in the segment
     
         Source:
-        N/A
+            None 
     
-        Args:  
-            atmosphere.temperature             [Kelvin]
-            
-            Optional:
+        Args:   
+            atmosphere.temperature                  (float): [Kelvin]  
             segment.
-                 battery.cycle_in_day               [unitless]
-                 battery.pack.temperature           [Kelvin]
-                 battery.charge_throughput          [Ampere-Hours] 
-                 battery.resistance_growth_factor   [unitless]
-                 battery.capacity_fade_factor       [unitless]
-                 battery.discharge                  [boolean]
-                 increment_battery_age_by_one_day     [boolean]
+                 battery.cycle_in_day               (float): [unitless]
+                 battery.pack.temperature           (float): [Kelvin]
+                 battery.charge_throughput          (float): [Ampere-Hours] 
+                 battery.resistance_growth_factor   (float): [unitless]
+                 battery.capacity_fade_factor       (float): [unitless]
+                 battery.discharge                   (bool): [boolean]
+                 increment_battery_age_by_one_day    (bool): [boolean]
                
         Returns:
-            segment
-               battery_discharge                    [boolean]
-               increment_battery_age_by_one_day     [boolean]
-               segment.state.conditions.energy
-               battery.battery_discharge_flag       [boolean]
-               battery.pack.maximum_initial_energy  [watts]
-               battery.pack.energy                  [watts] 
-               battery.pack.temperature             [kelvin]
-               battery.cycle_in_day                 [int]
-               battery.cell.charge_throughput       [Ampere-Hours] 
-               battery.resistance_growth_factor     [unitless]
-               battery.capacity_fade_factor         [unitless]  
+            None 
     """       
     # compute ambient conditions
     atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()

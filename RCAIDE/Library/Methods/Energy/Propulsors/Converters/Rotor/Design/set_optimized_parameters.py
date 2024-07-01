@@ -1,28 +1,28 @@
-## @ingroup Methods-Energy-Propulsors-Rotor_Design 
-# RCAIDE/Library/Methods/Energy/Propulsors/Rotor_Design/set_optimized_parameters.py
-# 
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Rotor-Design
+# RCAIDE/Library/Methods/Energy/Propulsors/Converters/Rotor/Design/set_optimized_parameters.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke 
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Set Optimized rotor platform paramters
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Energy-Propulsors-Rotor_Design
+## @ingroup Library-Methods-Energy-Propulsors-Converters-Rotor-Design
 def set_optimized_parameters(rotor,optimization_problem):
     """ Append parameters of optimized prop-rotor to input prop-rotor
-          
-          Args:  
-             rotor                - rotor data structure                        [None]
-             optimization_problem      - data struction of optimized parameters [None]
-             
-          Returns: 
-             rotor                - rotor data structure                        [None]
-              
-          Assumptions: 
-             1) Default noise measurements are taken 135 degrees from prop-rotor plane 
-        
-          Source:
-             None
+                        
+        Assumptions: 
+           Default noise measurements are taken 135 degrees from prop-rotor plane 
+      
+        Source:
+           None 
+           
+        Args:  
+           rotor                - rotor data structure                        [None]
+           optimization_problem      - data struction of optimized parameters [None]
+           
+        Returns: 
+           rotor                - rotor data structure                        [None]
     """    
     results                         = optimization_problem.results
     optimal_hover_rotor_bus         = optimization_problem.vehicle_configurations.hover.networks.all_electric.busses.bus

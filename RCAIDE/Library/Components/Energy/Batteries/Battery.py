@@ -31,12 +31,15 @@ class Battery(Component):
         self.chemistry                                         = None 
         self.assigned_propulsors                               = None
         self.mass_properties.mass                              = 0.0
-        self.energy_density                                    = 0.0
+
         self.current_energy                                    = 0.0
         self.initial_temperature                               = 20.0
         self.current_capacitor_charge                          = 0.0
-        self.resistance                                        = 0.07446 # base internal resistance of battery in ohms  
-        self.specific_heat_capacity                            = 1100.   
+        self.resistance                                        = 0.07446 # base internal resistance of battery in ohms
+        
+        self.cell                                              = Data()        
+        self.cell.specific_energy                              = 0.0        
+        self.cell.specific_heat_capacity                       = 1100. # [J/kgK]   
                             
         self.pack                                              = Data()
         self.pack.maximum_energy                               = 0.0

@@ -1,4 +1,4 @@
-## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
+## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_thrust.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,61 +13,51 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #   size_stream_thrust
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
+## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 def size_stream_thrust(turbofan,conditions): 
     """Sizes the core flow for the design condition. 
 
        Assumptions: 
-       Perfect gas 
+           Working fluid is a perfect gas
 
        Source: 
-       Heiser, William H., Pratt, D. T., Daley, D. H., and Unmeel, B. M., 
-       "Hypersonic Airbreathing Propulsors", 1994 
-       Chapter 4 - pgs. 175-180
-       
-       Args: 
-       conditions.freestream.speed_of_sound [m/s]  
-       turbofan.inputs. 
-          bypass_ratio                       [-] 
-          total_temperature_reference        [K] 
-          total_pressure_reference           [Pa] 
-          number_of_engines                  [-] 
-
-        turbofan. 
-           reference_temperature              [K] 
-           reference_pressure                 [Pa] 
-           total_design                       [N] - Design thrust
+           Heiser, William H., Pratt, D. T., Daley, D. H., and Unmeel, B. M., 
+           "Hypersonic Airbreathing Propulsors", 1994 
+           Chapter 4 - pgs. 175-180
            
-        Returns: 
-          turbofan.outputs.non_dimensional_thrust  [-]  
-           """              
+    Args:
+        conditions.freestream.speed_of_sound  (numpy.ndarray): [m/s]  
+        turbofan
+          .inputs.bypass_ratio                (float): bypass_ratio                [-]
+          .inputs.total_temperature_reference (float): total temperature reference [K]
+          .inputs.total_pressure_reference    (float): total pressure reference    [Pa]  
+          .reference_temperature              (float): reference temperature       [K]
+          .reference_pressure                 (float): reference pressure          [Pa]
+          .design_thrust                      (float): design thrust               [N]  
 
-    # Unpack Inputs
+    Returns:
+        None 
+    """              
     
-    # Unpack Conditions
+    # Unpack Flight conditions
     a0                      = conditions.freestream.speed_of_sound 
     throttle                = 1.0 
     
-    # Unpack from turbofan 
-    Tref                        = turbofan.reference_temperature 
-    Pref                        = turbofan.reference_pressure  
-    
-    # Unpack from Inputs
-    total_temperature_reference = turbofan.inputs.total_temperature_reference  # low pressure turbine output for turbofan 
-    total_pressure_reference    = turbofan.inputs.total_pressure_reference 
-    no_eng                      = turbofan.inputs.number_of_engines 
+    # Unpack properties from turbofan 
+    Tref   = turbofan.reference_temperature 
+    Pref   = turbofan.reference_pressure   
+    Tt_ref = turbofan.inputs.total_temperature_reference  
+    Pt_ref = turbofan.inputs.total_pressure_reference  
     
     #compute nondimensional thrust 
-    turbofan.compute_stream_thrust(conditions) 
-    
-    #unpack results  
-    Fsp                         = turbofan.outputs.non_dimensional_thrust 
+    turbofan.compute_stream_thrust(conditions)
     
     #compute dimensional mass flow rates 
-    mdot_core                   = turbofan.design_thrust/(Fsp*a0*no_eng*throttle)   
-    mdhc                        = mdot_core/ (np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref)) 
+    Fsp                         = turbofan.outputs.non_dimensional_thrust 
+    mdot_core                   = turbofan.design_thrust/(Fsp*a0*throttle)   
+    mdhc                        = mdot_core/ (np.sqrt(Tref/Tt_ref)*(Pt_ref/Pref)) 
     
-    #pack outputs 
+    # Store results on turbofan data structure 
     turbofan.mass_flow_rate_design               = mdot_core 
     turbofan.compressor_nondimensional_massflow  = mdhc 
     

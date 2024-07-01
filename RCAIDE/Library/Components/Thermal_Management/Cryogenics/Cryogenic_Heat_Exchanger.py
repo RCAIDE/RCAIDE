@@ -49,11 +49,11 @@ class Cryogenic_Heat_Exchanger(Component):
         Source:
             None
 
-        Inputs:
+        Args:
             self                       (dict): cryogen            [-]
             self.inputs.cooling_power (float): cooling power      [W]
 
-        Outputs: 
+        Returns: 
             mdot  (numpy.ndarray): mass flow of cryogenic heat exchanger  [kg/s] 
         
         """         

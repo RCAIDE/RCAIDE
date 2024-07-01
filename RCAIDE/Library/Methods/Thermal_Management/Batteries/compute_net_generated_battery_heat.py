@@ -1,6 +1,6 @@
-## @ingroup Methods-Energy-Sources-Battery-Common
-# RCAIDE/Methods/Energy/Sources/Battery/Common/compute_net_generated_battery_heat.py
-# 
+## @ingroup Library-Methods-Energy-Sources-Battery-Common
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Common/compute_net_generated_battery_heat.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -11,9 +11,9 @@
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  Compute Net Generated Battery Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Sources-Battery-Common 
+## @ingroup Library-Methods-Energy-Sources-Battery-Common 
 def compute_net_generated_battery_heat(n_total,battery,Q_heat_gen,numerics):
     '''Computes the net heat generated in a battery during cycling. 
 
