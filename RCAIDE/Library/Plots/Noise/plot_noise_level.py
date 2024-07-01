@@ -28,22 +28,16 @@ def plot_noise_level(noise_data,
     on the ground
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    results.segments.conditions.
-        frames.inertial.position_vector   - position vector of aircraft
-        noise.
-            total_SPL_dBA                 - total SPL (dbA)
-            relative_microphone_locations - microphone locations
+        results (dict): results data structure
 
     Returns:
-    Plots
-
-
+       fig 
     """      
     N_gm_y       = noise_data.ground_microphone_y_resolution 
     gm           = noise_data.ground_microphone_locations    

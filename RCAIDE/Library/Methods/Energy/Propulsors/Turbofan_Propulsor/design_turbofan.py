@@ -18,7 +18,7 @@ from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Turbine            impo
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor            import size_core
-from  RCAIDE.Library.Methods.Energy.Propulsors.Common                       import compute_static_sea_level_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Common                 import compute_static_sea_level_performance
 
 
 # Python package imports

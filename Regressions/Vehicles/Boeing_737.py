@@ -146,7 +146,7 @@ def vehicle_setup():
     wing.append_segment(segment)
     
     # Fill out more segment properties automatically
-    wing = segment_properties(wing)    
+    segment_properties(wing)    
 
     # control surfaces -------------------------------------------
     slat                          = RCAIDE.Library.Components.Wings.Control_Surfaces.Slat()
@@ -228,7 +228,7 @@ def vehicle_setup():
     wing.append_segment(segment)
     
     # Fill out more segment properties automatically
-    wing = segment_properties(wing)        
+    segment_properties(wing)        
 
     # control surfaces -------------------------------------------
     elevator                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator()
@@ -311,7 +311,7 @@ def vehicle_setup():
     
     
     # Fill out more segment properties automatically
-    wing = segment_properties(wing)        
+    segment_properties(wing)        
 
     # add to vehicle
     vehicle.append_component(wing)

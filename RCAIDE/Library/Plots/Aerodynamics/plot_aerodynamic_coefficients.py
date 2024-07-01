@@ -23,25 +23,20 @@ def plot_aerodynamic_coefficients(results,
                              save_filename = "Aerodynamic_Coefficents",
                              file_type = ".png",
                              width = 12, height = 7):
-    """This plots the aerodynamic coefficients
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
-    
-    Args:
-    results.segments.condtions.aerodynamics.
-        lift_coefficient
-        drag_coefficient
-        angle_of_attack
-        
-    Returns:
-    Plots
-    
+    """This plots the aerodynamic coefficients 
 
-    """ 
+    Assumptions:
+        None
+
+    Source:
+        None
+
+    Args:
+        results (dict): results data structure
+
+    Returns:
+        fig     (figure) 
+    """
 
     # get plotting style 
     ps      = plot_style()  

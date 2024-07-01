@@ -23,25 +23,19 @@ def plot_drag_components(results,
                          save_filename="Drag_Components",
                          file_type=".png",
                         width = 12, height = 7):
-    """This plots the drag components of the aircraft
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
-    
-    Args:
-    results.segments.condtions.aerodynamics.coefficients.drag.breakdown
-          parasite.total
-          induced.total
-          compressible.total
-          miscellaneous.total
-          
-    Returns:
-    Plots
-    
+    """This plots the drag components of the aircraft 
 
+    Assumptions:
+        None
+
+    Source:
+        None
+
+    Args:
+        results (dict): results data structure
+
+    Returns:
+        fig     (figure) 
     """ 
     # get plotting style 
     ps      = plot_style()  
@@ -61,12 +55,12 @@ def plot_drag_components(results,
     for i, segment in enumerate(results.segments):
         time   = segment.conditions.frames.inertial.time[:,0] / Units.min 
         drag   = segment.conditions.aerodynamics.coefficients.drag.breakdown
-        cdp = drag.parasite.total[:,0]
-        cdi = drag.induced.total[:,0]
-        cdc = drag.compressible.total[:,0]
-        cdm = drag.miscellaneous.total[:,0]
-        cde = np.ones_like(cdm)*drag.drag_coefficient_increment
-        cd  = drag.total[:,0]
+        cdp    = drag.parasite.total[:,0]
+        cdi    = drag.induced.total[:,0]
+        cdc    = drag.compressible.total[:,0]
+        cdm    = drag.miscellaneous.total[:,0]
+        cde    = np.ones_like(cdm)*drag.drag_coefficient_increment
+        cd     = drag.total[:,0]
          
             
         segment_tag  =  segment.tag

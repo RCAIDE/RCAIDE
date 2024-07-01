@@ -19,18 +19,16 @@ def plot_rotor_performance(rotor, title=None, show_figure = True,save_figure=Fal
     """Plots a summary of rotor performance 
     
     Assumptions:
-    None
+       None
 
     Source: 
-    None
+       None
     
-    Inputs
-    rotor   - rotor data structure 
-    
+    Args:
+        rotor   (dict) rotor data structure  
+
     Returns:
-    Plots
-
-
+        fig     (figure) 
     """
     # unpack
     outputs = rotor.outputs

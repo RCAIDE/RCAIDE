@@ -17,24 +17,20 @@ import numpy as np
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------      
 ## @ingroup Library-Plots-Performance-Aerodynamics
-def plot_rotor_disc_performance(prop,outputs,i=0,title=None,save_figure=False): 
-
+def plot_rotor_disc_performance(rotor,outputs,i=0,title=None,save_figure=False):  
     """Plots rotor disc performance
 
     Assumptions:
-    None
+        None
 
-    Source: 
-    None
-    
-    Inputs
-    outputs    - rotor outputs data structure 
+    Source:
+        None
+
+    Args:
+        rotor (dict): results data structure
 
     Returns:
-    Plots
-
-
-    
+        fig     (figure)  
     """
      
     # Now plotting:

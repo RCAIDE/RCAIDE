@@ -10,4 +10,3 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from .compute_component_centers_of_gravity import compute_component_centers_of_gravity
-from .compute_vehicle_center_of_gravity import compute_vehicle_center_of_gravity

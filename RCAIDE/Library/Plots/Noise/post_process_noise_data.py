@@ -23,15 +23,16 @@ def post_process_noise_data(results,time_step = 20):
     """This translates all noise data into metadata for plotting 
     
     Assumptions:
-    None
+        None
     
-    Source: 
+    Source:
+        None 
  
-    Args: results 
+    Args:
+        results  (dict): results data structure 
          
-    Returns: noise_data
-    
-
+    Returns:
+        noise_data (dict): processed noise data
     """
 
     # unpack 

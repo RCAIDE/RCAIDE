@@ -25,7 +25,7 @@ def pre_stall_coefficients(state,settings,wing):
         Wind Turbines and Wind Tunnels" by D. A. Spera
 
     Args:
-        state.conditions.aerodynamics.angle_of_attack (numpy.ndarray):  [radians]
+        state.conditions.aerodynamics.angles.alpha    (numpy.ndarray):  [radians]
         settings.section_zero_lift_angle_of_attack            (float):  [unitless]
         geometry.section.angle_attack_max_prestall_lift       (float):  [unitless]
         geometry.section.zero_lift_drag_coefficient           (float):  [unitless]
@@ -40,7 +40,7 @@ def pre_stall_coefficients(state,settings,wing):
     """  
     
     # unpack inputs 
-    alpha  = state.conditions.aerodynamics.angle_of_attack  
+    alpha  = state.conditions.aerodynamics.angles.alpha  
     A0     = settings.section_zero_lift_angle_of_attack 
     CL1max = wing.pre_stall_maximum_lift_coefficient
     S1     = wing.pre_stall_lift_curve_slope  

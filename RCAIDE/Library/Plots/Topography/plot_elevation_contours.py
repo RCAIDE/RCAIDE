@@ -34,18 +34,16 @@ def plot_elevation_contours(topography_file,
     """This plots the elevation contours
 
     Assumptions:
-    None
+        None
 
     Source:
-    topography_file
+        None 
 
-    Args:
-    vehicle
+    Args: 
+        topography_file
 
     Returns:
-    Plots
-
-
+        fig 
     """
 
     # get plotting style 
@@ -80,8 +78,7 @@ def plot_elevation_contours(topography_file,
         y_max_coord = np.max(Long)-360  
     
     top_left_map_coords      = np.array([x_max_coord,y_min_coord])
-    bottom_left_map_coords   = np.array([x_min_coord,y_min_coord]) 
-    top_right_map_coords     = np.array([x_max_coord,y_max_coord])
+    bottom_left_map_coords   = np.array([x_min_coord,y_min_coord])  
     bottom_right_map_coords  = np.array([x_min_coord,y_max_coord]) 
     
     x_dist_max = GD(top_left_map_coords,bottom_left_map_coords).m 

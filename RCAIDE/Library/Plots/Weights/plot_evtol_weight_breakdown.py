@@ -29,18 +29,16 @@ def plot_evtol_weight_breakdown(vehicle,
     """This plots the weight breakdown of an evtol aircraft
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    vehicle
+        vehicle
 
     Returns:
-    Plots
-
-
+        fig 
     """
 
     b         =  vehicle.weight_breakdown    

@@ -16,40 +16,40 @@ import matplotlib.pyplot as plt
 # ----------------------------------------------------------------------------------------------------------------------     
 
 ## @ingroup Library-Plots-Performance-Aerodynamics   
-def plot_airfoil_surface_forces(ap, save_figure = False , arrow_color = 'red',save_filename = 'Airfoil_Cp_Distribution', show_figure = True, file_type = ".png"):  
+def plot_airfoil_surface_forces(polars, save_figure = False , arrow_color = 'red',save_filename = 'Airfoil_Cp_Distribution', show_figure = True, file_type = ".png"):  
     """ This plots the forces on an airfoil surface
     
         Assumptions:
-        None
+           None
         
         Args: 
-        ap       - data stucture of airfoil boundary layer properties and polars 
+            polars    (dict) data stucture of airfoil boundary layer properties and polars 
          
         Returns: 
-        None 
+            fig
         
         """        
     
     # determine dimension of angle of attack and reynolds number 
-    n_cpts   = len(ap.AoA)
-    nAoA     = len(ap.AoA[0])
-    n_pts    = len(ap.x[0,0,:])- 1 
+    n_cpts   = len(polars.AoA)
+    nAoA     = len(polars.AoA[0])
+    n_pts    = len(polars.x[0,0,:])- 1 
      
 
     for i in range(n_cpts):     
         for j in range(nAoA): 
-            label =  '_AoA_' + str(round(ap.AoA[i][j]/Units.degrees,2)) + '_deg_Re_' + str(round(ap.Re[i][j]/1000000,2)) + 'E6'
+            label =  '_AoA_' + str(round(polars.AoA[i][j]/Units.degrees,2)) + '_deg_Re_' + str(round(polars.Re[i][j]/1000000,2)) + 'E6'
             fig   = plt.figure('Airfoil_Pressure_Normals' + label )
             axis = fig.add_subplot(1,1,1) 
-            axis.plot(ap.x[0,0,:], ap.y[0,0,:],'k-')   
+            axis.plot(polars.x[0,0,:], polars.y[0,0,:],'k-')   
             for k in range(n_pts):
-                dx_val = ap.normals[i,j,k,0]*abs(ap.cp[i,j,k])*0.1
-                dy_val = ap.normals[i,j,k,1]*abs(ap.cp[i,j,k])*0.1
-                if ap.cp[i,j,k] < 0:
-                    plt.arrow(x= ap.x[i,j,k], y=ap.y[i,j,k] , dx= dx_val , dy = dy_val , 
+                dx_val = polars.normals[i,j,k,0]*abs(polars.cp[i,j,k])*0.1
+                dy_val = polars.normals[i,j,k,1]*abs(polars.cp[i,j,k])*0.1
+                if polars.cp[i,j,k] < 0:
+                    plt.arrow(x= polars.x[i,j,k], y=polars.y[i,j,k] , dx= dx_val , dy = dy_val , 
                               fc=arrow_color, ec=arrow_color,head_width=0.005, head_length=0.01 )   
                 else:
-                    plt.arrow(x= ap.x[i,j,k]+dx_val , y= ap.y[i,j,k]+dy_val , dx= -dx_val , dy = -dy_val , 
+                    plt.arrow(x= polars.x[i,j,k]+dx_val , y= polars.y[i,j,k]+dy_val , dx= -dx_val , dy = -dy_val , 
                               fc=arrow_color, ec=arrow_color,head_width=0.005, head_length=0.01 )   
     
     

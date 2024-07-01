@@ -1,14 +1,14 @@
 ## @ingroup Library-Methods-Energy-Sources-Battery-Ragone
-# RCAIDE/Library/Methods/Energy/Sources/Battery/Ragone/find_specific_power.py
+# RCAIDE/Library/Methods/Energy/Sources/Battery/Ragone/compute_specific_power.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2023, M. Clarke 
  
 # ----------------------------------------------------------------------------------------------------------------------
-#  find_specific_power
+#  compute_specific_power
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Library-Methods-Energy-Sources-Battery-Ragone
-def find_specific_power(battery, specific_energy):
+def compute_specific_power(battery, specific_energy):
     """Determines specific specific power from a ragone curve correlation
     
     Assumptions:

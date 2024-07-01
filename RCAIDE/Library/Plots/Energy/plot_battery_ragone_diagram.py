@@ -26,22 +26,16 @@ def plot_battery_ragone_diagram(battery,
     """Plots the pack-level conditions of the battery throughout flight.
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    results.segments.conditions.
-        freestream.altitude
-        weights.total_mass
-        weights.vehicle_mass_rate
-        frames.body.thrust_force_vector
+        results (dict): results data structure
 
     Returns:
-    Plots
-
-
+        fig     (figure) 
     """
  
     # get plotting style 

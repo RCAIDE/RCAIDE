@@ -27,15 +27,16 @@ def plot_solar_network_conditions(results,
     """This plots the solar flux and power train performance of an solar powered aircraft
 
     Assumptions:
-    None
-     
-    Source:
-    None
-    
-    Returns:
-    Plots
-    
+        None
 
+    Source:
+        None
+
+    Args:
+        results (dict): results data structure
+
+    Returns:
+        fig     (figure) 
     """
     
     # get plotting style 

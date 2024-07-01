@@ -24,24 +24,19 @@ def plot_aerodynamic_forces(results,
                              file_type = ".png",
                              width = 12, height = 7):
     """This plots the aerodynamic forces
-    
-    Assumptions:
-    None
-    
-    Source:
-    None
-    
-    Args:
-    results.segments.condtions.frames
-         body.thrust_force_vector
-         wind.force_vector
-         wind.force_vector
-         
-    Returns:
-    Plots
-    
 
-    """ 
+    Assumptions:
+        None
+
+    Source:
+        None
+
+    Args:
+        results (dict): results data structure
+
+    Returns:
+        fig     (figure) 
+    """
 
     # get plotting style 
     ps      = plot_style()  

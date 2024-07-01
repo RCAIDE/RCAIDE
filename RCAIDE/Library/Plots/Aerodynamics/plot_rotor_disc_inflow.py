@@ -18,23 +18,20 @@ import numpy as np
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------      
 ## @ingroup Library-Plots-Performance-Aerodynamics  
-def plot_rotor_disc_inflow(prop,velocities, grid_points):
-
+def plot_rotor_disc_inflow(rotor,velocities, grid_points): 
     """Plots rotor disc inflow velocities
 
     Assumptions:
-    None
+        None
 
-    Source: 
-    None
-    
-    Inputs
-    velocites  - velocites at rotor plane  [m/s]
+    Source:
+        None
+
+    Args:
+        results (dict): results data structure
 
     Returns:
-    Plots
-
-
+        fig     (figure) 
     """    
     
     u = velocities.u_velocities
@@ -46,8 +43,8 @@ def plot_rotor_disc_inflow(prop,velocities, grid_points):
     y = grid_points.ymesh
     z = grid_points.zmesh
 
-    R  = prop.tip_radius
-    Rh = prop.hub_radius
+    R  = rotor.tip_radius
+    Rh = rotor.hub_radius
     psi_360 = np.linspace(0,2*np.pi,40)
     
     vmin = round(np.min([u,v,w,vtot]),3)
@@ -89,13 +86,13 @@ def plot_rotor_disc_inflow(prop,velocities, grid_points):
     style = "Simple, tail_width=0.5, head_width=4, head_length=8"
     kw    = dict(arrowstyle=style,color="k")
     
-    if prop.rotation==1:
+    if rotor.rotation==1:
         # Rotation direction is ccw
         arrow1 = patches.FancyArrowPatch((-0.8*R,-0.8*R),(0.8*R,-0.8*R), connectionstyle="arc3,rad=0.4", **kw)
         arrow2 = patches.FancyArrowPatch((-0.8*R,-0.8*R),(0.8*R,-0.8*R), connectionstyle="arc3,rad=0.4", **kw)
         arrow3 = patches.FancyArrowPatch((-0.8*R,-0.8*R),(0.8*R,-0.8*R), connectionstyle="arc3,rad=0.4", **kw)
         arrow4 = patches.FancyArrowPatch((-0.8*R,-0.8*R),(0.8*R,-0.8*R), connectionstyle="arc3,rad=0.4", **kw)
-    elif prop.rotation==-1:
+    elif rotor.rotation==-1:
         # Rotation direction is cw
         arrow1 = patches.FancyArrowPatch((0.8*R,-0.8*R),(-0.8*R,-0.8*R), connectionstyle="arc3,rad=-0.4", **kw)
         arrow2 = patches.FancyArrowPatch((0.8*R,-0.8*R),(-0.8*R,-0.8*R), connectionstyle="arc3,rad=-0.4", **kw)

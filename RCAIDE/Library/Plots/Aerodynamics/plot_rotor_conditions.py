@@ -27,17 +27,16 @@ def plot_rotor_conditions(results,
     """This plots the electric driven network propeller efficiencies 
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    results.segments.conditions.propulsion.  
-        
-    Returns: 
-    Plots
+        results (dict): results data structure
 
+    Returns:
+        fig     (figure) 
 	
     """	   
     # get plotting style 

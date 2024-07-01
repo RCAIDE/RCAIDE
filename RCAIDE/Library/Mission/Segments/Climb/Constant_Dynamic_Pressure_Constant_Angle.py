@@ -18,28 +18,30 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Segments-Climb
 def initialize_conditions_unpack_unknowns(segment):
-    """Sets the specified conditions which are given for the segment type.
+    """Sets the specified conditions which are given for the segment type. 
+     Computed flight kinematics include: 
+       conditions.frames.inertial.velocity_vector  [meters/second]
+       conditions.frames.inertial.position_vector  [meters]
+       conditions.energy.throttle              [unitless]
+       conditions.frames.body.inertial_rotations   [radians]
+
 
     Assumptions:
-    Constrant dynamic pressure and constant rate of climb
+       Constrant dynamic pressure and constant rate of climb
 
     Source:
-    None
+       None
 
     Args:
-    segment.climb_angle                                 [radians]
-    segment.dynamic_pressure                            [pascals]
-    segment.altitude_start                              [meters]
-    segment.altitude_end                                [meters]
-    segment.state.numerics.dimensionless.control_points [unitless]
-    conditions.freestream.density                       [kilograms/meter^3]  
+       segment.climb_angle                                 [radians]
+       segment.dynamic_pressure                            [pascals]
+       segment.altitude_start                              [meters]
+       segment.altitude_end                                [meters]
+       segment.state.numerics.dimensionless.control_points [unitless]
+       conditions.freestream.density                       [kilograms/meter^3]  
 
     Returns:
-    conditions.frames.inertial.velocity_vector  [meters/second]
-    conditions.frames.inertial.position_vector  [meters]
-    conditions.energy.throttle              [unitless]
-    conditions.frames.body.inertial_rotations   [radians]
-
+       None 
 
     """           
     

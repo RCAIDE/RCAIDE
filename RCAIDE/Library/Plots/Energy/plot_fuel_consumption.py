@@ -25,22 +25,18 @@ def plot_fuel_consumption(results,
                     width = 12, height = 7): 
 
     """This plots aircraft fuel usage
-    
-    
-    Assumptions:
-    None
 
-    Source: 
-  
+    Assumptions:
+        None
+
+    Source:
+        None
+
     Args:
-    results.segments.condtions.
-        frames.inertial.time
-        weights.fuel_mass
-        weights.additional_fuel_mass
-        weights.total_mass
-        
+        results (dict): results data structure
+
     Returns:
-    Plots
+        fig     (figure) 
 	"""
 
     # get plotting style 

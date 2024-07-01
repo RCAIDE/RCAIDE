@@ -28,25 +28,16 @@ def plot_flight_trajectory(results,
     """This plots the 3D flight trajectory of the aircraft.
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    results.segments.conditions.
-         frames 
-             body.inertial_rotations
-             inertial.position_vector 
-         freestream.velocity
-         aerodynamics.
-             lift_coefficient
-             drag_coefficient
-             angle_of_attack
-        
-    Returns: 
-    Plots
+        results (dict): results data structure
 
+    Returns:
+        fig     (figure) 
 	
     """	     
 

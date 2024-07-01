@@ -58,9 +58,7 @@ def plot_3D_noise_contour(noise_data,
        show_microphones  - show microhpone flag 
 
     Returns:
-       Plots
-
-
+        fig
     """   
     Aircraft_pos    = noise_data.aircraft_position      
     X               = noise_data.ground_microphone_locations[:,:,0]/Units.nmi  

@@ -25,23 +25,19 @@ def plot_disc_and_power_loading(results,
                             save_filename="Disc_And_Power_Loading",
                             file_type = ".png",
                             width = 12, height = 7):
-    """Plots rotor disc and power loadings
+    """Plots rotor disc and power loadings 
 
     Assumptions:
-    None
+        None
 
-    Source: 
-    None
-    
-    Inputs
-    results.segments.conditions.propulsion.
-        disc_loadings
-        power_loading 
+    Source:
+        None
+
+    Args:
+        results (dict): results data structure
 
     Returns:
-    Plots
-
-
+        fig     (figure) 
     """
  
     # get plotting style 

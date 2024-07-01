@@ -27,7 +27,7 @@ def post_stall_coefficients(state,settings,wing):
         Wind Turbines and Wind Tunnels" by D. A. Spera
 
     Args:
-        state.conditions.aerodynamics.angle_of_attack (numpy.ndarray:  [radians]
+        state.conditions.aerodynamics.angles.alpha    (numpy.ndarray:  [radians]
         settings.section_zero_lift_angle_of_attack           (float):  [radians]
         wing.aspect_ratio                                    (float):  [unitless]
         wing.thickness_to_chord                              (float):  [unitless]
@@ -47,7 +47,7 @@ def post_stall_coefficients(state,settings,wing):
     ACL1   = wing.section.angle_attack_max_prestall_lift 
     CD1max = wing.pre_stall_maximum_lift_drag_coefficient
     ACD1   = wing.pre_stall_maximum_drag_coefficient_angle
-    alpha  = state.conditions.aerodynamics.angle_of_attack 
+    alpha  = state.conditions.aerodynamics.angles.alpha 
             
     # Eqn 9a and b
     F1        = 1.190*(1.0-(t_c*t_c))

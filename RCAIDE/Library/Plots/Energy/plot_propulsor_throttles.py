@@ -26,21 +26,16 @@ def plot_propulsor_throttles(results,
     """This plots the altitude, specific fuel consumption and vehicle weight.
 
     Assumptions:
-    None
+        None
 
     Source:
+        None
 
     Args:
-    results.segments.conditions.
-        freestream.altitude
-        weights.total_mass
-        weights.vehicle_mass_rate
-        frames.body.thrust_force_vector
+        results (dict): results data structure
 
     Returns:
-    Plots
-
-
+        fig     (figure) 
     """
  
     # get plotting style 

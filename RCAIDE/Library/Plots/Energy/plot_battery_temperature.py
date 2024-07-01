@@ -27,22 +27,16 @@ def plot_battery_temperature(results,
     """Plots the cell-level conditions of the battery throughout flight.
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    results.segments.conditions.
-        freestream.altitude
-        weights.total_mass
-        weights.vehicle_mass_rate
-        frames.body.thrust_force_vector
+        results (dict): results data structure
 
-    Returns: 
-    Plots
-
-	
+    Returns:
+        fig     (figure) 
     """ 
     
     # get plotting style 

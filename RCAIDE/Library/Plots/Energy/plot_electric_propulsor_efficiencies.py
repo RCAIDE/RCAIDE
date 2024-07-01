@@ -27,21 +27,16 @@ def plot_electric_propulsor_efficiencies(results,
     """This plots the electric driven network propeller efficiencies 
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    results.segments.conditions.propulsion. 
-         etap
-         etam
-         fom
-        
-    Returns: 
-    Plots
+        results (dict): results data structure
 
-	
+    Returns:
+        fig     (figure) 
     """	   
     # get plotting style 
     ps      = plot_style()  

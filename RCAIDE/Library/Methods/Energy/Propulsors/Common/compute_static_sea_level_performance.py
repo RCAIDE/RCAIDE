@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE Imports
-import RCAIDE 
-from RCAIDE.Library.Methods.Energy.Propulsors import Turbofan_Propulsor
+import RCAIDE  
 
 # Python package imports
 import numpy as np
@@ -84,15 +83,14 @@ def compute_static_sea_level_performance(propulsor):
 
     # initialize data structure for propulsor operating conditions (for noise )       
     sls_conditions.noise[fuel_line.tag]                                 = RCAIDE.Framework.Mission.Common.Conditions()              
-    sls_conditions.noise[fuel_line.tag][propulsor.tag]                   = RCAIDE.Framework.Mission.Common.Conditions() 
-    sls_conditions.noise[fuel_line.tag][propulsor.tag].propulsor          = RCAIDE.Framework.Mission.Common.Conditions()
+    sls_conditions.noise[fuel_line.tag][propulsor.tag]                  = RCAIDE.Framework.Mission.Common.Conditions() 
     
     total_power     = np.zeros((3,1))
     total_thrust    = np.zeros((1,1))
     
     if type(propulsor) == RCAIDE.Library.Components.Propulsors.Turbofan:
-        Turbofan_Propulsor.compute_performance(sls_conditions,fuel_line,propulsor,total_thrust,total_power)
+        sls_conditions.noise[fuel_line.tag][propulsor.tag].turbofan         = RCAIDE.Framework.Mission.Common.Conditions()
+        RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor.compute_performance(sls_conditions,fuel_line,propulsor,total_thrust,total_power)
         
-    propulsor.sealevel_static_thrust = propulsor.outputs.thrust
-    
+    propulsor.sealevel_static_thrust = propulsor.outputs.thrust 
     return 

@@ -28,26 +28,16 @@ def plot_flight_conditions(results,
     """This plots the flights the conditions
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    results.segments.conditions.
-         frames
-             body.inertial_rotations
-             inertial.position_vector
-         freestream.velocity
-         aerodynamics.
-             lift_coefficient
-             drag_coefficient
-             angle_of_attack
+        results (dict): results data structure
 
     Returns:
-    Plots
-
-
+        fig     (figure) 
     """
  
 

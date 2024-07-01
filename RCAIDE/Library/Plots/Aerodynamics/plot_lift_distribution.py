@@ -23,21 +23,17 @@ def plot_lift_distribution(results,vehicle,
     """This plots the sectional lift distrubtion at all control points
      on all lifting surfaces of the aircraft
 
-     Assumptions:
-     None
+    Assumptions:
+        None
 
-     Source:
-     None
+    Source:
+        None
 
-     Args:
-     results.segments.aerodynamics.
-         inviscid_wings_sectional_lift
-     vehicle.vortex_distribution.
-        n_sw
-        n_w
+    Args:
+        results (dict): results data structure
 
-     Returns: 
-         Plots 
+    Returns:
+        fig     (figure) 
      """   
 
     # get plotting style 

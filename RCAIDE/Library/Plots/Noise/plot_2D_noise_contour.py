@@ -56,9 +56,7 @@ def plot_2D_noise_contour(noise_data,
        show_microphones  - show microhpone flag 
 
     Returns:
-       Plots
-
-
+       fig 
     """      
     
     elevation       = noise_data.ground_microphone_locations[:,:,2]/Units.ft      

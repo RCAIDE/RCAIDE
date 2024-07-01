@@ -27,21 +27,19 @@ def plot_airfoil_boundary_layer_properties(ap,
                                            save_filename = 'Airfoil_with_Boundary_Layers', 
                                            width = 12, height = 7):
     """Plots viscous distributions
-    
-    Assumptions:
-    None
-    
-    Source: 
-    None
-                                                     
-    Args:
-        ap     : data stucture of airfoil boundary layer properties  
-                                                                           
-    Returns:
-        Figures of quantity distributions
-    
 
-    """      
+    Assumptions:
+        None
+
+    Source:
+        None
+
+    Args:
+        results (dict): results data structure
+
+    Returns:
+        fig     (figure) 
+    """
     # get plotting style 
     ps      = plot_style()  
     
@@ -88,10 +86,10 @@ def plot_quantity(ap, q, qaxis, qname,ylim_low,ylim_high,file_type,show_legend,s
     """Plots a quantity q over lower/upper/wake surfaces
     
     Assumptions:
-    None
+       None
     
     Source: 
-    None
+       None
                                                      
     Args:
        ap        : data stucture of airfoil boundary layer properties  
@@ -100,9 +98,7 @@ def plot_quantity(ap, q, qaxis, qname,ylim_low,ylim_high,file_type,show_legend,s
        qname     : name of quantity, for title labeling
                                                                            
     Returns:
-       Figure showing q versus x
-    
-
+       Figure showing q versus x 
     """          
 
     # get plotting style 

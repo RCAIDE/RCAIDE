@@ -27,21 +27,16 @@ def plot_aircraft_velocities(results,
     """This plots true, equivalent, and calibrated airspeeds along with mach
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    results.segments.condtions.freestream.
-        velocity
-        density
-        mach_number
+        results (dict): results data structure
 
     Returns:
-    Plots
-
-
+        fig     (figure) 
     """ 
 
     # get plotting style 

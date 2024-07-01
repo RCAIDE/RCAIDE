@@ -20,26 +20,27 @@ import numpy as np
 ## @ingroup Library-Missions-Segments-Climb
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
+     Computed flight kinematics include: 
+        conditions.frames.inertial.velocity_vector  [meters/second]
+        conditions.frames.inertial.position_vector  [meters]
+        conditions.freestream.altitude              [meters] 
     
     Assumptions:
-    Constant CAS airspeed with a constant rate of climb
+       Constant CAS airspeed with a constant rate of climb
 
     Source:
-    None
+       None
 
     Args:
-    segment.climb_rate                                  [meters/second]
-    segment.calibrated_air_speed                        [meters/second]
-    segment.altitude_start                              [meters]
-    segment.altitude_end                                [meters]
-    segment.state.numerics.dimensionless.control_points [unitless]
-    conditions.freestream.density                       [kilograms/meter^3]
+       segment.climb_rate                                  [meters/second]
+       segment.calibrated_air_speed                        [meters/second]
+       segment.altitude_start                              [meters]
+       segment.altitude_end                                [meters]
+       segment.state.numerics.dimensionless.control_points [unitless]
+       conditions.freestream.density                       [kilograms/meter^3]
 
     Returns:
-    conditions.frames.inertial.velocity_vector  [meters/second]
-    conditions.frames.inertial.position_vector  [meters]
-    conditions.freestream.altitude              [meters]
-
+       None
 
     """         
     
@@ -91,3 +92,5 @@ def initialize_conditions(segment):
     conditions.frames.inertial.velocity_vector[:,2] = v_z
     conditions.frames.inertial.position_vector[:,2] = -alt[:,0]  
     conditions.freestream.altitude[:,0]             = alt[:,0]  
+    
+    return 

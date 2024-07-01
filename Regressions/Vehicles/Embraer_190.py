@@ -121,7 +121,7 @@ def vehicle_setup():
     wing.Segments.append(segment)       
     
     # Fill out more segment properties automatically
-    wing = segment_properties(wing)        
+    segment_properties(wing)        
 
     # control surfaces -------------------------------------------
     flap                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Flap() 

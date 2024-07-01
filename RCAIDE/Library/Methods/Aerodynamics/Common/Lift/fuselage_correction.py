@@ -21,7 +21,7 @@ def fuselage_correction(state,settings,geometry):
         settings.fuselage_lift_correction (float): fuselage lift correction [unitless]
         state.conditions.
           freestream.mach_number          (numpy.ndarray): mach number      [unitless]
-          aerodynamics.angle_of_attack    (numpy.ndarray): angle of attack  [radians]
+          aerodynamics.angles.alpha       (numpy.ndarray): angle of attack  [radians]
           aerodynamics.coefficients.lift  (numpy.ndarray): lift coefficient [unitless]
 
     Returns:

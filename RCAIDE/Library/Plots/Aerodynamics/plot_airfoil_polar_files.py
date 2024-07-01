@@ -27,18 +27,16 @@ def plot_airfoil_polar_files(polar_data,
     """This plots all airfoil polars in the list "airfoil_polar_paths" 
 
     Assumptions:
-    None
+       None
 
     Source:
-    None
+        None
 
     Args:
-    airfoil_polar_paths   [list of strings]
+        airfoil_polar_paths   [list of strings] 
 
-    Returns: 
-    Plots
-
-	
+    Returns:
+        fig     (figure) 
     """ 
   
     
