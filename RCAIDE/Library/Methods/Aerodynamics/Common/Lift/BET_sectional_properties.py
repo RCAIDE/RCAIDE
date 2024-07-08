@@ -1,7 +1,6 @@
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/compute_airfoil_section_coefficients.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# 
 # Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -47,42 +46,18 @@ def compute_section_coefficients(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
     Returns:
        Cl               (numpy.ndaray) :  Lift Coefficients                         [unitless]
        Cdval            (numpy.ndaray) :  Drag Coefficients  (before scaling)       [unitless]
-       alpha            (numpy.ndaray) :  section local angle of attack             [rad]
+       AoA              (numpy.ndaray) :  section local angle of attack             [rad]
        Ma               (numpy.ndaray) :  Mach Numner                               [unitless]
        W                (numpy.ndaray) :  Sectional velocitty                       [m/s]
        Re               (numpy.ndaray) :  Reynolds Number                           [unitless] 
     """ 
-    alpha    = beta - np.arctan2(Wa,Wt)
+    AoA      = beta - np.arctan2(Wa,Wt)
     W        = (Wa*Wa + Wt*Wt)**0.5
     Ma       = W/a
     Re       = (W*c)/nu
 
-    # If propeller airfoils are defined, use surrogate
-    if a_loc != None:  
-        # Compute blade Cl and Cd distribution from the airfoil data 
-        if use_2d_analysis:
-            # return the 2D Cl and CDval of shape (ctrl_pts, Nr, Na)
-            Cl      = np.zeros((ctrl_pts,Nr,Na))
-            Cdval   = np.zeros((ctrl_pts,Nr,Na))
-            for jj,airfoil in enumerate(airfoils):
-                pd              = airfoil.polars
-                Cl_af           = interp2d(Re,alpha,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients) 
-                Cdval_af        = interp2d(Re,alpha,pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
-                locs            = np.where(np.array(a_loc) == jj )
-                Cl[:,locs,:]    = Cl_af[:,locs,:]
-                Cdval[:,locs,:] = Cdval_af[:,locs,:]
-        else:
-            # return the 1D Cl and CDval of shape (ctrl_pts, Nr)
-            Cl      = np.zeros((ctrl_pts,Nr))
-            Cdval   = np.zeros((ctrl_pts,Nr)) 
-            for jj,airfoil in enumerate(airfoils):
-                pd            = airfoil.polars
-                Cl_af         = interp2d(Re,alpha,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients)
-                Cdval_af      = interp2d(Re,alpha,pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
-                locs          = np.where(np.array(a_loc) == jj )
-                Cl[:,locs]    = Cl_af[:,locs]
-                Cdval[:,locs] = Cdval_af[:,locs]
-    else: # use empirical fit 
+    # If propeller airfoils are not defined, use empirical fit 
+    if a_loc == None:    
         # Estimate Cl max
         t_c_1      = t_c*100
         Cl_max_ref = -0.0009*t_c_1**3 + 0.0217*t_c_1**2 - 0.0442*t_c_1 + 0.7005
@@ -91,9 +66,9 @@ def compute_section_coefficients(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
         Cl1maxp    = Cl_max_ref * ( Re / Re_ref ) **0.1
 
         # If not airfoil polar provided, use 2*pi as lift curve slope
-        Cl                 = 2.*np.pi*alpha 
+        Cl                 = 2.*np.pi*AoA 
         Cl[Cl>Cl1maxp]     = Cl1maxp[Cl>Cl1maxp] # use Cl max value 
-        Cl[alpha>=np.pi/2] = 0. # stall if blade angle is greater than 90 degrees 
+        Cl[AoA>=np.pi/2] = 0. # stall if blade angle is greater than 90 degrees 
 
         # Apply Karmen_Tsien Mach scaling 
         KT_cond         = np.logical_and((Ma[:,:]<1.),(Cl>0))
@@ -101,13 +76,36 @@ def compute_section_coefficients(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
         Cl[Ma[:,:]>=1.] = Cl[Ma[:,:]>=1.] # If the blade segments are supersonic, don't scale
 
         # DAE51 data Approximation
-        Cdval = (0.108*(Cl*Cl*Cl*Cl)-0.2612*(Cl*Cl*Cl)+0.181*(Cl*Cl)-0.0139*Cl+0.0278)*((50000./Re)**0.2)
-        Cdval[alpha>=np.pi/2] = 2. # limit if blade angle is greater than 90 degrees
+        Cdval = (0.108*(Cl**4)-0.2612*(Cl**3)+0.181*(Cl**2)-0.0139*Cl+0.0278)*((50000./Re)**0.2)
+        Cdval[AoA>=np.pi/2] = 2. # limit if blade angle is greater than 90 degrees
+        
+    else: 
+        # Compute blade Cl and Cd distribution from the airfoil data 
+        if use_2d_analysis:# return the 2D Cl and CDval of shape (ctrl_pts, Nr, Na)
+            Cl      = np.zeros((ctrl_pts,Nr,Na))
+            Cdval   = np.zeros((ctrl_pts,Nr,Na))
+            for jj,airfoil in enumerate(airfoils):
+                pd              = airfoil.polars
+                Cl_af           = interp2d(Re,AoA,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients) 
+                Cdval_af        = interp2d(Re,AoA,pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
+                locs            = np.where(np.array(a_loc) == jj )
+                Cl[:,locs,:]    = Cl_af[:,locs,:]
+                Cdval[:,locs,:] = Cdval_af[:,locs,:]
+        else: # return the 1D Cl and CDval of shape (ctrl_pts, Nr)
+            Cl      = np.zeros((ctrl_pts,Nr))
+            Cdval   = np.zeros((ctrl_pts,Nr)) 
+            for jj,airfoil in enumerate(airfoils):
+                pd            = airfoil.polars
+                Cl_af         = interp2d(Re,AoA,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients)
+                Cdval_af      = interp2d(Re,AoA,pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
+                locs          = np.where(np.array(a_loc) == jj )
+                Cl[:,locs]    = Cl_af[:,locs]
+                Cdval[:,locs] = Cdval_af[:,locs]        
         
     # prevent zero Cl to keep Cd/Cl from breaking in BET
     Cl[Cl==0] = 1e-12
 
-    return Cl, Cdval, alpha, Ma, W, Re  
+    return Cl, Cdval, AoA, Ma, W, Re  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_inflow_and_tip_loss

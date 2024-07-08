@@ -1,60 +1,51 @@
 # RCAIDE/Library/Methods/Geometry/Two_Dimensional/Airfoil/convert_airfoil_to_meshgrid.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2024, M. Clarke 
+# Created:  Jul 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
-
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 # convert_airfoil_to_meshgrid
 # ----------------------------------------------------------------------------------------------------------------------   
 def convert_airfoil_to_meshgrid(airfoil_geometry, *args, **kwargs):
-    """Converts a RCAIDE airfoil geometry representation to a Numpy meshgrid
-    array mask of boolean values.
+    """Converts an airfoil geometry representation to a numpy meshgrid array mask of boolean values.
 
     Assumptions:
-    None
+        None
 
     Source:
-    None
+        None
 
     Args:
-    airfoil_geometry                [RCAIDE Data Structure]
-        .x_lower_surface            [Numpy Array, float32]
-        .y_lower_surface            [Numpy Array, float32]
-        .y_upper_surface            [Numpy Array, float32]
+        airfoil_geometry               (dict): [-]   
+            .x_lower_surf     (numpy.ndarray): [unitless]
+            .y_lower_surf     (numpy.ndarray): [unitless]
+            .y_upper_surface  (numpy.ndarray): [unitless]
 
-    Returns: 
-
-    airfoil_meshgrid                [Numpy Array, bool]
+    Returns:  
+        airfoil_mask          (numpy.ndarray,bool):
 
 	
     """
 
-    # Unpack Values
-
-    x_lower_surface = airfoil_geometry.x_lower_surface
-    y_lower_surface = airfoil_geometry.y_lower_surface
+    # Unpack Values 
+    x_lower_surf = airfoil_geometry.x_lower_surf
+    y_lower_surf = airfoil_geometry.y_lower_surf
     y_upper_surface = airfoil_geometry.y_upper_surface
 
     # Determine necessary resolution of the meshgrid. We do this by dividing the
-    # x-length of the  lower surface by the minimum separation between
+    # x-length of the lower surface by the minimum separation between
     # any two x-coordinates of the geometry (ceil-rounded to an int). Later
     # we'll instantiate the meshgrid with this number of x-indices, so that the
     # separation between any two points in the meshgrid is equal to the minimum
     # separation between any two x-coordinates.
 
-    x_length = (
-        np.max(x_lower_surface)
-    )
-
-    Nx = np.ceil(
-        x_length / np.abs(np.min(np.diff(x_lower_surface)))
-    ).astype(int)
+    x_length = (np.max(x_lower_surf)) 
+    Nx       = int(np.ceil(x_length / np.abs(np.min(np.diff(x_lower_surf)))))
 
     # We determine the necessary number of y-coordinate points by taking the
     # maximum separation between the highest point of the upper surface and the
@@ -62,104 +53,69 @@ def convert_airfoil_to_meshgrid(airfoil_geometry, *args, **kwargs):
     # x-points in order to re-normalize to our future meshgrid coordinates,
     # then ciel-rounding to an int.
 
-    Ny = np.ceil(
-        Nx * ( np.max(y_upper_surface) - np.min(y_lower_surface) )
-    ).astype(int)
+    Ny = int(np.ceil(Nx * ( np.max(y_upper_surface) - np.min(y_lower_surf) )))
 
     # Instantiate the meshgrid, using ij-indexing so that X[i,j] returns i
-    # for all points, and Y[i,j] returns j for all coordinates.
-
+    # for all points, and Y[i,j] returns j for all coordinates. 
     X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing="ij")
 
     # Create the indexing arrays for the meshgrid. These convert the airfoil
-    # geometry coordinates into meshgrid array indices. The X_INDICES are found
+    # geometry coordinates into meshgrid array indices. The x_indices are found
     # just by multplying/stretching the x_lower_surface coordinates across the
-    # number of x-coodinates in the meshgrid.
-
-    X_INDICES = np.ceil(
-        Nx / x_length * x_lower_surface
-    ).astype(int)
+    # number of x-coodinates in the meshgrid. 
+    x_indices = int(np.ceil(Nx / x_length * x_lower_surf))
 
     # The Y_INDICES are similarly stretched, but first are offset by the
-    # minimum of the lower surface to bring them to a relative zero
-
-    Y_LOWER_INDICES = np.floor(
-        Nx / x_length * (
-            y_lower_surface - np.min(y_lower_surface)
-        )
-    ).astype(int)
-
-    Y_UPPER_INDICES = np.ceil(
-        Nx /x_length * (
-            y_upper_surface - np.min(y_lower_surface)
-        )
-    ).astype(int)
+    # minimum of the lower surface to bring them to a relative zero 
+    y_lower_indices = int(np.floor( Nx / x_length * ( y_lower_surf - np.min(y_lower_surf)))) 
+    y_upper_indices = int(np.ceil( Nx /x_length * ( y_upper_surface - np.min(y_lower_surf))))
 
     # We then repeat the elements of the Y_INDICES by the number of gridpoints
     # between each x-coordinate, essentially treating the y-surface as flat
     # between those points. We trim the final point by telling it to repeat 0
-    # times
+    # times 
+    num_reps = np.append(np.diff(x_indices), 0 )
 
-    REPEATS = np.append(
-            np.diff(X_INDICES),
-            0
-    )
-
-    # Need to hand the case where the X_INDICES aren't sorted, and swap
+    # Need to hand the case where the x_indices aren't sorted, and swap
     # some elements around to allow the masks to be created
 
-    if np.any(REPEATS<0):
+    if np.any(num_reps<0): 
+        reg_reps = np.where(num_reps<0)[0]
 
-        REPEAT_FLAG = True
-
-        NEG_REPEATS = np.where(REPEATS<0)[0]
-
-        if np.any(np.diff(NEG_REPEATS) == 1):
+        if np.any(np.diff(reg_reps) == 1):
             print("Airfoil geometry contains sequential negative x-steps. Meshing Failed.")
             return None
 
-        (X_INDICES[NEG_REPEATS],
-         X_INDICES[NEG_REPEATS + 1]) = (X_INDICES[NEG_REPEATS + 1],
-                                        X_INDICES[NEG_REPEATS])
+        (x_indices[reg_reps],x_indices[reg_reps + 1]) = (x_indices[reg_reps + 1], x_indices[reg_reps])
 
-        (Y_LOWER_INDICES[NEG_REPEATS],
-         Y_LOWER_INDICES[NEG_REPEATS + 1]) = (Y_LOWER_INDICES[NEG_REPEATS + 1],
-                                              Y_LOWER_INDICES[NEG_REPEATS])
+        (y_lower_indices[reg_reps],  y_lower_indices[reg_reps + 1]) = (y_lower_indices[reg_reps + 1], y_lower_indices[reg_reps])
 
-        (Y_UPPER_INDICES[NEG_REPEATS],
-         Y_UPPER_INDICES[NEG_REPEATS + 1]) = (Y_UPPER_INDICES[NEG_REPEATS + 1],
-                                              Y_UPPER_INDICES[NEG_REPEATS])
+        (y_upper_indices[reg_reps], y_upper_indices[reg_reps + 1]) = (y_upper_indices[reg_reps + 1], y_upper_indices[reg_reps])
 
-        REPEATS = np.append(
-            np.diff(X_INDICES),
-            0
-        )
+        num_reps = np.append( np.diff(x_indices), 0 )
 
-        Nx = np.sum(REPEATS)
-
-        Ny = np.ceil(
-            Nx * (np.max(y_upper_surface) - np.min(y_lower_surface))
-        ).astype(int)
+        Nx = np.sum(num_reps) 
+        Ny = int(np.ceil( Nx * (np.max(y_upper_surface) - np.min(y_lower_surf))))
 
         X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing="ij")
 
-    Y_LOWER_INDICES = np.repeat(Y_LOWER_INDICES, REPEATS)
-    Y_UPPER_INDICES = np.repeat(Y_UPPER_INDICES, REPEATS)
+    y_lower_indices = np.repeat(y_lower_indices, num_reps)
+    y_upper_indices = np.repeat(y_upper_indices, num_reps)
 
     # We then create masks for the upper and lower surfaces by tiling the
     # indices over the meshgrid (taking a transpose to comport with our earlier
     # indexing style).
 
-    Y_LOWER_GRID = np.tile(Y_LOWER_INDICES, (Ny,1)).T
-    Y_UPPER_GRID = np.tile(Y_UPPER_INDICES, (Ny,1)).T
+    y_lower_grid = np.tile(y_lower_indices, (Ny,1)).T
+    y_upper_grid = np.tile(y_upper_indices, (Ny,1)).T
 
     # We then create our airfoil meshgrid mask by comparing our Y coordinates
     # from the meshgrid to our upper and lower grids, intermediately treating
     # them as ints to simplify the multi-condition comparison
 
-    Y_LOWER = (Y > Y_LOWER_GRID).astype(int)
-    Y_UPPER = (Y < Y_UPPER_GRID).astype(int)
+    y_lower = (Y > y_lower_grid).astype(int)
+    y_upper = (Y < y_upper_grid).astype(int)
 
-    AIRFOIL_MASK = (Y_LOWER + Y_UPPER) > 1
+    airfoil_mask = (y_lower + y_upper) > 1
 
-    return AIRFOIL_MASK
+    return airfoil_mask

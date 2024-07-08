@@ -19,23 +19,24 @@ import numpy as np
 #  compute_dynamic_flight_modes
 # ---------------------------------------------------------------------------------------------------------------------- 
 def compute_dynamic_flight_modes(conditions,aircraft): 
-    """This function follows the stability axis EOM derivation in Blakelock
-    to return the aircraft's dynamic modes and state space 
+    """This function follows the stability axis EOM derivation in Blakelock to return
+    the aircraft's dynamic modes and state space. 
     
     Assumptions:
-       Linerarized Equations are used following the reference below
+        Linerarized Equations are used following the reference below
 
     Source:
-      Automatic Control of Aircraft and Missiles by J. Blakelock Pg 23 and 117 
+        1) J.H. Blakelock, "Automatic Control of Aircraft and Missiles   Wiley & Sons,
+           Inc. New York, 1991, pg. 23,117  
+        2) Etkin, Bernard, and Lloyd Duff Reid. Dynamics of flight: stability and control. John Wiley & Sons, 1995.
+           pg. 118 
 
     Args:
-       conditions.aerodynamics  
-       conditions.static_stability  
-       conditions.stability.dynamic 
+        conditions  (dict): flight conditions data structure [-]
+        aircraft    (dict): aircraft data structure          [-]
 
-    Returns: 
-       conditions.dynamic_stability.LatModes
-       conditions.dynamic_stability.LongModes  
+    Returns:
+        None
      """
  
     # unpack unit conversions  
@@ -61,10 +62,10 @@ def compute_dynamic_flight_modes(conditions,aircraft):
     c_ref  = conditions.c_ref
     S_ref  = conditions.S_ref 
     AR     = (b_ref**2)/S_ref
-    moments_of_inertia = aircraft.mass_properties.moments_of_inertia.tensor
-    Ixx    = moments_of_inertia[0][0]
-    Iyy    = moments_of_inertia[1][1]
-    Izz    = moments_of_inertia[2][2]    
+    I      = aircraft.mass_properties.I.tensor
+    Ixx    = I[0][0]
+    Iyy    = I[1][1]
+    Izz    = I[2][2]    
     if aircraft.mass_properties.mass == 0:
         m  = aircraft.mass_properties.max_takeoff
     elif aircraft.mass_properties.max_takeoff == 0:
@@ -104,11 +105,12 @@ def compute_dynamic_flight_modes(conditions,aircraft):
     
     # Derivative of pitching rate with respect to d(alpha)/d(t)
     if aircraft.wings['horizontal_stabilizer'] and aircraft.wings['main_wing']:
-        l_t             = aircraft.wings['horizontal_stabilizer'].origin[0][0] + aircraft.wings['horizontal_stabilizer'].aerodynamic_center[0] - aircraft.wings['main_wing'].origin[0][0] - aircraft.wings['main_wing'].aerodynamic_center[0] 
+        l_t             = aircraft.wings['horizontal_stabilizer'].origin[0][0] + aircraft.wings['horizontal_stabilizer'].aerodynamic_center[0] \
+                          - aircraft.wings['main_wing'].origin[0][0] - aircraft.wings['main_wing'].aerodynamic_center[0] 
         mac             = aircraft.wings['main_wing'].chords.mean_aerodynamic
         CL_alpha_mw     = estimate_wing_CL_alpha(aircraft.wings['main_wing'],mach) 
-        ep_alpha        = 2 * CL_alpha_mw/ np.pi / (b_ref ** 2. / S_ref )   # J.H. Blakelock, "AAutomatic Control of Aircraft and Missiles"  Wiley & Sons, Inc. New York, 1991, (pg 34)
-        SSD.Cm_alpha_dot = 2. * SSD.CM_alpha * ep_alpha * l_t / mac #  J.H. Blakelock, "Automatic Control of Aircraft and Missiles   Wiley & Sons, Inc. New York, 1991, (pg 23)
+        ep_alpha        = 2 * CL_alpha_mw/ np.pi / (b_ref ** 2. / S_ref )   
+        SSD.Cm_alpha_dot = 2. * SSD.CM_alpha * ep_alpha * l_t / mac 
         SSD.Cz_alpha_dot = 2. * SSD.CM_alpha * ep_alpha
     else:    
         SSD.Cm_alpha_dot = 0 
@@ -189,8 +191,9 @@ def compute_dynamic_flight_modes(conditions,aircraft):
     Ixzp = np.zeros((num_cases,1))
     
     for i in range(num_cases): 
-        R       = np.array( [[np.cos(AoA[i][0]*Units.degrees) ,  - np.sin(AoA[i][0]*Units.degrees) ], [ np.sin( AoA[i][0]*Units.degrees) , np.cos(AoA[i][0]*Units.degrees)]])
-        modI    = np.array([[moments_of_inertia[0][0],moments_of_inertia[0][2]],[moments_of_inertia[2][0],moments_of_inertia[2][2]]] ) 
+        R       = np.array( [[np.cos(AoA[i][0]*Units.degrees) ,  - np.sin(AoA[i][0]*Units.degrees) ],\
+                             [ np.sin( AoA[i][0]*Units.degrees) , np.cos(AoA[i][0]*Units.degrees)]])
+        modI    = np.array([[I[0][0],I[0][2]],[I[2][0],I[2][2]]] ) 
         INew    = R * modI  * np.transpose(R)
         IxxStab =  INew[0,0]
         IxzStab = -INew[0,1]
@@ -287,16 +290,14 @@ def compute_dynamic_flight_modes(conditions,aircraft):
         spiralTimeDoubleHalf[i] = np.log(2) / abs(2 * np.pi * spiralFreqHz[i] * spiralDamping[i])
          
     ## Build longitudinal and lateral state space system. Requires additional toolbox 
-    #from control.matlab import ss  # control toolbox needed in python. Run "pip (or pip3) install control"    
+    # control toolbox needed in python. Run "pip (or pip3) install control"    
     #LonSys    = {}
     #LatSys    = {}    
     #for i in range(num_cases):         
         #LonSys[cases[i].tag] = ss(ALon[i],BLon[i],CLon[i],DLon[i])
-        #LatSys[cases[i].tag] = ss(ALat[i],BLat[i],CLat[i],DLat[i]) 
-    
-    
-    # Inertial coupling susceptibility
-    # See Etkin & Reid pg. 118 
+        #LatSys[cases[i].tag] = ss(ALat[i],BLat[i],CLat[i],DLat[i])
+        
+    # Inertial coupling susceptibility, See Etkin & Reid pg. 118 
     DS.pMax = min(min(np.sqrt(-Mw * u0 / (Izz - Ixx))), min(np.sqrt(-Nv * u0 / (Iyy - Ixx)))) 
     
     # -----------------------------------------------------------------------------------------------------------------------  

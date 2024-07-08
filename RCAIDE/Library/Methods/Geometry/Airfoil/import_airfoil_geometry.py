@@ -1,51 +1,39 @@
-# import_airfoil_geometry.py
+# RCAIDE/Library/Methods/Geometry/Two_Dimensional/Airfoil/import_airfoil_geometry.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Mar 2019, M. Clarke
-# Modified: Mar 2020, M. Clarke
-#           Apr 2020, M. Clarke
-#           Apr 2020, M. Clarke
-#           May 2020, B. Dalman
-#           Sep 2020, M. Clarke
-#           May 2021, E. Botero
-#           May 2021, R. Erhard
-#           Jun 2021, E. Botero
-#           Aug 2021, M. Clarke
+# Created:  Jul 2024, M. Clarke 
 
-# ----------------------------------------------------------------------
-#  Imports
-# ---------------------------------------------------------------------- 
-from Legacy.trunk.S.Core import Data  
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+from RCAIDE.Framework.Core import Data
+
+# python imports 
 import numpy as np
 from scipy import interpolate
- 
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Import Airfoil Geometry 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpolation = 'cubic'):
-    """This imports an airfoil geometry from a text file  and store
-    the coordinates of upper and lower surfaces as well as the mean
-    camberline
+    """Imports an airfoil geometry from a text file  and stores the coordinates of upper and lower
+    surfaces as well as the mean camberline. Automatically detects the format of the airfoil based
+    off first line of data. Assumes it is one of those two. 
     
     Assumptions:
-    Works for Selig and Lednicer airfoil formats. Automatically detects which format based off first line of data. Assumes it is one of those two.
+        Works for Selig and Lednicer airfoil formats.
+        
     Source:
-    airfoiltools.com/airfoil/index - method for determining format and basic error checking
+        None
+        
     Args:
-    airfoil_geometry_files   <list of strings>
-    surface_interpolation   - type of interpolation used in the SciPy function. Preferable options are linear, quardratic and cubic. 
-    Full list of options can be found here : 
-    https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html#scipy.interpolate.interp1d
+         airfoil_geometry_file    (list): list of airfoil file paths           [unitless]
+         npoints                   (int): number of points on airfoil          [unitless]
+         surface_interpolation  (string): Type of interpolation used by SciPy  [unitless]
+         
     Returns:
-    airfoil_data.
-        thickness_to_chord 
-        x_coordinates 
-        y_coordinates
-        x_upper_surface
-        x_lower_surface
-        y_upper_surface
-        y_lower_surface
-        camber_coordinates  
-
+        geometry (dict): data structure of airfoil geometry [-] 
     """  
-    geometry     = Data()
-    half_npoints = npoints//2         
  
     # Open file and read column names and data block
     f = open(airfoil_geometry_file) 
@@ -67,7 +55,7 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
         except:
             format_flag = float(format_line.strip().split(',')[0])
             
-        if format_flag > 1.01: # Amount of wiggle room per airfoil tools
+        if format_flag > 1.01:  
             lednicer_format = True
             # Remove header block
             data_block      = data_block[3:]
@@ -130,8 +118,7 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
                 y_up_surf_rev.append(float(data_block[line_count].strip().replace(',','').split()[1])) 
             else:                              
                 x_lo_surf.append(float(data_block[line_count].strip().replace(',','').split()[0])) 
-                y_lo_surf.append(float(data_block[line_count].strip().replace(',','').split()[1]))
-            
+                y_lo_surf.append(float(data_block[line_count].strip().replace(',','').split()[1])) 
             
             if upper_surface_flag ==True:
                 # check if next line flips without x-coordinate going to 0
@@ -153,7 +140,7 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
     y_up_surf = np.array(y_up_surf)
     y_lo_surf = np.array(y_lo_surf)  
     
-    # Check for extra zeros (OpenVSP exports extra zeros)
+    # Check for extra zeros and remove them (OpenVSP exports extra zeros)
     if len(np.unique(x_up_surf))!=len(x_up_surf):
         x_up_surf = x_up_surf[1:]
         x_lo_surf = x_lo_surf[1:]
@@ -161,11 +148,8 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
         y_lo_surf = y_lo_surf[1:]
 
     # create custom spacing for more points and leading and trailing edge
-    t            = np.linspace(0,4,npoints-1)
-    delta        = 0.25 
-    A            = 5
-    f            = 0.25
-    smoothsq     = 5 + (2*A/np.pi) *np.arctan(np.sin(2*np.pi*t*f + np.pi/2)/delta) 
+    t            = np.linspace(0,4,npoints-1) 
+    smoothsq     = 5 + (10/np.pi) *np.arctan(np.sin(2*np.pi*t*0.25 + np.pi/2)/0.25) 
     dim_spacing  = np.append(0,np.cumsum(smoothsq)/sum(smoothsq))
     
     # compute thickness, camber and concatenate coodinates 
@@ -176,10 +160,8 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
     x_data        = out[0]   
     y_data        = out[1]  
     
-    # shift points to leading edge (x = 0, y = 0)
-    x_delta  = min(x_data)
-    x_data   = x_data - x_delta 
-    
+    # shift points to leading edge  
+    x_data   = x_data - min(x_data)
     arg_min  = np.argmin(x_data) 
     y_delta  = y_data[arg_min]
     y_data   = y_data - y_delta
@@ -194,10 +176,22 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
     
     # make sure a small gap at trailing edge
     if (y_data[0] == y_data[-1]): 
-        y_data[0]          = y_data[0]  - 1E-4
-        y_data[-1]         = y_data[-1] + 1E-4
-        
-    # thicknes and camber distributions require equal points     
+        y_data[0]  = y_data[0]  - 1E-4
+        y_data[-1] = y_data[-1] + 1E-4 
+    
+    # thicknes and camber distributions require equal points   
+    half_npoints   = npoints//2
+    
+    # y coordinates 
+    y_up_surf_old  = np.array(y_up_surf)   
+    arry_up_interp = interpolate.interp1d(np.arange(y_up_surf_old.size),y_up_surf_old, kind=surface_interpolation)
+    y_up_surf_new  = arry_up_interp(np.linspace(0,y_up_surf_old.size-1,half_npoints))    
+ 
+    y_lo_surf_old  = np.array(y_lo_surf) 
+    arry_lo_interp = interpolate.interp1d(np.arange(y_lo_surf_old.size),y_lo_surf_old, kind=surface_interpolation)
+    y_lo_surf_new  = arry_lo_interp(np.linspace(0,y_lo_surf_old.size-1,half_npoints))
+    
+    # x coordinates 
     x_up_surf_old  = np.array(x_up_surf)   
     arrx_up_interp = interpolate.interp1d(np.arange(x_up_surf_old.size),x_up_surf_old, kind=surface_interpolation)
     x_up_surf_new  = arrx_up_interp(np.linspace(0,x_up_surf_old.size-1,half_npoints))    
@@ -205,15 +199,6 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
     x_lo_surf_old  = np.array(x_lo_surf) 
     arrx_lo_interp = interpolate.interp1d(np.arange(x_lo_surf_old.size),x_lo_surf_old, kind=surface_interpolation )
     x_lo_surf_new  = arrx_lo_interp(np.linspace(0,x_lo_surf_old.size-1,half_npoints)) 
- 
-    # y coordinate s 
-    y_up_surf_old  = np.array(y_up_surf)   
-    arry_up_interp = interpolate.interp1d(np.arange(y_up_surf_old.size),y_up_surf_old, kind=surface_interpolation)
-    y_up_surf_new  = arry_up_interp(np.linspace(0,y_up_surf_old.size-1,half_npoints))    
- 
-    y_lo_surf_old  = np.array(y_lo_surf) 
-    arry_lo_interp = interpolate.interp1d(np.arange(y_lo_surf_old.size),y_lo_surf_old, kind=surface_interpolation)
-    y_lo_surf_new  = arry_lo_interp(np.linspace(0,y_lo_surf_old.size-1,half_npoints)) 
 
     # compute thickness, camber and concatenate coodinates 
     thickness      = y_up_surf_new - y_lo_surf_new
@@ -221,7 +206,8 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
     max_t          = np.max(thickness)
     max_c          = max(x_data) - min(x_data)
     t_c            = max_t/max_c 
-    
+
+    geometry                    = Data()    
     geometry.thickness_to_chord = t_c
     geometry.max_thickness      = max_t     
     geometry.x_coordinates      = x_data   

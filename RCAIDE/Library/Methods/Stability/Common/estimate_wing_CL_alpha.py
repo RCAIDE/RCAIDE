@@ -13,37 +13,25 @@ from RCAIDE.Library.Methods.Geometry.Planform  import convert_sweep
 # estimate_wing_CL_alpha
 # ---------------------------------------------------------------------- 
 def estimate_wing_CL_alpha(wing,mach):
-    """ This method uses the DATCOM formula to compute dCL/dalpha without 
-    correlations for downwash of lifting surfaces further ahead on the 
-    aircraft or upwash resulting from the position of the wing on the body.
+    """ Estimate the derivative of 3D lift coefficient with respect to angle of attack.
 
-    CAUTION: The method presented here is applicable for subsonic speeds.
-    May be inaccurate for transonic or supersonic flight. A correction factor
-    for supersonic flight is included, but may not be completely accurate.
-
-    Assumptions:
-    Mach number should not be transonic
+    Assumptions: 
+        1) Only applicable for subsonic speeds and may be inaccurate for transonic or supersonic flight.
+        2) A correction factor for supersonic flight is included, but may not be completely accurate.
     
     Source:
-        None
+        1) DATCOM 
+        2) Sectional lfit curve slope at M = 0 is 6.18 is based on Roskam Airplane Design Part VI, Table 8.1 
          
     Args:
-        wing - a data dictionary with the fields:
-            effective_apsect_ratio - wing aspect ratio [dimensionless]. If 
-            this variable is not inlcuded in the input, the method will look
-            for a variable named 'aspect_ratio'.
-            sweep_le - wing leading-edge sweep angle [radians]
-            taper - wing taper ratio [dimensionless]
-        mach - flight Mach number [dimensionless]. Should be a numpy array
-            with one or more elements.
+        wing           (dict): wing data structure [-] 
+        mach  (numpy.ndarray): flight Mach number  [unitless]
 
     Returns:
-        cL_alpha - The derivative of 3D lift coefficient with respect to AoA
+        cL_alpha   (numpy.ndarray): derivative of lift coefficient with respect to angle of attack [unitless]
 
 
-    """         
-    
-    #Unpack inputs
+    """          
     if 'effective_aspect_ratio' in wing:
         ar = wing.effective_aspect_ratio
     elif 'extended' in wing:
@@ -54,26 +42,26 @@ def estimate_wing_CL_alpha(wing,mach):
     else:
         ar = wing.aspect_ratio    
         
-    #Compute relevent parameters
-    cL_alpha = []
-    half_chord_sweep = convert_sweep(wing,0.25,0.5)  #Assumes original sweep is that of LE
+    # convert wing sweep 
+    half_chord_sweep = convert_sweep(wing,0.25,0.5) 
     
-    #Compute k correction factor for Mach number    
-    #First, compute corrected 2D section lift curve slope (C_la) for the given Mach number
-    cla = 6.13          #Section C_la at M = 0; Roskam Airplane Design Part VI, Table 8.1  
-    
+    # Lift curve slope 
+    cla = 6.13         
+
+    # Initlaize arrays 
     cL_alpha = np.ones_like(mach)
     Beta     = np.ones_like(mach)
     k        = np.ones_like(mach)
     cla_M    = np.ones_like(mach)
-    
+
+    #Compute k correction factor for Mach number     
     Beta[mach<1.]  = (1.0-mach[mach<1.]**2.0)**0.5
     Beta[mach>1.]  = (mach[mach>1.]**2.0-1.0)**0.5
     cla_M[mach<1.] = cla/Beta[mach<1.]
     cla_M[mach>1.] = 4.0/Beta[mach>1.]
     k              = cla_M/(2.0*np.pi/Beta)
     
-    #Compute aerodynamic surface 3D lift curve slope using the DATCOM formula
+    # Compute aerodynamic surface 3D lift curve slope using the DATCOM formula
     cL_alpha =(2.0*np.pi*ar/(2.0+((ar**2.0*(Beta*Beta)/(k*k))*(1.0+(np.tan(half_chord_sweep))**2.0/(Beta*Beta))+4.0)**0.5))
     
     return cL_alpha
