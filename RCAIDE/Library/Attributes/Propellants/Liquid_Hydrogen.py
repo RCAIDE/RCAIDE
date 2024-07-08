@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Propellants 
 # RCAIDE/Library/Attributes/Liquid_Hydrogen.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ from .Propellant import Propellant
 # ----------------------------------------------------------------------------------------------------------------------
 #  Liquid Hydrogen
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Attributes-Propellants
 class Liquid_Hydrogen(Propellant):
     """Liquid hydrogen fuel class 
     """

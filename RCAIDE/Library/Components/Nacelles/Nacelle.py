@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Nacelles
 # RCAIDE/Compoments/Nacelles/Nacelle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ import numpy as np
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Nacalle
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Nacelles
+# ----------------------------------------------------------------------------------------------------------------------  
 class Nacelle(Component):
     """ Default nacelle compoment class.
     """

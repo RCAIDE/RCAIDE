@@ -1,6 +1,5 @@
-## @ingroup Library-Methods-Geomery-Two_Dimensional-Airfoil
 # RCAIDE/Library/Methods/Geometry/Two_Dimensional/Airfoil/compute_naca_4series.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2024, M. Clarke 
 
@@ -14,7 +13,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_naca_4series
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Geometry-Two_Dimensional-Airfoil
 def compute_naca_4series(airfoil_geometry_file,npoints= 201, leading_and_trailing_edge_resolution_factor = 1.5 ):
     """Computes the points of NACA 4-series airfoil
 

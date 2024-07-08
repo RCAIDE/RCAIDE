@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Converters
 # RCAIDE/Library/Components/Propulsors/Converters/Compressor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compressor 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Propulsors-Converters 
 class Compressor(Component):
     """This is a compressor component typically used in a turbofan or turbojet.
     """

@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Climb
 # RCAIDE/Framework/Mission/Segments/Climb/Constant_Speed_Constant_Angle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,6 @@ from RCAIDE.Library.Mission                          import Common,Segments
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Speed_Constant_Angle
 # ---------------------------------------------------------------------------------------------------------------------- 
-
-## @ingroup Framework-Mission-Segments-Climb
 class Constant_Speed_Constant_Angle(Evaluate):
     """ A basic constant true airspeed climb at a constant angle. Usually used for certification to ensure a vehicle
         can clear and obstacle. 

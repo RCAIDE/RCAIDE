@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Converters
 # RCAIDE/Library/Components/Propulsors/Converters/Engine.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from RCAIDE.Library.Components                      import Component
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Engine Class
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Components-Propulsors-Converters
+# ----------------------------------------------------------------------------------------------------------------------  
 class Engine(Component):
     """This is an internal combustion engine component. 
     """           

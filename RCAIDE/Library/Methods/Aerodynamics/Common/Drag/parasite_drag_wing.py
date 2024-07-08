@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Common-Drag
 # RCAIDE/Methods/Aerodynamics/Common/Drag/parasite_drag_wing.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -19,8 +18,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #   Parasite Drag Wing 
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Drag
+# ----------------------------------------------------------------------------------------------------------------------   
 def parasite_drag_wing(state,settings,wing):
     """Computes the parasite drag due to wings
 
@@ -167,8 +165,7 @@ def parasite_drag_wing(state,settings,wing):
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  compute_parasite_drag
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Drag
+# ----------------------------------------------------------------------------------------------------------------------   
 def compute_parasite_drag(re,mac_w,Mc,Tc,xtu,xtl,sweep_w,t_c_w,S_ref,Swet,C):
     """Computes the parasite drag due to wings
 

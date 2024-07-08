@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Converters
 # RCAIDE/Library/Components/Propulsors/Converters/Expansion_Nozzle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from RCAIDE.Library.Components                      import Component
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Expansion Nozzle
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Propulsors-Converters
+# ----------------------------------------------------------------------------------------------------------------------
 class Expansion_Nozzle(Component):
     """This is a nozzle component intended for use in expansion. 
     """

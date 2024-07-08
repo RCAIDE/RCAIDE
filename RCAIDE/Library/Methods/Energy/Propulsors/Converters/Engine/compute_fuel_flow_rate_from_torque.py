@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Engine
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Engine/compute_fuel_flow_rate_from_torque.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,7 @@ import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # calculate_fuel_flow_rate_from_torque
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Energy-Propulsors-Converters-Engine
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_fuel_flow_rate_from_torque(engine,conditions):
     """ The internal combustion engine output power and specific power consumption. The following
     properties are computed:

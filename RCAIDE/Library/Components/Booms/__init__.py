@@ -1,4 +1,3 @@
-## @defgroup Library-Components-Booms Booms
 # RCAIDE/Library/Components/Booms/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

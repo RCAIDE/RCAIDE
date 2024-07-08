@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments
 # RCAIDE/Framework/Mission/Segment/Evaluate.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,7 @@ from RCAIDE.Framework.Analyses                 import Process
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ANALYSES
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Framework-Mission-Segments
+# ----------------------------------------------------------------------------------------------------------------------  
 class Evaluate(Segment):
     """ Base process class used to analyze a vehicle in each flight segment.
     """     

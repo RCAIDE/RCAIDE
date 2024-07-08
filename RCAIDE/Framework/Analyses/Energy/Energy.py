@@ -1,4 +1,3 @@
-## @ingroup Framework-Analyses-Energy
 # RCAIDE/Framework/Analyses/Energy/Energy.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -13,8 +12,7 @@ from RCAIDE.Framework.Analyses import Analysis
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Energy Analysis
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Framework-Analyses-Energy
+# ----------------------------------------------------------------------------------------------------------------------   
 class Energy(Analysis):
     """ This is the base class for energy analyses.
     """

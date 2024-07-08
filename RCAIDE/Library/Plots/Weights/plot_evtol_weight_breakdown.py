@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Weights
 # RCAIDE/Library/Plots/Weights/plot_evtol_weight_breakdown.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ import matplotlib.cm as cm
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Weights
+# ----------------------------------------------------------------------------------------------------------------------    
 def plot_evtol_weight_breakdown(vehicle,
                                 save_figure = False,
                                 show_legend=True,

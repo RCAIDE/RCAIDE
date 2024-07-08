@@ -1,4 +1,3 @@
-## @ingroup Framework-Analyses
 # RCAIDE/Framework/Analyses/Process.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ from RCAIDE.Framework.Core import Data
 # ----------------------------------------------------------------------------------------------------------------------
 # Process
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Framework-Analyses
 class Process(Container):
     """The top level process container class 
     """      

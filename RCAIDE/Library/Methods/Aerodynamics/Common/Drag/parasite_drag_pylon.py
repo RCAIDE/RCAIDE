@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/pparasite_drag_pylon.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Pylon Drag Fuselage
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Aerodynamics-Common-Drag  
+# ----------------------------------------------------------------------------------------------------------------------   
 def parasite_drag_pylon(state,settings,geometry):
     """Computes the parasite drag due to pylons as a proportion of the network 
 

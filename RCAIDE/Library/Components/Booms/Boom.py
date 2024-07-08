@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Booms
 # RCAIDE/Compoments/Booms/Boom.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from RCAIDE.Framework.Core     import Data, Container
  
 # ----------------------------------------------------------------------------------------------------------------------
 # Boom 
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Booms
+# ----------------------------------------------------------------------------------------------------------------------  
 class Boom(Component):
     """This is a standard boom for a rotor"""
     

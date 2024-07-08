@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Lift
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/compute_airfoil_section_coefficients.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,7 +16,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_section_coefficients
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Aerodynamics-Common-Lift
 def compute_section_coefficients(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts,Nr,Na,t_c,use_2d_analysis):
     """ Computes the aerodynamic properties at sectional blade locations for the blade element theory analysis. 
 
@@ -114,7 +112,6 @@ def compute_section_coefficients(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_inflow_and_tip_loss
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Aerodynamics-Common-Lift
 def compute_inflow_and_tip_loss(r,R,Wa,Wt,B,et1=1.0,et2=1.0,et3=1.0):
     """ Computes the inflow, lamdaw, and the tip loss factor, F.
 

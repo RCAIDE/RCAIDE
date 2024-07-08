@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Noise
 # RCAIDE/Library/Missions/Common/compute_point_to_point_geospacial_data.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,10 +12,9 @@ from scipy.interpolate import griddata
 import numpy as np
 from geopy.distance import geodesic as GD
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------  
 #  Compute Point to Point Geospacial Data
-# ---------------------------------------------------------------------
-## @ingroup Library-Missions
+# ----------------------------------------------------------------------------------------------------------------------  
 def compute_point_to_point_geospacial_data(topography_file                        = None,
                                             origin_tag                         = 'origin',
                                             destination_tag                       = 'destination',

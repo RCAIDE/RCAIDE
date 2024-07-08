@@ -1,13 +1,11 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Ram
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Ram/compute_ram_performance.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke    
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_ram_performance
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Methods-Energy-Propulsors-Converters-Ram 
+# ----------------------------------------------------------------------------------------------------------------------     
 def compute_ram_performance(ram,conditions):
     """ This computes the output values from the input values according T0
     equations from the source. The following properties are determined 

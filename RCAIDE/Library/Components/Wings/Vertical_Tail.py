@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Wings
 # RCAIDE/Compoments/Wings/Vertical_Tail.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from copy import deepcopy
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Vertical_Tail
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings    
+# ----------------------------------------------------------------------------------------------------------------------     
 class Vertical_Tail(Wing):
     """Vertical tail compoment class. 
     """ 

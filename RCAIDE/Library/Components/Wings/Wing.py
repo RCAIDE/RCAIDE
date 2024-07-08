@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Wings
 # RCAIDE/Compoments/Wings/Wing.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Wing
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings  
+# ----------------------------------------------------------------------------------------------------------------------   
 class Wing(Component):
     """Default wing compoment class. 
     """      

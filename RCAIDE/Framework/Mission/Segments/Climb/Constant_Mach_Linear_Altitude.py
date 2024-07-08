@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Climb
 # RCAIDE/Framework/Mission/Segments/Climb/Constant_Mach_Linear_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,8 +16,6 @@ from RCAIDE.Library.Mission                          import Common,Segments
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_Mach_Linear_Altitude
 # ---------------------------------------------------------------------------------------------------------------------- 
-
-## @ingroup Framework-Mission-Segments-Climb
 class Constant_Mach_Linear_Altitude(Evaluate):
     """ Climb at a constant mach number but linearly change altitudes over a distance. 
     """       

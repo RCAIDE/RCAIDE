@@ -1,4 +1,3 @@
-## @defgroup Library-Plots-Mission  
 # RCAIDE/Library/Plots/Performance/Mission/plot_flight_conditions.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,7 +16,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @defgroup Library-Plots-Mission  
 def plot_flight_conditions(results,
                            save_figure = False,
                            show_legend=True,

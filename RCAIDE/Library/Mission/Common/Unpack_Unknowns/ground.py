@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Unknowns
 # RCAIDE/Library/Missions/Common/Unknowns/ground.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unpack Unknowns
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Unknowns
+# ---------------------------------------------------------------------------------------------------------------------- 
 def ground(segment):
     """Assigns the unknowns for the aircraft velocity to the aircraft each iteration of
        the mission solving process. Computes the following variables:

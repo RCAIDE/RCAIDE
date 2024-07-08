@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Lift
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/compute_wing_wake.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -18,8 +17,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute Wing Wake 
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Lift
+# ---------------------------------------------------------------------------------------------------------------------- 
 def compute_wing_wake(vehicle, conditions, X_wake, grid_settings, VLM_settings,evaluation_points=None,viscous_wake=True):
     """ Computes the wing-induced velocities at a given x-plane.
     

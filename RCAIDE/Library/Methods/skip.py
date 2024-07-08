@@ -1,4 +1,3 @@
-## @ingroup Library-Methods
 # RCAIDE/Library/Methods/skip.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------    
-## @ingroup Methods
+# ----------------------------------------------------------------------------------------------------------------------     
 def skip(*args,**kwarg):
     """This method can be used to replace default functions when no action is desired instead.
 

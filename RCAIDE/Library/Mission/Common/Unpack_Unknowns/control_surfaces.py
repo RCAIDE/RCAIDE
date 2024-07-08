@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Unpack_Unknowns
 # RCAIDE/Library/Missions/Common/Unpack_Unknowns/control_surfaces.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -10,8 +9,7 @@ import RCAIDE
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unpack Unknowns
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Unpack_Unknowns
+# ---------------------------------------------------------------------------------------------------------------------- 
 def control_surfaces(segment):
     """Assigns the unknowns for the control surface deflections to the aircraft each iteration of
        the mission solving process.

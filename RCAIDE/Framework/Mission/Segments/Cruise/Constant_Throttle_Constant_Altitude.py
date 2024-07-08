@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Cruise 
 # RCAIDE/Framework/Mission/Segments/Cruise/Constant_Throttle_Constant_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,9 +15,7 @@ from RCAIDE.Library.Mission                       import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Throttle_Constant_Altitude
-# ----------------------------------------------------------------------------------------------------------------------  
-
-## @ingroup Framework-Mission-Segments-Cruise
+# ----------------------------------------------------------------------------------------------------------------------   
 class Constant_Throttle_Constant_Altitude(Evaluate):
     """ Vehicle flies at a set throttle setting. Allows a vehicle to do a level acceleration. 
     """            

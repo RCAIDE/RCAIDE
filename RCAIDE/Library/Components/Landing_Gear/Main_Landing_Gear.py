@@ -1,4 +1,3 @@
-## @ingroup Library-Compoments-Landing_Gear
 # RCAIDE/Library/Compoments/Landing_Gear/Main_Landing_Gear.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from .Landing_Gear import Landing_Gear
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Main_Landing_Gear
-# ----------------------------------------------------------------------------------------------------------------------    
-## @ingroup Library-Compoments-Landing_Gear 
+# ----------------------------------------------------------------------------------------------------------------------     
 class Main_Landing_Gear(Landing_Gear):
     """Main landing gear compoment class   
     """

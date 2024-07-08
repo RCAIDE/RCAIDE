@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Gases
 # RCAIDE/Library/Attributes/Gases/Air.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -13,8 +12,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------  
 # Air Class
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Attributes-Gases 
+# ----------------------------------------------------------------------------------------------------------------------    
 class Air(Gas):
     """Generic class of air gas. 
     """

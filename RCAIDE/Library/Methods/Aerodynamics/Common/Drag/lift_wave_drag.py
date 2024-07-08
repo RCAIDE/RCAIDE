@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/lift_wave_drag.py 
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compressibility Drag Total
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerdoynamics-Supersonic_Zero-Drag
+# ---------------------------------------------------------------------------------------------------------------------- 
 def lift_wave_drag(conditions,wing,Sref):
     """Determine lift wave drag for supersonic speeds.
 

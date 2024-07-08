@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments 
 # RCAIDE/Library/Missions/Segments/expand_state.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Expand State
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Missions-Segments 
+# ----------------------------------------------------------------------------------------------------------------------  
 def expand_state(segment):
     
     """Makes all vectors in the state the same size.

@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Geometry
 # RCAIDE/Library/Plots/Geometry/plot_rotor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,7 +15,6 @@ import plotly.graph_objects as go
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Plots-Geometry
 def plot_rotor(prop, face_color = 'red', edge_color = 'black' ,show_figure = True, save_figure = False, save_filename = "Propeller_Geometry", file_type = ".png"):
     """This plots the geometry of a propeller or rotor
 

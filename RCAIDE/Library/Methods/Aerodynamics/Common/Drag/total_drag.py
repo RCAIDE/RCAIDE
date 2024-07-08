@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/total_drag.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Wave Drag 
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Drag 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def total_drag(state,settings,geometry):
     """ Computes the total drag of an aircraft.
 

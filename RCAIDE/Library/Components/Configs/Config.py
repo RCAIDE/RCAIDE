@@ -1,4 +1,3 @@
-## @defgroup Library-Compoments-Configs
 # RCAIDE/Library/Compoments/Configs/Config.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ from RCAIDE.Vehicle          import Vehicle
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Config
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Components-Configs
+# ----------------------------------------------------------------------------------------------------------------------   
 class Config(Diffed_Data,Vehicle):
     """ The top level configuration class.
     """ 

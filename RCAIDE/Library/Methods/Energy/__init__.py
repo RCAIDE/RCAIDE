@@ -1,4 +1,3 @@
-## @defgroup Methods-Energy Energy 
 # RCAIDE/Library/Methods/Energy/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

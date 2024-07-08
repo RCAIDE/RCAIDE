@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Combustor
 # RCAIDE/Library/Components/Propulsors/Converters/Combustor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Combustor
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Propulsors-Converters 
 class Combustor(Component):
     """This is a combustor compoment class.
     """

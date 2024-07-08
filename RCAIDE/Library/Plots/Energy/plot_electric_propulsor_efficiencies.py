@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Energy
 # RCAIDE/Library/Plots/Energy/plot_electric_propulsor_efficiencies.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,7 +16,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Energy
 def plot_electric_propulsor_efficiencies(results,
                                   save_figure = False,
                                   show_legend=True,

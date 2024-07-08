@@ -1,16 +1,17 @@
-## @ingroup Library-Missions-Segments-Transition
 # RCAIDE/Library/Missions/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke 
   
 # ----------------------------------------------------------------------------------------------------------------------  
-#  Initialize Conditions
+# IMPORTS 
 # ----------------------------------------------------------------------------------------------------------------------   
 # Package imports 
 import numpy as np
 
-## @ingroup Library-Missions-Segments-Transition
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Initialize Conditions
+# ----------------------------------------------------------------------------------------------------------------------    
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

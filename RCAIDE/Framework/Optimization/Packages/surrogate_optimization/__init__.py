@@ -1,4 +1,3 @@
-# @ingroup Optimization-Packages 
 # RCAIDE/Optimization/Packages/surrogate_optimization/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 

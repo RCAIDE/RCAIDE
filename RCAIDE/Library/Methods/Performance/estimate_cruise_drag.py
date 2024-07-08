@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Performance
 # RCAIDE/Library/Methods/Performance/estimate_cruise_drag.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,9 +15,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Cruise Drag Function
-# ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Library-Methods-Performance
+# ---------------------------------------------------------------------------------------------------------------------- 
 def estimate_cruise_drag(vehicle,altitude,speed,lift_coefficient = 0.5 ,profile_drag = 0.05):
 
     """Calculates the drag force of an aircraft at a given altitude and  cruising speed.

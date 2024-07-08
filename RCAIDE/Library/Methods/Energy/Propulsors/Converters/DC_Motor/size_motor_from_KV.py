@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Motor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Motor/size_motor_from_Kv.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,7 +11,6 @@ from RCAIDE.Framework.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------  
 #  size_from_kv
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Energy-Propulsors-Converters-Motor
 def size_motor_from_KV(motor):
     """ Determines a motors mass based on the speed constant, KV. The following perperties
         are computed   

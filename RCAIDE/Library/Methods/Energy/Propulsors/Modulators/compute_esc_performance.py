@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Modulators
 # RCAIDE/Library/Methods/Energy/Propulsors/Modulators/compute_esc_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
  
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_electric_rotor_performance
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Propulsors-Modulators
+# ----------------------------------------------------------------------------------------------------------------------  
 def compute_voltage_out_from_throttle(esc,throttle):
     """ Compute output voltage from electronic speed controller based on throttle  
     
@@ -37,8 +35,7 @@ def compute_voltage_out_from_throttle(esc,throttle):
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_voltage_in_from_throttle
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Propulsors-Modulators
+# ----------------------------------------------------------------------------------------------------------------------  
 def compute_voltage_in_from_throttle(esc,throttle):
     """ Computes the input voltage from throttle
     
@@ -70,8 +67,7 @@ def compute_voltage_in_from_throttle(esc,throttle):
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_throttle_from_voltages
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Propulsors-Modulators
+# ----------------------------------------------------------------------------------------------------------------------  
 def compute_throttle_from_voltages(esc): 
     """ Computes ESC throttle from input and output voltages 
 
@@ -100,8 +96,7 @@ def compute_throttle_from_voltages(esc):
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_current_in_from_throttle
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Propulsors-Modulators
+# ----------------------------------------------------------------------------------------------------------------------  
 def compute_current_in_from_throttle(esc,throttle):
     """ Computes the current going into the electronic speed controller
     

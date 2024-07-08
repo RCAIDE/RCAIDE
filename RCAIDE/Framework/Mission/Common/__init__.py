@@ -1,6 +1,5 @@
-## @defgroup Framework-Mission-Common Common
 # RCAIDE/Framework/Mission/Common/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

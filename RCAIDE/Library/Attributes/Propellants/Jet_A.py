@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Propellants
 # RCAIDE/Library/Attributes/Propellants/Jet_A.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -14,7 +13,6 @@ from RCAIDE.Framework.Core import Data
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Jet_A1 Propellant Class
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup  Library-Attributes-Propellants
 class Jet_A(Propellant):
     """Jet A class propellant
     """

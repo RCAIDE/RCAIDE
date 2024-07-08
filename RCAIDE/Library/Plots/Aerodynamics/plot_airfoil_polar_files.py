@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Performance-Aerodynamics   
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_airfoil_polar_files.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,9 +15,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
-# ----------------------------------------------------------------------------------------------------------------------     
-
-## @ingroup Library-Plots-Performance-Aerodynamics   
+# ----------------------------------------------------------------------------------------------------------------------        
 def plot_airfoil_polar_files(polar_data,
                              save_figure = False,
                              save_filename = "Airfoil_Polars",

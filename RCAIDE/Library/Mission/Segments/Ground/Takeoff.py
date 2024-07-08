@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Ground
 # RCAIDE/Library/Missions/Segments/Ground/Takeoff.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # unpack unknowns
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Ground
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

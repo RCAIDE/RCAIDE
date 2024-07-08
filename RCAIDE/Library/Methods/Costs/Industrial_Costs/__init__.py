@@ -1,4 +1,3 @@
-## @defgroup Library-Methods-Costs-Industrial_Costs  Industrial_Costs   
 # RCAIDE/Library/Methods/Costs/Industrial_Costs /__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

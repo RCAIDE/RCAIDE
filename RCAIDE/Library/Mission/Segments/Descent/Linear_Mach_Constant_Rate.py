@@ -1,5 +1,4 @@
- ## @ingroup Library-Missions-Segments-Descent
-# RCAIDE/Library/Missions/Segments/Descent/Linear_Mach_Constant_Rate.py
+ # RCAIDE/Library/Missions/Segments/Descent/Linear_Mach_Constant_Rate.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke 
@@ -16,7 +15,6 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Missions-Segments-Descent
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

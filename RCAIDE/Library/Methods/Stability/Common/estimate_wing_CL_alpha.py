@@ -1,4 +1,7 @@
-## @ingroup Library-Methods-Stability-Common  
+# RCAIDE/Library/Methods/Stability/Common/estimate_wing_CL_alpha.py
+# (c) Copyright 2023 Aerospace Research Community LLC
+# 
+# Created:  Jul 2024, M. Clarke
 
 # ----------------------------------------------------------------------
 #  Imports
@@ -7,10 +10,8 @@ import numpy as np
 from RCAIDE.Library.Methods.Geometry.Planform  import convert_sweep
 
 # ----------------------------------------------------------------------
-#  Method
-# ----------------------------------------------------------------------
-
-## @ingroup Library-Methods-Stability-Common  
+# estimate_wing_CL_alpha
+# ---------------------------------------------------------------------- 
 def estimate_wing_CL_alpha(wing,mach):
     """ This method uses the DATCOM formula to compute dCL/dalpha without 
     correlations for downwash of lifting surfaces further ahead on the 

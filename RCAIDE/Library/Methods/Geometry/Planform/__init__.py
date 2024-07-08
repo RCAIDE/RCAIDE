@@ -1,14 +1,12 @@
-## @defgroup Methods-Geometry-Two_Dimensional/Planform Planform
 # RCAIDE/Methods/Geometry/Two_Dimensional/Planform/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Geometry-Two_Dimensional
+# ---------------------------------------------------------------------------------------------------------------------- 
 from .wing_segmented_planform                                 import wing_segmented_planform, segment_properties
 
 from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Planform import populate_control_sections as populate_control_sections  

@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Cruise 
 # RCAIDE/Framework/Mission/Segments/Cruise/Constant_Speed_Constant_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,6 @@ from RCAIDE.Library.Mission                      import Common,Segments
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Speed_Constant_Altitude
 # ----------------------------------------------------------------------------------------------------------------------  
-
-## @ingroup Framework-Mission-Segments-Cruise
 class Constant_Speed_Constant_Altitude(Evaluate):
     """ Fixed true airspeed and altitude and a set distance. 
     """         

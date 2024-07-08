@@ -1,4 +1,3 @@
-## @ingroup Framework-Networks
 # RCAIDE/Framework/Networks/Turbofan_Engine_Network.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -16,8 +15,7 @@ from .Network                                                                   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Turbofan
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Framework-Networks
+# ----------------------------------------------------------------------------------------------------------------------  
 class Turbofan_Engine_Network(Network):
     """ This is a turbofan engine network
     """      

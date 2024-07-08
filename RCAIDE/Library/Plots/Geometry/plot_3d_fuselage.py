@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Geometry 
 # RCAIDE/Library/Plots/Geometry/plot_3d_fuselage.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,16 +5,13 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Data
+# ----------------------------------------------------------------------------------------------------------------------   
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
-import numpy as np  
-import plotly.graph_objects as go 
+import numpy as np   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Plots-Geometry 
+# ----------------------------------------------------------------------------------------------------------------------   
 def plot_3d_fuselage(plot_data,fuselage, tessellation = 24 ,color_map = 'teal'):
     """ This plots the fuselage surface
 

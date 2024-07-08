@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Geometry
 # RCAIDE/Library/Plots/Geometry/plot_3d_vehicle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,14 +11,12 @@ from RCAIDE.Library.Plots.Geometry.plot_3d_wing                 import plot_3d_w
 from RCAIDE.Library.Plots.Geometry.plot_3d_nacelle              import plot_3d_nacelle
 from RCAIDE.Library.Plots.Geometry.plot_3d_rotor                import plot_3d_rotor
 
-# python imports 
-import numpy as np 
+# python imports  
 import plotly.graph_objects as go  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Plots-Geometry
+# ----------------------------------------------------------------------------------------------------------------------   
 def plot_3d_vehicle(vehicle,
                     show_axis                   = False,
                     save_figure                 = False,
@@ -105,7 +102,6 @@ def plot_3d_vehicle(vehicle,
     
     return     
 
-## @ingroup Library-Plots-Geometry
 def generate_3d_vehicle_geometry_data(plot_data,
                                       vehicle, 
                                       alpha                       = 1.0,  
@@ -161,7 +157,6 @@ def generate_3d_vehicle_geometry_data(plot_data,
  
     return plot_data,min_x_axis_limit,max_x_axis_limit,min_y_axis_limit,max_y_axis_limit,min_z_axis_limit,max_z_axis_limit
 
-## @ingroup Library-Plots-Geometry
 def plot_3d_energy_network(plot_data,network,number_of_airfoil_points,color_map):
     """ This plots the 3D surface of the network
 

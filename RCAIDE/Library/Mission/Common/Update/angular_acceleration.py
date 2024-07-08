@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Update 
 # RCAIDE/Library/Missions/Common/Update/angular_acceleration.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -11,8 +10,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Update Acceleration
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Missions-Common-Update  
+# ----------------------------------------------------------------------------------------------------------------------   
 def angular_acceleration(segment):
     """ Differentiates the angular velocity vector to get angular accelerations
     

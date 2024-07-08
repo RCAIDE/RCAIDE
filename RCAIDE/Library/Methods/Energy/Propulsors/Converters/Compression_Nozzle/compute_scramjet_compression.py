@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Compression_Nozzle
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compression_Nozzle/compute_scramjet_compression.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ from Legacy.trunk.S.Methods.Propulsion.shock_train import shock_train
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_scramjet_compression
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Energy-Propulsors-Converters-Compression_Nozzle       
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_scramjet_compression(compression_nozzle,conditions): 
     """This function computes the compression of a scramjet using shock trains.
         The following properties are computed: 

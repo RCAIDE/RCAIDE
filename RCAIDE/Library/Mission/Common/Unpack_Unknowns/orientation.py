@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Unpack_Unknowns
 # RCAIDE/Library/Missions/Common/Unpack_Unknowns/orientation.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unpack Unknowns
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Unpack_Unknowns
+# ---------------------------------------------------------------------------------------------------------------------- 
 def orientation(segment): 
     """Assigns the unknowns for the aircraft orientation to the aircraft each iteration of
        the mission solving process.

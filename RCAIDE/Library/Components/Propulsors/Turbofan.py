@@ -1,23 +1,18 @@
-## @ingroup Components-Propulsors-Converters
 # RCAIDE/Library/Components/Propulsors/Converters/Fan.py
 # (c) Copyright 2023 Aerospace Research Community LLC
-# 
-# 
+#  
 # Created:  Mar 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports  
-from RCAIDE.Framework.Core      import Data, Units
-from .                import Propulsor
-
-import numpy as np 
-
-# ----------------------------------------------------------------------
+from RCAIDE.Framework.Core      import Data 
+from .                          import Propulsor
+ 
+# ---------------------------------------------------------------------------------------------------------------------- 
 #  Fan Component
-# ----------------------------------------------------------------------
-## @ingroup Components-Propulsors-Converters
+# ---------------------------------------------------------------------------------------------------------------------- 
 class Turbofan(Propulsor):
     """This is a turbofan propulsor.
     

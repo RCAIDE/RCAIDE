@@ -1,4 +1,3 @@
-## @defgroup Methods-Missions-Segments-Descent Descent
 # RCAIDE/Methods/Mission/Segments/Descent/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -8,7 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Mission-Segments
 
 from . import Constant_Speed_Constant_Rate
 from . import Linear_Mach_Constant_Rate

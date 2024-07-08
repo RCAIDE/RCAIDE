@@ -1,7 +1,5 @@
-## @defgroup Library-Methods-Aerdoynamics-Fidelity_Zero Fidelity_Zero
-# @ingroup Library-Methods-Aerdoynamics
 # RCAIDE/Methods/Aerodynamics/Fidelity_Zero/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

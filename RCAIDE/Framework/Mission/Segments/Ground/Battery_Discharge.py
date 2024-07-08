@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Ground
 # RCAIDE/Framework/Mission/Segments/Ground/Battery_Disharge.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,7 @@ from RCAIDE.Library.Methods.skip                      import skip
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  SEGMENT
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Framework-Mission-Segments-Ground
+# ---------------------------------------------------------------------------------------------------------------------- 
 class Battery_Discharge(Evaluate):  
     """Discharging segment for battery"""  
 

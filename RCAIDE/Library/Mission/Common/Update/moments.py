@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/moments.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from RCAIDE.Framework.Core  import  orientation_product
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Moments
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Common-Update
+# ---------------------------------------------------------------------------------------------------------------------- 
 def moments(segment): 
     """ Updates the total resultant moment on the vehicle 
         

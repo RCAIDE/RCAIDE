@@ -1,6 +1,5 @@
-## @ingroup  Library-Methods-Stability
-# RCAIDE/Library/Methods/Stability/VLM_Stability.py
-# 
+# RCAIDE/Library/Methods/Stability/VLM_Stability_solver.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Apr 2024, M. Clarke 
 
@@ -20,8 +19,7 @@ from scipy import interpolate
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Stability  
+# ---------------------------------------------------------------------------------------------------------------------- 
 def evaluate_surrogate(state,settings,geometry):
     """Evaluates surrogates forces and moments using built surrogates 
     

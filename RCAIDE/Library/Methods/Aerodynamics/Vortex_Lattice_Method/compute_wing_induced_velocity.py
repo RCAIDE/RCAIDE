@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Vortex_Lattice_Method
 # RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_wing_induced_velocity.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@
 
 # package imports 
 import numpy as np 
-
-## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
+ 
 def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     """ This computes the induced velocities at each control point of the vehicle vortex lattice 
 

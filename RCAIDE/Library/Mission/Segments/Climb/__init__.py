@@ -1,4 +1,3 @@
-## @defgroup Methods-Missions-Segments-Climb Climb
 # RCAIDE/Methods/Mission/Segments/Climb/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -8,8 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Mission-Segments 
-
 from . import Constant_Speed_Constant_Rate
 from . import Constant_Mach_Constant_Rate
 from . import Constant_Mach_Constant_Angle

@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Converters
 # RCAIDE/Library/Components/Propulsors/Converters/Turbine.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from RCAIDE.Library.Components                      import Component
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Turbine
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Components-Propulsors-Converters
+# ----------------------------------------------------------------------------------------------------------------------  
 class Turbine(Component):
     """This is a turbine component typically used in a turbofan or turbojet
     

@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common/Update
 # RCAIDE/Library/Missions/Common/Update/atmosphere.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,7 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Atmosphere
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Update
 def atmosphere(segment):
     """ Computes conditions of the atmosphere at given altitudes
     

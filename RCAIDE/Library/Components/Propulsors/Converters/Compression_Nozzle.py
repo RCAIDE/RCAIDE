@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Converters
 # RCAIDE/Library/Components/Propulsors/Converters/Compression_Nozzle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compression Nozzle 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Propulsors-Converters 
 class Compression_Nozzle(Component):
     """This is a nozzle component intended for use in compression. 
     """

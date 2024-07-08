@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Climb
 # RCAIDE/Framework/Mission/Segments/Climb/Constant_EAS_Constant_Rate.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,6 @@ from RCAIDE.Library.Mission                          import Common,Segments
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_EAS_Constant_Rate
 # ---------------------------------------------------------------------------------------------------------------------- 
-
-## @ingroup Framework-Mission-Segments-Climb
 class Constant_EAS_Constant_Rate(Evaluate):
     """ Fixed at constant Equivalent Airspeed (EAS) the vehicle will climb at a constant rate. 
     """       

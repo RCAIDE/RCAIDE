@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Cryogens
 # RCAIDE/Library/Attributes/Cryogens/Cryogens.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -12,8 +11,7 @@ from RCAIDE.Framework.Core import Data
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # Cryogen
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Attributes-Cryogens
+# ----------------------------------------------------------------------------------------------------------------------  
 class Cryogen(Data):
     """Defauly cryogenic liquid class 
     """

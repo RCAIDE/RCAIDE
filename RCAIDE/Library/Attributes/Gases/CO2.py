@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Gases
 # RCAIDE/Library/Attributes/Gases/CO2.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -12,8 +11,7 @@ from .Gas import Gas
 
 # ----------------------------------------------------------------------------------------------------------------------  
 # CO2 Class
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Attributes-Gases 
+# ----------------------------------------------------------------------------------------------------------------------   
 class CO2(Gas):
    """Generic class for carbon dioxide 
    """

@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Energy-Propulsors-Common 
 # RCAIDE/Library/Methods/Energy/Propulsors/Common/compute_static_sea_level_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Design Turbofan
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Energy-Propulsors-Common
+# ---------------------------------------------------------------------------------------------------------------------- 
 def compute_static_sea_level_performance(propulsor):
     """Compute static sea level performance of a propulsor     
     

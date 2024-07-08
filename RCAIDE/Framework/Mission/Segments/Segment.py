@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments
 # RCAIDE/Framework/Mission/Segment/Segment.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,9 +12,8 @@ from RCAIDE.Framework.Analyses           import Analysis, Settings, Process
 from RCAIDE.Framework.Mission.Common     import State 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  ANALYSES
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Framework-Mission-Segments
+#  Segment 
+# ----------------------------------------------------------------------------------------------------------------------   
 class Segment(Analysis):
     """ Base segment class 
     """    
@@ -258,9 +256,7 @@ class Segment(Analysis):
            
 # ----------------------------------------------------------------------
 #  Container
-# ----------------------------------------------------------------------
-
-## @ingroup Framework-Mission-Segments
+# ---------------------------------------------------------------------- 
 class Container(Segment):
     """ A container for the segment
     

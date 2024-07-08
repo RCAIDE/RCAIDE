@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Cryogens
 # RCAIDE/Library/Attributes/Cryogens/Liquid_Hydrogen.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -12,8 +11,7 @@ from .Cryogen import Cryogen
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Liquid Hydrogen Cryogen
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Attributes-Cryogens
+# ----------------------------------------------------------------------------------------------------------------------  
 class Liquid_Hydrogen(Cryogen):
     """Liquid Hydrogen Cryogen Class 
     """

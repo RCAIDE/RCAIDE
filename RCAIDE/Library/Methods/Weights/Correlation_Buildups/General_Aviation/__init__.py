@@ -1,6 +1,5 @@
-## @defgroup Methods-Weights-Correlations-General_Aviation General_Aviation
 # RCAIDE/Methods/Weights/Correlations/General_Aviation/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """RCAIDE Package Setup
 """

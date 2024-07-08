@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/forces.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -9,13 +8,11 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core  import  orientation_product
-import numpy as np
+from RCAIDE.Framework.Core  import  orientation_product 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Forces
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Common-Update
+# ---------------------------------------------------------------------------------------------------------------------- 
 def forces(segment): 
     """ Updates the total resultant force on the vehicle 
         

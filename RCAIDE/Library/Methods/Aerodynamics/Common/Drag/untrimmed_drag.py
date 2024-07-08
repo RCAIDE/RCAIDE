@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/untrimmed_drag.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,7 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Untrmmed drag 
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 def untrimmed_drag(state,settings,geometry):
     """Sums aircraft drag before trim correction
 

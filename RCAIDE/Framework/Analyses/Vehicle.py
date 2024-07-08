@@ -1,4 +1,3 @@
-## @ingroup Framework-Analyses
 # RCAIDE/Framework/Analyses/Vehicle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from .Analysis import Analysis
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Vehicle
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Framework-Analyses
+# ----------------------------------------------------------------------------------------------------------------------   
 class Vehicle(Analysis.Container):
     """ The Vehicle Analyses Container Class 
     """

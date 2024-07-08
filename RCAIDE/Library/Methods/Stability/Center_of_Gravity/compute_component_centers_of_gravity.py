@@ -1,6 +1,5 @@
-## @ingroup Methods-Stability-Center_of_Gravity Center_of_Gravity
 # RCAIDE/Methods/Stability/Center_of_Gravity/compute_component_centers_of_gravity.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Dec 2023, M. Clarke  
 
@@ -20,9 +19,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity
-# ---------------------------------------------------------------------------------------------------------------------- 
-
-## @ingroup Methods-Stability-Center_of_Gravity
+# ----------------------------------------------------------------------------------------------------------------------  
 def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     """ computes the center of gravity of all of the vehicle components based on correlations 
     from Stanford University AA241 Lecture Notes 

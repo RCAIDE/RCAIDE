@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission
 # RCAIDE/Framework/Mission/Mission.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ from RCAIDE.Framework.Core import Container
 # ----------------------------------------------------------------------------------------------------------------------
 #  Mission
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Framework-Mission
 class Missions(Container):
     """Top-level mission class 
     """ 

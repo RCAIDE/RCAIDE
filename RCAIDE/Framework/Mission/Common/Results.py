@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Conditions
 # RCAIDE/Framework/Mission/Segments/Conditions/Results.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,13 +16,9 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Results
 # ---------------------------------------------------------------------------------------------------------------------- 
-
-## @ingroup Framework-Mission-Segments-Conditions
 class Results(Conditions):
     """ This builds upon Basic, which itself builds on conditions, to add the data structure for aerodynamic mission analyses. 
-    """
-    
-    
+    """ 
     def __defaults__(self):
         """This sets the default values.
     

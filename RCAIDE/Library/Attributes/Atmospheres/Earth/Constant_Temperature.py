@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Atmospheres-Earth
 # RCAIDE/Library/Attributes/Atmospheres/Earth/Constant_Temperature.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -16,8 +15,7 @@ import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # Constant_Temperature Class
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Attributes-Atmospheres-Earth   
+# ----------------------------------------------------------------------------------------------------------------------     
 class Constant_Temperature(Atmosphere):
     """Contains US Standard 1976 values with temperature modified to be constant. 
     """

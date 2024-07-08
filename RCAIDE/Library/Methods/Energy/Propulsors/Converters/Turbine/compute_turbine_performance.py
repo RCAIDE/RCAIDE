@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Turbine
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Turbine/compute_turbine_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_turbine_performance
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Methods-Energy-Propulsors-Converters-Turbine 
+# ----------------------------------------------------------------------------------------------------------------------     
 def compute_turbine_performance(turbine,conditions):
     """This computes the output values from the input values according to
     equations from the source. The following properties are computed: 

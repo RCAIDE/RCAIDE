@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/compressibility_drag_total.py 
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -23,7 +22,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compressibility Drag Total
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerdoynamics-Common-Drag
 def compressibility_drag_total(state,settings,geometry):
     """Computes compressibility drag for full aircraft including volume drag
 

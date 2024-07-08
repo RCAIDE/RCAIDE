@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Lift
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/total_lift.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Total Lift 
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def total_lift(state,settings,geometry):
     """Returns the total lift of the aircraft 
 

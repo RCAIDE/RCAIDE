@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Wings
 # RCAIDE/Compoments/Wings/Stabilator.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from .All_Moving_Surface import All_Moving_Surface
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Stabilator
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings    
+# ----------------------------------------------------------------------------------------------------------------------     
 class Stabilator(Horizontal_Tail, All_Moving_Surface):
     """ This class is used to define stabilatorsE. It 
     inherits from both Horizontal_Tail and All_Moving_Surface 

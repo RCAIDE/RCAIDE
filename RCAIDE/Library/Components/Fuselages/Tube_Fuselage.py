@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Fuselages
 # RCAIDE/Compoments/Fuselages/Tube_Fuselage.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from .Fuselage import Fuselage
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Tube_Fuselage
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Fuselages 
+# ----------------------------------------------------------------------------------------------------------------------  
 class Tube_Fuselage(Fuselage):
     """ This is a standard fuselage for a tube and wing aircraft.
     

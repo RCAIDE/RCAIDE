@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Nacelles
 # RCAIDE/Library/Compoments/Nacelles/Segment.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from RCAIDE.Library.Components import Component
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Segment
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Nacelles  
+# ----------------------------------------------------------------------------------------------------------------------  
 class Segment(Component):
     def __defaults__(self): 
         """This sets the default for fuselage segments in RCAIDE.
@@ -41,8 +39,7 @@ class Segment(Component):
         self.height                   = 0 
         self.width                    = 0 
         self.curvature                = 2  
-        
-## @ingroup Components-Nacelles
+         
 class Segment_Container(Container):
     """ Container for nacelle segment. 
     """     

@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors
 # RCAIDE/Library/Components/Propulsors/Propusor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,9 +12,8 @@
 from RCAIDE.Library.Components                   import Component 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Propusor
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Distributors
+#  Propulsor
+# ----------------------------------------------------------------------------------------------------------------------  
 class Propulsor(Component):
     """ Default propulsor compoment class. 
     """ 

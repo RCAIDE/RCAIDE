@@ -1,6 +1,5 @@
-## @ingroup Library-Methods-Geomery-Two_Dimensional-Airfoil
 # RCAIDE/Library/Methods/Geometry/Two_Dimensional/Airfoil/convert_airfoil_to_meshgrid.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2024, M. Clarke 
 
@@ -13,7 +12,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # convert_airfoil_to_meshgrid
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Geometry-Two_Dimensional-Airfoil
 def convert_airfoil_to_meshgrid(airfoil_geometry, *args, **kwargs):
     """Converts a RCAIDE airfoil geometry representation to a Numpy meshgrid
     array mask of boolean values.

@@ -1,6 +1,5 @@
-## @defgroup Energy-Networks Networks
 # RCAIDE/Library/Compoments/Energy/Networks/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

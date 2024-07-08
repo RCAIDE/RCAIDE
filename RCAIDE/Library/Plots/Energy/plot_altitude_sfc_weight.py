@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Energy
 # RCAIDE/Library/Plots/Energy/plot_altitude_sfc_weight.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Performance-Energy-Fuel
+# ----------------------------------------------------------------------------------------------------------------------    
 def plot_altitude_sfc_weight(results,
                              save_figure = False,
                              show_legend = True,

@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Engine
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Engine/compute_throttle_from_power.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,7 @@ import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  calculate_throttle_from_power
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Energy-Propulsors-Converters-Engine
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_throttle_from_power(engine,conditions):
     """ The internal combustion engine output power and specific power consumption.
     The following perperties are computed:

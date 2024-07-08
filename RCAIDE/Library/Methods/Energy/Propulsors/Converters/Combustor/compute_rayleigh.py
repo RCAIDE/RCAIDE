@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Combustor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Combustor/compute_rayleigh.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ from Legacy.trunk.S.Methods.Propulsion.fm_solver import fm_solver
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_rayleigh
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Energy-Propulsors-Converters-Combustor 
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_rayleigh(combustor,conditions):
     """ This combutes the temperature and pressure change across the combustor using Rayleigh Line flow.
     The following properties are computed 

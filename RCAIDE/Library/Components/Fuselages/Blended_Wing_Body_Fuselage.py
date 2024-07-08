@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Fuselages
 # RCAIDE/Compoments/Fuselages/Blended_Wing_Body_Fuselage.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from .Fuselage import Fuselage
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Blended_Wing_Body_Fuselage
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Fuselages 
+# ----------------------------------------------------------------------------------------------------------------------  
 class Blended_Wing_Body_Fuselage(Fuselage):
     """ This is a blended wing body fuselage class  
     """

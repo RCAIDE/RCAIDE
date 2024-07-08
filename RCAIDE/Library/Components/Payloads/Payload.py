@@ -1,4 +1,3 @@
-## @ingroup Library-Compoments-Payload
 # RCAIDE/Compoments/Payload/Payload.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from RCAIDE.Library.Components import Component
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Payload
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Library-Compoments-Payload
+# ----------------------------------------------------------------------------------------------------------------------            
 class Payload(Component):
     """Payload component class. 
     """          

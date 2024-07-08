@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Auxillary_Systems
 # RCAIDE/Library/Methods/Energy/Auxillary_Systems/auxillary_systems_power.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 

@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Vortex_Lattice_Method
 # RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_RHS_matrix.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -23,8 +22,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_section_coefficients
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Aerdoynamics-Vortex_Lattice_Method
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_model): 
     """ This computes the right hand side matrix for the VLM. In this function,
         induced velocites from propeller wake are also included when relevent and

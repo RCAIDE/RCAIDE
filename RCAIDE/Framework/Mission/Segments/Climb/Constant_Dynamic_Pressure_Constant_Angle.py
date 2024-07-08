@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Climb
 # RCAIDE/Framework/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,6 @@ from RCAIDE.Library.Mission                          import Common,Segments
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_Dynamic_Pressure_Constant_Angle
 # ---------------------------------------------------------------------------------------------------------------------- 
- 
-## @ingroup Framework-Mission-Segments-Climb
 class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
     """ Climb at a constant dynamic pressure at a constant angle.This segment takes longer to solve than most because 
         it has extra unknowns and residuals.

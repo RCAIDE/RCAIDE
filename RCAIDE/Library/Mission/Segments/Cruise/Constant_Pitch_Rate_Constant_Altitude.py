@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Cruise
 # RCAIDE/Library/Missions/Segments/Cruise/Constant_Pitch_Rate_Constant_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,7 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Cruise
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

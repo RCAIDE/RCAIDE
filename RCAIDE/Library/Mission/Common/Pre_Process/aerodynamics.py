@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Pre_Process
 # RCAIDE/Library/Missions/Common/Pre_Process/aerodynamics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ import RCAIDE
 # ----------------------------------------------------------------------------------------------------------------------
 #  aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Missions-Segments-Common-Pre_Process
 def aerodynamics(mission):
     """ Runs aerdoynamics model and build surrogate
     

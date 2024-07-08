@@ -1,4 +1,3 @@
-## @ingroup Library-Compoments-Systems
 # RCAIDE/Compoments/Systems/Avionics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from RCAIDE.Library.Components import Component
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Avionics
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Library-Components-Systems
+# ----------------------------------------------------------------------------------------------------------------------            
 class Avionics(Component):
     """A class representing avionics.
     """        

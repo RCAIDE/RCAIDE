@@ -1,4 +1,3 @@
-## @defgroup Framework-Analyses-Weights Weights
 # RCAIDE/Framework/Analyses/Weights/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Cruise
 # RCAIDE/Library/Missions/Segments/Cruise/Constant_Throttle_Constant_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Cruise
 def unpack_unknowns(segment):
     
     # unpack unknowns
@@ -67,7 +65,6 @@ def integrate_velocity(segment):
 #  Initialize Conditions
 # ----------------------------------------------------------------------    
 
-## @ingroup Library-Missions-Segments-Cruise
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 
@@ -124,7 +121,6 @@ def initialize_conditions(segment):
 #  Solve Residuals
 # ----------------------------------------------------------------------    
 
-## @ingroup Library-Missions-Segments-Cruise
 def solve_velocity(segment):
     """ Calculates the additional velocity residual
     

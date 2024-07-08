@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_turbofan_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -21,7 +20,6 @@ from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor            impo
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 def compute_turbofan_performance(fuel_line,state):  
     ''' Computes the perfomrance of all turbofan engines connected to a fuel tank
     

@@ -1,4 +1,3 @@
-## @ingroup Analyses-Aerodynamics
 # RCAIDE/Framework/Analyses/Aerodynamics/Supersonic_VLM.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -21,8 +20,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------
 #  Class
-# ----------------------------------------------------------------------
-## @ingroup Analyses-Aerodynamics
+# ---------------------------------------------------------------------- 
 class Supersonic_VLM(Aerodynamics):
     """This is a supersonic aerodynamic buildup analysis based on the vortex lattice method 
     """ 

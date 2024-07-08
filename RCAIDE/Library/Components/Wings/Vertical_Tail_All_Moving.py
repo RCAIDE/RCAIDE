@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Wings
 # RCAIDE/Compoments/Wings/Vertical_Tail_All_Moving.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from .All_Moving_Surface import All_Moving_Surface
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Vertical_Tail_All_Moving
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings    
+# ----------------------------------------------------------------------------------------------------------------------     
 class Vertical_Tail_All_Moving(Vertical_Tail, All_Moving_Surface):
     """ This class is used to define all-moving vertical tails. It 
     inherits from both Horizontal_Tail and All_Moving_Surface 

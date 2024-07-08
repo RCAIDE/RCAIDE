@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method  
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/thwaites_method_new.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -16,7 +15,6 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 # thwaites_method
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def thwaites_method(npanel,ncases,nRe,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
     """ Computes the boundary layer characteristics in laminar flow pressure gradients
     

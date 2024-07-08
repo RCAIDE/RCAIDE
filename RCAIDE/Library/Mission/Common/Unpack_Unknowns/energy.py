@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Unpack_Unknowns
 # RCAIDE/Library/Missions/Common/Unpack_Unknowns/energy.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unpack Unknowns
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Unpack_Unknowns
+# ---------------------------------------------------------------------------------------------------------------------- 
 def fuel_line_unknowns(segment,fuel_lines):
     """Assigns the unknowns for an fuel-based energy network to the aircraft each iteration of the mission
        solving process.

@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Vortex_Lattice_Method
 # RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/Vortex_Lattice_Method.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -20,9 +19,7 @@ from .compute_RHS_matrix                 import compute_RHS_matrix
 
 # ----------------------------------------------------------------------
 #  Vortex Lattice
-# ----------------------------------------------------------------------
-
-## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Lift
+# ---------------------------------------------------------------------- 
 def Vortex_Lattice_Method(conditions,settings,geometry):
     """Uses the vortex lattice method to compute the lift, induced drag and moment coefficients.
     

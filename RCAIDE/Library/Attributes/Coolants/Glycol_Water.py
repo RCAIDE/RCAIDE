@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Coolants 
 # RCAIDE/Library/Attributes/Coolants/Glycol_Water.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -11,8 +10,7 @@ from .Coolant import Coolant
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Glycol_Water
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Attributes-Coolants
+# ----------------------------------------------------------------------------------------------------------------------  
 class Glycol_Water(Coolant):
     """Generic class of ethelyne glycol-water mixture coolant.
     """

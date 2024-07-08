@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Performance-Aerodynamics
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_aerodynamic_coefficients.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,7 +15,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Performance-Aerodynamics
 def plot_aerodynamic_coefficients(results,
                              save_figure = False,  
                              show_legend = True,

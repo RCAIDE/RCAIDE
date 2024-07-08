@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Update
 # RCAIDE/Library/Missions/Common/Update/battery_age.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,7 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Battery Age
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Missions-Common-Update
 def battery_age(segment):  
     """Updates battery age based on operating conditions, cell temperature and time of operation.
        Source: 

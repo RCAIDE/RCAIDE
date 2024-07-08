@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Pre_Process
 # RCAIDE/Library/Missions/Common/Pre_Process/energy.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  energy
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Missions-Segments-Common-Pre_Process
+# ----------------------------------------------------------------------------------------------------------------------   
 def energy(mission):
     """ Appends all unknows and residuals to the network 
     

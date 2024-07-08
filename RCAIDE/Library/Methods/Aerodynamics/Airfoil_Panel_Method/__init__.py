@@ -1,7 +1,5 @@
-## @defgroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method Airfoil_Panel_Method 
-# @ingroup Library-Methods-Aerdoynamics
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

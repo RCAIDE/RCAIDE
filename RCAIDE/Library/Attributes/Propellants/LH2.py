@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Propellants 
 # RCAIDE/Library/Attributes/LH2.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,7 +13,6 @@ from RCAIDE.Framework.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------
 #  LH2
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Attributes-Propellants
 class LH2(Propellant):
     """LH2 Rocket Fuel Class
     """

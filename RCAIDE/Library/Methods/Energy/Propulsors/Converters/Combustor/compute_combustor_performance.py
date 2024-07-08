@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Energy-Propulsors-Converters-Combustor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Combustor/compute_combustor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_combustor_performance
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Components-Propulsors-Converters-Combustor  
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_combustor_performance(combustor,conditions):
     """ This computes the output values from the input values according to
         equations from the source. The following properties are computed         

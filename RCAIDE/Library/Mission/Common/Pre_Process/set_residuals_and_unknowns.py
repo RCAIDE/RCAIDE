@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Pre_Process
 # RCAIDE/Library/Missions/Common/Pre_Process/set_residuals_and_unknowns.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,7 +11,6 @@ from RCAIDE.Framework.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------
 #  set_residuals_and_unknowns
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Missions-Segments-Common-Pre_Process
 def set_residuals_and_unknowns(mission):
     """ Sets the flight dynamics residuals and fligth controls of the aircraft   
 

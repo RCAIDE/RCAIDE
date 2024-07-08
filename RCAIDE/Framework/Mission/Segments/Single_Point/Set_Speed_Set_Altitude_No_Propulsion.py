@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Single_Point
 # RCAIDE/Framework/Mission/Segments/Single_Point/Set_Speed_Set_Altitude_No_Propulsion.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,9 +15,7 @@ from RCAIDE.Library.Mission                          import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Set_Speed_Set_Altitude_No_Propulsion
-# ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Framework-Mission-Segments-Single_Point
+# ---------------------------------------------------------------------------------------------------------------------- 
 class Set_Speed_Set_Altitude_No_Propulsion(Evaluate):
     """ This is a segment that is solved using a single point. A snapshot in time.
         We fix the speed and altitude. Throttle is solved from those. 

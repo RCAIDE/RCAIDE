@@ -1,6 +1,5 @@
-## @defgroup Methods-Missions-Segments Segments
 # RCAIDE/Methods/Mission/Segments/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
@@ -8,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Mission
+ 
 from . import Cruise
 from . import Climb
 from . import Descent

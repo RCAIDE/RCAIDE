@@ -1,4 +1,3 @@
-## @defgroup Library-Attributes-Coolants Coolants
 # RCAIDE/Library/Attributes/Coolants/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

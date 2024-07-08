@@ -1,4 +1,3 @@
-## @ingroup Framework-Analyses-Stability
 # RCAIDE/Framework/Analyses/Stability/VLM_Perturbation_Method.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -22,8 +21,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  VLM_Perturbation_Method
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Framework-Analyses-Stability
+# ---------------------------------------------------------------------------------------------------------------------- 
 class VLM_Perturbation_Method(Stability):  
     """ This is a subsonic stability buildup analysis based on a pertubation approch of the vortex lattice method.
     """      

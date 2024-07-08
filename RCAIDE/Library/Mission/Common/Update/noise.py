@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,9 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  noise
-# ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Library-Missions-Segments-Common-Update
+# ---------------------------------------------------------------------------------------------------------------------- 
 def noise(segment):
     """ Computes the noise using the prescribed method 
         

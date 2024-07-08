@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Stability  
 # RCAIDE/Library/Plots/Stability/plot_lateral_stability.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,7 +15,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Stability
 def plot_lateral_stability(results,
                              save_figure = False,
                              show_legend=True,

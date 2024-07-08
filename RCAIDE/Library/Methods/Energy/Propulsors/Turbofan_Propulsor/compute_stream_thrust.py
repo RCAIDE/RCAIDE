@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_stream_thrust.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_stream_thrust
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor  
+# ----------------------------------------------------------------------------------------------------------------------  
 def compute_stream_thrust(turbofan,conditions):  
     """Computes steam thrust and other properties of the turbofan listed below: 
     turbofan.  

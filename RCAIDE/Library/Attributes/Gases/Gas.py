@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Gases
 # RCAIDE/Library/Attributes/Gases/Gas.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -12,8 +11,7 @@ from RCAIDE.Framework.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Gas Class
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Attributes-Gases 
+# ----------------------------------------------------------------------------------------------------------------------   
 class Gas(Data):
     """Default class for all gases.
     """

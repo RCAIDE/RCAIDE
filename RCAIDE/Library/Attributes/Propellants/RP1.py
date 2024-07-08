@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Propellants 
 # RCAIDE/Library/Attributes/RP1.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,7 +13,6 @@ from RCAIDE.Framework.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------
 #  RP1
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Attributes-Propellants
 class RP1(Propellant):
     """RP1 Rocket Fuel Class
     """

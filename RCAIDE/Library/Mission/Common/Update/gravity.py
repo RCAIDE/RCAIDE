@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Update
 # RCAIDE/Library/Missions/Common/Update/gravity.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,8 +6,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Gravity
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Update
+# ---------------------------------------------------------------------------------------------------------------------- 
 def gravity(segment):
     """ Sets the gravity for each part of the mission
     

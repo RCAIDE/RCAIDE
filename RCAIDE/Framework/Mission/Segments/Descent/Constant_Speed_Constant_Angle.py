@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Descent
 # RCAIDE/Framework/Mission/Segments/Descent/Constant_Speed_Constant_Angle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,6 @@ from RCAIDE.Library.Mission                      import Common,Segments
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_Speed_Constant_Angle
 # ----------------------------------------------------------------------------------------------------------------------  
-
-## @ingroup Framework-Mission-Segments-Descent
 class Constant_Speed_Constant_Angle(Evaluate):
     """ Fixed at a true airspeed the vehicle will descend at a constant angle.
     

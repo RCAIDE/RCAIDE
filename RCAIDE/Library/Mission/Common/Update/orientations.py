@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/orientations.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,7 +16,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Orientations
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Update
 def orientations(segment):
     
     """ Updates the orientation of the vehicle throughout the mission for each relevant axis

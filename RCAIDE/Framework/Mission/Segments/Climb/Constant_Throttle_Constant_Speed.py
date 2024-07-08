@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Climb
 # RCAIDE/Framework/Mission/Segments/Climb/Constant_Throttle_Constant_Speed.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,7 +16,6 @@ from RCAIDE.Library.Mission                          import Common,Segments
 # Constant_Throttle_Constant_Speed
 # ---------------------------------------------------------------------------------------------------------------------- 
  
-## @ingroup Framework-Mission-Segments-Climb
 class Constant_Throttle_Constant_Speed(Evaluate):
     """ Climb at a constant throttle setting and true airspeed. This segment may not always converge as the vehicle 
         could be deficient in thrust. Useful as a check to see the climb rate at the top of climb. 

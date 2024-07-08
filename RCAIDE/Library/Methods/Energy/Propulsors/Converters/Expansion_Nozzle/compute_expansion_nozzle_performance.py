@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Fan
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Fan/compute_fan_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,7 @@ from warnings import warn
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_expansion_nozzle_performance
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Methods-Energy-Propulsors-Converters-Expansion_Nozzle
+# ----------------------------------------------------------------------------------------------------------------------        
 def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
     """ This computes the output values from the input values according to
     equations from the source. The following properties are computed: 

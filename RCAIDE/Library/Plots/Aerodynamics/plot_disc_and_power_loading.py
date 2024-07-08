@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Performance-Aerodynamics
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_disc_and_power_loading.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -18,7 +17,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------      
-## @ingroup Library-Plots-Performance-Aerodynamics
 def plot_disc_and_power_loading(results,
                             save_figure=False,
                             show_legend = True,

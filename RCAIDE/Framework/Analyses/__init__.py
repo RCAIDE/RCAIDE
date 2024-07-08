@@ -1,4 +1,3 @@
-## @defgroup Framework-Analyses Analyses
 # RCAIDE/Framework/Analyses/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

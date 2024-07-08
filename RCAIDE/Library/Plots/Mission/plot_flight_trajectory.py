@@ -1,4 +1,3 @@
-## @defgroup Library-Plots-Mission  
 # RCAIDE/Library/Plots/Performance/Mission/plot_flight_trajectory.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Mission           
+# ----------------------------------------------------------------------------------------------------------------------             
 def plot_flight_trajectory(results,
                            line_color = 'bo-',
                            line_color2 = 'rs--',

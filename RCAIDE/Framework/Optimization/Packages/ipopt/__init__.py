@@ -1,4 +1,3 @@
-# @ingroup Optimization-Packages-ipopt
 # RCAIDE/Optimization/Packages/ipopt/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 

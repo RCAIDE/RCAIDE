@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Update 
 # RCAIDE/Library/Missions/Common/Update/aerodynamics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,7 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Update
 def aerodynamics(segment):
     """ Computes the aerodynamic properties of the aircraft 
             segment.state.conditions.aerodynamics.coefficients.lift        [unitless]

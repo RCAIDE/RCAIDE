@@ -1,4 +1,3 @@
-## @defgroup Library-Methods-Aerodynamics-OpenVSP_Wave_Drag OpenVSP_Wave_Drag  
 # RCAIDE/Library/Methods/Aerodynamics/OpenVSP_Wave_Drag/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

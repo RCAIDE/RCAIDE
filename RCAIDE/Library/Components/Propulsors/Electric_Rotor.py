@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Electric_Rotor
 # RCAIDE/Library/Components/Propulsors/Electric_Rotor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -11,18 +10,11 @@
  # RCAIDE imports   
 from .                import Propulsor 
 
-# ----------------------------------------------------------------------
-#  Fan Component
-# ----------------------------------------------------------------------
-## @ingroup Components-Propulsors-Converters
+# ---------------------------------------------------------------------------------------------------------------------- 
+#  Electric_Rotor Component
+# ---------------------------------------------------------------------------------------------------------------------- 
 class Electric_Rotor(Propulsor):
-    """This is a electric motor-rotor propulsor 
-    
-    Assumptions:
-    None
-
-    Source:
-    None
+    """This is a electric motor-rotor propulsor  
     """ 
     def __defaults__(self):    
         # setting the default values

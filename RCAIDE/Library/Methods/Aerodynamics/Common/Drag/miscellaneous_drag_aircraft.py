@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/miscellaneous_drag_aircraft.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,7 +14,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  miscellaneous_drag_aircraft
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Methods-Aerdoynamics-Common-Drag
 def miscellaneous_drag_aircraft(state,settings,geometry):
     """Computes the miscellaneous drag associated with an aircraft
 

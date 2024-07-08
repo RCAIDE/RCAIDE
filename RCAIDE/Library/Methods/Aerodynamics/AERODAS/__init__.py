@@ -1,7 +1,5 @@
-## @defgroup Library-Methods-Aerdoynamics-AERODAS AERODAS
-# @ingroup Library-Methods-Aerdoynamics
 # RCAIDE/Methods/Aerodynamics/AERODAS/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

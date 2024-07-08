@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Energy-Propulsors-Converters-Compressor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compressor/compute_compressor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_compression_nozzle_performance
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Components-Propulsors-Converters-Compressor
+# ----------------------------------------------------------------------------------------------------------------------  
 def compute_compressor_performance(compressor,conditions):
     """ Computes the performance of a compressor bases on its polytropic efficiency.
         The following properties are computed: 

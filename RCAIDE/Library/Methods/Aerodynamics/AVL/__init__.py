@@ -1,4 +1,3 @@
-## @defgroup Library-Methods-Aerodynamics-AVL AVL  
 # RCAIDE/Library/Methods/Aerodynamics/AVL/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

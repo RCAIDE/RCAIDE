@@ -1,15 +1,12 @@
-## @defgroup Methods-Geometry-Two_Dimensional/Cross_SectioNoneirfoil Airfoil
 # RCAIDE/Methods/Geometry/Two_Dimensional/Cross_SectioNoneirfoil/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Geometry-Two_Dimensional-Cross_Section
-
+# ---------------------------------------------------------------------------------------------------------------------- 
 from .compute_naca_4series        import compute_naca_4series 
 from .compute_airfoil_properties  import compute_airfoil_properties
 from .import_airfoil_dat          import import_airfoil_dat

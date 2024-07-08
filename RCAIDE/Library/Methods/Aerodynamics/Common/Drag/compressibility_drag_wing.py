@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Common-Drag
 # RCAIDE/Methods/Aerodynamics/Common/Drag/compressibility_drag_wing.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,7 +14,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #   Compressibility Drag for Wings 
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Drag
 def compressibility_drag_wing(state,settings,wing):
     """Computes compressibility drag for a wing
 

@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/size_core.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  size_core
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def size_core(turbofan,conditions):
     """Sizes the core flow for the design condition by computing the
     non-dimensional thrust 

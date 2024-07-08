@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Conditions 
 # RCAIDE/Framework/Mission/Segments/Conditions/Residuals.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,6 @@ from .Conditions import Conditions
 # ----------------------------------------------------------------------------------------------------------------------
 #  Residuals
 # ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Framework-Mission-Segments-Conditions
 class Residuals(Conditions):
     """ Creates the data structure for the residuals that solved in a mission.
     """    

@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Conditions 
 # RCAIDE/Framework/Mission/Segments/Conditions/Numerics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Numerics
 # ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Framework-Mission-Segments-Conditions
 class Numerics(Conditions):
     """ Creates the data structure for the numerical solving of a mission.
     """

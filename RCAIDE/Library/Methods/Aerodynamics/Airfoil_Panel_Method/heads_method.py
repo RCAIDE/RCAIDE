@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/heads_method.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -16,7 +15,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # heads_method
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor_0,RE_L,TURBULENT_COORD,VE_I,DVE_I,TURBULENT_SURF,tol):
     """ Computes the boundary layer characteristics in turbulent
     flow pressure gradients

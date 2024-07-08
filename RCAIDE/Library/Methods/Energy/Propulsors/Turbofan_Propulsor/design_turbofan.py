@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/design_turbofan.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -18,7 +17,7 @@ from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Turbine            impo
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor            import size_core
-from RCAIDE.Library.Methods.Energy.Propulsors.Common                 import compute_static_sea_level_performance
+from RCAIDE.Library.Methods.Energy.Propulsors.Common                        import compute_static_sea_level_performance
 
 
 # Python package imports
@@ -26,8 +25,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Design Turbofan
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
+# ---------------------------------------------------------------------------------------------------------------------- 
 def design_turbofan(turbofan):
     """Compute perfomance properties of a turbofan based on polytropic ration and combustor properties.
     Turbofan is created by manually linking the different components

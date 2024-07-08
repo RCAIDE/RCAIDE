@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Initialize
 # RCAIDE/Library/Missions/Common/Initialize/energy.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ import RCAIDE
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  energy
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Missions-Segments-Common-Initialize
+# ----------------------------------------------------------------------------------------------------------------------   
 def energy(segment):
     """ Sets the initial energy state of the aircraft at the start of the mission
 

@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Wings-Control_Surfaces
 # RCAIDE/Compoments/Wings/Control_Surfaces/Control_Surface.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from RCAIDE.Library.Components import Component
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Control Surfaces
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings-Control_Surfaces 
+# ----------------------------------------------------------------------------------------------------------------------  
 class Control_Surface(Component):
     def __defaults__(self):
         """This sets the default values of control surfaces defined in RCAIDE. 

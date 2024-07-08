@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 # RCAIDE/Library/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_thrust.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,7 +15,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_thrust
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Energy-Propulsors-Turbofan_Propulsor
 def compute_thrust(turbofan,conditions,throttle = 1.0):
     """Computes thrust and other properties of the turbofan listed below: 
     turbofan.  

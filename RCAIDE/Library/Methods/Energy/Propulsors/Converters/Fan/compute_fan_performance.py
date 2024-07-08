@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Fan
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Fan/compute_fan_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fan 
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Methods-Energy-Propulsors-Converters-Fan
+# ----------------------------------------------------------------------------------------------------------------------            
 def compute_fan_performance(fan,conditions):
     """ This computes the output values from the input values according to
     equations from the source. The following outputs are computed: 

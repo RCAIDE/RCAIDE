@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Geomery-Two_Dimensional-Planform
 # RCAIDE/Library/Methods/Geometry/Two_Dimensional/Planform/wing_segmented_planform.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_section_coefficients
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Geometry-Two_Dimensional-Planform
+# ----------------------------------------------------------------------------------------------------------------------    
 def wing_segmented_planform(wing, overwrite_reference = False):
     """Computes the high-levelproperties of a segmented wing. These include: 
     wing.

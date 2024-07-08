@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/DC_Motor/motor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_Q_from_omega_and_V
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
+# ---------------------------------------------------------------------------------------------------------------------- 
 def compute_torque_from_RPM_and_voltage(motor):
     """Calculates the motor's torque based on RPM (angular velocity) and voltage.  
     The following perperties of the motor are computed
@@ -63,8 +61,7 @@ def compute_torque_from_RPM_and_voltage(motor):
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_omega_and_Q_from_Cp_and_V
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,conditions):
     """Calculates the motors RPM and torque using power coefficient and operating voltage.
     The following perperties of the motor are computed  
@@ -125,8 +122,7 @@ def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,conditions):
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_I_from_omega_and_V
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
+# ---------------------------------------------------------------------------------------------------------------------- 
 def compute_current_from_RPM_and_voltage(motor):
     """Calculates the motor's current from its RPM and voltage. 
     The following perperties of the motor are computed   
@@ -176,8 +172,7 @@ def compute_current_from_RPM_and_voltage(motor):
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_V_and_I_from_omega_and_Kv
-# ----------------------------------------------------------------------------------------------------------------------           
-## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
+# ----------------------------------------------------------------------------------------------------------------------      
 def compute_voltage_and_current_from_RPM_and_speed_constant(motor):
     """Calculates the motor's voltage and current from its RPM and speed constant
     The following perperties of the motor are computed    

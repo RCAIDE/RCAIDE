@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors 
 # RCAIDE/Library/Components/Propulsors/ICE_Propeller.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -10,19 +9,12 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports   
 from .                import Propulsor 
-
-# ----------------------------------------------------------------------
-#  Fan Component
-# ----------------------------------------------------------------------
-## @ingroup Components-Propulsors-Converters
+ 
+# ---------------------------------------------------------------------------------------------------------------------- 
+#  ICE Propeller
+# ----------------------------------------------------------------------------------------------------------------------  
 class ICE_Propeller(Propulsor):
-    """This is an internal engine-propeller propulsor
-    
-    Assumptions:
-    None
-
-    Source:
-    None
+    """This is an internal engine-propeller propulsor 
     """ 
     def __defaults__(self):    
         # setting the default values

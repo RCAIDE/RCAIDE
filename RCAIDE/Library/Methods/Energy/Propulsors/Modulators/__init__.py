@@ -1,4 +1,3 @@
-## @defgroup Library-Methods-Energy-Propulsors-Modulators
 # RCAIDE/Library/Methods/Energy/Propulsors/Modulators/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

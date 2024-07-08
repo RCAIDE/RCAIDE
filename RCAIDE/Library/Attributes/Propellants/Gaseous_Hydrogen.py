@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Propellants
 # RCAIDE/Library/Attributes/Propellants/Gaseous_Hydrogen.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -12,9 +11,8 @@ from .Propellant import Propellant
 from RCAIDE.Framework.Core import Data
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  Gaseous_Hydrogen Class
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup  Library-Attributes-Propellants 
+#  Gaseous_Hydrogen  
+# ----------------------------------------------------------------------------------------------------------------------   
 class Gaseous_Hydrogen(Propellant):
     """Gaseous hydrogen class
     """

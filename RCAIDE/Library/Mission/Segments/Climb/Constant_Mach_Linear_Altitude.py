@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Climb
 # RCAIDE/Library/Missions/Segments/Climb/Constant_Mach_Linear_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,7 +15,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Climb
 def initialize_conditions(segment):
     """Sets the specified conditions which are given for the segment type.
 

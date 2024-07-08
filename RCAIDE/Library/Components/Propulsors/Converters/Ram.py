@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Converters
 # RCAIDE/Library/Components/Propulsors/Converters/Ram.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from RCAIDE.Library.Components                      import Component
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fan Component
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Propulsors-Converters
+# ----------------------------------------------------------------------------------------------------------------------
 class Ram(Component):
     """This represent the compression of incoming air flow. 
     """

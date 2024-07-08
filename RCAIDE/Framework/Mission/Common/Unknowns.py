@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Conditions 
 # RCAIDE/Framework/Mission/Segments/Conditions/Unknowns.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,6 @@ from .Conditions import Conditions
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unknowns
 # ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Framework-Mission-Segments-Conditions
 class Unknowns(Conditions):
     """ Creates the data structure for the unknowns that solved in a mission.
     """     

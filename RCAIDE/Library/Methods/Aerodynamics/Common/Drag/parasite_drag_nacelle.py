@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/parasite_drag_nacelle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,7 +16,6 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 #   Parasite Drag Nacelle
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Drag
 def parasite_drag_nacelle(state,settings,geometry):
     """Computes the parasite drag due to the nacelle
 
@@ -58,7 +56,6 @@ def parasite_drag_nacelle(state,settings,geometry):
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Nacelle Drag 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Drag
 def nacelle_drag(state, nacelle):
     """helperr fuction to computes the parasite drag due to the nacelle
 

@@ -1,4 +1,3 @@
-## @defgroup Library-Methods-Costs Costs  
 # RCAIDE/Library/Methods/Costs/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

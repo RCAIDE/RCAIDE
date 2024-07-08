@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Compression_Nozzle
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Compression_Nozzle/compute_compression_nozzle_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ from warnings import warn
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_compression_nozzle_performance
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Energy-Propulsors-Converters-Compression_Nozzle
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_compression_nozzle_performance(compression_nozzle,conditions):
     """  Computes the performance of a compression nozzle bases on its polytropic efficiency.
          The following properties are computed: 

@@ -1,4 +1,3 @@
-## @defgroup Library-Compoments-Energy-Networks-Distribution
 # RCAIDE/Library/Compoments/Energy/Networks/Distribution/Fuel_Line.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ from RCAIDE.Library.Components.Component                      import Container
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Line
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Compoments-Energy-Networks-Distribution
+# ----------------------------------------------------------------------------------------------------------------------  
 class Fuel_Line(Component):
     """ Fuel line component class.
     """  

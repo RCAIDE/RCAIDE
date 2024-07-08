@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 # RCAIDE/Methods/Aerodynamics/Airfoil_Panel_Method/panel_geometry.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # panel_geometry
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerdoynamics-Airfoil_Panel_Method
 def panel_geometry(x,y,npanel,ncases,ncpts):
     """Computes airfoil surface panelization parameters for later use in 
     the computation of the matrix of influence coefficients.        

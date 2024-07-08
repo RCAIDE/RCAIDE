@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Wings
 # RCAIDE/Compoments/Wings/All_Moving_Surface.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  All_Moving_Surface
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings  
+# ----------------------------------------------------------------------------------------------------------------------  
 class All_Moving_Surface(Component):
     """ This class is used to allow every all-moving control surface class
     (e.g. Stabilator) to inherit from both a type of Wing (Horizontal_Tail

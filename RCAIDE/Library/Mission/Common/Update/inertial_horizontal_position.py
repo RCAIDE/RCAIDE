@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common Common-Update
 # RCAIDE/Library/Missions/Common/Update/inertial_horizontal_position.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,9 +12,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Integrate Position
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Update
- 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def inertial_horizontal_position(segment):
     """ Determines how far the airplane has traveled. 
     

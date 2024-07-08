@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common
 # RCAIDE/Library/Missions/Segments/Common/Update/dimensionless.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Differentials Altitude
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Missions-Segments-Common-Update
+# ----------------------------------------------------------------------------------------------------------------------  
 def differentials_altitude(segment):
     """ Initializes the differntial altitude and computes the discretized time steps.
     

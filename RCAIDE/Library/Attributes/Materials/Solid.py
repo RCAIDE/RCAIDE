@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Solids 
 # RCAIDE/Library/Attributes/Solids/Solid.py
 # (c) Copyright 2023 Aerospace Research Community LLC 
  
@@ -10,9 +9,7 @@ from RCAIDE.Framework.Core import Data
 
 #-------------------------------------------------------------------------------
 # Solid Data Class
-#-------------------------------------------------------------------------------
-
-## @ingroup Attributes-Solids
+#------------------------------------------------------------------------------- 
 class Solid(Data):
     """ Default Template for Solid Attribute Classes  
     """

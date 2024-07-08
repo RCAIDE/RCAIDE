@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Segments/Common/Update/differentials_time.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,8 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Differentials Time
 # ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Library-Missions-Segments-Common-Update
 def differentials_time(segment):
     """ Updates the time descretization 
         

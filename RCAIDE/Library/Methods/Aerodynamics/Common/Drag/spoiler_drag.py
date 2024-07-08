@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/spoiler_drag.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Spolier Drag 
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Drag 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def spoiler_drag(state,settings,geometry):
     """Adds a spoiler drag increment
 

@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/fuselage_correction.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #  
@@ -7,7 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuselage Correction
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
 def fuselage_correction(state,settings,geometry):  
     """Corrects aircraft lift based on fuselage effects
 

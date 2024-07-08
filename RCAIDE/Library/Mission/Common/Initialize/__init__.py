@@ -1,4 +1,3 @@
-## @defgroup Methods-Missions-Common-Initialize Initialize
 # RCAIDE/Methods/Mission/Common/Initialize/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -8,7 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Mission-Segments-Common
    
 from .weights                      import weights
 from .differentials_dimensionless  import differentials_dimensionless

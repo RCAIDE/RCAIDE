@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Planets
 # RCAIDE/Library/Attributes/Planets/Planet.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -12,8 +11,7 @@ from RCAIDE.Framework.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Planet Class
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Attributes-Planets 
+# ----------------------------------------------------------------------------------------------------------------------   
 class Planet(Data):
     """Default planet class 
     """

@@ -1,4 +1,3 @@
-## @defgroup Framework-Mission-Segments-Transition Transition
 # RCAIDE/Framework/Mission/Segments/Transition/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

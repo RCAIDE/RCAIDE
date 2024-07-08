@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Shaft_Power_Offtake
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Shaft_Power_Offtake/compute_shaft_power_offtaker.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_shaft_power_offtake
-# ----------------------------------------------------------------------------------------------------------------------    
-## @ingroup Methods-Energy-Propulsors-Converters-Shaft_Power_Offtake
+# ----------------------------------------------------------------------------------------------------------------------     
 def compute_shaft_power_offtake(offtake_shaft, state):
     """ This computes the work done from the power draw. The following properties are computed: 
     offtake_shaft.outputs.

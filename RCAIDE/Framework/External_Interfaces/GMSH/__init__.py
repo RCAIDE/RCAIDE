@@ -1,4 +1,3 @@
-## @defgroup External_Interfaces-GMSH GMSH  
 # RCAIDE/External_Interfaces/OpenVSP/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

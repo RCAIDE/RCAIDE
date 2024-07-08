@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Vortex_Lattice_Method
 # RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/VLM_aerdoynamics_solver.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -20,8 +19,7 @@ from scipy.interpolate import RectBivariateSpline, RegularGridInterpolator
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Analyses-Aerodynamics 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def evaluate_surrogate(state,settings,geometry):
     """Evaluates lift and drag using available surrogates.
 

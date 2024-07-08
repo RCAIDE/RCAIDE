@@ -1,4 +1,3 @@
-## @defgroup Vehicle
 # Vehicle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -17,8 +16,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vehicle
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Vehicle
+# ----------------------------------------------------------------------------------------------------------------------  
 class Vehicle(Data):
     """RCAIDE Vehicle container class with database + input / output functionality
     """    
@@ -246,8 +244,7 @@ class Vehicle(Data):
 
         return energy_network_root
 
-
-## @ingroup Vehicle
+ 
 class Vehicle_Mass_Properties(Components.Mass_Properties): 
     """ The vehicle's mass properties.
         

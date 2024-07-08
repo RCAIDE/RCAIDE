@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Coolants 
 # RCAIDE/Library/Attributes/Coolants/Coolant.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -11,9 +10,8 @@
 from RCAIDE.Framework.Core import Data
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  Class
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Attributes-Coolants
+#  Coolant
+# ----------------------------------------------------------------------------------------------------------------------  
 class Coolant(Data):
     """Default class of a liquid coolant.
     """

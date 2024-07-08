@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-AERODAS
 # RCAIDE/Library/Methods/Aerdoynamics/AERODAS/post_stall_coefficients.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Post Stall Coefficients
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Aerodynamics-AERODAS
+# ----------------------------------------------------------------------------------------------------------------------    
 def post_stall_coefficients(state,settings,wing):
     """Uses the AERODAS method to determine poststall parameters for lift and drag for a single wing
 

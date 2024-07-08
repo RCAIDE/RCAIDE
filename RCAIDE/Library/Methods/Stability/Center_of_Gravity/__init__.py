@@ -1,6 +1,5 @@
-## @defgroup Methods-Stability-Center_of_Gravity Center_of_Gravity 
 # RCAIDE/Methods/Stability/Center_of_Gravity/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

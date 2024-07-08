@@ -1,4 +1,3 @@
-## @defgroup Library-Methods-Utilities Utilities
 # RCAIDE/Library/Methods/Utilities/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -8,8 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods
-
 from . import Chebyshev
 
 from Legacy.trunk.S.Methods.Utilities.soft_max                 import soft_max

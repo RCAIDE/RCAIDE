@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Fuselages
 # RCAIDE/Compoments/Fuselages/Fuselage.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ from RCAIDE.Library.Components            import Component
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fuselage
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Fuselages 
+# ----------------------------------------------------------------------------------------------------------------------  
 class Fuselage(Component):
     """Default fuselage compoment class.
     """

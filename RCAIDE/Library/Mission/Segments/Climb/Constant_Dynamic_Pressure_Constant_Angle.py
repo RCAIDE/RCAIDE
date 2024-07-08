@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Climb
 # RCAIDE/Library/Missions/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,7 +15,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Climb
 def initialize_conditions_unpack_unknowns(segment):
     """Sets the specified conditions which are given for the segment type. 
      Computed flight kinematics include: 
@@ -83,7 +81,6 @@ def initialize_conditions_unpack_unknowns(segment):
     conditions.frames.inertial.velocity_vector[:,1] = v_y
     conditions.frames.inertial.velocity_vector[:,2] = v_z   
     
-## @ingroup Library-Missions-Segments-Climb
 def residual_altitude(segment):
     """Computes the altitude residual
 
@@ -115,8 +112,7 @@ def residual_altitude(segment):
 
 # ----------------------------------------------------------------------------------------------------------------------  
 # Update Differentials
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Missions-Segments-Climb   
+# ----------------------------------------------------------------------------------------------------------------------     
 def update_differentials(segment):
     """ On each iteration creates the differentials and integration functions from knowns about the problem. 
       Sets the time at each point. Must return in dimensional time, with t[0] = 0.

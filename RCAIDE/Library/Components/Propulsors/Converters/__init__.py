@@ -1,4 +1,3 @@
-## @defgroup Components-Propulsors-Converters Converters
 # RCAIDE/Library/Components/Propulsors/Converters/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -8,9 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Energy
-
+ 
 from .Combustor                                  import Combustor
 from .Compressor                                 import Compressor
 from .Compression_Nozzle                         import Compression_Nozzle

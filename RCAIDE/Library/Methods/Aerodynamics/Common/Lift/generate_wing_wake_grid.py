@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Lift
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/generate_wing_wake_grid.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Generate Wing Wake Grid
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+# ---------------------------------------------------------------------------------------------------------------------- 
 def generate_wing_wake_grid(vehicle, H, L, H_f, x_plane, N_z_coarse=20, N_z_fine=35, N_y_coarse=20):
     """ Generates the grid points for evaluating the viscous wing wake in a downstream plane.
     Uses smaller grid near the wing to better capture boundary layer.

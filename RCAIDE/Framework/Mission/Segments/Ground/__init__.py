@@ -1,4 +1,3 @@
-## @defgroup Framework-Mission-Segments-Ground Ground
 # RCAIDE/Framework/Mission/Segments/Ground/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

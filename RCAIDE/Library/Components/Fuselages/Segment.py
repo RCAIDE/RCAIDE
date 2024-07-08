@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Fuselages
 # RCAIDE/Library/Compoments/Fuselage/Segment.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from RCAIDE.Library.Components import Component
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Segment
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings  
+# ----------------------------------------------------------------------------------------------------------------------   
 class Segment(Component):
     """Fuselage segment class.
     """
@@ -36,8 +34,7 @@ class Segment(Component):
         self.height                  = 0 
         self.width                   = 0 
         self.curvature               = 2
-        
-## @ingroup Components-Wings
+         
 class Segment_Container(Container):
     """ Container for fuselage segment.
     """     

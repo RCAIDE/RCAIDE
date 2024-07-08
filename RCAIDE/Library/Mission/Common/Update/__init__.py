@@ -1,6 +1,5 @@
-## @defgroup Methods-Missions-Common-Update Update
 # RCAIDE/Methods/Mission/Common/Update/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
@@ -8,7 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# @ingroup Methods-Mission-Segments
   
 from .noise                            import noise  
 from .inertial_horizontal_position     import inertial_horizontal_position

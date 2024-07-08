@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Airfoils
 # RCAIDE/Compoments/Airfoils/Airfoil.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from RCAIDE.Library.Components   import Component
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Airfoil
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Airfoils 
+# ----------------------------------------------------------------------------------------------------------------------  
 class Airfoil(Component):
     """Default airfoil component class."""
     

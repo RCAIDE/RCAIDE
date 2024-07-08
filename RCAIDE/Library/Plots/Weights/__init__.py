@@ -1,5 +1,3 @@
-## @defgroup Library-Plots-WeightsWeights
-# @ingroup Visualization 
 # RCAIDE/Library/Plots/Weights/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

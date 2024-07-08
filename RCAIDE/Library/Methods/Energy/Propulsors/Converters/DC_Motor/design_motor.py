@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/DC_Motor/design_motor.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -12,8 +11,7 @@ from scipy.optimize import minimize
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  design motor 
-# ----------------------------------------------------------------------------------------------------------------------    
-## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor
+# ----------------------------------------------------------------------------------------------------------------------     
 def design_motor(motor):
     ''' Sizes a DC motor to obtain the best combination of speed constant and resistance values
     by sizing the motor for a design RPM value. Note that this design RPM value can be compute

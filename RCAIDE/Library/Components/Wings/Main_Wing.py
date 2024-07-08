@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Wings
 # RCAIDE/Compoments/Wings/Main_Wing.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ from RCAIDE.Library.Components.Wings.Segment import Segment
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Main Wing 
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings   
+# ----------------------------------------------------------------------------------------------------------------------  
 class Main_Wing(Wing):
     """Main wing compoment class.
     """
@@ -30,8 +28,7 @@ class Main_Wing(Wing):
         """   
         self.tag                 = 'main_wing'
         self.Segments            = Segment_Container()
-        
-## @ingroup Library-Components-Wings 
+         
 class Segment_Container(Container):
     """ Container for wing segment.
         """    

@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Initialize
 # RCAIDE/Library/Missions/Segments/Common/Initialize/inertial_position.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -7,7 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Inertial Position
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Common-Initialize
 def inertial_position(segment): 
     """ Initializes intertial positon of vehicle
     

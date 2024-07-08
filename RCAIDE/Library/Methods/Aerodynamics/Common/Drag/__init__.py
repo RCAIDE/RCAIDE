@@ -1,7 +1,5 @@
-## @defgroup Library-Methods-Aerdoynamics-Common-Drag Drag 
-# @ingroup Library-Methods-Aerdoynamics-Common
 # RCAIDE/Methods/Aerodynamics/Common/Drag/__init__.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """

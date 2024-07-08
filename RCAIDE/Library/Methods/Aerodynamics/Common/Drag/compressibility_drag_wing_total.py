@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Common-Drag
 # RCAIDE/Methods/Aerodynamics/Common/Drag/compressibility_drag_wing_total.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -6,8 +5,7 @@
  
 # ----------------------------------------------------------------------------------------------------------------------  
 #   Compressibility Drag for Wings 
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Drag 
+# ----------------------------------------------------------------------------------------------------------------------    
 def compressibility_drag_wing_total(state,settings,geometry):
     """Sums compressibility drag for all wings  
 

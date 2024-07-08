@@ -1,20 +1,17 @@
-## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-# import_airfoil_dat.py
-# 
-# Created:  
-# Modified: Sep 2016, E. Botero
+# RCAIDE/Library/Methods/Geometry/Airfoil/import_airfoil_dat.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
-# ----------------------------------------------------------------------
-#  Imports
-# ----------------------------------------------------------------------
+# Created: Jul 2024, M. Clarke
+
+# ----------------------------------------------------------------------------------------------------------------------
+# IMPORTS 
+# ----------------------------------------------------------------------------------------------------------------------      
 
 import numpy as np
 
-# ------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------  
 #  import airfoil dat
-# ------------------------------------------------------------
-
-## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
+# ----------------------------------------------------------------------------------------------------------------------  
 def import_airfoil_dat(filename):
     """Import an airfoil data file and stores it in a numpy array.
     
@@ -28,9 +25,7 @@ def import_airfoil_dat(filename):
     filename   <string>
 
     Returns:
-    data       numpy array with airfoil data
-
-
+    data       numpy array with airfoil data 
     """     
     
     filein = open(filename,'r')

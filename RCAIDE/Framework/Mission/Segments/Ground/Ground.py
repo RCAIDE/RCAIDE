@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Ground
 # RCAIDE/Framework/Mission/Segments/Ground/Ground.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,6 @@ from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_
 # ----------------------------------------------------------------------------------------------------------------------
 #  Ground
 # ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Framework-Mission-Segments-Ground
 class Ground(Evaluate):
     """ Ground Taxi Segment. Integrates equations of motion including rolling friction.
         

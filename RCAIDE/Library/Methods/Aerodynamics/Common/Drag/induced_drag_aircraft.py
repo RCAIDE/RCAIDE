@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/induced_drag_aircraft.py 
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,9 +14,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Induced Drag Aircraft
-# ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Drag
+# ---------------------------------------------------------------------------------------------------------------------- 
 def induced_drag_aircraft(state,settings,geometry):
     """Determines induced drag for the full aircraft
 

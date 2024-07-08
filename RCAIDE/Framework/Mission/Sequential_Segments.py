@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission
 # RCAIDE/Framework/Mission/Sequential_Segments.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,9 +15,8 @@ from RCAIDE.Framework.Analyses                 import Process
 from . import Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
-# ANALYSIS
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Framework-Mission
+# Sequential Segments 
+# ----------------------------------------------------------------------------------------------------------------------   
 class Sequential_Segments(Segments.Segment.Container):
     """ Solves each segment sequentially, one at a time
     """
@@ -93,9 +91,7 @@ class Sequential_Segments(Segments.Segment.Container):
     
 # ----------------------------------------------------------------------
 #   Container Class
-# ----------------------------------------------------------------------
-
-## @ingroup Framework-Mission
+# ---------------------------------------------------------------------- 
 class Container(ContainerBase):
     """ Container for mission.
     """    

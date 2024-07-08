@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/wave_drag.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,7 +14,6 @@ from RCAIDE.Library.Components.Wings import Main_Wing
 # ----------------------------------------------------------------------------------------------------------------------
 #  Wave Drag 
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 def wave_drag(conditions,wing):
     """Computes wave drag due to lift
 

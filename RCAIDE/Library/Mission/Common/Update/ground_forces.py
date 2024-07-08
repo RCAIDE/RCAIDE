@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Segments-Common-Update
 # RCAIDE/Library/Missions/Common/Update/ground_forces.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,7 +13,6 @@ from RCAIDE.Library.Mission.Common.Update.forces import forces
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Ground Forces
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Segments-Ground
 def ground_forces(segment):
     """ Compute the rolling friction on the aircraft 
     

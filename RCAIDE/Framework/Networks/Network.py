@@ -1,4 +1,3 @@
-## @ingroup Networks
 # RCAIDE/Library/Compoments/Energy/Networks/Network.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -15,8 +14,7 @@ from RCAIDE.Library.Components import Component
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  NETWORK
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Networks
+# ---------------------------------------------------------------------------------------------------------------------- 
 class Network(Component):
     """ The top-level network class.
     """
@@ -41,8 +39,7 @@ class Network(Component):
 
 # ----------------------------------------------------------------------
 #  Component Container
-# ----------------------------------------------------------------------
-## @ingroup Energy-Network
+# ---------------------------------------------------------------------- 
 class Container(Component.Container):
     """ The Network container class 
     """

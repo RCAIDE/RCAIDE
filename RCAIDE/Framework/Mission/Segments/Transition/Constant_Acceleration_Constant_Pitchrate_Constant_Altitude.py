@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Transition
 # RCAIDE/Framework/Mission/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py 
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ from RCAIDE.Library.Mission                           import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Acceleration_Constant_Pitchrate_Constant_Altitude
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Framework-Mission-Segments-Transition
+# ---------------------------------------------------------------------------------------------------------------------- 
 class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Evaluate):
     """ Vehicle accelerates at a constant rate between two airspeeds. 
     """     

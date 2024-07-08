@@ -1,4 +1,3 @@
-## @ingroup Library-Missions-Common-Residuals
 # RCAIDE/Library/Missions/Common/Residuals/flight_dynamics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -14,8 +13,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Residual Total Forces
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Missions-Common-Residuals
+# ---------------------------------------------------------------------------------------------------------------------- 
 def flight_dynamics(segment):
     """Computes residuals for the force and moment equations of motion of aircraft in varying altitude flight.
 

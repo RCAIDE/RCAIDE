@@ -1,4 +1,3 @@
-## @defgroup Framework-Analyses-Propulsion Propulsion
 # RCAIDE/Framework/Analyses/Propulsion/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

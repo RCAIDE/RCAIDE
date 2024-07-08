@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Planets
 # RCAIDE/Library/Attributes/Planets/Earth.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -12,8 +11,7 @@ from .Planet                import Planet
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Earth Class
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Attributes-Planets
+# ----------------------------------------------------------------------------------------------------------------------   
 class Earth(Planet):
     """Class for planet Earth with defauk properties  
     """

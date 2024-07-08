@@ -1,4 +1,3 @@
-## @ingroup Library-Components-Wings
 # RCAIDE/Compoments/Wings/Segment.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ from RCAIDE.Library.Components import Component
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Segment
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Components-Wings  
+# ----------------------------------------------------------------------------------------------------------------------   
 class Segment(Component):
     """ Wing segment compoment class.
     """
@@ -77,8 +75,7 @@ class Segment(Component):
         # store data
         self.Airfoil.append(airfoil)
 
-        
-## @ingroup Components-Wings
+         
 class Segment_Container(Container):
     """ Container for wing segment. 
     """     

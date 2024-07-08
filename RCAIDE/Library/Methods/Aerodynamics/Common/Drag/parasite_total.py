@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerdoynamics-Common-Drag
 # RCAIDE/Methods/Aerodynamics/Common/Drag/parasite_drag_total.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Total Parasite Drag 
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Library-Methods-Aerdoynamics-Common-Fidelity_Zero-Drag
+# ----------------------------------------------------------------------------------------------------------------------   
 def parasite_total(state,settings,geometry):
     """Sums up the parasite drags from all compoments 
 

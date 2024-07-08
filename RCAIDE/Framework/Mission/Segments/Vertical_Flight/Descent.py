@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Vertical_Flight
 # RCAIDE/Framework/Mission/Segments/Vertical_Flight/Descent.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -16,8 +15,6 @@ from RCAIDE.Library.Mission                      import Common,Segments
 # ----------------------------------------------------------------------------------------------------------------------
 #  Descent
 # ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Framework-Mission-Segments-Vertical_Flight
 class Descent(Evaluate):
     """ A vertically descending hover for VTOL aircraft.
     """      

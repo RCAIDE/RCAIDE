@@ -1,4 +1,3 @@
-## @ingroup Framework-Mission-Segments-Ground
 # RCAIDE/Framework/Mission/Segments/Ground/Takeoff.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -17,8 +16,6 @@ from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_
 # ----------------------------------------------------------------------------------------------------------------------
 #  Takeoff
 # ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Framework-Mission-Segments-Ground
 class Takeoff(Evaluate):
     """ Segment for takeoff. Integrates equations of motion including rolling friction.
         

@@ -1,4 +1,3 @@
-## @defgroup Framework-Analyses-Energy Energy
 # RCAIDE/Framework/Analyses/Energy/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 

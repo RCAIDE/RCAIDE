@@ -1,6 +1,5 @@
-## @ingroup Library-Methods-Geomery-Two_Dimensional-Airfoil
 # RCAIDE/Library/Methods/Geometry/Two_Dimensional/Airfoil/compute_airfoil_properties.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2024, M. Clarke 
 
@@ -22,8 +21,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_airfoil_properties
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Geometry-Two_Dimensional-Airfoil
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_airfoil_properties(airfoil_geometry, airfoil_polar_files = None,use_pre_stall_data=True):
     """This computes the aerodynamic properties and coefficients of an airfoil in stall regimes using pre-stall
     characterstics and AERODAS formation for post stall characteristics. This is useful for 
@@ -262,8 +260,7 @@ def apply_pre_stall_data(AoA_sweep_deg, airfoil_aoa, airfoil_cl, airfoil_cd, CL,
     CD[data_ub:]  = np.maximum(CD[data_ub:],  CD[data_ub]*np.ones_like(CD[data_ub:])) 
     
     return CL, CD
-
-## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
+ 
 def compute_boundary_layer_properties(airfoil_geometry,Airfoil_Data): 
     '''Computes the boundary layer properties of an airfoil for a sweep of Reynolds numbers 
     and angle of attacks. 

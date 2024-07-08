@@ -1,4 +1,3 @@
-## @defgroup Library-Components-Wings-Control_Surfaces Control_Surfaces
 # RCAIDE/Library/Components/Wings/Control_Surfaces/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 

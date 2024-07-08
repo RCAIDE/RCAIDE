@@ -1,4 +1,3 @@
-## @ingroup Library-Methods-Aerodynamics-Common-Drag
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/drag_divergence.py 
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -15,8 +14,7 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Drag Divergence
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Methods-Aerdoynamics-Common-Drag
+# ---------------------------------------------------------------------------------------------------------------------- 
 def drag_divergence(Mc_ii,wing,cl,Sref):
     """Use drag divergence mach number to determine drag for subsonic speeds
 

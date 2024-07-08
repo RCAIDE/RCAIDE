@@ -1,4 +1,3 @@
-## @ingroup Components-Propulsors-Shaft_Power_Offtake
 # RCAIDE/Library/Components/Propulsors/Converters/Shaft_Power_Offtake.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,7 +12,6 @@ from RCAIDE.Library.Components                      import Component
 # ---------------------------------------------------------------------------------------------------------------------- 
 # Shaft_Power_Offtake
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Propulsors-Converters 
 class Shaft_Power_Offtake(Component):
     """This is a component representing the power draw from the shaft. 
     """ 

@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Combustor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Combustor/compute_supersonic_combustion.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -13,8 +12,7 @@ import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # calculate_power_from_throttle
-# ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Energy-Propulsors-Converters-Combustor 
+# ----------------------------------------------------------------------------------------------------------------------    
 def compute_supersonic_combustion(combustor,conditions): 
     """ This function computes the output values for supersonic combustion (Scramjet).
     This will be done using stream thrust analysis. The following properties are computed. 

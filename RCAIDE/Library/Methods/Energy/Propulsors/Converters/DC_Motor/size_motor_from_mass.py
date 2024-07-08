@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Propulsors-Converters-Motor
 # RCAIDE/Library/Methods/Energy/Propulsors/Converters/Motor/size_motor_mass.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
@@ -11,8 +10,7 @@ from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------  
 # size_motor_from_mass
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Methods-Energy-Propulsors-Converters-Motor
+# ----------------------------------------------------------------------------------------------------------------------   
 def size_motor_from_mass(motor):
     """ Sizes motor from mass based on correlations. The following perperties
         are computed  

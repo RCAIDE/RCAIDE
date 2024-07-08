@@ -1,4 +1,3 @@
-## @ingroup Library-Attributes-Propellants
 # RCAIDE/Library/Attributes/Propellants/JP7.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -12,8 +11,7 @@ from .Propellant import Propellant
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Jet_A1 Propellant Class
-# ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup  Library-Attributes-Propellants
+# ----------------------------------------------------------------------------------------------------------------------   
 class JP7(Propellant):
     """JP7 Jet fuel class
     """
