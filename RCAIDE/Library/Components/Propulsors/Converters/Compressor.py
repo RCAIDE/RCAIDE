@@ -52,3 +52,4 @@ class Compressor(Component):
         self.outputs.stagnation_temperature  = 0.
         self.outputs.stagnation_pressure     = 0.
         self.outputs.stagnation_enthalpy     = 0.
+        self.mass_flow_rate                  = 0.
