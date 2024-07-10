@@ -15,7 +15,7 @@ from scipy import interpolate
 # Import Airfoil Geoemtry
 # --------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpolation = 'cubic'):
+def import_airfoil_geometry(airfoil_geometry_file, npoints = 201,surface_interpolation = 'cubic'):
     """This imports an airfoil geometry from a text file  and store
     the coordinates of upper and lower surfaces as well as the mean
     camberline
