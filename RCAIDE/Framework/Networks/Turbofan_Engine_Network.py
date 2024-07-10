@@ -10,7 +10,7 @@
 # RCAIDE Imports  
 import RCAIDE 
 from RCAIDE.Framework.Mission.Common                                                           import Residuals    
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor.compute_turbofan_performance  import compute_turbofan_performance
+from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor.compute_turbofan_performance  import compute_turbofan_performance
 from .Network                                                                                  import Network  
 
 # ----------------------------------------------------------------------------------------------------------------------

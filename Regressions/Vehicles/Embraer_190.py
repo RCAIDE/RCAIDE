@@ -8,9 +8,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Framework.Core import Units      
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan
-from RCAIDE.Library.Methods.Geometry.Planform      import wing_planform, segment_properties
+from RCAIDE.Framework.Core                                  import Units      
+from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor   import design_turbofan
+from RCAIDE.Library.Methods.Geometry.Planform               import wing_planform, segment_properties
 from RCAIDE.Library.Plots                 import *     
 
 # python imports 
