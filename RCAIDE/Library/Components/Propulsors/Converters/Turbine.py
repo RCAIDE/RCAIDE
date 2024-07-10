@@ -54,4 +54,6 @@ class Turbine(Component):
         self.outputs.stagnation_pressure       = 1.0
         self.outputs.stagnation_enthalpy       = 1.0 
         self.inputs.shaft_power_off_take       = None
+        
+        self.inputs.compressor.work_done       = 1.0
     
