@@ -41,7 +41,11 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 201,surface_interpo
         camber_coordinates  
     Properties Used:
     N/A
-    """  
+    """ 
+    if npoints%2 != 1:
+        npoints+= 1
+        print('Number of points must be odd, changing to ' + str(npoints) + ' points')
+        
     geometry     = Data()
     half_npoints = npoints//2         
  
