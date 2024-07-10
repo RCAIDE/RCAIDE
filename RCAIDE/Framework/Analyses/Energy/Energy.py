@@ -64,3 +64,29 @@ class Energy(Analysis):
         
         return results
     
+    def evaluate_power(self,state):
+        
+        """Evaluate the power produced by the energy network.
+    
+                Assumptions:
+                Network has an "evaluate_power" method.
+    
+                Source:
+                N/A
+    
+                Inputs:
+                State data container
+    
+                Outputs:
+                Results of the power evaluation method.
+    
+                Properties Used:
+                N/A                
+            """
+                
+            
+        networks = self.networks
+        results  = networks.evaluate_power(state) 
+        
+        return results    
+    

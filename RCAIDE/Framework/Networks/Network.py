@@ -84,6 +84,34 @@ class Container(Component.Container):
                 results[key] += results_p[key]
         return results
     
+    def evaluate_power(self,state):
+        """ This is used to evaluate the power produced by the network.
+                Assumptions:
+                Network has "evaluate_power" method
+                If multiple networks are attached their masses will be summed
+                Source:
+                N/A
+                Inputs:
+                State variables
+                Outputs:
+                Results of the "evaluate_power" method
+                Properties Used:
+                N/A
+        """
+        ones_row = state.ones_row
+        results = Data()
+        results.power                     = 0.*ones_row(1)
+        results.vehicle_mass_rate         = 0.*ones_row(1)
+        for net in self.values():
+            if hasattr(net, 'has_additional_fuel_type'):
+                if net.has_additional_fuel_type: #Check if Network has additional fuel
+                    results.vehicle_additional_fuel_rate  =  0.*ones_row(1) #fuel rate for additional fuel types, eg cryogenic fuel
+                    results.vehicle_fuel_rate             =  0.*ones_row(1)
+            results_p = net.evaluate_power(state)
+            for key in results.keys():
+                results[key] += results_p[key]
+        return results    
+    
 # ----------------------------------------------------------------------
 #  Handle Linking
 # ----------------------------------------------------------------------

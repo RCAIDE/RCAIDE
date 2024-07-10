@@ -34,6 +34,7 @@ class Propellant(Data):
         self.density                   = 0.0                       # kg/m^3
         self.specific_energy           = 0.0                       # MJ/kg
         self.energy_density            = 0.0                       # MJ/m^3
+        self.lower_heating_value       = 0.0                       # MJ/kg
         self.mass_properties           = Mass_Properties()
         self.max_mass_fraction         = Data({'Air' : 0.0, 'O2' : 0.0}) # kg propellant / kg oxidizer
         self.temperatures              = Data()
