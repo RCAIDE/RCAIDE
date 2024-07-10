@@ -45,7 +45,7 @@ def main():
     missions = missions_setup(mission) 
      
     # mission analysis 
-    results = missions.base_mission.evaluate()    
+    results = missions.base_mission.evaluate() 
     
     ## plt the old results
     plot_mission(results)   

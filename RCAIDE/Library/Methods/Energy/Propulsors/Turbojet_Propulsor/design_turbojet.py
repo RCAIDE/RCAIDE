@@ -17,7 +17,7 @@ from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compressor         impo
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
 from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbojet_Propulsor            import size_core, compute_thrust
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbojet_Propulsor            import size_core,  compute_performance
 
 # Python package imports   
 import numpy as np
@@ -216,7 +216,7 @@ def design_turbojet(turbojet):
     # initialize data structure for turbofan operating conditions (for noise )       
     sls_conditions.noise[fuel_line.tag]                                 = RCAIDE.Framework.Mission.Common.Conditions()              
     sls_conditions.noise[fuel_line.tag][turbojet.tag]                   = RCAIDE.Framework.Mission.Common.Conditions() 
-    sls_conditions.noise[fuel_line.tag][turbojet.tag].turbofan          = RCAIDE.Framework.Mission.Common.Conditions()
+    sls_conditions.noise[fuel_line.tag][turbojet.tag].turbojet          = RCAIDE.Framework.Mission.Common.Conditions()
     
     total_power     = np.zeros((3,1))
     total_thrust    = np.zeros((1,1))
