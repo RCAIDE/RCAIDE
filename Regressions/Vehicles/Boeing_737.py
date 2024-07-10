@@ -9,12 +9,8 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units       
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import segment_properties   
-<<<<<<< HEAD
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan 
-=======
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan
->>>>>>> ba71cdec03d7f147bcc2f476562a7f3c5e2331b2
+from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import segment_properties    
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan   
 from RCAIDE.Library.Methods.Stability.Center_of_Gravity            import compute_component_centers_of_gravity
 from RCAIDE.Library.Plots                                          import *     
  
