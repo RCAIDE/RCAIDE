@@ -222,6 +222,11 @@ def generate_3d_blade_points(rotor,n_points,dim,i,aircraftRefFrame=True):
     G.Y  = mat[:,:,:,1] + origin[0][1]
     G.Z  = mat[:,:,:,2] + origin[0][2]
 
+    G.PTS = np.zeros((cpts,len(zp),n_points,3))    
+    G.PTS[:,:,:,0] =  mat[:,:,:,0] + origin[0][0]    
+    G.PTS[:,:,:,1] =  mat[:,:,:,1] + origin[0][1]    
+    G.PTS[:,:,:,2] =  mat[:,:,:,2] + origin[0][2]    
+
     # store points
     G.XA1  = mat[:,:-1,:-1,0] + origin[0][0]
     G.YA1  = mat[:,:-1,:-1,1] + origin[0][1]

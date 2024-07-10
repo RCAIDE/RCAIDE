@@ -287,9 +287,10 @@ def generate_3d_wing_points(wing,n_points,dim):
     G = Data()
 
     # store node points
-    G.X  = mat[:,:,0,0]  
-    G.Y  = mat[:,:,1,0]  
-    G.Z  = mat[:,:,2,0]  
+    G.X    = mat[:,:,0,0]  
+    G.Y    = mat[:,:,1,0]  
+    G.Z    = mat[:,:,2,0]
+    G.PTS  = mat[:,:,:,0]
 
     # store points
     G.XA1  = mat[:-1,:-1,0,0] 

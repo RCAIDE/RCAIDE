@@ -8,10 +8,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 import RCAIDE
+from RCAIDE.Framework.Core import Data 
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry
-from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series 
-
+from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series  
 import numpy as np  
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -39,21 +39,23 @@ def plot_3d_nacelle(plot_data,nacelle,tessellation = 24,number_of_airfoil_points
     """
     
     if type(nacelle) == RCAIDE.Library.Components.Nacelles.Stack_Nacelle: 
-        nac_pts = generate_3d_stack_nacelle_points(nacelle,tessellation,number_of_airfoil_points)
+        G = generate_3d_stack_nacelle_points(nacelle,tessellation,number_of_airfoil_points)
     elif type(nacelle) == RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle: 
-        nac_pts = generate_3d_BOR_nacelle_points(nacelle,tessellation,number_of_airfoil_points)
+        G = generate_3d_BOR_nacelle_points(nacelle,tessellation,number_of_airfoil_points)
     else:
-        nac_pts = generate_3d_basic_nacelle_points(nacelle,tessellation,number_of_airfoil_points) 
-    num_nac_segs = len(nac_pts[:,0,0])
-    tesselation  = len(nac_pts[0,:,0]) 
+        G= generate_3d_basic_nacelle_points(nacelle,tessellation,number_of_airfoil_points)
+        
+               
+    num_nac_segs = len(G.PTS[:,0,0])
+    tesselation  = len(G.PTS[0,:,0]) 
     for i_seg in range(num_nac_segs-1):
         for i_tes in range(tesselation-1):
-            X = np.array([[nac_pts[i_seg  ,i_tes  ,0],nac_pts[i_seg+1,i_tes  ,0]],
-                 [nac_pts[i_seg  ,i_tes+1,0],nac_pts[i_seg+1,i_tes+1,0]]])
-            Y = np.array([[nac_pts[i_seg  ,i_tes  ,1],nac_pts[i_seg+1,i_tes  ,1]],
-                 [nac_pts[i_seg  ,i_tes+1,1],nac_pts[i_seg+1,i_tes+1,1]]])
-            Z = np.array([[nac_pts[i_seg  ,i_tes  ,2],nac_pts[i_seg+1,i_tes  ,2]],
-                 [nac_pts[i_seg  ,i_tes+1,2],nac_pts[i_seg+1,i_tes+1,2]]])
+            X = np.array([[G.PTS[i_seg  ,i_tes  ,0],G.PTS[i_seg+1,i_tes  ,0]],
+                 [G.PTS[i_seg  ,i_tes+1,0],G.PTS[i_seg+1,i_tes+1,0]]])
+            Y = np.array([[G.PTS[i_seg  ,i_tes  ,1],G.PTS[i_seg+1,i_tes  ,1]],
+                 [G.PTS[i_seg  ,i_tes+1,1],G.PTS[i_seg+1,i_tes+1,1]]])
+            Z = np.array([[G.PTS[i_seg  ,i_tes  ,2],G.PTS[i_seg+1,i_tes  ,2]],
+                 [G.PTS[i_seg  ,i_tes+1,2],G.PTS[i_seg+1,i_tes+1,2]]])
              
             values = np.zeros_like(X) 
             verts = contour_surface_slice(X, Y, Z ,values,color_map)
@@ -133,7 +135,9 @@ def generate_3d_stack_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_po
     NAC_PTS[:,:,1] = NAC_PTS[:,:,1] + nac.origin[0][1]
     NAC_PTS[:,:,2] = NAC_PTS[:,:,2] + nac.origin[0][2]
      
-    return NAC_PTS
+    G = Data()         
+    G.PTS  = NAC_PTS 
+    return G     
 
 
 
@@ -191,8 +195,10 @@ def generate_3d_BOR_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_poin
     NAC_PTS[:,:,0] = NAC_PTS[:,:,0] + nac.origin[0][0]
     NAC_PTS[:,:,1] = NAC_PTS[:,:,1] + nac.origin[0][1]
     NAC_PTS[:,:,2] = NAC_PTS[:,:,2] + nac.origin[0][2]
-     
-    return NAC_PTS
+    
+    G = Data()         
+    G.PTS  = NAC_PTS 
+    return G     
 
 def generate_3d_basic_nacelle_points(nac,tessellation,number_of_airfoil_points):
     """ This generates the coordinate points on the surface of the nacelle
@@ -244,4 +250,6 @@ def generate_3d_basic_nacelle_points(nac,tessellation,number_of_airfoil_points):
     NAC_PTS[:,:,1] = NAC_PTS[:,:,1] + nac.origin[0][1]
     NAC_PTS[:,:,2] = NAC_PTS[:,:,2] + nac.origin[0][2]
      
-    return NAC_PTS
+    G = Data()         
+    G.PTS  = NAC_PTS 
+    return G     
