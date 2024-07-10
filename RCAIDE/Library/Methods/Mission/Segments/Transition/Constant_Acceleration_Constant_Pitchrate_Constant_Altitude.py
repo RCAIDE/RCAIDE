@@ -84,5 +84,5 @@ def initialize_conditions(segment):
     segment.state.conditions.freestream.altitude[:,0] = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
     segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_y[:,0]
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_y[:,0]
     segment.state.conditions.frames.inertial.time[:,0] = time[:,0]

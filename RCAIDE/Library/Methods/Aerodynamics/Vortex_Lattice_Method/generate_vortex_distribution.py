@@ -202,7 +202,7 @@ def generate_vortex_distribution(geometry,settings):
     VD.exposed_leading_edge_flag = np.array([], dtype=np.int16)  # 0 or 1 per strip. 0 turns off leading edge suction for non-slat control surfaces
     
     # ---------------------------------------------------------------------------------------
-    # STEP 2: Unpack aircraft wing geometry 
+    # Unpack aircraft wing geometry 
     # ---------------------------------------------------------------------------------------    
     VD.wing_areas  = [] # instantiate wing areas
     VD.vortex_lift = []
@@ -225,26 +225,17 @@ def generate_vortex_distribution(geometry,settings):
             
             
     # ---------------------------------------------------------------------------------------
-    # STEP 8: Unpack aircraft nacelle geometry
+    # Unpack aircraft fuselage geometry
     # ---------------------------------------------------------------------------------------      
     VD.wing_areas = np.array(VD.wing_areas, dtype=precision)
-    VD.n_fus      = 0
-    for nac in geometry.nacelles:
-        if show_prints: print('discretizing ' + nac.tag)
-        VD = generate_fuselage_and_nacelle_vortex_distribution(VD,nac,n_cw_fuse,n_sw_fuse,precision,model_nacelle)
-
-
-    # ---------------------------------------------------------------------------------------
-    # STEP 9: Unpack aircraft fuselage geometry
-    # ---------------------------------------------------------------------------------------
-    VD.wing_areas = np.array(VD.wing_areas, dtype=precision)
+    VD.n_fus      = 0   
     for fus in geometry.fuselages:
         if show_prints: print('discretizing ' + fus.tag)
         VD = generate_fuselage_and_nacelle_vortex_distribution(VD,fus,n_cw_fuse,n_sw_fuse,precision,model_fuselage)
 
 
     # ---------------------------------------------------------------------------------------
-    # STEP 10: Deflect Control Surfaces
+    # Deflect Control Surfaces
     # ---------------------------------------------------------------------------------------      
     for wing in VD.VLM_wings:
         wing_is_all_moving = (not wing.is_a_control_surface) and issubclass(wing.wing_type, All_Moving_Surface)        
@@ -253,7 +244,7 @@ def generate_vortex_distribution(geometry,settings):
             VD, wing = deflect_control_surface(VD, wing)
             
     # ---------------------------------------------------------------------------------------
-    # STEP 11: Postprocess VD information
+    # Postprocess VD information
     # ---------------------------------------------------------------------------------------  
     
     VD = postprocess_VD(VD, settings)
@@ -947,34 +938,6 @@ def generate_fuselage_and_nacelle_vortex_distribution(VD,fus,n_cw,n_sw,precision
 
         fhs.sweep[:] = np.concatenate([np.arctan((fhs.origin[:,0][1:] - fhs.origin[:,0][:-1])/(fhs.origin[:,1][1:]  - fhs.origin[:,1][:-1])) ,np.zeros(1)])
         fvs.sweep[:] = np.concatenate([np.arctan((fvs.origin[:,0][1:] - fvs.origin[:,0][:-1])/(fvs.origin[:,2][1:]  - fvs.origin[:,2][:-1])) ,np.zeros(1)])
-
-    elif isinstance(fus, Nacelle):
-        num_nac_segs = len(fus.Segments.keys())
-        if num_nac_segs>1:
-            widths  = np.zeros(num_nac_segs)
-            heights = np.zeros(num_nac_segs)
-            for i_seg, segment in enumerate(fus.Segments):
-                widths[i_seg]  = segment.width
-                heights[i_seg] = segment.height
-            mean_width   = np.mean(widths)
-            mean_height  = np.mean(heights)
-        else:
-            mean_width   = fus.diameter
-            mean_height  = fus.diameter
-        length = fus.length
-
-        # geometry values
-        semispan_h = mean_width * 0.5
-        semispan_v = mean_height * 0.5
-
-        si         = np.arange(1,((n_sw*2)+2))
-        spacing    = np.cos((2*si - 1)/(2*len(si))*np.pi)
-        h_array    = semispan_h*spacing[0:int((len(si)+1)/2)][::-1]
-        v_array    = semispan_v*spacing[0:int((len(si)+1)/2)][::-1]
-
-        for i in range(n_sw+1):
-            fhs.chord[i]      = length
-            fvs.chord[i]      = length
 
     # ---------------------------------------------------------------------------------------
     # STEP 9: Define coordinates of panels horseshoe vortices and control points  

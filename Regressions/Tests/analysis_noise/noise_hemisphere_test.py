@@ -24,14 +24,25 @@ from NASA_X57    import vehicle_setup, configs_setup
 #   Main
 # ---------------------------------------------------------------------- 
 def main():     
-    vehicle  = vehicle_setup()  
+    vehicle  = vehicle_setup()
+    plot_3d_vehicle_vlm_panelization(vehicle, show_figure = False)
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs)  
     mission  = mission_setup(analyses,vehicle)
     missions = missions_setup(mission)  
-    results  = missions.base_mission.evaluate()   
+    results  = missions.base_mission.evaluate() 
     regression_plotting_flag = False 
-    plot_results(results,regression_plotting_flag)    
+    noise_data = plot_results(results,regression_plotting_flag) 
+ 
+ 
+    # dBA Verification checj
+    dBA_true   = 69.02428537507147
+    dBA        = noise_data.SPL_dBA[0,0,0]
+    print('dBA: ' + str(dBA)) 
+    diff_dBA                = np.abs(dBA  - dBA_true) 
+    print('dBA difference: ' +  str(diff_dBA)) 
+    assert np.abs((dBA  - dBA_true)/dBA_true) < 1e-6     
+    
     return     
  
 
@@ -187,7 +198,7 @@ def plot_results(results,regression_plotting_flag):
                           show_figure      = regression_plotting_flag)      
     
      
-    return  
+    return noise_data 
 
 if __name__ == '__main__': 
     main()    

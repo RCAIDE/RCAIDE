@@ -27,7 +27,18 @@ from Stopped_Rotor_EVTOL    import vehicle_setup, configs_setup
 def main():           
          
     # vehicle data
-    vehicle  = vehicle_setup() 
+    vehicle  = vehicle_setup()
+
+    # plot vehicle 
+    plot_3d_vehicle(vehicle, 
+                    min_x_axis_limit            = -5,
+                    max_x_axis_limit            = 15,
+                    min_y_axis_limit            = -10,
+                    max_y_axis_limit            = 10,
+                    min_z_axis_limit            = -10,
+                    max_z_axis_limit            = 10,
+                    show_figure                 = False 
+                    )           
 
     # Set up configs
     configs  = configs_setup(vehicle)
@@ -45,7 +56,7 @@ def main():
     plot_results(results)    
     
     # lift Coefficient Check During Cruise
-    lift_coefficient_true   = 0.7179703354369213
+    lift_coefficient_true   = 0.717970335436922
     lift_coefficient        = results.segments.high_speed_climbing_transition.conditions.aerodynamics.coefficients.lift[2][0] 
     print('CL: ' + str(lift_coefficient)) 
     diff_CL                 = np.abs(lift_coefficient  - lift_coefficient_true) 

@@ -10,7 +10,11 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units       
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import segment_properties   
+<<<<<<< HEAD
 from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan 
+=======
+from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor   import design_turbofan
+>>>>>>> ba71cdec03d7f147bcc2f476562a7f3c5e2331b2
 from RCAIDE.Library.Methods.Stability.Center_of_Gravity            import compute_component_centers_of_gravity
 from RCAIDE.Library.Plots                                          import *     
  
@@ -584,13 +588,14 @@ def vehicle_setup():
    
  
     # Nacelle 
-    nacelle                                     = RCAIDE.Library.Components.Nacelles.Nacelle()
+    nacelle                                     = RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle()
     nacelle.diameter                            = 2.05
     nacelle.length                              = 2.71
     nacelle.tag                                 = 'nacelle_1'
     nacelle.inlet_diameter                      = 2.0
     nacelle.origin                              = [[13.5,4.38,-1.5]] 
     nacelle.areas.wetted                        = 1.1*np.pi*nacelle.diameter*nacelle.length
+<<<<<<< HEAD
     nacelle.Airfoil.NACA_4_series_flag          = True 
     nacelle.Airfoil.coordinate_file             = '2410' 
            
@@ -629,6 +634,11 @@ def vehicle_setup():
     nac_segment.height                          = 1.7 
     nac_segment.width                           = 1.7
     nacelle.append_segment(nac_segment)           
+=======
+    nacelle_airfoil                             = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
+    nacelle_airfoil.NACA_4_Series_code          = '2410'
+    nacelle.append_airfoil(nacelle_airfoil) 
+>>>>>>> ba71cdec03d7f147bcc2f476562a7f3c5e2331b2
     turbofan.nacelle                            = nacelle
     
     fuel_line.propulsors.append(turbofan)  

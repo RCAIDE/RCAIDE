@@ -30,7 +30,19 @@ def main():
     
 
     # vehicle data
-    vehicle  = vehicle_setup() 
+    vehicle  = vehicle_setup()
+
+    # plot vehicle 
+    plot_3d_vehicle(vehicle, 
+                    min_x_axis_limit            = 0,
+                    max_x_axis_limit            = 60,
+                    min_y_axis_limit            = -30,
+                    max_y_axis_limit            = 30,
+                    min_z_axis_limit            = -30,
+                    max_z_axis_limit            = 30,
+                    show_figure                 =False 
+                    )         
+        
     
     # Set up vehicle configs
     configs  = configs_setup(vehicle)
