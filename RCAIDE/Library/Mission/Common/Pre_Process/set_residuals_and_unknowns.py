@@ -180,18 +180,4 @@ def set_residuals_and_unknowns(mission):
                         segment.state.unknowns["blade_pitch_angle_" + str(i)] = ones_row(1) * ctrls.blade_pitch_angle.initial_guess_values[i][j]
                 else:
                     segment.state.unknowns["blade_pitch_angle_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
-                num_ctrls += 1      
-                                                                                      
-        # RPM  
-        if ctrls.RPM.active:  
-            for i in range(len(ctrls.RPM.assigned_propulsors)):   
-                if ctrls.RPM.initial_guess:    
-                    for j in range(len(ctrls.RPM.assigned_propulsors[i])):
-                        segment.state.unknowns["rpm_" + str(i)] = ones_row(1) * ctrls.RPM.initial_guess_values[i][j]
-                else:
-                    segment.state.unknowns["rpm_" + str(i)] = ones_row(1) * 2400 
-                num_ctrls += 1
-                
-                
-        # if the degrees of freedom are greater than the number of control inputs, post problem at optimization  # TO DO
-                                                                                                                                                                
+                num_ctrls += 1                                                                                                                          
