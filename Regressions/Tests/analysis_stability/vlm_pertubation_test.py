@@ -181,11 +181,7 @@ def mission_setup(analyses):
     segment.flight_dynamics.force_x                       = True    
     segment.flight_dynamics.force_z                       = True    
                 
-    # define flight controls              
-    segment.flight_controls.RPM.active                               = True           
-    segment.flight_controls.RPM.assigned_propulsors                  = [['ice_propeller']]
-    segment.flight_controls.RPM.initial_guess                        = True 
-    segment.flight_controls.RPM.initial_guess_values                 = [[2500]] 
+    # define flight controls               
     segment.flight_controls.throttle.active                          = True           
     segment.flight_controls.throttle.assigned_propulsors             = [['ice_propeller']]    
     segment.flight_controls.body_angle.active                        = True   

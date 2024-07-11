@@ -38,16 +38,7 @@ def fuel_line_unknowns(segment,fuel_lines):
             propulsor_tag = flight_controls.blade_pitch_angle.assigned_propulsors[i][0]
             for fuel_line in fuel_lines:
                 if propulsor_tag in fuel_line.propulsors:
-                    state.conditions.energy[fuel_line.tag][propulsor_tag].rotor.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]  
-              
-    # Thrust Vector Control 
-    if flight_controls.RPM.active:                
-        for i in range(len(flight_controls.RPM.assigned_propulsors)): 
-            propulsor_tag = flight_controls.RPM.assigned_propulsors[i][0]
-            for fuel_line in fuel_lines:
-                if propulsor_tag in fuel_line.propulsors:
-                    state.conditions.energy[fuel_line.tag][propulsor_tag].engine.rpm = state.unknowns["rpm_" + str(i)]         
-                                                                                       
+                    state.conditions.energy[fuel_line.tag][propulsor_tag].rotor.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]   
     return 
 
 def bus_unknowns(segment,busses): 

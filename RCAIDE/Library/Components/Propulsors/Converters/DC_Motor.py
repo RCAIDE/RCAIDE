@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor import compute_omega_and_Q_from_Cp_and_V , compute_I_from_omega_and_V
+from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor import compute_omega_and_Q_from_Cp_and_V , compute_I_from_omega_and_V
 
 
 # ----------------------------------------------------------------------------------------------------------------------

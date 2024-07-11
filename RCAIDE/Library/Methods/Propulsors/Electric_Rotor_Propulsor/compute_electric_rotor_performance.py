@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Methods.Energy.Propulsors.Modulators  import compute_voltage_out_from_throttle ,compute_current_in_from_throttle
+from RCAIDE.Library.Methods.Propulsors.Modulators  import compute_voltage_out_from_throttle ,compute_current_in_from_throttle
 
 # pacakge imports  
 import numpy as np 

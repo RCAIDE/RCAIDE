@@ -11,14 +11,14 @@
 # RCAIDE Imports     
 import RCAIDE
 from RCAIDE.Framework.Core                                                  import Data
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Ram                import compute_ram_performance
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Combustor          import compute_combustor_performance
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compressor         import compute_compressor_performance
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Turbine            import compute_turbine_performance
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
-from RCAIDE.Library.Methods.Energy.Propulsors.Turboshaft_Propulsor          import size_core  
-from RCAIDE.Library.Methods.Energy.Propulsors.Turboshaft_Propulsor.compute_turboshaft_performance   import   compute_performance
+from RCAIDE.Library.Methods.Propulsors.Converters.Ram                import compute_ram_performance
+from RCAIDE.Library.Methods.Propulsors.Converters.Combustor          import compute_combustor_performance
+from RCAIDE.Library.Methods.Propulsors.Converters.Compressor         import compute_compressor_performance
+from RCAIDE.Library.Methods.Propulsors.Converters.Turbine            import compute_turbine_performance
+from RCAIDE.Library.Methods.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
+from RCAIDE.Library.Methods.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
+from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor          import size_core  
+from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.compute_turboshaft_performance   import   compute_performance
 
 # Python package imports   
 import numpy                                                                as np

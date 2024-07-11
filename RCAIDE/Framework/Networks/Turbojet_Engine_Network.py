@@ -12,7 +12,7 @@
 import RCAIDE 
 from RCAIDE.Framework.Core                                                                      import Data 
 from RCAIDE.Framework.Mission.Common                                                   import Residuals    
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbojet_Propulsor.compute_turbojet_performance import compute_turbojet_performance
+from RCAIDE.Library.Methods.Propulsors.Turbojet_Propulsor.compute_turbojet_performance import compute_turbojet_performance
 from .Network                                                                         import Network  
 
 # ----------------------------------------------------------------------------------------------------------------------

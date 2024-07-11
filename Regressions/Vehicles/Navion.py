@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE 
 from RCAIDE.Framework.Core import Units   
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor import design_propeller
+from RCAIDE.Library.Methods.Propulsors.Converters.Rotor import design_propeller
 from RCAIDE.Library.Methods.Geometry.Planform  import segment_properties
 from RCAIDE.Library.Plots       import *  
 

@@ -81,7 +81,7 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
     # -----------------------------------------------------------------------------------------------------------------------------
     # rotation matrix of rotor blade twist
     # -----------------------------------------------------------------------------------------------------------------------------     
-    theta_tot             = theta + theta_0    
+    theta_tot             = theta + np.atleast_2d(theta_0) 
     theta_total           = np.tile(theta_tot[:,None,None,None,:],(1,num_mic,num_rot,num_blades,1)) 
     Rotation_blade_twist  = np.tile(I[None,None,None,None,:,:,:],(num_cpt,num_mic,num_rot,num_blades,num_sec,1,1))     
     Rotation_blade_twist[:,:,:,:,:,0,0] = np.cos(theta_total)

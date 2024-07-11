@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 from RCAIDE.Framework.Core import Units  
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Engine import compute_throttle_from_power
+from RCAIDE.Library.Methods.Propulsors.Converters.Engine import compute_throttle_from_power
 
 # pacakge imports  
 import numpy as np 

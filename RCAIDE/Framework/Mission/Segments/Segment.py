@@ -255,13 +255,7 @@ class Segment(Analysis):
         self.flight_controls.blade_pitch_angle.active                     = False          
         self.flight_controls.blade_pitch_angle.assigned_propulsors        = None
         self.flight_controls.blade_pitch_angle.initial_guess              = False 
-        self.flight_controls.blade_pitch_angle.initial_guess_values       = None
-    
-        self.flight_controls.RPM                                          = Data() 
-        self.flight_controls.RPM.active                                   = False              
-        self.flight_controls.RPM.assigned_propulsors                      = None
-        self.flight_controls.RPM.initial_guess                            = False 
-        self.flight_controls.RPM.initial_guess_values                     = None
+        self.flight_controls.blade_pitch_angle.initial_guess_values       = None 
     
         return     
            

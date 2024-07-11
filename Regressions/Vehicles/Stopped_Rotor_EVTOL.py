@@ -15,8 +15,8 @@ from RCAIDE.Library.Methods.Performance.estimate_cruise_drag                   i
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform                  import segment_properties 
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                      import initialize_from_circuit_configuration 
 from RCAIDE.Library.Methods.Weights.Correlation_Buildups.Propulsion            import nasa_motor
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor              import design_motor
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor                 import design_propeller ,design_lift_rotor 
+from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor              import design_motor
+from RCAIDE.Library.Methods.Propulsors.Converters.Rotor                 import design_propeller ,design_lift_rotor 
 from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric            import compute_weight , converge_weight
 from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform                  import wing_segmented_planform   
 from RCAIDE.Library.Plots                                                      import *       

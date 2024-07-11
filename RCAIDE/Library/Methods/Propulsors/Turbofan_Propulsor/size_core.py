@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor            import compute_thrust
+from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor            import compute_thrust
 
 # Python package imports
 import numpy as np

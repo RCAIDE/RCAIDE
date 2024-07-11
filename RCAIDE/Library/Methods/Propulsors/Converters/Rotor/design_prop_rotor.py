@@ -10,8 +10,8 @@
 
 # RCAIDE Imports    
 from RCAIDE.Framework.Optimization.Packages.scipy                                              import scipy_setup 
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.optimization_setup       import optimization_setup
-from RCAIDE.Library.Methods.Energy.Propulsors.Converters.Rotor.Design.set_optimized_parameters import set_optimized_parameters
+from RCAIDE.Library.Methods.Propulsors.Converters.Rotor.Design.optimization_setup       import optimization_setup
+from RCAIDE.Library.Methods.Propulsors.Converters.Rotor.Design.set_optimized_parameters import set_optimized_parameters
 
 # Python package imports   
 import time 

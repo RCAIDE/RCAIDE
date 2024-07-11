@@ -16,6 +16,7 @@ from . import Geometry
 from . import Mission
 from . import Noise
 from . import Performance 
+from . import Propulsors
 from . import Stability
 from . import Utilities
 from . import Weights

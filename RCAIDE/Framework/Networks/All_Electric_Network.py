@@ -9,13 +9,13 @@
 # ----------------------------------------------------------------------------------------------------------------------  
  # RCAIDE imports 
 import RCAIDE 
-from RCAIDE.Framework.Core                                                                                import Data 
-from RCAIDE.Framework.Mission.Common                                                                      import Residuals 
-from RCAIDE.Library.Components.Component                                                                  import Container   
-from RCAIDE.Library.Components.Propulsors.Converters                                                      import Propeller, Lift_Rotor, Prop_Rotor 
-from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                                                 import append_initial_battery_conditions 
-from RCAIDE.Library.Methods.Energy.Propulsors.Electric_Rotor_Propulsor.compute_electric_rotor_performance import compute_electric_rotor_performance
-from .Network                                                                                     import Network  
+from RCAIDE.Framework.Core                                                                         import Data 
+from RCAIDE.Framework.Mission.Common                                                               import Residuals 
+from RCAIDE.Library.Components.Component                                                           import Container   
+from RCAIDE.Library.Components.Propulsors.Converters                                               import Propeller, Lift_Rotor, Prop_Rotor 
+from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                                          import append_initial_battery_conditions 
+from RCAIDE.Library.Methods.Propulsors.Electric_Rotor_Propulsor.compute_electric_rotor_performance import compute_electric_rotor_performance
+from .Network                                                                                      import Network  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  All Electric
@@ -178,7 +178,7 @@ class All_Electric_Network(Network):
                 bus_results = segment.state.conditions.energy[bus.tag] 
                 for i , propulsor in enumerate(bus.propulsors):
                     if bus.identical_propulsors == False or i == 0: 
-                        bus_results[propulsor.tag].rotor.power_coefficient = segment.state.unknowns[bus.tag + '_rotor_cp']
+                        bus_results[propulsor.tag].rotor.power_coefficient = segment.state.unknowns[propulsor.tag  + '_rotor_cp']
         return     
     
     def residuals(self,segment):
@@ -207,10 +207,11 @@ class All_Electric_Network(Network):
         for bus in busses:  
             if bus.active and (type(segment) != RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge):   
                 bus_results   = segment.state.conditions.energy[bus.tag]  
-                for propulsor in bus.propulsors:               
-                    q_motor   = bus_results[propulsor.tag].motor.torque
-                    q_prop    = bus_results[propulsor.tag].rotor.torque 
-                    segment.state.residuals.network[ bus.tag  + '_rotor_motor_torque'] = q_motor - q_prop   
+                for i ,  propulsor in enumerate(bus.propulsors):
+                    if bus.identical_propulsors == False or i == 0:
+                        q_motor   = bus_results[propulsor.tag].motor.torque
+                        q_prop    = bus_results[propulsor.tag].rotor.torque 
+                        segment.state.residuals.network[propulsor.tag  + '_rotor_motor_torque'] = q_motor - q_prop   
          
         return     
     
