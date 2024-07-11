@@ -161,8 +161,7 @@ def reuse_stored_data(conditions,fuel_line,ice_propeller,stored_propulsor_tag,to
     ice_results_0                         = conditions.energy[fuel_line.tag][stored_propulsor_tag]
     noise_results_0                       = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
     ice_results                           = conditions.energy[fuel_line.tag][ice_propeller.tag]  
-    noise_results                         = conditions.noise[fuel_line.tag][ice_propeller.tag]  
-    ice_results.mass_flow_rate            = ice_results_0.mass_flow_rate          
+    noise_results                         = conditions.noise[fuel_line.tag][ice_propeller.tag]        
     ice_results.engine.power              = ice_results_0.engine.power            
     ice_results.engine.torque             = ice_results_0.engine.torque           
     ice_results.throttle                  = ice_results_0.throttle         
