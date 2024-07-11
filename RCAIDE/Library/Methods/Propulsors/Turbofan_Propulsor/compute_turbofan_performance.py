@@ -238,9 +238,9 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     # compute the thrust
     compute_thrust(turbofan,conditions,throttle = turbofan_results.throttle )
 
-    # getting the network outputs from the thrust outputs  
-    turbofan_results.thrust = turbofan.outputs.thrust
-    turbofan_results.power  = turbofan.outputs.power  
+    # getting the network outputs from the thrust outputs   
+    turbofan_results.thrust   = turbofan.outputs.thrust
+    turbofan_results.power    = turbofan.outputs.power  
     turbofan_results.fuel_flow_rate  = turbofan.outputs.fuel_flow_rate 
     total_power                     += turbofan_results.power
     total_thrust[:,0]               += turbofan_results.thrust[:,0]
@@ -298,7 +298,8 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     turbofan_results_0                   = conditions.energy[fuel_line.tag][stored_propulsor_tag]
     noise_results_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
     turbofan_results                     = conditions.energy[fuel_line.tag][turbofan.tag]  
-    noise_results                        = conditions.noise[fuel_line.tag][turbofan.tag] 
+    noise_results                        = conditions.noise[fuel_line.tag][turbofan.tag]
+    turbofan_results.throttle            = turbofan_results_0.throttle
     turbofan_results.thrust              = turbofan_results_0.thrust   
     turbofan_results.power               = turbofan_results_0.power  
     turbofan_results.fuel_flow_rate      = turbofan_results_0.fuel_flow_rate 

@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Framework.Core                                                                               import Data   
-from RCAIDE.Library.Methods.Propulsors.Constant_Speed_ICE_Propulsor.compute_cs_ice_performance  import compute_cs_ice_performance
+from RCAIDE.Framework.Core                                                                     import Data   
+from RCAIDE.Library.Methods.Propulsors.Constant_Speed_ICE_Propulsor.compute_cs_ice_performance import compute_cs_ice_performance
 from .Network                                                                                  import Network   
   
 # ----------------------------------------------------------------------------------------------------------------------

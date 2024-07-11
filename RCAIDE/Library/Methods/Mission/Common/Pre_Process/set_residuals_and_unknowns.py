@@ -181,4 +181,5 @@ def set_residuals_and_unknowns(mission):
                 num_ctrls += 1      
                                                                  
         # if the degrees of freedom are greater than the number of control inputs, post problem at optimization  # TO DO
+    return 
                                                                                                                                                                 

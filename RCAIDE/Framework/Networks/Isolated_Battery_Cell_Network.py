@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------  
  # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Framework.Mission.Common                                                 import Residuals
-from RCAIDE.Framework.Core                                                                    import Data
+from RCAIDE.Framework.Mission.Common                                                        import Residuals
+from RCAIDE.Framework.Core                                                                  import Data
 from RCAIDE.Library.Components.Component                                                    import Container    
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Common.append_initial_battery_conditions import append_initial_battery_conditions
 from .Network import Network 

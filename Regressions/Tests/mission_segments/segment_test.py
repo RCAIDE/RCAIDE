@@ -498,7 +498,7 @@ def mission_setup(analyses):
     segment.flight_controls.throttle.active              = True           
     segment.flight_controls.throttle.assigned_propulsors = [['starboard_propulsor','port_propulsor']]
     segment.flight_controls.throttle.initial_guess       = True 
-    segment.flight_controls.throttle.initial_guess_values= [[0.9,0.9]] 
+    segment.flight_controls.throttle.initial_guess_values= [[0.9]] 
     segment.flight_controls.velocity.active              = True           
     segment.flight_controls.velocity.initial_guess       = True     
     segment.flight_controls.velocity.initial_guess_values= [[ 200]] 

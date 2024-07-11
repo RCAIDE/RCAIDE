@@ -253,7 +253,8 @@ def reuse_stored_data(conditions,fuel_line,turbojet,stored_propulsor_tag,total_t
     turbojet_results_0                   = conditions.energy[fuel_line.tag][stored_propulsor_tag]
     noise_results_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
     turbojet_results                     = conditions.energy[fuel_line.tag][turbojet.tag]  
-    noise_results                        = conditions.noise[fuel_line.tag][turbojet.tag]  
+    noise_results                        = conditions.noise[fuel_line.tag][turbojet.tag]
+    turbojet_results.throttle            = turbojet_results_0.throttle
     turbojet_results.thrust              = turbojet_results_0.thrust 
     turbojet_results.power               = turbojet_results_0.power   
     noise_results.turbojet.fan_nozzle    = None  
