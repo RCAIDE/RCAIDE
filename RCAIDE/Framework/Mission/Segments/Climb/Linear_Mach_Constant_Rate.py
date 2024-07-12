@@ -64,7 +64,7 @@ class Linear_Mach_Constant_Rate(Evaluate):
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Linear_Mach_Constant_Rate.initialize_conditions  
         iterate                            = self.process.iterate
-        iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation   
         
         return

@@ -62,7 +62,7 @@ class Climb(Evaluate):
         initialize                         = self.process.initialize
         iterate                            = self.process.iterate 
         initialize.conditions              = Segments.Vertical_Flight.Climb.initialize_conditions
-        iterate.residuals.flight_dynamics  = Common.Residuals.vertical_flight_dynamics
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
     
         return
        

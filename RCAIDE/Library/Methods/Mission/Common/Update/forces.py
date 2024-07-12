@@ -37,8 +37,9 @@ def forces(segment):
         N/A
                     
     """    
-
+ 
     # unpack
+    RT                            = segment.reverse_thrust_ratio
     conditions                    = segment.state.conditions 
     wind_force_vector             = conditions.frames.wind.force_vector
     body_thrust_force_vector      = conditions.frames.body.thrust_force_vector
@@ -56,11 +57,11 @@ def forces(segment):
     elif type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover:
         F =  np.zeros_like(T)
     elif type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:
-        F =  np.zeros_like(T)
+        F =  np.zeros_like(T) 
     W = inertial_gravity_force_vector
 
     # sum of the forces
-    F_tot = F + T + W
+    F_tot = F +  T*(1 - RT) + W + T*RT
 
     # pack
     conditions.frames.inertial.total_force_vector[:,:] = F_tot[:,:]
