@@ -34,6 +34,8 @@ from Tiltwing_EVTOL    import vehicle_setup, configs_setup
 # ----------------------------------------------------------------------
 def main():  
     vehicle  = vehicle_setup() 
+
+    plot_3d_vehicle(vehicle, show_figure  = False)    
         
     # Set up configs
     configs  = configs_setup(vehicle)
@@ -472,77 +474,7 @@ def mission_setup(analyses ):
     segment.flight_controls.body_angle.active             = True
     
         
-    mission.append_segment(segment)     
-    
-    ## ------------------------------------------------------------------
-    ##  Forth Transition Segment
-    ## ------------------------------------------------------------------ 
-    #segment                          = Segments.Cruise.Constant_Acceleration_Constant_Altitude(base_segment)  
-    #segment.tag                      = "Descent_Transition" 
-    #segment.analyses.extend( analyses.descent_transition)    
-    #segment.air_speed_end            = 300. * Units['ft/min'] 
-    #segment.acceleration             = -0.5 * Units['m/s/s']
-    
-    ## define flight dynamics to model 
-    #segment.flight_dynamics.force_x                       = True  
-    #segment.flight_dynamics.force_z                       = True     
-    
-    ## define flight controls 
-    #segment.flight_controls.throttle.active               = True           
-    #segment.flight_controls.throttle.assigned_propulsors  = [['lift_rotor_propulsor_1','lift_rotor_propulsor_2','lift_rotor_propulsor_3','lift_rotor_propulsor_4',
-                                                                             #'lift_rotor_propulsor_5','lift_rotor_propulsor_6','lift_rotor_propulsor_7','lift_rotor_propulsor_8']]
-    #segment.flight_controls.body_angle.active             = True
-                 
-    #mission.append_segment(segment)
-    
-    ## ------------------------------------------------------------------
-    ##  Forth Transition Segment
-    ## ------------------------------------------------------------------ 
-    #segment                          = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(base_segment)  
-    #segment.tag                      = "Descent_Transition" 
-    #segment.analyses.extend( analyses.descent_transition)     
-    #segment.acceleration             = -0.5 * Units['m/s/s']
-    #segment.air_speed_end            = 300. * Units['ft/min'] 
-    #segment.pitch_initial            = 5.0 * Units['rad']
-    #segment.pitch_final              = 1.0 * Units['rad'] 
-    
-    
-    ## define flight dynamics to model 
-    #segment.flight_dynamics.force_x                       = True  
-    #segment.flight_dynamics.force_z                       = True     
-    
-    ## define flight controls 
-    #segment.flight_controls.throttle.active               = True           
-    #segment.flight_controls.throttle.assigned_propulsors  = [['lift_rotor_propulsor_1','lift_rotor_propulsor_2','lift_rotor_propulsor_3','lift_rotor_propulsor_4',
-                                                                             #'lift_rotor_propulsor_5','lift_rotor_propulsor_6','lift_rotor_propulsor_7','lift_rotor_propulsor_8']]
-    #segment.flight_controls.body_angle.active             = True
-                 
-    #mission.append_segment(segment)         
-
-    ## ------------------------------------------------------------------
-    ##   Descent Segment: Constant Speed, Constant Rate
-    ## ------------------------------------------------------------------ 
-    #segment                          = Segments.Vertical_Flight.Descent(base_segment)
-    #segment.tag                      = "Vertical_Descent"  
-    #segment.analyses.extend( analyses.vertical_descent) 
-    #segment.altitude_start           = 40.0  * Units.ft  
-    #segment.altitude_end             = 0.  * Units.ft  
-    #segment.descent_rate             = 300. * Units['ft/min'] 
-
-    ## define flight dynamics to model  
-    #segment.flight_dynamics.force_z                        = True 
-
-    ## define flight controls  
-    #segment.flight_controls.throttle.active               = True           
-    #segment.flight_controls.throttle.assigned_propulsors  = [['lift_rotor_propulsor_1','lift_rotor_propulsor_2','lift_rotor_propulsor_3','lift_rotor_propulsor_4',
-                                                            #'lift_rotor_propulsor_5','lift_rotor_propulsor_6','lift_rotor_propulsor_7','lift_rotor_propulsor_8']]
-    
-    #mission.append_segment(segment)   
-    ## ------------------------------------------------------------------
-    ##   Mission definition complete    
-    ## ------------------------------------------------------------------   
-
-
+    mission.append_segment(segment)      
     return mission
 
 def missions_setup(mission): 

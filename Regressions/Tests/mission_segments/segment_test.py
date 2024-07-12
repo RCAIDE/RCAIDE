@@ -10,6 +10,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units ,  Data
+from RCAIDE.Library.Plots             import *       
 
 # python imports 
 import numpy as np
@@ -139,7 +140,9 @@ def main():
     print(error)
      
     for k,v in list(error.items()):
-        assert(np.abs(v)<1e-6)   
+        assert(np.abs(v)<1e-6)
+        
+    plot_results(results)
     return 
 # ----------------------------------------------------------------------
 #   Define the Vehicle Analyses
@@ -755,6 +758,11 @@ def mission_setup(analyses):
     
     return mission
 
+def plot_results(results): 
+
+    plot_propulsor_throttles(results)
+    
+    return
 
 def missions_setup(mission): 
  

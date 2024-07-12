@@ -11,7 +11,7 @@
 # RCAIDE imports
 from RCAIDE.Framework.Core                                      import Units , Data 
 from RCAIDE.Framework.Mission.Segments.Evaluate        import Evaluate
-from RCAIDE.Library.Methods.Mission.Common                    import Residuals , Unpack_Unknowns, Update
+from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_Unknowns, Update
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Ground

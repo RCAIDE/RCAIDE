@@ -132,7 +132,7 @@ class Constant_Speed_Internal_Combustion_Engine_Network(Network):
         """            
  
         fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine_constant_speed.fuel_lines  
-        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines)
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines)
         return    
     
     def add_unknowns_and_residuals_to_segment(self,segment):

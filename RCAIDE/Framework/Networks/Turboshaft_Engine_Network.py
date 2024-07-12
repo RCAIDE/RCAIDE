@@ -169,7 +169,7 @@ class Turboshaft_Engine_Network(Network):
         """            
         
         fuel_lines = segment.analyses.energy.networks.turboshaft_engine.fuel_lines
-        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
         
         return    
      

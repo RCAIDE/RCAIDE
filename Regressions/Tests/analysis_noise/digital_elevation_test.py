@@ -10,8 +10,8 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units , Data 
 from RCAIDE.Library.Plots import *     
 from RCAIDE.Library.Methods.Noise.Metrics import *  
-from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations                import generate_terrain_elevated_microphone_locations
-from RCAIDE.Library.Methods.Mission.Common.compute_point_to_point_geospacial_data     import compute_point_to_point_geospacial_data
+from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations        import generate_terrain_elevated_microphone_locations
+from RCAIDE.Library.Mission.Common.compute_point_to_point_geospacial_data     import compute_point_to_point_geospacial_data
 
 # Python imports
 import matplotlib.pyplot as plt  

@@ -137,7 +137,7 @@ class Internal_Combustion_Engine_Network(Network):
         """            
  
         fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine.fuel_lines   
-        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines)
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines)
  
         for fuel_line in fuel_lines:         
             if fuel_line.active:

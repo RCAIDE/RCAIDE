@@ -166,7 +166,7 @@ class All_Electric_Network(Network):
         """                          
         # unpack the ones function 
         busses       = segment.analyses.energy.networks.all_electric.busses
-        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,busses) 
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,busses) 
         
         for bus in busses:           
             if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge: 

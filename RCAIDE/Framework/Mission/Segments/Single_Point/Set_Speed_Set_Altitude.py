@@ -11,7 +11,7 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Core                                     import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
+from RCAIDE.Library.Mission                          import Common,Segments
 from RCAIDE.Library.Methods.skip                             import skip 
 
 # package imports 

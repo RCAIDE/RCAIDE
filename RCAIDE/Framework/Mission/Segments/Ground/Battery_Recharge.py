@@ -10,7 +10,7 @@
 
 # RCAIDE imports
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission.Segments                 import Ground   
+from RCAIDE.Library.Mission.Segments                 import Ground   
 from RCAIDE.Framework.Core                                     import Units
 from RCAIDE.Library.Methods.skip                             import skip 
 
