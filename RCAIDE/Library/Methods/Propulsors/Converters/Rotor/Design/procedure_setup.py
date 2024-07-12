@@ -453,7 +453,7 @@ def post_process(nexus):
     
 
     if nexus.prop_rotor_flag:  
-        rotor_cru  = nexus.vehicle_configurations.cruise.networks.all_electric.busses.bus.rotors.rotor         
+        rotor_cru  = nexus.vehicle_configurations.cruise.networks.all_electric.busses.bus.propulsors.propulsor.rotor         
         summary.max_sectional_cl_cruise = nexus.results.cruise.max_sectional_cl   
         
     # -------------------------------------------------------

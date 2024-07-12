@@ -8,9 +8,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-# RCAIDE imports 
+# RCAIDE imports
+import  RCAIDE
 from RCAIDE.Framework.Core  import  orientation_product
-import numpy as np
+import  numpy as  np 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Forces
@@ -50,6 +51,12 @@ def forces(segment):
     # to inertial frame
     F = orientation_product(T_wind2inertial,wind_force_vector)
     T = orientation_product(T_body2inertial,body_thrust_force_vector)
+    if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb:
+        F =  np.zeros_like(T)
+    elif type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover:
+        F =  np.zeros_like(T)
+    elif type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:
+        F =  np.zeros_like(T)
     W = inertial_gravity_force_vector
 
     # sum of the forces

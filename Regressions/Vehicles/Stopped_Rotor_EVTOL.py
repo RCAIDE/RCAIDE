@@ -78,8 +78,7 @@ def vehicle_setup() :
     wing.symmetric                = True
     wing.vertical                 = False
     
-    ospath                        = os.path.abspath(__file__)
-    ospath                        = os.path.abspath(__file__)
+    ospath                        = os.path.abspath(__file__) 
     separator                     = os.path.sep
     rel_path                      = os.path.dirname(ospath) + separator 
     airfoil                       = RCAIDE.Library.Components.Airfoils.Airfoil()
@@ -188,7 +187,7 @@ def vehicle_setup() :
     #------------------------------------------------------------------------------------------------------------------------------------
     # ##########################################################   Fuselage  ############################################################   
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    fuselage                                    = RCAIDE.Library.Components.Fuselages.Tube_Fuselage()
+    fuselage                                    = RCAIDE.Library.Components.Fuselages.Fuselage()
     fuselage.tag                                = 'fuselage' 
     fuselage.seats_abreast                      = 2.  
     fuselage.seat_pitch                         = 3.  

@@ -15,7 +15,7 @@ from RCAIDE.Library.Components.Component                                        
 from RCAIDE.Library.Components.Propulsors.Converters                                               import Propeller, Lift_Rotor, Prop_Rotor 
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                                          import append_initial_battery_conditions 
 from RCAIDE.Library.Methods.Propulsors.Electric_Rotor_Propulsor.compute_electric_rotor_performance import compute_electric_rotor_performance
-from .Network                                                                                      import Network  
+from .Network                                                                                      import Network
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  All Electric
@@ -81,8 +81,7 @@ class All_Electric_Network(Network):
         """          
     
         # unpack   
-        conditions      = state.conditions
-        numerics        = state.numerics
+        conditions      = state.conditions 
         busses          = self.busses
         total_thrust    = 0. * state.ones_row(3) 
         total_power     = 0. * state.ones_row(1)  

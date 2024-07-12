@@ -214,6 +214,7 @@ def mission_setup(analyses):
             segment.flight_controls.throttle.assigned_propulsors  = [['cruise_propulsor_1','cruise_propulsor_2'],
                                                                      ['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
                                                                     'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']]
+            mission.append_segment(segment) 
             
             #------------------------------------------------------------------------------------------------------------------------------------  
             # High-Speed Climbing Transition 
@@ -284,7 +285,8 @@ def missions_setup(mission):
     mission.tag  = 'base_mission'
     missions.append(mission)
  
-    return missions  
+    return missions
+
 def plot_results(results):
 
     # Plots fligh conditions 

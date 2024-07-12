@@ -16,8 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Methods-Missions-Common-Residuals
 def level_flight_dynamics(segment):
-    """ Calculates a force and moment residuals 
-                                
+    """ Calculates a force and moment residuals  
     """        
     if 'acceleration' in segment:
         ax      = segment.acceleration  

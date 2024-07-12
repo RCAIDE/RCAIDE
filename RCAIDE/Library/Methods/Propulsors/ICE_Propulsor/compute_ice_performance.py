@@ -98,6 +98,7 @@ def compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_po
     torque                 = engine.outputs.torque     
     
     # link engine RPM to propeller 
+    propeller.inputs.y_axis_rotation = ice_results.y_axis_rotation
     propeller.inputs.omega = RPM * Units.rpm 
 
     # Spin the propeller 
