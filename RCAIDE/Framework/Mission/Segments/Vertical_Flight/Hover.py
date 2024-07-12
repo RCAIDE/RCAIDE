@@ -11,7 +11,7 @@
 # RCAIDE imports 
 from RCAIDE.Framework.Core                                 import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Hover
@@ -61,6 +61,6 @@ class Hover(Evaluate):
         initialize                         = self.process.initialize
         iterate                            = self.process.iterate 
         initialize.conditions              = Segments.Vertical_Flight.Hover.initialize_conditions
-        iterate.residuals.flight_dynamics  = Common.Residuals.vertical_flight_dynamics
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         return
 

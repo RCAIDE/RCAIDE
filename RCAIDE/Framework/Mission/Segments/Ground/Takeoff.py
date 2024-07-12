@@ -11,8 +11,8 @@
 # RCAIDE imports 
 from RCAIDE.Framework.Mission.Segments.Evaluate        import Evaluate
 from RCAIDE.Framework.Core                                      import Units, Data 
-from RCAIDE.Library.Methods.Mission.Segments                  import Ground  
-from RCAIDE.Library.Methods.Mission.Common                    import Residuals , Unpack_Unknowns, Update
+from RCAIDE.Library.Mission.Segments                  import Ground  
+from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_Unknowns, Update
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Takeoff
@@ -95,7 +95,7 @@ class Takeoff(Evaluate):
         iterate                            = self.process.iterate   
         iterate.conditions.forces_ground   = Update.ground_forces
         iterate.unknowns.mission           = Unpack_Unknowns.ground
-        iterate.residuals.flight_dynamics  = Residuals.ground_flight_dynamics
+        iterate.residuals.flight_dynamics  = Residuals.flight_dynamics
         
         return
 

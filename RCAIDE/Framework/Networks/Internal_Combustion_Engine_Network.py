@@ -9,10 +9,10 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE 
-from RCAIDE.Framework.Core                                                             import Data 
+from RCAIDE.Framework.Core                                                    import Data ,  Units
 from RCAIDE.Framework.Mission.Common                                          import Residuals    
-from RCAIDE.Library.Methods.Energy.Propulsors.ICE_Propulsor.compute_ice_performance  import compute_ice_performance
-from .Network                                                                import Network   
+from RCAIDE.Library.Methods.Propulsors.ICE_Propulsor.compute_ice_performance  import compute_ice_performance
+from .Network                                                                 import Network   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ICE_Propelle
@@ -137,8 +137,15 @@ class Internal_Combustion_Engine_Network(Network):
         """            
  
         fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine.fuel_lines   
-        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines)      
-        
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines)
+ 
+        for fuel_line in fuel_lines:         
+            if fuel_line.active:
+                fuel_line_results = segment.state.conditions.energy[fuel_line.tag] 
+                for i , propulsor in enumerate(fuel_line.propulsors):
+                    if fuel_line.identical_propulsors == False or i == 0: 
+                        fuel_line_results[propulsor.tag].engine.rpm = segment.state.unknowns["rpm_" + str(i)]        
+                 
         return
     
     def residuals(self,segment):
@@ -163,10 +170,11 @@ class Internal_Combustion_Engine_Network(Network):
         fuel_lines   = segment.analyses.energy.networks.internal_combustion_engine.fuel_lines 
         for fuel_line in fuel_lines:  
             fuel_line_results       = segment.state.conditions.energy[fuel_line.tag]  
-            for propulsor in fuel_line.propulsors: 
-                q_engine   = fuel_line_results[propulsor.tag].engine.torque
-                q_prop    = fuel_line_results[propulsor.tag].rotor.torque 
-                segment.state.residuals.network[fuel_line.tag + '_' + propulsor.tag + '_rotor_engine_torque'] = q_engine - q_prop 
+            for i , propulsor in enumerate(fuel_line.propulsors):
+                if fuel_line.identical_propulsors == False or i == 0: 
+                    q_engine   = fuel_line_results[propulsor.tag].engine.torque
+                    q_prop     = fuel_line_results[propulsor.tag].rotor.torque 
+                    segment.state.residuals.network[ fuel_line.tag + '_' + propulsor.tag + '_rotor_engine_torque'] = q_engine - q_prop 
         
         return
     
@@ -212,8 +220,16 @@ class Internal_Combustion_Engine_Network(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
-            for propulsor in fuel_line.propulsors:          
-                segment.state.residuals.network[ fuel_line.tag + '_' + propulsor.tag + '_rotor_engine_torque'] = 0. * ones_row(1) 
+            for i, propulsor in enumerate(fuel_line.propulsors): 
+                if fuel_line.active: 
+                    if fuel_line.identical_propulsors == False or i == 0:
+                        try: 
+                            segment.state.unknowns["rpm_" + str(i)] = ones_row(1) * segment.estimated_RPM[fuel_line_i]
+                        except:
+                            propeller  = propulsor.propeller 
+                            segment.state.unknowns["rpm_" + str(i)] = ones_row(1) * float(propeller.cruise.design_angular_velocity) /Units.rpm   
+                        segment.state.residuals.network[ fuel_line.tag + '_' + propulsor.tag + '_rotor_engine_torque'] = 0. * ones_row(1) 
+                
                 fuel_line_results[propulsor.tag]                         = RCAIDE.Framework.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].engine                  = RCAIDE.Framework.Mission.Common.Conditions()
                 fuel_line_results[propulsor.tag].rotor                   = RCAIDE.Framework.Mission.Common.Conditions()  

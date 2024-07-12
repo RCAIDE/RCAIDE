@@ -11,7 +11,7 @@
 import RCAIDE 
 from RCAIDE.Framework.Core                                                                        import Data 
 from RCAIDE.Framework.Mission.Common                                                              import Residuals    
-from RCAIDE.Library.Methods.Energy.Propulsors.Turboshaft_Propulsor.compute_turboshaft_performance import compute_turboshaft_performance
+from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.compute_turboshaft_performance import compute_turboshaft_performance
 from .Network                                                                                     import Network  
                                                                                               
 # ----------------------------------------------------------------------------------------------------------------------
@@ -169,7 +169,7 @@ class Turboshaft_Engine_Network(Network):
         """            
         
         fuel_lines = segment.analyses.energy.networks.turboshaft_engine.fuel_lines
-        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
         
         return    
      
@@ -218,7 +218,7 @@ class Turboshaft_Engine_Network(Network):
             for turboshaft in fuel_line.propulsors:               
                 fuel_line_results[turboshaft.tag]                  = RCAIDE.Framework.Mission.Common.Conditions() 
                 fuel_line_results[turboshaft.tag].throttle         = 0. * ones_row(1)    
-                fuel_line_results[turboshaft.tag].y_axis_rotation  = 0. * ones_row(1)   # NEED TO REMOVE
+                fuel_line_results[turboshaft.tag].y_axis_rotation  = 0. * ones_row(1)    
                 fuel_line_results[turboshaft.tag].power            = 0. * ones_row(1) 
                 noise_results[turboshaft.tag]                      = RCAIDE.Framework.Mission.Common.Conditions() 
                 noise_results[turboshaft.tag].turboshaft           = RCAIDE.Framework.Mission.Common.Conditions() 

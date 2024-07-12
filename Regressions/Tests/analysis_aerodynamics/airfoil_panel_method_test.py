@@ -150,9 +150,9 @@ def multi_airfoil():
     airfoil_geometry_2    = import_airfoil_geometry(airfoil_file_2,npoints = 200)      
     airfoil_properties_2  = airfoil_analysis(airfoil_geometry_2,AoA_vals,Re_vals)     
        
-    True_cl_invisc = np.array([0.45692191, 0.56682385, 0.67657043, 0.78612768, 0.89546165, 1.0045384 ])
-    True_cd_invisc = np.array([ 5.47863961e-05, -1.00070485e-04, -2.45090408e-04, -3.79337274e-04,  -5.01907590e-04, -6.11933108e-04])
-    True_cm_invisc = np.array([-0.09706381, -0.09639439, -0.09574306, -0.09511061, -0.0944978 , -0.0939054 ])
+    True_cl_invisc = np.array([0.45707213, 0.56697577, 0.6767239 , 0.78628253, 0.8956177 , 1.0046955 ])
+    True_cd_invisc = np.array([ 5.62827861e-05, -9.72045393e-05, -2.40818475e-04, -3.73629564e-04, -4.94741048e-04, -6.03291489e-04])
+    True_cm_invisc = np.array([-0.09711004, -0.09645007, -0.09581086, -0.0951932 , -0.09459784, -0.0940255 ])
     
     print('\n\nThis is for multi airfoil')
     print('\ninvisc CL difference')

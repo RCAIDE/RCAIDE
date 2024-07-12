@@ -12,7 +12,7 @@
 import RCAIDE 
 from RCAIDE.Framework.Core                                                                      import Data 
 from RCAIDE.Framework.Mission.Common                                                   import Residuals    
-from RCAIDE.Library.Methods.Energy.Propulsors.Turbojet_Propulsor.compute_turbojet_performance import compute_turbojet_performance
+from RCAIDE.Library.Methods.Propulsors.Turbojet_Propulsor.compute_turbojet_performance import compute_turbojet_performance
 from .Network                                                                         import Network  
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ class Turbojet_Engine_Network(Network):
         """            
         
         fuel_lines = segment.analyses.energy.networks.turbojet_engine.fuel_lines
-        RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
         
         return    
      

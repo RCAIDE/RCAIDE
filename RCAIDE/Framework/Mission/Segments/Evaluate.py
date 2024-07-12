@@ -11,7 +11,7 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Mission.Segments         import Segment
 from RCAIDE.Framework.Mission.Common.Results   import Results
-from RCAIDE.Library.Methods.Mission            import Common , Solver 
+from RCAIDE.Library.Mission            import Common , Solver 
 from RCAIDE.Framework.Analyses                 import Process  
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -63,6 +63,7 @@ class Evaluate(Segment):
         # conditions
         self.temperature_deviation                = 0.0
         self.sideslip_angle                       = 0.0
+        self.reverse_thrust_ratio                 = 0.0
         self.state.conditions.update(Results())
         
         # ---------------------------------------------------------------

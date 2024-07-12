@@ -12,7 +12,7 @@
 from RCAIDE.Library.Methods.skip                             import skip 
 from RCAIDE.Framework.Core                                     import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
+from RCAIDE.Library.Mission                          import Common,Segments
 
 # package imports 
 import numpy as np
@@ -76,7 +76,7 @@ class Set_Speed_Set_Throttle(Evaluate):
         iterate.conditions.acceleration          = skip
         iterate.conditions.angular_acceleration  = skip 
         iterate.conditions.weights               = skip 
-        iterate.residuals.flight_dynamics        = Common.Residuals.climb_descent_flight_dynamics
+        iterate.residuals.flight_dynamics        = Common.Residuals.flight_dynamics
         post_process                             = self.process.post_process 
         post_process.inertial_position           = skip    
                 

@@ -11,8 +11,8 @@
 # RCAIDE imports
 from RCAIDE.Framework.Mission.Segments.Evaluate        import Evaluate 
 from RCAIDE.Framework.Core                                      import Units , Data 
-from RCAIDE.Library.Methods.Mission.Segments                  import Ground  
-from RCAIDE.Library.Methods.Mission.Common                    import Residuals , Unpack_Unknowns, Update
+from RCAIDE.Library.Mission.Segments                  import Ground  
+from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_Unknowns, Update
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Landing
@@ -59,13 +59,13 @@ class Landing(Evaluate):
         # -------------------------------------------------------------------------------------------------------------- 
         #   User Inputs
         # -------------------------------------------------------------------------------------------------------------- 
-
-        self.ground_incline       = 0.0 
+ 
         self.velocity_start       = 150 * Units.knots
         self.velocity_end         = 0.0
         self.friction_coefficient = 0.4
-        self.throttle             = 0.0
+        self.throttle             = 0.1
         self.altitude             = 0.0
+        self.reverse_thrust_ratio = 0.1
         self.true_course_angle    = 0.0 * Units.degrees 
         
         # -------------------------------------------------------------------------------------------------------------- 
@@ -81,8 +81,7 @@ class Landing(Evaluate):
         #  Mission Conditions 
         # --------------------------------------------------------------------------------------------------------------          
         ones_row = self.state.ones_row  
-        self.state.conditions.ground                              = Data()
-        self.state.conditions.ground.incline                      = ones_row(1) * 0.0
+        self.state.conditions.ground                              = Data() 
         self.state.conditions.ground.friction_coefficient         = ones_row(1) * 0.0
         self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0 
         
@@ -94,6 +93,6 @@ class Landing(Evaluate):
         iterate                            = self.process.iterate   
         iterate.conditions.forces_ground   = Update.ground_forces
         iterate.unknowns.mission           = Unpack_Unknowns.ground
-        iterate.residuals.flight_dynamics  = Residuals.ground_flight_dynamics
+        iterate.residuals.flight_dynamics  = Residuals.flight_dynamics    
 
         return

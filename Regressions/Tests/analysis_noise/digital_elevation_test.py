@@ -10,8 +10,8 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units , Data 
 from RCAIDE.Library.Plots import *     
 from RCAIDE.Library.Methods.Noise.Metrics import *  
-from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations                import generate_terrain_elevated_microphone_locations
-from RCAIDE.Library.Methods.Mission.Common.compute_point_to_point_geospacial_data     import compute_point_to_point_geospacial_data
+from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations        import generate_terrain_elevated_microphone_locations
+from RCAIDE.Library.Mission.Common.compute_point_to_point_geospacial_data     import compute_point_to_point_geospacial_data
 
 # Python imports
 import matplotlib.pyplot as plt  
@@ -44,7 +44,8 @@ def main():
 
     plot_elevation_contours(topography_file   ='LA_Metropolitan_Area.txt',use_lat_long_coordinates = False, save_filename = "Elevation_Contours_XY")  
       
-    vehicle  = vehicle_setup()  
+    vehicle  = vehicle_setup()      
+    vehicle.networks.all_electric.busses.bus.identical_propulsors     = False # only for regression     
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs,microphone_terrain_data,geospacial_data)  
     mission  = mission_setup(analyses,geospacial_data)
@@ -55,7 +56,7 @@ def main():
     plot_results(results,regression_plotting_flag)   
 
     X57_SPL        = np.max(results.segments.climb.conditions.noise.total_SPL_dBA) 
-    X57_SPL_true   = 54.997847164849006
+    X57_SPL_true   = 56.65697143910036
     X57_diff_SPL   = np.abs(X57_SPL - X57_SPL_true)
     print('Error: ',X57_diff_SPL)
     assert np.abs((X57_SPL - X57_SPL_true)/X57_SPL_true) < 1e-3    

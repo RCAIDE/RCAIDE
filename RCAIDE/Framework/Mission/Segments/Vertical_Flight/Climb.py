@@ -11,7 +11,7 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Core                                 import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Climb
@@ -62,7 +62,7 @@ class Climb(Evaluate):
         initialize                         = self.process.initialize
         iterate                            = self.process.iterate 
         initialize.conditions              = Segments.Vertical_Flight.Climb.initialize_conditions
-        iterate.residuals.flight_dynamics  = Common.Residuals.vertical_flight_dynamics
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
     
         return
        

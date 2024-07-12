@@ -46,7 +46,7 @@ def main():
     # evaluate
     results     = mission.evaluate()  
     P_truth     = 53537.3966546438
-    mdot_truth  = 0.004703918236179497
+    mdot_truth  = 0.004703918236179497 
     
     P    = results.segments.cruise.state.conditions.energy.fuel_line.ice_propeller.engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]
@@ -84,8 +84,6 @@ def mission_setup(analyses):
 
     # base segment
     base_segment = Segments.Segment()
-    
-
 
     # ------------------------------------------------------------------    
     #   Cruise Segment: Constant Speed Constant Altitude
@@ -103,17 +101,12 @@ def mission_setup(analyses):
     segment.flight_dynamics.force_x                       = True  
     segment.flight_dynamics.force_z                       = True     
     
-    # define flight controls 
-    segment.flight_controls.RPM.active                    = True           
-    segment.flight_controls.RPM.assigned_propulsors       = [['ice_propeller']]
-    segment.flight_controls.RPM.initial_guess             = True 
-    segment.flight_controls.RPM.initial_guess_values      = [[2500]] 
+    # define flight controls   
     segment.flight_controls.throttle.active               = True           
     segment.flight_controls.throttle.assigned_propulsors  = [['ice_propeller']]  
     segment.flight_controls.body_angle.active             = True                  
     
     mission.append_segment(segment)
-
 
     return mission
 

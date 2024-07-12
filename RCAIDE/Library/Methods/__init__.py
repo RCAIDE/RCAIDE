@@ -13,9 +13,9 @@ from . import Aerodynamics
 from . import Costs 
 from . import Energy
 from . import Geometry
-from . import Mission
 from . import Noise
 from . import Performance 
+from . import Propulsors
 from . import Stability
 from . import Utilities
 from . import Weights

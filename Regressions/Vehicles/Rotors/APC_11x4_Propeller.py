@@ -59,7 +59,7 @@ def APC_11x4_Propeller():
     separator                       = os.path.sep
     rel_path                        = os.path.dirname(ospath) + separator   
     airfoil                         = RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.number_of_points        = 300
+    airfoil.number_of_points        = 301
     airfoil.coordinate_file         = rel_path +'../Airfoils/Clark_y.txt'
     airfoil.polar_files             = [rel_path +'../Airfoils/Polars/Clark_y_polar_Re_50000.txt',
                                      rel_path +'../Airfoils/Polars/Clark_y_polar_Re_100000.txt',rel_path +'../Airfoils/Polars/Clark_y_polar_Re_200000.txt',

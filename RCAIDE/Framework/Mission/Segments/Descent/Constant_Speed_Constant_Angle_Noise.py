@@ -12,7 +12,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core                                 import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Constant_Speed_Constant_Angle_Noise
@@ -70,7 +70,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         initialize.expand_state            = Segments.Descent.Constant_Speed_Constant_Angle_Noise.expand_state
         initialize.conditions              = Segments.Descent.Constant_Speed_Constant_Angle_Noise.initialize_conditions
         iterate                            = self.process.iterate   
-        iterate.residuals.flight_dynamics  = Common.Residuals.climb_descent_flight_dynamics
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation          
         
         return

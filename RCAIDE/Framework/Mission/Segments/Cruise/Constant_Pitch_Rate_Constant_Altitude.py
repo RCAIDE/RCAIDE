@@ -11,8 +11,8 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Mission.Segments.Evaluate   import Evaluate 
 from RCAIDE.Framework.Core                                 import Units   
-from RCAIDE.Library.Methods.Mission.Segments             import Cruise
-from RCAIDE.Library.Methods.Mission                      import Common,Segments
+from RCAIDE.Library.Mission.Segments             import Cruise
+from RCAIDE.Library.Mission                      import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Pitch_Rate_Constant_Altitude
@@ -66,7 +66,7 @@ class Constant_Pitch_Rate_Constant_Altitude(Evaluate):
         iterate                            = self.process.iterate 
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation  
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
-        iterate.residuals.flight_dynamics  = Common.Residuals.level_flight_dynamics
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         
         return
 

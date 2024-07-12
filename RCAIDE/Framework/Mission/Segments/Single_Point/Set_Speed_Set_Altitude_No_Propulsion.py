@@ -12,7 +12,7 @@
 from RCAIDE.Library.Methods                                  import skip   
 from RCAIDE.Framework.Core                                     import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Methods.Mission                          import Common,Segments
+from RCAIDE.Library.Mission                          import Common,Segments
 
 
 # Package imports 
@@ -73,7 +73,7 @@ class Set_Speed_Set_Altitude_No_Propulsion(Evaluate):
         iterate.conditions.differentials   = skip 
         iterate.conditions.weights         = Common.Update.weights
         iterate.conditions.planet_position = skip 
-        iterate.residuals.flight_dynamics  = Common.Residuals.level_flight_dynamics
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
         
