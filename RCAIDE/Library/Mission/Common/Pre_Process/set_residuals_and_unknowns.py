@@ -162,7 +162,7 @@ def set_residuals_and_unknowns(mission):
                     segment.state.unknowns["aileron_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
                 num_ctrls += 1       
             
-        # Thrust 
+        # Thrust Vector Angle 
         if ctrls.thrust_vector_angle.active:  
             for i in range(len(ctrls.thrust_vector_angle.assigned_propulsors)):  
                 if ctrls.thrust_vector_angle.initial_guess:     
@@ -170,14 +170,5 @@ def set_residuals_and_unknowns(mission):
                         segment.state.unknowns["thrust_vector_" + str(i)] = ones_row(1) * ctrls.thrust_vector_angle.initial_guess_values[i][j]
                 else:
                     segment.state.unknowns["thrust_vector_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
-                num_ctrls += 1       
-            
-        # Blade Pitch 
-        if ctrls.blade_pitch_angle.active:  
-            for i in range(len(ctrls.blade_pitch_angle.assigned_propulsors)):   
-                if ctrls.blade_pitch_angle.initial_guess:    
-                    for j in range(len(ctrls.blade_pitch_angle.assigned_propulsors[i])):   
-                        segment.state.unknowns["blade_pitch_angle_" + str(i)] = ones_row(1) * ctrls.blade_pitch_angle.initial_guess_values[i][j]
-                else:
-                    segment.state.unknowns["blade_pitch_angle_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
-                num_ctrls += 1                                                                                                                          
+                num_ctrls += 1        
+    return 

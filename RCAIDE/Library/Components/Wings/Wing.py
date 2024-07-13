@@ -78,7 +78,7 @@ class Wing(Component):
                                                
         self.dynamic_pressure_ratio            = 0.0
                                                
-        self.Airfoil                           = Data() 
+        self.Airfoil                           = Container()  
         
         self.Segments                          = Container()
         self.control_surfaces                  = Container() 

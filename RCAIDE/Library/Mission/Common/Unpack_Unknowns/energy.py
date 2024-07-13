@@ -42,16 +42,7 @@ def fuel_line_unknowns(segment,fuel_lines):
                 propulsor_tag = flight_controls.thrust_vector_angle.assigned_propulsors[i][j]
                 for fuel_line in fuel_lines:
                     if propulsor_tag in fuel_line.propulsors:
-                        state.conditions.energy[fuel_line.tag][propulsor_tag].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]   
-                    
-    # Thrust Vector Control 
-    if flight_controls.blade_pitch_angle.active:                
-        for i in range(len(flight_controls.blade_pitch_angle.assigned_propulsors)):
-            for j in range(len(flight_controls.blade_pitch_angle.assigned_propulsors[i])): 
-                propulsor_tag = flight_controls.blade_pitch_angle.assigned_propulsors[i][j]
-                for fuel_line in fuel_lines:
-                    if propulsor_tag in fuel_line.propulsors:
-                        state.conditions.energy[fuel_line.tag][propulsor_tag].rotor.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]   
+                        state.conditions.energy[fuel_line.tag][propulsor_tag].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]      
     return 
 
 def bus_unknowns(segment,busses): 
@@ -90,16 +81,7 @@ def bus_unknowns(segment,busses):
                 propulsor_tag = flight_controls.thrust_vector_angle.assigned_propulsors[i][j]
                 for bus in busses:
                     if propulsor_tag in bus.propulsors:
-                        state.conditions.energy[bus.tag][propulsor_tag].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]  
-                    
-    # Thrust Vector Control 
-    if flight_controls.blade_pitch_angle.active:                
-        for i in range(len(flight_controls.blade_pitch_angle.assigned_propulsors)):
-            for j in range(len(flight_controls.blade_pitch_angle.assigned_propulsors[i])): 
-                propulsor_tag = flight_controls.blade_pitch_angle.assigned_propulsors[i][j]
-                for bus in busses:
-                    if propulsor_tag in bus.propulsors:
-                        state.conditions.energy[bus.tag][propulsor_tag].rotor.pitch_command = state.unknowns["blade_pitch_angle_" + str(i)]   
+                        state.conditions.energy[bus.tag][propulsor_tag].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]    
     return 
      
  
