@@ -19,8 +19,8 @@ from .atmosphere                       import atmosphere
 from .battery_age                      import battery_age
 from .differentials_time               import differentials_time
 from .forces                           import forces
-from .noise                            import emissions
-from .emissions                        import noise  
+from .noise                            import noise
+from .emissions                        import emissions   
 from .moments                          import moments
 from .ground_forces                    import ground_forces
 from .freestream                       import freestream

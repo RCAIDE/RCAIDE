@@ -11,7 +11,8 @@
 
 from .Geometry     import *  
 from .Aerodynamics import * 
-from .Common       import * 
+from .Common       import *
+from .Emissions    import *  
 from .Energy       import * 
 from .Mission      import *  
 from .Noise        import * 

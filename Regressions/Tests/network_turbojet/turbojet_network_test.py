@@ -135,7 +135,9 @@ def plot_mission(results):
     
     plot_aircraft_velocities(results)
     
-    plot_drag_components(results)
+    plot_drag_components(results) 
+ 
+    plot_CO2e_emissions(results)    
     return
 
 def simple_sizing(configs):

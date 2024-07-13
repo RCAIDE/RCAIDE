@@ -239,8 +239,8 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     compute_thrust(turbofan,conditions,throttle = turbofan_results.throttle )
 
     # getting the network outputs from the thrust outputs   
-    turbofan_results.thrust   = turbofan.outputs.thrust
-    turbofan_results.power    = turbofan.outputs.power  
+    turbofan_results.thrust          = turbofan.outputs.thrust
+    turbofan_results.power           = turbofan.outputs.power  
     turbofan_results.fuel_flow_rate  = turbofan.outputs.fuel_flow_rate 
     total_power                     += turbofan_results.power
     total_thrust[:,0]               += turbofan_results.thrust[:,0]
