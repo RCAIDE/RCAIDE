@@ -19,6 +19,7 @@ from . import Aerodynamics
 from . import Atmospheric
 from . import Costs
 from . import Energy
+from . import Emissions
 from . import Noise
 from . import Planets
 from . import Propulsion
