@@ -99,7 +99,14 @@ def base_analysis(vehicle):
     aerodynamics.settings.number_of_chordwise_vortices = 2       
     aerodynamics.settings.model_fuselage               = True
     aerodynamics.settings.drag_coefficient_increment   = 0.0000
-    analyses.append(aerodynamics) 
+    analyses.append(aerodynamics)
+
+    # ------------------------------------------------------------------
+    #  Energy
+    emissions = RCAIDE.Framework.Analyses.Emissions.Emission_Index_Correlation_Method()
+    emissions.geometry = vehicle          
+    analyses.append(emissions)
+        
     
     # ------------------------------------------------------------------
     #  Energy

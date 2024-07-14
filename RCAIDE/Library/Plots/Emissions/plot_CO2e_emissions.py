@@ -46,13 +46,13 @@ def plot_CO2e_emissions(results,
     cum_y1_0 = 0  
     
     for i in range(len(results.segments)): 
-        time               = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min 
-        emissions_CO2      = results.segments[i].conditions.emissions.total.CO2[:, 0]  
-        emissions_NOx      = results.segments[i].conditions.emissions.total.NOx[:, 0] 
-        emissions_H2O      = results.segments[i].conditions.emissions.total.H2O[:, 0] 
-        emissions_Contrails= results.segments[i].conditions.emissions.total.Contrails[:, 0]
-        emissions_Soot     = results.segments[i].conditions.emissions.total.Soot[:, 0]
-        emissions_SO2      = results.segments[i].conditions.emissions.total.SO2[:, 0]  
+        time                = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min 
+        emissions_CO2       = results.segments[i].conditions.emissions.total.CO2[:, 0]  
+        emissions_NOx       = results.segments[i].conditions.emissions.total.NOx[:, 0] 
+        emissions_H2O       = results.segments[i].conditions.emissions.total.H2O[:, 0] 
+        emissions_Contrails = results.segments[i].conditions.emissions.total.Contrails[:, 0]
+        emissions_Soot      = results.segments[i].conditions.emissions.total.Soot[:, 0]
+        emissions_SO2       = results.segments[i].conditions.emissions.total.SO2[:, 0]  
 
         cum_y0 = np.zeros_like(emissions_CO2)  
         cum_y1 = cum_y1_0 + emissions_CO2 +  emissions_NOx  + emissions_H2O  + emissions_Contrails +  emissions_Soot +  emissions_SO2    
