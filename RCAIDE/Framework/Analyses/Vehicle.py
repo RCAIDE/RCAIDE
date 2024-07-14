@@ -48,6 +48,7 @@ class Vehicle(Analysis.Container):
         self.costs        = None
         self.energy       = None
         self.noise        = None
+        self.emissions    = None
         self.planet       = None
         self.sizing       = None
         self.stability    = None
@@ -106,6 +107,7 @@ class Vehicle(Analysis.Container):
             RCAIDE.Framework.Analyses.Atmospheric.Atmospheric   : 'atmosphere'   ,
             RCAIDE.Framework.Analyses.Planets.Planet            : 'planet'       ,
             RCAIDE.Framework.Analyses.Noise.Noise               : 'noise'        ,
+            RCAIDE.Framework.Analyses.Emissions.Emissions       : 'emissions'    ,
             RCAIDE.Framework.Analyses.Costs.Costs               : 'costs'        ,
         }
 

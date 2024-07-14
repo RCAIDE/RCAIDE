@@ -38,4 +38,18 @@ class Jet_A1(Propellant):
         self.temperatures.flash        = 311.15                           # K
         self.temperatures.autoignition = 483.15                           # K
         self.temperatures.freeze       = 226.15                           # K
-        self.temperatures.boiling      = 0.0                              # K
+        self.temperatures.boiling      = 0.0                              # K 
+
+        self.emission_indices.Production  = 0.4656   # kg/kg Greet 
+        self.emission_indices.CO2         = 3.16    # kg/kg  fuel
+        self.emission_indices.H2O         = 1.34    # kg/kg  fuel 
+        self.emission_indices.SO2         = 0.0012  # kg/kg  fuel
+        self.emission_indices.NOx         = 0.01514 # kg/kg  fuel
+        self.emission_indices.Soot        = 0.0012  # kg/kg  fuel
+
+        self.global_warming_potential_100.CO2       = 1     # CO2e/kg  
+        self.global_warming_potential_100.H2O       = 0.06  # CO2e/kg  
+        self.global_warming_potential_100.SO2       = -226  # CO2e/kg  
+        self.global_warming_potential_100.NOx       = 52    # CO2e/kg  
+        self.global_warming_potential_100.Soot      = 1166  # CO2e/kg    
+        self.global_warming_potential_100.Contrails = 11 # kg/CO2e/km  

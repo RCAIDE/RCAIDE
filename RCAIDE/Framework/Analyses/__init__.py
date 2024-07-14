@@ -18,6 +18,7 @@ from . import Common
 from . import Aerodynamics
 from . import Atmospheric
 from . import Costs
+from . import Emissions
 from . import Energy
 from . import Noise
 from . import Planets

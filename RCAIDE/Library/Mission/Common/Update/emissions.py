@@ -1,16 +1,16 @@
 ## @ingroup Library-Missions-Segments-Common-Update
-# RCAIDE/Library/Missions/Common/Update/noise.py
+# RCAIDE/Library/Missions/Common/Update/emissions.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
-# noise
+#  emissions
 # ----------------------------------------------------------------------------------------------------------------------
 
 ## @ingroup Library-Missions-Segments-Common-Update
-def noise(segment):
-    """ Updates the noise produced by the vehicle
+def emissions(segment):
+    """ Updates the emissions produced by the vehicle
         
         Assumptions:
         N/A
@@ -25,7 +25,7 @@ def noise(segment):
         N/A
                     
     """   
-    noise_model = segment.analyses.noise
+    emissions_model = segment.analyses.emissions
     
-    if noise_model:
-        noise_model.evaluate_noise(segment)    
+    if emissions_model:
+        emissions_model.evaluate_emissions(segment)    

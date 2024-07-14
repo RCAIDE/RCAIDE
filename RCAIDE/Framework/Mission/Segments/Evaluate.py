@@ -127,6 +127,7 @@ class Evaluate(Segment):
         post_process.inertial_position  = Common.Update.inertial_horizontal_position
         post_process.battery_age        = Common.Update.battery_age  
         post_process.noise              = Common.Update.noise
+        post_process.emissions          = Common.Update.emissions
         
         return
 

@@ -29,5 +29,5 @@ class Aviation_Gasoline(Propellant):
         """    
         self.tag             ='Aviation_Gasoline'
         self.density         = 721.0            # kg/m^3
-        self.specific_energy = 43.71e6          # J/kg
+        self.specific_energy = 43.71e6          # J/kg     
         

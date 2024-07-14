@@ -1,4 +1,4 @@
-## @defgroup Library-Plots-Energy Battery 
+## @defgroup Library-Plots-Energy 
 # RCAIDE/Library/Plots/Energy/__init__.py
 # 
 

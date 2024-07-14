@@ -11,7 +11,8 @@
 
 from . import Aerodynamics
 from . import Costs 
-from . import Energy
+from . import Emissions
+from . import Energy 
 from . import Geometry
 from . import Noise
 from . import Performance 
