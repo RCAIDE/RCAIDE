@@ -12,7 +12,7 @@
 # RCAIDE imports  
 import RCAIDE 
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method   import VLM   
-from RCAIDE.Library.Methods.Stability.Common          import compute_dynamic_flight_modes
+from RCAIDE.Library.Methods.Stability.Common                     import compute_dynamic_flight_modes
 
 # package imports
 import numpy                                                     as np 
@@ -53,7 +53,7 @@ def evaluate_surrogate(state,settings,geometry):
     
     # only compute derivative if control surface exists
     if stability.aileron_flag: 
-        delta_a     = np.atleast_2d(conditions.control_surfaces.aileron.deflection)
+        delta_a        = np.atleast_2d(conditions.control_surfaces.aileron.deflection)
         pts_delta_a    = np.hstack((delta_a,Mach))
         Clift_delta_a  = np.atleast_2d(surrogates.Clift_delta_a(pts_delta_a)).T
         Cdrag_delta_a  = np.atleast_2d(surrogates.Cdrag_delta_a(pts_delta_a)).T  
@@ -405,11 +405,8 @@ def evaluate_no_surrogate(state,settings,geometry):
         None  
     """          
 
-    # unpack
-    stability  = state.analyses.stability
-    conditions = state.conditions 
-    settings   = stability.settings
-    geometry   = stability.geometry     
+    # unpack 
+    conditions = state.conditions      
     
     # if in transonic regime, use surrogate
     Clift,Cdrag,CX,CY,CZ,CL_mom,CM,CN, S_ref,b_ref,c_ref,X_ref,Y_ref ,Z_ref = evaluate_VLM(conditions,settings,geometry) 
@@ -425,7 +422,7 @@ def evaluate_no_surrogate(state,settings,geometry):
     conditions.static_stability.coefficients.N      = np.atleast_2d(CN).T 
     return  
 
-def sample_training(stability):
+def train_VLM_surrogates(stability):
     """Call methods to run VLM for sample point evaluation. 
     
     Assumptions:
@@ -635,8 +632,8 @@ def sample_training(stability):
     
     Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_pitch_rate     = np.reshape(Clift_res,(len_Mach,len_pitch_rate)).T - Clift_alpha_0
-    Cdrag_pitch_rate     = np.reshape(Cdrag_res,(len_Mach,len_pitch_rate)).T - Cdrag_alpha_0
+    Clift_q     = np.reshape(Clift_res,(len_Mach,len_pitch_rate)).T - Clift_alpha_0
+    Cdrag_q     = np.reshape(Cdrag_res,(len_Mach,len_pitch_rate)).T - Cdrag_alpha_0
     CX_pitch_rate        = np.reshape(CX_res,(len_Mach,len_pitch_rate)).T    - CX_alpha_0   
     CY_pitch_rate        = np.reshape(CY_res,(len_Mach,len_pitch_rate)).T    - CY_alpha_0   
     CZ_pitch_rate        = np.reshape(CZ_res,(len_Mach,len_pitch_rate)).T    - CZ_alpha_0   
@@ -658,7 +655,7 @@ def sample_training(stability):
         
     Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)  
         
-    Clift_roll_rate     = np.reshape(Clift_res,(len_Mach,len_roll_rate)).T - Clift_alpha_0
+    Clift_p     = np.reshape(Clift_res,(len_Mach,len_roll_rate)).T - Clift_alpha_0
     Cdrag_roll_rate     = np.reshape(Cdrag_res,(len_Mach,len_roll_rate)).T - Cdrag_alpha_0
     CX_roll_rate        = np.reshape(CX_res,(len_Mach,len_roll_rate)).T    - CX_alpha_0   
     CY_roll_rate        = np.reshape(CY_res,(len_Mach,len_roll_rate)).T    - CY_alpha_0   
@@ -681,7 +678,7 @@ def sample_training(stability):
     
     Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_yaw_rate     = np.reshape(Clift_res,(len_Mach,len_yaw_rate)).T - Clift_alpha_0
+    Clift_r     = np.reshape(Clift_res,(len_Mach,len_yaw_rate)).T - Clift_alpha_0
     Cdrag_yaw_rate     = np.reshape(Cdrag_res,(len_Mach,len_yaw_rate)).T - Cdrag_alpha_0
     CX_yaw_rate        = np.reshape(CX_res,(len_Mach,len_yaw_rate)).T    - CX_alpha_0   
     CY_yaw_rate        = np.reshape(CY_res,(len_Mach,len_yaw_rate)).T    - CY_alpha_0   
@@ -698,16 +695,16 @@ def sample_training(stability):
     training.Clift_u        = Clift_u       
     training.Clift_v        = Clift_v       
     training.Clift_w        = Clift_w       
-    training.Clift_p        = Clift_roll_rate       
-    training.Clift_q        = Clift_pitch_rate       
-    training.Clift_r        = Clift_yaw_rate       
+    training.Clift_p        = Clift_p       
+    training.Clift_q        = Clift_q       
+    training.Clift_r        = Clift_r       
     training.Cdrag_alpha    = Cdrag_alpha   
     training.Cdrag_beta     = Cdrag_beta 
     training.Cdrag_u        = Cdrag_u       
     training.Cdrag_v        = Cdrag_v       
     training.Cdrag_w        = Cdrag_w       
     training.Cdrag_p        = Cdrag_roll_rate        
-    training.Cdrag_q        = Cdrag_pitch_rate       
+    training.Cdrag_q        = Cdrag_q       
     training.Cdrag_r        = Cdrag_yaw_rate         
     training.CX_alpha       = CX_alpha      
     training.CX_beta        = CX_beta 
@@ -772,9 +769,9 @@ def sample_training(stability):
     training.dClift_du = (Clift_u[0,:] - Clift_u[1,:]) / (u[0] - u[1])            
     training.dClift_dv = (Clift_v[0,:] - Clift_v[1,:]) / (v[0] - v[1])          
     training.dClift_dw = (Clift_w[0,:] - Clift_w[1,:]) / (w[0] - w[1])         
-    training.dClift_dp = (Clift_roll_rate[0,:] - Clift_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])            
-    training.dClift_dq = (Clift_pitch_rate[0,:] - Clift_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])        
-    training.dClift_dr = (Clift_yaw_rate[0,:] - Clift_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                
+    training.dClift_dp = (Clift_p[0,:] - Clift_p[1,:]) / (roll_rate[0]-roll_rate[1])            
+    training.dClift_dq = (Clift_q[0,:] - Clift_q[1,:]) / (pitch_rate[0]-pitch_rate[1])        
+    training.dClift_dr = (Clift_r[0,:] - Clift_r[1,:]) / (yaw_rate[0]-yaw_rate[1])                
     training.dCdrag_dalpha = (Cdrag_alpha[0,:] - Cdrag_alpha[1,:]) / (AoA[0] - AoA[1])    
     training.dCdrag_dbeta = (Cdrag_beta[0,:] - Cdrag_beta[1,:]) / (Beta[0] - Beta[1])
                 
@@ -782,7 +779,7 @@ def sample_training(stability):
     training.dCdrag_dv = (Cdrag_v[0,:] - Cdrag_v[1,:]) / (v[0] - v[1])                   
     training.dCdrag_dw = (Cdrag_w[0,:] - Cdrag_w[1,:]) / (w[0] - w[1])                  
     training.dCdrag_dp = (Cdrag_roll_rate[0,:] - Cdrag_roll_rate[1,:]) / (roll_rate[0]-roll_rate[1])             
-    training.dCdrag_dq = (Cdrag_pitch_rate[0,:] - Cdrag_pitch_rate[1,:]) / (pitch_rate[0]-pitch_rate[1])         
+    training.dCdrag_dq = (Cdrag_q[0,:] - Cdrag_q[1,:]) / (pitch_rate[0]-pitch_rate[1])         
     training.dCdrag_dr = (Cdrag_yaw_rate[0,:] - Cdrag_yaw_rate[1,:]) / (yaw_rate[0]-yaw_rate[1])                 
     training.dCX_dalpha = (CX_alpha[0,:] - CX_alpha[1,:]) / (AoA[0] - AoA[1])            
     training.dCX_dbeta = (CX_beta[0,:] - CX_beta[1,:]) / (Beta[0] - Beta[1]) 
@@ -1084,7 +1081,7 @@ def sample_training(stability):
                         conditions                                      = RCAIDE.Framework.Mission.Common.Results()
                         conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
                         conditions.freestream.mach_number               = Machs 
-                        conditions.control_surfaces.flat.deflection     = np.ones_like(Machs)*Delta_s_s
+                        conditions.control_surfaces.slat.deflection     = np.ones_like(Machs)*Delta_s_s
                         control_surface.deflection                      = delta_s[s_i]
                         
                         Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
@@ -1117,7 +1114,7 @@ def sample_training(stability):
     
     return
         
-def build_surrogate(stability):
+def build_VLM_surrogates(stability):
     """Build a surrogate using sample evaluation results.
     
     Assumptions:
@@ -1377,14 +1374,14 @@ def build_surrogate(stability):
         surrogates.CL_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CL_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
         surrogates.CM_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CM_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
         surrogates.CN_delta_s       = RegularGridInterpolator((slat_data,mach_data),training.CN_delta_s  ,method = 'linear',   bounds_error=False, fill_value=None) 
-        surrogates.dClift_ddelta_s  = interpolate.interp1d(training.dClift_ddelta_s  ,kind = 'linear',   bounds_error=False, fill_value=None)  
-        surrogates.dCdrag_ddelta_s  = interpolate.interp1d(training.dCdrag_ddelta_s  ,kind = 'linear',   bounds_error=False, fill_value=None)   
-        surrogates.dCX_ddelta_s     = interpolate.interp1d(training.dCX_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
-        surrogates.dCY_ddelta_s     = interpolate.interp1d(training.dCY_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None)  
-        surrogates.dCZ_ddelta_s     = interpolate.interp1d(training.dCZ_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
-        surrogates.dCL_ddelta_s     = interpolate.interp1d(training.dCL_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
-        surrogates.dCM_ddelta_s     = interpolate.interp1d(training.dCM_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
-        surrogates.dCN_ddelta_s     = interpolate.interp1d(training.dCN_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None)   
+        surrogates.dClift_ddelta_s  = interpolate.interp1d(mach_data, training.dClift_ddelta_s  ,kind = 'linear',   bounds_error=False, fill_value=None)  
+        surrogates.dCdrag_ddelta_s  = interpolate.interp1d(mach_data, training.dCdrag_ddelta_s  ,kind = 'linear',   bounds_error=False, fill_value=None)   
+        surrogates.dCX_ddelta_s     = interpolate.interp1d(mach_data, training.dCX_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+        surrogates.dCY_ddelta_s     = interpolate.interp1d(mach_data, training.dCY_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None)  
+        surrogates.dCZ_ddelta_s     = interpolate.interp1d(mach_data, training.dCZ_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+        surrogates.dCL_ddelta_s     = interpolate.interp1d(mach_data, training.dCL_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+        surrogates.dCM_ddelta_s     = interpolate.interp1d(mach_data, training.dCM_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None) 
+        surrogates.dCN_ddelta_s     = interpolate.interp1d(mach_data, training.dCN_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value=None)   
 
     return
 

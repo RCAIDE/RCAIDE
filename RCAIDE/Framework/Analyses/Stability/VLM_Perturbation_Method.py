@@ -103,8 +103,8 @@ class VLM_Perturbation_Method(Stability):
 
         # conditions table, used for surrogate model training
         self.training                                 = Data()
-        self.training.Mach                            = np.array([0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5])        
         self.training.angle_of_attack                 = np.array([-10, -7.5, -5, -2.5, 1E-12, 2.5, 5, 7.5, 10]) * Units.deg     
+        self.training.Mach                            = np.array([0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5])        
         self.training.sideslip_angle                  = np.array([0, 5]) * Units.deg
         self.training.aileron_deflection              = np.array([0, 1]) * Units.deg
         self.training.elevator_deflection             = np.array([0, 1]) * Units.deg   
@@ -132,10 +132,10 @@ class VLM_Perturbation_Method(Stability):
         # If we are using the surrogate
         if use_surrogate == True: 
             # sample training data
-            sample_training(self)
+            train_VLM_surrogates(self)
 
             # build surrogate
-            build_surrogate(self) 
+            build_VLM_surrogates(self) 
 
         # build the evaluation process
         compute                                          = Process() 
