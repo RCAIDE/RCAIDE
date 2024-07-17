@@ -29,7 +29,7 @@ def parasite_drag_wing(state,settings,geometry):
     Source:
     http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html (Stanford AA241 A/B Course Notes)
 
-    Inputs:
+    Args:
     settings.wing_parasite_drag_form_factor      [Unitless]
     state.conditions.freestream.
       mach_number                                [Unitless]
@@ -48,11 +48,8 @@ def parasite_drag_wing(state,settings,geometry):
       transition_x_lower                         [Unitless]
       
       
-    Outputs:
-    wing_parasite_drag                           [Unitless]
-
-    Properties Used:
-    N/A
+    Returns:
+    wing_parasite_drag                           [Unitless] 
     """
     
     # unpack inputs
@@ -158,14 +155,14 @@ def parasite_drag_wing(state,settings,geometry):
     wing_result = Data(
         wetted_area               = wing.areas.wetted,
         reference_area            = Sref   , 
-        parasite_drag_coefficient = wing_parasite_drag ,
-        skin_friction_coefficient = (cf_w_u+cf_w_l)/2.   ,
+        total                     = wing_parasite_drag ,
+        skin_friction             = (cf_w_u+cf_w_l)/2.   ,
         compressibility_factor    = (k_comp_u+k_comp_l)/2 ,
         reynolds_factor           = (k_reyn_u+k_reyn_l)/2 , 
         form_factor               = k_w    ,
     )
     
-    state.conditions.aerodynamics.drag_breakdown.parasite[wing.tag] = wing_result
+    state.conditions.aerodynamics.coefficients.drag.breakdown.parasite[wing.tag] = wing_result
 
     return wing_parasite_drag
 
@@ -180,7 +177,7 @@ def compute_parasite_drag(re,mac_w,Mc,Tc,xtu,xtl,sweep_w,t_c_w,Sref,Swet,C):
     Source:
     adg.stanford.edu (Stanford AA241 A/B Course Notes)
 
-    Inputs:
+    Args:
     re (Reynolds Number)    [Unitless]
     mac_w (Wing MAC)        [m]
     Mc (Mach Number)        [Unitless]
@@ -193,7 +190,7 @@ def compute_parasite_drag(re,mac_w,Mc,Tc,xtu,xtl,sweep_w,t_c_w,Sref,Swet,C):
     Swet (Wing Wetted Area) [m^2]
     C (Form Factor)         [Unitless]
       
-    Outputs:
+    Returns:
     (u is upper, l is lower)
     wing_parasite_drag                 [Unitless]
     k_w    (Form Factor)               [Unitless]
@@ -202,10 +199,7 @@ def compute_parasite_drag(re,mac_w,Mc,Tc,xtu,xtl,sweep_w,t_c_w,Sref,Swet,C):
     k_comp_u (Compressibility Factor)  [Unitless]
     k_comp_l                           [Unitless]
     k_reyn_u (Reynolds Factor)         [Unitless]
-    k_reyn_l                           [Unitless]
-
-    Properties Used:
-    N/A
+    k_reyn_l                           [Unitless] 
     """    
    
     # reynolds number

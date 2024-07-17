@@ -1,46 +1,37 @@
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
-# fuselage_correction.py
-# 
-# Created:  Dec 2013, A. Variyar 
-# Modified: Feb 2014, A. Variyar, T. Lukaczyk, T. Orra 
-#           Apr 2014, A. Variyar
-#           Jan 2015, E. Botero
+# RCAIDE/Library/Methods/Aerodynamics/Common/Lift/fuselage_correction.py
+# (c) Copyright 2023 Aerospace Research Community LLC
+#  
+# Created: Mar 2024 M. Carke     
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Fuselage Correction
-# ----------------------------------------------------------------------
-
-## @ingroup Methods-Aerodynamics-Common-Fidelity_Zero-Lift
+# ----------------------------------------------------------------------------------------------------------------------
 def fuselage_correction(state,settings,geometry):  
     """Corrects aircraft lift based on fuselage effects
 
     Assumptions:
-    None
+        None
 
     Source:
-    adg.stanford.edu (Stanford AA241 A/B Course Notes)
+        adg.stanford.edu (Stanford AA241 A/B Course Notes)
 
-    Inputs:
-    settings.fuselage_lift_correction  [Unitless]
-    state.conditions.
-      freestream.mach_number           [Unitless]
-      aerodynamics.angle_of_attack     [radians]
-      aerodynamics.coefficients.lift    [Unitless]
+    Args:
+        settings.fuselage_lift_correction (float): fuselage lift correction [unitless]
+        state.conditions.
+          freestream.mach_number          (numpy.ndarray): mach number      [unitless]
+          aerodynamics.angles.alpha       (numpy.ndarray): angle of attack  [radians]
+          aerodynamics.coefficients.lift  (numpy.ndarray): lift coefficient [unitless]
 
-    Outputs:
-    aircraft_lift_total                [Unitless]
-
-    Properties Used:
-    N/A
-    """         
-   
-    # unpack
+    Returns:
+        aircraft_total_lift               (numpy.ndarray): lift coefficient [unitless]   
+    """        
+    # unpack 
     fus_correction  = settings.fuselage_lift_correction
-    wings_lift_comp = state.conditions.aerodynamics.coefficients.lift
+    wings_lift_comp = state.conditions.aerodynamics.coefficients.lift.total
     
-    # total lift, accounting one fuselage
-    aircraft_lift_total = wings_lift_comp * fus_correction 
+    # total lift, assuming one fuselage
+    aircraft_total_lift = wings_lift_comp * fus_correction  
 
-    state.conditions.aerodynamics.coefficients.lift= aircraft_lift_total
+    state.conditions.aerodynamics.coefficients.lift.total = aircraft_total_lift
 
-    return aircraft_lift_total
+    return 

@@ -26,7 +26,11 @@ class Jet_A1(Propellant):
             None
         
         Source:
-            lower_heating_value: Boehm et al, Lower Heating Value of Jet Fuel From Hydrocarbon Class Concentration Data and Thermo-Chemical Reference Data: An Uncertainty Quantification
+            lower_heating_value: Boehm et al, Lower Heating Value of Jet Fuel From Hydrocarbon Class Concentration Data
+            and Thermo-Chemical Reference Data: An Uncertainty Quantification
+            
+            emission indices: NASA's Engine Performance Program (NEPP) and 
+    
         """    
         self.tag                       = 'Jet A1'
         self.reactant                  = 'O2'

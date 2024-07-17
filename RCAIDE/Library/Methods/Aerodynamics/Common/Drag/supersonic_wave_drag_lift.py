@@ -1,22 +1,21 @@
-## @ingroup Methods-Aerodynamics-Common-Drag
-# RCAIDE/Methods/Aerodynamics/Common/Drag/wave_drag.py
+# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/supersonic_compressibility_drag_total.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jun 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------- 
+   
+from RCAIDE.Library.Components.Wings          import Main_Wing 
 
-# RCAIDE imports   
+# package imports
 import numpy as np
-from RCAIDE.Library.Components.Wings import Main_Wing
 
-# ----------------------------------------------------------------------
-#  Wave Drag 
-# ----------------------------------------------------------------------
-## @ingroup Methods-Aerodynamics-Common-Drag
-def wave_drag(conditions,configuration,wing):
+# ---------------------------------------------------------------------------------------------------------------------- 
+#  Supersonic Wave Draf Due to Lift 
+# ----------------------------------------------------------------------------------------------------------------------  
+def supersonic_wave_drag_lift(conditions,configuration,wing):
     """Computes wave drag due to lift
 
     Assumptions:
@@ -34,34 +33,35 @@ def wave_drag(conditions,configuration,wing):
     wing.aspect_ratio                        [-]
 
     Returns:
-    wave_drag_lift                           [Unitless] 
+    wave_drag_lift                           [Unitless]
+
+    Properties Used:
+    N/A
     """  
 
     # Unpack
-    freestream   = conditions.freestream
-    
-    # Conditions
-    Mc  = freestream.mach_number * 1.0
+    freestream  = conditions.freestream 
+    Mach        = freestream.mach_number * 1.0
     
     # Lift coefficient
     if isinstance(wing,Main_Wing):
-        CL = conditions.aerodynamics.coefficients.lift
+        CL = conditions.aerodynamics.coefficients.lift.total
     else:
-        CL = np.zeros_like(conditions.aerodynamics.coefficients.lift)
+        CL = np.zeros_like(conditions.aerodynamics.coefficients.lift.total)
 
     # JAXA method
     s    = wing.spans.projected / 2
     l    = wing.total_length
     AR   = wing.aspect_ratio
     p    = 2/AR*s/l
-    beta = np.sqrt(Mc[Mc >= 1.01]**2-1)
+    beta = np.sqrt(Mach[Mach >= 1.01]**2-1)
     
     Kw = (1+1/p)*fw(beta*s/l)/(2*beta**2*(s/l)**2)
     
     # Ignore area comparison since this is full vehicle CL
-    CDwl = CL[Mc >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
-    wave_drag_lift = np.zeros_like(Mc)
-    wave_drag_lift[Mc >= 1.01] = CDwl
+    CDwl           = CL[Mach >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
+    wave_drag_lift = np.zeros_like(Mach)
+    wave_drag_lift[Mach >= 1.01] = CDwl
 
     return wave_drag_lift
 
@@ -79,10 +79,7 @@ def fw(x):
     x    [Unitless]
 
     Returns:
-    ret  [Unitless]
-
-    Properties Used:
-    N/A
+    ret  [Unitless] 
     """  
     
     ret = np.zeros_like(x)

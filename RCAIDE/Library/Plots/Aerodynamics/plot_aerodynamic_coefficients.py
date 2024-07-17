@@ -66,8 +66,8 @@ def plot_aerodynamic_coefficients(results,
     
     for i in range(len(results.segments)): 
         time = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min
-        cl   = results.segments[i].conditions.aerodynamics.coefficients.lift[:,0,None]
-        cd   = results.segments[i].conditions.aerodynamics.coefficients.drag[:,0,None]
+        cl   = results.segments[i].conditions.aerodynamics.coefficients.lift.total[:,0,None]
+        cd   = results.segments[i].conditions.aerodynamics.coefficients.drag.total[:,0,None]
         aoa  = results.segments[i].conditions.aerodynamics.angles.alpha[:,0] / Units.deg
         l_d  = cl/cd    
                        

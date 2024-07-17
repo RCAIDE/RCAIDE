@@ -152,9 +152,7 @@ def train_model(aerodynamics, Mach):
     aerodynamics.X_ref = X_ref
     aerodynamics.Y_ref = Y_ref
     aerodynamics.Z_ref = Z_ref
-    aerodynamics.aspect_ratio = (b_ref ** 2) / S_ref 
-    oswald_efficiency =  (Clift_res**2)/(np.pi* aerodynamics.aspect_ratio *Cdrag_res) 
-    oswald_efficiency = np.reshape(oswald_efficiency,(len_Mach,len_AoA)).T
+    aerodynamics.aspect_ratio = (b_ref ** 2) / S_ref  
     
     Clift_wing_alpha = Data()
     Cdrag_wing_alpha = Data() 
@@ -318,8 +316,7 @@ def train_model(aerodynamics, Mach):
     CM_r        = np.reshape(CM_res,(len_Mach,len_r)).T    - CM_alpha_0   
     CN_r        = np.reshape(CN_res,(len_Mach,len_r)).T    - CN_alpha_0   
         
-    # STABILITY COEFFICIENTS 
-    training.oswald_efficiency = oswald_efficiency
+    # STABILITY COEFFICIENTS  
     training.Clift_alpha       = Clift_alpha 
     training.Clift_wing_alpha  = Clift_wing_alpha
     training.Clift_beta        = Clift_beta
@@ -813,8 +810,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
         Cdrag_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Cdrag_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Cdrag_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
  
 
-    aerodynamics.aspect_ratio = (aerodynamics.b_ref ** 2) /aerodynamics.S_ref 
-    oswald_efficiency         =  (Clift_alpha**2)/(np.pi* aerodynamics.aspect_ratio *Cdrag_alpha)  
+    aerodynamics.aspect_ratio = (aerodynamics.b_ref ** 2) /aerodynamics.S_ref  
     
     # Angle of Attack at 0 Degrees 
     Clift_alpha_0   =  np.tile(Clift_alpha[4][None,:],(2,1))
@@ -915,10 +911,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     CM_r        =  np.concatenate((training_subsonic.CM_r[:,-1][:,None]    , training_supersonic.CM_r[:,0][:,None] ), axis = 1)      - CM_alpha_0       
     CN_r        =  np.concatenate((training_subsonic.CN_r[:,-1][:,None]    , training_supersonic.CN_r[:,0][:,None] ), axis = 1)      - CN_alpha_0       
  
-    # STABILITY COEFFICIENTS
-
     # STABILITY COEFFICIENTS 
-    training.oswald_efficiency = oswald_efficiency 
     training.Clift_wing_alpha  = Clift_wing_alpha   
 
     training.Clift_alpha       = Clift_alpha   

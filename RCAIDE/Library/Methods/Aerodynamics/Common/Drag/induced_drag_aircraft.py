@@ -66,16 +66,14 @@ def induced_drag_aircraft(state,settings,geometry):
     """
 
     # unpack inputs
-    conditions    = state.conditions
-    configuration = settings
-    wings         = geometry.wings
-    
-    K       = configuration.viscous_lift_dependent_drag_factor
-    e_osw   = configuration.oswald_efficiency_factor	
-    e_span  = configuration.span_efficiency
-    CL      = conditions.aerodynamics.coefficients.lift
-    CDi     = conditions.aerodynamics.drag_breakdown.induced.inviscid
-    S_ref   = geometry.reference_area
+    conditions    = state.conditions 
+    K             = settings.viscous_lift_dependent_drag_factor
+    e_osw         = settings.oswald_efficiency_factor	
+    e_span        = settings.span_efficiency
+    CL            = conditions.aerodynamics.coefficients.lift
+    CDi           = conditions.aerodynamics.drag_breakdown.induced.inviscid
+    S_ref         = geometry.reference_area
+    wings         = geometry.wings 
 
     wing_viscous_induced_drags = Data()
 

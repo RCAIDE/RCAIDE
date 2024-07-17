@@ -16,15 +16,7 @@ from RCAIDE.Framework.Analyses import Analysis
 # ----------------------------------------------------------------------
 ## @ingroup Analyses-Emissions
 class Emissions(Analysis):
-    """ RCAIDE.Framework.Analyses.Emissions.Emissions()
-    
-        The Top Level Emissions Analysis Class
-        
-            Assumptions:
-            None
-            
-            Source:
-            N/A
+    """ The Top Level Emissions Analysis Class 
     """
     def __defaults__(self):
         """This sets the default values and methods for the analysis.
@@ -33,16 +25,7 @@ class Emissions(Analysis):
             None
     
             Source:
-            N/A
-    
-            Inputs:
-            None
-    
-            Outputs:
-            None
-    
-            Properties Used:
-            N/A
+            None 
             """                   
         self.tag    = 'Emissions'        
   
@@ -57,18 +40,15 @@ class Emissions(Analysis):
         None
 
         Source:
-        N/A
+        None 
 
         Inputs:
-        None
+        self   - emissions analyses 
+        state  - flight conditions 
 
         Outputs:
-        results   <Results class> (empty)
-
-        Properties Used:
-        N/A
-        """           
-        
+        results  
+        """         
         results = Data()
         
         return results 

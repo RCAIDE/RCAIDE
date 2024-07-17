@@ -62,8 +62,8 @@ def stability(segment):
         F[:,1] = F[:,1] + W[:,0]*np.sin(phi) 
 
         # rewrite aerodynamic CL and CD
-        conditions.aerodynamics.coefficients.lift  = CL
-        conditions.aerodynamics.coefficients.drag  = CD
+        conditions.aerodynamics.coefficients.lift.total  = CL
+        conditions.aerodynamics.coefficients.drag.total  = CD
         conditions.frames.wind.force_vector[:,:]   = F[:,:]
 
         # -----------------------------------------------------------------

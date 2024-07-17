@@ -1,5 +1,5 @@
 ## @ingroup Analyses-Aerodynamics
-# RCAIDE/Framework/Analyses/Aerodynamics/Subsonic_VLM.py
+# RCAIDE/Framework/Analyses/Aerodynamics/Subsonic_VLM_Perturbation_Method.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,22 +10,21 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Framework.Core                             import Data, Units
-from RCAIDE.Framework.Analyses                         import Process 
-from RCAIDE.Library.Methods.Aerodynamics               import Common
-from .Aerodynamics                                     import Aerodynamics 
-from RCAIDE.Framework.Analyses.Common.Process_Geometry import Process_Geometry 
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import *  
-#from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.evaluate_VLM import *
+from RCAIDE.Framework.Core                                     import Data, Units
+from RCAIDE.Framework.Analyses                                 import Process 
+from RCAIDE.Library.Methods.Aerodynamics                       import Common
+from .Stability                                                import Stability  
+from RCAIDE.Framework.Analyses.Common.Process_Geometry         import Process_Geometry 
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import *   
 
 # package imports 
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Subsonic_VLM
+#  Vortex_Lattice_Perturbation_Method
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Aerodynamics
-class Subsonic_VLM(Aerodynamics):
+class Vortex_Lattice_Perturbation_Method(Stability):
     """This is a subsonic aerodynamic buildup analysis based on the vortex lattice method
 
      Assumptions:
@@ -84,10 +83,10 @@ class Subsonic_VLM(Aerodynamics):
         settings.span_efficiency                    = None
         settings.recalculate_total_wetted_area      = False
         settings.propeller_wake_model               = False 
-        settings.model_fuselage                     = False
-        settings.model_nacelle                      = False
+        settings.model_fuselage                     = False 
         settings.discretize_control_surfaces        = True 
         settings.use_surrogate                      = True
+        settings.trim_aircraft                      = True 
         
         settings.number_of_spanwise_vortices        = 15
         settings.number_of_chordwise_vortices       = 5
@@ -104,8 +103,7 @@ class Subsonic_VLM(Aerodynamics):
         # conditions table, used for surrogate model training
         self.training                              = Data()
        
-        self.training.angle_of_attack              = np.array([-10, -7.5, -5, -2.5, 1E-12, 2.5, 5, 7.5, 10, 12., 45., 75.]) * Units.deg
-        #self.training.Mach                         = np.array([0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5])     
+        self.training.angle_of_attack              = np.array([-10, -7.5, -5, -2.5, 1E-12, 2.5, 5, 7.5, 10, 12., 45., 75.]) * Units.deg 
         self.training.Mach                         = np.array([0.1 , 0.2 , 0.3,  0.5,  0.75 , 0.85 , 0.9, 1.3, 1.35 , 1.5 , 2.0, 2.25 , 2.5  , 3.0  , 3.5])  
         
         self.training.subsonic                     = None
@@ -161,8 +159,7 @@ class Subsonic_VLM(Aerodynamics):
         else:
             compute.lift.inviscid_wings  = evaluate_no_surrogate
         compute.lift.vortex                        = RCAIDE.Library.Methods.skip
-        compute.lift.fuselage                      = Common.Lift.fuselage_correction
-        compute.lift.total                         = Common.Lift.aircraft_total  
+        compute.lift.fuselage                      = Common.Lift.fuselage_correction 
         compute.drag                               = Process()
         compute.drag.parasite                      = Process()
         compute.drag.parasite.wings                = Process_Geometry('wings')
@@ -170,9 +167,8 @@ class Subsonic_VLM(Aerodynamics):
         compute.drag.parasite.fuselages            = Process_Geometry('fuselages')
         compute.drag.parasite.fuselages.fuselage   = Common.Drag.parasite_drag_fuselage
         compute.drag.parasite.booms                = Process_Geometry('booms')
-        compute.drag.parasite.booms.boom           = Common.Drag.parasite_drag_fuselage
-        compute.drag.parasite.nacelles             = Process_Geometry('nacelles')
-        compute.drag.parasite.nacelles.nacelle     = Common.Drag.parasite_drag_nacelle
+        compute.drag.parasite.booms.boom           = Common.Drag.parasite_drag_fuselage 
+        compute.drag.parasite.nacelles             = Common.Drag.parasite_drag_nacelle
         compute.drag.parasite.pylons               = Common.Drag.parasite_drag_pylon
         compute.drag.parasite.total                = Common.Drag.parasite_total
         compute.drag.induced                       = Common.Drag.induced_drag_aircraft
@@ -180,11 +176,13 @@ class Subsonic_VLM(Aerodynamics):
         compute.drag.compressibility.wings         = Process_Geometry('wings')
         compute.drag.compressibility.wings.wing    = Common.Drag.compressibility_drag_wing
         compute.drag.compressibility.total         = Common.Drag.compressibility_drag_wing_total
-        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag_aircraft_ESDU
-        compute.drag.untrimmed                     = Common.Drag.untrimmed
-        compute.drag.trim                          = Common.Drag.trim
+        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag_aircraft
+        compute.drag.untrimmed_drag                = Common.Drag.untrimmed_drag
+        compute.drag.trimmed_drag                  = Common.Drag.trimmed_drag
         compute.drag.spoiler                       = Common.Drag.spoiler_drag
-        compute.drag.total                         = Common.Drag.total_aircraft 
+        compute.drag.total                         = Common.Drag.total_drag
+        compute.stability                          = Process()
+        compute.stability.dynamic_modes            = RCAIDE.Library.Methods.Stability.Common.compute_dynamic_flight_modes 
         self.process.compute                       = compute            
 
         return 
