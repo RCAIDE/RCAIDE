@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core                    import Data 
 from RCAIDE.Library.Components.Wings          import Main_Wing
 from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender  
-from .supersonic_wave_drag_lift               import supersonic_wave_drag_lift
+from .wave_drag              import wave_drag
 from .supersonic_wave_drag_volume_raymer      import supersonic_wave_drag_volume_raymer
 from .supersonic_wave_drag_volume_sears_haack import supersonic_wave_drag_volume_sears_haack
 
@@ -169,7 +169,7 @@ def lift_wave_drag(conditions,configuration,geometry):
             cd_c_l = np.zeros_like(Mach) 
         
             # Calculate wing values at all Mach numbers
-            cd_lift_wave = supersonic_wave_drag_lift(conditions,configuration,wing)
+            cd_lift_wave = wave_drag(conditions,wing)
         
             # Pack supersonic results into correct elements
             cd_c_l[Mach >= 1.01] = cd_lift_wave[0:len(Mach[Mach >= 1.01]),0] 
