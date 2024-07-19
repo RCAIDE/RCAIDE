@@ -128,9 +128,9 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.training.u                                             = np.array([0.1 , 1E-12])  
         self.training.v                                             = np.array([0.1 , 1E-12])  
         self.training.w                                             = np.array([0.1 , 1E-12])    
-        self.training.pitch_rate                                    = np.array([0.01, 1E-12 ])  * Units.rad / Units.sec
-        self.training.roll_rate                                     = np.array([0.3 , 1E-12])  * Units.rad / Units.sec
-        self.training.yaw_rate                                      = np.array([0.01, 1E-12])  * Units.rad / Units.sec
+        self.training.pitch_rate                                    = np.array([0.01, 0.0 ])  * Units.rad / Units.sec
+        self.training.roll_rate                                     = np.array([0.3 , 0.0])  * Units.rad / Units.sec
+        self.training.yaw_rate                                      = np.array([0.01, 0.0])  * Units.rad / Units.sec
                       
         # control surface flags                  
         self.aileron_flag                                           = False 

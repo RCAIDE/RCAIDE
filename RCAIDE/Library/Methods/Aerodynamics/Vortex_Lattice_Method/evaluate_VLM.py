@@ -551,7 +551,7 @@ def evaluate_no_surrogate(state,settings,geometry):
     return
 
 def compute_stability_derivative(sub_sur,trans_sur,sup_sur,h_sub,h_sup,Mach): 
-    derivative = h_sub(Mach)*sub_sur(Mach) +   (h_sup(Mach) - h_sub(Mach))*trans_sur(Mach)  + h_sub(Mach)*sup_sur(Mach) 
+    derivative = h_sub(Mach)*sub_sur(Mach) +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_sur(Mach)  + h_sup(Mach)*sup_sur(Mach) 
     return derivative
 
 def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_sur_CZ,sub_sur_CL,sub_sur_CM,sub_sur_CN,

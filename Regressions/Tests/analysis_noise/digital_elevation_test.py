@@ -56,7 +56,7 @@ def main():
     plot_results(results,regression_plotting_flag)   
 
     X57_SPL        = np.max(results.segments.climb.conditions.noise.total_SPL_dBA) 
-    X57_SPL_true   = 55.032385258066725
+    X57_SPL_true   = 55.07572946679936
     X57_diff_SPL   = np.abs(X57_SPL - X57_SPL_true)
     print('Error: ',X57_diff_SPL)
     assert np.abs((X57_SPL - X57_SPL_true)/X57_SPL_true) < 1e-3    
@@ -170,7 +170,7 @@ def mission_setup(analyses,geospacial_data):
     segment.air_speed_start                              = 100.    * Units['mph'] 
     segment.air_speed_end                                = 120.    * Units['mph'] 
     segment.climb_rate                                   = 50.     * Units['ft/min']         
-    segment.true_course_angle                            = geospacial_data.true_course_angle
+    segment.true_course                                  = geospacial_data.true_course 
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                      = True  

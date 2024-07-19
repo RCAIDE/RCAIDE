@@ -9,8 +9,7 @@
 # RCAIDE imports  
 import RCAIDE
 from RCAIDE.Framework.Core                          import Units , Data 
-from RCAIDE.Library.Plots                           import *       
-from RCAIDE.Library.Methods.Noise.Boom.lift_equivalent_area import lift_equivalent_area
+from RCAIDE.Library.Plots                           import *        
 
 # python imports     
 import numpy as np  

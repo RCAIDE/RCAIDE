@@ -121,7 +121,7 @@ def set_residuals_and_unknowns(mission):
         # Elevator 
         if ctrls.elevator_deflection.active:     
             for i in range(len(ctrls.elevator_deflection.assigned_surfaces)): 
-                if ctrls.elevator_deflection.initial_guess_value != None:  
+                if ctrls.elevator_deflection.initial_guess_values!= None:  
                     segment.state.unknowns["elevator_" + str(i)] = ones_row(1) * ctrls.elevator_deflection.initial_guess_values[i][0]
                 else:
                     segment.state.unknowns["elevator_" + str(i)] = ones_row(1) * 0.0 * Units.degrees  
@@ -130,8 +130,8 @@ def set_residuals_and_unknowns(mission):
         # Elevator 
         if ctrls.rudder_deflection.active:  
             for i in range(len(ctrls.rudder_deflection.assigned_surfaces)):   
-                if ctrls.rudder_deflection.initial_values !=  None: 
-                    segment.state.unknowns["rudder_" + str(i)] = ones_row(1) * ctrls.rudder_deflection.initial_values[i][0]
+                if ctrls.rudder_deflection.initial_guess_values !=  None: 
+                    segment.state.unknowns["rudder_" + str(i)] = ones_row(1) * ctrls.rudder_deflection.initial_guess_values[i][0]
                 else:
                     segment.state.unknowns["rudder_" + str(i)] = ones_row(1) * 0.0 * Units.degrees  
                 num_ctrls += 1    

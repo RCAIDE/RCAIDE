@@ -75,8 +75,8 @@ def compressibility_drag(state,settings,geometry):
 
     low_cutoff_volume_total  = np.zeros_like(Mach)
     high_cutoff_volume_total = np.zeros_like(Mach)     
-    low_cutoff_volume_total  = drag_div(low_mach_cutoff*np.ones([1]), geometry,Cl) 
-    high_cutoff_volume_total = wave_drag_volume(geometry,low_mach_cutoff*np.ones([1]),scaling_factor)
+    low_cutoff_volume_total  = drag_div(low_mach_cutoff*np.ones_like(Mach), geometry,Cl) 
+    high_cutoff_volume_total = wave_drag_volume(geometry,low_mach_cutoff*np.ones_like(Mach),scaling_factor)
     
     peak_volume_total = high_cutoff_volume_total*peak_factor
      
@@ -101,8 +101,8 @@ def compressibility_drag(state,settings,geometry):
     cd_c_v_base[Mach>=peak_mach] = wave_drag_volume(geometry, Mach[Mach>=peak_mach], scaling_factor) 
     
     cd_c_v = np.zeros_like(Mach)
-    cd_c_v[low_inds] = cd_c_v_base[low_inds]*(sub_h00(Mach[low_inds])) + transonic_drag_function(Mach[low_inds],a1[low_inds], peak_mach, peak_volume_total)*(1-sub_h00(Mach[low_inds]))
-    cd_c_v[hi_inds]  = transonic_drag_function(Mach[hi_inds],a2, peak_mach, peak_volume_total)*(sup_h00(Mach[hi_inds])) + cd_c_v_base[hi_inds]*(1-sup_h00(Mach[hi_inds]))
+    cd_c_v[low_inds] = cd_c_v_base[low_inds]*(sub_h00(Mach[low_inds])) + transonic_drag_function(Mach[low_inds],a1[low_inds], peak_mach, peak_volume_total[low_inds])*(1-sub_h00(Mach[low_inds]))
+    cd_c_v[hi_inds]  = transonic_drag_function(Mach[hi_inds],a2[hi_inds], peak_mach, peak_volume_total[hi_inds])*(sup_h00(Mach[hi_inds])) + cd_c_v_base[hi_inds]*(1-sup_h00(Mach[hi_inds]))
 
     if peak_mach<1.01:
         print('Warning: a peak Mach number of less than 1.01 will cause a small discontinuity in lift wave drag')

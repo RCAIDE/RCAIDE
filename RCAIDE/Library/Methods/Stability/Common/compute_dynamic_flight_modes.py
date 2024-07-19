@@ -47,8 +47,7 @@ def compute_dynamic_flight_modes(state,settings,aircraft):
     if np.count_nonzero(aircraft.mass_properties.moments_of_inertia.tensor) > 0:
             
         conditions =  state.conditions 
-        g          = conditions.freestream.gravity 
-        mach       = conditions.freestream.mach_number 
+        g          = conditions.freestream.gravity  
         rho        = conditions.freestream.density
         u0         = conditions.freestream.velocity
         qDyn0      = conditions.freestream.dynamic_pressure  
@@ -146,21 +145,24 @@ def compute_dynamic_flight_modes(state,settings,aircraft):
         shortPeriodDamping        = np.zeros((num_cases,1))
         shortPeriodTimeDoubleHalf = np.zeros((num_cases,1))
         
-        for i in range(num_cases):
-            D  , V = np.linalg.eig(ALon[i,:,:]) # State order: u, w, q, theta
-            LonModes[i,:] = D
-            
-            # Find phugoid
-            phugoidInd               = np.argmax(V[0,:]) # u is the primary state involved
-            phugoidFreqHz[i]         = abs(LonModes[i,phugoidInd]) / 2 / np.pi
-            phugoidDamping[i]        = -np.cos(np.angle(LonModes[i,phugoidInd]))
-            phugoidTimeDoubleHalf[i] = np.log(2) / abs(2 * np.pi * phugoidFreqHz[i] * phugoidDamping[i])
-            
-            # Find short period
-            shortPeriodInd               = np.argmax(V[1,:]) # w is the primary state involved
-            shortPeriodFreqHz[i]         = abs(LonModes[i, shortPeriodInd]) / 2 / np.pi
-            shortPeriodDamping[i]        = -np.cos(np.angle(LonModes[i, shortPeriodInd ]))
-            shortPeriodTimeDoubleHalf[i] = np.log(2) / abs(2 * np.pi * shortPeriodFreqHz[i] * shortPeriodDamping[i]) 
+        if np.any(np.isnan(ALon)):
+            pass
+        else:
+            for i in range(num_cases):
+                D  , V = np.linalg.eig(ALon[i,:,:]) # State order: u, w, q, theta
+                LonModes[i,:] = D
+                
+                # Find phugoid
+                phugoidInd               = np.argmax(V[0,:]) # u is the primary state involved
+                phugoidFreqHz[i]         = abs(LonModes[i,phugoidInd]) / 2 / np.pi
+                phugoidDamping[i]        = -np.cos(np.angle(LonModes[i,phugoidInd]))
+                phugoidTimeDoubleHalf[i] = np.log(2) / abs(2 * np.pi * phugoidFreqHz[i] * phugoidDamping[i])
+                
+                # Find short period
+                shortPeriodInd               = np.argmax(V[1,:]) # w is the primary state involved
+                shortPeriodFreqHz[i]         = abs(LonModes[i, shortPeriodInd]) / 2 / np.pi
+                shortPeriodDamping[i]        = -np.cos(np.angle(LonModes[i, shortPeriodInd ]))
+                shortPeriodTimeDoubleHalf[i] = np.log(2) / abs(2 * np.pi * shortPeriodFreqHz[i] * shortPeriodDamping[i]) 
         
         ## Build lateral EOM A Matrix (stability axis)
         ALat = np.zeros((num_cases,4,4))

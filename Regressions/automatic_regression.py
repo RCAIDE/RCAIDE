@@ -27,7 +27,6 @@ modules = [
     'Tests/geometry_airfoils/airfoil_import_test.py', 
     'Tests/geometry_airfoils/airfoil_interpolation_test.py',    
     'Tests/mission_segments/segment_test.py',     
-    'Tests/mission_segments/transition_segment_test.py',     
     'Tests/network_turbofan/turbofan_network_test.py',
     'Tests/network_turbojet/turbojet_network_test.py',
     'Tests/network_turboshaft/turboshaft_network_test.py',

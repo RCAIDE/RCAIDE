@@ -45,8 +45,8 @@ def main():
     
     # evaluate
     results     = mission.evaluate()  
-    P_truth     = 53895.51401862169
-    mdot_truth  = 0.004735383248097577
+    P_truth     = 54482.84055310519
+    mdot_truth  = 0.004786987102002009
     
     P    = results.segments.cruise.state.conditions.energy.fuel_line.ice_propeller.engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]
