@@ -165,15 +165,15 @@ class Results(Conditions):
         self.aerodynamics.coefficients                                         = Conditions()
         self.aerodynamics.coefficients.lift                                    = Conditions()
         self.aerodynamics.coefficients.lift.total                              = ones_1col * 0 
-        self.aerodynamics.coefficients.lift.inviscid_wings           = Conditions()
-        self.aerodynamics.coefficients.lift.compressible_wings       = Conditions() 
+        self.aerodynamics.coefficients.lift.inviscid_wings                     = Conditions()
+        self.aerodynamics.coefficients.lift.compressible_wings                 = Conditions() 
         self.aerodynamics.coefficients.drag                                    = Conditions()  
         self.aerodynamics.coefficients.drag.total                              = ones_1col * 0   
-        self.aerodynamics.coefficients.drag.parasite                 = Conditions()
-        self.aerodynamics.coefficients.drag.compressible             = Conditions()
-        self.aerodynamics.coefficients.drag.induced                  = Conditions()
-        self.aerodynamics.coefficients.drag.induced.inviscid_wings   = Conditions()
-        self.aerodynamics.coefficients.drag.induced.total            = ones_1col * 0 
+        self.aerodynamics.coefficients.drag.parasite                           = Conditions()
+        self.aerodynamics.coefficients.drag.compressible                       = Conditions()
+        self.aerodynamics.coefficients.drag.induced                            = Conditions()
+        self.aerodynamics.coefficients.drag.induced.inviscid_wings             = Conditions()
+        self.aerodynamics.coefficients.drag.induced.total                      = ones_1col * 0 
  
         # ----------------------------------------------------------------------------------------------------------------------
         # Control Surfaces 

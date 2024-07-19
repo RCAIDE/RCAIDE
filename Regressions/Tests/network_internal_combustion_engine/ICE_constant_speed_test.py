@@ -217,10 +217,10 @@ def mission_setup(analyses):
     segment.flight_dynamics.force_z                       = True     
     
     # define flight controls 
-    segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['ice_constant_speed_propeller']] 
-    segment.flight_controls.body_angle                   
-    segment.flight_controls.body_angle.active             = True                
+    segment.assigned_control_variables.throttle.active               = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors  = [['ice_constant_speed_propeller']] 
+    segment.assigned_control_variables.body_angle                   
+    segment.assigned_control_variables.body_angle.active             = True                
                 
     mission.append_segment(segment)
 
