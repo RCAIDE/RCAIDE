@@ -482,9 +482,7 @@ def evaluate_surrogate(state,settings,geometry):
     conditions.static_stability.derivatives.CM_r        = compute_stability_derivative(sub_sur.dCM_dr, trans_sur.dCM_dr, sup_sur.dCM_dr, h_sub,h_sup,Mach)
     conditions.static_stability.derivatives.CN_p        = compute_stability_derivative(sub_sur.dCN_dp, trans_sur.dCN_dp, sup_sur.dCN_dp, h_sub,h_sup,Mach)
     conditions.static_stability.derivatives.CN_q        = compute_stability_derivative(sub_sur.dCN_dq, trans_sur.dCN_dq, sup_sur.dCN_dq, h_sub,h_sup,Mach)
-    conditions.static_stability.derivatives.CN_r        = compute_stability_derivative(sub_sur.dCN_dr, trans_sur.dCN_dr, sup_sur.dCN_dr, h_sub,h_sup,Mach)
-    #conditions.static_stability.neutral_point           = # Need to Update
-    #conditions.static_stability.spiral_criteria         = # Need to Update  
+    conditions.static_stability.derivatives.CN_r        = compute_stability_derivative(sub_sur.dCN_dr, trans_sur.dCN_dr, sup_sur.dCN_dr, h_sub,h_sup,Mach) 
 
     for wing in geometry.wings:   
         inviscid_wing_lifts = compute_coefficient(sub_sur.Clift_wing_alpha[wing.tag],trans_sur.Clift_wing_alpha[wing.tag],sup_sur.Cdrag_wing_alpha[wing.tag],h_sub,h_sup,Mach,pts_alpha)
@@ -548,6 +546,7 @@ def evaluate_no_surrogate(state,settings,geometry):
     conditions.aerodynamics.coefficients.lift.total                =  results.CL  
     conditions.aerodynamics.coefficients.drag.induced.inviscid     =  results.CDi   
     
+
     return
 
 def compute_stability_derivative(sub_sur,trans_sur,sup_sur,h_sub,h_sup,Mach): 

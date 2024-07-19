@@ -133,14 +133,14 @@ def train_model(aerodynamics, Mach):
     CN_alpha      = np.reshape(CN_res,(len_Mach,len_AoA)).T  
     
     # Angle of Attack at 0 Degrees 
-    Clift_alpha_0   =  np.tile(Clift_alpha[2][None,:],(2,1))
-    Cdrag_alpha_0   =  np.tile(Cdrag_alpha[2][None,:],(2,1))
-    CX_alpha_0      =  np.tile(CX_alpha[2][None,:],(2, 1)) 
-    CY_alpha_0      =  np.tile(CY_alpha[2][None,:],(2, 1)) 
-    CZ_alpha_0      =  np.tile(CZ_alpha[2][None,:],(2, 1)) 
-    CL_alpha_0      =  np.tile(CL_alpha[2][None,:],(2, 1)) 
-    CM_alpha_0      =  np.tile(CM_alpha[2][None,:],(2, 1)) 
-    CN_alpha_0      =  np.tile(CN_alpha[2][None,:],(2, 1)) 
+    Clift_alpha_0   =  np.tile(Clift_alpha[2][None,:],(3,1))
+    Cdrag_alpha_0   =  np.tile(Cdrag_alpha[2][None,:],(3,1))
+    CX_alpha_0      =  np.tile(CX_alpha[2][None,:],(3, 1)) 
+    CY_alpha_0      =  np.tile(CY_alpha[2][None,:],(3, 1)) 
+    CZ_alpha_0      =  np.tile(CZ_alpha[2][None,:],(3, 1)) 
+    CL_alpha_0      =  np.tile(CL_alpha[2][None,:],(3, 1)) 
+    CM_alpha_0      =  np.tile(CM_alpha[2][None,:],(3, 1)) 
+    CN_alpha_0      =  np.tile(CN_alpha[2][None,:],(3, 1)) 
     
     aerodynamics.S_ref = S_ref
     aerodynamics.b_ref = b_ref

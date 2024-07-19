@@ -120,18 +120,18 @@ class Vortex_Lattice_Perturbation_Method(Stability):
         self.training.supersonic                                    = None
         self.training.transonic                                     = None
                                
-        self.training.sideslip_angle                                = np.array([5.0 , 1E-12]) * Units.deg
-        self.training.aileron_deflection                            = np.array([1.0 , 1E-12]) * Units.deg
-        self.training.elevator_deflection                           = np.array([1.0 , 1E-12]) * Units.deg   
-        self.training.rudder_deflection                             = np.array([1.0 , 1E-12]) * Units.deg
-        self.training.flap_deflection                               = np.array([1.0 , 1E-12])* Units.deg 
-        self.training.slat_deflection                               = np.array([1.0 , 1E-12]) * Units.deg                      
-        self.training.u                                             = np.array([0.1 , 1E-12])  
-        self.training.v                                             = np.array([0.1 , 1E-12])  
-        self.training.w                                             = np.array([0.1 , 1E-12])    
-        self.training.pitch_rate                                    = np.array([0.01, 0.0 ])  * Units.rad / Units.sec
-        self.training.roll_rate                                     = np.array([0.3 , 0.0])  * Units.rad / Units.sec
-        self.training.yaw_rate                                      = np.array([0.01, 0.0])  * Units.rad / Units.sec
+        self.training.sideslip_angle                                = np.array([30  , 10.0 , 1E-12]) * Units.deg
+        self.training.aileron_deflection                            = np.array([30  , 10.0 , 1E-12]) * Units.deg
+        self.training.elevator_deflection                           = np.array([30  , 10.0 , 1E-12]) * Units.deg   
+        self.training.rudder_deflection                             = np.array([30  , 10.0 , 1E-12]) * Units.deg
+        self.training.flap_deflection                               = np.array([30  , 10.0 , 1E-12]) * Units.deg 
+        self.training.slat_deflection                               = np.array([30  , 10.0 , 1E-12]) * Units.deg                      
+        self.training.u                                             = np.array([0.2 , 0.1  , 1E-12])  
+        self.training.v                                             = np.array([0.2 , 0.1  , 1E-12])  
+        self.training.w                                             = np.array([0.2 , 0.1  , 1E-12])    
+        self.training.pitch_rate                                    = np.array([0.3 ,0.15  , 0.0 ])  * Units.rad / Units.sec
+        self.training.roll_rate                                     = np.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
+        self.training.yaw_rate                                      = np.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
                       
         # control surface flags                  
         self.aileron_flag                                           = False 
