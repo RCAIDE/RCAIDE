@@ -53,8 +53,7 @@ def compressibility_drag(state,settings,geometry):
     # Unpack
     conditions  = state.conditions
     Mach        = conditions.freestream.mach_number 
-    Cl          = conditions.aerodynamics.coefficients.lift.total 
-    S_ref       = geometry.reference_area       
+    Cl          = conditions.aerodynamics.coefficients.lift.total  
       
     # supersonic 
     low_mach_cutoff  = settings.supersonic.begin_drag_rise_mach_number
