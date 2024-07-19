@@ -49,7 +49,7 @@ def planet_position(segment):
     V          = conditions.freestream.velocity[:,0]
     altitude   = conditions.freestream.altitude[:,0] 
     theta      = conditions.frames.body.inertial_rotations[:,1]
-    psi        = segment.true_course        # sign convetion is clockwise positive
+    psi        = segment.true_course        
     alpha      = conditions.aerodynamics.angles.alpha[:,0]
     I          = segment.state.numerics.time.integrate
     Re         = segment.analyses.planet.features.mean_radius  

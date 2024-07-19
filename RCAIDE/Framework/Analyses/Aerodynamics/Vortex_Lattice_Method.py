@@ -68,7 +68,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         # correction factors           
         settings                                                    = self.settings
         settings.fuselage_lift_correction                           = 1.14
-        settings.trim_drag_correction_factor                        = 1.02
+        settings.trim_drag_correction_factor                        = 1.0
         settings.wing_parasite_drag_form_factor                     = 1.1
         settings.fuselage_parasite_drag_form_factor                 = 2.3
         settings.maximum_lift_coefficient_factor                    = 1.0        
@@ -165,13 +165,9 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.parasite.pylons               = Common.Drag.parasite_drag_pylon
         compute.drag.parasite.total                = Common.Drag.parasite_total
         compute.drag.induced                       = Common.Drag.induced_drag
-        compute.drag.compressibility               = Process()
-        compute.drag.compressibility.wings         = Process_Geometry('wings')
-        compute.drag.compressibility.wings.wing    = Common.Drag.compressibility_drag_wing
-        compute.drag.compressibility.total         = Common.Drag.compressibility_drag_total 
-        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag
-        compute.drag.untrimmed_drag                = Common.Drag.untrimmed_drag
-        compute.drag.trimmed_drag                  = Common.Drag.trimmed_drag
+        compute.drag.compressibility               = Process() 
+        compute.drag.compressibility.total         = Common.Drag.compressibility_drag
+        compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag 
         compute.drag.spoiler                       = Common.Drag.spoiler_drag
         compute.drag.total                         = Common.Drag.total_drag
         self.process.compute                       = compute

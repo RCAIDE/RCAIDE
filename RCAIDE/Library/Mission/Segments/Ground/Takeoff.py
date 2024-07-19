@@ -76,4 +76,11 @@ def initialize_conditions(segment):
     conditions.freestream.altitude[:,0]             = alt
     conditions.frames.inertial.position_vector[:,2] = -alt   
     conditions.weights.total_mass[:,0]              = segment.analyses.weights.vehicle.mass_properties.takeoff
-    conditions.frames.inertial.position_vector[:,:] = conditions.frames.inertial.position_vector[0,:][None,:][:,:]  
+    conditions.frames.inertial.position_vector[:,:] = conditions.frames.inertial.position_vector[0,:][None,:][:,:] 
+    
+    for network in segment.analyses.energy.networks:
+        if 'fuel_lines' in network: 
+            RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,network.fuel_lines)  
+        if 'busses' in network: 
+            RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.bus_unknowns(segment,network.busses)  
+     

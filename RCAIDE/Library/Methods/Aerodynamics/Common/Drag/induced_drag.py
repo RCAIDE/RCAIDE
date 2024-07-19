@@ -67,7 +67,6 @@ def induced_drag(state,settings,geometry):
     aero          = state.conditions.aerodynamics.coefficients
     CL            = aero.lift.total
     CDi           = aero.drag.induced.inviscid
-    S_ref         = geometry.reference_area
 
     wing_viscous_induced_drags = Data()
 
@@ -79,22 +78,13 @@ def induced_drag(state,settings,geometry):
         AR                          = 1E-12 
         total_induced_viscous_drag  = K*aero.drag.parasite.total*(CL**2)
 
-        ## Go through each wing, and make calculations
-        #for wing in wings: 
-            #AR_wing    = wing.aspect_ratio
-            #S_wing     = aero.drag.parasite[wing.tag].reference_area
-            #cl_wing    = aero.lift.inviscid_wings[wing.tag] 
-            #cdp_wing   = aero.drag.parasite[wing.tag].total 
-            #cdi_v_wing = K*cdp_wing*(cl_wing**2)
-            #total_induced_viscous_drag += cdi_v_wing*(S_wing/S_ref) 
-
-            ## pack the wing level viscous induced drag
-            #wing_viscous_induced_drags[wing.tag] = cdi_v_wing
-
-            ## Update AR for vehicle-level calculations 
-            #if S_wing > area:
-                #area = S_wing
-                #AR   = AR_wing
+        # Go through each wing, and make calculations
+        for wing in wings: 
+            AR_wing    = wing.aspect_ratio
+            S_wing     = aero.drag.parasite[wing.tag].reference_area  
+            if S_wing > area:
+                area = S_wing
+                AR   = AR_wing
         
         # compute total induced drag 
         total_induced_drag = total_induced_viscous_drag +  CDi  
