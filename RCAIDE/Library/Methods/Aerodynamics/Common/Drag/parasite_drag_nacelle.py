@@ -93,8 +93,7 @@ def nacelle_drag(state,settings, nacelle):
     
     # Form factor according to Raymer equation
     form_factor  = 1 + 0.35 / ( nacelle.length/nacelle.diameter)   
-           
-    
+         
     if np.all((Mach<=1.0) == True): 
         # subsonic condition 
         parasite_drag = form_factor * cf_prop * Swet / Sref 

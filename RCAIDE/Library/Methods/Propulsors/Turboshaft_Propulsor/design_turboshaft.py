@@ -18,7 +18,6 @@ from RCAIDE.Library.Methods.Propulsors.Converters.Turbine            import comp
 from RCAIDE.Library.Methods.Propulsors.Converters.Expansion_Nozzle   import compute_expansion_nozzle_performance 
 from RCAIDE.Library.Methods.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
 from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor          import size_core  
-from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.compute_turboshaft_performance   import   compute_performance
 
 # Python package imports   
 import numpy                                                                as np

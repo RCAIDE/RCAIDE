@@ -38,7 +38,7 @@ def miscellaneous_drag(state,settings,geometry):
     conditions     = state.conditions  
     S_ref          = geometry.reference_area
     Mach             = conditions.freestream.mach_number 
-    
+   
     if np.all((Mach<=1.0) == True): 
         swet_tot       = 0.
         for wing in geometry.wings:

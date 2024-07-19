@@ -183,7 +183,7 @@ def run_rotor_OEI(nexus):
     conditions.frames.inertial.velocity_vector          = np.array([[0.,0.,speed]]) 
     conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
     conditions.frames.wind.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
-    conditions.frames.planet.true_course_angle          = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
+    conditions.frames.planet.true_course                = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
     
     # Calculate the RPM
     tip_speed = atmosphere_conditions.speed_of_sound*TM
@@ -237,7 +237,7 @@ def run_rotor_hover(nexus):
     conditions.frames.inertial.velocity_vector          = np.array([[0.,0.,speed]])   
     conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
     conditions.frames.wind.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
-    conditions.frames.planet.true_course_angle          = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
+    conditions.frames.planet.true_course                = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
        
     # Run the rotor
     F, Q, P, Cp, outputs, etap  = rotor.spin(conditions)
@@ -316,7 +316,7 @@ def run_rotor_cruise(nexus):
         conditions.frames.inertial.velocity_vector          = np.array([[0,0.,speed]]) 
         conditions.frames.body.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0., -1.]]]) 
         conditions.frames.wind.transform_to_inertial        = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) 
-        conditions.frames.planet.true_course_angle          = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]])         
+        conditions.frames.planet.true_course                = np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]])         
            
         # Run the rotor
         F, Q, P, Cp, outputs, etap  = rotor.spin(conditions)

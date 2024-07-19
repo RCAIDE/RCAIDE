@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Mission.Segments.Evaluate        import Evaluate
-from RCAIDE.Framework.Core                                      import Units, Data 
+from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
+from RCAIDE.Framework.Core                            import Units, Data 
 from RCAIDE.Library.Mission.Segments                  import Ground  
 from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_Unknowns, Update
 
@@ -67,7 +67,7 @@ class Takeoff(Evaluate):
         self.friction_coefficient = 0.04
         self.throttle             = 1.0
         self.altitude             = 0.0
-        self.true_course_angle    = 0.0 * Units.degrees 
+        self.true_course          = 0.0 * Units.degrees 
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Unknowns and Residuals

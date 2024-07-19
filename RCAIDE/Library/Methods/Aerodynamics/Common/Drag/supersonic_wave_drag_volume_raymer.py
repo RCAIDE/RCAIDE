@@ -49,9 +49,11 @@ def supersonic_wave_drag_volume_raymer(vehicle,mach,scaling_factor):
     # estimation of leading edge sweep if not defined 
     if main_wing.sweeps.leading_edge == None:                           
         main_wing.sweeps.leading_edge  = convert_sweep(main_wing,old_ref_chord_fraction = 0.25 ,new_ref_chord_fraction = 0.0) 
-        
+    
+    L =  0 
+    for fuselage in  vehicle.fuselages:
+        L =  np.maximum(L, fuselage.lengths.total)
     LE_sweep = main_wing.sweeps.leading_edge / Units.deg
-    L        = vehicle.total_length
     Ae       = vehicle.maximum_cross_sectional_area
     S        = vehicle.reference_area
     

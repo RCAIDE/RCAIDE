@@ -43,15 +43,16 @@ def supersonic_wave_drag_lift(conditions,configuration,wing):
     freestream  = conditions.freestream 
     Mach        = freestream.mach_number * 1.0
     
-    # Lift coefficient
+    # Lift coefficient 
     if isinstance(wing,Main_Wing):
-        CL = conditions.aerodynamics.coefficients.lift.total
+        CL = conditions.aerodynamics.coefficients.lift.total 
+        l  = np.maximum(wing.total_length,wing.chords.root)        
     else:
         CL = np.zeros_like(conditions.aerodynamics.coefficients.lift.total)
+        l  = np.maximum(wing.total_length,wing.chords.root) 
 
     # JAXA method
     s    = wing.spans.projected / 2
-    l    = wing.total_length
     AR   = wing.aspect_ratio
     p    = 2/AR*s/l
     beta = np.sqrt(Mach[Mach >= 1.01]**2-1)

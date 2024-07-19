@@ -57,6 +57,7 @@ def plot_drag_components(results,
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
      
     fig   = plt.figure(save_filename)
+    axis_1 = plt.subplot(1,1,1)
     fig.set_size_inches(12,height)
     
     for i in range(len(results.segments)): 
@@ -67,42 +68,25 @@ def plot_drag_components(results,
         cdc    = drag.compressible.total[:,0]
         cdm    = drag.miscellaneous.total[:,0]
         cde    = np.ones_like(cdm)*drag.drag_coefficient_increment
-        cd     = drag.total[:,0] 
-            
-        segment_tag  =  results.segments[i].tag
-        segment_name = segment_tag.replace('_', ' ')
+        cd     = drag.total[:,0]  
         
-        axis_1 = plt.subplot(3,2,1)
-        axis_1.plot(time, cdp, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
-        axis_1.set_ylabel(r'$C_{Dp}$')
-        set_axes(axis_1)    
+        if i ==  0:
+            axis_1.plot(time, cdp, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = r'$C_{Dp}$') 
+            axis_1.plot(time,cdi, color = line_colors[i], marker = ps.markers[1], linewidth = ps.line_width,  label = r'$C_{Di}$')  
+            axis_1.plot(time, cdc, color = line_colors[i], marker = ps.markers[2], linewidth = ps.line_width,  label =r'$C_{Dc}$')  
+            axis_1.plot(time, cdm, color = line_colors[i], marker = ps.markers[3], linewidth = ps.line_width,  label =r'$C_{Dm}$') 
+            axis_1.plot(time, cde, color = line_colors[i], marker = ps.markers[4], linewidth = ps.line_width,  label =r'$C_{De}$') 
+            axis_1.plot(time, cd, color = line_colors[i], marker = ps.markers[5], linewidth = ps.line_width,  label =r'$C_D$')
+        else:
+            axis_1.plot(time, cdp, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
+            axis_1.plot(time,cdi, color = line_colors[i], marker = ps.markers[1], linewidth = ps.line_width)
+            axis_1.plot(time, cdc, color = line_colors[i], marker = ps.markers[2], linewidth = ps.line_width)
+            axis_1.plot(time, cdm, color = line_colors[i], marker = ps.markers[3], linewidth = ps.line_width)
+            axis_1.plot(time, cde, color = line_colors[i], marker = ps.markers[4], linewidth = ps.line_width)
+            axis_1.plot(time, cd, color = line_colors[i], marker = ps.markers[5], linewidth = ps.line_width)
         
-        axis_2 = plt.subplot(3,2,2)
-        axis_2.plot(time,cdi, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
-        axis_2.set_ylabel(r'$C_{Di}$')
-        set_axes(axis_2) 
-
-        axis_3 = plt.subplot(3,2,3)
-        axis_3.plot(time, cdc, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 
-        axis_3.set_ylabel(r'$C_{Dc}$')
-        set_axes(axis_3) 
-        
-        axis_4 = plt.subplot(3,2,4)
-        axis_4.plot(time, cdm, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
-        axis_4.set_ylabel(r'$C_{Dm}$')
-        set_axes(axis_4)    
-        
-        axis_5 = plt.subplot(3,2,5)
-        axis_5.plot(time, cde, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
-        axis_5.set_xlabel('Time (mins)')
-        axis_5.set_ylabel(r'$C_{De}$')
-        set_axes(axis_5) 
-
-        axis_6 = plt.subplot(3,2,6)
-        axis_6.plot(time, cd, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)
-        axis_6.set_xlabel('Time (mins)')
-        axis_6.set_ylabel(r'$C_D$')
-        set_axes(axis_6) 
+        axis_1.set_xlabel('Time (mins)')
+        axis_1.set_ylabel(r'$C_D$') 
         
     
     if show_legend:                    

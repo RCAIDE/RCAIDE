@@ -151,7 +151,7 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
  
     Rotation_RPY                     = np.tile(I[None,None,None,None,:,:,:],(num_cpt,num_mic,num_rot,num_blades,num_sec,1,1)) 
     V_vec_pitch                      = conditions.frames.wind.transform_to_inertial[:,np.newaxis,np.newaxis,np.newaxis,np.newaxis,:,:]  # np.linalg.inv(conditions.frames.wind.transform_to_inertial[:,np.newaxis,np.newaxis,np.newaxis,np.newaxis,:,:])
-    V_vec_true_course                = np.linalg.inv(conditions.frames.planet.true_course_angle[:,np.newaxis,np.newaxis,np.newaxis,np.newaxis,:,:]) 
+    V_vec_true_course                = np.linalg.inv(conditions.frames.planet.true_course      [:,np.newaxis,np.newaxis,np.newaxis,np.newaxis,:,:]) 
     Rotation_RPY[:,:,:,:,:,0:3,0:3]  = np.matmul(V_vec_true_course,V_vec_pitch)  
  
     Rotated_Translation                = np.matmul(Rotation_RPY,Translation_XYZ) 

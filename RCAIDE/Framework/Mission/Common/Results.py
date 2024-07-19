@@ -123,7 +123,7 @@ class Results(Conditions):
         self.frames.planet.start_time                                          = None
         self.frames.planet.latitude                                            = ones_1col * 0
         self.frames.planet.longitude                                           = ones_1col * 0
-        self.frames.planet.true_course_angle                                   = np.empty([0,0,0])
+        self.frames.planet.true_course                                         = np.empty([0,0,0])
 
         # ----------------------------------------------------------------------------------------------------------------------         
         # Freestream 

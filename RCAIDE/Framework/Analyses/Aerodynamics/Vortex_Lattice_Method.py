@@ -112,7 +112,7 @@ class Vortex_Lattice_Method(Aerodynamics):
     
         # conditions table, used for surrogate model training
         self.training                                               = Data()
-        self.training.angle_of_attack                               = np.array([-5., -2. , 1E-12 , 2.0, 5.0, 8.0, 10.0 , 12., 45.]) * Units.deg 
+        self.training.angle_of_attack                               = np.array([-5., -2. , 1E-12 , 2.0, 5.0, 8.0, 10.0 , 12., 45., 75.]) * Units.deg 
         self.training.Mach                                          = np.array([1E-12, 0.1  , 0.2 , 0.3,  0.5,  0.75 , 0.85 , 0.9, 1.3, 1.35 , 1.5 , 2.0, 2.25 , 2.5  , 3.0  , 3.5])               
                       
         self.training.subsonic                                      = None
@@ -164,7 +164,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.parasite.nacelles             = Common.Drag.parasite_drag_nacelle
         compute.drag.parasite.pylons               = Common.Drag.parasite_drag_pylon
         compute.drag.parasite.total                = Common.Drag.parasite_total
-        compute.drag.induced                       = Common.Drag.induced_drag_aircraft
+        compute.drag.induced                       = Common.Drag.induced_drag
         compute.drag.compressibility               = Process()
         compute.drag.compressibility.wings         = Process_Geometry('wings')
         compute.drag.compressibility.wings.wing    = Common.Drag.compressibility_drag_wing

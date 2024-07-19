@@ -55,7 +55,7 @@ class Linear_Mach_Constant_Rate(Evaluate):
         self.climb_rate        = 3.  * Units.m / Units.s
         self.mach_number_end   = 0.7
         self.mach_number_start = 0.8
-        self.true_course_angle = 0.0 * Units.degrees    
+        self.true_course       = 0.0 * Units.degrees    
       
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

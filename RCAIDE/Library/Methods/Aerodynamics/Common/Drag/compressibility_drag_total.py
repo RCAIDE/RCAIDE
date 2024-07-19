@@ -55,7 +55,7 @@ def compressibility_drag_total(state,settings,geometry):
     Mach        = conditions.freestream.mach_number 
     Cl_wings    = conditions.aerodynamics.coefficients.lift.compressible_wings 
     S_ref       = geometry.reference_area       
-    
+     
     if np.all((Mach<=1.0) == True):  
         # intiialize parasite drag total
         total_compressibility_drag = 0.0

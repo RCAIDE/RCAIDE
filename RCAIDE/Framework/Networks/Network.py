@@ -43,6 +43,7 @@ class Network(Component):
         self.busses                 = Container()     
         self.fuel_lines             = Container()    
         self.wing_mounted           = True
+        self.reverse_thrust         = False 
 
 # ----------------------------------------------------------------------
 #  Component Container
