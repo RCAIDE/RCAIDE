@@ -80,8 +80,8 @@ class Turboshaft_Engine_Network(Network):
         """           
 
         # Step 1: Unpack
-        conditions  = state.conditions  
-        fuel_lines  = self.fuel_lines 
+        conditions     = state.conditions  
+        fuel_lines     = self.fuel_lines  
          
         total_power   = 0. * state.ones_row(1) 
         total_mdot    = 0. * state.ones_row(1)   

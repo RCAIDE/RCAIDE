@@ -86,6 +86,7 @@ class All_Electric_Network(Network):
         total_thrust    = 0. * state.ones_row(3) 
         total_power     = 0. * state.ones_row(1)  
         recharging_flag = conditions.energy.recharging 
+        reverse_thrust  = self.reverse_thrust
         
         for bus in busses:  
             if bus.active:             
@@ -132,6 +133,9 @@ class All_Electric_Network(Network):
                         battery.outputs.current     = battery.outputs.power/bus_voltage
                         battery.energy_calc(state,bus,recharging_flag)       
                          
+                
+        if reverse_thrust ==  True:
+            total_thrust =  total_thrust * -1                         
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
         conditions.energy.vehicle_mass_rate    = state.ones_row(1)*0.0  

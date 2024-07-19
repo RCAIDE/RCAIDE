@@ -76,6 +76,7 @@ class Internal_Combustion_Engine_Network(Network):
         # Step 1: Unpack
         conditions  = state.conditions  
         fuel_lines  = self.fuel_lines 
+        reverse_thrust = self.reverse_thrust
     
         total_thrust  = 0. * state.ones_row(3) 
         total_power   = 0. * state.ones_row(1) 
@@ -106,6 +107,9 @@ class Internal_Combustion_Engine_Network(Network):
                     total_mdot += fuel_tank_mdot                    
     
         # Step 3: Pack results 
+        if reverse_thrust ==  True:
+            total_thrust =  total_thrust * -1
+            
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
         conditions.energy.vehicle_mass_rate    = total_mdot        
