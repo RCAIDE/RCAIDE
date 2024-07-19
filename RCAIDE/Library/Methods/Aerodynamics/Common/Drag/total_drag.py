@@ -19,7 +19,7 @@ def total_drag(state,settings,geometry):
         settings.
           drag_coefficient_increment                          (float): drag_coefficient_increment [Unitless]
           lift_to_drag_adjustment                             (float): lift_to_drag_adjustment    [Unitless]  
-        state.conditions.aerodynamics.coefficients.drag.breakdown.
+        state.conditions.aerodynamics.coefficients.drag.
           trim_corrected_drag                         (numpy.ndarray): trim corrected drag        [Unitless]
           spoiler_drag                                (numpy.ndarray): spoiler drag               [Unitless]
         geometry                                               (dict): aircraft data structure    [-]
@@ -33,12 +33,12 @@ def total_drag(state,settings,geometry):
     drag =  state.conditions.aerodynamics.coefficients.drag
 
     drag_coefficient_increment = settings.drag_coefficient_increment
-    trim_corrected_drag        = drag.breakdown.trim_corrected_drag
-    spoiler_drag               = drag.breakdown.spoiler_drag 
+    trim_corrected_drag        = drag.trim_corrected_drag
+    spoiler_drag               = drag.spoiler_drag 
 
     # Add drag_coefficient_increment
     aircraft_total_drag = trim_corrected_drag + drag_coefficient_increment + spoiler_drag
-    drag.breakdown.drag_coefficient_increment = drag_coefficient_increment
+    drag.drag_coefficient_increment = drag_coefficient_increment
     
     # Add L/D correction
     aircraft_total_drag  = aircraft_total_drag/(1.+settings.lift_to_drag_adjustment) 

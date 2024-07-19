@@ -32,7 +32,7 @@ def plot_drag_components(results,
     None
     
     Inputs:
-    results.segments.condtions.aerodynamics.coefficients.drag.breakdown
+    results.segments.condtions.aerodynamics.coefficients.drag
           parasite.total
           induced.total
           compressible.total
@@ -62,11 +62,11 @@ def plot_drag_components(results,
     for i in range(len(results.segments)): 
         time   = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
         drag   = results.segments[i].conditions.aerodynamics.coefficients.drag 
-        cdp    = drag.breakdown.parasite.total[:,0]
-        cdi    = drag.breakdown.induced.total[:,0]
-        cdc    = drag.breakdown.compressible.total[:,0]
-        cdm    = drag.breakdown.miscellaneous.total[:,0]
-        cde    = np.ones_like(cdm)*drag.breakdown.drag_coefficient_increment
+        cdp    = drag.parasite.total[:,0]
+        cdi    = drag.induced.total[:,0]
+        cdc    = drag.compressible.total[:,0]
+        cdm    = drag.miscellaneous.total[:,0]
+        cde    = np.ones_like(cdm)*drag.drag_coefficient_increment
         cd     = drag.total[:,0] 
             
         segment_tag  =  results.segments[i].tag

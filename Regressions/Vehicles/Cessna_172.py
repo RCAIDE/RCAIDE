@@ -88,7 +88,7 @@ def vehicle_setup():
     slat.chord_fraction                         = 0.1      
     wing.append_control_surface(slat)  
     
-    RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform.wing_planform(wing) 
+    RCAIDE.Library.Methods.Geometry.Planform.wing_planform(wing) 
 
     # add to vehicle
     vehicle.append_component(wing)

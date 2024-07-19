@@ -29,6 +29,6 @@ def spoiler_drag(state,settings,geometry):
         None 
     """    
     Mc =  state.conditions.freestream.mach_number
-    state.conditions.aerodynamics.coefficients.drag.breakdown.spoiler_drag = settings.spoiler_drag_increment * np.ones_like(Mc)
+    state.conditions.aerodynamics.coefficients.drag.spoiler_drag = settings.spoiler_drag_increment * np.ones_like(Mc)
     
     return  

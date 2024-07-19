@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Core                            import Units
-from RCAIDE.Library.Methods.Stability.Common          import estimate_wing_CL_alpha
+from RCAIDE.Framework.Core                            import Units 
 from RCAIDE.Library.Components.Wings.Control_Surfaces import Aileron , Elevator  
 
 # python imports 
@@ -54,10 +53,7 @@ def compute_dynamic_flight_modes(state,settings,aircraft):
         u0         = conditions.freestream.velocity
         qDyn0      = conditions.freestream.dynamic_pressure  
         theta0     = conditions.aerodynamics.angles.alpha
-        AoA        = conditions.aerodynamics.angles.alpha
-        CLtot      = conditions.aerodynamics.coefficients.lift.total 
-        CDtot      = conditions.aerodynamics.coefficients.drag.total 
-        e          = conditions.aerodynamics.oswald_efficiency
+        AoA        = conditions.aerodynamics.angles.alpha    
         SS         = conditions.static_stability
         SSD        = SS.derivatives 
         DS         = conditions.dynamic_stability
@@ -66,8 +62,7 @@ def compute_dynamic_flight_modes(state,settings,aircraft):
          
         b_ref  = conditions.b_ref
         c_ref  = conditions.c_ref
-        S_ref  = conditions.S_ref 
-        AR     = (b_ref**2)/S_ref
+        S_ref  = conditions.S_ref  
         moments_of_inertia = aircraft.mass_properties.moments_of_inertia.tensor
         Ixx    = moments_of_inertia[0][0]
         Iyy    = moments_of_inertia[1][1]
@@ -80,8 +75,7 @@ def compute_dynamic_flight_modes(state,settings,aircraft):
             raise AttributeError("Specify Vehicle Mass") 
         
         if np.all(conditions.static_stability.spiral_criteria) == 0: 
-            conditions.static_stability.spiral_criteria = SSD.CL_beta*SSD.CN_r / (SSD.CL_r*SSD.CN_beta)
-        
+            conditions.static_stability.spiral_criteria = SSD.CL_beta*SSD.CN_r / (SSD.CL_r*SSD.CN_beta) 
           
         ## Build longitudinal EOM A Matrix (stability axis)
         ALon = np.zeros((num_cases,4,4))
@@ -94,35 +88,21 @@ def compute_dynamic_flight_modes(state,settings,aircraft):
         Cw         = m * g / (qDyn0 * S_ref) 
         Cxu        = SSD.CX_u
         Xu         = rho * u0 * S_ref * Cw * np.sin(theta0) + 0.5 * rho * u0 * S_ref * Cxu
-        Cxalpha    = (CLtot - 2 * CLtot / (np.pi * AR * e ) * SSD.CL_alpha)
+        Cxalpha    = SSD.CX_alpha
         Xw         = 0.5 * rho * u0 * S_ref * Cxalpha
-        Xq         = 0  
-                   
+        Xq         = 0   
         Czu        = SSD.CZ_u
         Zu         = -rho * u0 * S_ref * Cw * np.cos(theta0) + 0.5 * rho * u0 * S_ref * Czu
-        Czalpha    = -CDtot - SSD.CL_alpha
+        Czalpha    = SSD.CL_alpha
         Zw         = 0.5 * rho * u0 * S_ref * Czalpha
         Czq        = -SSD.CL_q 
         Zq         = 0.25 * rho * u0 * c_ref * S_ref * Czq
         Cmu        = SSD.CM_q   
         Mu         = 0.5 * rho * u0 * c_ref * S_ref * Cmu
         Mw         = 0.5 * rho * u0 * c_ref * S_ref * SSD.CM_alpha
-        Mq         = 0.25 * rho * u0 * c_ref * c_ref * S_ref * SSD.CM_q 
-        
-        # Derivative of pitching rate with respect to d(alpha)/d(t)
-        if aircraft.wings['horizontal_stabilizer'] and aircraft.wings['main_wing']:
-            l_t             = aircraft.wings['horizontal_stabilizer'].origin[0][0] + aircraft.wings['horizontal_stabilizer'].aerodynamic_center[0] - aircraft.wings['main_wing'].origin[0][0] - aircraft.wings['main_wing'].aerodynamic_center[0] 
-            mac             = aircraft.wings['main_wing'].chords.mean_aerodynamic
-            CL_alpha_mw     = estimate_wing_CL_alpha(aircraft.wings['main_wing'],mach) 
-            ep_alpha        = 2 * CL_alpha_mw/ np.pi / (b_ref ** 2. / S_ref )   # J.H. Blakelock, "AAutomatic Control of Aircraft and Missiles"  Wiley & Sons, Inc. New York, 1991, (pg 34)
-            SSD.Cm_alpha_dot = 2. * SSD.CM_alpha * ep_alpha * l_t / mac #  J.H. Blakelock, "Automatic Control of Aircraft and Missiles   Wiley & Sons, Inc. New York, 1991, (pg 23)
-            SSD.Cz_alpha_dot = 2. * SSD.CM_alpha * ep_alpha
-        else:    
-            SSD.Cm_alpha_dot = 0 
-            SSD.Cz_alpha_dot = 0
-            
-        ZwDot      = 0.25 * rho * c_ref * S_ref * SSD.Cz_alpha_dot    
-        MwDot      = 0.25 * rho * c_ref * S_ref * SSD.Cm_alpha_dot 
+        Mq         = 0.25 * rho * u0 * c_ref * c_ref * S_ref * SSD.CM_q  
+        ZwDot      = 0.25 * rho * c_ref * S_ref * SSD.CZ_q 
+        MwDot      = 0.25 * rho * c_ref * S_ref * SSD.CM_q
         
         # Elevator effectiveness 
         for wing in aircraft.wings:

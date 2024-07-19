@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------------------------------------------   
   
 from RCAIDE.Library.Plots import *  
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil   import import_airfoil_geometry, compute_airfoil_properties, convert_airfoil_to_meshgrid
+from RCAIDE.Library.Methods.Geometry.Airfoil   import import_airfoil_geometry, compute_airfoil_properties, convert_airfoil_to_meshgrid
 
 # python imports 
 import os

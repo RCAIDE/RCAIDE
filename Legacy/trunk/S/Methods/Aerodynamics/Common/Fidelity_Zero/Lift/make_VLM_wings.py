@@ -10,7 +10,7 @@
 # package imports 
 import numpy as np
 from copy import deepcopy
-
+import  RCAIDE
 import Legacy.trunk.S as SUAVE
 from Legacy.trunk.S.Core import  Data
 from Legacy.trunk.S.Components.Wings import All_Moving_Surface 
@@ -253,24 +253,27 @@ def copy_large_container(large_container, type_str):
     container = SUAVE.Core.Container()  if type_str != "Segments" else SUAVE.Core.ContainerOrdered()
     paths = get_paths(type_str)
     
-    for obj in large_container: 
-        #copy from paths
-        data = copy_data_from_paths(obj, paths)     
-        
-        #special case new attributes
-        if type_str == 'control_surfaces':
-            data.cs_type                     = type(obj) # needed to identify the class of a control surface
-        elif type_str == 'wings':
-            data.wing_type = type(obj)
-            if issubclass(data.wing_type, All_Moving_Surface):
-                data.sign_duplicate              = obj.sign_duplicate
-                data.hinge_fraction              = obj.hinge_fraction 
-                data.deflection                  = obj.deflection  
-                data.is_slat                     = False
-                data.use_constant_hinge_fraction = obj.use_constant_hinge_fraction
-                data.hinge_vector                = obj.hinge_vector
-                data.deflection_last             = 0.
-        container.append(data)
+    for obj in large_container:
+        if type(obj) ==  RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: # DO NOT COPY SLATS
+            continue
+        else:
+            #copy from paths
+            data = copy_data_from_paths(obj, paths)     
+            
+            #special case new attributes
+            if type_str == 'control_surfaces':
+                data.cs_type                     = type(obj) # needed to identify the class of a control surface
+            elif type_str == 'wings':
+                data.wing_type = type(obj)
+                if issubclass(data.wing_type, All_Moving_Surface):
+                    data.sign_duplicate              = obj.sign_duplicate
+                    data.hinge_fraction              = obj.hinge_fraction 
+                    data.deflection                  = obj.deflection  
+                    data.is_slat                     = False
+                    data.use_constant_hinge_fraction = obj.use_constant_hinge_fraction
+                    data.hinge_vector                = obj.hinge_vector
+                    data.deflection_last             = 0.
+            container.append(data)
         
     return container
 

@@ -1,26 +1,14 @@
 ## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-# import_airfoil_geometry.py
-# 
-# Created:  Mar 2019, M. Clarke
-# Modified: Mar 2020, M. Clarke
-#           Apr 2020, M. Clarke
-#           Apr 2020, M. Clarke
-#           May 2020, B. Dalman
-#           Sep 2020, M. Clarke
-#           May 2021, E. Botero
-#           May 2021, R. Erhard
-#           Jun 2021, E. Botero
-#           Aug 2021, M. Clarke
-
+# import_airfoil_geometry.py 
 # ----------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------- 
-from Legacy.trunk.S.Core import Data  
+from RCAIDE.Framework.Core import  Data 
 import numpy as np
 from scipy import interpolate
 
 ## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpolation = 'cubic'):
+def import_airfoil_geometry(airfoil_geometry_file, npoints = 201,surface_interpolation = 'cubic'):
     """This imports an airfoil geometry from a text file  and store
     the coordinates of upper and lower surfaces as well as the mean
     camberline
@@ -46,7 +34,12 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
         camber_coordinates  
     Properties Used:
     N/A
-    """  
+    """
+
+    if npoints%2 != 1:
+        npoints+= 1
+        print('Number of points must be odd, changing to ' + str(npoints) + ' points')      
+    
     geometry     = Data()
     half_npoints = npoints//2         
  

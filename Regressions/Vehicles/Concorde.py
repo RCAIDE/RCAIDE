@@ -8,9 +8,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Framework.Core                                           import Units , Data    
+from RCAIDE.Framework.Core                                  import Units , Data    
 from RCAIDE.Library.Methods.Propulsors.Turbojet_Propulsor   import design_turbojet
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Planform      import wing_segmented_planform
+from RCAIDE.Library.Methods.Geometry.Planform               import wing_segmented_planform
 from RCAIDE.Library.Plots     import *     
 
 # python imports 
@@ -382,7 +382,7 @@ def vehicle_setup():
     outer_right_turbojet.areas.wetted                 = 30
     outer_right_turbojet.design_altitude              = 60000.0*Units.ft
     outer_right_turbojet.design_mach_number           = 2.02
-    outer_right_turbojet.design_thrust                = 40000. * Units.lbf  
+    outer_right_turbojet.design_thrust                = 10000. * Units.lbf  
     outer_right_turbojet.origin                       = [[37.,5.5,-1.6]] 
     outer_right_turbojet.working_fluid                = RCAIDE.Library.Attributes.Gases.Air()
     
@@ -480,11 +480,8 @@ def vehicle_setup():
     nac_segment.height                          = 1.5
     nac_segment.width                           = 1.5
     nac_segment.curvature                       = 5
-    nacelle.append_segment(nac_segment)     
-    
-    outer_right_turbojet.nacelle = nacelle 
-    
-    # append turbojet    
+    nacelle.append_segment(nac_segment)      
+    outer_right_turbojet.nacelle = nacelle  
     fuel_line.propulsors.append(outer_right_turbojet) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -497,8 +494,7 @@ def vehicle_setup():
     nacelle_2                                = deepcopy(nacelle)
     nacelle_2.tag                            = 'nacelle_2'
     nacelle_2.origin                         = [[37.,4,-1.6]]
-    inner_right_turbojet.nacelle = nacelle_2
-   
+    inner_right_turbojet.nacelle = nacelle_2 
     fuel_line.propulsors.append(inner_right_turbojet) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -511,8 +507,7 @@ def vehicle_setup():
     nacelle_3                               = deepcopy(nacelle)
     nacelle_3.tag                           = 'nacelle_3'
     nacelle_3.origin                        = [[37.,-4,-1.6]]
-    inner_left_turbojet.nacelle = nacelle_3
-
+    inner_left_turbojet.nacelle = nacelle_3 
     fuel_line.propulsors.append(inner_left_turbojet) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  

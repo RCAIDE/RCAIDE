@@ -159,26 +159,21 @@ class Results(Conditions):
         # aerodynamic coefficients                                             
         self.aerodynamics.coefficients                                         = Conditions()
         self.aerodynamics.coefficients.lift                                    = ones_1col * 0
-        self.aerodynamics.coefficients.drag                                    = ones_1col * 0  
-        self.aerodynamics.span_efficiency                                      = ones_1col * 0    
-        self.aerodynamics.oswald_efficiency                                    = ones_1col * 0    
+        self.aerodynamics.coefficients.drag                                    = ones_1col * 0     
                                                                                
         # aerodynamic coefficients                                             
         self.aerodynamics.coefficients                                         = Conditions()
         self.aerodynamics.coefficients.lift                                    = Conditions()
-        self.aerodynamics.coefficients.lift.total                              = ones_1col * 0
-        self.aerodynamics.coefficients.lift.breakdown                          = Conditions() 
-        self.aerodynamics.coefficients.lift.breakdown.inviscid_wings           = Conditions()
-        self.aerodynamics.coefficients.lift.breakdown.compressible_wings       = Conditions() 
+        self.aerodynamics.coefficients.lift.total                              = ones_1col * 0 
+        self.aerodynamics.coefficients.lift.inviscid_wings           = Conditions()
+        self.aerodynamics.coefficients.lift.compressible_wings       = Conditions() 
         self.aerodynamics.coefficients.drag                                    = Conditions()  
-        self.aerodynamics.coefficients.drag.total                              = ones_1col * 0  
-        self.aerodynamics.coefficients.drag.breakdown                          = Conditions()
-        self.aerodynamics.coefficients.drag.breakdown.parasite                 = Conditions()
-        self.aerodynamics.coefficients.drag.breakdown.compressible             = Conditions()
-        self.aerodynamics.coefficients.drag.breakdown.induced                  = Conditions()
-        self.aerodynamics.coefficients.drag.breakdown.induced.inviscid_wings   = Conditions()
-        self.aerodynamics.coefficients.drag.breakdown.induced.total            = ones_1col * 0
-        self.aerodynamics.coefficients.drag.breakdown.induced.efficiency_factor= ones_1col * 0
+        self.aerodynamics.coefficients.drag.total                              = ones_1col * 0   
+        self.aerodynamics.coefficients.drag.parasite                 = Conditions()
+        self.aerodynamics.coefficients.drag.compressible             = Conditions()
+        self.aerodynamics.coefficients.drag.induced                  = Conditions()
+        self.aerodynamics.coefficients.drag.induced.inviscid_wings   = Conditions()
+        self.aerodynamics.coefficients.drag.induced.total            = ones_1col * 0 
  
         # ----------------------------------------------------------------------------------------------------------------------
         # Control Surfaces 

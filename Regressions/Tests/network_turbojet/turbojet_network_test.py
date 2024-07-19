@@ -93,7 +93,7 @@ def base_analysis(vehicle):
     
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics                                       = RCAIDE.Framework.Analyses.Aerodynamics.Supersonic_VLM()
+    aerodynamics                                       = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics.geometry                              = vehicle
     aerodynamics.settings.number_of_spanwise_vortices  = 5
     aerodynamics.settings.number_of_chordwise_vortices = 2       
@@ -498,8 +498,8 @@ def check_results(new_results,old_results):
     # check segment values
     check_list = [
         'segments.climbing_cruise.conditions.aerodynamics.angles.alpha',
-        'segments.climbing_cruise.conditions.aerodynamics.coefficients.drag',
-        'segments.climbing_cruise.conditions.aerodynamics.coefficients.lift', 
+        'segments.climbing_cruise.conditions.aerodynamics.coefficients.drag.total',
+        'segments.climbing_cruise.conditions.aerodynamics.coefficients.lift.total', 
         'segments.climbing_cruise.conditions.weights.vehicle_mass_rate', 
     ]
 

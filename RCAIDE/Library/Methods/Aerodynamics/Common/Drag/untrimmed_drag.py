@@ -16,7 +16,7 @@ def untrimmed_drag(state,settings,geometry):
         None
 
     Args:
-        state.conditions.aerodynamics.coefficients.drag.breakdown.
+        state.conditions.aerodynamics.coefficients.drag.
           parasite.total            (numpy.ndarray) : total parasite drag      [Unitless]
           induced.total             (numpy.ndarray) : total induced drag       [Unitless]
           compressible.total        (numpy.ndarray) : total compressible drag  [Unitless]
@@ -30,11 +30,11 @@ def untrimmed_drag(state,settings,geometry):
     conditions     = state.conditions
 
     # various drag components
-    parasite_total        = conditions.aerodynamics.coefficients.drag.breakdown.parasite.total            
-    induced_total         = conditions.aerodynamics.coefficients.drag.breakdown.induced.total            
-    compressibility_total = conditions.aerodynamics.coefficients.drag.breakdown.compressible.total         
-    miscellaneous_drag    = conditions.aerodynamics.coefficients.drag.breakdown.miscellaneous.total 
+    parasite_total        = conditions.aerodynamics.coefficients.drag.parasite.total            
+    induced_total         = conditions.aerodynamics.coefficients.drag.induced.total            
+    compressibility_total = conditions.aerodynamics.coefficients.drag.compressible.total         
+    miscellaneous_drag    = conditions.aerodynamics.coefficients.drag.miscellaneous.total 
 
     # untrimmed drag 
-    conditions.aerodynamics.coefficients.drag.breakdown.untrimmed =  parasite_total + induced_total  + compressibility_total + miscellaneous_drag
+    conditions.aerodynamics.coefficients.drag.untrimmed =  parasite_total + induced_total  + compressibility_total + miscellaneous_drag
     return  

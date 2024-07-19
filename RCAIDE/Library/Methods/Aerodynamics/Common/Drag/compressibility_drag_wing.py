@@ -36,7 +36,7 @@ def compressibility_drag_wing(state,settings,wing):
     
     # unpack 
     mach       = state.conditions.freestream.mach_number 
-    cl_w       = state.conditions.aerodynamics.coefficients.lift.breakdown.compressible_wings[wing.tag]   
+    cl_w       = state.conditions.aerodynamics.coefficients.lift.compressible_wings[wing.tag]   
     t_c_w      = wing.thickness_to_chord
     sweep_w    = wing.sweeps.quarter_chord
     cos_sweep  = np.cos(sweep_w)
@@ -76,6 +76,6 @@ def compressibility_drag_wing(state,settings,wing):
         crest_critical            = mcc     ,
         divergence_mach           = MDiv    ,
     )
-    state.conditions.aerodynamics.coefficients.drag.breakdown.compressible[wing.tag] = wing_results
+    state.conditions.aerodynamics.coefficients.drag.compressible[wing.tag] = wing_results
     
     return 

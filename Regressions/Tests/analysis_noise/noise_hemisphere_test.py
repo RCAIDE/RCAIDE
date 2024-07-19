@@ -36,7 +36,7 @@ def main():
  
  
     # dBA Verification checj
-    dBA_true   = 69.02428537507147
+    dBA_true   = 69.18670852476845
     dBA        = noise_data.SPL_dBA[0,0,0]
     print('dBA: ' + str(dBA)) 
     diff_dBA                = np.abs(dBA  - dBA_true) 
@@ -61,7 +61,7 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
     aerodynamics.geometry = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics)   

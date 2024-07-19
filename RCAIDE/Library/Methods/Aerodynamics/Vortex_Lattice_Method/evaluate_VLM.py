@@ -46,7 +46,13 @@ def evaluate_surrogate(state,settings,geometry):
     Beta          = np.atleast_2d(conditions.aerodynamics.angles.beta)    
     Mach          = np.atleast_2d(conditions.freestream.mach_number)  
      
-    # loop through wings to determine what control surfaces are present 
+    # loop through wings to determine what control surfaces are present
+    delta_a = np.zeros_like(Mach)
+    delta_e = np.zeros_like(Mach)
+    delta_r = np.zeros_like(Mach)
+    delta_s = np.zeros_like(Mach)
+    delta_f = np.zeros_like(Mach)
+    
     for wing in geometry.wings: 
         for control_surface in wing.control_surfaces:  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
@@ -69,8 +75,7 @@ def evaluate_surrogate(state,settings,geometry):
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:   
                 delta_f        = np.ones_like(Mach) * control_surface.deflection
     
-    if (sup_sur == None) and (trans_sur == None):
-    
+    if np.all((Mach<=1.0) == True): 
         surrogates    = aerodynamics.surrogates.subsonic    
         aerodynamics  = state.analyses.aerodynamics
                     
@@ -394,9 +399,9 @@ def evaluate_surrogate(state,settings,geometry):
             inviscid_wing_lifts = np.atleast_2d(surrogates.Clift_wing_alpha[wing.tag](pts_alpha)).T
             inviscid_wing_drags = np.atleast_2d(surrogates.Cdrag_wing_alpha[wing.tag](pts_alpha)).T
             # Pack 
-            conditions.aerodynamics.coefficients.lift.breakdown.inviscid_wings[wing.tag]         = inviscid_wing_lifts 
-            conditions.aerodynamics.coefficients.lift.breakdown.compressible_wings[wing.tag]     = inviscid_wing_lifts 
-            conditions.aerodynamics.coefficients.drag.breakdown.induced.inviscid_wings[wing.tag] = inviscid_wing_drags 
+            conditions.aerodynamics.coefficients.lift.inviscid_wings[wing.tag]         = inviscid_wing_lifts 
+            conditions.aerodynamics.coefficients.lift.compressible_wings[wing.tag]     = inviscid_wing_lifts 
+            conditions.aerodynamics.coefficients.drag.induced.inviscid_wings[wing.tag] = inviscid_wing_drags 
         
     else: 
         geometry      = aerodynamics.geometry 
@@ -408,7 +413,7 @@ def evaluate_surrogate(state,settings,geometry):
         # Spline for Subsonic-to-Transonic-to-Supersonic Regimes
         sub_trans_spline = Cubic_Spline_Blender(hsub_min,hsub_max)
         h_sub            = lambda M:sub_trans_spline.compute(M)          
-        sup_trans_spline = Cubic_Spline_Blender(hsup_min,hsup_max) 
+        sup_trans_spline = Cubic_Spline_Blender(hsup_max, hsup_min) 
         h_sup            = lambda M:sup_trans_spline.compute(M)    
      
         # only compute derivative if control surface exists
@@ -517,9 +522,9 @@ def evaluate_surrogate(state,settings,geometry):
         
         # Alpha 
         results_alpha    = compute_coefficients( sub_sur.Clift_alpha,  sub_sur.Cdrag_alpha,  sub_sur.CX_alpha,  sub_sur.CY_alpha,  sub_sur.CZ_alpha,  sub_sur.CL_alpha,  sub_sur.CM_alpha,   sub_sur.CN_alpha,
-                            trans_sur.Clift_alpha,trans_sur.Cdrag_alpha,trans_sur.CX_alpha,trans_sur.CY_alpha,trans_sur.CZ_alpha,trans_sur.CL_alpha,trans_sur.CM_alpha, trans_sur.CN_alpha,
-                              sup_sur.Clift_alpha,  sup_sur.Cdrag_alpha,  sup_sur.CX_alpha,  sup_sur.CY_alpha,  sup_sur.CZ_alpha,  sup_sur.CL_alpha,  sup_sur.CM_alpha,   sup_sur.CN_alpha,
-                                 h_sub,h_sup,Mach, pts_beta)        
+                                               trans_sur.Clift_alpha,trans_sur.Cdrag_alpha,trans_sur.CX_alpha,trans_sur.CY_alpha,trans_sur.CZ_alpha,trans_sur.CL_alpha,trans_sur.CM_alpha, trans_sur.CN_alpha,
+                                                 sup_sur.Clift_alpha,  sup_sur.Cdrag_alpha,  sup_sur.CX_alpha,  sup_sur.CY_alpha,  sup_sur.CZ_alpha,  sup_sur.CL_alpha,  sup_sur.CM_alpha,   sup_sur.CN_alpha,
+                                                  h_sub,h_sup,Mach, pts_alpha)        
 
         Clift_alpha    = results_alpha.Clift   
         Cdrag_alpha    = results_alpha.Cdrag   
@@ -532,9 +537,9 @@ def evaluate_surrogate(state,settings,geometry):
          
         # Beta 
         results_beta =  compute_coefficients(sub_sur.Clift_beta,  sub_sur.Cdrag_beta,  sub_sur.CX_beta,  sub_sur.CY_beta,  sub_sur.CZ_beta,  sub_sur.CL_beta,  sub_sur.CM_beta,   sub_sur.CN_beta,
-                       trans_sur.Clift_beta,trans_sur.Cdrag_beta,trans_sur.CX_beta,trans_sur.CY_beta,trans_sur.CZ_beta,trans_sur.CL_beta,trans_sur.CM_beta, trans_sur.CN_beta,
-                         sup_sur.Clift_beta,  sup_sur.Cdrag_beta,  sup_sur.CX_beta,  sup_sur.CY_beta,  sup_sur.CZ_beta,  sup_sur.CL_beta,  sup_sur.CM_beta,   sup_sur.CN_beta,
-                         h_sub,h_sup,Mach, pts_beta)
+                                           trans_sur.Clift_beta,trans_sur.Cdrag_beta,trans_sur.CX_beta,trans_sur.CY_beta,trans_sur.CZ_beta,trans_sur.CL_beta,trans_sur.CM_beta, trans_sur.CN_beta,
+                                             sup_sur.Clift_beta,  sup_sur.Cdrag_beta,  sup_sur.CX_beta,  sup_sur.CY_beta,  sup_sur.CZ_beta,  sup_sur.CL_beta,  sup_sur.CM_beta,   sup_sur.CN_beta,
+                                             h_sub,h_sup,Mach, pts_beta)
          
         Clift_beta   = results_beta.Clift   
         Cdrag_beta   = results_beta.Cdrag   
@@ -547,9 +552,9 @@ def evaluate_surrogate(state,settings,geometry):
 
         # u  
         results_u    =  compute_coefficients(sub_sur.Clift_u,  sub_sur.Cdrag_u,  sub_sur.CX_u,  sub_sur.CY_u,  sub_sur.CZ_u,  sub_sur.CL_u,  sub_sur.CM_u,   sub_sur.CN_u,
-                       trans_sur.Clift_u,trans_sur.Cdrag_u,trans_sur.CX_u,trans_sur.CY_u,trans_sur.CZ_u,trans_sur.CL_u,trans_sur.CM_u, trans_sur.CN_u,
-                         sup_sur.Clift_u,  sup_sur.Cdrag_u,  sup_sur.CX_u,  sup_sur.CY_u,  sup_sur.CZ_u,  sup_sur.CL_u,  sup_sur.CM_u,   sup_sur.CN_u,
-                         h_sub,h_sup,Mach, pts_u)
+                                           trans_sur.Clift_u,trans_sur.Cdrag_u,trans_sur.CX_u,trans_sur.CY_u,trans_sur.CZ_u,trans_sur.CL_u,trans_sur.CM_u, trans_sur.CN_u,
+                                             sup_sur.Clift_u,  sup_sur.Cdrag_u,  sup_sur.CX_u,  sup_sur.CY_u,  sup_sur.CZ_u,  sup_sur.CL_u,  sup_sur.CM_u,   sup_sur.CN_u,
+                                             h_sub,h_sup,Mach, pts_u)
          
         Clift_u   = results_u.Clift   
         Cdrag_u   = results_u.Cdrag   
@@ -562,9 +567,9 @@ def evaluate_surrogate(state,settings,geometry):
 
         # v  
         results_v    =  compute_coefficients(sub_sur.Clift_v,  sub_sur.Cdrag_v,  sub_sur.CX_v,  sub_sur.CY_v,  sub_sur.CZ_v,  sub_sur.CL_v,  sub_sur.CM_v,   sub_sur.CN_v,
-                       trans_sur.Clift_v,trans_sur.Cdrag_v,trans_sur.CX_v,trans_sur.CY_v,trans_sur.CZ_v,trans_sur.CL_v,trans_sur.CM_v, trans_sur.CN_v,
-                         sup_sur.Clift_v,  sup_sur.Cdrag_v,  sup_sur.CX_v,  sup_sur.CY_v,  sup_sur.CZ_v,  sup_sur.CL_v,  sup_sur.CM_v,   sup_sur.CN_v,
-                         h_sub,h_sup,Mach, pts_v)
+                                           trans_sur.Clift_v,trans_sur.Cdrag_v,trans_sur.CX_v,trans_sur.CY_v,trans_sur.CZ_v,trans_sur.CL_v,trans_sur.CM_v, trans_sur.CN_v,
+                                             sup_sur.Clift_v,  sup_sur.Cdrag_v,  sup_sur.CX_v,  sup_sur.CY_v,  sup_sur.CZ_v,  sup_sur.CL_v,  sup_sur.CM_v,   sup_sur.CN_v,
+                                             h_sub,h_sup,Mach, pts_v)
          
         Clift_v   = results_v.Clift   
         Cdrag_v   = results_v.Cdrag   
@@ -577,9 +582,9 @@ def evaluate_surrogate(state,settings,geometry):
 
         # w  
         results_w    =  compute_coefficients(sub_sur.Clift_w,  sub_sur.Cdrag_w,  sub_sur.CX_w,  sub_sur.CY_w,  sub_sur.CZ_w,  sub_sur.CL_w,  sub_sur.CM_w,   sub_sur.CN_w,
-                       trans_sur.Clift_w,trans_sur.Cdrag_w,trans_sur.CX_w,trans_sur.CY_w,trans_sur.CZ_w,trans_sur.CL_w,trans_sur.CM_w, trans_sur.CN_w,
-                         sup_sur.Clift_w,  sup_sur.Cdrag_w,  sup_sur.CX_w,  sup_sur.CY_w,  sup_sur.CZ_w,  sup_sur.CL_w,  sup_sur.CM_w,   sup_sur.CN_w,
-                         h_sub,h_sup,Mach, pts_w)
+                                           trans_sur.Clift_w,trans_sur.Cdrag_w,trans_sur.CX_w,trans_sur.CY_w,trans_sur.CZ_w,trans_sur.CL_w,trans_sur.CM_w, trans_sur.CN_w,
+                                             sup_sur.Clift_w,  sup_sur.Cdrag_w,  sup_sur.CX_w,  sup_sur.CY_w,  sup_sur.CZ_w,  sup_sur.CL_w,  sup_sur.CM_w,   sup_sur.CN_w,
+                                            h_sub,h_sup,Mach, pts_w)
          
         Clift_w   = results_w.Clift   
         Cdrag_w   = results_w.Cdrag   
@@ -593,9 +598,9 @@ def evaluate_surrogate(state,settings,geometry):
 
         # p  
         results_p    =  compute_coefficients(sub_sur.Clift_p,  sub_sur.Cdrag_p,  sub_sur.CX_p,  sub_sur.CY_p,  sub_sur.CZ_p,  sub_sur.CL_p,  sub_sur.CM_p,   sub_sur.CN_p,
-                       trans_sur.Clift_p,trans_sur.Cdrag_p,trans_sur.CX_p,trans_sur.CY_p,trans_sur.CZ_p,trans_sur.CL_p,trans_sur.CM_p, trans_sur.CN_p,
-                         sup_sur.Clift_p,  sup_sur.Cdrag_p,  sup_sur.CX_p,  sup_sur.CY_p,  sup_sur.CZ_p,  sup_sur.CL_p,  sup_sur.CM_p,   sup_sur.CN_p,
-                         h_sub,h_sup,Mach, pts_p)
+                                           trans_sur.Clift_p,trans_sur.Cdrag_p,trans_sur.CX_p,trans_sur.CY_p,trans_sur.CZ_p,trans_sur.CL_p,trans_sur.CM_p, trans_sur.CN_p,
+                                             sup_sur.Clift_p,  sup_sur.Cdrag_p,  sup_sur.CX_p,  sup_sur.CY_p,  sup_sur.CZ_p,  sup_sur.CL_p,  sup_sur.CM_p,   sup_sur.CN_p,
+                                            h_sub,h_sup,Mach, pts_p)
          
         Clift_p   = results_p.Clift   
         Cdrag_p   = results_p.Cdrag   
@@ -609,9 +614,9 @@ def evaluate_surrogate(state,settings,geometry):
 
         # q  
         results_q    =  compute_coefficients(sub_sur.Clift_q,  sub_sur.Cdrag_q,  sub_sur.CX_q,  sub_sur.CY_q,  sub_sur.CZ_q,  sub_sur.CL_q,  sub_sur.CM_q,   sub_sur.CN_q,
-                       trans_sur.Clift_q,trans_sur.Cdrag_q,trans_sur.CX_q,trans_sur.CY_q,trans_sur.CZ_q,trans_sur.CL_q,trans_sur.CM_q, trans_sur.CN_q,
-                         sup_sur.Clift_q,  sup_sur.Cdrag_q,  sup_sur.CX_q,  sup_sur.CY_q,  sup_sur.CZ_q,  sup_sur.CL_q,  sup_sur.CM_q,   sup_sur.CN_q,
-                         h_sub,h_sup,Mach, pts_q)
+                                           trans_sur.Clift_q,trans_sur.Cdrag_q,trans_sur.CX_q,trans_sur.CY_q,trans_sur.CZ_q,trans_sur.CL_q,trans_sur.CM_q, trans_sur.CN_q,
+                                             sup_sur.Clift_q,  sup_sur.Cdrag_q,  sup_sur.CX_q,  sup_sur.CY_q,  sup_sur.CZ_q,  sup_sur.CL_q,  sup_sur.CM_q,   sup_sur.CN_q,
+                                            h_sub,h_sup,Mach, pts_q)
          
         Clift_q   = results_q.Clift   
         Cdrag_q   = results_q.Cdrag   
@@ -624,9 +629,9 @@ def evaluate_surrogate(state,settings,geometry):
         
         # r  
         results_r    =  compute_coefficients(sub_sur.Clift_r,  sub_sur.Cdrag_r,  sub_sur.CX_r,  sub_sur.CY_r,  sub_sur.CZ_r,  sub_sur.CL_r,  sub_sur.CM_r,   sub_sur.CN_r,
-                       trans_sur.Clift_r,trans_sur.Cdrag_r,trans_sur.CX_r,trans_sur.CY_r,trans_sur.CZ_r,trans_sur.CL_r,trans_sur.CM_r, trans_sur.CN_r,
-                         sup_sur.Clift_r,  sup_sur.Cdrag_r,  sup_sur.CX_r,  sup_sur.CY_r,  sup_sur.CZ_r,  sup_sur.CL_r,  sup_sur.CM_r,   sup_sur.CN_r,
-                         h_sub,h_sup,Mach, pts_r)
+                                           trans_sur.Clift_r,trans_sur.Cdrag_r,trans_sur.CX_r,trans_sur.CY_r,trans_sur.CZ_r,trans_sur.CL_r,trans_sur.CM_r, trans_sur.CN_r,
+                                             sup_sur.Clift_r,  sup_sur.Cdrag_r,  sup_sur.CX_r,  sup_sur.CY_r,  sup_sur.CZ_r,  sup_sur.CL_r,  sup_sur.CM_r,   sup_sur.CN_r,
+                                            h_sub,h_sup,Mach, pts_r)
          
         Clift_r   = results_r.Clift   
         Cdrag_r   = results_r.Cdrag   
@@ -754,12 +759,16 @@ def evaluate_surrogate(state,settings,geometry):
          
         
         conditions.static_stability.derivatives.Clift_alpha = compute_stability_derivative(sub_sur.dClift_dalpha ,trans_sur.dClift_dalpha ,sup_sur.dClift_dalpha , h_sub,h_sup,Mach)
+        conditions.static_stability.derivatives.CX_alpha    = compute_stability_derivative(sub_sur.dCX_dalpha    ,trans_sur.dCX_dalpha    ,sup_sur.dCX_dalpha    , h_sub,h_sup,Mach)  
         conditions.static_stability.derivatives.CY_alpha    = compute_stability_derivative(sub_sur.dCY_dalpha    ,trans_sur.dCY_dalpha    ,sup_sur.dCY_dalpha    , h_sub,h_sup,Mach)
+        conditions.static_stability.derivatives.CZ_alpha    = compute_stability_derivative(sub_sur.dCZ_dalpha    ,trans_sur.dCZ_dalpha    ,sup_sur.dCZ_dalpha    , h_sub,h_sup,Mach) 
         conditions.static_stability.derivatives.CL_alpha    = compute_stability_derivative(sub_sur.dCL_dalpha    ,trans_sur.dCL_dalpha    ,sup_sur.dCL_dalpha    , h_sub,h_sup,Mach)
         conditions.static_stability.derivatives.CM_alpha    = compute_stability_derivative(sub_sur.dCM_dalpha    ,trans_sur.dCM_dalpha    ,sup_sur.dCM_dalpha    , h_sub,h_sup,Mach)
         conditions.static_stability.derivatives.CN_alpha    = compute_stability_derivative(sub_sur.dCN_dalpha    ,trans_sur.dCN_dalpha    ,sup_sur.dCN_dalpha    , h_sub,h_sup,Mach)
         conditions.static_stability.derivatives.Clift_beta  = compute_stability_derivative(sub_sur.dClift_dbeta  ,trans_sur.dClift_dbeta  ,sup_sur.dClift_dbeta  , h_sub,h_sup,Mach)
+        conditions.static_stability.derivatives.CX_beta     = compute_stability_derivative(sub_sur.dCX_dbeta     ,trans_sur.dCX_dbeta     ,sup_sur.dCX_dbeta     , h_sub,h_sup,Mach)  
         conditions.static_stability.derivatives.CY_beta     = compute_stability_derivative(sub_sur.dCY_dbeta     ,trans_sur.dCY_dbeta     ,sup_sur.dCY_dbeta     , h_sub,h_sup,Mach)
+        conditions.static_stability.derivatives.CZ_beta     = compute_stability_derivative(sub_sur.dCZ_dbeta     ,trans_sur.dCZ_dbeta     ,sup_sur.dCZ_dbeta     , h_sub,h_sup,Mach) 
         conditions.static_stability.derivatives.CL_beta     = compute_stability_derivative(sub_sur.dCL_dbeta     ,trans_sur.dCL_dbeta     ,sup_sur.dCL_dbeta     , h_sub,h_sup,Mach)
         conditions.static_stability.derivatives.CM_beta     = compute_stability_derivative(sub_sur.dCM_dbeta     ,trans_sur.dCM_dbeta     ,sup_sur.dCM_dbeta     , h_sub,h_sup,Mach)
         conditions.static_stability.derivatives.CN_beta     = compute_stability_derivative(sub_sur.dCN_dbeta     ,trans_sur.dCN_dbeta     ,sup_sur.dCN_dbeta     , h_sub,h_sup,Mach)
@@ -809,12 +818,12 @@ def evaluate_surrogate(state,settings,geometry):
             inviscid_wing_lifts = compute_coefficient(sub_sur.Clift_wing_alpha[wing.tag],trans_sur.Clift_wing_alpha[wing.tag],sup_sur.Cdrag_wing_alpha[wing.tag],h_sub,h_sup,Mach,pts_alpha)
             inviscid_wing_drags = compute_coefficient(sub_sur.Cdrag_wing_alpha[wing.tag],trans_sur.Cdrag_wing_alpha[wing.tag],sup_sur.Cdrag_wing_alpha[wing.tag],h_sub,h_sup,Mach,pts_alpha)
             # Pack 
-            conditions.aerodynamics.coefficients.lift.breakdown.inviscid_wings[wing.tag]         =  inviscid_wing_lifts 
-            conditions.aerodynamics.coefficients.lift.breakdown.compressible_wings[wing.tag]     =  inviscid_wing_lifts 
-            conditions.aerodynamics.coefficients.drag.breakdown.induced.inviscid_wings[wing.tag] =  inviscid_wing_drags   
+            conditions.aerodynamics.coefficients.lift.inviscid_wings[wing.tag]         =  inviscid_wing_lifts 
+            conditions.aerodynamics.coefficients.lift.compressible_wings[wing.tag]     =  inviscid_wing_lifts 
+            conditions.aerodynamics.coefficients.drag.induced.inviscid_wings[wing.tag] =  inviscid_wing_drags   
     
-    conditions.aerodynamics.coefficients.lift.total                      = conditions.static_stability.coefficients.lift 
-    conditions.aerodynamics.coefficients.drag.breakdown.induced.total    = conditions.static_stability.coefficients.drag   
+    conditions.aerodynamics.coefficients.lift.total            = conditions.static_stability.coefficients.lift 
+    conditions.aerodynamics.coefficients.drag.induced.inviscid = conditions.static_stability.coefficients.drag   
 
     return
 
@@ -848,25 +857,25 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
     trans_CN     = np.atleast_2d(trans_sur_CN(pts)).T
     
     # supersonic 
-    sup_Clift  = np.atleast_2d(sub_sur_Clift(pts)).T  
-    sup_Cdrag  = np.atleast_2d(sub_sur_Cdrag(pts)).T  
-    sup_CX     = np.atleast_2d(sub_sur_CX(pts)).T 
-    sup_CY     = np.atleast_2d(sub_sur_CY(pts)).T     
-    sup_CZ     = np.atleast_2d(sub_sur_CZ(pts)).T     
-    sup_CL     = np.atleast_2d(sub_sur_CL(pts)).T     
-    sup_CM     = np.atleast_2d(sub_sur_CM(pts)).T     
-    sup_CN     = np.atleast_2d(sub_sur_CN(pts)).T            
+    sup_Clift  = np.atleast_2d(sup_sur_Clift(pts)).T  
+    sup_Cdrag  = np.atleast_2d(sup_sur_Cdrag(pts)).T  
+    sup_CX     = np.atleast_2d(sup_sur_CX(pts)).T 
+    sup_CY     = np.atleast_2d(sup_sur_CY(pts)).T     
+    sup_CZ     = np.atleast_2d(sup_sur_CZ(pts)).T     
+    sup_CL     = np.atleast_2d(sup_sur_CL(pts)).T     
+    sup_CM     = np.atleast_2d(sup_sur_CM(pts)).T     
+    sup_CN     = np.atleast_2d(sup_sur_CN(pts)).T            
     
     # apply 
     results       = Data() 
-    results.Clift = h_sub(Mach)*sub_Clift +   (h_sup(Mach) - h_sub(Mach))*trans_Clift  + h_sub(Mach)*sup_Clift
-    results.Cdrag = h_sub(Mach)*sub_Cdrag +   (h_sup(Mach) - h_sub(Mach))*trans_Cdrag  + h_sub(Mach)*sup_Cdrag
-    results.CX    = h_sub(Mach)*sub_CX    +   (h_sup(Mach) - h_sub(Mach))*trans_CX     + h_sub(Mach)*sup_CX   
-    results.CY    = h_sub(Mach)*sub_CY    +   (h_sup(Mach) - h_sub(Mach))*trans_CY     + h_sub(Mach)*sup_CY   
-    results.CZ    = h_sub(Mach)*sub_CZ    +   (h_sup(Mach) - h_sub(Mach))*trans_CZ     + h_sub(Mach)*sup_CZ   
-    results.CL    = h_sub(Mach)*sub_CL    +   (h_sup(Mach) - h_sub(Mach))*trans_CL     + h_sub(Mach)*sup_CL   
-    results.CM    = h_sub(Mach)*sub_CM    +   (h_sup(Mach) - h_sub(Mach))*trans_CM     + h_sub(Mach)*sup_CM   
-    results.CN    = h_sub(Mach)*sub_CN    +   (h_sup(Mach) - h_sub(Mach))*trans_CN     + h_sub(Mach)*sup_CN
+    results.Clift = h_sub(Mach)*sub_Clift +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_Clift  + h_sup(Mach)*sup_Clift
+    results.Cdrag = h_sub(Mach)*sub_Cdrag +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_Cdrag  + h_sup(Mach)*sup_Cdrag
+    results.CX    = h_sub(Mach)*sub_CX    +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CX     + h_sup(Mach)*sup_CX   
+    results.CY    = h_sub(Mach)*sub_CY    +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CY     + h_sup(Mach)*sup_CY   
+    results.CZ    = h_sub(Mach)*sub_CZ    +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CZ     + h_sup(Mach)*sup_CZ   
+    results.CL    = h_sub(Mach)*sub_CL    +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CL     + h_sup(Mach)*sup_CL   
+    results.CM    = h_sub(Mach)*sub_CM    +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CM     + h_sup(Mach)*sup_CM   
+    results.CN    = h_sub(Mach)*sub_CN    +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CN     + h_sup(Mach)*sup_CN
   
     return results
 
@@ -883,7 +892,7 @@ def compute_coefficient(sub_sur_coef,trans_sur_coef, sup_sur_coef, h_sub,h_sup,M
     sup_coef  = np.atleast_2d(sub_sur_coef(pts)).T             
     
     # apply  
-    coef = h_sub(Mach)*sub_coef +   (h_sup(Mach) - h_sub(Mach))*trans_coef  + h_sub(Mach)*sup_coef 
+    coef = h_sub(Mach)*sub_coef +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_coef  + h_sub(Mach)*sup_coef 
   
     return coef 
 
@@ -927,13 +936,13 @@ def evaluate_no_surrogate(state,settings,geometry):
             Cdrag_wing  = np.atleast_2d(dim_wing_drags[:,i]).T/ref 
         i+=1
          
-        conditions.aerodynamics.coefficients.lift.breakdown.inviscid_wings[wing.tag]         = Clift_wing
-        conditions.aerodynamics.coefficients.lift.breakdown.compressible_wings[wing.tag]     = Clift_wing
-        conditions.aerodynamics.coefficients.drag.breakdown.induced.inviscid_wings[wing.tag] = Cdrag_wing
+        conditions.aerodynamics.coefficients.lift.inviscid_wings[wing.tag]         = Clift_wing
+        conditions.aerodynamics.coefficients.lift.compressible_wings[wing.tag]     = Clift_wing
+        conditions.aerodynamics.coefficients.drag.induced.inviscid_wings[wing.tag] = Cdrag_wing
         
          
     # Pack
-    conditions.aerodynamics.coefficients.lift.total                       =  results.CL  
-    conditions.aerodynamics.coefficients.drag.breakdown.induced.total     =  results.CDi   
+    conditions.aerodynamics.coefficients.lift.total                =  results.CL  
+    conditions.aerodynamics.coefficients.drag.induced.inviscid     =  results.CDi   
     
     return

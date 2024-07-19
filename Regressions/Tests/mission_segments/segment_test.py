@@ -60,17 +60,18 @@ def main():
     climb_throttle_7   = results.segments.climb_7.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0] 
     climb_throttle_8   = results.segments.climb_8.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0] 
     climb_throttle_9   = results.segments.climb_9.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]  
-    cruise_CL_1        = results.segments.cruise_1.conditions.aerodynamics.coefficients.lift[2][0]
-    cruise_CL_2        = results.segments.cruise_2.conditions.aerodynamics.coefficients.lift[2][0]
-    cruise_CL_3        = results.segments.cruise_3.conditions.aerodynamics.coefficients.lift[2][0] 
+    climb_10_CL        = results.segments.climb_10.conditions.aerodynamics.coefficients.lift.total[2][0]
+    cruise_CL_1        = results.segments.cruise_1.conditions.aerodynamics.coefficients.lift.total[2][0]
+    cruise_CL_2        = results.segments.cruise_2.conditions.aerodynamics.coefficients.lift.total[2][0]
+    cruise_CL_3        = results.segments.cruise_3.conditions.aerodynamics.coefficients.lift.total[2][0] 
     descent_throttle_1 = results.segments.descent_1.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]
     descent_throttle_2 = results.segments.descent_2.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]
-    single_pt_CL_1     = results.segments.single_point_1.conditions.aerodynamics.coefficients.lift[0][0]
-    single_pt_CL_2     = results.segments.single_point_2.conditions.aerodynamics.coefficients.lift[0][0]     
-    loiter_1_CL        = results.segments.loiter_1.conditions.aerodynamics.coefficients.lift[2][0]    
-    loiter_2_CL        = results.segments.loiter_2.conditions.aerodynamics.coefficients.lift[2][0]  
-    reserve_1_CL       = results.segments.reserve_loiter.conditions.aerodynamics.coefficients.lift[2][0]    
-    reserve_2_CL       = results.segments.reserve_cruise.conditions.aerodynamics.coefficients.lift[2][0]
+    single_pt_CL_1     = results.segments.single_point_1.conditions.aerodynamics.coefficients.lift.total[0][0]
+    single_pt_CL_2     = results.segments.single_point_2.conditions.aerodynamics.coefficients.lift.total[0][0]     
+    loiter_1_CL        = results.segments.loiter_1.conditions.aerodynamics.coefficients.lift.total[2][0]    
+    loiter_2_CL        = results.segments.loiter_2.conditions.aerodynamics.coefficients.lift.total[2][0]  
+    reserve_1_CL       = results.segments.reserve_loiter.conditions.aerodynamics.coefficients.lift.total[2][0]    
+    reserve_2_CL       = results.segments.reserve_cruise.conditions.aerodynamics.coefficients.lift.total[2][0]
     descent_throttle_3 = results.segments.descent_3.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]
     landing_thrust     = results.segments.landing.conditions.energy['fuel_line']['port_propulsor'].thrust[3][0]
     
@@ -78,7 +79,7 @@ def main():
     show_vals = True
     if show_vals:
         data = [takeoff_thrust, climb_throttle_1,   climb_throttle_2,   climb_throttle_3,   climb_throttle_4,   climb_throttle_5,  
-                climb_throttle_6,   climb_throttle_7,   climb_throttle_8,   climb_throttle_9,     
+                climb_throttle_6,   climb_throttle_7,   climb_throttle_8,   climb_throttle_9,   climb_10_CL,  
                 cruise_CL_1,  cruise_CL_2,  cruise_CL_3,        descent_throttle_1, descent_throttle_2,
                 single_pt_CL_1,     single_pt_CL_2,     loiter_1_CL,   loiter_2_CL, reserve_1_CL,reserve_2_CL,
                 descent_throttle_3,  landing_thrust]
@@ -86,29 +87,30 @@ def main():
             print(val)
     
     # Truth values
-    takeoff_thrust_truth     = 134346.3680968552
-    climb_throttle_1_truth   = 0.7413716914498286
-    climb_throttle_2_truth   = 0.6748322582362029
-    climb_throttle_3_truth   = 0.5
-    climb_throttle_4_truth   = 0.5652713886312003
-    climb_throttle_5_truth   = 0.5984019069253707
-    climb_throttle_6_truth   = 0.9797399450029933
-    climb_throttle_7_truth   = 1.1356363229325166
-    climb_throttle_8_truth   = 0.49141102165439143
-    climb_throttle_9_truth   = 0.534534704213123
-    cruise_CL_1_truth        = 0.7107049948911637
-    cruise_CL_2_truth        = 0.6991914686536842
-    cruise_CL_3_truth        = 0.7944463520623792
-    descent_throttle_1_truth = 0.35439031817921046
-    descent_throttle_2_truth = 0.5
-    single_pt_CL_1_truth     = 0.0006360316610969179
-    single_pt_CL_2_truth     = 0.0011705075023784222
-    loiter_1_CL_truth        = 0.5028577198435271
-    loiter_2_CL_truth        = 0.5028535230497425
-    reserve_1_CL_truth       = 0.346480034344035
-    reserve_2_CL_truth       = 0.34038156644416667
-    descent_throttle_3_truth = 0.1215657375539266
-    landing_thrust_truth     = 12726.760644532253
+    takeoff_thrust_truth     = 134345.8206371487 
+    climb_throttle_1_truth   = 0.7924031575305701 
+    climb_throttle_2_truth   = 0.6687152757815645 
+    climb_throttle_3_truth   = 0.5 
+    climb_throttle_4_truth   = 0.5602870849898138 
+    climb_throttle_5_truth   = 0.5866240282040578 
+    climb_throttle_6_truth   = 0.9847173506986509 
+    climb_throttle_7_truth   = 1.1361859686120184 
+    climb_throttle_8_truth   = 0.48638201276137716 
+    climb_throttle_9_truth   = 0.5343604779991377 
+    climb_10_CL_truth        = 0.343146309416358 
+    cruise_CL_1_truth        = 0.693638879796393 
+    cruise_CL_2_truth        = 0.6828889081600428 
+    cruise_CL_3_truth        = 0.7752061780953093 
+    descent_throttle_1_truth = 0.2415212986632528 
+    descent_throttle_2_truth = 0.5 
+    single_pt_CL_1_truth     = 0.0005638821719964144 
+    single_pt_CL_2_truth     = 0.0010139645855828314 
+    loiter_1_CL_truth        = 0.491122026966234 
+    loiter_2_CL_truth        = 0.49111798466132756 
+    reserve_1_CL_truth       = 0.33834151893309844 
+    reserve_2_CL_truth       = 0.3322214286230122 
+    descent_throttle_3_truth = 0.10223434860031803 
+    landing_thrust_truth     = 12727.18840376575 
     
     # Store errors 
     error = Data()
@@ -122,6 +124,7 @@ def main():
     error.climb_throttle_7   = np.max(np.abs(climb_throttle_7     - climb_throttle_7_truth))   
     error.climb_throttle_8   = np.max(np.abs(climb_throttle_8     - climb_throttle_8_truth))  
     error.climb_throttle_9   = np.max(np.abs(climb_throttle_9     - climb_throttle_9_truth))  
+    error.climb_10_CL        = np.max(np.abs(climb_10_CL          - climb_10_CL_truth ))    
     error.cruise_CL_1        = np.max(np.abs(cruise_CL_1          - cruise_CL_1_truth ))     
     error.cruise_CL_2        = np.max(np.abs(cruise_CL_2          - cruise_CL_2_truth ))      
     error.cruise_CL_3        = np.max(np.abs(cruise_CL_3          - cruise_CL_3_truth ))     
@@ -174,7 +177,7 @@ def base_analysis(vehicle):
     analyses.append(weights)
  
     #  Aerodynamics Analysis
-    aerodynamics                                     = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM()
+    aerodynamics                                     = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.number_of_spanwise_vortices   = 5
     aerodynamics.settings.number_of_chordwise_vortices  = 2       
@@ -404,7 +407,7 @@ def mission_setup(analyses):
     segment = Segments.Climb.Constant_CAS_Constant_Rate(base_segment)
     segment.tag = "climb_9"
     segment.analyses.extend( analyses.base )  
-    segment.altitude_end                                 = 9. * Units.km    
+    segment.altitude_end                                 = 10.9 * Units.km    
     segment.calibrated_air_speed                         = 150. * Units.m / Units.s
     segment.climb_rate                                   = 1.  
     
@@ -428,7 +431,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.base )  
     segment.altitude_end                                 = 11.   * Units.km    
     segment.air_speed                                    = 150. * Units.m / Units.s
-    segment.throttle                                     = 0.5 
+    segment.throttle                                     = 0.55 
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                      = True  

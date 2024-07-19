@@ -25,7 +25,7 @@ def parasite_drag_pylon(state,settings,geometry):
         Stanford AA241 A/B Course Notes
 
     Args:
-        state.conditions.aerodynamics.coefficients.drag.breakdown.parasite[network.tag].
+        state.conditions.aerodynamics.coefficients.drag.parasite[network.tag].
           form_factor                      (float): form_factor              [Unitless]
           compressibility_factor           (float): compressibility_factor   [Unitless]
           skin_friction            (numpy.ndarray): skin_friction            [Unitless]
@@ -38,7 +38,7 @@ def parasite_drag_pylon(state,settings,geometry):
         None 
     """
     
-    drag          = state.conditions.aerodynamics.coefficients.drag.breakdown
+    drag          = state.conditions.aerodynamics.coefficients.drag
     pylon_factor  = 0.2  
 
     # Estimating pylon drag

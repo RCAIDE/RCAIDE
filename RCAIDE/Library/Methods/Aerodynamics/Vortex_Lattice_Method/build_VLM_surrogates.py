@@ -33,14 +33,9 @@ def build_VLM_surrogates(aerodynamics):
     """
     surrogates =  aerodynamics.surrogates
     training   =  aerodynamics.training 
-    surrogates.subsonic    =  build_surrogate(aerodynamics, training.subsonic)
-        
-    if  training.supersonic ==  None:
-        surrogates.supersonic  =  None
-        surrogates.transonic   =  None
-    else:
-        surrogates.supersonic  =  build_surrogate(aerodynamics, training.supersonic)
-        surrogates.transonic   =  build_surrogate(aerodynamics, training.transonic)
+    surrogates.subsonic    =  build_surrogate(aerodynamics, training.subsonic) 
+    surrogates.supersonic  =  build_surrogate(aerodynamics, training.supersonic)
+    surrogates.transonic   =  build_surrogate(aerodynamics, training.transonic)
     return
 
 def build_surrogate(aerodynamics, training):

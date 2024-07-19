@@ -43,21 +43,21 @@ def main():
     results = missions.base_mission.evaluate() 
 
     elevator_deflection        = results.segments.climb.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg  
-    elevator_deflection_true   = -3.1111958662603465
+    elevator_deflection_true   = -1.6780193065956492
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
     print('Error: ',elevator_deflection_diff)
     assert np.abs(elevator_deflection_diff/elevator_deflection_true) < 1e-3
     
 
     aileron_deflection        = results.segments.climb.conditions.control_surfaces.aileron.deflection[0,0] / Units.deg  
-    aileron_deflection_true   = -2.1598531533493865
+    aileron_deflection_true   = 0.8803301129916888
     aileron_deflection_diff   = np.abs(aileron_deflection - aileron_deflection_true)
     print('Error: ',aileron_deflection_diff)
     assert np.abs(aileron_deflection_diff/aileron_deflection_true) < 1e-3
     
 
     rudder_deflection        = results.segments.climb.conditions.control_surfaces.rudder.deflection[0,0] / Units.deg  
-    rudder_deflection_true   = -3.4170973783633762
+    rudder_deflection_true   = -2.4320842771635736
     rudder_deflection_diff   = np.abs(rudder_deflection - rudder_deflection_true)
     print('Error: ',rudder_deflection_diff)
     assert np.abs(rudder_deflection_diff/rudder_deflection_true) < 1e-3    
@@ -99,13 +99,13 @@ def base_analysis(vehicle, configs):
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.number_spanwise_vortices   = 30
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics) 
       
-    stability                                   = RCAIDE.Framework.Analyses.Stability.VLM_Perturbation_Method() 
+    stability                                   = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Perturbation_Method() 
     stability.settings.discretize_control_surfaces  = True
     stability.settings.model_fuselage               = True                
     stability.settings.model_nacelle                = True

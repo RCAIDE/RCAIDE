@@ -77,15 +77,25 @@ def plot_altitude_sfc_weight(results,
         set_axes(axis_1)               
         for network in results.segments[i].analyses.energy.networks: 
             busses      = network.busses
-            fuel_lines  = network.fuel_lines
-            for bus in busses:
-                for propulsor in bus.propulsors: 
-                    eta = results.segments[i].conditions.energy[bus.tag][propulsor.tag].throttle[:,0]  
-                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)               
-            for fuel_line in fuel_lines:  
-                for propulsor in fuel_line.propulsors: 
-                    eta = results.segments[i].conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
-                    axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)     
+            fuel_lines  = network.fuel_lines 
+            for network in results.segments[i].analyses.energy.networks: 
+                busses      = network.busses
+                fuel_lines  = network.fuel_lines 
+                for bus in busses:
+                    for j ,  propulsor in enumerate(bus.propulsors):
+                        eta = results.segments[i].conditions.energy[bus.tag][propulsor.tag].throttle[:,0]  
+                        if j == 0: 
+                            axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name  )
+                        else:
+                            axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)  
+                for fuel_line in fuel_lines:  
+                    for j ,  propulsor in enumerate(fuel_line.propulsors):
+                        eta = results.segments[i].conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]
+                        eta = results.segments[i].conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0]  
+                        if j == 0: 
+                            axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name   )
+                        else:
+                            axis_1.plot(time, eta, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width)  
         
         if i == 0:
             axis_2.plot(time, Weight/1000 , color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name) 
@@ -113,7 +123,7 @@ def plot_altitude_sfc_weight(results,
     fig.subplots_adjust(top=0.8)
     
     # set title of plot 
-    title_text    = 'Throttle, Fuel Consumption  and Weight'      
+    title_text    = 'Throttle, Fuel Consumption and Weight'      
     fig.suptitle(title_text)
     
     if save_figure:

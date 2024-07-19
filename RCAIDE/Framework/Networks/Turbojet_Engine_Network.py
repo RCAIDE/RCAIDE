@@ -213,8 +213,7 @@ class Turbojet_Engine_Network(Network):
             # Create fuel_line results data structure  
             # ------------------------------------------------------------------------------------------------------
             segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Framework.Mission.Common.Conditions()       
-            fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]   
-            fuel_line_results.throttle                           = 0. * ones_row(1) 
+            fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]    
             segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Framework.Mission.Common.Conditions()  
             noise_results                                        = segment.state.conditions.noise[fuel_line.tag]  
      
