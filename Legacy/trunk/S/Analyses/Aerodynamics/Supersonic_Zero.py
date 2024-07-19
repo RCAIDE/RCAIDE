@@ -110,17 +110,18 @@ class Supersonic_Zero(Markup):
         
         compute.drag = Process()
         compute.drag.compressibility               = Process()
-        compute.drag.compressibility.total         = Methods.Drag.compressibility_drag_total # Supersonic         
+        compute.drag.compressibility.total         = Methods.Drag.compressibility_drag_total # SZ        
         compute.drag.parasite                      = Process()
         compute.drag.parasite.wings                = Process_Geometry('wings')
         compute.drag.parasite.wings.wing           = Common.Drag.parasite_drag_wing 
         compute.drag.parasite.fuselages            = Process_Geometry('fuselages')
-        compute.drag.parasite.fuselages.fuselage   = Methods.Drag.parasite_drag_fuselage  # Supersonic     
+        compute.drag.parasite.fuselages.fuselage   = Methods.Drag.parasite_drag_fuselage 
         compute.drag.parasite.nacelles             = Process_Geometry('nacelles')
-        compute.drag.parasite.nacelles.nacelle     = Methods.Drag.parasite_drag_nacelle  # Supersonic   
+        compute.drag.parasite.nacelles.nacelle     = Methods.Drag.parasite_drag_nacelle # SZ
+        #compute.drag.parasite.pylons               = Methods.Drag.parasite_drag_pylon
         compute.drag.parasite.total                = Common.Drag.parasite_total
         compute.drag.induced                       = Common.Drag.induced_drag_aircraft
-        compute.drag.miscellaneous                 = Methods.Drag.miscellaneous_drag_aircraft # Supersonic     
+        compute.drag.miscellaneous                 = Methods.Drag.miscellaneous_drag_aircraft # different type used in FZ
         compute.drag.untrimmed                     = Common.Drag.untrimmed
         compute.drag.trim                          = Common.Drag.trim
         compute.drag.spoiler                       = Common.Drag.spoiler_drag
