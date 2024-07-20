@@ -42,6 +42,7 @@ def evaluate_surrogate(state,settings,geometry):
     sub_sur       = aerodynamics.surrogates.subsonic
     sup_sur       = aerodynamics.surrogates.supersonic
     trans_sur     = aerodynamics.surrogates.transonic 
+    ref_vals      = aerodynamics.reference_values
     AoA           = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
     Beta          = np.atleast_2d(conditions.aerodynamics.angles.beta)    
     Mach          = np.atleast_2d(conditions.freestream.mach_number)  
@@ -315,12 +316,12 @@ def evaluate_surrogate(state,settings,geometry):
     CN_r      = results_r.CN 
 
     # Stability Results  
-    conditions.S_ref                                                  = aerodynamics.S_ref              
-    conditions.c_ref                                                  = aerodynamics.c_ref              
-    conditions.b_ref                                                  = aerodynamics.b_ref
-    conditions.X_ref                                                  = aerodynamics.X_ref
-    conditions.Y_ref                                                  = aerodynamics.Y_ref
-    conditions.Z_ref                                                  = aerodynamics.Z_ref 
+    conditions.S_ref    = ref_vals.S_ref              
+    conditions.c_ref    = ref_vals.c_ref              
+    conditions.b_ref    = ref_vals.b_ref
+    conditions.X_ref    = ref_vals.X_ref
+    conditions.Y_ref    = ref_vals.Y_ref
+    conditions.Z_ref    = ref_vals.Z_ref 
     
     conditions.static_stability.coefficients.lift                     = Clift_alpha + Clift_beta + Clift_u + Clift_v + Clift_w + Clift_p + Clift_q + Clift_r 
     conditions.static_stability.coefficients.drag                     = Cdrag_alpha + Cdrag_beta + Cdrag_u + Cdrag_v + Cdrag_w + Cdrag_p + Cdrag_q + Cdrag_r 

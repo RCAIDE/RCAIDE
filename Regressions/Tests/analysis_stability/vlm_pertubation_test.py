@@ -105,7 +105,7 @@ def base_analysis(vehicle, configs):
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics) 
       
-    stability                                   = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Perturbation_Method() 
+    stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method() 
     stability.settings.discretize_control_surfaces  = True
     stability.settings.model_fuselage               = True                
     stability.settings.model_nacelle                = True

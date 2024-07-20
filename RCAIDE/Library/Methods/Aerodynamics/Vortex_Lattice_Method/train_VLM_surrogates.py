@@ -140,15 +140,15 @@ def train_model(aerodynamics, Mach):
     CZ_alpha_0      =  np.tile(CZ_alpha[2][None,:],(3, 1)) 
     CL_alpha_0      =  np.tile(CL_alpha[2][None,:],(3, 1)) 
     CM_alpha_0      =  np.tile(CM_alpha[2][None,:],(3, 1)) 
-    CN_alpha_0      =  np.tile(CN_alpha[2][None,:],(3, 1)) 
-    
-    aerodynamics.S_ref = S_ref
-    aerodynamics.b_ref = b_ref
-    aerodynamics.c_ref = c_ref
-    aerodynamics.X_ref = X_ref
-    aerodynamics.Y_ref = Y_ref
-    aerodynamics.Z_ref = Z_ref
-    aerodynamics.aspect_ratio = (b_ref ** 2) / S_ref  
+    CN_alpha_0      =  np.tile(CN_alpha[2][None,:],(3, 1))  
+
+    aerodynamics.reference_values.S_ref = S_ref
+    aerodynamics.reference_values.b_ref = b_ref
+    aerodynamics.reference_values.c_ref = c_ref
+    aerodynamics.reference_values.X_ref = X_ref
+    aerodynamics.reference_values.Y_ref = Y_ref
+    aerodynamics.reference_values.Z_ref = Z_ref
+    aerodynamics.reference_values.aspect_ratio = (b_ref ** 2) / S_ref
     
     Clift_wing_alpha = Data()
     Cdrag_wing_alpha = Data() 

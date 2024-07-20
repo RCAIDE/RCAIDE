@@ -1,5 +1,5 @@
 ## @ingroup Analyses-Aerodynamics
-# RCAIDE/Framework/Analyses/Aerodynamics/Vortex_Lattice_Perturbation_Method.py
+# RCAIDE/Framework/Analyses/Aerodynamics/Vortex_Lattice_Method.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -21,10 +21,10 @@ from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import *
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Vortex_Lattice_Perturbation_Method
+#  Vortex_Lattice_Method
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Analyses-Aerodynamics
-class Vortex_Lattice_Perturbation_Method(Stability):
+class Vortex_Lattice_Method(Stability):
     """This is a subsonic aerodynamic buildup analysis based on the vortex lattice method
 
      Assumptions:
@@ -132,7 +132,15 @@ class Vortex_Lattice_Perturbation_Method(Stability):
         self.training.pitch_rate                                    = np.array([0.3 ,0.15  , 0.0 ])  * Units.rad / Units.sec
         self.training.roll_rate                                     = np.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
         self.training.yaw_rate                                      = np.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
-                      
+    
+        self.reference_values                                       = Data()
+        self.reference_values.S_ref                                 = 0
+        self.reference_values.c_ref                                 = 0
+        self.reference_values.b_ref                                 = 0
+        self.reference_values.X_ref                                 = 0
+        self.reference_values.Y_ref                                 = 0
+        self.reference_values.Z_ref                                 = 0
+        
         # control surface flags                  
         self.aileron_flag                                           = False 
         self.flap_flag                                              = False 

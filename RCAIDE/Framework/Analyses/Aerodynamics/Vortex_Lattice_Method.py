@@ -131,7 +131,15 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.training.pitch_rate                                    = np.array([0.3 ,0.15  , 0.0 ])  * Units.rad / Units.sec
         self.training.roll_rate                                     = np.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
         self.training.yaw_rate                                      = np.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
-                      
+    
+        self.reference_values                                       = Data()
+        self.reference_values.S_ref                                 = 0
+        self.reference_values.c_ref                                 = 0
+        self.reference_values.b_ref                                 = 0
+        self.reference_values.X_ref                                 = 0
+        self.reference_values.Y_ref                                 = 0
+        self.reference_values.Z_ref                                 = 0
+        
         # control surface flags                  
         self.aileron_flag                                           = False 
         self.flap_flag                                              = False 
