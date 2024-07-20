@@ -36,7 +36,7 @@ class Climb(Evaluate):
         self.altitude_start    = None # Optional
         self.altitude_end      = 1. * Units.km
         self.climb_rate        = 1.  * Units.m / Units.s
-        self.true_course_angle = 0.0 * Units.degrees  
+        self.true_course       = 0.0 * Units.degrees  
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

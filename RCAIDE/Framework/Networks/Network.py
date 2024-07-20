@@ -31,11 +31,13 @@ class Network(Component):
         self.busses                                      = Container()     
         self.fuel_lines                                  = Container() 
         self.thermal_management                          = Data() 
-        self.thermal_management.heat_acquisition_systems = None
-        self.thermal_management.heat_exchanger_systems   = None  
-        self.thermal_management.heat_addition_systems    = None 
-        self.thermal_management.coolant_reservoirs       = None    
+        self.thermal_management.heat_acquisition_systems = Container() 
+        self.thermal_management.heat_exchanger_systems   = Container() 
+        self.thermal_management.heat_addition_systems    = Container() 
+        self.thermal_management.coolant_reservoirs       = Container() 
         self.wing_mounted                                = True
+        self.system_voltage                              = None   
+        
 
 # ----------------------------------------------------------------------
 #  Component Container

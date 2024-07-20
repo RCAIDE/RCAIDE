@@ -9,12 +9,12 @@
 
 # RCAIDE imports  
 import RCAIDE
+from .Stability                                             import Stability
 from RCAIDE.Framework.Core                                  import Data , Units
 from RCAIDE.Framework.Analyses                              import Process  
 from RCAIDE.Framework.Analyses.Common.Process_Geometry      import Process_Geometry   
 from RCAIDE.Library.Methods.Aerodynamics                    import Common
 from RCAIDE.Library.Methods.Stability.VLM_stability_solver  import *  
-from .Stability                                             import Stability 
 
 # package imports 
 import numpy as np 

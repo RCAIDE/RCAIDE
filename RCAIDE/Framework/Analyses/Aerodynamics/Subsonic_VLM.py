@@ -166,6 +166,6 @@ class Subsonic_VLM(Aerodynamics):
         """               
         settings = self.settings
         geometry = self.geometry 
-        results  = self.process.compute(state,settings,geometry)
+        results  = self.process.compute.evaluate(state,settings,geometry)
         
         return results

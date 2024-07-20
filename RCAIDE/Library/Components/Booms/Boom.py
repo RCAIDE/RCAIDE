@@ -60,8 +60,6 @@ class Boom(Component):
         self.fineness                               = Data()
         self.fineness.nose                          = 0.0
         self.fineness.tail                          = 0.0
-             
-        self.differential_pressure                  = 0.0 
               
         # For VSP     
         self.vsp_data                               = Data()
@@ -95,24 +93,6 @@ class Boom(Component):
         self.Segments.append(segment) 
         
         return 
-
-class Container(Component.Container):
-    def get_children(self):
-        """ Returns the components that can go inside
-    
-        Assumptions:
-            None
-            
-        Source:
-            None
-        
-        Args:
-            self  (dict): container of booms [-]    
-            
-        Returns:
-            Boom  (dict): boom               [-] 
-        """ 
-        return [Boom]
 
 # ------------------------------------------------------------
 #  Handle Linking

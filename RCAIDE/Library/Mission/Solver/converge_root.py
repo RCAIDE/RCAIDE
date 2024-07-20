@@ -87,7 +87,7 @@ def iterate(unknowns, segment):
     else:
         segment.state.unknowns = unknowns
         
-    segment.process.iterate(segment)
+    segment.process.iterate.evaluate(segment)
     
     residuals = segment.state.residuals.pack_array()
         

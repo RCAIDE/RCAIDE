@@ -30,7 +30,5 @@ class Airfoil(Component):
         self.geometry                   = None
         self.polar_files                = None
         self.polars                     = None
-        self.prev                       = None
-        self.next                       = None
         self.number_of_points           = 200
        

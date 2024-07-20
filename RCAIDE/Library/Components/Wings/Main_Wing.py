@@ -32,24 +32,6 @@ class Main_Wing(Wing):
 class Segment_Container(Container):
     """ Container for wing segment.
         """    
-
-    def get_children(self):
-        """ Returns the components that can go inside
-    
-        Assumptions:
-            None
-
-        Source:
-            None
-
-        Args:
-           self (dict): main wing data structure 
-
-        Returns:
-           segment (dict): data sructure  
-        """     
-        
-        return [Segment] 
     
     def append(self,val):
         """Appends the value to the containers. This overrides the basic data class append
@@ -76,3 +58,5 @@ class Segment_Container(Container):
             val.tag = val.tag + str(n_comps+1)    
             
         Container.append(self,val) 
+        
+    

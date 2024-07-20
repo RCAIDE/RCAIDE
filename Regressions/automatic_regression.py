@@ -10,7 +10,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
  
-from RCAIDE.Framework.Core import DataOrdered
+from RCAIDE.Framework.Core import Data
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
@@ -25,7 +25,7 @@ modules = [
 def regressions():
      
     # preallocate test results
-    results = DataOrdered()
+    results = Data()
     for module in modules:
         results[module] = 'Untested'
 

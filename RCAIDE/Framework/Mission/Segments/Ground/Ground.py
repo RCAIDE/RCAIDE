@@ -51,7 +51,7 @@ class Ground(Evaluate):
         self.velocity_start       = 0.0
         self.velocity_end         = 0.0 
         self.altitude             = 0.0
-        self.true_course_angle    = 0.0 * Units.degrees      
+        self.true_course          = 0.0 * Units.degrees      
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Conditions 

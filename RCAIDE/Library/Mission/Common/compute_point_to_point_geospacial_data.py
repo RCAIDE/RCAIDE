@@ -36,7 +36,7 @@ def compute_point_to_point_geospacial_data(topography_file                      
     Returns:                                   
         latitude_longitude_micrphone_locations - latitude-longitude and elevation coordinates of all microphones in domain          [deg,deg,m]  
         flight_range                           - gound distance between origin and destination location                          [meters]              
-        true_course_angle                      - true course angle measured clockwise from true north                               [radians]
+        true_course                            - true course angle measured clockwise from true north                               [radians]
         origin tag           
         origin_location                     - cartesial coordinates of origin location relative to computational domain       [meters]                        
         origin_coord_deg                  - cartesial coordinates of origin location relative to computational domain       [meters]                                    
@@ -107,7 +107,7 @@ def compute_point_to_point_geospacial_data(topography_file                      
     # pack data 
     geospacial_data = Data( 
         flight_range            = R*angle,
-        true_course_angle       = gamma,
+        true_course             = gamma,
         origin_tag              = origin_tag,
         origin_coord_deg        = origin_coord_deg,
         origin_location         = ori_location,

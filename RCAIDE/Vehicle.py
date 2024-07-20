@@ -297,15 +297,3 @@ class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Propert
         self.clear()
         for key in value.keys():
             self[key] = value[key]
-
-    def get_children(self):
-        """ Returns the components that can go inside
-        
-            Assumptions:
-                None
-    
-            Source:
-                None
-        """       
-        
-        return [Vehicle_Mass_Properties]

@@ -7,7 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports  
-from RCAIDE.Framework.Core      import Data 
+from RCAIDE.Framework.Core      import Data, Container
 from .                          import Propulsor
  
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -26,7 +26,7 @@ class Turbofan(Propulsor):
         # setting the default values
         self.tag                                      = 'Turbofan'  
         self.nacelle                                  = None 
-        self.fan                                      = None 
+        self.fan                                      = Container
         self.ram                                      = None 
         self.inlet_nozzle                             = None 
         self.low_pressure_compressor                  = None 
@@ -54,13 +54,6 @@ class Turbofan(Propulsor):
         self.design_thrust                            = 0.0
         self.mass_flow_rate_design                    = 0.0
         self.OpenVSP_flow_through                     = False
-        
-        #areas needed for drag; not in there yet
-        self.areas                                    = Data()
-        self.areas.wetted                             = 0.0
-        self.areas.maximum                            = 0.0
-        self.areas.exit                               = 0.0
-        self.areas.inflow                             = 0.0
                                
         self.inputs                                   = Data()
         self.outputs                                  = Data()

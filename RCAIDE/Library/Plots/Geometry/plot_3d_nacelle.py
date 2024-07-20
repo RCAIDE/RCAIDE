@@ -78,11 +78,10 @@ def generate_3d_stack_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_po
     for i_seg, segment in enumerate(nac.Segments): 
         a = segment.width/2
         b = segment.height/2
-        n = segment.curvature
         theta                   = np.linspace(0,2*np.pi,tessellation) 
         section_points          = np.zeros((24, 3, 1))
-        section_points[:, 1, 0] = (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
-        section_points[:, 2, 0] = (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+        section_points[:, 1, 0] = (abs((np.cos(theta))))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
+        section_points[:, 2, 0] = (abs((np.sin(theta))))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
         
         x_rotation = np.zeros((tessellation, 3, 3))
         x_rotation[:,0,0] = 1

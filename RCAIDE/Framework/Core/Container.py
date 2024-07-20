@@ -102,21 +102,3 @@ class Container(Data):
             self.update(vals)
         else:
             raise Exception('unrecognized data type')
-        
-    def get_children(self):
-        """ Returns the components that can go inside
-        
-        Assumptions:
-            None
-    
-        Source:
-           None
-    
-        Args:
-           None
-    
-        Returns:
-           None 
-        """        
-        
-        return []    

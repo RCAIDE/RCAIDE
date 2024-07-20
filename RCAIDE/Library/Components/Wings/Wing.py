@@ -163,28 +163,6 @@ class Wing(Component):
 
         return 
     
-class Container(Component.Container):
-    def get_children(self):
-        """ Returns the components that can go inside
-        
-        Assumptions:
-        None
-    
-        Source:
-        None
-    
-        Args:
-        None
-    
-        Returns:
-        None
-    
-        """       
-        from . import Main_Wing
-        from . import Vertical_Tail
-        from . import Horizontal_Tail
-        
-        return [Main_Wing,Vertical_Tail,Horizontal_Tail] 
 
 # ------------------------------------------------------------
 #  Handle Linking

@@ -43,7 +43,6 @@ class Nacelle(Component):
         self.length                    = 0.0   
         self.orientation_euler_angles  = [0.,0.,0.]    
         self.flow_through              = True 
-        self.differential_pressure     = 0.0    
         self.cowling_airfoil_angle     = 0.0    
 
     def nac_vel_to_body(self):

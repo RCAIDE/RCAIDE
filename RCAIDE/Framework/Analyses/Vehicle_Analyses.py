@@ -12,7 +12,7 @@ from .Analysis import Analysis
 # ----------------------------------------------------------------------------------------------------------------------
 # Vehicle
 # ----------------------------------------------------------------------------------------------------------------------   
-class Vehicle(Analysis.Container):
+class Vehicle_Analyses(Analysis.Container):
     """ The Vehicle Analyses Container Class 
     """
     def __defaults__(self):

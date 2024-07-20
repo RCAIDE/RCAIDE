@@ -52,13 +52,6 @@ class Turbojet(Propulsor):
         self.mass_flow_rate_design                    = 0.0 
         self.OpenVSP_flow_through                     = False
 
-        #areas needed for drag; not in there yet
-        self.areas                                    = Data()
-        self.areas.wetted                             = 0.0
-        self.areas.maximum                            = 0.0
-        self.areas.exit                               = 0.0
-        self.areas.inflow                             = 0.0
-
         self.inputs                                   = Data()
         self.outputs                                  = Data()
 

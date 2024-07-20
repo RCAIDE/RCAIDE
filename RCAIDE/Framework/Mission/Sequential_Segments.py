@@ -85,7 +85,7 @@ class Sequential_Segments(Segments.Segment.Container):
         """           
         if state is None:
             state = self.state
-        self.process(self)
+        self.process.evaluate(self)
         return self     
         
     

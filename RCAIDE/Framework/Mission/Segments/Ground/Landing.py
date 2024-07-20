@@ -54,7 +54,7 @@ class Landing(Evaluate):
         self.throttle             = 0.1
         self.altitude             = 0.0
         self.reverse_thrust_ratio = 0.1
-        self.true_course_angle    = 0.0 * Units.degrees 
+        self.true_course          = 0.0 * Units.degrees 
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Unique Mission Unknowns and Residuals

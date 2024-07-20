@@ -38,25 +38,5 @@ class Segment(Component):
         self.percent_z_location       = 0 
         self.height                   = 0 
         self.width                    = 0 
-        self.curvature                = 2  
-         
-class Segment_Container(Container):
-    """ Container for nacelle segment. 
-    """     
-
-    def get_children(self):
-        """ Returns the components that can go inside
         
-        Assumptions:
-            None
-    
-        Source:
-            None
-    
-        Args:
-            None
-    
-        Returns:
-            None 
-        """      
-        return []
+Segment.Container = Container

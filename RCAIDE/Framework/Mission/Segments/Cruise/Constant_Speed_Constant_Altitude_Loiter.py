@@ -35,7 +35,7 @@ class Constant_Speed_Constant_Altitude_Loiter(Evaluate):
         self.altitude          = None
         self.air_speed         = None
         self.time              = 1.0 * Units.sec
-        self.true_course_angle = 0.0 * Units.degrees        
+        self.true_course       = 0.0 * Units.degrees        
                 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

@@ -37,7 +37,7 @@ class Constant_Dynamic_Pressure_Constant_Angle(Evaluate):
         self.altitude_end              = 10.  * Units.km
         self.climb_angle               = 3.   * Units.degrees
         self.dynamic_pressure          = None
-        self.true_course_angle         = 0.0 * Units.degrees
+        self.true_course               = 0.0 * Units.degrees
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Specific Unknowns and Residuals 
