@@ -55,7 +55,7 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
     try:
         VD = vehicle.vortex_distribution
     except:
-        VL = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM()  
+        VL = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
         VL.settings.number_of_spanwise_vortices  = 25
         VL.settings.number_of_chordwise_vortices = 5
         VL.settings.spanwise_cosine_spacing      = False

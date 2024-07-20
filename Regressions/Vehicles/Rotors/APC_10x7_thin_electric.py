@@ -8,11 +8,8 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Data, Units
 import numpy as np
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.import_airfoil_geometry\
-     import import_airfoil_geometry
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil.compute_airfoil_properties import (
-    compute_airfoil_properties,
-)
+from RCAIDE.Library.Methods.Geometry.Airfoil.import_airfoil_geometry import import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Airfoil.compute_airfoil_properties import compute_airfoil_properties
 import os
 
 

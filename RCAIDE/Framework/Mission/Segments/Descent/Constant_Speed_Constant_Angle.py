@@ -54,7 +54,7 @@ class Constant_Speed_Constant_Angle(Evaluate):
         self.altitude_end      = 0.0 * Units.km
         self.descent_angle     = 3.  * Units.deg
         self.air_speed         = 100 * Units.m / Units.s
-        self.true_course_angle = 0.0 * Units.degrees  
+        self.true_course       = 0.0 * Units.degrees  
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

@@ -43,21 +43,21 @@ def main():
     results = missions.base_mission.evaluate() 
 
     elevator_deflection        = results.segments.climb.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg  
-    elevator_deflection_true   = -3.1111958662603465
+    elevator_deflection_true   = -1.6514157380434311
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
     print('Error: ',elevator_deflection_diff)
     assert np.abs(elevator_deflection_diff/elevator_deflection_true) < 1e-3
     
 
     aileron_deflection        = results.segments.climb.conditions.control_surfaces.aileron.deflection[0,0] / Units.deg  
-    aileron_deflection_true   = -2.1598531533493865
+    aileron_deflection_true   = 0.8448403820824947
     aileron_deflection_diff   = np.abs(aileron_deflection - aileron_deflection_true)
     print('Error: ',aileron_deflection_diff)
     assert np.abs(aileron_deflection_diff/aileron_deflection_true) < 1e-3
     
 
     rudder_deflection        = results.segments.climb.conditions.control_surfaces.rudder.deflection[0,0] / Units.deg  
-    rudder_deflection_true   = -3.4170973783633762
+    rudder_deflection_true   = -2.357495302759012
     rudder_deflection_diff   = np.abs(rudder_deflection - rudder_deflection_true)
     print('Error: ',rudder_deflection_diff)
     assert np.abs(rudder_deflection_diff/rudder_deflection_true) < 1e-3    
@@ -99,13 +99,13 @@ def base_analysis(vehicle, configs):
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.number_spanwise_vortices   = 30
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics) 
       
-    stability                                   = RCAIDE.Framework.Analyses.Stability.VLM_Perturbation_Method() 
+    stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method() 
     stability.settings.discretize_control_surfaces  = True
     stability.settings.model_fuselage               = True                
     stability.settings.model_nacelle                = True
@@ -182,28 +182,28 @@ def mission_setup(analyses):
     segment.flight_dynamics.force_z                       = True    
                 
     # define flight controls               
-    segment.flight_controls.throttle.active                          = True           
-    segment.flight_controls.throttle.assigned_propulsors             = [['ice_propeller']]    
-    segment.flight_controls.body_angle.active                        = True   
+    segment.assigned_control_variables.throttle.active                          = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]    
+    segment.assigned_control_variables.body_angle.active                        = True   
     
     # Longidinal Flight Mechanics
     segment.flight_dynamics.moment_y                                 = True 
-    segment.flight_controls.elevator_deflection.active               = True    
-    segment.flight_controls.elevator_deflection.assigned_surfaces    = [['elevator']]
-    segment.flight_controls.elevator_deflection.initial_guess_values = [[0]]     
+    segment.assigned_control_variables.elevator_deflection.active               = True    
+    segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']]
+    segment.assigned_control_variables.elevator_deflection.initial_guess_values = [[0]]     
    
     # Lateral Flight Mechanics 
     segment.flight_dynamics.force_y                                  = True     
     segment.flight_dynamics.moment_x                                 = True
     segment.flight_dynamics.moment_z                                 = True 
-    segment.flight_controls.aileron_deflection.active                = True    
-    segment.flight_controls.aileron_deflection.assigned_surfaces     = [['aileron']]
-    segment.flight_controls.aileron_deflection.initial_guess_values  = [[0]] 
-    segment.flight_controls.rudder_deflection.active                 = True    
-    segment.flight_controls.rudder_deflection.assigned_surfaces      = [['rudder']]
-    segment.flight_controls.rudder_deflection.initial_guess_values   = [[0]]
-    segment.flight_controls.bank_angle.active                        = True    
-    segment.flight_controls.bank_angle.initial_guess_values          = [[0]]  
+    segment.assigned_control_variables.aileron_deflection.active                = True    
+    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
+    segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[0]] 
+    segment.assigned_control_variables.rudder_deflection.active                 = True    
+    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
+    segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[0]]
+    segment.assigned_control_variables.bank_angle.active                        = True    
+    segment.assigned_control_variables.bank_angle.initial_guess_values          = [[0]]  
     mission.append_segment(segment) 
 
     return mission 

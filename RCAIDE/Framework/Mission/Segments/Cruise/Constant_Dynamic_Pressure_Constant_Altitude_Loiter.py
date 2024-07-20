@@ -53,7 +53,7 @@ class Constant_Dynamic_Pressure_Constant_Altitude_Loiter(Evaluate):
         self.altitude          = 0.0
         self.dynamic_pressure  = None
         self.time              = 1.0 * Units.sec
-        self.true_course_angle = 0.0 * Units.degrees 
+        self.true_course       = 0.0 * Units.degrees 
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

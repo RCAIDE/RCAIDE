@@ -67,7 +67,7 @@ class Takeoff(Evaluate):
         self.friction_coefficient = 0.04
         self.throttle             = 1.0
         self.altitude             = 0.0
-        self.true_course_angle    = 0.0 * Units.degrees 
+        self.true_course          = 0.0 * Units.degrees 
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Unknowns and Residuals

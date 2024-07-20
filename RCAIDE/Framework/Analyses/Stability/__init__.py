@@ -9,5 +9,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
  
-from .Stability                import Stability
-from .VLM_Perturbation_Method  import VLM_Perturbation_Method
+from .Stability                  import Stability
+from .Vortex_Lattice_Method    import Vortex_Lattice_Method

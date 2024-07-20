@@ -38,7 +38,7 @@ def inertial_horizontal_position(segment):
     """        
 
     conditions = segment.state.conditions
-    psi        = segment.true_course_angle # sign convetion is clockwise positive
+    psi        = segment.true_course       # sign convetion is clockwise positive
     cpts       = int(segment.state.numerics.number_of_control_points)
     x0         = conditions.frames.inertial.position_vector[0,None,0:1+1]
     R0         = conditions.frames.inertial.aircraft_range[0,None,0:1+1]

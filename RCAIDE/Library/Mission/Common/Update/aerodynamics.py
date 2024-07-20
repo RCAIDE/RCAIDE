@@ -23,8 +23,8 @@ def aerodynamics(segment):
             segment.state.conditions.freestream.dynamic_pressure   [pascals]
 
         Outputs:
-            conditions.aerodynamics.coefficients.lift [unitless]
-            conditions.aerodynamics.coefficients.drag [unitless]
+            conditions.aerodynamics.coefficients.lift.total [unitless]
+            conditions.aerodynamics.coefficients.drag.total [unitless]
             conditions.frames.wind.force_vector [newtons]
             conditions.frames.wind.drag_force_vector [newtons]
 
@@ -43,8 +43,8 @@ def aerodynamics(segment):
     results = aerodynamics_model(segment)    
     
     # unpack results
-    CL = results.lift.total
-    CD = results.drag.total
+    CL = conditions.aerodynamics.coefficients.lift.total
+    CD = conditions.aerodynamics.coefficients.drag.total
 
     CL[q<=0.0] = 0.0
     CD[q<=0.0] = 0.0
@@ -63,8 +63,8 @@ def aerodynamics(segment):
     results.force_vector = F
 
     # pack conditions
-    conditions.aerodynamics.coefficients.lift  = CL
-    conditions.aerodynamics.coefficients.drag  = CD
+    conditions.aerodynamics.coefficients.lift.total  = CL
+    conditions.aerodynamics.coefficients.drag.total  = CD
     conditions.frames.wind.force_vector[:,:]   = F[:,:]
 
     return

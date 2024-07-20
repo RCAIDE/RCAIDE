@@ -12,8 +12,8 @@
 import RCAIDE
 from RCAIDE.Framework.Core                                                          import Data , Units 
 from RCAIDE.Library.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis      import airfoil_analysis
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil.import_airfoil_polars  import import_airfoil_polars 
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil.compute_naca_4series   import compute_naca_4series  
+from RCAIDE.Library.Methods.Geometry.Airfoil.import_airfoil_polars                  import import_airfoil_polars 
+from RCAIDE.Library.Methods.Geometry.Airfoil.compute_naca_4series                   import compute_naca_4series  
 from RCAIDE.Library.Methods.Aerodynamics.AERODAS.pre_stall_coefficients             import pre_stall_coefficients
 from RCAIDE.Library.Methods.Aerodynamics.AERODAS.post_stall_coefficients            import post_stall_coefficients
 

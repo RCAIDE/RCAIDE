@@ -1,5 +1,5 @@
 ## @ingroup Methods-Aerodynamics-Common-Drag
-# RCAIDE/Methods/Aerodynamics/Common/Drag/compressibility_drag_total.py
+# RCAIDE/Methods/Aerodynamics/Common/Drag/wave_drag.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -16,7 +16,7 @@ from RCAIDE.Library.Components.Wings import Main_Wing
 #  Wave Drag 
 # ----------------------------------------------------------------------
 ## @ingroup Methods-Aerodynamics-Common-Drag
-def wave_drag(conditions,configuration,wing):
+def wave_drag(conditions,wing):
     """Computes wave drag due to lift
 
     Assumptions:
@@ -26,45 +26,41 @@ def wave_drag(conditions,configuration,wing):
     Yoshida, Kenji. "Supersonic drag reduction technology in the scaled supersonic 
     experimental airplane project by JAXA."
 
-    Inputs:
+    Args:
     conditions.freestream.mach_number        [Unitless]
     conditions.aerodynamics.lift_coefficient [Unitless]
     wing.spans.projected                     [m]
     wing.total_length                        [m]
     wing.aspect_ratio                        [-]
 
-    Outputs:
-    wave_drag_lift                           [Unitless]
-
-    Properties Used:
-    N/A
+    Returns:
+    wave_drag_lift                           [Unitless] 
     """  
 
     # Unpack
-    freestream   = conditions.freestream
+    freestream  = conditions.freestream 
+    Mach        = freestream.mach_number * 1.0
     
-    # Conditions
-    Mc  = freestream.mach_number * 1.0
-    
-    # Lift coefficient
+    # Lift coefficient 
     if isinstance(wing,Main_Wing):
-        CL = conditions.aerodynamics.coefficients.lift
+        CL = conditions.aerodynamics.coefficients.lift.total 
+        l  = np.maximum(wing.total_length,wing.chords.root)        
     else:
-        CL = np.zeros_like(conditions.aerodynamics.coefficients.lift)
+        CL = np.zeros_like(conditions.aerodynamics.coefficients.lift.total)
+        l  = np.maximum(wing.total_length,wing.chords.root) 
 
     # JAXA method
     s    = wing.spans.projected / 2
-    l    = wing.total_length
     AR   = wing.aspect_ratio
     p    = 2/AR*s/l
-    beta = np.sqrt(Mc[Mc >= 1.01]**2-1)
+    beta = np.sqrt(Mach[Mach >= 1.01]**2-1)
     
     Kw = (1+1/p)*fw(beta*s/l)/(2*beta**2*(s/l)**2)
     
     # Ignore area comparison since this is full vehicle CL
-    CDwl = CL[Mc >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
-    wave_drag_lift = np.zeros_like(Mc)
-    wave_drag_lift[Mc >= 1.01] = CDwl
+    CDwl           = CL[Mach >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
+    wave_drag_lift = np.zeros_like(Mach)
+    wave_drag_lift[Mach >= 1.01] = CDwl
 
     return wave_drag_lift
 
@@ -78,10 +74,10 @@ def fw(x):
     Yoshida, Kenji. "Supersonic drag reduction technology in the scaled supersonic 
     experimental airplane project by JAXA."
 
-    Inputs:
+    Args:
     x    [Unitless]
 
-    Outputs:
+    Returns:
     ret  [Unitless]
 
     Properties Used:

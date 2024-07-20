@@ -8,7 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
 
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil.import_airfoil_geometry import import_airfoil_geometry 
+from RCAIDE.Library.Methods.Geometry.Airfoil.import_airfoil_geometry import import_airfoil_geometry 
 from RCAIDE.Library.Plots.Geometry import plot_airfoil
 import numpy as np
 import os

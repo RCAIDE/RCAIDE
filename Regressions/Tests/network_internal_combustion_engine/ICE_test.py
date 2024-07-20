@@ -45,8 +45,8 @@ def main():
     
     # evaluate
     results     = mission.evaluate()  
-    P_truth     = 53537.3966546438
-    mdot_truth  = 0.004703918236179497 
+    P_truth     = 54482.84055310519
+    mdot_truth  = 0.004786987102002009
     
     P    = results.segments.cruise.state.conditions.energy.fuel_line.ice_propeller.engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]
@@ -102,9 +102,9 @@ def mission_setup(analyses):
     segment.flight_dynamics.force_z                       = True     
     
     # define flight controls   
-    segment.flight_controls.throttle.active               = True           
-    segment.flight_controls.throttle.assigned_propulsors  = [['ice_propeller']]  
-    segment.flight_controls.body_angle.active             = True                  
+    segment.assigned_control_variables.throttle.active               = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors  = [['ice_propeller']]  
+    segment.assigned_control_variables.body_angle.active             = True                  
     
     mission.append_segment(segment)
 
@@ -126,7 +126,7 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Subsonic_VLM() 
+    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
     aerodynamics.geometry                            = vehicle
     aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics) 

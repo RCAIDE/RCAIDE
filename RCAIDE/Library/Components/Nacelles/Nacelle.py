@@ -41,10 +41,7 @@ class Nacelle(Component):
         None
     
         Outputs:
-        None
-    
-        Properties Used:
-        None
+        None 
         """      
         
         self.tag                       = 'nacelle'
@@ -58,7 +55,8 @@ class Nacelle(Component):
         self.inlet_diameter            = 0.0
         self.length                    = 0.0   
         self.orientation_euler_angles  = [0.,0.,0.]    
-        self.flow_through              = True 
+        self.flow_through              = True
+        self.has_pylon                 = True
         self.differential_pressure     = 0.0    
         self.cowling_airfoil_angle     = 0.0    
 
@@ -77,10 +75,7 @@ class Nacelle(Component):
         None
 
         Outputs:
-        None
-
-        Properties Used:
-        None
+        None 
         """
         
         body2nacvel = self.body_to_nac_vel()
@@ -106,10 +101,7 @@ class Nacelle(Component):
         None
 
         Outputs:
-        None
-
-        Properties Used:
-        None
+        None 
         """
         
         # Go from body to vehicle frame

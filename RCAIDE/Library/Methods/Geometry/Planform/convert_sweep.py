@@ -1,4 +1,4 @@
-## @ingroup Methods-Flight_Dynamics-Static_Stability-Approximations-Supporting_Functions
+## @ingroup Methods-Geometry-Planform
 # convert_sweep.py
 #
 # Created:  Feb 2014, T. Momose
@@ -14,7 +14,7 @@ import numpy as np
 #  Method
 # ----------------------------------------------------------------------
 
-## @ingroup Methods-Flight_Dynamics-Static_Stability-Approximations-Supporting_Functions
+## @ingroup Methods-Geometry-Planform
 def convert_sweep(wing,old_ref_chord_fraction = 0.0,new_ref_chord_fraction = 0.25):
     """ This method converts the sweep of a wing planform to refer to a new
     chord fraction. Defaults to converting from leading-edge sweep to 

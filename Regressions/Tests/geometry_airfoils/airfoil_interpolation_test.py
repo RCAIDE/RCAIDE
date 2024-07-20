@@ -4,8 +4,8 @@
 #   IMPORTS 
 # ----------------------------------------------------------------------------------------------------------------   
 
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil.generate_interpolated_airfoils import generate_interpolated_airfoils 
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil.import_airfoil_geometry import import_airfoil_geometry 
+from RCAIDE.Library.Methods.Geometry.Airfoil.generate_interpolated_airfoils import generate_interpolated_airfoils 
+from RCAIDE.Library.Methods.Geometry.Airfoil.import_airfoil_geometry import import_airfoil_geometry 
 import pylab as plt
 import os
 

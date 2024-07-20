@@ -1,35 +1,43 @@
 ## @ingroup Analyses-Emissions
 # RCAIDE/Framework/Analyses/Emissions/Emission_Index_Correlation_Method.py
-# 
-# 
+#  
 # Created:  Jul 2024, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 import  RCAIDE
-from RCAIDE.Framework.Core import Data ,  Units  
+from RCAIDE.Framework.Core import Data 
  
 # package imports
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Correlation_Buildup
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Analyses-Noise  
+#  emissions_index_correlation
+# ---------------------------------------------------------------------------------------------------------------------- 
 def emissions_index_correlation(emissions_analysis,segment):
-    """
-    Assumtion: 
-    Outputs a turbofan's emission_index takens from a regression calculated
-    from NASA's Engine Performance Program (NEPP)
+    """ Computes the CO2 equivalent emissions from aircraft propulsors with combustor compoments
+    using emissions indices correlated to various fuels
+    
+    Assumtion:
+    None
+    
+    Source
+    None
+    
+    Args:
+    emissions_analysis 
+    segment
+    
+    Returns:
+    None  
     """    
     # unpack
     state           = segment.state
     vehicle         = emissions_analysis.geometry 
     I               = state.numerics.time.integrate
     
-    NOx_total  = 0 * state.ones_row(1) 
-    CO_total   = 0 * state.ones_row(1) 
+    NOx_total  = 0 * state.ones_row(1)  
     CO2_total  = 0 * state.ones_row(1) 
     SO2_total  = 0 * state.ones_row(1) 
     H2O_total  = 0 * state.ones_row(1) 

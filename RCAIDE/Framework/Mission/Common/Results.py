@@ -123,7 +123,7 @@ class Results(Conditions):
         self.frames.planet.start_time                                          = None
         self.frames.planet.latitude                                            = ones_1col * 0
         self.frames.planet.longitude                                           = ones_1col * 0
-        self.frames.planet.true_course_angle                                   = np.empty([0,0,0])
+        self.frames.planet.true_course                                         = np.empty([0,0,0])
 
         # ----------------------------------------------------------------------------------------------------------------------         
         # Freestream 
@@ -159,17 +159,22 @@ class Results(Conditions):
         # aerodynamic coefficients                                             
         self.aerodynamics.coefficients                                         = Conditions()
         self.aerodynamics.coefficients.lift                                    = ones_1col * 0
-        self.aerodynamics.coefficients.drag                                    = ones_1col * 0  
-        self.aerodynamics.oswald_efficiency                                    = ones_1col * 0    
+        self.aerodynamics.coefficients.drag                                    = ones_1col * 0     
                                                                                
-        self.aerodynamics.lift_breakdown                                       = Conditions()
-        self.aerodynamics.drag_breakdown                                       = Conditions()
-        self.aerodynamics.drag_breakdown.parasite                              = Conditions()
-        self.aerodynamics.drag_breakdown.compressible                          = Conditions()
-        self.aerodynamics.drag_breakdown.induced                               = Conditions()
-        self.aerodynamics.drag_breakdown.induced.total                         = ones_1col * 0
-        self.aerodynamics.drag_breakdown.induced.efficiency_factor             = ones_1col * 0
-
+        # aerodynamic coefficients                                             
+        self.aerodynamics.coefficients                                         = Conditions()
+        self.aerodynamics.coefficients.lift                                    = Conditions()
+        self.aerodynamics.coefficients.lift.total                              = ones_1col * 0 
+        self.aerodynamics.coefficients.lift.inviscid_wings                     = Conditions()
+        self.aerodynamics.coefficients.lift.compressible_wings                 = Conditions() 
+        self.aerodynamics.coefficients.drag                                    = Conditions()  
+        self.aerodynamics.coefficients.drag.total                              = ones_1col * 0   
+        self.aerodynamics.coefficients.drag.parasite                           = Conditions()
+        self.aerodynamics.coefficients.drag.compressible                       = Conditions()
+        self.aerodynamics.coefficients.drag.induced                            = Conditions()
+        self.aerodynamics.coefficients.drag.induced.inviscid_wings             = Conditions()
+        self.aerodynamics.coefficients.drag.induced.total                      = ones_1col * 0 
+ 
         # ----------------------------------------------------------------------------------------------------------------------
         # Control Surfaces 
         # ----------------------------------------------------------------------------------------------------------------------

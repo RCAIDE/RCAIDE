@@ -55,7 +55,7 @@ class Linear_Speed_Constant_Rate(Evaluate):
         self.descent_rate      = 3.  * Units.m / Units.s
         self.air_speed_start   = None
         self.air_speed_end     = 200 * Units.m / Units.s
-        self.true_course_angle = 0.0 * Units.degrees     
+        self.true_course       = 0.0 * Units.degrees     
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

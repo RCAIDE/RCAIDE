@@ -13,7 +13,7 @@ from RCAIDE.Framework.Core import Data
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  compute_airfoil_aerodynamics
+#  Wing Segmented Planform
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Methods-Geometry-Two_Dimensional-Planform
 def wing_segmented_planform(wing, overwrite_reference = False):

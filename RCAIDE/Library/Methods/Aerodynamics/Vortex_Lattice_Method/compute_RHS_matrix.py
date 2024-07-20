@@ -14,7 +14,7 @@ from RCAIDE.Framework.Core import Data, interp2d
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  compute_airfoil_aerodynamics
+#  Compute RHS matrix 
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Methods-Aerodynamics-Common-Lift 
 def compute_RHS_matrix(delta,phi,conditions,settings,geometry,propeller_wake_model):

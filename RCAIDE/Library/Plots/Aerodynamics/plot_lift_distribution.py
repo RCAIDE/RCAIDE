@@ -61,7 +61,7 @@ def plot_lift_distribution(results,vehicle,
     for segment in results.segments.values():   	
         num_ctrl_pts = len(segment.conditions.frames.inertial.time)	
         for ti in range(num_ctrl_pts):  
-            cl_y = segment.conditions.aerodynamics.lift_breakdown.inviscid_wings_sectional[ti] 
+            cl_y = segment.conditions.aerodynamics.coefficients.lift.inviscid_wings_sectional[ti] 
             line = ['-b','-b','-r','-r','-k']
             fig  = plt.figure(save_filename + '_' + str(img_idx))
             fig.set_size_inches(8,8)  

@@ -38,8 +38,7 @@ def forces(segment):
                     
     """    
  
-    # unpack
-    RT                            = segment.reverse_thrust_ratio
+    # unpack 
     conditions                    = segment.state.conditions 
     wind_force_vector             = conditions.frames.wind.force_vector
     body_thrust_force_vector      = conditions.frames.body.thrust_force_vector
@@ -61,7 +60,7 @@ def forces(segment):
     W = inertial_gravity_force_vector
 
     # sum of the forces
-    F_tot = F +  T*(1 - RT) + W + T*RT
+    F_tot = F +  T  + W 
 
     # pack
     conditions.frames.inertial.total_force_vector[:,:] = F_tot[:,:]

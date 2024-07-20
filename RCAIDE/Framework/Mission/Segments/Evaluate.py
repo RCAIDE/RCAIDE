@@ -62,8 +62,7 @@ class Evaluate(Segment):
         
         # conditions
         self.temperature_deviation                = 0.0
-        self.sideslip_angle                       = 0.0
-        self.reverse_thrust_ratio                 = 0.0
+        self.sideslip_angle                       = 0.0 
         self.state.conditions.update(Results())
         
         # ---------------------------------------------------------------

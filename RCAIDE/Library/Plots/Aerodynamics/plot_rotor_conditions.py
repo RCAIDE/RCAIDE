@@ -57,9 +57,9 @@ def plot_rotor_conditions(results,
     fig.set_size_inches(width,height) 
     axis_0 = plt.subplot(1,1,1) 
     axis_1 = plt.subplot(2,2,1)
-    axis_2 = plt.subplot(2,2,1)
-    axis_3 = plt.subplot(2,2,2) 
-    axis_4 = plt.subplot(2,2,3)  
+    axis_2 = plt.subplot(2,2,2)
+    axis_3 = plt.subplot(2,2,3) 
+    axis_4 = plt.subplot(2,2,4)  
     pi     = 0 
     for network in results.segments[0].analyses.energy.networks:  
         if 'busses' in network: 
@@ -116,7 +116,7 @@ def plot_propulsor_data(results,distributor,propulsor,axis_1,axis_2,axis_3,axis_
         rpm          =  bus_results[propulsor.tag].rotor.rpm[:,0]
         thrust       =  bus_results[propulsor.tag].rotor.thrust[:,0]
         torque       =  bus_results[propulsor.tag].rotor.torque[:,0]
-        tm           =  bus_results[propulsor.tag].rotor.tip_mach[:,0]  
+        angle        =  bus_results[propulsor.tag].y_axis_rotation[:,0]  
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
         if pi == 0: 
@@ -126,8 +126,8 @@ def plot_propulsor_data(results,distributor,propulsor,axis_1,axis_2,axis_3,axis_
         axis_1.set_ylabel(r'RPM')
         set_axes(axis_1)    
          
-        axis_2.plot(time, tm, color = line_colors[i], marker = ps.markers[pi]  , linewidth = ps.line_width) 
-        axis_2.set_ylabel(r'Tip Mach')
+        axis_2.plot(time, angle/Units.degrees, color = line_colors[i], marker = ps.markers[pi]  , linewidth = ps.line_width) 
+        axis_2.set_ylabel(r'Rotor Angle')
         set_axes(axis_2) 
  
         axis_3.plot(time,thrust, color = line_colors[i], marker = ps.markers[pi] , linewidth = ps.line_width)

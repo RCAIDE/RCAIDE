@@ -8,8 +8,8 @@
 # RCAIDE Imports 
 from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Methods.Aerodynamics.Airfoil_Panel_Method     import airfoil_analysis 
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil      import compute_naca_4series
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil      import import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Airfoil      import compute_naca_4series
+from RCAIDE.Library.Methods.Geometry.Airfoil     import import_airfoil_geometry
 from RCAIDE.Library.Plots import * 
 
 # Python imports
@@ -147,7 +147,7 @@ def multi_airfoil():
     Re_vals               = np.array([[1E5, 1E5, 1E5, 1E5, 1E5, 1E5],[2E5, 2E5, 2E5, 2E5, 2E5, 2E5]])
     AoA_vals              = np.array([[0,1,2,3,4,5],[0,1,2,3,4,5]])*Units.degrees  
     airfoil_file_2        = rel_path + 'NACA_4412.txt'     
-    airfoil_geometry_2    = import_airfoil_geometry(airfoil_file_2,npoints = 200)      
+    airfoil_geometry_2    = import_airfoil_geometry(airfoil_file_2,npoints = 201)      
     airfoil_properties_2  = airfoil_analysis(airfoil_geometry_2,AoA_vals,Re_vals)     
        
     True_cl_invisc = np.array([0.45707213, 0.56697577, 0.6767239 , 0.78628253, 0.8956177 , 1.0046955 ])

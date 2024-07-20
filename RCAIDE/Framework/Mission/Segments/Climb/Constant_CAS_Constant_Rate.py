@@ -53,7 +53,7 @@ class Constant_CAS_Constant_Rate(Evaluate):
         self.altitude_end         = 10. * Units.km
         self.climb_rate           = 3.  * Units.m / Units.s
         self.calibrated_air_speed = None
-        self.true_course_angle    = 0.0 * Units.degrees  
+        self.true_course          = 0.0 * Units.degrees  
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

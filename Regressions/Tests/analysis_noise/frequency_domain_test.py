@@ -58,7 +58,7 @@ def Hararmonic_Noise_Validation(PP):
     test_omega              = np.array([2390,2710,2630]) * Units.rpm    
     ctrl_pts                = len(test_omega)
     AoA                     = np.zeros(ctrl_pts)
-    true_course_angle       = 0
+    true_course             = 0
     fligth_path_angle       = 0 
     three_quarter_twist     = 21 * Units.degrees 
     n                       = len(rotor.twist_distribution)
@@ -85,12 +85,12 @@ def Hararmonic_Noise_Validation(PP):
     conditions.energy.throttle                             = np.ones((ctrl_pts,1))*1.0 
     rotor.inputs.omega                                     = np.atleast_2d(test_omega).T   
     rotor.inputs.pitch_command                             = np.ones((ctrl_pts,1))*0.0 
-    conditions.frames.planet.true_course_angle             = np.zeros((ctrl_pts,3,3)) 
-    conditions.frames.planet.true_course_angle[:,0,0]      = np.cos(true_course_angle),
-    conditions.frames.planet.true_course_angle[:,0,1]      = - np.sin(true_course_angle)
-    conditions.frames.planet.true_course_angle[:,1,0]      = np.sin(true_course_angle)
-    conditions.frames.planet.true_course_angle[:,1,1]      = np.cos(true_course_angle) 
-    conditions.frames.planet.true_course_angle[:,2,2]      = 1 
+    conditions.frames.planet.true_course                   = np.zeros((ctrl_pts,3,3)) 
+    conditions.frames.planet.true_course[:,0,0]            = np.cos(true_course),
+    conditions.frames.planet.true_course[:,0,1]            = - np.sin(true_course)
+    conditions.frames.planet.true_course[:,1,0]            = np.sin(true_course)
+    conditions.frames.planet.true_course[:,1,1]            = np.cos(true_course) 
+    conditions.frames.planet.true_course[:,2,2]            = 1 
     conditions.frames.wind.transform_to_inertial           = np.zeros((ctrl_pts,3,3))   
     conditions.frames.wind.transform_to_inertial[:,0,0]    = np.cos(fligth_path_angle) 
     conditions.frames.wind.transform_to_inertial[:,0,2]    = np.sin(fligth_path_angle) 
@@ -233,7 +233,7 @@ def Broadband_Noise_Validation(PP):
     theta                         = np.array([45., 67.5, 90.001, 112.5 , 135.])  # np.linspace(0.1,180,100)  
     S                             = 1.905
     AoA                           = np.zeros(ctrl_pts)
-    true_course_angle             = 0
+    true_course             = 0
     fligth_path_angle             = 0    
 
     # Microphone Locations 
@@ -257,12 +257,12 @@ def Broadband_Noise_Validation(PP):
     conditions.frames.inertial.velocity_vector             = v_mat 
     conditions.energy.throttle                             = np.ones((ctrl_pts,1)) * 1.0    
     conditions.aerodynamics.angle_of_attack                = np.atleast_2d(AoA).T  
-    conditions.frames.planet.true_course_angle             = np.zeros((ctrl_pts,3,3)) 
-    conditions.frames.planet.true_course_angle[:,0,0]      = np.cos(true_course_angle),
-    conditions.frames.planet.true_course_angle[:,0,1]      = - np.sin(true_course_angle)
-    conditions.frames.planet.true_course_angle[:,1,0]      = np.sin(true_course_angle)
-    conditions.frames.planet.true_course_angle[:,1,1]      = np.cos(true_course_angle) 
-    conditions.frames.planet.true_course_angle[:,2,2]      = 1 
+    conditions.frames.planet.true_course             = np.zeros((ctrl_pts,3,3)) 
+    conditions.frames.planet.true_course[:,0,0]      = np.cos(true_course),
+    conditions.frames.planet.true_course[:,0,1]      = - np.sin(true_course)
+    conditions.frames.planet.true_course[:,1,0]      = np.sin(true_course)
+    conditions.frames.planet.true_course[:,1,1]      = np.cos(true_course) 
+    conditions.frames.planet.true_course[:,2,2]      = 1 
     conditions.frames.wind.transform_to_inertial           = np.zeros((ctrl_pts,3,3))   
     conditions.frames.wind.transform_to_inertial[:,0,0]    = np.cos(fligth_path_angle) 
     conditions.frames.wind.transform_to_inertial[:,0,2]    = np.sin(fligth_path_angle) 

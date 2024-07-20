@@ -5,8 +5,8 @@
 # Imports
 import RCAIDE
 from RCAIDE.Framework.Core import Units, Data  
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil   import compute_airfoil_properties
-from RCAIDE.Library.Methods.Geometry.Two_Dimensional.Airfoil   import import_airfoil_geometry    
+from RCAIDE.Library.Methods.Geometry.Airfoil   import compute_airfoil_properties
+from RCAIDE.Library.Methods.Geometry.Airfoil   import import_airfoil_geometry    
 from scipy.interpolate import interp1d
 import os
 import numpy as np  

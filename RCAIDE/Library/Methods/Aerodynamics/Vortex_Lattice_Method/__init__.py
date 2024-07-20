@@ -17,6 +17,8 @@ from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.deflect_contr
 from .compute_RHS_matrix                      import compute_RHS_matrix 
 from .compute_wing_induced_velocity           import compute_wing_induced_velocity 
 from .generate_vortex_distribution            import generate_vortex_distribution
+from .train_VLM_surrogates                    import train_VLM_surrogates
+from .build_VLM_surrogates                    import build_VLM_surrogates 
 from .VLM                                     import VLM
-from .VLM_Aerodynamics import *  
+from .evaluate_VLM import *  
 

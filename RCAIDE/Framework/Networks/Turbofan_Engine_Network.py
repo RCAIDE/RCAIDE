@@ -87,12 +87,12 @@ class Turbofan_Engine_Network(Network):
         """           
 
         # Step 1: Unpack
-        conditions  = state.conditions  
-        fuel_lines  = self.fuel_lines 
-         
-        total_thrust  = 0. * state.ones_row(3) 
-        total_power   = 0. * state.ones_row(1) 
-        total_mdot    = 0. * state.ones_row(1)   
+        conditions     = state.conditions  
+        fuel_lines     = self.fuel_lines 
+        reverse_thrust = self.reverse_thrust
+        total_thrust   = 0. * state.ones_row(3) 
+        total_power    = 0. * state.ones_row(1) 
+        total_mdot     = 0. * state.ones_row(1)   
         
         # Step 2: loop through compoments of network and determine performance
         for fuel_line in fuel_lines:
@@ -118,7 +118,10 @@ class Turbofan_Engine_Network(Network):
                     conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate  = fuel_tank_mdot  
                     total_mdot += fuel_tank_mdot                    
                             
-        # Step 3: Pack results 
+        # Step 3: Pack results
+        if reverse_thrust ==  True:
+            total_thrust =  total_thrust * -1
+            
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_power 
         conditions.energy.vehicle_mass_rate    = total_mdot           
