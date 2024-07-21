@@ -15,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Induced Drag Aircraft
 # ---------------------------------------------------------------------------------------------------------------------- 
-def induced_drag_aircraft(state,settings,geometry):
+def induced_drag(state,settings,geometry):
     """Determines induced drag for the full aircraft
 
     Assumptions:
@@ -52,15 +52,13 @@ def induced_drag_aircraft(state,settings,geometry):
             .induced.oswald_efficiency_factor                       (numpy.ndarray): oswald_efficiency_factor coefficient    [unitless]
             .induced.viscous_wings_drag                             (numpy.ndarray): viscous_wings_drag coefficient          [unitless]  
     """
-    # unpack inputs 
+    # unpack inputs  
     wings         = geometry.wings 
     K             = settings.viscous_lift_dependent_drag_factor
-    e_osw         = settings.oswald_efficiency_factor	
-    e_span        = settings.span_efficiency
+    e_osw         = settings.oswald_efficiency_factor	 
     aero          = state.conditions.aerodynamics.coefficients
     CL            = aero.lift.total
-    CDi           = aero.drag.breakdown.induced.inviscid
-    S_ref         = geometry.reference_area
+    CDi           = aero.drag.induced.inviscid
 
     wing_viscous_induced_drags = Data()
 
@@ -70,41 +68,19 @@ def induced_drag_aircraft(state,settings,geometry):
         # Prime totals
         area                        = 1E-12 
         AR                          = 1E-12 
-        total_induced_viscous_drag  = 0.
-        total_induced_inviscid_drag = 0.
+        total_induced_viscous_drag  = K*aero.drag.parasite.total*(CL**2)
 
         # Go through each wing, and make calculations
         for wing in wings: 
             AR_wing    = wing.aspect_ratio
-            S_wing     = aero.drag.breakdown.parasite[wing.tag].reference_area
-            cl_wing    = aero.lift.breakdown.inviscid_wings[wing.tag]
-            cdi_i_wing = aero.drag.breakdown.induced.inviscid_wings[wing.tag]
-            cdp_wing   = aero.drag.breakdown.parasite[wing.tag].parasite_drag 
-            cdi_v_wing = K*cdp_wing*(cl_wing**2)
-            total_induced_viscous_drag += cdi_v_wing*(S_wing/S_ref)
-
-            # Does the user specify a span efficiency?
-            if e_span == None:
-                total_induced_inviscid_drag  += cdi_i_wing*(S_wing/S_ref)
-            else:
-                # Override the wings inviscid induced drag
-                cdi_i_wing = (cl_wing**2)/(np.pi*AR_wing*e_span)
-                total_induced_inviscid_drag += cdi_i_wing*(S_wing/S_ref)
-
-                # Repack
-                aero.drag.breakdown.induced.inviscid_wings[wing.tag] = cdi_i_wing
-
-            # pack the wing level viscous induced drag
-            wing_viscous_induced_drags[wing.tag] = cdi_v_wing
-
-            # Update AR for vehicle-level calculations 
+            S_wing     = aero.drag.parasite[wing.tag].reference_area  
             if S_wing > area:
                 area = S_wing
                 AR   = AR_wing
-        
+
         # compute total induced drag 
-        total_induced_drag = total_induced_viscous_drag + total_induced_inviscid_drag
-        
+        total_induced_drag = total_induced_viscous_drag +  CDi  
+
         # Calculate the vehicle level oswald efficiency
         e_osw = (CL**2)/(np.pi*AR*total_induced_drag)
 
@@ -120,12 +96,11 @@ def induced_drag_aircraft(state,settings,geometry):
 
         # Calculate the induced drag       
         total_induced_drag = CL **2 / (np.pi*AR*e_osw)
-        total_induced_viscous_drag = total_induced_drag - CDi 
+        total_induced_viscous_drag = total_induced_drag - CDi
 
-    aero.drag.breakdown.induced.total                    = total_induced_drag
-    aero.drag.breakdown.induced.viscous                  = total_induced_viscous_drag
-    aero.drag.breakdown.induced.oswald_efficiency_factor = e_osw
-    aero.drag.breakdown.induced.viscous_wings_drag       = wing_viscous_induced_drags
-
+    aero.drag.induced.total                    = total_induced_drag
+    aero.drag.induced.viscous                  = total_induced_viscous_drag
+    aero.drag.induced.oswald_efficiency_factor = e_osw
+    aero.drag.induced.viscous_wings_drag       = wing_viscous_induced_drags 
     return  
  

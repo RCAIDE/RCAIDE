@@ -15,7 +15,6 @@ from Legacy.trunk.S.Methods.Aerodynamics.Fidelity_Zero.Lift.compute_slat_lift   
 from .BET_sectional_properties                                                                             import compute_section_coefficients
 from .BET_sectional_properties                                                                             import compute_inflow_and_tip_loss
 from .fuselage_correction                                                                                  import fuselage_correction
-from .total_lift                                                                                           import total_lift
 from .generate_wing_wake_grid                 import generate_wing_wake_grid
 from .compute_wing_wake                       import compute_wing_wake
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Lift.generate_propeller_grid                 import generate_propeller_grid

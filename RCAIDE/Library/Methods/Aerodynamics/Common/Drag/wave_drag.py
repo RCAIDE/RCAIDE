@@ -35,21 +35,31 @@ def wave_drag(conditions,wing):
         wave_drag_lift                            (numpy.ndarray): wave drag         [unitless] 
     """  
  
-    Mc  = conditions.freestream.mach_number  
+    # Unpack
+    freestream  = conditions.freestream 
+    Mach        = freestream.mach_number * 1.0
+    
+    # Lift coefficient 
     if isinstance(wing,Main_Wing):
-        CL = conditions.aerodynamics.coefficients.lift.total
+        CL = conditions.aerodynamics.coefficients.lift.total 
+        l  = np.maximum(wing.total_length,wing.chords.root)        
     else:
         CL = np.zeros_like(conditions.aerodynamics.coefficients.lift.total)
- 
+        l  = np.maximum(wing.total_length,wing.chords.root) 
+
+    # JAXA method
     s    = wing.spans.projected / 2
-    l    = wing.total_length
     AR   = wing.aspect_ratio
     p    = 2/AR*s/l
-    beta = np.sqrt(Mc[Mc >= 1.01]**2-1) 
-    Kw   = (1+1/p)*func(beta*s/l)/(2*beta**2*(s/l)**2)
-     
-    wave_drag_lift = np.zeros_like(Mc)
-    wave_drag_lift[Mc >= 1.01] = CL[Mc >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
+    beta = np.sqrt(Mach[Mach >= 1.01]**2-1)
+    
+    Kw = (1+1/p)*func(beta*s/l)/(2*beta**2*(s/l)**2)
+    
+    # Ignore area comparison since this is full vehicle CL
+    CDwl           = CL[Mach >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
+    wave_drag_lift = np.zeros_like(Mach)
+    wave_drag_lift[Mach >= 1.01] = CDwl
+
 
     return wave_drag_lift
 

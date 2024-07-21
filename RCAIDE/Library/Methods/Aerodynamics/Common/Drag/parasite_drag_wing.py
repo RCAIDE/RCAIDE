@@ -45,7 +45,7 @@ def parasite_drag_wing(state,settings,wing):
       
       
     Returns:
-        state.conditions.aerodynamics.coefficients.drag.breakdown
+        state.conditions.aerodynamics.coefficients.drag
             .parasite[wing.tag].wetted_area                            (float): wetted_area               [m^2]
             .parasite[wing.tag].parasite_drag      (numpy.ndarray): parasite_drag [unitess]
             .parasite[wing.tag].skin_friction      (numpy.ndarray): skin_friction [unitess]
@@ -54,24 +54,25 @@ def parasite_drag_wing(state,settings,wing):
             .parasite[wing.tag].form_factor                            (float): form_factor               [unitess]
     """
     
-    # unpack inputs
+     # unpack inputs
     C                             = settings.wing_parasite_drag_form_factor
     recalculate_total_wetted_area = settings.recalculate_total_wetted_area
     freestream                    = state.conditions.freestream
     
     # conditions
-    Mc   = freestream.mach_number
-    Tc   = freestream.temperature    
-    re   = freestream.reynolds_number      
+    Mc  = freestream.mach_number
+    Tc  = freestream.temperature    
+    re  = freestream.reynolds_number   
     wing_parasite_drag = 0.0
     
     # Unpack wing
-    percent_span_root_offset = wing.percent_span_root_offset
-    t_c_w                    = wing.thickness_to_chord
-    S_ref                    = wing.areas.reference
-    num_segments             = len(wing.Segments.keys())     
+    span_offset  = wing.percent_span_root_offset
+    t_c_w        = wing.thickness_to_chord
+    Sref         = wing.areas.reference
+    num_segments = len(wing.Segments.keys())     
     
-    # if wing has segments, compute and sum parasite drag of each segment 
+    # if wing has segments, compute and sum parasite drag of each segment
+
     xtu       = wing.transition_x_upper
     xtl       = wing.transition_x_lower     
     
@@ -87,6 +88,7 @@ def parasite_drag_wing(state,settings,wing):
         
         if recalculate_total_wetted_area:
             wing = segment_properties(wing,update_wet_areas=True)
+            
         
         for i,segment in enumerate (wing.Segments): 
             if i == num_segments-1:
@@ -108,32 +110,34 @@ def parasite_drag_wing(state,settings,wing):
             total_k_reyn_u               += k_reyn_u*Sref_seg                 
             total_k_reyn_l               += k_reyn_l*Sref_seg  
                 
-        wing_parasite_drag = total_segment_parasite_drag  / S_ref
-        k_w                = total_segment_k_w / S_ref
-        cf_w_u             = total_segment_cf_w_u  / S_ref
-        cf_w_l             = total_segment_cf_w_l / S_ref
-        k_comp_u           = total_segment_k_comp_u  / S_ref
-        k_comp_l           = total_segment_k_comp_l  / S_ref
-        k_reyn_u           = total_k_reyn_u  / S_ref
-        k_reyn_l           = total_k_reyn_l  / S_ref
+        wing_parasite_drag = total_segment_parasite_drag  / Sref
+        k_w                = total_segment_k_w / Sref
+        cf_w_u             = total_segment_cf_w_u  / Sref
+        cf_w_l             = total_segment_cf_w_l / Sref
+        k_comp_u           = total_segment_k_comp_u  / Sref
+        k_comp_l           = total_segment_k_comp_l  / Sref
+        k_reyn_u           = total_k_reyn_u  / Sref
+        k_reyn_l           = total_k_reyn_l  / Sref
 
     # if wing has no segments      
-    else:          
-        mac_w      = wing.chords.mean_aerodynamic
-        sweep_w    = wing.sweeps.quarter_chord 
-        span_w     = wing.spans.projected
-        S_ref      = wing.areas.reference 
+    else:              
+        # wing
+        mac_w        = wing.chords.mean_aerodynamic
+        sweep_w      = wing.sweeps.quarter_chord 
+        span_w       = wing.spans.projected
+        Sref         = wing.areas.reference
+        
         chord_root = wing.chords.root
         chord_tip  = wing.chords.tip
-        wing_root  = chord_root + percent_span_root_offset*((chord_tip - chord_root)/span_w)
+        wing_root     = chord_root + span_offset*((chord_tip - chord_root)/span_w)
         
         if recalculate_total_wetted_area or wing.areas.wetted==0.:  
             
             # calculate exposed area
             if wing.symmetric:
-                S_exposed_w = wing.areas.reference - (chord_root + wing_root)*percent_span_root_offset         
+                S_exposed_w = wing.areas.reference - (chord_root + wing_root)*span_offset         
             else: 
-                S_exposed_w = wing.areas.reference - 0.5*(chord_root + wing_root)*percent_span_root_offset
+                S_exposed_w = wing.areas.reference - 0.5*(chord_root + wing_root)*span_offset
                 
             if t_c_w < 0.05:
                 Swet = 2.003* S_exposed_w
@@ -145,20 +149,20 @@ def parasite_drag_wing(state,settings,wing):
             Swet              = wing.areas.wetted                         
 
         # compute parasite drag coef., form factor, skin friction coef., compressibility factor and reynolds number for wing
-        wing_parasite_drag , k_w, cf_w_u, cf_w_l, k_comp_u, k_comp_l, k_reyn_u, k_reyn_l = compute_parasite_drag(re,mac_w,Mc,Tc,xtu,xtl,sweep_w,t_c_w,S_ref,Swet,C)             
+        wing_parasite_drag , k_w, cf_w_u, cf_w_l, k_comp_u, k_comp_l, k_reyn_u, k_reyn_l = compute_parasite_drag(re,mac_w,Mc,Tc,xtu,xtl,sweep_w,t_c_w,Sref,Swet,C)             
 
-    # Store results 
+    # dump data to conditions
     wing_result = Data(
         wetted_area               = wing.areas.wetted,
-        reference_area            = S_ref, 
-        parasite_drag             = wing_parasite_drag ,
+        reference_area            = Sref   , 
+        total                     = wing_parasite_drag ,
         skin_friction             = (cf_w_u+cf_w_l)/2.   ,
         compressibility_factor    = (k_comp_u+k_comp_l)/2 ,
         reynolds_factor           = (k_reyn_u+k_reyn_l)/2 , 
-        form_factor               = k_w ,
+        form_factor               = k_w    ,
     )
     
-    state.conditions.aerodynamics.coefficients.drag.breakdown.parasite[wing.tag] = wing_result
+    state.conditions.aerodynamics.coefficients.drag.parasite[wing.tag] = wing_result
 
     return wing_parasite_drag
 

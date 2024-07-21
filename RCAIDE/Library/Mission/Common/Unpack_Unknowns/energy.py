@@ -19,7 +19,7 @@ def fuel_line_unknowns(segment,fuel_lines):
         Returns:
             None 
     """        
-    flight_controls = segment.flight_controls
+    assigned_control_variables = segment.assigned_control_variables
     state           = segment.state 
 
     # Throttle Control 
@@ -27,19 +27,19 @@ def fuel_line_unknowns(segment,fuel_lines):
         for fuel_line in fuel_lines:
             for propulsor in fuel_line.propulsors: 
                 state.conditions.energy[fuel_line.tag][propulsor.tag].throttle[:,0] = segment.throttle 
-    elif flight_controls.throttle.active:                
-        for i in range(len(flight_controls.throttle.assigned_propulsors)):
-            for j in range(len(flight_controls.throttle.assigned_propulsors[i])): 
-                propulsor_tag = flight_controls.throttle.assigned_propulsors[i][j]
+    elif assigned_control_variables.throttle.active:                
+        for i in range(len(assigned_control_variables.throttle.assigned_propulsors)):
+            for j in range(len(assigned_control_variables.throttle.assigned_propulsors[i])): 
+                propulsor_tag = assigned_control_variables.throttle.assigned_propulsors[i][j]
                 for fuel_line in fuel_lines:
                     if propulsor_tag in fuel_line.propulsors:
                         state.conditions.energy[fuel_line.tag][propulsor_tag].throttle = state.unknowns["throttle_" + str(i)]   
      
     # Thrust Vector Control 
-    if flight_controls.thrust_vector_angle.active:                
-        for i in range(len(flight_controls.thrust_vector_angle.assigned_propulsors)):
-            for j in range(len(flight_controls.thrust_vector_angle.assigned_propulsors[i])): 
-                propulsor_tag = flight_controls.thrust_vector_angle.assigned_propulsors[i][j]
+    if assigned_control_variables.thrust_vector_angle.active:                
+        for i in range(len(assigned_control_variables.thrust_vector_angle.assigned_propulsors)):
+            for j in range(len(assigned_control_variables.thrust_vector_angle.assigned_propulsors[i])): 
+                propulsor_tag = assigned_control_variables.thrust_vector_angle.assigned_propulsors[i][j]
                 for fuel_line in fuel_lines:
                     if propulsor_tag in fuel_line.propulsors:
                         state.conditions.energy[fuel_line.tag][propulsor_tag].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]      
@@ -58,7 +58,7 @@ def bus_unknowns(segment,busses):
         Returns:
             None 
     """        
-    flight_controls = segment.flight_controls
+    assigned_control_variables = segment.assigned_control_variables
     state           = segment.state 
 
     # Throttle Control 
@@ -66,19 +66,19 @@ def bus_unknowns(segment,busses):
         for bus in busses:
             for propulsor in bus.propulsors: 
                 state.conditions.energy[bus.tag][propulsor.tag].throttle[:,0] = segment.throttle 
-    elif flight_controls.throttle.active:                
-        for i in range(len(flight_controls.throttle.assigned_propulsors)):
-            for j in range(len(flight_controls.throttle.assigned_propulsors[i])): 
-                propulsor_tag = flight_controls.throttle.assigned_propulsors[i][j]
+    elif assigned_control_variables.throttle.active:                
+        for i in range(len(assigned_control_variables.throttle.assigned_propulsors)):
+            for j in range(len(assigned_control_variables.throttle.assigned_propulsors[i])): 
+                propulsor_tag = assigned_control_variables.throttle.assigned_propulsors[i][j]
                 for bus in busses:
                     if propulsor_tag in bus.propulsors:
                         state.conditions.energy[bus.tag][propulsor_tag].throttle = state.unknowns["throttle_" + str(i)]   
      
     # Thrust Vector Control 
-    if flight_controls.thrust_vector_angle.active:                
-        for i in range(len(flight_controls.thrust_vector_angle.assigned_propulsors)):
-            for j in range(len(flight_controls.thrust_vector_angle.assigned_propulsors[i])): 
-                propulsor_tag = flight_controls.thrust_vector_angle.assigned_propulsors[i][j]
+    if assigned_control_variables.thrust_vector_angle.active:                
+        for i in range(len(assigned_control_variables.thrust_vector_angle.assigned_propulsors)):
+            for j in range(len(assigned_control_variables.thrust_vector_angle.assigned_propulsors[i])): 
+                propulsor_tag = assigned_control_variables.thrust_vector_angle.assigned_propulsors[i][j]
                 for bus in busses:
                     if propulsor_tag in bus.propulsors:
                         state.conditions.energy[bus.tag][propulsor_tag].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]    

@@ -25,7 +25,7 @@ def parasite_drag_pylon(state,settings,geometry):
         Stanford AA241 A/B Course Notes
 
     Args:
-        state.conditions.aerodynamics.coefficients.drag.breakdown.parasite[network.tag].
+        state.conditions.aerodynamics.coefficients.drag.parasite[network.tag].
           form_factor                      (float): form_factor              [Unitless]
           compressibility_factor           (float): compressibility_factor   [Unitless]
           skin_friction            (numpy.ndarray): skin_friction            [Unitless]
@@ -38,7 +38,7 @@ def parasite_drag_pylon(state,settings,geometry):
         None 
     """
     
-    drag          = state.conditions.aerodynamics.coefficients.drag.breakdown
+    drag          = state.conditions.aerodynamics.coefficients.drag
     pylon_factor  = 0.2  
 
     # Estimating pylon drag
@@ -50,7 +50,7 @@ def parasite_drag_pylon(state,settings,geometry):
                         nacelle              =  propulsor.nacelle
                         if nacelle.has_pylon:
                             ref_area             = nacelle.diameter**2 / 4 * np.pi
-                            pylon_parasite_drag  = pylon_factor *  drag.parasite[nacelle.tag].parasite_drag* (ref_area/geometry.reference_area)
+                            pylon_parasite_drag  = pylon_factor *  drag.parasite[nacelle.tag].total * (ref_area/geometry.reference_area)
                             pylon_wetted_area    = pylon_factor *  drag.parasite[nacelle.tag].wetted_area  
                             pylon_cf             = drag.parasite[nacelle.tag].skin_friction 
                             pylon_compr_fact     = drag.parasite[nacelle.tag].compressibility_factor
@@ -59,7 +59,7 @@ def parasite_drag_pylon(state,settings,geometry):
                             pylon_result         = Data(
                                 wetted_area               = pylon_wetted_area   ,
                                 reference_area            = geometry.reference_area   ,
-                                parasite_drag             = pylon_parasite_drag ,
+                                total                     = pylon_parasite_drag ,
                                 skin_friction             = pylon_cf  ,
                                 compressibility_factor    = pylon_compr_fact   ,
                                 reynolds_factor           = pylon_rey_fact   ,
@@ -69,7 +69,7 @@ def parasite_drag_pylon(state,settings,geometry):
                             pylon_result = Data(
                                 wetted_area               = 0 ,
                                 reference_area            = geometry.reference_area  ,
-                                parasite_drag             = np.zeros_like(drag.parasite[nacelle.tag].skin_friction)  ,
+                                total                     = np.zeros_like(drag.parasite[nacelle.tag].skin_friction)  ,
                                 skin_friction             = 0 ,
                                 compressibility_factor    = 0 ,
                                 reynolds_factor           = 0 ,
@@ -83,7 +83,7 @@ def parasite_drag_pylon(state,settings,geometry):
                         nacelle              = propulsor.nacelle
                         if nacelle.has_pylon:
                             ref_area             = nacelle.diameter**2 / 4 * np.pi
-                            pylon_parasite_drag  = pylon_factor *  drag.parasite[nacelle.tag].parasite_drag* (ref_area/geometry.reference_area)
+                            pylon_parasite_drag  = pylon_factor *  drag.parasite[nacelle.tag].total* (ref_area/geometry.reference_area)
                             pylon_wetted_area    = pylon_factor *  drag.parasite[nacelle.tag].wetted_area  
                             pylon_cf             = drag.parasite[nacelle.tag].skin_friction 
                             pylon_compr_fact     = drag.parasite[nacelle.tag].compressibility_factor
@@ -92,7 +92,7 @@ def parasite_drag_pylon(state,settings,geometry):
                             pylon_result = Data(
                                 wetted_area               = pylon_wetted_area   ,
                                 reference_area            = geometry.reference_area   ,
-                                parasite_drag             = pylon_parasite_drag ,
+                                total                     = pylon_parasite_drag ,
                                 skin_friction             = pylon_cf  ,
                                 compressibility_factor    = pylon_compr_fact   ,
                                 reynolds_factor           = pylon_rey_fact   ,
@@ -102,7 +102,7 @@ def parasite_drag_pylon(state,settings,geometry):
                             pylon_result = Data(
                                 wetted_area               = 0 ,
                                 reference_area            = geometry.reference_area  ,
-                                parasite_drag             = np.zeros_like(drag.parasite[nacelle.tag].skin_friction)  ,
+                                total                     = np.zeros_like(drag.parasite[nacelle.tag].skin_friction)  ,
                                 skin_friction             = 0 ,
                                 compressibility_factor    = 0 ,
                                 reynolds_factor           = 0 ,

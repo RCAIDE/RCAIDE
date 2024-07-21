@@ -8,6 +8,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
  
-from .Aerodynamics      import Aerodynamics 
-from .Subsonic_VLM      import Subsonic_VLM 
-from .Supersonic_VLM    import Supersonic_VLM 
+from .Aerodynamics          import Aerodynamics
+from .Vortex_Lattice_Method import Vortex_Lattice_Method

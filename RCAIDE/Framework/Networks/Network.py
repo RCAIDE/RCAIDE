@@ -29,12 +29,8 @@ class Network(Component):
         """
         self.tag                                         = 'network'  
         self.busses                                      = Container()     
-        self.fuel_lines                                  = Container() 
-        self.thermal_management                          = Data() 
-        self.thermal_management.heat_acquisition_systems = None
-        self.thermal_management.heat_exchanger_systems   = None  
-        self.thermal_management.heat_addition_systems    = None 
-        self.thermal_management.coolant_reservoirs       = None    
+        self.fuel_lines                                  = Container()
+        self.reverse_thrust                              = False
         self.wing_mounted                                = True
 
 # ----------------------------------------------------------------------

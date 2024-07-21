@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Framework.Core  import Data
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.Vortex_Lattice_Method import Vortex_Lattice_Method
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.Vortex_Lattice_Method import compute_wing_induced_velocity
-from RCAIDE.Library.Methods.Aerodynamics.Common.Lift                                 import generate_wing_wake_grid
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import VLM
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import compute_wing_induced_velocity
+from RCAIDE.Library.Methods.Aerodynamics.Common.Lift           import generate_wing_wake_grid
 
 # python imports 
 import numpy as np
@@ -74,7 +74,7 @@ def compute_wing_wake(vehicle, conditions, X_wake, grid_settings, VLM_settings,e
     H_f       = grid_settings.height_fine
      
     # Run the VLM for the given vehicle and conditions  
-    results = Vortex_Lattice_Method(conditions,VLM_settings, vehicle)
+    results = VLM(conditions,VLM_settings, vehicle)
     gamma   = results.gamma
     VD      = vehicle.vortex_distribution  
     gammaT  = gamma.T

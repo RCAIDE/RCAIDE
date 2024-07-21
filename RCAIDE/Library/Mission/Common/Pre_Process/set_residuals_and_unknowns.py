@@ -25,7 +25,7 @@ def set_residuals_and_unknowns(mission):
             """    
     for segment in mission.segments:  
         ones_row    = segment.state.ones_row 
-        ctrls       = segment.flight_controls
+        ctrls       = segment.assigned_control_variables
         dynamics    = segment.flight_dynamics
         
         # assign force and moment residuals i.e. degrees of freedom 

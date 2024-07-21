@@ -28,20 +28,19 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     
     2. VORLAX Source Code
 
-    Inputs: 
-    VD       - vehicle vortex distribution                    [Unitless] 
-    mach                                                      [Unitless] 
+    Args: 
+    VD       - vehicle vortex distribution                    [unitless] 
+    mach                                                      [unitless] 
     
-    Outputs:                                
-    C_mn     - total induced velocity matrix                  [Unitless] 
+    Returns:                                
+    C_mn     - total induced velocity matrix                  [unitless] 
     s        - semispan of the horshoe vortex                 [m] 
     t        - tangent of the horshoe vortex                  [-] 
     CHORD    - chord length for a panel                       [m] 
     RFLAG    - sonic vortex flag                              [boolean] 
     ZETA     - tangent incidence angle of the chordwise strip [-] 
 
-    Properties Used:
-    N/A
+
     """
     # unpack  
     LE_ind       = VD.leading_edge_indices
@@ -228,7 +227,7 @@ def subsonic(Z,XSQ1,RO1,XSQ2,RO2,XTY,T,B2,ZSQ,TOLSQ,X1,Y1,X2,Y2,RTV1,RTV2):
     
     2. VORLAX Source Code
 
-    Inputs: 
+    Args: 
     Z       Z relative location of the vortices          [m]
     XSQ1    X1 squared                                   [m^2]
     RO1     coefficient                                  [-]
@@ -247,13 +246,12 @@ def subsonic(Z,XSQ1,RO1,XSQ2,RO2,XTY,T,B2,ZSQ,TOLSQ,X1,Y1,X2,Y2,RTV1,RTV2):
     RTV2    coefficient                                  [-]
 
     
-    Outputs:           
+    Returns:           
     U       X velocity       [unitless]
     V       Y velocity       [unitless]
     W       Z velocity       [unitless]
 
-    Properties Used:
-    N/A
+
     """  
     
     CPI  = 4 * np.pi
@@ -298,7 +296,7 @@ def supersonic(Z,XSQ1,RO1,XSQ2,RO2,XTY,T,B2,ZSQ,TOLSQ,TOL,TOLSQ2,X1,Y1,X2,Y2,RTV
     
     2. VORLAX Source Code
 
-    Inputs: 
+    Args: 
     Z            Z relative location of the vortices          [m]
     XSQ1         X1 squared                                   [m^2]
     RO1          coefficient                                  [-]
@@ -324,14 +322,13 @@ def supersonic(Z,XSQ1,RO1,XSQ2,RO2,XTY,T,B2,ZSQ,TOLSQ,TOL,TOLSQ2,X1,Y1,X2,Y2,RTV
     
 
     
-    Outputs:           
+    Returns:           
     U       X velocity        [unitless]
     V       Y velocity        [unitless]
     W       Z velocity        [unitless]
     RFLAG   sonic vortex flag [boolean] 
 
-    Properties Used:
-    N/A
+
     """      
     
     CPI    = 2 * np.pi
@@ -510,7 +507,7 @@ def supersonic_in_plane(RAD1,RAD2,Y1,Y2,TOL,XTY,CPI):
     
     2. VORLAX Source Code
 
-    Inputs: 
+    Args: 
     RAD1    array of zeros                               [-]
     RAD2    array of zeros                               [-]
     Y1      Y coordinate of the left side of the vortex  [m]
@@ -520,11 +517,10 @@ def supersonic_in_plane(RAD1,RAD2,Y1,Y2,TOL,XTY,CPI):
     CPI     2 Pi                                         [radians]
 
     
-    Outputs:           
+    Returns:           
     W       Z velocity       [unitless]
 
-    Properties Used:
-    N/A
+
     """    
     
     shape = np.shape(RAD2)
