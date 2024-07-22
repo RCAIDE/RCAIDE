@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE Imports
 from RCAIDE.Framework.Core import Data
-from RCAIDE.Framework.Analyses           import Analysis, Settings, Process   
+from RCAIDE.Framework.Analyses           import Analysis, Process   
 from RCAIDE.Framework.Mission.Common     import State 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ class Segment(Analysis):
         None 
         """          
         
-        self.settings                      = Settings() 
+        self.settings                      = Data()
         self.state                         = State() 
         self.analyses                      = Analysis.Container() 
         self.process                       = Process() 
@@ -56,7 +56,6 @@ class Segment(Analysis):
                 None
     
             Args:
-                State (dict): RCAIDE data structure  
     
             Returns:
                 None
@@ -91,7 +90,6 @@ class Segment(Analysis):
                 None
     
             Args:
-                State (dict): RCAIDE data structure  
     
             Returns:
                 None
@@ -109,7 +107,6 @@ class Segment(Analysis):
                 None
     
             Args:
-                State (dict): RCAIDE data structure  
     
             Returns:
                 None
@@ -127,15 +124,14 @@ class Segment(Analysis):
                 None
     
             Args:
-                self  (dict): RCAIDE data structure  
                 State (dict): RCAIDE data structure  
     
             Returns:
-                State (dict): RCAIDE data structure  
+                self
         """          
         if state is None:
             state = self.state
-        self.process(self)
+        self.process.evaluate(self)
         return self
     
     def flight_dynamics_and_controls(self): 
@@ -148,7 +144,6 @@ class Segment(Analysis):
                 None
     
             Args:
-                self (dict): RCAIDE data structure  
     
             Returns:
                 None

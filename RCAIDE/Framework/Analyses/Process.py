@@ -46,23 +46,3 @@ class Process(Container):
             results[tag] = result
          
         return results
-        
-    def __call__(self,*args,**kwarg):
-        """Set the class' call behavior to the evaluate functions.
-        
-            Assumptions:
-                None
-    
-            Source:
-                None
-    
-            Args:
-                self  : class                           [-] 
-                args  : arguments of the class          [-]
-                kwarg : keyword arguments of the classs [-]
-    
-            Returns:
-                None 
-            """                        
-        return self.evaluate(*args,**kwarg) 
-    

@@ -36,7 +36,6 @@ class Process_Geometry(Process):
             None
 
         Args:
-            self         (dict): geoemtry data structure [-] 
             geometry_key (dict): data object             [string]
 
         Returns:
@@ -54,7 +53,6 @@ class Process_Geometry(Process):
             None
 
         Args:
-            self     (dict): geoemtry data structure             [-] 
             state    (dict): flight conditions                   [-]
             setting  (dict): settings of geometry data structure [-]
             geometry (dict): geometry data structure             [-]

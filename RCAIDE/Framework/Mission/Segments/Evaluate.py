@@ -14,7 +14,7 @@ from RCAIDE.Library.Mission                    import Common , Solver
 from RCAIDE.Framework.Analyses                 import Process  
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  ANALYSES
+#  Evaluate
 # ----------------------------------------------------------------------------------------------------------------------  
 class Evaluate(Segment):
     """ Base process class used to analyze a vehicle in each flight segment.

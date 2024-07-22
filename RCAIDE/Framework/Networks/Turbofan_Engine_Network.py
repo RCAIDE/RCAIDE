@@ -9,7 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports  
 import RCAIDE 
-from RCAIDE.Framework.Mission.Common                                                           import Residuals    
+from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import fuel_line_unknowns
+from RCAIDE.Framework.Mission.Common                                                           import Residuals, Conditions
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor.compute_turbofan_performance  import compute_turbofan_performance
 from .Network                                                                                  import Network  
 
@@ -30,7 +31,6 @@ class Turbofan_Engine_Network(Network):
             None 
         """            
         self.tag                          = 'turbofan_engine'  
-        self.system_voltage               = None   
         
     # linking the different network components
     def evaluate(self,state):
@@ -134,7 +134,7 @@ class Turbofan_Engine_Network(Network):
         """            
          
         fuel_lines = segment.analyses.energy.networks.turbofan_engine.fuel_lines
-        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
+        fuel_line_unknowns(segment,fuel_lines) 
             
         return    
      
@@ -162,13 +162,13 @@ class Turbofan_Engine_Network(Network):
             # ------------------------------------------------------------------------------------------------------            
             # Create fuel_line results data structure  
             # ------------------------------------------------------------------------------------------------------
-            segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Framework.Mission.Common.Conditions()       
+            segment.state.conditions.energy[fuel_line.tag]       = Conditions()       
             fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]    
-            segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Framework.Mission.Common.Conditions()  
+            segment.state.conditions.noise[fuel_line.tag]        = Conditions()  
             noise_results                                        = segment.state.conditions.noise[fuel_line.tag]      
      
             for fuel_tank in fuel_line.fuel_tanks:               
-                fuel_line_results[fuel_tank.tag]                 = RCAIDE.Framework.Mission.Common.Conditions()  
+                fuel_line_results[fuel_tank.tag]                 = Conditions()  
                 fuel_line_results[fuel_tank.tag].mass_flow_rate  = ones_row(1)  
                 fuel_line_results[fuel_tank.tag].mass            = ones_row(1)  
                 
@@ -176,13 +176,13 @@ class Turbofan_Engine_Network(Network):
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
             for turbofan in fuel_line.propulsors:               
-                fuel_line_results[turbofan.tag]                         = RCAIDE.Framework.Mission.Common.Conditions() 
+                fuel_line_results[turbofan.tag]                         = Conditions() 
                 fuel_line_results[turbofan.tag].throttle                = 0. * ones_row(1)      
                 fuel_line_results[turbofan.tag].y_axis_rotation         = 0. * ones_row(1)  
                 fuel_line_results[turbofan.tag].thrust                  = 0. * ones_row(1) 
                 fuel_line_results[turbofan.tag].power                   = 0. * ones_row(1) 
-                noise_results[turbofan.tag]                             = RCAIDE.Framework.Mission.Common.Conditions() 
-                noise_results[turbofan.tag].turbofan                    = RCAIDE.Framework.Mission.Common.Conditions() 
+                noise_results[turbofan.tag]                             = Conditions() 
+                noise_results[turbofan.tag].turbofan                    = Conditions() 
         
         segment.process.iterate.unknowns.network   = self.unpack_unknowns                   
         return segment    

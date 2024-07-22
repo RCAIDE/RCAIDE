@@ -26,8 +26,6 @@ class Segment(Component):
             None 
         """         
         self.tag                     = 'segment'
-        self.prev                    = None
-        self.next                    = None  
         self.percent_span_location   = 0.0
         self.twist                   = 0.0
         self.taper                   = 0.0
@@ -76,24 +74,4 @@ class Segment(Component):
         self.Airfoil.append(airfoil)
 
          
-class Segment_Container(Container):
-    """ Container for wing segment. 
-    """     
-
-    def get_children(self):
-        """ Returns the components that can go inside
-        
-        Assumptions:
-            None
-    
-        Source:
-            None
-    
-        Args:
-            None
-    
-        Returns:
-           None 
-        """       
-        
-        return []
+Segment_Container = Container         

@@ -64,10 +64,9 @@ def generate_3d_fuselage_points(fuselage ,tessellation = 24 ):
         for i_seg, segment in enumerate(fuselage.Segments): 
             a = segment.width/2
             b = segment.height/2
-            n = segment.curvature
             theta    = np.linspace(0,2*np.pi,tessellation) 
-            fus_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
-            fus_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+            fus_ypts =  (abs((np.cos(theta))))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
+            fus_zpts =  (abs((np.sin(theta))))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
             fuselage_points[i_seg,:,0] = segment.percent_x_location*fuselage.lengths.total + fuselage.origin[0][0]
             fuselage_points[i_seg,:,1] = fus_ypts + segment.percent_y_location*fuselage.lengths.total + fuselage.origin[0][1]
             fuselage_points[i_seg,:,2] = fus_zpts + segment.percent_z_location*fuselage.lengths.total + fuselage.origin[0][2]

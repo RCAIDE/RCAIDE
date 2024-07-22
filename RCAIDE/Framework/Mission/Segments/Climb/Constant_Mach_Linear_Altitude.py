@@ -37,7 +37,7 @@ class Constant_Mach_Linear_Altitude(Evaluate):
         self.distance          = 10. * Units.km
         self.altitude_start    = None
         self.altitude_end      = None
-        self.true_course_angle = 0.0 * Units.degrees     
+        self.true_course       = 0.0 * Units.degrees     
         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

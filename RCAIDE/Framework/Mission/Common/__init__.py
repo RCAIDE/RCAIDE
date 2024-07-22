@@ -13,4 +13,3 @@ from .Numerics     import Numerics
 from .Residuals    import Residuals
 from .Results      import Results
 from .State        import State
-from .Unknowns     import Unknowns

@@ -8,10 +8,9 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Analysis  import Analysis 
-from .Process   import Process
-from .Settings  import Settings
-from .Vehicle   import Vehicle 
+from .Analysis           import Analysis 
+from .Process            import Process
+from .Vehicle_Analyses   import Vehicle_Analyses
 from . import Aerodynamics
 from . import Atmospheric
 from . import Costs

@@ -16,5 +16,4 @@ from .Gaseous_Hydrogen   import Gaseous_Hydrogen
 from .Liquid_Natural_Gas import Liquid_Natural_Gas
 from .JP7                import JP7
 from .Liquid_Hydrogen    import Liquid_Hydrogen
-from .LH2                import LH2
 from .RP1                import RP1

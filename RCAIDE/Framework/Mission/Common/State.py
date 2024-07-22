@@ -8,9 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Framework.Core import DataOrdered
+from RCAIDE.Framework.Core import Data
 from .Conditions           import Conditions
-from .Unknowns             import Unknowns
 from .Residuals            import Residuals
 from .Numerics             import Numerics   
 
@@ -36,7 +35,7 @@ class State(Conditions):
         self.tag        = 'state'
         self.initials   = Conditions()
         self.numerics   = Numerics()
-        self.unknowns   = Unknowns()
+        self.unknowns   = Conditions()
         self.conditions = Conditions()
         self.residuals  = Residuals()
         
@@ -88,7 +87,7 @@ class Container(State):
             Source:
                 None 
         """         
-        self.segments = DataOrdered()
+        self.segments = Data()
         
     def merged(self):
         """ Combines the states of multiple segments

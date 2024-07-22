@@ -25,28 +25,11 @@ class Segment(Component):
         Source:
            None
         """ 
-        self.tag                     = 'segment'
-        self.prev                    = None
-        self.next                    = None    
+        self.tag                     = 'segment'  
         self.percent_x_location      = 0  
         self.percent_y_location      = 0
         self.percent_z_location      = 0 
         self.height                  = 0 
         self.width                   = 0 
-        self.curvature               = 2
-         
-class Segment_Container(Container):
-    """ Container for fuselage segment.
-    """     
-
-    def get_children(self):
-        """ Returns the components that can go inside
         
-        Assumptions:
-        None
-    
-        Source:
-        None 
-        """       
-        
-        return []
+Segment.Container = Container

@@ -38,7 +38,6 @@ class Energy(Analysis):
             None
 
         Args:
-            self        : energy network    [-]
             state (dict): flight conditions [-]
 
         Returns:

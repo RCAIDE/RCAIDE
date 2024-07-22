@@ -91,28 +91,7 @@ class Analysis(Data):
                 None
             """                
         return 
-    
-    def __call__(self,*args,**kwarg):
-        
-        """This is used to set the class' call behavior to the evaluate function. 
-                                                
-            Assumptions:
-                None
-                                            
-            Source:
-                None
-                                            
-            Args:
-                self  : class                           [-] 
-                args  : arguments of the class          [-]
-                kwarg : keyword arguments of the classs [-]
-                                            
-            Returns:
-                results : results of evaluation function [-]
-            """                 
-        
-        return self.evaluate(*args,**kwarg)
-    
+
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  CONFIG CONTAINER
