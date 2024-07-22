@@ -44,7 +44,7 @@ class Constant_Speed_Constant_Altitude_Loiter(Evaluate):
         initialize.conditions              = Segments.Cruise.Constant_Speed_Constant_Altitude_Loiter.initialize_conditions 
         iterate                            = self.process.iterate   
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.attitude
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         return
 

@@ -46,7 +46,7 @@ class Constant_CAS_Constant_Rate(Evaluate):
         initialize.conditions              = Segments.Climb.Constant_CAS_Constant_Rate.initialize_conditions  
         iterate                            = self.process.iterate
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.attitude
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         
         return

@@ -104,29 +104,7 @@ class Container(ContainerBase):
         
         Source:
             None
-    """ 
-        
-    def initialize(self,*args,**kwarg):
-        """This is used to execute the initialize functions of the analyses
-            stored in the container.
-                                        
-            Assumptions:
-                None
-                                    
-            Source:
-                None
-                                    
-            Args:
-                self  : class                           [-] 
-                args  : arguments of the class          [-]
-                kwarg : keyword arguments of the classs [-]
-                                    
-            Returns:
-                None 
-            """                    
-        for tag,analysis in self.items:
-            if hasattr(analysis,'initialize'):
-                analysis.initialize(*args,**kwarg) 
+    """  
     
     def evaluate(self,*args,**kwarg):
         """This is used to execute the evaluate functions of the analyses
@@ -174,29 +152,7 @@ class Container(ContainerBase):
         
         for tag,analysis in self.items():
             if hasattr(analysis,'post_process'):
-                analysis.post_process(*args,**kwarg)
-                
-    
-    def __call__(self,*args,**kwarg): 
-        """This is used to set the class' call behavior to the evaluate functions.
-                                                        
-            Assumptions:
-                None
-                                                    
-            Source:
-                None
-                                                    
-            Args:
-                self  : class                           [-] 
-                args  : arguments of the class          [-]
-                kwarg : keyword arguments of the classs [-]
-                                                    
-            Returns:
-                evaluation function 
-              
-            """                
-        
-        return self.evaluate(*args,**kwarg)
+                analysis.post_process(*args,**kwarg) 
 
     
 # ----------------------------------------------------------------------------------------------------------------------   

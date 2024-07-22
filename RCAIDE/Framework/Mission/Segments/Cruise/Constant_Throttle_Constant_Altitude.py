@@ -69,7 +69,7 @@ class Constant_Throttle_Constant_Altitude(Evaluate):
         iterate.conditions.planet_position = Common.Update.planet_position
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         iterate.residuals.velocity         = Segments.Cruise.Constant_Throttle_Constant_Altitude.solve_velocity
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation  
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.attitude  
         iterate.unknowns.acceleration      = Segments.Cruise.Constant_Throttle_Constant_Altitude.unpack_unknowns  
 
         return

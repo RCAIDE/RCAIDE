@@ -50,7 +50,7 @@ class Set_Speed_Set_Altitude(Evaluate):
         iterate                                  = self.process.iterate 
         iterate.initials.energy                  = skip
         iterate.unknowns.controls                = Common.Unpack_Unknowns.control_surfaces
-        iterate.unknowns.mission                 = Common.Unpack_Unknowns.orientation  
+        iterate.unknowns.mission                 = Common.Unpack_Unknowns.attitude  
         iterate.conditions.planet_position       = skip    
         iterate.conditions.acceleration          = skip
         iterate.conditions.angular_acceleration  = skip 

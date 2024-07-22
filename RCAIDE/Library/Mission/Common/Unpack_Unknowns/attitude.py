@@ -1,4 +1,4 @@
-# RCAIDE/Library/Missions/Common/Unpack_Unknowns/orientation.py
+# RCAIDE/Library/Missions/Common/Unpack_Unknowns/attitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke
@@ -6,8 +6,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Unpack Unknowns
 # ---------------------------------------------------------------------------------------------------------------------- 
-def orientation(segment): 
-    """Assigns the unknowns for the aircraft orientation to the aircraft each iteration of
+def attitude(segment): 
+    """Assigns the unknowns for the aircraft attitude to the aircraft each iteration of
        the mission solving process.
 
         Assumptions:

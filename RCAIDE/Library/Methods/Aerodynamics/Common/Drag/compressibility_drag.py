@@ -10,6 +10,7 @@
 from RCAIDE.Library.Components.Wings          import Main_Wing
 from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender  
 from .wave_drag                               import wave_drag
+from .drag_divergence                         import drag_divergence 
 from .supersonic_wave_drag_volume_raymer      import supersonic_wave_drag_volume_raymer
 from .supersonic_wave_drag_volume_sears_haack import supersonic_wave_drag_volume_sears_haack
 
@@ -17,7 +18,7 @@ from .supersonic_wave_drag_volume_sears_haack import supersonic_wave_drag_volume
 import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  Supersonic Compressibility Drag Total
+#  Compressibility Drag Total
 # ----------------------------------------------------------------------------------------------------------------------  
 def compressibility_drag(state,settings,geometry):
     """Computes compressibility drag for full aircraft including volume drag
@@ -73,7 +74,7 @@ def compressibility_drag(state,settings,geometry):
 
     low_cutoff_volume_total  = np.zeros_like(Mach)
     high_cutoff_volume_total = np.zeros_like(Mach)     
-    low_cutoff_volume_total  = drag_div(low_mach_cutoff*np.ones_like(Mach), geometry,Cl) 
+    low_cutoff_volume_total  = drag_divergence(low_mach_cutoff*np.ones_like(Mach), geometry,Cl) 
     high_cutoff_volume_total = wave_drag_volume(geometry,low_mach_cutoff*np.ones_like(Mach),scaling_factor)
     
     peak_volume_total = high_cutoff_volume_total*peak_factor
@@ -94,7 +95,7 @@ def compressibility_drag(state,settings,geometry):
     hi_inds  = Mach[:,0]>=peak_mach
 
     cd_c_v_base                  = np.zeros_like(Mach) 
-    cd_c_v_base[low_inds]        = drag_div(Mach[low_inds], geometry,Cl[low_inds]) 
+    cd_c_v_base[low_inds]        = drag_divergence(Mach[low_inds], geometry,Cl[low_inds]) 
     cd_c_l_base                  = lift_wave_drag(conditions, settings, geometry)
     cd_c_v_base[Mach>=peak_mach] = wave_drag_volume(geometry, Mach[Mach>=peak_mach], scaling_factor) 
     
@@ -175,76 +176,3 @@ def lift_wave_drag(conditions,configuration,geometry):
 
     return cd_c_l
 
-# ----------------------------------------------------------------------------------------------------------------------
-# drag_div
-# ----------------------------------------------------------------------------------------------------------------------
-def drag_div(Mach,geometry, Cl):
-    """Use drag divergence Mach number to determine drag for subsonic speeds
-
-    Assumptions:
-    Basic fit, subsonic
-
-    Source:
-    http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html (Stanford AA241 A/B Course Notes)
-    Concorde data can be found in "Supersonic drag reduction technology in the scaled supersonic 
-    experimental airplane project by JAXA" by Kenji Yoshida
-
-    Args:
-    wing.
-      thickness_to_chord    [-]     
-      sweeps.quarter_chord  [radians]
-      high_mach             [Boolean]
-      areas.reference       [m^2]
-
-    Returns:
-    cd_c                    [-]
-    Machc                   [-]
-    MDiv                    [-]
-  
-    """
-
-    t_c_w     = 0
-    sweep_w   = 0
-    high_mach = False 
-    for wing in  geometry.wings:
-        if isinstance(wing, Main_Wing):  
-            t_c_w     = wing.thickness_to_chord
-            sweep_w   = wing.sweeps.quarter_chord
-            high_mach =  wing.high_mach
-        
-    # Check if the wing is designed for high subsonic cruise
-    # If so use arbitrary divergence point as correlation will not work
-    if high_mach == True: 
-        # Divergence Mach number, fit to Concorde data 
-        Mcc    =  0.95 * np.ones_like(Mach)  
-    else:  
-        # Get effective Cl_wings and sweep 
-        tc = t_c_w / np.cos(sweep_w)
-        cl = Cl/ (np.cos(sweep_w) ** 2)
-
-        # Compressibility drag based on regressed fits from AA241
-    
-        mcc_cos_ws = 0.922321524499352       \
-                   - 1.153885166170620*tc    \
-                   - 0.304541067183461*cl    \
-                   + 0.332881324404729*tc*tc \
-                   + 0.467317361111105*tc*cl \
-                   + 0.087490431201549*cl*cl
-         
-        # Crest-critical Mach number, corrected for wing sweep
-        Mcc = mcc_cos_ws/ np.cos(sweep_w)      
-
-    # Divergence ratio
-    mo_Mach = Mach/Mcc
-
-    # Compressibility correlation, Shevell
-    dcdc_cos3g = 0.0019*mo_Mach**14.641
-
-    # Compressibility drag 
-    # Sweep correlation cannot be used if the wing has a high Mach design
-    if high_mach is True:
-        cd_c = dcdc_cos3g
-    else:
-        cd_c = dcdc_cos3g * (np.cos(sweep_w)**3)
-          
-    return cd_c 

@@ -1,4 +1,4 @@
-# RCAIDE/Library/Missions/Common/compute_point_to_point_geospacial_data.py
+# RCAIDE/Library/Missions/Common/compute_point_to_point_geospatial_data.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke 
@@ -15,7 +15,7 @@ from geopy.distance import geodesic as GD
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Compute Point to Point Geospacial Data
 # ----------------------------------------------------------------------------------------------------------------------  
-def compute_point_to_point_geospacial_data(topography_file                        = None,
+def compute_point_to_point_geospatial_data(topography_file                        = None,
                                             origin_tag                         = 'origin',
                                             destination_tag                       = 'destination',
                                             origin_coord_deg                 = [0.0,0.0],

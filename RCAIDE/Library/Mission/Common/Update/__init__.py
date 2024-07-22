@@ -22,8 +22,7 @@ from .moments                          import moments
 from .ground_forces                    import ground_forces
 from .freestream                       import freestream
 from .gravity                          import gravity
-from .inertial_horizontal_position     import inertial_horizontal_position
-from .kinematics                       import kinematics
+from .inertial_horizontal_position     import inertial_horizontal_position 
 from .orientations                     import orientations
 from .planet_position                  import planet_position
 from .stability                        import stability

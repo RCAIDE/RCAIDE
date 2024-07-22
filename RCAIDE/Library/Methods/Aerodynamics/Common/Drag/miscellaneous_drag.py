@@ -92,8 +92,5 @@ def miscellaneous_drag(state,settings,geometry):
         total_miscellaneous_drag = miscellaneous_drag *np.ones_like(Mach)
         
     # Store results 
-    conditions.aerodynamics.coefficients.drag.miscellaneous = Data( 
-        total            = total_miscellaneous_drag  ,
-    ) 
-
+    conditions.aerodynamics.coefficients.drag.miscellaneous.total =  total_miscellaneous_drag 
     return  

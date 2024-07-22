@@ -57,16 +57,16 @@ def plot_rotor_disc_inflow(rotor,velocities, grid_points):
     ax4 = plt.subplot(224)
     
     c1 = ax1.tricontourf(y,z, u, levels=levels, vmax=vmax, vmin=vmin, cmap='seismic')
-    plt.colorbar(c1, ax=ax1)#, orientation="horizontal")           
+    plt.colorbar(c1, ax=ax1)          
                                
     c2 = ax2.tricontourf(y,z, v, levels=levels, vmax=vmax, vmin=vmin, cmap='seismic')
-    plt.colorbar(c2, ax=ax2)#, orientation="horizontal")           
+    plt.colorbar(c2, ax=ax2)          
                                
     c3 = ax3.tricontourf(y,z, w, levels=levels, vmax=vmax, vmin=vmin, cmap='seismic')
-    plt.colorbar(c3, ax=ax3)#, orientation="horizontal")
+    plt.colorbar(c3, ax=ax3) 
     
     c4 = ax4.tricontourf(y,z, vtot, levels=levels, vmax=vmax, vmin=vmin, cmap='seismic')
-    plt.colorbar(c4, ax=ax4)#, orientation="horizontal")    
+    plt.colorbar(c4, ax=ax4)  
     
     # plot the rotor radius
     ax1.plot(R*np.cos(psi_360), R*np.sin(psi_360), 'k')

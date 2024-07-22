@@ -53,7 +53,7 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         initialize.conditions              = Segments.Descent.Constant_Speed_Constant_Angle_Noise.initialize_conditions
         iterate                            = self.process.iterate   
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation          
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.attitude          
         
         return
 

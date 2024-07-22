@@ -302,4 +302,3 @@ def build_surrogate(aerodynamics, training):
         surrogates.dCN_ddelta_s     = interpolate.interp1d(mach_data,training.dCN_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value="extrapolate")   
    
     return surrogates
- 

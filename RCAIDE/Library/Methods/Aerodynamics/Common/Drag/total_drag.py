@@ -49,7 +49,7 @@ def total_drag(state,settings,geometry):
     # Unpack inputs 
 
     drag_coefficient_increment = settings.drag_coefficient_increment 
-    spoiler_drag               = drag.spoiler_drag 
+    spoiler_drag               = drag.spoiler.total
 
     # Add drag_coefficient_increment
     aircraft_total_drag =  corrected_aircraft_total_trim_drag   + drag_coefficient_increment + spoiler_drag

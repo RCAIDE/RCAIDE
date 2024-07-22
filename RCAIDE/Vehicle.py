@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 from RCAIDE                    import Framework
-from RCAIDE.Framework.Core     import Data, DataOrdered
+from RCAIDE.Framework.Core     import Data 
 from RCAIDE.Library            import Components, Attributes 
 import numpy as np
 
@@ -42,13 +42,12 @@ class Vehicle(Data):
         self.payload                      = Components.Payloads.Payload.Container()
         self.costs                        = Data() 
         self.costs.industrial             = Attributes.Costs.Industrial_Costs()
-        self.costs.operating              = Attributes.Costs.Operating_Costs()    
-        self.envelope                     = Attributes.Envelope()
+        self.costs.operating              = Attributes.Costs.Operating_Costs()     
         self.landing_gear                 = Components.Landing_Gear.Landing_Gear.Container()
         self.reference_area               = 0.0
         self.passengers                   = 0.0
-        self.maximum_cross_sectional_area =  0.0
-        self.performance                  = DataOrdered()
+        self.maximum_cross_sectional_area = 0.0
+        self.performance                  = Data()
          
     _energy_network_root_map = None 
 
@@ -76,8 +75,7 @@ class Vehicle(Data):
             Components.Systems.System                  : self['systems']          ,
             Components.Systems.Avionics                : self['avionics']         ,
             Components.Payloads.Payload                : self['payload']          , 
-            Framework.Networks.Network                 : self['networks']         ,
-            Attributes.Envelope                        : self['envelope']         ,
+            Framework.Networks.Network                 : self['networks']         , 
             Components.Booms.Boom                      : self['booms']            ,
             Components.Landing_Gear.Landing_Gear       : self['landing_gear']     ,
             Vehicle_Mass_Properties                    : self['mass_properties']  ,
@@ -285,16 +283,4 @@ class Vehicle_Mass_Properties(Components.Mass_Properties):
         self.zero_fuel_center_of_gravity = np.array([[0.0,0.0,0.0]])    
         
 class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Properties):
-        
-    def append(self,value,key=None):
-        """ Appends the vehicle mass, but only let's one ever exist. Keeps the newest one
-        
-            Assumptions:
-                None
-    
-            Source:
-                None
-        """      
-        self.clear()
-        for key in value.keys():
-            self[key] = value[key]
+         
