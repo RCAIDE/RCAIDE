@@ -188,7 +188,7 @@ class Vortex_Lattice_Method(Aerodynamics):
             compute.lift.inviscid_wings  = evaluate_no_surrogate  
         return 
             
-    def evaluate(self,state):
+    def evaluate(self,segment):
         """Subsonic Vortex Lattice Method evaluate function which calls listed processes in the analysis method.
 
         Assumptions:
@@ -206,6 +206,6 @@ class Vortex_Lattice_Method(Aerodynamics):
         """               
         settings = self.settings
         geometry = self.geometry 
-        results  = self.process.compute(state,settings,geometry)
+        results  =  self.process.compute.evaluate(segment,settings,geometry)
         
         return results

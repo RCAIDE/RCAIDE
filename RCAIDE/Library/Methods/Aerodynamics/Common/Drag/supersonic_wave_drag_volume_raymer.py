@@ -37,13 +37,9 @@ def supersonic_wave_drag_volume_raymer(vehicle,mach,scaling_factor):
     Returns:
     vehicle_wave_drag                     [Unitless] 
     """  
-    num_main_wings = 0
     for wing in vehicle.wings:
         if isinstance(wing,Main_Wing):
-            main_wing = wing
-            num_main_wings += 1
-        if num_main_wings > 1:
-            raise NotImplementedError('This function is not designed to handle multiple main wings.')
+            main_wing = wing 
     
     main_wing = vehicle.wings.main_wing
     # estimation of leading edge sweep if not defined 

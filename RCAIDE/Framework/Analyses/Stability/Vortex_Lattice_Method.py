@@ -9,10 +9,10 @@
 
 # RCAIDE imports  
 import RCAIDE
+from .Stability                                                import Stability  
 from RCAIDE.Framework.Core                                     import Data, Units
 from RCAIDE.Framework.Analyses                                 import Process 
 from RCAIDE.Library.Methods.Aerodynamics                       import Common
-from .Stability                                                import Stability  
 from RCAIDE.Framework.Analyses.Common.Process_Geometry         import Process_Geometry 
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import *   
 

@@ -42,7 +42,7 @@ class Constant_Mach_Constant_Angle(Evaluate):
         # -------------------------------------------------------------------------------------------------------------- 
         #  Unique Mission Unknowns and Residuals
         # --------------------------------------------------------------------------------------------------------------  
-        ones_row = self.state.ones_row        
+        ones_row = self.state.ones_row    
         self.state.unknowns.altitude   = ones_row(1) * 0.0   
         self.state.residuals.altitude  = ones_row(1) * 0.0   
     
@@ -53,12 +53,12 @@ class Constant_Mach_Constant_Angle(Evaluate):
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
         initialize.conditions              = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions  
         iterate                            = self.process.iterate
+        iterate.residuals.flight_altitude  = Segments.Climb.Constant_Mach_Constant_Angle.altitude_residual
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
-        iterate.residuals.altitude         = Segments.Climb.Constant_Mach_Constant_Angle.altitude_residual
         iterate.conditions.differentials   = Segments.Climb.Constant_Mach_Constant_Angle.update_differentials 
         iterate.unknowns.mission           = Common.Unpack_Unknowns.attitude
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
         iterate.unknowns.kinematics        = Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions
-          
+
         return
 

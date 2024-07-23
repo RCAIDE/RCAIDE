@@ -66,6 +66,6 @@ def flight_dynamics(segment):
         if  segment.flight_dynamics.moment_y:
             segment.state.residuals.moment_y[:,0] = MT[:,1]/I[1,1] - ang_acc[:,1]   
         if  segment.flight_dynamics.moment_z:
-            segment.state.residuals.moment_z[:,0] = MT[:,2]/I[2,2] - ang_acc[:,2] 
-             
+            segment.state.residuals.moment_z[:,0] = MT[:,2]/I[2,2] - ang_acc[:,2]   
+   
     return

@@ -36,7 +36,7 @@ def aerodynamics(segment):
     CLmax              = aerodynamics_model.settings.maximum_lift_coefficient
     
     # call aerodynamics model
-    _ = aerodynamics_model(segment)    
+    _ = aerodynamics_model.evaluate(segment)    
     
     # unpack results
     CL = conditions.aerodynamics.coefficients.lift.total

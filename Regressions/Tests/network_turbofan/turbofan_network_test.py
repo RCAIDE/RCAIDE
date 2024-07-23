@@ -148,12 +148,10 @@ def mission_setup(analyses):
       
     # define flight controls   
     segment.assigned_control_variables.throttle.active                 = True           
-    segment.assigned_control_variables.throttle.assigned_propulsors    = [['starboard_propulsor','port_propulsor']]
-    segment.assigned_control_variables.throttle.initial_guess          = True 
-    segment.assigned_control_variables.throttle.initial_guess_values   = [[0.5,0.5]] 
-    segment.assigned_control_variables.body_angle.active               = True               
-    segment.assigned_control_variables.body_angle.initial_guess        = True 
-    segment.assigned_control_variables.body_angle.initial_guess_values = [[3*Units.degrees]]    
+    segment.assigned_control_variables.throttle.assigned_propulsors    = [['starboard_propulsor','port_propulsor']] 
+    segment.assigned_control_variables.throttle.initial_guess   = [[0.5,0.5]] 
+    segment.assigned_control_variables.body_angle.active               = True 
+    segment.assigned_control_variables.body_angle.initial_guess = [[3*Units.degrees]]    
       
     mission.append_segment(segment)
 

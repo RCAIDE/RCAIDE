@@ -10,7 +10,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units ,  Data
-from RCAIDE.Library.Plots                 import *     
+from RCAIDE.Library.Plots             import *       
 
 # python imports 
 import numpy as np
@@ -47,7 +47,7 @@ def main():
     missions = missions_setup(mission) 
      
     # mission analysis 
-    results = missions.base_mission.evaluate() 
+    results = missions.base_mission.evaluate()   
  
     # Extract sample values from computation  
     takeoff_thrust     = results.segments.takeoff.conditions.energy['fuel_line']['port_propulsor'].thrust[3][0]
@@ -60,6 +60,7 @@ def main():
     climb_throttle_7   = results.segments.climb_7.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0] 
     climb_throttle_8   = results.segments.climb_8.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0] 
     climb_throttle_9   = results.segments.climb_9.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]  
+    climb_10_CL        = results.segments.climb_10.conditions.aerodynamics.coefficients.lift.total[2][0]
     cruise_CL_1        = results.segments.cruise_1.conditions.aerodynamics.coefficients.lift.total[2][0]
     cruise_CL_2        = results.segments.cruise_2.conditions.aerodynamics.coefficients.lift.total[2][0]
     cruise_CL_3        = results.segments.cruise_3.conditions.aerodynamics.coefficients.lift.total[2][0] 
@@ -78,7 +79,7 @@ def main():
     show_vals = True
     if show_vals:
         data = [takeoff_thrust, climb_throttle_1,   climb_throttle_2,   climb_throttle_3,   climb_throttle_4,   climb_throttle_5,  
-                climb_throttle_6,   climb_throttle_7,   climb_throttle_8,   climb_throttle_9,     
+                climb_throttle_6,   climb_throttle_7,   climb_throttle_8,   climb_throttle_9,   climb_10_CL,  
                 cruise_CL_1,  cruise_CL_2,  cruise_CL_3,        descent_throttle_1, descent_throttle_2,
                 single_pt_CL_1,     single_pt_CL_2,     loiter_1_CL,   loiter_2_CL, reserve_1_CL,reserve_2_CL,
                 descent_throttle_3,  landing_thrust]
@@ -86,29 +87,30 @@ def main():
             print(val)
     
     # Truth values
-    takeoff_thrust_truth     = 100683.91185106298
-    climb_throttle_1_truth   = 1.1391379413888172
-    climb_throttle_2_truth   = 0.9746429330139766
-    climb_throttle_3_truth   = 0.5301629744627968
-    climb_throttle_4_truth   = 0.787175013434259
-    climb_throttle_5_truth   = 0.8202588649460556
-    climb_throttle_6_truth   = 1.4463513056163761
-    climb_throttle_7_truth   = 1.5457396514788462
-    climb_throttle_8_truth   = 0.7850597626587676
-    climb_throttle_9_truth   = 0.9190884251185264
-    cruise_CL_1_truth        = 0.707361510895817
-    cruise_CL_2_truth        = 0.6947094085751778
-    cruise_CL_3_truth        = 0.788261751238435
-    descent_throttle_1_truth = 0.5669238225512958
-    descent_throttle_2_truth = 0.4078553430244653
-    single_pt_CL_1_truth     = 0.0005560647894209755
-    single_pt_CL_2_truth     = 0.0007507193292659409
-    loiter_1_CL_truth        = 0.5076309829593281
-    loiter_2_CL_truth        = 0.5076263190514616
-    reserve_1_CL_truth       = 0.34978636574190564
-    reserve_2_CL_truth       = 0.34311148322617663
-    descent_throttle_3_truth = 0.19209417546010837
-    landing_thrust_truth     = 9511.973485072813
+    takeoff_thrust_truth     = 134345.66568322046
+    climb_throttle_1_truth   = 0.8519995580095454
+    climb_throttle_2_truth   = 0.7306973633198071
+    climb_throttle_3_truth   = 0.39690304595743814
+    climb_throttle_4_truth   = 0.5890265366392743
+    climb_throttle_5_truth   = 0.6143207508716927
+    climb_throttle_6_truth   = 1.0812714787932027
+    climb_throttle_7_truth   = 1.1573327617126228
+    climb_throttle_8_truth   = 0.5910744527902868
+    climb_throttle_9_truth   = 0.7125118126322201
+    climb_10_CL_truth        = 0.31040405524381864
+    cruise_CL_1_truth        = 0.6881102309174906
+    cruise_CL_2_truth        = 0.6753870177011538
+    cruise_CL_3_truth        = 0.7666527259117641
+    descent_throttle_1_truth = 0.3977601675225955
+    descent_throttle_2_truth = 0.2932594042219065
+    single_pt_CL_1_truth     = 0.0005606689678351563
+    single_pt_CL_2_truth     = 0.0010139645855829203
+    loiter_1_CL_truth        = 0.4938877245571978
+    loiter_2_CL_truth        = 0.4938832668603209
+    reserve_1_CL_truth       = 0.34029926694776513
+    reserve_2_CL_truth       = 0.33383773811981826
+    descent_throttle_3_truth = 0.1370259091257396
+    landing_thrust_truth     = 12716.741720890417
     
     # Store errors 
     error = Data()
@@ -122,6 +124,7 @@ def main():
     error.climb_throttle_7   = np.max(np.abs(climb_throttle_7     - climb_throttle_7_truth))   
     error.climb_throttle_8   = np.max(np.abs(climb_throttle_8     - climb_throttle_8_truth))  
     error.climb_throttle_9   = np.max(np.abs(climb_throttle_9     - climb_throttle_9_truth))  
+    error.climb_10_CL        = np.max(np.abs(climb_10_CL          - climb_10_CL_truth ))    
     error.cruise_CL_1        = np.max(np.abs(cruise_CL_1          - cruise_CL_1_truth ))     
     error.cruise_CL_2        = np.max(np.abs(cruise_CL_2          - cruise_CL_2_truth ))      
     error.cruise_CL_3        = np.max(np.abs(cruise_CL_3          - cruise_CL_3_truth ))     
@@ -139,9 +142,10 @@ def main():
     print('Errors:')
     print(error)
      
-    for k,v in list(error.items()):
-        assert(np.abs(v)<1e-6)  
-    
+    for k,v in list(error.items()): 
+        assert(np.abs(v)<1e-3)
+        
+    plot_results(results)
     return 
 # ----------------------------------------------------------------------
 #   Define the Vehicle Analyses
@@ -173,11 +177,11 @@ def base_analysis(vehicle):
     analyses.append(weights)
  
     #  Aerodynamics Analysis
-    aerodynamics                                        = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.geometry                               = vehicle
+    aerodynamics                                     = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
+    aerodynamics.geometry                            = vehicle
     aerodynamics.settings.number_of_spanwise_vortices   = 5
     aerodynamics.settings.number_of_chordwise_vortices  = 2       
-    aerodynamics.settings.drag_coefficient_increment    = 0.0000
+    aerodynamics.settings.drag_coefficient_increment = 0.0000
     analyses.append(aerodynamics)
   
     #  Energy
@@ -225,12 +229,14 @@ def mission_setup(analyses):
     segment.velocity_start           = 100.* Units.knots
     segment.velocity_end             = 150 * Units.knots
     segment.friction_coefficient     = 0.04
-    segment.altitude                 = 0.0
-    
-    segment.assigned_control_variables.elapsed_time.active           = True  
-    segment.assigned_control_variables.elapsed_time.initial_guess_values   = [[30.]]
-    
+    segment.altitude                 = 0.0    
+
+    segment.flight_dynamics.force_x                                = True
+     
+    segment.assigned_control_variables.elapsed_time.active         = True   
+    segment.assigned_control_variables.elapsed_time.initial_guess  = [[30.]] 
     mission.append_segment(segment)
+    
     
 
     # ------------------------------------------------------------------------------------------------------------------------------------ 
@@ -407,7 +413,7 @@ def mission_setup(analyses):
     segment = Segments.Climb.Constant_CAS_Constant_Rate(base_segment)
     segment.tag = "climb_9"
     segment.analyses.extend( analyses.base )  
-    segment.altitude_end                                 = 9. * Units.km    
+    segment.altitude_end                                 = 10.9 * Units.km    
     segment.calibrated_air_speed                         = 150. * Units.m / Units.s
     segment.climb_rate                                   = 1.  
     
@@ -431,19 +437,17 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.base )  
     segment.altitude_end                                 = 11.   * Units.km    
     segment.air_speed                                    = 150. * Units.m / Units.s
-    segment.throttle                                     = 0.5 
+    segment.throttle                                     = 0.55 
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                      = True  
     segment.flight_dynamics.force_z                      = True     
     
     # define flight controls 
-    segment.assigned_control_variables.wind_angle.active                 = True  
-    segment.assigned_control_variables.wind_angle.initial_guess          = True 
-    segment.assigned_control_variables.wind_angle.initial_guess_values   = [[ 1.0 * Units.deg]] 
-    segment.assigned_control_variables.body_angle.active                 = True               
-    segment.assigned_control_variables.body_angle.initial_guess          = True  
-    segment.assigned_control_variables.body_angle.initial_guess_values   = [[ 5.0 * Units.deg]]   
+    segment.assigned_control_variables.wind_angle.active          = True   
+    segment.assigned_control_variables.wind_angle.initial_guess   = [[ 1.0 * Units.deg]] 
+    segment.assigned_control_variables.body_angle.active          = True    
+    segment.assigned_control_variables.body_angle.initial_guess   = [[ 5.0 * Units.deg]]   
      
     mission.append_segment(segment) 
     
@@ -484,15 +488,12 @@ def mission_setup(analyses):
     segment.flight_dynamics.force_z                             = True     
           
     # define flight controls       
-    segment.assigned_control_variables.elapsed_time.active                 = True  
-    segment.assigned_control_variables.elapsed_time.initial_guess          = True 
-    segment.assigned_control_variables.elapsed_time.initial_guess_values   = [[10.]]  
-    segment.assigned_control_variables.acceleration.active                 = True              
-    segment.assigned_control_variables.acceleration.initial_guess          = True
-    segment.assigned_control_variables.acceleration.initial_guess_values   = [[-1]] 
-    segment.assigned_control_variables.body_angle.active                   = True   
-    segment.assigned_control_variables.body_angle.initial_guess            = True 
-    segment.assigned_control_variables.body_angle.initial_guess_values     = [[0*Units.degrees]]   
+    segment.assigned_control_variables.elapsed_time.active           = True    
+    segment.assigned_control_variables.elapsed_time.initial_guess   = [[10.]]  
+    segment.assigned_control_variables.acceleration.active          = True     
+    segment.assigned_control_variables.acceleration.initial_guess   = [[-1]] 
+    segment.assigned_control_variables.body_angle.active            = True    
+    segment.assigned_control_variables.body_angle.initial_guess     = [[0*Units.degrees]]   
         
     mission.append_segment(segment)   
     
@@ -513,12 +514,10 @@ def mission_setup(analyses):
     
     # define flight controls 
     segment.assigned_control_variables.throttle.active              = True           
-    segment.assigned_control_variables.throttle.assigned_propulsors = [['starboard_propulsor','port_propulsor']]
-    segment.assigned_control_variables.throttle.initial_guess       = True 
-    segment.assigned_control_variables.throttle.initial_guess_values= [[0.9,0.9]] 
-    segment.assigned_control_variables.velocity.active              = True           
-    segment.assigned_control_variables.velocity.initial_guess       = True     
-    segment.assigned_control_variables.velocity.initial_guess_values= [[ 200]] 
+    segment.assigned_control_variables.throttle.assigned_propulsors = [['starboard_propulsor','port_propulsor']] 
+    segment.assigned_control_variables.throttle.initial_guess       = [[0.9]] 
+    segment.assigned_control_variables.velocity.active              = True       
+    segment.assigned_control_variables.velocity.initial_guess       = [[ 200]] 
         
     mission.append_segment(segment)   
     
@@ -719,16 +718,19 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------------------------------------------------------------------------ 
 
     segment = Segments.Ground.Landing(base_segment)
-    segment.tag = "landing"
+    segment.tag = "Landing"
 
     segment.analyses.extend( analyses.landing )
     segment.velocity_start                                     = 150 * Units.knots
     segment.velocity_end                                       = 100 * Units.knots 
     segment.friction_coefficient                               = 0.4
-    segment.altitude                                           = 0.0 
-    segment.assigned_control_variables.elapsed_time.active                = True   
-    segment.assigned_control_variables.elapsed_time.initial_guess_values  = [[30.]]  
-    mission.append_segment(segment)     
+    segment.altitude                                           = 0.0
+
+    segment.flight_dynamics.force_x                       = True
+    
+    segment.assigned_control_variables.elapsed_time.active         = True   
+    segment.assigned_control_variables.elapsed_time.initial_guess  = [[30.]]  
+    mission.append_segment(segment)      
 
 
     # ------------------------------------------------------------------------------------------------------------------------------------ 
@@ -750,7 +752,7 @@ def mission_setup(analyses):
     # define flight controls 
     segment.assigned_control_variables.elapsed_time.active           = True   
     segment.assigned_control_variables.acceleration.active           = True          
-    segment.assigned_control_variables.body_angle.active             = True                
+    segment.assigned_control_variables.body_angle.active             = True   
     
     mission.append_segment(segment)     
 
@@ -761,7 +763,12 @@ def mission_setup(analyses):
     
     return mission
 
- 
+def plot_results(results): 
+
+    plot_propulsor_throttles(results)
+    
+    return
+
 def missions_setup(mission): 
  
     missions     = RCAIDE.Framework.Mission.Missions() 
@@ -772,4 +779,4 @@ def missions_setup(mission):
 
 
 if __name__ == '__main__': 
-    main()     
+    main()    

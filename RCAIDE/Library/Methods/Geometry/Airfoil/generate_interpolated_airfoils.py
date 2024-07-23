@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
-from RCAIDE.Library.Methods.Geometry.Airfoil.import_airfoil_geometry import import_airfoil_geometry  
+from Legacy.trunk.S.Methods.Geometry.Two_Dimensional.Cross_Section.Airfoil import import_airfoil_geometry  
 
 # python imports 
 import numpy as np

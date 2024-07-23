@@ -283,4 +283,14 @@ class Vehicle_Mass_Properties(Components.Mass_Properties):
         self.zero_fuel_center_of_gravity = np.array([[0.0,0.0,0.0]])    
         
 class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Properties):
+
+    def __defaults__(self):
+        """This sets the default values.
+        
+            Assumptions:
+                None
+    
+            Source:
+                None
+            """             
          

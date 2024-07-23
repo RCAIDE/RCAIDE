@@ -1,13 +1,14 @@
-# RCAIDE/Library/Methods/Propulsors/Turbofan_Propulsor/compute_turbofan_performance.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
+# RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_turbofan_performance.py
 # 
-# Created:  Jun 2024, M. Clarke
+# 
+# Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Framework.Core import Data   
 from RCAIDE.Library.Methods.Propulsors.Converters.Ram                import compute_ram_performance
 from RCAIDE.Library.Methods.Propulsors.Converters.Combustor          import compute_combustor_performance
 from RCAIDE.Library.Methods.Propulsors.Converters.Compressor         import compute_compressor_performance
@@ -20,24 +21,28 @@ from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor            import comp
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
+## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
 def compute_turbofan_performance(fuel_line,state):  
     ''' Computes the perfomrance of all turbofan engines connected to a fuel tank
     
     Assumptions: 
-        None
+    N/A
 
     Source:
-        None
+    N/A
 
-    Args:   
-        fuel_line   (dict): data structure containing turbofans on distrubution network  [-]  
-        propulsors  (dict): list of propulsors that are powered by energy source         [-]
-        state       (dict): operating data structure                                     [-] 
+    Inputs:   
+    fuel_line            - data structure containing turbofans on distrubution network  [-]  
+    propulsors           - list of propulsors that are powered by energy source         [-]
+    state                - operating data structure                                     [-] 
                      
-    Returns:                       
-        total_thrust  (numpy.ndarray): thrust of turbofans   [N]
-        total_power   (numpy.ndarray): power of turbofans    [W] 
-     
+    Outputs:                      
+    outputs              - turbofan operating outputs                                   [-]
+    total_thrust         - thrust of turbofans                                          [N]
+    total_power          - power of turbofans                                           [W] 
+    
+    Properties Used: 
+    N.A.        
     '''
       
     total_power     = 0*state.ones_row(1) 
@@ -64,23 +69,26 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     ''' Computes the perfomrance of one turbofan
     
     Assumptions: 
-        None
+    N/A
 
     Source:
-        None
+    N/A
 
-    Args:  
-        conditions              (dict): operating conditions data structure   [-]  
-        fuel_line               (dict): fuelline                              [-] 
-        turbofan                (dict): turbofan data structure               [-] 
-        total_thrust   (numpy.ndarray): thrust of turbofan group              [N]
-        total_power    (numpy.ndarray): power of turbofan group               [W] 
+    Inputs:  
+    conditions           - operating conditions data structure   [-]  
+    fuel_line            - fuelline                              [-] 
+    turbofan             - turbofan data structure               [-] 
+    total_thrust         - thrust of turbofan group              [N]
+    total_power          - power of turbofan group               [W] 
 
-    Returns:  
-        total_thrust         (numpy.ndarray): thrust of turbofan group              [N]
-        total_power          (numpy.ndarray): power of turbofan group               [W] 
-        stored_results_flag        (boolean): boolean for stored results            [-]     
-        stored_propulsor_tag        (string): name of turbofan with stored results  [-] 
+    Outputs:  
+    total_thrust         - thrust of turbofan group              [N]
+    total_power          - power of turbofan group               [W] 
+    stored_results_flag  - boolean for stored results            [-]     
+    stored_propulsor_tag - name of turbofan with stored results  [-]
+    
+    Properties Used: 
+    N.A.        
     ''' 
     noise_results             = conditions.noise[fuel_line.tag][turbofan.tag] 
     turbofan_results          = conditions.energy[fuel_line.tag][turbofan.tag] 
@@ -230,9 +238,9 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     # compute the thrust
     compute_thrust(turbofan,conditions,throttle = turbofan_results.throttle )
 
-    # getting the network outputs from the thrust outputs  
-    turbofan_results.thrust = turbofan.outputs.thrust
-    turbofan_results.power  = turbofan.outputs.power  
+    # getting the network outputs from the thrust outputs   
+    turbofan_results.thrust          = turbofan.outputs.thrust
+    turbofan_results.power           = turbofan.outputs.power  
     turbofan_results.fuel_flow_rate  = turbofan.outputs.fuel_flow_rate 
     total_power                     += turbofan_results.power
     total_thrust[:,0]               += turbofan_results.thrust[:,0]
@@ -268,27 +276,29 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     '''Reuses results from one turbofan for identical turbofans
     
     Assumptions: 
-        None
+    N/A
 
     Source:
-        None
+    N/A
 
-    Args:  
-        conditions              (dict): operating conditions data structure    [-]  
-        fuel_line               (dict): fuelline                               [-] 
-        turbofan                (dict): turbofan data structure                [-] 
-        total_thrust   (numpy.ndarray): thrust of turbofan group               [N]
-        total_power    (numpy.ndarray): power of turbofan group                [W] 
+    Inputs:  
+    conditions           - operating conditions data structure   [-]  
+    fuel_line            - fuelline                              [-] 
+    turbofan            - turbofan data structure                [-] 
+    total_thrust         - thrust of turbofan group              [N]
+    total_power          - power of turbofan group               [W] 
 
-    Returns:  
-        total_thrust   (numpy.ndarray): thrust of turbofan group              [N]
-        total_power    (numpy.ndarray): power of turbofan group               [W] 
-     
+    Outputs:  
+    total_thrust         - thrust of turbofan group              [N]
+    total_power          - power of turbofan group               [W] 
+    
+    Properties Used: 
+    N.A.        
     ''' 
     turbofan_results_0                   = conditions.energy[fuel_line.tag][stored_propulsor_tag]
     noise_results_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
     turbofan_results                     = conditions.energy[fuel_line.tag][turbofan.tag]  
-    noise_results                        = conditions.noise[fuel_line.tag][turbofan.tag] 
+    noise_results                        = conditions.noise[fuel_line.tag][turbofan.tag]
     turbofan_results.throttle            = turbofan_results_0.throttle
     turbofan_results.thrust              = turbofan_results_0.thrust   
     turbofan_results.power               = turbofan_results_0.power  

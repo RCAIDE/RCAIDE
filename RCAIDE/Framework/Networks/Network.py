@@ -27,11 +27,12 @@ class Network(Component):
             Source:
                 None 
         """
-        self.tag                                         = 'network'  
-        self.busses                                      = Container()     
-        self.fuel_lines                                  = Container()
-        self.reverse_thrust                              = False
-        self.wing_mounted                                = True
+        self.tag                          = 'network'  
+        self.busses                       = Container()     
+        self.fuel_lines                   = Container()
+        self.system_voltage               = None   
+        self.reverse_thrust               = False
+        self.wing_mounted                 = True
 
 # ----------------------------------------------------------------------
 #  Component Container

@@ -1,8 +1,6 @@
 ## @ingroup  Library-Methods-Aerodynamics-Vortex_Lattice_Method
 # RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/evaluate_VLM.py
-
-# 
-# Created:  Apr 2024, M. Clarke
+#  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
@@ -44,24 +42,22 @@ def evaluate_surrogate(state,settings,geometry):
     sub_sur       = aerodynamics.surrogates.subsonic
     sup_sur       = aerodynamics.surrogates.supersonic
     trans_sur     = aerodynamics.surrogates.transonic 
-    ref_vals      = aerodynamics.reference_values
-    AoA           = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
-    Beta          = np.atleast_2d(conditions.aerodynamics.angles.beta)    
-    Mach          = np.atleast_2d(conditions.freestream.mach_number)   
- 
     geometry      = aerodynamics.geometry 
     hsub_min      = aerodynamics.hsub_min
     hsub_max      = aerodynamics.hsub_max
     hsup_min      = aerodynamics.hsup_min
-    hsup_max      = aerodynamics.hsup_max
-
+    hsup_max      = aerodynamics.hsup_max 
+    ref_vals      = aerodynamics.reference_values
+ 
     # Spline for Subsonic-to-Transonic-to-Supersonic Regimes
     sub_trans_spline = Cubic_Spline_Blender(hsub_min,hsub_max)
     h_sub            = lambda M:sub_trans_spline.compute(M)          
     sup_trans_spline = Cubic_Spline_Blender(hsup_max, hsup_min) 
     h_sup            = lambda M:sup_trans_spline.compute(M)    
 
-         
+    AoA         = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
+    Beta        = np.atleast_2d(conditions.aerodynamics.angles.beta)    
+    Mach        = np.atleast_2d(conditions.freestream.mach_number)       
     u           = np.atleast_2d(conditions.freestream.u)
     v           = np.atleast_2d(conditions.freestream.v)
     w           = np.atleast_2d(conditions.freestream.w)
@@ -227,13 +223,6 @@ def evaluate_surrogate(state,settings,geometry):
     delta_f = np.zeros_like(Mach)
     
     for wing in geometry.wings: 
-        inviscid_wing_lifts = compute_coefficient(sub_sur.Clift_wing_alpha[wing.tag],trans_sur.Clift_wing_alpha[wing.tag],sup_sur.Cdrag_wing_alpha[wing.tag],h_sub,h_sup,Mach,pts_alpha)
-        inviscid_wing_drags = compute_coefficient(sub_sur.Cdrag_wing_alpha[wing.tag],trans_sur.Cdrag_wing_alpha[wing.tag],sup_sur.Cdrag_wing_alpha[wing.tag],h_sub,h_sup,Mach,pts_alpha)
-        # Pack 
-        conditions.aerodynamics.coefficients.lift.inviscid_wings[wing.tag]         =  inviscid_wing_lifts 
-        conditions.aerodynamics.coefficients.lift.compressible_wings[wing.tag]     =  inviscid_wing_lifts 
-        conditions.aerodynamics.coefficients.drag.induced.inviscid_wings[wing.tag] =  inviscid_wing_drags
-        
         for control_surface in wing.control_surfaces:  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
                 if trim ==  True: 
@@ -241,43 +230,44 @@ def evaluate_surrogate(state,settings,geometry):
                 else:
                     delta_a        = np.ones_like(Mach) * control_surface.deflection 
             
-                pts_delta_a    = np.hstack((delta_a,Mach)) 
+                pts_delta_a    = np.hstack((delta_a,Mach))
+                
                 results_delta_a =  compute_coefficients(sub_sur.Clift_delta_a,sub_sur.Cdrag_delta_a,sub_sur.CX_delta_a,sub_sur.CY_delta_a,sub_sur.CZ_delta_a,sub_sur.CL_delta_a,sub_sur.CM_delta_a, sub_sur.CN_delta_a,
                  trans_sur.Clift_delta_a,trans_sur.Cdrag_delta_a,trans_sur.CX_delta_a,trans_sur.CY_delta_a,trans_sur.CZ_delta_a,trans_sur.CL_delta_a,trans_sur.CM_delta_a, trans_sur.CN_delta_a,
                  sup_sur.Clift_delta_a,sup_sur.Cdrag_delta_a,sup_sur.CX_delta_a,sup_sur.CY_delta_a,sup_sur.CZ_delta_a,sup_sur.CL_delta_a,sup_sur.CM_delta_a, sup_sur.CN_delta_a,
-                h_sub,h_sup,Mach, pts_delta_a) 
-        
-                conditions.static_stability.coefficients.lift += results_delta_a.Clift   
-                conditions.static_stability.coefficients.drag += results_delta_a.Cdrag   
-                conditions.static_stability.coefficients.X    += results_delta_a.CX      
-                conditions.static_stability.coefficients.Y    += results_delta_a.CY      
-                conditions.static_stability.coefficients.Z    += results_delta_a.CZ      
-                conditions.static_stability.coefficients.L    += results_delta_a.CL      
-                conditions.static_stability.coefficients.M    += results_delta_a.CM      
+                h_sub,h_sup,Mach, pts_delta_a)
+                
+                conditions.static_stability.coefficients.lift += results_delta_a.Clift 
+                conditions.static_stability.coefficients.drag += results_delta_a.Cdrag 
+                conditions.static_stability.coefficients.X    += results_delta_a.CX    
+                conditions.static_stability.coefficients.Y    += results_delta_a.CY    
+                conditions.static_stability.coefficients.Z    += results_delta_a.CZ    
+                conditions.static_stability.coefficients.L    += results_delta_a.CL    
+                conditions.static_stability.coefficients.M    += results_delta_a.CM    
                 conditions.static_stability.coefficients.N    += results_delta_a.CN
                 
         
-                conditions.control_surfaces.aileron.static_stability.coefficients.lift       = results_delta_a.Clift      
-                conditions.control_surfaces.aileron.static_stability.coefficients.drag       = results_delta_a.Cdrag         
-                conditions.control_surfaces.aileron.static_stability.coefficients.X          = results_delta_a.CX          
-                conditions.control_surfaces.aileron.static_stability.coefficients.Y          = results_delta_a.CY         
-                conditions.control_surfaces.aileron.static_stability.coefficients.Z          = results_delta_a.CZ       
-                conditions.control_surfaces.aileron.static_stability.coefficients.L          = results_delta_a.CL       
-                conditions.control_surfaces.aileron.static_stability.coefficients.M          = results_delta_a.CM       
+                conditions.control_surfaces.aileron.static_stability.coefficients.lift       = results_delta_a.Clift     
+                conditions.control_surfaces.aileron.static_stability.coefficients.drag       = results_delta_a.Cdrag        
+                conditions.control_surfaces.aileron.static_stability.coefficients.X          = results_delta_a.CX         
+                conditions.control_surfaces.aileron.static_stability.coefficients.Y          = results_delta_a.CY        
+                conditions.control_surfaces.aileron.static_stability.coefficients.Z          = results_delta_a.CZ      
+                conditions.control_surfaces.aileron.static_stability.coefficients.L          = results_delta_a.CL      
+                conditions.control_surfaces.aileron.static_stability.coefficients.M          = results_delta_a.CM      
                 conditions.control_surfaces.aileron.static_stability.coefficients.N          = results_delta_a.CN
-                    
+                
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
                 if trim ==  True: 
                     delta_e        = np.atleast_2d(conditions.control_surfaces.elevator.deflection)
                 else:  
-                    delta_e        = np.ones_like(Mach) * control_surface.deflection
-                    
+                    delta_e        = np.ones_like(Mach) * control_surface.deflection 
+            
                 pts_delta_e    = np.hstack((delta_e,Mach))
         
                 results_delta_e =  compute_coefficients(sub_sur.Clift_delta_e,sub_sur.Cdrag_delta_e,sub_sur.CX_delta_e,sub_sur.CY_delta_e,sub_sur.CZ_delta_e,sub_sur.CL_delta_e,sub_sur.CM_delta_e, sub_sur.CN_delta_e,
                  trans_sur.Clift_delta_e,trans_sur.Cdrag_delta_e,trans_sur.CX_delta_e,trans_sur.CY_delta_e,trans_sur.CZ_delta_e,trans_sur.CL_delta_e,trans_sur.CM_delta_e, trans_sur.CN_delta_e,
                  sup_sur.Clift_delta_e,sup_sur.Cdrag_delta_e,sup_sur.CX_delta_e,sup_sur.CY_delta_e,sup_sur.CZ_delta_e,sup_sur.CL_delta_e,sup_sur.CM_delta_e, sup_sur.CN_delta_e,
-                h_sub,h_sup,Mach, pts_delta_e)
+                h_sub,h_sup,Mach, pts_delta_e) 
                 
                 conditions.static_stability.coefficients.lift += results_delta_e.Clift  
                 conditions.static_stability.coefficients.drag += results_delta_e.Cdrag  
@@ -288,46 +278,47 @@ def evaluate_surrogate(state,settings,geometry):
                 conditions.static_stability.coefficients.M    += results_delta_e.CM     
                 conditions.static_stability.coefficients.N    += results_delta_e.CN
                 
-                conditions.control_surfaces.elevator.static_stability.coefficients.lift       = results_delta_e.Clift          
-                conditions.control_surfaces.elevator.static_stability.coefficients.drag       = results_delta_e.Cdrag             
-                conditions.control_surfaces.elevator.static_stability.coefficients.X          = results_delta_e.CX              
-                conditions.control_surfaces.elevator.static_stability.coefficients.Y          = results_delta_e.CY             
-                conditions.control_surfaces.elevator.static_stability.coefficients.Z          = results_delta_e.CZ           
-                conditions.control_surfaces.elevator.static_stability.coefficients.L          = results_delta_e.CL           
-                conditions.control_surfaces.elevator.static_stability.coefficients.M          = results_delta_e.CM           
-                conditions.control_surfaces.elevator.static_stability.coefficients.N          = results_delta_e.CN 
-                    
+                conditions.control_surfaces.elevator.static_stability.coefficients.lift       = results_delta_e.Clift   
+                conditions.control_surfaces.elevator.static_stability.coefficients.drag       = results_delta_e.Cdrag      
+                conditions.control_surfaces.elevator.static_stability.coefficients.X          = results_delta_e.CX       
+                conditions.control_surfaces.elevator.static_stability.coefficients.Y          = results_delta_e.CY      
+                conditions.control_surfaces.elevator.static_stability.coefficients.Z          = results_delta_e.CZ     
+                conditions.control_surfaces.elevator.static_stability.coefficients.L          = results_delta_e.CL     
+                conditions.control_surfaces.elevator.static_stability.coefficients.M          = results_delta_e.CM     
+                conditions.control_surfaces.elevator.static_stability.coefficients.N          = results_delta_e.CN
+                
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
                 if trim ==  True: 
                     delta_r        = np.atleast_2d(conditions.control_surfaces.rudder.deflection)
                 else:  
-                    delta_r        = np.ones_like(Mach) * control_surface.deflection 
-            
+                    delta_r        = np.ones_like(Mach) * control_surface.deflection
+                    
+        
                 pts_delta_r    = np.hstack((delta_r,Mach))
                 
                 results_delta_r =  compute_coefficients(sub_sur.Clift_delta_r,sub_sur.Cdrag_delta_r,sub_sur.CX_delta_r,sub_sur.CY_delta_r,sub_sur.CZ_delta_r,sub_sur.CL_delta_r,sub_sur.CM_delta_r, sub_sur.CN_delta_r,
                  trans_sur.Clift_delta_r,trans_sur.Cdrag_delta_r,trans_sur.CX_delta_r,trans_sur.CY_delta_r,trans_sur.CZ_delta_r,trans_sur.CL_delta_r,trans_sur.CM_delta_r, trans_sur.CN_delta_r,
                  sup_sur.Clift_delta_r,sup_sur.Cdrag_delta_r,sup_sur.CX_delta_r,sup_sur.CY_delta_r,sup_sur.CZ_delta_r,sup_sur.CL_delta_r,sup_sur.CM_delta_r, sup_sur.CN_delta_r,
                 h_sub,h_sup,Mach, pts_delta_r) 
-        
-                conditions.static_stability.coefficients.lift += results_delta_r.Clift  
-                conditions.static_stability.coefficients.drag += results_delta_r.Cdrag  
-                conditions.static_stability.coefficients.X    += results_delta_r.CX     
-                conditions.static_stability.coefficients.Y    += results_delta_r.CY     
-                conditions.static_stability.coefficients.Z    += results_delta_r.CZ     
-                conditions.static_stability.coefficients.L    += results_delta_r.CL     
-                conditions.static_stability.coefficients.M    += results_delta_r.CM     
-                conditions.static_stability.coefficients.N    += results_delta_r.CN
+                        
+                conditions.static_stability.coefficients.lift += results_delta_r.Clift   
+                conditions.static_stability.coefficients.drag += results_delta_r.Cdrag   
+                conditions.static_stability.coefficients.X    += results_delta_r.CX      
+                conditions.static_stability.coefficients.Y    += results_delta_r.CY      
+                conditions.static_stability.coefficients.Z    += results_delta_r.CZ      
+                conditions.static_stability.coefficients.L    += results_delta_r.CL      
+                conditions.static_stability.coefficients.M    += results_delta_r.CM      
+                conditions.static_stability.coefficients.N    += results_delta_r.CN 
         
                 conditions.control_surfaces.rudder.static_stability.coefficients.lift       = results_delta_r.Clift   
-                conditions.control_surfaces.rudder.static_stability.coefficients.drag       = results_delta_r.Cdrag      
-                conditions.control_surfaces.rudder.static_stability.coefficients.X          = results_delta_r.CX       
+                conditions.control_surfaces.rudder.static_stability.coefficients.drag       = results_delta_r.Cdrag     
+                conditions.control_surfaces.rudder.static_stability.coefficients.X          = results_delta_r.CX      
                 conditions.control_surfaces.rudder.static_stability.coefficients.Y          = results_delta_r.CY      
                 conditions.control_surfaces.rudder.static_stability.coefficients.Z          = results_delta_r.CZ      
                 conditions.control_surfaces.rudder.static_stability.coefficients.L          = results_delta_r.CL      
                 conditions.control_surfaces.rudder.static_stability.coefficients.M          = results_delta_r.CM      
                 conditions.control_surfaces.rudder.static_stability.coefficients.N          = results_delta_r.CN
-                    
+                
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
                 delta_s        = np.ones_like(Mach) * control_surface.deflection
         
@@ -336,28 +327,28 @@ def evaluate_surrogate(state,settings,geometry):
                 results_delta_s =  compute_coefficients(sub_sur.Clift_delta_s,sub_sur.Cdrag_delta_s,sub_sur.CX_delta_s,sub_sur.CY_delta_s,sub_sur.CZ_delta_s,sub_sur.CL_delta_s,sub_sur.CM_delta_s, sub_sur.CN_delta_s,
                  trans_sur.Clift_delta_s,trans_sur.Cdrag_delta_s,trans_sur.CX_delta_s,trans_sur.CY_delta_s,trans_sur.CZ_delta_s,trans_sur.CL_delta_s,trans_sur.CM_delta_s, trans_sur.CN_delta_s,
                  sup_sur.Clift_delta_s,sup_sur.Cdrag_delta_s,sup_sur.CX_delta_s,sup_sur.CY_delta_s,sup_sur.CZ_delta_s,sup_sur.CL_delta_s,sup_sur.CM_delta_s, sup_sur.CN_delta_s,
-                h_sub,h_sup,Mach, pts_delta_s)
-                  
-                conditions.static_stability.coefficients.lift += results_delta_s.Clift  
-                conditions.static_stability.coefficients.drag += results_delta_s.Cdrag  
-                conditions.static_stability.coefficients.X    += results_delta_s.CX     
-                conditions.static_stability.coefficients.Y    += results_delta_s.CY     
-                conditions.static_stability.coefficients.Z    += results_delta_s.CZ     
-                conditions.static_stability.coefficients.L    += results_delta_s.CL     
-                conditions.static_stability.coefficients.M    += results_delta_s.CM     
+                h_sub,h_sup,Mach, pts_delta_s) 
+                
+                conditions.static_stability.coefficients.lift += results_delta_s.Clift   
+                conditions.static_stability.coefficients.drag += results_delta_s.Cdrag   
+                conditions.static_stability.coefficients.X    += results_delta_s.CX      
+                conditions.static_stability.coefficients.Y    += results_delta_s.CY      
+                conditions.static_stability.coefficients.Z    += results_delta_s.CZ      
+                conditions.static_stability.coefficients.L    += results_delta_s.CL      
+                conditions.static_stability.coefficients.M    += results_delta_s.CM      
                 conditions.static_stability.coefficients.N    += results_delta_s.CN
         
-                conditions.control_surfaces.slat.static_stability.coefficients.lift       = results_delta_s.Clift     
-                conditions.control_surfaces.slat.static_stability.coefficients.drag       = results_delta_s.Cdrag        
-                conditions.control_surfaces.slat.static_stability.coefficients.X          = results_delta_s.CX         
-                conditions.control_surfaces.slat.static_stability.coefficients.Y          = results_delta_s.CY        
-                conditions.control_surfaces.slat.static_stability.coefficients.Z          = results_delta_s.CZ      
-                conditions.control_surfaces.slat.static_stability.coefficients.L          = results_delta_s.CL      
-                conditions.control_surfaces.slat.static_stability.coefficients.M          = results_delta_s.CM      
+                conditions.control_surfaces.slat.static_stability.coefficients.lift       = results_delta_s.Clift       
+                conditions.control_surfaces.slat.static_stability.coefficients.drag       = results_delta_s.Cdrag          
+                conditions.control_surfaces.slat.static_stability.coefficients.X          = results_delta_s.CX           
+                conditions.control_surfaces.slat.static_stability.coefficients.Y          = results_delta_s.CY          
+                conditions.control_surfaces.slat.static_stability.coefficients.Z          = results_delta_s.CZ        
+                conditions.control_surfaces.slat.static_stability.coefficients.L          = results_delta_s.CL        
+                conditions.control_surfaces.slat.static_stability.coefficients.M          = results_delta_s.CM        
                 conditions.control_surfaces.slat.static_stability.coefficients.N          = results_delta_s.CN
                 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:   
-                delta_f        = np.ones_like(Mach) * control_surface.deflection 
+                delta_f        = np.ones_like(Mach) * control_surface.deflection
         
                 pts_delta_f    = np.hstack((delta_f,Mach))
                 
@@ -365,27 +356,27 @@ def evaluate_surrogate(state,settings,geometry):
                  trans_sur.Clift_delta_f,trans_sur.Cdrag_delta_f,trans_sur.CX_delta_f,trans_sur.CY_delta_f,trans_sur.CZ_delta_f,trans_sur.CL_delta_f,trans_sur.CM_delta_f, trans_sur.CN_delta_f,
                  sup_sur.Clift_delta_f,sup_sur.Cdrag_delta_f,sup_sur.CX_delta_f,sup_sur.CY_delta_f,sup_sur.CZ_delta_f,sup_sur.CL_delta_f,sup_sur.CM_delta_f, sup_sur.CN_delta_f,
                 h_sub,h_sup,Mach, pts_delta_f) 
-        
-                conditions.static_stability.coefficients.lift += results_delta_f.Clift
-                conditions.static_stability.coefficients.drag += results_delta_f.Cdrag
-                conditions.static_stability.coefficients.X    += results_delta_f.CX   
-                conditions.static_stability.coefficients.Y    += results_delta_f.CY   
-                conditions.static_stability.coefficients.Z    += results_delta_f.CZ   
-                conditions.static_stability.coefficients.L    += results_delta_f.CL   
-                conditions.static_stability.coefficients.M    += results_delta_f.CM   
+                
+                conditions.static_stability.coefficients.lift += results_delta_f.Clift   
+                conditions.static_stability.coefficients.drag += results_delta_f.Cdrag   
+                conditions.static_stability.coefficients.X    += results_delta_f.CX      
+                conditions.static_stability.coefficients.Y    += results_delta_f.CY      
+                conditions.static_stability.coefficients.Z    += results_delta_f.CZ      
+                conditions.static_stability.coefficients.L    += results_delta_f.CL      
+                conditions.static_stability.coefficients.M    += results_delta_f.CM      
                 conditions.static_stability.coefficients.N    += results_delta_f.CN
                 
         
-                conditions.control_surfaces.flap.static_stability.coefficients.lift       = results_delta_f.Clift     
-                conditions.control_surfaces.flap.static_stability.coefficients.drag       = results_delta_f.Cdrag        
-                conditions.control_surfaces.flap.static_stability.coefficients.X          = results_delta_f.CX         
-                conditions.control_surfaces.flap.static_stability.coefficients.Y          = results_delta_f.CY        
+                conditions.control_surfaces.flap.static_stability.coefficients.lift       = results_delta_f.Clift   
+                conditions.control_surfaces.flap.static_stability.coefficients.drag       = results_delta_f.Cdrag     
+                conditions.control_surfaces.flap.static_stability.coefficients.X          = results_delta_f.CX      
+                conditions.control_surfaces.flap.static_stability.coefficients.Y          = results_delta_f.CY      
                 conditions.control_surfaces.flap.static_stability.coefficients.Z          = results_delta_f.CZ      
                 conditions.control_surfaces.flap.static_stability.coefficients.L          = results_delta_f.CL      
                 conditions.control_surfaces.flap.static_stability.coefficients.M          = results_delta_f.CM      
-                conditions.control_surfaces.flap.static_stability.coefficients.N          = results_delta_f.CN                  
+                conditions.control_surfaces.flap.static_stability.coefficients.N          = results_delta_f.CN
+                                 
     
-        
     conditions.static_stability.derivatives.Clift_alpha = compute_stability_derivative(sub_sur.dClift_dalpha ,trans_sur.dClift_dalpha ,sup_sur.dClift_dalpha , h_sub,h_sup,Mach)
     conditions.static_stability.derivatives.CX_alpha    = compute_stability_derivative(sub_sur.dCX_dalpha    ,trans_sur.dCX_dalpha    ,sup_sur.dCX_dalpha    , h_sub,h_sup,Mach)  
     conditions.static_stability.derivatives.CY_alpha    = compute_stability_derivative(sub_sur.dCY_dalpha    ,trans_sur.dCY_dalpha    ,sup_sur.dCY_dalpha    , h_sub,h_sup,Mach)
@@ -439,7 +430,15 @@ def evaluate_surrogate(state,settings,geometry):
     conditions.static_stability.derivatives.CN_p        = compute_stability_derivative(sub_sur.dCN_dp, trans_sur.dCN_dp, sup_sur.dCN_dp, h_sub,h_sup,Mach)
     conditions.static_stability.derivatives.CN_q        = compute_stability_derivative(sub_sur.dCN_dq, trans_sur.dCN_dq, sup_sur.dCN_dq, h_sub,h_sup,Mach)
     conditions.static_stability.derivatives.CN_r        = compute_stability_derivative(sub_sur.dCN_dr, trans_sur.dCN_dr, sup_sur.dCN_dr, h_sub,h_sup,Mach) 
-  
+
+    for wing in geometry.wings:   
+        inviscid_wing_lifts = compute_coefficient(sub_sur.Clift_wing_alpha[wing.tag],trans_sur.Clift_wing_alpha[wing.tag],sup_sur.Cdrag_wing_alpha[wing.tag],h_sub,h_sup,Mach,pts_alpha)
+        inviscid_wing_drags = compute_coefficient(sub_sur.Cdrag_wing_alpha[wing.tag],trans_sur.Cdrag_wing_alpha[wing.tag],sup_sur.Cdrag_wing_alpha[wing.tag],h_sub,h_sup,Mach,pts_alpha)
+        # Pack 
+        conditions.aerodynamics.coefficients.lift.inviscid_wings[wing.tag]         =  inviscid_wing_lifts 
+        conditions.aerodynamics.coefficients.lift.compressible_wings[wing.tag]     =  inviscid_wing_lifts 
+        conditions.aerodynamics.coefficients.drag.induced.inviscid_wings[wing.tag] =  inviscid_wing_drags   
+    
     conditions.aerodynamics.coefficients.lift.total            = conditions.static_stability.coefficients.lift 
     conditions.aerodynamics.coefficients.drag.induced.inviscid = conditions.static_stability.coefficients.drag   
 

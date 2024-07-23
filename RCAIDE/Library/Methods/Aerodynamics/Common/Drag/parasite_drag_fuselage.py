@@ -42,6 +42,7 @@ def parasite_drag_fuselage(state,settings,fuselage):
         None 
     """
 
+   
     # unpack inputs   
     Sref          = fuselage.areas.front_projected
     Swet          = fuselage.areas.wetted 

@@ -9,10 +9,10 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units       
-from RCAIDE.Library.Methods.Geometry.Planform                      import segment_properties   
-from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor          import design_turbofan
-from RCAIDE.Library.Methods.Stability.Center_of_Gravity            import compute_component_centers_of_gravity
-from RCAIDE.Library.Plots                                          import *     
+from RCAIDE.Library.Methods.Geometry.Planform               import segment_properties    
+from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor   import design_turbofan   
+from RCAIDE.Library.Methods.Stability.Center_of_Gravity     import compute_component_centers_of_gravity
+from RCAIDE.Library.Plots                                   import *     
  
 # python imports 
 import numpy as np  
@@ -34,8 +34,6 @@ def vehicle_setup():
     vehicle.mass_properties.operating_empty           = 62746.4 * Units.kilogram  
     vehicle.mass_properties.max_zero_fuel             = 62732.0 * Units.kilogram 
     vehicle.mass_properties.cargo                     = 10000.  * Units.kilogram  
-    vehicle.envelope.ultimate_load                    = 3.75
-    vehicle.envelope.limit_load                       = 2.5 
     vehicle.reference_area                            = 124.862 * Units['meters**2']   
     vehicle.passengers                                = 170
     vehicle.systems.control                           = "fully powered" 
@@ -80,9 +78,7 @@ def vehicle_setup():
     wing.aerodynamic_center               = [0,0,0] 
     wing.vertical                         = False
     wing.symmetric                        = True
-    wing.high_lift                        = True 
-    wing.dynamic_pressure_ratio           = 1.0
-    wing.percent_span_root_offset         = 3.74 / wing.spans.projected
+    wing.high_lift                        = True  
 
 
     # Wing Segments
@@ -185,25 +181,23 @@ def vehicle_setup():
     wing     = RCAIDE.Library.Components.Wings.Horizontal_Tail()
     wing.tag = 'horizontal_stabilizer'
 
-    wing.aspect_ratio              = 4.99
-    wing.sweeps.quarter_chord      = 28.2250 * Units.deg  
-    wing.thickness_to_chord        = 0.08
-    wing.taper                     = 0.3333  
-    wing.spans.projected           = 14.4 
-    wing.chords.root               = 4.2731 
-    wing.chords.tip                = 1.4243 
-    wing.chords.mean_aerodynamic   = 8.0 
-    wing.areas.reference           = 41.49
-    wing.areas.exposed             = 59.354    # Exposed area of the horizontal tail
-    wing.areas.wetted              = 71.81     # Wetted area of the horizontal tail
-    wing.twists.root               = 3.0 * Units.degrees
-    wing.twists.tip                = 3.0 * Units.degrees 
-    wing.origin                    = [[33.02,0,1.466]]
-    wing.aerodynamic_center        = [0,0,0] 
-    wing.vertical                  = False
-    wing.symmetric                 = True 
-    wing.dynamic_pressure_ratio    = 0.9
-    wing.percent_span_root_offset = 3.74 / wing.spans.projected
+    wing.aspect_ratio            = 4.99
+    wing.sweeps.quarter_chord    = 28.2250 * Units.deg  
+    wing.thickness_to_chord      = 0.08
+    wing.taper                   = 0.3333  
+    wing.spans.projected         = 14.4 
+    wing.chords.root             = 4.2731 
+    wing.chords.tip              = 1.4243 
+    wing.chords.mean_aerodynamic = 8.0 
+    wing.areas.reference         = 41.49
+    wing.areas.exposed           = 59.354    # Exposed area of the horizontal tail
+    wing.areas.wetted            = 71.81     # Wetted area of the horizontal tail
+    wing.twists.root             = 3.0 * Units.degrees
+    wing.twists.tip              = 3.0 * Units.degrees 
+    wing.origin                  = [[33.02,0,1.466]]
+    wing.aerodynamic_center      = [0,0,0] 
+    wing.vertical                = False
+    wing.symmetric               = True  
 
 
     # Wing Segments
@@ -273,10 +267,7 @@ def vehicle_setup():
 
     wing.vertical                = True
     wing.symmetric               = False
-    wing.t_tail                  = False
-
-    wing.dynamic_pressure_ratio  = 1.0
-
+    wing.t_tail                  = False 
 
     # Wing Segments
     segment                               = RCAIDE.Library.Components.Wings.Segment()
@@ -498,16 +489,15 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor: Starboard Propulsor
     #------------------------------------------------------------------------------------------------------------------------------------         
-    turbofan                                    = RCAIDE.Library.Components.Propulsors.Turbofan()
+    turbofan                                    = RCAIDE.Library.Components.Propulsors.Turbofan() 
     turbofan.tag                                = 'starboard_propulsor'
     turbofan.active_fuel_tanks                  = ['fuel_tank']   
     turbofan.origin                             = [[13.72, 4.86,-1.1]] 
-    turbofan.engine_length                      = 98.7 * Units.inches  # 2.71
-    turbofan.mass_properties.mass               = 5216 * Units.lb
-    turbofan.bypass_ratio                       = 5.6 # 5.4    # CFM56-7B
+    turbofan.engine_length                      = 2.71     
+    turbofan.bypass_ratio                       = 5.4    
     turbofan.design_altitude                    = 35000.0*Units.ft
     turbofan.design_mach_number                 = 0.78   
-    turbofan.design_thrust                      = 26266. * Units.N  
+    turbofan.design_thrust                      = 35000.0* Units.N 
              
     # fan                
     fan                                         = RCAIDE.Library.Components.Propulsors.Converters.Fan()   
@@ -533,14 +523,14 @@ def vehicle_setup():
     low_pressure_compressor                       = RCAIDE.Library.Components.Propulsors.Converters.Compressor()    
     low_pressure_compressor.tag                   = 'lpc'
     low_pressure_compressor.polytropic_efficiency = 0.91
-    low_pressure_compressor.pressure_ratio        = 1.14
+    low_pressure_compressor.pressure_ratio        = 1.9   
     turbofan.low_pressure_compressor              = low_pressure_compressor
 
     # high pressure compressor  
     high_pressure_compressor                       = RCAIDE.Library.Components.Propulsors.Converters.Compressor()    
     high_pressure_compressor.tag                   = 'hpc'
     high_pressure_compressor.polytropic_efficiency = 0.91
-    high_pressure_compressor.pressure_ratio        = 13.415
+    high_pressure_compressor.pressure_ratio        = 10.0    
     turbofan.high_pressure_compressor              = high_pressure_compressor
 
     # low pressure turbine  
@@ -562,9 +552,9 @@ def vehicle_setup():
     combustor.tag                                  = 'Comb'
     combustor.efficiency                           = 0.99 
     combustor.alphac                               = 1.0     
-    combustor.turbine_inlet_temperature            = 1450
+    combustor.turbine_inlet_temperature            = 1500
     combustor.pressure_ratio                       = 0.95
-    combustor.fuel_data                            = RCAIDE.Library.Attributes.Propellants.Jet_A()  
+    combustor.fuel_data                            = RCAIDE.Library.Attributes.Propellants.Jet_A1()  
     turbofan.combustor                             = combustor
 
     # core nozzle
@@ -593,10 +583,10 @@ def vehicle_setup():
     nacelle.tag                                 = 'nacelle_1'
     nacelle.inlet_diameter                      = 2.0
     nacelle.origin                              = [[13.5,4.38,-1.5]] 
-    nacelle.areas.wetted                        = 1.1*np.pi*nacelle.diameter*nacelle.length
+    nacelle.areas.wetted                        = 1.1*np.pi*nacelle.diameter*nacelle.length 
     nacelle_airfoil                             = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
     nacelle_airfoil.NACA_4_Series_code          = '2410'
-    nacelle.append_airfoil(nacelle_airfoil) 
+    nacelle.append_airfoil(nacelle_airfoil)  
     turbofan.nacelle                            = nacelle
     
     fuel_line.propulsors.append(turbofan)  
@@ -622,7 +612,7 @@ def vehicle_setup():
     fuel_tank.origin                            = wing.origin 
     
     # append fuel 
-    fuel                                        = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()   
+    fuel                                        = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel.mass_properties.mass                   = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
     fuel.origin                                 = vehicle.wings.main_wing.mass_properties.center_of_gravity      
     fuel.mass_properties.center_of_gravity      = vehicle.wings.main_wing.aerodynamic_center
