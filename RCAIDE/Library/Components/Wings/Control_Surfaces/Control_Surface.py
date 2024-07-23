@@ -1,7 +1,7 @@
 # RCAIDE/Compoments/Wings/Control_Surfaces/Control_Surface.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Mar 2024, M. Clarke 
+# Created:  Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

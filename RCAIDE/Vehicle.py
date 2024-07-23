@@ -46,7 +46,7 @@ class Vehicle(Data):
         self.landing_gear                 = Components.Landing_Gear.Landing_Gear.Container()
         self.reference_area               = 0.0
         self.passengers                   = 0.0
-        self.maximum_cross_sectional_area = 0.0
+        self.maximum_cross_sectional_area = 0.0 
         self.performance                  = Data()
          
     _energy_network_root_map = None 

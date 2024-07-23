@@ -9,7 +9,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units       
-from RCAIDE.Library.Methods.Geometry.Planform               import segment_properties    
+from RCAIDE.Library.Methods.Geometry.Planform               import wing_segmented_planform
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor   import design_turbofan   
 from RCAIDE.Library.Methods.Stability.Center_of_Gravity     import compute_component_centers_of_gravity
 from RCAIDE.Library.Plots                                   import *     
@@ -142,8 +142,8 @@ def vehicle_setup():
     wing.append_segment(segment)
     
     # Fill out more segment properties automatically
-    segment_properties(wing)    
-
+    wing =  wing_segmented_planform(wing)
+    
     # control surfaces -------------------------------------------
     slat                          = RCAIDE.Library.Components.Wings.Control_Surfaces.Slat()
     slat.tag                      = 'slat'
@@ -222,7 +222,7 @@ def vehicle_setup():
     wing.append_segment(segment)
     
     # Fill out more segment properties automatically
-    segment_properties(wing)        
+    wing =  wing_segmented_planform(wing)        
 
     # control surfaces -------------------------------------------
     elevator                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator()
@@ -302,7 +302,7 @@ def vehicle_setup():
     
     
     # Fill out more segment properties automatically
-    segment_properties(wing)        
+    wing =  wing_segmented_planform(wing) 
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -693,11 +693,10 @@ def configs_setup(vehicle):
     config.wings['main_wing'].control_surfaces.slat.deflection  = 20. * Units.deg
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2780. * Units.rpm
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2780. * Units.rpm
-    config.landing_gear.gear_condition                          = 'up'       
+    config.landing_gear.gear_condition                          = 'up'      
+    config.networks.turbofan_engine.identical_propulsors        = False # for regression purposes
     configs.append(config)   
-    
-        
-    
+     
     # ------------------------------------------------------------------
     #   Landing Configuration
     # ------------------------------------------------------------------
@@ -708,22 +707,7 @@ def configs_setup(vehicle):
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2030. * Units.rpm
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2030. * Units.rpm
-    config.landing_gear.gear_condition                          = 'down'   
-    config.Vref_VS_ratio = 1.23
+    config.landing_gear.gear_condition                          = 'down'    
     configs.append(config)   
-     
-    # ------------------------------------------------------------------
-    #   Short Field Takeoff Configuration
-    # ------------------------------------------------------------------ 
-
-    config = RCAIDE.Library.Components.Configs.Config(base_config)
-    config.tag = 'short_field_takeoff'    
-    config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  3470. * Units.rpm
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  3470. * Units.rpm
-    config.landing_gear.gear_condition                          = 'down'   
-    config.V2_VS_ratio = 1.21 
-    configs.append(config)    
-
+      
     return configs  

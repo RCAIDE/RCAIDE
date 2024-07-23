@@ -1,7 +1,7 @@
 # RCAIDE/Library/Methods/Geometry/Two_Dimensional/Planform/wing_segmented_planform.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2024, M. Clarke 
+# Created:  Jul 2024, RCAIDE Team 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -14,7 +14,7 @@ import numpy as np
 #  compute_section_coefficients
 # ----------------------------------------------------------------------------------------------------------------------    
 def wing_segmented_planform(wing, overwrite_reference = False):
-    """Computes the high-levelproperties of a segmented wing. These include: 
+    """Computes the high-level properties of a segmented wing. These include: 
     wing.
       spans.total                (float): [m]
       chords.tip                 (float): [m]
@@ -164,9 +164,9 @@ def wing_segmented_planform(wing, overwrite_reference = False):
     wing.total_length                   =  wing_length
 
     # Update remainder segment properties
-    segment_properties(wing)
+    wing =  segment_properties(wing)
     
-    return 
+    return wing
  
 def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
     """Computes detailed segment properties. These are currently used for parasite drag calculations.
@@ -254,7 +254,7 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
     if wing.areas.wetted==0. or update_wet_areas:
         wing.areas.wetted    = total_wetted_area
         
-    return 
+    return wing 
 
 # Segment centroid
 def segment_centroid(le_sweep,seg_span,dx,dy,dz,taper,A,dihedral,root_chord,tip_chord):

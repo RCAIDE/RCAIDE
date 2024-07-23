@@ -7,22 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 import  RCAIDE
-from RCAIDE.Framework.Core import Units
-
-# ----------------------------------------------------------------------------------------------------------------------
-#  set_residuals_and_unknowns
-# ----------------------------------------------------------------------------------------------------------------------
-
-## @ingroup Library-Missions-Segments-Common-Pre_Process
-# RCAIDE/Library/Missions/Common/Pre_Process/set_residuals_and_unknowns.py
-# 
-# 
-# Created:  Jul 2023, M. Clarke
-
-# ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Units
+from RCAIDE.Framework.Core import Units 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  set_residuals_and_unknowns
@@ -78,14 +63,17 @@ def set_residuals_and_unknowns(mission):
             segment.state.residuals.moment_z = ones_row(1) *0
             num_DOF += 1
             
-        if type(segment) == RCAIDE.Framework.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude: 
+        if (type(segment) == RCAIDE.Framework.Mission.Segments.Cruise.Constant_Throttle_Constant_Altitude) or ground_seg_flag: 
             segment.state.residuals.final_velocity_error = ones_row(1) *0
             num_DOF += 1 
         
-        # assign control variables   
-        ones_row     = segment.state.ones_row 
-        num_ctrls    = 0
+        # assign control variables     
+        num_ctrls    = 0 
         
+        if ground_seg_flag:                        
+            segment.state.unknowns.ground_velocity       = ones_row_m1(1) * 0
+            num_ctrls += 1 
+         
         # Body Angle  
         if ctrls.body_angle.active:
             if ctrls.body_angle.initial_guess !=  None:

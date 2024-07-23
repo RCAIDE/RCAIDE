@@ -1,7 +1,7 @@
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/compute_airfoil_section_coefficients.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke 
+# Created:  Jul 2024, RCAIDE Team 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

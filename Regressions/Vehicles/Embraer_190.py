@@ -10,7 +10,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units      
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor   import design_turbofan
-from RCAIDE.Library.Methods.Geometry.Planform               import wing_planform, segment_properties
+from RCAIDE.Library.Methods.Geometry.Planform               import wing_planform, wing_segmented_planform
 from RCAIDE.Library.Plots                 import *     
 
 # python imports 
@@ -42,12 +42,8 @@ def vehicle_setup():
     vehicle.mass_properties.cargo                     =     0.0  # kg
 
     vehicle.mass_properties.center_of_gravity         = [[16.8, 0, 1.6]]
-    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]] 
-
-    # envelope properties
-    vehicle.envelope.ultimate_load = 3.5
-    vehicle.envelope.limit_load    = 1.5
-
+    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]]
+    
     # basic parameters
     vehicle.reference_area         = 92.
     vehicle.passengers             = 106
@@ -120,7 +116,7 @@ def vehicle_setup():
     wing.Segments.append(segment)       
     
     # Fill out more segment properties automatically
-    wing = segment_properties(wing)        
+    wing =  wing_segmented_planform(wing)        
 
     # control surfaces -------------------------------------------
     flap                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Flap() 
@@ -144,8 +140,7 @@ def vehicle_setup():
     
     wing.areas.exposed           = 0.80 * wing.areas.wetted
     wing.twists.root             = 2.0 * Units.degrees
-    wing.twists.tip              = 0.0 * Units.degrees    
-    wing.dynamic_pressure_ratio  = 1.0   
+    wing.twists.tip              = 0.0 * Units.degrees     
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -169,8 +164,7 @@ def vehicle_setup():
     wing                         = wing_planform(wing)
     wing.areas.exposed           = 0.9 * wing.areas.wetted 
     wing.twists.root             = 2.0 * Units.degrees
-    wing.twists.tip              = 2.0 * Units.degrees    
-    wing.dynamic_pressure_ratio  = 0.90
+    wing.twists.tip              = 2.0 * Units.degrees     
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -594,8 +588,8 @@ def configs_setup(vehicle):
 
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'cutback'
-    config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 20. * Units.deg
+    config.wings['main_wing'].control_surfaces.flap.deflection  = 1. * Units.deg
+    config.wings['main_wing'].control_surfaces.slat.deflection  = 0. * Units.deg
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2780. * Units.rpm
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2780. * Units.rpm
     config.landing_gear.gear_condition                          = 'up'       
@@ -613,8 +607,7 @@ def configs_setup(vehicle):
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2030. * Units.rpm
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2030. * Units.rpm
-    config.landing_gear.gear_condition                          = 'down'   
-    config.Vref_VS_ratio = 1.23
+    config.landing_gear.gear_condition                          = 'down'    
     configs.append(config)   
      
     # ------------------------------------------------------------------
@@ -628,9 +621,33 @@ def configs_setup(vehicle):
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  3470. * Units.rpm
     config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  3470. * Units.rpm
     config.landing_gear.gear_condition                          = 'down'   
-    config.V2_VS_ratio = 1.21 
     configs.append(config)    
 
-    # done!
+
+    # ------------------------------------------------------------------
+    #  Approach Configuration
+    # ------------------------------------------------------------------ 
+    config = RCAIDE.Library.Components.Configs.Config(base_config)
+    config.tag = 'approach'
+    config.wings['main_wing'].control_surfaces.flap.deflection  = 5. * Units.deg
+    config.wings['main_wing'].control_surfaces.slat.deflection  = 5. * Units.deg 
+    config.landing_gear.gear_condition                          = 'down'       
+    configs.append(config)   
+
+
+    # ------------------------------------------------------------------
+    #  Reverse Thurst Configuration
+    # ------------------------------------------------------------------
+
+    config = RCAIDE.Library.Components.Configs.Config(base_config)
+    config.tag = 'reverse_thrust'
+    config.wings['main_wing'].control_surfaces.flap.deflection  = 0. * Units.deg
+    config.wings['main_wing'].control_surfaces.slat.deflection  = 0. * Units.deg
+    config.networks.turbofan_engine.reverse_thrust =  True 
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2030. * Units.rpm
+    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2030. * Units.rpm
+    config.landing_gear.gear_condition                          = 'down'    
+    configs.append(config)   
+
     return configs
 

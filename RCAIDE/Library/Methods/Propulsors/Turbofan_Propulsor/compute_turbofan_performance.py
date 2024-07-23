@@ -2,7 +2,7 @@
 # RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_turbofan_performance.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -103,18 +103,19 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     core_nozzle               = turbofan.core_nozzle
     fan_nozzle                = turbofan.fan_nozzle 
     bypass_ratio              = turbofan.bypass_ratio
-
-    ram_conditions =  turbofan_conditions[ram.tag]    
-    fan_conditions =  turbofan_conditions[fan.tag]    
-    inlet_nozzle_conditions =  turbofan_conditions[inlet_nozzle.tag]
-    core_nozzle_conditions =  turbofan_conditions[core_nozzle.tag]
-    fan_nozzle_conditions = turbofan_conditions[fan_nozzle.tag]
-    lpc_conditions   = turbofan_conditions[low_pressure_compressor.tag]
-    hpc_conditions   = turbofan_conditions[high_pressure_compressor.tag]
-    lpt_conditions   = turbofan_conditions[low_pressure_turbine.tag]
-    hpt_conditions   = turbofan_conditions[high_pressure_turbine.tag]
-    combustor_conditions   = turbofan_conditions[combustor.tag]
-    freestream =  conditions.freestream
+    
+    # unpack component conditions 
+    ram_conditions          = turbofan_conditions[ram.tag]    
+    fan_conditions          = turbofan_conditions[fan.tag]    
+    inlet_nozzle_conditions = turbofan_conditions[inlet_nozzle.tag]
+    core_nozzle_conditions  = turbofan_conditions[core_nozzle.tag]
+    fan_nozzle_conditions   = turbofan_conditions[fan_nozzle.tag]
+    lpc_conditions          = turbofan_conditions[low_pressure_compressor.tag]
+    hpc_conditions          = turbofan_conditions[high_pressure_compressor.tag]
+    lpt_conditions          = turbofan_conditions[low_pressure_turbine.tag]
+    hpt_conditions          = turbofan_conditions[high_pressure_turbine.tag]
+    combustor_conditions    = turbofan_conditions[combustor.tag]
+    freestream              = conditions.freestream
 
     #Creating the network by manually linking the different components
 

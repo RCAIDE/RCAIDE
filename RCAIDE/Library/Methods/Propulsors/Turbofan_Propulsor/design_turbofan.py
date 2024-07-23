@@ -1,7 +1,7 @@
 # RCAIDE/Library/Methods/Propulsors/Turbofan_Propulsor/design_turbofan.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -88,52 +88,53 @@ def design_turbofan(turbofan):
     fan_nozzle                = turbofan.fan_nozzle 
     bypass_ratio              = turbofan.bypass_ratio 
     
-    turbofan_conditions                                       = Conditions() 
-    turbofan_conditions[combustor.tag]                        = Conditions() 
-    turbofan_conditions[combustor.tag].inputs                 = Conditions() 
-    turbofan_conditions[combustor.tag].outputs                = Conditions() 
-    turbofan_conditions[combustor.tag].inputs.nondim_mass_ratio  = np.array([[1.0]])  
-    turbofan_conditions[ram.tag]                              = Conditions() 
-    turbofan_conditions[ram.tag].inputs                       = Conditions() 
-    turbofan_conditions[ram.tag].outputs                      = Conditions() 
-    turbofan_conditions[fan.tag]                              = Conditions() 
-    turbofan_conditions[fan.tag].inputs                       = Conditions() 
-    turbofan_conditions[fan.tag].outputs                      = Conditions() 
-    turbofan_conditions[high_pressure_compressor.tag]         = Conditions()
-    turbofan_conditions[high_pressure_compressor.tag].inputs  = Conditions()
-    turbofan_conditions[high_pressure_compressor.tag].outputs = Conditions()
-    turbofan_conditions[low_pressure_compressor.tag]          = Conditions()
-    turbofan_conditions[low_pressure_compressor.tag].inputs   = Conditions()
-    turbofan_conditions[low_pressure_compressor.tag].outputs  = Conditions()
-    turbofan_conditions[high_pressure_turbine.tag]            = Conditions()
-    turbofan_conditions[high_pressure_turbine.tag].inputs     = Conditions()
-    turbofan_conditions[high_pressure_turbine.tag].outputs    = Conditions()
-    turbofan_conditions[low_pressure_turbine.tag]             = Conditions()
-    turbofan_conditions[low_pressure_turbine.tag].inputs      = Conditions()
-    turbofan_conditions[low_pressure_turbine.tag].outputs     = Conditions()
-    turbofan_conditions[core_nozzle.tag]                      = Conditions()
-    turbofan_conditions[core_nozzle.tag].inputs               = Conditions()
-    turbofan_conditions[core_nozzle.tag].outputs              = Conditions()
-    turbofan_conditions[fan_nozzle.tag]                       = Conditions()
-    turbofan_conditions[fan_nozzle.tag].inputs                = Conditions()
-    turbofan_conditions[fan_nozzle.tag].outputs               = Conditions()
-    turbofan_conditions[inlet_nozzle.tag]                     = Conditions()
-    turbofan_conditions[inlet_nozzle.tag].inputs              = Conditions()
-    turbofan_conditions[inlet_nozzle.tag].outputs             = Conditions()
-    turbofan_conditions.inputs                                         = Conditions()
-    turbofan_conditions.outputs                                        = Conditions()
+    turbofan_conditions                                         = Conditions() 
+    turbofan_conditions[combustor.tag]                          = Conditions() 
+    turbofan_conditions[combustor.tag].inputs                   = Conditions() 
+    turbofan_conditions[combustor.tag].outputs                  = Conditions() 
+    turbofan_conditions[combustor.tag].inputs.nondim_mass_ratio = np.array([[1.0]])  
+    turbofan_conditions[ram.tag]                                = Conditions() 
+    turbofan_conditions[ram.tag].inputs                         = Conditions() 
+    turbofan_conditions[ram.tag].outputs                        = Conditions() 
+    turbofan_conditions[fan.tag]                                = Conditions() 
+    turbofan_conditions[fan.tag].inputs                         = Conditions() 
+    turbofan_conditions[fan.tag].outputs                        = Conditions() 
+    turbofan_conditions[high_pressure_compressor.tag]           = Conditions()
+    turbofan_conditions[high_pressure_compressor.tag].inputs    = Conditions()
+    turbofan_conditions[high_pressure_compressor.tag].outputs   = Conditions()
+    turbofan_conditions[low_pressure_compressor.tag]            = Conditions()
+    turbofan_conditions[low_pressure_compressor.tag].inputs     = Conditions()
+    turbofan_conditions[low_pressure_compressor.tag].outputs    = Conditions()
+    turbofan_conditions[high_pressure_turbine.tag]              = Conditions()
+    turbofan_conditions[high_pressure_turbine.tag].inputs       = Conditions()
+    turbofan_conditions[high_pressure_turbine.tag].outputs      = Conditions()
+    turbofan_conditions[low_pressure_turbine.tag]               = Conditions()
+    turbofan_conditions[low_pressure_turbine.tag].inputs        = Conditions()
+    turbofan_conditions[low_pressure_turbine.tag].outputs       = Conditions()
+    turbofan_conditions[core_nozzle.tag]                        = Conditions()
+    turbofan_conditions[core_nozzle.tag].inputs                 = Conditions()
+    turbofan_conditions[core_nozzle.tag].outputs                = Conditions()
+    turbofan_conditions[fan_nozzle.tag]                         = Conditions()
+    turbofan_conditions[fan_nozzle.tag].inputs                  = Conditions()
+    turbofan_conditions[fan_nozzle.tag].outputs                 = Conditions()
+    turbofan_conditions[inlet_nozzle.tag]                       = Conditions()
+    turbofan_conditions[inlet_nozzle.tag].inputs                = Conditions()
+    turbofan_conditions[inlet_nozzle.tag].outputs               = Conditions()
+    turbofan_conditions.inputs                                  = Conditions()
+    turbofan_conditions.outputs                                 = Conditions()
 
-    ram_conditions =  turbofan_conditions[ram.tag]        
-    fan_conditions =  turbofan_conditions[fan.tag]    
+    # unpack component conditions 
+    ram_conditions          = turbofan_conditions[ram.tag]    
+    fan_conditions          = turbofan_conditions[fan.tag]    
     inlet_nozzle_conditions = turbofan_conditions[inlet_nozzle.tag]
     core_nozzle_conditions  = turbofan_conditions[core_nozzle.tag]
     fan_nozzle_conditions   = turbofan_conditions[fan_nozzle.tag]
-    lpc_conditions   = turbofan_conditions[low_pressure_compressor.tag]
-    hpc_conditions   = turbofan_conditions[high_pressure_compressor.tag]
-    lpt_conditions   = turbofan_conditions[low_pressure_turbine.tag]
-    hpt_conditions   = turbofan_conditions[high_pressure_turbine.tag]
-    combustor_conditions   = turbofan_conditions[combustor.tag]
-    freestream = conditions.freestream
+    lpc_conditions          = turbofan_conditions[low_pressure_compressor.tag]
+    hpc_conditions          = turbofan_conditions[high_pressure_compressor.tag]
+    lpt_conditions          = turbofan_conditions[low_pressure_turbine.tag]
+    hpt_conditions          = turbofan_conditions[high_pressure_turbine.tag]
+    combustor_conditions    = turbofan_conditions[combustor.tag]
+    freestream              = conditions.freestream
      
     # Step 1: Set the working fluid to determine the fluid properties
     ram.working_fluid                             = turbofan.working_fluid

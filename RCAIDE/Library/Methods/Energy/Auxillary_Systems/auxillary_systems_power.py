@@ -1,7 +1,7 @@
 # RCAIDE/Library/Methods/Energy/Auxillary_Systems/auxillary_systems_power.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke
+# Created:  Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_payload_power_consumption
