@@ -16,7 +16,7 @@ import numpy as np
 def compute_supersonic_combustion(combustor,conditions): 
     """ This function computes the output values for supersonic combustion (Scramjet).
     This will be done using stream thrust analysis. The following properties are computed. 
-    combustor.outputs. 
+    combustor_conditions.outputs. 
        stagnation_temperature               (numpy.ndarray) : [K] 
        stagnation_pressure                  (numpy.ndarray) : [Pa] 
        stagnation_enthalpy                  (numpy.ndarray) : [J/kg] 
@@ -44,7 +44,7 @@ def compute_supersonic_combustion(combustor,conditions):
            temperature                              (numpy.ndarray): [K] 
            stagnation_temperature                   (numpy.ndarray): [K]
            universal_gas_constant                   (numpy.ndarray): [J/(kg K)]  
-        combustor.inputs.     
+        combustor_conditions.inputs.     
            stagnation_temperature                   (numpy.ndarray): [K] 
            stagnation_pressure                      (numpy.ndarray): [Pa] 
            inlet_nozzle                             (numpy.ndarray): [unitless] 
@@ -64,8 +64,8 @@ def compute_supersonic_combustion(combustor,conditions):
     Tref   = conditions.freestream.temperature
     
     # unpacking properties of combustor 
-    nozzle  = combustor.inputs.inlet_nozzle 
-    Pt_in   = combustor.inputs.stagnation_pressure 
+    nozzle  = combustor_conditions.inputs.inlet_nozzle 
+    Pt_in   = combustor_conditions.inputs.stagnation_pressure 
     Cp_c    = nozzle.specific_heat_at_constant_pressure 
     htf     = combustor.fuel_data.specific_energy 
     eta_b   = combustor.efficiency 
@@ -99,15 +99,15 @@ def compute_supersonic_combustion(combustor,conditions):
     Pt_out = Pt_in*((((gamma_b+1.)*(M_out**2.))/((gamma_b-1.)*M_out**2.+2.))**(gamma_b/(gamma_b-1.)))*((gamma_b+1.)/(2.*gamma_b*M_out**2.-(gamma_b-1.)))**(1./(gamma_b-1.))  
     
     # pack results   
-    combustor.outputs.stagnation_temperature          = Tt_out  
-    combustor.outputs.stagnation_pressure             = Pt_out        
-    combustor.outputs.stagnation_enthalpy             = ht_out        
-    combustor.outputs.fuel_to_air_ratio               = f        
-    combustor.outputs.static_temperature              = T_out  
-    combustor.outputs.static_pressure                 = P_out         
-    combustor.outputs.velocity                        = V_out  
-    combustor.outputs.mach_number                     = M_out 
-    combustor.outputs.specific_heat_constant_pressure = Cpb
-    combustor.outputs.isentropic_expansion_factor     = gamma_b
+    combustor_conditions.outputs.stagnation_temperature          = Tt_out  
+    combustor_conditions.outputs.stagnation_pressure             = Pt_out        
+    combustor_conditions.outputs.stagnation_enthalpy             = ht_out        
+    combustor_conditions.outputs.fuel_to_air_ratio               = f        
+    combustor_conditions.outputs.static_temperature              = T_out  
+    combustor_conditions.outputs.static_pressure                 = P_out         
+    combustor_conditions.outputs.velocity                        = V_out  
+    combustor_conditions.outputs.mach_number                     = M_out 
+    combustor_conditions.outputs.specific_heat_constant_pressure = Cpb
+    combustor_conditions.outputs.isentropic_expansion_factor     = gamma_b
     return 
 

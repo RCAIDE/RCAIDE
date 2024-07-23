@@ -30,9 +30,4 @@ class Expansion_Nozzle(Component):
         #set the defaults
         self.tag = 'Nozzle'
         self.polytropic_efficiency           = 1.0
-        self.pressure_ratio                  = 1.0
-        self.inputs.stagnation_temperature   = 0.
-        self.inputs.stagnation_pressure      = 0.
-        self.outputs.stagnation_temperature  = 0.
-        self.outputs.stagnation_pressure     = 0.
-        self.outputs.stagnation_enthalpy     = 0. 
+        self.pressure_ratio                  = 1.0 

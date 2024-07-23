@@ -16,7 +16,7 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_power_from_throttle
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_power_from_throttle(engine,conditions,throttle):
+def compute_power_from_throttle(engine,engine_conditions,freestream):
     """ The internal combustion engine output power and specific power consumption.
     The following properties are computed:
         engine
@@ -47,11 +47,11 @@ def compute_power_from_throttle(engine,conditions,throttle):
     """
 
     # Unpack
-    altitude    = conditions.freestream.altitude
-    delta_isa   = conditions.freestream.delta_ISA 
+    altitude    = freestream.altitude
+    delta_isa   = freestream.delta_ISA 
     PSLS        = engine.sea_level_power
     h_flat      = engine.flat_rate_altitude
-    omega       = engine.inputs.speed
+    omega       = engine_conditions.speed
     PSFC        = engine.power_specific_fuel_consumption
 
     # shift in power lapse due to flat rate
@@ -73,7 +73,7 @@ def compute_power_from_throttle(engine,conditions,throttle):
     Pavailable[h_flat > altitude] = PSLS
 
     # Regulate using throttle 
-    P       = Pavailable * throttle 
+    P       = Pavailable * engine_conditions.throttle 
     P[P<0.] = 0. 
     SFC     = PSFC * Units['lb/hp/hr']
 
@@ -85,9 +85,9 @@ def compute_power_from_throttle(engine,conditions,throttle):
     fuel_flow_rate  = np.fmax(P*SFC,alt_0) 
     
     # Store results 
-    engine.outputs.power                           = P
-    engine.outputs.power_specific_fuel_consumption = PSFC
-    engine.outputs.fuel_flow_rate                  = fuel_flow_rate
-    engine.outputs.torque                          = torque
+    engine_conditions.power                           = P
+    engine_conditions.power_specific_fuel_consumption = PSFC
+    engine_conditions.fuel_flow_rate                  = fuel_flow_rate
+    engine_conditions.torque                          = torque
 
     return

@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  size_core
 # ---------------------------------------------------------------------------------------------------------------------- 
-def size_core(turbofan,conditions):
+def size_core(turbofan,turbofan_conditions, freestream):
     """Sizes the core flow for the design condition by computing the
     non-dimensional thrust 
 
@@ -38,22 +38,21 @@ def size_core(turbofan,conditions):
         None 
     """             
     # Unpack flight conditions 
-    a0             = conditions.freestream.speed_of_sound
+    a0             = freestream.speed_of_sound
 
     # Unpack turbofan flight conditions 
-    bypass_ratio   = turbofan.inputs.bypass_ratio
+    bypass_ratio   = turbofan_conditions.bypass_ratio
     Tref           = turbofan.reference_temperature
     Pref           = turbofan.reference_pressure 
-    throttle       = 1.0 
-    Tt_ref         = turbofan.inputs.total_temperature_reference  
-    Pt_ref         = turbofan.inputs.total_pressure_reference 
-
+    Tt_ref         = turbofan_conditions.total_temperature_reference  
+    Pt_ref         = turbofan_conditions.total_pressure_reference  
     # Compute nondimensional thrust
-    compute_thrust(turbofan,conditions) 
+    turbofan_conditions.throttle = 1.0
+    compute_thrust(turbofan,turbofan_conditions, freestream) 
 
     # Compute dimensional mass flow rates
-    Fsp        = turbofan.outputs.non_dimensional_thrust
-    mdot_core  = turbofan.design_thrust/(Fsp*a0*(1+bypass_ratio)*throttle)  
+    Fsp        = turbofan_conditions.non_dimensional_thrust
+    mdot_core  = turbofan.design_thrust/(Fsp*a0*(1+bypass_ratio)*turbofan_conditions.throttle)  
     mdhc       = mdot_core/ (np.sqrt(Tref/Tt_ref)*(Pt_ref/Pref))
 
     # Store results on turbofan data structure 

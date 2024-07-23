@@ -13,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_stream_thrust
 # ----------------------------------------------------------------------------------------------------------------------  
-def compute_stream_thrust(turbofan,conditions):  
+def compute_stream_thrust(turbofan,turbofan_conditions,freestream):  
     """Computes steam thrust and other properties of the turbofan listed below: 
     turbofan.  
       .outputs.thrust                           (numpy.ndarray): thrust                     [N] 
@@ -60,21 +60,21 @@ def compute_stream_thrust(turbofan,conditions):
     Tref             = turbofan.reference_temperature 
     Pref             = turbofan.reference_pressure 
     mdhc             = turbofan.compressor_nondimensional_massflow 
-    f                = turbofan.inputs.fuel_to_air_ratio 
-    Tt_ref           = turbofan.inputs.total_temperature_reference 
-    Pt_ref           = turbofan.inputs.total_pressure_reference  
-    Te_core          = turbofan.inputs.core_nozzle.temperature 
-    Ve_core          = turbofan.inputs.core_nozzle.velocity 
-    core_area_ratio  = turbofan.inputs.core_nozzle.area_ratio 
-    no_eng           = turbofan.inputs.number_of_engines
+    f                = turbofan_conditions.fuel_to_air_ratio 
+    Tt_ref           = turbofan_conditions.total_temperature_reference 
+    Pt_ref           = turbofan_conditions.total_pressure_reference  
+    Te_core          = turbofan_conditions.core_nozzle.temperature 
+    Ve_core          = turbofan_conditions.core_nozzle.velocity 
+    core_area_ratio  = turbofan_conditions.core_nozzle.area_ratio 
+    no_eng           = turbofan_conditions.number_of_engines
     
     # Unpack flight conditions 
-    u0        = conditions.freestream.velocity 
-    a0        = conditions.freestream.speed_of_sound 
-    T0        = conditions.freestream.temperature 
-    g         = conditions.freestream.gravity 
-    throttle  = conditions.propulsion.throttle   
-    R         = conditions.freestream.gas_specific_constant 
+    u0        = freestream.velocity 
+    a0        = freestream.speed_of_sound 
+    T0        = freestream.temperature 
+    g         = freestream.gravity 
+    throttle  = propulsion.throttle   
+    R         = freestream.gas_specific_constant 
   
 
     # Stream thrust method 
@@ -101,12 +101,12 @@ def compute_stream_thrust(turbofan,conditions):
     fuel_flow_rate   = np.fmax(FD2*TSFC/g,np.array([0.]))  
  
     # Pack turbofan outptus      
-    turbofan.outputs.thrust                            = FD2    
-    turbofan.outputs.power                             = power
-    turbofan.outputs.thrust_specific_fuel_consumption  = TSFC 
-    turbofan.outputs.specific_impulse                  = Isp
-    turbofan.outputs.non_dimensional_thrust            = Fsp  
-    turbofan.outputs.core_mass_flow_rate               = mdot_core 
-    turbofan.outputs.fuel_flow_rate                    = fuel_flow_rate   
+    turbofan_conditions.thrust                            = FD2    
+    turbofan_conditions.power                             = power
+    turbofan_conditions.thrust_specific_fuel_consumption  = TSFC 
+    turbofan_conditions.specific_impulse                  = Isp
+    turbofan_conditions.non_dimensional_thrust            = Fsp  
+    turbofan_conditions.core_mass_flow_rate               = mdot_core 
+    turbofan_conditions.fuel_flow_rate                    = fuel_flow_rate   
     
     return  

@@ -14,7 +14,7 @@ from warnings import warn
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_compression_nozzle_performance
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_compression_nozzle_performance(compression_nozzle,conditions):
+def compute_compression_nozzle_performance(compression_nozzle,nozzle_conditions,freestream):
     """  Computes the performance of a compression nozzle bases on its polytropic efficiency.
          The following properties are computed: 
         compression_nozzle.outputs.
@@ -52,14 +52,14 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
     """
 
     # Unpack conditions
-    gamma   = conditions.freestream.isentropic_expansion_factor
-    Cp      = conditions.freestream.specific_heat_at_constant_pressure
-    P0      = conditions.freestream.pressure
-    M0      = conditions.freestream.mach_number 
+    gamma   = freestream.isentropic_expansion_factor
+    Cp      = freestream.specific_heat_at_constant_pressure
+    P0      = freestream.pressure
+    M0      = freestream.mach_number 
 
     # Unpack inpust
-    Tt_in                   = compression_nozzle.inputs.stagnation_temperature
-    Pt_in                   = compression_nozzle.inputs.stagnation_pressure
+    Tt_in                   = nozzle_conditions.inputs.stagnation_temperature
+    Pt_in                   = nozzle_conditions.inputs.stagnation_pressure
     PR                      = compression_nozzle.pressure_ratio
     eta_p_old               = compression_nozzle.polytropic_efficiency
     eta_rec                 = compression_nozzle.pressure_recovery
@@ -104,14 +104,14 @@ def compute_compression_nozzle_performance(compression_nozzle,conditions):
     u_out   = np.sqrt(2.*(ht_out-h_out))
 
     # Pack computed quantities into outputs
-    compression_nozzle.outputs.mach_number             = Mach
-    compression_nozzle.outputs.static_temperature      = T_out
-    compression_nozzle.outputs.static_enthalpy         = h_out
-    compression_nozzle.outputs.velocity                = u_out
-    compression_nozzle.outputs.stagnation_temperature  = Tt_out
-    compression_nozzle.outputs.stagnation_pressure     = Pt_out
-    compression_nozzle.outputs.stagnation_temperature  = Tt_out
-    compression_nozzle.outputs.stagnation_pressure     = Pt_out
-    compression_nozzle.outputs.stagnation_enthalpy     = ht_out
+    nozzle_conditions.outputs.mach_number             = Mach
+    nozzle_conditions.outputs.static_temperature      = T_out
+    nozzle_conditions.outputs.static_enthalpy         = h_out
+    nozzle_conditions.outputs.velocity                = u_out
+    nozzle_conditions.outputs.stagnation_temperature  = Tt_out
+    nozzle_conditions.outputs.stagnation_pressure     = Pt_out
+    nozzle_conditions.outputs.stagnation_temperature  = Tt_out
+    nozzle_conditions.outputs.stagnation_pressure     = Pt_out
+    nozzle_conditions.outputs.stagnation_enthalpy     = ht_out
     
     return 

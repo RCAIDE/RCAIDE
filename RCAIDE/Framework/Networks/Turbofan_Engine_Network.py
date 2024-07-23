@@ -8,9 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------------------------------------------------------
-# RCAIDE Imports  
-import RCAIDE 
-from RCAIDE.Framework.Core                                                                     import Data 
+# RCAIDE Imports   
 from RCAIDE.Framework.Mission.Common                                                           import Residuals , Conditions
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor.compute_turbofan_performance         import compute_turbofan_performance
 from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import fuel_line_unknowns
@@ -207,7 +205,7 @@ class Turbofan_Engine_Network(Network):
             segment.state.conditions.energy[fuel_line.tag]       =Conditions()       
             fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]    
             segment.state.conditions.noise[fuel_line.tag]        = Conditions()  
-            noise_results                                        = segment.state.conditions.noise[fuel_line.tag]      
+            noise_conditions                                        = segment.state.conditions.noise[fuel_line.tag]      
      
             for fuel_tank in fuel_line.fuel_tanks:               
                 fuel_line_results[fuel_tank.tag]                 = Conditions()  
@@ -217,14 +215,60 @@ class Turbofan_Engine_Network(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
-            for turbofan in fuel_line.propulsors:               
-                fuel_line_results[turbofan.tag]                         = Conditions() 
-                fuel_line_results[turbofan.tag].throttle                = 0. * ones_row(1)      
-                fuel_line_results[turbofan.tag].y_axis_rotation         = 0. * ones_row(1)  
-                fuel_line_results[turbofan.tag].thrust                  = 0. * ones_row(1) 
-                fuel_line_results[turbofan.tag].power                   = 0. * ones_row(1) 
-                noise_results[turbofan.tag]                             = Conditions() 
-                noise_results[turbofan.tag].turbofan                    = Conditions() 
+            for turbofan in fuel_line.propulsors:
+            
+                ram                       = turbofan.ram
+                inlet_nozzle              = turbofan.inlet_nozzle
+                low_pressure_compressor   = turbofan.low_pressure_compressor
+                high_pressure_compressor  = turbofan.high_pressure_compressor
+                fan                       = turbofan.fan
+                combustor                 = turbofan.combustor
+                high_pressure_turbine     = turbofan.high_pressure_turbine
+                low_pressure_turbine      = turbofan.low_pressure_turbine
+                core_nozzle               = turbofan.core_nozzle
+                fan_nozzle                = turbofan.fan_nozzle                 
+
+                fuel_line_results[turbofan.tag]                                                = Conditions() 
+                fuel_line_results[turbofan.tag].throttle                                       = 0. * ones_row(1)      
+                fuel_line_results[turbofan.tag].y_axis_rotation                                = 0. * ones_row(1)  
+                fuel_line_results[turbofan.tag].thrust                                         = 0. * ones_row(1) 
+                fuel_line_results[turbofan.tag].power                                          = 0. * ones_row(1)
+                fuel_line_results[turbofan.tag][combustor.tag]                        = Conditions() 
+                fuel_line_results[turbofan.tag][combustor.tag].inputs                 = Conditions() 
+                fuel_line_results[turbofan.tag][combustor.tag].inputs.nondim_mass_ratio  = ones_row(1)
+                fuel_line_results[turbofan.tag][combustor.tag].outputs                = Conditions()
+                fuel_line_results[turbofan.tag][ram.tag]                              = Conditions() 
+                fuel_line_results[turbofan.tag][ram.tag].inputs                       = Conditions() 
+                fuel_line_results[turbofan.tag][ram.tag].outputs                      = Conditions() 
+                fuel_line_results[turbofan.tag][fan.tag]                              = Conditions() 
+                fuel_line_results[turbofan.tag][fan.tag].inputs                       = Conditions() 
+                fuel_line_results[turbofan.tag][fan.tag].outputs                      = Conditions() 
+                fuel_line_results[turbofan.tag][high_pressure_compressor.tag]         = Conditions()
+                fuel_line_results[turbofan.tag][high_pressure_compressor.tag].inputs  = Conditions()
+                fuel_line_results[turbofan.tag][high_pressure_compressor.tag].outputs = Conditions()
+                fuel_line_results[turbofan.tag][low_pressure_compressor.tag]          = Conditions()
+                fuel_line_results[turbofan.tag][low_pressure_compressor.tag].inputs   = Conditions()
+                fuel_line_results[turbofan.tag][low_pressure_compressor.tag].outputs  = Conditions()
+                fuel_line_results[turbofan.tag][high_pressure_turbine.tag]            = Conditions()
+                fuel_line_results[turbofan.tag][high_pressure_turbine.tag].inputs     = Conditions()
+                fuel_line_results[turbofan.tag][high_pressure_turbine.tag].outputs    = Conditions()
+                fuel_line_results[turbofan.tag][low_pressure_turbine.tag]             = Conditions()
+                fuel_line_results[turbofan.tag][low_pressure_turbine.tag].inputs      = Conditions()
+                fuel_line_results[turbofan.tag][low_pressure_turbine.tag].outputs     = Conditions()
+                fuel_line_results[turbofan.tag][core_nozzle.tag]                      = Conditions()
+                fuel_line_results[turbofan.tag][core_nozzle.tag].inputs               = Conditions()
+                fuel_line_results[turbofan.tag][core_nozzle.tag].outputs              = Conditions()
+                fuel_line_results[turbofan.tag][fan_nozzle.tag]                       = Conditions()
+                fuel_line_results[turbofan.tag][fan_nozzle.tag].inputs                = Conditions()
+                fuel_line_results[turbofan.tag][fan_nozzle.tag].outputs               = Conditions()
+                fuel_line_results[turbofan.tag][inlet_nozzle.tag]                     = Conditions()
+                fuel_line_results[turbofan.tag][inlet_nozzle.tag].inputs              = Conditions()
+                fuel_line_results[turbofan.tag][inlet_nozzle.tag].outputs             = Conditions()
+                fuel_line_results[turbofan.tag].inputs                                         = Conditions()
+                fuel_line_results[turbofan.tag].outputs                                        = Conditions() 
+                
+                noise_conditions[turbofan.tag]                             = Conditions() 
+                noise_conditions[turbofan.tag].turbofan                    = Conditions() 
         
         segment.process.iterate.unknowns.network   = self.unpack_unknowns                   
         return segment    

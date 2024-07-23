@@ -34,12 +34,5 @@ class Turbine(Component):
         #set the default values
         self.tag                               ='Turbine'
         self.mechanical_efficiency             = 1.0
-        self.polytropic_efficiency             = 1.0
-        self.inputs.stagnation_temperature     = 1.0
-        self.inputs.stagnation_pressure        = 1.0
-        self.inputs.fuel_to_air_ratio          = 1.0
-        self.outputs.stagnation_temperature    = 1.0
-        self.outputs.stagnation_pressure       = 1.0
-        self.outputs.stagnation_enthalpy       = 1.0 
-        self.inputs.shaft_power_off_take       = None
+        self.polytropic_efficiency             = 1.0   
     

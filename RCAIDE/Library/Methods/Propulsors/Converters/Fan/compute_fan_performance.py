@@ -6,10 +6,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fan 
 # ----------------------------------------------------------------------------------------------------------------------            
-def compute_fan_performance(fan,conditions):
+def compute_fan_performance(fan,fan_conditions, freestream):
     """ This computes the output values from the input values according to
     equations from the source. The following outputs are computed: 
-    fan.outputs.
+    fan_conditions.outputs.
       stagnation_temperature  (numpy.ndarray): exit stagnation_temperature  [K]  
       stagnation_pressure     (numpy.ndarray): exit stagnation_pressure     [Pa]
       stagnation_enthalpy     (numpy.ndarray): exit stagnation_enthalpy     [J/kg]
@@ -38,14 +38,14 @@ def compute_fan_performance(fan,conditions):
     """        
     
     # Unpack flight conditions 
-    gamma     = conditions.freestream.isentropic_expansion_factor
-    Cp        = conditions.freestream.specific_heat_at_constant_pressure
+    gamma     = freestream.isentropic_expansion_factor
+    Cp        = freestream.specific_heat_at_constant_pressure
      
     # unpack from fan
     PR        = fan.pressure_ratio
     etapold   = fan.polytropic_efficiency
-    Tt_in     = fan.inputs.stagnation_temperature
-    Pt_in     = fan.inputs.stagnation_pressure
+    Tt_in     = fan_conditions.inputs.stagnation_temperature
+    Pt_in     = fan_conditions.inputs.stagnation_pressure
      
     
     # Compute the output quantities  
@@ -58,9 +58,9 @@ def compute_fan_performance(fan,conditions):
     work_done = ht_out - ht_in
     
     # Store computed quantities into outputs
-    fan.outputs.stagnation_temperature  = Tt_out
-    fan.outputs.stagnation_pressure     = Pt_out
-    fan.outputs.work_done               = work_done
-    fan.outputs.stagnation_enthalpy     = ht_out
+    fan_conditions.outputs.stagnation_temperature  = Tt_out
+    fan_conditions.outputs.stagnation_pressure     = Pt_out
+    fan_conditions.outputs.work_done               = work_done
+    fan_conditions.outputs.stagnation_enthalpy     = ht_out
     
     return 

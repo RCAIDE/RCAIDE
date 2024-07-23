@@ -52,16 +52,3 @@ class Turbojet(Propulsor):
         self.mass_flow_rate_design                    = 0.0 
         self.OpenVSP_flow_through                     = False
 
-        self.inputs                                   = Data()
-        self.outputs                                  = Data()
-
-        self.inputs.fuel_to_air_ratio                 = 0.0
-        self.outputs.thrust                           = 0.0 
-        self.outputs.thrust_specific_fuel_consumption = 0.0
-        self.outputs.specific_impulse                 = 0.0
-        self.outputs.non_dimensional_thrust           = 0.0
-        self.outputs.core_mass_flow_rate              = 0.0
-        self.outputs.fuel_flow_rate                   = 0.0
-        self.outputs.fuel_mass                        = 0.0
-        self.outputs.power                            = 0.0 
-

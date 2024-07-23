@@ -16,7 +16,7 @@ from warnings import warn
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_expansion_nozzle_performance
 # ----------------------------------------------------------------------------------------------------------------------        
-def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
+def compute_expansion_nozzle_performance(expansion_nozzle,nozzle_conditions, freestream):
     """ This computes the output values from the input values according to
     equations from the source. The following properties are computed: 
     expansion_nozzle.outputs.
@@ -58,17 +58,17 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
 
     """                 
     # Unpack flight conditions 
-    gamma    = conditions.freestream.isentropic_expansion_factor
-    R        = conditions.freestream.gas_specific_constant
-    Cp       = conditions.freestream.specific_heat_at_constant_pressure
-    M0       = conditions.freestream.mach_number
-    P0       = conditions.freestream.pressure
-    Pt0      = conditions.freestream.stagnation_pressure
-    Tt0      = conditions.freestream.stagnation_temperature
+    gamma    = freestream.isentropic_expansion_factor
+    R        = freestream.gas_specific_constant
+    Cp       = freestream.specific_heat_at_constant_pressure
+    M0       = freestream.mach_number
+    P0       = freestream.pressure
+    Pt0      = freestream.stagnation_pressure
+    Tt0      = freestream.stagnation_temperature
     
     # Unpack exansion nozzle inputs
-    Tt_in    = expansion_nozzle.inputs.stagnation_temperature
-    Pt_in    = expansion_nozzle.inputs.stagnation_pressure 
+    Tt_in    = nozzle_conditions.inputs.stagnation_temperature
+    Pt_in    = nozzle_conditions.inputs.stagnation_pressure 
     PR       = expansion_nozzle.pressure_ratio
     etapold  = expansion_nozzle.polytropic_efficiency
      
@@ -111,15 +111,15 @@ def compute_expansion_nozzle_performance(expansion_nozzle,conditions):
     area_ratio    = (fm_id(M0,gamma)/fm_id(Mach,gamma)*(1/(Pt_out/Pt0))*(np.sqrt(Tt_out/Tt0)))
     
     #pack computed quantities into outputs
-    expansion_nozzle.outputs.area_ratio              = area_ratio
-    expansion_nozzle.outputs.mach_number             = Mach
-    expansion_nozzle.outputs.density                 = rho_out
-    expansion_nozzle.outputs.velocity                = u_out
-    expansion_nozzle.outputs.static_pressure         = P_out
-    expansion_nozzle.outputs.static_temperature      = T_out
-    expansion_nozzle.outputs.static_enthalpy         = h_out
-    expansion_nozzle.outputs.stagnation_temperature  = Tt_out
-    expansion_nozzle.outputs.stagnation_pressure     = Pt_out
-    expansion_nozzle.outputs.stagnation_enthalpy     = ht_out
+    nozzle_conditions.outputs.area_ratio              = area_ratio
+    nozzle_conditions.outputs.mach_number             = Mach
+    nozzle_conditions.outputs.density                 = rho_out
+    nozzle_conditions.outputs.velocity                = u_out
+    nozzle_conditions.outputs.static_pressure         = P_out
+    nozzle_conditions.outputs.static_temperature      = T_out
+    nozzle_conditions.outputs.static_enthalpy         = h_out
+    nozzle_conditions.outputs.stagnation_temperature  = Tt_out
+    nozzle_conditions.outputs.stagnation_pressure     = Pt_out
+    nozzle_conditions.outputs.stagnation_enthalpy     = ht_out
     
     return 

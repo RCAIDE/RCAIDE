@@ -6,10 +6,10 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_combustor_performance
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_combustor_performance(combustor,conditions):
+def compute_combustor_performance(combustor,combustor_conditions, freestream):
     """ This computes the output values from the input values according to
         equations from the source. The following properties are computed         
-        combustor.outputs.
+        combustor_conditions.outputs.
           stagnation_temperature             (numpy.ndarray):  [K]  
           stagnation_pressure                (numpy.ndarray):  [Pa]
           stagnation_enthalpy                (numpy.ndarray):  [J/kg]
@@ -27,7 +27,7 @@ def compute_combustor_performance(combustor,conditions):
           specific_heat_at_constant_pressure (numpy.ndarray):  [J/(kg K)]
           temperature                        (numpy.ndarray):  [K]
           stagnation_temperature             (numpy.ndarray):  [K]
-        combustor.inputs.
+        combustor_conditions.inputs.
           stagnation_temperature             (numpy.ndarray):  [K]
           stagnation_pressure                (numpy.ndarray):  [Pa]
           nondim_mass_ratio                  (numpy.ndarray):  [unitless] 
@@ -42,15 +42,15 @@ def compute_combustor_performance(combustor,conditions):
         None
     """          
     # unpacking the values from conditions 
-    Cp      = conditions.freestream.specific_heat_at_constant_pressure 
+    Cp      =  freestream.specific_heat_at_constant_pressure 
     
     # unpacking the values form inputs
-    Tt_in    = combustor.inputs.stagnation_temperature
-    Pt_in    = combustor.inputs.stagnation_pressure
+    Tt_in    = combustor_conditions.inputs.stagnation_temperature
+    Pt_in    = combustor_conditions.inputs.stagnation_pressure
+    nondim_r = combustor_conditions.inputs.nondim_mass_ratio 
     Tt4      = combustor.turbine_inlet_temperature
     pib      = combustor.pressure_ratio
     eta_b    = combustor.efficiency
-    nondim_r = combustor.inputs.nondim_mass_ratio 
     htf      = combustor.fuel_data.specific_energy 
     
     # compute stanation pressure 
@@ -67,9 +67,9 @@ def compute_combustor_performance(combustor,conditions):
     ht_out  = Tt4 * Cp
     
     # Pack results 
-    combustor.outputs.stagnation_temperature  = Tt4
-    combustor.outputs.stagnation_pressure     = Pt_out
-    combustor.outputs.stagnation_enthalpy     = ht_out
-    combustor.outputs.fuel_to_air_ratio       = f 
+    combustor_conditions.outputs.stagnation_temperature  = Tt4
+    combustor_conditions.outputs.stagnation_pressure     = Pt_out
+    combustor_conditions.outputs.stagnation_enthalpy     = ht_out
+    combustor_conditions.outputs.fuel_to_air_ratio       = f 
     
     return 

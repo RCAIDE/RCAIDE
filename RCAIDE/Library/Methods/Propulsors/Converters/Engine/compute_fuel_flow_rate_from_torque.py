@@ -16,7 +16,7 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 # calculate_fuel_flow_rate_from_torque
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_fuel_flow_rate_from_torque(engine,conditions):
+def compute_fuel_flow_rate_from_torque(engine,engine_conditions, freestream):
     """ The internal combustion engine output power and specific power consumption. The following
     properties are computed:
     engine 
@@ -47,15 +47,15 @@ def compute_fuel_flow_rate_from_torque(engine,conditions):
     """
 
     # Unpack conditions 
-    altitude   = conditions.freestream.altitude
-    delta_isa  = conditions.freestream.delta_ISA
+    altitude   = freestream.altitude
+    delta_isa  = freestream.delta_ISA
     
     # Unpack engine properties 
     PSLS       = engine.sea_level_power
     h_flat     = engine.flat_rate_altitude
     PSFC       = engine.power_specific_fuel_consumption
-    omega      = engine.outputs.omega
-    torque     = engine.outputs.torque
+    omega      = engine_condition.omega
+    torque     = engine_condition.torque
     
     # compute atmospheric properties 
     altitude_virtual = altitude - h_flat
@@ -82,10 +82,10 @@ def compute_fuel_flow_rate_from_torque(engine,conditions):
     throttle        = P/Pavailable
 
     # Store results as engine outputs
-    engine.outputs.throttle                        = throttle
-    engine.outputs.power_specific_fuel_consumption = PSFC
-    engine.outputs.fuel_flow_rate                  = fuel_flow_rate
-    engine.outputs.power                           = P
+    engine_conditions.throttle                        = throttle
+    engine_conditions.power_specific_fuel_consumption = PSFC
+    engine_conditions.fuel_flow_rate                  = fuel_flow_rate
+    engine_conditions.power                           = P
 
     return
 

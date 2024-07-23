@@ -18,7 +18,7 @@ from Legacy.trunk.S.Methods.Propulsion.fm_solver import fm_solver
 def compute_rayleigh(combustor,conditions):
     """ This combutes the temperature and pressure change across the combustor using Rayleigh Line flow.
     The following properties are computed 
-        combustor.outputs.
+        combustor_conditions.outputs.
           stagnation_temperature             (numpy.ndarray): [K]  
           stagnation_pressure                (numpy.ndarray): [Pa]
           stagnation_enthalpy                (numpy.ndarray): [J/kg]
@@ -37,7 +37,7 @@ def compute_rayleigh(combustor,conditions):
           specific_heat_at_constant_pressure (numpy.ndarray): [J/(kg K)]
           temperature                        (numpy.ndarray): [K]
           stagnation_temperature             (numpy.ndarray): [K]
-        combustor.inputs. 
+        combustor_conditions.inputs. 
           stagnation_temperature             (numpy.ndarray): [K]
           stagnation_pressure                (numpy.ndarray): [Pa]
         combustor.
@@ -55,9 +55,9 @@ def compute_rayleigh(combustor,conditions):
     Cp     = conditions.freestream.specific_heat_at_constant_pressure 
     
     # unpack properties of combustor 
-    Tt_in  = combustor.inputs.stagnation_temperature
-    Pt_in  = combustor.inputs.stagnation_pressure
-    Mach   = combustor.inputs.mach_number
+    Tt_in  = combustor_conditions.inputs.stagnation_temperature
+    Pt_in  = combustor_conditions.inputs.stagnation_pressure
+    Mach   = combustor_conditions.inputs.mach_number
     Tt4    = combustor.turbine_inlet_temperature 
     eta_b  = combustor.efficiency 
     htf    = combustor.fuel_data.specific_energy
@@ -91,9 +91,9 @@ def compute_rayleigh(combustor,conditions):
     ht_out  = Tt4 * Cp 
     
     # Pack results 
-    combustor.outputs.stagnation_temperature  = Tt4
-    combustor.outputs.stagnation_pressure     = Pt_out
-    combustor.outputs.stagnation_enthalpy     = ht_out
-    combustor.outputs.fuel_to_air_ratio       = f    
-    combustor.outputs.mach_number             = M_out
+    combustor_conditions.outputs.stagnation_temperature  = Tt4
+    combustor_conditions.outputs.stagnation_pressure     = Pt_out
+    combustor_conditions.outputs.stagnation_enthalpy     = ht_out
+    combustor_conditions.outputs.fuel_to_air_ratio       = f    
+    combustor_conditions.outputs.mach_number             = M_out
     return 

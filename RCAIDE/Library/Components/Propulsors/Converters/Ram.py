@@ -27,8 +27,6 @@ class Ram(Component):
             https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/ 
         """
         #set the deafult values
-        self.tag                             = 'Ram'
-        self.outputs.stagnation_temperature  = 1.0
-        self.outputs.stagnation_pressure     = 1.0
-        self.inputs.working_fluid            = Data()
+        self.tag                             = 'Ram' 
+        self.working_fluid            = Data()
  

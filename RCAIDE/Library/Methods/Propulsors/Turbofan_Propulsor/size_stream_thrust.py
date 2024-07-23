@@ -5,6 +5,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor            import compute_stream_thrust
 
 # Python package imports
 import numpy as np
@@ -12,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #   size_stream_thrust
 # ----------------------------------------------------------------------------------------------------------------------
-def size_stream_thrust(turbofan,conditions): 
+def size_stream_thrust(turbofan,turbofan_conditions,freestream): 
     """Sizes the core flow for the design condition. 
 
        Assumptions: 
@@ -38,21 +39,21 @@ def size_stream_thrust(turbofan,conditions):
     """              
     
     # Unpack Flight conditions
-    a0                      = conditions.freestream.speed_of_sound 
-    throttle                = 1.0 
+    a0                            = freestream.speed_of_sound 
+    turbofan_conditions.throttle  = 1.0 
     
     # Unpack properties from turbofan 
     Tref   = turbofan.reference_temperature 
     Pref   = turbofan.reference_pressure   
-    Tt_ref = turbofan.inputs.total_temperature_reference  
-    Pt_ref = turbofan.inputs.total_pressure_reference  
+    Tt_ref = turbofan_conditions.total_temperature_reference  
+    Pt_ref = turbofan_conditions.total_pressure_reference  
     
     #compute nondimensional thrust 
-    turbofan.compute_stream_thrust(conditions)
+    compute_stream_thrust(turbofan, turbofan_conditions, freestream)
     
     #compute dimensional mass flow rates 
-    Fsp                         = turbofan.outputs.non_dimensional_thrust 
-    mdot_core                   = turbofan.design_thrust/(Fsp*a0*throttle)   
+    Fsp                         = turbofan_conditions.non_dimensional_thrust 
+    mdot_core                   = turbofan.design_thrust/(Fsp*a0*turbofan_conditions.throttle)   
     mdhc                        = mdot_core/ (np.sqrt(Tref/Tt_ref)*(Pt_ref/Pref)) 
     
     # Store results on turbofan data structure 

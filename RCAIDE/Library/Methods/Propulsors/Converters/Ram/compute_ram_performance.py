@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_ram_performance
 # ----------------------------------------------------------------------------------------------------------------------     
-def compute_ram_performance(ram,conditions):
+def compute_ram_performance(ram,ram_conditions, freestream):
     """ This computes the output values from the input values according T0
     equations from the source. The following properties are determined 
         conditions.freestream.
@@ -41,12 +41,12 @@ def compute_ram_performance(ram,conditions):
   
     """
     # Unpack flight conditions 
-    M0  = conditions.freestream.mach_number
-    P0 = conditions.freestream.pressure
-    T0 = conditions.freestream.temperature
+    M0 = freestream.mach_number
+    P0 = freestream.pressure
+    T0 = freestream.temperature
 
     # Unpack ram inputs
-    working_fluid  = ram.inputs.working_fluid
+    working_fluid  = ram.working_fluid
  
     # Compute the working fluid properties
     R      = working_fluid.gas_specific_constant
@@ -58,17 +58,17 @@ def compute_ram_performance(ram,conditions):
     stagnation_temperature = T0*(1.+((gamma-1.)/2.*M0*M0))
 
     # Store values into flight conditions data structure  
-    conditions.freestream.isentropic_expansion_factor          = gamma
-    conditions.freestream.specific_heat_at_constant_pressure   = Cp
-    conditions.freestream.gas_specific_constant                = R
-    conditions.freestream.stagnation_temperature               = stagnation_temperature
-    conditions.freestream.stagnation_pressure                  = stagnation_pressure
+    freestream.isentropic_expansion_factor          = gamma
+    freestream.specific_heat_at_constant_pressure   = Cp
+    freestream.gas_specific_constant                = R
+    freestream.stagnation_temperature               = stagnation_temperature
+    freestream.stagnation_pressure                  = stagnation_pressure
 
     # Store values into compoment outputs  
-    ram.outputs.isentropic_expansion_factor         = gamma
-    ram.outputs.specific_heat_at_constant_pressure  = Cp
-    ram.outputs.gas_specific_constant               = R
-    ram.outputs.stagnation_temperature              = stagnation_temperature
-    ram.outputs.stagnation_pressure                 = stagnation_pressure    
+    ram_conditions.outputs.isentropic_expansion_factor         = gamma
+    ram_conditions.outputs.specific_heat_at_constant_pressure  = Cp
+    ram_conditions.outputs.gas_specific_constant               = R
+    ram_conditions.outputs.stagnation_temperature              = stagnation_temperature
+    ram_conditions.outputs.stagnation_pressure                 = stagnation_pressure    
     
     return 

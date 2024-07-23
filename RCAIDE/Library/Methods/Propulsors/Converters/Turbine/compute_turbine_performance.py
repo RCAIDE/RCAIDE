@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_turbine_performance
 # ----------------------------------------------------------------------------------------------------------------------     
-def compute_turbine_performance(turbine,conditions):
+def compute_turbine_performance(turbine,turbine_conditions,freestream):
     """This computes the output values from the input values according to
     equations from the source. The following properties are computed: 
     turbine.outputs.
@@ -39,21 +39,21 @@ def compute_turbine_performance(turbine,conditions):
         None 
     """            
     # Unpack flight conditions 
-    gamma           = conditions.freestream.isentropic_expansion_factor
-    Cp              = conditions.freestream.specific_heat_at_constant_pressure
+    gamma           = freestream.isentropic_expansion_factor
+    Cp              = freestream.specific_heat_at_constant_pressure
     
     #Unpack turbine entering properties 
     eta_mech        = turbine.mechanical_efficiency
     etapolt         = turbine.polytropic_efficiency
-    alpha           = turbine.inputs.bypass_ratio
-    Tt_in           = turbine.inputs.stagnation_temperature
-    Pt_in           = turbine.inputs.stagnation_pressure
-    compressor_work = turbine.inputs.compressor.work_done
-    fan_work        = turbine.inputs.fan.work_done
-    f               = turbine.inputs.fuel_to_air_ratio
+    alpha           = turbine_conditions.inputs.bypass_ratio
+    Tt_in           = turbine_conditions.inputs.stagnation_temperature
+    Pt_in           = turbine_conditions.inputs.stagnation_pressure
+    compressor_work = turbine_conditions.inputs.compressor.work_done
+    fan_work        = turbine_conditions.inputs.fan.work_done
+    f               = turbine_conditions.inputs.fuel_to_air_ratio
 
-    if turbine.inputs.shaft_power_off_take is not None:
-        shaft_takeoff = turbine.inputs.shaft_power_off_take.work_done
+    if turbine_conditions.inputs.shaft_power_off_take is not None:
+        shaft_takeoff = turbine_conditions.inputs.shaft_power_off_take.work_done
     else:
         shaft_takeoff = 0.
   
@@ -66,8 +66,8 @@ def compute_turbine_performance(turbine,conditions):
     Pt_out    =  Pt_in*(Tt_out/Tt_in)**(gamma/((gamma-1)*etapolt))
     
     # Pack outputs of turbine 
-    turbine.outputs.stagnation_pressure     = Pt_out
-    turbine.outputs.stagnation_temperature  = Tt_out
-    turbine.outputs.stagnation_enthalpy     = ht_out
+    turbine_conditions.outputs.stagnation_pressure     = Pt_out
+    turbine_conditions.outputs.stagnation_temperature  = Tt_out
+    turbine_conditions.outputs.stagnation_enthalpy     = ht_out
     
     return
