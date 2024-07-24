@@ -39,7 +39,7 @@ class Sequential_Segments(Segments.Segment.Container):
         self.process.initialize.stability                      = stability
         self.process.initialize.energy                         = energy
         self.process.initialize.set_residuals_and_unknowns     = set_residuals_and_unknowns
- 
+
         #   Converge 
         self.process.converge    = sequential_segments
          
@@ -47,25 +47,6 @@ class Sequential_Segments(Segments.Segment.Container):
         del self.process.iterate  
 
         return  
-
-    def pre_process(self):
-        """ This executes a pre-processing step
-    
-            Assumptions:
-                None
-    
-            Source:
-                None
-    
-            Args:
-                self (dict): RCAIDE data structure of containing process [-]
-    
-            Returns:
-                self (dict): RCAIDE data structure of containing process [-]
-        """   
-        self.process.pre_process(self)
-         
-        return self 
 
                         
     def evaluate(self,state=None):

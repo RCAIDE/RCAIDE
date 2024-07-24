@@ -10,10 +10,6 @@
 import RCAIDE 
 from RCAIDE.Framework.Core  import Data 
 
-def pre_process(mission): 
-    for tag,segment in mission.segments.items():     
-        segment.pre_process()
-
 def sequential_segments(mission):   
     last_tag = None
     for tag,segment in mission.segments.items(): 
