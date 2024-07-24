@@ -8,7 +8,6 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports   
 import RCAIDE
-from RCAIDE.Library.Mission.Common.Segments    import  sequential_segments
 from RCAIDE.Library.Mission.Initialize import  aerodynamics,stability,energy,set_residuals_and_unknowns
 from RCAIDE.Framework.Core                     import Container as ContainerBase
 from RCAIDE.Framework.Analyses                 import Process 
@@ -41,7 +40,7 @@ class Sequential_Segments(Segments.Segment.Container):
         self.process.initialize.set_residuals_and_unknowns     = set_residuals_and_unknowns
 
         #   Converge 
-        self.process.converge    = sequential_segments
+        self.process.converge    = self.converge
          
         #   Iterate     
         del self.process.iterate  
@@ -68,6 +67,16 @@ class Sequential_Segments(Segments.Segment.Container):
             state = self.state
         self.process.evaluate(self)
         return self     
+    
+    def converge(self,mission):   
+        last_tag = None
+        for tag,segment in mission.segments.items(): 
+            if last_tag:
+                segment.state.initials = mission.segments[last_tag].state
+            last_tag = tag        
+            
+            segment.process.initialize.expand_state(segment) 
+            segment.evaluate()    
         
     
 # ----------------------------------------------------------------------
