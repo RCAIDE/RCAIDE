@@ -34,10 +34,12 @@ def vehicle_setup():
     vehicle.mass_properties.operating_empty           = 62746.4 * Units.kilogram  
     vehicle.mass_properties.max_zero_fuel             = 62732.0 * Units.kilogram 
     vehicle.mass_properties.cargo                     = 10000.  * Units.kilogram  
+    vehicle.mass_properties.center_of_gravity         = [[13.72,0,-1.0]] 
     vehicle.reference_area                            = 124.862 * Units['meters**2']   
     vehicle.passengers                                = 170
     vehicle.systems.control                           = "fully powered" 
     vehicle.systems.accessories                       = "medium range"
+
 
     # ################################################# Landing Gear #############################################################   
     # ------------------------------------------------------------------        
@@ -492,7 +494,7 @@ def vehicle_setup():
     turbofan                                    = RCAIDE.Library.Components.Propulsors.Turbofan() 
     turbofan.tag                                = 'starboard_propulsor'
     turbofan.active_fuel_tanks                  = ['fuel_tank']   
-    turbofan.origin                             = [[13.72, 4.86,-1.1]] 
+    turbofan.origin                             = [[13.72, 4.38,-1.1]] 
     turbofan.engine_length                      = 2.71     
     turbofan.bypass_ratio                       = 5.4    
     turbofan.design_altitude                    = 35000.0*Units.ft
@@ -599,7 +601,7 @@ def vehicle_setup():
     turbofan_2.active_fuel_tanks                = ['fuel_tank'] 
     turbofan_2.tag                              = 'port_propulsor' 
     turbofan_2.origin                           = [[13.72,-4.38,-1.1]]  # change origin 
-    turbofan_2.nacelle.origin                   = [[13.5,-4.38,-1.5]]
+    turbofan_2.nacelle.origin                   = [[13.5 ,-4.38,-1.5]]
          
     # append propulsor to distribution line 
     fuel_line.propulsors.append(turbofan_2)
@@ -626,14 +628,7 @@ def vehicle_setup():
     net.fuel_lines.append(fuel_line)   
 
     # Append energy network to aircraft 
-    vehicle.append_energy_network(net)    
-    
-    #------------------------------------------------------------------------------------------------------------------------- 
-    # Compute Center of Gravity of aircraft (Optional)
-    #------------------------------------------------------------------------------------------------------------------------- 
-   
-    vehicle.center_of_gravity()    
-    compute_component_centers_of_gravity(vehicle)
+    vehicle.append_energy_network(net)
     
     #------------------------------------------------------------------------------------------------------------------------- 
     # Done ! 

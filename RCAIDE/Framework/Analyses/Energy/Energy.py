@@ -44,7 +44,8 @@ class Energy(Analysis):
             results : results of the thrust evaluation method. 
         """ 
             
-        networks = self.networks 
-        networks.evaluate(state)
+        networks = self.vehicle.networks
+        cg       = self.vehicle.mass_properties.center_of_gravity
+        networks.evaluate(state,cg)
         return  
     

@@ -21,7 +21,7 @@ def aerodynamics(segment):
         Args: 
             segment.analyses.aerodynamics                                     [Function]
             segment.analyses.aerodynamics.settings.maximum_lift_coefficient   [unitless]
-            segment.analyses.aerodynamics.geometry.reference_area             [meter^2]
+            segment.analyses.aerodynamics.vehicle.reference_area             [meter^2]
             segment.state.conditions.freestream.dynamic_pressure              [pascals]
 
         Returns:
@@ -32,7 +32,7 @@ def aerodynamics(segment):
     conditions         = segment.state.conditions
     aerodynamics_model = segment.analyses.aerodynamics
     q                  = segment.state.conditions.freestream.dynamic_pressure
-    Sref               = aerodynamics_model.geometry.reference_area
+    Sref               = aerodynamics_model.vehicle.reference_area
     CLmax              = aerodynamics_model.settings.maximum_lift_coefficient
     
     # call aerodynamics model

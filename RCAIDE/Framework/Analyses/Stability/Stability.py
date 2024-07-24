@@ -28,8 +28,8 @@ class Stability(Analysis):
         Source:
             None
         """   
-        self.tag    = 'stability'
-        self.geometry = Data()
+        self.tag      = 'stability'
+        self.vehicle  = Data()
         self.settings = Data() 
 
 

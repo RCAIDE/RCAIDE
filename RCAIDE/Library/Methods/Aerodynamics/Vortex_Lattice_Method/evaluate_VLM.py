@@ -42,7 +42,7 @@ def evaluate_surrogate(state,settings,geometry):
     sub_sur       = aerodynamics.surrogates.subsonic
     sup_sur       = aerodynamics.surrogates.supersonic
     trans_sur     = aerodynamics.surrogates.transonic 
-    geometry      = aerodynamics.geometry 
+    geometry      = aerodynamics.vehicle 
     hsub_min      = aerodynamics.hsub_min
     hsub_max      = aerodynamics.hsub_max
     hsup_min      = aerodynamics.hsup_min

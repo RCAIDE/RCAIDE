@@ -43,7 +43,7 @@ def build_surrogate(aerodynamics, training):
     # unpack data
     surrogates     = Data()
     mach_data      = training.Mach
-    geometry       = aerodynamics.geometry
+    geometry       = aerodynamics.vehicle
     AoA_data       = aerodynamics.training.angle_of_attack           
     Beta_data      = aerodynamics.training.sideslip_angle  
     u_data         = aerodynamics.training.u

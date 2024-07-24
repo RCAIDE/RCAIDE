@@ -35,7 +35,7 @@ class Vortex_Lattice_Method(Aerodynamics):
             None 
         """          
         self.tag                                                    = 'Vortex_Lattice_Method' 
-        self.geometry                                               = Data()  
+        self.vehicle                                                = Data()  
         self.process                                                = Process()
         self.process.initialize                                     = Process()  
                    
@@ -205,7 +205,7 @@ class Vortex_Lattice_Method(Aerodynamics):
              results (dict): aerodynamic results    [-]
         """               
         settings = self.settings
-        geometry = self.geometry 
-        results  =  self.process.compute.evaluate(segment,settings,geometry)
+        vehicle  = self.vehicle
+        results  = self.process.compute.evaluate(segment,settings,vehicle)
         
         return results
