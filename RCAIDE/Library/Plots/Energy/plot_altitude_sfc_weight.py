@@ -67,7 +67,7 @@ def plot_altitude_sfc_weight(results,
         
         axis_1.set_ylabel(r'Throttle')
         set_axes(axis_1)               
-        for network in segment.analyses.energy.networks: 
+        for network in segment.analyses.energy.vehicle.networks: 
             busses      = network.busses
             fuel_lines  = network.fuel_lines
             for bus in busses:

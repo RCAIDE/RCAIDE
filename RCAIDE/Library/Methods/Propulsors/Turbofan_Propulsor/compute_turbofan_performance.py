@@ -18,11 +18,13 @@ from RCAIDE.Library.Methods.Propulsors.Converters.Expansion_Nozzle   import comp
 from RCAIDE.Library.Methods.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor            import compute_thrust
 
+import  numpy as  np
+
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-def compute_turbofan_performance(fuel_line,state):  
+def compute_turbofan_performance(fuel_line,state,center_of_gravity=[[0.0, 0.0, 0.0]]):  
     ''' Computes the perfomrance of all turbofan engines connected to a fuel tank
     
     Assumptions: 
@@ -44,28 +46,28 @@ def compute_turbofan_performance(fuel_line,state):
     Properties Used: 
     N.A.        
     '''
-      
+   
     total_power     = 0*state.ones_row(1) 
-    total_thrust    = 0*state.ones_row(3) 
-    conditions      = state.conditions
+    total_thrust    = 0*state.ones_row(3)
+    total_moment    = 0*state.ones_row(3)
     stored_results_flag  = False  
     
     for turbofan in fuel_line.propulsors:  
         if turbofan.active == True:  
             if fuel_line.identical_propulsors == False:
                 # run analysis  
-                total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power)
+                total_thrust,total_moment,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total_power,center_of_gravity)
             else:             
                 if stored_results_flag == False: 
                     # run analysis 
-                    total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power)
+                    total_thrust,total_moment,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total_power,center_of_gravity)
                 else:
                     # use old results 
-                    total_thrust,total_power  = reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_thrust,total_power)
+                    total_thrust,total_moment,total_power  = reuse_stored_data(state,fuel_line,turbofan,stored_propulsor_tag,total_thrust,total_moment,total_power,center_of_gravity)
                 
-    return total_thrust,total_power
+    return total_thrust,total_moment,total_power
 
-def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):  
+def compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total_power, center_of_gravity= [[0.0, 0.0,0.0]]):  
     ''' Computes the perfomrance of one turbofan
     
     Assumptions: 
@@ -90,6 +92,7 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     Properties Used: 
     N.A.        
     ''' 
+    conditions                = state.conditions   
     noise_conditions          = conditions.noise[fuel_line.tag][turbofan.tag] 
     turbofan_conditions       = conditions.energy[fuel_line.tag][turbofan.tag] 
     ram                       = turbofan.ram
@@ -247,9 +250,17 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     # compute the thrust
     compute_thrust(turbofan,turbofan_conditions,freestream)
 
-    # getting the network outputs from the thrust outputs    
-    total_power                     += turbofan_conditions.power
-    total_thrust[:,0]               += turbofan_conditions.thrust[:,0]
+    # getting the network outputs
+    moment_vector      = 0*state.ones_row(3)
+    F                  = 0*state.ones_row(3)
+    F[:,0]             =  turbofan_conditions.thrust[:,0]
+    moment_vector[:,0] =  turbofan.origin[0][0] -   center_of_gravity[0][0] 
+    moment_vector[:,1] =  turbofan.origin[0][1]  -  center_of_gravity[0][1] 
+    moment_vector[:,2] =  turbofan.origin[0][2]  -  center_of_gravity[0][2]
+    M                  =  np.cross(moment_vector, F)   
+    total_moment       += M 
+    total_power        += turbofan_conditions.power
+    total_thrust       += F
 
     # store data
     core_nozzle_res = Data(
@@ -274,11 +285,11 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     stored_results_flag                  = True
     stored_propulsor_tag                 = turbofan.tag 
     
-    return total_thrust,total_power ,stored_results_flag,stored_propulsor_tag
+    return total_thrust,total_moment,total_power,stored_results_flag,stored_propulsor_tag
     
     
     
-def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_thrust,total_power):
+def reuse_stored_data(state,fuel_line,turbofan,stored_propulsor_tag,total_thrust,total_moment,total_power,center_of_gravity):
     '''Reuses results from one turbofan for identical turbofans
     
     Assumptions: 
@@ -301,10 +312,21 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     Properties Used: 
     N.A.        
     ''' 
+    conditions                              = state.conditions  
     turbofan_conditions_0                   = conditions.energy[fuel_line.tag][stored_propulsor_tag]
     noise_conditions_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
     turbofan_conditions                     = conditions.energy[fuel_line.tag][turbofan.tag]  
     noise_conditions                        = conditions.noise[fuel_line.tag][turbofan.tag]
+    
+    # compute moment  
+    moment_vector      = 0*state.ones_row(3)
+    F                  = 0*state.ones_row(3)
+    F[:,0]             = turbofan_conditions_0.thrust[:,0] 
+    moment_vector[:,0] = turbofan.origin[0][0] -   center_of_gravity[0][0] 
+    moment_vector[:,1] = turbofan.origin[0][1]  -  center_of_gravity[0][1] 
+    moment_vector[:,2] = turbofan.origin[0][2]  -  center_of_gravity[0][2]
+    M                  = np.cross(moment_vector, F)          
+    
     turbofan_conditions.throttle            = turbofan_conditions_0.throttle
     turbofan_conditions.thrust              = turbofan_conditions_0.thrust   
     turbofan_conditions.power               = turbofan_conditions_0.power  
@@ -312,7 +334,8 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     noise_conditions.turbofan.fan_nozzle    = noise_conditions_0.turbofan.fan_nozzle 
     noise_conditions.turbofan.core_nozzle   = noise_conditions_0.turbofan.core_nozzle 
     noise_conditions.turbofan.fan           = None   
-    total_power                          += turbofan_conditions.power
-    total_thrust[:,0]                    += turbofan_conditions.thrust[:,0] 
+    total_moment                           += M
+    total_power                            += turbofan_conditions.power
+    total_thrust                           += turbofan_conditions.thrust 
  
-    return total_thrust,total_power    
+    return total_thrust,total_moment,total_power    

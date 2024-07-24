@@ -30,6 +30,6 @@ class Aerodynamics(Analysis):
             None 
         """           
         self.tag                               = 'aerodynamics'  
-        self.geometry                          = Data()
+        self.vehicle                           = Data()
         self.settings                          = Data()
         self.settings.maximum_lift_coefficient = np.inf

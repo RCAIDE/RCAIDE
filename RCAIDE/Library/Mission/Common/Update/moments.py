@@ -30,16 +30,17 @@ def moments(segment):
     """    
 
     # unpack
-    conditions         = segment.state.conditions  
-    wind_moment_vector = conditions.frames.wind.moment_vector
+    conditions           = segment.state.conditions  
+    wind_moment_vector   = conditions.frames.wind.moment_vector
+    M_thrust             = conditions.energy.thrust_moment_vector
     
     # unpack transformation matrices
     T_wind2inertial = conditions.frames.wind.transform_to_inertial
 
     # to inertial frame
-    M = orientation_product(T_wind2inertial, wind_moment_vector) 
+    M_aero = orientation_product(T_wind2inertial, wind_moment_vector) 
     
     # pack
-    conditions.frames.inertial.total_moment_vector[:,:] = M[:,:]
+    conditions.frames.inertial.total_moment_vector = M_aero +  M_thrust
 
     return

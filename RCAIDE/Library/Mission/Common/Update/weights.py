@@ -37,7 +37,7 @@ def weights(segment):
     mdot_fuel    = conditions.weights.vehicle_mass_rate
     g            = conditions.freestream.gravity   
     
-    networks = segment.analyses.energy.networks
+    networks = segment.analyses.energy.vehicle.networks
     for network in networks:
         if 'fuel_lines' in network:
             for fuel_line in network.fuel_lines:  

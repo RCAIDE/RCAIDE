@@ -39,8 +39,7 @@ def vehicle_setup():
     vehicle.mass_properties.max_zero_fuel             = 40900.   # kg
     vehicle.mass_properties.max_payload               = 13063.   # kg
     vehicle.mass_properties.max_fuel                  = 12971.   # kg
-    vehicle.mass_properties.cargo                     =     0.0  # kg
-
+    vehicle.mass_properties.cargo                     =     0.0  # kg 
     vehicle.mass_properties.center_of_gravity         = [[16.8, 0, 1.6]]
     vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]]
     
@@ -417,6 +416,7 @@ def vehicle_setup():
     turbofan                                        = RCAIDE.Library.Components.Propulsors.Turbofan() 
     turbofan.tag                                    = 'starboard_propulsor'
     turbofan.active_fuel_tanks                      = ['fuel_tank']   
+    turbofan.origin                                 = [[12.0,4.38,-1.1]]  # change origin  
     turbofan.engine_length                          = 2.71     
     turbofan.bypass_ratio                           = 5.4   
     turbofan.design_altitude                        = 35000.0*Units.ft

@@ -25,7 +25,7 @@ def control_surfaces(segment):
     """        
     assigned_control_variables   = segment.assigned_control_variables
     control_surfaces  = segment.state.conditions.control_surfaces
-    wings             = segment.analyses.aerodynamics.geometry.wings
+    wings             = segment.analyses.aerodynamics.vehicle.wings
     # loop through wings on aircraft
     for wing in wings:
         # Elevator Control

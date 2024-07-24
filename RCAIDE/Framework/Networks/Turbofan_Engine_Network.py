@@ -51,7 +51,7 @@ class Turbofan_Engine_Network(Network):
         self.tag                          = 'turbofan_engine'  
         
     # linking the different network components
-    def evaluate(self,state):
+    def evaluate(self,state,center_of_gravity):
         """ Calculate thrust given the current state of the vehicle
     
             Assumptions:
@@ -89,6 +89,7 @@ class Turbofan_Engine_Network(Network):
         fuel_lines     = self.fuel_lines 
         reverse_thrust = self.reverse_thrust
         total_thrust   = 0. * state.ones_row(3) 
+        total_moment   = 0. * state.ones_row(3) 
         total_power    = 0. * state.ones_row(1) 
         total_mdot     = 0. * state.ones_row(1)   
         
@@ -97,8 +98,9 @@ class Turbofan_Engine_Network(Network):
             if fuel_line.active:   
                 
                 # Step 2.1: Compute and store perfomrance of all propulsors 
-                fuel_line_T,fuel_line_P = compute_turbofan_performance(fuel_line,state)  
+                fuel_line_T,fuel_line_M,fuel_line_P = compute_turbofan_performance(fuel_line,state,center_of_gravity)  
                 total_thrust += fuel_line_T   
+                total_moment += fuel_line_M   
                 total_power  += fuel_line_P  
                 
                 # Step 2.2: Link each turbofan the its respective fuel tank(s)
@@ -118,9 +120,11 @@ class Turbofan_Engine_Network(Network):
                             
         # Step 3: Pack results
         if reverse_thrust ==  True:
-            total_thrust =  total_thrust * -1
+            total_thrust =  total_thrust* -1
+            total_moment =  total_moment* -1
             
         conditions.energy.thrust_force_vector  = total_thrust
+        conditions.energy.thrust_moment_vector = total_moment
         conditions.energy.power                = total_power 
         conditions.energy.vehicle_mass_rate    = total_mdot    
         
@@ -169,7 +173,7 @@ class Turbofan_Engine_Network(Network):
         N/A
         """            
          
-        fuel_lines = segment.analyses.energy.networks.turbofan_engine.fuel_lines
+        fuel_lines = segment.analyses.energy.vehicle.networks.turbofan_engine.fuel_lines
         fuel_line_unknowns(segment,fuel_lines) 
             
         return    
@@ -194,7 +198,7 @@ class Turbofan_Engine_Network(Network):
             Properties Used:
             N/A
         """                  
-        fuel_lines  = segment.analyses.energy.networks.turbofan_engine.fuel_lines
+        fuel_lines  = segment.analyses.energy.vehicle.networks.turbofan_engine.fuel_lines
         ones_row    = segment.state.ones_row 
         segment.state.residuals.network = Residuals()  
         
