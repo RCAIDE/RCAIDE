@@ -50,40 +50,6 @@ def converge_opt(segment):
     # Solve the problem, based on chosen algorithm
     if segment.algorithm == 'SLSQP':
         unknowns = opt.fmin_slsqp(obj,unknowns,f_eqcons=econ,f_ieqcons=iecon,bounds=bnds,iter=2000)
-        
-    elif segment.algorithm == 'SNOPT':
-        
-        # SNOPT imports
-        import pyOpt
-        import pyOpt.pySNOPT    
-        
-        # Have the optimizer call the wrapper
-        obj_pyopt = lambda unknowns:get_problem_pyopt(unknowns,segment) 
-    
-        opt_prob = pyOpt.Optimization('RCAIDE',obj_pyopt)
-        opt_prob.addObj(segment.objective)
-    
-        for ii in range(0,len(unknowns)):
-            lbd = (bnds[ii][0])
-            ubd = (bnds[ii][1])
-            vartype = 'c'
-            opt_prob.addVar(str(ii),vartype,lower=lbd,upper=ubd,value=unknowns[ii])  
-    
-        # Setup constraints
-        segment_points = segment.state.numerics.number_of_control_points
-        for ii in range(0,2*segment_points):
-            opt_prob.addCon(str(ii), type='e', equal=0.)
-        for ii in range(0,5*segment_points-1):
-            opt_prob.addCon(str(ii+segment_points*2), type='i', lower=0.,upper=np.inf)
-    
-        print(opt_prob)
-    
-        snopt = pyOpt.pySNOPT.SNOPT()    
-        outputs = snopt(opt_prob) 
-    
-        print(outputs)
-        print(opt_prob.solution(0))
-
     return
     
 # ----------------------------------------------------------------------
@@ -232,60 +198,4 @@ def get_ieconstraints(unknowns, segment):
     
     constraints = np.concatenate((time_con,CL_con,CL_con2,alt_con,acc_con))
     
-    return constraints
- 
-def get_problem_pyopt(unknowns, segment):
-    """ Runs the mission and obtains the objective and all constraints. This is formatted for pyopt
-    
-        Assumptions:
-        Time only goes forward
-        CL is less than a specified limit
-        All altitudes are greater than zero
-        
-        Args:
-        state.unknowns      [Data]
-    
-        Returns:
-        obj                 [float]
-        con                 [array]
-        fail                [boolean]
-
-        
-                                
-    """       
-
-    if isinstance(unknowns,np.ndarray):
-        segment.state.unknowns.unpack_array(unknowns)
-    else:
-        segment.state.unknowns = unknowns
-        
-    if not np.all(segment.state.inputs_last == segment.state.unknowns):
-        segment.process.iterate(segment)
-        
-    obj      = segment.state.objective_value
-    
-    # Time goes forward, not backward
-    t_final  = segment.state.conditions.frames.inertial.time[-1,0]
-    time_con = (segment.state.conditions.frames.inertial.time[1:,0] - segment.state.conditions.frames.inertial.time[0:-1,0])/t_final
-    
-    # Less than a specified CL limit
-    lift_coefficient_limit = segment.lift_coefficient_limit 
-    CL_con   = (lift_coefficient_limit  - segment.state.conditions.aerodynamics.coefficients.lift.total[:,0])/lift_coefficient_limit
-    
-    CL_con2   = segment.state.conditions.aerodynamics.coefficients.lift.total[:,0]
-    
-    # Altitudes are greater than 0
-    alt_con = segment.state.conditions.freestream.altitude[:,0]/segment.altitude_end
-    
-    # Acceleration constraint, go faster not slower
-    acc_con   = segment.state.conditions.frames.inertial.acceleration_vector[:,0]
-    
-    # Put the equality and inequality constraints together
-    constraints = np.concatenate((segment.state.constraint_values,time_con,CL_con,alt_con,acc_con,CL_con2))
-    
-    
-    obj   = segment.state.objective_value
-    const = constraints.tolist()
-    fail  = np.array(np.isnan(obj) or np.isnan(np.array(const).any())).astype(int)    
-    
-    return obj,const,fail
+    return constraints 
