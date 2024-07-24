@@ -41,7 +41,9 @@ def stability(mission):
         
         if (type(segment.analyses.stability) == RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method):
             if last_tag and  'compute' in mission.segments[last_tag].analyses.stability.process: 
-                segment.analyses.stability.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.stability.process.compute.lift.inviscid_wings                  
+                segment.analyses.stability.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.stability.process.compute.lift.inviscid_wings  
+        else:
+            raise('Stability Model Not Supported Yet')
                 
 
     return 
