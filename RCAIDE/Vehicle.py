@@ -38,7 +38,7 @@ class Vehicle(Data):
         self.avionics                     = Components.Systems.Avionics.Container()
         self.systems                      = Components.Systems.System.Container()
         self.booms                        = Components.Booms.Boom.Container()
-        self.mass_properties              = Vehicle_Mass_Container()
+        self.mass_properties              = Vehicle_Mass_Properties()
         self.payload                      = Components.Payloads.Payload.Container()
         self.costs                        = Data() 
         self.costs.industrial             = Attributes.Costs.Industrial_Costs()
@@ -47,7 +47,6 @@ class Vehicle(Data):
         self.reference_area               = 0.0
         self.passengers                   = 0.0
         self.maximum_cross_sectional_area = 0.0 
-        self.performance                  = Data()
          
     _energy_network_root_map = None 
 
@@ -78,7 +77,6 @@ class Vehicle(Data):
             Framework.Networks.Network                 : self['networks']         , 
             Components.Booms.Boom                      : self['booms']            ,
             Components.Landing_Gear.Landing_Gear       : self['landing_gear']     ,
-            Vehicle_Mass_Properties                    : self['mass_properties']  ,
         }
 
         self._energy_network_root_map= {
@@ -273,24 +271,7 @@ class Vehicle_Mass_Properties(Components.Mass_Properties):
         self.max_cargo                   = 0.0
         self.cargo                       = 0.0
         self.max_payload                 = 0.0
-        self.payload                     = 0.0
-        self.passenger                   = 0.0
-        self.crew                        = 0.0
         self.max_fuel                    = 0.0
-        self.fuel                        = 0.0
         self.max_zero_fuel               = 0.0
         self.center_of_gravity           = [[0.0,0.0,0.0]]
         self.zero_fuel_center_of_gravity = np.array([[0.0,0.0,0.0]])    
-        
-class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Properties):
-
-    def __defaults__(self):
-        """This sets the default values.
-        
-            Assumptions:
-                None
-    
-            Source:
-                None
-            """             
-         
