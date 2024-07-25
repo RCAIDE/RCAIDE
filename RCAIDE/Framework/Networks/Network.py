@@ -54,20 +54,10 @@ class Container(Component.Container):
             
             Returns:
                 results (dict): Results of the evaluate method 
-        """
-        #ones_row                          = state.ones_row
-        #results                           = Data()
-        #results.thrust_force_vector       = 0.*ones_row(3)
-        #results.vehicle_mass_rate         = 0.*ones_row(1)
-        for net in self.values():
-            #if hasattr(net, 'has_additional_fuel_type'):
-                #if net.has_additional_fuel_type: 
-                    #results.vehicle_additional_fuel_rate  =  0.*ones_row(1)  
-                    #results.vehicle_fuel_rate             =  0.*ones_row(1)
-            net.evaluate(state,center_of_gravity)
-            #results.thrust_force_vector  += state.conditions.energy.thrust_force_vector
-            #results.vehicle_mass_rate    += state.conditions.energy.vehicle_mass_rate    
-        return # results
+        """ 
+        for net in self.values(): 
+            net.evaluate(state,center_of_gravity)  
+        return  
     
 # ----------------------------------------------------------------------
 #  Handle Linking
