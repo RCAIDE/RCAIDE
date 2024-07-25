@@ -8,14 +8,14 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## RCAIDE imports   
-from RCAIDE.Framework.Core      import Data
+from RCAIDE.Framework.Core      import Data, Container
 from .                import Propulsor
  
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # Turbojet 
 # ---------------------------------------------------------------------------------------------------------------------- 
-class Turbojet(Propulsor):
+class Turbojet(Propulsor, Container):
     """This is a  turbojet propulsor
 
     Assumptions:

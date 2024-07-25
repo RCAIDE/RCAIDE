@@ -15,7 +15,23 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # heads_method
 # ---------------------------------------------------------------------------------------------------------------------- 
-def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor_0,RE_L,TURBULENT_COORD,VE_I,DVE_I,TURBULENT_SURF,tol):
+
+
+def heads_method(npanel: int,
+                 ncases: int,
+                 ncpts: float,
+                 DEL_0: float,
+                 DELTA_STAR_0: float,
+                 CF_0: float,
+                 ShapeFactor_0: float,
+                 THETA_0: float,
+                 TURBULENT_SURF: np.ndarray,
+                 RE_L: np.ndarray,
+                 TURBULENT_COORD: np.ndarray,
+                 VE_I: np.ndarray,
+                 DVE_I: np.ndarray,
+                 ERR_0: float = 0.2,
+                 TOL: float = 1E-5):
     """ Computes the boundary layer characteristics in turbulent
     flow pressure gradients
 
@@ -27,20 +43,21 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
         None  
 
     Args: 
+        npanel                    (int): number of points on surface                          [unitless]
         ncases                    (int): number of cases (angle of attacks)                   [unitless]
         ncpts                     (int): number of control points (reynolds numbers)          [unitless]
-        DEL_0                   (float): intital bounday layer thickness                      [m]
+        DEL_0                   (float): initial boundary layer thickness                     [m]
         DELTA_STAR_0            (float): initial displacement thickness                       [m]
         CF_0                    (float): initial value of the skin friction coefficient       [unitless]
-        H_0                     (float): initial value of the shape factor                    [unitless]
+        ShapeFactor_0           (float): initial value of the shape factor                    [unitless]
         THETA_0                 (float): initial momentum thickness                           [m]
         TURBULENT_SURF  (numpy.ndarray): normalized length of surface                         [unitless]
         RE_L            (numpy.ndarray): Reynolds number                                      [unitless]
         TURBULENT_COORD (numpy.ndarray): x coordinate on surface of airfoil                   [unitless] 
         VE_I            (numpy.ndarray): boundary layer velocity at all panels                [m/s-m] 
-        DVE_I           (numpy.ndarray): derivative of boundary layer velocity at all panels  [m/s^2] 
-        npanel                    (int): number of points on surface                          [unitless]
-        tol                     (float): boundary layer error correction tolerance            [unitless]
+        DVE_I           (numpy.ndarray): derivative of boundary layer velocity at all panels  [m/s^2]
+        ERR_0                   (float): starting point for boundary layer error correction   [unitless]
+        TOL                     (float): boundary layer error correction tolerance            [unitless]
 
     Returns:  
         RESULTS.X_H          (numpy.ndarray): reshaped distance along airfoil surface             [unitless]
@@ -64,7 +81,7 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
     
     for case in range(ncases):
         for cpt in range(ncpts):  
-            # length of tubulent surface  
+            # length of turbulent surface
             l = TURBULENT_SURF[case,cpt] 
             if l == 0.0:
                 pass
@@ -75,7 +92,7 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
                     return cf_var 
 
                 def getH(H1_var):
-                    if H1_var<3.3:
+                    if H1_var < 3.3:
                         H_var = 3.0
                     elif H1_var < 5.39142:
                         H_var = 0.6778 + 1.153793*(H1_var-3.3)**-0.32637
@@ -104,7 +121,7 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
                 Theta[0]     = THETA_0[case,cpt]
                 H1           = np.zeros(n) 
                 H1[0]        = (DEL_0[case,cpt] - DELTA_STAR_0[case,cpt])/THETA_0[case,cpt]
-                if H1[0]<3.3:
+                if H1[0] < 3.3:
                     H1[0] = 3.417285
                 
                 cf           = np.zeros(n)
@@ -112,7 +129,7 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
                 VeThetaH1    = np.zeros(n)
                 VeThetaH1[0] = Ve_i[0]*Theta[0]*H1[0]
                 
-                for i in range(1,n):
+                for i in range(1, n):
                     # initialise the variable values at the current grid point using previous grid points (to define the error functions)
                     H_er     = H[i-1]
                     cf_er    = cf[i-1]
@@ -124,13 +141,11 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0,CF_0,ShapeFactor
                     cf[i] = cf[i-1]
                     
                     #assume some error values
-                    erH     = 0.2
-                    erH1    = 0.2
-                    erTheta = 0.2
-                    ercf    = 0.2
+                    erH = erH1 = erTheta = ercf = ERR_0
                     
                     # iterate to get the variables at the grid point
-                    while abs(erH)>0.00001 or abs(erH1)>0.00001 or abs(erTheta)>0.00001 or abs(ercf)>0.00001:
+
+                    while any(error > TOL for error in [erH, erH1, erTheta, ercf]):
                         
                         # get Theta and VeThetaH1
                         Theta[i], VeThetaH1[i] = RK4(i-1, dx, x_i, Theta, VeThetaH1, dTheta_by_dx, dVeThetaH1_by_dx)
@@ -199,12 +214,12 @@ def RK4(ind, dx, x, Theta_var, VeThetaH1_var, Theta_slope, VeThetaH1_slope):
                                                                    
     Args:                                                      
         ind             ((int) : index                 [unitless]
-        dx              (float): surface increment     [unitless]
-        x               (float): location on surface   [unitless]
-        Theta_var       (float): Theta                 [unitless]
-        VeThetaH1_var   (float): VeThetaH1             [unitless]
-        Theta_slope     (float): gradient of Theta     [unitless]
-        VeThetaH1_slope (float): gradient of VeThetaH1 [unitless]
+        dx              (list): surface increment     [unitless]
+        x               (list): location on surface   [unitless]
+        Theta_var       (list): Theta                 [unitless]
+        VeThetaH1_var   (list): VeThetaH1             [unitless]
+        Theta_slope     (callable): gradient of Theta     [unitless]
+        VeThetaH1_slope (callable): gradient of VeThetaH1 [unitless]
         
     Returns:
         Theta_new     (float): new value of Theta      [unitless]

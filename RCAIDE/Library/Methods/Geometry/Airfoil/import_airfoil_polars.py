@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # Import Airfoil Polars 
 # ----------------------------------------------------------------------------------------------------------------------   
-def import_airfoil_polars(airfoil_polar_files,angel_of_attack_discretization = 89):
+def import_airfoil_polars(airfoil_polar_files, angle_of_attack_discretization = 89):
     """Imports airfoil polars from a text file
     
     Assumptions:
@@ -44,12 +44,12 @@ def import_airfoil_polars(airfoil_polar_files,angel_of_attack_discretization = 8
     num_polars            = max(num_polars, n_p)       
     
     # create empty data structures 
-    AoA        = np.zeros((num_polars,angel_of_attack_discretization))
-    CL         = np.zeros((num_polars,angel_of_attack_discretization))
-    CD         = np.zeros((num_polars,angel_of_attack_discretization)) 
+    AoA        = np.zeros((num_polars, angle_of_attack_discretization))
+    CL         = np.zeros((num_polars, angle_of_attack_discretization))
+    CD         = np.zeros((num_polars, angle_of_attack_discretization))
     Re         = np.zeros(num_polars)
     Ma         = np.zeros(num_polars) 
-    AoA_interp = np.linspace(-6,16,angel_of_attack_discretization)  
+    AoA_interp = np.linspace(-6, 16, angle_of_attack_discretization)
     
     for j in range(len(airfoil_polar_files)):   
         # Open file and read column names and data block

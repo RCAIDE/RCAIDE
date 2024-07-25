@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-# RCAIDE imporst 
+# RCAIDE imports 
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Methods.Utilities   import Cubic_Spline_Blender   
 from . import compressible_turbulent_flat_plate
@@ -56,7 +56,7 @@ def parasite_drag_nacelle(state,settings,geometry):
 #  Nacelle Drag 
 # ---------------------------------------------------------------------------------------------------------------------- 
 def nacelle_drag(state,settings, nacelle):
-    """helperr fuction to computes the parasite drag due to the nacelle
+    """helper function to compute the parasite drag due to the nacelle
 
     Assumptions:
         None 
@@ -89,36 +89,36 @@ def nacelle_drag(state,settings, nacelle):
     Re_prop = Re*nacelle.length
     
     # Skin friction coefficient
-    cf_prop, k_comp, k_reyn = compressible_turbulent_flat_plate(Re_prop,Mach,T) 
+    cf_prop, k_comp, k_reyn = compressible_turbulent_flat_plate(Re_prop, Mach, T)
     
     # Form factor according to Raymer equation
-    form_factor  = 1 + 0.35 / ( nacelle.length/nacelle.diameter)   
+    form_factor  = 1 + 0.35 / (nacelle.length / nacelle.diameter)
          
-    if np.all((Mach<=1.0) == True): 
+    if np.all(Mach <= 1.0):
         # subsonic condition 
-        parasite_drag = form_factor * cf_prop * Swet / Sref 
+        pass
     else:
 
         # supersonic condition 
         k_prop_sup = 1.
         
         trans_spline = Cubic_Spline_Blender(low_mach_cutoff,high_mach_cutoff)
-        h00 = lambda M:trans_spline.compute(M)
+        h00 = lambda M: trans_spline.compute(M)
         
-        form_factor = form_factor*(h00(Mach)) + k_prop_sup*(1-h00(Mach))
+        form_factor = form_factor * (h00(Mach)) + k_prop_sup * (1 - h00(Mach))
              
-        # find the final result    
-        parasite_drag = form_factor * cf_prop * Swet / Sref        
+    # find the final result
+    parasite_drag = form_factor * cf_prop * Swet / Sref
     
     # store results
     results = Data(
-        wetted_area               = Swet    , 
-        reference_area            = Sref    , 
-        total                     = parasite_drag ,
-        skin_friction             = cf_prop ,
-        compressibility_factor    = k_comp  ,
-        reynolds_factor           = k_reyn  , 
-        form_factor               = form_factor  ,
+        wetted_area=Swet,
+        reference_area=Sref,
+        total=parasite_drag,
+        skin_friction=cf_prop,
+        compressibility_factor=k_comp,
+        reynolds_factor=k_reyn,
+        form_factor=form_factor,
     )
     state.conditions.aerodynamics.coefficients.drag.parasite[nacelle.tag] = results    
     

@@ -11,7 +11,7 @@ from .panel_geometry import panel_geometry
 from .infl_coeff  import infl_coeff
 from .velocity_distribution import velocity_distribution
 
-# pacakge imports  
+# package imports  
 import numpy as np  
  
 # ----------------------------------------------------------------------------------------------------------------------

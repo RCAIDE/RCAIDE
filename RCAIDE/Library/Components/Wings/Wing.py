@@ -76,8 +76,6 @@ class Wing(Component):
         self.transition_x_upper                = 0.0
         self.transition_x_lower                = 0.0
                                                
-        self.dynamic_pressure_ratio            = 0.0
-                                               
         self.Airfoil                           = Container()  
         
         self.Segments                          = Container()

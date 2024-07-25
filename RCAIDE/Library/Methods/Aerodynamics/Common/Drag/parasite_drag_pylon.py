@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-# RCAIDE imporst 
+# RCAIDE imports
 from RCAIDE.Framework.Core import Data 
 
 # python imports 
@@ -39,74 +39,37 @@ def parasite_drag_pylon(state,settings,geometry):
     """
     
     drag          = state.conditions.aerodynamics.coefficients.drag
-    pylon_factor  = 0.2  
+    pylon_factor  = 0.2
 
     # Estimating pylon drag
     for network in  geometry.networks: 
-        if 'busses' in network:  
-            for bus in network.busses:
-                for propulsor in bus.propulsors:  
-                    if 'nacelle' in propulsor:
-                        nacelle              =  propulsor.nacelle
-                        if nacelle.has_pylon:
-                            ref_area             = nacelle.diameter**2 / 4 * np.pi
-                            pylon_parasite_drag  = pylon_factor *  drag.parasite[nacelle.tag].total * (ref_area/geometry.reference_area)
-                            pylon_wetted_area    = pylon_factor *  drag.parasite[nacelle.tag].wetted_area  
-                            pylon_cf             = drag.parasite[nacelle.tag].skin_friction 
-                            pylon_compr_fact     = drag.parasite[nacelle.tag].compressibility_factor
-                            pylon_rey_fact       = drag.parasite[nacelle.tag].reynolds_factor
-                            pylon_FF             = drag.parasite[nacelle.tag].form_factor 
-                            pylon_result         = Data(
-                                wetted_area               = pylon_wetted_area   ,
-                                reference_area            = geometry.reference_area   ,
-                                total                     = pylon_parasite_drag ,
-                                skin_friction             = pylon_cf  ,
-                                compressibility_factor    = pylon_compr_fact   ,
-                                reynolds_factor           = pylon_rey_fact   ,
-                                form_factor               = pylon_FF   , )
-                            drag.parasite[ nacelle.tag + '_pylon'] = pylon_result
-                        else:
-                            pylon_result = Data(
-                                wetted_area               = 0 ,
-                                reference_area            = geometry.reference_area  ,
-                                total                     = np.zeros_like(drag.parasite[nacelle.tag].skin_friction)  ,
-                                skin_friction             = 0 ,
-                                compressibility_factor    = 0 ,
-                                reynolds_factor           = 0 ,
-                                form_factor               = 0 , )
-                            drag.parasite[ nacelle.tag + '_pylon'] = pylon_result
-     
-        if 'fuel_lines' in network:  
-            for fuel_line in network.fuel_lines:
-                for propulsor in fuel_line.propulsors:  
-                    if 'nacelle' in propulsor:
-                        nacelle              = propulsor.nacelle
-                        if nacelle.has_pylon:
-                            ref_area             = nacelle.diameter**2 / 4 * np.pi
-                            pylon_parasite_drag  = pylon_factor *  drag.parasite[nacelle.tag].total* (ref_area/geometry.reference_area)
-                            pylon_wetted_area    = pylon_factor *  drag.parasite[nacelle.tag].wetted_area  
-                            pylon_cf             = drag.parasite[nacelle.tag].skin_friction 
-                            pylon_compr_fact     = drag.parasite[nacelle.tag].compressibility_factor
-                            pylon_rey_fact       = drag.parasite[nacelle.tag].reynolds_factor
-                            pylon_FF             = drag.parasite[nacelle.tag].form_factor  
-                            pylon_result = Data(
-                                wetted_area               = pylon_wetted_area   ,
-                                reference_area            = geometry.reference_area   ,
-                                total                     = pylon_parasite_drag ,
-                                skin_friction             = pylon_cf  ,
-                                compressibility_factor    = pylon_compr_fact   ,
-                                reynolds_factor           = pylon_rey_fact   ,
-                                form_factor               = pylon_FF   , )
-                            drag.parasite[ nacelle.tag + '_pylon'] = pylon_result
-                        else:
-                            pylon_result = Data(
-                                wetted_area               = 0 ,
-                                reference_area            = geometry.reference_area  ,
-                                total                     = np.zeros_like(drag.parasite[nacelle.tag].skin_friction)  ,
-                                skin_friction             = 0 ,
-                                compressibility_factor    = 0 ,
-                                reynolds_factor           = 0 ,
-                                form_factor               = 0 , )
-                            drag.parasite[ nacelle.tag + '_pylon'] = pylon_result
- 
-    return 
+        if 'busses' in network:
+            carriers = network.busses
+        if 'fuel_lines' in network:
+            carriers = network.fuel_lines
+
+        for carrier in carriers:
+            nacelle_propulsors = [p for p in carrier.propulsors if 'nacelle' in p]
+            for propulsor in nacelle_propulsors:
+                nacelle = propulsor.nacelle
+                pylon = nacelle.has_pylon
+                pylon_result         = Data(
+                    wetted_area            =(0
+                                             + pylon * pylon_factor * drag.parasite[nacelle.tag].wetted_area),
+                    reference_area         =geometry.reference_area,
+
+                    skin_friction          =(0
+                                             + pylon * drag.parasite[nacelle.tag].skin_friction),
+                    compressibility_factor =(0
+                                             + pylon * drag.parasite[nacelle.tag].compressibility_factor),
+                    reynolds_factor        =(0
+                                             + pylon * drag.parasite[nacelle.tag].reynolds_factor),
+                    form_factor            =(0
+                                                + pylon * drag.parasite[nacelle.tag].form_factor),
+                    total                  =(np.zeros_like(drag.parasite[nacelle.tag].skin_friction)
+                                             + pylon * pylon_factor * drag.parasite[nacelle.tag].total
+                                             * (nacelle.diameter ** 2 / 4 * np.pi / geometry.reference_area))
+                )
+                drag.parasite[nacelle.tag + '_pylon'] = pylon_result
+
+    return

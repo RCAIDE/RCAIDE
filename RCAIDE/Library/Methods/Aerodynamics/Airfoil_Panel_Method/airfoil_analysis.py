@@ -13,7 +13,7 @@ from .thwaites_method      import thwaites_method
 from .heads_method         import heads_method 
 from .aero_coeff           import aero_coeff  
 
-# pacakge imports  
+# package imports  
 import numpy as np  
 
 # ----------------------------------------------------------------------------------------------------------------------

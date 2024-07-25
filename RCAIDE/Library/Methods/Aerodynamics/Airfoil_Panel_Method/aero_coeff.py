@@ -9,7 +9,7 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Core import Data
 
-# pacakge imports  
+# package imports  
 import numpy as np  
 
 # ----------------------------------------------------------------------------------------------------------------------
