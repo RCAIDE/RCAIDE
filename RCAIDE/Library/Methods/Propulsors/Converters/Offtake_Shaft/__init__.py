@@ -7,5 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-        
-from .compute_shaft_power_offtake import compute_shaft_power_offtake 
+
+from .append_offtake_shaft_conditions    import append_offtake_shaft_conditions                    
+from .compute_offtake_shaft_performance  import compute_offtake_shaft_performance

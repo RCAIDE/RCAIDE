@@ -7,5 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-        
+
+from .append_expansion_nozzle_conditions    import append_expansion_nozzle_conditions         
 from .compute_expansion_nozzle_performance  import compute_expansion_nozzle_performance

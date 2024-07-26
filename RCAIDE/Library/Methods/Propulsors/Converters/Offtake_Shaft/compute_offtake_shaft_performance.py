@@ -11,9 +11,9 @@
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-# compute_shaft_power_offtake
+# compute_offtake_shaft_performance
 # ----------------------------------------------------------------------------------------------------------------------     
-def compute_shaft_power_offtake(offtake_shaft, state):
+def compute_offtake_shaft_performance(offtake_shaft, state):
     """ This computes the work done from the power draw. The following properties are computed: 
     offtake_shaft.outputs.
       power        (numpy.ndarray): power                              [W]

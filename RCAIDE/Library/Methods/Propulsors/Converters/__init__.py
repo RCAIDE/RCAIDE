@@ -16,5 +16,5 @@ from . import Engine
 from . import Expansion_Nozzle
 from . import Fan 
 from . import Ram 
-from . import Shaft_Power_Offtake
+from . import Offtake_Shaft
 from . import Turbine

@@ -8,6 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports  
 from RCAIDE.Library.Components                      import Component   
+from RCAIDE.Library.Methods.Propulsors.Converters.Engine.append_engine_conditions import append_engine_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Engine Class
@@ -30,4 +31,8 @@ class Engine(Component):
         self.rated_speed                     = 0.0  
         self.power_split_ratio               = 0.0
         self.power_specific_fuel_consumption = 0.36
+
+    def append_operating_conditions(self,propulsor_conditions): 
+        append_engine_conditions(self,propulsor_conditions)
+        return                
 

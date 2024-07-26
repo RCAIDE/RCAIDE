@@ -20,6 +20,5 @@ class Constant_Speed_ICE_Propeller(Propulsor):
         self.tag                          = 'ice_constant_speed_propeller'   
         self.active_fuel_tanks            = None
         self.engine                       = None
-        self.propeller                    = None  
-          
+        self.propeller                    = None 
  

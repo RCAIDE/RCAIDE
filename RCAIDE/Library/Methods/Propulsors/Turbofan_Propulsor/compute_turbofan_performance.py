@@ -23,51 +23,8 @@ import  numpy as  np
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-def compute_turbofan_performance(fuel_line,state,center_of_gravity=[[0.0, 0.0, 0.0]]):  
-    ''' Computes the perfomrance of all turbofan engines connected to a fuel tank
-    
-    Assumptions: 
-    N/A
-
-    Source:
-    N/A
-
-    Inputs:   
-    fuel_line            - data structure containing turbofans on distrubution network  [-]  
-    propulsors           - list of propulsors that are powered by energy source         [-]
-    state                - operating data structure                                     [-] 
-                     
-    Outputs:                      
-    outputs              - turbofan operating outputs                                   [-]
-    total_thrust         - thrust of turbofans                                          [N]
-    total_power          - power of turbofans                                           [W] 
-    
-    Properties Used: 
-    N.A.        
-    '''
-   
-    total_power     = 0*state.ones_row(1) 
-    total_thrust    = 0*state.ones_row(3)
-    total_moment    = 0*state.ones_row(3)
-    stored_results_flag  = False  
-    
-    for turbofan in fuel_line.propulsors:  
-        if turbofan.active == True:  
-            if fuel_line.identical_propulsors == False:
-                # run analysis  
-                total_thrust,total_moment,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total_power,center_of_gravity)
-            else:             
-                if stored_results_flag == False: 
-                    # run analysis 
-                    total_thrust,total_moment,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total_power,center_of_gravity)
-                else:
-                    # use old results 
-                    total_thrust,total_moment,total_power  = reuse_stored_data(state,fuel_line,turbofan,stored_propulsor_tag,total_thrust,total_moment,total_power,center_of_gravity)
-                
-    return total_thrust,total_moment,total_power
-
-def compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total_power, center_of_gravity= [[0.0, 0.0,0.0]]):  
+## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor  
+def compute_turbofan_performance(turbofan,state,fuel_line,center_of_gravity= [[0.0, 0.0,0.0]]):  
     ''' Computes the perfomrance of one turbofan
     
     Assumptions: 
@@ -122,8 +79,8 @@ def compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total
 
     #Creating the network by manually linking the different components
 
-    #set the working fluid to determine the fluid properties
-    ram.working_fluid                               = turbofan.working_fluid
+    # Set the working fluid to determine the fluid properties
+    ram.working_fluid = turbofan.working_fluid
 
     #Flow through the ram , this computes the necessary flow quantities and stores it into conditions
     compute_ram_performance(ram,ram_conditions, freestream)
@@ -258,9 +215,9 @@ def compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total
     moment_vector[:,1] =  turbofan.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2] =  turbofan.origin[0][2]  -  center_of_gravity[0][2]
     M                  =  np.cross(moment_vector, F)   
-    total_moment       += M 
-    total_power        += turbofan_conditions.power
-    total_thrust       += F
+    moment             = M 
+    power              = turbofan_conditions.power
+    thrust             = F
 
     # store data
     core_nozzle_res = Data(
@@ -282,14 +239,12 @@ def compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total
     noise_conditions.turbofan.fan_nozzle    = fan_nozzle_res
     noise_conditions.turbofan.core_nozzle   = core_nozzle_res  
     noise_conditions.turbofan.fan           = None
-    stored_results_flag                  = True
-    stored_propulsor_tag                 = turbofan.tag 
+    stored_results_flag                     = True
+    stored_propulsor_tag                    = turbofan.tag 
     
-    return total_thrust,total_moment,total_power,stored_results_flag,stored_propulsor_tag
+    return thrust,moment,power,stored_results_flag,stored_propulsor_tag 
     
-    
-    
-def reuse_stored_data(state,fuel_line,turbofan,stored_propulsor_tag,total_thrust,total_moment,total_power,center_of_gravity):
+def reuse_stored_turbofan_data(turbofan,state,fuel_line,stored_propulsor_tag,center_of_gravity= [[0.0, 0.0,0.0]]):
     '''Reuses results from one turbofan for identical turbofans
     
     Assumptions: 
@@ -333,9 +288,10 @@ def reuse_stored_data(state,fuel_line,turbofan,stored_propulsor_tag,total_thrust
     turbofan_conditions.fuel_flow_rate      = turbofan_conditions_0.fuel_flow_rate 
     noise_conditions.turbofan.fan_nozzle    = noise_conditions_0.turbofan.fan_nozzle 
     noise_conditions.turbofan.core_nozzle   = noise_conditions_0.turbofan.core_nozzle 
-    noise_conditions.turbofan.fan           = None   
-    total_moment                           += M
-    total_power                            += turbofan_conditions.power
-    total_thrust                           += turbofan_conditions.thrust 
+    noise_conditions.turbofan.fan           = None  
  
-    return total_thrust,total_moment,total_power    
+    moment                                  = M
+    power                                   = turbofan_conditions.power
+    thrust                                  = turbofan_conditions.thrust 
+ 
+    return thrust,moment,power    

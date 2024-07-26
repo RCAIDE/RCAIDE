@@ -8,6 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports   
 from RCAIDE.Library.Components                      import Component  
+from RCAIDE.Library.Methods.Propulsors.Converters.Compressor.append_compressor_conditions import append_compressor_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compressor 
@@ -28,4 +29,9 @@ class Compressor(Component):
         #set the default values
         self.tag                             = 'Compressor'
         self.polytropic_efficiency           = 1.0
-        self.pressure_ratio                  = 1.0 
+        self.pressure_ratio                  = 1.0
+
+    def append_operating_conditions(self,segment,fuel_line,propulsor): 
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag]
+        append_compressor_conditions(self,segment,propulsor_conditions)
+        return        

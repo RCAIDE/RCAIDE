@@ -8,6 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports   
 from RCAIDE.Library.Components                      import Component  
+from RCAIDE.Library.Methods.Propulsors.Converters.Fan.append_fan_conditions import append_fan_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fan  
@@ -29,4 +30,10 @@ class Fan(Component):
         self.tag                            = 'Fan'
         self.polytropic_efficiency          = 1.0
         self.pressure_ratio                 = 1.0
-        self.angular_velocity               = 0    
+        self.angular_velocity               = 0
+
+
+    def append_operating_conditions(self,segment,fuel_line,propulsor): 
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag]
+        append_fan_conditions(self,segment,propulsor_conditions)
+        return                                

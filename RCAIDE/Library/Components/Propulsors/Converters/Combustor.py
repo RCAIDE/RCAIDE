@@ -7,7 +7,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports   
-from RCAIDE.Library.Components                      import Component  
+from RCAIDE.Library.Components                      import Component
+from RCAIDE.Library.Methods.Propulsors.Converters.Combustor.append_combustor_conditions import  append_combustor_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Combustor
@@ -36,3 +37,7 @@ class Combustor(Component):
         self.absolute_sensible_enthalpy      = 0.0
         self.fuel_equivalency_ratio          = 1.0        
     
+    def append_operating_conditions(self,segment,fuel_line,propulsor):
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag]
+        append_combustor_conditions(self,segment,propulsor_conditions)
+        return

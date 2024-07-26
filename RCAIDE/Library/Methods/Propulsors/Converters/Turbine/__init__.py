@@ -7,5 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-        
+
+from .append_turbine_conditions   import append_turbine_conditions                     
 from .compute_turbine_performance import compute_turbine_performance

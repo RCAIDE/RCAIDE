@@ -8,6 +8,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+from .append_motor_conditions           import append_motor_conditions 
 from .motor_performance                 import compute_torque_from_RPM_and_voltage
 from .motor_performance                 import compute_RPM_and_torque_from_power_coefficent_and_voltage
 from .motor_performance                 import compute_current_from_RPM_and_voltage

@@ -9,6 +9,7 @@
  # RCAIDE imports
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Components                      import Component  
+from RCAIDE.Library.Methods.Propulsors.Converters.Ram.append_ram_conditions import append_ram_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fan Component
@@ -27,6 +28,11 @@ class Ram(Component):
             https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/ 
         """
         #set the deafult values
-        self.tag                             = 'Ram' 
+        self.tag                      = 'Ram' 
         self.working_fluid            = Data()
- 
+
+
+    def append_operating_conditions(self,segment,fuel_line,propulsor): 
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag]
+        append_ram_conditions(self,segment,propulsor_conditions)
+        return                         

@@ -7,8 +7,10 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports  
-from RCAIDE.Framework.Core      import Data, Container
+from RCAIDE.Framework.Core      import Container
 from .                          import Propulsor
+from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor.append_turbofan_conditions     import append_turbofan_conditions 
+from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor.compute_turbofan_performance   import compute_turbofan_performance, reuse_stored_turbofan_data
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fan Component
@@ -53,4 +55,16 @@ class Turbofan(Propulsor):
         self.reference_pressure                       = 1.01325*10**5 
         self.design_thrust                            = 0.0
         self.mass_flow_rate_design                    = 0.0
-        self.OpenVSP_flow_through                     = False 
+        self.OpenVSP_flow_through                     = False
+    
+    def append_operating_conditions(self,segment,fuel_line):
+        append_turbofan_conditions(self,segment,fuel_line)
+        return
+    
+    def compute_performance(self,state,fuel_line,center_of_gravity = [[0, 0, 0]]):
+        thrust,moment,power,stored_results_flag,stored_propulsor_tag =  compute_turbofan_performance(self,state,fuel_line,center_of_gravity)
+        return thrust,moment,power,stored_results_flag,stored_propulsor_tag
+    
+    def reuse_stored_data(turbofan,state,fuel_line,stored_propulsor_tag,center_of_gravity = [[0, 0, 0]]):
+        thrust,moment,power  = reuse_stored_turbofan_data(turbofan,state,fuel_line,stored_propulsor_tag,center_of_gravity)
+        return thrust,moment,power 

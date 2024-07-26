@@ -8,6 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports   
 from RCAIDE.Library.Components                      import Component  
+from RCAIDE.Library.Methods.Propulsors.Converters.Compression_Nozzle.append_compression_nozzle_conditions import append_compression_nozzle_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compression Nozzle 
@@ -33,3 +34,8 @@ class Compression_Nozzle(Component):
         self.compressibility_effects         = False 
         self.compression_levels              = 0.0
         self.theta                           = 0.0
+
+    def append_operating_conditions(self,segment,fuel_line,propulsor): 
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag]
+        append_compression_nozzle_conditions(self,segment,propulsor_conditions)
+        return

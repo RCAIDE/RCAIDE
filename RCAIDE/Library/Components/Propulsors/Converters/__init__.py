@@ -23,7 +23,7 @@ from Legacy.trunk.S.Components.Energy.Converters import Motor_Lo_Fid
 from Legacy.trunk.S.Components.Energy.Converters import Propeller_Lo_Fid 
 from .Ram                                        import Ram
 from Legacy.trunk.S.Components.Energy.Converters import Rocket_Combustor  
-from .Shaft_Power_Offtake                        import Shaft_Power_Offtake
+from .Offtake_Shaft                              import Offtake_Shaft
 from Legacy.trunk.S.Components.Energy.Converters import Solar_Panel
 from Legacy.trunk.S.Components.Energy.Converters import Supersonic_Nozzle
 from .Turbine                                    import Turbine

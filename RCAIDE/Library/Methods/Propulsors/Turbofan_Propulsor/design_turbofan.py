@@ -76,6 +76,16 @@ def design_turbofan(turbofan):
         conditions.freestream.speed_of_sound              = np.atleast_1d(a)
         conditions.freestream.velocity                    = np.atleast_1d(a*turbofan.design_mach_number) 
     
+    fuel_line                = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()
+    segment                  = RCAIDE.Framework.Mission.Segments.Segment()  
+    segment.state.conditions = conditions
+    segment.state.conditions.energy[fuel_line.tag] = Conditions()
+    segment.state.conditions.noise[fuel_line.tag] = Conditions()
+    turbofan.append_operating_conditions(segment,fuel_line) 
+    for tag, item in  turbofan.items(): 
+        if issubclass(type(item), RCAIDE.Library.Components.Component):
+            item.append_operating_conditions(segment,fuel_line,turbofan) 
+                    
     ram                       = turbofan.ram
     inlet_nozzle              = turbofan.inlet_nozzle
     low_pressure_compressor   = turbofan.low_pressure_compressor
@@ -86,44 +96,10 @@ def design_turbofan(turbofan):
     low_pressure_turbine      = turbofan.low_pressure_turbine
     core_nozzle               = turbofan.core_nozzle
     fan_nozzle                = turbofan.fan_nozzle 
-    bypass_ratio              = turbofan.bypass_ratio 
-    
-    turbofan_conditions                                         = Conditions() 
-    turbofan_conditions[combustor.tag]                          = Conditions() 
-    turbofan_conditions[combustor.tag].inputs                   = Conditions() 
-    turbofan_conditions[combustor.tag].outputs                  = Conditions() 
-    turbofan_conditions[combustor.tag].inputs.nondim_mass_ratio = np.array([[1.0]])  
-    turbofan_conditions[ram.tag]                                = Conditions() 
-    turbofan_conditions[ram.tag].inputs                         = Conditions() 
-    turbofan_conditions[ram.tag].outputs                        = Conditions() 
-    turbofan_conditions[fan.tag]                                = Conditions() 
-    turbofan_conditions[fan.tag].inputs                         = Conditions() 
-    turbofan_conditions[fan.tag].outputs                        = Conditions() 
-    turbofan_conditions[high_pressure_compressor.tag]           = Conditions()
-    turbofan_conditions[high_pressure_compressor.tag].inputs    = Conditions()
-    turbofan_conditions[high_pressure_compressor.tag].outputs   = Conditions()
-    turbofan_conditions[low_pressure_compressor.tag]            = Conditions()
-    turbofan_conditions[low_pressure_compressor.tag].inputs     = Conditions()
-    turbofan_conditions[low_pressure_compressor.tag].outputs    = Conditions()
-    turbofan_conditions[high_pressure_turbine.tag]              = Conditions()
-    turbofan_conditions[high_pressure_turbine.tag].inputs       = Conditions()
-    turbofan_conditions[high_pressure_turbine.tag].outputs      = Conditions()
-    turbofan_conditions[low_pressure_turbine.tag]               = Conditions()
-    turbofan_conditions[low_pressure_turbine.tag].inputs        = Conditions()
-    turbofan_conditions[low_pressure_turbine.tag].outputs       = Conditions()
-    turbofan_conditions[core_nozzle.tag]                        = Conditions()
-    turbofan_conditions[core_nozzle.tag].inputs                 = Conditions()
-    turbofan_conditions[core_nozzle.tag].outputs                = Conditions()
-    turbofan_conditions[fan_nozzle.tag]                         = Conditions()
-    turbofan_conditions[fan_nozzle.tag].inputs                  = Conditions()
-    turbofan_conditions[fan_nozzle.tag].outputs                 = Conditions()
-    turbofan_conditions[inlet_nozzle.tag]                       = Conditions()
-    turbofan_conditions[inlet_nozzle.tag].inputs                = Conditions()
-    turbofan_conditions[inlet_nozzle.tag].outputs               = Conditions()
-    turbofan_conditions.inputs                                  = Conditions()
-    turbofan_conditions.outputs                                 = Conditions()
+    bypass_ratio              = turbofan.bypass_ratio  
 
-    # unpack component conditions 
+    # unpack component conditions
+    turbofan_conditions     = conditions.energy[fuel_line.tag][turbofan.tag]
     ram_conditions          = turbofan_conditions[ram.tag]    
     fan_conditions          = turbofan_conditions[fan.tag]    
     inlet_nozzle_conditions = turbofan_conditions[inlet_nozzle.tag]

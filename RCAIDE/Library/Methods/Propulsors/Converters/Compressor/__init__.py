@@ -8,4 +8,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
         
-from .compute_compressor_performance    import  compute_compressor_performance
+from .compute_compressor_performance import compute_compressor_performance
+from .append_compressor_conditions   import append_compressor_conditions

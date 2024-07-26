@@ -7,8 +7,8 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports   
-from RCAIDE.Library.Components                      import Component  
- 
+from RCAIDE.Library.Components                      import Component   
+from RCAIDE.Library.Methods.Propulsors.Converters.Expansion_Nozzle.append_expansion_nozzle_conditions import append_expansion_nozzle_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Expansion Nozzle
@@ -30,4 +30,9 @@ class Expansion_Nozzle(Component):
         #set the defaults
         self.tag = 'Nozzle'
         self.polytropic_efficiency           = 1.0
-        self.pressure_ratio                  = 1.0 
+        self.pressure_ratio                  = 1.0
+
+    def append_operating_conditions(self,segment,fuel_line,propulsor): 
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag]
+        append_expansion_nozzle_conditions(self,segment,propulsor_conditions)
+        return                        

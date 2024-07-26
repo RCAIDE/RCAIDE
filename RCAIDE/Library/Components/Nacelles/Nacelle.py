@@ -43,7 +43,10 @@ class Nacelle(Component):
         self.length                    = 0.0   
         self.orientation_euler_angles  = [0.,0.,0.]    
         self.flow_through              = True 
-        self.cowling_airfoil_angle     = 0.0    
+        self.cowling_airfoil_angle     = 0.0
+        
+    def append_operating_conditions(self,segment,fuel_line,propulsor):  
+        return
 
     def nac_vel_to_body(self):
         """This rotates from the systems body frame to the nacelles velocity frame
