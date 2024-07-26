@@ -200,8 +200,8 @@ def design_turbofan(turbofan):
     fuel_tank                               = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()  
     fuel                                    = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()    
     fuel_tank.fuel                          = fuel  
-    fuel_line.fuel_tanks.append(fuel_tank)  
-    fuel_line.propulsors.append(turbofan)  
+    #fuel_line.fuel_tanks.append(fuel_tank)  
+    #fuel_line.propulsors.append(turbofan)  
         
     sls_conditions = RCAIDE.Framework.Mission.Common.Results()
 

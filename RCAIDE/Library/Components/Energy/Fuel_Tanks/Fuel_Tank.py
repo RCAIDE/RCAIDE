@@ -28,6 +28,7 @@ class Fuel_Tank(Component):
             None
         """          
         self.tag                         = 'fuel_tank'
+        self.type                        = 'fuel_tanks'
         self.fuel_selector_ratio         = 1.0 
         self.mass_properties.empty_mass  = 0.0   
         self.secondary_fuel_flow         = 0.0

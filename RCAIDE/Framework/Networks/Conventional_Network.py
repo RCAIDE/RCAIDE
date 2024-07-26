@@ -8,10 +8,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+from RCAIDE.Library.Components              import Component
+from RCAIDE.Library.Components.Component    import Container
 
-from RCAIDE.Library.Components import Component  
-from RCAIDE.Framework.Core import Data
-from RCAIDE.Library.Components import Component
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  NETWORK
@@ -38,7 +37,32 @@ class Conventional_Network(Component):
                 Properties Used:
                 N/A
         """
-        self.tag                    = 'network'  
-        self.fuel_lines             = Container()    
+        self.tag                    = 'conventional_network'
+        self.distribution_lines     =  Container()
         self.wing_mounted           = True
         self.reverse_thrust         = False 
+        
+    def create_propulsion_network(self, Components,  fuel_line):
+        """ Creates a Propulsion Network for each component pack in a given Propulsion Network
+           
+                   Assumptions:
+                   N/A
+           
+                   Source:
+                   N/A
+           
+                   Inputs:
+                   Components that on that particular fuel line
+                   Fuel line that components are connected to
+                  
+                   Outputs:
+                   Creates a propulsion network
+                   
+                   Properties Used:
+                   Defaulted values
+               """        
+        for Component in  Components:
+            fuel_line[Component.type]                =  Container()
+            fuel_line[Component.type][Component.tag] =  Component
+            
+       
