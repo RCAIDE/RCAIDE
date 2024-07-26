@@ -9,7 +9,7 @@
 # RCAIDE imports  
 from RCAIDE.Library.Mission.Common.Update.atmosphere import atmosphere
 
-# pacakge imports 
+# package imports 
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------  

@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-# RCAIDE imports 
+# package imports
 import RCAIDE
 from RCAIDE.Framework.Core import Units      
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor   import design_turbofan

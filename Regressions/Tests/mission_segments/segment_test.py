@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------
 #   Imports
 # ----------------------------------------------------------------------
-# RCAIDE imports 
+# package imports
 import RCAIDE
 from RCAIDE.Framework.Core import Units ,  Data
 from RCAIDE.Library.Plots             import *       

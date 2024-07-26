@@ -73,6 +73,13 @@ nosetests.xml
 *.pdf
 *.png
 
+# Docs
+*.html
+*.rst
+
 /doc/html
 /doc/latex
-/docs/_build/html/
+/docs/_build/
+/docs/_modules/
+/docs/_sources/
+/docs/_static/

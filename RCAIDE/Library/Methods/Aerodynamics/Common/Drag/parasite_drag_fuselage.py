@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-# RCAIDE imporst 
+# RCAIDE imports 
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender  
 from . import compressible_turbulent_flat_plate
@@ -18,7 +18,7 @@ import numpy as np
 #   Parasite Drag Fuselage
 # ---------------------------------------------------------------------------------------------------------------------- 
 def parasite_drag_fuselage(state,settings,fuselage):
-    """Computes the parasite drag due the a fuselage (or boom)
+    """Computes the parasite drag due to a fuselage (or boom)
 
     Assumptions:
         None
@@ -56,71 +56,68 @@ def parasite_drag_fuselage(state,settings,fuselage):
     Re            = state.conditions.freestream.reynolds_number 
 
     # Reynolds number
-    Re_fus = Re*(l_fus)
+    Re_fus = Re * l_fus
     
     # skin friction coefficient
-    cf_fus, k_comp, k_reyn = compressible_turbulent_flat_plate(Re_fus,Mach,T)       
+    cf_fus, k_comp, k_reyn = compressible_turbulent_flat_plate(Re_fus, Mach, T)
     d_d = float(d_fus)/float(l_fus) 
  
-    if np.all((Mach<=1.0) == True): 
+    if np.all(Mach <= 1.0):
         # compute form factor for cylindrical bodies 
-        D             = np.zeros_like(Mach)    
-        D[Mach < 0.95]  = np.sqrt(1 - (1-Mach[Mach < 0.95]**2) * d_d**2)
-        D[Mach >= 0.95] = np.sqrt(1 - d_d**2)
+        D               = np.zeros_like(Mach)
+        D[Mach <  0.95] = np.sqrt(1 - (1 - Mach[Mach < 0.95] ** 2) * d_d ** 2)
+        D[Mach >= 0.95] = np.sqrt(1 - d_d ** 2)
     
-        a             = np.zeros_like(Mach)    
-        a[Mach < 0.95]  = 2 * (1-Mach[Mach < 0.95]**2) * (d_d**2) *(np.arctanh(D[Mach < 0.95])-D[Mach < 0.95]) / (D[Mach < 0.95]**3)
-        a[Mach >= 0.95] = 2  * (d_d**2) *(np.arctanh(D[Mach >= 0.95])-D[Mach >= 0.95]) / (D[Mach >= 0.95]**3)
+        a               = np.zeros_like(Mach)
+        a[Mach < 0.95]  = (2 * (1 - Mach[Mach < 0.95]**2)
+                           * (d_d**2) * (np.arctanh(D[Mach < 0.95]) - D[Mach < 0.95])
+                           / (D[Mach < 0.95]**3))
+        a[Mach >= 0.95] = (2
+                           * (d_d**2) * (np.arctanh(D[Mach >= 0.95]) - D[Mach >= 0.95])
+                           / (D[Mach >= 0.95]**3))
     
-        du_max_u             = np.zeros_like(Mach)    
-        du_max_u[Mach < 0.95]  = a[Mach < 0.95] / ( (2-a[Mach < 0.95]) * (1-Mach[Mach < 0.95]**2)**0.5 ) 
-        du_max_u[Mach >= 0.95] = a[Mach >= 0.95] / ( (2-a[Mach >= 0.95]) )
-        
-        k_fus                  = (1 + form_factor*du_max_u)**2 
-        fuselage_parasite_drag = k_fus * cf_fus * Swet / Sref
-        
-    else: 
-        
+        du_max_u               = np.zeros_like(Mach)
+        du_max_u[Mach <  0.95] = a[Mach <  0.95] / ((2 - a[Mach <  0.95]) * (1 - Mach[Mach < 0.95] ** 2) ** 0.5)
+        du_max_u[Mach >= 0.95] = a[Mach >= 0.95] /  (2 - a[Mach >= 0.95])
+    else:
         # supersonic condition  
-        D_low        = np.zeros_like(Mach)
-        a_low        = np.zeros_like(Mach)
-        du_max_u_low = np.zeros_like(Mach)
+        D_low = a_low = du_max_u_low = np.zeros_like(Mach)
         
-        D_high        = np.zeros_like(Mach)
-        a_high        = np.zeros_like(Mach)
-        du_max_u_high = np.zeros_like(Mach) 
-        k_fus         = np.zeros_like(Mach)
+        D_high = a_high = du_max_u_high = np.zeros_like(Mach)
         
-        low_inds      = Mach < high_cutoff
-        high_inds     = Mach > low_cutoff
+        low_inds  = Mach < high_cutoff
+        high_inds = Mach > low_cutoff
         
-        D_low[low_inds]        = np.sqrt(1 - (1-Mach[low_inds]**2) * d_d**2)
-        a_low[low_inds]        = 2 * (1-Mach[low_inds]**2) * (d_d**2) *(np.arctanh(D_low[low_inds])-D_low[low_inds]) / (D_low[low_inds]**3)
-        du_max_u_low[low_inds] = a_low[low_inds] / ( (2-a_low[low_inds]) * (1-Mach[low_inds]**2)**0.5 )
+        D_low[low_inds]          = np.sqrt(1 - (1-Mach[low_inds] ** 2) * d_d ** 2)
+        a_low[low_inds]          = (2 * (1-Mach[low_inds]**2)
+                                    * (d_d**2) * (np.arctanh(D_low[low_inds]) - D_low[low_inds])
+                                    / (D_low[low_inds]**3))
+        du_max_u_low[low_inds]   = a_low[low_inds] / ((2 - a_low[low_inds]) * (1 - Mach[low_inds] ** 2) ** 0.5)
         
-        D_high[high_inds]        = np.sqrt(1 - d_d**2)
-        a_high[high_inds]        = 2  * (d_d**2) *(np.arctanh(D_high[high_inds])-D_high[high_inds]) / (D_high[high_inds]**3)
-        du_max_u_high[high_inds] = a_high[high_inds] / ( (2-a_high[high_inds]) )
+        D_high[high_inds]        = np.sqrt(1 - d_d ** 2)
+        a_high[high_inds]        = (2  * (d_d**2) * (np.arctanh(D_high[high_inds])-D_high[high_inds])
+                                    / (D_high[high_inds] ** 3))
+        du_max_u_high[high_inds] = a_high[high_inds] / (2 - a_high[high_inds])
         
         spline = Cubic_Spline_Blender(low_cutoff,high_cutoff)
-        h00    = lambda M:spline.compute(M)
+        h00    = lambda M: spline.compute(M)
         
         du_max_u = du_max_u_low*(h00(Mach)) + du_max_u_high*(1-h00(Mach))    
         
-        k_fus = (1 + form_factor*du_max_u)**2
-    
-        fuselage_parasite_drag = k_fus * cf_fus * Swet / Sref
+    k_fus = (1 + form_factor * du_max_u) ** 2
+
+    fuselage_parasite_drag = k_fus * cf_fus * Swet / Sref
          
-    # Store dat 
+    # Store data
     results = Data(
-        wetted_area               = Swet   , 
-        reference_area            = Sref   , 
-        total                     = fuselage_parasite_drag ,
-        skin_friction             = cf_fus ,
-        compressibility_factor    = k_comp ,
-        reynolds_factor           = k_reyn , 
-        form_factor               = k_fus  ,
+        wetted_area=Swet,
+        reference_area=Sref,
+        total=fuselage_parasite_drag,
+        skin_friction=cf_fus,
+        compressibility_factor=k_comp,
+        reynolds_factor=k_reyn,
+        form_factor=k_fus,
     ) 
     state.conditions.aerodynamics.coefficients.drag.parasite[fuselage.tag] = results        
         
-    return  
+    return
