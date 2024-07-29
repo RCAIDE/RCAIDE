@@ -4,17 +4,34 @@ from RCAIDE.Library.Methods.Mass import Correlation as Mass
 
 class TransportMassAnalysis(Process):
 
+    # Make settings analysis class attributes so that users can see what settings can/must be set when initializing
+    # an instance of this analysis, and so that they appear in the docstring of the analysis
+
+    # Mass Reduction Factors
+    main_wing_mass_reduction_factor: float = 0.
+    fuselage_mass_reduction_factor: float = 0.
+    empennage_mass_reduction_factor: float = 0.
+    systems_mass_reduction_factor: float = 0.
+
+    # Rudder Sizing Fraction
+    rudder_sizing_fraction: float = 0.25
+
     def __post_init__(self):
+        # If the appropriate datastructures aren't already in settings, create them:
+        if 'mass_reduction_factors' not in vars(self.initial_settings).keys():
+            self.initial_settings.mass_reduction_factors = dataclass()
+        if 'sizing' not in vars(self.initial_settings).keys():
+            self.initial_settings.sizing = dataclass()
 
-        # Weight Reduction Factors
+        # Map analysis settings into settings datastructure for later retreival
+        self.initial_settings.mass_reduction_factors.main_wing    = self.main_wing_mass_reduction_factor
+        self.initial_settings.mass_reduction_factors.fuselage     = self.fuselage_mass_reduction_factor
+        self.initial_settings.mass_reduction_factors.empennage    = self.empennage_mass_reduction_factor
+        self.initial_settings.mass_reduction_factors.systems      = self.systems_mass_reduction_factor
 
-        self.initial_settings.mass_reduction_factors = dataclass()
-        self.initial_settings.mass_reduction_factors.main_wing    = 0.
-        self.initial_settings.mass_reduction_factors.fuselage     = 0.
-        self.initial_settings.mass_reduction_factors.empennage    = 0.
-        self.initial_settings.mass_reduction_factors.systems      = 0.
+        self.initial_settings.sizing.rudder_fraction              = self.rudder_sizing_fraction
 
-        self.initial_settings.sizing.rudder_fraction = 0.25
+        ###---Default Process Steps---###
 
         # Propulsion Mass
         Prop = ProcessStep()
@@ -63,6 +80,3 @@ class TransportMassAnalysis(Process):
         LG.name = 'Landing Gear'
         LG.function = Mass.Transport.landing_gear
         self.append(LG)
-
-
-

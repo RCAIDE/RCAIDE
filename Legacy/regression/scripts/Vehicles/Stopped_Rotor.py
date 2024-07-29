@@ -732,3 +732,8 @@ def configs_setup(vehicle):
 
     # done!
     return configs
+
+
+if __name__ == '__main__':
+    stopped_rotor = vehicle_setup()
+    print(stopped_rotor)

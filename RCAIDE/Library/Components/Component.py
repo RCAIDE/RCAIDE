@@ -10,6 +10,7 @@
 
 from dataclasses import dataclass, field
 from typing import TypeVar
+from warnings import warn
 
 # package imports 
 import numpy as np
@@ -18,10 +19,13 @@ import numpy as np
 #  Mass_Properties
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 @dataclass
 class ComponentRatios:
 
-    effective           : float = field(init=True, default=1.0)
+    effective           : float = 1.0
+    nose                : float = 0.0
+    tail                : float = 0.0
 
 
 @dataclass
@@ -60,6 +64,7 @@ class ComponentAreas:
     wetted              : float = field(init=True, default=0.0)
     exposed             : float = field(init=True, default=0.0)
 
+
 @dataclass
 class MassProperties:
 
@@ -67,16 +72,15 @@ class MassProperties:
     volume              : float             = field(init=True, default=0.0)
     density             : float             = field(init=True, default=0.0)
     center_of_gravity   : np.ndarray        = field(init=True, default_factory=lambda: np.zeros(3))
-    moments_of_inertia  : np.ndarray        = field(init=True, default_factory=lambda: np.zeros((3,3)))
+    moments_of_inertia  : np.ndarray        = field(init=True, default_factory=lambda: np.zeros((3, 3)))
 
     def __post_init__(self):
         if not np.any(self.density):
             if np.any(self.mass) and np.any(self.volume):
                 try:
                     self.density = self.mass/self.volume
-                except:
-                    raise MassPropertiesError("Error in calculating component density. "
-                                              "Check mass and volume specification.")
+                except ValueError:
+                    warn("Error in calculating component density. Check mass and volume specifications.")
 
 
 @dataclass
@@ -89,6 +93,8 @@ class MaterialProperties:
 
 ComponentType = TypeVar("ComponentType", bound="Component")
 SegmentType = TypeVar("SegmentType", bound="ComponentSegment")
+
+
 @dataclass
 class Component:
 
@@ -134,6 +140,7 @@ class Component:
                     v.mass_properties.moments_of_inertia
                     + v.mass_properties.mass * r**2 * np.eye(3)
                 )
+
             if len(self.segments) > 0:
                 r_seg = np.asarray([np.linalg.norm(s.origin + s.mass_properties.center_of_gravity)-self.origin
                                     for s in self.segments])
@@ -155,9 +162,9 @@ class Component:
 
     def add_subcomponent(self,
                          subcomponent: ComponentType,
-                         sum_mass=False,
-                         sum_center_of_gravity=False,
-                         sum_moments_of_inertia=False
+                         sum_mass=True,
+                         sum_center_of_gravity=True,
+                         sum_moments_of_inertia=True
                          ):
 
         if isinstance(subcomponent, ComponentSegment):
@@ -170,9 +177,10 @@ class Component:
                 self.segments.insert(subcomponent.segment_index, subcomponent)
 
         elif isinstance(subcomponent, Component):
-            eval(f"self.{subcomponent.name} = {subcomponent}")
+            vars(self)[subcomponent.name] = subcomponent
         else:
-            raise NonComponentError("Attempted to add a subcomponent of an unknown type.")
+            raise TypeError(f"Attempted to add a subcomponent to {self.name} "
+                            f"which was not a Component or Component Segment.")
 
         if sum_mass:
             self.sum_mass()
@@ -180,6 +188,7 @@ class Component:
                 self.sum_center_of_gravity()
             if sum_moments_of_inertia:
                 self.sum_moments_of_inertia()
+
 
 @dataclass
 class ComponentSegment(Component):

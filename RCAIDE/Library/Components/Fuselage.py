@@ -17,10 +17,12 @@ import numpy as np
 # Fuselage Component
 #-------------------------------------------------------------------------------
 
+
 @dataclass
 class Fuselage(Component):
 
     differential_pressure: float = field(init=True, default=0.0)
+    fineness: ComponentRatios = ComponentRatios()
 
     def __post_init__(self):
 
@@ -28,10 +30,11 @@ class Fuselage(Component):
             for segment in self.segments:
                 self.add_subcomponent(segment)
 
-
         self.add_subcomponent(Component(name='cabin'))
 
         self.fineness.nose = 0.0
         self.fineness.tail = 0.0
+
+        self.lengths.ordinal_direction = True
 
 

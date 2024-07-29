@@ -32,12 +32,12 @@ class ProcessStep:
         return self.function(*framework_args)
 
 
-def create_details():
+def _create_details():
 
     details = pd.DataFrame(
-        columns = ['Name',
-                   'Function',
-                   'Last Result']
+        columns=['Name',
+                 'Function',
+                 'Last Result']
     )
 
     return details
@@ -61,7 +61,7 @@ class Process:
     # Internal Parameters
 
     steps: list[ProcessStep] = field(init=False, default_factory=list)
-    details: pd.DataFrame    = field(init=False, default_factory=create_details)
+    details: pd.DataFrame    = field(init=False, default_factory=_create_details)
 
     current_step: int = field(init=False, default=0)
     start_at: int = field(init=False, default=0)
@@ -119,26 +119,26 @@ class Process:
 
         return None
 
-    def index_name(self, name: str):
+    def _index_name(self, name: str):
 
         names = [step.name for step in self.steps]
         index = names.index(name)
 
         return index
 
-    def index_function(self, function: Callable):
+    def _index_function(self, function: Callable):
 
         functions = [step.function for step in self.steps]
         index = functions.index(function)
 
         return index
 
-    def index(self, value: object, mode:str = 'name'):
+    def index(self, value: str | Callable, mode: str = 'name'):
 
         if mode == 'name':
-            index = self.index_name(value)
+            index = self._index_name(value)
         elif mode == 'function':
-            index = self.index_function(value)
+            index = self._index_function(value)
         else:
             raise ValueError("Mode must be 'name' or 'function'.")
 
@@ -158,14 +158,14 @@ class Process:
 
         return None
 
-    def remove_name(self, name: str):
+    def _remove_name(self, name: str):
 
         self.steps.pop(self.index_name(name))
         self.update_details()
 
         return None
 
-    def remove_function(self, function: Callable):
+    def _remove_function(self, function: Callable):
 
         self.steps.pop(self.index_function(function))
         self.update_details()
@@ -175,10 +175,10 @@ class Process:
     def remove(self, value: object, mode: str = 'name'):
 
         if mode == 'name':
-            self.remove_name(value)
+            self._remove_name(value)
             self.update_details()
         elif mode == 'function':
-            self.remove_function(value)
+            self._remove_function(value)
             self.update_details()
         else:
             raise ValueError("Mode must be 'name' or 'function'.")
@@ -199,8 +199,8 @@ class Process:
                             for step in self.steps]
 
         new_details = pd.DataFrame(new_details_list,
-                                   columns = self.details.columns,
-                                   index = [*range(len(self.steps))])
+                                   columns=self.details.columns,
+                                   index=[*range(len(self.steps))])
 
         self.details = new_details
 
