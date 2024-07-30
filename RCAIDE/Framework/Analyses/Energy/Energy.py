@@ -60,7 +60,11 @@ class Energy(Analysis):
                 
             
         networks = self.networks
-        results  = networks.evaluate_thrust(state) 
+        #results  = networks.evaluate_thrust(state)
+        for network in  networks:
+            for distribution_line in network.distribution_lines:
+                for propulsor in  distribution_line.propulsors:
+                    results =  propulsor.evaluate_thrust(state)  
         
         return results
     

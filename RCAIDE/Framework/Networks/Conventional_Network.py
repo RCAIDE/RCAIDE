@@ -63,6 +63,7 @@ class Conventional_Network(Component):
                """        
         for Component in  Components:
             fuel_line[Component.type]                =  Container()
+        for Component in  Components:     
             fuel_line[Component.type][Component.tag] =  Component
             
        

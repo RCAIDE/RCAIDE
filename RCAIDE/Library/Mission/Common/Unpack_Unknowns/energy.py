@@ -33,7 +33,7 @@ def fuel_line_unknowns(segment,fuel_lines):
                 for fuel_line in fuel_lines:
                     if propulsor_tags[j] in fuel_line.propulsors:
                         state.conditions.energy[fuel_line.tag][propulsor_tags[j]].y_axis_rotation = state.unknowns["thrust_vector_" + str(i)]    
-    return 
+    return segment.process.iterate.unknowns
 
 def bus_unknowns(segment,busses): 
     assigned_control_variables = segment.assigned_control_variables
