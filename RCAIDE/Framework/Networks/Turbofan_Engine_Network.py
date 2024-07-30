@@ -9,7 +9,7 @@
 #  Imports
 # ---------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports   
-from RCAIDE.Framework.Mission.Common                                                           import Residuals , Conditions
+from RCAIDE.Framework.Missions.Common                                                           import Residuals , Conditions
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor.compute_turbofan_performance         import compute_turbofan_performance
 from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import fuel_line_unknowns
 from .Network                                                                                  import Network  

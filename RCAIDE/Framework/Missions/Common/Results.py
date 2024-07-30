@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-from RCAIDE.Framework.Mission.Common import Conditions
+from RCAIDE.Framework.Missions.Common import Conditions
 
 # python imports
 import numpy as np

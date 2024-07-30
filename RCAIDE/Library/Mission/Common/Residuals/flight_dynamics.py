@@ -7,9 +7,9 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Framework.Mission.Segments.Transition import (Constant_Acceleration_Constant_Angle_Linear_Climb
+from RCAIDE.Framework.Missions.Segments.Transition import (Constant_Acceleration_Constant_Angle_Linear_Climb
                                                           as Transition_Segment)
-from RCAIDE.Framework.Mission.Segments.Ground import Landing, Takeoff, Ground
+from RCAIDE.Framework.Missions.Segments.Ground import Landing, Takeoff, Ground
 
 # Python imports 
 import numpy as np 

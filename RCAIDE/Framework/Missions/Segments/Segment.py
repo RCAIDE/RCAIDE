@@ -9,7 +9,7 @@
 # RCAIDE Imports
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Framework.Analyses           import Analysis, Process   
-from RCAIDE.Framework.Mission.Common     import State 
+from RCAIDE.Framework.Missions.Common     import State
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Segment 

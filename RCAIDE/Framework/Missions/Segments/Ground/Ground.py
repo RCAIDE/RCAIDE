@@ -9,7 +9,7 @@
 
 # RCAIDE imports
 from RCAIDE.Framework.Core                            import Units , Data 
-from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
+from RCAIDE.Framework.Missions.Segments.Evaluate       import Evaluate
 from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_Unknowns, Update
  
 # ----------------------------------------------------------------------------------------------------------------------

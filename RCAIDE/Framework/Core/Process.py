@@ -1,9 +1,11 @@
+import dataclasses
 from dataclasses    import dataclass, field
 from typing         import Callable, Iterable
 
 from RCAIDE.Framework.Core.Utilities import args_passer
 
 import pandas as pd
+
 
 @dataclass
 class ProcessStep:
@@ -73,6 +75,10 @@ class Process:
     def __getitem__(self, item):
         return self.steps[item]
 
+    def __delitem__(self, key):
+        del self.steps[key]
+        self.update_details()
+
     def __call__(self, *args, **kwargs):
 
         self.update_details()
@@ -106,12 +112,10 @@ class Process:
         return None
 
     def copy(self):
-        raise NotImplementedError("Process cannot be copied directly."
-                                  "Use Process.steps.copy() instead.")
+        return dataclasses.replace(self)
 
-    def count(self):
-        raise NotImplementedError("Process steps cannot be counted directly."
-                                  "Use Process.steps.count() instead.")
+    def count(self, step: ProcessStep):
+        return self.steps.count(step)
 
     def extend(self, extension: Iterable):
         self.steps.extend(extension)
@@ -133,16 +137,17 @@ class Process:
 
         return index
 
-    def index(self, value: str | Callable, mode: str = 'name'):
+    def index(self, value: str | Callable | ProcessStep):
 
-        if mode == 'name':
-            index = self._index_name(value)
-        elif mode == 'function':
-            index = self._index_function(value)
+        if insinstance(value, str):
+            return self._index_name(value)
+        elif isinstance(value, Callable):
+            return self._index_function(value)
+        elif isinstance(value, ProcessStep):
+            return self.steps.index(value)
+
         else:
-            raise ValueError("Mode must be 'name' or 'function'.")
-
-        return index
+            raise ValueError("RCAIDE processes can only be indexed by name, function, or ProcessStep object.")
 
     def insert(self, index: int, step: ProcessStep):
 
@@ -172,18 +177,17 @@ class Process:
 
         return None
 
-    def remove(self, value: object, mode: str = 'name'):
+    def remove(self, value: str | Callable | ProcessStep):
 
-        if mode == 'name':
+        if isinstance(value, str):
             self._remove_name(value)
             self.update_details()
-        elif mode == 'function':
+        elif isinstance(value, Callable):
             self._remove_function(value)
             self.update_details()
-        else:
-            raise ValueError("Mode must be 'name' or 'function'.")
-
-        return None
+        elif isinstance(value, ProcessStep):
+            self.steps.remove(value)
+            self.update_details()
 
     def reverse(self):
         raise NotImplementedError("Process cannot be reversed.")
