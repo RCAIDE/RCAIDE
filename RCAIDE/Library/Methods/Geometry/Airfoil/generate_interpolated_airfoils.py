@@ -1,7 +1,7 @@
 # RCAIDE/Library/Methods/Geometry/Two_Dimensional/Airfoil/generate_interpolated_airfoils.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2024, RCAIDE Team 
+# Created: Jul 2024, RCAIDE Team
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

@@ -1,7 +1,7 @@
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_aerodynamic_coefficients.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2024, RCAIDE Team
+# Created: Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

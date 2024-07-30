@@ -1,7 +1,7 @@
 # load.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2024, RCAIDE Team 
+# Created: Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -16,6 +16,8 @@ from collections import OrderedDict
 # ----------------------------------------------------------------------------------------------------------------------
 #  load
 # ----------------------------------------------------------------------------------------------------------------------    
+
+
 def load(filename,pickle_format = False):
     """Converts a JSON file into a RCAIDE data structure. 
     
@@ -49,7 +51,8 @@ def load(filename,pickle_format = False):
         # Convert to RCAIDE data structure
         data = read_RCAIDE_json_dict(res_dict) 
     
-    return data 
+    return data
+
 
 def read_RCAIDE_json_dict(res_dict):
     """Builds a RCAIDE data structure based on a dictionary from a JSON file. This is initial case.
@@ -76,6 +79,7 @@ def read_RCAIDE_json_dict(res_dict):
         RCAIDE_data[k] = build_data_r(v) # recursive function
     return RCAIDE_data
  
+
 def build_data_r(v):
     """Builds a RCAIDE data structure based on a dictionary from a JSON file. This is recursive step.
 

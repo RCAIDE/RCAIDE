@@ -1,7 +1,7 @@
 # RCAIDE/Library/Attributes/Costs/Industrial_Costs.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
-# Created:  Mar 2024, M. Clarke
+# Created: Mar 2024, RCAIDE Team
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Imports

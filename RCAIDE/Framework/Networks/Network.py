@@ -1,8 +1,8 @@
 # RCAIDE/Library/Compoments/Energy/Networks/Network.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
-# Created:  Jul 2024, RCAIDE Team
-# Modified: Aug 2023, E. Botero
+# Created: Jul 2024, RCAIDE Team
+# Modified:
 
 
 # ----------------------------------------------------------------------------------------------------------------------

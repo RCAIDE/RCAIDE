@@ -1,9 +1,8 @@
 # Vehicle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
-# Created:  Jul 2023, E. Botero
-# Created:  Mar 2024, M. Clarke
-# Modified:  
+# Created: Mar 2024, RCAIDE Team
+# Modified:
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

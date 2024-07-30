@@ -1,8 +1,8 @@
 # RCAIDE/Library/Missions/Common/Pre_Process/aerodynamics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke
-# Modified: Jul 2024, E. Botero
+# Created: Jun 2024, RCAIDE Team
+# Modified:
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
