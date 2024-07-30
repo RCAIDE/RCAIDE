@@ -69,8 +69,9 @@ class Fuel_Tank(Component):
         ones_row    = segment.state.ones_row 
         
     
-        #segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Framework.Mission.Common.Conditions()       
-        fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]        
+        segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Framework.Mission.Common.Conditions()
+        segment.state.conditions.energy[fuel_line.tag].fuel_tank       = RCAIDE.Framework.Mission.Common.Conditions()   
+        fuel_line_results                                    = segment.state.conditions.energy.distribution_lines[fuel_line.tag]        
 
                   
         fuel_line_results[fuel_tank.tag]                 = RCAIDE.Framework.Mission.Common.Conditions()  

@@ -44,7 +44,7 @@ def energy(segment):
 
     """ 
 
-    conditions = segment.state.conditions.energy
+    conditions = segment.state.conditions.energy.distribution_lines
     
     # loop through batteries in networks
     for network in segment.analyses.energy.networks:  

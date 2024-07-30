@@ -85,31 +85,33 @@ class Turbofan(Propulsor):
         self.outputs.fuel_mass                        = 0.0
         self.outputs.power                            = 0.0
 
-    
+        self.reverse_thrust                           = False
+        self.active                                   = True
+
     #def unpack_unknowns(self,segment,fuel_line, turbofan):
             #"""Unpacks the unknowns set in the mission to be available for the mission.
-    
+
             #Assumptions:
             #N/A
-    
+
             #Source:
             #N/A
-    
+
             #Inputs: 
                 #segment   - data structure of mission segment [-]
-    
+
             #Outputs: 
-    
+
             #Properties Used:
             #N/A
             #"""            
-    
-                       
+
+
             #RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_line, turbofan) 
-    
+
             #return            
 
-    def add_unknowns_and_residuals_to_segment(self, segment, fuel_line, turbofan, i):
+    def add_unknowns_and_residuals_to_segment(self, segment, fuel_line, turbofan, first_propulsor):
         """ This function sets up the information that the mission needs to run a mission segment using this network 
 
             Assumptions:
@@ -138,21 +140,23 @@ class Turbofan(Propulsor):
         # ------------------------------------------------------------------------------------------------------            
         # Create fuel_line results data structure  
         # ------------------------------------------------------------------------------------------------------
-        if i == 0:
-            segment.state.conditions.energy[fuel_line.tag]       = RCAIDE.Framework.Mission.Common.Conditions()       
-            fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]    
-            segment.state.conditions.noise[fuel_line.tag]        = RCAIDE.Framework.Mission.Common.Conditions()  
-            noise_results                                        = segment.state.conditions.noise[fuel_line.tag]
+        if first_propulsor ==  True:
+            segment.state.conditions.energy.distribution_lines[fuel_line.tag]                  = RCAIDE.Framework.Mission.Common.Conditions()
+            segment.state.conditions.energy.distribution_lines[fuel_line.tag].propulsors       = RCAIDE.Framework.Mission.Common.Conditions()       
+            fuel_line_results                                                                    = segment.state.conditions.energy.distribution_lines[fuel_line.tag].propulsors    
+            segment.state.conditions.noise.distribution_lines[fuel_line.tag]                    = RCAIDE.Framework.Mission.Common.Conditions()
+            segment.state.conditions.noise.distribution_lines[fuel_line.tag].propulsors         = RCAIDE.Framework.Mission.Common.Conditions()  
+            noise_results                                                                      = segment.state.conditions.noise.distribution_lines[fuel_line.tag].propulsors
         else:
-            fuel_line_results                                    = segment.state.conditions.energy[fuel_line.tag]
-            noise_results                                        = segment.state.conditions.noise[fuel_line.tag]
-            
+            fuel_line_results                                    = segment.state.conditions.energy.distribution_lines[fuel_line.tag].propulsors
+            noise_results                                        = segment.state.conditions.noise.distribution_lines[fuel_line.tag].propulsors
 
-       
+
+
         # ------------------------------------------------------------------------------------------------------
         # Assign network-specific  residuals, unknowns and results data structures
         # ------------------------------------------------------------------------------------------------------
-            
+
         fuel_line_results[turbofan.tag]                         = RCAIDE.Framework.Mission.Common.Conditions() 
         fuel_line_results[turbofan.tag].throttle                = 0. * ones_row(1)      
         fuel_line_results[turbofan.tag].y_axis_rotation         = 0. * ones_row(1)  
@@ -165,7 +169,7 @@ class Turbofan(Propulsor):
         return segment
 
 
-    def evaluate_thrust(self,state):
+    def evaluate_thrust(self,state, network):
         """ Calculate thrust given the current state of the vehicle
 
             Assumptions:
@@ -200,7 +204,7 @@ class Turbofan(Propulsor):
 
         # Step 1: Unpack
         conditions     = state.conditions  
-        fuel_lines     = self.distribution_lines 
+        fuel_lines     = network.distribution_lines
         reverse_thrust = self.reverse_thrust
         total_thrust   = 0. * state.ones_row(3) 
         total_power    = 0. * state.ones_row(1) 
@@ -208,27 +212,27 @@ class Turbofan(Propulsor):
 
         # Step 2: loop through compoments of network and determine performance
         for fuel_line in fuel_lines:
-            if fuel_line.active:   
+            #if fuel_line.active:   
 
-                # Step 2.1: Compute and store perfomrance of all propulsors 
-                fuel_line_T,fuel_line_P = compute_turbofan_performance(fuel_line,state)  
-                total_thrust += fuel_line_T   
-                total_power  += fuel_line_P  
+            # Step 2.1: Compute and store perfomrance of all propulsors 
+            fuel_line_T,fuel_line_P = compute_turbofan_performance(fuel_line,state)  
+            total_thrust += fuel_line_T   
+            total_power  += fuel_line_P  
 
-                # Step 2.2: Link each turbofan the its respective fuel tank(s)
-                for fuel_tank in fuel_line.fuel_tanks:
-                    mdot = 0. * state.ones_row(1)   
-                    for turbofan in fuel_line.propulsors:
-                        for source in (turbofan.active_fuel_tanks):
-                            if fuel_tank.tag == source: 
-                                mdot += conditions.energy[fuel_line.tag][turbofan.tag].fuel_flow_rate 
+            # Step 2.2: Link each turbofan the its respective fuel tank(s)
+            for fuel_tank in fuel_line.fuel_tanks:
+                mdot = 0. * state.ones_row(1)   
+                for turbofan in fuel_line.propulsors:
+                    for source in (turbofan.active_fuel_tanks):
+                        if fuel_tank.tag == source: 
+                            mdot += conditions.energy.distribution_lines[fuel_line.tag].propulsors[turbofan.tag].fuel_flow_rate 
 
-                    # Step 2.3 : Determine cumulative fuel flow from fuel tank 
-                    fuel_tank_mdot = fuel_tank.fuel_selector_ratio*mdot + fuel_tank.secondary_fuel_flow 
+                # Step 2.3 : Determine cumulative fuel flow from fuel tank 
+                fuel_tank_mdot = fuel_tank.fuel_selector_ratio*mdot + fuel_tank.secondary_fuel_flow 
 
-                    # Step 2.4: Store mass flow results 
-                    conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate  = fuel_tank_mdot  
-                    total_mdot += fuel_tank_mdot                    
+                # Step 2.4: Store mass flow results 
+                conditions.energy.distribution_lines[fuel_line.tag][fuel_tank.tag].mass_flow_rate  = fuel_tank_mdot  
+                total_mdot += fuel_tank_mdot                    
 
         # Step 3: Pack results
         if reverse_thrust ==  True:

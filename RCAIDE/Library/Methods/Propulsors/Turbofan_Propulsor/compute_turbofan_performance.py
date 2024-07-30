@@ -89,9 +89,9 @@ def compute_performance(conditions,fuel_line,turbofan,total_thrust,total_power):
     
     Properties Used: 
     N.A.        
-    ''' 
-    noise_results             = conditions.noise[fuel_line.tag][turbofan.tag] 
-    turbofan_results          = conditions.energy[fuel_line.tag][turbofan.tag] 
+    '''
+    noise_results             = conditions.noise.distribution_lines[fuel_line.tag].propulsors[turbofan.tag] 
+    turbofan_results          = conditions.energy.distribution_lines[fuel_line.tag].propulsors[turbofan.tag] 
     ram                       = turbofan.ram
     inlet_nozzle              = turbofan.inlet_nozzle
     low_pressure_compressor   = turbofan.low_pressure_compressor
@@ -295,10 +295,10 @@ def reuse_stored_data(conditions,fuel_line,turbofan,stored_propulsor_tag,total_t
     Properties Used: 
     N.A.        
     ''' 
-    turbofan_results_0                   = conditions.energy[fuel_line.tag][stored_propulsor_tag]
-    noise_results_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
-    turbofan_results                     = conditions.energy[fuel_line.tag][turbofan.tag]  
-    noise_results                        = conditions.noise[fuel_line.tag][turbofan.tag]
+    turbofan_results_0                   = conditions.energy.distribution_lines[fuel_line.tag].propulsors[stored_propulsor_tag]
+    noise_results_0                      = conditions.noise.distribution_lines[fuel_line.tag].propulsors[stored_propulsor_tag] 
+    turbofan_results                     = conditions.energy.distribution_lines[fuel_line.tag].propulsors[turbofan.tag]  
+    noise_results                        = conditions.noise.distribution_lines[fuel_line.tag].propulsors[turbofan.tag]
     turbofan_results.throttle            = turbofan_results_0.throttle
     turbofan_results.thrust              = turbofan_results_0.thrust   
     turbofan_results.power               = turbofan_results_0.power  

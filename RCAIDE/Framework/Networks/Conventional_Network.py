@@ -8,6 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+import RCAIDE
 from RCAIDE.Library.Components              import Component
 from RCAIDE.Library.Components.Component    import Container
 
@@ -40,8 +41,9 @@ class Conventional_Network(Component):
         self.tag                    = 'conventional_network'
         self.distribution_lines     =  Container()
         self.wing_mounted           = True
-        self.reverse_thrust         = False 
         
+        
+     
     def create_propulsion_network(self, Components,  fuel_line):
         """ Creates a Propulsion Network for each component pack in a given Propulsion Network
            
@@ -65,5 +67,52 @@ class Conventional_Network(Component):
             fuel_line[Component.type]                =  Container()
         for Component in  Components:     
             fuel_line[Component.type][Component.tag] =  Component
+            
+    def unpack_unknowns(self,segment):
+        """Unpacks the unknowns set in the mission to be available for the mission.
+
+        Assumptions:
+        N/A
+        
+        Source:
+        N/A
+        
+        Inputs: 
+            segment   - data structure of mission segment [-]
+        
+        Outputs: 
+        
+        Properties Used:
+        N/A
+        """            
+         
+        fuel_lines = segment.analyses.energy.networks.turbofan_engine.fuel_lines
+        RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy.fuel_line_unknowns(segment,fuel_lines) 
+            
+        return
+  
+    def add_unknowns_and_residuals_to_segment(self, segment):
+        """ This function sets up the information that the mission needs to run a mission segment using this network 
+         
+            Assumptions:
+            None
+    
+            Source:
+            N/A
+    
+            Inputs:
+            segment
+            eestimated_throttles           [-]
+            estimated_propulsor_group_rpms [-]  
+            
+            Outputs:
+            segment
+    
+            Properties Used:
+            N/A
+        """                  
+        
+        segment.process.iterate.unknowns.network   = self.unpack_unknowns                   
+        return segment        
             
        
