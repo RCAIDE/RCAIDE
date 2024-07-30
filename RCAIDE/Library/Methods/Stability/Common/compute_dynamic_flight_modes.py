@@ -2,7 +2,7 @@
 # RCAIDE/Library/Methods/Stability/Dynamic_Stability/compute_dynamic_flight_modes.py
 # 
 # 
-# Created:  Apr 2024, M. Clarke
+# Created: Apr 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

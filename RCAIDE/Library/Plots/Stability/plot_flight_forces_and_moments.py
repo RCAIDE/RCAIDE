@@ -1,7 +1,7 @@
 # RCAIDE/Library/Plots/Stability/plot_stability_forces_and_moments.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke
+# Created: Jun 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

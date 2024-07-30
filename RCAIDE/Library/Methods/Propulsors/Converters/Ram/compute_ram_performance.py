@@ -1,7 +1,7 @@
 # RCAIDE/Library/Methods/Propulsors/Converters/Ram/compute_ram_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke    
+# Created: Jun 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_ram_performance

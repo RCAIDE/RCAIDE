@@ -2,8 +2,8 @@
 # RCAIDE/Energy/Networks/Turbofan_Engine_Network.py
 # 
 #
-# Created:  Oct 2023, M. Clarke
-# Modified: 
+# Created: Oct 2023, RCAIDE Team
+# Modified:
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Imports

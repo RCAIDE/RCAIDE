@@ -1,7 +1,7 @@
 # RCAIDE/Methods/Stability/Center_of_Gravity/compute_component_centers_of_gravity.py
 # Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Dec 2023, M. Clarke  
+# Created: Dec 2023, RCAIDE Team
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

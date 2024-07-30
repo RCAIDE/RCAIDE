@@ -1,7 +1,7 @@
 # RCAIDE/Framework/Analyses/Stability/Vortex_Lattice_Method.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Mar 2023, M. Clarke 
+# Created: Mar 2023, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -22,8 +22,8 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice_Method
 # ---------------------------------------------------------------------------------------------------------------------- 
-class Vortex_Lattice_Method(Stability):  
-    """ This is a subsonic stability buildup analysis based on a pertubation approch of the vortex lattice method.
+class Vortex_Lattice_Method(Stability):
+    """ This is a  stability buildup analysis based on a pertubation approch of the vortex lattice method.
     """      
 
     def __defaults__(self):

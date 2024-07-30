@@ -1,7 +1,7 @@
 # RCAIDE/Library/Plots/Energy/plot_electric_propulsor_efficiencies.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke
+# Created: Jun 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

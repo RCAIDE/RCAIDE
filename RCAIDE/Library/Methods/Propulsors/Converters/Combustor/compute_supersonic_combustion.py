@@ -1,7 +1,7 @@
 # RCAIDE/Library/Methods/Propulsors/Converters/Combustor/compute_supersonic_combustion.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke 
+# Created: Jun 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

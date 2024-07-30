@@ -1,7 +1,7 @@
 # RCAIDE/Library/Methods/Propulsors/Converters/Shaft_Power_Offtake/compute_shaft_power_offtaker.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke 
+# Created: Jun 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

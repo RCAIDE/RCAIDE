@@ -1,7 +1,7 @@
 # RCAIDE/Library/Components/Propulsors/Converters/Fan.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #  
-# Created:  Mar 2024, M. Clarke
+# Created: Mar 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -25,8 +25,8 @@ class Turbofan(Propulsor):
     def __defaults__(self):    
         # setting the default values
         self.tag                                      = 'Turbofan'  
-        self.nacelle                                  = None 
-        self.fan                                      = Container
+        self.nacelle                                  = Container()
+        self.fan                                      = Container()
         self.ram                                      = None 
         self.inlet_nozzle                             = None 
         self.low_pressure_compressor                  = None 

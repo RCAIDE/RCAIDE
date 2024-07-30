@@ -1,8 +1,7 @@
 # RCAIDE/Library/Compoments/PhysicalComponent.py
 # (c) Copyright 2024 Aerospace Research Community LLC
 # 
-# Created:  Apr 2024, J. Smart
-# Modified:
+# Created: Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

@@ -1,11 +1,12 @@
 # RCAIDE/Library/Missions/Segments/Cruise/Variable_Cruise_Distance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke   
+# Created: Jun 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Initialize - for cruise distance
-# ---------------------------------------------------------------------------------------------------------------------- 
+# ---------------------------------------------------------------------------------------------------------------------- 
+
 def initialize_cruise_distance(segment):
     """This is a method that allows your vehicle to land at prescribed landing weight
 
@@ -34,7 +35,8 @@ def initialize_cruise_distance(segment):
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #   Unknowns - for cruise distance
-# ---------------------------------------------------------------------------------------------------------------------- 
+# ---------------------------------------------------------------------------------------------------------------------- 
+
 def unknown_cruise_distance(segment):
     """This is a method that allows your vehicle to land at prescribed landing weight
 
@@ -64,7 +66,8 @@ def unknown_cruise_distance(segment):
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #   Residuals - for Take Off Weight
-# ---------------------------------------------------------------------------------------------------------------------- 
+# ---------------------------------------------------------------------------------------------------------------------- 
+
 def residual_landing_weight(segment):
     """This is a method that allows your vehicle to land at prescribed landing weight.
     This takes the final weight and compares it against the prescribed landing weight.
@@ -94,7 +97,8 @@ def residual_landing_weight(segment):
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #   Residuals - for Take Off Weight
-# ---------------------------------------------------------------------------------------------------------------------- 
+# ---------------------------------------------------------------------------------------------------------------------- 
+
 def residual_state_of_charge(segment):
     """This is a method that allows your vehicle to land at a prescribed state of charge.
     This takes the final weight and compares it against the prescribed state of charge.

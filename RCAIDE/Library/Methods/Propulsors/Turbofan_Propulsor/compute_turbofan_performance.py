@@ -2,7 +2,7 @@
 # RCAIDE/Methods/Energy/Propulsors/Turbofan_Propulsor/compute_turbofan_performance.py
 # 
 # 
-# Created:  Jul 2024, RCAIDE Team
+# Created: Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT

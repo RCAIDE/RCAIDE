@@ -1,7 +1,7 @@
 # RCAIDE/Library/Plots/Geometry/Common/contour_surface_slices.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2024, RCAIDE Team
+# Created: Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
