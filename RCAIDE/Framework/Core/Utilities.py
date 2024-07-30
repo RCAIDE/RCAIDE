@@ -1,20 +1,18 @@
-## @ingroup Core 
 # RCAIDE/Core/Utilities.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Jul 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-# Package imports 
+# package imports
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  interp2d
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Core 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def interp2d(x,y,xp,yp,zp,fill_value= None):
     """
     Bilinear interpolation on a grid. ``CartesianGrid`` is much faster if the data
@@ -59,8 +57,7 @@ def interp2d(x,y,xp,yp,zp,fill_value= None):
 
 # ----------------------------------------------------------------------------------------------------------------------
 # orientation_product
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Core 
+# ---------------------------------------------------------------------------------------------------------------------- 
 def orientation_product(T,Bb):
     """Computes the product of a tensor and a vector.
 
@@ -68,18 +65,17 @@ def orientation_product(T,Bb):
     None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     T         [-] 3-dimensional array with rotation matrix
                   patterned along dimension zero
     Bb        [-] 3-dimensional vector
 
-    Outputs:
+    Returns:
     C         [-] transformed vector
 
-    Properties Used:
-    N/A
+    
     """            
     
     assert T.ndim == 3
@@ -96,7 +92,6 @@ def orientation_product(T,Bb):
 # ----------------------------------------------------------------------------------------------------------------------
 # orientation_transpose
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Core
 def orientation_transpose(T):
     """Computes the transpose of a tensor.
 
@@ -104,17 +99,16 @@ def orientation_transpose(T):
     None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     T         [-] 3-dimensional array with rotation matrix
                   patterned along dimension zero
 
-    Outputs:
+    Returns:
     Tt        [-] transformed tensor
 
-    Properties Used:
-    N/A
+    
     """   
     
     assert T.ndim == 3
@@ -126,26 +120,24 @@ def orientation_transpose(T):
 # ----------------------------------------------------------------------------------------------------------------------
 # angles_to_dcms
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Core
 def angles_to_dcms(rotations,sequence=(2,1,0)):
     """Builds an euler angle rotation matrix
     
     Assumptions:
-    N/A
+    None
 
     Source:
-    N/A
+    None
 
-    Inputs:
+    Args:
     rotations     [radians]  [r1s r2s r3s], column array of rotations
     sequence      [-]        (2,1,0) (default), (2,1,2), etc.. a combination of three column indices
 
-    Outputs:
+    Returns:
     transform     [-]        3-dimensional array with direction cosine matrices
                              patterned along dimension zero
 
-    Properties Used:
-    N/A
+    
     """         
     # transform map
     Ts = { 0:T0, 1:T1, 2:T2 }
@@ -164,32 +156,24 @@ def angles_to_dcms(rotations,sequence=(2,1,0)):
 # ----------------------------------------------------------------------------------------------------------------------
 # T0
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Core
 def T0(a):
     """Rotation matrix about first axis
     
     Assumptions:
-    N/A
+        None
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    a        [radians] angle of rotation
+    Args:
+        a (float):  angle of rotation  [radians] 
 
-    Outputs:
-    T        [-]       rotation matrix
-
-    Properties Used:
-    N/A
-    """      
-    # T = np.array([[1,   0,  0],
-    #               [0, cos,sin],
-    #               [0,-sin,cos]])
+    Returns:
+        T  (float):  rotation matrix  [-]  
+    """       
     
     cos = np.cos(a)
-    sin = np.sin(a)
-                  
+    sin = np.sin(a) 
     T = new_tensor(a)
     
     T[:,1,1] = cos
@@ -202,24 +186,20 @@ def T0(a):
 # ----------------------------------------------------------------------------------------------------------------------
 # T1
 # ----------------------------------------------------------------------------------------------------------------------          
-## @ingroup Core
 def T1(a):
     """Rotation matrix about second axis
     
     Assumptions:
-    N/A
+        None
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    a        [radians] angle of rotation
+    Args:
+        a (float):  angle of rotation  [radians] 
 
-    Outputs:
-    T        [-]       rotation matrix
-
-    Properties Used:
-    N/A
+    Returns:
+        T  (float):  rotation matrix  [-]  
     """      
     # T = np.array([[cos,0,-sin],
     #               [0  ,1,   0],
@@ -240,24 +220,21 @@ def T1(a):
 # ----------------------------------------------------------------------------------------------------------------------
 # T2
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Core
 def T2(a):
     """Rotation matrix about third axis
     
     Assumptions:
-    N/A
+        None
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    a        [radians] angle of rotation
+    Args:
+        a (float):  angle of rotation  [radians] 
 
-    Outputs:
-    T        [-]       rotation matrix
-
-    Properties Used:
-    N/A
+    Returns:
+        T  (float):  rotation matrix  [-]  
+    
     """      
     # T = np.array([[cos ,sin,0],
     #               [-sin,cos,0],
@@ -278,28 +255,25 @@ def T2(a):
 # ----------------------------------------------------------------------------------------------------------------------
 # new_tensor
 # ----------------------------------------------------------------------------------------------------------------------  
-## @ingroup Core
 def new_tensor(a):
-    """Initializes the required tensor. Able to handle imaginary values.
-    
+    """Initializes the required tensor. Able to handle imaginary values. 
+  
     Assumptions:
-    N/A
+        None
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    a        [radians] angle of rotation
+    Args:
+        a (float):  angle of rotation  [radians] 
 
-    Outputs:
-    T        [-]       3-dimensional array with identity matrix
-                       patterned along dimension zero
-
-    Properties Used:
-    N/A
+    Returns:
+        T  (float):  3-dimensional array with identity matrix
+                       patterned along dimension zero  [-]   
     """      
     assert a.ndim == 1
-    n_a = len(a)
+    n_a = len(a) 
+    T   = np.eye(3)
     
     T = np.eye(3)
     

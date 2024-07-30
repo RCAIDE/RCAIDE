@@ -1,4 +1,3 @@
-## @defgroup Components Components
 # RCAIDE/Library/Components/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -14,7 +13,6 @@ from .Fuselage import Fuselage
   
 from . import Propulsors
 from . import Energy
-from . import Thermal_Management 
 from . import Airfoils
 from . import Booms
 from . import Configs

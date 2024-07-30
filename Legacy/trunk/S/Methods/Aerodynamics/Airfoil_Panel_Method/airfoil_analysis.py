@@ -22,7 +22,7 @@ from .aero_coeff      import aero_coeff
 # ----------------------------------------------------------------------   
 
 ## @ingroup Methods-Aerodynamics-Airfoil_Panel_Method
-def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5,tolerance = 1E0,H_wake = 1.05,Ue_wake = 0.99):
+def airfoil_analysis(airfoil_geometry,alpha,Re_L, batch_analysis = True, airfoil_stations = [0],initial_momentum_thickness=1E-5,tolerance = 1E0,H_wake = 1.05,Ue_wake = 0.99):
     """This computes the aerodynamic polars as well as the boundary layer properties of 
     an airfoil at a defined set of reynolds numbers and angle of attacks
 
@@ -78,13 +78,19 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     ncpts        = len(Re_L)  
     x_coord      = airfoil_geometry.x_coordinates
     y_coord      = airfoil_geometry.y_coordinates
-    npanel       = len(x_coord)-1 
-         
-    if (ncases !=  len(Re_L[0,:])  ):
-        raise AssertionError('Number of angle of attacks and Reynolds numbers must be equal')      
-    x_coord_3d = np.tile(x_coord[:,None,None],(1,ncases,ncpts)) # number of points, number of cases, number of control points 
-    y_coord_3d = np.tile(y_coord[:,None,None],(1,ncases,ncpts)) # number of points, number of cases, number of control points 
-        
+    npanel       = len(x_coord)-1  
+              
+    if batch_analysis: 
+        if (ncases !=  len(Re_L[0,:])  ):
+            raise AssertionError('Number of angle of attacks and Reynolds numbers must be equal')      
+        x_coord_3d = np.tile(x_coord[:,None,None],(1,ncases,ncpts))  
+        y_coord_3d = np.tile(y_coord[:,None,None],(1,ncases,ncpts))       
+    else: 
+        if (ncases != ncpts) and ( len(airfoil_stations)!= ncases):
+            raise AssertionError('Dimension of angle of attacks, Reynolds numbers and airfoil stations must all be equal')      
+        x_coord_3d = np.repeat(x_coord[:,:,np.newaxis],ncpts, axis = 2)
+        y_coord_3d = np.repeat(y_coord[:,:,np.newaxis],ncpts, axis = 2) 
+            
     # Begin by solving for velocity distribution at airfoil surface using inviscid panel simulation
     # these are the locations (faces) where things are computed , len = n panel
     # dimension of vt = npanel x ncases x ncpts
@@ -99,8 +105,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     VT              = np.ma.masked_greater(vt,0 )
     VT_mask         = np.ma.masked_greater(vt,0 ).mask
     X_BOT_VALS      = np.ma.array(X, mask = VT_mask)[::-1]
-    Y_BOT           = np.ma.array(Y, mask = VT_mask)[::-1]
-         
+    Y_BOT           = np.ma.array(Y, mask = VT_mask)[::-1] 
     X_BOT           = np.zeros_like(X_BOT_VALS)
     X_BOT[1:]       = np.cumsum(np.sqrt((X_BOT_VALS[1:] - X_BOT_VALS[:-1])**2 + (Y_BOT[1:] - Y_BOT[:-1])**2),axis = 0)
     first_idx       = np.ma.count_masked(X_BOT,axis = 0)
@@ -370,8 +375,7 @@ def airfoil_analysis(airfoil_geometry,alpha,Re_L,initial_momentum_thickness=1E-5
     CF_TOP_SURF          = CF_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')
     RE_THETA_TOP_SURF    = RE_THETA_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')  
     RE_X_TOP_SURF        = RE_X_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')  
-    DELTA_TOP_SURF       = DELTA_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')          
-
+    DELTA_TOP_SURF       = DELTA_TOP_SURF_2.reshape((npanel,ncases,ncpts),order = 'F')   
     
     # ------------------------------------------------------------------------------------------------------
     # concatenate lower and upper surfaces   

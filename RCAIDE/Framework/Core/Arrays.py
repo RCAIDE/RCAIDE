@@ -1,8 +1,7 @@
-## @ingroup Core
 # RCAIDE/Core/Arrays.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jul 2024, RCAIDE Team 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -12,75 +11,66 @@ import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  atleast_2d_col
-# ----------------------------------------------------------------------------------------------------------------------        
-## @ingroup Core
+# ----------------------------------------------------------------------------------------------------------------------         
 def atleast_2d_col(A):
     """Makes a 2D array in column format
 
     Assumptions:
-    None
+        None
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    A      [1-D Array]
+    Args:
+        A  (numpy.ndarray):  1-D Array 
 
-    Outputs:
-    A      [2-D Array]
-
-    Properties Used:
-    N/A
+    Returns:
+        A  (numpy.ndarray):  2-D Array  
+    
     """       
     return atleast_2d(A,'col')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  atleast_2d_row
-# ----------------------------------------------------------------------------------------------------------------------        
-## @ingroup Core
+# ----------------------------------------------------------------------------------------------------------------------         
 def atleast_2d_row(A):
     """Makes a 2D array in row format
 
     Assumptions:
-    None
+        None
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    A      [1-D Array]
+    Args:
+        A  (numpy.ndarray):  1-D Array 
 
-    Outputs:
-    A      [2-D Array]
+    Returns:
+        A  (numpy.ndarray):  2-D Array 
 
-    Properties Used:
-    N/A
     """       
     return atleast_2d(A,'row')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  atleast_2d
-# ----------------------------------------------------------------------------------------------------------------------        
-## @ingroup Core
+# ----------------------------------------------------------------------------------------------------------------------         
 def atleast_2d(A,oned_as='row'):
     """ensures A is an array and at least of rank 2
 
     Assumptions:
-    Defaults as row
+        Defaults as row
 
     Source:
-    N/A
+        None
 
-    Inputs:
-    A      [1-D Array]
+    Args:
+        A  (numpy.ndarray):  1-D Array 
 
-    Outputs:
-    A      [2-D Array]
+    Returns:
+        A  (numpy.ndarray):  2-D Array 
 
-    Properties Used:
-    N/A
     """       
     
     # not an array yet
@@ -101,26 +91,22 @@ def atleast_2d(A,oned_as='row'):
             
     return A
 
-
-## @ingroup Core
+ 
 def append_array(A=None,B=None):
     """ A stacking operation used by merged to put together data structures
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
+            None
 
-        Inputs:
-        A [array]
-        B [array]
+        Args:
+            A (float)
+            B (float)
 
-        Outputs:
-        array
-
-        Properties Used:
-        None
+        Returns:
+            array
     """       
     if isinstance(A,np.ndarray) and isinstance(B,np.ndarray):
         return np.vstack([A,B])

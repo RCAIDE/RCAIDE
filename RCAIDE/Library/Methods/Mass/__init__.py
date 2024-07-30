@@ -1,4 +1,3 @@
-## @defgroup Methods-Weights Weights
 # RCAIDE/Library/Methods/Weights/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
@@ -8,6 +7,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+ 
+from . import Correlation_Buildups
 
 from . import Analytical
 from . import Correlation

@@ -14,13 +14,13 @@
 
 # ----------------------------------------------------------------------
 #  Imports
-# ---------------------------------------------------------------------- 
-from Legacy.trunk.S.Core import Data  
+# ----------------------------------------------------------------------
+import RCAIDE
 import numpy as np
 from scipy import interpolate
 
-## @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
-def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpolation = 'cubic'):
+# @ingroup Methods-Geometry-Two_Dimensional-Cross_Section-Airfoil
+def import_airfoil_geometry(airfoil_geometry_file, npoints = 201,surface_interpolation = 'cubic'):
     """This imports an airfoil geometry from a text file  and store
     the coordinates of upper and lower surfaces as well as the mean
     camberline
@@ -46,8 +46,13 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 200,surface_interpo
         camber_coordinates  
     Properties Used:
     N/A
-    """  
-    geometry     = Data()
+    """
+
+    if npoints%2 != 1:
+        npoints+= 1
+        print('Number of points must be odd, changing to ' + str(npoints) + ' points')      
+    
+    geometry     = RCAIDE.Framework.Core.Data()
     half_npoints = npoints//2         
  
     # Open file and read column names and data block

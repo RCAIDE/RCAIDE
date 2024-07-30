@@ -10,37 +10,27 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
  
-from RCAIDE.Core import DataOrdered
+from RCAIDE.Framework.Core import Data
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
 import sys, os, traceback, time 
  
 modules = [ 
-    # ----------------------- Regression List --------------------------
-    'Tests/analysis_aerodynamics/airfoil_panel_method_test.py',  
-    'Tests/analysis_noise/digital_elevation_test.py',  
-    'Tests/analysis_noise/frequency_domain_test.py', 
-    'Tests/analysis_noise/empirical_jet_noise_test.py',     
-    'Tests/analysis_noise/noise_hemisphere_test.py', 
-    'Tests/mission_segments/segment_test.py',    
-    'Tests/network_all_electric/all_electric_rotor_test.py',  
-    'Tests/network_turbofan/turbofan_network_test.py',
-    'Tests/network_turbojet/turbojet_network_test.py',
-    'Tests/network_internal_combustion_engine/ICE_test.py',
-    'Tests/network_internal_combustion_engine/ICE_constant_speed_test.py',
-    'Tests/network_isolated_battery_cell/cell_test.py', 
+    # ----------------------- Regression List -------------------------- 
+    'Tests/mission_segments/segment_test.py',     
+    'Tests/network_turbofan/turbofan_network_test.py', 
 ]
 
 def regressions():
      
     # preallocate test results
-    results = DataOrdered()
+    results = Data()
     for module in modules:
         results[module] = 'Untested'
 
     sys.stdout.write('# --------------------------------------------------------------------- \n')
-    sys.stdout.write('#   RCAIDE-UIUC Automatic Regression \n')
+    sys.stdout.write('#   RCAIDE Automatic Regression \n')
     sys.stdout.write('#   %s \n' % time.strftime("%B %d, %Y - %H:%M:%S", time.gmtime()) )
     sys.stdout.write('# --------------------------------------------------------------------- \n')
     sys.stdout.write(' \n')

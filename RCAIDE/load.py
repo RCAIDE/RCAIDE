@@ -1,7 +1,7 @@
 # load.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jul 2024, RCAIDE Team 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -97,7 +97,7 @@ def build_data_r(v):
     if tv == OrderedDict:
         keys = v.keys()
         # Recursively assign values
-        ret = DataOrdered()
+        ret = Data()
         for k in keys:
             k = str(k)
             ret[k] = build_data_r(v[k])

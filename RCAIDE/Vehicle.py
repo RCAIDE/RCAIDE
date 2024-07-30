@@ -1,4 +1,3 @@
-## @defgroup Vehicle
 # Vehicle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #
@@ -11,14 +10,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 from RCAIDE                    import Framework
-from RCAIDE.Framework.Core     import Data, DataOrdered
+from RCAIDE.Framework.Core     import Data 
 from RCAIDE.Library            import Components, Attributes 
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vehicle
-# ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Vehicle
+# ----------------------------------------------------------------------------------------------------------------------  
 class Vehicle(Data):
     """RCAIDE Vehicle container class with database + input / output functionality
     """    
@@ -32,23 +30,23 @@ class Vehicle(Data):
         Source:
             None
         """    
-        self.tag                    = 'vehicle'
-        self.fuselages              = Components.Fuselages.Fuselage.Container()
-        self.wings                  = Components.Wings.Wing.Container()
-        self.networks               = Framework.Networks.Network.Container()
-        self.nacelles               = Components.Nacelles.Nacelle.Container()
-        self.systems                = Components.Systems.System.Container()
-        self.booms                  = Components.Booms.Boom.Container()
-        self.mass_properties        = Vehicle_Mass_Container()
-        self.payload                = Components.Payloads.Payload.Container()
-        self.costs                  = Data() 
-        self.costs.industrial       = Attributes.Costs.Industrial_Costs()
-        self.costs.operating        = Attributes.Costs.Operating_Costs()    
-        self.envelope               = Attributes.Envelope()
-        self.landing_gear           = Components.Landing_Gear.Landing_Gear.Container()
-        self.reference_area         = 0.0
-        self.passengers             = 0.0
-        self.performance            = DataOrdered()
+        self.tag                          = 'vehicle'
+        self.fuselages                    = Components.Fuselages.Fuselage.Container()
+        self.wings                        = Components.Wings.Wing.Container()
+        self.networks                     = Framework.Networks.Network.Container()
+        self.nacelles                     = Components.Nacelles.Nacelle.Container()
+        self.avionics                     = Components.Systems.Avionics.Container()
+        self.systems                      = Components.Systems.System.Container()
+        self.booms                        = Components.Booms.Boom.Container()
+        self.mass_properties              = Vehicle_Mass_Properties()
+        self.payload                      = Components.Payloads.Payload.Container()
+        self.costs                        = Data() 
+        self.costs.industrial             = Attributes.Costs.Industrial_Costs()
+        self.costs.operating              = Attributes.Costs.Operating_Costs()     
+        self.landing_gear                 = Components.Landing_Gear.Landing_Gear.Container()
+        self.reference_area               = 0.0
+        self.passengers                   = 0.0
+        self.maximum_cross_sectional_area = 0.0 
          
     _energy_network_root_map = None 
 
@@ -56,19 +54,16 @@ class Vehicle(Data):
         """ Sets up the component hierarchy for a vehicle
     
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None 
         """          
         # will set defaults
         super(Vehicle,self).__init__(*args,**kwarg)  
@@ -80,15 +75,14 @@ class Vehicle(Data):
             Components.Systems.Avionics                : self['avionics']         ,
             Components.Payloads.Payload                : self['payload']          , 
             Framework.Networks.Network                 : self['networks']         , 
-            Components.Nacelles.Nacelle                : self['nacelles']         ,
-            Attributes.Envelope                        : self['envelope']         ,
             Components.Booms.Boom                      : self['booms']            ,
             Components.Landing_Gear.Landing_Gear       : self['landing_gear']     ,
-            Vehicle_Mass_Properties                    : self['mass_properties']  ,
         }
-        
-        self.append_component(Vehicle_Mass_Properties())
-         
+
+        self._energy_network_root_map= {
+            Framework.Networks.Network                 : self['networks']         , 
+            }    
+                         
         return
     
 
@@ -96,19 +90,16 @@ class Vehicle(Data):
         """ find pointer to component data root.
         
             Assumptions:
-            None
+                None
     
             Source:
-            N/A
+                None 
     
-            Inputs:
-            None
+            Args:
+                None
     
-            Outputs:
-            None
-    
-            Properties Used:
-            None
+            Returns:
+                None 
         """  
 
         # find component root by type, allow subclasses
@@ -248,8 +239,7 @@ class Vehicle(Data):
 
         return energy_network_root
 
-
-## @ingroup Vehicle
+ 
 class Vehicle_Mass_Properties(Components.Mass_Properties): 
     """ The vehicle's mass properties.
         
@@ -279,38 +269,7 @@ class Vehicle_Mass_Properties(Components.Mass_Properties):
         self.max_cargo                   = 0.0
         self.cargo                       = 0.0
         self.max_payload                 = 0.0
-        self.payload                     = 0.0
-        self.passenger                   = 0.0
-        self.crew                        = 0.0
         self.max_fuel                    = 0.0
-        self.fuel                        = 0.0
         self.max_zero_fuel               = 0.0
         self.center_of_gravity           = [[0.0,0.0,0.0]]
         self.zero_fuel_center_of_gravity = np.array([[0.0,0.0,0.0]])    
-        
-class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Properties):
-        
-    def append(self,value,key=None):
-        """ Appends the vehicle mass, but only let's one ever exist. Keeps the newest one
-        
-            Assumptions:
-                None
-    
-            Source:
-                None
-        """      
-        self.clear()
-        for key in value.keys():
-            self[key] = value[key]
-
-    def get_children(self):
-        """ Returns the components that can go inside
-        
-            Assumptions:
-                None
-    
-            Source:
-                None
-        """       
-        
-        return [Vehicle_Mass_Properties]
