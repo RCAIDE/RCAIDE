@@ -1,8 +1,38 @@
+from abc import ABC
 from dataclasses import dataclass
 from RCAIDE.Framework.Core import Process, ProcessStep
 from RCAIDE.Library.Methods.Mass import Correlation as Mass
 
+
+@dataclass(kw_only=True)
 class TransportMassAnalysis(Process):
+    """
+    Transport Mass Analysis Class
+
+    This class is used to perform mass analysis for a transport aircraft. It inherits from the `Process` class.
+
+    Attributes
+    ----------
+    main_wing_mass_reduction_factor : float
+        The mass reduction factor for the main wing.
+    fuselage_mass_reduction_factor : float
+        The mass reduction factor for the fuselage.
+    empennage_mass_reduction_factor : float
+        The mass reduction factor for the empennage.
+    systems_mass_reduction_factor : float
+        The mass reduction factor for the systems.
+    rudder_sizing_fraction : float
+        The rudder area as a fraction of the main wing area.
+
+    Methods
+    -------
+    __post_init__():
+        Initializes the settings for the mass analysis.
+
+        If the appropriate datastructures aren't already in settings, creates them.
+        Maps analysis settings into settings datastructure for later retrieval.
+        Adds default process steps for mass calculations.
+    """
 
     # Make settings analysis class attributes so that users can see what settings can/must be set when initializing
     # an instance of this analysis, and so that they appear in the docstring of the analysis
