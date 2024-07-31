@@ -11,8 +11,7 @@
 import RCAIDE 
 from RCAIDE.Framework.Core                                                                         import Data 
 from RCAIDE.Framework.Mission.Common                                                               import Residuals 
-from RCAIDE.Library.Components.Component                                                           import Container   
-from RCAIDE.Library.Components.Propulsors.Converters                                               import Propeller, Lift_Rotor, Prop_Rotor 
+from RCAIDE.Library.Components.Component                                                           import Container    
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                                          import append_initial_battery_conditions 
 from .Network                                                                                      import Network
 
@@ -303,7 +302,7 @@ class Electric(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------
-            for i, propulsor in enumerate(bus.propulsors):
+            for i, propulsor in enumerate(bus.propulsors):     
                 if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge: 
                     segment.state.conditions.energy.recharging  = True 
                     segment.state.unknowns['recharge']          =  0* ones_row(1)  
@@ -322,11 +321,11 @@ class Electric(Network):
                         segment.state.unknowns[ propulsor.tag  + '_rotor_cp']                    = cp_init * ones_row(1)  
                         segment.state.residuals.network[ propulsor.tag  + '_rotor_motor_torque'] = 0. * ones_row(1)            
                     
-                # Results data structure for each propulsor group      
-                bus_results[propulsor.tag].esc                     = RCAIDE.Framework.Mission.Common.Conditions() 
-                bus_results[propulsor.tag].throttle                = 0. * ones_row(1)  
-                bus_results[propulsor.tag].y_axis_rotation         = 0. * ones_row(1)  
-                noise_results[propulsor.tag]                       = RCAIDE.Framework.Mission.Common.Conditions() 
+                # Results data structure for each propulsor group 
+                propulsor.append_operating_conditions(segment,bus) 
+                for tag, item in  propulsor.items(): 
+                    if issubclass(type(item), RCAIDE.Library.Components.Component):
+                        item.append_operating_conditions(segment,bus,propulsor) 
             
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network            = self.unpack_unknowns
