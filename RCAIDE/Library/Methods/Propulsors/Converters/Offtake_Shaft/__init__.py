@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Propulsors/Converters/Expansion_Nozzlee/__init__.py
+# RCAIDE/Library/Methods/Propulsors/Converters/Shaft_Power_Off_Take/__init__.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
@@ -8,5 +8,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .append_expansion_nozzle_conditions    import append_expansion_nozzle_conditions         
-from .compute_expansion_nozzle_performance  import compute_expansion_nozzle_performance
+from .append_offtake_shaft_conditions    import append_offtake_shaft_conditions                    
+from .compute_offtake_shaft_performance  import compute_offtake_shaft_performance

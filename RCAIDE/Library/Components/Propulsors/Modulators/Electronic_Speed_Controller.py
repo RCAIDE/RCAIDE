@@ -11,6 +11,8 @@
 
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
+from RCAIDE.Library.Methods.Propulsors.Modulators.Electronic_Speed_Controller.compute_esc_performance import compute_esc_performance
+from RCAIDE.Library.Methods.Propulsors.Modulators.Electronic_Speed_Controller.append_esc_conditions   import append_esc_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Electronic Speed Controller Class
@@ -38,4 +40,10 @@ class Electronic_Speed_Controller(Component):
             """         
 
         self.tag              = 'electronic_speed_controller'  
-        self.efficiency       = 0.0       
+        self.efficiency       = 0.0
+        
+
+    def append_operating_conditions(self,segment,bus,propulsor): 
+        propulsor_conditions =  segment.state.conditions.energy[bus.tag][propulsor.tag]
+        append_esc_conditions(self,segment,propulsor_conditions)
+        return                

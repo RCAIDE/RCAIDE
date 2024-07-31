@@ -1,6 +1,5 @@
-## @defgroup Methods-Energy-Propulsors-Converters-Ram
-# RCAIDE/Methods/Energy/Propulsors/Converters/Ram/__init__.py
-# 
+# RCAIDE/Library/Methods/Propulsors/Converters/Ram/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
@@ -8,5 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-        
+
+from .append_ram_conditions   import append_ram_conditions                         
 from .compute_ram_performance import compute_ram_performance

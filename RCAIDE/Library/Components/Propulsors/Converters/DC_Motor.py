@@ -9,7 +9,8 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor import compute_omega_and_Q_from_Cp_and_V , compute_I_from_omega_and_V
+from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor.append_motor_conditions import  append_motor_conditions
+from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor import compute_RPM_and_torque_from_power_coefficent_and_voltage , compute_current_from_RPM_and_voltage
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -58,7 +59,7 @@ class DC_Motor(Component):
         self.wing_mounted       = False
         self.interpolated_func  = None
         
-    def compute_omega(self,conditions): 
+    def compute_omega(self,motor_conditions,freestream): 
         """Calculates the motor's rotation rate
         
         Assumptions:
@@ -77,11 +78,11 @@ class DC_Motor(Component):
         None
         """                   
          
-        compute_omega_and_Q_from_Cp_and_V(self,conditions)    
+        compute_RPM_and_torque_from_power_coefficent_and_voltage(self,motor_conditions,freestream)    
         
         return 
     
-    def compute_current_draw(self):
+    def compute_current_draw(self,motor_conditions,freestream):
         """Calculates the current draw from a DC motor 
         
         Assumptions:
@@ -100,6 +101,12 @@ class DC_Motor(Component):
         None
         """             
          
-        compute_I_from_omega_and_V(self)        
+        compute_current_from_RPM_and_voltage(self,motor_conditions,freestream)        
         
-        return 
+        return
+
+    def append_operating_conditions(self,segment,bus,propulsor):
+        propulsor_conditions =  segment.state.conditions.energy[bus.tag][propulsor.tag]
+        append_motor_conditions(self,segment,propulsor_conditions)
+        return
+    

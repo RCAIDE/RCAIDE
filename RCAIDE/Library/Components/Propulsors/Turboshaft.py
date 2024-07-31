@@ -13,6 +13,9 @@
 import RCAIDE
 from RCAIDE.Framework.Core                  import Data
 from .                                      import Propulsor  
+from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.append_turboprop_conditions     import append_turboprop_conditions 
+from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.compute_turboprop_performance   import compute_turboprop_performance, reuse_stored_turboprop_data
+ 
 
 # ----------------------------------------------------------------------
 #  Turboshaft
@@ -61,22 +64,16 @@ class Turboshaft(Propulsor):
         self.areas.wetted                                     = 0.0
         self.areas.maximum                                    = 0.0
         self.areas.exit                                       = 0.0
-        self.areas.inflow                                     = 0.0
-                                                              
-        self.inputs                                           = Data()
-        self.outputs                                          = Data()
+        self.areas.inflow                                     = 0.0 
 
-        self.inputs.fuel_to_air_ratio                         = 0.0
-        self.outputs.thrust                                   = 0.0 
-        self.outputs.thrust_specific_fuel_consumption         = 0.0
-        self.outputs.specific_impulse                         = 0.0
-        self.outputs.non_dimensional_thrust                   = 0.0
-        self.outputs.non_dimensional_power                    = 0.0
-        self.outputs.core_mass_flow_rate                      = 0.0
-        self.outputs.fuel_flow_rate                           = 0.0
-        self.outputs.fuel_mass                                = 0.0
-        self.outputs.power                                    = 0.0
-        self.outputs.power_specific_fuel_consumption          = 0.0 
-        self.combustor.outputs.stagnation_temperature         = 0.0
-        self.compressor.pressure_ratio                        = 0.0
-
+    def append_operating_conditions(self,segment,fuel_line):
+        append_turboprop_conditions(self,segment,fuel_line)
+        return
+    
+    def compute_performance(self,state,fuel_line,center_of_gravity = [[0, 0, 0]]):
+        thrust,moment,power,stored_results_flag,stored_propulsor_tag =  compute_turboprop_performance(self,state,fuel_line,center_of_gravity)
+        return thrust,moment,power,stored_results_flag,stored_propulsor_tag
+    
+    def reuse_stored_data(turboprop,state,fuel_line,stored_propulsor_tag,center_of_gravity = [[0, 0, 0]]):
+        thrust,moment,power  = reuse_stored_turboprop_data(turboprop,state,fuel_line,stored_propulsor_tag,center_of_gravity)
+        return thrust,moment,power 

@@ -1,6 +1,5 @@
-## @ingroup Components-Propulsors-Converters
 # RCAIDE/Library/Components/Propulsors/Converters/Compressor.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Feb 2024, M. Clarke
 
@@ -9,47 +8,30 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports   
 from RCAIDE.Library.Components                      import Component  
+from RCAIDE.Library.Methods.Propulsors.Converters.Compressor.append_compressor_conditions import append_compressor_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compressor 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Propulsors-Converters 
 class Compressor(Component):
-    """This is a compressor component typically used in a turbofan.
-    Calling this class calls the compute function.
-    
-    Assumptions:
-    Pressure ratio and efficiency do not change with varying conditions.
-
-    Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """This is a compressor component typically used in a turbofan or turbojet.
     """
     
     def __defaults__(self):
         """This sets the default values for the component to function.
 
         Assumptions:
-        None
+            None
 
         Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+            None 
         """          
         #set the default values
         self.tag                             = 'Compressor'
         self.polytropic_efficiency           = 1.0
         self.pressure_ratio                  = 1.0
-        self.inputs.stagnation_temperature   = 0.
-        self.inputs.stagnation_pressure      = 0.
-        self.outputs.stagnation_temperature  = 0.
-        self.outputs.stagnation_pressure     = 0.
-        self.outputs.stagnation_enthalpy     = 0.
-        self.mass_flow_rate                  = 0.
+
+    def append_operating_conditions(self,segment,fuel_line,propulsor): 
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag]
+        append_compressor_conditions(self,segment,propulsor_conditions)
+        return        
