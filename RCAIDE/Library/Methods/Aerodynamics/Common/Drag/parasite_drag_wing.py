@@ -54,17 +54,16 @@ def parasite_drag_wing(state, settings, geometry):
             .parasite[wing.tag].form_factor                            (float): form_factor               [unitess]
     """
     
-     # unpack inputs
+    # Unpack inputs
     C                             = settings.wing_parasite_drag_form_factor
     recalculate_total_wetted_area = settings.recalculate_total_wetted_area
     freestream                    = state.conditions.freestream
     
-    # conditions
+    # Unpack conditions
     Mc  = freestream.mach_number
     Tc  = freestream.temperature    
-    re  = freestream.reynolds_number   
-    wing_parasite_drag = 0.0
-    
+    re  = freestream.reynolds_number
+
     # Unpack wing
     span_offset  = geometry.percent_span_root_offset
     t_c_w        = geometry.thickness_to_chord
@@ -72,107 +71,63 @@ def parasite_drag_wing(state, settings, geometry):
     xtu          = geometry.transition_x_upper
     xtl          = geometry.transition_x_lower
 
-    # Define a function for computing the parasite drag for basic geometry
-
-    def _compute_parasite_drag(re, mac_w, Mc, Tc, xtu, xtl, sweep_w, t_c_w, S_ref, Swet, C):
-        """Computes the parasite drag due to wings
-
-        Assumptions:
-
-        Source:
-            adg.stanford.edu (Stanford AA241 A/B Course Notes)
-
-        Args:
-            re      (float): Reynolds Number                 [unitless]
-            mac_w   (float): Wing mean aerodynamic chord     [m]
-            Mc      (float): Mach Number                     [unitless]
-            Tc      (float): Temperature                     [K]
-            xtu     (float): Upper surface transition point  [unitless]
-            xtl     (float): Lower surface transition point  [unitless]
-            sweep_w (float): wing sweep                      [rad]
-            t_c_w   (float): wing thickness to chord ratio   [unitless]
-            S_ref   (float): wing reference area             [m^2]
-            Swet    (float): wing wetted area                [m^2]
-            C       (float): form factor                     [unitless]
-
-        Returns:
-            wing_parasite_drag  (float): wing parasite drag               [unitless]
-            k_w                 (float): form factor                      [unitless]
-            cf_w_u              (float): upper skin-friction coefficient  [unitless]
-            cf_w_l              (float): lower skin-friction coefficient  [unitless]
-            k_comp_u            (float): upper compressibility factor     [unitless]
-            k_comp_l            (float): lower compressibility factor     [unitless]
-            k_reyn_u            (float): upper reynolds factor            [unitless]
-            k_reyn_l            (float): lower reynolds factor            [unitless]
-        """
-        # reynolds number
-        Re_w = re * mac_w
-
-        # skin friction  coefficient, upper
-        cf_w_u, k_comp_u, k_reyn_u = compressible_mixed_flat_plate(Re_w, Mc, Tc, xtu)
-
-        # skin friction  coefficient, lower
-        cf_w_l, k_comp_l, k_reyn_l = compressible_mixed_flat_plate(Re_w, Mc, Tc, xtl)
-
-        # correction for airfoils
-        cos_sweep = np.cos(sweep_w)
-        cos_squared = cos_sweep * cos_sweep
-        ind = Mc <= 1.
-        k_w = np.ones_like(Mc)
-        k_w[ind] = (1.
-                    + (2. * C * (t_c_w * cos_squared))
-                    / (np.sqrt(1. - Mc[ind] * Mc[ind] * cos_squared))
-                    + (C * C * cos_squared * t_c_w * t_c_w * (1. + 5. * cos_squared))
-                    / (2. * (1. - (Mc[ind] * cos_sweep) ** 2.)))
-
-        spline = Cubic_Spline_Blender(.95, 1.0)
-        h00 = lambda M: spline.compute(M)
-        k_w = k_w * (h00(Mc)) + 1 * (1 - h00(Mc))
-
-        wing_parasite_drag = k_w * Swet / S_ref / 2. * (cf_w_u + cf_w_l)
-
-        return wing_parasite_drag, k_w, cf_w_u, cf_w_l, k_comp_u, k_comp_l, k_reyn_u, k_reyn_l
-
     # Define a function to compute parasite drag for a single segment
     def _single_segmented(segment):
 
-        mac = geometry.chords.mean_aerodynamic
-        sweep = geometry.sweeps.quarter_chord
-        span = geometry.spans.projected
-        seg_Sref = geometry.areas.reference
+        # Unpack Geometry
 
-        chord_root = geometry.chords.root
-        chord_tip = geometry.chords.tip
+        mac         = geometry.chords.mean_aerodynamic
+        sweep       = geometry.sweeps.quarter_chord
+        span        = geometry.spans.projected
+        seg_Sref    = geometry.areas.reference
+        seg_Swet    = geometery.areas.wetted
+        chord_root  = geometry.chords.root
+        chord_tip   = geometry.chords.tip
+
+        # Derived Quantities
+
         wing_root = chord_root + span_offset * ((chord_tip - chord_root) / span)
+        re_w = re * mac
 
-        if recalculate_total_wetted_area or geometry.areas.wetted == 0.:
+        # Optionally recalculate total wetted area if not provided
 
-            # calculate exposed area
-            if geometry.symmetric:
-                S_exposed = geometry.areas.reference - (chord_root + wing_root) * span_offset
-            else:
-                S_exposed = geometry.areas.reference - 0.5 * (chord_root + wing_root) * span_offset
+        if recalculate_total_wetted_area or seg_Swet == 0.:
+
+            # If the wing is not symmetric, take only half of the exposed area correction from the reference area
+
+            S_exposed = (seg_Sref -
+                         ((chord_root + wing_root) * span_offset * (0.5 * geometry.symmetric)))
 
             if t_c_w < 0.05:
-                Swet = 2.003 * S_exposed
+                seg_Swet = 2.003 * S_exposed
             else:
-                Swet = (1.977 + 0.52 * t_c_w) * S_exposed
+                seg_Swet = (1.977 + 0.52 * t_c_w) * S_exposed
 
-            geometry.areas.wetted = Swet
-        else:
-            Swet = geometry.areas.wetted
+            geometry.areas.wetted = seg_Swet
 
-        # compute parasite drag coef., form factor, skin friction coef.,
-        # compressibility factor and reynolds number for wing
+        # Calculate upper and lower skin friction compressibility, and Reynolds' number factors
 
-        (seg_parasite_drag,
-         seg_k_w,
-         seg_cf_w_u,
-         seg_cf_w_l,
-         seg_k_comp_u,
-         seg_k_comp_l,
-         seg_k_reyn_u,
-         seg_k_reyn_l) = _compute_parasite_drag(re, mac, Mc, Tc, xtu, xtl, sweep, t_c_w, seg_Sref, Swet, C)
+        seg_cf_w_u, seg_k_comp_u, seg_k_reyn_u = compressible_mixed_flat_plate(re_w, Mc, Tc, xtu)
+        seg_cf_w_l, seg_k_comp_l, seg_k_reyn_l = compressible_mixed_flat_plate(re_w, Mc, Tc, xtl)
+
+        # Compute airfoil correction
+        cos_sweep = np.cos(sweep)
+
+        # Mask for subsonic analysis points
+        seg_k_w = np.ones_like(Mc)
+        subsonic = Mc <= 1.
+
+        seg_kw[subsonic] = (1.
+                            + (2. * C * (t_c_w * cos_sweepv ** 2))
+                            / (np.sqrt(1. - (Mc[subsonic] * cos_sweep) ** 2))
+                            + ((C * cos_sweep * t_c_w) ** 2 * (1. + 5. * cos_sweep ** 2))
+                            / (2. * (1. - (Mc[ind] * cos_sweep) ** 2.)))
+
+        transonic_spline = Cubic_Spline_Blender(.95, 1.0)
+        seg_k_w *= transonic_spline.compute(Mc)
+        seg_k_w += 1 - transonic_spline.compute(Mc)
+
+        seg_parasite_drag = seg_k_w * seg_Swet / seg_Sref / 2. * (seg_cf_w_u + seg_cf_w_l)
 
         return (seg_parasite_drag, seg_k_w, seg_cf_w_u, seg_cf_w_l,
                 seg_k_comp_u, seg_k_comp_l, seg_k_reyn_u, seg_k_reyn_l, seg_Sref)
@@ -194,8 +149,7 @@ def parasite_drag_wing(state, settings, geometry):
     k_reyn_u            = np.sum([r[6]*r[8] for r in segment_results])/Sref
     k_reyn_l            = np.sum([r[7]*r[8] for r in segment_results])/Sref
 
-
-    # dump data to conditions
+    # Dump data to conditions
     wing_result = Data(
         wetted_area=geometry.areas.wetted,
         reference_area=Sref,
