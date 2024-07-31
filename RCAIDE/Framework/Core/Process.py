@@ -7,7 +7,7 @@ from RCAIDE.Framework.Core.Utilities import args_passer
 import pandas as pd
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ProcessStep:
 
     #---------------------------------------------------------------------------
@@ -45,7 +45,7 @@ def _create_details():
     return details
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Process:
 
     #---------------------------------------------------------------------------
