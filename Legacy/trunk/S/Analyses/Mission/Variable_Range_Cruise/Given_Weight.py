@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Variable_Range_Cruise
+## @ingroup Analyses-Functions-Variable_Range_Cruise
 # Given_Weight.py
 #
 # Created:  
@@ -16,7 +16,7 @@ from Legacy.trunk.S.Analyses.Mission import All_At_Once
 #   Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Vary_Cruise
+## @ingroup Analyses-Functions-Vary_Cruise
 class Given_Weight(All_At_Once):
     """ Given a target landing weight, select the cruise distance by adding a residual to the mission
     

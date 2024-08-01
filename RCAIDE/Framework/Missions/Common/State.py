@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Common/State.py
+# RCAIDE/Framework/Functions/Segments/Common/State.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jul 2024, RCAIDE Team

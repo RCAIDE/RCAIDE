@@ -6,6 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
+# RCAIDE imports
 import RCAIDE
 from RCAIDE.Library.Components.Fuselages import Blended_Wing_Body_Fuselage as BWB_Fuselage
  
@@ -15,7 +16,9 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Total Parasite Drag 
 # ----------------------------------------------------------------------------------------------------------------------   
-def parasite_total(state,settings,geometry):
+
+
+def parasite_total(state, settings, geometry):
     """Sums up the parasite drags from all compoments 
 
     Assumptions:
@@ -40,20 +43,29 @@ def parasite_total(state,settings,geometry):
         None 
     """
 
-    # unpack
+    # Unpack
     conditions             = state.conditions 
     vehicle_reference_area = geometry.reference_area
 
-    #compute parasite drag total
-    total_parasite_drag = 0 *  state.state.ones_row(1)
+    # Compute parasite drag total
+    total_parasite_drag = 0 * state.state.ones_row(1)
 
+    # Renormalize wing drag using wing reference area
     for wing in geometry.wings:
-        total_parasite_drag +=renormalize(wing.tag, wing.areas.reference, conditions,vehicle_reference_area)
+        total_parasite_drag += renormalize(wing.tag,
+                                           wing.areas.reference,
+                                           conditions,
+                                           vehicle_reference_area)
 
+    # Renomralize fuselage drag using fuselage front projected area
     fuselages = [f for f in geometry.fuselages if not isinstance(f, BWB_Fuselage)]
     for fuselage in fuselages:
-        total_parasite_drag +=renormalize(fuselage.tag, fuselage.areas.front_projected, conditions, vehicle_reference_area)
+        total_parasite_drag += renormalize(fuselage.tag,
+                                           fuselage.areas.front_projected,
+                                           conditions,
+                                           vehicle_reference_area)
 
+    # Renormalize nacelle and pylong drag using nacelle frontal area
     for network in geometry.networks:
         if 'busses' in network:
             carriers = network.busses
@@ -64,21 +76,22 @@ def parasite_total(state,settings,geometry):
             nacelle_propulsors = [p for p in carrier.propulsors if 'nacelle' in p]
             for propulsor in nacelle_propulsors:
                 total_parasite_drag += renormalize(propulsor.nacelle.tag,
-                            propulsor.nacelle.diameter**2 / 4 * np.pi,
-                            conditions,
-                            vehicle_reference_area)
+                                                   propulsor.nacelle.diameter**2 / 4 * np.pi,
+                                                   conditions,
+                                                   vehicle_reference_area)
                 if propulsor.nacelle.has_pylon:
                     total_parasite_drag += renormalize(propulsor.nacelle.tag+'_pylon',
-                                propulsor.nacelle.diameter**2 / 4 * np.pi,
-                                conditions,
-                                vehicle_reference_area)
+                                                       propulsor.nacelle.diameter**2 / 4 * np.pi,
+                                                       conditions,
+                                                       vehicle_reference_area)
     
     state.conditions.aerodynamics.coefficients.drag.parasite.total = total_parasite_drag
 
     return 
 
-def renormalize(tag, ref_area, conditions,vehicle_reference_area):
+
+def renormalize(tag, ref_area, conditions, vehicle_reference_area):
     p_drag = conditions.aerodynamics.coefficients.drag.parasite[tag].total
-    p_drag_norm =  p_drag * ref_area/vehicle_reference_area
+    p_drag_norm = p_drag * ref_area/vehicle_reference_area
     conditions.aerodynamics.coefficients.drag.parasite[tag].total = p_drag_norm
     return p_drag_norm

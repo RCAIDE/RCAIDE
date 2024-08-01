@@ -165,7 +165,7 @@ def base_analysis(vehicle):
     return analyses 
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 
 def mission_setup(analyses,vehicle): 
@@ -175,7 +175,7 @@ def mission_setup(analyses,vehicle):
     max_vertical_rate  = 3.6 * Units['m/s'] 
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'tiltrotor_mission'
@@ -297,7 +297,7 @@ def mission_setup(analyses,vehicle):
 
 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------ 
 
     return mission
@@ -309,7 +309,7 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     missions.base = base_mission
 

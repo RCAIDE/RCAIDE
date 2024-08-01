@@ -18,9 +18,8 @@ class Segment(Component):
         """This sets the default for fuselage segments in RCAIDE.
 
         Assumptions:
-            Cross-section of nacelle is a super ellipse defined
-            |x/a|^n + |x/b|^n = 1 where n is the curvature.
-            n = 2 defaulted to give rounded concave edges
+            Cross-section of nacelle is an ellipse defined
+            |x/a| + |x/b| = 1.
 
         Source:
             None

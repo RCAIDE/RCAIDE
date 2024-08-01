@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Constant_Dynamic_Pressure_Constant_Angle.py
 #
 # Created:  Jun 2017, E. Botero
@@ -20,7 +20,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Constant_Dynamic_Pressure_Constant_Angle(Unknown_Throttle):
     """ Climb at a constant dynamic pressure at a constant angle.
         This segment takes longer to solve than most because it has extra unknowns and residuals

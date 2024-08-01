@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Single_Point
+## @ingroup Analyses-Functions-Segments-Single_Point
 # Set_Speed_Set_Altitude.py
 #
 # Created:  Mar 2017, T. MacDonald
@@ -28,7 +28,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Single_Point
+## @ingroup Analyses-Functions-Segments-Single_Point
 class Set_Speed_Set_Altitude(Aerodynamic):
     """ This is a segment that is solved using a single point. A snapshot in time.
         We fix the speed and altitude. Throttle is solved from those.

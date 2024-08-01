@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 # Takeoff.py
 #
 # Created:  
@@ -19,7 +19,7 @@ from Legacy.trunk.S.Core import Units
 #  Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 class Takeoff(Ground):
     """ Segment for takeoff. Integrates equations of motion
         including rolling friction.

@@ -5,7 +5,7 @@
 # Modified: Jan 2016, E. Botero
 
 # ----------------------------------------------------------------------
-#  Computer Mission Center of Gravity
+#  Computer Functions Center of Gravity
 # ----------------------------------------------------------------------
 
 ## @ingroup Methods-Center_of_Gravity

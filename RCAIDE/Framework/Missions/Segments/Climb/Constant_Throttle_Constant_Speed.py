@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Climb/Constant_Throttle_Constant_Speed.py
+# RCAIDE/Framework/Functions/Segments/Climb/Constant_Throttle_Constant_Speed.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -9,8 +9,9 @@
 
 # RCAIDE imports 
 from RCAIDE.Framework.Core                           import Units 
-from RCAIDE.Framework.Missions.Segments.Evaluate      import Evaluate
-from RCAIDE.Library.Mission                          import Common,Segments
+from RCAIDE.Framework.Mission.Segments.Evaluate      import Evaluate
+from RCAIDE.Framework.Mission.Functions import Common
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Constant_Throttle_Constant_Speed
@@ -41,15 +42,15 @@ class Constant_Throttle_Constant_Speed(Evaluate):
         self.true_course       = 0.0 * Units.degrees       
 
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # --------------------------------------------------------------------------------------------------------------      
         initialize                         = self.process.initialize  
-        initialize.velocities              = Segments.Climb.Constant_Throttle_Constant_Speed.update_velocity_vector_from_wind_angle
-        initialize.conditions              = Segments.Climb.Constant_Throttle_Constant_Speed.initialize_conditions
+        initialize.velocities              = RCAIDE.Framework.Mission.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.update_velocity_vector_from_wind_angle
+        initialize.conditions              = RCAIDE.Framework.Mission.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.initialize_conditions
         iterate                            = self.process.iterate
-        iterate.unknowns.mission           = Segments.Climb.Constant_Throttle_Constant_Speed.unpack_body_angle 
-        iterate.differentials_altitude     = Segments.Climb.Constant_Throttle_Constant_Speed.update_differentials_altitude
-        iterate.velocities                 = Segments.Climb.Constant_Throttle_Constant_Speed.update_velocity_vector_from_wind_angle
+        iterate.unknowns.mission           = RCAIDE.Framework.Mission.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.unpack_body_angle
+        iterate.differentials_altitude     = RCAIDE.Framework.Mission.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.update_differentials_altitude
+        iterate.velocities                 = RCAIDE.Framework.Mission.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.update_velocity_vector_from_wind_angle
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         return
 

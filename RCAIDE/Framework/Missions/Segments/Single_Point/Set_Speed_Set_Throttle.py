@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Single_Point/Set_Speed_Set_Throttle.py
+# RCAIDE/Framework/Functions/Segments/Single_Point/Set_Speed_Set_Throttle.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -10,8 +10,9 @@
 # RCAIDE imports   
 from RCAIDE.Library.Methods.skip                     import skip 
 from RCAIDE.Framework.Core                           import Units 
-from RCAIDE.Framework.Missions.Segments.Evaluate      import Evaluate
-from RCAIDE.Library.Mission                          import Common,Segments
+from RCAIDE.Framework.Mission.Segments.Evaluate      import Evaluate
+from RCAIDE.Framework.Mission.Functions import Common
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Set_Speed_Set_Throttle
@@ -41,15 +42,15 @@ class Set_Speed_Set_Throttle(Evaluate):
         self.state.numerics.number_of_control_points = 1  
 
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # --------------------------------------------------------------------------------------------------------------             
         initialize                               = self.process.initialize 
         initialize.expand_state                  = skip
         initialize.differentials                 = skip
-        initialize.conditions                    = Segments.Single_Point.Set_Speed_Set_Throttle.initialize_conditions 
+        initialize.conditions                    = RCAIDE.Framework.Mission.Mission.Segments.Single_Point.Set_Speed_Set_Throttle.initialize_conditions
         iterate                                  = self.process.iterate 
         iterate.initials.energy                  = skip    
-        iterate.unknowns.mission                 = Segments.Single_Point.Set_Speed_Set_Throttle.unpack_unknowns  
+        iterate.unknowns.mission                 = RCAIDE.Framework.Mission.Mission.Segments.Single_Point.Set_Speed_Set_Throttle.unpack_unknowns
         iterate.conditions.differentials         = skip 
         iterate.conditions.planet_position       = skip    
         iterate.conditions.acceleration          = skip

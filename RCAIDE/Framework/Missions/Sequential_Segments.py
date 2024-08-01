@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Sequential_Segments.py
+# RCAIDE/Framework/Functions/Sequential_Segments.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jul 2024, RCAIDE Team
@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 # RCAIDE imports   
 import RCAIDE
-from RCAIDE.Library.Mission.Initialize import  aerodynamics,stability,energy,set_residuals_and_unknowns
+from RCAIDE.Framework.Mission.Functions.Initialize import  aerodynamics,stability,energy,set_residuals_and_unknowns
 from RCAIDE.Framework.Core                     import Container as ContainerBase
 from RCAIDE.Framework.Analyses                 import Process 
 from . import Segments

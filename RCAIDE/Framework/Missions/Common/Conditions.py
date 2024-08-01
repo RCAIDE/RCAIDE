@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Conditions/Conditions.py
+# RCAIDE/Framework/Functions/Segments/Conditions/Conditions.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jul 2024, RCAIDE Team

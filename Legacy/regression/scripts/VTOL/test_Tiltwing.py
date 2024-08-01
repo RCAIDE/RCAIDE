@@ -162,7 +162,7 @@ def base_analysis(vehicle):
 def mission_setup(analyses,vehicle):
         
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission     = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -225,7 +225,7 @@ def mission_setup(analyses,vehicle):
     # add to misison
     mission.append_segment(segment) 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
   
     return mission
@@ -236,7 +236,7 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
 
     missions.base = base_mission

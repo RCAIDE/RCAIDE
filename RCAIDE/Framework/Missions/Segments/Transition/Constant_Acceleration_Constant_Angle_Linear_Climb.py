@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
+# RCAIDE/Framework/Functions/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -9,8 +9,9 @@
 
 # RCAIDE imports 
 from RCAIDE.Framework.Core                       import Units 
-from RCAIDE.Framework.Missions.Segments.Evaluate  import Evaluate
-from RCAIDE.Library.Mission                      import Common,Segments
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate
+from RCAIDE.Framework.Mission.Functions import Common
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Acceleration_Constant_Angle_Linear_Climb
@@ -42,10 +43,10 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
         self.true_course            = 0.0 * Units.degrees  
         
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # --------------------------------------------------------------------------------------------------------------  
         initialize                         = self.process.initialize 
-        initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.initialize_conditions  
+        initialize.conditions              = RCAIDE.Framework.Mission.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.initialize_conditions
         iterate                            = self.process.iterate  
         iterate.unknowns.mission           = Common.Unpack_Unknowns.attitude
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces

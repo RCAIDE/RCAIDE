@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Optimized.py
 #
 # Created:  Mar 2016, E. Botero 
@@ -25,7 +25,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Optimized(Aerodynamic):
     """ Optimize your climb segment. This is useful if you're not sure how your vehicle should climb.
         You can set any conditions parameter as the objective, for example setting time to climb or vehicle mass:

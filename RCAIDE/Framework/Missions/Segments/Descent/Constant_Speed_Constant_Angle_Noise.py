@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Descent/Constant_Speed_Constant_Angle_Noise.py
+# RCAIDE/Framework/Functions/Segments/Descent/Constant_Speed_Constant_Angle_Noise.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -10,10 +10,11 @@
 # RCAIDE imports
 import RCAIDE
 from RCAIDE.Framework.Core                       import Units 
-from RCAIDE.Framework.Missions.Segments.Evaluate  import Evaluate
-from RCAIDE.Library.Mission                      import Common,Segments
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
+from RCAIDE.Framework.Mission.Functions import Common
 
-# ----------------------------------------------------------------------------------------------------------------------  
+
+# ----------------------------------------------------------------------------------------------------------------------
 #  Constant_Speed_Constant_Angle_Noise
 # ----------------------------------------------------------------------------------------------------------------------    
 class Constant_Speed_Constant_Angle_Noise(Evaluate):
@@ -45,12 +46,12 @@ class Constant_Speed_Constant_Angle_Noise(Evaluate):
         self.state.numerics.discretization_method = RCAIDE.Library.Methods.Utilities.Chebyshev.linear_data 
         
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # --------------------------------------------------------------------------------------------------------------  
         initialize                         = self.process.initialize  
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
-        initialize.expand_state            = Segments.Descent.Constant_Speed_Constant_Angle_Noise.expand_state
-        initialize.conditions              = Segments.Descent.Constant_Speed_Constant_Angle_Noise.initialize_conditions
+        initialize.expand_state            = RCAIDE.Framework.Mission.Mission.Segments.Descent.Constant_Speed_Constant_Angle_Noise.expand_state
+        initialize.conditions              = RCAIDE.Framework.Mission.Mission.Segments.Descent.Constant_Speed_Constant_Angle_Noise.initialize_conditions
         iterate                            = self.process.iterate   
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         iterate.unknowns.mission           = Common.Unpack_Unknowns.attitude          

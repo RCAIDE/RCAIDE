@@ -15,7 +15,7 @@ from .                import Propulsor
 # ---------------------------------------------------------------------------------------------------------------------- 
 # Turbojet 
 # ---------------------------------------------------------------------------------------------------------------------- 
-class Turbojet(Propulsor, Container):
+class Turbojet(Propulsor):
     """This is a  turbojet propulsor
 
     Assumptions:
@@ -28,7 +28,7 @@ class Turbojet(Propulsor, Container):
         # setting the default values
         self.tag                                      = 'Turbojet' 
         self.active_fuel_tanks                        = None
-        self.nacelle                                  = None  
+        self.nacelle                                  = Container()
         self.ram                                      = None 
         self.inlet_nozzle                             = None 
         self.low_pressure_compressor                  = None 

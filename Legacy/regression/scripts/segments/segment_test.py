@@ -33,7 +33,7 @@ from Boeing_737 import vehicle_setup, configs_setup
 
 def main(): 
     # -----------------------------------------
-    # Multi-Point Mission Setup 
+    # Multi-Point Functions Setup
     # -----------------------------------------
     configs, analyses = full_setup() 
     simple_sizing(configs, analyses) 
@@ -276,13 +276,13 @@ def simple_sizing(configs, analyses):
     return
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 
 def mission_setup(analyses): 
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -618,7 +618,7 @@ def mission_setup(analyses):
 
         
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------ 
     
     return mission
@@ -630,7 +630,7 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     missions.base = base_mission
 

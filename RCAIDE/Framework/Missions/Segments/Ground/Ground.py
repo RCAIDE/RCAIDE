@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Ground/Ground.py
+# RCAIDE/Framework/Functions/Segments/Ground/Ground.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -9,9 +9,10 @@
 
 # RCAIDE imports
 from RCAIDE.Framework.Core                            import Units , Data 
-from RCAIDE.Framework.Missions.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Mission.Common                    import Residuals , Unpack_Unknowns, Update
- 
+from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
+from RCAIDE.Framework.Mission.Functions.Common import Unpack_Unknowns, Update, Residuals
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  Ground
 # ----------------------------------------------------------------------------------------------------------------------
@@ -54,7 +55,7 @@ class Ground(Evaluate):
         self.true_course          = 0.0 * Units.degrees      
 
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Conditions 
+        #  Functions Conditions
         # --------------------------------------------------------------------------------------------------------------          
         ones_row = self.state.ones_row  
         self.state.conditions.ground                              = Data() 
@@ -62,13 +63,13 @@ class Ground(Evaluate):
         self.state.conditions.frames.inertial.ground_force_vector = ones_row(3) * 0.0 
 
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission Specific Unknowns and Residuals 
+        #  Functions Specific Unknowns and Residuals
         # --------------------------------------------------------------------------------------------------------------       
         iterate.unknowns.mission           = Unpack_Unknowns.ground
         iterate.residuals.flight_dynamics  = Residuals.flight_dynamics
         
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # -------------------------------------------------------------------------------------------------------------- 
         iterate                            = self.process.iterate    
         iterate.conditions.forces_ground   = Update.ground_forces

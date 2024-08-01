@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Vertical_Flight/Climb.py
+# RCAIDE/Framework/Functions/Segments/Vertical_Flight/Climb.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -9,8 +9,9 @@
 
 # RCAIDE imports  
 from RCAIDE.Framework.Core                       import Units 
-from RCAIDE.Framework.Missions.Segments.Evaluate  import Evaluate
-from RCAIDE.Library.Mission                      import Common,Segments
+from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
+from RCAIDE.Framework.Mission.Functions import Common
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Climb
@@ -39,11 +40,11 @@ class Climb(Evaluate):
         self.true_course       = 0.0 * Units.degrees  
         
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # --------------------------------------------------------------------------------------------------------------  
         initialize                         = self.process.initialize
         iterate                            = self.process.iterate 
-        initialize.conditions              = Segments.Vertical_Flight.Climb.initialize_conditions
+        initialize.conditions              = RCAIDE.Framework.Mission.Mission.Segments.Vertical_Flight.Climb.initialize_conditions
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
     
         return

@@ -9,10 +9,9 @@
 # package imports
 import RCAIDE
 from RCAIDE.Framework.Core import Units  
-from RCAIDE.Library.Plots                 import *       
+from RCAIDE.Framework.Plots import *
 
 # python imports     
-import numpy as np  
 import sys
 import matplotlib.pyplot as plt  
 
@@ -114,13 +113,13 @@ def base_analysis(vehicle):
     return analyses    
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
  
 def mission_setup(analyses):
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = RCAIDE.Framework.Mission.Sequential_Segments()
@@ -386,7 +385,7 @@ def mission_setup(analyses):
 
 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
 
 

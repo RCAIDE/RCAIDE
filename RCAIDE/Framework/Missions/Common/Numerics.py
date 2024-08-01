@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Conditions/Numerics.py
+# RCAIDE/Framework/Functions/Segments/Conditions/Numerics.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jul 2024, RCAIDE Team

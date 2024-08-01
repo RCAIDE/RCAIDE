@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments
+## @ingroup Analyses-Functions-Segments
 # Aerodynamic.py
 #
 # Created:  
@@ -19,7 +19,7 @@ from Legacy.trunk.S.Analyses                  import Process
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments
+## @ingroup Analyses-Functions-Segments
 class Aerodynamic(Simple):
     """ The third basic piece of a mission which each segment will expand upon
     

@@ -98,7 +98,7 @@ def propeller_single_point(prop,
     density             = atmo_data.density
     dynamic_viscosity   = atmo_data.dynamic_viscosity
 
-    # Setup Pseudo-Mission for Prop Evaluation
+    # Setup Pseudo-Functions for Prop Evaluation
     ctrl_pts = 1
     prop.inputs.omega                               = np.ones((ctrl_pts, 1)) * omega
     conditions                                      = SUAVE.Analyses.Mission.Segments.Conditions.Conditions()

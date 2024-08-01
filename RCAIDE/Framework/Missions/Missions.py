@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Mission.py
+# RCAIDE/Framework/Functions/Functions.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jul 2024, RCAIDE Team
@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import Container 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Mission
+#  Functions
 # ---------------------------------------------------------------------------------------------------------------------- 
 class Missions(Container):
     """Top-level mission class 
@@ -37,7 +37,7 @@ class Missions(Container):
                 None
     
             Args:
-                self    (dict): Mission data structure of containing process [-]
+                self    (dict): Functions data structure of containing process [-]
                 mission (dict): mission to be appended                       [-]
     
             Returns:

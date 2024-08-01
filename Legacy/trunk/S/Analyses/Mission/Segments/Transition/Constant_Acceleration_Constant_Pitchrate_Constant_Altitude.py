@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Transition
+## @ingroup Analyses-Functions-Segments-Transition
 # Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py
 #
 # Created:  Jan 2016, E. Botero
@@ -27,7 +27,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Transition
+## @ingroup Analyses-Functions-Segments-Transition
 class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Aerodynamic):
     """ Vehicle accelerates at a constant rate between two airspeeds.
     

@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 # Conditions.py
 #
 # Created:  
@@ -21,7 +21,7 @@ from Legacy.trunk.S.Core                    import Data
 #  Conditions
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 class Conditions(Data):
     """ Conditions are the magic Data that contains the information about the vehicle in flight.
         At this point none of the information really exists. What is here are the methods that allow a mission
@@ -142,7 +142,7 @@ class Conditions(Data):
         
         return
         
-## @ingroup Analyses-Mission-Segments-Conditions        
+## @ingroup Analyses-Functions-Segments-Conditions
 class expanded_array(Data):
     """ This is an array that will expand later when the mission is initialized. It is called specifically by conditions
     

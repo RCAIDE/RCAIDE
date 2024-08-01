@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 # Aerodynamics.py
 #
 # Created:  
@@ -23,7 +23,7 @@ from .Conditions import Conditions
 #  Conditions
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 class Aerodynamics(Basic):
     """ This builds upon Basic, which itself builds on conditions, to add the data structure for aerodynamic mission analyses.
     

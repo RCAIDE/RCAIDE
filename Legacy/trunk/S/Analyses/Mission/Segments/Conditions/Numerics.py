@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 # Numerics.py
 #
 # Created:  
@@ -18,7 +18,7 @@ import numpy as np
 #  Numerics
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 class Numerics(Conditions):
     """ Creates the data structure for the numerical solving of a mission.
     

@@ -282,12 +282,12 @@ def base_analysis(vehicle):
     return analyses    
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 
 def GA_mission_setup(analyses,vehicle): 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'mission'
@@ -380,7 +380,7 @@ def GA_mission_setup(analyses,vehicle):
 def EVTOL_mission_setup(analyses,vehicle): 
         
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
     mission            = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag        = 'the_mission'
@@ -548,7 +548,7 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     missions.base = base_mission
 

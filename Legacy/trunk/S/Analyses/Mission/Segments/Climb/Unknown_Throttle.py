@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Unknown_Throttle.py
 #
 # Created:  
@@ -28,7 +28,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Unknown_Throttle(Aerodynamic):
     """ This is a basic climb segment that is not callable by a user. All other variable throttle missions are based 
         on this class as a building block.
