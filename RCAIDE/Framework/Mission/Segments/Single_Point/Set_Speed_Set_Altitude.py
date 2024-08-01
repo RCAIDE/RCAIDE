@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Single_Point/Set_Speed_Set_Altitude.py
+# RCAIDE/Framework/Functions/Segments/Single_Point/Set_Speed_Set_Altitude.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -10,7 +10,7 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Core                           import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate      import Evaluate
-from RCAIDE.Library.Mission                          import Common,Segments
+from RCAIDE.Framework.Mission.Functions import Common
 from RCAIDE.Library.Methods.skip                     import skip
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -41,12 +41,12 @@ class Set_Speed_Set_Altitude(Evaluate):
         self.state.numerics.number_of_control_points = 1   
          
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # --------------------------------------------------------------------------------------------------------------     
         initialize                               = self.process.initialize 
         initialize.expand_state                  = skip
         initialize.differentials                 = skip
-        initialize.conditions                    = Segments.Single_Point.Set_Speed_Set_Altitude.initialize_conditions 
+        initialize.conditions                    = RCAIDE.Framework.Mission.Mission.Segments.Single_Point.Set_Speed_Set_Altitude.initialize_conditions
         iterate                                  = self.process.iterate 
         iterate.initials.energy                  = skip
         iterate.unknowns.controls                = Common.Unpack_Unknowns.control_surfaces

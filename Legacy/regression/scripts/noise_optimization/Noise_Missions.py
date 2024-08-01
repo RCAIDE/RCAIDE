@@ -14,7 +14,7 @@ from Legacy.trunk.S.Core import Units
 import numpy as np
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
     
 def setup(analyses):
@@ -23,7 +23,7 @@ def setup(analyses):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     base_mission = base(analyses)  # mission for performance
     missions.base = base_mission 
@@ -49,7 +49,7 @@ def setup(analyses):
     missions.landing = landing_mission_setup(analyses)        
 
     # ------------------------------------------------------------------
-    #   Mission for Takeoff Field Lengths
+    #   Functions for Takeoff Field Lengths
     # ------------------------------------------------------------------    
     takeoff = SUAVE.Analyses.Mission.Mission(base_mission) #Short_Field_Constrained()
     takeoff.tag = 'takeoff_field'    
@@ -69,7 +69,7 @@ def setup(analyses):
 def base(analyses):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -288,7 +288,7 @@ def base(analyses):
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
     
     
@@ -384,7 +384,7 @@ def base(analyses):
 def max_range_setup(analyses):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -603,7 +603,7 @@ def max_range_setup(analyses):
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------ 
     # ------------------------------------------------------------------
     #   First Climb Segment: constant Mach, constant segment angle
@@ -690,7 +690,7 @@ def max_range_setup(analyses):
 def short_field_setup(analyses):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -910,7 +910,7 @@ def short_field_setup(analyses):
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
 
 
@@ -1006,7 +1006,7 @@ def short_field_setup(analyses):
 def takeoff_mission_setup(analyses):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission segment for takeoff
+    #   Initialize the Functions segment for takeoff
     # ------------------------------------------------------------------
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'takeoff'
@@ -1052,7 +1052,7 @@ def takeoff_mission_setup(analyses):
 
 def sideline_mission_setup(analyses):
     # ------------------------------------------------------------------
-    #   Initialize the Mission segment for takeoff
+    #   Initialize the Functions segment for takeoff
     # ------------------------------------------------------------------
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'sideline_takeoff'
@@ -1091,7 +1091,7 @@ def sideline_mission_setup(analyses):
 def takeoff_mission_initialization(analyses):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission segment for takeoff
+    #   Initialize the Functions segment for takeoff
     # ------------------------------------------------------------------
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'takeoff_initialization'
@@ -1131,7 +1131,7 @@ def takeoff_mission_initialization(analyses):
 def landing_mission_setup(analyses):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission segment for landing
+    #   Initialize the Functions segment for landing
     # ------------------------------------------------------------------
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'landing'

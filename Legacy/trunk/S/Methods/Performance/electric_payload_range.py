@@ -30,7 +30,7 @@ def electric_payload_range(vehicle,
                            display_plot=True):
 
         Calculates and optionally displays a payload range diagram for a
-        Variable Cruise Distance - State of Charge SUAVE Mission and Vehicle.
+        Variable Cruise Distance - State of Charge SUAVE Functions and Vehicle.
 
         Sources:
         N/A
@@ -47,11 +47,11 @@ def electric_payload_range(vehicle,
                     .max_payload            Vehicle Maximum Payload Mass    [kg]
                     .max_takeoff            Vehicle Maximum Takeoff Mass    [kg]
 
-            mission                         SUAVE Mission Structure
-                .Variable_Range_Cruise      Mission Type
+            mission                         SUAVE Functions Structure
+                .Variable_Range_Cruise      Functions Type
                     .Given_State_of_Charge  Convergence Criteria
-                .cruise_tag                 Mission Segment Tag             [String]
-                .target_state_of_charge     End Mission State of Charge     [Unitless]
+                .cruise_tag                 Functions Segment Tag             [String]
+                .target_state_of_charge     End Functions State of Charge     [Unitless]
 
             cruise_segment_tag              mission.cruise_tag              [String]
 

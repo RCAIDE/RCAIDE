@@ -186,7 +186,7 @@ def base_analysis(vehicle):
     return analyses    
 
 # ----------------------------------------------------------------------
-#   Plot Mission
+#   Plot Functions
 # ----------------------------------------------------------------------
 
 def plot_mission(results,line_style='bo-'):
@@ -262,13 +262,13 @@ def simple_sizing(configs, analyses):
     return
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 
 def mission_setup(analyses):
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -460,7 +460,7 @@ def mission_setup(analyses):
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
 
     return mission
@@ -471,12 +471,12 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     missions.base = base_mission
 
     # ------------------------------------------------------------------
-    #   Mission for Constrained Fuel
+    #   Functions for Constrained Fuel
     # ------------------------------------------------------------------    
     fuel_mission         = SUAVE.Analyses.Mission.Mission() #Fuel_Constrained()
     fuel_mission.tag     = 'fuel'
@@ -485,7 +485,7 @@ def missions_setup(base_mission):
     missions.append(fuel_mission)    
 
     # ------------------------------------------------------------------
-    #   Mission for Constrained Short Field
+    #   Functions for Constrained Short Field
     # ------------------------------------------------------------------    
     short_field = SUAVE.Analyses.Mission.Mission(base_mission) #Short_Field_Constrained()
     short_field.tag = 'short_field'    
@@ -500,7 +500,7 @@ def missions_setup(base_mission):
     missions.append(short_field)
 
     # ------------------------------------------------------------------
-    #   Mission for Fixed Payload
+    #   Functions for Fixed Payload
     # ------------------------------------------------------------------    
     payload = SUAVE.Analyses.Mission.Mission() #Payload_Constrained()
     payload.tag     = 'payload'

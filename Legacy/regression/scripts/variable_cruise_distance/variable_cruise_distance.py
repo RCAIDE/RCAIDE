@@ -86,7 +86,7 @@ def find_propeller_max_range_endurance_speeds(analyses,altitude,CL_max,up_bnd,de
     def mini_mission():
 
         # ------------------------------------------------------------------
-        #   Initialize the Mission
+        #   Initialize the Functions
         # ------------------------------------------------------------------
         mission = SUAVE.Analyses.Mission.Sequential_Segments()
         mission.tag = 'the_mission'
@@ -116,7 +116,7 @@ def find_propeller_max_range_endurance_speeds(analyses,altitude,CL_max,up_bnd,de
         mission.segments.single_point.air_speed = X
         mission.segments.single_point.state.unknowns.body_angle = np.array([[15.0]]) * Units.degrees
 
-        # Run the Mission
+        # Run the Functions
         point_results = mission.evaluate()
 
         CL = point_results.segments.single_point.conditions.aerodynamics.lift_coefficient
@@ -138,7 +138,7 @@ def find_propeller_max_range_endurance_speeds(analyses,altitude,CL_max,up_bnd,de
         mission.segments.single_point.air_speed = X
         mission.segments.single_point.state.unknowns.body_angle = np.array([[15.0]]) * Units.degrees
 
-        # Run the Mission
+        # Run the Functions
         point_results = mission.evaluate()
 
         CL = point_results.segments.single_point.conditions.aerodynamics.lift_coefficient
@@ -209,7 +209,7 @@ def stall_speed(analyses,mass,CL_max,altitude,delta_isa):
 def mission_setup(configs,analyses):
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Variable_Range_Cruise.Given_Weight()
@@ -283,7 +283,7 @@ def mission_setup(configs,analyses):
 def mission_setup_SR(vehicle,analyses):
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Variable_Range_Cruise.Given_State_of_Charge()

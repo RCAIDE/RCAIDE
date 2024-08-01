@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 # Constant_Speed_Constant_Angle_Noise.py
 #
 # Created:  
@@ -23,7 +23,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 class Constant_Speed_Constant_Angle_Noise(Unknown_Throttle):
     """ Fixed at a true airspeed the vehicle will descend at a constant angle. This is a specific segment for Noise.
         A vehicle performs a descent to landing in accordance with a certification points for landing noise.

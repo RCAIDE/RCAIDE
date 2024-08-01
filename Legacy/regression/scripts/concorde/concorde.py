@@ -115,7 +115,7 @@ def full_setup():
     # Vehicle analyses
     configs_analyses = analyses_setup(configs)
     
-    # Mission analyses
+    # Functions analyses
     mission  = mission_setup(configs_analyses)
     missions_analyses = missions_setup(mission)
 
@@ -217,7 +217,7 @@ def base_analysis(vehicle):
     return analyses    
 
 # ----------------------------------------------------------------------
-#   Plot Mission
+#   Plot Functions
 # ----------------------------------------------------------------------
 
 def plot_mission(results,line_style='bo-'):
@@ -265,13 +265,13 @@ def simple_sizing(configs):
     return
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
     
 def mission_setup(analyses):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
     
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -506,7 +506,7 @@ def mission_setup(analyses):
     mission.append_segment(segment)      
     
     # ------------------------------------------------------------------    
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
     
     return mission
@@ -517,7 +517,7 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
     
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     
     missions.base = base_mission

@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Ground
+## @ingroup Analyses-Functions-Segments-Ground
 # Battery_Charge_Discharge.py
 #
 # Created: Apr 2021, M. Clarke
@@ -21,7 +21,7 @@ from Legacy.trunk.S.Core import Units
 #  Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Ground
+## @ingroup Analyses-Functions-Segments-Ground
 class Battery_Charge_Discharge(Aerodynamic): 
 
     # ------------------------------------------------------------------

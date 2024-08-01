@@ -10,10 +10,8 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units       
 from RCAIDE.Library.Methods.Geometry.Planform               import wing_segmented_planform
-from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor   import design_turbofan   
-from RCAIDE.Library.Methods.Stability.Center_of_Gravity     import compute_component_centers_of_gravity
-from RCAIDE.Library.Plots                                   import *     
- 
+from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor   import design_turbofan
+
 # python imports 
 import numpy as np  
 from copy import deepcopy 

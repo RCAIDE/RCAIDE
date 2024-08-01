@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Constant_CAS_Constant_Rate.py
 #
 # Created:  Nov 2020, S. Karpuk
@@ -22,7 +22,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Constant_CAS_Constant_Rate(Unknown_Throttle):
     """ Climb at a constant Calibrated Airspeed (CAS) at a constant rate.
     

@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 # Ground.py
 #
 # Created:  
@@ -30,7 +30,7 @@ from Legacy.trunk.S.Core import Data
 #  Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 class Ground(Aerodynamic):
     """ Base segment for takeoff and landing segments. Integrates equations of motion
         including rolling friction.

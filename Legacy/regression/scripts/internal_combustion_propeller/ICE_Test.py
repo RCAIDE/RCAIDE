@@ -65,13 +65,13 @@ def main():
 
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 
 def mission_setup(analyses,vehicle):
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()

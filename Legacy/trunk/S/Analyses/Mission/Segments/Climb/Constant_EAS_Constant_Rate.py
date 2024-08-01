@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Constant_EAS_Constant_Rate.py
 #
 # Created:  Aug 2016, T. MacDonald
@@ -22,7 +22,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Constant_EAS_Constant_Rate(Unknown_Throttle):
     """ Climb at a constant Equivalent Airspeed (EAS) at a constant rate.
     

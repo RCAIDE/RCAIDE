@@ -13,7 +13,7 @@ from Legacy.trunk.S.Core import Units
 import pylab as plt
 
 # ----------------------------------------------------------------------
-#   Plot Mission
+#   Plot Functions
 # ----------------------------------------------------------------------
 
 def plot_mission(results,line_style='bo-'):

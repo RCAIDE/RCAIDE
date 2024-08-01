@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Constant_Mach_Constant_Angle.py
 #
 # Created:  June 2017, E. Botero 
@@ -20,7 +20,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Constant_Mach_Constant_Angle(Unknown_Throttle):
     """ Climb at a constant mach number and at a constant angle.
         This segment takes longer to solve than most because it has extra unknowns and residuals

@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Transition
+## @ingroup Analyses-Functions-Segments-Transition
 # Constant_Acceleration_Constant_Angle_Linear_Climb.py
 #
 # Created:  Feb 2019, M. Clarke
@@ -26,7 +26,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Transition
+## @ingroup Analyses-Functions-Segments-Transition
 class Constant_Acceleration_Constant_Angle_Linear_Climb(Aerodynamic):
     """ Vehicle accelerates at a constant rate between two airspeeds.
     

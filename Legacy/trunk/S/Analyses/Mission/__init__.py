@@ -1,5 +1,5 @@
-## @defgroup Analyses-Mission Mission
-# Mission Analyses to setup each part of a mission to fly
+## @defgroup Analyses-Functions Functions
+# Functions Analyses to setup each part of a mission to fly
 # @ingroup Analyses
 
 # classes

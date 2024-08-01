@@ -321,7 +321,7 @@ def find_target_range(nexus,mission):
     return nexus 
 
 #----------------------------------------------------------------------        
-#   Max Range Mission
+#   Max Range Functions
 #----------------------------------------------------------------------      
 def max_range_mission(nexus): 
     

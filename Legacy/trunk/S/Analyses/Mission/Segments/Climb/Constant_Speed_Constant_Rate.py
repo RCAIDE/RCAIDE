@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Constant_Speed_Constant_Rate.py
 #
 # Created:  
@@ -20,7 +20,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Constant_Speed_Constant_Rate(Unknown_Throttle):
     """ The most basic segment. Fly at a constant true airspeed at a fixed rate of climb between 2 altitudes.
     

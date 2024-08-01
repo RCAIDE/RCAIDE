@@ -167,16 +167,16 @@ def base_analysis(vehicle): # --------------------------------------------------
 
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 def mission_setup(analyses,vehicle):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
-    mission.tag = 'The Test Mission'
+    mission.tag = 'The Test Functions'
 
     mission.atmosphere  = SUAVE.Attributes.Atmospheres.Earth.US_Standard_1976()
     mission.planet      = SUAVE.Attributes.Planets.Earth()
@@ -212,7 +212,7 @@ def mission_setup(analyses,vehicle):
     mission.append_segment(segment)    
 
     # ------------------------------------------------------------------    
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
     
     return mission
@@ -224,7 +224,7 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     missions.base = base_mission 
     
@@ -232,7 +232,7 @@ def missions_setup(base_mission):
     return missions  
 
 # ----------------------------------------------------------------------
-#   Plot Mission
+#   Plot Functions
 # ----------------------------------------------------------------------
 
 def plot_mission(results,line_style='bo-'):     

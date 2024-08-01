@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Ground/Battery_Disharge.py
+# RCAIDE/Framework/Functions/Segments/Ground/Battery_Disharge.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -10,8 +10,7 @@
 # RCAIDE imports
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate    
 from RCAIDE.Framework.Core                            import Units
-from RCAIDE.Library.Mission.Segments                  import Ground  
-from RCAIDE.Library.Methods.skip                      import skip 
+from RCAIDE.Library.Methods.skip                      import skip
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  SEGMENT
@@ -39,10 +38,10 @@ class Battery_Discharge(Evaluate):
         self.true_course            = 0.0 * Units.degrees 
 
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # --------------------------------------------------------------------------------------------------------------       
         initialize                         = self.process.initialize 
-        initialize.conditions              = Ground.Battery_Charge_Discharge.initialize_conditions 
+        initialize.conditions              = RCAIDE.Framework.Mission.Mission.Segments.Ground.Battery_Charge_Discharge.initialize_conditions
         iterate                            = self.process.iterate 
         iterate.unknowns.mission           = skip
         iterate.conditions.aerodynamics    = skip

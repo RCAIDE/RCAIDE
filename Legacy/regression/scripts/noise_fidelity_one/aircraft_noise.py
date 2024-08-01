@@ -241,7 +241,7 @@ def simple_sizing(configs):
     return
  
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 
 def urban_canyon_microphone_setup():  
@@ -270,7 +270,7 @@ def X57_mission_setup(analyses,vehicle):
     Vstall         = estimate_stall_speed(vehicle_mass,reference_area,altitude,CL_max)   
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'mission'
@@ -312,7 +312,7 @@ def X57_mission_setup(analyses,vehicle):
 
 def B737_mission_setup(analyses): 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -492,7 +492,7 @@ def B737_mission_setup(analyses):
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
 
     return mission 
@@ -503,7 +503,7 @@ def X57_missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     missions.base = base_mission
 
@@ -518,13 +518,13 @@ def B737_missions_setup(base_mission,analyses):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------ 
     missions.base = base_mission
 
 
     # ------------------------------------------------------------------
-    #   Mission for Constrained Fuel
+    #   Functions for Constrained Fuel
     # ------------------------------------------------------------------    
     fuel_mission           = SUAVE.Analyses.Mission.Mission() 
     fuel_mission.tag       = 'fuel'
@@ -534,7 +534,7 @@ def B737_missions_setup(base_mission,analyses):
 
 
     # ------------------------------------------------------------------
-    #   Mission for Constrained Short Field
+    #   Functions for Constrained Short Field
     # ------------------------------------------------------------------    
     short_field            = SUAVE.Analyses.Mission.Mission(base_mission) 
     short_field.tag        = 'short_field'  
@@ -549,7 +549,7 @@ def B737_missions_setup(base_mission,analyses):
     
     
     # ------------------------------------------------------------------
-    #   Mission for Fixed Payload
+    #   Functions for Fixed Payload
     # ------------------------------------------------------------------    
     payload         = SUAVE.Analyses.Mission.Mission()  
     payload.tag     = 'payload'
@@ -559,7 +559,7 @@ def B737_missions_setup(base_mission,analyses):
 
     
     # ------------------------------------------------------------------
-    #   Mission for Takeoff Noise
+    #   Functions for Takeoff Noise
     # ------------------------------------------------------------------    
     takeoff                           = SUAVE.Analyses.Mission.Sequential_Segments()
     takeoff.tag                       = 'takeoff'   
@@ -604,7 +604,7 @@ def B737_missions_setup(base_mission,analyses):
     missions.append(takeoff)
 
     # ------------------------------------------------------------------
-    #   Mission for Sideline Noise
+    #   Functions for Sideline Noise
     # ------------------------------------------------------------------     
     sideline_takeoff                  = SUAVE.Analyses.Mission.Sequential_Segments()
     sideline_takeoff.tag              = 'sideline_takeoff'   
@@ -626,7 +626,7 @@ def B737_missions_setup(base_mission,analyses):
     missions.append(sideline_takeoff)
     
     # -------------------   -----------------------------------------------
-    #   Mission for Landing Noise
+    #   Functions for Landing Noise
     # ------------------------------------------------------------------    
     landing                           = SUAVE.Analyses.Mission.Sequential_Segments()
     landing.tag                       = 'landing'   

@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 # Basic.py
 #
 # Created:  
@@ -19,7 +19,7 @@ from .Conditions import Conditions
 #  Conditions
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 class Basic(Conditions):
     """ Basic builds upon conditions to add the mission data structure. Here frames and weights are added.
     

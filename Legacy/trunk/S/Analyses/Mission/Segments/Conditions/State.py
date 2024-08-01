@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 # State.py
 #
 # Created:  
@@ -26,7 +26,7 @@ from Legacy.trunk.S.Core import DataOrdered
 #  State
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 class State(Conditions):
     """ Creates the State data structure for storing daata that solved in a mission
     
@@ -106,7 +106,7 @@ class State(Conditions):
         #: for each key,value        
         
         
-## @ingroup Analyses-Mission-Segments-Conditions        
+## @ingroup Analyses-Functions-Segments-Conditions
 class Container(State):
     def __defaults__(self):
         """ This sets the default values.
@@ -160,7 +160,7 @@ class Container(State):
         
 State.Container = Container
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 def append_array(A,B=None):
     """ A stacking operation used by merged to put together data structures
 

@@ -84,7 +84,7 @@ def electric_V_h_diagram(vehicle,
     Nprops          = int(vehicle.networks.battery_propeller.number_of_propeller_engines)
     identical_props = vehicle.networks.battery_propeller.identical_propellers
 
-    # Single Point Mission for Drag Determination
+    # Single Point Functions for Drag Determination
 
     def mini_mission(altitude, speed):
 

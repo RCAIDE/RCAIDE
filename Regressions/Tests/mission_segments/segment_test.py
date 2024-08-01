@@ -10,11 +10,10 @@
 # package imports
 import RCAIDE
 from RCAIDE.Framework.Core import Units ,  Data
-from RCAIDE.Library.Plots             import *       
+from RCAIDE.Framework.Plots import *
 
 # python imports 
 import numpy as np
-import pylab as plt 
 import sys
 
 # local imports 
@@ -28,7 +27,7 @@ from Boeing_737    import configs_setup as configs_setup
 
 def main(): 
     # -----------------------------------------
-    # Multi-Point Mission Setup 
+    # Multi-Point Functions Setup
     # -----------------------------------------
 
     # vehicle data
@@ -203,13 +202,13 @@ def base_analysis(vehicle):
     return analyses 
    
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 
 def mission_setup(analyses): 
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = RCAIDE.Framework.Mission.Sequential_Segments()
@@ -758,7 +757,7 @@ def mission_setup(analyses):
 
         
     # ------------------------------------------------------------------------------------------------------------------------------------ 
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------------------------------------------------------------------------  
     
     return mission

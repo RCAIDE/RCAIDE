@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 # Constant_Dynamic_Pressure_Constant_Altitude_Loiter.py
 #
 # Created:  
@@ -20,7 +20,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 class Constant_Dynamic_Pressure_Constant_Altitude_Loiter(Constant_Speed_Constant_Altitude):
     """ Vehicle flies at a constant dynamic pressure at a set altitude for a fixed time.
         This is useful for HALE UAVs like a solar UAV.

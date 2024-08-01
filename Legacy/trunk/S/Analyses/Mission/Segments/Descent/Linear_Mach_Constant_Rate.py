@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 # Linear_Mach_Constant_Rate.py
 #
 # Created:  
@@ -21,7 +21,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 class Linear_Mach_Constant_Rate(Unknown_Throttle):
     """ Change Mach numbers during a descent while descending at a constant rate. The Mach number changes linearly
         throughout the descent.

@@ -195,12 +195,12 @@ def base_analysis(vehicle):
 
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 def mission_setup(analyses):
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -384,7 +384,7 @@ def mission_setup(analyses):
 
 
     # ------------------------------------------------------------------
-    #   Mission definition complete
+    #   Functions definition complete
     # ------------------------------------------------------------------
 
     return mission
@@ -393,7 +393,7 @@ def mission_setup(analyses):
 
 
 # ----------------------------------------------------------------------
-#   Plot Mission
+#   Plot Functions
 # ----------------------------------------------------------------------
 
 def plot_mission(results,line_style='bo-'):

@@ -56,7 +56,7 @@ def propeller_range_endurance_speeds(analyses,altitude,CL_max,up_bnd,delta_isa):
         def mini_mission():
         
                 # ------------------------------------------------------------------
-                #   Initialize the Mission
+                #   Initialize the Functions
                 # ------------------------------------------------------------------
                 mission = SUAVE.Analyses.Mission.Sequential_Segments()
                 mission.tag = 'the_mission'
@@ -84,7 +84,7 @@ def propeller_range_endurance_speeds(analyses,altitude,CL_max,up_bnd,delta_isa):
                 # Update the mission
                 mission.segments.single_point.air_speed = X
 
-                # Run the Mission      
+                # Run the Functions
                 point_results = mission.evaluate()    
 
                 CL = point_results.segments.single_point.conditions.aerodynamics.lift_coefficient
@@ -101,7 +101,7 @@ def propeller_range_endurance_speeds(analyses,altitude,CL_max,up_bnd,delta_isa):
                 # Modify the mission for the next iteration
                 mission.segments.single_point.air_speed = X
 
-                # Run the Mission      
+                # Run the Functions
                 point_results = mission.evaluate()    
 
                 CL = point_results.segments.single_point.conditions.aerodynamics.lift_coefficient

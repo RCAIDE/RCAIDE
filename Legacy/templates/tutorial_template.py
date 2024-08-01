@@ -58,19 +58,19 @@ def define_vehicle():
 
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 def define_mission(vehicle):
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
-    mission.tag = 'The Test Mission'
+    mission.tag = 'The Test Functions'
     
     # ------------------------------------------------------------------    
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
     
     return mission
@@ -79,7 +79,7 @@ def define_mission(vehicle):
 
 
 # ----------------------------------------------------------------------
-#   Evaluate the Mission
+#   Evaluate the Functions
 # ----------------------------------------------------------------------
 def evaluate_mission(vehicle,mision):
     results = None

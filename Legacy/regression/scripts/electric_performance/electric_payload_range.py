@@ -48,7 +48,7 @@ def main():
 
 def mission_setup(vehicle, analyses):
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Variable_Range_Cruise.Given_State_of_Charge()

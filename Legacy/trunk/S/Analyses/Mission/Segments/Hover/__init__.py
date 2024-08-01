@@ -1,6 +1,6 @@
-## @defgroup Analyses-Mission-Segments-Hover Hover
+## @defgroup Analyses-Functions-Segments-Hover Hover
 # Segments for VTOL aircraft.
-# @ingroup Analyses-Mission-Segments
+# @ingroup Analyses-Functions-Segments
 
 from .Climb import Climb
 from .Hover import Hover

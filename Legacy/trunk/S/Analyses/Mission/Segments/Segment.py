@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments
+## @ingroup Analyses-Functions-Segments
 # Segment.py
 #
 # Created:  
@@ -20,7 +20,7 @@ from copy import deepcopy
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments
+## @ingroup Analyses-Functions-Segments
 class Segment(Analysis):
     """ The first basic piece of a mission which each segment will expand upon
     
@@ -218,7 +218,7 @@ class Segment(Analysis):
 #  Container
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments
+## @ingroup Analyses-Functions-Segments
 class Container(Segment):
     """ A container for the segment
     

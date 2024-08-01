@@ -85,7 +85,7 @@ def main():
     configs_analyses.cruise.append(stability)
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()

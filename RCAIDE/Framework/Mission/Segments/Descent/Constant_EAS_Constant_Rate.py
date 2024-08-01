@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Mission/Segments/Descent/Constant_EAS_Constant_Rate.py
+# RCAIDE/Framework/Functions/Segments/Descent/Constant_EAS_Constant_Rate.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created: Jun 2024, RCAIDE Team
@@ -10,9 +10,10 @@
 # RCAIDE imports
 from RCAIDE.Framework.Core                       import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate  import Evaluate 
-from RCAIDE.Library.Mission                      import Common,Segments
+from RCAIDE.Framework.Mission.Functions import Common
 
-# ----------------------------------------------------------------------------------------------------------------------  
+
+# ----------------------------------------------------------------------------------------------------------------------
 #  Constant_EAS_Constant_Rate
 # ----------------------------------------------------------------------------------------------------------------------  
 class Constant_EAS_Constant_Rate(Evaluate):
@@ -39,11 +40,11 @@ class Constant_EAS_Constant_Rate(Evaluate):
         self.true_course          = 0.0 * Units.degrees      
         
         # -------------------------------------------------------------------------------------------------------------- 
-        #  Mission specific processes 
+        #  Functions specific processes
         # -------------------------------------------------------------------------------------------------------------- 
         initialize                         = self.process.initialize  
         initialize.differentials_altitude  = Common.Initialize.differentials_altitude
-        initialize.conditions              = Segments.Descent.Constant_EAS_Constant_Rate.initialize_conditions  
+        initialize.conditions              = RCAIDE.Framework.Mission.Mission.Segments.Descent.Constant_EAS_Constant_Rate.initialize_conditions
         iterate                            = self.process.iterate
         iterate.unknowns.mission           = Common.Unpack_Unknowns.attitude   
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
