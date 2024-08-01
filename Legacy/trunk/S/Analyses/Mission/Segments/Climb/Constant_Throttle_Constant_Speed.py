@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Constant_Throttle_Constant_Speed.py
 #
 # Created:  
@@ -27,7 +27,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Constant_Throttle_Constant_Speed(Aerodynamic):
     """ Climb at a constant throttle setting and true airspeed.
         This segment may not always converge as the vehicle could be deficient in thrust.

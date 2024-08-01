@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 # Constant_Acceleration_Constant_Altitude.py
 #
 # Created:  Jan 2016, E. Botero
@@ -26,7 +26,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 class Constant_Acceleration_Constant_Altitude(Aerodynamic):
     """ Vehicle accelerates at a constant rate between two airspeeds.
     

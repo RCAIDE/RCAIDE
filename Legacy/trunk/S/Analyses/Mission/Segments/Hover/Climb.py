@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 # Climb.py
 # 
 # Created:  Jan 2016, E. Botero
@@ -25,7 +25,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 class Climb(Hover):
     """ A vertically climbing hover for VTOL aircraft. Although the vehicle moves, no aerodynamic drag and lift are used.
     

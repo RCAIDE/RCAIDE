@@ -362,7 +362,7 @@ def configs_setup(vehicle):
 def mission_setup(analyses,vehicle,battery_chemistry,current,mAh):
 
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission     = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -418,7 +418,7 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     missions.base = base_mission
 

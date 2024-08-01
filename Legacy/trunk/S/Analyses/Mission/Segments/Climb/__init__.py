@@ -1,6 +1,6 @@
-## @defgroup Analyses-Mission-Segments-Climb Climb
+## @defgroup Analyses-Functions-Segments-Climb Climb
 # Segments for climbing flight
-# @ingroup Analyses-Mission-Segments
+# @ingroup Analyses-Functions-Segments
 
 from .Constant_Dynamic_Pressure_Constant_Angle import Constant_Dynamic_Pressure_Constant_Angle
 from .Constant_Dynamic_Pressure_Constant_Rate  import Constant_Dynamic_Pressure_Constant_Rate

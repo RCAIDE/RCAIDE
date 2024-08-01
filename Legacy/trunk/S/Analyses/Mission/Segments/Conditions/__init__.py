@@ -1,7 +1,7 @@
-## @defgroup Analyses-Mission-Segments-Conditions Conditions
+## @defgroup Analyses-Functions-Segments-Conditions Conditions
 # These are analyses files that help setup a mission. They create the data structure.
 # They're not something the user normally toucbes.
-# @ingroup Analyses-Mission-Segments
+# @ingroup Analyses-Functions-Segments
 
 from .Aerodynamics import Aerodynamics
 from .Basic        import Basic

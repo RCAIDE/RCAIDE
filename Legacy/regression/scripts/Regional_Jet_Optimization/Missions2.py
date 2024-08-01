@@ -14,7 +14,7 @@ from Legacy.trunk.S.Core import Units
 import numpy as np
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
     
 def setup(analyses):
@@ -23,7 +23,7 @@ def setup(analyses):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
     base_mission = base(analyses)
     missions.base = base_mission 
@@ -35,7 +35,7 @@ def setup(analyses):
 def base(analyses):
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
 
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
@@ -250,7 +250,7 @@ def base(analyses):
     mission.append_segment(segment)
 
     # ------------------------------------------------------------------
-    #   Mission definition complete    
+    #   Functions definition complete
     # ------------------------------------------------------------------
     
     

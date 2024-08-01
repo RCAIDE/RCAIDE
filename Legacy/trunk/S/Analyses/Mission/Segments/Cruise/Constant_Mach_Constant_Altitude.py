@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 # Constant_Mach_Constant_Altitude.py
 #
 # Created:  
@@ -20,7 +20,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 class Constant_Mach_Constant_Altitude(Constant_Speed_Constant_Altitude):
     """ Vehicle flies at a constant Mach number at a set altitude for a fixed distance
     

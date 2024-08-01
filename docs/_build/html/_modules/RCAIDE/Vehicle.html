@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Vehicle &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Vehicle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Vehicle</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @defgroup Vehicle</span>
+<span class="c1"># Vehicle.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Created:  Jul 2023, E. Botero</span>
+<span class="c1"># Created:  Mar 2024, M. Clarke</span>
+<span class="c1"># Modified:  </span>
+ 
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+ 
+<span class="kn">from</span> <span class="nn">RCAIDE</span>                    <span class="kn">import</span> <span class="n">Framework</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>     <span class="kn">import</span> <span class="n">Data</span><span class="p">,</span> <span class="n">DataOrdered</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library</span>            <span class="kn">import</span> <span class="n">Components</span><span class="p">,</span> <span class="n">Attributes</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  Vehicle</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Vehicle</span>
+<div class="viewcode-block" id="Vehicle">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle">[docs]</a>
+<span class="k">class</span> <span class="nc">Vehicle</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;RCAIDE Vehicle container class with database + input / output functionality</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This sets the default values.</span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        </span>
+<span class="sd">        Source:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>                    <span class="o">=</span> <span class="s1">&#39;vehicle&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuselages</span>              <span class="o">=</span> <span class="n">Components</span><span class="o">.</span><span class="n">Fuselages</span><span class="o">.</span><span class="n">Fuselage</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wings</span>                  <span class="o">=</span> <span class="n">Components</span><span class="o">.</span><span class="n">Wings</span><span class="o">.</span><span class="n">Wing</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">networks</span>               <span class="o">=</span> <span class="n">Framework</span><span class="o">.</span><span class="n">Networks</span><span class="o">.</span><span class="n">Network</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nacelles</span>               <span class="o">=</span> <span class="n">Components</span><span class="o">.</span><span class="n">Nacelles</span><span class="o">.</span><span class="n">Nacelle</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">systems</span>                <span class="o">=</span> <span class="n">Components</span><span class="o">.</span><span class="n">Systems</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">booms</span>                  <span class="o">=</span> <span class="n">Components</span><span class="o">.</span><span class="n">Booms</span><span class="o">.</span><span class="n">Boom</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass_properties</span>        <span class="o">=</span> <span class="n">Vehicle_Mass_Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>                <span class="o">=</span> <span class="n">Components</span><span class="o">.</span><span class="n">Payloads</span><span class="o">.</span><span class="n">Payload</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">costs</span>                  <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">costs</span><span class="o">.</span><span class="n">industrial</span>       <span class="o">=</span> <span class="n">Attributes</span><span class="o">.</span><span class="n">Costs</span><span class="o">.</span><span class="n">Industrial_Costs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">costs</span><span class="o">.</span><span class="n">operating</span>        <span class="o">=</span> <span class="n">Attributes</span><span class="o">.</span><span class="n">Costs</span><span class="o">.</span><span class="n">Operating_Costs</span><span class="p">()</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">envelope</span>               <span class="o">=</span> <span class="n">Attributes</span><span class="o">.</span><span class="n">Envelope</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">landing_gear</span>           <span class="o">=</span> <span class="n">Components</span><span class="o">.</span><span class="n">Landing_Gear</span><span class="o">.</span><span class="n">Landing_Gear</span><span class="o">.</span><span class="n">Container</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference_area</span>         <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passengers</span>             <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">performance</span>            <span class="o">=</span> <span class="n">DataOrdered</span><span class="p">()</span>
+         
+    <span class="n">_energy_network_root_map</span> <span class="o">=</span> <span class="kc">None</span> 
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Sets up the component hierarchy for a vehicle</span>
+<span class="sd">    </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">            N/A</span>
+<span class="sd">    </span>
+<span class="sd">            Inputs:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Outputs:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Properties Used:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>          
+        <span class="c1"># will set defaults</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Vehicle</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">)</span>  
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_component_root_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">Components</span><span class="o">.</span><span class="n">Fuselages</span><span class="o">.</span><span class="n">Fuselage</span>              <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;fuselages&#39;</span><span class="p">]</span>        <span class="p">,</span>
+            <span class="n">Components</span><span class="o">.</span><span class="n">Wings</span><span class="o">.</span><span class="n">Wing</span>                      <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;wings&#39;</span><span class="p">]</span>            <span class="p">,</span>
+            <span class="n">Components</span><span class="o">.</span><span class="n">Systems</span><span class="o">.</span><span class="n">System</span>                  <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;systems&#39;</span><span class="p">]</span>          <span class="p">,</span>
+            <span class="n">Components</span><span class="o">.</span><span class="n">Systems</span><span class="o">.</span><span class="n">Avionics</span>                <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;avionics&#39;</span><span class="p">]</span>         <span class="p">,</span>
+            <span class="n">Components</span><span class="o">.</span><span class="n">Payloads</span><span class="o">.</span><span class="n">Payload</span>                <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;payload&#39;</span><span class="p">]</span>          <span class="p">,</span> 
+            <span class="n">Framework</span><span class="o">.</span><span class="n">Networks</span><span class="o">.</span><span class="n">Network</span>                 <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;networks&#39;</span><span class="p">]</span>         <span class="p">,</span> 
+            <span class="n">Components</span><span class="o">.</span><span class="n">Nacelles</span><span class="o">.</span><span class="n">Nacelle</span>                <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;nacelles&#39;</span><span class="p">]</span>         <span class="p">,</span>
+            <span class="n">Attributes</span><span class="o">.</span><span class="n">Envelope</span>                        <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;envelope&#39;</span><span class="p">]</span>         <span class="p">,</span>
+            <span class="n">Components</span><span class="o">.</span><span class="n">Booms</span><span class="o">.</span><span class="n">Boom</span>                      <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;booms&#39;</span><span class="p">]</span>            <span class="p">,</span>
+            <span class="n">Components</span><span class="o">.</span><span class="n">Landing_Gear</span><span class="o">.</span><span class="n">Landing_Gear</span>       <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;landing_gear&#39;</span><span class="p">]</span>     <span class="p">,</span>
+            <span class="n">Vehicle_Mass_Properties</span>                    <span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;mass_properties&#39;</span><span class="p">]</span>  <span class="p">,</span>
+        <span class="p">}</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_component</span><span class="p">(</span><span class="n">Vehicle_Mass_Properties</span><span class="p">())</span>
+         
+        <span class="k">return</span>
+    
+
+<div class="viewcode-block" id="Vehicle.find_component_root">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle.find_component_root">[docs]</a>
+    <span class="k">def</span> <span class="nf">find_component_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">component</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; find pointer to component data root.</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">            N/A</span>
+<span class="sd">    </span>
+<span class="sd">            Inputs:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Outputs:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Properties Used:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
+
+        <span class="c1"># find component root by type, allow subclasses</span>
+        <span class="k">for</span> <span class="n">component_type</span><span class="p">,</span> <span class="n">component_root</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_component_root_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">component</span><span class="p">,</span><span class="n">component_type</span><span class="p">):</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unable to place component type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">component</span><span class="o">.</span><span class="n">typestring</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">component_root</span></div>
+
+
+
+<div class="viewcode-block" id="Vehicle.append_component">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle.append_component">[docs]</a>
+    <span class="k">def</span> <span class="nf">append_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">component</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Adds a component to vehicle</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
+
+        <span class="c1"># assert database type</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">component</span><span class="p">,</span><span class="n">Data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;input component must be of type Data()&#39;</span><span class="p">)</span>
+
+        <span class="c1"># find the place to store data</span>
+        <span class="n">component_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_component_root</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+        
+        <span class="c1"># See if the component exists, if it does modify the name</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">component_root</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">string_of_keys</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">component_root</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">n_comps</span> <span class="o">=</span> <span class="n">string_of_keys</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span>
+            <span class="n">component</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">tag</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_comps</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># store data</span>
+        <span class="n">component_root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
+
+        <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="Vehicle.sum_mass">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle.sum_mass">[docs]</a>
+    <span class="k">def</span> <span class="nf">sum_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Regresses through the vehicle and sums the masses</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
+
+        <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+        
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="o">.</span><span class="n">Container</span><span class="p">):</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">sum_mass</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">total</span></div>
+
+    
+    
+<div class="viewcode-block" id="Vehicle.center_of_gravity">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle.center_of_gravity">[docs]</a>
+    <span class="k">def</span> <span class="nf">center_of_gravity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; will recursively search the data tree and sum</span>
+<span class="sd">            any Comp.Mass_Properties.mass, and return the total sum</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>   
+        <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]])</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="o">.</span><span class="n">Container</span><span class="p">):</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">item</span><span class="o">.</span><span class="n">total_moment</span><span class="p">()</span>
+                
+        <span class="n">mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum_mass</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mass</span> <span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">mass</span> <span class="o">=</span> <span class="mf">1.</span>
+                
+        <span class="n">CG</span> <span class="o">=</span> <span class="n">total</span><span class="o">/</span><span class="n">mass</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span> <span class="o">=</span> <span class="n">CG</span>
+                
+        <span class="k">return</span> <span class="n">CG</span> </div>
+
+    
+    
+<div class="viewcode-block" id="Vehicle.append_energy_network">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle.append_energy_network">[docs]</a>
+    <span class="k">def</span> <span class="nf">append_energy_network</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">energy_network</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Adds an energy network to vehicle </span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
+
+        <span class="c1"># assert database type</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">energy_network</span><span class="p">,</span><span class="n">Data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;input energy network must be of type Data()&#39;</span><span class="p">)</span>
+
+        <span class="c1"># find the place to store data</span>
+        <span class="n">energy_network_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_energy_network_root</span><span class="p">(</span><span class="n">energy_network</span><span class="p">)</span>
+        
+        <span class="c1"># See if the energy network exists, if it does modify the name</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">energy_network_root</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span><span class="n">energy_network</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">string_of_keys</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">energy_network_root</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">n_comps</span> <span class="o">=</span> <span class="n">string_of_keys</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">energy_network</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span>
+            <span class="n">energy_network</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">energy_network</span><span class="o">.</span><span class="n">tag</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_comps</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># store data</span>
+        <span class="n">energy_network_root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy_network</span><span class="p">)</span>
+
+        <span class="k">return</span>    </div>
+
+
+<div class="viewcode-block" id="Vehicle.find_energy_network_root">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle.find_energy_network_root">[docs]</a>
+    <span class="k">def</span> <span class="nf">find_energy_network_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">energy_network</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Find pointer to energy network data root.</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
+
+        <span class="n">energy_network_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">energy_network</span><span class="p">)</span>
+
+        <span class="c1"># find energy network root by type, allow subclasses</span>
+        <span class="k">for</span> <span class="n">energy_network_type</span><span class="p">,</span> <span class="n">energy_network_root</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_energy_network_root_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">energy_network</span><span class="p">,</span><span class="n">energy_network_type</span><span class="p">):</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unable to place energy_network type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">energy_network</span><span class="o">.</span><span class="n">typestring</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">energy_network_root</span></div>
+</div>
+
+
+
+<span class="c1">## @ingroup Vehicle</span>
+<div class="viewcode-block" id="Vehicle_Mass_Properties">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle_Mass_Properties">[docs]</a>
+<span class="k">class</span> <span class="nc">Vehicle_Mass_Properties</span><span class="p">(</span><span class="n">Components</span><span class="o">.</span><span class="n">Mass_Properties</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; The vehicle&#39;s mass properties.</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This sets the default values.</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">            &quot;&quot;&quot;</span>         
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>                         <span class="o">=</span> <span class="s1">&#39;mass_properties&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operating_empty</span>             <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_takeoff</span>                 <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">takeoff</span>                     <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_landing</span>                 <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">landing</span>                     <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_cargo</span>                   <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cargo</span>                       <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_payload</span>                 <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payload</span>                     <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">passenger</span>                   <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crew</span>                        <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_fuel</span>                    <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fuel</span>                        <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_zero_fuel</span>               <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_of_gravity</span>           <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zero_fuel_center_of_gravity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]])</span>    </div>
+
+        
+<div class="viewcode-block" id="Vehicle_Mass_Container">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle_Mass_Container">[docs]</a>
+<span class="k">class</span> <span class="nc">Vehicle_Mass_Container</span><span class="p">(</span><span class="n">Components</span><span class="o">.</span><span class="n">Component</span><span class="o">.</span><span class="n">Container</span><span class="p">,</span><span class="n">Vehicle_Mass_Properties</span><span class="p">):</span>
+        
+<div class="viewcode-block" id="Vehicle_Mass_Container.append">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle_Mass_Container.append">[docs]</a>
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Appends the vehicle mass, but only let&#39;s one ever exist. Keeps the newest one</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>      
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Vehicle_Mass_Container.get_children">
+<a class="viewcode-back" href="../../RCAIDE.html#RCAIDE.Vehicle.Vehicle_Mass_Container.get_children">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns the components that can go inside</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">                None</span>
+<span class="sd">        &quot;&quot;&quot;</span>       
+        
+        <span class="k">return</span> <span class="p">[</span><span class="n">Vehicle_Mass_Properties</span><span class="p">]</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

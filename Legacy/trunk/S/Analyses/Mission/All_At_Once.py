@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission
+## @ingroup Analyses-Functions
 # All_At_Once.py
 #
 # Created:  
@@ -16,7 +16,7 @@ from .Mission import Mission
 #   Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission
+## @ingroup Analyses-Functions
 class All_At_Once(Mission):
     """ Solves all segments and sub segments at once
     

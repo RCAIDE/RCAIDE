@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 # Constant_Speed_Constant_Altitude.py
 #
 # Created:  
@@ -27,7 +27,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 class Constant_Speed_Constant_Altitude(Aerodynamic):
     """ The CLASSIC! Fixed true airspeed and altitude and a set distance.
         Most other cruise segments are built off this segment. The most simple segment you can fly.

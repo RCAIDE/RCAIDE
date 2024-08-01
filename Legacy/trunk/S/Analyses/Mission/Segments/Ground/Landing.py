@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 # Landing.py
 #
 # Created:  
@@ -20,7 +20,7 @@ from Legacy.trunk.S.Core import Units
 #  Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 class Landing(Ground):
     """ Segment for landing. Integrates equations of motion
         including rolling friction.

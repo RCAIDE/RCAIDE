@@ -1,6 +1,6 @@
-## @defgroup Analyses-Mission-Segments-Descent Descent
+## @defgroup Analyses-Functions-Segments-Descent Descent
 # Segments for descending flight
-# @ingroup Analyses-Mission-Segments
+# @ingroup Analyses-Functions-Segments
 
 
 from .Constant_Speed_Constant_Angle import Constant_Speed_Constant_Angle

@@ -1,10 +1,10 @@
-## @ingroup Analyses-Mission
-# Mission.py
+## @ingroup Analyses-Functions
+# Functions.py
 #
 # Created:  
 # Modified: Feb 2016, Andrew Wendorff
 
-""" Mission.py: Top-level mission class """
+""" Functions.py: Top-level mission class """
 
 # ----------------------------------------------------------------------
 #  Imports
@@ -18,9 +18,9 @@ from . import Segments
 #   Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission
+## @ingroup Analyses-Functions
 class Mission(Segments.Simple.Container):
-    """ Mission.py: Top-level mission class
+    """ Functions.py: Top-level mission class
     
         Assumptions:
         None
@@ -77,7 +77,7 @@ class Mission(Segments.Simple.Container):
 #   Container Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission
+## @ingroup Analyses-Functions
 class Container(ContainerBase):
     """ Container for mission
     

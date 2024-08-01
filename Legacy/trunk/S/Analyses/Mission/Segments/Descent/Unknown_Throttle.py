@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 # Unknown_Throttle.py
 #
 # Created:  Aug 2016, T. MacDonald
@@ -26,7 +26,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 class Unknown_Throttle(Aerodynamic):
     """ This is not a usable segment for missions. Rather other descent segments that require throttle determination
         are based off this segment type.

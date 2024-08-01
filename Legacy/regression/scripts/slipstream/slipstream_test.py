@@ -271,14 +271,14 @@ def base_analysis(vehicle):
 
 
 # ----------------------------------------------------------------------
-#   Define the Mission
+#   Define the Functions
 # ----------------------------------------------------------------------
 
 def X57_mission_setup(analyses,vehicle):
     net_tag = list(vehicle.networks.keys())[0]
     
     # ------------------------------------------------------------------
-    #   Initialize the Mission
+    #   Initialize the Functions
     # ------------------------------------------------------------------
     mission = SUAVE.Analyses.Mission.Sequential_Segments()
     mission.tag = 'mission'
@@ -331,7 +331,7 @@ def missions_setup(base_mission):
     missions = SUAVE.Analyses.Mission.Mission.Container()
 
     # ------------------------------------------------------------------
-    #   Base Mission
+    #   Base Functions
     # ------------------------------------------------------------------
 
     missions.base = base_mission

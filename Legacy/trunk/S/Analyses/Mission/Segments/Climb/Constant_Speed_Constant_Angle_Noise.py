@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Constant_Speed_Constant_Angle_Noise.py
 #
 # Created:  
@@ -20,7 +20,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Constant_Speed_Constant_Angle_Noise(Unknown_Throttle):
     """ Fixed at a true airspeed the vehicle will climb at a constant angle. This is a specific segment for Noise.
         A vehicle performs a climb in accordance with a certification points for takeoff noise.

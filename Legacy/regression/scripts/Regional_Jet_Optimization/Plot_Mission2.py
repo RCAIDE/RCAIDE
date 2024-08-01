@@ -12,7 +12,7 @@ from Legacy.trunk.S.Core import Units
 from Legacy.trunk.S.Plots.Performance.Mission_Plots import *  
 
 # ----------------------------------------------------------------------
-#   Plot Mission
+#   Plot Functions
 # ----------------------------------------------------------------------
 
 def plot_mission(results,line_style='bo-'):

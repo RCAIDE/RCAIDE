@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor </span>
+<span class="c1"># RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/LBL_VS_broadband_noise.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+
+<span class="c1"># Python Package imports  </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># Compute LBL-VS Broadband Noise </span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor </span>
+<div class="viewcode-block" id="LBL_VS_broadband_noise">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise.LBL_VS_broadband_noise">[docs]</a>
+<span class="k">def</span> <span class="nf">LBL_VS_broadband_noise</span><span class="p">(</span><span class="n">R_c</span><span class="p">,</span><span class="n">alpha_star</span><span class="p">,</span><span class="n">delta_p</span><span class="p">,</span><span class="n">r_e</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">Dbar_h</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">U</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This computes the laminar boundary layer compoment of broadband noise using the method outlined by the </span>
+<span class="sd">    Brooks, Pope and Marcolini (BPM) Model</span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        BPM models assumes a naca 0012 airfol  </span>
+<span class="sd">        </span>
+<span class="sd">    Source:  </span>
+<span class="sd">        BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.</span>
+<span class="sd">        Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:  </span>
+<span class="sd">       R_c          - Reynolds number                        [-]</span>
+<span class="sd">       alpha_star   - angle of attack blade section          [deg]</span>
+<span class="sd">       delta_p      - boundary layer of pressure section     [m</span>
+<span class="sd">       L            - length of blade section                [m]</span>
+<span class="sd">       U            - velocity of blade section              [m/s]</span>
+<span class="sd">       M            - Mach number                            [-]</span>
+<span class="sd">       c            - airfoil section chord                  [m] </span>
+<span class="sd">       f            - frequency spectrum                     [Hz]</span>
+<span class="sd">       Dbar_h       - high frequency directivity term        [-]</span>
+<span class="sd">       r_e          - distance from noise source to observer [m] </span>
+<span class="sd">    </span>
+<span class="sd">    Outputs </span>
+<span class="sd">       SPL_LBL_VS   - Sound pressure level of laminar boundary layer [dB]</span>
+<span class="sd">       </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A   </span>
+<span class="sd">    &#39;&#39;&#39;</span>       
+    
+    <span class="n">St_prime</span>              <span class="o">=</span> <span class="n">f</span><span class="o">*</span><span class="n">delta_p</span><span class="o">/</span><span class="n">U</span> <span class="c1"># eqn 54 </span>
+    <span class="n">St_prime_1</span>            <span class="o">=</span> <span class="mf">0.001756</span><span class="o">*</span><span class="p">(</span><span class="n">R_c</span><span class="o">**</span><span class="mf">0.3931</span><span class="p">)</span>  <span class="c1"># eqn 55 </span>
+    <span class="n">St_prime_1</span><span class="p">[</span><span class="n">R_c</span><span class="o">&lt;</span><span class="mf">1.3E5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.18</span>                    <span class="c1"># eqn 55 </span>
+    <span class="n">St_prime_1</span><span class="p">[</span><span class="n">R_c</span><span class="o">&gt;</span><span class="mf">4E5</span><span class="p">]</span>   <span class="o">=</span> <span class="mf">0.28</span>                    <span class="c1"># eqn 55 </span>
+    
+    <span class="n">St_prime_peak</span> <span class="o">=</span> <span class="n">St_prime_1</span><span class="o">*</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.04</span><span class="o">*</span><span class="n">alpha_star</span><span class="p">))</span>
+    
+    <span class="n">G_1</span>   <span class="o">=</span> <span class="n">compute_G_1</span><span class="p">(</span><span class="n">St_prime</span><span class="o">/</span><span class="n">St_prime_peak</span><span class="p">)</span>
+    <span class="n">R_c_0</span> <span class="o">=</span> <span class="n">compute_R_c_0</span><span class="p">(</span><span class="n">alpha_star</span><span class="p">)</span>
+    <span class="n">G_2</span>   <span class="o">=</span> <span class="n">compute_G_2</span><span class="p">(</span><span class="n">R_c</span><span class="o">/</span><span class="n">R_c_0</span><span class="p">)</span>
+    <span class="n">G_3</span>   <span class="o">=</span> <span class="n">compute_G_3</span><span class="p">(</span><span class="n">alpha_star</span><span class="p">)</span>
+    
+    <span class="n">SPL_LBL_VS</span> <span class="o">=</span>  <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">delta_p</span><span class="o">*</span><span class="p">(</span><span class="n">M</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">L</span><span class="o">*</span><span class="n">Dbar_h</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">r_e</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="n">G_1</span>  <span class="o">+</span> <span class="n">G_2</span> <span class="o">+</span> <span class="n">G_3</span> <span class="c1"># eqn 53</span>
+
+    <span class="k">return</span>  <span class="n">SPL_LBL_VS</span></div>
+
+
+<div class="viewcode-block" id="compute_G_1">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise.compute_G_1">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_G_1</span><span class="p">(</span><span class="n">e</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This computes the G_1 function using the BPM model</span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        BPM models assumes a naca 0012 airfol </span>
+<span class="sd">        Corrections made to match experimental results </span>
+<span class="sd">        </span>
+<span class="sd">    Source:  </span>
+<span class="sd">        BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.</span>
+<span class="sd">        Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs: </span>
+<span class="sd">        e     [-]</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs </span>
+<span class="sd">        G_1   [-]</span>
+<span class="sd">       </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A   </span>
+<span class="sd">    &#39;&#39;&#39;</span>         
+    <span class="n">e</span>     <span class="o">=</span> <span class="n">e</span> <span class="o">*</span> <span class="mf">0.3</span>  
+    <span class="n">num_1</span> <span class="o">=</span> <span class="mf">39.8</span> <span class="o">*</span><span class="mf">0.5</span> 
+    <span class="n">num_2</span> <span class="o">=</span> <span class="mf">98.409</span> <span class="o">*</span><span class="mf">0.5</span>  
+    
+    <span class="n">G_1</span>           <span class="o">=</span> <span class="o">-</span><span class="n">num_1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">-</span> <span class="mf">11.2</span>   <span class="c1"># eqn 57</span>
+    <span class="n">G_1</span><span class="p">[</span><span class="n">e</span><span class="o">&lt;</span><span class="mf">1.64</span><span class="p">]</span>   <span class="o">=</span> <span class="o">-</span><span class="n">num_2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">e</span><span class="o">&lt;</span><span class="mf">1.64</span><span class="p">])</span> <span class="o">+</span> <span class="mi">2</span>  <span class="c1"># eqn 57</span>
+    <span class="n">G_1</span><span class="p">[</span><span class="n">e</span><span class="o">&lt;</span><span class="mf">1.17</span><span class="p">]</span>   <span class="o">=</span> <span class="o">-</span><span class="mf">5.076</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="mf">2.484</span> <span class="o">-</span> <span class="mf">506.25</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">e</span><span class="o">&lt;</span><span class="mf">1.17</span><span class="p">]))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># eqn 57</span>
+    <span class="n">G_1</span><span class="p">[</span><span class="n">e</span><span class="o">&lt;</span><span class="mf">0.8545</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">e</span><span class="o">&lt;</span><span class="mf">0.8545</span><span class="p">])</span> <span class="o">+</span> <span class="mi">2</span>      <span class="c1"># eqn 57</span>
+    <span class="n">G_1</span><span class="p">[</span><span class="n">e</span><span class="o">&lt;</span><span class="mf">0.5974</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">e</span><span class="o">&lt;</span><span class="mf">0.5974</span><span class="p">])</span> <span class="o">-</span> <span class="mf">11.2</span>    <span class="c1"># eqn 57</span>
+    
+    <span class="k">return</span> <span class="n">G_1</span></div>
+
+
+<div class="viewcode-block" id="compute_G_2">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise.compute_G_2">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_G_2</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This computes the G_2 function using the BPM model</span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        BPM models assumes a naca 0012 airfol  </span>
+<span class="sd">        </span>
+<span class="sd">    Source:  </span>
+<span class="sd">        BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.</span>
+<span class="sd">        Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs: </span>
+<span class="sd">        d     [-]</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs </span>
+<span class="sd">        G_2   [-]</span>
+<span class="sd">       </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A   </span>
+<span class="sd">    &#39;&#39;&#39;</span>     
+ 
+    <span class="n">G_2</span>           <span class="o">=</span> <span class="o">-</span><span class="mf">77.852</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="mf">15.328</span>           <span class="c1"># eqn 58 </span>
+    <span class="n">G_2</span><span class="p">[</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">3.0889</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">65.188</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">3.0889</span><span class="p">])</span> <span class="o">+</span> <span class="mf">9.125</span>  <span class="c1"># eqn 58 </span>
+    <span class="n">G_2</span><span class="p">[</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">1.7579</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">114.052</span><span class="o">*</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">1.7579</span><span class="p">]))</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="c1"># eqn 58</span>
+    <span class="n">G_2</span><span class="p">[</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">0.5689</span><span class="p">]</span> <span class="o">=</span> <span class="mf">65.188</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">0.5689</span><span class="p">])</span> <span class="o">+</span> <span class="mf">9.125</span>   <span class="c1"># eqn 58</span>
+    <span class="n">G_2</span><span class="p">[</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">0.3237</span><span class="p">]</span> <span class="o">=</span> <span class="mf">77.852</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">d</span><span class="o">&lt;</span><span class="mf">0.3237</span><span class="p">])</span> <span class="o">+</span> <span class="mf">15.328</span>  <span class="c1"># eqn 58    </span>
+    
+    <span class="k">return</span> <span class="n">G_2</span></div>
+
+
+<div class="viewcode-block" id="compute_G_3">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise.compute_G_3">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_G_3</span><span class="p">(</span><span class="n">alpha_star</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This computes the G_3 function using the BPM model</span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        BPM models assumes a naca 0012 airfol  </span>
+<span class="sd">        </span>
+<span class="sd">    Source:  </span>
+<span class="sd">        BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.</span>
+<span class="sd">        Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs: </span>
+<span class="sd">        alpha_star    [deg]</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs </span>
+<span class="sd">        G_3           [-]</span>
+<span class="sd">       </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A   </span>
+<span class="sd">    &#39;&#39;&#39;</span>     
+    <span class="n">G_3</span> <span class="o">=</span> <span class="mf">171.04</span> <span class="o">-</span> <span class="mf">3.03</span><span class="o">*</span><span class="n">alpha_star</span>
+    <span class="k">return</span> <span class="n">G_3</span></div>
+
+
+<div class="viewcode-block" id="compute_R_c_0">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise.compute_R_c_0">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_R_c_0</span><span class="p">(</span><span class="n">alpha_star</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This computes the R_c_0 function using the BPM model</span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        BPM models assumes a naca 0012 airfol  </span>
+<span class="sd">        </span>
+<span class="sd">    Source:  </span>
+<span class="sd">        BPM Model:  Brooks, Thomas F., D. Stuart Pope, and Michael A.</span>
+<span class="sd">        Marcolini. Airfoil self-noise and prediction. No. L-16528. 1989.</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs: </span>
+<span class="sd">        alpha_star    [deg]</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs </span>
+<span class="sd">        R_c_0         [-]</span>
+<span class="sd">       </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A   </span>
+<span class="sd">    &#39;&#39;&#39;</span>     
+    <span class="n">R_c_0</span>               <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="mf">0.215</span><span class="o">*</span><span class="n">alpha_star</span> <span class="o">+</span> <span class="mf">4.978</span><span class="p">)</span> <span class="c1"># eqn 59</span>
+    <span class="n">R_c_0</span><span class="p">[</span><span class="mi">3</span><span class="o">&lt;</span><span class="n">alpha_star</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="mf">0.120</span><span class="o">*</span><span class="n">alpha_star</span><span class="p">[</span><span class="mi">3</span><span class="o">&lt;</span><span class="n">alpha_star</span><span class="p">]</span> <span class="o">+</span> <span class="mf">5.263</span><span class="p">)</span>  <span class="c1"># eqn 59 </span>
+    <span class="k">return</span> <span class="n">R_c_0</span> </div>
+
+
+
+<span class="k">def</span> <span class="nf">_LBL_VS_broadband_noise</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of LBL_VS_broadband_noise.</span>
+<span class="sd">	Wraps LBL_VS_broadband_noise with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see LBL_VS_broadband_noise documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: R_c        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: alpha_star = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: delta_p    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: r_e        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: L          = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: M          = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Dbar_h     = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: f          = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: U          = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">LBL_VS_broadband_noise</span><span class="p">(</span><span class="s1">&#39;R_c&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha_star&#39;</span><span class="p">,</span> <span class="s1">&#39;delta_p&#39;</span><span class="p">,</span> <span class="s1">&#39;r_e&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;Dbar_h&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_G_1</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_G_1.</span>
+<span class="sd">	Wraps compute_G_1 with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_G_1 documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: e = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_G_1</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_G_2</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_G_2.</span>
+<span class="sd">	Wraps compute_G_2 with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_G_2 documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: d = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_G_2</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_G_3</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_G_3.</span>
+<span class="sd">	Wraps compute_G_3 with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_G_3 documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: alpha_star = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_G_3</span><span class="p">(</span><span class="s1">&#39;alpha_star&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_R_c_0</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_R_c_0.</span>
+<span class="sd">	Wraps compute_R_c_0 with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_R_c_0 documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: alpha_star = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_R_c_0</span><span class="p">(</span><span class="s1">&#39;alpha_star&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

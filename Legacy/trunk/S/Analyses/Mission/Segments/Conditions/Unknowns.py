@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 # Unknowns.py
 #
 # Created:  
@@ -14,7 +14,7 @@ from .Conditions import Conditions
 #  Unknowns
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Conditions
+## @ingroup Analyses-Functions-Segments-Conditions
 class Unknowns(Conditions):
     """ Creates the data structure for the unknowns that solved in a mission
     

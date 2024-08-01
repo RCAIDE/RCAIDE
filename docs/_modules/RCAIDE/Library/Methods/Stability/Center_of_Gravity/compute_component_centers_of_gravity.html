@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Stability.Center_of_Gravity.compute_component_centers_of_gravity &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Stability.Center_of_Gravity.compute_component_centers_of_gravity</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Stability.Center_of_Gravity.compute_component_centers_of_gravity</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Methods-Stability-Center_of_Gravity Center_of_Gravity</span>
+<span class="c1"># RCAIDE/Library/Methods/Stability/Center_of_Gravity/compute_component_centers_of_gravity.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Dec 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c1"># RCAIDE </span>
+<span class="kn">import</span> <span class="nn">RCAIDE</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Components</span> <span class="kn">import</span> <span class="n">Component</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Geometry.Three_Dimensional</span> <span class="kn">import</span> <span class="n">compute_span_location_from_chord_length</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Geometry.Three_Dimensional</span> <span class="kn">import</span> <span class="n">compute_chord_length_from_span_location</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Geometry.Three_Dimensional</span> <span class="kn">import</span> <span class="n">convert_wing_sweep</span>
+<span class="c1"># package imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  Computer Aircraft Center of Gravity</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+
+<span class="c1">## @ingroup Methods-Stability-Center_of_Gravity</span>
+<div class="viewcode-block" id="compute_component_centers_of_gravity">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Stability.Center_of_Gravity.html#RCAIDE.Library.Methods.Stability.Center_of_Gravity.compute_component_centers_of_gravity.compute_component_centers_of_gravity">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_component_centers_of_gravity</span><span class="p">(</span><span class="n">vehicle</span><span class="p">,</span> <span class="n">nose_load</span> <span class="o">=</span> <span class="mf">0.06</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; computes the center of gravity of all of the vehicle components based on correlations </span>
+<span class="sd">    from Stanford University AA241 Lecture Notes </span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    AA 241 Notes</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    vehicle</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    
+    <span class="n">C</span> <span class="o">=</span>  <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Components</span>
+    
+    <span class="c1"># Go through all wings</span>
+    <span class="k">for</span> <span class="n">wing</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">wings</span><span class="p">:</span>
+    
+        <span class="k">if</span> <span class="n">wing</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">leading_edge</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wing</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">leading_edge</span> <span class="o">=</span> <span class="n">convert_wing_sweep</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span><span class="n">old_ref_chord_fraction</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="p">,</span><span class="n">new_ref_chord_fraction</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span><span class="n">C</span><span class="o">.</span><span class="n">Wings</span><span class="o">.</span><span class="n">Main_Wing</span><span class="p">):</span>
+                <span class="n">wing</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.05</span><span class="o">*</span><span class="n">wing</span><span class="o">.</span><span class="n">chords</span><span class="o">.</span><span class="n">mean_aerodynamic</span> <span class="o">+</span><span class="n">wing</span><span class="o">.</span><span class="n">aerodynamic_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>             
+                
+            
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span><span class="n">C</span><span class="o">.</span><span class="n">Wings</span><span class="o">.</span><span class="n">Horizontal_Tail</span><span class="p">):</span>
+            <span class="n">chord_length_h_tail_35_percent_semi_span</span>  <span class="o">=</span> <span class="n">compute_chord_length_from_span_location</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span><span class="mf">.35</span><span class="o">*</span><span class="n">wing</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">projected</span><span class="o">*</span><span class="mf">.5</span><span class="p">)</span>
+            <span class="n">h_tail_35_percent_semi_span_offset</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">wing</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">quarter_chord</span><span class="p">)</span><span class="o">*</span><span class="mf">.35</span><span class="o">*</span><span class="mf">.5</span><span class="o">*</span><span class="n">wing</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">projected</span>   
+            <span class="n">wing</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.3</span><span class="o">*</span><span class="n">chord_length_h_tail_35_percent_semi_span</span> <span class="o">+</span> \
+                                                                          <span class="n">h_tail_35_percent_semi_span_offset</span>            
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span><span class="n">C</span><span class="o">.</span><span class="n">Wings</span><span class="o">.</span><span class="n">Vertical_Tail</span><span class="p">):</span>
+            <span class="n">chord_length_v_tail_35_percent_semi_span</span>  <span class="o">=</span> <span class="n">compute_chord_length_from_span_location</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span><span class="mf">.35</span><span class="o">*</span><span class="n">wing</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">projected</span><span class="p">)</span>
+            <span class="n">v_tail_35_percent_semi_span_offset</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">wing</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">quarter_chord</span><span class="p">)</span><span class="o">*</span><span class="mf">.35</span><span class="o">*</span><span class="mf">.5</span><span class="o">*</span><span class="n">wing</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">projected</span>
+            <span class="n">wing</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.3</span><span class="o">*</span><span class="n">chord_length_v_tail_35_percent_semi_span</span> <span class="o">+</span> \
+                                                                        <span class="n">v_tail_35_percent_semi_span_offset</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">span_location_mac</span> <span class="o">=</span> <span class="n">compute_span_location_from_chord_length</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span> <span class="n">wing</span><span class="o">.</span><span class="n">chords</span><span class="o">.</span><span class="n">mean_aerodynamic</span><span class="p">)</span>
+            <span class="n">mac_le_offset</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">wing</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">leading_edge</span><span class="p">)</span><span class="o">*</span><span class="n">span_location_mac</span>
+            
+            <span class="n">wing</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.3</span><span class="o">*</span><span class="n">wing</span><span class="o">.</span><span class="n">chords</span><span class="o">.</span><span class="n">mean_aerodynamic</span> <span class="o">+</span> <span class="n">mac_le_offset</span>
+            
+            
+    <span class="c1"># Go through all the networks</span>
+    <span class="n">network_moment</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="n">network_mass</span>   <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">networks</span><span class="p">:</span>  
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">Comp</span> <span class="ow">in</span> <span class="n">net</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Comp</span><span class="p">,</span><span class="n">Component</span><span class="p">):</span>            
+                <span class="n">network_moment</span> <span class="o">+=</span> <span class="n">net</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">origin</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">net</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">)</span>
+                <span class="n">network_mass</span>   <span class="o">+=</span> <span class="n">net</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">net</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">network_mass</span><span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="n">propulsion_cg</span> <span class="o">=</span> <span class="n">network_moment</span><span class="o">/</span><span class="n">network_mass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">propulsion_cg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">]])</span>
+
+    <span class="c1"># Go through all the fuselages</span>
+    <span class="k">for</span> <span class="n">fuse</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">fuselages</span><span class="p">:</span>
+        <span class="n">fuse</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>   <span class="o">=</span> <span class="mf">.45</span><span class="o">*</span><span class="n">fuse</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">total</span>
+
+    <span class="c1">#---------------------------------------------------------------------------------</span>
+    <span class="c1"># All other components</span>
+    <span class="c1">#---------------------------------------------------------------------------------</span>
+     
+    <span class="c1"># Select a length scale depending on what kind of vehicle this is</span>
+    <span class="n">length_scale</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="n">nose_length</span>  <span class="o">=</span> <span class="mf">0.</span>
+     
+    <span class="c1"># Check if there is a fuselage</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">fuselages</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">wing</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">wings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span><span class="n">C</span><span class="o">.</span><span class="n">Wings</span><span class="o">.</span><span class="n">Main_Wing</span><span class="p">):</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">chords</span><span class="o">.</span><span class="n">root</span>
+                <span class="k">if</span> <span class="n">b</span><span class="o">&gt;</span><span class="n">length_scale</span><span class="p">:</span>
+                    <span class="n">length_scale</span> <span class="o">=</span> <span class="n">b</span>
+                    <span class="n">nose_length</span>  <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">b</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fuse</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">fuselages</span><span class="p">:</span>
+            <span class="n">nose</span>   <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">nose</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">total</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="o">&gt;</span> <span class="n">length_scale</span><span class="p">:</span>
+                <span class="n">length_scale</span> <span class="o">=</span> <span class="n">length</span>
+                <span class="n">nose_length</span>  <span class="o">=</span> <span class="n">nose</span>
+                
+    <span class="c1"># unpack all components:</span>
+    <span class="k">try</span><span class="p">:</span> 
+        <span class="n">avionics</span>                                                   <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">avionics</span>
+        <span class="n">avionics</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                      <span class="o">=</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">nose_length</span>
+        <span class="n">avionics</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>           <span class="o">=</span> <span class="mf">0.0</span> 
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span> 
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">furnishings</span>                                                <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">furnishings</span>
+        <span class="n">furnishings</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                   <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">length_scale</span>
+        <span class="n">furnishings</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>        <span class="o">=</span> <span class="mf">0.0</span> 
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>     
+
+    <span class="k">try</span><span class="p">:</span>   
+        <span class="n">apu</span>                                                        <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">apu</span> 
+        <span class="n">apu</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                           <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">length_scale</span>   
+        <span class="n">apu</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">passengers</span>                                                 <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">passengers</span>
+        <span class="n">passengers</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                    <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">length_scale</span>  
+        <span class="n">passengers</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>         <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+    
+    
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">baggage</span>                                                    <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">baggage</span>
+        <span class="n">baggage</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                       <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">length_scale</span>  
+        <span class="n">baggage</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>            <span class="o">=</span> <span class="mf">0.0</span> 
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">cargo</span>                                                      <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">cargo</span>
+        <span class="n">cargo</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                         <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">length_scale</span>  
+        <span class="n">cargo</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>              <span class="o">=</span> <span class="mf">0.0</span>    
+        
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+    
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">air_conditioner</span>                                            <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">air_conditioner</span>
+        <span class="n">air_conditioner</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                               <span class="o">=</span> <span class="n">nose_length</span>
+        <span class="n">air_conditioner</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>    <span class="o">=</span> <span class="mf">0.0</span> 
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+    
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">optionals</span>                                                  <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">optionals</span> 
+        <span class="n">optionals</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                     <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">length_scale</span>  
+        <span class="n">optionals</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>          <span class="o">=</span> <span class="mf">0.0</span>    
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+    
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">control_systems</span>                                            <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">control_systems</span>
+        <span class="n">control_systems</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                               <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> 
+        <span class="n">control_systems</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>    <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> \
+            <span class="mf">.1</span><span class="o">*</span><span class="n">vehicle</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">chords</span><span class="o">.</span><span class="n">mean_aerodynamic</span> 
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+    
+    
+
+    <span class="k">try</span><span class="p">:</span>   
+        <span class="n">electrical_systems</span>                                         <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">electrical_systems</span>
+        <span class="n">electrical_systems</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                            <span class="o">=</span> <span class="mf">.75</span><span class="o">*</span><span class="p">(</span><span class="mf">.5</span><span class="o">*</span><span class="n">length_scale</span><span class="p">)</span> <span class="o">+</span> <span class="n">propulsion_cg</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">.25</span>
+        <span class="n">electrical_systems</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span> 
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+    
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">main_gear</span>                                                  <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">main</span>  
+        <span class="n">moment_sans_main</span>                                           <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">sum_mass</span><span class="p">()</span><span class="o">-</span><span class="n">main_gear</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span><span class="p">)</span> 
+        <span class="n">main_gear_location</span>                                         <span class="o">=</span> <span class="n">moment_sans_main</span><span class="o">/</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">takeoff</span><span class="o">-</span><span class="n">main_gear</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">mass</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">nose_load</span><span class="p">)</span>
+        <span class="n">main_gear</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                     <span class="o">=</span> <span class="n">main_gear_location</span>
+        <span class="n">main_gear</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span>                <span class="o">=</span> <span class="mf">0.0</span> 
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>           
+    
+
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">nose_gear</span>                                                  <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">nose</span>  
+        <span class="n">nose_gear</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                     <span class="o">=</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">nose_length</span>
+        <span class="n">nose_gear</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>          <span class="o">=</span> <span class="mf">0.0</span>   
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>     
+     
+    <span class="k">try</span><span class="p">:</span>  
+        <span class="n">hydraulics</span>                                                 <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">systems</span><span class="o">.</span><span class="n">hydraulics</span>
+        <span class="n">hydraulics</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                    <span class="o">=</span> <span class="mf">.75</span><span class="o">*</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">wing</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mf">0.25</span><span class="o">*</span> <span class="n">length_scale</span><span class="o">*</span><span class="mf">.95</span>
+        <span class="n">hydraulics</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">center_of_gravity</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>         <span class="o">=</span> <span class="mf">0.0</span>       
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>         
+         
+    
+    <span class="k">return</span> </div>
+
+    
+
+
+
+<span class="k">def</span> <span class="nf">_compute_component_centers_of_gravity</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_component_centers_of_gravity.</span>
+<span class="sd">	Wraps compute_component_centers_of_gravity with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_component_centers_of_gravity documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: vehicle   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: nose_load = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_component_centers_of_gravity</span><span class="p">(</span><span class="s1">&#39;vehicle&#39;</span><span class="p">,</span> <span class="s1">&#39;nose_load&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

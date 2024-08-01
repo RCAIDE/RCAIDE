@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Geometry.Three_Dimensional.convert_wing_sweep &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Geometry.Three_Dimensional.convert_wing_sweep</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Geometry.Three_Dimensional.convert_wing_sweep</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Geometry-Three_Dimensional</span>
+<span class="c1"># RCAIDE/Library/Methods/Geometry/Three_Dimensional/convert_segmented_wing_sweep.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Mar 2024, M. Clarke  </span>
+
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1"># Imports </span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+<span class="c1">#  convert_wing_sweep</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Library-Methods-Geometry-Three_Dimensional</span>
+<div class="viewcode-block" id="convert_wing_sweep">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Geometry.Three_Dimensional.html#RCAIDE.Library.Methods.Geometry.Three_Dimensional.convert_wing_sweep.convert_wing_sweep">[docs]</a>
+<span class="k">def</span> <span class="nf">convert_wing_sweep</span><span class="p">(</span><span class="n">wing</span><span class="p">,</span><span class="n">old_ref_chord_fraction</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span><span class="n">new_ref_chord_fraction</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This method converts the sweep of a wing planform to refer to a new</span>
+<span class="sd">    chord fraction. Defaults to converting from leading-edge sweep to </span>
+<span class="sd">    quarter-chord sweep.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">        Assumes a simple trapezoidal wing shape. If the input wing object does</span>
+<span class="sd">        not have a simple trapezoidal shape, this function will convert sweeps</span>
+<span class="sd">        for an equivalent trapezoid having the same reference sweep, aspect </span>
+<span class="sd">        ratio, and taper ratio.</span>
+<span class="sd">    </span>
+<span class="sd">    Source:</span>
+<span class="sd">        Unknown</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        wing - a data dictionary with the fields:</span>
+<span class="sd">            apsect_ratio - wing aspect ratio                            [dimensionless]</span>
+<span class="sd">            sweep        - wing sweep                                   [radians]</span>
+<span class="sd">            taper        - wing taper ratio                             [dimensionless]</span>
+<span class="sd"> </span>
+<span class="sd">        old_ref_chord_fraction - a float value between 0 and 1.0 that </span>
+<span class="sd">                                 tells what fraction of the local chord</span>
+<span class="sd">                                 the sweep line follows. (For example, </span>
+<span class="sd">                                 a value of 0.25 refers to quarter-chord</span>
+<span class="sd">                                 sweep</span>
+<span class="sd">        new_ref_chord_fraction - a float value between 0 and 1.0 that</span>
+<span class="sd">                                 tells what fraction of the local chord</span>
+<span class="sd">                                 is the new reference for sweep.</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">        output - a single float value, new_sweep, which is the sweep</span>
+<span class="sd">                 angle referenced to the new_ref_chord_fraction.</span>
+
+<span class="sd">    Defaults:</span>
+<span class="sd">        Defaults to converting from leading edge sweep to quater-chord sweep.</span>
+<span class="sd">        </span>
+<span class="sd">     Properties Used:</span>
+<span class="sd">        N/A       </span>
+<span class="sd">    &quot;&quot;&quot;</span>             
+    <span class="c1"># Unpack inputs</span>
+    <span class="n">sweep</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">quarter_chord</span>
+    <span class="n">taper</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">taper</span>
+    <span class="k">if</span> <span class="s1">&#39;effective_aspect_ratio&#39;</span> <span class="ow">in</span> <span class="n">wing</span><span class="p">:</span>
+        <span class="n">ar</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">effective_aspect_ratio</span>
+    <span class="k">elif</span> <span class="s1">&#39;extended&#39;</span> <span class="ow">in</span> <span class="n">wing</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;aspect_ratio&#39;</span> <span class="ow">in</span> <span class="n">wing</span><span class="o">.</span><span class="n">extended</span><span class="p">:</span>
+            <span class="n">ar</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">extended</span><span class="o">.</span><span class="n">aspect_ratio</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ar</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">aspect_ratio</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ar</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">aspect_ratio</span>    
+    
+    <span class="c1">#Convert sweep to leading edge sweep if it was not already so</span>
+    <span class="k">if</span> <span class="n">old_ref_chord_fraction</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">sweep_LE</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">leading_edge</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sweep_LE</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">sweep</span><span class="p">)</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">old_ref_chord_fraction</span><span class="o">*</span>
+                              <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">taper</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">ar</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">taper</span><span class="p">)))</span>  <span class="c1">#Compute leading-edge sweep</span>
+
+    <span class="c1">#Convert from leading edge sweep to the desired sweep reference</span>
+    <span class="n">new_sweep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">sweep_LE</span><span class="p">)</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">new_ref_chord_fraction</span><span class="o">*</span>
+                          <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">taper</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">ar</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">taper</span><span class="p">)))</span>  <span class="c1">#Compute sweep referenced </span>
+                                                     <span class="c1">#to new chord-fraction</span>
+
+    <span class="k">return</span> <span class="n">new_sweep</span></div>
+
+
+
+
+<span class="k">def</span> <span class="nf">_convert_wing_sweep</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of convert_wing_sweep.</span>
+<span class="sd">	Wraps convert_wing_sweep with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see convert_wing_sweep documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: wing                   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: old_ref_chord_fraction = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: new_ref_chord_fraction = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">convert_wing_sweep</span><span class="p">(</span><span class="s1">&#39;wing&#39;</span><span class="p">,</span> <span class="s1">&#39;old_ref_chord_fraction&#39;</span><span class="p">,</span> <span class="s1">&#39;new_ref_chord_fraction&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,6 +1,6 @@
-## @defgroup Analyses-Mission-Segments-Ground Ground
+## @defgroup Analyses-Functions-Segments-Ground Ground
 # Segments for ground operations
-# @ingroup Analyses-Mission-Segments
+# @ingroup Analyses-Functions-Segments
 
 
 from .Ground                   import Ground

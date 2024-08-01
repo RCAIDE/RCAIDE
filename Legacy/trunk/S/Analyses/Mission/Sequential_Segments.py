@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission
+## @ingroup Analyses-Functions
 # Sequential_Segments.py
 #
 # Created:  
@@ -17,7 +17,7 @@ from .Mission import Mission
 #   Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission
+## @ingroup Analyses-Functions
 class Sequential_Segments(Mission):
     """ Solves each segment one at time
     

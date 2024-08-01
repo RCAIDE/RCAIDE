@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Linear_Speed_Constant_Rate.py
 #
 # Created:  
@@ -21,7 +21,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Linear_Speed_Constant_Rate(Unknown_Throttle):
     """ Linearly change true airspeed while climbing at a constant rate.
     

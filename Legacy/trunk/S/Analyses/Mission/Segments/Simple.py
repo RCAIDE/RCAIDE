@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments
+## @ingroup Analyses-Functions-Segments
 # Simple.py
 #
 # Created:  
@@ -19,7 +19,7 @@ from Legacy.trunk.S.Methods.Missions import Segments as Methods
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments
+## @ingroup Analyses-Functions-Segments
 class Simple(Segment):
     """ The Second basic piece of a mission which each segment will expand upon
     

@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 # Constant_EAS_Constant_Rate.py
 #
 # Created:  Aug 2016, T. MacDonald
@@ -22,7 +22,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 class Constant_EAS_Constant_Rate(Unknown_Throttle):
     """ Fixed at an Equivalent Airspeed (EAS) the vehicle will descent at a constant rate.
     

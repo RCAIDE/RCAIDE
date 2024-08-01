@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 # Constant_Throttle_Constant_Altitude.py
 #
 # Created:  
@@ -25,7 +25,7 @@ from Legacy.trunk.S.Analyses import Process
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 class Constant_Throttle_Constant_Altitude(Aerodynamic):
     """ Vehicle flies at a set throttle setting. Allows a vehicle to do a level acceleration.
     

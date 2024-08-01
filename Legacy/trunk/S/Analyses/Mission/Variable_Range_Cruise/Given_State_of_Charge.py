@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Variable_Range_Cruise
+## @ingroup Analyses-Functions-Variable_Range_Cruise
 # Given_State_of_Charge.py
 #
 # Created:  Dec 2020, E. Botero
@@ -16,7 +16,7 @@ from Legacy.trunk.S.Analyses.Mission import All_At_Once
 #   Class
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Vary_Cruise
+## @ingroup Analyses-Functions-Vary_Cruise
 class Given_State_of_Charge(All_At_Once):
     """ Given a target landing state of charge, select the cruise distance by adding a residual to the mission
     

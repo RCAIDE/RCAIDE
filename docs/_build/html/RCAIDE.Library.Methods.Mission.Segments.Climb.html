@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Mission.Segments.Climb package &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RCAIDE.Library.Methods.Mission.Segments.Cruise package" href="RCAIDE.Library.Methods.Mission.Segments.Cruise.html" />
+    <link rel="prev" title="RCAIDE.Library.Methods.Mission.Segments package" href="RCAIDE.Library.Methods.Mission.Segments.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">RCAIDE</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="RCAIDE.html">RCAIDE package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="RCAIDE.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Framework.html">RCAIDE.Framework package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.Vehicle">RCAIDE.Vehicle module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.load">RCAIDE.load module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.save">RCAIDE.save module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.version">RCAIDE.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">RCAIDE</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.html">RCAIDE package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Methods.html">RCAIDE.Library.Methods package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Methods.Mission.html">RCAIDE.Library.Methods.Mission package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Methods.Mission.Segments.html">RCAIDE.Library.Methods.Mission.Segments package</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Mission.Segments.Climb package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/RCAIDE.Library.Methods.Mission.Segments.Climb.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rcaide-library-methods-mission-segments-climb-package">
+<h1>RCAIDE.Library.Methods.Mission.Segments.Climb package<a class="headerlink" href="#rcaide-library-methods-mission-segments-climb-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_CAS_Constant_Rate">
+<span id="rcaide-library-methods-mission-segments-climb-constant-cas-constant-rate-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_CAS_Constant_Rate module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_CAS_Constant_Rate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_CAS_Constant_Rate.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_CAS_Constant_Rate.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_CAS_Constant_Rate.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_CAS_Constant_Rate.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constant CAS airspeed with a constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_rate                                  [meters/second]
+segment.calibrated_air_speed                        [meters/second]
+segment.altitude_start                              [meters]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle">
+<span id="rcaide-library-methods-mission-segments-climb-constant-dynamic-pressure-constant-angle-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions_unpack_unknowns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.html#initialize_conditions_unpack_unknowns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.initialize_conditions_unpack_unknowns" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constrant dynamic pressure and constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_angle                                 [radians]
+segment.dynamic_pressure                            [pascals]
+segment.altitude_start                              [meters]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.energy.throttle              [unitless]
+conditions.frames.body.inertial_rotations   [radians]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.residual_altitude">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.</span></span><span class="sig-name descname"><span class="pre">residual_altitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.html#residual_altitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.residual_altitude" title="Link to this definition"></a></dt>
+<dd><p>Computes the altitude residual</p>
+<p>Assumptions:
+No higher order terms.</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.state.conditions.frames.inertial.total_force_vector   [Newtons]
+segment.state.conditions.frames.inertial.acceleration_vector  [meter/second^2]
+segment.state.conditions.weights.total_mass                   [kilogram]
+segment.state.conditions.freestream.altitude                  [meter]</p>
+<p>Outputs:
+segment.state.residuals.altitude                              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.update_differentials">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.</span></span><span class="sig-name descname"><span class="pre">update_differentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Angle.html#update_differentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Angle.update_differentials" title="Link to this definition"></a></dt>
+<dd><p>On each iteration creates the differentials and integration functions from knowns about the problem. 
+Sets the time at each point. Must return in dimensional time, with t[0] = 0.
+This is different from the common method as it also includes the scaling of operators.</p>
+<blockquote>
+<div><p>Assumptions:
+Works with a segment discretized in vertical position, altitude</p>
+<p>Inputs:
+state.numerics.dimensionless.control_points      [Unitless]
+state.numerics.dimensionless.differentiate       [Unitless]
+state.numerics.dimensionless.integrate           [Unitless]
+state.conditions.frames.inertial.position_vector [meter]
+state.conditions.frames.inertial.velocity_vector [meter/second]</p>
+<p>Outputs:
+state.conditions.frames.inertial.time            [second]</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate">
+<span id="rcaide-library-methods-mission-segments-climb-constant-dynamic-pressure-constant-rate-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Dynamic_Pressure_Constant_Rate.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Dynamic_Pressure_Constant_Rate.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constant dynamic pressure and constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_rate                                  [meters/second]
+segment.dynamic_pressure                            [pascals]
+segment.altitude_start                              [meters]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_EAS_Constant_Rate">
+<span id="rcaide-library-methods-mission-segments-climb-constant-eas-constant-rate-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_EAS_Constant_Rate module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_EAS_Constant_Rate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_EAS_Constant_Rate.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_EAS_Constant_Rate.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_EAS_Constant_Rate.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_EAS_Constant_Rate.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constant true airspeed with a constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_rate                                  [meters/second]
+segment.equivalent_air_speed                        [meters/second]
+segment.altitude_start                              [meters]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle">
+<span id="rcaide-library-methods-mission-segments-climb-constant-mach-constant-angle-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Mach_Constant_Angle.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constant Mach number, with a constant angle of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_angle                                 [radians]
+segment.mach_number                                 [Unitless]
+segment.altitude_start                              [meters]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.residual_total_forces">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.</span></span><span class="sig-name descname"><span class="pre">residual_total_forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Mach_Constant_Angle.html#residual_total_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.residual_total_forces" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.update_differentials">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.</span></span><span class="sig-name descname"><span class="pre">update_differentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Mach_Constant_Angle.html#update_differentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Angle.update_differentials" title="Link to this definition"></a></dt>
+<dd><p>On each iteration creates the differentials and integration functions from knowns about the problem. 
+Sets the time at each point. Must return in dimensional time, with t[0] = 0.
+This is different from the common method as it also includes the scaling of operators.</p>
+<blockquote>
+<div><p>Assumptions:
+Works with a segment discretized in vertical position, altitude</p>
+<p>Inputs:
+state.numerics.dimensionless.control_points      [Unitless]
+state.numerics.dimensionless.differentiate       [Unitless]
+state.numerics.dimensionless.integrate           [Unitless]
+state.conditions.frames.inertial.position_vector [meter]
+state.conditions.frames.inertial.velocity_vector [meter/second]</p>
+<p>Outputs:
+state.conditions.frames.inertial.time            [second]</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Rate">
+<span id="rcaide-library-methods-mission-segments-climb-constant-mach-constant-rate-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Rate module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Rate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Rate.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Rate.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Mach_Constant_Rate.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Constant_Rate.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constant Mach number, with a constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_rate                                  [meters/second]
+segment.mach_number                                 [Unitless]
+segment.altitude_start                              [meters]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Linear_Altitude">
+<span id="rcaide-library-methods-mission-segments-climb-constant-mach-linear-altitude-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Linear_Altitude module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Linear_Altitude" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Linear_Altitude.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Linear_Altitude.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Mach_Linear_Altitude.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Mach_Linear_Altitude.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constrant dynamic pressure and constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.mach_number                         [unitless]
+segment.dynamic_pressure                    [pascals]
+segment.altitude_start                      [meters]
+segment.altitude_end                        [meters]
+segment.distance                            [meters]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]
+conditions.frames.inertial.time             [seconds]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle">
+<span id="rcaide-library-methods-mission-segments-climb-constant-speed-constant-angle-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Speed_Constant_Angle.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constant true airspeed, with a constant climb angle</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_angle                         [radians]
+segment.air_speed                           [meter/second]
+segment.altitude_start                      [meters]
+segment.altitude_end                        [meters]
+state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density               [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise">
+<span id="rcaide-library-methods-mission-segments-climb-constant-speed-constant-angle-noise-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise.expand_state">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise.</span></span><span class="sig-name descname"><span class="pre">expand_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Speed_Constant_Angle_Noise.html#expand_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise.expand_state" title="Link to this definition"></a></dt>
+<dd><p>Makes all vectors in the state the same size. Determines the minimum amount of points needed to get data for noise certification.</p>
+<p>Assumptions:
+Half second intervals for certification requirements. Fixed microphone position</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+state.numerics.number_of_control_points  [Unitless]</p>
+<p>Outputs:
+N/A</p>
+<p>Properties Used:
+Position of the flyover microphone is 6500 meters</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Speed_Constant_Angle_Noise.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Angle_Noise.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Gets the overall time step for the segment type.</p>
+<p>Assumptions:
+Constant true airspeed, with a constant climb angle. This segment is specically created for noise calculations.</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_angle                         [radians]
+segment.air_speed                           [meter/second]
+segment.altitude_start                      [meters]
+segment.altitude_end                        [meters]
+state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density               [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Rate">
+<span id="rcaide-library-methods-mission-segments-climb-constant-speed-constant-rate-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Rate module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Rate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Rate.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Rate.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Speed_Constant_Rate.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Constant_Rate.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constant true airspeed, with a constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_rate                                  [meters/second]
+segment.air_speed                                   [meters/second]
+segment.altitude_start                              [meters]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Linear_Altitude">
+<span id="rcaide-library-methods-mission-segments-climb-constant-speed-linear-altitude-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Linear_Altitude module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Linear_Altitude" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Linear_Altitude.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Linear_Altitude.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Speed_Linear_Altitude.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Speed_Linear_Altitude.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constrant dynamic pressure and constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.air_speed                           [meters/second]
+segment.altitude_start                      [meters]
+segment.altitude_end                        [meters]
+segment.distance                            [meters]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]
+conditions.frames.inertial.time             [seconds]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed">
+<span id="rcaide-library-methods-mission-segments-climb-constant-throttle-constant-speed-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Throttle_Constant_Speed.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Constant throttle estting, with a constant true airspeed</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.air_speed                                   [meters/second] 
+segment.altitude_start                              [meters]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector          [meters/second]
+conditions.energy.throttle                          [Unitless]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.unpack_body_angle">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.</span></span><span class="sig-name descname"><span class="pre">unpack_body_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Throttle_Constant_Speed.html#unpack_body_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.unpack_body_angle" title="Link to this definition"></a></dt>
+<dd><p>Unpacks and sets the proper value for body angle</p>
+<p>Assumptions:
+N/A</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+state.unknowns.body_angle                      [Radians]</p>
+<p>Outputs:
+state.conditions.frames.body.inertial_rotation [Radians]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.update_differentials_altitude">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.</span></span><span class="sig-name descname"><span class="pre">update_differentials_altitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Throttle_Constant_Speed.html#update_differentials_altitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.update_differentials_altitude" title="Link to this definition"></a></dt>
+<dd><p>On each iteration creates the differentials and integration funcitons from knowns about the problem. Sets the time at each point. Must return in dimensional time, with t[0] = 0</p>
+<p>Assumptions:
+Constant throttle setting, with a constant true airspeed.</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_angle                         [radians]
+state.conditions.frames.inertial.velocity_vector [meter/second]
+segment.altitude_start                      [meters]
+segment.altitude_end                        [meters]</p>
+<p>Outputs:
+state.conditions.frames.inertial.time       [seconds]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.update_velocity_vector_from_wind_angle">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.</span></span><span class="sig-name descname"><span class="pre">update_velocity_vector_from_wind_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Constant_Throttle_Constant_Speed.html#update_velocity_vector_from_wind_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Constant_Throttle_Constant_Speed.update_velocity_vector_from_wind_angle" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Mach_Constant_Rate">
+<span id="rcaide-library-methods-mission-segments-climb-linear-mach-constant-rate-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Mach_Constant_Rate module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Mach_Constant_Rate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Mach_Constant_Rate.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Mach_Constant_Rate.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Linear_Mach_Constant_Rate.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Mach_Constant_Rate.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Linearly changing mach number, with a constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_rate                                  [meters/second]
+segment.mach_number_start                                  [Unitless]
+segment.mach_number_end                                    [Unitless]
+segment.altitude_end                                [meters]
+segment.state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density                       [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Speed_Constant_Rate">
+<span id="rcaide-library-methods-mission-segments-climb-linear-speed-constant-rate-module"></span><h2>RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Speed_Constant_Rate module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Speed_Constant_Rate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Speed_Constant_Rate.initialize_conditions">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Speed_Constant_Rate.</span></span><span class="sig-name descname"><span class="pre">initialize_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Segments/Climb/Linear_Speed_Constant_Rate.html#initialize_conditions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Segments.Climb.Linear_Speed_Constant_Rate.initialize_conditions" title="Link to this definition"></a></dt>
+<dd><p>Sets the specified conditions which are given for the segment type.</p>
+<p>Assumptions:
+Linearly changing airspeed, with a constant rate of climb</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+segment.climb_rate                          [meters/second]
+segment.air_speed_start                     [meters/second]
+segment.air_speed_end                       [meters/second]
+segment.altitude_end                        [meters]
+state.numerics.dimensionless.control_points [Unitless]
+conditions.freestream.density               [kilograms/meter^3]</p>
+<p>Outputs:
+conditions.frames.inertial.velocity_vector  [meters/second]
+conditions.frames.inertial.position_vector  [meters]
+conditions.freestream.altitude              [meters]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Segments.Climb">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Segments.Climb" title="Link to this heading"></a></h2>
+<p>RCAIDE Package Setup</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="RCAIDE.Library.Methods.Mission.Segments.html" class="btn btn-neutral float-left" title="RCAIDE.Library.Methods.Mission.Segments package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RCAIDE.Library.Methods.Mission.Segments.Cruise.html" class="btn btn-neutral float-right" title="RCAIDE.Library.Methods.Mission.Segments.Cruise package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

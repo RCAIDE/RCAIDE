@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 # Hover.py
 # 
 # Created:  Jan 2016, E. Botero
@@ -25,7 +25,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Hover
+## @ingroup Analyses-Functions-Segments-Hover
 class Hover(Aerodynamic):
     """ A stationary hover for VTOL aircraft. No aerodynamic drag and lift are used, since there is no velocity.
     

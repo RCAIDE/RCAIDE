@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 # Constant_CAS_Constant_Rate.py
 #
 # Created:  
@@ -21,7 +21,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Descent
+## @ingroup Analyses-Functions-Segments-Descent
 class Constant_CAS_Constant_Rate(Unknown_Throttle):
     
     def __defaults__(self):

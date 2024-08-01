@@ -82,7 +82,7 @@ def find_target_range(nexus,mission):
     return nexus
 
 # ----------------------------------------------------------------------        
-#   Design Mission
+#   Design Functions
 # ----------------------------------------------------------------------    
 def design_mission(nexus):
     

@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 # Constant_Dynamic_Pressure_Constant_Rate.py
 #
 # Created:  
@@ -19,7 +19,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Climb
+## @ingroup Analyses-Functions-Segments-Climb
 class Constant_Dynamic_Pressure_Constant_Rate(Unknown_Throttle):
     """ Climb at a constant dynamic pressure at a constant rate.
     

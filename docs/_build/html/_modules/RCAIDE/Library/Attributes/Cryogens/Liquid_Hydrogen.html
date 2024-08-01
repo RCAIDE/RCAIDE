@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Attributes.Cryogens.Liquid_Hydrogen &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Attributes.Cryogens.Liquid_Hydrogen</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Attributes.Cryogens.Liquid_Hydrogen</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Attributes-Cryogens</span>
+<span class="c1"># RCAIDE/Library/Attributes/Cryogens/Liquid_Hydrogen.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Created:  Mar 2024, M. Clarke</span>
+
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+
+<span class="kn">from</span> <span class="nn">.Cryogen</span> <span class="kn">import</span> <span class="n">Cryogen</span>
+
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">#  Liquid Hydrogen Cryogen</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Attributes-Cryogens</span>
+<div class="viewcode-block" id="Liquid_Hydrogen">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Attributes.Cryogens.html#RCAIDE.Library.Attributes.Cryogens.Liquid_Hydrogen.Liquid_Hydrogen">[docs]</a>
+<span class="k">class</span> <span class="nc">Liquid_Hydrogen</span><span class="p">(</span><span class="n">Cryogen</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Liquid Hydrogen Cryogen Class </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This sets the default values.</span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        </span>
+<span class="sd">        Source:</span>
+<span class="sd">            Ekin - Experimental Techniques for Low Temperature Measurements, ISBN 0-19-857054-6</span>
+<span class="sd">            NIST Chemistry Webbook</span>
+<span class="sd">       &quot;&quot;&quot;</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>                        <span class="o">=</span> <span class="s1">&#39;Liquid_Hydrogen&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">density</span>                    <span class="o">=</span>    <span class="mf">59.9</span>            <span class="c1"># [kg/m^3] </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">specific_energy</span>            <span class="o">=</span>   <span class="mf">141.86e6</span>         <span class="c1"># [J/kg] </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_density</span>             <span class="o">=</span>  <span class="mf">8491.0e6</span>          <span class="c1"># [J/m^3]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperatures</span><span class="o">.</span><span class="n">freeze</span>        <span class="o">=</span>    <span class="mf">13.99</span>           <span class="c1"># [K]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperatures</span><span class="o">.</span><span class="n">boiling</span>       <span class="o">=</span>    <span class="mf">20.271</span>          <span class="c1"># [K]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vaporization_enthalpy</span>      <span class="o">=</span>   <span class="mf">461.</span>             <span class="c1"># [kJ/kg]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">specific_heat</span>              <span class="o">=</span>    <span class="mf">10.67</span>           <span class="c1"># [kJ/kgK]</span>
+
+        <span class="c1"># Coefficiencts for polynomial fit of Liquid Specific Heat Capacity (C_P) curve.</span>
+        <span class="c1"># C_P = CP_C3*T^3 + CP_C2*T^2 + CP_C1*T^1 + CP_C0*T^0 where C_P is Specific Heat Capacity (J/gK) T is temperature (kelvin).</span>
+        <span class="c1"># Data from NIST Chemistry Webbook. Pressure is 1.295MPa.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LCP_C0</span>                     <span class="o">=</span>   <span class="o">-</span><span class="mf">31.2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LCP_C1</span>                     <span class="o">=</span>     <span class="mf">5.56</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LCP_C2</span>                     <span class="o">=</span>    <span class="o">-</span><span class="mf">0.272</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LCP_C3</span>                     <span class="o">=</span>     <span class="mf">4.76E-03</span>
+        
+        <span class="c1"># Range for which this polynomial fit holds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LCP_minT</span>                   <span class="o">=</span>    <span class="mf">15.0</span>              <span class="c1"># [K]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LCP_maxT</span>                   <span class="o">=</span>    <span class="mf">30.0</span>              <span class="c1"># [K]</span>
+
+        <span class="c1"># Coefficiencts for polynomial fit of Gas Specific Heat Capacity (C_P) curve.</span>
+        <span class="c1"># C_P = CP_C3*T^3 + CP_C2*T^2 + CP_C1*T^1 + CP_C0*T^0 where C_P is Specific Heat Capacity (J/gK) T is temperature (kelvin).</span>
+        <span class="c1"># Data from NIST Chemistry Webbook. Pressure is 0.01 MPa</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GCP_C0</span>                     <span class="o">=</span>   <span class="mf">10.3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GCP_C1</span>                     <span class="o">=</span>   <span class="o">-</span><span class="mf">7.39E-03</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GCP_C2</span>                     <span class="o">=</span>    <span class="mf">0.221E-03</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GCP_C3</span>                     <span class="o">=</span>   <span class="o">-</span><span class="mf">0.516E-06</span>
+        
+        <span class="c1"># Range for which this polynomial fit holds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GCP_minT</span>                   <span class="o">=</span>   <span class="mf">20.0</span>              <span class="c1"># [K]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GCP_maxT</span>                   <span class="o">=</span>  <span class="mf">300.0</span>              <span class="c1"># [K]</span>
+
+        <span class="c1"># Antoine Equation Coefficients for calculatating the evaporation temperature.</span>
+        <span class="c1"># log10(P) = A - (B/(T+C)) where P is vapour pressure (Pa) and T temperature (kelvin).</span>
+        <span class="c1"># Data from NIST Chemistry Webbook, coefficients converted so as to use pressure in Pa.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">antoine_A</span>                  <span class="o">=</span>    <span class="mf">8.54314</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">antoine_B</span>                  <span class="o">=</span>   <span class="mf">99.395</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">antoine_C</span>                  <span class="o">=</span>    <span class="mf">7.726</span>
+        
+        <span class="c1"># Range for which Antoine Equation is referenced</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">antoine_minT</span>               <span class="o">=</span>   <span class="mf">21.01</span>             <span class="c1"># [K]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">antoine_maxT</span>               <span class="o">=</span>   <span class="mf">32.27</span>             <span class="c1"># [K]</span>
+
+        <span class="c1"># Coefficiencts for polynomial fit of vapourisation enthalpy</span>
+        <span class="c1"># ΔH = H_C3*P^3 + H_C2*P^2 + H_C1*P^1 + H_C0*P^0 where ΔH is vapourisation enthalpy (kJ/kg), P is pressure (Pa). </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H_C0</span>                       <span class="o">=</span>   <span class="mf">464.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H_C1</span>                       <span class="o">=</span>    <span class="o">-</span><span class="mf">0.000176</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H_C2</span>                       <span class="o">=</span>    <span class="mf">52.3E-12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H_C3</span>                       <span class="o">=</span>  <span class="o">-</span><span class="mf">100.00E-18</span>
+        
+        <span class="c1"># Range for which this polynomial fit holds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H_minP</span>                     <span class="o">=</span>     <span class="mf">0.02E6</span>         <span class="c1"># [Pa]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H_maxP</span>                     <span class="o">=</span>     <span class="mf">1.20E6</span>         <span class="c1"># [Pa]</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -73,10 +73,13 @@ nosetests.xml
 *.pdf
 *.png
 
-ide/Wing/SUAVE.wpr
+# Docs
+*.html
+*.rst
+
 /doc/html
 /doc/latex
-
-!/doc/suave_logo.png
-/trunk/SUAVE/version.py
-
+/docs/_build/
+/docs/_modules/
+/docs/_sources/
+/docs/_static/

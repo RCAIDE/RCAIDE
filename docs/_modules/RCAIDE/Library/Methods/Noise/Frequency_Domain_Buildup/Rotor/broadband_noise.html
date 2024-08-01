@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.broadband_noise &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.broadband_noise</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.broadband_noise</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor</span>
+<span class="c1"># RCAIDE/Library/Methods/Noise/Frequency_Domain_Buildup/Rotor/broadband_noise.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># RCAIDE </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">Units</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic</span>                                 <span class="kn">import</span> <span class="n">SPL_arithmetic</span>  
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.BPM_boundary_layer_properties</span> <span class="kn">import</span> <span class="n">BPM_boundary_layer_properties</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.LBL_VS_broadband_noise</span>        <span class="kn">import</span> <span class="n">LBL_VS_broadband_noise</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.TBL_TE_broadband_noise</span>        <span class="kn">import</span> <span class="n">TBL_TE_broadband_noise</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.TIP_broadband_noise</span>           <span class="kn">import</span> <span class="n">TIP_broadband_noise</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.noise_directivities</span>           <span class="kn">import</span> <span class="n">noise_directivities</span>
+
+<span class="c1"># Python Package imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  
+ 
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># Compute Broadband Noise </span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Noise-Frequency_Domain_Buildup-Rotor</span>
+<div class="viewcode-block" id="broadband_noise">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.broadband_noise.broadband_noise">[docs]</a>
+<span class="k">def</span> <span class="nf">broadband_noise</span><span class="p">(</span><span class="n">freestream</span><span class="p">,</span><span class="n">angle_of_attack</span><span class="p">,</span><span class="n">coordinates</span><span class="p">,</span>
+                            <span class="n">velocity_vector</span><span class="p">,</span><span class="n">rotor</span><span class="p">,</span><span class="n">aeroacoustic_data</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">res</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;This computes the trailing edge noise compoment of broadband noise of a propeller or </span>
+<span class="sd">    lift-rotor in the frequency domain. Boundary layer properties are computed using RCAIDE&#39;s </span>
+<span class="sd">    panel method.</span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        Boundary layer thickness (delta) appear to be an order of magnitude off at the trailing edge and </span>
+<span class="sd">        correction factor of 0.1 is used. See lines 255 and 256 </span>
+<span class="sd">        </span>
+<span class="sd">    Source: </span>
+<span class="sd">        Li, Sicheng Kevin, and Seongkyu Lee. &quot;Prediction of Urban Air Mobility Multirotor VTOL Broadband Noise</span>
+<span class="sd">        Using UCD-QuietFly.&quot; Journal of the American Helicopter Society (2021).</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:  </span>
+<span class="sd">        freestream                                   - freestream data structure                                                          [m/s]</span>
+<span class="sd">        angle_of_attack                              - aircraft angle of attack                                                           [rad]</span>
+<span class="sd">        bspv                                         - rotor blade section trailing position edge vectors                                 [m]</span>
+<span class="sd">        velocity_vector                              - velocity vector of aircraft                                                        [m/s]</span>
+<span class="sd">        rotors                                       - data structure of rotors                                                           [None] </span>
+<span class="sd">        aeroacoustic_data                            - data structure of acoustic data                                                    [None] </span>
+<span class="sd">        settings                                     - accoustic settings                                                                 [None] </span>
+<span class="sd">        res                                          - results data structure                                                             [None] </span>
+<span class="sd">    </span>
+<span class="sd">    Outputs </span>
+<span class="sd">       res.                                           *acoustic data is stored and passed in data structures*                                          </span>
+<span class="sd">           SPL_prop_broadband_spectrum               - broadband noise in blade passing frequency spectrum                                [dB]</span>
+<span class="sd">           SPL_prop_broadband_spectrum_dBA           - dBA-Weighted broadband noise in blade passing frequency spectrum                   [dbA]     </span>
+<span class="sd">           SPL_prop_broadband_1_3_spectrum           - broadband noise in 1/3 octave spectrum                                             [dB]</span>
+<span class="sd">           SPL_prop_broadband_1_3_spectrum_dBA       - dBA-Weighted broadband noise in 1/3 octave spectrum                                [dBA]                               </span>
+<span class="sd">           p_pref_azimuthal_broadband                - azimuthal varying pressure ratio of broadband noise                                [Unitless]       </span>
+<span class="sd">           p_pref_azimuthal_broadband_dBA            - azimuthal varying pressure ratio of dBA-weighted broadband noise                   [Unitless]     </span>
+<span class="sd">           SPL_prop_azimuthal_broadband_spectrum     - azimuthal varying broadband noise in blade passing frequency spectrum              [dB]      </span>
+<span class="sd">           SPL_prop_azimuthal_broadband_spectrum_dBA - azimuthal varying dBA-Weighted broadband noise in blade passing frequency spectrum [dbA]   </span>
+<span class="sd">        </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A   </span>
+<span class="sd">    &#39;&#39;&#39;</span>     
+
+    <span class="n">num_cpt</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">num_mic</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>  
+    <span class="n">num_rot</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">num_blades</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">num_sec</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">])</span> 
+    <span class="n">frequency</span>     <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">center_frequencies</span>
+    <span class="n">num_cf</span>        <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">frequency</span><span class="p">)</span>     
+    
+    <span class="c1"># ----------------------------------------------------------------------------------</span>
+    <span class="c1"># Trailing Edge Noise</span>
+    <span class="c1"># ---------------------------------------------------------------------------------- </span>
+    <span class="n">speed_of_sound</span>     <span class="o">=</span> <span class="n">freestream</span><span class="o">.</span><span class="n">speed_of_sound</span>          <span class="c1"># speed of sound</span>
+    <span class="n">density</span>            <span class="o">=</span> <span class="n">freestream</span><span class="o">.</span><span class="n">density</span>                 <span class="c1"># air density </span>
+    <span class="n">dyna_visc</span>          <span class="o">=</span> <span class="n">freestream</span><span class="o">.</span><span class="n">dynamic_viscosity</span>  
+    <span class="n">alpha</span>              <span class="o">=</span> <span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_effective_angle_of_attack</span><span class="o">/</span><span class="n">Units</span><span class="o">.</span><span class="n">degrees</span> 
+    <span class="n">alpha_tip</span>          <span class="o">=</span> <span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_effective_angle_of_attack</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Units</span><span class="o">.</span><span class="n">degrees</span>  
+    <span class="n">blade_Re</span>           <span class="o">=</span> <span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_reynolds_number</span>
+    <span class="n">blade_speed</span>        <span class="o">=</span> <span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_velocity</span>
+    <span class="n">blade_Ma</span>           <span class="o">=</span> <span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_Mach_number</span>
+    <span class="n">Vt</span>                 <span class="o">=</span> <span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_tangential_velocity</span>  
+    <span class="n">Va</span>                 <span class="o">=</span> <span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">blade_axial_velocity</span>                
+    <span class="n">blade_chords</span>       <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">chord_distribution</span>           <span class="c1"># blade chord    </span>
+    <span class="n">r</span>                  <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">radius_distribution</span>          <span class="c1"># radial location   </span>
+    <span class="n">Omega</span>              <span class="o">=</span> <span class="n">aeroacoustic_data</span><span class="o">.</span><span class="n">omega</span>            <span class="c1"># angular velocity    </span>
+    <span class="n">L</span>                  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">del_r</span>              <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">r</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>               <span class="o">=</span> <span class="n">del_r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">L</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>              <span class="o">=</span> <span class="n">del_r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>            <span class="o">=</span> <span class="p">(</span><span class="n">del_r</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span> <span class="n">del_r</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">/</span><span class="mi">2</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Omega</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">p_pref_broadband</span>                          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span> 
+        <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_broadband_spectrum</span>               <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">p_pref_broadband</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_broadband_spectrum_dBA</span>           <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">p_pref_broadband</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_broadband_1_3_spectrum</span>           <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_broadband_1_3_spectrum_dBA</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">p_pref_azimuthal_broadband</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">p_pref_azimuthal_broadband_dBA</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">p_pref_azimuthal_broadband</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_azimuthal_broadband_spectrum</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">p_pref_azimuthal_broadband</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_azimuthal_broadband_spectrum_dBA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">p_pref_azimuthal_broadband</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="c1"># dimension of matrices [control point, microphone , num rotors , number of blades, number of sections ,num center frequencies ] </span>
+        <span class="n">c</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">blade_chords</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+        <span class="n">L</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+        <span class="n">f</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">frequency</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:],(</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+            
+        <span class="n">SPLb_sum_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">cpt_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cpt</span><span class="p">):</span>
+            <span class="n">alpha_blade</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+            <span class="n">V</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+            <span class="n">V</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span>    <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">Vt</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span> 
+            <span class="n">V</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">Va</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>  
+            <span class="n">V_tot</span>             <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="n">alpha_tip</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">alpha_tip</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>  
+            <span class="n">c_0</span>               <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">speed_of_sound</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+            <span class="n">rho</span>               <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">density</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span> 
+            <span class="n">mu</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">dyna_visc</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span> 
+            <span class="n">R_c</span>               <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">blade_Re</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+            <span class="n">U</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">blade_speed</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+            <span class="n">M</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">blade_Ma</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span> <span class="c1"># U/c_0 </span>
+            <span class="n">M_tot</span>             <span class="o">=</span> <span class="n">V_tot</span><span class="o">/</span><span class="n">c_0</span>   
+              
+            <span class="n">X_prime_r</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X_prime_r</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,:,:,:,:,</span><span class="kc">None</span><span class="p">,:],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">cos_zeta_r</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X_prime_r</span><span class="o">*</span><span class="n">V</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X_prime_r</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">5</span><span class="p">))</span> 
+            <span class="n">r_er</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">X_e_r</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)[</span><span class="n">cpt_i</span><span class="p">,:,:,:,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>           
+            <span class="n">Phi_er</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">phi_e_r</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,:,:,:,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+            <span class="n">Theta_er</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">coordinates</span><span class="o">.</span><span class="n">theta_e_r</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">,:,:,:,:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>    
+            
+            <span class="c1"># flatten matrices </span>
+            <span class="n">R_c</span>        <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">R_c</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">c</span>          <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">alpha_star</span> <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">alpha_blade</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">alpha_tip</span>  <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">alpha_tip</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">U</span>          <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">U</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">cos_zeta_r</span> <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">cos_zeta_r</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">M_tot</span>      <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">M_tot</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">f</span>          <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">c_0</span>        <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">c_0</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">rho</span>        <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">r_er</span>       <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">r_er</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">mu</span>         <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">L</span>          <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">M</span>          <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">Phi_er</span>     <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">Phi_er</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">Theta_er</span>   <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="n">Theta_er</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            
+            
+            <span class="c1"># calculation of boundary layer properties, eqns 2 - 16   </span>
+            <span class="c1"># boundary layer properies of tripped and untripped at 0 angle of attack   </span>
+            <span class="n">boundary_layer_data</span>  <span class="o">=</span> <span class="n">BPM_boundary_layer_properties</span><span class="p">(</span><span class="n">R_c</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">alpha_star</span><span class="p">)</span>  
+        
+            <span class="c1"># define simulation variables/constants   </span>
+            <span class="n">Re_delta_star_p_untripped</span> <span class="o">=</span> <span class="n">boundary_layer_data</span><span class="o">.</span><span class="n">delta_star_p_untripped</span><span class="o">*</span><span class="n">U</span><span class="o">*</span><span class="n">rho</span><span class="o">/</span><span class="n">mu</span>
+            <span class="n">Re_delta_star_p_tripped</span>   <span class="o">=</span> <span class="n">boundary_layer_data</span><span class="o">.</span><span class="n">delta_star_p_tripped</span><span class="o">*</span><span class="n">U</span><span class="o">*</span><span class="n">rho</span><span class="o">/</span><span class="n">mu</span>  
+        
+            <span class="c1"># calculation of directivitiy terms , eqns 24 - 50 </span>
+            <span class="n">Dbar_h</span><span class="p">,</span> <span class="n">Dbar_l</span> <span class="o">=</span> <span class="n">noise_directivities</span><span class="p">(</span><span class="n">Theta_er</span><span class="p">,</span><span class="n">Phi_er</span><span class="p">,</span><span class="n">cos_zeta_r</span><span class="p">,</span><span class="n">M_tot</span><span class="p">)</span> 
+              
+            <span class="c1"># calculation of turbulent boundary layer - trailing edge noise,  eqns 24 - 50 </span>
+            <span class="n">SPL_TBL_TE_tripped</span>   <span class="o">=</span> <span class="n">TBL_TE_broadband_noise</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">r_er</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">R_c</span><span class="p">,</span><span class="n">Dbar_h</span><span class="p">,</span><span class="n">Dbar_l</span><span class="p">,</span><span class="n">Re_delta_star_p_tripped</span><span class="p">,</span>
+                                                      <span class="n">boundary_layer_data</span><span class="o">.</span><span class="n">delta_star_p_tripped</span><span class="p">,</span>
+                                                      <span class="n">boundary_layer_data</span><span class="o">.</span><span class="n">delta_star_s_tripped</span><span class="p">,</span>
+                                                      <span class="n">alpha_star</span><span class="p">)</span> 
+            
+            <span class="n">SPL_TBL_TE_untripped</span> <span class="o">=</span> <span class="n">TBL_TE_broadband_noise</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">r_er</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">R_c</span><span class="p">,</span><span class="n">Dbar_h</span><span class="p">,</span><span class="n">Dbar_l</span><span class="p">,</span><span class="n">Re_delta_star_p_untripped</span><span class="p">,</span>
+                                                      <span class="n">boundary_layer_data</span><span class="o">.</span><span class="n">delta_star_p_untripped</span><span class="p">,</span>
+                                                      <span class="n">boundary_layer_data</span><span class="o">.</span><span class="n">delta_star_s_untripped</span><span class="p">,</span>
+                                                      <span class="n">alpha_star</span><span class="p">)</span>  
+          
+            <span class="c1"># calculation of laminar boundary layer - vortex shedding, eqns 53 - 60 </span>
+            <span class="n">SPL_LBL_VS</span> <span class="o">=</span> <span class="n">LBL_VS_broadband_noise</span><span class="p">(</span><span class="n">R_c</span><span class="p">,</span><span class="n">alpha_star</span><span class="p">,</span><span class="n">boundary_layer_data</span><span class="o">.</span><span class="n">delta_star_p_untripped</span><span class="p">,</span><span class="n">r_er</span><span class="p">,</span><span class="n">L</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">Dbar_h</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">U</span><span class="p">)</span>
+           
+            <span class="c1"># calculation of tip vortex noise, eqns 61 - 67 </span>
+            <span class="n">alpha_TIP</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">alpha_tip</span><span class="p">)</span>
+            <span class="n">SPL_TIP</span>   <span class="o">=</span> <span class="n">TIP_broadband_noise</span><span class="p">(</span><span class="n">alpha_TIP</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">c_0</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">Dbar_h</span><span class="p">,</span><span class="n">r_er</span><span class="p">)</span>  
+             
+            <span class="c1"># TO DO : Compute BWI  </span>
+             
+            <span class="c1"># TO DO : Compute BVI </span>
+            
+            <span class="c1"># Unflatten Matices </span>
+            <span class="n">SPL_TBL_TE_tripped</span>   <span class="o">=</span> <span class="n">unflatten_matrix</span><span class="p">(</span><span class="n">SPL_TBL_TE_tripped</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span> 
+            <span class="n">SPL_TBL_TE_untripped</span> <span class="o">=</span> <span class="n">unflatten_matrix</span><span class="p">(</span><span class="n">SPL_TBL_TE_untripped</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>
+            <span class="n">SPL_LBL_VS</span>           <span class="o">=</span> <span class="n">unflatten_matrix</span><span class="p">(</span><span class="n">SPL_LBL_VS</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)</span>          
+            <span class="n">SPL_TIP</span>              <span class="o">=</span> <span class="n">unflatten_matrix</span><span class="p">(</span><span class="n">SPL_TIP</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">)[:,:,:,</span><span class="mi">0</span><span class="p">,:]</span>     
+            
+            <span class="c1"># Sum broadband compoments along blade sections and blades to get noise per rotor </span>
+            <span class="n">broadband_SPLs</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span>
+            <span class="n">broadband_SPLs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">SPL_TBL_TE_tripped</span> 
+            <span class="n">broadband_SPLs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">SPL_LBL_VS</span>  
+            <span class="n">SPLb_sum_1</span>        <span class="o">=</span> <span class="n">SPL_arithmetic</span><span class="p">(</span><span class="n">broadband_SPLs</span><span class="p">,</span> <span class="n">sum_axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+            <span class="n">SPLb_sum_2</span>        <span class="o">=</span> <span class="n">SPL_arithmetic</span><span class="p">(</span><span class="n">SPLb_sum_1</span><span class="p">,</span> <span class="n">sum_axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> 
+            <span class="n">SPLb_sum_3</span><span class="p">[</span><span class="n">cpt_i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">SPLb_sum_2</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">SPL_TIP</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span> <span class="p">)</span> 
+        
+        <span class="c1"># store results </span>
+        <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_broadband_spectrum</span>                   <span class="o">=</span> <span class="n">SPL_arithmetic</span><span class="p">(</span><span class="n">SPLb_sum_3</span><span class="p">,</span> <span class="n">sum_axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> 
+        <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_broadband_1_3_spectrum</span>               <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">SPL_prop_broadband_spectrum</span>     <span class="c1"># already in 1/3 octave specturm  </span>
+        
+    <span class="k">return</span></div>
+
+ 
+<div class="viewcode-block" id="flatten_matrix">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.broadband_noise.flatten_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">flatten_matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,(</span><span class="n">num_mic</span><span class="o">*</span><span class="n">num_rot</span><span class="o">*</span><span class="n">num_blades</span><span class="o">*</span><span class="n">num_sec</span><span class="o">*</span><span class="n">num_cf</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="unflatten_matrix">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.html#RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.broadband_noise.unflatten_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">unflatten_matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,(</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="n">num_cf</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_broadband_noise</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of broadband_noise.</span>
+<span class="sd">	Wraps broadband_noise with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see broadband_noise documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: freestream        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: angle_of_attack   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: coordinates       = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: velocity_vector   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: rotor             = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: aeroacoustic_data = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: settings          = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: res               = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">broadband_noise</span><span class="p">(</span><span class="s1">&#39;freestream&#39;</span><span class="p">,</span> <span class="s1">&#39;angle_of_attack&#39;</span><span class="p">,</span> <span class="s1">&#39;coordinates&#39;</span><span class="p">,</span> <span class="s1">&#39;velocity_vector&#39;</span><span class="p">,</span> <span class="s1">&#39;rotor&#39;</span><span class="p">,</span> <span class="s1">&#39;aeroacoustic_data&#39;</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">,</span> <span class="s1">&#39;res&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_flatten_matrix</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of flatten_matrix.</span>
+<span class="sd">	Wraps flatten_matrix with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see flatten_matrix documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: x          = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_mic    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_rot    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_blades = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_sec    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_cf     = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">flatten_matrix</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;num_mic&#39;</span><span class="p">,</span> <span class="s1">&#39;num_rot&#39;</span><span class="p">,</span> <span class="s1">&#39;num_blades&#39;</span><span class="p">,</span> <span class="s1">&#39;num_sec&#39;</span><span class="p">,</span> <span class="s1">&#39;num_cf&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_unflatten_matrix</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of unflatten_matrix.</span>
+<span class="sd">	Wraps unflatten_matrix with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see unflatten_matrix documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: x          = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_mic    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_rot    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_blades = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_sec    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: num_cf     = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">unflatten_matrix</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;num_mic&#39;</span><span class="p">,</span> <span class="s1">&#39;num_rot&#39;</span><span class="p">,</span> <span class="s1">&#39;num_blades&#39;</span><span class="p">,</span> <span class="s1">&#39;num_sec&#39;</span><span class="p">,</span> <span class="s1">&#39;num_cf&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

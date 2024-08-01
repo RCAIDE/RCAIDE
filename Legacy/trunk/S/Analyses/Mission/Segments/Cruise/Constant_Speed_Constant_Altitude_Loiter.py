@@ -1,4 +1,4 @@
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 # Constant_Speed_Constant_Altitude_Loiter.py
 #
 # Created:  Jun 2017, E. Botero 
@@ -20,7 +20,7 @@ from Legacy.trunk.S.Core import Units
 #  Segment
 # ----------------------------------------------------------------------
 
-## @ingroup Analyses-Mission-Segments-Cruise
+## @ingroup Analyses-Functions-Segments-Cruise
 class Constant_Speed_Constant_Altitude_Loiter(Constant_Speed_Constant_Altitude):
     """ Fixed true airspeed and altitude for a fixed time.
         This is useful aircraft who need to station keep.
