@@ -21,7 +21,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 
 class State(Conditions):
-    """ Creates the State data structure for storing daata that solved in a mission.
+    """ Creates the State data structure for storing data that solved in a mission.
     """  
     def __defaults__(self):
         """ This sets the default values.

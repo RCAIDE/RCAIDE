@@ -121,7 +121,7 @@ def parasite_drag_wing(state, settings, geometry):
                             + (2. * C * (t_c_w * cos_sweepv ** 2))
                             / (np.sqrt(1. - (Mc[subsonic] * cos_sweep) ** 2))
                             + ((C * cos_sweep * t_c_w) ** 2 * (1. + 5. * cos_sweep ** 2))
-                            / (2. * (1. - (Mc[ind] * cos_sweep) ** 2.)))
+                            / (2. * (1. - (Mc[subsonic] * cos_sweep) ** 2.)))
 
         transonic_spline = Cubic_Spline_Blender(.95, 1.0)
         seg_k_w *= transonic_spline.compute(Mc)
