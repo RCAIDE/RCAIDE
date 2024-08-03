@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------- 
 
 import numpy as np
-from RCAIDE.Framework.Core import Units
+from RCAIDE.Reference.Core import Units
 from RCAIDE.Library.Components import Component
 from RCAIDE.Library.Components.Wings import Horizontal_Tail, Vertical_Tail, Main_Wing
 

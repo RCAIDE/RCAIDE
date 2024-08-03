@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Framework.Core  import Data
+from RCAIDE.Reference.Core import Data
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import VLM
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import compute_wing_induced_velocity
 from RCAIDE.Library.Methods.Aerodynamics.Common.Lift           import generate_wing_wake_grid

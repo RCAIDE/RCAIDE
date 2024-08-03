@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Reference.Core import Data
 from RCAIDE.Library.Components.Mass_Properties import Mass_Properties
 
 # ----------------------------------------------------------------------------------------------------------------------

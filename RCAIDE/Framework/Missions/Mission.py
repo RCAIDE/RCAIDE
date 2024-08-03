@@ -8,18 +8,39 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from dataclasses import dataclass, field
-from warnings import warn
 
 # RCAIDE Imports
 
-from RCAIDE.Framework.Core import Process, ProcessStep
+from RCAIDE.Reference.Core import Process, ProcessStep
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Mission Segment
 # ----------------------------------------------------------------------------------------------------------------------
 
+@dataclass(kw_only=True)
+class Iterate(Process):
+
+    name: str = "Iterate"
+
+    def __post_init__(self):
+
+        initialization = Process(name="Iterate Initials")
+        time = ProcessStep(name="Initialize Time")
+
+
+
 
 @dataclass(kw_only=True)
-class MissionSegment(ProcessStep):
+class MissionSegment(Process):
+
+    name: str = "Mission Segment"
+
+    Settings: dataclass = dataclass(kw_only=True)
 
     analyses: list[Process] = field(default_factory=list)
+
+    def __post_init__(self):
+        return None
+
+
+

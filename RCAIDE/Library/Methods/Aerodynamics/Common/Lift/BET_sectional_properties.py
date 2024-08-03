@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports 
-from RCAIDE.Framework.Core import interp2d
+from RCAIDE.Reference.Core import interp2d
 
 # package imports 
 import numpy as np

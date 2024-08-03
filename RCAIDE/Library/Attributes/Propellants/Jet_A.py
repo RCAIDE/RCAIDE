@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 from .Propellant import Propellant
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Reference.Core import Data
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Jet_A1 Propellant Class

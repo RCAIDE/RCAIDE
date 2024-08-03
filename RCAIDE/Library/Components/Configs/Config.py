@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
-from RCAIDE.Framework.Core    import Diffed_Data
+from RCAIDE.Reference.Core import Diffed_Data
 from RCAIDE.Vehicle          import Vehicle  
 
 # ----------------------------------------------------------------------------------------------------------------------

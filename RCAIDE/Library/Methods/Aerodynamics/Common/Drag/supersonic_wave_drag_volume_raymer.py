@@ -7,7 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
   
-from RCAIDE.Framework.Core                    import    Units 
+from RCAIDE.Reference.Core import    Units
 from RCAIDE.Library.Components.Wings          import Main_Wing
 from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender   
 from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.convert_sweep import convert_sweep 

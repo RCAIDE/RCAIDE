@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
-from RCAIDE.Framework.Core import  Data 
+from RCAIDE.Reference.Core import  Data
 
 # package imports 
 from scipy.interpolate                                           import RegularGridInterpolator

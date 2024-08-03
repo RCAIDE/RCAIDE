@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Reference.Core import Data
 from .hess_smith           import hess_smith
 from .thwaites_method      import thwaites_method 
 from .heads_method         import heads_method 

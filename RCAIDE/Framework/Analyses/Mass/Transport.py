@@ -1,6 +1,5 @@
-from abc import ABC
 from dataclasses import dataclass
-from RCAIDE.Framework.Core import Process, ProcessStep
+from RCAIDE.Reference.Core import Process, ProcessStep
 from RCAIDE.Library.Methods.Mass import Correlation as Mass
 
 

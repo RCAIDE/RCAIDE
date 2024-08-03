@@ -7,7 +7,7 @@
 #  Imports
 # ---------------------------------------------------------------------------------------------------------------------- 
  
-from RCAIDE.Framework.Core import Data , Units
+from RCAIDE.Reference.Core import Data , Units
 from RCAIDE.Library.Attributes.Gases import Air
 from RCAIDE.Library.Attributes.Atmospheres import Atmosphere
 from RCAIDE.Library.Attributes.Planets import Earth 

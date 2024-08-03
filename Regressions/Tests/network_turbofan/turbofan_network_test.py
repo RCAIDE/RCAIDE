@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # package imports
 import RCAIDE
-from RCAIDE.Framework.Core import Units  
-from RCAIDE.Framework.Plots import *
+from RCAIDE.Reference.Core import Units
+from RCAIDE.Reference.Plots import *
 
 # python imports     
 import sys

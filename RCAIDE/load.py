@@ -9,7 +9,7 @@
 
 import json
 import pickle
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Reference.Core import Data
 import numpy as np
 from collections import OrderedDict
 

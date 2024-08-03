@@ -5,7 +5,7 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Reference.Core import Data
 
 #-------------------------------------------------------------------------------
 # Solid Data Class

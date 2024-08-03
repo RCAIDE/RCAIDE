@@ -7,7 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Reference.Core import Data
 from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender  
 from . import compressible_turbulent_flat_plate
 

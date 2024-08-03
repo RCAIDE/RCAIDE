@@ -6,8 +6,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Container as ContainerBase
-from RCAIDE.Framework.Core import Data
+from RCAIDE.Reference.Core import Container as ContainerBase
+from RCAIDE.Reference.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Analysis

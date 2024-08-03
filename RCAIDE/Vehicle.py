@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 from RCAIDE                    import Framework
-from RCAIDE.Framework.Core     import Data 
+from RCAIDE.Reference.Core import Data
 from RCAIDE.Library            import Components, Attributes 
 import numpy as np
 

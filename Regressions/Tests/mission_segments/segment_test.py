@@ -9,8 +9,8 @@
 # ----------------------------------------------------------------------
 # package imports
 import RCAIDE
-from RCAIDE.Framework.Core import Units ,  Data
-from RCAIDE.Framework.Plots import *
+from RCAIDE.Reference.Core import Units ,  Data
+from RCAIDE.Reference.Plots import *
 
 # python imports 
 import numpy as np

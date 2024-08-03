@@ -21,7 +21,7 @@ import numpy as np
 @dataclass
 class Fuselage(Component):
 
-    differential_pressure: float = field(init=True, default=0.0)
+    differential_pressure: float = field(default=0.0)
     fineness: ComponentRatios = ComponentRatios()
 
     def __post_init__(self):

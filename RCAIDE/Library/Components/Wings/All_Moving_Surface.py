@@ -7,8 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports     
-from RCAIDE.Library.Components     import Component 
-from RCAIDE.Framework.Core         import DataOrdered 
+from RCAIDE.Library.Components     import Component
 import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 

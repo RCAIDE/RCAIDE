@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports 
 from RCAIDE.Library.Components import Component 
-from RCAIDE.Framework.Core     import Data, Container 
+from RCAIDE.Reference.Core import Data, Container
  
 # ----------------------------------------------------------------------------------------------------------------------
 # Boom 

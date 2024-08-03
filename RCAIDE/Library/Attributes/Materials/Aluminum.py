@@ -9,8 +9,8 @@
 # Imports
 #-------------------------------------------------------------------------------
 
-from dataclasses import dataclass, field
-from RCAIDE.Framework.Core import Units
+from dataclasses import dataclass
+from RCAIDE.Reference.Core import Units
 
 #-------------------------------------------------------------------------------
 # Aluminum for WavyChannel for battery cooling

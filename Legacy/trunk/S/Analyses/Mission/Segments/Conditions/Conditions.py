@@ -153,7 +153,7 @@ class expanded_array(Data):
         None   
     """ 
 
-    _size = 1  
+    _size = 1
         
     def __init__(self, cols, adjustment):
         """ Initialization that sets expansion later

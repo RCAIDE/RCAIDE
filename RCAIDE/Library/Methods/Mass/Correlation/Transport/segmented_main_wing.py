@@ -8,9 +8,7 @@
 #  Imports
 # ---------------------------------------------------------------------- 
 
-from RCAIDE.Framework.Core import Units
-
-from collections import deque
+from RCAIDE.Reference.Core import Units
 
 import numpy as np
 

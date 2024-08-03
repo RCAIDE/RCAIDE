@@ -6,8 +6,7 @@
 #  Imports
 #-------------------------------------------------------------------------------
 
-from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Components import Fuselage
+from RCAIDE.Reference.Core import Units
 
 import numpy as np
 

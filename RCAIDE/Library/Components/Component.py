@@ -30,48 +30,48 @@ class ComponentRatios:
 @dataclass
 class ComponentDimensions:
 
-    ordinal_direction   : bool  = field(init=True, default=False)
+    ordinal_direction   : bool  = field(default=False)
 
-    reference           : float = field(init=True, default=0.0)
-    total               : float = field(init=True, default=0.0)
-    maximum             : float = field(init=True, default=0.0)
-    effective           : float = field(init=True, default=0.0)
+    reference           : float = field(default=0.0)
+    total               : float = field(default=0.0)
+    maximum             : float = field(default=0.0)
+    effective           : float = field(default=0.0)
 
-    projected           : float = field(init=True, default=0.0)
-    front_projected     : float = field(init=True, default=0.0)
-    top_projected       : float = field(init=True, default=0.0)
-    side_projected      : float = field(init=True, default=0.0)
+    projected           : float = field(default=0.0)
+    front_projected     : float = field(default=0.0)
+    top_projected       : float = field(default=0.0)
+    side_projected      : float = field(default=0.0)
 
 
 @dataclass
 class ComponentAreas:
 
-    reference           : float = field(init=True, default=0.0)
-    total               : float = field(init=True, default=0.0)
-    maximum             : float = field(init=True, default=0.0)
-    effective           : float = field(init=True, default=0.0)
+    reference           : float = field(default=0.0)
+    total               : float = field(default=0.0)
+    maximum             : float = field(default=0.0)
+    effective           : float = field(default=0.0)
 
-    inflow              : float = field(init=True, default=0.0)
-    outflow             : float = field(init=True, default=0.0)
-    exit                : float = field(init=True, default=0.0)
+    inflow              : float = field(default=0.0)
+    outflow             : float = field(default=0.0)
+    exit                : float = field(default=0.0)
 
-    projected           : float = field(init=True, default=0.0)
-    front_projected     : float = field(init=True, default=0.0)
-    top_projected       : float = field(init=True, default=0.0)
-    side_projected      : float = field(init=True, default=0.0)
+    projected           : float = field(default=0.0)
+    front_projected     : float = field(default=0.0)
+    top_projected       : float = field(default=0.0)
+    side_projected      : float = field(default=0.0)
 
-    wetted              : float = field(init=True, default=0.0)
-    exposed             : float = field(init=True, default=0.0)
+    wetted              : float = field(default=0.0)
+    exposed             : float = field(default=0.0)
 
 
 @dataclass
 class MassProperties:
 
-    mass                : float             = field(init=True, default=0.0)
-    volume              : float             = field(init=True, default=0.0)
-    density             : float             = field(init=True, default=0.0)
-    center_of_gravity   : np.ndarray        = field(init=True, default_factory=lambda: np.zeros(3))
-    moments_of_inertia  : np.ndarray        = field(init=True, default_factory=lambda: np.zeros((3, 3)))
+    mass                : float             = field(default=0.0)
+    volume              : float             = field(default=0.0)
+    density             : float             = field(default=0.0)
+    center_of_gravity   : np.ndarray        = field(default_factory=lambda: np.zeros(3))
+    moments_of_inertia  : np.ndarray        = field(default_factory=lambda: np.zeros((3, 3)))
 
     def __post_init__(self):
         if not np.any(self.density):
@@ -85,9 +85,9 @@ class MassProperties:
 @dataclass
 class MaterialProperties:
 
-    tensile_stress_carrier    : dataclass  = field(init=True, default_factory=dataclass)
-    torsional_stress_carrier  : dataclass  = field(init=True, default_factory=dataclass)
-    shear_stress_carrier      : dataclass  = field(init=True, default_factory=dataclass)
+    tensile_stress_carrier    : dataclass  = field(default_factory=dataclass)
+    torsional_stress_carrier  : dataclass  = field(default_factory=dataclass)
+    shear_stress_carrier      : dataclass  = field(default_factory=dataclass)
 
 
 ComponentType = TypeVar("ComponentType", bound="Component")
@@ -100,20 +100,20 @@ class Component:
     #-------------------------------------------------IDENTIFIERS-------------------------------------------------------
 
     name                : str                   = field(init=True)
-    segments            : list[SegmentType]     = field(init=True, default_factory=list)
-    origin              : np.ndarray            = field(init=True, default_factory=lambda: np.zeros(3))
+    segments            : list[SegmentType]     = field(default_factory=list)
+    origin              : np.ndarray            = field(default_factory=lambda: np.zeros(3))
 
     #----------------------------------------------------AREAS----------------------------------------------------------
-    areas               : ComponentAreas        = field(init=True, default_factory=ComponentAreas)
+    areas               : ComponentAreas        = field(default_factory=ComponentAreas)
 
     #--------------------------------------------------DIMENSIONS-------------------------------------------------------
-    lengths             : ComponentDimensions   = field(init=True, default_factory=ComponentDimensions)
-    widths              : ComponentDimensions   = field(init=True, default_factory=ComponentDimensions)
-    heights             : ComponentDimensions   = field(init=True, default_factory=ComponentDimensions)
+    lengths             : ComponentDimensions   = field(default_factory=ComponentDimensions)
+    widths              : ComponentDimensions   = field(default_factory=ComponentDimensions)
+    heights             : ComponentDimensions   = field(default_factory=ComponentDimensions)
 
     #-----------------------------------------------MASS & MATERIALS----------------------------------------------------
-    mass_properties     : MassProperties        = field(init=True, default_factory=MassProperties)
-    material_properties : MaterialProperties    = field(init=True, default_factory=MaterialProperties)
+    mass_properties     : MassProperties        = field(default_factory=MassProperties)
+    material_properties : MaterialProperties    = field(default_factory=MaterialProperties)
 
     def sum_mass(self):
         self.mass_properties.mass = 0.
@@ -192,4 +192,4 @@ class Component:
 @dataclass
 class ComponentSegment(Component):
 
-    segment_index : int = field(init=True, default=-1)
+    segment_index : int = field(default=-1)

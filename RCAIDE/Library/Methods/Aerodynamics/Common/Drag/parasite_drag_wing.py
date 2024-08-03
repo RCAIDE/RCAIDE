@@ -6,8 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
-from RCAIDE.Framework.Core import Data  
-from RCAIDE.Library.Methods.Geometry.Planform.wing_segmented_planform import segment_properties
+from RCAIDE.Reference.Core import Data
 
 # legacy imports 
 from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Helper_Functions import compressible_mixed_flat_plate

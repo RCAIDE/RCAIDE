@@ -9,7 +9,7 @@
 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Framework.Core                                                          import Data , Units 
+from RCAIDE.Reference.Core import Data , Units
 from RCAIDE.Library.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis      import airfoil_analysis
 from RCAIDE.Library.Methods.Geometry.Airfoil.import_airfoil_polars                  import import_airfoil_polars 
 from RCAIDE.Library.Methods.Geometry.Airfoil.compute_naca_4series                   import compute_naca_4series  

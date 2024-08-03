@@ -7,7 +7,7 @@
 
 # RCAIDE imports  
 import RCAIDE 
-from RCAIDE.Framework.Core import  Data 
+from RCAIDE.Reference.Core import  Data
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method   import VLM
 from RCAIDE.Library.Methods.Utilities                            import Cubic_Spline_Blender 
 

@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Framework.Core                             import Data, Units
+from RCAIDE.Reference.Core import Data, Units
 from RCAIDE.Framework.Analyses                         import Process 
 from RCAIDE.Library.Methods.Aerodynamics               import Common
 from .Aerodynamics                                     import Aerodynamics 

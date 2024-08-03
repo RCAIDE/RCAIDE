@@ -9,7 +9,7 @@
 
 # RCAIDE Imports
 import RCAIDE
-from RCAIDE.Framework.Missions.Common                                 import Conditions
+from RCAIDE.Reference.Missions import Conditions
 from RCAIDE.Library.Methods.Propulsors.Converters.Ram                import compute_ram_performance
 from RCAIDE.Library.Methods.Propulsors.Converters.Combustor          import compute_combustor_performance
 from RCAIDE.Library.Methods.Propulsors.Converters.Compressor         import compute_compressor_performance 

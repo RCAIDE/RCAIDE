@@ -7,7 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports    
-from RCAIDE.Framework.Core              import Data, Container  
+from RCAIDE.Reference.Core import Data, Container
 from .Nacelle import Nacelle
   
 # ---------------------------------------------------------------------------------------------------------------------- 

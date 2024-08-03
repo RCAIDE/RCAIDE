@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # package imports
 import RCAIDE
-from RCAIDE.Framework.Core import Units      
+from RCAIDE.Reference.Core import Units
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor   import design_turbofan
 from RCAIDE.Library.Methods.Geometry.Planform               import wing_planform, wing_segmented_planform
 
