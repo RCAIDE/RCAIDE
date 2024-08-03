@@ -212,7 +212,7 @@ def design_turbofan(turbofan):
     turbofan_conditions.total_pressure_reference                 = lpc_conditions.outputs.stagnation_pressure    
 
     # Step 25: Size the core of the turbofan  
-    size_core(turbofan,turbofan_conditions, freestream)
+    size_core(turbofan,turbofan_conditions,freestream)
     
     # Step 26: Static Sea Level Thrust 
     compute_static_sea_level_performance(turbofan)

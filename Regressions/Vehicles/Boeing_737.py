@@ -486,7 +486,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------- 
     #  Turbofan Network
     #-------------------------------------------------------------------------------------------------------------------------   
-    net                                         = RCAIDE.Framework.Networks.Turbofan_Engine_Network() 
+    net                                         = RCAIDE.Framework.Networks.Fuel() 
     
     #------------------------------------------------------------------------------------------------------------------------- 
     # Fuel Distrubition Line 
@@ -615,7 +615,7 @@ def vehicle_setup():
     #  Energy Source: Fuel Tank
     #------------------------------------------------------------------------------------------------------------------------- 
     # fuel tank
-    fuel_tank                                   = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()
+    fuel_tank                                   = RCAIDE.Library.Components.Energy.Sources.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = wing.origin 
     
     # append fuel 
@@ -683,8 +683,8 @@ def configs_setup(vehicle):
     config.tag = 'takeoff'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  3470. * Units.rpm
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  3470. * Units.rpm
+    config.networks.fuel.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  3470. * Units.rpm
+    config.networks.fuel.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  3470. * Units.rpm
     config.landing_gear.gear_condition                          = 'up'       
     config.V2_VS_ratio = 1.21
     configs.append(config)
@@ -698,8 +698,8 @@ def configs_setup(vehicle):
     config.tag = 'cutback'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 20. * Units.deg
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2780. * Units.rpm
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2780. * Units.rpm
+    config.networks.fuel.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2780. * Units.rpm
+    config.networks.fuel.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2780. * Units.rpm
     config.landing_gear.gear_condition                          = 'up'       
     configs.append(config)   
     
@@ -713,8 +713,8 @@ def configs_setup(vehicle):
     config.tag = 'landing'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2030. * Units.rpm
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2030. * Units.rpm
+    config.networks.fuel.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  2030. * Units.rpm
+    config.networks.fuel.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  2030. * Units.rpm
     config.landing_gear.gear_condition                          = 'down'   
     config.Vref_VS_ratio = 1.23
     configs.append(config)   
@@ -727,8 +727,8 @@ def configs_setup(vehicle):
     config.tag = 'short_field_takeoff'    
     config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  3470. * Units.rpm
-    config.networks.turbofan_engine.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  3470. * Units.rpm
+    config.networks.fuel.fuel_lines['fuel_line'].propulsors['starboard_propulsor'].fan.angular_velocity =  3470. * Units.rpm
+    config.networks.fuel.fuel_lines['fuel_line'].propulsors['port_propulsor'].fan.angular_velocity      =  3470. * Units.rpm
     config.landing_gear.gear_condition                          = 'down'   
     config.V2_VS_ratio = 1.21 
     configs.append(config)    

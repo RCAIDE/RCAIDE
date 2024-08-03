@@ -64,8 +64,8 @@ def design_motor(motor):
         if sol.success == False:
             assert('\n Slack contraints failed')  
     
-    motor.speed_constant   = sol[0]
-    motor.resistance       = sol[1]    
+    motor.speed_constant   = sol.x[0]
+    motor.resistance       = sol.x[1]    
     
     return   
   

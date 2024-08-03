@@ -67,13 +67,13 @@ def modify_blade_geometry(nexus):
     # Pull out the vehicles
 
     vehicle_hover     = nexus.vehicle_configurations.hover
-    rotor_hover       = vehicle_hover.networks.all_electric.busses.bus.propulsors.propulsor.rotor
+    rotor_hover       = vehicle_hover.networks.electric.busses.bus.propulsors.propulsor.rotor
     vehicle_oei       = nexus.vehicle_configurations.oei
-    rotor_oei         = vehicle_oei.networks.all_electric.busses.bus.propulsors.propulsor.rotor    
+    rotor_oei         = vehicle_oei.networks.electric.busses.bus.propulsors.propulsor.rotor    
     
     if nexus.prop_rotor_flag:  
         vehicle_cruise    = nexus.vehicle_configurations.cruise 
-        rotor_cruise      = vehicle_cruise.networks.all_electric.busses.bus.propulsors.propulsor.rotor 
+        rotor_cruise      = vehicle_cruise.networks.electric.busses.bus.propulsors.propulsor.rotor 
         
     airfoils = rotor_hover.Airfoils      
     a_loc    = rotor_hover.airfoil_polar_stations   
@@ -165,7 +165,7 @@ def updated_blade_geometry(chi,c_r,p,q,c_t):
 def run_rotor_OEI(nexus):
     
     # Unpack  
-    bus                   = nexus.vehicle_configurations.oei.networks.all_electric.busses.bus 
+    bus                   = nexus.vehicle_configurations.oei.networks.electric.busses.bus 
     propulsor             = bus.propulsors.propulsor 
     rotor                 = propulsor.rotor
     
@@ -215,7 +215,7 @@ def run_rotor_OEI(nexus):
 def run_rotor_hover(nexus):
      
     # Unpack    
-    bus                   = nexus.vehicle_configurations.hover.networks.all_electric.busses.bus 
+    bus                   = nexus.vehicle_configurations.hover.networks.electric.busses.bus 
     propulsor             = bus.propulsors.propulsor
     rotor                 = propulsor.rotor
     
@@ -294,7 +294,7 @@ def run_rotor_hover(nexus):
 def run_rotor_cruise(nexus):
  
     if nexus.prop_rotor_flag:     
-        bus    = nexus.vehicle_configurations.cruise.networks.all_electric.busses.bus 
+        bus    = nexus.vehicle_configurations.cruise.networks.electric.busses.bus 
         propulsor  = bus.propulsors.propulsor
         rotor      = propulsor.rotor 
         alpha  = rotor.optimization_parameters.multiobjective_aeroacoustic_weight       
@@ -390,8 +390,8 @@ def run_rotor_cruise(nexus):
 def post_process(nexus):
      
     summary                         = nexus.summary 
-    rotor                           = nexus.vehicle_configurations.hover.networks.all_electric.busses.bus.propulsors.propulsor.rotor  
-    rotor_oei                       = nexus.vehicle_configurations.oei.networks.all_electric.busses.bus.propulsors.propulsor.rotor
+    rotor                           = nexus.vehicle_configurations.hover.networks.electric.busses.bus.propulsors.propulsor.rotor  
+    rotor_oei                       = nexus.vehicle_configurations.oei.networks.electric.busses.bus.propulsors.propulsor.rotor
     alpha                           = rotor.optimization_parameters.multiobjective_aeroacoustic_weight
     beta                            = rotor.optimization_parameters.multiobjective_performance_weight
     gamma                           = rotor.optimization_parameters.multiobjective_acoustic_weight
@@ -453,7 +453,7 @@ def post_process(nexus):
     
 
     if nexus.prop_rotor_flag:  
-        rotor_cru  = nexus.vehicle_configurations.cruise.networks.all_electric.busses.bus.propulsors.propulsor.rotor         
+        rotor_cru  = nexus.vehicle_configurations.cruise.networks.electric.busses.bus.propulsors.propulsor.rotor         
         summary.max_sectional_cl_cruise = nexus.results.cruise.max_sectional_cl   
         
     # -------------------------------------------------------

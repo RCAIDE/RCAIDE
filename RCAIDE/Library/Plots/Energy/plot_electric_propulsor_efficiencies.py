@@ -63,7 +63,7 @@ def plot_electric_propulsor_efficiencies(results,
     axis_2 = plt.subplot(2,2,2) 
     axis_3 = plt.subplot(2,2,3)   
     pi     = 0 
-    for network in results.segments[0].analyses.energy.networks:  
+    for network in results.segments[0].analyses.energy.vehicle.networks:  
         if 'busses' in network: 
             for bus in network.busses:    
                 for p_i, propulsor in enumerate(bus.propulsors): 

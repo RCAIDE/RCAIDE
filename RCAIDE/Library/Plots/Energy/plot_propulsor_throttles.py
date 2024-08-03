@@ -68,7 +68,7 @@ def plot_propulsor_throttles(results,
         axis_1 = plt.subplot(1,1,1)
         axis_1.set_ylabel(r'Throttle')
         set_axes(axis_1)               
-        for network in results.segments[i].analyses.energy.networks: 
+        for network in results.segments[i].analyses.energy.vehicle.networks: 
             busses      = network.busses
             fuel_lines  = network.fuel_lines 
             for bus in busses:

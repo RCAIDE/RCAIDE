@@ -10,8 +10,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # RCAIDE imports  
-from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Methods.Propulsors.Modulators.Electronic_Speed_Controller.compute_esc_performance import compute_esc_performance
+from RCAIDE.Library.Components import Component 
 from RCAIDE.Library.Methods.Propulsors.Modulators.Electronic_Speed_Controller.append_esc_conditions   import append_esc_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------

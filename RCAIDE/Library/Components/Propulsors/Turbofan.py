@@ -57,8 +57,14 @@ class Turbofan(Propulsor):
         self.mass_flow_rate_design                    = 0.0
         self.OpenVSP_flow_through                     = False
     
-    def append_operating_conditions(self,segment,fuel_line):
-        append_turbofan_conditions(self,segment,fuel_line)
+    def append_operating_conditions(self,segment,fuel_line,add_additional_network_equation = False):
+        append_turbofan_conditions(self,segment,fuel_line,add_additional_network_equation)
+        return
+
+    def unpack_propulsor_unknown(self,segment,fuel_line,add_additional_network_equation = False):   
+        return 
+
+    def pack_network_residuals(self,segment,fuel_line,add_additional_network_equation = False): 
         return
     
     def compute_performance(self,state,fuel_line,center_of_gravity = [[0, 0, 0]]):

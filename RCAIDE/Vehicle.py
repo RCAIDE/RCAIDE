@@ -31,7 +31,7 @@ class Vehicle(Data):
             None
         """    
         self.tag                    = 'vehicle'
-        self.networks               = Framework.Networks.Conventional_Network.Container()
+        self.networks               = Framework.Networks.Network.Container()
         self.fuselages              = Components.Fuselages.Fuselage.Container()
         self.wings                  = Components.Wings.Wing.Container()
         self.nacelles               = Components.Nacelles.Nacelle.Container()
@@ -87,7 +87,7 @@ class Vehicle(Data):
         }
          
         self._energy_network_root_map= {
-            Framework.Networks.Conventional_Network                 : self['networks']         , 
+            Framework.Networks.Network                 : self['networks']         ,
             }    
         
         self.append_component(Vehicle_Mass_Properties())

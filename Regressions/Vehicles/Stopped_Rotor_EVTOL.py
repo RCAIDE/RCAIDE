@@ -9,8 +9,7 @@
 #   Imports
 # ---------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Framework.Core import Units, Data   
-from RCAIDE.Framework.Networks.All_Electric_Network                            import All_Electric_Network 
+from RCAIDE.Framework.Core import Units, Data    
 from RCAIDE.Library.Methods.Performance.estimate_cruise_drag                   import estimate_cruise_drag
 from RCAIDE.Library.Methods.Geometry.Planform                                  import segment_properties,wing_segmented_planform    
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                      import initialize_from_circuit_configuration 
@@ -386,7 +385,7 @@ def vehicle_setup() :
     # ########################################################  Energy Network  ######################################################### 
     #------------------------------------------------------------------------------------------------------------------------------------
     # define network
-    network                                                = All_Electric_Network()   
+    network                                                = RCAIDE.Framework.Networks.Electric()   
     
     #==================================================================================================================================== 
     # Forward Bus
@@ -397,7 +396,7 @@ def vehicle_setup() :
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus Battery
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    bat                                                    = RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_NMC() 
+    bat                                                    = RCAIDE.Library.Components.Energy.Sources.Batteries.Lithium_Ion_NMC() 
     bat.tag                                                = 'cruise_bus_battery'
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 60
@@ -457,7 +456,7 @@ def vehicle_setup() :
                                                              rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
     propeller.append_airfoil(airfoil)                     
     propeller.airfoil_polar_stations                       = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]  
-    propeller                                              = design_propeller(propeller)   
+    design_propeller(propeller)   
     cruise_propulsor_1.rotor                               = propeller    
                 
     # Propeller Motor              
@@ -474,7 +473,7 @@ def vehicle_setup() :
     propeller_motor.rotor_radius                           = propeller.tip_radius
     propeller_motor.design_torque                          = propeller.cruise.design_torque
     propeller_motor.angular_velocity                       = propeller.cruise.design_angular_velocity/propeller_motor.gear_ratio  
-    propeller_motor                                        = design_motor(propeller_motor)  
+    design_motor(propeller_motor)  
     propeller_motor.mass_properties.mass                   = nasa_motor(propeller_motor.design_torque)  
     cruise_propulsor_1.motor                               = propeller_motor 
       
@@ -591,7 +590,7 @@ def vehicle_setup() :
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus Battery
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    bat                                                    = RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_NMC() 
+    bat                                                    = RCAIDE.Library.Components.Energy.Sources.Batteries.Lithium_Ion_NMC() 
     bat.tag                                                = 'lift_bus_battery'
     bat.pack.electrical_configuration.series               = 140   
     bat.pack.electrical_configuration.parallel             = 20
@@ -648,7 +647,7 @@ def vehicle_setup() :
                                                               rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
     lift_rotor.append_airfoil(airfoil)                         
     lift_rotor.airfoil_polar_stations                      = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]  
-    lift_rotor                                             = design_lift_rotor(lift_rotor) 
+    design_lift_rotor(lift_rotor) 
     lift_propulsor_1.rotor                                 = lift_rotor      
     
     #------------------------------------------------------------------------------------------------------------------------------------               
@@ -666,7 +665,7 @@ def vehicle_setup() :
     lift_rotor_motor.rotor_radius                          = lift_rotor.tip_radius
     lift_rotor_motor.design_torque                         = lift_rotor.hover.design_torque
     lift_rotor_motor.angular_velocity                      = lift_rotor.hover.design_angular_velocity/lift_rotor_motor.gear_ratio  
-    lift_rotor_motor                                       = design_motor(lift_rotor_motor)
+    design_motor(lift_rotor_motor)
     lift_rotor_motor.mass_properties.mass                  = nasa_motor(lift_rotor_motor.design_torque)     
     lift_propulsor_1.motor                                 = lift_rotor_motor
     
@@ -825,7 +824,7 @@ def configs_setup(vehicle):
 
     forward_config                                                    = RCAIDE.Library.Components.Configs.Config(vehicle)
     forward_config.tag                                                = 'forward_flight'  
-    forward_config.networks.all_electric.busses['lift_bus'].active    = False  
+    forward_config.networks.electric.busses['lift_bus'].active    = False  
     configs.append(forward_config)  
 
     transition_config                                                 = RCAIDE.Library.Components.Configs.Config(vehicle)
@@ -835,7 +834,7 @@ def configs_setup(vehicle):
 
     vertical_config                                                   = RCAIDE.Library.Components.Configs.Config(vehicle)
     vertical_config.tag                                               = 'vertical_flight'  
-    vertical_config.networks.all_electric.busses['cruise_bus'].active = False  
+    vertical_config.networks.electric.busses['cruise_bus'].active = False  
     configs.append(vertical_config)   
      
     return configs

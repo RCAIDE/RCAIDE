@@ -9,6 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+from .compute_static_sea_level_performance                                    import compute_static_sea_level_performance
 from Legacy.trunk.S.Methods.Propulsion.fm_id                                  import fm_id
 from Legacy.trunk.S.Methods.Propulsion.fm_solver                              import fm_solver
 from Legacy.trunk.S.Methods.Propulsion.rayleigh                               import rayleigh

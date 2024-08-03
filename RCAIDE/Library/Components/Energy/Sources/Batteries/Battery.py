@@ -12,6 +12,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core        import Data
 from RCAIDE.Library.Components    import Component   
+from RCAIDE.Library.Methods.Energy.Sources.Battery.Common.append_battery_conditions import append_battery_conditions
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery
@@ -53,3 +54,8 @@ class Battery(Component):
         self.thermal_management_system                         = Data()    
         self.thermal_management_system.heat_acquisition_system = RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition()
         self.thermal_management_system.heat_exchanger_system   = RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Exchanger_Systems.No_Heat_Exchanger()
+        
+         
+    def append_operating_conditions(self,segment,bus):  
+        append_battery_conditions(self,segment,bus)  
+        return                                 

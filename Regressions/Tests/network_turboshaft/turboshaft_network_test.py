@@ -118,7 +118,7 @@ def turboshaft_engine_Boeing_502_14(altitude,mach):
      
     # connect turboshaft with network
     fuel_line                                      = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()    
-    fuel_tank                                      = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()  
+    fuel_tank                                      = RCAIDE.Library.Components.Energy.Sources.Fuel_Tanks.Fuel_Tank()  
     fuel                                           = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()    
     fuel_tank.fuel                                 = fuel  
     fuel_line.fuel_tanks.append(fuel_tank)  

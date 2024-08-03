@@ -82,7 +82,7 @@ def ICE_CS(vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # uel Tank and Fuel
     #------------------------------------------------------------------------------------------------------------------------------------   
-    fuel_tank                                   = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()
+    fuel_tank                                   = RCAIDE.Library.Components.Energy.Sources.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = vehicle.wings.main_wing.origin  
     fuel                                        = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline() 
     fuel.mass_properties.mass                   = 319 *Units.lbs 
@@ -128,7 +128,7 @@ def ICE_CS(vehicle):
                                            '../../Vehicles/Airfoils/Polars/NACA_4412_polar_Re_1000000.txt' ] 
     prop.append_airfoil(airfoil)  
     prop.airfoil_polar_stations            = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    prop                                   = design_propeller(prop)   
+    design_propeller(prop)   
     propulsor.propeller                    = prop
     
     fuel_line.propulsors.append(propulsor)
@@ -252,7 +252,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Energy
     energy= RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.networks = vehicle.networks 
+    energy.vehicle  = vehicle 
     analyses.append(energy)
 
     # ------------------------------------------------------------------

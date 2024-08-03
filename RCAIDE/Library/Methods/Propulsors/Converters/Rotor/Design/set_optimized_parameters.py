@@ -25,7 +25,7 @@ def set_optimized_parameters(rotor,optimization_problem):
              None
     """    
     results                         = optimization_problem.results
-    optimal_hover_rotor_bus         = optimization_problem.vehicle_configurations.hover.networks.all_electric.busses.bus
+    optimal_hover_rotor_bus         = optimization_problem.vehicle_configurations.hover.networks.electric.busses.bus
     optimal_hover_rotor_propulsor   = optimal_hover_rotor_bus.propulsors.propulsor 
     optimal_hover_rotor             = optimal_hover_rotor_propulsor.rotor      
     rotor.chord_distribution        = optimal_hover_rotor.chord_distribution

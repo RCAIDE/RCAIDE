@@ -12,128 +12,115 @@ from RCAIDE.Framework.Core      import Units
 
 # Python package imports
 import numpy as np
-
+ 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_thrust
 # ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor
-def compute_thrust(turbofan,conditions,throttle = 1.0):
-    """Computes thrust and other properties as below.
-
+def compute_thrust(turbofan,turbofan_conditions,freestream):
+    """Computes thrust and other properties of the turbofan listed below: 
+    turbofan.  
+      .outputs.thrust                           (numpy.ndarray): thrust                     [N] 
+      .outputs.thrust_specific_fuel_consumption (numpy.ndarray): TSFC                       [N/N-s] 
+      .outputs.non_dimensional_thrust           (numpy.ndarray): non-dim thurst             [unitless] 
+      .outputs.core_mass_flow_rate              (numpy.ndarray): core nozzle mass flow rate [kg/s] 
+      .outputs.fuel_flow_rate                   (numpy.ndarray): fuel flow rate             [kg/s] 
+      .outputs.power                            (numpy.ndarray): power                      [W] 
+      
     Assumptions:
-    Perfect gas
+        Perfect gas
 
     Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+        Stanford AA 283 Course Notes: https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
 
-    Inputs:
-    conditions.freestream.
-      isentropic_expansion_factor        [-] (gamma)
-      specific_heat_at_constant_pressure [J/(kg K)]
-      velocity                           [m/s]
-      speed_of_sound                     [m/s]
-      mach_number                        [-]
-      pressure                           [Pa]
-      gravity                            [m/s^2]
-    conditions.throttle                  [-] (.1 is 10%)
-    turbofan.inputs.
-      fuel_to_air_ratio                  [-]
-      total_temperature_reference        [K]
-      total_pressure_reference           [Pa]
-      core_nozzle.
-        velocity                         [m/s]
-        static_pressure                  [Pa]
-        area_ratio                       [-]
-      fan_nozzle.
-        velocity                         [m/s]
-        static_pressure                  [Pa]
-        area_ratio                       [-]
-      number_of_engines                  [-]
-      bypass_ratio                       [-]
-      flow_through_core                  [-] percentage of total flow (.1 is 10%)
-      flow_through_fan                   [-] percentage of total flow (.1 is 10%)
 
-    Outputs:
-    turbofan.outputs.
-      thrust                             [N]
-      thrust_specific_fuel_consumption   [N/N-s]
-      non_dimensional_thrust             [-]
-      core_mass_flow_rate                [kg/s]
-      fuel_flow_rate                     [kg/s]
-      power                              [W]
-      Specific Impulse                   [s]
+    Args: 
+        conditions. 
+           freestream.isentropic_expansion_factor                (float): isentropic expansion factor   [unitless]  
+           freestream.specific_heat_at_constant_pressure         (float): speific heat                  [J/(kg K)] 
+           freestream.velocity                           (numpy.ndarray): freestream velocity           [m/s] 
+           freestream.speed_of_sound                     (numpy.ndarray): freestream speed_of_sound     [m/s] 
+           freestream.mach_number                        (numpy.ndarray): freestream mach_number        [unitless] 
+           freestream.pressure                           (numpy.ndarray): freestream pressure           [Pa] 
+           freestream.gravity                            (numpy.ndarray): freestream gravity            [m/s^2] 
+           propulsion.throttle                           (numpy.ndarray): throttle                      [unitless] 
+        turbofan 
+           .inputs.fuel_to_air_ratio                          (float): fuel_to_air_ratio                    [unitless] 
+           .inputs.total_temperature_reference                (float): total_temperature_reference          [K] 
+           .inputs.total_pressure_reference                   (float): total_pressure_reference             [Pa]    
+           .core_nozzle.velocity                      (numpy.ndarray): turbofan core nozzle velocity        [m/s] 
+           .core_nozzle.static_pressure               (numpy.ndarray): turbofan core nozzle static pressure [Pa] 
+           .core_nozzle.area_ratio                            (float): turbofan core nozzle area ratio      [unitless] 
+           .fan_nozzle.velocity                       (numpy.ndarray): turbofan fan nozzle velocity         [m/s] 
+           .fan_nozzle.static_pressure                (numpy.ndarray): turbofan fan nozzle static pressure  [Pa] 
+           .fan_nozzle.area_ratio                             (float): turbofan fan nozzle area ratio       [unitless]   
+           .reference_temperature                             (float): reference_temperature                [K] 
+           .reference_pressure                                (float): reference_pressure                   [Pa] 
+           .compressor_nondimensional_massflow                (float): non-dim mass flow rate               [unitless]
+      
+    Returns:
+        None
+         
+    """      
+    # Unpack flight conditions 
+    gamma                       = freestream.isentropic_expansion_factor 
+    u0                          = freestream.velocity
+    a0                          = freestream.speed_of_sound
+    M0                          = freestream.mach_number
+    p0                          = freestream.pressure  
+    g                           = freestream.gravity        
 
-    Properties Used:
-    turbofan.
-      reference_temperature              [K]
-      reference_pressure                 [Pa]
-      compressor_nondimensional_massflow [-]
-      SFC_adjustment                     [-]
-    """           
-    #unpack the values
-
-    #unpacking from conditions
-    gamma                       = conditions.freestream.isentropic_expansion_factor 
-    u0                          = conditions.freestream.velocity
-    a0                          = conditions.freestream.speed_of_sound
-    M0                          = conditions.freestream.mach_number
-    p0                          = conditions.freestream.pressure  
-    g                           = conditions.freestream.gravity        
-
-    #unpacking from inputs
-    f                           = turbofan.inputs.fuel_to_air_ratio
-    total_temperature_reference = turbofan.inputs.total_temperature_reference
-    total_pressure_reference    = turbofan.inputs.total_pressure_reference
-    core_nozzle                 = turbofan.inputs.core_nozzle
-    fan_nozzle                  = turbofan.inputs.fan_nozzle 
-    fan_area_ratio              = turbofan.inputs.fan_nozzle.area_ratio
-    core_area_ratio             = turbofan.inputs.core_nozzle.area_ratio                   
-    bypass_ratio                = turbofan.inputs.bypass_ratio  
-    flow_through_core           = turbofan.inputs.flow_through_core #scaled constant to turn on core thrust computation
-    flow_through_fan            = turbofan.inputs.flow_through_fan #scaled constant to turn on fan thrust computation
-
-    #unpacking from turbofan
+    # Unpack turbofan operating conditions and properties 
     Tref                        = turbofan.reference_temperature
     Pref                        = turbofan.reference_pressure
     mdhc                        = turbofan.compressor_nondimensional_massflow
     SFC_adjustment              = turbofan.SFC_adjustment 
+    f                           = turbofan_conditions.fuel_to_air_ratio
+    total_temperature_reference = turbofan_conditions.total_temperature_reference
+    total_pressure_reference    = turbofan_conditions.total_pressure_reference 
+    flow_through_core           = turbofan_conditions.flow_through_core 
+    flow_through_fan            = turbofan_conditions.flow_through_fan  
+    V_fan_nozzle                = turbofan_conditions.fan_nozzle.velocity
+    fan_area_ratio              = turbofan_conditions.fan_nozzle.area_ratio
+    P_fan_nozzle                = turbofan_conditions.fan_nozzle.static_pressure
+    P_core_nozzle               = turbofan_conditions.core_nozzle.static_pressure
+    V_core_nozzle               = turbofan_conditions.core_nozzle.velocity
+    core_area_ratio             = turbofan_conditions.core_nozzle.area_ratio                   
+    bypass_ratio                = turbofan_conditions.bypass_ratio  
 
-    #computing the non dimensional thrust
-    core_thrust_nondimensional  = flow_through_core*(gamma*M0*M0*(core_nozzle.velocity/u0-1.) + core_area_ratio*(core_nozzle.static_pressure/p0-1.))
-    fan_thrust_nondimensional   = flow_through_fan*(gamma*M0*M0*(fan_nozzle.velocity/u0-1.) + fan_area_ratio*(fan_nozzle.static_pressure/p0-1.))
+    # Compute  non dimensional thrust
+    fan_thrust_nondim   = flow_through_fan*(gamma*M0*M0*(V_fan_nozzle/u0-1.) + fan_area_ratio*(P_fan_nozzle/p0-1.))
+    core_thrust_nondim  = flow_through_core*(gamma*M0*M0*(V_core_nozzle/u0-1.) + core_area_ratio*(P_core_nozzle/p0-1.))
 
-    Thrust_nd                   = core_thrust_nondimensional + fan_thrust_nondimensional
+    thrust_nondim       = core_thrust_nondim + fan_thrust_nondim
 
-    #Computing Specifc Thrust
-    Fsp              = 1./(gamma*M0)*Thrust_nd
+    # Computing Specifc Thrust
+    Fsp   = 1./(gamma*M0)*thrust_nondim
 
-    #Computing the specific impulse
-    Isp              = Fsp*a0*(1.+bypass_ratio)/(f*g)
+    # Compute specific impulse
+    Isp   = Fsp*a0*(1.+bypass_ratio)/(f*g)
 
-    #Computing the TSFC
-    TSFC             = f*g/(Fsp*a0*(1.+bypass_ratio))*(1.-SFC_adjustment) * Units.hour # 1/s is converted to 1/hr here
+    # Compute TSFC
+    TSFC  = f*g/(Fsp*a0*(1.+bypass_ratio))*(1.-SFC_adjustment) * Units.hour # 1/s is converted to 1/hr here
  
-    #computing the core mass flow
-    mdot_core        = mdhc*np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref)
+    # Compute core mass flow
+    mdot_core  = mdhc*np.sqrt(Tref/total_temperature_reference)*(total_pressure_reference/Pref)
 
-    #computing the dimensional thrust
-    FD2              = Fsp*a0*(1.+bypass_ratio)*mdot_core*throttle
+    # Compute dimensional thrust
+    FD2  = Fsp*a0*(1.+bypass_ratio)*mdot_core*turbofan_conditions.throttle
 
-    #fuel flow rate
-    a = np.array([0.])        
-    fuel_flow_rate   = np.fmax(FD2*TSFC/g,a)*1./Units.hour
+    # Compute power 
+    power   = FD2*u0    
 
-    #computing the power 
-    power            = FD2*u0
+    # Compute fuel flow rate 
+    fuel_flow_rate   = np.fmax(FD2*TSFC/g,np.array([0.]))*1./Units.hour
 
-    #pack outputs
-
-    turbofan.outputs.thrust                            = FD2 
-    turbofan.outputs.thrust_specific_fuel_consumption  = TSFC
-    turbofan.outputs.non_dimensional_thrust            = Fsp 
-    turbofan.outputs.core_mass_flow_rate               = mdot_core
-    turbofan.outputs.fuel_flow_rate                    = fuel_flow_rate    
-    turbofan.outputs.power                             = power  
-    turbofan.outputs.specific_impulse                  = Isp
+    # Pack turbofan outouts  
+    turbofan_conditions.thrust                            = FD2 
+    turbofan_conditions.thrust_specific_fuel_consumption  = TSFC
+    turbofan_conditions.non_dimensional_thrust            = Fsp  
+    turbofan_conditions.power                             = power  
+    turbofan_conditions.specific_impulse                  = Isp
+    turbofan_conditions.core_mass_flow_rate               = mdot_core
+    turbofan_conditions.fuel_flow_rate                    = fuel_flow_rate   
     
     return  

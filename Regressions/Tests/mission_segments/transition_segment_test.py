@@ -9,15 +9,8 @@
 #   Imports
 # ---------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Framework.Core import Units, Data   
-from RCAIDE.Framework.Networks.All_Electric_Network                            import All_Electric_Network 
-from RCAIDE.Library.Methods.Performance.estimate_cruise_drag                   import estimate_cruise_drag 
-from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                      import initialize_from_circuit_configuration 
-from RCAIDE.Library.Methods.Weights.Correlation_Buildups.Propulsion            import nasa_motor
-from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor                     import design_motor
-from RCAIDE.Library.Methods.Propulsors.Converters.Rotor                        import design_prop_rotor ,design_prop_rotor 
-from RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Electric            import compute_weight , converge_weight 
-from RCAIDE.Library.Plots                                                      import *       
+from RCAIDE.Framework.Core import Units, Data     
+from RCAIDE.Library.Plots  import *       
   
 # python imports     
 import numpy as np  
@@ -149,7 +142,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Energy
     energy          = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.networks = vehicle.networks 
+    energy.vehicle  = vehicle 
     analyses.append(energy)
 
     # ------------------------------------------------------------------

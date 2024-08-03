@@ -23,5 +23,6 @@ from .parasite_drag_nacelle                     import parasite_drag_nacelle
 from .spoiler_drag                              import spoiler_drag 
 from .wave_drag                                 import wave_drag 
 from .total_drag                                import total_drag 
+from .drag_divergence                           import drag_divergence
 from .supersonic_wave_drag_volume_raymer        import supersonic_wave_drag_volume_raymer
 from .supersonic_wave_drag_volume_sears_haack   import supersonic_wave_drag_volume_sears_haack

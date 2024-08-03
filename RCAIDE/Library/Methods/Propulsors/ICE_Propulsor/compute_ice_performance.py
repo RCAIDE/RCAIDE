@@ -18,49 +18,7 @@ import numpy as np
 # compute_ice_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-ICE_Propulsor
-def compute_ice_performance(fuel_line,state): 
-    ''' Computes the perfomrance of all internal combustion engine-propellers 
-    connected to a fuel tank
-    
-    Assumptions: 
-    N/A
-
-    Source:
-    N/A
-
-    Inputs:   
-    fuel_line            - data structure containing turbofans on distrubution network  [-]   
-    state                - operating data structure                                     [-] 
-                     
-    Outputs:                      
-    outputs              - ice_propeller operating outputs                              [-]
-    total_thrust         - thrust of internal combustion engine propellers              [N]
-    total_power          - power of internal combustion engine propellers               [W] 
-    
-    Properties Used: 
-    N.A.        
-    ''' 
-    total_power     = 0*state.ones_row(1) 
-    total_thrust    = 0*state.ones_row(3) 
-    conditions      = state.conditions
-    stored_results_flag  = False 
-    
-    for ice_propeller in fuel_line.propulsors:  
-        if ice_propeller.active == True:   
-            if fuel_line.identical_propulsors == False:
-                # run analysis  
-                total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_power)
-            else:             
-                if stored_results_flag == False: 
-                    # run analysis 
-                    total_thrust,total_power ,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_power)
-                else:
-                    # use old results 
-                    total_thrust,total_power  = reuse_stored_data(conditions,fuel_line,ice_propeller,stored_propulsor_tag,total_thrust,total_power)
-                
-    return total_thrust,total_power 
-    
-def compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_power):  
+def compute_ice_performance(ice_propeller,state,fuel_line,center_of_gravity= [[0.0, 0.0,0.0]]):  
     ''' Computes the perfomrance of one ice_propeller
     
     Assumptions: 
@@ -85,21 +43,23 @@ def compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_po
     Properties Used: 
     N.A.        
     '''  
-    ice_results             = conditions.energy[fuel_line.tag][ice_propeller.tag]
-    noise_results           = conditions.noise[fuel_line.tag][ice_propeller.tag] 
+    conditions              = state.conditions  
+    ice_conditions          = conditions.energy[fuel_line.tag][ice_propeller.tag]
+    noise_conditions        = conditions.noise[fuel_line.tag][ice_propeller.tag] 
     engine                  = ice_propeller.engine 
     propeller               = ice_propeller.propeller
-    eta                     = ice_results.throttle  
-    RPM                     = ice_results.engine.rpm
+    eta                     = ice_conditions.throttle  
+    RPM                     = ice_conditions.engine.rpm
 
     # Throttle the engine
-    engine.inputs.speed    = RPM * Units.rpm   
-    compute_power_from_throttle(engine,conditions,eta)    
-    torque                 = engine.outputs.torque     
+    ice_conditions.engine.inputs.speed    = RPM * Units.rpm
+    ice_conditions.engine.throttle        = eta 
+    compute_power_from_throttle(engine,ice_conditions,conditions)    
+    torque                                = ice_conditions.engine.torque     
     
     # link engine RPM to propeller 
-    propeller.inputs.y_axis_rotation = ice_results.y_axis_rotation
-    propeller.inputs.omega = RPM * Units.rpm 
+    ice_conditions.rotor.y_axis_rotation = ice_conditions.y_axis_rotation
+    ice_conditions.rotor.omega           = RPM * Units.rpm  
 
     # Spin the propeller 
     F, Q, P, Cp, outputs, etap = propeller.spin(conditions) 
@@ -110,33 +70,43 @@ def compute_performance(conditions,fuel_line,ice_propeller,total_thrust,total_po
 
     # Determine Conditions specific to this instantation of engine and rotors
     R                   = propeller.tip_radius
-    rpm                 = engine.inputs.speed / Units.rpm 
+    rpm                 = ice_conditions.engine.inputs.speed / Units.rpm 
     F_mag               = np.atleast_2d(np.linalg.norm(F, axis=1)).T  
 
     # Create the outputs 
-    ice_results.fuel_flow_rate            = engine.outputs.fuel_flow_rate
-    ice_results.engine.power              = P 
-    ice_results.engine.torque             = torque
-    ice_results.throttle                  = eta 
-    ice_results.rotor.torque              = Q
-    ice_results.rotor.thrust              = F
-    ice_results.rotor.rpm                 = rpm
-    ice_results.rotor.tip_mach            = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound    
-    ice_results.rotor.disc_loading        = (F_mag)/(np.pi*(R**2))             
-    ice_results.rotor.power_loading       = (F_mag)/(P)    
-    ice_results.rotor.efficiency          = etap
-    ice_results.rotor.figure_of_merit     = outputs.figure_of_merit
-    noise_results.rotor                   = outputs  
-    total_power                           += P
-    total_thrust                          += F  
-    stored_results_flag                   = True
-    stored_propulsor_tag                  = ice_propeller.tag  
- 
-    return total_thrust,total_power,stored_results_flag,stored_propulsor_tag
+    ice_conditions.fuel_flow_rate            = ice_conditions.engine.outputs.fuel_flow_rate  
+    ice_conditions.engine.power              = P 
+    ice_conditions.engine.torque             = torque
+    ice_conditions.throttle                  = eta 
+    ice_conditions.rotor.torque              = Q
+    ice_conditions.rotor.thrust              = F
+    ice_conditions.rotor.rpm                 = rpm
+    ice_conditions.rotor.tip_mach            = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound    
+    ice_conditions.rotor.disc_loading        = (F_mag)/(np.pi*(R**2))             
+    ice_conditions.rotor.power_loading       = (F_mag)/(P)    
+    ice_conditions.rotor.efficiency          = etap
+    ice_conditions.rotor.figure_of_merit     = outputs.figure_of_merit
+    noise_conditions.rotor                   = outputs
+    power                                    = P
+    thrust                                   = F  
+    stored_results_flag                      = True
+    stored_propulsor_tag                     = ice_propeller.tag
+    
+    # Compute forces and moments
+    moment_vector      = 0*state.ones_row(3)
+    F                  = 0*state.ones_row(3)
+    F[:,0]             = ice_conditions.thrust[:,0]
+    moment_vector[:,0] = ice_propeller.origin[0][0] -   center_of_gravity[0][0] 
+    moment_vector[:,1] = ice_propeller.origin[0][1]  -  center_of_gravity[0][1] 
+    moment_vector[:,2] = ice_propeller.origin[0][2]  -  center_of_gravity[0][2]
+    M                  = np.cross(moment_vector, F)   
+    moment             = M 
+    
+    return thrust,moment,power,stored_results_flag,stored_propulsor_tag 
     
     
     
-def reuse_stored_data(conditions,fuel_line,ice_propeller,stored_propulsor_tag,total_thrust,total_power):
+def reuse_stored_ice_data(ice_propeller,state,fuel_line,stored_propulsor_tag,center_of_gravity= [[0.0, 0.0,0.0]]):
     '''Reuses results from one ice_propeller for identical propulsors
     
     Assumptions: 
@@ -159,27 +129,25 @@ def reuse_stored_data(conditions,fuel_line,ice_propeller,stored_propulsor_tag,to
     Properties Used: 
     N.A.        
     ''' 
-    ice_results_0                         = conditions.energy[fuel_line.tag][stored_propulsor_tag]
-    noise_results_0                       = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
-    ice_results                           = conditions.energy[fuel_line.tag][ice_propeller.tag]  
-    noise_results                         = conditions.noise[fuel_line.tag][ice_propeller.tag]        
-    ice_results.engine.power              = ice_results_0.engine.power            
-    ice_results.engine.torque             = ice_results_0.engine.torque           
-    ice_results.throttle                  = ice_results_0.throttle         
-    ice_results.rotor.torque              = ice_results_0.rotor.torque            
-    ice_results.rotor.thrust              = ice_results_0.rotor.thrust            
-    ice_results.rotor.rpm                 = ice_results_0.rotor.rpm               
-    ice_results.rotor.tip_mach            = ice_results_0.rotor.tip_mach          
-    ice_results.rotor.disc_loading        = ice_results_0.rotor.disc_loading      
-    ice_results.rotor.power_loading       = ice_results_0.rotor.power_loading     
-    ice_results.rotor.efficiency          = ice_results_0.rotor.efficiency        
-    ice_results.rotor.figure_of_merit     = ice_results_0.rotor.figure_of_merit 
-    ice_results.fuel_flow_rate            = ice_results_0.fuel_flow_rate 
-    noise_results.rotor                   = noise_results_0.rotor      
-    total_power                           += ice_results.engine.power
-    total_thrust                          += ice_results.rotor.thrust 
+    conditions                                          = state.conditions  
+    ice_conditions_0                                    = conditions.energy[fuel_line.tag][stored_propulsor_tag]
+    noise_conditions_0                                  = conditions.noise[fuel_line.tag][stored_propulsor_tag]   
+    conditions.energy[fuel_line.tag][ice_propeller.tag] = ice_conditions_0
+    conditions.noise[fuel_line.tag][ice_propeller.tag]  = noise_conditions_0
     
-    return total_thrust,total_power   
+    # compute moment  
+    moment_vector      = 0*state.ones_row(3)
+    F                  = 0*state.ones_row(3)
+    F[:,0]             = ice_conditions_0.thrust[:,0] 
+    moment_vector[:,0] = ice_propeller.origin[0][0] -   center_of_gravity[0][0] 
+    moment_vector[:,1] = ice_propeller.origin[0][1]  -  center_of_gravity[0][1] 
+    moment_vector[:,2] = ice_propeller.origin[0][2]  -  center_of_gravity[0][2]
+    moment             = np.cross(moment_vector, F) 
+     
+    power   = conditions.energy[fuel_line.tag][ice_propeller.tag].engine.power
+    thrust  = conditions.energy[fuel_line.tag][ice_propeller.tag].rotor.thrust 
+ 
+    return thrust,moment,power 
 
             
                

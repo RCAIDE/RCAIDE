@@ -47,12 +47,12 @@ def energy(segment):
     conditions = segment.state.conditions.energy.distribution_lines
     
     # loop through batteries in networks
-    for network in segment.analyses.energy.networks:  
+    for network in segment.analyses.energy.vehicle.networks:  
         # if network has busses 
         if 'busses' in network: 
             for bus in network.busses:
                 for battery in bus.batteries:   
-                    battery_conditions = conditions[bus.tag][battery.tag]
+                    battery_conditions = conditions.energy[bus.tag][battery.tag]
                     if segment.state.initials:  
                         battery_initials                                        = segment.state.initials.conditions.energy[bus.tag][battery.tag]  
                         if type(segment) ==  RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:             
@@ -81,5 +81,5 @@ def energy(segment):
                         fuel_tank_initials = segment.state.initials.conditions.energy[fuel_line.tag][fuel_tank.tag] 
                         fuel_tank_conditions.mass[:,0]   = fuel_tank_initials.mass[-1,0]
                     else: 
-                        fuel_tank_conditions.mass[:,0]   = segment.analyses.energy.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass    
+                        fuel_tank_conditions.mass[:,0]   = segment.analyses.energy.vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass    
                     

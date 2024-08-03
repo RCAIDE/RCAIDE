@@ -8,13 +8,14 @@ from RCAIDE.Framework.Mission.Common     import   Conditions
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  append_turbofan_conditions
 # ----------------------------------------------------------------------------------------------------------------------    
-def append_turbofan_conditions(turbofan,segment,fuel_line):  
+def append_turbofan_conditions(turbofan,segment,fuel_line,add_additional_network_equation):  
     ones_row    = segment.state.ones_row                  
     segment.state.conditions.energy[fuel_line.tag][turbofan.tag]                      = Conditions()  
     segment.state.conditions.energy[fuel_line.tag][turbofan.tag].throttle             = 0. * ones_row(1)      
     segment.state.conditions.energy[fuel_line.tag][turbofan.tag].orientation          = 0. * ones_row(1)  
-    segment.state.conditions.energy[fuel_line.tag][turbofan.tag].thrust               = 0. * ones_row(1) 
+    segment.state.conditions.energy[fuel_line.tag][turbofan.tag].thrust               = 0. * ones_row(3) 
     segment.state.conditions.energy[fuel_line.tag][turbofan.tag].power                = 0. * ones_row(1) 
+    segment.state.conditions.energy[fuel_line.tag][turbofan.tag].moment               = 0. * ones_row(3) 
     segment.state.conditions.energy[fuel_line.tag][turbofan.tag].inputs               = Conditions()
     segment.state.conditions.energy[fuel_line.tag][turbofan.tag].outputs              = Conditions() 
     segment.state.conditions.noise[fuel_line.tag][turbofan.tag]                       = Conditions() 

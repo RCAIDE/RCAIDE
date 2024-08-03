@@ -13,6 +13,7 @@ from RCAIDE.Library.Components                          import Component
 from RCAIDE.Framework.Analyses.Propulsion               import Rotor_Wake_Fidelity_Zero
 from RCAIDE.Framework.Analyses.Propulsion               import Rotor_Wake_Fidelity_One
 from RCAIDE.Library.Methods.Aerodynamics.Common.Lift    import compute_airfoil_aerodynamics,compute_inflow_and_tip_loss 
+from RCAIDE.Library.Methods.Propulsors.Converters.Rotor.append_rotor_conditions import  append_rotor_conditions
 
 # package imports
 import numpy as np
@@ -109,6 +110,11 @@ class Rotor(Component):
         self.optimization_parameters.ideal_SPL_dBA                      = 30
         self.optimization_parameters.ideal_efficiency                   = 1.0     
         self.optimization_parameters.ideal_figure_of_merit              = 1.0
+
+    def append_operating_conditions(self,segment,distribution_line,propulsor): 
+        propulsor_conditions   =  segment.state.conditions.energy[distribution_line.tag][propulsor.tag]
+        append_rotor_conditions(self,segment,propulsor_conditions)
+        return        
          
     def append_airfoil(self,airfoil):
         """ Adds an airfoil to the segment

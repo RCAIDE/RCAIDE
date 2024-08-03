@@ -42,20 +42,20 @@ def main():
     return 
      
 def aluminum_air_battery_test(Ereq,Preq): 
-    battery_al_air                 = RCAIDE.Library.Components.Energy.Batteries.Aluminum_Air()    
+    battery_al_air                 = RCAIDE.Library.Components.Energy.Sources.Batteries.Aluminum_Air()    
     test_initialize_from_energy_and_power(battery_al_air, Ereq, Preq)
     test_mass_gain(battery_al_air, Preq)
     return 
    
 def lithium_sulphur_battery_test(Ereq,Preq):   
-    battery_li_s                   = RCAIDE.Library.Components.Energy.Batteries.Lithium_Sulfur()
+    battery_li_s                   = RCAIDE.Library.Components.Energy.Sources.Batteries.Lithium_Sulfur()
     specific_energy_guess          = 400*Units.Wh/Units.kg 
     test_find_ragone_properties(specific_energy_guess,battery_li_s, Ereq,Preq) 
     plot_battery_ragone_diagram(battery_li_s,   save_filename =  'lithium_sulfur')     
     return 
 
 def lithium_ion_battery_test(Ereq,Preq):  
-    battery_li_ion                        = RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_LFP() 
+    battery_li_ion                        = RCAIDE.Library.Components.Energy.Sources.Batteries.Lithium_Ion_LFP() 
     battery_li_ion.outputs                = Data() 
     battery_li_ion.outputs.current        = np.array([[100],[100]])*Units.amps
     battery_li_ion.outputs.power          = np.array([[Preq/2.] ,[ Preq]])   

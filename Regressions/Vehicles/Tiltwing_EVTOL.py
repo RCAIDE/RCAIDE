@@ -9,8 +9,7 @@
 #   Imports
 # ---------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Framework.Core import Units, Data   
-from RCAIDE.Framework.Networks.All_Electric_Network                            import All_Electric_Network 
+from RCAIDE.Framework.Core import Units, Data    
 from RCAIDE.Library.Methods.Performance.estimate_cruise_drag                   import estimate_cruise_drag 
 from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                      import initialize_from_circuit_configuration 
 from RCAIDE.Library.Methods.Weights.Correlation_Buildups.Propulsion            import nasa_motor
@@ -216,7 +215,7 @@ def vehicle_setup():
     # ########################################################  Energy Network  ######################################################### 
     #------------------------------------------------------------------------------------------------------------------------------------
     # define network
-    network                                                = All_Electric_Network()   
+    network                                                = RCAIDE.Framework.Networks.Electric()
  
  
      
@@ -229,7 +228,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus Battery
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    bat                                                    = RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_NMC() 
+    bat                                                    = RCAIDE.Library.Components.Energy.Sources.Batteries.Lithium_Ion_NMC() 
     bat.tag                                                = 'bus_battery'
     bat.pack.electrical_configuration.series               = 80 
     bat.pack.electrical_configuration.parallel             = 60
@@ -291,7 +290,7 @@ def vehicle_setup():
                                                      rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
     prop_rotor.append_airfoil(airfoil)                
     prop_rotor.airfoil_polar_stations             = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]   
-    lift_propulsor.rotor                          = design_prop_rotor(prop_rotor)     
+    design_prop_rotor(prop_rotor)     
      
     
     #------------------------------------------------------------------------------------------------------------------------------------               
@@ -306,7 +305,7 @@ def vehicle_setup():
     prop_rotor_motor.rotor_radius            = prop_rotor.tip_radius
     prop_rotor_motor.design_torque           = prop_rotor.hover.design_torque
     prop_rotor_motor.angular_velocity        = prop_rotor.hover.design_angular_velocity/prop_rotor_motor.gear_ratio  
-    prop_rotor_motor                         = design_motor(prop_rotor_motor)
+    design_motor(prop_rotor_motor)
     prop_rotor_motor.mass_properties.mass    = nasa_motor(prop_rotor_motor.design_torque)     
     lift_propulsor.motor                     = prop_rotor_motor
      

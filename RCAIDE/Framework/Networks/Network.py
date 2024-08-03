@@ -43,75 +43,34 @@ class Network(Component):
         self.busses                 = Container()     
         self.fuel_lines             = Container()    
         self.wing_mounted           = True
-        self.reverse_thrust         = False 
+        self.reverse_thrust         = False
+        
 
 # ----------------------------------------------------------------------
 #  Component Container
-# ----------------------------------------------------------------------
-## @ingroup Energy-Network
+# ---------------------------------------------------------------------- 
 class Container(Component.Container):
-    """ RCAIDE.Library.Components.Energy.Networks.Network.Container()
-        The Network Container Class
-            Assumptions:
-            None
-            Source:
-            N/A
+    """ The Network container class 
     """
-    def evaluate_thrust(self,state):
+    def evaluate(self,state,center_of_gravity):
         """ This is used to evaluate the thrust produced by the network.
-                Assumptions:
-                Network has "evaluate_thrust" method
-                If multiple networks are attached their masses will be summed
-                Source:
-                N/A
-                Inputs:
-                State variables
-                Outputs:
-                Results of the "evaluate_thrust" method
-                Properties Used:
-                N/A
-        """
-        ones_row = state.ones_row
-        results = Data()
-        results.thrust_force_vector       = 0.*ones_row(3)
-        results.vehicle_mass_rate         = 0.*ones_row(1)
-        for net in self.values():
-            if hasattr(net, 'has_additional_fuel_type'):
-                if net.has_additional_fuel_type: #Check if Network has additional fuel
-                    results.vehicle_additional_fuel_rate  =  0.*ones_row(1) #fuel rate for additional fuel types, eg cryogenic fuel
-                    results.vehicle_fuel_rate             =  0.*ones_row(1)
-            results_p = net.evaluate_thrust(state)
-            for key in results.keys():
-                results[key] += results_p[key]
-        return results
-    
-    def evaluate_power(self,state):
-        """ This is used to evaluate the power produced by the network.
-                Assumptions:
-                Network has "evaluate_power" method
-                If multiple networks are attached their masses will be summed
-                Source:
-                N/A
-                Inputs:
-                State variables
-                Outputs:
-                Results of the "evaluate_power" method
-                Properties Used:
-                N/A
-        """
-        ones_row = state.ones_row
-        results = Data()
-        results.power                     = 0.*ones_row(1)
-        results.vehicle_mass_rate         = 0.*ones_row(1)
-        for net in self.values():
-            if hasattr(net, 'has_additional_fuel_type'):
-                if net.has_additional_fuel_type: #Check if Network has additional fuel
-                    results.vehicle_additional_fuel_rate  =  0.*ones_row(1) #fuel rate for additional fuel types, eg cryogenic fuel
-                    results.vehicle_fuel_rate             =  0.*ones_row(1)
-            results_p = net.evaluate_power(state)
-            for key in results.keys():
-                results[key] += results_p[key]
-        return results    
+        
+            Assumptions:  
+                If multiple networks are attached their performances will be summed
+            
+            Source:
+                None
+            
+            Args:
+                State (dict): flight conditions 
+            
+            Returns:
+                results (dict): Results of the evaluate method 
+        """ 
+        for net in self.values(): 
+            net.evaluate(state,center_of_gravity)  
+        return  
+     
     
 # ----------------------------------------------------------------------
 #  Handle Linking

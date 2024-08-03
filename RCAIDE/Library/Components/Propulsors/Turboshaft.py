@@ -13,10 +13,9 @@
 import RCAIDE
 from RCAIDE.Framework.Core                  import Data
 from .                                      import Propulsor  
-from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.append_turboprop_conditions     import append_turboprop_conditions 
-from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.compute_turboprop_performance   import compute_turboprop_performance, reuse_stored_turboprop_data
+from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.append_turboshaft_conditions     import append_turboshaft_conditions 
+from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor.compute_turboshaft_performance   import compute_turboshaft_performance, reuse_stored_turboshaft_data
  
-
 # ----------------------------------------------------------------------
 #  Turboshaft
 # ----------------------------------------------------------------------
@@ -66,14 +65,21 @@ class Turboshaft(Propulsor):
         self.areas.exit                                       = 0.0
         self.areas.inflow                                     = 0.0 
 
-    def append_operating_conditions(self,segment,fuel_line):
-        append_turboprop_conditions(self,segment,fuel_line)
+    def append_operating_conditions(self,segment,fuel_line,add_additional_network_equation = False):
+        append_turboshaft_conditions(self,segment,fuel_line,add_additional_network_equation)
         return
+
+    def unpack_propulsor_unknown(self,segment,fuel_line,add_additional_network_equation = False):   
+        return 
+
+    def pack_network_residuals(self,segment,fuel_line,add_additional_network_equation = False): 
+        return    
+
     
     def compute_performance(self,state,fuel_line,center_of_gravity = [[0, 0, 0]]):
-        thrust,moment,power,stored_results_flag,stored_propulsor_tag =  compute_turboprop_performance(self,state,fuel_line,center_of_gravity)
+        thrust,moment,power,stored_results_flag,stored_propulsor_tag =  compute_turboshaft_performance(self,state,fuel_line,center_of_gravity)
         return thrust,moment,power,stored_results_flag,stored_propulsor_tag
     
-    def reuse_stored_data(turboprop,state,fuel_line,stored_propulsor_tag,center_of_gravity = [[0, 0, 0]]):
-        thrust,moment,power  = reuse_stored_turboprop_data(turboprop,state,fuel_line,stored_propulsor_tag,center_of_gravity)
+    def reuse_stored_data(turboshaft,state,fuel_line,stored_propulsor_tag,center_of_gravity = [[0, 0, 0]]):
+        thrust,moment,power  = reuse_stored_turboshaft_data(turboshaft,state,fuel_line,stored_propulsor_tag,center_of_gravity)
         return thrust,moment,power 
