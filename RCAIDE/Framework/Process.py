@@ -1,10 +1,31 @@
+# RCAIDE/Framework/Process.py
+# (c) Copyright 2024 Aerospace Research Community LLC
+#
+# Created: Jul 2024, RCAIDE Team
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
 import dataclasses
-from dataclasses    import dataclass, field
-from typing         import Callable, Iterable
+from dataclasses import dataclass, field
+from typing      import Callable, Iterable
 
-from RCAIDE.Reference.Core.Utilities import args_passer
-
+# package imports
+import numpy as np
 import pandas as pd
+
+# RCAIDE imports
+from RCAIDE.Framework import State, Settings, System
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Argument Passer
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+def _args_passer(*args, **kwargs):
+    return *args, kwargs
 
 
 @dataclass(kw_only=True)
@@ -16,16 +37,16 @@ class ProcessStep:
 
     # Required Parameters
 
-    function:       Callable    = field(default=args_passer)
+    function:       Callable    = _args_passer
 
     # Optional Parameters
 
-    name:           str         = field(default="")
-    last_result:    object      = field(default=None)
+    name:           str         = "Process Step"
+    last_result:    object      = None
 
-    State:          dataclass   = field(default_factory=State())
-    Settings:       dataclass   = field(default_factory=State())
-    System:         dataclass   = field(default_factory=State())
+    state:          State       = State()
+    settings:       Settings    = Settings()
+    system:         System      = System()
 
     def __call__(self):
 
@@ -48,29 +69,21 @@ def _create_details():
 @dataclass(kw_only=True)
 class Process:
 
-    #---------------------------------------------------------------------------
-    # Process Parameters
-    #---------------------------------------------------------------------------
+    name:               str                 = "Process"
 
-    # Required Parameters
+    steps:              list[ProcessStep]   = field(default_factory=list)
+    details:            pd.DataFrame        = field(default_factory=_create_details)
 
-        # N/A
+    step:               int                 = 0
+    initial_step:       int                 = 0
 
-    # Optional Parameters
+    initial_state:      State               = State()
+    initial_settings:   Settings            = Settings()
+    initial_system:     System              = System()
 
-    name: str = field(default="")
-
-    # Internal Parameters
-
-    steps: list[ProcessStep] = field(default_factory=list)
-    details: pd.DataFrame    = field(default_factory=_create_details)
-
-    current_step: int = field(default=0)
-    start_at: int = field(default=0)
-
-    initial_state: dataclass = field(default_factory=State())
-    initial_settings: dataclass = field(default_factory=State())
-    initial_system: dataclass = field(default_factory=State())
+    state:              State               = None
+    settings:           Settings            = None
+    system:             System              = None
 
     def __getitem__(self, item):
         return self.steps[item]

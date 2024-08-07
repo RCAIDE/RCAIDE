@@ -9,7 +9,7 @@
 
 # RCAIDE imports   
 import numpy as np
-from RCAIDE.Library.Components.Wings import Main_Wing
+from RCAIDE.Framework.Components.Wings import Main_Wing
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Wave Drag 

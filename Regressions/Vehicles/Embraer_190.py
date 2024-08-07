@@ -396,7 +396,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Fuel Tank & Fuel
     #------------------------------------------------------------------------------------------------------------------------------------   
-    fuel_tank                                   = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()
+    fuel_tank                                   = RCAIDE.Framework.Components.Energy.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = wing.origin 
     
     # fuel 

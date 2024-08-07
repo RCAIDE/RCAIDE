@@ -46,7 +46,7 @@ def compute_static_sea_level_performance(propulsor):
 
     # setup conditions 
     fuel_line                               = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()    
-    fuel_tank                               = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()  
+    fuel_tank                               = RCAIDE.Framework.Components.Energy.Fuel_Tanks.Fuel_Tank()
     fuel                                    = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()    
     fuel_tank.fuel                          = fuel  
     fuel_line.fuel_tanks.append(fuel_tank)  

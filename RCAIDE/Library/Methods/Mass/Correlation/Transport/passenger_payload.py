@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------- 
 
 from Legacy.trunk.S.Core import Units
-from RCAIDE.Library.Components import PhysicalComponent
+from RCAIDE.Framework.Components import PhysicalComponent
 
 # -----------------------------------------------------------------------
 # Functional/Library Version

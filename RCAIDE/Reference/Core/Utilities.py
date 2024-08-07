@@ -283,6 +283,3 @@ def new_tensor(a):
     T = np.resize(T,[n_a,3,3])
     
     return T
-
-def args_passer(*args, **kwargs):
-    return *args, kwargs

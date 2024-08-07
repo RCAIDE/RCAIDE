@@ -8,10 +8,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports  
-from RCAIDE.Framework.Missions.Mission import Segment
-from RCAIDE.Framework.Missions.Mission import Results
-from RCAIDE.Reference.Missions.Functions import Common, Solver
-from RCAIDE.Framework.Analyses                 import Process  
+from RCAIDE.Framework.Missions.Mission      import Segment
+from RCAIDE.Framework.Missions.Mission      import Results
+from RCAIDE.Reference.Missions.Functions    import Common, Solver
+from RCAIDE.Framework.Analyses              import Process
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Evaluate

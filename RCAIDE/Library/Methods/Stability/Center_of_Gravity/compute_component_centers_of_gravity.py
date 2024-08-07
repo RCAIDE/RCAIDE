@@ -12,7 +12,7 @@ import RCAIDE
 from RCAIDE.Library.Methods.Geometry.Planform import compute_span_location_from_chord_length
 from RCAIDE.Library.Methods.Geometry.Planform import compute_chord_length_from_span_location
 from RCAIDE.Library.Methods.Geometry.Planform import convert_sweep
-from RCAIDE.Library.Components import  Component
+from RCAIDE.Framework.Components import  Component
 
 # package imports 
 import numpy as np 

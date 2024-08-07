@@ -11,23 +11,31 @@ from dataclasses import dataclass, field
 
 # RCAIDE Imports
 
-from RCAIDE.Reference.Core import Process, ProcessStep
+from RCAIDE.Framework import State, Settings, System, Process, ProcessStep
+from RCAIDE.Framework.Missions.Initialization import time,
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Mission Segment
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 @dataclass(kw_only=True)
-class Iterate(Process):
+class MissionInitialization(Process):
 
-    name: str = "Iterate"
+    name: str = 'Mission Initialization'
 
-    def __post_init__(self):
-
-        initialization = Process(name="Iterate Initials")
-        time = ProcessStep(name="Initialize Time")
+    time: ProcessStep = ProcessStep(name="Initialize Time")
 
 
+@dataclass(kw_only=True)
+class MissionIteration(Process):
+
+    name: str = "Mission Iteration"
+
+@dataclass(kw_only=True)
+class MissionFinalization(Process):
+
+    name: str = "Mission Finalization"
 
 
 @dataclass(kw_only=True)
@@ -35,12 +43,16 @@ class MissionSegment(Process):
 
     name: str = "Mission Segment"
 
-    Settings: dataclass = dataclass(kw_only=True)
-
     analyses: list[Process] = field(default_factory=list)
 
+    initialization: MissionInitialization   = MissionInitialization()
+    iteration:      MissionIteration        = MissionIteration()
+    finalization:   MissionFinalization     = MissionFinalization()
+
     def __post_init__(self):
-        return None
+        self.append(self.initialization)
+        self.append(self.iteration)
+        self.append(self.finalization)
 
 
 

@@ -10,8 +10,8 @@
 
 import numpy as np
 from RCAIDE.Reference.Core import Units
-from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Components.Wings import Horizontal_Tail, Vertical_Tail, Main_Wing
+from RCAIDE.Framework.Components import Component
+from RCAIDE.Framework.Components.Wings import Horizontal_Tail, Vertical_Tail, Main_Wing
 
 # -----------------------------------------------------------------------
 # Functional/Library Version

@@ -7,8 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports
-import RCAIDE
-from RCAIDE.Library.Components.Fuselages import Blended_Wing_Body_Fuselage as BWB_Fuselage
+from RCAIDE.Framework.Components.Fuselages import Blended_Wing_Body_Fuselage as BWB_Fuselage
  
 # package imports
 import numpy as np  

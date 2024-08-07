@@ -10,7 +10,8 @@
  
 from RCAIDE                    import Framework
 from RCAIDE.Reference.Core import Data
-from RCAIDE.Library            import Components, Attributes 
+from RCAIDE.Library            import Attributes
+from RCAIDE.Framework import Components
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -154,7 +155,7 @@ class Vehicle(Data):
         
         for key in self.keys():
             item = self[key]
-            if isinstance(item,Components.Component.Container):
+            if isinstance(item, Components.Component.Container):
                 total += item.sum_mass()
 
         return total
@@ -174,7 +175,7 @@ class Vehicle(Data):
 
         for key in self.keys():
             item = self[key]
-            if isinstance(item,Components.Component.Container):
+            if isinstance(item, Components.Component.Container):
                 total += item.total_moment()
                 
         mass = self.sum_mass()
