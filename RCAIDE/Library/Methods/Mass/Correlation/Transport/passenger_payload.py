@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------- 
 
 from Legacy.trunk.S.Core import Units
-from RCAIDE.Framework.Components import PhysicalComponent
+from RCAIDE.Framework import Component
 
 # -----------------------------------------------------------------------
 # Functional/Library Version
@@ -50,7 +50,7 @@ def passenger_payload(State, Settings, System):
 
     n_passengers    = System.number_of_passengers
 
-    passenger_mass, baggage_mass = func_payload(n_passengers)
+    passenger_mass, baggage_mass = func_passenger_payload(n_passengers)
 
     def _build_payload(payload: PhysicalComponent):
 

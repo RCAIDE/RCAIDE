@@ -7,10 +7,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+from typing import Callable
 from dataclasses import dataclass, field
 
 # package imports
 import numpy as np
+from scipy.optimize import fsolve
 
 # RCAIDE imports
 
@@ -23,3 +25,6 @@ import numpy as np
 class Settings:
 
     name: str = 'Settings'
+
+    # Mission Settings
+    root_finder: Callable = fsolve

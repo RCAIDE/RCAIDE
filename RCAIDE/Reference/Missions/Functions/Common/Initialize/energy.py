@@ -37,11 +37,12 @@ def energy(segment):
                     battery_conditions = conditions[bus.tag][battery.tag]
                     if segment.state.initials:  
                         battery_initials                                        = segment.state.initials.conditions.energy[bus.tag][battery.tag]  
-                        if type(segment) ==  RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:             
+                        if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:
                             battery_conditions.battery_discharge_flag           = False 
                         else:                   
                             battery_conditions.battery_discharge_flag           = True             
-                        battery_conditions.pack.maximum_initial_energy          = battery_initials.pack.maximum_initial_energy 
+
+                        battery_conditions.pack.maximum_initial_energy          = battery_initials.pack.maximum_initial_energy
                         battery_conditions.pack.energy[:,0]                     = battery_initials.pack.energy[-1,0]
                         battery_conditions.pack.temperature[:,0]                = battery_initials.pack.temperature[-1,0]
                         battery_conditions.cell.temperature[:,0]                = battery_initials.cell.temperature[-1,0]

@@ -10,6 +10,7 @@ from Energy             import EnergyConditions
 from Frames             import FrameConditions
 from Freestream         import FreestreamConditions
 from Mass               import MassConditions
+from Noise              import NoiseConditions
 from Numerics           import Numerics
 from Stability          import StabilityConditions
 

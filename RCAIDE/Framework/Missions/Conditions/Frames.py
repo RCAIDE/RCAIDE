@@ -26,7 +26,7 @@ class Frame(Conditions):
     #Attribute              Type        Default Value
     name:                   str         = 'Frame'
 
-    transform_to_inertial:  np.ndarray  = field(default_factory=lambda: np.ndarray((0, 0, 0)))
+    transform_to_inertial:  np.ndarray  = field(default_factory=lambda: np.zeros((0, 0, 0)))
 
 
 @dataclass(kw_only=True)
@@ -35,15 +35,15 @@ class InertialFrame(Frame):
     #Attribute      Type        Default Value
     name:           str         = 'Inertial Frame'
 
-    position:       np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
-    velocity:       np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
-    acceleration:   np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
+    position:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    velocity:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    acceleration:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
-    gravity_force:  np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
-    total_force:    np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
+    gravity_force:  np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    total_force:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
-    time:           np.ndarray  = field(default_factory=lambda: np.ndarray((1, 1)))
-    system_range:   np.ndarray  = field(default_factory=lambda: np.ndarray((1, 1)))
+    time:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    system_range:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
 
 @dataclass(kw_only=True)
@@ -63,12 +63,12 @@ class WindFrame(Frame):
     #Attribute      Type        Default Value
     name:           str         = 'Wind Frame'
 
-    body_rotations: np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
+    body_rotations: np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
-    velocity:       np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
+    velocity:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
-    lift_force:     np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
-    drag_force:     np.ndarray  = field(default_factory=lambda: np.ndarray((1, 3)))
+    lift_force:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    drag_force:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
 
 @dataclass(kw_only=True)
@@ -77,8 +77,8 @@ class PlanetFrame(Frame):
     name:       str = 'Planet Frame'
     start_time: float = None
 
-    latitude:   np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
-    longitude:  np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
+    latitude:   np.ndarray = field(default_factory=lambda: np.zeros((1, 1)))
+    longitude:  np.ndarray = field(default_factory=lambda: np.zeros((1, 1)))
 
 
 @dataclass(kw_only=True)

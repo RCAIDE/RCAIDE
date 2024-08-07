@@ -26,9 +26,9 @@ class StaticStability(Conditions):
     #Attribute      Type        Default Value
     name:           str         = 'Static Stability'
 
-    Cm:             np.ndarray  = field(default_factory=lambda: np.ndarray((1,1)))
-    Cm_alpha:       np.ndarray  = field(default_factory=lambda: np.ndarray((1,1)))
-    static_margin:  np.ndarray  = field(default_factory=lambda: np.ndarray((1,1)))
+    Cm:             np.ndarray  = field(default_factory=lambda: np.zeros((1,1)))
+    Cm_alpha:       np.ndarray  = field(default_factory=lambda: np.zeros((1,1)))
+    static_margin:  np.ndarray  = field(default_factory=lambda: np.zeros((1,1)))
 
 
 @dataclass(kw_only=True)
@@ -37,9 +37,9 @@ class DynamicStability(Conditions):
     #Attribute      Type        Default Value
     name:           str         = 'Dynamic Stability'
 
-    pitch_rate:     np.ndarray  = field(default_factory=lambda: np.ndarray((1,1)))
-    roll_rate:      np.ndarray  = field(default_factory=lambda: np.ndarray((1,1)))
-    yaw_rate:       np.ndarray  = field(default_factory=lambda: np.ndarray((1,1)))
+    pitch_rate:     np.ndarray  = field(default_factory=lambda: np.zeros((1,1)))
+    roll_rate:      np.ndarray  = field(default_factory=lambda: np.zeros((1,1)))
+    yaw_rate:       np.ndarray  = field(default_factory=lambda: np.zeros((1,1)))
 
 
 @dataclass(kw_only=True)

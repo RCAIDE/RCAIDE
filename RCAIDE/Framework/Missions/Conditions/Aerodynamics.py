@@ -37,11 +37,11 @@ class AerodynamicsConditions(Conditions):
     #Attribute          Type            Default Value
     name:               str             = 'Aerodynamics'
 
-    angle_of_attack:    np.ndarray      = field(default_factory=lambda: np.ndarray((1, 1)))
-    side_slip_angle:    np.ndarray      = field(default_factory=lambda: np.ndarray((1, 1)))
-    roll_angle:         np.ndarray      = field(default_factory=lambda: np.ndarray((1, 1)))
-    lift_coefficient:   np.ndarray      = field(default_factory=lambda: np.ndarray((1, 1)))
-    drag_coefficient:   np.ndarray      = field(default_factory=lambda: np.ndarray((1, 1)))
+    angle_of_attack:    np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    side_slip_angle:    np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    roll_angle:         np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    lift_coefficient:   np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    drag_coefficient:   np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
 
     lift_breakdown:     Conditions      = Conditions(name='Lift Breakdown')
     drag_breakdown:     DragBreakdown   = DragBreakdown()

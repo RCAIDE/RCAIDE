@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from RCAIDE.Reference.Core import Process, ProcessStep
-from RCAIDE.Library.Methods.Mass import Correlation as Mass
+from RCAIDE.Framework import Process, ProcessStep
+from RCAIDE.Library.Methods.Mass.Correlation import Transport as Mass
 
 
 @dataclass(kw_only=True)
@@ -52,7 +52,7 @@ class TransportMassAnalysis(Process):
         if 'sizing' not in vars(self.initial_settings).keys():
             self.initial_settings.sizing = dataclass()
 
-        # Map analysis settings into settings datastructure for later retreival
+        # Map analysis settings into settings datastructure for later retrieval
         self.initial_settings.mass_reduction_factors.main_wing    = self.main_wing_mass_reduction_factor
         self.initial_settings.mass_reduction_factors.fuselage     = self.fuselage_mass_reduction_factor
         self.initial_settings.mass_reduction_factors.empennage    = self.empennage_mass_reduction_factor
@@ -62,50 +62,19 @@ class TransportMassAnalysis(Process):
 
         ###---Default Process Steps---###
 
-        # Propulsion Mass
-        Prop = ProcessStep()
-        Prop.name = 'Propulsion'
-        Prop.function = Mass.Propulsion.jet_mass_from_sls
-        self.append(Prop)
-
-        # Passenger Payload Mass
-        Passengers = ProcessStep()
-        Passengers.name = 'Payload'
-        Passengers.function = Mass.Transport.passenger_payload
-        self.append(Passengers)
-
-        # Operating Items and Systems Mass
-        OpSys = ProcessStep()
-        OpSys.name = 'Operating Systems'
-        OpSys.function = Mass.Transport.operating_systems
-        self.append(OpSys)
-
-        # Main Wing Mass
-        M_Wing = ProcessStep()
-        M_Wing.name = 'Main Wing'
-        M_Wing.function = Mass.Transport.segmented_main_wing
-        self.append(M_Wing)
-
-        # H-Tail Mass
-        H_Tail = ProcessStep()
-        H_Tail.name = 'Horizontal Tail'
-        H_Tail.function = Mass.Transport.horizontal_tail
-        self.append(H_Tail)
-
-        # V-Tail Mass
-        V_Tail = ProcessStep()
-        V_Tail.name = 'Vertical Tail'
-        V_Tail.function = Mass.Transport.vertical_tail
-        self.append(V_Tail)
-
-        # Fuselage Mass
-        Fuselages = ProcessStep()
-        Fuselages.name = 'Fuselage'
-        Fuselages.function = Mass.Transport.fuselage
-        self.append(Fuselages)
-
-        # Landing Gear Mass
-        LG = ProcessStep()
-        LG.name = 'Landing Gear'
-        LG.function = Mass.Transport.landing_gear
-        self.append(LG)
+        self.append(ProcessStep(name='Propulsion Mass',
+                                function=Mass.Propulsion.jet_mass_from_sls))
+        self.append(ProcessStep(name='Passenger & Payload Mass',
+                                function=Mass.passenger_payload))
+        self.append(ProcessStep(name='Operating System Mass',
+                                function=Mass.operating_systems))
+        self.append(ProcessStep(name='Main Wing Mass',
+                                function=Mass.segmented_main_wing))
+        self.append(ProcessStep(name='Horizontal Tail Mass',
+                                function=Mass.horizontal_tail))
+        self.append(ProcessStep(name='Vertical Tail Mass',
+                                function=Mass.vertical_tail))
+        self.append(ProcessStep(name='Fuselage Mass',
+                                function=Mass.fuselage))
+        self.append(ProcessStep(name='Landing Gear',
+                                function=Mass.landing_gear))

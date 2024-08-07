@@ -43,7 +43,7 @@ class ControlVariable(Conditions):
     active:         bool        = False
     initial_guess:  float       = None
 
-    value:          np.ndarray  = field(default_factory=lambda: np.ndarray((1, 1)))
+    value:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
 
 @dataclass(kw_only=True)

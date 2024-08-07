@@ -1,30 +1,29 @@
-# RCAIDE/Framework/Missions/Conditions/Mass.py
+# RCAIDE/Framework/Missions/Initialization/mass.py
 # (c) Copyright 2024 Aerospace Research Community LLC
-#
-# Created: Jul 2024, RCAIDE Team
+# Created: Aug 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
+# Imports
 # ----------------------------------------------------------------------------------------------------------------------
-
-from dataclasses import dataclass, field
 
 # package imports
 import numpy as np
 
-# RCAIDE imports
-from RCAIDE.Framework.Missions.Conditions import Conditions
+# RCAIDE Imports
+import RCAIDE.Framework as rcf
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Mass
+# Initialize Mass
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-@dataclass(kw_only=True)
-class MassConditions(Conditions):
+def initialize_mass(State: rcf.State,
+                    Settings: rcf.Settings,
+                    System: rcf.System):
 
-    #Attribute          Type        Default Value
-    total:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    rate_of_change:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    m_initial = State.initials.mass.total[-1, 0]
+    m_current = State.mass.total[0, 0]
 
-    breakdown:          Conditions  = Conditions(name='Mass Breakdown')
+    State.mass.total += (m_initial - m_current)
+
+    return State, Settings, System

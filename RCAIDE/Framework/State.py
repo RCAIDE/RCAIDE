@@ -23,10 +23,10 @@ from RCAIDE.Framework.Missions.Conditions import *
 @dataclass(kw_only=True)
 class State(Conditions):
 
-    #Attribute  Type        Default Value
-    name:       str         = 'State'
-
+    #Attribute          Type                        Default Value
+    name:               str                         = 'State'
     numerics:           Numerics                    = Numerics()
+    initials:           Conditions                  = None
 
     frames:             FrameConditions             = FrameConditions()
 
@@ -38,3 +38,9 @@ class State(Conditions):
     aero_derivatives:   AeroDerivativesConditions   = AeroDerivativesConditions()
 
     controls:           ControlsConditions          = ControlsConditions()
+
+    unknowns:           np.ndarray                  = field(default_factory=lambda: np.zeros((1, 1)))
+    residuals:          np.ndarray                  = field(default_factory=lambda: np.zeros((1, 1)))
+
+    def __post_init__(self):
+        self.initials = State(name='Initial State')

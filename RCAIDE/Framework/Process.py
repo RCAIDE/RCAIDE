@@ -50,7 +50,7 @@ class ProcessStep:
 
     def __call__(self):
 
-        framework_args = (self.State, self.Settings, self.System)
+        framework_args = (self.state, self.settings, self.system)
 
         return self.function(*framework_args)
 
@@ -100,12 +100,12 @@ class Process:
                           self.initial_settings,
                           self.initial_system)
 
-        for index, step in enumerate(self.steps[self.start_at:-1]):
+        for index, step in enumerate(self.steps[self.initial_step:-1]):
             framework_args = step(*framework_args)
             self.steps[index].last_result = framework_args
             self.details.at[index, 'Last Result'] = framework_args
 
-        results = self.steps[-1](*next_args)
+        results = self.steps[-1](*framework_args)
         self.details.at[len(self.steps)-1, 'Last Result'] = results
 
         return results

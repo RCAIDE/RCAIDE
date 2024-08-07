@@ -26,8 +26,8 @@ class NoiseBreakdown(Conditions):
     #Attribute      Type        Default Value
     name:           str         = 'Noise Breakdown'
 
-    propellers:     np.ndarray  = field(default_factory=lambda: np.ndarray((1, 1)))
-    lift_rotors:    np.ndarray  = field(default_factory=lambda: np.ndarray((1, 1)))
+    propellers:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    lift_rotors:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
 
 @dataclass(kw_only=True)
@@ -36,6 +36,6 @@ class NoiseConditions(Conditions):
     # Attribute     Type            Default Value
     name:           str             = 'Noise'
 
-    total:          np.ndarray  = field(default_factory=lambda: np.ndarray((1, 1)))
+    total:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
     breakdown:      NoiseBreakdown = NoiseBreakdown()

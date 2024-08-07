@@ -1,7 +1,7 @@
-# RCAIDE/Framework/Missions/Conditions/Mass.py
+# RCAIDE/Framework/Missions/Initialization/expand_state.py
 # (c) Copyright 2024 Aerospace Research Community LLC
 #
-# Created: Jul 2024, RCAIDE Team
+# Created: Aug 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -13,18 +13,17 @@ from dataclasses import dataclass, field
 import numpy as np
 
 # RCAIDE imports
-from RCAIDE.Framework.Missions.Conditions import Conditions
+import RCAIDE.Framework as rcf
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Mass
+#  Expand State
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-@dataclass(kw_only=True)
-class MassConditions(Conditions):
+def expand_state(State: rcf.State,
+                 Settings: rcf.Settings,
+                 System: rcf.System):
 
-    #Attribute          Type        Default Value
-    total:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    rate_of_change:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    State.expand_rows(rows=State.numerics.number_of_control_points)
 
-    breakdown:          Conditions  = Conditions(name='Mass Breakdown')
+    return State, Settings, System

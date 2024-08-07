@@ -7,12 +7,17 @@
 # IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+from typing import Callable
 from dataclasses import dataclass, field
 
-# RCAIDE Imports
+# package imports
 
-from RCAIDE.Framework import State, Settings, System, Process, ProcessStep
-from RCAIDE.Framework.Missions.Initialization import time,
+from scipy.optimize import fsolve
+
+# RCAIDE imports
+
+from RCAIDE.Framework import Process, ProcessStep
+from RCAIDE.Framework.Missions.Initialization import *
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Mission Segment
@@ -24,13 +29,23 @@ class MissionInitialization(Process):
 
     name: str = 'Mission Initialization'
 
-    time: ProcessStep = ProcessStep(name="Initialize Time")
+    def __post_init__(self):
+
+        self.append(ProcessStep(name="Initialize Time",
+                                function=initialize_time))
+        self.append(ProcessStep(name="Initialize Mass",
+                                function=initialize_mass))
+        self.append(ProcessStep(name="Initialize Energy",
+                                function=initialize_energy))
 
 
 @dataclass(kw_only=True)
 class MissionIteration(Process):
 
     name: str = "Mission Iteration"
+
+    def __post_init__(self):
+        return
 
 @dataclass(kw_only=True)
 class MissionFinalization(Process):
@@ -50,6 +65,9 @@ class MissionSegment(Process):
     finalization:   MissionFinalization     = MissionFinalization()
 
     def __post_init__(self):
+        self.append(ProcessStep(name="Expand State",
+                                function=expand_state))
+
         self.append(self.initialization)
         self.append(self.iteration)
         self.append(self.finalization)

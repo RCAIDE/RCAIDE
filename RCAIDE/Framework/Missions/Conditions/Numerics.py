@@ -7,6 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+from typing import Callable
 from warnings import warn
 from dataclasses import dataclass, field
 
@@ -55,11 +56,11 @@ def _chebyshev_matrices(n: int = 16,
         I = np.append(np.zeros((1, n - 1)), I, axis=0)
         I = np.append(np.zeros((n, 1)), I, axis=1)
 
-        return x, D, I
+        return np.atleast_2d(x), D, I
 
     else:
 
-        return x, D, None
+        return np.atleast_2d(x), D, None
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Numerics
@@ -70,9 +71,9 @@ def _chebyshev_matrices(n: int = 16,
 class NumericalTime(Conditions):
 
     #Attribute      Type        Default Value
-    control_points: np.ndarray  = field(default_factory=lambda: np.ndarray((0, 0)))
-    differentiate:  np.ndarray  = field(default_factory=lambda: np.ndarray((0, 0)))
-    integrate:      np.ndarray  = field(default_factory=lambda: np.ndarray((0, 0)))
+    control_points: np.ndarray  = field(default_factory=lambda: np.zeros((0, 0)))
+    differentiate:  np.ndarray  = field(default_factory=lambda: np.zeros((0, 0)))
+    integrate:      np.ndarray  = field(default_factory=lambda: np.zeros((0, 0)))
 
 
 @dataclass(kw_only=True)
@@ -100,4 +101,8 @@ class Numerics(Conditions):
         self.discretization_method = lambda: _chebyshev_matrices(n=self.number_of_control_points,
                                                                  calculate_integration=self.calculate_integration,
                                                                  spacing=self.control_point_spacing)
+
+        (self.dimensionless.control_points,
+         self.dimensionless.differentiate,
+         self.dimensionless.integrate) = self.discretization_method()
 
