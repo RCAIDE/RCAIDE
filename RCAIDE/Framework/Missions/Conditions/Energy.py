@@ -49,18 +49,23 @@ class EnergyStoreConditions(Conditions):
 @dataclass(kw_only=True)
 class EnergyConverterConditions(Conditions):
 
-    #Attribute  Type    Default Value
-    name:       str     = 'Energy Converter'
+    #Attribute          Type        Default Value
+    name:               str         = 'Energy Converter'
 
-    efficiency: np.ndarray = field(default_factory=lambda: np.zeros((1, 1)))
-    power:      np.ndarray = field(default_factory=lambda: np.zeros((1, 1)))
+    efficiency:         np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    power:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
-    thrust:     np.ndarray = field(default_factory=lambda: np.zeros((1, 3)))
+    thrust:             np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+
+    x_axis_rotation:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    y_axis_rotation:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    z_axis_rotation:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery Stores
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 @dataclass(kw_only=True)
 class BatteryCellConditions(EnergyStoreConditions):

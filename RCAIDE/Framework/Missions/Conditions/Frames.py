@@ -32,18 +32,22 @@ class Frame(Conditions):
 @dataclass(kw_only=True)
 class InertialFrame(Frame):
 
-    #Attribute      Type        Default Value
-    name:           str         = 'Inertial Frame'
+    #Attribute              Type        Default Value
+    name:                   str         = 'Inertial Frame'
 
-    position:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    velocity:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    acceleration:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    position:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
-    gravity_force:  np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    total_force:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    velocity:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    acceleration:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
-    time:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    system_range:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    angular_velocity:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    angular_acceleration:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+
+    gravity_force:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    total_force:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+
+    time:                   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    system_range:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
 
 @dataclass(kw_only=True)

@@ -17,7 +17,8 @@ from scipy.optimize import fsolve
 # RCAIDE imports
 
 from RCAIDE.Framework import Process, ProcessStep
-from RCAIDE.Framework.Missions.Initialization import *
+from RCAIDE.Framework.Missions.Initialization   import *
+from RCAIDE.Framework.Missions.Update           import *
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Mission Segment
@@ -25,30 +26,61 @@ from RCAIDE.Framework.Missions.Initialization import *
 
 
 @dataclass(kw_only=True)
-class MissionInitialization(Process):
+class SegmentInitialization(Process):
 
-    name: str = 'Mission Initialization'
+    name: str = 'Segment Initialization'
 
     def __post_init__(self):
 
-        self.append(ProcessStep(name="Initialize Time",
-                                function=initialize_time))
-        self.append(ProcessStep(name="Initialize Mass",
-                                function=initialize_mass))
-        self.append(ProcessStep(name="Initialize Energy",
-                                function=initialize_energy))
+        default_steps = [
+            #Step Name                          Step Functions
+            ("Initialize Time",                 initialize_time),
+            ("Initialize Mass",                 initialize_mass),
+            ("Initialize Energy",               initialize_energy),
+            ("Initialize Inertial Position",    initialize_inertial_position),
+            ("Initialize Planetary Position",   initialize_planetary_position)
+        ]
+
+        for name, function in default_steps:
+            self.append(ProcessStep(name=name, function=function))
 
 
 @dataclass(kw_only=True)
-class MissionIteration(Process):
+class SegmentUpdate(Process):
 
-    name: str = "Mission Iteration"
+    name: str = "Segment Iteration"
 
     def __post_init__(self):
-        return
+
+        default_steps = [
+            ("Update Time Differentials",   update_time_differentials),
+            ("Update Acceleration",         update_acceleration),
+            ("Update Angular Acceleration", update_angular_acceleration),
+            ("Update Altitude",             update_),
+            ("Update Atmosphere",           update_),
+            ("Update Gravity",              update_),
+            ("Update Freestream",           update_),
+            ("Update Orientations",         update_),
+            ("Update Energy",               update_),
+            ("Update Aerodynamics",         update_),
+            ("Update Stability",            update_),
+            ("Update Mass",                 update_),
+            ("Update Forces",               update_),
+            ("Update Moments",              update_),
+            ("Update Planetary Position",   update_)
+        ]
+
+        for name, function in default_steps:
+            self.append(ProcessStep(name=name, function=function))
+
 
 @dataclass(kw_only=True)
-class MissionFinalization(Process):
+class SegmentConvergence(Process):
+
+    name: str = "Segment Convergence"
+
+@dataclass(kw_only=True)
+class SegmentFinalization(Process):
 
     name: str = "Mission Finalization"
 
@@ -60,9 +92,9 @@ class MissionSegment(Process):
 
     analyses: list[Process] = field(default_factory=list)
 
-    initialization: MissionInitialization   = MissionInitialization()
-    iteration:      MissionIteration        = MissionIteration()
-    finalization:   MissionFinalization     = MissionFinalization()
+    initialization: SegmentInitialization   = SegmentInitialization()
+    iteration:      SegmentUpdate           = SegmentUpdate()
+    finalization:   SegmentFinalization     = SegmentFinalization()
 
     def __post_init__(self):
         self.append(ProcessStep(name="Expand State",

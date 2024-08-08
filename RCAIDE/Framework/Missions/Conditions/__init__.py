@@ -6,7 +6,7 @@ from Conditions         import Conditions
 from AeroDerivatives    import AeroDerivativesConditions
 from Aerodynamics       import AerodynamicsConditions
 from Controls           import ControlsConditions
-from Energy             import EnergyConditions
+from Energy             import *
 from Frames             import FrameConditions
 from Freestream         import FreestreamConditions
 from Mass               import MassConditions

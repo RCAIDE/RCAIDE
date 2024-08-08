@@ -29,9 +29,10 @@ class State(Conditions):
     initials:           Conditions                  = None
 
     frames:             FrameConditions             = FrameConditions()
+    freestream:         FreestreamConditions        = FreestreamConditions()
 
     mass:               MassConditions              = MassConditions()
-    energy:             EnergyConditions            = EnergyConditions()
+    energy:             NetworkConditions           = NetworkConditions()
     noise:              NoiseConditions             = NoiseConditions()
 
     aerodynamics:       AerodynamicsConditions      = AerodynamicsConditions()
@@ -39,8 +40,8 @@ class State(Conditions):
 
     controls:           ControlsConditions          = ControlsConditions()
 
-    unknowns:           np.ndarray                  = field(default_factory=lambda: np.zeros((1, 1)))
-    residuals:          np.ndarray                  = field(default_factory=lambda: np.zeros((1, 1)))
+    unknowns:           Conditions                  = Conditions(name='Unknowns')
+    residuals:          Conditions                  = Conditions(name='Residuals')
 
     def __post_init__(self):
         self.initials = State(name='Initial State')
