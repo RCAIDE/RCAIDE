@@ -1,5 +1,5 @@
 ## @ingroup Energy-Networks
-# RCAIDE/Energy/Networks/All_Electric_Network.py
+# RCAIDE/Energy/Networks/Electric.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -12,6 +12,8 @@ import RCAIDE
 from RCAIDE.Framework.Mission.Common                      import Residuals
 from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import bus_unknowns
 from .Network                                             import Network
+from RCAIDE.Library.Methods.Propulsors.Common.compute_avionics_power_draw import compute_avionics_power_draw
+from RCAIDE.Library.Methods.Propulsors.Common.compute_payload_power_draw  import compute_payload_power_draw 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  All Electric
@@ -89,11 +91,13 @@ class Electric(Network):
                 payload         = bus.payload  
                 batteries       = bus.batteries
                 
-                # Avionics Power Consumtion 
-                avionics.power() 
+                # Avionics Power Consumtion
+                avionics_conditions = state.conditions.energy[bus.tag][avionics.tag]
+                compute_avionics_power_draw(avionics,avionics_conditions,conditions)
                 
-                # Payload Power 
-                payload.power() 
+                # Payload Power
+                payload_conditions = state.conditions.energy[bus.tag][payload.tag]
+                compute_payload_power_draw(payload,payload_conditions,conditions)
                             
                 # Bus Voltage 
                 bus_voltage = bus.voltage * state.ones_row(1)
@@ -101,8 +105,8 @@ class Electric(Network):
                 if recharging_flag:
                     for battery in batteries: 
                         # append compoment power to bus 
-                        avionics_power         = (avionics.inputs.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1)
-                        payload_power          = (payload.inputs.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1)            
+                        avionics_power         = (avionics_conditions.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1)
+                        payload_power          = (payload_conditions.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1)            
                         total_esc_power        = 0 * state.ones_row(1)     
                         charging_power         = (state.conditions.energy[bus.tag][battery.tag].pack.current*bus_voltage*battery.bus_power_split_ratio)/len(batteries)
                        
@@ -112,15 +116,14 @@ class Electric(Network):
                         battery.energy_calc(state,bus,recharging_flag)  
                 else:       
                     # compute energy consumption of each battery on bus  
-                    for battery in batteries:
-        
+                    for battery in batteries: 
                         stored_results_flag  = False
                         stored_propulsor_tag = None 
                         for propulsor in bus.propulsors:  
                             if propulsor.active == True:  
                                 if bus.identical_propulsors == False:
                                     # run analysis  
-                                    T,M,P,stored_results_flag,stored_propulsor_tag = propulsor.compute_performance(state,bus,center_of_gravity)
+                                    T,M,P,stored_results_flag,stored_propulsor_tag = propulsor.compute_performance(state,bus,bus_voltage,center_of_gravity)
                                 else:             
                                     if stored_results_flag == False: 
                                         # run propulsor analysis 
@@ -134,8 +137,8 @@ class Electric(Network):
                                 total_power  += P 
                         
                         # compute power from each componemnt 
-                        avionics_power  = (avionics.inputs.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1) 
-                        payload_power   = (payload.inputs.power*battery.bus_power_split_ratio)/len(batteries) * state.ones_row(1)  
+                        avionics_power  = (avionics_conditions.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1) 
+                        payload_power   = (payload_conditions.power*battery.bus_power_split_ratio)/len(batteries) * state.ones_row(1)  
                         charging_power  = bus.charging_power*battery.bus_power_split_ratio/len(batteries)
                         total_esc_power = P*battery.bus_power_split_ratio  
                            
@@ -187,7 +190,7 @@ class Electric(Network):
             elif bus.active: 
                 for i, propulsor in enumerate(bus.propulsors):  
                     add_additional_network_equation = bus.identical_propulsors == False or i == 0
-                    propulsor.unpack_propulsor_unknown(segment,bus,add_additional_network_equation)
+                    propulsor.unpack_propulsor_unknowns(segment,bus,add_additional_network_equation)
         return     
     
     def residuals(self,segment):
@@ -251,8 +254,6 @@ class Electric(Network):
         segment.state.residuals.network = Residuals()  
          
         for bus_i, bus in enumerate(busses):  
-            batteries                                = bus.batteries 
-
             # ------------------------------------------------------------------------------------------------------            
             # Create bus results data structure  
             # ------------------------------------------------------------------------------------------------------
@@ -260,21 +261,22 @@ class Electric(Network):
             segment.state.conditions.noise[bus.tag]  = RCAIDE.Framework.Mission.Common.Conditions()   
                 
             # ------------------------------------------------------------------------------------------------------
-            # Assign battery residuals, unknowns and results data structures 
-            # ------------------------------------------------------------------------------------------------------   
-            for b_i , battery in enumerate(batteries): 
-                # Append Operating Conditions 
-                battery.append_operating_conditions(segment,bus)           
-                 
-            # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
-            # ------------------------------------------------------------------------------------------------------
-            for i, propulsor in enumerate(bus.propulsors): 
-                add_additional_network_equation = bus.identical_propulsors == False or i == 0  
-                propulsor.append_operating_conditions(segment,bus,add_additional_network_equation)
-                for tag, item in  propulsor.items(): 
-                    if issubclass(type(item), RCAIDE.Library.Components.Component):
-                        item.append_operating_conditions(segment,bus,propulsor) 
+            # ------------------------------------------------------------------------------------------------------ 
+            for tag, item in  bus.items():
+                if tag == 'batteries':
+                    for battery in item:  
+                        battery.append_operating_conditions(segment,bus)
+                elif tag == 'propulsors':  
+                    for i, propulsor in enumerate(item): 
+                        add_additional_network_equation = bus.identical_propulsors == False or i == 0  
+                        propulsor.append_operating_conditions(segment,bus,add_additional_network_equation)
+                        for tag, sub_item in  propulsor.items(): 
+                            if issubclass(type(sub_item), RCAIDE.Library.Components.Component):
+                                sub_item.append_operating_conditions(segment,bus,propulsor)  
+                elif issubclass(type(item), RCAIDE.Library.Components.Component):
+                    item.append_operating_conditions(segment,bus)
+                    
             
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network            = self.unpack_unknowns

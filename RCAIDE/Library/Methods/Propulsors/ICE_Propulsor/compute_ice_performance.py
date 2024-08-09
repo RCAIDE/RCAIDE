@@ -10,6 +10,7 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Core import Units  
 from RCAIDE.Library.Methods.Propulsors.Converters.Engine import compute_power_from_throttle
+from RCAIDE.Library.Methods.Propulsors.Converters.Rotor.compute_rotor_performance import  compute_rotor_performance
 
 # pacakge imports  
 import numpy as np 
@@ -56,13 +57,11 @@ def compute_ice_performance(ice_propeller,state,fuel_line,center_of_gravity= [[0
     ice_conditions.engine.throttle        = eta 
     compute_power_from_throttle(engine,ice_conditions,conditions)    
     torque                                = ice_conditions.engine.torque     
-    
-    # link engine RPM to propeller 
-    ice_conditions.rotor.y_axis_rotation = ice_conditions.y_axis_rotation
-    ice_conditions.rotor.omega           = RPM * Units.rpm  
-
-    # Spin the propeller 
-    F, Q, P, Cp, outputs, etap = propeller.spin(conditions) 
+     
+    # Run the propeller to get the power
+    propeller_conditions                = ice_conditions[propeller.tag]
+    propeller_conditions.omega          = RPM * Units.rpm 
+    F,M,Q,P,Cp,etap                     = compute_rotor_performance(ice_propeller,state,fuel_line,center_of_gravity)  
 
     # Check to see if magic thrust is needed, the ESC caps throttle at 1.1 already
     P[eta>1.0]          = P[eta>1.0]*eta[eta>1.0]

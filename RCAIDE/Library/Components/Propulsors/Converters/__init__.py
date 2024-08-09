@@ -33,6 +33,6 @@ from .Rotor                                      import Rotor
 from .Prop_Rotor                                 import Prop_Rotor
 from .Offtake_Shaft                              import Offtake_Shaft
 from Legacy.trunk.S.Components.Energy.Converters import Solar_Panel
-from Legacy.trunk.S.Components.Energy.Converters import Supersonic_Nozzle
+from .Supersonic_Nozzle                          import Supersonic_Nozzle
 from .Turbine                                    import Turbine
 

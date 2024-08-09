@@ -41,11 +41,11 @@ class ICE_Propeller(Propulsor):
         append_ice_propeller_conditions(self,segment,fuel_line,add_additional_network_equation)
         return
 
-    def unpack_propulsor_unknown(self,segment,fuel_line,add_additional_network_equation = False):  
+    def unpack_propulsor_unknowns(self,segment,fuel_line,add_additional_network_equation = False):  
         unpack_ice_propeller_unknowns(self,segment,fuel_line,add_additional_network_equation)
         return 
 
-    def pack_network_residuals(self,segment,fuel_line,add_additional_network_equation = False): 
+    def pack_propulsor_residuals(self,segment,fuel_line,add_additional_network_equation = False): 
         pack_ice_propeller_residuals(self,segment,fuel_line,add_additional_network_equation)
         return
     

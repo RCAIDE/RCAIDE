@@ -411,18 +411,14 @@ class Results(Conditions):
         # ----------------------------------------------------------------------------------------------------------------------         
         # Noise 
         # ----------------------------------------------------------------------------------------------------------------------       
-        self.noise                                            = Conditions()
-        self.noise.distribution_lines                         = Conditions()
-        #self.noise.distribution_lines.[Any]                = Conditions() 
+        self.noise                                            = Conditions() 
 
         # ----------------------------------------------------------------------------------------------------------------------         
         # Energy
         # ---------------------------------------------------------------------------------------------------------------------- 
         self.energy                                           = Conditions()
         self.energy.throttle                                  = ones_1col * 0  
-        self.energy.thrust_breakdown                          = Conditions()
-        self.energy.distribution_lines                        = Conditions()
-        #self.energy.distribution_lines.fuel_line              = Conditions() 
+        self.energy.thrust_breakdown                          = Conditions()     
         
         # ----------------------------------------------------------------------------------------------------------------------         
         # Weights 

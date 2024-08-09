@@ -30,7 +30,7 @@ def vehicle_setup(current,cell_chemistry,fixed_bus_voltage):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    bus                              = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus() 
+    bus                              = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus() 
  
     # Battery    
     if cell_chemistry == 'lithium_ion_nmc': 

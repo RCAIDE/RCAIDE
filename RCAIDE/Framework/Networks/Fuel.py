@@ -144,7 +144,7 @@ class Fuel(Network):
         for fuel_line in fuel_lines: 
             for i, propulsor in enumerate(fuel_line.propulsors):  
                 add_additional_network_equation = fuel_line.identical_propulsors == False or i == 0
-                propulsor.unpack_propulsor_unknown(segment,fuel_line,add_additional_network_equation)
+                propulsor.unpack_propulsor_unknowns(segment,fuel_line,add_additional_network_equation)
  
         return    
      

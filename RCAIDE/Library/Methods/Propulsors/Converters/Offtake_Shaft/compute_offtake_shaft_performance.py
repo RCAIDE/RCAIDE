@@ -13,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_offtake_shaft_performance
 # ----------------------------------------------------------------------------------------------------------------------     
-def compute_offtake_shaft_performance(offtake_shaft, state):
+def compute_offtake_shaft_performance(offtake_shaft,offtake_shaft_conditions, conditions):
     """ This computes the work done from the power draw. The following properties are computed: 
     offtake_shaft.outputs.
       power        (numpy.ndarray): power                              [W]
@@ -39,17 +39,17 @@ def compute_offtake_shaft_performance(offtake_shaft, state):
         offtake_shaft.outputs.work_done = np.array([0.0]) 
     else: 
         # unpack 
-        total_temperature_reference = offtake_shaft.inputs.total_temperature_reference
-        total_pressure_reference    = offtake_shaft.inputs.total_pressure_reference
-        mdhc                        = offtake_shaft.inputs.mdhc
+        total_temperature_reference = offtake_shaft_conditions.inputs.total_temperature_reference
+        total_pressure_reference    = offtake_shaft_conditions.inputs.total_pressure_reference
+        mdhc                        = offtake_shaft_conditions.inputs.mdhc
         Tref                        = offtake_shaft.reference_temperature
         Pref                        = offtake_shaft.reference_pressure
         
         # compute core mass flow rate 
         mdot_core = mdhc * np.sqrt(Tref / total_temperature_reference) * (total_pressure_reference / Pref)
 
-        offtake_shaft.outputs.power     = offtake_shaft.power_draw
-        offtake_shaft.outputs.work_done = offtake_shaft.outputs.power / mdot_core  # normalize 
-        offtake_shaft.outputs.work_done[mdot_core == 0] = 0
+        offtake_shaft_conditions.outputs.power     = offtake_shaft.power_draw
+        offtake_shaft_conditions.outputs.work_done = offtake_shaft_conditions.outputs.power / mdot_core  # normalize 
+        offtake_shaft_conditions.outputs.work_done[mdot_core == 0] = 0
         
     return 

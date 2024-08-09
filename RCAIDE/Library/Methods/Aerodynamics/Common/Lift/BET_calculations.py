@@ -66,7 +66,7 @@ def compute_airfoil_aerodynamics(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
     Ma       = W/a
     Re       = (W*c)/nu
 
-    # If propeller airfoils are defined, use airfoil surrogate
+    # If rotor airfoils are defined, use airfoil surrogate
     if a_loc != None:  
         # Compute blade Cl and Cd distribution from the airfoil data 
         if use_2d_analysis:

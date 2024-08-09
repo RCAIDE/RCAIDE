@@ -96,8 +96,8 @@ def blade_geometry_setup(rotor,number_of_stations):
     
     vehicle                            = RCAIDE.Vehicle()  
     net                                = RCAIDE.Framework.Networks.Electric() 
-    bus                                = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus()
-    propulsor                          = RCAIDE.Library.Components.Propulsors.Propulsor()
+    bus                                = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus()
+    propulsor                          = RCAIDE.Library.Components.Propulsors.Electric_Rotor()
     propulsor.rotor                    = rotor  
     bus.propulsors.append(propulsor)
     net.busses.append(bus)
@@ -108,12 +108,12 @@ def blade_geometry_setup(rotor,number_of_stations):
     
     config                              = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag                          = 'hover' 
-    config.networks.electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
+    config.networks.electric.busses.bus.propulsors.electric_rotor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
     configs.append(config)        
 
     config                              = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag                          = 'oei' 
-    config.networks.electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
+    config.networks.electric.busses.bus.propulsors.electric_rotor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0]    
     configs.append(config)       
     
     if type(rotor) == RCAIDE.Library.Components.Propulsors.Converters.Prop_Rotor:  
@@ -126,6 +126,6 @@ def blade_geometry_setup(rotor,number_of_stations):
         
         config                          = RCAIDE.Library.Components.Configs.Config(base_config)
         config.tag                      = 'cruise'
-        config.networks.electric.busses.bus.propulsors.propulsor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0] 
+        config.networks.electric.busses.bus.propulsors.electric_rotor.rotor.orientation_euler_angles = [0.0,np.pi/2,0.0] 
         configs.append(config)
     return configs 

@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fan 
 # ----------------------------------------------------------------------------------------------------------------------            
-def compute_fan_performance(fan,fan_conditions, freestream):
+def compute_fan_performance(fan,fan_conditions,conditions):
     """ This computes the output values from the input values according to
     equations from the source. The following outputs are computed: 
     fan_conditions.outputs.
@@ -38,8 +38,8 @@ def compute_fan_performance(fan,fan_conditions, freestream):
     """        
     
     # Unpack flight conditions 
-    gamma     = freestream.isentropic_expansion_factor
-    Cp        = freestream.specific_heat_at_constant_pressure
+    gamma     = conditions.freestream.isentropic_expansion_factor
+    Cp        = conditions.freestream.specific_heat_at_constant_pressure
      
     # unpack from fan
     PR        = fan.pressure_ratio

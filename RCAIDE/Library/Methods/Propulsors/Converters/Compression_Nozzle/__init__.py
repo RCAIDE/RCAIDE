@@ -7,7 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-        
-from .compute_scramjet_compression           import compute_scramjet_compression
+         
 from .compute_compression_nozzle_performance import compute_compression_nozzle_performance
 from .append_compression_nozzle_conditions   import append_compression_nozzle_conditions 

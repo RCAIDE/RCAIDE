@@ -16,7 +16,7 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_power_from_throttle
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_power_from_throttle(engine,engine_conditions,freestream):
+def compute_power_from_throttle(engine,engine_conditions,conditions):
     """ The internal combustion engine output power and specific power consumption.
     The following properties are computed:
         engine
@@ -47,8 +47,8 @@ def compute_power_from_throttle(engine,engine_conditions,freestream):
     """
 
     # Unpack
-    altitude    = freestream.altitude
-    delta_isa   = freestream.delta_ISA 
+    altitude    = conditions.freestream.altitude
+    delta_isa   = conditions.freestream.delta_ISA 
     PSLS        = engine.sea_level_power
     h_flat      = engine.flat_rate_altitude
     omega       = engine_conditions.speed

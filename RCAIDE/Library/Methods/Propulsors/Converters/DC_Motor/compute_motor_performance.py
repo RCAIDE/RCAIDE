@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Propulsors/Converters/DC_Motor/motor_performance.py
+# RCAIDE/Library/Methods/Propulsors/Converters/DC_Motor/compute_motor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2024, RCAIDE Team 
@@ -12,7 +12,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_Q_from_omega_and_V
 # ---------------------------------------------------------------------------------------------------------------------- 
-def compute_torque_from_RPM_and_voltage(motor,motor_conditions,freestream):
+def compute_torque_from_RPM_and_voltage(motor,motor_conditions,conditions):
     """Calculates the motor's torque based on RPM (angular velocity) and voltage.  
     The following perperties of the motor are computed
     
@@ -62,7 +62,7 @@ def compute_torque_from_RPM_and_voltage(motor,motor_conditions,freestream):
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_omega_and_Q_from_Cp_and_V
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditions,freestream):
+def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditions,conditions):
     """Calculates the motors RPM and torque using power coefficient and operating voltage.
     The following perperties of the motor are computed  
     motor.outputs.torque                    (numpy.ndarray):  torque [Nm]
@@ -93,7 +93,7 @@ def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditi
         None
     """           
     # Unpack 
-    rho   = freestream.density[:,0,None]
+    rho   = conditions.freestream.density[:,0,None]
     Res   = motor.resistance
     eta_G = motor.gearbox_efficiency
     exp_I = motor.expected_current
@@ -123,7 +123,7 @@ def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditi
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_I_from_omega_and_V
 # ---------------------------------------------------------------------------------------------------------------------- 
-def compute_current_from_RPM_and_voltage(motor, motor_conditions,freestream):
+def compute_current_from_RPM_and_voltage(motor, motor_conditions,conditions):
     """Calculates the motor's current from its RPM and voltage. 
     The following perperties of the motor are computed   
     motor.outputs.current     (numpy.ndarray): current      [A]
@@ -173,7 +173,7 @@ def compute_current_from_RPM_and_voltage(motor, motor_conditions,freestream):
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_V_and_I_from_omega_and_Kv
 # ----------------------------------------------------------------------------------------------------------------------      
-def compute_voltage_and_current_from_RPM_and_speed_constant(motor, motor_conditions,freestream):
+def compute_voltage_and_current_from_RPM_and_speed_constant(motor, motor_conditions,conditions):
     """Calculates the motor's voltage and current from its RPM and speed constant
     The following perperties of the motor are computed    
         motor.outputs.current     (numpy.ndarray): current    [A] 

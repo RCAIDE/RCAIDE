@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_compression_nozzle_performance
 # ----------------------------------------------------------------------------------------------------------------------  
-def compute_compressor_performance(compressor,compressor_conditions,freestream):
+def compute_compressor_performance(compressor,compressor_conditions,conditions):
     """ Computes the performance of a compressor bases on its polytropic efficiency.
         The following properties are computed: 
        compressor.outputs.
@@ -36,8 +36,8 @@ def compute_compressor_performance(compressor,compressor_conditions,freestream):
     """          
     
     # Unpack flight conditions 
-    gamma    = freestream.isentropic_expansion_factor
-    Cp       = freestream.specific_heat_at_constant_pressure
+    gamma    = conditions.freestream.isentropic_expansion_factor
+    Cp       = conditions.freestream.specific_heat_at_constant_pressure
     
     # Unpack component inputs
     Tt_in    = compressor_conditions.inputs.stagnation_temperature

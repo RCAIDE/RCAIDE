@@ -8,7 +8,7 @@
 # compute_electric_rotor_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Modulators
-def compute_voltage_out_from_throttle(esc,esc_conditions,freestream):
+def compute_voltage_out_from_throttle(esc,esc_conditions,conditions):
     """ The voltage out of the electronic speed controller
     
         Assumptions:
@@ -48,7 +48,7 @@ def compute_voltage_out_from_throttle(esc,esc_conditions,freestream):
 # compute_voltage_in_from_throttle
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Modulators
-def compute_voltage_in_from_throttle(esc,esc_conditions,freestream):
+def compute_voltage_in_from_throttle(esc,esc_conditions,conditions):
     """ The voltage out of the electronic speed controller
 
         Assumptions:
@@ -89,7 +89,7 @@ def compute_voltage_in_from_throttle(esc,esc_conditions,freestream):
 # compute_throttle_from_voltages
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Modulators
-def compute_throttle_from_voltages(esc,esc_conditions,freestream):
+def compute_throttle_from_voltages(esc,esc_conditions,conditions):
 
     """ The voltage out of the electronic speed controller
 
@@ -126,7 +126,7 @@ def compute_throttle_from_voltages(esc,esc_conditions,freestream):
 # compute_current_in_from_throttle
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Modulators
-def compute_current_in_from_throttle(esc,esc_conditions,freestream):
+def compute_current_in_from_throttle(esc,esc_conditions,conditions):
     """ The current going into the speed controller
     
         Assumptions:

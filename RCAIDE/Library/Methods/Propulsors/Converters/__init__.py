@@ -15,6 +15,7 @@ from . import Compressor
 from . import DC_Motor
 from . import Engine
 from . import Expansion_Nozzle
+from . import Supersonic_Nozzle
 from . import Fan 
 from . import Ram
 from . import Rotor 

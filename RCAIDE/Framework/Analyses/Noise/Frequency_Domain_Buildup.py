@@ -6,15 +6,13 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
-from .Noise      import Noise  
-from RCAIDE.Library.Components.Component import Container 
-
+# ----------------------------------------------------------------------------------------------------------------------  
 # noise imports    
 from RCAIDE.Library.Methods.Noise.Common.decibel_arithmetic                           import SPL_arithmetic
 from RCAIDE.Library.Methods.Noise.Common.generate_microphone_locations                import generate_zero_elevation_microphone_locations, generate_noise_hemisphere_microphone_locations
 from RCAIDE.Library.Methods.Noise.Common.compute_relative_noise_evaluation_locations  import compute_relative_noise_evaluation_locations  
-from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.rotor_noise          import rotor_noise 
+from RCAIDE.Library.Methods.Noise.Frequency_Domain_Buildup.Rotor.compute_rotor_noise  import compute_rotor_noise 
+from .Noise      import Noise   
 
 # package imports
 import numpy as np
@@ -158,14 +156,14 @@ class Frequency_Domain_Buildup(Noise):
                 for bus in network.busses: 
                     for propulsor in bus.propulsors: 
                         if ('rotor' in  propulsor) or  ('propeller' in  propulsor):
-                            rotor_noise_res   = rotor_noise(propulsor.rotor,conditions.noise[bus.tag][propulsor.tag].rotor,segment,settings)   
+                            rotor_noise_res   = compute_rotor_noise(bus,propulsor,segment,settings)   
                             total_SPL_dBA     = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],rotor_noise_res.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
                             total_SPL_spectra = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,:],rotor_noise_res.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1)  
             if 'fuel_line ' in network:
                 for fuel_line in network.fuel_lines:  
                     for propulsor in fuel_line.propulsors:
                         if ('rotor' in  propulsor) or  ('propeller' in  propulsor):
-                            rotor_noise_res   = rotor_noise(propulsor.rotor,conditions.noise[fuel_line.tag][propulsor.tag].rotor,segment,settings)   
+                            rotor_noise_res   = compute_rotor_noise(fuel_line,propulsor,segment,settings)   
                             total_SPL_dBA     = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],rotor_noise_res.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
                             total_SPL_spectra = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,:],rotor_noise_res.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1) 
         conditions.noise.total_SPL_dBA              = total_SPL_dBA

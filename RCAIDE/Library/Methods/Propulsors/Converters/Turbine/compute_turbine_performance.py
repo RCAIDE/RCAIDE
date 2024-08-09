@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_turbine_performance
 # ----------------------------------------------------------------------------------------------------------------------     
-def compute_turbine_performance(turbine,turbine_conditions,freestream):
+def compute_turbine_performance(turbine,turbine_conditions,conditions):
     """This computes the output values from the input values according to
     equations from the source. The following properties are computed: 
     turbine.outputs.
@@ -39,8 +39,8 @@ def compute_turbine_performance(turbine,turbine_conditions,freestream):
         None 
     """            
     # Unpack flight conditions 
-    gamma           = freestream.isentropic_expansion_factor
-    Cp              = freestream.specific_heat_at_constant_pressure
+    gamma           = conditions.freestream.isentropic_expansion_factor
+    Cp              = conditions.freestream.specific_heat_at_constant_pressure
     
     #Unpack turbine entering properties 
     eta_mech        = turbine.mechanical_efficiency
@@ -50,12 +50,8 @@ def compute_turbine_performance(turbine,turbine_conditions,freestream):
     Pt_in           = turbine_conditions.inputs.stagnation_pressure
     compressor_work = turbine_conditions.inputs.compressor.work_done
     fan_work        = turbine_conditions.inputs.fan.work_done
-    f               = turbine_conditions.inputs.fuel_to_air_ratio
-
-    if turbine_conditions.inputs.shaft_power_off_take is not None:
-        shaft_takeoff = turbine_conditions.inputs.shaft_power_off_take.work_done
-    else:
-        shaft_takeoff = 0.
+    f               = turbine_conditions.inputs.fuel_to_air_ratio 
+    shaft_takeoff   = turbine_conditions.inputs.shaft_power_off_take.work_done 
   
     # Using the work done by the compressors/fan and the fuel to air ratio to compute the energy drop across the turbine
     deltah_ht = -1/(1+f) * (compressor_work + shaft_takeoff + alpha * fan_work) * 1/eta_mech

@@ -10,8 +10,6 @@
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
 from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor.append_motor_conditions import  append_motor_conditions
-from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor import compute_RPM_and_torque_from_power_coefficent_and_voltage , compute_current_from_RPM_and_voltage
-
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  DC_Motor  
@@ -59,52 +57,6 @@ class DC_Motor(Component):
         self.wing_mounted       = False
         self.interpolated_func  = None
         
-    def compute_omega(self,motor_conditions,freestream): 
-        """Calculates the motor's rotation rate
-        
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
-        """                   
-         
-        compute_RPM_and_torque_from_power_coefficent_and_voltage(self,motor_conditions,freestream)    
-        
-        return 
-    
-    def compute_current_draw(self,motor_conditions,freestream):
-        """Calculates the current draw from a DC motor 
-        
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
-        """             
-         
-        compute_current_from_RPM_and_voltage(self,motor_conditions,freestream)        
-        
-        return
-
     def append_operating_conditions(self,segment,bus,propulsor):
         propulsor_conditions =  segment.state.conditions.energy[bus.tag][propulsor.tag]
         append_motor_conditions(self,segment,propulsor_conditions)

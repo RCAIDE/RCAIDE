@@ -172,7 +172,7 @@ def lithium_ion_battery_test(Ereq,Preq):
 
 def set_up_conditions(battery_li_ion):           
     
-    bus                                                                                = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus()  
+    bus                                                                                = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus()  
     state                                                                              = Conditions()  
     state.numerics                                                                     = Conditions()
     state.numerics.time                                                                = Conditions() 

@@ -222,7 +222,7 @@ def vehicle_setup():
     #==================================================================================================================================== 
     # Lift Bus 
     #====================================================================================================================================          
-    bus                                                    = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus()
+    bus                                                    = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus()
     bus.tag                                                = 'bus' 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -252,7 +252,7 @@ def vehicle_setup():
     lift_propulsor.active_batteries               = ['bus_battery']          
               
     # Electronic Speed Controller           
-    prop_rotor_esc                                = RCAIDE.Library.Components.Propulsors.Modulators.Electronic_Speed_Controller()
+    prop_rotor_esc                                = RCAIDE.Library.Components.Energy.Modulators.Electronic_Speed_Controller()
     prop_rotor_esc.efficiency                     = 0.95    
     prop_rotor_esc.tag                            = 'prop_rotor_esc_1'  
     lift_propulsor.electronic_speed_controller    = prop_rotor_esc  

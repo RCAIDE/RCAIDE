@@ -338,7 +338,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    bus                              = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus() 
+    bus                              = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus() 
 
     #------------------------------------------------------------------------------------------------------------------------------------           
     # Battery
@@ -366,7 +366,7 @@ def vehicle_setup():
     starboard_propulsor.active_batteries             = ['li_ion_battery']   
   
     # Electronic Speed Controller       
-    esc                                              = RCAIDE.Library.Components.Propulsors.Modulators.Electronic_Speed_Controller()
+    esc                                              = RCAIDE.Library.Components.Energy.Modulators.Electronic_Speed_Controller()
     esc.tag                                          = 'esc_1'
     esc.efficiency                                   = 0.95 
     starboard_propulsor.electronic_speed_controller  = esc   

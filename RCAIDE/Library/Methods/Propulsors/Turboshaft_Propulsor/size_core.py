@@ -17,7 +17,7 @@ import numpy                                                       as np
 #  size_core
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Energy-Propulsors-Turboshaft_Propulsor 
-def size_core(turboshaft,conditions):
+def size_core(turboshaft,turboshaft_conditions,conditions):
     """Sizes the core flow for the design condition.
 
     Assumptions:
@@ -49,14 +49,14 @@ def size_core(turboshaft,conditions):
     #unpack from turboshaft
     Tref                                           = turboshaft.reference_temperature
     Pref                                           = turboshaft.reference_pressure 
-    total_temperature_reference                    = turboshaft.inputs.total_temperature_reference  
-    total_pressure_reference                       = turboshaft.inputs.total_pressure_reference 
+    total_temperature_reference                    = turboshaft_conditions.total_temperature_reference  
+    total_pressure_reference                       = turboshaft_conditions.total_pressure_reference 
 
     #compute nondimensional power
-    compute_power(turboshaft,conditions)
+    compute_power(turboshaft,turboshaft_conditions,conditions)
 
     #unpack results 
-    Psp                                            = turboshaft.outputs.non_dimensional_power
+    Psp                                            = turboshaft_conditions.non_dimensional_power
     
     #compute dimensional mass flow rates
     mdot_air                                       = turboshaft.design_power/Psp

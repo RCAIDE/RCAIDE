@@ -17,7 +17,7 @@ import numpy                               as np
 #  compute_power
 # ----------------------------------------------------------------------------------------------------------------------
 
-def compute_power(turboshaft,conditions,throttle = 1.0):
+def compute_power(turboshaft,turboshaft_conditions,conditions):
     """Computes power and other properties as below.
 
     Assumptions:
@@ -82,14 +82,14 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     a0                                         = conditions.freestream.speed_of_sound                                                                   
     M0                                         = conditions.freestream.mach_number                                                                      
     Cp                                         = conditions.freestream.Cp                                                                               # Source [2]
-    total_temperature_reference                = turboshaft.inputs.total_temperature_reference                                                          
-    total_pressure_reference                   = turboshaft.inputs.total_pressure_reference                                                             # Source [1]
+    total_temperature_reference                = turboshaft_conditions.total_temperature_reference                                                          
+    total_pressure_reference                   = turboshaft_conditions.total_pressure_reference                                                             # Source [1]
     eta_c                                      = turboshaft.conversion_efficiency                                                                       # Source [2]
                                                                                                                                                         
     #unpacking from turboshaft                                                                                                                          
     Tref                                       = turboshaft.reference_temperature                                                                       # Source [1]
     Pref                                       = turboshaft.reference_pressure                                                                          # Source [1]
-    Tt4                                        = turboshaft.combustor.outputs.stagnation_temperature                                                    
+    Tt4                                        = turboshaft_conditions.combustor_stagnation_temperature                                                    
     pi_c                                       = turboshaft.compressor.pressure_ratio                                                                   
     m_dot_compressor                           = turboshaft.compressor.mass_flow_rate                                                                   # Source [2]
                                                                                                                                                         
@@ -134,11 +134,11 @@ def compute_power(turboshaft,conditions,throttle = 1.0):
     eta_T                                      = 1 - (tau_r*(tau_c - 1))/(tau_lambda*(1 - x/(tau_r*tau_c)))                                             # Source [1]    
 
     #pack outputs
-    turboshaft.outputs.power_specific_fuel_consumption   = PSFC
-    turboshaft.outputs.fuel_flow_rate                    = fuel_flow_rate                                                                              
-    turboshaft.outputs.power                             = Power
-    turboshaft.outputs.non_dimensional_power             = Psp
-    turboshaft.outputs.non_dimensional_thrust            = Tsp
-    turboshaft.outputs.thermal_efficiency                = eta_T
+    turboshaft_conditions.power_specific_fuel_consumption   = PSFC
+    turboshaft_conditions.fuel_flow_rate                    = fuel_flow_rate                                                                              
+    turboshaft_conditions.power                             = Power
+    turboshaft_conditions.non_dimensional_power             = Psp
+    turboshaft_conditions.non_dimensional_thrust            = Tsp
+    turboshaft_conditions.thermal_efficiency                = eta_T
 
     return 

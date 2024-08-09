@@ -15,7 +15,7 @@ from Legacy.trunk.S.Methods.Propulsion.fm_solver import fm_solver
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_rayleigh
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_rayleigh(combustor,conditions):
+def compute_rayleigh(combustor,combustor_conditions,conditions):
     """ This combutes the temperature and pressure change across the combustor using Rayleigh Line flow.
     The following properties are computed 
         combustor_conditions.outputs.

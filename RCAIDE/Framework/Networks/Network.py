@@ -1,50 +1,38 @@
-## @ingroup Networks
-# RCAIDE/Energy/Networks/Network.py
-# 
+# RCAIDE/Library/Compoments/Energy/Networks/Network.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 #
-# Created:  Jul 2023, M. Clarke
+# Created:  Jul 2024, RCAIDE Team
 # Modified: Aug 2023, E. Botero
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from RCAIDE.Library.Components import Component  
+ 
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Components import Component
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  NETWORK
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Energy-Networks
+# ---------------------------------------------------------------------------------------------------------------------- 
 class Network(Component):
-    """ RCAIDE.Energy.Networks.Network()
-        The Top Level Network Class
-            Assumptions:
-            None
-            Source:
-            N/As
+    """ The top-level network class.
     """
     def __defaults__(self):
         """ This sets the default attributes for the network.
-                Assumptions:
-                None
-                Source:
-                N/A
-                Inputs:
-                None
-                Outputs:
-                None
-                Properties Used:
-                N/A
-        """
-        self.tag                    = 'network'  
-        self.busses                 = Container()     
-        self.fuel_lines             = Container()    
-        self.wing_mounted           = True
-        self.reverse_thrust         = False
         
+            Assumptions:
+                None
+            
+            Source:
+                None 
+        """
+        self.tag                          = 'network'  
+        self.busses                       = Container()     
+        self.fuel_lines                   = Container()
+        self.system_voltage               = None   
+        self.reverse_thrust               = False
+        self.wing_mounted                 = True
 
 # ----------------------------------------------------------------------
 #  Component Container
@@ -70,7 +58,6 @@ class Container(Component.Container):
         for net in self.values(): 
             net.evaluate(state,center_of_gravity)  
         return  
-     
     
 # ----------------------------------------------------------------------
 #  Handle Linking

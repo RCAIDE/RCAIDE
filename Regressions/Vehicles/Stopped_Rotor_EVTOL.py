@@ -390,7 +390,7 @@ def vehicle_setup() :
     #==================================================================================================================================== 
     # Forward Bus
     #====================================================================================================================================  
-    cruise_bus                                             = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus() 
+    cruise_bus                                             = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus() 
     cruise_bus.tag                                         = 'cruise_bus'
      
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -418,7 +418,7 @@ def vehicle_setup() :
     cruise_propulsor_1.active_batteries                    = ['cruise_bus_battery']   
                  
     # Electronic Speed Controller                     
-    propeller_esc                                          = RCAIDE.Library.Components.Propulsors.Modulators.Electronic_Speed_Controller() 
+    propeller_esc                                          = RCAIDE.Library.Components.Energy.Modulators.Electronic_Speed_Controller() 
     propeller_esc.efficiency                               = 0.95  
     propeller_esc.origin                                   = [[6.583, 1.300,  1.092 ]] 
     propeller_esc.tag                                      = 'propeller_esc_1' 
@@ -584,7 +584,7 @@ def vehicle_setup() :
     #==================================================================================================================================== 
     # Lift Bus 
     #====================================================================================================================================          
-    lift_bus                                               = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus()
+    lift_bus                                               = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus()
     lift_bus.tag                                           = 'lift_bus' 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
@@ -614,7 +614,7 @@ def vehicle_setup() :
     lift_propulsor_1.active_batteries                      = ['lift_bus_battery']          
               
     # Electronic Speed Controller           
-    lift_rotor_esc                                         = RCAIDE.Library.Components.Propulsors.Modulators.Electronic_Speed_Controller()
+    lift_rotor_esc                                         = RCAIDE.Library.Components.Energy.Modulators.Electronic_Speed_Controller()
     lift_rotor_esc.efficiency                              = 0.95    
     lift_rotor_esc.tag                                     = 'lift_rotor_esc_1' 
     lift_rotor_esc.origin                                  = [[-0.073 ,  1.950 , 1.2]] 

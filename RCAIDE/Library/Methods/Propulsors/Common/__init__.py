@@ -10,6 +10,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from .compute_static_sea_level_performance                                    import compute_static_sea_level_performance
+from .append_avionics_conditions                                              import append_avionics_conditions
+from .append_payload_conditions                                               import append_payload_conditions
+
 from Legacy.trunk.S.Methods.Propulsion.fm_id                                  import fm_id
 from Legacy.trunk.S.Methods.Propulsion.fm_solver                              import fm_solver
 from Legacy.trunk.S.Methods.Propulsion.rayleigh                               import rayleigh

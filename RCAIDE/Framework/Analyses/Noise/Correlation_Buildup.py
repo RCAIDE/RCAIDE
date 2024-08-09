@@ -152,7 +152,7 @@ class Correlation_Buildup(Noise):
     
         # flap noise - only applicable for turbofan aircraft
         if 'flap' in config.wings.main_wing.control_surfaces:    
-            airframe_noise_res        = airframe_noise(segment,analyses,config,settings)     
+            airframe_noise_res        = airframe_noise(segment,analyses,config,settings) 
             total_SPL_dBA             = SPL_arithmetic(np.concatenate((total_SPL_dBA[:,None,:],airframe_noise_res.SPL_dBA[:,None,:]),axis =1),sum_axis=1)
             total_SPL_spectra[:,:,5:] = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,5:],airframe_noise_res.SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1)
              

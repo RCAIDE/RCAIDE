@@ -63,36 +63,35 @@ def compute_turboshaft_performance(turboshaft,state,fuel_line,center_of_gravity=
     compressor_conditions   = turboshaft_conditions[compressor.tag] 
     lpt_conditions          = turboshaft_conditions[low_pressure_turbine.tag]
     hpt_conditions          = turboshaft_conditions[high_pressure_turbine.tag]
-    combustor_conditions    = turboshaft_conditions[combustor.tag]
-    freestream              = conditions.freestream 
+    combustor_conditions    = turboshaft_conditions[combustor.tag] 
 
 
     # Set the working fluid to determine the fluid properties
     ram.working_fluid    = turboshaft.working_fluid
 
     # Flow through the ram , this computes the necessary flow quantities and stores it into conditions
-    compute_ram_performance(ram,ram_conditions, freestream)
+    compute_ram_performance(ram,ram_conditions,conditions)
   
     # Link inlet nozzle to ram 
     inlet_nozzle_conditions.inputs.stagnation_temperature             = ram_conditions.outputs.stagnation_temperature 
     inlet_nozzle_conditions.inputs.stagnation_pressure                = ram_conditions.outputs.stagnation_pressure
 
     # Flow through the inlet nozzle
-    compute_compression_nozzle_performance(inlet_nozzle,inlet_nozzle_conditions, freestream)
+    compute_compression_nozzle_performance(inlet_nozzle,inlet_nozzle_conditions,conditions)
  
     # Link compressor to the inlet nozzle
-    compressor_conditions.inputs.stagnation_temperature                   = inlet_nozzle.outputs.stagnation_temperature
-    compressor_conditions.inputs.stagnation_pressure                      = inlet_nozzle.outputs.stagnation_pressure
+    compressor_conditions.inputs.stagnation_temperature              = inlet_nozzle_conditions.outputs.stagnation_temperature
+    compressor_conditions.inputs.stagnation_pressure                 = inlet_nozzle_conditions.outputs.stagnation_pressure
                                                                
     # Flow through the low pressure compressor
-    compute_compressor_performance(compressor,compressor_conditions, freestream)
+    compute_compressor_performance(compressor,compressor_conditions,conditions)
                                                                
     #link the combustor to the compressor                      
     combustor_conditions.inputs.stagnation_temperature                    = compressor_conditions.outputs.stagnation_temperature
     combustor_conditions.inputs.stagnation_pressure                       = compressor_conditions.outputs.stagnation_pressure
                                                                
     # Flow through the combustor                                
-    compute_combustor_performance(combustor,conditions)        
+    compute_combustor_performance(combustor,combustor_conditions,conditions)        
                                                                
     # Link the high pressure turbine to the combustor           
     hpt_conditions.inputs.stagnation_temperature        = combustor_conditions.outputs.stagnation_temperature
@@ -101,9 +100,10 @@ def compute_turboshaft_performance(turboshaft,state,fuel_line,center_of_gravity=
                                                                
     # Link the high pressure turbine to the compressor          
     hpt_conditions.inputs.compressor                    = compressor_conditions.outputs
+    hpt_conditions.inputs.bypass_ratio                  = 0.0  
 
     # Flow through the high pressure turbine
-    compute_turbine_performance(high_pressure_turbine,conditions)
+    compute_turbine_performance(high_pressure_turbine,hpt_conditions,conditions)
 
     # Link the low pressure turbine to the high pressure turbine
     lpt_conditions.inputs.stagnation_temperature         = hpt_conditions.outputs.stagnation_temperature
@@ -113,17 +113,19 @@ def compute_turboshaft_performance(turboshaft,state,fuel_line,center_of_gravity=
     lpt_conditions.inputs.fuel_to_air_ratio              = combustor_conditions.outputs.fuel_to_air_ratio
                                                                
     # Get the bypass ratio from the thrust component            
-    lpt_conditions.inputs.bypass_ratio                   = 0.0
+    lpt_conditions.inputs.compressor                     = Data()
+    lpt_conditions.inputs.compressor.work_done           = 0.0
+    lpt_conditions.inputs.bypass_ratio                   = 0.0 
 
     # Flow through the low pressure turbine
-    compute_turbine_performance(low_pressure_turbine,conditions)
+    compute_turbine_performance(low_pressure_turbine,lpt_conditions,conditions)
 
     # Link the core nozzle to the low pressure turbine
     core_nozzle_conditions.inputs.stagnation_temperature                  = lpt_conditions.outputs.stagnation_temperature
     core_nozzle_conditions.inputs.stagnation_pressure                     = lpt_conditions.outputs.stagnation_pressure
 
     # Flow through the core nozzle
-    compute_expansion_nozzle_performance(core_nozzle,conditions)
+    compute_expansion_nozzle_performance(core_nozzle,core_nozzle_conditions,conditions)
  
     # Link the thrust component to the core nozzle
     turboshaft_conditions.core_exit_velocity                       = core_nozzle_conditions.outputs.velocity
@@ -134,13 +136,14 @@ def compute_turboshaft_performance(turboshaft,state,fuel_line,center_of_gravity=
     turboshaft_conditions.fuel_to_air_ratio                        = combustor_conditions.outputs.fuel_to_air_ratio 
 
     # Link the thrust component to the low pressure compressor 
+    turboshaft_conditions.combustor_stagnation_temperature         = combustor_conditions.outputs.stagnation_temperature
     turboshaft_conditions.total_temperature_reference              = compressor_conditions.inputs.stagnation_temperature
     turboshaft_conditions.total_pressure_reference                 = compressor_conditions.inputs.stagnation_pressure 
     turboshaft_conditions.flow_through_core                        =  1.0 #scaled constant to turn on core thrust computation
     turboshaft_conditions.flow_through_fan                         =  0.0 #scaled constant to turn on fan thrust computation        
     
     # Compute the power
-    compute_power(turboshaft,turboshaft_conditions,freestream) 
+    compute_power(turboshaft,turboshaft_conditions,conditions) 
 
     # Store data
     core_nozzle_res = Data(
@@ -151,7 +154,7 @@ def compute_turboshaft_performance(turboshaft,state,fuel_line,center_of_gravity=
                 exit_velocity                       = core_nozzle_conditions.outputs.velocity
             )
   
-    noise_conditions.turbofan.core_nozzle   = core_nozzle_res  
+    noise_conditions.turboshaft.core_nozzle   = core_nozzle_res  
     
     # Pack results   
     moment                 = 0*state.ones_row(3)

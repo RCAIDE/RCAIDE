@@ -10,8 +10,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .                                           import Converters 
-from .                                           import Modulators 
+from .                                           import Converters  
 from .Propulsor                                  import Propulsor
 from .Electric_Rotor                             import Electric_Rotor
 from .ICE_Propeller                              import ICE_Propeller

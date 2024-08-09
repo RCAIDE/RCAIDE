@@ -9,7 +9,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
   
-from .rotor_noise                   import rotor_noise 
+from .compute_rotor_noise           import compute_rotor_noise 
 from .broadband_noise               import broadband_noise
 from .harmonic_noise                import harmonic_noise
 from .BPM_boundary_layer_properties import BPM_boundary_layer_properties 

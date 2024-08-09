@@ -13,7 +13,7 @@ import numpy as np
 # ---------------------------------------------------------------------------------------------------------------------- 
 # calculate_power_from_throttle
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_supersonic_combustion(combustor,conditions): 
+def compute_supersonic_combustion(combustor,combustor_conditions,conditions): 
     """ This function computes the output values for supersonic combustion (Scramjet).
     This will be done using stream thrust analysis. The following properties are computed. 
     combustor_conditions.outputs. 

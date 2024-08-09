@@ -41,16 +41,16 @@ class Electric_Rotor(Propulsor):
         append_electric_rotor_conditions(self,segment,bus,add_additional_network_equation)
         return
 
-    def unpack_propulsor_unknown(self,segment,bus,add_additional_network_equation = False):  
+    def unpack_propulsor_unknowns(self,segment,bus,add_additional_network_equation = False):  
         unpack_electric_rotor_unknowns(self,segment,bus,add_additional_network_equation)
         return 
 
-    def pack_network_residuals(self,segment,bus,add_additional_network_equation = False): 
+    def pack_propulsor_residuals(self,segment,bus,add_additional_network_equation = False): 
         pack_electric_rotor_residuals(self,segment,bus,add_additional_network_equation)
         return    
     
-    def compute_performance(self,state,bus,center_of_gravity = [[0, 0, 0]]):
-        thrust,moment,power,current, stored_results_flag,stored_propulsor_tag =  compute_electric_rotor_performance(self,state,bus,center_of_gravity)
+    def compute_performance(self,state,bus,voltage,center_of_gravity = [[0, 0, 0]]):
+        thrust,moment,power,current,stored_results_flag,stored_propulsor_tag =  compute_electric_rotor_performance(self,state,bus,voltage,center_of_gravity)
         return thrust,moment,power,stored_results_flag,stored_propulsor_tag
     
     def reuse_stored_data(turboshaft,state,bus,stored_propulsor_tag,center_of_gravity = [[0, 0, 0]]):

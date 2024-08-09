@@ -25,10 +25,8 @@ def append_electric_rotor_conditions(propulsor,segment,bus,add_additional_networ
     segment.state.conditions.energy[bus.tag][propulsor.tag].orientation          = 0. * ones_row(1)  
     segment.state.conditions.energy[bus.tag][propulsor.tag].thrust               = 0. * ones_row(3) 
     segment.state.conditions.energy[bus.tag][propulsor.tag].power                = 0. * ones_row(1) 
-    segment.state.conditions.energy[bus.tag][propulsor.tag].moment               = 0. * ones_row(3) 
-    segment.state.conditions.energy[bus.tag][propulsor.tag].inputs               = Conditions()
-    segment.state.conditions.energy[bus.tag][propulsor.tag].outputs              = Conditions()
-    
+    segment.state.conditions.energy[bus.tag][propulsor.tag].moment               = 0. * ones_row(3)  
+    segment.state.conditions.noise[bus.tag][propulsor.tag]                       = Conditions()
 
     if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge: 
         segment.state.conditions.energy.recharging  = True 

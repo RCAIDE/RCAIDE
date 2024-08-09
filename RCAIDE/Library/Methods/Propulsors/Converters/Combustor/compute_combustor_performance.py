@@ -1,12 +1,18 @@
 # RCAIDE/Library/Methods/Propulsors/Converters/Combustor/compute_combustor_performance.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 # 
-# Created:  Jun 2024, M. Clarke  
+# Created:  Jun 2024, M. Clarke
+
+
+# ---------------------------------------------------------------------------------------------------------------------- 
+#  Imports 
+# ----------------------------------------------------------------------------------------------------------------------   
+import  numpy as  np 
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_combustor_performance
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_combustor_performance(combustor,combustor_conditions, freestream):
+def compute_combustor_performance(combustor,combustor_conditions,conditions):
     """ This computes the output values from the input values according to
         equations from the source. The following properties are computed         
         combustor_conditions.outputs.
@@ -42,13 +48,13 @@ def compute_combustor_performance(combustor,combustor_conditions, freestream):
         None
     """          
     # unpacking the values from conditions 
-    Cp      =  freestream.specific_heat_at_constant_pressure 
+    Cp      =  conditions.freestream.specific_heat_at_constant_pressure 
     
     # unpacking the values form inputs
     Tt_in    = combustor_conditions.inputs.stagnation_temperature
     Pt_in    = combustor_conditions.inputs.stagnation_pressure
     nondim_r = combustor_conditions.inputs.nondim_mass_ratio 
-    Tt4      = combustor.turbine_inlet_temperature
+    Tt4      = combustor.turbine_inlet_temperature *  np.ones_like(Tt_in)
     pib      = combustor.pressure_ratio
     eta_b    = combustor.efficiency
     htf      = combustor.fuel_data.specific_energy 

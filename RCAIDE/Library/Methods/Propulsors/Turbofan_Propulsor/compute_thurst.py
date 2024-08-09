@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_thrust
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_thrust(turbofan,turbofan_conditions,freestream):
+def compute_thrust(turbofan,turbofan_conditions,conditions):
     """Computes thrust and other properties of the turbofan listed below: 
     turbofan.  
       .outputs.thrust                           (numpy.ndarray): thrust                     [N] 
@@ -44,9 +44,9 @@ def compute_thrust(turbofan,turbofan_conditions,freestream):
            freestream.gravity                            (numpy.ndarray): freestream gravity            [m/s^2] 
            propulsion.throttle                           (numpy.ndarray): throttle                      [unitless] 
         turbofan 
-           .inputs.fuel_to_air_ratio                          (float): fuel_to_air_ratio                    [unitless] 
-           .inputs.total_temperature_reference                (float): total_temperature_reference          [K] 
-           .inputs.total_pressure_reference                   (float): total_pressure_reference             [Pa]    
+           ..fuel_to_air_ratio                          (float): fuel_to_air_ratio                    [unitless] 
+           ..total_temperature_reference                (float): total_temperature_reference          [K] 
+           ..total_pressure_reference                   (float): total_pressure_reference             [Pa]    
            .core_nozzle.velocity                      (numpy.ndarray): turbofan core nozzle velocity        [m/s] 
            .core_nozzle.static_pressure               (numpy.ndarray): turbofan core nozzle static pressure [Pa] 
            .core_nozzle.area_ratio                            (float): turbofan core nozzle area ratio      [unitless] 
@@ -62,12 +62,12 @@ def compute_thrust(turbofan,turbofan_conditions,freestream):
          
     """      
     # Unpack flight conditions 
-    gamma                       = freestream.isentropic_expansion_factor 
-    u0                          = freestream.velocity
-    a0                          = freestream.speed_of_sound
-    M0                          = freestream.mach_number
-    p0                          = freestream.pressure  
-    g                           = freestream.gravity        
+    gamma                       = conditions.freestream.isentropic_expansion_factor 
+    u0                          = conditions.freestream.velocity
+    a0                          = conditions.freestream.speed_of_sound
+    M0                          = conditions.freestream.mach_number
+    p0                          = conditions.freestream.pressure  
+    g                           = conditions.freestream.gravity        
 
     # Unpack turbofan operating conditions and properties 
     Tref                        = turbofan.reference_temperature
@@ -79,12 +79,12 @@ def compute_thrust(turbofan,turbofan_conditions,freestream):
     total_pressure_reference    = turbofan_conditions.total_pressure_reference 
     flow_through_core           = turbofan_conditions.flow_through_core 
     flow_through_fan            = turbofan_conditions.flow_through_fan  
-    V_fan_nozzle                = turbofan_conditions.fan_nozzle.velocity
-    fan_area_ratio              = turbofan_conditions.fan_nozzle.area_ratio
-    P_fan_nozzle                = turbofan_conditions.fan_nozzle.static_pressure
-    P_core_nozzle               = turbofan_conditions.core_nozzle.static_pressure
-    V_core_nozzle               = turbofan_conditions.core_nozzle.velocity
-    core_area_ratio             = turbofan_conditions.core_nozzle.area_ratio                   
+    V_fan_nozzle                = turbofan_conditions.fan_nozzle_exit_velocity
+    fan_area_ratio              = turbofan_conditions.fan_nozzle_area_ratio
+    P_fan_nozzle                = turbofan_conditions.fan_nozzle_static_pressure
+    P_core_nozzle               = turbofan_conditions.core_nozzle_static_pressure
+    V_core_nozzle               = turbofan_conditions.core_nozzle_exit_velocity
+    core_area_ratio             = turbofan_conditions.core_nozzle_area_ratio                   
     bypass_ratio                = turbofan_conditions.bypass_ratio  
 
     # Compute  non dimensional thrust

@@ -3,8 +3,6 @@
 # 
 # 
 # Created:  Jul 2023, M. Clarke
-
-import  RCAIDE
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  energy
@@ -24,7 +22,7 @@ def energy(mission):
 
         Properties Used:
         N/A                
-    """
+    """       
     for segment in mission.segments:
         for network in segment.analyses.energy.vehicle.networks:
             network.add_unknowns_and_residuals_to_segment(segment) 

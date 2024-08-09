@@ -60,7 +60,7 @@ def compute_static_sea_level_performance(propulsor):
 
 
     ## setup conditions  
-    fuel_line                = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()
+    fuel_line                = RCAIDE.Library.Components.Energy.Distributors.Fuel_Line()
     segment                  = RCAIDE.Framework.Mission.Segments.Segment()  
     segment.state.conditions = conditions     
     segment.state.conditions.energy[fuel_line.tag] = Conditions()

@@ -16,7 +16,7 @@ import numpy as np
 #  size_core
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Methods-Energy-Propulsors-Turbofan_Propulsor 
-def size_core(turbofan,turbofan_conditions, freestream):
+def size_core(turbofan,turbofan_conditions,conditions):
     """Sizes the core flow for the design condition by computing the
     non-dimensional thrust 
 
@@ -29,9 +29,9 @@ def size_core(turbofan,turbofan_conditions, freestream):
     Args:
         conditions.freestream.speed_of_sound  (numpy.ndarray): [m/s]  
         turbofan
-          .inputs.bypass_ratio                (float): bypass_ratio                [-]
-          .inputs.total_temperature_reference (float): total temperature reference [K]
-          .inputs.total_pressure_reference    (float): total pressure reference    [Pa]  
+          .bypass_ratio                (float): bypass_ratio                [-]
+          .total_temperature_reference (float): total temperature reference [K]
+          .total_pressure_reference    (float): total pressure reference    [Pa]  
           .reference_temperature              (float): reference temperature       [K]
           .reference_pressure                 (float): reference pressure          [Pa]
           .design_thrust                      (float): design thrust               [N]  
@@ -40,7 +40,7 @@ def size_core(turbofan,turbofan_conditions, freestream):
         None 
     """             
     # Unpack flight conditions 
-    a0             = freestream.speed_of_sound
+    a0             = conditions.freestream.speed_of_sound
 
     # Unpack turbofan flight conditions 
     bypass_ratio   = turbofan_conditions.bypass_ratio
@@ -50,7 +50,7 @@ def size_core(turbofan,turbofan_conditions, freestream):
     Pt_ref         = turbofan_conditions.total_pressure_reference  
     # Compute nondimensional thrust
     turbofan_conditions.throttle = 1.0
-    compute_thrust(turbofan,turbofan_conditions, freestream) 
+    compute_thrust(turbofan,turbofan_conditions,conditions) 
 
     # Compute dimensional mass flow rates
     Fsp        = turbofan_conditions.non_dimensional_thrust

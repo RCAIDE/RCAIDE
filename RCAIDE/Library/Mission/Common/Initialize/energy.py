@@ -44,7 +44,7 @@ def energy(segment):
 
     """ 
 
-    conditions = segment.state.conditions.energy.distribution_lines
+    conditions = segment.state.conditions.energy
     
     # loop through batteries in networks
     for network in segment.analyses.energy.vehicle.networks:  
@@ -52,7 +52,7 @@ def energy(segment):
         if 'busses' in network: 
             for bus in network.busses:
                 for battery in bus.batteries:   
-                    battery_conditions = conditions.energy[bus.tag][battery.tag]
+                    battery_conditions = conditions[bus.tag][battery.tag]
                     if segment.state.initials:  
                         battery_initials                                        = segment.state.initials.conditions.energy[bus.tag][battery.tag]  
                         if type(segment) ==  RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:             

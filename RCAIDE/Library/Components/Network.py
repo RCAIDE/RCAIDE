@@ -46,7 +46,6 @@ class Network(Data):
             None
             """         
         self.tag                = 'Network' 
-        self.distribution_lines =  Data()
         self.mass_properties    = Mass_Properties()
         self.origin             = np.array([[0.0,0.0,0.0]]) 
         self.inputs             = Data()

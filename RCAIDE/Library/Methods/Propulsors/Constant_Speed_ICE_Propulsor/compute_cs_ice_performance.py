@@ -10,6 +10,7 @@
 # RCAIDE imports  
 from RCAIDE.Framework.Core import Units  
 from RCAIDE.Library.Methods.Propulsors.Converters.Engine import compute_throttle_from_power
+from RCAIDE.Library.Methods.Propulsors.Converters.Rotor.compute_rotor_performance import  compute_rotor_performance
 
 # pacakge imports  
 import numpy as np 
@@ -44,16 +45,16 @@ def compute_cs_ice_performance(ice_cs_propeller,state,fuel_line,center_of_gravit
     N.A.        
     '''  
     conditions              = state.conditions  
-    ice_cs_conditions       = conditions.energy[fuel_line.tag][ice_cs_propeller.tag]
-    noise_conditions        = conditions.noise[fuel_line.tag][ice_cs_propeller.tag] 
+    ice_cs_conditions       = conditions.energy[fuel_line.tag][ice_cs_propeller.tag] 
     engine                  = ice_cs_propeller.engine 
     propeller               = ice_cs_propeller.propeller
     RPM                     = ice_cs_conditions.engine.rpm  
 
     # Run the propeller to get the power
-    ice_cs_conditions.rotor.inputs.inputs.omega    = RPM * Units.rpm
-    ice_cs_conditions.rotor.inputs.pitch_command   = ice_cs_conditions.throttle - 0.5
-    F, Q, P, Cp, outputs, etap       = propeller.spin(conditions) 
+    propeller_conditions                = ice_cs_conditions[propeller.tag]
+    propeller_conditions.omega          = RPM * Units.rpm
+    propeller_conditions.pitch_command  = ice_cs_conditions.throttle - 0.5
+    F, M, Q, P, Cp, etap                = compute_rotor_performance(ice_cs_propeller,state,fuel_line,center_of_gravity)
 
     # Run the engine to calculate the throttle setting and the fuel burn
     ice_cs_conditions.engine.inputs.power = P
@@ -74,9 +75,7 @@ def compute_cs_ice_performance(ice_cs_propeller,state,fuel_line,center_of_gravit
     ice_cs_conditions.rotor.tip_mach        = (R*RPM *Units.rpm)/conditions.freestream.speed_of_sound 
     ice_cs_conditions.rotor.disc_loading    = (F_mag)/(np.pi*(R**2))             
     ice_cs_conditions.rotor.power_loading   = (F_mag)/(P)    
-    ice_cs_conditions.rotor.efficiency      = etap
-    ice_cs_conditions.rotor.figure_of_merit = outputs.figure_of_merit
-    noise_conditions.rotor                  = outputs  
+    ice_cs_conditions.rotor.efficiency      = etap 
     power                                   = P
     thrust                                  = F  
     stored_results_flag                     = True
