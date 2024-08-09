@@ -386,7 +386,7 @@ def run_rotor_cruise(nexus):
         nexus.results.cruise.max_sectional_cl = 0.0
         nexus.results.cruise.mean_CL          = 0.0
         nexus.results.cruise.efficiency       = 0.0  
-        nexus.results.cruise.mean_SPL         = 0 
+        nexus.results.cruise.mean_SPL         = 0.0
         nexus.results.cruise.noise_data       = None   
 
     return nexus
