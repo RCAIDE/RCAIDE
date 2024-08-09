@@ -93,7 +93,8 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
     elif 'propeller' in  propulsor:
         rotor =  propulsor.propeller
     
-    rotor_conditions      = conditions.energy[disributor.tag][propulsor.tag][rotor.tag] 
+    rotor_conditions      = conditions.energy[disributor.tag][propulsor.tag][rotor.tag]
+    eta                   = rotor_conditions.throttle 
     omega                 = rotor_conditions.omega
     pitch_c               = rotor_conditions.pitch_command
     B                     = rotor.number_of_blades
@@ -393,18 +394,22 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
     FoM      = thrust*np.sqrt(thrust/(2*rho_0*A))    /power  
 
     # prevent things from breaking
-    Cq[Cq<0]                                               = 0.
-    Ct[Ct<0]                                               = 0.
-    Cp[Cp<0]                                               = 0.
-    thrust[omega<0.0]                                      = -thrust[omega<0.0]
-    thrust[omega==0.0]                                     = 0.0
-    power[omega==0.0]                                      = 0.0
-    torque[omega==0.0]                                     = 0.0
-    rotor_drag[omega==0.0]                                 = 0.0
-    Ct[omega==0.0]                                         = 0.0
-    Cp[omega==0.0]                                         = 0.0
-    etap[omega==0.0]                                       = 0.0
-
+    Cq[Cq<0]                   = 0.
+    Ct[Ct<0]                   = 0.
+    Cp[Cp<0]                   = 0.
+    thrust[omega<0.0]          = -thrust[omega<0.0]
+    thrust[omega==0.0]         = 0.0
+    power[omega==0.0]          = 0.0
+    torque[omega==0.0]         = 0.0
+    rotor_drag[omega==0.0]     = 0.0
+    Ct[omega==0.0]             = 0.0
+    Cp[omega==0.0]             = 0.0
+    etap[omega==0.0]           = 0. 
+    thrust[eta[:,0]  <=0.0]    = 0.0
+    power[eta[:,0]  <=0.0]     = 0.0
+    torque[eta[:,0]  <=0.0]    = 0.0 
+    power[eta>1.0]             = power[eta>1.0]*eta[eta>1.0]
+    thrust[eta[:,0]>1.0,:]     = thrust[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:] 
 
     # Make the thrust a 3D vector
     thrust_prop_frame      = np.zeros((ctrl_pts,3))
@@ -475,4 +480,4 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
     
     conditions.energy[disributor.tag][propulsor.tag][rotor.tag] = outputs   
     
-    return thrust_vector,moment,torque, power, Cp, etap
+    return  

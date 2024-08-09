@@ -10,11 +10,11 @@ from RCAIDE.Framework.Mission.Common     import   Conditions
 # ----------------------------------------------------------------------------------------------------------------------    
 def append_rotor_conditions(rotor,segment,energy_conditions,noise_conditions): 
     ones_row    = segment.state.ones_row 
-    energy_conditions[rotor.tag]                   = Conditions()
-    energy_conditions[rotor.tag].inputs            = Conditions()     
+    energy_conditions[rotor.tag]                   = Conditions()   
     energy_conditions[rotor.tag].orientation       = 0. * ones_row(3)  
     energy_conditions[rotor.tag].pitch_command     = 0. * ones_row(1)
     energy_conditions[rotor.tag].torque            = 0. * ones_row(1)
+    energy_conditions[rotor.tag].throttle          = ones_row(1)
     energy_conditions[rotor.tag].thrust            = 0. * ones_row(1)
     energy_conditions[rotor.tag].rpm               = 0. * ones_row(1)
     energy_conditions[rotor.tag].omega             = 0. * ones_row(1)

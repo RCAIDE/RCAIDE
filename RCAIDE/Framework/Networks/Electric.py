@@ -110,9 +110,10 @@ class Electric(Network):
                         total_esc_power        = 0 * state.ones_row(1)     
                         charging_power         = (state.conditions.energy[bus.tag][battery.tag].pack.current*bus_voltage*battery.bus_power_split_ratio)/len(batteries)
                        
-                        # append bus outputs to battery 
-                        battery.outputs.power       = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
-                        battery.outputs.current     = -battery.outputs.power/bus_voltage
+                        # append bus outputs to battery
+                        battery_conditions                   = state.conditions.energy[bus.tag][battery.tag] 
+                        battery_conditions.pack.power_draw   = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
+                        battery_conditions.pack.current_draw = -battery_conditions.pack.power_draw/bus_voltage
                         battery.energy_calc(state,bus,recharging_flag)  
                 else:       
                     # compute energy consumption of each battery on bus  
@@ -143,8 +144,9 @@ class Electric(Network):
                         total_esc_power = P*battery.bus_power_split_ratio  
                            
                         # append bus outputs to battery 
-                        battery.outputs.power       = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
-                        battery.outputs.current     = battery.outputs.power/bus_voltage
+                        battery_conditions                    = state.conditions.energy[bus.tag][battery.tag] 
+                        battery_conditions.pack.power_draw    = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
+                        battery_conditions.pack.current_draw  = battery_conditions.pack.power_draw/bus_voltage
                         battery.energy_calc(state,bus,recharging_flag)       
                          
                 
@@ -271,7 +273,7 @@ class Electric(Network):
                     for i, propulsor in enumerate(item): 
                         add_additional_network_equation = bus.identical_propulsors == False or i == 0  
                         propulsor.append_operating_conditions(segment,bus,add_additional_network_equation)
-                        for tag, sub_item in  propulsor.items(): 
+                        for sub_tag, sub_item in  propulsor.items(): 
                             if issubclass(type(sub_item), RCAIDE.Library.Components.Component):
                                 sub_item.append_operating_conditions(segment,bus,propulsor)  
                 elif issubclass(type(item), RCAIDE.Library.Components.Component):

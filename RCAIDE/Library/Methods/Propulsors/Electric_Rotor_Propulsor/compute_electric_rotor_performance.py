@@ -60,6 +60,7 @@ def compute_electric_rotor_performance(propulsor,state,bus,voltage,center_of_gra
     eta                        = conditions.energy[bus.tag][propulsor.tag].throttle
 
     esc_conditions.inputs.voltage   = voltage
+    esc_conditions.throttle         = eta 
     compute_voltage_out_from_throttle(esc,esc_conditions,conditions)
 
     # Assign conditions to the rotor
@@ -68,35 +69,16 @@ def compute_electric_rotor_performance(propulsor,state,bus,voltage,center_of_gra
     compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditions,conditions)
     
     # Spin the rotor 
-    rotor_conditions.omega    = motor_conditions.outputs.omega 
-    F, M, Q, P, Cp, etap      = compute_rotor_performance(propulsor,state,bus,center_of_gravity)  
-
-    # Check to see if magic thrust is needed, the ESC caps throttle at 1.1 already
-    F[eta[:,0]  <=0.0] = 0.0
-    P[eta[:,0]  <=0.0] = 0.0
-    Q[eta[:,0]  <=0.0] = 0.0 
-    P[eta>1.0]         = P[eta>1.0]*eta[eta>1.0]
-    F[eta[:,0]>1.0,:]  = F[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:]
+    rotor_conditions.omega       = motor_conditions.outputs.omega
+    rotor_conditions.throttle    = esc_conditions.throttle 
+    compute_rotor_performance(propulsor,state,bus,center_of_gravity)  
 
     # Run the motor for current
     compute_current_from_RPM_and_voltage(motor,motor_conditions,conditions)
-
-    # Determine Conditions specific to this instantation of motor and rotors
-    R                   = rotor.tip_radius
-    rpm                 = motor_conditions.outputs.omega / Units.rpm
-    F_mag               = np.atleast_2d(np.linalg.norm(F, axis=1)).T 
-
+ 
     # Pack specific outputs
     motor_conditions.efficiency        = motor_conditions.outputs.efficiency
-    motor_conditions.torque            = motor_conditions.outputs.torque
-    rotor_conditions.torque            = Q 
-    rotor_conditions.power             = P 
-    rotor_conditions.thrust            = F
-    rotor_conditions.rpm               = rpm
-    rotor_conditions.tip_mach          = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound
-    rotor_conditions.disc_loading      = (F_mag)/(np.pi*(R**2))
-    rotor_conditions.power_loading     = (F_mag)/(P)
-    rotor_conditions.efficiency        = etap 
+    motor_conditions.torque            = motor_conditions.outputs.torque 
 
     # Detemine esc current 
     esc_conditions.outputs.current = motor_conditions.outputs.current
@@ -107,10 +89,16 @@ def compute_electric_rotor_performance(propulsor,state,bus,voltage,center_of_gra
     stored_results_flag     = True
     stored_propulsor_tag    = propulsor.tag 
     
-    electric_rotor_conditions.thrust      = rotor_conditions.thrust 
-    electric_rotor_conditions.moment      = rotor_conditions.momemt 
-     
-    return rotor_conditions.thrust,rotor_conditions.momemt,esc_conditions.power,esc_conditions.current, stored_results_flag,stored_propulsor_tag 
+    # compute total forces and moments from propulsor (future work would be to add moments from motors)
+    conditions.energy[bus.tag][propulsor.tag].thrust      = conditions.energy[bus.tag][propulsor.tag][rotor.tag].thrust 
+    conditions.energy[bus.tag][propulsor.tag].moment      = conditions.energy[bus.tag][propulsor.tag][rotor.tag].moment 
+    
+    T  = conditions.energy[bus.tag][propulsor.tag].thrust 
+    M  = conditions.energy[bus.tag][propulsor.tag].moment 
+    P  = esc_conditions.power
+    I  = esc_conditions.current
+    
+    return T,M,P,I, stored_results_flag,stored_propulsor_tag 
                 
 def reuse_stored_electric_rotor_data(propulsor,state,bus,stored_propulsor_tag,center_of_gravity= [[0.0, 0.0,0.0]]):
     '''Reuses results from one propulsor for identical propulsors
@@ -168,7 +156,6 @@ def reuse_stored_electric_rotor_data(propulsor,state,bus,stored_propulsor_tag,ce
     moment                  =  np.cross(moment_vector, thrust)
     
     conditions.energy[bus.tag][propulsor.tag][rotor.tag].moment = moment  
-    conditions.energy[bus.tag][propulsor.tag].orientation       = 0 # TO CHANGE 
     conditions.energy[bus.tag][propulsor.tag].thrust            = thrust   
     conditions.energy[bus.tag][propulsor.tag].moment            = moment  
     
