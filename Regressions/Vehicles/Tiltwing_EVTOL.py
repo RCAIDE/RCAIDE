@@ -11,7 +11,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units, Data    
 from RCAIDE.Library.Methods.Performance.estimate_cruise_drag                   import estimate_cruise_drag 
-from RCAIDE.Library.Methods.Energy.Sources.Battery.Common                      import initialize_from_circuit_configuration 
+from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common                    import initialize_from_circuit_configuration 
 from RCAIDE.Library.Methods.Weights.Correlation_Buildups.Propulsion            import nasa_motor
 from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor                     import design_motor
 from RCAIDE.Library.Methods.Propulsors.Converters.Rotor                        import design_prop_rotor ,design_prop_rotor 
@@ -290,7 +290,8 @@ def vehicle_setup():
                                                      rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
     prop_rotor.append_airfoil(airfoil)                
     prop_rotor.airfoil_polar_stations             = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]   
-    design_prop_rotor(prop_rotor)     
+    design_prop_rotor(prop_rotor)
+    lift_propulsor.rotor                          = prop_rotor 
      
     
     #------------------------------------------------------------------------------------------------------------------------------------               
@@ -410,7 +411,7 @@ def configs_setup(vehicle):
     for network in  config.networks: 
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
-                propulsor.rotor.inputs.y_axis_rotation =  vector_angle 
+                propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
     configs.append(config)
 
     # ------------------------------------------------------------------
@@ -426,8 +427,8 @@ def configs_setup(vehicle):
     for network in  config.networks: 
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
-                propulsor.rotor.inputs.y_axis_rotation = vector_angle
-                propulsor.rotor.inputs.pitch_command   = propulsor.rotor.cruise.design_collective_pitch  
+                propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
+                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_collective_pitch  
     configs.append(config)
     
 
@@ -444,8 +445,8 @@ def configs_setup(vehicle):
     for network in  config.networks: 
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
-                propulsor.rotor.inputs.y_axis_rotation = vector_angle
-                propulsor.rotor.inputs.pitch_command   = propulsor.rotor.cruise.design_collective_pitch  
+                propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
+                propulsor.rotor.pitch_command     = propulsor.rotor.cruise.design_collective_pitch  
     configs.append(config) 
 
     # ------------------------------------------------------------------
@@ -461,8 +462,8 @@ def configs_setup(vehicle):
     for network in  config.networks: 
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
-                propulsor.rotor.inputs.y_axis_rotation = vector_angle
-                propulsor.rotor.inputs.pitch_command   = propulsor.rotor.cruise.design_collective_pitch  
+                propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
+                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_collective_pitch  
     configs.append(config)    
     
   
@@ -480,8 +481,8 @@ def configs_setup(vehicle):
     for network in  config.networks: 
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
-                propulsor.rotor.inputs.y_axis_rotation = vector_angle
-                propulsor.rotor.inputs.pitch_command   = propulsor.rotor.cruise.design_collective_pitch    
+                propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
+                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_collective_pitch    
     configs.append(config)     
     
     # ------------------------------------------------------------------
@@ -497,8 +498,8 @@ def configs_setup(vehicle):
     for network in  config.networks: 
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
-                propulsor.rotor.inputs.y_axis_rotation = vector_angle
-                propulsor.rotor.inputs.pitch_command   = propulsor.rotor.cruise.design_collective_pitch * 0.5
+                propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
+                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_collective_pitch * 0.5
     configs.append(config) 
     
 
@@ -515,7 +516,7 @@ def configs_setup(vehicle):
     for network in  config.networks: 
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
-                propulsor.rotor.inputs.y_axis_rotation = vector_angle 
+                propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
     configs.append(config)
 
     return configs 

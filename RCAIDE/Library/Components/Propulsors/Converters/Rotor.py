@@ -79,7 +79,8 @@ class Rotor(Component):
         self.profile_drag_coefficient          = .03
         self.clockwise_rotation                = True
         self.phase_offset_angle                = 0.0
-        self.orientation_euler_angles          = [0.,0.,0.]  # vector of angles defining default orientation of rotor 
+        self.orientation_euler_angles          = [0.,0.,0.]  # vector of angles defining default orientation of rotor
+        self.pitch_command                     = 0.0
         self.ducted                            = False
         self.sol_tolerance                     = 1e-8 
         self.use_2d_analysis                   = False       # True if rotor is at an angle relative to freestream or nonuniform freestream

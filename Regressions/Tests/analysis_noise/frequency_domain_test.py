@@ -117,7 +117,7 @@ def Hararmonic_Noise_Validation(PP):
     segment.state.conditions.expand_rows(ctrl_pts)
     rotor_conditions             =  segment.state.conditions.energy[bus.tag][electric_rotor.tag][rotor.tag]     
     rotor_conditions.omega[:,0]  = test_omega
-    F,M,Q,P,Cp,etap = compute_rotor_performance(electric_rotor,segment.state,bus)      
+    compute_rotor_performance(electric_rotor,segment.state,bus)      
     
     noise                                                  = RCAIDE.Framework.Analyses.Noise.Frequency_Domain_Buildup() 
     settings                                               = noise.settings   
@@ -132,6 +132,7 @@ def Hararmonic_Noise_Validation(PP):
     F8745D4_SPL_harmonic_bpf_spectrum                      = conditions.noise[bus.tag][electric_rotor.tag][rotor.tag].SPL_harmonic_bpf_spectrum     
     
     validation_data = Hararmonic_Noise_Validation_Data()
+    Cp =  segment.state.conditions.energy[bus.tag][electric_rotor.tag][rotor.tag].power_coefficient
     
     # plot results
     fig = plt.figure('Harmonic Test')
@@ -144,7 +145,8 @@ def Hararmonic_Noise_Validation(PP):
     axes.set_ylabel('SPL (dB)') 
     axes.minorticks_on() 
     #plt.ylim((80,125))      
-
+    
+    Cp =  segment.state.conditions.energy[bus.tag][electric_rotor.tag][rotor.tag].power_coefficient
     # Test Case 2
     axes = fig.add_subplot(2,3,2) 
     axes.plot(validation_data.harmonics, F8745D4_SPL_harmonic_bpf_spectrum[1,6,:][:len(validation_data.harmonics)] , color = PP.Slc[0] , linestyle = PP.Sls, marker = PP.Slm[0]  , markersize = PP.m , linewidth = PP.lw,   label = 'RCAIDE')    
@@ -293,7 +295,7 @@ def Broadband_Noise_Validation(PP):
     segment.state.conditions.expand_rows(ctrl_pts)
     rotor_conditions             =  segment.state.conditions.energy[bus.tag][electric_rotor.tag][rotor.tag]     
     rotor_conditions.omega[:,0]  = APC_SF_omega_vector
-    F,M,Q,P,Cp,etap = compute_rotor_performance(electric_rotor,segment.state,bus)
+    compute_rotor_performance(electric_rotor,segment.state,bus)
 
     noise                                                  = RCAIDE.Framework.Analyses.Noise.Frequency_Domain_Buildup() 
     settings                                               = noise.settings   

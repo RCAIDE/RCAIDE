@@ -391,7 +391,7 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
     Crd      = rotor_drag/(rho_0*(n*n)*(D*D*D*D))
     etap     = V*thrust/power
     A        = np.pi*(R**2 - rotor.hub_radius**2)
-    FoM      = thrust*np.sqrt(thrust/(2*rho_0*A))    /power  
+    FoM      = thrust*np.sqrt(thrust/(2*rho_0*A))/power  
 
     # prevent things from breaking
     Cq[Cq<0]                   = 0.
@@ -404,7 +404,9 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
     rotor_drag[omega==0.0]     = 0.0
     Ct[omega==0.0]             = 0.0
     Cp[omega==0.0]             = 0.0
-    etap[omega==0.0]           = 0. 
+    etap[omega==0.0]           = 0.
+    
+    
     thrust[eta[:,0]  <=0.0]    = 0.0
     power[eta[:,0]  <=0.0]     = 0.0
     torque[eta[:,0]  <=0.0]    = 0.0 

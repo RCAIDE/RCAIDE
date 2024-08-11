@@ -32,7 +32,8 @@ class Engine(Component):
         self.power_split_ratio               = 0.0
         self.power_specific_fuel_consumption = 0.36
 
-    def append_operating_conditions(self,propulsor_conditions): 
-        append_engine_conditions(self,propulsor_conditions)
+    def append_operating_conditions(self,segment,fuel_line,propulsor):  
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag] 
+        append_engine_conditions(self,segment,propulsor_conditions) 
         return                
 

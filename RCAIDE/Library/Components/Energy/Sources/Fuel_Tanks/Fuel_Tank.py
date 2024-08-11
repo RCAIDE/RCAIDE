@@ -8,17 +8,13 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-# RCAIDE imports
-import  RCAIDE
-from RCAIDE.Framework.Core              import Data 
-from RCAIDE.Framework.Mission.Common    import Residuals  
+# RCAIDE imports 
 from RCAIDE.Library.Components          import Component
-
-import numpy as np 
+from RCAIDE.Library.Methods.Energy.Sources.Fuel_Tanks.append_fuel_tank_conditions import append_fuel_tank_conditions 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Tank
-# ----------------------------------------------------------------------------------------------------------------------   
+# ---------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Compoments-Energy-Fuel_Tanks 
 class Fuel_Tank(Component):
     """Fuel tank compoment.
@@ -33,8 +29,12 @@ class Fuel_Tank(Component):
             None
         """          
         self.tag                         = 'fuel_tank'
-        self.type                        = 'fuel_tanks'
         self.fuel_selector_ratio         = 1.0 
         self.mass_properties.empty_mass  = 0.0   
         self.secondary_fuel_flow         = 0.0
-        self.fuel                        = None 
+        self.fuel                        = None
+         
+
+    def append_operating_conditions(self,segment,fuel_line):  
+        append_fuel_tank_conditions(self,segment, fuel_line)  
+        return                                          

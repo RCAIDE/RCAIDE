@@ -1,5 +1,5 @@
 ## @ingroup Methods-Energy-Sources-Battery 
-# RCAIDE/Methods/Energy/Sources/Battery/Common/append_initial_battery_conditions.py
+# RCAIDE/Methods/Energy/Sources/Battery/Common/append_battery_conditions.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -76,6 +76,7 @@ def append_battery_conditions(battery,segment,bus):
     bus_results[battery.tag].pack.power                    = 0 * ones_row(1) 
     bus_results[battery.tag].pack.power_draw               = 0 * ones_row(1)    
     bus_results[battery.tag].pack.current_draw             = 0 * ones_row(1)    
+    bus_results[battery.tag].pack.charging_current         = 0 * ones_row(1)    
     bus_results[battery.tag].pack.current                  = 0 * ones_row(1)    
     bus_results[battery.tag].pack.heat_energy_generated    = 0 * ones_row(1)   
     bus_results[battery.tag].pack.internal_resistance      = 0 * ones_row(1)   
@@ -92,10 +93,10 @@ def append_battery_conditions(battery,segment,bus):
     # recgarging segment 
     if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:
         segment.state.conditions.energy.recharging  = True
-        bus_results[battery.tag].pack.current       = segment.current * ones_row(1)  
-    else: 
+        bus_results[battery.tag].pack.charging_current = segment.current * ones_row(1)  
+    elif type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge:
         segment.state.conditions.energy.recharging  = False 
-        bus_results[battery.tag].pack.current       = 0 * ones_row(1)
+        bus_results[battery.tag].pack.charging_current = -segment.current * ones_row(1)  
         
     # first segment 
     if 'initial_battery_state_of_charge' in segment:  

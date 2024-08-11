@@ -31,7 +31,7 @@ class ICE_Propeller(Propulsor):
     """ 
     def __defaults__(self):    
         # setting the default values
-        self.tag                          = 'ICE_propeller'   
+        self.tag                          = 'ice_propeller'   
         self.active_fuel_tanks            = None
         self.engine                       = None
         self.propeller                    = None   
@@ -41,12 +41,12 @@ class ICE_Propeller(Propulsor):
         append_ice_propeller_conditions(self,segment,fuel_line,add_additional_network_equation)
         return
 
-    def unpack_propulsor_unknowns(self,segment,fuel_line,add_additional_network_equation = False):  
-        unpack_ice_propeller_unknowns(self,segment,fuel_line,add_additional_network_equation)
+    def unpack_propulsor_unknowns(self,reference_propulsor,segment,fuel_line):  
+        unpack_ice_propeller_unknowns(self,reference_propulsor,segment,fuel_line)
         return 
 
-    def pack_propulsor_residuals(self,segment,fuel_line,add_additional_network_equation = False): 
-        pack_ice_propeller_residuals(self,segment,fuel_line,add_additional_network_equation)
+    def pack_propulsor_residuals(self,segment,fuel_line): 
+        pack_ice_propeller_residuals(self,segment,fuel_line)
         return
     
     def compute_performance(self,state,fuel_line,center_of_gravity = [[0, 0, 0]]):

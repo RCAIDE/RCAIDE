@@ -11,7 +11,7 @@
  # RCAIDE imports
 from .Battery import Battery  
 from RCAIDE.Framework.Core                      import Units, Data
-from RCAIDE.Library.Methods.Energy.Sources.Battery.Lithium_Ion_Generic  import compute_generic_li_cell_performance 
+from RCAIDE.Library.Methods.Energy.Sources.Batteries.Lithium_Ion_Generic  import compute_generic_li_cell_performance 
 
 # ----------------------------------------------------------------------
 #  Lithium_Ion_Generic

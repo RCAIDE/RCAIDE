@@ -108,7 +108,7 @@ class Electric(Network):
                         avionics_power         = (avionics_conditions.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1)
                         payload_power          = (payload_conditions.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1)            
                         total_esc_power        = 0 * state.ones_row(1)     
-                        charging_power         = (state.conditions.energy[bus.tag][battery.tag].pack.current*bus_voltage*battery.bus_power_split_ratio)/len(batteries)
+                        charging_power         = (state.conditions.energy[bus.tag][battery.tag].pack.charging_current*bus_voltage*battery.bus_power_split_ratio)/len(batteries)
                        
                         # append bus outputs to battery
                         battery_conditions                   = state.conditions.energy[bus.tag][battery.tag] 
@@ -128,7 +128,7 @@ class Electric(Network):
                                 else:             
                                     if stored_results_flag == False: 
                                         # run propulsor analysis 
-                                        T,M,P,stored_results_flag,stored_propulsor_tag = propulsor.compute_performance(state,bus,center_of_gravity)
+                                        T,M,P,stored_results_flag,stored_propulsor_tag = propulsor.compute_performance(state,bus,bus_voltage,center_of_gravity)
                                     else:
                                         # use previous propulsor results 
                                         T,M,P = propulsor.reuse_stored_data(state,bus,stored_propulsor_tag,center_of_gravity)
@@ -139,16 +139,15 @@ class Electric(Network):
                         
                         # compute power from each componemnt 
                         avionics_power  = (avionics_conditions.power*battery.bus_power_split_ratio)/len(batteries)* state.ones_row(1) 
-                        payload_power   = (payload_conditions.power*battery.bus_power_split_ratio)/len(batteries) * state.ones_row(1)  
-                        charging_power  = bus.charging_power*battery.bus_power_split_ratio/len(batteries)
-                        total_esc_power = P*battery.bus_power_split_ratio  
+                        payload_power   = (payload_conditions.power*battery.bus_power_split_ratio)/len(batteries) * state.ones_row(1)   
+                        charging_power  = (state.conditions.energy[bus.tag][battery.tag].pack.charging_current*bus_voltage*battery.bus_power_split_ratio)/len(batteries) 
+                        total_esc_power = total_power*battery.bus_power_split_ratio  
                            
                         # append bus outputs to battery 
                         battery_conditions                    = state.conditions.energy[bus.tag][battery.tag] 
                         battery_conditions.pack.power_draw    = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
                         battery_conditions.pack.current_draw  = battery_conditions.pack.power_draw/bus_voltage
-                        battery.energy_calc(state,bus,recharging_flag)       
-                         
+                        battery.energy_calc(state,bus,recharging_flag)        
                 
         if reverse_thrust ==  True:
             total_thrust =  total_thrust * -1     
@@ -189,10 +188,10 @@ class Electric(Network):
                 pass
             elif type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge:
                 pass
-            elif bus.active: 
-                for i, propulsor in enumerate(bus.propulsors):  
-                    add_additional_network_equation = bus.identical_propulsors == False or i == 0
-                    propulsor.unpack_propulsor_unknowns(segment,bus,add_additional_network_equation)
+            elif bus.active and len(bus.propulsors) > 0:
+                reference_propulsor = bus.propulsors[list(bus.propulsors.keys())[0]]                 
+                for propulsor in  bus.propulsors: 
+                    propulsor.unpack_propulsor_unknowns(reference_propulsor,segment,bus)
         return     
     
     def residuals(self,segment):
@@ -221,11 +220,10 @@ class Electric(Network):
         if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:
             pass
         else:
-            for bus in busses:  
-                for i, propulsor in enumerate(bus.propulsors): 
-                    add_additional_network_equation = bus.identical_propulsors == False or i == 0  
-                    propulsor.pack_propulsor_residuals(segment,bus,add_additional_network_equation) 
-         
+            for bus in busses:
+                if bus.active and len(bus.propulsors) > 0:
+                    propulsor = bus.propulsors[list(bus.propulsors.keys())[0]]
+                    propulsor.pack_propulsor_residuals(segment,bus)  
         return     
     
     ## @ingroup Components-Energy-Networks
@@ -267,11 +265,11 @@ class Electric(Network):
             # ------------------------------------------------------------------------------------------------------ 
             for tag, item in  bus.items():
                 if tag == 'batteries':
-                    for battery in item:  
+                    for battery in item:
                         battery.append_operating_conditions(segment,bus)
                 elif tag == 'propulsors':  
-                    for i, propulsor in enumerate(item): 
-                        add_additional_network_equation = bus.identical_propulsors == False or i == 0  
+                    for i, propulsor in enumerate(item):  
+                        add_additional_network_equation = (bus.active) and  (i == 0)   
                         propulsor.append_operating_conditions(segment,bus,add_additional_network_equation)
                         for sub_tag, sub_item in  propulsor.items(): 
                             if issubclass(type(sub_item), RCAIDE.Library.Components.Component):

@@ -12,7 +12,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core        import Data
 from RCAIDE.Library.Components    import Component   
-from RCAIDE.Library.Methods.Energy.Sources.Battery.Common.append_battery_conditions import append_battery_conditions
+from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common.append_battery_conditions import append_battery_conditions
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery
