@@ -115,7 +115,6 @@ def base_analysis(vehicle):
 
     # done!
     return analyses    
-
 # ----------------------------------------------------------------------
 #   Define the Mission
 # ----------------------------------------------------------------------
@@ -131,7 +130,8 @@ def mission_setup(analyses):
     Segments = RCAIDE.Framework.Mission.Segments 
     
     # base segment
-    base_segment = Segments.Segment()       
+    base_segment = Segments.Segment()
+    base_segment.state.numerics.number_control_points  = 4       
     
     flights_per_day = 1 
     simulated_days  = 1
@@ -157,7 +157,7 @@ def mission_setup(analyses):
             Segments = RCAIDE.Framework.Mission.Segments
         
             # base segment           
-            base_segment  = Segments.Segment() 
+            base_segment  = Segments.Segment()   
             
             # VSTALL Calculation   
             Vstall         = 48.3144   
@@ -178,11 +178,11 @@ def mission_setup(analyses):
             segment.flight_dynamics.force_z                       = True     
             
             # define flight controls 
-            segment.assigned_control_variables.throttle.active               = True  
-            segment.assigned_control_variables.throttle.initial_guess_values =  [[0.75]]         
+            segment.assigned_control_variables.throttle.active               = True           
             segment.assigned_control_variables.throttle.assigned_propulsors  = [['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
                                                                       'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']] 
-    
+            
+
             if (day == 0) and (flight_no == 0):        
                 segment.initial_battery_state_of_charge              = 0.89 
                 segment.initial_battery_resistance_growth_factor     = 1
@@ -209,7 +209,7 @@ def mission_setup(analyses):
             segment.flight_dynamics.force_z                       = True     
             
             # define flight controls 
-            segment.assigned_control_variables.throttle.active               = True
+            segment.assigned_control_variables.throttle.active               = True           
             segment.assigned_control_variables.throttle.assigned_propulsors  = [['cruise_propulsor_1','cruise_propulsor_2'],
                                                                      ['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
                                                                     'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']]
@@ -275,6 +275,7 @@ def mission_setup(analyses):
             mission.append_segment(segment)                
 
     return mission
+
 
 def missions_setup(mission): 
  
