@@ -9,7 +9,9 @@
 #   Imports
 # ---------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Framework.Core import Units, Data     
+from RCAIDE.Framework.Core import Units, Data   
+from RCAIDE.Framework.Networks.Electric                                        import Electric
+from RCAIDE.Library.Methods.Performance.estimate_cruise_drag                   import estimate_cruise_drag
 from RCAIDE.Library.Methods.Geometry.Planform                                  import segment_properties,wing_segmented_planform    
 from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common                    import initialize_from_circuit_configuration 
 from RCAIDE.Library.Methods.Weights.Correlation_Buildups.Propulsion            import nasa_motor
@@ -384,7 +386,7 @@ def vehicle_setup() :
     # ########################################################  Energy Network  ######################################################### 
     #------------------------------------------------------------------------------------------------------------------------------------
     # define network
-    network                                                = RCAIDE.Framework.Networks.Electric()   
+    network                                                = Electric()   
     
     #==================================================================================================================================== 
     # Forward Bus
@@ -425,8 +427,8 @@ def vehicle_setup() :
     
     # Propeller 
     g                                                      = 9.81                                   # gravitational acceleration 
-    speed_of_sound                                         = 340                                    # speed of sound  
-    Hover_Load                                             = 1.1 *vehicle.mass_properties.takeoff*g      # hover load   
+    speed_of_sound                                         = 340                                    # speed of sound 
+    Hover_Load                                             = vehicle.mass_properties.takeoff*g      # hover load   
             
     propeller                                              = RCAIDE.Library.Components.Propulsors.Converters.Propeller()
     propeller.number_of_blades                             = 3
@@ -439,7 +441,7 @@ def vehicle_setup() :
     propeller.cruise.design_angular_velocity               = propeller.cruise.design_tip_mach *speed_of_sound/propeller.tip_radius
     propeller.cruise.design_Cl                             = 0.7
     propeller.cruise.design_altitude                       = 1500 * Units.feet
-    propeller.cruise.design_thrust                         = 3500
+    propeller.cruise.design_thrust                         = 3129.031253067049 
     propeller.rotation                                     = 1
     propeller.variable_pitch                               = True  
     airfoil                                                = RCAIDE.Library.Components.Airfoils.Airfoil()
@@ -454,7 +456,7 @@ def vehicle_setup() :
                                                              rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
     propeller.append_airfoil(airfoil)                     
     propeller.airfoil_polar_stations                       = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]  
-    design_propeller(propeller)   
+    propeller                                              = design_propeller(propeller)   
     cruise_propulsor_1.rotor                               = propeller    
                 
     # Propeller Motor              
@@ -583,8 +585,7 @@ def vehicle_setup() :
     # Lift Bus 
     #====================================================================================================================================          
     lift_bus                                               = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus()
-    lift_bus.tag                                           = 'lift_bus'
-    lift_bus.identical_propulsors                          = False # rotors have different orientation angles 
+    lift_bus.tag                                           = 'lift_bus' 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus Battery
@@ -613,10 +614,10 @@ def vehicle_setup() :
     lift_propulsor_1.active_batteries                      = ['lift_bus_battery']          
               
     # Electronic Speed Controller           
-    lift_rotor_esc                                         = RCAIDE.Library.Components.Energy.Modulators.Electronic_Speed_Controller()
+    lift_rotor_esc                                         = RCAIDE.Library.Components.Energy.Modulators.Electronic_Speed_Controller() 
     lift_rotor_esc.efficiency                              = 0.95    
     lift_rotor_esc.tag                                     = 'lift_rotor_esc_1' 
-    lift_rotor_esc.origin                                  = [[-0.073 ,  1.950 , 1.2]]
+    lift_rotor_esc.origin                                  = [[-0.073 ,  1.950 , 1.2]] 
     lift_propulsor_1.electronic_speed_controller           = lift_rotor_esc 
            
     # Lift Rotor Design              
@@ -646,7 +647,7 @@ def vehicle_setup() :
                                                               rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
     lift_rotor.append_airfoil(airfoil)                         
     lift_rotor.airfoil_polar_stations                      = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]  
-    design_lift_rotor(lift_rotor) 
+    lift_rotor                                             = design_lift_rotor(lift_rotor) 
     lift_propulsor_1.rotor                                 = lift_rotor      
     
     #------------------------------------------------------------------------------------------------------------------------------------               
@@ -654,7 +655,7 @@ def vehicle_setup() :
     #------------------------------------------------------------------------------------------------------------------------------------    
     lift_rotor_motor                                       = RCAIDE.Library.Components.Propulsors.Converters.DC_Motor()
     lift_rotor_motor.efficiency                            = 0.9
-    lift_rotor_motor.nominal_voltage                       = bat.pack.maximum_voltage 
+    lift_rotor_motor.nominal_voltage                       = bat.pack.maximum_voltage*3/4  
     lift_rotor_motor.origin                                = [[-0.073 ,  1.950 , 1.2]]
     lift_rotor_motor.propeller_radius                      = lift_rotor.tip_radius
     lift_rotor_motor.tag                                   = 'lift_rotor_motor_1' 
@@ -689,7 +690,7 @@ def vehicle_setup() :
     lift_propulsor_2                                       = deepcopy(lift_propulsor_1)
     lift_propulsor_2.tag                                   = 'lift_propulsor_2' 
     lift_propulsor_2.rotor.origin                          = [[-0.073  , -1.950  , 1.2]]  
-    lift_propulsor_2.rotor.orientation_euler_angles        = [-10.0* Units.degrees,np.pi/2.,0.]
+    lift_propulsor_2.rotor.orientation_euler_angle         = [-10.0* Units.degrees,np.pi/2.,0.]
     lift_propulsor_2.motor.origin                          = [[-0.073  , -1.950  , 1.2]] 
     lift_propulsor_2.rotor.origin                          = [[-0.073  , -1.950  , 1.2]] 
     rotor_nacelle                                          = deepcopy(nacelle)
@@ -702,7 +703,7 @@ def vehicle_setup() :
     lift_propulsor_3                                       = deepcopy(lift_propulsor_1)
     lift_propulsor_3.tag                                   = 'lift_propulsor_3' 
     lift_propulsor_3.rotor.origin                          = [[ 4.440 ,  1.950 , 1.2]]  
-    lift_propulsor_3.rotor.orientation_euler_angles        = [10.0* Units.degrees,np.pi/2.,0.]
+    lift_propulsor_3.rotor.orientation_euler_angle         = [10.0* Units.degrees,np.pi/2.,0.]
     lift_propulsor_3.motor.origin                          = [[ 4.440 ,  1.950 , 1.2]] 
     lift_propulsor_3.rotor.origin                          = [[ 4.440 ,  1.950 , 1.2]] 
     rotor_nacelle                                          = deepcopy(nacelle)
@@ -715,20 +716,21 @@ def vehicle_setup() :
     lift_propulsor_4                                       = deepcopy(lift_propulsor_1)
     lift_propulsor_4.tag                                   = 'lift_propulsor_4' 
     lift_propulsor_4.rotor.origin                          = [[ 4.440  , -1.950  , 1.2]]  
-    lift_propulsor_4.rotor.orientation_euler_angles        = [-10.0* Units.degrees,np.pi/2.,0.]
+    lift_propulsor_4.rotor.orientation_euler_angle         = [-10.0* Units.degrees,np.pi/2.,0.]
     lift_propulsor_4.motor.origin                          = [[ 4.440  , -1.950  , 1.2]] 
     lift_propulsor_4.rotor.origin                          = [[ 4.440  , -1.950  , 1.2]] 
     rotor_nacelle                                          = deepcopy(nacelle)
     rotor_nacelle.tag                                      = 'rotor_nacelle_4' 
     rotor_nacelle.origin                                   = [[   4.413, -1.950, 1.2]]
-    lift_propulsor_4.nacelle                               = rotor_nacelle   
-    lift_bus.propulsors.append(lift_propulsor_4)    
+    lift_propulsor_4.nacelle                               = rotor_nacelle  
+    vehicle.append_component(rotor_nacelle) 
+    #lift_bus.propulsors.append(lift_propulsor_4)   TO CORRECT   
     
 
     lift_propulsor_5                                       = deepcopy(lift_propulsor_1)
     lift_propulsor_5.tag                                   = 'lift_propulsor_5' 
     lift_propulsor_5.rotor.origin                          = [[ 0.219 ,  4.891 , 1.2]]  
-    lift_propulsor_5.rotor.orientation_euler_angles        = [10.0* Units.degrees,np.pi/2.,0.]
+    lift_propulsor_5.rotor.orientation_euler_angle         = [10.0* Units.degrees,np.pi/2.,0.]
     lift_propulsor_5.motor.origin                          = [[ 0.219 ,  4.891 , 1.2]] 
     lift_propulsor_5.rotor.origin                          = [[ 0.219 ,  4.891 , 1.2]] 
     rotor_nacelle                                          = deepcopy(nacelle)
@@ -741,7 +743,7 @@ def vehicle_setup() :
     lift_propulsor_6                                       = deepcopy(lift_propulsor_1)
     lift_propulsor_6.tag                                   = 'lift_propulsor_6' 
     lift_propulsor_6.rotor.origin                          = [[ 0.219  , - 4.891 , 1.2]]  
-    lift_propulsor_6.rotor.orientation_euler_angles        = [-10.0* Units.degrees,np.pi/2.,0.]
+    lift_propulsor_6.rotor.orientation_euler_angle         = [-10.0* Units.degrees,np.pi/2.,0.]
     lift_propulsor_6.motor.origin                          = [[ 0.219  , - 4.891 , 1.2]] 
     lift_propulsor_6.rotor.origin                          = [[ 0.219  , - 4.891 , 1.2]] 
     rotor_nacelle                                          = deepcopy(nacelle)
@@ -755,7 +757,7 @@ def vehicle_setup() :
     lift_propulsor_7                                       = deepcopy(lift_propulsor_1)
     lift_propulsor_7.tag                                   = 'lift_propulsor_7' 
     lift_propulsor_7.rotor.origin                          = [[ 4.196 ,  4.891 , 1.2]]  
-    lift_propulsor_7.rotor.orientation_euler_angles        = [10.0* Units.degrees,np.pi/2.,0.]
+    lift_propulsor_7.rotor.orientation_euler_angle         = [10.0* Units.degrees,np.pi/2.,0.]
     lift_propulsor_7.motor.origin                          = [[ 4.196 ,  4.891 , 1.2]] 
     lift_propulsor_7.rotor.origin                          = [[ 4.196 ,  4.891 , 1.2]]   
     rotor_nacelle                                          = deepcopy(nacelle)
@@ -768,7 +770,7 @@ def vehicle_setup() :
     lift_propulsor_8                                       = deepcopy(lift_propulsor_1)
     lift_propulsor_8.tag                                   = 'lift_propulsor_8' 
     lift_propulsor_8.rotor.origin                          = [[ 4.196  , - 4.891 , 1.2]]  
-    lift_propulsor_8.rotor.orientation_euler_angles        = [-10.0* Units.degrees,np.pi/2.,0.]
+    lift_propulsor_8.rotor.orientation_euler_angle         = [-10.0* Units.degrees,np.pi/2.,0.]
     lift_propulsor_8.motor.origin                          = [[ 4.196  , - 4.891 , 1.2]] 
     lift_propulsor_8.rotor.origin                          = [[ 4.196  , - 4.891 , 1.2]]  
     rotor_nacelle                                          = deepcopy(nacelle)
@@ -823,7 +825,7 @@ def configs_setup(vehicle):
 
     forward_config                                                    = RCAIDE.Library.Components.Configs.Config(vehicle)
     forward_config.tag                                                = 'forward_flight'  
-    forward_config.networks.electric.busses['lift_bus'].active    = False  
+    forward_config.networks.all_electric.busses['lift_bus'].active    = False  
     configs.append(forward_config)  
 
     transition_config                                                 = RCAIDE.Library.Components.Configs.Config(vehicle)
@@ -833,7 +835,7 @@ def configs_setup(vehicle):
 
     vertical_config                                                   = RCAIDE.Library.Components.Configs.Config(vehicle)
     vertical_config.tag                                               = 'vertical_flight'  
-    vertical_config.networks.electric.busses['cruise_bus'].active = False  
+    vertical_config.networks.all_electric.busses['cruise_bus'].active = False  
     configs.append(vertical_config)   
      
     return configs
