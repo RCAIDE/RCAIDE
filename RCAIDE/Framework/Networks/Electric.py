@@ -184,10 +184,8 @@ class Electric(Network):
         bus_unknowns(segment,busses) 
     
         for bus in busses:           
-            if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge: 
-                pass
-            elif type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge:
-                pass
+            if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge or type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge:
+                pass 
             elif bus.active and len(bus.propulsors) > 0:
                 reference_propulsor = bus.propulsors[list(bus.propulsors.keys())[0]]                 
                 for propulsor in  bus.propulsors: 
@@ -217,13 +215,12 @@ class Electric(Network):
        """           
 
         busses   = segment.analyses.energy.vehicle.networks.electric.busses 
-        if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:
-            pass
-        else:
-            for bus in busses:
-                if bus.active and len(bus.propulsors) > 0:
-                    propulsor = bus.propulsors[list(bus.propulsors.keys())[0]]
-                    propulsor.pack_propulsor_residuals(segment,bus)  
+        for bus in busses:             
+            if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge or type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Battery_Discharge:
+                pass 
+            elif bus.active and len(bus.propulsors) > 0:
+                propulsor = bus.propulsors[list(bus.propulsors.keys())[0]]
+                propulsor.pack_propulsor_residuals(segment,bus)  
         return     
     
     ## @ingroup Components-Energy-Networks

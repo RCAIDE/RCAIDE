@@ -258,16 +258,13 @@ def vehicle_setup():
     lift_propulsor.electronic_speed_controller    = prop_rotor_esc  
     
     # Lift Rotor Design
-    g                                             = 9.81                                   # gravitational acceleration  
-    Drag                                          = estimate_cruise_drag(vehicle,altitude = 1500. * Units.ft,speed= 130.* Units['mph'] ,lift_coefficient = 0.5 ,profile_drag = 0.06)
-    Hover_Load                                    = vehicle.mass_properties.takeoff*g *1.2      # hover load   
-    
+    g                                             = 9.81                                    # gravitational acceleration   
+    Hover_Load                                    = vehicle.mass_properties.takeoff*g *1.1  # hover load   
     prop_rotor                                    = RCAIDE.Library.Components.Propulsors.Converters.Prop_Rotor()   
     prop_rotor.tag                                = 'prop_rotor'   
     prop_rotor.tip_radius                         = 0.8875
-    prop_rotor.hub_radius                         = 0.15 * prop_rotor.tip_radius
+    prop_rotor.hub_radius                         = 0.10 * prop_rotor.tip_radius
     prop_rotor.number_of_blades                   = 3
-    
     prop_rotor.hover.design_altitude              = 40 * Units.feet   
     prop_rotor.hover.design_thrust                = Hover_Load/8 
     prop_rotor.hover.design_freestream_velocity   = np.sqrt(prop_rotor.hover.design_thrust/(2*1.2*np.pi*(prop_rotor.tip_radius**2)))  
@@ -275,13 +272,13 @@ def vehicle_setup():
     prop_rotor.oei.design_thrust                  = Hover_Load/7  
     prop_rotor.oei.design_freestream_velocity     = np.sqrt(prop_rotor.oei.design_thrust/(2*1.2*np.pi*(prop_rotor.tip_radius**2)))   
     prop_rotor.cruise.design_altitude             = 1500 * Units.feet
-    prop_rotor.cruise.design_thrust               = Drag /8     
+    prop_rotor.cruise.design_thrust               = 200    
     prop_rotor.cruise.design_freestream_velocity  = 130.* Units['mph']  
     
     airfoil                                       = RCAIDE.Library.Components.Airfoils.Airfoil()   
-    airfoil.coordinate_file                       = rel_path + 'Airfoils' + separator + 'NACA_4412.txt'
+    airfoil.coordinate_file                       =  rel_path + 'Airfoils' + separator + 'NACA_4412.txt'
     airfoil.polar_files                           = [rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_50000.txt' ,
-                                                    rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_100000.txt' ,
+                                                     rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_100000.txt' ,
                                                      rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_200000.txt' ,
                                                      rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_500000.txt' ,
                                                      rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_1000000.txt',
@@ -299,7 +296,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------    
     prop_rotor_motor                         = RCAIDE.Library.Components.Propulsors.Converters.DC_Motor()
     prop_rotor_motor.efficiency              = 0.95
-    prop_rotor_motor.nominal_voltage         = bat.pack.maximum_voltage*3/4   
+    prop_rotor_motor.nominal_voltage         = bus.voltage * 0.75
     prop_rotor_motor.prop_rotor_radius       = prop_rotor.tip_radius 
     prop_rotor_motor.no_load_current         = 0.1  
     prop_rotor_motor.wing_mounted            = True 
@@ -428,7 +425,7 @@ def configs_setup(vehicle):
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
                 propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
-                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_collective_pitch  
+                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_pitch_command  
     configs.append(config)
     
 
@@ -446,7 +443,7 @@ def configs_setup(vehicle):
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
                 propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
-                propulsor.rotor.pitch_command     = propulsor.rotor.cruise.design_collective_pitch  
+                propulsor.rotor.pitch_command     = propulsor.rotor.cruise.design_pitch_command  
     configs.append(config) 
 
     # ------------------------------------------------------------------
@@ -463,7 +460,7 @@ def configs_setup(vehicle):
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
                 propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
-                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_collective_pitch  
+                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_pitch_command  
     configs.append(config)    
     
   
@@ -482,7 +479,7 @@ def configs_setup(vehicle):
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
                 propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
-                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_collective_pitch    
+                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_pitch_command    
     configs.append(config)     
     
     # ------------------------------------------------------------------
@@ -499,7 +496,7 @@ def configs_setup(vehicle):
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
                 propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
-                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_collective_pitch * 0.5
+                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_pitch_command * 0.5
     configs.append(config) 
     
 

@@ -109,14 +109,18 @@ def plot_rotor_conditions(results,
     return fig 
 
 def plot_propulsor_data(results,distributor,propulsor,axis_1,axis_2,axis_3,axis_4,line_colors,ps,pi):
-    
+    if 'rotor' in  propulsor:
+        rotor = propulsor.rotor
+    elif 'propeller' in  propulsor:
+        rotor = propulsor.propeller
+        
     for i in range(len(results.segments)): 
         bus_results  =  results.segments[i].conditions.energy[distributor.tag] 
         time         =  results.segments[i].conditions.frames.inertial.time[:,0] / Units.min   
-        rpm          =  bus_results[propulsor.tag].rotor.rpm[:,0]
-        thrust       =  bus_results[propulsor.tag].rotor.thrust[:,0]
-        torque       =  bus_results[propulsor.tag].rotor.torque[:,0]
-        angle        =  bus_results[propulsor.tag].y_axis_rotation[:,0]  
+        rpm          =  bus_results[propulsor.tag][rotor.tag].rpm[:,0]
+        thrust       =  bus_results[propulsor.tag][rotor.tag].thrust[:,0]
+        torque       =  bus_results[propulsor.tag][rotor.tag].torque[:,0]
+        angle        =  bus_results[propulsor.tag].orientation[:,0]  
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
         if pi == 0: 

@@ -36,10 +36,9 @@ def compute_voltage_out_from_throttle(esc,esc_conditions,conditions):
     
     # Cap the throttle
     eta[eta>=1.0] = 1.0
-    voltsout = eta*esc_conditions.inputs.voltage
     
     # Pack the output
-    esc_conditions.outputs.voltage  = voltsout
+    esc_conditions.outputs.voltage  =eta*esc_conditions.inputs.voltage
     esc_conditions.throttle         = eta 
     
     return
@@ -70,18 +69,17 @@ def compute_voltage_in_from_throttle(esc,esc_conditions,conditions):
         None
 
     """
-    eta        = esc_conditions.throttle
+    eta        = esc_conditions.throttle * 1.0
     
     # Negative throttle is bad
     eta[eta<=0.0] = 0.0
 
     # Cap the throttle
-    eta[eta>=1.0] = 1.0
-    voltsin = esc_conditions.outputs.voltage/eta
+    eta[eta>=1.0] = 1.0 
 
     # Pack the output
     esc_conditions.inputs.throttle = eta
-    esc_conditions.inputs.voltage  = voltsin
+    esc_conditions.inputs.voltage  = esc_conditions.outputs.voltage/eta
 
     return
 

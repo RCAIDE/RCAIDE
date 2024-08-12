@@ -16,8 +16,8 @@ def compute_torque_from_RPM_and_voltage(motor,motor_conditions,conditions):
     """Calculates the motor's torque based on RPM (angular velocity) and voltage.  
     The following perperties of the motor are computed
     
-    motor.outputs.torque  (numpy.ndarray): torque  [Nm]
-    motor.outputs.omega   (numpy.ndarray): omega   [radian/s]
+    motor_conditions.torque  (numpy.ndarray): torque  [Nm]
+    motor_conditions.omega   (numpy.ndarray): omega   [radian/s]
       
     Assumptions:
        None 
@@ -47,14 +47,14 @@ def compute_torque_from_RPM_and_voltage(motor,motor_conditions,conditions):
     I0    = motor.no_load_current + exp_I*(1-eta_G)
     G     = motor.gear_ratio
     KV    = motor.speed_constant/G
-    v     = motor.inputs.voltage
-    omega = motor.inputs.omega
+    v     = motor_conditions.voltage
+    omega = motor_conditions.omega
     
     # Torque
     Q = ((v-omega/KV)/Res -I0)/KV
     
-    motor_conditions.outputs.torque = Q
-    motor_conditions.outputs.omega  = omega
+    motor_conditions.torque = Q
+    motor_conditions.omega  = omega
 
     return
 
@@ -65,8 +65,8 @@ def compute_torque_from_RPM_and_voltage(motor,motor_conditions,conditions):
 def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditions,conditions):
     """Calculates the motors RPM and torque using power coefficient and operating voltage.
     The following perperties of the motor are computed  
-    motor.outputs.torque                    (numpy.ndarray):  torque [Nm]
-    motor.outputs.omega                     (numpy.ndarray):  omega  [radian/s] 
+    motor_conditions.torque                    (numpy.ndarray):  torque [Nm]
+    motor_conditions.omega                     (numpy.ndarray):  omega  [radian/s] 
 
     Assumptions: 
       Omega is solved by setting the torque of the motor equal to the torque of the prop
@@ -101,8 +101,8 @@ def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditi
     G     = motor.gear_ratio
     KV    = motor.speed_constant/G
     R     = motor.rotor_radius
-    v     = motor_conditions.inputs.voltage
-    Cp    = motor_conditions.inputs.rotor_power_coefficient 
+    v     = motor_conditions.voltage
+    Cp    = motor_conditions.rotor_power_coefficient 
 
     # compute angular velocity, omega 
     omega   =   ((np.pi**(3./2.))*((- 16.*Cp*I0*rho*(KV*KV*KV)*(R*R*R*R*R)*(Res*Res) +
@@ -114,8 +114,8 @@ def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditi
     Q = ((v-omega /KV)/Res -I0)/KV 
     
     # store values 
-    motor_conditions.outputs.torque  = Q
-    motor_conditions.outputs.omega   = omega 
+    motor_conditions.torque  = Q
+    motor_conditions.omega   = omega 
 
     return
 
@@ -126,8 +126,8 @@ def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditi
 def compute_current_from_RPM_and_voltage(motor, motor_conditions,conditions):
     """Calculates the motor's current from its RPM and voltage. 
     The following perperties of the motor are computed   
-    motor.outputs.current     (numpy.ndarray): current      [A]
-    motor.outputs.efficiency  (numpy.ndarray): efficiency   [unitless] 
+    motor_conditions.current     (numpy.ndarray): current      [A]
+    motor_conditions.efficiency  (numpy.ndarray): efficiency   [unitless] 
       
     Assumptions:
         None
@@ -153,8 +153,8 @@ def compute_current_from_RPM_and_voltage(motor, motor_conditions,conditions):
     # Unpack
     KV    = motor.speed_constant
     Res   = motor.resistance
-    omega = motor_conditions.outputs.omega
-    V     = motor_conditions.inputs.voltage
+    omega = motor_conditions.omega
+    V     = motor_conditions.voltage
     G     = motor.gear_ratio
     eta_G = motor.gearbox_efficiency
     exp_I = motor.expected_current
@@ -164,8 +164,8 @@ def compute_current_from_RPM_and_voltage(motor, motor_conditions,conditions):
     I    = (V-(omega*G)/KV)/Res 
 
     # Pack results 
-    motor_conditions.outputs.current    = I
-    motor_conditions.outputs.efficiency = (1-I0/I)*(1-I*Res/V)
+    motor_conditions.current    = I
+    motor_conditions.efficiency = (1-I0/I)*(1-I*Res/V)
     return
 
 
@@ -176,9 +176,9 @@ def compute_current_from_RPM_and_voltage(motor, motor_conditions,conditions):
 def compute_voltage_and_current_from_RPM_and_speed_constant(motor, motor_conditions,conditions):
     """Calculates the motor's voltage and current from its RPM and speed constant
     The following perperties of the motor are computed    
-        motor.outputs.current     (numpy.ndarray): current    [A] 
-        motor.outputs.volage      (numpy.ndarray): volage     [V] 
-        motor.outputs.efficiency  (numpy.ndarray): efficiency [unitless]
+        motor_conditions.current     (numpy.ndarray): current    [A] 
+        motor_conditions.volage      (numpy.ndarray): volage     [V] 
+        motor_conditions.efficiency  (numpy.ndarray): efficiency [unitless]
         
     Assumptions:
         None 
@@ -203,8 +203,8 @@ def compute_voltage_and_current_from_RPM_and_speed_constant(motor, motor_conditi
            
     G      = motor.gear_ratio
     KV     = motor.speed_constant/G
-    Q      = motor_conditions.inputs.torque
-    omega  = motor_conditions.inputs.omega   
+    Q      = motor_conditions.torque
+    omega  = motor_conditions.omega   
     Res    = motor.resistance     
     eta_G  = motor.gearbox_efficiency
     exp_I  = motor.expected_current
@@ -214,8 +214,8 @@ def compute_voltage_and_current_from_RPM_and_speed_constant(motor, motor_conditi
     I = (V-omega/KV)/Res
     
     # Store results 
-    motor_conditions.outputs.current    = I
-    motor_conditions.outputs.efficiency = (1-I0/I)*(1-I*Res/V)
-    motor_conditions.outputs.voltage    = V
+    motor_conditions.current    = I
+    motor_conditions.efficiency = (1-I0/I)*(1-I*Res/V)
+    motor_conditions.voltage    = V
     
     return

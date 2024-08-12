@@ -75,7 +75,7 @@ def optimization_setup(rotor,number_of_stations,print_iterations):
     inputs.append([ 'OEI_collective_pitch'  , np.pi/6   , -np.pi/6   , np.pi/6   , 1.0      ,  1*Units.less]) 
     if nexus.prop_rotor_flag: 
         inputs.append([ 'cruise_tip_mach'         , tm_ll_c , tm_ll_c    , tm_ul_c   , 1.0     ,  1*Units.less]) 
-        inputs.append([ 'cuise_collective_pitch'  ,-np.pi/6  , -np.pi/6   , np.pi/6   , 1.0     ,  1*Units.less]) 
+        inputs.append([ 'cuise_collective_pitch'  ,-np.pi/6  , -np.pi/6   , np.pi/6  , 1.0     ,  1*Units.less]) 
     problem.inputs = np.array(inputs,dtype=object)   
 
     # -------------------------------------------------------------------

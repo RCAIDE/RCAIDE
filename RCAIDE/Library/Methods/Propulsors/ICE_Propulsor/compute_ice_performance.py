@@ -106,12 +106,11 @@ def reuse_stored_ice_data(propulsor,state,fuel_line,stored_propulsor_tag,center_
     ''' 
 
 
-    conditions                 = state.conditions
-
-    engine                     = propulsor.engine
-    propeller                      = propulsor.propeller 
-    engine_0                   = fuel_line.propulsors[stored_propulsor_tag].engine
-    propeller_0                    = fuel_line.propulsors[stored_propulsor_tag].propeller  
+    conditions   = state.conditions 
+    engine       = propulsor.engine
+    propeller    = propulsor.propeller 
+    engine_0     = fuel_line.propulsors[stored_propulsor_tag].engine
+    propeller_0  = fuel_line.propulsors[stored_propulsor_tag].propeller  
     
     conditions.energy[fuel_line.tag][propulsor.tag][engine.tag]        = conditions.energy[fuel_line.tag][stored_propulsor_tag][engine_0.tag]
     conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag]        = conditions.energy[fuel_line.tag][stored_propulsor_tag][propeller_0.tag] 
