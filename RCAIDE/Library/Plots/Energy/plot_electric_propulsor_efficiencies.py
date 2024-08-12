@@ -96,13 +96,16 @@ def plot_electric_propulsor_efficiencies(results,
      
     return fig 
 
-def plot_propulsor_data(results,bus,propulsor,axis_1,axis_2,axis_3,line_colors,ps,pi):  
+def plot_propulsor_data(results,bus,propulsor,axis_1,axis_2,axis_3,line_colors,ps,pi): 
+    rotor  =  propulsor.rotor
+    motor =  propulsor.motor
+    
     for i in range(len(results.segments)): 
         bus_results  = results.segments[i].conditions.energy[bus.tag] 
         time         = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min      
-        effp         = bus_results[propulsor.tag].rotor.efficiency[:,0]
-        fom          = bus_results[propulsor.tag].rotor.figure_of_merit[:,0]
-        effm         = bus_results[propulsor.tag].motor.efficiency[:,0]        
+        effp         = bus_results[propulsor.tag][rotor.tag].efficiency[:,0]
+        fom          = bus_results[propulsor.tag][rotor.tag].figure_of_merit[:,0]
+        effm         = bus_results[propulsor.tag][motor.tag].efficiency[:,0]        
         segment_tag  = results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')
         

@@ -411,7 +411,10 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
     power[eta[:,0]  <=0.0]     = 0.0
     torque[eta[:,0]  <=0.0]    = 0.0 
     power[eta>1.0]             = power[eta>1.0]*eta[eta>1.0]
-    thrust[eta[:,0]>1.0,:]     = thrust[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:] 
+    thrust[eta[:,0]>1.0,:]     = thrust[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:]
+
+    disc_loading           = thrust/(np.pi*(R**2))
+    power_loading          = thrust/(power)
 
     # Make the thrust a 3D vector
     thrust_prop_frame      = np.zeros((ctrl_pts,3))
@@ -423,7 +426,8 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
     moment_vector[:,0]      = rotor.origin[0][0]  -  center_of_gravity[0][0] 
     moment_vector[:,1]      = rotor.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2]      = rotor.origin[0][2]  -  center_of_gravity[0][2]
-    moment                  =  np.cross(moment_vector, thrust_vector)     
+    moment                  =  np.cross(moment_vector, thrust_vector)
+      
      
     outputs                                       = Data( 
                 torque                            = torque,
@@ -454,7 +458,9 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
                 disc_tangential_velocity          = Vt_2d,
                 disc_axial_velocity               = Va_2d,
                 drag_coefficient                  = Cd,
-                lift_coefficient                  = Cl,
+                lift_coefficient                  = Cl, 
+                disc_loading                      = disc_loading, 
+                power_loading                     = power_loading,      
                 omega                             = omega,
                 disc_circulation                  = blade_Gamma_2d,
                 blade_dT_dr                       = blade_dT_dr,

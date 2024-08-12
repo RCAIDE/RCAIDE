@@ -722,9 +722,8 @@ def vehicle_setup() :
     rotor_nacelle                                          = deepcopy(nacelle)
     rotor_nacelle.tag                                      = 'rotor_nacelle_4' 
     rotor_nacelle.origin                                   = [[   4.413, -1.950, 1.2]]
-    lift_propulsor_4.nacelle                               = rotor_nacelle  
-    vehicle.append_component(rotor_nacelle) 
-    #lift_bus.propulsors.append(lift_propulsor_4)   TO CORRECT   
+    lift_propulsor_4.nacelle                               = rotor_nacelle   
+    lift_bus.propulsors.append(lift_propulsor_4)    
     
 
     lift_propulsor_5                                       = deepcopy(lift_propulsor_1)
@@ -825,7 +824,7 @@ def configs_setup(vehicle):
 
     forward_config                                                    = RCAIDE.Library.Components.Configs.Config(vehicle)
     forward_config.tag                                                = 'forward_flight'  
-    forward_config.networks.all_electric.busses['lift_bus'].active    = False  
+    forward_config.networks.electric.busses['lift_bus'].active        = False  
     configs.append(forward_config)  
 
     transition_config                                                 = RCAIDE.Library.Components.Configs.Config(vehicle)
@@ -835,7 +834,7 @@ def configs_setup(vehicle):
 
     vertical_config                                                   = RCAIDE.Library.Components.Configs.Config(vehicle)
     vertical_config.tag                                               = 'vertical_flight'  
-    vertical_config.networks.all_electric.busses['cruise_bus'].active = False  
+    vertical_config.networks.electric.busses['cruise_bus'].active = False  
     configs.append(vertical_config)   
      
     return configs
