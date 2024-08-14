@@ -45,10 +45,10 @@ def main():
     # mission analysis 
     results = missions.base_mission.evaluate()   
     
-    P_truth     = 54521.82437744845
-    mdot_truth  = 0.0047904123096095645
+    P_truth     = 54521.82437744922
+    mdot_truth  = 0.004790412309609632
     
-    P    = results.segments.cruise.state.conditions.energy.fuel_line.ice_constant_speed_propeller.engine.power[-1,0]
+    P    = results.segments.cruise.state.conditions.energy.fuel_line.ice_constant_speed_propeller.internal_combustion_engine.power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]     
 
     # Check the errors
@@ -69,10 +69,10 @@ def main():
 def ICE_CS(vehicle):
     
     # Replace the C172 engine and propeller with a constant speed propeller  
-    vehicle.networks.pop('internal_combustion_engine')
+    vehicle.networks.pop('fuel')
 
     # ########################################################  Energy Network  #########################################################  
-    net                                         = RCAIDE.Framework.Networks.Constant_Speed_Internal_Combustion_Engine_Network()  
+    net                                         = RCAIDE.Framework.Networks.Fuel()  
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus

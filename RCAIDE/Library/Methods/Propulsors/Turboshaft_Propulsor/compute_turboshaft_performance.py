@@ -17,7 +17,8 @@ from RCAIDE.Library.Methods.Propulsors.Converters.Expansion_Nozzle   import comp
 from RCAIDE.Library.Methods.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
 from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor          import compute_power
  
- 
+# python imports 
+from copy import deepcopy 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_turboshaft_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -186,11 +187,9 @@ def reuse_stored_turboshaft_data(turboshaft,state,fuel_line,stored_propulsor_tag
     Properties Used: 
     N.A.        
     ''' 
-    conditions                                        = state.conditions  
-    turboshaft_conditions_0                           = conditions.energy[fuel_line.tag][stored_propulsor_tag]
-    noise_conditions_0                                = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
-    conditions.energy[fuel_line.tag][turboshaft.tag]  = turboshaft_conditions_0 
-    conditions.noise[fuel_line.tag][turboshaft.tag]   = noise_conditions_0
+    conditions                                        = state.conditions   
+    conditions.energy[fuel_line.tag][turboshaft.tag]  = deepcopy(conditions.energy[fuel_line.tag][stored_propulsor_tag])
+    conditions.noise[fuel_line.tag][turboshaft.tag]   = deepcopy(conditions.noise[fuel_line.tag][stored_propulsor_tag])
       
     power    = conditions.energy[fuel_line.tag][turboshaft.tag].power    
     moment   = 0*state.ones_row(3)

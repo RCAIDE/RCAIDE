@@ -10,8 +10,7 @@
 # ---------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Framework.Core import Units, Data   
-from RCAIDE.Framework.Networks.Electric                                        import Electric
-from RCAIDE.Library.Methods.Performance.estimate_cruise_drag                   import estimate_cruise_drag
+from RCAIDE.Framework.Networks.Electric                                        import Electric 
 from RCAIDE.Library.Methods.Geometry.Planform                                  import segment_properties,wing_segmented_planform    
 from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common                    import initialize_from_circuit_configuration 
 from RCAIDE.Library.Methods.Weights.Correlation_Buildups.Propulsion            import nasa_motor

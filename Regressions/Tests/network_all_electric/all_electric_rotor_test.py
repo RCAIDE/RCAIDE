@@ -189,89 +189,89 @@ def mission_setup(analyses):
                
             mission.append_segment(segment)
             
-            ##------------------------------------------------------------------------------------------------------------------------------------  
-            ## Low-Speed Transition
-            ##------------------------------------------------------------------------------------------------------------------------------------  
+            #------------------------------------------------------------------------------------------------------------------------------------  
+            # Low-Speed Transition
+            #------------------------------------------------------------------------------------------------------------------------------------  
          
-            #segment                                               = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(base_segment)
-            #segment.tag                                           = "Low_Speed_Transition"  
-            #segment.analyses.extend( analyses.transition_flight )   
-            #segment.altitude                                      = 200.  * Units.ft           
-            #segment.air_speed_start                               = 500. * Units['ft/min']
-            #segment.air_speed_end                                 = 0.75 * Vstall
-            #segment.acceleration                                  = 1.5
-            #segment.pitch_initial                                 = 0.0 * Units.degrees
-            #segment.pitch_final                                   = 2.  * Units.degrees    
+            segment                                               = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(base_segment)
+            segment.tag                                           = "Low_Speed_Transition"  
+            segment.analyses.extend( analyses.transition_flight )   
+            segment.altitude                                      = 200.  * Units.ft           
+            segment.air_speed_start                               = 500. * Units['ft/min']
+            segment.air_speed_end                                 = 0.75 * Vstall
+            segment.acceleration                                  = 1.5
+            segment.pitch_initial                                 = 0.0 * Units.degrees
+            segment.pitch_final                                   = 2.  * Units.degrees    
         
-            ## define flight dynamics to model 
-            #segment.flight_dynamics.force_x                       = True  
-            #segment.flight_dynamics.force_z                       = True     
+            # define flight dynamics to model 
+            segment.flight_dynamics.force_x                       = True  
+            segment.flight_dynamics.force_z                       = True     
             
-            ## define flight controls 
-            #segment.assigned_control_variables.throttle.active               = True           
-            #segment.assigned_control_variables.throttle.assigned_propulsors  = [['cruise_propulsor_1','cruise_propulsor_2'],
-                                                                     #['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
-                                                                    #'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']]
-            #mission.append_segment(segment) 
+            # define flight controls 
+            segment.assigned_control_variables.throttle.active               = True           
+            segment.assigned_control_variables.throttle.assigned_propulsors  = [['cruise_propulsor_1','cruise_propulsor_2'],
+                                                                     ['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
+                                                                    'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']]
+            mission.append_segment(segment) 
             
-            ##------------------------------------------------------------------------------------------------------------------------------------  
-            ## High-Speed Climbing Transition 
-            ##------------------------------------------------------------------------------------------------------------------------------------  
-            #segment                                               = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb(base_segment)
-            #segment.tag                                           = "High_Speed_Climbing_Transition" 
-            #segment.analyses.extend( analyses.transition_flight)    
-            #segment.altitude_start                                = 200.0 * Units.ft   
-            #segment.altitude_end                                  = 500.0 * Units.ft   
-            #segment.air_speed_start                               = 0.75   * Vstall
-            #segment.climb_angle                                   = 3     * Units.degrees   
-            #segment.acceleration                                  = 0.25  * Units['m/s/s'] 
-            #segment.pitch_initial                                 = 2.    * Units.degrees 
-            #segment.pitch_final                                   = 7.    * Units.degrees   
+            #------------------------------------------------------------------------------------------------------------------------------------  
+            # High-Speed Climbing Transition 
+            #------------------------------------------------------------------------------------------------------------------------------------  
+            segment                                               = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb(base_segment)
+            segment.tag                                           = "High_Speed_Climbing_Transition" 
+            segment.analyses.extend( analyses.transition_flight)    
+            segment.altitude_start                                = 200.0 * Units.ft   
+            segment.altitude_end                                  = 500.0 * Units.ft   
+            segment.air_speed_start                               = 0.75   * Vstall
+            segment.climb_angle                                   = 3     * Units.degrees   
+            segment.acceleration                                  = 0.25  * Units['m/s/s'] 
+            segment.pitch_initial                                 = 2.    * Units.degrees 
+            segment.pitch_final                                   = 7.    * Units.degrees   
         
-            ## define flight dynamics to model 
-            #segment.flight_dynamics.force_x                       = True  
-            #segment.flight_dynamics.force_z                       = True     
+            # define flight dynamics to model 
+            segment.flight_dynamics.force_x                       = True  
+            segment.flight_dynamics.force_z                       = True     
             
-            ## define flight controls 
-            #segment.assigned_control_variables.throttle.active               = True           
-            #segment.assigned_control_variables.throttle.assigned_propulsors  = [['cruise_propulsor_1','cruise_propulsor_2'],
-                                                                     #['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
-                                                                    #'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']]
-            #mission.append_segment(segment) 
+            # define flight controls 
+            segment.assigned_control_variables.throttle.active               = True           
+            segment.assigned_control_variables.throttle.assigned_propulsors  = [['cruise_propulsor_1','cruise_propulsor_2'],
+                                                                     ['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
+                                                                    'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']]
+            mission.append_segment(segment) 
            
-            ##------------------------------------------------------------------------------------------------------------------------------------ 
-            ## Vertical Descent 
-            ##------------------------------------------------------------------------------------------------------------------------------------ 
-            #segment                                               = Segments.Vertical_Flight.Descent(base_segment)
-            #segment.tag                                           = "Vertical_Descent" 
-            #segment.analyses.extend( analyses.vertical_flight)     
-            #segment.altitude_start                                = 300.0 * Units.ft   
-            #segment.altitude_end                                  = 0.   * Units.ft  
-            #segment.descent_rate                                  = 300. * Units['ft/min']  
+            #------------------------------------------------------------------------------------------------------------------------------------ 
+            # Vertical Descent 
+            #------------------------------------------------------------------------------------------------------------------------------------ 
+            segment                                               = Segments.Vertical_Flight.Descent(base_segment)
+            segment.tag                                           = "Vertical_Descent" 
+            segment.analyses.extend( analyses.vertical_flight)     
+            segment.altitude_start                                = 300.0 * Units.ft   
+            segment.altitude_end                                  = 0.   * Units.ft  
+            segment.descent_rate                                  = 300. * Units['ft/min']  
             
-            ## define flight dynamics to model  
-            #segment.flight_dynamics.force_z                       = True     
+            # define flight dynamics to model  
+            segment.flight_dynamics.force_z                       = True     
             
-            ## define flight controls 
-            #segment.assigned_control_variables.throttle.active               = True           
-            #segment.assigned_control_variables.throttle.assigned_propulsors  = [['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
-                                                                      #'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']] 
+            # define flight controls 
+            segment.assigned_control_variables.throttle.active               = True           
+            segment.assigned_control_variables.throttle.assigned_propulsors  = [['lift_propulsor_1','lift_propulsor_2','lift_propulsor_3','lift_propulsor_4',
+                                                                      'lift_propulsor_5','lift_propulsor_6','lift_propulsor_7','lift_propulsor_8']] 
                     
-            #mission.append_segment(segment)  
+            mission.append_segment(segment)  
           
         
-            ## ------------------------------------------------------------------
-            ##  Charge Segment: 
-            ## ------------------------------------------------------------------  
-            ## Charge Model 
-            #segment                                         = Segments.Ground.Battery_Recharge(base_segment)     
-            #segment.analyses.extend(analyses.base)              
-            #segment.tag                                     = 'Recharge' 
-            #segment.time                                    = 1 * Units.hr
-            #segment.current                                 = 100 
-            #if flight_no  == flights_per_day:  
-                #segment.increment_battery_age_by_one_day    =True     
-            #mission.append_segment(segment)                
+            # ------------------------------------------------------------------
+            #  Charge Segment: 
+            # ------------------------------------------------------------------  
+            # Charge Model 
+            segment                                         = Segments.Ground.Battery_Recharge(base_segment)     
+            segment.analyses.extend(analyses.base)              
+            segment.tag                                     = 'Recharge' 
+            segment.time                                    = 1 * Units.hr
+            segment.current                                 = 100 
+            if flight_no  == flights_per_day:  
+                segment.increment_battery_age_by_one_day    =True     
+            mission.append_segment(segment)                
 
     return mission
 

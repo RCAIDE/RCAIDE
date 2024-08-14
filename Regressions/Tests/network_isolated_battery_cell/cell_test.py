@@ -9,9 +9,9 @@
 # RCAIDE imports 
 import RCAIDE  
 from RCAIDE.Framework.Core                                    import Units, Data 
-from RCAIDE.Library.Methods.Energy.Sources.Battery.Common   import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, find_mass_gain_rate, find_total_mass_gain, find_ragone_properties, find_ragone_optimum  
-from RCAIDE.Framework.Mission.Common                 import Conditions
-from RCAIDE.Library.Plots                           import * 
+from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common   import initialize_from_mass ,initialize_from_energy_and_power, initialize_from_mass, find_mass_gain_rate, find_total_mass_gain, find_ragone_properties, find_ragone_optimum  
+from RCAIDE.Framework.Mission.Common                          import Conditions
+from RCAIDE.Library.Plots                                     import * 
 
 # package imports  
 import numpy as np

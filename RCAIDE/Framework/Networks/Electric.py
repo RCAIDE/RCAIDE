@@ -248,8 +248,8 @@ class Electric(Network):
             N/A
         """              
         busses   = segment.analyses.energy.vehicle.networks.electric.busses 
-        segment.state.residuals.network = Residuals()  
-         
+        segment.state.residuals.network = Residuals()
+        
         for bus_i, bus in enumerate(busses):  
             # ------------------------------------------------------------------------------------------------------            
             # Create bus results data structure  

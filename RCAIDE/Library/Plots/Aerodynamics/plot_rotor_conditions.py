@@ -120,7 +120,7 @@ def plot_propulsor_data(results,distributor,propulsor,axis_1,axis_2,axis_3,axis_
         rpm          =  bus_results[propulsor.tag][rotor.tag].rpm[:,0]
         thrust       =  bus_results[propulsor.tag][rotor.tag].thrust[:,0]
         torque       =  bus_results[propulsor.tag][rotor.tag].torque[:,0]
-        angle        =  bus_results[propulsor.tag].orientation[:,0]  
+        angle        =  bus_results[propulsor.tag].commanded_thrust_vector_angle[:,0]  
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
         if pi == 0: 

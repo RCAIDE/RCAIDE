@@ -10,7 +10,6 @@
 # ---------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Framework.Core import Units, Data    
-from RCAIDE.Library.Methods.Performance.estimate_cruise_drag                   import estimate_cruise_drag 
 from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common                    import initialize_from_circuit_configuration 
 from RCAIDE.Library.Methods.Weights.Correlation_Buildups.Propulsion            import nasa_motor
 from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor                     import design_motor
@@ -380,6 +379,11 @@ def vehicle_setup():
 #   Define the Configurations
 # ---------------------------------------------------------------------
 
+
+# ----------------------------------------------------------------------
+#   Define the Configurations
+# ---------------------------------------------------------------------
+
 def configs_setup(vehicle):
     '''
     The configration set up below the scheduling of the nacelle angle and vehicle speed.
@@ -415,7 +419,7 @@ def configs_setup(vehicle):
     #    
     # ------------------------------------------------------------------
     config                                            = RCAIDE.Library.Components.Configs.Config(vehicle)
-    vector_angle                                      = 45.0  * Units.degrees 
+    vector_angle                                      = 30.0  * Units.degrees 
     config.tag                                        = 'vertical_transition'
     config.wings.main_wing.twists.root                = vector_angle
     config.wings.main_wing.twists.tip                 = vector_angle
@@ -425,7 +429,7 @@ def configs_setup(vehicle):
         for bus in network.busses: 
             for propulsor in  bus.propulsors:
                 propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
-                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_pitch_command  
+                propulsor.rotor.pitch_command   = propulsor.rotor.hover.design_pitch_command * 0.5 
     configs.append(config)
     
 
@@ -462,25 +466,7 @@ def configs_setup(vehicle):
                 propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
                 propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_pitch_command  
     configs.append(config)    
-    
-  
-
-    # ------------------------------------------------------------------
-    #   Approach Configuration
-    # ------------------------------------------------------------------
-    config                                            = RCAIDE.Library.Components.Configs.Config(vehicle)
-    config.tag                                        = 'approach'   
-    vector_angle                                      = 5.0 * Units.degrees 
-    config.wings.main_wing.twists.root                = vector_angle
-    config.wings.main_wing.twists.tip                 = vector_angle
-    config.wings.canard_wing.twists.root              = vector_angle
-    config.wings.canard_wing.twists.tip               = vector_angle 
-    for network in  config.networks: 
-        for bus in network.busses: 
-            for propulsor in  bus.propulsors:
-                propulsor.rotor.orientation_euler_angles =  [0, vector_angle, 0]
-                propulsor.rotor.pitch_command   = propulsor.rotor.cruise.design_pitch_command    
-    configs.append(config)     
+      
     
     # ------------------------------------------------------------------
     #   
@@ -517,5 +503,3 @@ def configs_setup(vehicle):
     configs.append(config)
 
     return configs 
-
- 

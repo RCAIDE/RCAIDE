@@ -13,7 +13,9 @@ from RCAIDE.Library.Methods.Propulsors.Converters.Engine import compute_power_fr
 from RCAIDE.Library.Methods.Propulsors.Converters.Rotor.compute_rotor_performance import  compute_rotor_performance
 
 # pacakge imports  
+from copy import deepcopy
 import numpy as np 
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_ice_performance
@@ -70,12 +72,13 @@ def compute_ice_performance(propulsor,state,fuel_line,center_of_gravity= [[0.0, 
 
 
     # compute total forces and moments from propulsor (future work would be to add moments from motors)
-    conditions.energy[fuel_line.tag][propulsor.tag].thrust      = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].thrust 
-    conditions.energy[fuel_line.tag][propulsor.tag].moment      = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].moment
-    conditions.energy[fuel_line.tag][propulsor.tag].power       = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].power 
-    T  = conditions.energy[fuel_line.tag][propulsor.tag].thrust 
-    M  = conditions.energy[fuel_line.tag][propulsor.tag].moment 
-    P  = conditions.energy[fuel_line.tag][propulsor.tag].power 
+    ice_conditions.thrust      = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].thrust 
+    ice_conditions.moment      = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].moment
+    ice_conditions.power       = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].power 
+    
+    T  = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].thrust  
+    M  = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].moment 
+    P  = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].power 
     
     return T,M,P,stored_results_flag,stored_propulsor_tag 
     
@@ -93,7 +96,7 @@ def reuse_stored_ice_data(propulsor,state,fuel_line,stored_propulsor_tag,center_
     Inputs:  
     conditions           - operating conditions data structure        [-]  
     fuel_line            - fuel line                                  [-] 
-    propulsor        - propulsor data structure               [-] 
+    propulsor            - propulsor data structure               [-] 
     total_thrust         - thrust of propulsor group              [N]
     total_power          - power of propulsor group               [W] 
 
@@ -112,8 +115,8 @@ def reuse_stored_ice_data(propulsor,state,fuel_line,stored_propulsor_tag,center_
     engine_0     = fuel_line.propulsors[stored_propulsor_tag].engine
     propeller_0  = fuel_line.propulsors[stored_propulsor_tag].propeller  
     
-    conditions.energy[fuel_line.tag][propulsor.tag][engine.tag]        = conditions.energy[fuel_line.tag][stored_propulsor_tag][engine_0.tag]
-    conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag]        = conditions.energy[fuel_line.tag][stored_propulsor_tag][propeller_0.tag] 
+    conditions.energy[fuel_line.tag][propulsor.tag][engine.tag]        = deepcopy(conditions.energy[fuel_line.tag][stored_propulsor_tag][engine_0.tag])
+    conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag]     = deepcopy(conditions.energy[fuel_line.tag][stored_propulsor_tag][propeller_0.tag])
   
     thrust                  = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].thrust 
     power                   = conditions.energy[fuel_line.tag][propulsor.tag][propeller.tag].power 

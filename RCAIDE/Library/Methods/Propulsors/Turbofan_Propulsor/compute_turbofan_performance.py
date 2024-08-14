@@ -19,6 +19,7 @@ from RCAIDE.Library.Methods.Propulsors.Converters.Compression_Nozzle import comp
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor            import compute_thrust
 
 import  numpy as  np
+from copy import  deepcopy
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_performance
@@ -261,15 +262,13 @@ def reuse_stored_turbofan_data(turbofan,state,fuel_line,stored_propulsor_tag,cen
     N.A.        
     ''' 
     conditions                                      = state.conditions  
-    turbofan_conditions_0                           = conditions.energy[fuel_line.tag][stored_propulsor_tag]
-    noise_conditions_0                              = conditions.noise[fuel_line.tag][stored_propulsor_tag] 
-    conditions.energy[fuel_line.tag][turbofan.tag]  = turbofan_conditions_0 
-    conditions.noise[fuel_line.tag][turbofan.tag]   = noise_conditions_0  
+    conditions.energy[fuel_line.tag][turbofan.tag]  = deepcopy(conditions.energy[fuel_line.tag][stored_propulsor_tag])
+    conditions.noise[fuel_line.tag][turbofan.tag]   = deepcopy(conditions.noise[fuel_line.tag][stored_propulsor_tag])
     
     # compute moment  
     moment_vector      = 0*state.ones_row(3)
     F                  = 0*state.ones_row(3)
-    F[:,0]             = turbofan_conditions_0.thrust[:,0] 
+    F[:,0]             = conditions.energy[fuel_line.tag][turbofan.tag].thrust[:,0] 
     moment_vector[:,0] = turbofan.origin[0][0] -   center_of_gravity[0][0] 
     moment_vector[:,1] = turbofan.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2] = turbofan.origin[0][2]  -  center_of_gravity[0][2]

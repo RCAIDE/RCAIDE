@@ -16,7 +16,10 @@ from RCAIDE.Library.Methods.Propulsors.Converters.Turbine            import comp
 from RCAIDE.Library.Methods.Propulsors.Converters.Supersonic_Nozzle  import compute_supersonic_nozzle_performance
 from RCAIDE.Library.Methods.Propulsors.Converters.Compression_Nozzle import compute_compression_nozzle_performance
 from RCAIDE.Library.Methods.Propulsors.Turbojet_Propulsor            import compute_thrust
+
+# python imports 
 import  numpy as  np 
+from copy import  deepcopy
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_turbojet_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -217,16 +220,14 @@ def reuse_stored_turbojet_data(turbojet,state,fuel_line,stored_propulsor_tag,cen
     Properties Used: 
     N.A.        
     ''' 
-    conditions                              = state.conditions 
-    turbojet_conditions_0                   = conditions.energy[fuel_line.tag][stored_propulsor_tag]
-    noise_conditions_0                      = conditions.noise[fuel_line.tag][stored_propulsor_tag]  
-    conditions.energy[fuel_line.tag][turbojet.tag]  = turbojet_conditions_0 
-    conditions.noise[fuel_line.tag][turbojet.tag]   = noise_conditions_0
+    conditions                              = state.conditions  
+    conditions.energy[fuel_line.tag][turbojet.tag]  =deepcopy(conditions.energy[fuel_line.tag][stored_propulsor_tag])
+    conditions.noise[fuel_line.tag][turbojet.tag]   =deepcopy(conditions.noise[fuel_line.tag][stored_propulsor_tag])
     
     # compute moment  
     moment_vector      = 0*state.ones_row(3)
     F                  = 0*state.ones_row(3)
-    F[:,0]             = turbojet_conditions_0.thrust[:,0] 
+    F[:,0]             = conditions.energy[fuel_line.tag][turbojet.tag].thrust[:,0] 
     moment_vector[:,0] = turbojet.origin[0][0] -   center_of_gravity[0][0] 
     moment_vector[:,1] = turbojet.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2] = turbojet.origin[0][2]  -  center_of_gravity[0][2]

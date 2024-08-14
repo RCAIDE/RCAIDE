@@ -144,7 +144,6 @@ def Hararmonic_Noise_Validation(PP):
     axes.set_title('Case 1, $C_P$ = ' + str(round(Cp[0,0],3)))
     axes.set_ylabel('SPL (dB)') 
     axes.minorticks_on() 
-    #plt.ylim((80,125))      
     
     Cp =  segment.state.conditions.energy[bus.tag][electric_rotor.tag][rotor.tag].power_coefficient
     # Test Case 2

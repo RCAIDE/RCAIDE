@@ -92,8 +92,10 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
         rotor =  propulsor.rotor
     elif 'propeller' in  propulsor:
         rotor =  propulsor.propeller
-    
-    rotor_conditions      = conditions.energy[disributor.tag][propulsor.tag][rotor.tag]
+     
+    propulsor_conditions  = conditions.energy[disributor.tag][propulsor.tag]
+    rotor_conditions      = propulsor_conditions[rotor.tag]
+    commanded_TV          = propulsor_conditions.commanded_thrust_vector_angle
     eta                   = rotor_conditions.throttle 
     omega                 = rotor_conditions.omega
     pitch_c               = rotor_conditions.pitch_command
@@ -143,7 +145,7 @@ def compute_rotor_performance(propulsor,state,disributor,center_of_gravity= [[0.
     T_body2inertial         = conditions.frames.body.transform_to_inertial
     T_inertial2body         = orientation_transpose(T_body2inertial)
     V_body                  = orientation_product(T_inertial2body,Vv)
-    body2thrust,orientation = rotor.body_to_prop_vel(rotor_conditions) 
+    body2thrust,orientation = rotor.body_to_prop_vel(commanded_TV) 
     T_body2thrust           = orientation_transpose(np.ones_like(T_body2inertial[:])*body2thrust)
     V_thrust                = orientation_product(T_body2thrust,V_body)
 

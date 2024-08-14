@@ -68,8 +68,8 @@ def compute_electric_rotor_performance(propulsor,state,bus,voltage,center_of_gra
     compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditions,conditions)
     
     # Spin the rotor 
-    rotor_conditions.omega       = motor_conditions.omega
-    rotor_conditions.throttle    = esc_conditions.throttle 
+    rotor_conditions.omega           = motor_conditions.omega
+    rotor_conditions.throttle        = esc_conditions.throttle 
     compute_rotor_performance(propulsor,state,bus,center_of_gravity)  
 
     # Run the motor for current

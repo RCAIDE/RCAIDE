@@ -174,7 +174,7 @@ class Rotor(Component):
         return rot_mat
     
 
-    def body_to_prop_vel(self,rotor_conditions):
+    def body_to_prop_vel(self,commanded_thrust_vector):
         """This rotates from the system's body frame to the propeller's velocity frame
 
         Assumptions:
@@ -199,12 +199,10 @@ class Rotor(Component):
         body_2_vehicle = sp.spatial.transform.Rotation.from_rotvec([0,np.pi,0]).as_matrix()
 
         # Go from vehicle frame to propeller vehicle frame: rot 1 including the extra body rotation
-        cpts       = len(np.atleast_1d(rotor_conditions.orientation))
+        cpts       = len(np.atleast_1d(commanded_thrust_vector))
         rots       = np.array(self.orientation_euler_angles) * 1.
-        rots       = np.repeat(rots[None,:], cpts, axis=0)
-        rots[:,0] += rotor_conditions.orientation[:,0]
-        rots[:,1] += rotor_conditions.orientation[:,1]
-        rots[:,2] += rotor_conditions.orientation[:,2]
+        rots       = np.repeat(rots[None,:], cpts, axis=0) 
+        rots[:,1] += commanded_thrust_vector[:,0] 
         
         vehicle_2_prop_vec = sp.spatial.transform.Rotation.from_rotvec(rots).as_matrix()
 
@@ -218,7 +216,7 @@ class Rotor(Component):
         return rot_mat , rots
 
 
-    def prop_vel_to_body(self,rotor_conditions):
+    def prop_vel_to_body(self,commanded_thrust_vector):
         """This rotates from the propeller's velocity frame to the system's body frame
 
         Assumptions:
@@ -239,7 +237,7 @@ class Rotor(Component):
         None
         """
 
-        body2propvel,rots = self.body_to_prop_vel(rotor_conditions)
+        body2propvel,rots = self.body_to_prop_vel(commanded_thrust_vector)
 
         r = sp.spatial.transform.Rotation.from_matrix(body2propvel)
         r = r.inv()
@@ -247,8 +245,8 @@ class Rotor(Component):
 
         return rot_mat, rots
     
-    def vec_to_prop_body(self,rotor_conditions):
-        rot_mat, rots =  self.prop_vel_to_body(rotor_conditions) 
+    def vec_to_prop_body(self,commanded_thrust_vector):
+        rot_mat, rots =  self.prop_vel_to_body(commanded_thrust_vector) 
         return rot_mat, rots
 
  

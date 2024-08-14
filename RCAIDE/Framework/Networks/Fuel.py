@@ -171,7 +171,7 @@ class Fuel(Network):
 
         fuel_lines = segment.analyses.energy.vehicle.networks.fuel.fuel_lines 
         for fuel_line in  fuel_lines: 
-            if fuel_line.active:  
+            if fuel_line.active and len(fuel_line.propulsors) > 0:
                 propulsor = fuel_line.propulsors[list(fuel_line.propulsors.keys())[0]] 
                 propulsor.pack_propulsor_residuals(segment,fuel_line) 
          
@@ -212,8 +212,7 @@ class Fuel(Network):
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------ 
-            for tag, item in  fuel_line.items():
-
+            for tag, item in  fuel_line.items(): 
                 if tag == 'fuel_tanks':
                     for fuel_tank in item:
                         fuel_tank.append_operating_conditions(segment,fuel_line) 
@@ -227,7 +226,9 @@ class Fuel(Network):
                 elif issubclass(type(item), RCAIDE.Library.Components.Component):
                     item.append_operating_conditions(segment,fuel_line)
                       
-        segment.process.iterate.unknowns.network   = self.unpack_unknowns                   
+        segment.process.iterate.unknowns.network   = self.unpack_unknowns      
+        segment.process.iterate.residuals.network  = self.residuals
+        
         return segment
 
     __call__ = evaluate     
