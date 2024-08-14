@@ -34,15 +34,15 @@ def compute_turbojet_performance(turbojet,state,fuel_line,center_of_gravity= [[0
     N/A
     
     Inputs:  
-    turbofan             - turbofan data structure               [-]  
+    turbojet             - turbojet data structure               [-]  
     state                - operating conditions data structure   [-]  
     fuel_line            - fuelline                              [-]
     center_of_gravity    - aircraft center of gravity            [m]
 
     Outputs:  
-    total_thrust         - thrust of turbofan group              [N]
-    total_momnet         - moment of turbofan group              [Nm]
-    total_power          - power of turbofan group               [W] 
+    total_thrust         - thrust of turbojet group              [N]
+    total_momnet         - moment of turbojet group              [Nm]
+    total_power          - power of turbojet group               [W] 
     stored_results_flag  - boolean for stored results            [-]     
     stored_propulsor_tag - name of turbojet with stored results  [-]
     
