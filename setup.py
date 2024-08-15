@@ -20,7 +20,7 @@ def main():
     
     the_package = 'RCAIDE'
     version     = '1.0.0'
-    date        = 'Jul 4th, 2023'
+    date        = 'Aug 14th, 2024'
     
     if len(sys.argv) >= 2:
         command = sys.argv[1]
@@ -67,7 +67,7 @@ def install(the_package,version,date):
     # test for requirements
     import_tests()
     
-    # list all SUAVE sub packages
+    # list all RCAIDE sub packages
     #print 'Listing Packages and Sub-Packages:'
     packages = list_subpackages(the_package,verbose=False)
     packages = list(map( '.'.join, packages ))
@@ -239,7 +239,12 @@ def import_tests():
     try:
         import geopy
     except ImportError:
-        raise ImportError('geopy is required for this package')    
+        raise ImportError('geopy is required for this package')
+    
+    try:
+        import importlib_metadata
+    except ImportError:
+        raise ImportError('importlib_metadata is required for this package')        
     
     return
     

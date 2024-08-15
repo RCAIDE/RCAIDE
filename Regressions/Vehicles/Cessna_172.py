@@ -193,7 +193,7 @@ def vehicle_setup():
     vehicle.landing_gear                        = landing_gear
 
     # ########################################################  Energy Network  #########################################################  
-    net                                         = RCAIDE.Framework.Networks.Internal_Combustion_Engine_Network()   
+    net                                         = RCAIDE.Framework.Networks.Fuel()   
 
     # add the network to the vehicle
     vehicle.append_energy_network(net) 
@@ -201,12 +201,12 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                   = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()   
+    fuel_line                                   = RCAIDE.Library.Components.Energy.Distributors.Fuel_Line()   
 
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Fuel Tank & Fuel
     #------------------------------------------------------------------------------------------------------------------------------------       
-    fuel_tank                                   = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()
+    fuel_tank                                   = RCAIDE.Library.Components.Energy.Sources.Fuel_Tanks.Fuel_Tank()
     fuel_tank.origin                            = wing.origin  
     fuel                                        = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline() 
     fuel.mass_properties.mass                   = 319 *Units.lbs 
@@ -255,7 +255,7 @@ def vehicle_setup():
                                                rel_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_1000000.txt']  
     prop.append_airfoil(airfoil)      
     prop.airfoil_polar_stations             = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]  
-    prop                                    = design_propeller(prop)    
+    design_propeller(prop)    
     ice_prop.propeller                      = prop 
     
     fuel_line.propulsors.append(ice_prop)

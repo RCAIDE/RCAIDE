@@ -7,86 +7,51 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-# RCAIDE imports   
+# RCAIDE imports
+from RCAIDE.Framework.Core     import Data
 from RCAIDE.Framework.Analyses import Analysis 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  ANALYSIS
 # ----------------------------------------------------------------------------------------------------------------------  
 ## @ingroup Analyses-Energy
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Energy Analysis
+# ----------------------------------------------------------------------------------------------------------------------   
 class Energy(Analysis):
-    """ RCAIDE.Framework.Analyses.Energy.Energy()
+    """ This is the base class for energy analyses.
     """
     def __defaults__(self):
         """This sets the default values and methods for the analysis.
             
-                    Assumptions:
-                    None
-            
-                    Source:
-                    N/A
-            
-                    Inputs:
-                    None
-            
-                    Outputs:
-                    None
-            
-                    Properties Used:
-                    N/A
-                """        
+        Assumptions:
+            None
+
+        Source:
+            None 
+        """        
         self.tag      = 'energy'
-        self.networks = None
+        self.vehicle  = Data()
         
-    def evaluate_thrust(self,state):
-        
+    def evaluate(self,state): 
         """Evaluate the thrust produced by the energy network.
     
-                Assumptions:
-                Network has an "evaluate_thrust" method.
-    
-                Source:
-                N/A
-    
-                Inputs:
-                State data container
-    
-                Outputs:
-                Results of the thrust evaluation method.
-    
-                Properties Used:
-                N/A                
-            """
-                
+        Assumptions:
+            None
+
+        Source:
+            None
+
+        Args:
+            state (dict): flight conditions [-]
+
+        Returns:
+            results : results of the thrust evaluation method. 
+        """ 
             
-        networks = self.networks
-        results  = networks.evaluate_thrust(state) 
-        
-        return results
-    
-    def evaluate_power(self,state):
-        
-        """Evaluate the power produced by the energy network.
-    
-                Assumptions:
-                Network has an "evaluate_power" method.
-    
-                Source:
-                N/A
-    
-                Inputs:
-                State data container
-    
-                Outputs:
-                Results of the power evaluation method.
-    
-                Properties Used:
-                N/A                
-            """
-                
-            
-        networks = self.networks
-        results  = networks.evaluate_power(state) 
-        
-        return results    
+        networks = self.vehicle.networks
+        cg       = self.vehicle.mass_properties.center_of_gravity
+        networks.evaluate(state,cg)
+        return  
     

@@ -29,7 +29,7 @@ def thrust(segment):
     energy_model = segment.analyses.energy
 
     # evaluate
-    energy_model.evaluate_thrust(segment.state)
+    energy_model.evaluate(segment.state)
 
     # pack conditions
     conditions = segment.state.conditions

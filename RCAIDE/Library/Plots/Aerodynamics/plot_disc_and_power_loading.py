@@ -63,7 +63,7 @@ def plot_disc_and_power_loading(results,
     axis_1 = plt.subplot(2,1,1)
     axis_2 = plt.subplot(2,1,2)   
     pi     = 0 
-    for network in results.segments[0].analyses.energy.networks:  
+    for network in results.segments[0].analyses.energy.vehicle.networks:  
         if 'busses' in network: 
             for bus in network.busses:    
                 for p_i, propulsor in enumerate(bus.propulsors): 
@@ -111,12 +111,16 @@ def plot_disc_and_power_loading(results,
     return fig 
 
 def plot_propulsor_data(results,distributor,propulsor,axis_1,axis_2,line_colors,ps,pi):
-    
+    if 'rotor' in  propulsor:
+        rotor =  propulsor.rotor
+    elif 'propeller' in  propulsor:
+        rotor =  propulsor.propeller
+
     for i in range(len(results.segments)): 
         bus_results  = results.segments[i].conditions.energy[distributor.tag] 
         time         = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
-        DL           = bus_results[propulsor.tag].rotor.disc_loading[:,0]
-        PL           = bus_results[propulsor.tag].rotor.power_loading[:,0] 
+        DL           = bus_results[propulsor.tag][rotor.tag].disc_loading[:,0]
+        PL           = bus_results[propulsor.tag][rotor.tag].power_loading[:,0] 
                  
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')

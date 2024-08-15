@@ -61,6 +61,7 @@ class Lift_Rotor(Rotor):
         self.hover.design_freestream_velocity = None
         self.hover.design_acoustics           = None
         self.hover.design_performance         = None
+        self.hover.design_pitch_command       = 0.0
         self.hover.design_SPL_dBA             = None
         self.hover.design_Cl                  = None
         self.hover.design_thrust_coefficient  = None
@@ -75,6 +76,7 @@ class Lift_Rotor(Rotor):
         self.oei.design_tip_mach              = None  
         self.oei.design_altitude              = None
         self.oei.design_acoustics             = None
+        self.oei.design_pitch_command         = 0.0
         self.oei.design_performance           = None
         self.oei.design_SPL_dBA               = None
         self.oei.design_Cl                    = None

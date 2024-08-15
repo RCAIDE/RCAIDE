@@ -75,7 +75,7 @@ def plot_aerodynamic_coefficients(results,
         segment_name = segment_tag.replace('_', ' ')
         axis_1.plot(time, aoa, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
         axis_1.set_ylabel(r'AoA (deg)')
-        axis_1.set_ylim([-5,20])
+        axis_1.set_ylim([-5,15])
         set_axes(axis_1)    
         
         axis_2.plot(time, l_d, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width) 

@@ -46,6 +46,6 @@ class Propulsor(Component):
             None
         """          
         self.tag                          = 'propulsor' 
-        self.active                       = True 
+        self.active                       = True
         
     

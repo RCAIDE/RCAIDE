@@ -70,7 +70,7 @@ def plot_battery_pack_conditions(results,
     axis_5 = plt.subplot(3,2,5) 
     axis_6 = plt.subplot(3,2,6)      
     b_i = 0 
-    for network in results.segments[0].analyses.energy.networks: 
+    for network in results.segments[0].analyses.energy.vehicle.networks: 
         busses  = network.busses
         for bus in busses: 
             for battery in bus.batteries:   

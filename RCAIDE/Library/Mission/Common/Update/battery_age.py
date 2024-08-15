@@ -28,7 +28,7 @@ def battery_age(segment):
        N/A 
     """  
     # loop throuh networks in vehicle 
-    for network in segment.analyses.energy.networks: 
+    for network in segment.analyses.energy.vehicle.networks: 
         if 'busses' in network: 
             busses  = network.busses
             for bus in busses:

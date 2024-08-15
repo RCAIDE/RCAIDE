@@ -1,6 +1,5 @@
-## @defgroup Methods-Energy-Propulsors-Converters-Combustor
-# RCAIDE/Methods/Energy/Propulsors/Converters/Combustor/__init__.py
-# 
+# RCAIDE/Library/Methods/Propulsors/Converters/Combustor/__init__.py
+# (c) Copyright 2023 Aerospace Research Community LLC
 
 """ RCAIDE Package Setup
 """
@@ -12,3 +11,4 @@
 from .compute_combustor_performance import compute_combustor_performance
 from .compute_rayleigh              import compute_rayleigh
 from .compute_supersonic_combustion import compute_supersonic_combustion
+from .append_combustor_conditions   import append_combustor_conditions 

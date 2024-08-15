@@ -64,8 +64,7 @@ def set_residuals_and_unknowns(mission):
                 segment.state.unknowns.body_angle = ones_row(1) * ctrls.body_angle.initial_guess_values[0][0]
             else:
                 segment.state.unknowns.body_angle = ones_row(1) * 3.0 * Units.degrees 
-            num_ctrls += 1 
-            
+            num_ctrls += 1  
     
         # Bank Angle  
         if ctrls.bank_angle.active:
@@ -73,8 +72,7 @@ def set_residuals_and_unknowns(mission):
                 segment.state.unknowns.bank_angle = ones_row(1) * ctrls.bank_angle.initial_guess_values[0][0]
             else:
                 segment.state.unknowns.bank_angle = ones_row(1) * 0.0 * Units.degrees 
-            num_ctrls += 1    
-                
+            num_ctrls += 1     
                 
         # Wing Angle  
         if ctrls.wind_angle.active:
@@ -100,7 +98,6 @@ def set_residuals_and_unknowns(mission):
             else:
                 segment.state.unknowns.velocity = ones_row(1) *  100
             num_ctrls += 1    
-                        
                 
         # Acceleration 
         if ctrls.acceleration.active:  
@@ -169,8 +166,10 @@ def set_residuals_and_unknowns(mission):
                     segment.state.unknowns["thrust_vector_" + str(i)] = ones_row(1) * ctrls.thrust_vector_angle.initial_guess_values[i][0]
                 else:
                     segment.state.unknowns["thrust_vector_" + str(i)] = ones_row(1) * 0.0 * Units.degrees 
-                num_ctrls += 1        
-                                                                 
-        # if the degrees of freedom are greater than the number of control inputs, post problem at optimization  # TO DO
+                num_ctrls += 1         
+        
+        # TO DO: add pitch command
+        
+        # TO DO: if the degrees of freedom are greater than the number of control inputs, post problem at optimization   
     return 
                                                                                                                                                                 

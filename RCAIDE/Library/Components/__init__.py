@@ -10,6 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
  
 from .Component        import Component
+from . Network         import  Network
 from .Mass_Properties  import Mass_Properties
   
 from . import Propulsors

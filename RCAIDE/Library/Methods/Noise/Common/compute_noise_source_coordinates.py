@@ -17,7 +17,7 @@ import numpy as np
 #  Source Coordinates 
 # ----------------------------------------------------------------------------------------------------------------------      
 ## @ingroup Methods-Noise-Common 
-def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
+def compute_rotor_point_source_coordinates(distributor,propulsor,conditions,mls,settings):
     """This calculated the position vector from a point source to the observer 
             
     Assumptions:
@@ -38,6 +38,10 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
     Properties Used:
         N/A       
     """  
+    # unpack
+    rotor                   =  propulsor.rotor
+    rotor_conditions        =  conditions.energy[distributor.tag][propulsor.tag][rotor.tag]
+    commanded_thrust_vector =  conditions.energy[distributor.tag][propulsor.tag].commanded_thrust_vector_angle
     
     # aquire dimension of matrix
     num_cpt     = conditions._size
@@ -47,14 +51,14 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
     num_blades  = rotor.number_of_blades  
     num_sec     = len(rotor.radius_distribution)    
     
-    # Get the rotation matrix
-    prop2body   = rotor.prop_vel_to_body()  
+    # Get the rotation matrix 
+    prop2body   = rotor.prop_vel_to_body(commanded_thrust_vector)  
     phi         = np.linspace(0,2*np.pi,num_blades+1)[0:num_blades]  
     c           = rotor.chord_distribution 
     r           = rotor.radius_distribution  
     beta        = rotor.flap_angle
-    theta       = rotor.twist_distribution   # blade pitch 
-    theta_0     = rotor.inputs.pitch_command # collective
+    theta       = rotor.twist_distribution   
+    theta_0     = rotor_conditions.pitch_command  
     MCA         = rotor.mid_chord_alignment
  
     # dimension of matrices [control point, microphone , rotor, number of blades, number of sections , x,y,z coords]    
@@ -117,7 +121,7 @@ def compute_rotor_point_source_coordinates(conditions,rotor,mls,settings):
     # rotation matrix of rotor about y axis by thrust angle (one extra dimension for translations)
     # -----------------------------------------------------------------------------------------------------------------------------
     Rotation_thrust_vector_angle                    = np.tile(I[None,None,None,None,:,:,:],(num_cpt,num_mic,num_rot,num_blades,num_sec,1,1))
-    prop2body                                       = rotor.prop_vel_to_body()      
+    prop2body,orientation                           = rotor.prop_vel_to_body(commanded_thrust_vector)      
     thrust_vector                                   = np.arccos(prop2body[0][0][0]) - np.pi/2 
     Rotation_thrust_vector_angle[:,:,:,:,:,0,0]     = np.cos(thrust_vector)
     Rotation_thrust_vector_angle[:,:,:,:,:,0,2]     = np.sin(thrust_vector)

@@ -8,7 +8,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports    
-from RCAIDE.Framework.Core              import Data, Container 
+from RCAIDE.Framework.Core              import Data 
 from RCAIDE.Library.Components          import Component  
 from RCAIDE.Library.Components.Airfoils import Airfoil
 import scipy as sp
@@ -58,7 +58,10 @@ class Nacelle(Component):
         self.flow_through              = True
         self.has_pylon                 = True
         self.differential_pressure     = 0.0    
-        self.cowling_airfoil_angle     = 0.0    
+        self.cowling_airfoil_angle     = 0.0
+
+    def append_operating_conditions(self,segment,fuel_line,propulsor): 
+        return
 
     def nac_vel_to_body(self):
         """This rotates from the systems body frame to the nacelles velocity frame

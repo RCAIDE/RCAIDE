@@ -59,7 +59,7 @@ def plot_battery_pack_C_rates(results,
     # get line colors for plots 
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
     
-    for network in results.segments[0].analyses.energy.networks: 
+    for network in results.segments[0].analyses.energy.vehicle.networks: 
         busses  = network.busses
         for bus in busses: 
             for battery in bus.batteries:    

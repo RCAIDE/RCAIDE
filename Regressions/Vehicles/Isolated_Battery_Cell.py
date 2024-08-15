@@ -9,7 +9,7 @@
 # RCAIDE imports 
 import RCAIDE  
 from RCAIDE.Framework.Core                                    import Units 
-from RCAIDE.Library.Methods.Energy.Sources.Battery.Common   import initialize_from_circuit_configuration  
+from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common   import initialize_from_circuit_configuration  
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Build the Vehicle
@@ -26,17 +26,17 @@ def vehicle_setup(current,cell_chemistry,fixed_bus_voltage):
     vehicle.mass_properties.takeoff         = 1 * Units.kg 
     vehicle.mass_properties.max_takeoff     = 1 * Units.kg 
          
-    net                              = RCAIDE.Framework.Networks.Isolated_Battery_Cell_Network() 
+    net                              = RCAIDE.Framework.Networks.Electric() 
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Bus
     #------------------------------------------------------------------------------------------------------------------------------------  
-    bus                              = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus() 
+    bus                              = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus() 
  
     # Battery    
     if cell_chemistry == 'lithium_ion_nmc': 
-        battery = RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_NMC()
+        battery = RCAIDE.Library.Components.Energy.Sources.Batteries.Lithium_Ion_NMC()
     elif cell_chemistry == 'lithium_ion_lfp': 
-        battery = RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_LFP()  
+        battery = RCAIDE.Library.Components.Energy.Sources.Batteries.Lithium_Ion_LFP()  
     HAS                 = RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Acquisition_Systems.Direct_Air() 
     HAS.convective_heat_transfer_coefficient    = 7.17
     battery.thermal_management_system.heat_acquisition_system = HAS 

@@ -10,14 +10,14 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## RCAIDE imports   
 from RCAIDE.Framework.Core      import Data
-from .                import Propulsor
-
-import numpy as np 
-
+from .                          import Propulsor
+from RCAIDE.Library.Methods.Propulsors.Turbojet_Propulsor.append_turbojet_conditions     import append_turbojet_conditions 
+from RCAIDE.Library.Methods.Propulsors.Turbojet_Propulsor.compute_turbojet_performance   import compute_turbojet_performance, reuse_stored_turbojet_data
+ 
+ 
 # ----------------------------------------------------------------------
-#  Fan Component
-# ----------------------------------------------------------------------
-## @ingroup Components-Propulsors-Converters
+#  Turbojet Propulsor
+# ---------------------------------------------------------------------- 
 class Turbojet(Propulsor):
     """This is a  turbojet propulsor
 
@@ -60,18 +60,23 @@ class Turbojet(Propulsor):
         self.areas.wetted                             = 0.0
         self.areas.maximum                            = 0.0
         self.areas.exit                               = 0.0
-        self.areas.inflow                             = 0.0
+        self.areas.inflow                             = 0.0 
 
-        self.inputs                                   = Data()
-        self.outputs                                  = Data()
 
-        self.inputs.fuel_to_air_ratio                 = 0.0
-        self.outputs.thrust                           = 0.0 
-        self.outputs.thrust_specific_fuel_consumption = 0.0
-        self.outputs.specific_impulse                 = 0.0
-        self.outputs.non_dimensional_thrust           = 0.0
-        self.outputs.core_mass_flow_rate              = 0.0
-        self.outputs.fuel_flow_rate                   = 0.0
-        self.outputs.fuel_mass                        = 0.0
-        self.outputs.power                            = 0.0 
+    def append_operating_conditions(self,segment,fuel_line,add_additional_network_equation = False):
+        append_turbojet_conditions(self,segment,fuel_line,add_additional_network_equation)
+        return
 
+    def unpack_propulsor_unknowns(self,segment,fuel_line,add_additional_network_equation = False):   
+        return 
+
+    def pack_propulsor_residuals(self,segment,fuel_line,add_additional_network_equation = False): 
+        return        
+    
+    def compute_performance(self,state,fuel_line,center_of_gravity = [[0, 0, 0]]):
+        thrust,moment,power,stored_results_flag,stored_propulsor_tag =  compute_turbojet_performance(self,state,fuel_line,center_of_gravity)
+        return thrust,moment,power,stored_results_flag,stored_propulsor_tag
+    
+    def reuse_stored_data(turbojet,state,fuel_line,stored_propulsor_tag,center_of_gravity = [[0, 0, 0]]):
+        thrust,moment,power  = reuse_stored_turbojet_data(turbojet,state,fuel_line,stored_propulsor_tag,center_of_gravity)
+        return thrust,moment,power 

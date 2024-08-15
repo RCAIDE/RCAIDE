@@ -8,6 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
+from RCAIDE.Library.Methods.Propulsors.Common.append_avionics_conditions import append_avionics_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Avionics
@@ -42,6 +43,11 @@ class Avionics(Component):
         """                 
         self.power_draw = 0.0
         self.tag        = 'avionics'
+
+    def append_operating_conditions(self,segment,bus): 
+        append_avionics_conditions(self,segment,bus)
+        return
+            
         
     def power(self):
         """This gives the power draw from avionics.

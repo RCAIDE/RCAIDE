@@ -45,7 +45,7 @@ def main():
     plot_elevation_contours(topography_file   ='LA_Metropolitan_Area.txt',use_lat_long_coordinates = False, save_filename = "Elevation_Contours_XY")  
       
     vehicle  = vehicle_setup()      
-    vehicle.networks.all_electric.busses.bus.identical_propulsors     = False # only for regression     
+    vehicle.networks.electric.busses.bus.identical_propulsors     = False # only for regression     
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs,microphone_terrain_data,geospacial_data)  
     mission  = mission_setup(analyses,geospacial_data)
@@ -126,7 +126,7 @@ def base_analysis(vehicle,microphone_terrain_data,geospacial_data):
     # ------------------------------------------------------------------
     #  Energy
     energy          = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.networks = vehicle.networks 
+    energy.vehicle  = vehicle 
     analyses.append(energy)
 
     # ------------------------------------------------------------------

@@ -87,7 +87,7 @@ class Vehicle(Data):
         }
          
         self._energy_network_root_map= {
-            Framework.Networks.Network                 : self['networks']         , 
+            Framework.Networks.Network                 : self['networks']         ,
             }    
         
         self.append_component(Vehicle_Mass_Properties())

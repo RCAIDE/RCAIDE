@@ -1,6 +1,5 @@
-## @ingroup Components-Propulsors-Combustor
 # RCAIDE/Library/Components/Propulsors/Converters/Combustor.py
-# 
+# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Feb 2024, M. Clarke
 
@@ -8,21 +7,14 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
  # RCAIDE imports   
-from RCAIDE.Library.Components                      import Component  
+from RCAIDE.Library.Components                      import Component
+from RCAIDE.Library.Methods.Propulsors.Converters.Combustor.append_combustor_conditions import  append_combustor_conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Combustor
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Components-Propulsors-Converters 
 class Combustor(Component):
-    """This provides output values for a combustor
-    Calling this class calls the compute function.
-    
-    Assumptions:
-    None
-    
-    Source:
-    https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/
+    """This is a combustor compoment class.
     """
     
     def __defaults__(self):
@@ -32,35 +24,20 @@ class Combustor(Component):
         None
 
         Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
+        None 
         """         
         
         self.tag                             = 'Combustor' 
         self.alphac                          = 0.0
-        self.turbine_inlet_temperature       = 1.0
-        self.inputs.stagnation_temperature   = 1.0
-        self.inputs.stagnation_pressure      = 1.0
-        self.inputs.static_pressure          = 1.0
-        self.inputs.mach_number              = 0.1
-        self.outputs.stagnation_temperature  = 1.0
-        self.outputs.stagnation_pressure     = 1.0
-        self.outputs.static_pressure         = 1.0
-        self.outputs.stagnation_enthalpy     = 1.0
-        self.outputs.fuel_to_air_ratio       = 1.0 
+        self.turbine_inlet_temperature       = 1.0 
         self.area_ratio                      = 1.0
         self.axial_fuel_velocity_ratio       = 0.0
         self.fuel_velocity_ratio             = 0.0
         self.burner_drag_coefficient         = 0.0
         self.absolute_sensible_enthalpy      = 0.0
         self.fuel_equivalency_ratio          = 1.0        
-        self.inputs.nondim_mass_ratio        = 1.0 # allows fuel already burned to be added to the flow 
     
+    def append_operating_conditions(self,segment,fuel_line,propulsor):
+        propulsor_conditions =  segment.state.conditions.energy[fuel_line.tag][propulsor.tag]
+        append_combustor_conditions(self,segment,propulsor_conditions)
+        return

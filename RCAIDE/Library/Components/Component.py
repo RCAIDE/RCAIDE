@@ -47,9 +47,7 @@ class Component(Data):
             """         
         self.tag             = 'Component' 
         self.mass_properties = Mass_Properties()
-        self.origin          = np.array([[0.0,0.0,0.0]]) 
-        self.inputs          = Data()
-        self.outputs         = Data()
+        self.origin          = np.array([[0.0,0.0,0.0]])
     
         
 # ----------------------------------------------------------------------------------------------------------------------

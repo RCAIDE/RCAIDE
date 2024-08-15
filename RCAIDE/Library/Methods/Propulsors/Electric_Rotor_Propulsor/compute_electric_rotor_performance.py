@@ -7,62 +7,21 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# RCAIDE imports  
-from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Methods.Propulsors.Modulators  import compute_voltage_out_from_throttle ,compute_current_in_from_throttle
+# RCAIDE imports   
+from RCAIDE.Library.Methods.Propulsors.Modulators.Electronic_Speed_Controller.compute_esc_performance  import * 
+from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor.compute_motor_performance                   import *
+from RCAIDE.Library.Methods.Propulsors.Converters.Rotor.compute_rotor_performance                      import * 
+
 
 # pacakge imports  
 import numpy as np 
+from copy import deepcopy
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_electric_rotor_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Propulsors-Electric_Rotor_Propulsor
-def compute_electric_rotor_performance(bus,state,voltage):
-    ''' Computes the perfomrance of all electric propulsors, comprising 
-    of rotors, motors and electronic speed controllers, connected to a battery
-    
-    Assumptions: 
-    N/A
-
-    Source:
-    N/A
-
-    Inputs:  
-    bus                   - bus                                   [string]  
-    state                 - operating conditions data structure   [-] 
-    voltage               - system voltage                        [V]
-
-    Outputs:  
-    total_thrust         - thrust of rotors                       [N]
-    total_power          - power of rotors                        [W]
-    total_current        - current consumed by rotors             [A]
-    
-    Properties Used: 
-    N.A.        
-    ''' 
-    conditions      = state.conditions
-    total_power     = 0*state.ones_row(1) 
-    total_current   = 0*state.ones_row(1) 
-    total_thrust    = 0*state.ones_row(3) 
-    stored_results_flag  = False 
-
-    for propulsor in bus.propulsors:        
-        if propulsor.active == True:  
-            if bus.identical_propulsors == False:
-                # run analysis  
-                total_thrust,total_power,total_current,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_power,total_current)
-            else:             
-                if stored_results_flag == False: 
-                    # run analysis 
-                    total_thrust,total_power,total_current,stored_results_flag,stored_propulsor_tag = compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_power,total_current)
-                else:
-                    # use old results 
-                    total_thrust , total_power ,  total_current  = reuse_stored_data(conditions,bus,propulsor,stored_propulsor_tag,total_thrust,total_power,total_current)
-                
-    return total_thrust , total_power ,  total_current
-
-def compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_power,total_current): 
+def compute_electric_rotor_performance(propulsor,state,bus,voltage,center_of_gravity= [[0.0, 0.0,0.0]]):   
     ''' Computes the perfomrance of one propulsor
     
     Assumptions: 
@@ -90,71 +49,52 @@ def compute_performance(conditions,voltage,bus,propulsor,total_thrust,total_powe
     Properties Used: 
     N.A.        
     ''' 
-    noise_results        = conditions.noise[bus.tag][propulsor.tag]
-    energy_results       = conditions.energy[bus.tag][propulsor.tag] 
-    motor                = propulsor.motor 
-    rotor                = propulsor.rotor 
-    esc                  = propulsor.electronic_speed_controller 
-    eta                  = conditions.energy[bus.tag][propulsor.tag].throttle
-
-    esc.inputs.voltage   = voltage
-    compute_voltage_out_from_throttle(esc,eta) 
+    conditions                 = state.conditions    
+    electric_rotor_conditions  = conditions.energy[bus.tag][propulsor.tag] 
+    motor                      = propulsor.motor 
+    rotor                      = propulsor.rotor 
+    esc                        = propulsor.electronic_speed_controller  
+    esc_conditions             = electric_rotor_conditions[esc.tag]
+    motor_conditions           = electric_rotor_conditions[motor.tag]
+    rotor_conditions           = electric_rotor_conditions[rotor.tag]
+    eta                        = conditions.energy[bus.tag][propulsor.tag].throttle
+    
+    esc_conditions.inputs.voltage   = voltage
+    esc_conditions.throttle         = eta 
+    compute_voltage_out_from_throttle(esc,esc_conditions,conditions)
 
     # Assign conditions to the rotor
-    motor.inputs.voltage         = esc.outputs.voltage
-    motor.inputs.rotor_CP        = energy_results.rotor.power_coefficient  
-    motor.compute_omega(conditions)
-    rotor.inputs.omega           = motor.outputs.omega
-    rotor.inputs.y_axis_rotation += energy_results.y_axis_rotation
-    rotor.inputs.pitch_command   += energy_results.rotor.pitch_command
-
+    motor_conditions.voltage                   = esc_conditions.outputs.voltage 
+    compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditions,conditions)
+    
     # Spin the rotor 
-    F, Q, P, Cp, outputs, etap = rotor.spin(conditions)  
-
-    # Check to see if magic thrust is needed, the ESC caps throttle at 1.1 already
-    F[eta[:,0]  <=0.0] = 0.0
-    P[eta[:,0]  <=0.0] = 0.0
-    Q[eta[:,0]  <=0.0] = 0.0 
-    P[eta>1.0]         = P[eta>1.0]*eta[eta>1.0]
-    F[eta[:,0]>1.0,:]  = F[eta[:,0]>1.0,:]*eta[eta[:,0]>1.0,:]
+    rotor_conditions.omega           = motor_conditions.omega
+    rotor_conditions.throttle        = esc_conditions.throttle 
+    compute_rotor_performance(propulsor,state,bus,center_of_gravity)  
 
     # Run the motor for current
-    motor.compute_current_draw()
-
-    # Determine Conditions specific to this instantation of motor and rotors
-    R                   = rotor.tip_radius
-    rpm                 = motor.outputs.omega / Units.rpm
-    F_mag               = np.atleast_2d(np.linalg.norm(F, axis=1)).T 
-
-    # Pack specific outputs
-    energy_results.motor.efficiency        = motor.outputs.efficiency
-    energy_results.motor.torque            = motor.outputs.torque
-    energy_results.rotor.torque            = Q 
-    energy_results.rotor.power             = P 
-    energy_results.rotor.thrust            = F
-    energy_results.rotor.rpm               = rpm
-    energy_results.rotor.tip_mach          = (R*rpm*Units.rpm)/conditions.freestream.speed_of_sound
-    energy_results.rotor.disc_loading      = (F_mag)/(np.pi*(R**2))
-    energy_results.rotor.power_loading     = (F_mag)/(P)
-    energy_results.rotor.efficiency        = etap
-    energy_results.rotor.figure_of_merit   = outputs.figure_of_merit
-    noise_results.rotor                    = outputs 
-
-    # Detemine esc current 
-    esc.outputs.current          = motor.outputs.current
-    compute_current_in_from_throttle(esc,eta)
-    energy_results.esc.current   = esc.inputs.current  
-    energy_results.esc.power     = esc.inputs.power
-
-    total_thrust                 += energy_results.rotor.thrust 
-    total_power                  += energy_results.esc.power
-    total_current                += energy_results.esc.current  
-    stored_results_flag          = True
-    stored_propulsor_tag         = propulsor.tag   
+    compute_current_from_RPM_and_voltage(motor,motor_conditions,conditions)
     
-    return total_thrust,total_power,total_current,stored_results_flag,stored_propulsor_tag
+    # Detemine esc current 
+    esc_conditions.outputs.current = motor_conditions.current
+    compute_current_in_from_throttle(esc,esc_conditions,conditions)  
+    esc_conditions.current   = esc_conditions.inputs.current  
+    esc_conditions.power     = esc_conditions.inputs.power
+    
+    stored_results_flag     = True
+    stored_propulsor_tag    = propulsor.tag 
+    
+    # compute total forces and moments from propulsor (future work would be to add moments from motors)
+    electric_rotor_conditions.thrust      = conditions.energy[bus.tag][propulsor.tag][rotor.tag].thrust 
+    electric_rotor_conditions.moment      = conditions.energy[bus.tag][propulsor.tag][rotor.tag].moment 
+    
+    T  = conditions.energy[bus.tag][propulsor.tag][rotor.tag].thrust 
+    M  = conditions.energy[bus.tag][propulsor.tag][rotor.tag].moment 
+    P  = conditions.energy[bus.tag][propulsor.tag][esc.tag].power 
+    
+    return T,M,P, stored_results_flag,stored_propulsor_tag 
                 
-def reuse_stored_data(conditions,bus,propulsor,stored_propulsor_tag,total_thrust,total_power,total_current): 
+def reuse_stored_electric_rotor_data(propulsor,state,bus,stored_propulsor_tag,center_of_gravity= [[0.0, 0.0,0.0]]):
     '''Reuses results from one propulsor for identical propulsors
     
     Assumptions: 
@@ -180,27 +120,29 @@ def reuse_stored_data(conditions,bus,propulsor,stored_propulsor_tag,total_thrust
     Properties Used: 
     N.A.        
     ''' 
-    energy_results_0                       = conditions.energy[bus.tag][stored_propulsor_tag]
-    noise_results_0                        = conditions.noise[bus.tag][stored_propulsor_tag]  
-    energy_results                         = conditions.energy[bus.tag][propulsor.tag] 
-    noise_results                          = conditions.noise[bus.tag][propulsor.tag]
-    energy_results.motor.efficiency        = energy_results_0.motor.efficiency      
-    energy_results.motor.torque            = energy_results_0.motor.torque          
-    energy_results.rotor.torque            = energy_results_0.rotor.torque        
-    energy_results.rotor.power             = energy_results_0.rotor.power            
-    energy_results.rotor.thrust            = energy_results_0.rotor.thrust          
-    energy_results.rotor.rpm               = energy_results_0.rotor.rpm             
-    energy_results.rotor.tip_mach          = energy_results_0.rotor.tip_mach        
-    energy_results.rotor.disc_loading      = energy_results_0.rotor.disc_loading    
-    energy_results.rotor.power_loading     = energy_results_0.rotor.power_loading   
-    energy_results.rotor.efficiency        = energy_results_0.rotor.efficiency      
-    energy_results.rotor.figure_of_merit   = energy_results_0.rotor.figure_of_merit 
-    energy_results.esc.current             = energy_results_0.esc.current   
-    energy_results.rotor.power_coefficient = energy_results_0.rotor.power_coefficient  
-    energy_results.esc.power               = energy_results_0.esc.power     
-    noise_results.rotor                    = noise_results_0.rotor    
-    total_thrust                           += energy_results_0.rotor.thrust 
-    total_power                            += energy_results_0.esc.power
-    total_current                          += energy_results_0.esc.current 
+    conditions                 = state.conditions 
+    motor                      = propulsor.motor 
+    rotor                      = propulsor.rotor 
+    esc                        = propulsor.electronic_speed_controller  
+    motor_0                    = bus.propulsors[stored_propulsor_tag].motor 
+    rotor_0                    = bus.propulsors[stored_propulsor_tag].rotor 
+    esc_0                      = bus.propulsors[stored_propulsor_tag].electronic_speed_controller
     
-    return total_thrust , total_power ,  total_current 
+    conditions.energy[bus.tag][propulsor.tag][motor.tag]        = deepcopy(conditions.energy[bus.tag][stored_propulsor_tag][motor_0.tag])
+    conditions.energy[bus.tag][propulsor.tag][rotor.tag]        = deepcopy(conditions.energy[bus.tag][stored_propulsor_tag][rotor_0.tag])
+    conditions.energy[bus.tag][propulsor.tag][esc.tag]          = deepcopy(conditions.energy[bus.tag][stored_propulsor_tag][esc_0.tag])
+  
+    thrust                  = conditions.energy[bus.tag][propulsor.tag][rotor.tag].thrust 
+    power                   = conditions.energy[bus.tag][propulsor.tag][esc.tag].power 
+    
+    moment_vector           = 0*state.ones_row(3) 
+    moment_vector[:,0]      = rotor.origin[0][0]  -  center_of_gravity[0][0] 
+    moment_vector[:,1]      = rotor.origin[0][1]  -  center_of_gravity[0][1] 
+    moment_vector[:,2]      = rotor.origin[0][2]  -  center_of_gravity[0][2]
+    moment                  =  np.cross(moment_vector, thrust)
+    
+    conditions.energy[bus.tag][propulsor.tag][rotor.tag].moment = moment  
+    conditions.energy[bus.tag][propulsor.tag].thrust            = thrust   
+    conditions.energy[bus.tag][propulsor.tag].moment            = moment  
+    
+    return thrust,moment,power

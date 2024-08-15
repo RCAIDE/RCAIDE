@@ -9,5 +9,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from . import Battery
-from . import Fuel_Cell
+from . import Batteries
+from . import Fuel_Cells
+from . import Fuel_Tanks

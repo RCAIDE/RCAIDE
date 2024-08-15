@@ -8,7 +8,8 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core                                         import Units    
-from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor import design_turboshaft, compute_turboshaft_performance
+from RCAIDE.Library.Methods.Propulsors.Turboshaft_Propulsor        import design_turboshaft 
+from RCAIDE.Framework.Mission.Common                               import Conditions
 from RCAIDE.Library.Plots                                          import *     
 
 # python imports 
@@ -117,8 +118,8 @@ def turboshaft_engine_Boeing_502_14(altitude,mach):
     design_turboshaft(turboshaft)    
      
     # connect turboshaft with network
-    fuel_line                                      = RCAIDE.Library.Components.Energy.Distribution.Fuel_Line()    
-    fuel_tank                                      = RCAIDE.Library.Components.Energy.Fuel_Tanks.Fuel_Tank()  
+    fuel_line                                      = RCAIDE.Library.Components.Energy.Distributors.Fuel_Line()    
+    fuel_tank                                      = RCAIDE.Library.Components.Energy.Sources.Fuel_Tanks.Fuel_Tank()  
     fuel                                           = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()    
     fuel_tank.fuel                                 = fuel  
     fuel_line.fuel_tanks.append(fuel_tank)  
@@ -138,44 +139,41 @@ def turboshaft_engine_Boeing_502_14(altitude,mach):
     a                                                                         = atmo_data.speed_of_sound    
     mu                                                                        = atmo_data.dynamic_viscosity      
                                                                               
-    # initialize the operating conditions                                     
-    state                                                                     = RCAIDE.Framework.Mission.Common.State() 
-    state.conditions                                                          = RCAIDE.Framework.Mission.Common.Results()
-                                                                              
+    conditions = RCAIDE.Framework.Mission.Common.Results()
+    
     # setting conditions for current simulation                               
-    state.conditions.freestream.altitude                                      = np.atleast_2d(altitude)
-    state.conditions.freestream.mach_number                                   = np.atleast_2d(mach)
-    state.conditions.freestream.pressure                                      = np.atleast_2d(p)
-    state.conditions.freestream.temperature                                   = np.atleast_2d(T)
-    state.conditions.freestream.density                                       = np.atleast_2d(rho)
-    state.conditions.freestream.dynamic_viscosity                             = np.atleast_2d(mu)
-    state.conditions.freestream.gravity                                       = np.atleast_2d(planet.sea_level_gravity)
-    state.conditions.freestream.isentropic_expansion_factor                   = np.atleast_2d(turboshaft.working_fluid.compute_gamma(T,p))
-    state.conditions.freestream.Cp                                            = np.atleast_2d(turboshaft.working_fluid.compute_cp(T,p))
-    state.conditions.freestream.R                                             = np.atleast_2d(turboshaft.working_fluid.gas_specific_constant)
-    state.conditions.freestream.speed_of_sound                                = np.atleast_2d(a)
-    state.conditions.freestream.velocity                                      = np.atleast_2d(a*mach)  
-    
-    # initialize data structure for turboshaft operating conditions (for energy) 
-    state.conditions.energy[fuel_line.tag]                                    = RCAIDE.Framework.Mission.Common.Conditions()  
-    state.conditions.energy[fuel_line.tag][fuel_tank.tag]                     = RCAIDE.Framework.Mission.Common.Conditions()  
-    state.conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate      = np.zeros((1,1))     
-    state.conditions.energy[fuel_line.tag][fuel_tank.tag].mass                = np.zeros((1,1))   
-    state.conditions.energy[fuel_line.tag][turboshaft.tag]                    = RCAIDE.Framework.Mission.Common.Conditions() 
-    state.conditions.energy[fuel_line.tag][turboshaft.tag].throttle           = np.array([[1.0]])
-    state.conditions.energy[fuel_line.tag][turboshaft.tag].thrust             = np.zeros((1,1))
-    state.conditions.energy[fuel_line.tag][turboshaft.tag].power              = np.zeros((1,1)) 
+    conditions.freestream.altitude                                      = np.atleast_2d(altitude)
+    conditions.freestream.mach_number                                   = np.atleast_2d(mach)
+    conditions.freestream.pressure                                      = np.atleast_2d(p)
+    conditions.freestream.temperature                                   = np.atleast_2d(T)
+    conditions.freestream.density                                       = np.atleast_2d(rho)
+    conditions.freestream.dynamic_viscosity                             = np.atleast_2d(mu)
+    conditions.freestream.gravity                                       = np.atleast_2d(planet.sea_level_gravity)
+    conditions.freestream.isentropic_expansion_factor                   = np.atleast_2d(turboshaft.working_fluid.compute_gamma(T,p))
+    conditions.freestream.Cp                                            = np.atleast_2d(turboshaft.working_fluid.compute_cp(T,p))
+    conditions.freestream.R                                             = np.atleast_2d(turboshaft.working_fluid.gas_specific_constant)
+    conditions.freestream.speed_of_sound                                = np.atleast_2d(a)
+    conditions.freestream.velocity                                      = np.atleast_2d(a*mach)   
+ 
 
-    # initialize data structure for turshaft operating conditions (for noise )       
-    state.conditions.noise[fuel_line.tag]                                     = RCAIDE.Framework.Mission.Common.Conditions()              
-    state.conditions.noise[fuel_line.tag][turboshaft.tag]                     = RCAIDE.Framework.Mission.Common.Conditions() 
-    state.conditions.noise[fuel_line.tag][turboshaft.tag].turboshaft          = RCAIDE.Framework.Mission.Common.Conditions() 
-            
-    total_power, eta_thermal, power_specific_fuel_consumption                 = compute_turboshaft_performance(fuel_line,state)
+    ## setup conditions  
+    fuel_line                = RCAIDE.Library.Components.Energy.Distributors.Fuel_Line()
+    segment                  = RCAIDE.Framework.Mission.Segments.Segment()  
+    segment.state.conditions = conditions     
+    segment.state.conditions.energy[fuel_line.tag] = Conditions()
+    segment.state.conditions.noise[fuel_line.tag]  = Conditions()
+    turboshaft.append_operating_conditions(segment,fuel_line) 
+    for tag, item in  turboshaft.items(): 
+        if issubclass(type(item), RCAIDE.Library.Components.Component):
+            item.append_operating_conditions(segment,fuel_line,turboshaft) 
     
-    power                                                                     = total_power[0][0]
-    thermal_efficiency                                                        = eta_thermal[0][0]
-    PSFC                                                                      = power_specific_fuel_consumption[0][0]
+    # set throttle
+    segment.state.conditions.energy[fuel_line.tag][turboshaft.tag].throttle[:,0] = 1.0  
+    thrust,moment,power,stored_results_flag,stored_propulsor_tag = turboshaft.compute_performance(segment.state,fuel_line)  
+    
+    power                = power[0][0]
+    thermal_efficiency   = conditions.energy[fuel_line.tag][turboshaft.tag].thermal_efficiency[0][0]
+    PSFC                 = conditions.energy[fuel_line.tag][turboshaft.tag].power_specific_fuel_consumption[0][0]
 
     return power, thermal_efficiency, PSFC
 

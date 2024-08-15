@@ -61,7 +61,7 @@ def plot_rotor_conditions(results,
     axis_3 = plt.subplot(2,2,3) 
     axis_4 = plt.subplot(2,2,4)  
     pi     = 0 
-    for network in results.segments[0].analyses.energy.networks:  
+    for network in results.segments[0].analyses.energy.vehicle.networks:  
         if 'busses' in network: 
             for bus in network.busses:    
                 for p_i, propulsor in enumerate(bus.propulsors):
@@ -109,14 +109,18 @@ def plot_rotor_conditions(results,
     return fig 
 
 def plot_propulsor_data(results,distributor,propulsor,axis_1,axis_2,axis_3,axis_4,line_colors,ps,pi):
-    
+    if 'rotor' in  propulsor:
+        rotor = propulsor.rotor
+    elif 'propeller' in  propulsor:
+        rotor = propulsor.propeller
+        
     for i in range(len(results.segments)): 
         bus_results  =  results.segments[i].conditions.energy[distributor.tag] 
         time         =  results.segments[i].conditions.frames.inertial.time[:,0] / Units.min   
-        rpm          =  bus_results[propulsor.tag].rotor.rpm[:,0]
-        thrust       =  bus_results[propulsor.tag].rotor.thrust[:,0]
-        torque       =  bus_results[propulsor.tag].rotor.torque[:,0]
-        angle        =  bus_results[propulsor.tag].y_axis_rotation[:,0]  
+        rpm          =  bus_results[propulsor.tag][rotor.tag].rpm[:,0]
+        thrust       =  bus_results[propulsor.tag][rotor.tag].thrust[:,0]
+        torque       =  bus_results[propulsor.tag][rotor.tag].torque[:,0]
+        angle        =  bus_results[propulsor.tag].commanded_thrust_vector_angle[:,0]  
         segment_tag  =  results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
         if pi == 0: 

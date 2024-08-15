@@ -87,7 +87,7 @@ def base_analysis(vehicle):
     #  Energy
     # ------------------------------------------------------------------
     energy= RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.networks = vehicle.networks 
+    energy.vehicle  = vehicle 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
@@ -156,8 +156,8 @@ def baseline_mission_setup(analyses):
     # ------------------------------------------------------------------  
     segment                                                   = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
     segment.tag                                               = "takeoff"    
-    segment.analyses.extend(analyses.base )  
-    segment.altitude_start                                    =  35. *  Units.fts
+    segment.analyses.extend(analyses.takeoff )  
+    segment.altitude_start                                    = 35. *  Units.fts
     segment.altitude_end                                      = 304.8 *  Units.meter
     segment.air_speed                                         = 85.4 * Units['m/s']
     segment.throttle                                          = 1.    
@@ -167,11 +167,9 @@ def baseline_mission_setup(analyses):
     segment.flight_dynamics.force_z                           = True     
     
     # define flight controls 
-    segment.assigned_control_variables.wind_angle.active                 = True         
-    segment.assigned_control_variables.wind_angle.initial_guess          = True 
+    segment.assigned_control_variables.wind_angle.active                 = True     
     segment.assigned_control_variables.wind_angle.initial_guess_values   = [[ 1.0 * Units.deg]] 
-    segment.assigned_control_variables.body_angle.active                 = True               
-    segment.assigned_control_variables.body_angle.initial_guess          = True 
+    segment.assigned_control_variables.body_angle.active                 = True        
     segment.assigned_control_variables.body_angle.initial_guess_values   = [[ 5.0 * Units.deg]]
      
     mission.append_segment(segment)
@@ -181,9 +179,9 @@ def baseline_mission_setup(analyses):
     # ------------------------------------------------------------------   
     segment                                              = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
     segment.tag                                          = "cutback"     
-    segment.analyses.extend(analyses.base )
-    segment.air_speed                                    = 85.4 * Units['m/s']
-    segment.climb_angle                                  = 2.86  * Units.degrees
+    segment.analyses.extend(analyses.cutback )
+    segment.air_speed                                    = 100 * Units['m/s']
+    segment.climb_angle                                  = 5  * Units.degrees
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                      = True  
@@ -201,7 +199,7 @@ def baseline_mission_setup(analyses):
     # ------------------------------------------------------------------      
     segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
     segment.tag = "climb_1" 
-    segment.analyses.extend( analyses.takeoff )  
+    segment.analyses.extend( analyses.cruise )  
     segment.altitude_end                                  = 3.0   * Units.km
     segment.air_speed                                     = 125.0 * Units['m/s']
     segment.climb_rate                                    = 6.0   * Units['m/s']  

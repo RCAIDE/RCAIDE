@@ -176,7 +176,7 @@ def compute_weight(vehicle,
     total_number_of_rotors = 0 
     for network in vehicle.networks:
 
-        if not isinstance(network, RCAIDE.Framework.Networks.All_Electric_Network):
+        if not isinstance(network, RCAIDE.Framework.Networks.Electric):
             raise NotImplementedError("""eVTOL weight buildup only supports the Battery Electric Rotor energy network.\n
             Weight buildup will not return information on propulsion system.""",RuntimeWarning)
                 

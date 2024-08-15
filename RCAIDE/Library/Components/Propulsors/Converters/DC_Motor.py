@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor import compute_omega_and_Q_from_Cp_and_V , compute_I_from_omega_and_V
-
+from RCAIDE.Library.Methods.Propulsors.Converters.DC_Motor.append_motor_conditions import  append_motor_conditions
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  DC_Motor  
@@ -58,48 +57,8 @@ class DC_Motor(Component):
         self.wing_mounted       = False
         self.interpolated_func  = None
         
-    def compute_omega(self,conditions): 
-        """Calculates the motor's rotation rate
-        
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
-        """                   
-         
-        compute_omega_and_Q_from_Cp_and_V(self,conditions)    
-        
-        return 
+    def append_operating_conditions(self,segment,bus,propulsor):
+        propulsor_conditions =  segment.state.conditions.energy[bus.tag][propulsor.tag]
+        append_motor_conditions(self,segment,propulsor_conditions)
+        return
     
-    def compute_current_draw(self):
-        """Calculates the current draw from a DC motor 
-        
-        Assumptions:
-        None
-
-        Source:
-        N/A
-
-        Inputs:
-        None
-
-        Outputs:
-        None
-
-        Properties Used:
-        None
-        """             
-         
-        compute_I_from_omega_and_V(self)        
-        
-        return 
