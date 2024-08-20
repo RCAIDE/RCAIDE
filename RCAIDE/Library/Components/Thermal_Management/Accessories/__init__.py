@@ -1,5 +1,5 @@
-## @ingroup Methods-Thermal_Management-Batteries-Heat_Acquisition_System  Heat_Acquisition_System 
-# RCAIDE/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/__init__.py
+## @defgroup Library-Compoments-Thermal_Management-Batteries-Accessories 
+# RCAIDE/Library/Compoments/Thermal_Management/Accessories/__init__.py 
 
 """ RCAIDE Package Setup
 """
@@ -7,6 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+from .Fan          import Fan 
+from .Pump         import Pump
 
-from . import Direct_Air_Heat_Aquistion
-from . import No_Heat_Acquisition

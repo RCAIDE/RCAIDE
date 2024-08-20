@@ -1,5 +1,6 @@
-## @ingroup Methods-Thermal_Management-Batteries-Design-Heat_Acquisition_System-Cross_Flow_Heat_Exchanger
-# RCAIDE/Methods/Thermal_Management/Batteries/Design/Heat_Acquisition_System/Cross_Flow_Heat_Exchanger/__init__.py
+## @defgroup Energy-Thermal_Management-Heat_Exchangers
+# RCAIDE/Energy/Thermal_Management/Heat_Exchangers/__init__.py
+# 
 
 """ RCAIDE Package Setup
 """
@@ -7,5 +8,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-
-from . import No_Heat_Exchanger
+from .Cross_Flow_Heat_Exchanger  import Cross_Flow_Heat_Exchanger
+from .Cryogenic_Heat_Exchanger   import Cryogenic_Heat_Exchanger

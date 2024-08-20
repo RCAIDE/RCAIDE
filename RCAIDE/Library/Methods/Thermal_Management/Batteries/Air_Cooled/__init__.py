@@ -7,4 +7,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .direct_convection_model import direct_convection_model
+from .append_air_cooling_conditions import append_air_cooled_conditions
+from .compute_thermal_performance   import air_cooling_performance

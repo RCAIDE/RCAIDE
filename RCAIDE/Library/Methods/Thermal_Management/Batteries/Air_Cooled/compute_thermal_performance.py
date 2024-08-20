@@ -14,7 +14,7 @@ from RCAIDE.Framework.Core import Data
 #  Compute Net Convected Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
-def direct_convection_model(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
+def air_cooling_performance(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
     '''Computes the net heat removed by direct air heat acquisition system.
 
     Assumptions:
