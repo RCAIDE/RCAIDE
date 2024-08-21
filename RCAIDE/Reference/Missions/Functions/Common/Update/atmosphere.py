@@ -36,7 +36,7 @@ def atmosphere(segment):
     atmosphere            = segment.analyses.atmosphere
     
     # compute
-    atmosphere_data = atmosphere.compute_values(h,temperature_deviation)
+    atmosphere_data = atmosphere.compute_values(h, temperature_deviation)
     
     # pack
     conditions.freestream.pressure               = atmosphere_data.pressure

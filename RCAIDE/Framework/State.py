@@ -8,6 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from dataclasses import dataclass, field
+from typing import Self
 
 # package imports
 import numpy as np
@@ -26,7 +27,7 @@ class State(Conditions):
     #Attribute          Type                        Default Value
     name:               str                         = 'State'
     numerics:           Numerics                    = Numerics()
-    initials:           Conditions                  = None
+    initials:           Self                        = None
 
     frames:             FrameConditions             = FrameConditions()
     freestream:         FreestreamConditions        = FreestreamConditions()
