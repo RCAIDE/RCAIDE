@@ -152,7 +152,7 @@ class Process:
 
     def index(self, value: str | Callable | ProcessStep):
 
-        if insinstance(value, str):
+        if isinstance(value, str):
             return self._index_name(value)
         elif isinstance(value, Callable):
             return self._index_function(value)

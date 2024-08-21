@@ -79,6 +79,7 @@ class SegmentConvergence(Process):
 
     name: str = "Segment Convergence"
 
+
 @dataclass(kw_only=True)
 class SegmentFinalization(Process):
 
