@@ -10,8 +10,8 @@
  
 from RCAIDE.Library.Components import Component 
 from RCAIDE.Library.Attributes.Coolants.Glycol_Water                                import Glycol_Water
-from RCAIDE.Library.Attributes.Materials.Polyetherimide                             import Polyetherimide
-from RCAIDE.Library.Methods.Energy.Thermal_Management.Common.Reservoir.Reservoir import compute_mixing_temperature, compute_reservoir_temperature
+#from RCAIDE.Library.Attributes.Materials.Polyetherimide                             import Polyetherimide
+#from RCAIDE.Library.Methods.Thermal_Management.Reservoirs.Re import compute_mixing_temperature, compute_reservoir_temperature
 
 
 # ----------------------------------------------------------------------
@@ -38,7 +38,7 @@ class Reservoir(Component):
         Values commonly available  
         """
         self.tag                          = 'Coolant Reservoir'
-        self.material                     = Polyetherimide()
+        #self.material                     = Polyetherimide()
         self.coolant                      = Glycol_Water()
         self.length                       = 0.3                                      # [m]
         self.width                        = 0.3                                      # [m]
@@ -50,17 +50,17 @@ class Reservoir(Component):
 
         return
 
-    def compute_reservior_coolant_temperature(RES,battery_conditions,state,dt,i):
-        '''
-      COMMENTS SAI 
-      ''' 
-        compute_mixing_temperature(RES,battery_conditions,state,dt,i)   
-        return
+    #def compute_reservior_coolant_temperature(RES,battery_conditions,state,dt,i):
+        #'''
+      #COMMENTS SAI 
+      #''' 
+        #compute_mixing_temperature(RES,battery_conditions,state,dt,i)   
+        #return
     
-    def compute_reservior_heat_transfer(RES,battery_conditions,state,dt,i):
-        '''
-      COMMENTS SAI 
-      ''' 
-        compute_reservoir_temperature(RES,battery_conditions,state,dt,i)
+    #def compute_reservior_heat_transfer(RES,battery_conditions,state,dt,i):
+        #'''
+      #COMMENTS SAI 
+      #''' 
+        #compute_reservoir_temperature(RES,battery_conditions,state,dt,i)
         
-        return
+        #return

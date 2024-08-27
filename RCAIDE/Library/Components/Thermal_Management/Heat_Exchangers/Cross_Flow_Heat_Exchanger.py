@@ -12,7 +12,7 @@ from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Components import Component  
 from RCAIDE.Library.Attributes.Coolants.Glycol_Water                   import Glycol_Water  
 from RCAIDE.Library.Attributes.Gases                                   import Air
-from RCAIDE.Library.Methods.Energy.Thermal_Management.Common.Heat_Exchanger_Systems.Cross_Flow_Heat_Exchanger  import  cross_flow_hex_rating_model
+from RCAIDE.Library.Methods.Thermal_Management.Heat_Exchangers.Cross_Flow_Heat_Exchanger  import  cross_flow_hex_rating_model
  
 
 import os 

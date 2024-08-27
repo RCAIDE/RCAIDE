@@ -10,15 +10,15 @@
 # RCAIDE Imports
 import  RCAIDE 
 from RCAIDE.Framework.Mission.Common                      import Residuals , Conditions 
-from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import fuel_line_unknowns
-from .Network                                             import Network   
+from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import coolant_line_unknowns
+from .Network                                             import Network , Container   
 
 # ----------------------------------------------------------------------------------------------------------------------
-# Fuel
+# Thermal
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Networks
 class Thermal(Network):
-    """ This is a  fuel-based network. 
+    """ This is a Thermal network. 
     
         Assumptions:
         None
@@ -45,87 +45,88 @@ class Thermal(Network):
             N/A
         """           
 
-        self.tag    = 'thermal'  
+        self.tag                          = 'thermal'
+      
         
     # linking the different network components
-    def evaluate(self,state,center_of_gravity):
-        """ Calculate thrust given the current state of the vehicle
+    #def evaluate(self,state,center_of_gravity):
+        #""" Calculate thrust given the current state of the vehicle
     
-            Assumptions:
-            None
+            #Assumptions:
+            #None
      
-            Source:
-            N/A
+            #Source:
+            #N/A
     
-            Inputs: 
+            #Inputs: 
     
-            Outputs:  
-        """           
+            #Outputs:  
+        #"""           
 
-        # Step 1: Unpack
-        conditions     = state.conditions  
-        fuel_lines     = self.fuel_lines 
-        reverse_thrust = self.reverse_thrust
-        total_thrust   = 0. * state.ones_row(3) 
-        total_moment   = 0. * state.ones_row(3) 
-        total_power    = 0. * state.ones_row(1) 
-        total_mdot     = 0. * state.ones_row(1)   
+        ## Step 1: Unpack
+        #conditions     = state.conditions  
+        #coolant_lines     = self.coolant_lines 
+        #reverse_thrust = self.reverse_thrust
+        #total_thrust   = 0. * state.ones_row(3) 
+        #total_moment   = 0. * state.ones_row(3) 
+        #total_power    = 0. * state.ones_row(1) 
+        #total_mdot     = 0. * state.ones_row(1)   
         
-        # Step 2: loop through compoments of network and determine performance
-        for fuel_line in fuel_lines:
-            if fuel_line.active:     
-                stored_results_flag  = False
-                stored_propulsor_tag = None 
-                for propulsor in fuel_line.propulsors:  
-                    if propulsor.active == True:  
-                        if fuel_line.identical_propulsors == False:
-                            # run analysis  
-                            T,M,P,stored_results_flag,stored_propulsor_tag = propulsor.compute_performance(state,fuel_line,center_of_gravity)
-                        else:             
-                            if stored_results_flag == False: 
-                                # run propulsor analysis 
-                                T,M,P,stored_results_flag,stored_propulsor_tag = propulsor.compute_performance(state,fuel_line,center_of_gravity)
-                            else:
-                                # use previous propulsor results 
-                                T,M,P = propulsor.reuse_stored_data(state,fuel_line,stored_propulsor_tag,center_of_gravity)
+        ## Step 2: loop through compoments of network and determine performance
+        #for coolant_lines in coolant_lines:
+            #if coolant_lines.active:     
+                #stored_results_flag  = False
+                #stored_propulsor_tag = None 
+                #for propulsor in coolant_lines.propulsors:  
+                    #if propulsor.active == True:  
+                        #if coolant_lines.identical_propulsors == False:
+                            ## run analysis  
+                            #T,M,P,stored_results_flag,stored_propulsor_tag = propulsor.compute_performance(state,coolant_lines,center_of_gravity)
+                        #else:             
+                            #if stored_results_flag == False: 
+                                ## run propulsor analysis 
+                                #T,M,P,stored_results_flag,stored_propulsor_tag = propulsor.compute_performance(state,coolant_lines,center_of_gravity)
+                            #else:
+                                ## use previous propulsor results 
+                                #T,M,P = propulsor.reuse_stored_data(state,coolant_lines,stored_propulsor_tag,center_of_gravity)
                           
-                        total_thrust += T   
-                        total_moment += M   
-                        total_power  += P  
+                        #total_thrust += T   
+                        #total_moment += M   
+                        #total_power  += P  
                 
-                # Step 2.2: Link each propulsor the its respective fuel tank(s)
-                for fuel_tank in fuel_line.fuel_tanks:
-                    mdot = 0. * state.ones_row(1)   
-                    for propulsor in fuel_line.propulsors:
-                        for source in (propulsor.active_fuel_tanks):
-                            if fuel_tank.tag == source: 
-                                mdot += conditions.energy[fuel_line.tag][propulsor.tag].fuel_flow_rate 
+                ## Step 2.2: Link each propulsor the its respective fuel tank(s)
+                #for fuel_tank in coolant_lines.fuel_tanks:
+                    #mdot = 0. * state.ones_row(1)   
+                    #for propulsor in coolant_lines.propulsors:
+                        #for source in (propulsor.active_fuel_tanks):
+                            #if fuel_tank.tag == source: 
+                                #mdot += conditions.energy[coolant_lines.tag][propulsor.tag].fuel_flow_rate 
                         
-                    # Step 2.3 : Determine cumulative fuel flow from fuel tank 
-                    fuel_tank_mdot = fuel_tank.fuel_selector_ratio*mdot + fuel_tank.secondary_fuel_flow 
+                    ## Step 2.3 : Determine cumulative fuel flow from fuel tank 
+                    #fuel_tank_mdot = fuel_tank.fuel_selector_ratio*mdot + fuel_tank.secondary_fuel_flow 
                     
-                    # Step 2.4: Store mass flow results 
-                    conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate  = fuel_tank_mdot  
-                    total_mdot += fuel_tank_mdot                    
+                    ## Step 2.4: Store mass flow results 
+                    #conditions.energy[coolant_lines.tag][fuel_tank.tag].mass_flow_rate  = fuel_tank_mdot  
+                    #total_mdot += fuel_tank_mdot                    
                             
-        # Step 3: Pack results
-        if reverse_thrust ==  True:
-            total_thrust =  total_thrust* -1
-            total_moment =  total_moment* -1
+        ## Step 3: Pack results
+        #if reverse_thrust ==  True:
+            #total_thrust =  total_thrust* -1
+            #total_moment =  total_moment* -1
             
-        conditions.energy.thrust_force_vector  = total_thrust
-        conditions.energy.thrust_moment_vector = total_moment
-        conditions.energy.power                = total_power 
-        conditions.energy.vehicle_mass_rate    = total_mdot    
+        #conditions.energy.thrust_force_vector  = total_thrust
+        #conditions.energy.thrust_moment_vector = total_moment
+        #conditions.energy.power                = total_power 
+        #conditions.energy.vehicle_mass_rate    = total_mdot    
         
-        return
+        #return
     
     def unpack_unknowns(self,segment):
         """Unpacks the unknowns set in the mission to be available for the mission.
 
         Assumptions:
         N/A
-        
+        RCAIDE.Framework.Networks.Electric
         Source:
         N/A
         
@@ -138,13 +139,13 @@ class Thermal(Network):
         N/A
         """            
          
-        fuel_lines = segment.analyses.energy.vehicle.networks.fuel.fuel_lines
-        fuel_line_unknowns(segment,fuel_lines)  
-        for fuel_line in fuel_lines: 
-            if fuel_line.active and len(fuel_line.propulsors) > 0:
-                reference_propulsor = fuel_line.propulsors[list(fuel_line.propulsors.keys())[0]]                 
-                for propulsor in  fuel_line.propulsors: 
-                    propulsor.unpack_propulsor_unknowns(reference_propulsor,segment,fuel_line) 
+        coolant_lines = segment.analyses.energy.vehicle.networks.thermal.coolant_lines
+        coolant_line_unknowns(segment,coolant_lines)  
+        for coolant_lines in coolant_lines: 
+            if coolant_lines.active and len(coolant_lines.propulsors) > 0:
+                reference_propulsor = coolant_lines.propulsors[list(coolant_lines.propulsors.keys())[0]]                 
+                for propulsor in  coolant_lines.propulsors: 
+                    propulsor.unpack_propulsor_unknowns(reference_propulsor,segment,coolant_lines) 
         return    
      
     #def residuals(self,segment):
@@ -169,11 +170,11 @@ class Thermal(Network):
            #N/A
        #"""           
 
-        #fuel_lines = segment.analyses.energy.vehicle.networks.fuel.fuel_lines 
-        #for fuel_line in  fuel_lines: 
-            #if fuel_line.active and len(fuel_line.propulsors) > 0:
-                #propulsor = fuel_line.propulsors[list(fuel_line.propulsors.keys())[0]] 
-                #propulsor.pack_propulsor_residuals(segment,fuel_line) 
+        #coolant_lines = segment.analyses.energy.vehicle.networks.fuel.coolant_lines 
+        #for coolant_lines in  coolant_lines: 
+            #if coolant_lines.active and len(coolant_lines.propulsors) > 0:
+                #propulsor = coolant_lines.propulsors[list(coolant_lines.propulsors.keys())[0]] 
+                #propulsor.pack_propulsor_residuals(segment,coolant_lines) 
          
         #return      
     
@@ -201,33 +202,33 @@ class Thermal(Network):
         segment.state.residuals.network = Residuals()  
 
         # ------------------------------------------------------------------------------------------------------            
-        # Create fuel_line results data structure  
+        # Create coolant_lines results data structure  
         # ------------------------------------------------------------------------------------------------------        
         for coolant_line_i, coolant_line in enumerate(coolant_lines):    
             # ------------------------------------------------------------------------------------------------------            
-            # Create fuel_line results data structure  
+            # Create coolant_lines results data structure  
             # ------------------------------------------------------------------------------------------------------
             segment.state.conditions.energy[coolant_line.tag] = Conditions()        
             # ------------------------------------------------------------------------------------------------------
             # Assign network-specific  residuals, unknowns and results data structures
             # ------------------------------------------------------------------------------------------------------ 
             for tag, item in  coolant_line.items(): 
-                if tag == 'reservoirs':
-                    for fuel_tank in item:
-                        fuel_tank.append_operating_conditions(segment,coolant_line) 
-                if tag == 'propulsors':  
+                #if tag == 'reservoirs':
+                    #for fuel_tank in item:
+                        #fuel_tank.append_operating_conditions(segment,coolant_line) 
+                if tag == 'batteries':  
                     for i, propulsor in enumerate(item):  
-                        add_additional_network_equation = (fuel_line.active) and  (i == 0)   
-                        propulsor.append_operating_conditions(segment,fuel_line,add_additional_network_equation)
+                        add_additional_network_equation = (coolant_line.active) and  (i == 0)   
+                        propulsor.append_operating_conditions(segment,coolant_lines,add_additional_network_equation)
                         for sub_tag, sub_item in  propulsor.items(): 
                             if issubclass(type(sub_item), RCAIDE.Library.Components.Component):
-                                sub_item.append_operating_conditions(segment,fuel_line,propulsor)  
+                                sub_item.append_operating_conditions(segment,coolant_lines,propulsor)  
                 elif issubclass(type(item), RCAIDE.Library.Components.Component):
-                    item.append_operating_conditions(segment,fuel_line)
+                    item.append_operating_conditions(segment,coolant_lines)
                       
         segment.process.iterate.unknowns.network   = self.unpack_unknowns      
         segment.process.iterate.residuals.network  = self.residuals
         
         return segment
 
-    __call__ = evaluate     
+   # __call__ = evaluate     

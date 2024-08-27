@@ -103,9 +103,9 @@ def air_cooling_performance(HAS,battery,Q_heat_gen,T_cell,state,dt,i):
         Q_heat_gen_tot        = Q_heat_gen*n_total_module  
     Q_net                     = Q_heat_gen_tot - Q_convec  
     dT_dt                     = Q_net/(cell_mass*n_total_module*Cp)
-    T_current                 = T_cell + dT_dt*dt     
-    HAS_outputs               = Data(total_heat_generated = Q_heat_gen_tot, 
-                                     total_heat_removed   = Q_convec,
-                                     current_battery_temperature = T_current)    
+    T_current                 = 277#T_cell + dT_dt*dt     
+    #HAS_outputs               = Data(total_heat_generated = Q_heat_gen_tot, 
+                                     #total_heat_removed   = Q_convec,
+                                     #current_battery_temperature = T_current)    
     
-    return  HAS_outputs 
+    return  T_current

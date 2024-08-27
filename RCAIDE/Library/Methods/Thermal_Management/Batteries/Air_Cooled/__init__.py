@@ -7,5 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .append_air_cooling_conditions import append_air_cooled_conditions
-from .compute_thermal_performance   import air_cooling_performance
+from .air_cooling_performance  import air_cooling_performance
+from .append_air_cooled_conditions        import append_air_cooled_conditions
+    

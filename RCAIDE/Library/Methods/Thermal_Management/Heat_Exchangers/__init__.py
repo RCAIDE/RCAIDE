@@ -1,5 +1,5 @@
-## @ingroup Methods-Thermal_Management-Batteries Batteries 
-# RCAIDE/Methods/Thermal_Management/Batteries/__init__.py 
+## @ingroup Methods-Thermal_Management-Batteries-Design-Heat_Acquisition_System-Cross_Flow_Heat_Exchanger
+# RCAIDE/Methods/Thermal_Management/Batteries/Design/Heat_Acquisition_System/Cross_Flow_Heat_Exchanger/__init__.py
 
 """ RCAIDE Package Setup
 """
@@ -8,5 +8,4 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-from . import Air_Cooled
-from . import Liquid_Cooled_Wavy_Channel
+from . import Cross_Flow_Heat_Exchanger

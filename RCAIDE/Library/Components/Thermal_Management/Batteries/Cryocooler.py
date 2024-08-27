@@ -10,7 +10,7 @@
 
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component  
-from RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
+from RCAIDE.Library.Methods.Thermal_Management.Cryogenics.cryocooler_model import cryocooler_model
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Cryocooler

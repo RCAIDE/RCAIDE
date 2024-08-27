@@ -14,7 +14,7 @@ import numpy as np
 # compute_nmc_cell_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
-def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag): 
+def compute_nmc_cell_performance(battery,state,bus,coolant_lines,battery_discharge_flag): 
     '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
        battery cells. The model uses experimental data performed
        by the Automotive Industrial Systems Company of Panasonic Group 
@@ -70,11 +70,8 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
 
 
     # Unpack varibles 
-    battery            = battery  
-    battery_conditions = state.conditions.energy[bus.tag][battery.tag]    
-    btms               = battery.thermal_management_system 
-    HAS                = btms.heat_acquisition_system
-    HEX                = btms.heat_exchanger_system
+    battery            = battery
+    battery_conditions = state.conditions.energy[bus.tag][battery.tag]  
     electrode_area     = battery.cell.electrode_area 
     As_cell            = battery.cell.surface_area           
     battery_data       = battery.discharge_performance_map  
@@ -100,6 +97,19 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
     Q_cell             = battery_conditions.cell.charge_throughput              
     DOD_cell           = battery_conditions.cell.depth_of_discharge  
     time               = state.conditions.frames.inertial.time[:,0] 
+
+
+    # ---------------------------------------------------------------------------------
+    # Examine Thermal Management System
+    # ---------------------------------------------------------------------------------
+    HAS = None  
+    for coolant_line in coolant_lines:
+        for tag, item in  coolant_line.items():
+            if tag == 'batteries':
+                for sub_tag, sub_item in item.items():
+                    if sub_tag == battery.tag:
+                        for btms in  sub_item:
+                            HAS = btms
 
 
     # ---------------------------------------------------------------------------------
@@ -156,12 +166,14 @@ def compute_nmc_cell_performance(battery,state,bus,battery_discharge_flag):
         # Current State 
         # --------------------------------------------------------------------------------------------------- 
         if t_idx != state.numerics.number_of_control_points-1:  
-            # Compute cell temperature   
-            HAS_results  = HAS.compute_heat_removed(battery,Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx) 
-            HEX_results  = HEX.compute_heat_removed(HAS_results,state,delta_t[t_idx],t_idx)
+            # Compute cell temperature
+            
+            #HAS_results  = HAS.compute_heat_removed(battery,Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx) 
+            #HEX_results  = HEX.compute_heat_removed(HAS_results,state,delta_t[t_idx],t_idx)
 
-            # Temperature 
-            T_cell[t_idx+1] = HAS_results.current_battery_temperature
+            # Temperature
+            if HAS is not None:
+                T_cell[t_idx+1] = HAS.compute_thermal_performance(battery,Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx)
 
             # Compute state of charge and depth of discarge of the battery
             E_pack[t_idx+1]                          = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 
