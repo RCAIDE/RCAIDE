@@ -55,17 +55,17 @@ def passenger_payload(State, Settings, System):
     def _build_payload(payload: PhysicalComponent):
 
         if hasattr(payload, 'passengers'):
-            payload.passengers.mass_properties.mass = passenger_mass
+            payload.passengers.mass_properties.total = passenger_mass
         else:
             passengers = PhysicalComponent(name='passengers')
-            passengers.mass_properties.mass = passenger_mass
+            passengers.mass_properties.total = passenger_mass
             payload.add_subcomponent(passengers)
 
         if hasattr(payload, 'baggage'):
-            payload.baggage.mass_properties.mass = baggage_mass
+            payload.baggage.mass_properties.total = baggage_mass
         else:
             baggage = PhysicalComponent(name='baggage')
-            baggage.mass_properties.mass = baggage_mass
+            baggage.mass_properties.total = baggage_mass
             payload.add_subcomponent(baggage)
 
         payload.sum_mass

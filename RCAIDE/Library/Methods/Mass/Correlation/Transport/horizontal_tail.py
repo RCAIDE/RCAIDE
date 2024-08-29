@@ -113,7 +113,7 @@ def horizontal_tail(State, Settings, System):
                                    main_wing_mean_aerodynamic_chord,
                                    moment_arm_length)
 
-    h_tail.mass_properties.mass = h_tail_mass * (1. - Settings.mass_reduction_factors.empennage)
+    h_tail.mass_properties.total = h_tail_mass * (1. - Settings.mass_reduction_factors.empennage)
 
     System.sum_mass()
 

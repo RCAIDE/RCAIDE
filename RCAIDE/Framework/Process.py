@@ -9,7 +9,7 @@
 
 import dataclasses
 from dataclasses import dataclass, field
-from typing      import Callable, Iterable
+from typing      import Callable, Iterable, Self, TypeVar, List
 
 # package imports
 import numpy as np
@@ -31,9 +31,9 @@ def _args_passer(*args, **kwargs):
 @dataclass(kw_only=True)
 class ProcessStep:
 
-    #---------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     # Process Step Parameters
-    #---------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
 
     # Required Parameters
 
@@ -66,12 +66,14 @@ def _create_details():
     return details
 
 
+ProcessType = TypeVar('ProcessType', bound='Process')
+
 @dataclass(kw_only=True)
 class Process:
 
     name:               str                 = "Process"
 
-    steps:              list[ProcessStep]   = field(default_factory=list)
+    steps:              List[ProcessStep | ProcessType]   = field(default_factory=list)
     details:            pd.DataFrame        = field(default_factory=_create_details)
 
     step:               int                 = 0
@@ -110,7 +112,7 @@ class Process:
 
         return results
 
-    def append(self, step: ProcessStep):
+    def append(self, step: ProcessStep | Self):
 
         self.steps.append(step)
         self.update_details()
@@ -150,7 +152,7 @@ class Process:
 
         return index
 
-    def index(self, value: str | Callable | ProcessStep):
+    def index(self, value: str | Callable | ProcessStep | Self):
 
         if isinstance(value, str):
             return self._index_name(value)
@@ -162,7 +164,7 @@ class Process:
         else:
             raise ValueError("RCAIDE processes can only be indexed by name, function, or ProcessStep object.")
 
-    def insert(self, index: int, step: ProcessStep):
+    def insert(self, index: int, step: ProcessStep | Self):
 
         self.steps.insert(index, step)
         self.update_details()
@@ -178,19 +180,19 @@ class Process:
 
     def _remove_name(self, name: str):
 
-        self.steps.pop(self.index_name(name))
+        self.steps.pop(self._index_name(name))
         self.update_details()
 
         return None
 
     def _remove_function(self, function: Callable):
 
-        self.steps.pop(self.index_function(function))
+        self.steps.pop(self._index_function(function))
         self.update_details()
 
         return None
 
-    def remove(self, value: str | Callable | ProcessStep):
+    def remove(self, value: str | Callable | ProcessStep | Self):
 
         if isinstance(value, str):
             self._remove_name(value)
@@ -198,7 +200,7 @@ class Process:
         elif isinstance(value, Callable):
             self._remove_function(value)
             self.update_details()
-        elif isinstance(value, ProcessStep):
+        else:
             self.steps.remove(value)
             self.update_details()
 

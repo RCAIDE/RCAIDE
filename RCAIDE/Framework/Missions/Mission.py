@@ -7,18 +7,22 @@
 # IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from typing import Callable
+from typing import Callable, List, Any, Tuple
 from dataclasses import dataclass, field
 
 # package imports
 
+import numpy as np
 from scipy.optimize import fsolve
 
 # RCAIDE imports
 
+import RCAIDE.Framework as rcf
 from RCAIDE.Framework import Process, ProcessStep
-from RCAIDE.Framework.Missions.Initialization   import *
-from RCAIDE.Framework.Missions.Update           import *
+from RCAIDE.Framework.Process import _args_passer
+from RCAIDE.Framework.Missions.Conditions   import Conditions
+from RCAIDE.Framework.Missions.Initialize   import *
+from RCAIDE.Framework.Missions.Update       import *
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Mission Segment
@@ -33,7 +37,8 @@ class SegmentInitialization(Process):
     def __post_init__(self):
 
         default_steps = [
-            #Step Name                          Step Functions
+            # Step Name                         Step Functions
+            ("Expand State",                    expand_state),
             ("Initialize Time",                 initialize_time),
             ("Initialize Mass",                 initialize_mass),
             ("Initialize Energy",               initialize_energy),
@@ -57,15 +62,17 @@ class SegmentUpdate(Process):
             ("Update Acceleration",         update_acceleration),
             ("Update Angular Acceleration", update_angular_acceleration),
             ("Update Altitude",             update_altitude),
+            ("Update Atmosphere",           _args_passer),
+            ("Update Gravity",              _args_passer),
             ("Update Freestream",           update_freestream),
-            ("Update Orientations",         update_),
-            ("Update Energy",               update_),
-            ("Update Aerodynamics",         update_),
-            ("Update Stability",            update_),
-            ("Update Mass",                 update_),
-            ("Update Forces",               update_),
-            ("Update Moments",              update_),
-            ("Update Planetary Position",   update_)
+            ("Update Orientations",         update_orientations),
+            ("Update Energy",               _args_passer),
+            ("Update Aerodynamics",         _args_passer),
+            ("Update Stability",            _args_passer),
+            ("Update Mass",                 _args_passer),
+            ("Update Forces",               update_forces),
+            ("Update Moments",              update_moments),
+            ("Update Planetary Position",   _args_passer)
         ]
 
         for name, function in default_steps:
@@ -77,6 +84,40 @@ class SegmentConvergence(Process):
 
     name: str = "Segment Convergence"
 
+    calculate_residuals:    Callable = None
+
+    root_finder_args:       List = field(default_factory=list)
+    root_finder_kwargs:     dict = None
+    results_parser:         Callable[[Any], Tuple[rcf.State, rcf.Settings, rcf.System]] = _args_passer
+
+    initial_unknowns:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+
+    # Special override of process call to handle root finding, still follows process type flow
+    def __call__(self,
+                 State: rcf.State,
+                 Settings: rcf.Settings,
+                 System: rcf.System) -> Tuple[rcf.State, rcf.Settings, rcf.System]:
+
+        # Converge root of residuals
+
+        root_finder = Settings.root_finder
+
+        if self.root_finder_kwargs is None:
+            # Assume fsolve is the default root finder and that the calculate_residuals function is provided
+            self.root_finder_kwargs = {
+                'func': self.calculate_residuals,
+                'x0': State.unknowns.pack_array(),
+                'args': (State, Settings, System),
+                'xtol': State.numerics.solution_tolerance,
+                'maxfev': State.numerics.max_evaluations,
+                'epsfcn': State.numerics.step_size,
+                'full_output': True
+            }
+
+        results = root_finder(*self.root_finder_args, **self.root_finder_kwargs)
+
+        return self.results_parser(results)
+
 
 @dataclass(kw_only=True)
 class SegmentFinalization(Process):
@@ -87,21 +128,25 @@ class SegmentFinalization(Process):
 @dataclass(kw_only=True)
 class MissionSegment(Process):
 
-    name: str = "Mission Segment"
+    # Attribute             Type                    Default Value
+    name:                   str                     = "Mission Segment"
 
-    analyses: list[Process] = field(default_factory=list)
+    analyses:               list[Process]           = field(default_factory=list)
 
-    initialization: SegmentInitialization   = SegmentInitialization()
-    iteration:      SegmentUpdate           = SegmentUpdate()
-    finalization:   SegmentFinalization     = SegmentFinalization()
+    initialize:             SegmentInitialization   = SegmentInitialization()
+    update:                 SegmentUpdate           = SegmentUpdate()
+    converge:               SegmentConvergence      = SegmentConvergence()
+    finalize:               SegmentFinalization     = SegmentFinalization()
 
     def __post_init__(self):
-        self.append(ProcessStep(name="Expand State",
-                                function=expand_state))
 
-        self.append(self.initialization)
-        self.append(self.iteration)
-        self.append(self.finalization)
+        for analysis in self.analyses:
+            self.update.append(analysis)
+
+        self.append(self.initialize)
+        self.append(self.converge)
+        self.append(self.update)
+        self.append(self.finalize)
 
 
 

@@ -71,9 +71,9 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     for net in vehicle.networks:  
         for key,Comp in net.items():
             if isinstance(Comp,Component):
-                network_moment += net[key].mass_properties.mass*(np.sum(np.array(net[key].origin),axis=0) +
-                                                                     net[key].mass_properties.center_of_gravity)
-                network_mass   += net[key].mass_properties.mass*len(net[key].origin)
+                network_moment += net[key].mass_properties.total * (np.sum(np.array(net[key].origin), axis=0) +
+                                                                    net[key].mass_properties.center_of_gravity)
+                network_mass   += net[key].mass_properties.total * len(net[key].origin)
 
     if network_mass!= 0.:
         propulsion_cg = network_moment/network_mass
@@ -111,8 +111,8 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     # Main Landing Gear 
     try:  
         main_gear                                                  = vehicle.landing_gear.main  
-        moment_sans_main                                           = vehicle.center_of_gravity()[0][0]*(vehicle.sum_mass()-main_gear.mass_properties.mass) 
-        main_gear_location                                         = moment_sans_main/(vehicle.mass_properties.takeoff-main_gear.mass_properties.mass)/(1-nose_load)
+        moment_sans_main                                           = vehicle.center_of_gravity()[0][0]*(vehicle.sum_mass() - main_gear.mass_properties.total)
+        main_gear_location                                         = moment_sans_main / (vehicle.mass_properties.takeoff - main_gear.mass_properties.total) / (1 - nose_load)
         main_gear.origin[0][0]                                     = main_gear_location
         main_gear.mass_properties.center_of_gravity                = 0.0 
     except:

@@ -23,7 +23,7 @@ from RCAIDE.Framework.Missions.Conditions import Conditions
 @dataclass
 class NetworkConditions(Conditions):
 
-    #Attribute          Type        Default Value
+    # Attribute         Type        Default Value
     name:               str         = 'Energy Network'
 
     total_energy:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
@@ -32,13 +32,14 @@ class NetworkConditions(Conditions):
     throttle:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
     total_power:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
-    total_thrust:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    total_force:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    total_moment:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
 
 @dataclass(kw_only=True)
 class EnergyStoreConditions(Conditions):
 
-    #Attribute          Type        Default Value
+    # Attribute         Type        Default Value
     name:               str         = 'Energy Store'
 
     gravity:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
@@ -49,7 +50,7 @@ class EnergyStoreConditions(Conditions):
 @dataclass(kw_only=True)
 class EnergyConverterConditions(Conditions):
 
-    #Attribute          Type        Default Value
+    # Attribute         Type        Default Value
     name:               str         = 'Energy Converter'
 
     efficiency:         np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
@@ -70,7 +71,7 @@ class EnergyConverterConditions(Conditions):
 @dataclass(kw_only=True)
 class BatteryCellConditions(EnergyStoreConditions):
 
-    #Attribute                  Type        Default Value
+    # Attribute                 Type        Default Value
     name:                       str         = 'Battery Cell'
 
     cycle_in_day:               int         = 0
@@ -86,7 +87,7 @@ class BatteryCellConditions(EnergyStoreConditions):
 @dataclass(kw_only=True)
 class BatteryPackConditions(EnergyStoreConditions):
 
-    #Attribute              Type                    Default Value
+    # Attribute             Type                    Default Value
     name:                   str                     = 'Battery Pack'
 
     maximum_total_energy:   float                   = 0.0
@@ -105,7 +106,7 @@ class BatteryPackConditions(EnergyStoreConditions):
 @dataclass(kw_only=True)
 class FuelConditions(EnergyStoreConditions):
 
-    #Attribute  Type        Default Value
-    name:       str         = 'Fuel'
+    # Attribute     Type        Default Value
+    name:           str         = 'Fuel'
 
-    mass:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    mass:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))

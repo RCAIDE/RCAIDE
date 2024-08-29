@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 from dataclasses import dataclass, field
-from typing import TypeVar
+from typing import Self, TypeVar
 from warnings import warn
 
 # package imports 
@@ -75,30 +75,28 @@ class MaterialProperties:
     shear_stress_carrier      : dataclass  = field(default_factory=dataclass)
 
 
-ComponentType = TypeVar("ComponentType", bound="Component")
 SegmentType = TypeVar("SegmentType", bound="ComponentSegment")
 
 
 @dataclass(kw_only=True)
 class Component:
 
-    #-------------------------------------------------IDENTIFIERS-------------------------------------------------------
+    # ------------------------------------------------IDENTIFIERS-------------------------------------------------------
 
     name                : str                   = field(init=True)
     segments            : list[SegmentType]     = field(default_factory=list)
     origin              : np.ndarray            = field(default_factory=lambda: np.zeros(3))
 
-    #----------------------------------------------------AREAS----------------------------------------------------------
+    # ---------------------------------------------------AREAS----------------------------------------------------------
     areas               : ComponentAreas        = field(default_factory=ComponentAreas)
 
-    #--------------------------------------------------DIMENSIONS-------------------------------------------------------
+    # -------------------------------------------------DIMENSIONS-------------------------------------------------------
     lengths             : ComponentDimensions   = field(default_factory=ComponentDimensions)
     widths              : ComponentDimensions   = field(default_factory=ComponentDimensions)
     heights             : ComponentDimensions   = field(default_factory=ComponentDimensions)
 
-    #---------------------------------------------------MATERIALS-------------------------------------------------------
+    # --------------------------------------------------MATERIALS-------------------------------------------------------
     material_properties : MaterialProperties    = field(default_factory=MaterialProperties)
-
 
 
 @dataclass(kw_only=True)

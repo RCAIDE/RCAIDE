@@ -285,7 +285,7 @@ def segmented_main_wing(State, Settings, System):
                                               vehicle_maximum_takeoff_weight,
                                               vehicle_zero_fuel_weight)
 
-    wing.mass_properties.mass = main_wing_mass * (1. - Settings.mass_reduction_factors.main_wing)
+    wing.mass_properties.total = main_wing_mass * (1. - Settings.mass_reduction_factors.main_wing)
 
     System.sum_mass()
 

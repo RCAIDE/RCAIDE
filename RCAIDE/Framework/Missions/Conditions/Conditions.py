@@ -37,3 +37,6 @@ class Conditions:
                 v.expand_rows(rows, override=override)
             elif isinstance(v, np.ndarray):
                 vars(self)[k] = np.resize(v, (self.number_of_rows, v.shape[1]))
+
+    def pack_array(self):
+        return np.concatenate([vars(self)[k].flatten() for k in vars(self).keys()], axis=0)

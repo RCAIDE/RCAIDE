@@ -24,7 +24,7 @@ from RCAIDE.Framework.Missions.Conditions import *
 @dataclass(kw_only=True)
 class State(Conditions):
 
-    #Attribute          Type                        Default Value
+    # Attribute         Type                        Default Value
     name:               str                         = 'State'
     numerics:           Numerics                    = Numerics()
     initials:           Self                        = None

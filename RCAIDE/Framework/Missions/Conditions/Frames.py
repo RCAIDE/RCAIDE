@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 
 # package imports
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 # RCAIDE imports
 from RCAIDE.Framework.Missions.Conditions import Conditions
@@ -23,16 +24,19 @@ from RCAIDE.Framework.Missions.Conditions import Conditions
 @dataclass(kw_only=True)
 class Frame(Conditions):
 
-    #Attribute              Type        Default Value
+    # Attribute             Type        Default Value
     name:                   str         = 'Frame'
 
-    transform_to_inertial:  np.ndarray  = field(default_factory=lambda: np.zeros((0, 0, 0)))
+    transform_to_inertial:  Rotation  = Rotation.from_euler('zyx', [0., 0., 0.])
+
+    total_force:            np.ndarray = field(default_factory=lambda: np.zeros((1, 3)))
+    total_moment:           np.ndarray = field(default_factory=lambda: np.zeros((1, 3)))
 
 
 @dataclass(kw_only=True)
 class InertialFrame(Frame):
 
-    #Attribute              Type        Default Value
+    # Attribute             Type        Default Value
     name:                   str         = 'Inertial Frame'
 
     position:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
@@ -44,7 +48,6 @@ class InertialFrame(Frame):
     angular_acceleration:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
     gravity_force:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    total_force:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
     time:                   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
     system_range:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
@@ -53,7 +56,7 @@ class InertialFrame(Frame):
 @dataclass(kw_only=True)
 class BodyFrame(Frame):
 
-    #Attribute              Type        Default Value
+    # Attribute             Type        Default Value
     name:                   str         = 'Body Frame'
 
     inertial_rotations:     np.ndarray  = field(default_factory=lambda: np.ones((1, 3)))
@@ -64,15 +67,16 @@ class BodyFrame(Frame):
 @dataclass(kw_only=True)
 class WindFrame(Frame):
 
-    #Attribute      Type        Default Value
-    name:           str         = 'Wind Frame'
+    # Attribute         Type        Default Value
+    name:               str         = 'Wind Frame'
 
-    body_rotations: np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    body_rotations:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    transform_to_body:  Rotation    = Rotation.from_euler('zyx', [0., 0., 0.])
 
-    velocity:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    velocity:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
-    lift_force:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    drag_force:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    lift_force:         np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    drag_force:         np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
 
 @dataclass(kw_only=True)
@@ -88,11 +92,11 @@ class PlanetFrame(Frame):
 @dataclass(kw_only=True)
 class FrameConditions(Conditions):
 
-    #Attribute  Type            Default Value
-    name:       str             = 'Dynamic Frames'
+    # Attribute     Type            Default Value
+    name:           str             = 'Dynamic Frames'
 
-    inertial:   InertialFrame   = InertialFrame()
-    body:       BodyFrame       = BodyFrame()
-    wind:       WindFrame       = WindFrame()
-    planet:     PlanetFrame     = PlanetFrame()
+    inertial:       InertialFrame   = InertialFrame()
+    body:           BodyFrame       = BodyFrame()
+    wind:           WindFrame       = WindFrame()
+    planet:         PlanetFrame     = PlanetFrame()
 

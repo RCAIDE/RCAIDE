@@ -85,7 +85,7 @@ def compute_static_sea_level_performance(propulsor):
     conditions.energy[fuel_line.tag]                                                        = Conditions()  
     conditions.energy[fuel_line.tag][fuel_tank.tag]                                         = Conditions()  
     conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate                          = np.zeros((1,1))     
-    conditions.energy[fuel_line.tag][fuel_tank.tag].mass                                    = np.zeros((1,1))   
+    conditions.energy[fuel_line.tag][fuel_tank.tag].total                                    = np.zeros((1, 1))
     conditions.energy[fuel_line.tag][propulsor.tag]                                         = Conditions() 
     conditions.energy[fuel_line.tag][propulsor.tag].throttle                                = np.array([[1.0]])
     conditions.energy[fuel_line.tag][propulsor.tag].y_axis_rotation                         = np.zeros((1,1)) 

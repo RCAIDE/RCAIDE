@@ -70,7 +70,7 @@ def _chebyshev_matrices(n: int = 16,
 @dataclass(kw_only=True)
 class NumericalTime(Conditions):
 
-    #Attribute      Type        Default Value
+    # Attribute     Type        Default Value
     control_points: np.ndarray  = field(default_factory=lambda: np.zeros((0, 0)))
     differentiate:  np.ndarray  = field(default_factory=lambda: np.zeros((0, 0)))
     integrate:      np.ndarray  = field(default_factory=lambda: np.zeros((0, 0)))

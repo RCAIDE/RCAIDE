@@ -8,7 +8,7 @@
 #  Imports
 # ---------------------------------------------------------------------- 
 
-# TODO: ADD IMPORTS
+from RCAIDE.Framework.Core import Units
 
 # -----------------------------------------------------------------------
 # Functional/Library Version
@@ -103,7 +103,7 @@ def vertical_tail(State, Settings, System):
                                      )
 
 
-    v_tail.mass_properties.mass = v_tail_mass * (1. - Settings.mass_reduction_factors.empennage)
+    v_tail.mass_properties.total = v_tail_mass * (1. - Settings.mass_reduction_factors.empennage)
 
     System.sum_mass()
 

@@ -65,7 +65,7 @@ def converge_root(segment):
 # ----------------------------------------------------------------------------------------------------------------------  
 def iterate(unknowns, segment):
     
-    """Runs one iteration of of all analyses for the mission.
+    """Runs one iteration of all analyses for the mission.
 
     Assumptions:
     None
