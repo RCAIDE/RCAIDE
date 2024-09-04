@@ -14,7 +14,7 @@ import numpy as np
 # compute_nmc_cell_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
-def compute_nmc_cell_performance(battery,state,bus,coolant_lines,battery_discharge_flag): 
+def compute_nmc_cell_performance(): 
     '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
        battery cells. The model uses experimental data performed
        by the Automotive Industrial Systems Company of Panasonic Group 
@@ -70,10 +70,11 @@ def compute_nmc_cell_performance(battery,state,bus,coolant_lines,battery_dischar
 
 
     # Unpack varibles 
-    battery            = battery
     battery_conditions = state.conditions.energy[bus.tag][battery.tag]  
     electrode_area     = battery.cell.electrode_area 
-    As_cell            = battery.cell.surface_area           
+    As_cell            = battery.cell.surface_area
+    cell_mass          = battery.cell.mass    
+    Cp                 = battery.cell.specific_heat_capacity       
     battery_data       = battery.discharge_performance_map  
     I_bat              = battery_conditions.pack.current_draw
     P_bat              = battery_conditions.pack.power_draw      
@@ -120,73 +121,91 @@ def compute_nmc_cell_performance(battery,state,bus,coolant_lines,battery_dischar
     n_parallel        = battery.pack.electrical_configuration.parallel 
     n_total           = battery.pack.electrical_configuration.total   
 
-    delta_t           = np.diff(time)
-    for t_idx in range(state.numerics.number_of_control_points):   
 
-        # ---------------------------------------------------------------------------------------------------
-        # Current State 
-        # ---------------------------------------------------------------------------------------------------
-        I_cell[t_idx]        = I_bat[t_idx]/n_parallel   
+    def compute_current_state(battery,state,bus,coolant_lines,battery_discharge_flag):
+        delta_t           = np.diff(time)
+        for t_idx in range(state.numerics.number_of_control_points):   
+    
+            # ---------------------------------------------------------------------------------------------------
+            # Current State 
+            # ---------------------------------------------------------------------------------------------------
+            I_cell[t_idx]        = I_bat[t_idx]/n_parallel   
+    
+            # ---------------------------------------------------------------------------------
+            # Compute battery cell temperature 
+            # ---------------------------------------------------------------------------------
+            R_0[t_idx]               =  0.01483*(SOC[t_idx]**2) - 0.02518*SOC[t_idx] + 0.1036  
+            R_0[t_idx][R_0[t_idx]<0] = 0. 
+    
+            # Determine temperature increase         
+            sigma                 = 139 # Electrical conductivity
+            n                     = 1
+            F                     = 96485 # C/mol Faraday constant    
+            delta_S               = -496.66*(SOC[t_idx])**6 +  1729.4*(SOC[t_idx])**5 + -2278 *(SOC[t_idx])**4 +  1382.2 *(SOC[t_idx])**3 + \
+                    -380.47*(SOC[t_idx])**2 +  46.508*(SOC[t_idx])    + -10.692  
+    
+            i_cell                = I_cell[t_idx]/electrode_area # current intensity 
+            q_dot_entropy         = -(T_cell[t_idx])*delta_S*i_cell/(n*F)       
+            q_dot_joule           = (i_cell**2)/sigma                   
+            Q_heat_cell[t_idx]    = (q_dot_joule + q_dot_entropy)*As_cell 
+            Q_heat_pack[t_idx]    = Q_heat_cell[t_idx]*n_total  
+    
+            V_ul[t_idx]           = compute_nmc_cell_state(battery_data,SOC[t_idx],T_cell[t_idx],I_cell[t_idx]) 
+    
+            V_oc[t_idx]           = V_ul[t_idx] + (I_cell[t_idx] * R_0[t_idx])              
+    
+            # Effective Power flowing through battery 
+            P_pack[t_idx]         = P_bat[t_idx]  - np.abs(Q_heat_pack[t_idx]) 
+    
+            # store remaining variables 
+            I_pack[t_idx]         = I_bat[t_idx]  
+            V_oc_pack[t_idx]      = V_oc[t_idx]*n_series 
+            V_ul_pack[t_idx]      = V_ul[t_idx]*n_series  
+            T_pack[t_idx]         = T_cell[t_idx] 
+            P_cell[t_idx]         = P_pack[t_idx]/n_total  
+            E_cell[t_idx]         = E_pack[t_idx]/n_total  
+    
+            
+        return
 
-        # ---------------------------------------------------------------------------------
-        # Compute battery cell temperature 
-        # ---------------------------------------------------------------------------------
-        R_0[t_idx]               =  0.01483*(SOC[t_idx]**2) - 0.02518*SOC[t_idx] + 0.1036  
-        R_0[t_idx][R_0[t_idx]<0] = 0. 
-
-        # Determine temperature increase         
-        sigma                 = 139 # Electrical conductivity
-        n                     = 1
-        F                     = 96485 # C/mol Faraday constant    
-        delta_S               = -496.66*(SOC[t_idx])**6 +  1729.4*(SOC[t_idx])**5 + -2278 *(SOC[t_idx])**4 +  1382.2 *(SOC[t_idx])**3 + \
-                -380.47*(SOC[t_idx])**2 +  46.508*(SOC[t_idx])    + -10.692  
-
-        i_cell                = I_cell[t_idx]/electrode_area # current intensity 
-        q_dot_entropy         = -(T_cell[t_idx])*delta_S*i_cell/(n*F)       
-        q_dot_joule           = (i_cell**2)/sigma                   
-        Q_heat_cell[t_idx]    = (q_dot_joule + q_dot_entropy)*As_cell 
-        Q_heat_pack[t_idx]    = Q_heat_cell[t_idx]*n_total  
-
-        V_ul[t_idx]           = compute_nmc_cell_state(battery_data,SOC[t_idx],T_cell[t_idx],I_cell[t_idx]) 
-
-        V_oc[t_idx]           = V_ul[t_idx] + (I_cell[t_idx] * R_0[t_idx])              
-
-        # Effective Power flowing through battery 
-        P_pack[t_idx]         = P_bat[t_idx]  - np.abs(Q_heat_pack[t_idx]) 
-
-        # store remaining variables 
-        I_pack[t_idx]         = I_bat[t_idx]  
-        V_oc_pack[t_idx]      = V_oc[t_idx]*n_series 
-        V_ul_pack[t_idx]      = V_ul[t_idx]*n_series  
-        T_pack[t_idx]         = T_cell[t_idx] 
-        P_cell[t_idx]         = P_pack[t_idx]/n_total  
-        E_cell[t_idx]         = E_pack[t_idx]/n_total  
-
+    def compute_future_state(battery,state,bus,coolant_lines,battery_discharge_flag):
         # ---------------------------------------------------------------------------------------------------
         # Current State 
         # --------------------------------------------------------------------------------------------------- 
         if t_idx != state.numerics.number_of_control_points-1:  
             # Compute cell temperature
-            
+    
             #HAS_results  = HAS.compute_heat_removed(battery,Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx) 
             #HEX_results  = HEX.compute_heat_removed(HAS_results,state,delta_t[t_idx],t_idx)
-
+    
             # Temperature
             if HAS is not None:
                 T_cell[t_idx+1] = HAS.compute_thermal_performance(battery,Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx)
+            else:
+                Q_heat_pack[t_idx+1]  = Q_heat_cell[t_idx]*battery.pack.electrical_configuration.total
+                dT_dt                 = Q_heat_cell[t_idx]/(cell_mass*Cp)
+                T_cell[t_idx+1]       =  T_cell[t_idx] + dT_dt*delta_t[t_idx]    
+    
+    
+        
+        # Compute state of charge and depth of discarge of the battery
+        E_pack[t_idx+1]                          = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 
+        E_pack[t_idx+1][E_pack[t_idx+1] > E_max] = E_max
+        SOC[t_idx+1]                             = E_pack[t_idx+1]/E_max 
+        SOC[t_idx+1][SOC[t_idx+1]>1]             = 1.
+        SOC[t_idx+1][SOC[t_idx+1]<0]             = 0. 
+        DOD_cell[t_idx+1]                        = 1 - SOC[t_idx+1]  
+    
+        # Determine new charge throughput (the amount of charge gone through the battery)
+        Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr      
+        
+        return
 
-            # Compute state of charge and depth of discarge of the battery
-            E_pack[t_idx+1]                          = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 
-            E_pack[t_idx+1][E_pack[t_idx+1] > E_max] = E_max
-            SOC[t_idx+1]                             = E_pack[t_idx+1]/E_max 
-            SOC[t_idx+1][SOC[t_idx+1]>1]             = 1.
-            SOC[t_idx+1][SOC[t_idx+1]<0]             = 0. 
-            DOD_cell[t_idx+1]                        = 1 - SOC[t_idx+1]  
 
-            # Determine new charge throughput (the amount of charge gone through the battery)
-            Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr  
 
-    return battery    
+
+
+
 
 ## @ingroup Methods-Energy-Sources-Lithium_Ion_NMC
 def compute_nmc_cell_state(battery_data,SOC,T,I):

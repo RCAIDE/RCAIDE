@@ -73,7 +73,7 @@ class Lithium_Ion_Generic(Battery):
         return           
 
 
-    def energy_calc(self,state,bus,discharge= True): 
+    def energy_calc(self,state,bus, discharge= True): 
         """Computes the state of a generic battery cell.
            
         Assumptions:

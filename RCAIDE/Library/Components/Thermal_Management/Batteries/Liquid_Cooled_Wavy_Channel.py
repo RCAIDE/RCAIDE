@@ -82,6 +82,7 @@ class Liquid_Cooled_Wavy_Channel(Component):
         ''' 
         
         wavy_channel_rating_model(HAS,battery_conditions,battery, Q_heat_cell, state, dt, i)
+        # HEX RES
     
         
         return  

@@ -13,7 +13,8 @@ from RCAIDE.Framework.Mission.Common                      import Residuals
 from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import bus_unknowns
 from .Network                                             import Network, Container                 
 from RCAIDE.Library.Methods.Propulsors.Common.compute_avionics_power_draw import compute_avionics_power_draw
-from RCAIDE.Library.Methods.Propulsors.Common.compute_payload_power_draw  import compute_payload_power_draw 
+from RCAIDE.Library.Methods.Propulsors.Common.compute_payload_power_draw  import compute_payload_power_draw
+#from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  All Electric
@@ -151,7 +152,17 @@ class Electric(Network):
                         battery_conditions                    = state.conditions.energy[bus.tag][battery.tag] 
                         battery_conditions.pack.power_draw    = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
                         battery_conditions.pack.current_draw  = battery_conditions.pack.power_draw/bus_voltage
-                        battery.energy_calc(state,bus,coolant_lines,recharging_flag)        
+                        battery.energy_calc(state,bus,coolant_lines,recharging_flag)
+        
+        
+        #for t_idx in range(state.numerics.number_of_control_points):
+            #if recharging_flag:
+                #pass
+            #else:
+                #for battery in  batteries:
+                    #battery.compute_current_state(batteries,state,bus,coolant_lines,t_idx, recharging_flag)
+                
+    
 
         if reverse_thrust ==  True:
             total_thrust =  total_thrust * -1     
@@ -162,6 +173,10 @@ class Electric(Network):
         conditions.energy.vehicle_mass_rate    = state.ones_row(1)*0.0  
 
         return   
+        
+        
+        
+
 
     def unpack_unknowns(self,segment):
         """ This adds additional unknowns which are unpacked from the mission solver and send to the network.
