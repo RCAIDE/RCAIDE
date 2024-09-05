@@ -9,8 +9,6 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
  
 
-from .design_wavy_channel                     import design_wavy_channel
-from .wavy_channel_geometry_setup             import wavy_channel_geometry_setup
-from .wavy_channel_sizing_setup               import wavy_channel_sizing_setup
-from .wavy_channel_rating_model               import wavy_channel_rating_model
-from .append_wavy_channel_conditions          import append_wavy_channel_conditions
+from .append_reservoir_conditions import append_reservoir_conditions
+from .compute_mixing_temperature  import compute_mixing_temperature
+from .compute_reservoir_temperature import  compute_reservoir_temperature

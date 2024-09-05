@@ -14,7 +14,6 @@ from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import bus_unknowns
 from .Network                                             import Network, Container                 
 from RCAIDE.Library.Methods.Propulsors.Common.compute_avionics_power_draw import compute_avionics_power_draw
 from RCAIDE.Library.Methods.Propulsors.Common.compute_payload_power_draw  import compute_payload_power_draw
-#from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  All Electric
@@ -152,15 +151,19 @@ class Electric(Network):
                         battery_conditions                    = state.conditions.energy[bus.tag][battery.tag] 
                         battery_conditions.pack.power_draw    = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
                         battery_conditions.pack.current_draw  = battery_conditions.pack.power_draw/bus_voltage
-                        battery.energy_calc(state,bus,coolant_lines,recharging_flag)
+                        #battery.energy_calc(state,bus,coolant_lines,recharging_flag)
         
         
-        #for t_idx in range(state.numerics.number_of_control_points):
-            #if recharging_flag:
-                #pass
-            #else:
-                #for battery in  batteries:
-                    #battery.compute_current_state(batteries,state,bus,coolant_lines,t_idx, recharging_flag)
+        for t_idx in range(state.numerics.number_of_control_points):
+            if recharging_flag:
+                pass # add later 
+            else:
+                for bus in  busses:
+                    for battery in  batteries:
+                        battery.compute_current_state(state,busses,t_idx, recharging_flag)
+                #Future State Calculation        
+                
+                
                 
     
 
@@ -308,7 +311,13 @@ class Electric(Network):
                 if tag == 'batteries':
                     for battery in item:
                         for btms in  battery:
-                            btms.append_operating_conditions(segment,coolant_line)                         
+                            btms.append_operating_conditions(segment,coolant_line)
+                if tag == 'heat_exchangers':
+                    for heat_exchanger in  item:
+                        heat_exchanger.append_operate_conditions(segment, coolant_line)
+                if tag == 'reservoirs':
+                    for reservoir in  item:
+                        reservoir.append_operate_conditions(segment, coolant_line)                
 
         
         # Ensure the mission knows how to pack and unpack the unknowns and residuals

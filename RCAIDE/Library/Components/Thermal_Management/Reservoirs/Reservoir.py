@@ -11,7 +11,7 @@
 from RCAIDE.Library.Components import Component 
 from RCAIDE.Library.Attributes.Coolants.Glycol_Water                                import Glycol_Water
 #from RCAIDE.Library.Attributes.Materials.Polyetherimide                             import Polyetherimide
-#from RCAIDE.Library.Methods.Thermal_Management.Reservoirs.Re import compute_mixing_temperature, compute_reservoir_temperature
+from RCAIDE.Library.Methods.Thermal_Management.Reservoirs.Reservoir_Tank           import compute_mixing_temperature, compute_reservoir_temperature, append_reservoir_conditions
 
 
 # ----------------------------------------------------------------------
@@ -49,18 +49,22 @@ class Reservoir(Component):
         self.volume                       = self.length*self.width*self.height       # [m^3]
 
         return
-
-    #def compute_reservior_coolant_temperature(RES,battery_conditions,state,dt,i):
-        #'''
-      #COMMENTS SAI 
-      #''' 
-        #compute_mixing_temperature(RES,battery_conditions,state,dt,i)   
-        #return
     
-    #def compute_reservior_heat_transfer(RES,battery_conditions,state,dt,i):
-        #'''
-      #COMMENTS SAI 
-      #''' 
-        #compute_reservoir_temperature(RES,battery_conditions,state,dt,i)
+    def append_operating_conditions(self,segment,coolant_line,add_additional_network_equation = False):
+        append_reservoir_conditions(self,segment,coolant_line,add_additional_network_equation)
+        return    
+
+    def compute_reservior_coolant_temperature(RES,battery_conditions,state,dt,i):
+        '''
+      COMMENTS SAI 
+      ''' 
+        compute_mixing_temperature(RES,battery_conditions,state,dt,i)   
+        return
+    
+    def compute_reservior_heat_transfer(RES,battery_conditions,state,dt,i):
+        '''
+      COMMENTS SAI 
+      ''' 
+        compute_reservoir_temperature(RES,battery_conditions,state,dt,i)
         
-        #return
+        return
