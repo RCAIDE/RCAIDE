@@ -9,7 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 from RCAIDE.Reference.Core import Data
-from RCAIDE.Framework.Components.Mass_Properties import Mass_Properties
+from RCAIDE.Reference.Components.Mass_Properties import Mass_Properties
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Propellant

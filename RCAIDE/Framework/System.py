@@ -97,8 +97,6 @@ class MassProperties:
                     warn("Error in calculating component density. Check mass and volume specifications.")
 
 
-
-
 ComponentType = TypeVar("ComponentType", bound="Component")
 
 
@@ -146,7 +144,7 @@ class System(Component):
             sc_MOI = c.mass_properties.moments_of_inertia + c.mass_properties.total * r ** 2 * np.eye(3)
             return sc_MOI
 
-        self.mass_properties.subcomponent_moments_of_inertia = [self.sum_moments_of_inertia._subcomponent_MOI(c) for c in self.subcomponents])
+        self.mass_properties.subcomponent_moments_of_inertia = [self.sum_moments_of_inertia._subcomponent_MOI(c) for c in self.subcomponents]
 
 
         for k, v in self.__dict__.items():
@@ -184,20 +182,20 @@ class System(Component):
                          sum_moments_of_inertia=True
                          ):
 
-        if isinstance(subcomponent, ComponentSegment):
+        # if isinstance(subcomponent, ComponentSegment):
+        #
+        #     if subcomponent.segment_index == -1 or subcomponent.segment_index >= len(self.segments):
+        #
+        #         subcomponent.segment_index = len(self.segments)
+        #         self.segments.append(subcomponent.segment_index)
+        #     else:
+        #         self.segments.insert(subcomponent.segment_index, subcomponent)
 
-            if subcomponent.segment_index == -1 or subcomponent.segment_index >= len(self.segments):
-
-                subcomponent.segment_index = len(self.segments)
-                self.segments.append(subcomponent.segment_index)
-            else:
-                self.segments.insert(subcomponent.segment_index, subcomponent)
-
-        elif isinstance(subcomponent, Component):
+        if isinstance(subcomponent, Component):
             vars(self)[subcomponent.name] = subcomponent
         else:
             raise TypeError(f"Attempted to add a subcomponent to {self.name} "
-                            f"which was not a Component or Component Segment.")
+                            f"which was not a Component datastructure.")
 
         if sum_mass:
             self.sum_mass()
@@ -205,3 +203,7 @@ class System(Component):
                 self.sum_center_of_gravity()
             if sum_moments_of_inertia:
                 self.sum_moments_of_inertia()
+
+if __name__ == '__main__':
+    B737 = System(name='Boeing 737')
+    print(B737)

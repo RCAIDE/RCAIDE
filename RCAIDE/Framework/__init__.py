@@ -10,7 +10,9 @@
 
 from State      import State
 from Settings   import Settings
-from System     import System
+from System     import *
 
 from Process    import Process, ProcessStep
+
+import Components
 

@@ -11,7 +11,7 @@
 from RCAIDE                    import Framework
 from RCAIDE.Reference.Core import Data
 from RCAIDE.Library            import Attributes
-from RCAIDE.Framework import Components
+from RCAIDE.Reference import Components
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------

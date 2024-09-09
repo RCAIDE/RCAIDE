@@ -7,7 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
    
-from RCAIDE.Framework.Components.Wings import Main_Wing
+from RCAIDE.Reference.Components import Main_Wing
 from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender  
 from .wave_drag                               import wave_drag
 from .drag_divergence                         import drag_divergence 

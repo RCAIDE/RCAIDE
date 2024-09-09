@@ -14,7 +14,7 @@ import numpy as np
 
 # RCAIDE imports
 from RCAIDE.Framework.Conditions import Conditions
-from RCAIDE.Framework.Components import Component
+from RCAIDE.Reference.Components import Component
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Controls
