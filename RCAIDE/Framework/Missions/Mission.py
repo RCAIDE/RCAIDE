@@ -57,6 +57,8 @@ class SegmentUpdate(Process):
 
     def __post_init__(self):
 
+        # TODO: Rename Args Passer
+
         default_steps = [
             ("Update Time Differentials",   update_time_differentials),
             ("Update Acceleration",         update_acceleration),
@@ -149,4 +151,7 @@ class MissionSegment(Process):
         self.append(self.finalize)
 
 
-
+if __name__ == '__main__':
+    seg = MissionSegment()
+    print(seg.details)
+    print('Done')

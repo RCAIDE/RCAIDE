@@ -211,7 +211,7 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 201,surface_interpo
     x_up_surf_new  = arrx_up_interp(np.linspace(0,x_up_surf_old.size-1,half_npoints))    
  
     x_lo_surf_old  = np.array(x_lo_surf) 
-    arrx_lo_interp = interpolate.interp1d(np.arange(x_lo_surf_old.size),x_lo_surf_old, kind=surface_interpolation )
+    arrx_lo_interp = interpolate.interp1d(np.arange(x_lo_surf_old.size),x_lo_surf_old, kind=surface_interpolation)
     x_lo_surf_new  = arrx_lo_interp(np.linspace(0,x_lo_surf_old.size-1,half_npoints)) 
  
     # y coordinate s 

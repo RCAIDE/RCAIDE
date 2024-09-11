@@ -121,6 +121,9 @@ class Component:
     mass_properties:        MassProperties        = field(default_factory=MassProperties)
     material_properties:    MaterialProperties    = field(default_factory=MaterialProperties)
 
+    def add_segment(self, segment: ComponentType, index: int = -1):
+        self.segments.insert(index, segment)
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  System
@@ -147,7 +150,7 @@ class System(Component):
         self.mass_properties.subcomponent_moments_of_inertia = [self.sum_moments_of_inertia._subcomponent_MOI(c) for c in self.subcomponents]
 
 
-        for k, v in self.__dict__.items():
+        for k, v in vars(self).items():
             if isinstance(v, Component):
 
 
@@ -166,7 +169,7 @@ class System(Component):
 
         self.mass_properties.center_of_gravity = np.zeros(3)
 
-        for k, v in self.__dict__.items():
+        for k, v in vars(self).items():
             rel_origin = v.origin - self.origin
             rel_cg = rel_origin + v.mass_properties.center_of_gravity
 
@@ -182,17 +185,9 @@ class System(Component):
                          sum_moments_of_inertia=True
                          ):
 
-        # if isinstance(subcomponent, ComponentSegment):
-        #
-        #     if subcomponent.segment_index == -1 or subcomponent.segment_index >= len(self.segments):
-        #
-        #         subcomponent.segment_index = len(self.segments)
-        #         self.segments.append(subcomponent.segment_index)
-        #     else:
-        #         self.segments.insert(subcomponent.segment_index, subcomponent)
-
         if isinstance(subcomponent, Component):
             vars(self)[subcomponent.name] = subcomponent
+            self.subcomponents.append(subcomponent)
         else:
             raise TypeError(f"Attempted to add a subcomponent to {self.name} "
                             f"which was not a Component datastructure.")

@@ -99,6 +99,9 @@ def vehicle_setup():
 
     # --- --- Root Segment --- ---
 
+    root_segment = rcf.Components.WingSegment(name='Root')
+    root_segment.airfoil = rcf.Components.Airfoil.from_file()
+
     # --- --- Yehudi Segment --- ---
 
     # --- --- Mid Segment --- ---
