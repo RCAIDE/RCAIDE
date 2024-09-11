@@ -19,7 +19,7 @@ from scipy.optimize import fsolve
 
 import RCAIDE.Framework as rcf
 from RCAIDE.Framework import Process, ProcessStep
-from RCAIDE.Framework.Process import _args_passer
+from RCAIDE.Framework.Process import skip
 from RCAIDE.Framework.Missions.Conditions   import Conditions
 from RCAIDE.Framework.Missions.Initialize   import *
 from RCAIDE.Framework.Missions.Update       import *
@@ -64,17 +64,17 @@ class SegmentUpdate(Process):
             ("Update Acceleration",         update_acceleration),
             ("Update Angular Acceleration", update_angular_acceleration),
             ("Update Altitude",             update_altitude),
-            ("Update Atmosphere",           _args_passer),
-            ("Update Gravity",              _args_passer),
+            ("Update Atmosphere", skip),
+            ("Update Gravity", skip),
             ("Update Freestream",           update_freestream),
             ("Update Orientations",         update_orientations),
-            ("Update Energy",               _args_passer),
-            ("Update Aerodynamics",         _args_passer),
-            ("Update Stability",            _args_passer),
-            ("Update Mass",                 _args_passer),
+            ("Update Energy", skip),
+            ("Update Aerodynamics", skip),
+            ("Update Stability", skip),
+            ("Update Mass", skip),
             ("Update Forces",               update_forces),
             ("Update Moments",              update_moments),
-            ("Update Planetary Position",   _args_passer)
+            ("Update Planetary Position", skip)
         ]
 
         for name, function in default_steps:
@@ -90,7 +90,7 @@ class SegmentConvergence(Process):
 
     root_finder_args:       List = field(default_factory=list)
     root_finder_kwargs:     dict = None
-    results_parser:         Callable[[Any], Tuple[rcf.State, rcf.Settings, rcf.System]] = _args_passer
+    results_parser:         Callable[[Any], Tuple[rcf.State, rcf.Settings, rcf.System]] = skip
 
     initial_unknowns:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
