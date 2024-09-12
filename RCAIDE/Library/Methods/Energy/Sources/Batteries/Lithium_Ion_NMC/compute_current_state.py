@@ -167,6 +167,7 @@ def compute_current_state(battery,state,bus,coolant_lines, t_idx, delta_t, batte
         if HAS is not None:
             T_cell[t_idx+1] = HAS.compute_thermal_performance(battery,coolant_line, Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx)
         else:
+            # Considers a thermally insulated system and the heat piles on in the system
             Q_heat_pack[t_idx+1]  = Q_heat_cell[t_idx]*battery.pack.electrical_configuration.total
             dT_dt                 = Q_heat_cell[t_idx]/(cell_mass*Cp)
             T_cell[t_idx+1]       =  T_cell[t_idx] + dT_dt*delta_t[t_idx]
