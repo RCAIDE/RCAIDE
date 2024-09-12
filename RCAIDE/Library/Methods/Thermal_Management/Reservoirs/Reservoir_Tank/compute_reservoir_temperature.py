@@ -8,7 +8,7 @@
 #  Compute heat loss to environment 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def compute_reservoir_temperature(RES,battery_conditions,state,dt,i):
+def compute_reservoir_temperature(RES,state,coolant_line,dt,i):
     """
      Computes the resultant temperature of the reservoir at each time step with coolant exchanging heat to the environment
           
@@ -36,7 +36,7 @@ def compute_reservoir_temperature(RES,battery_conditions,state,dt,i):
     # properties of Reservoir
     A_surface                  = RES.surface_area
     volume                     = RES.volume
-    T_current                  = battery_conditions.thermal_management_system.RES.coolant_temperature[i+1,0]
+    T_current                  =state.conditions.energy.coolant_Line[RES.tag].coolant_temperature[i+1,0]
     thickness                  = RES.thickness
     conductivity               = RES.material.conductivity
     emissivity_res             = RES.material.emissivity
@@ -71,6 +71,6 @@ def compute_reservoir_temperature(RES,battery_conditions,state,dt,i):
     T_current                   = T_current - dT_dt*dt
     
     # Update the reservoir temperaure. 
-    battery_conditions.thermal_management_system.RES.coolant_temperature[i+1,0] = T_current
+    state.conditions.energy[coolant_line.tag][RES.tag].coolant_temperature[i+1,0] = T_current
 
     return

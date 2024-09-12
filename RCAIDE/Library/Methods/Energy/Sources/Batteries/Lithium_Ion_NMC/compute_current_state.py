@@ -14,7 +14,7 @@ import numpy as np
 # compute_nmc_cell_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
-def compute_current_state(battery,state,bus,t_idx,battery_discharge_flag): 
+def compute_current_state(battery,state,bus,coolant_lines, t_idx, delta_t, battery_discharge_flag): 
     '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
        battery cells. The model uses experimental data performed
        by the Automotive Industrial Systems Company of Panasonic Group 
@@ -97,9 +97,7 @@ def compute_current_state(battery,state,bus,t_idx,battery_discharge_flag):
     T_cell             = battery_conditions.cell.temperature                    
     Q_cell             = battery_conditions.cell.charge_throughput              
     DOD_cell           = battery_conditions.cell.depth_of_discharge
-    time               = state.conditions.frames.inertial.time[:,0] 
-    delta_t            = np.diff(time)
-
+    
     # ---------------------------------------------------------------------------------
     # Compute battery electrical properties 
     # --------------------------------------------------------------------------------- 
@@ -167,26 +165,24 @@ def compute_current_state(battery,state,bus,t_idx,battery_discharge_flag):
 
         # Compute cell temperature
         if HAS is not None:
-            T_cell[t_idx+1] = HAS.compute_thermal_performance(battery,Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx)
+            T_cell[t_idx+1] = HAS.compute_thermal_performance(battery,coolant_line, Q_heat_cell[t_idx],T_cell[t_idx],state,delta_t[t_idx],t_idx)
         else:
             Q_heat_pack[t_idx+1]  = Q_heat_cell[t_idx]*battery.pack.electrical_configuration.total
             dT_dt                 = Q_heat_cell[t_idx]/(cell_mass*Cp)
-            T_cell[t_idx+1]       =  T_cell[t_idx] + dT_dt*delta_t[t_idx]    
+            T_cell[t_idx+1]       =  T_cell[t_idx] + dT_dt*delta_t[t_idx]
+            
+        # Compute state of charge and depth of discarge of the battery
+        E_pack[t_idx+1]                          = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 
+        E_pack[t_idx+1][E_pack[t_idx+1] > E_max] = E_max
+        SOC[t_idx+1]                             = E_pack[t_idx+1]/E_max 
+        SOC[t_idx+1][SOC[t_idx+1]>1]             = 1.
+        SOC[t_idx+1][SOC[t_idx+1]<0]             = 0. 
+        DOD_cell[t_idx+1]                        = 1 - SOC[t_idx+1]  
+    
+        # Determine new charge throughput (the amount of charge gone through the battery)
+        Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr      
 
-
-
-    # Compute state of charge and depth of discarge of the battery
-    E_pack[t_idx+1]                          = E_pack[t_idx] -P_pack[t_idx]*delta_t[t_idx] 
-    E_pack[t_idx+1][E_pack[t_idx+1] > E_max] = E_max
-    SOC[t_idx+1]                             = E_pack[t_idx+1]/E_max 
-    SOC[t_idx+1][SOC[t_idx+1]>1]             = 1.
-    SOC[t_idx+1][SOC[t_idx+1]<0]             = 0. 
-    DOD_cell[t_idx+1]                        = 1 - SOC[t_idx+1]  
-
-    # Determine new charge throughput (the amount of charge gone through the battery)
-    Q_cell[t_idx+1]    = Q_cell[t_idx] + I_cell[t_idx]*delta_t[t_idx]/Units.hr      
-
-    return
+    return 
 
 
 

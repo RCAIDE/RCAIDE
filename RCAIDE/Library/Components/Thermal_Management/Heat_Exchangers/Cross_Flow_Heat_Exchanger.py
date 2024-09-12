@@ -128,7 +128,7 @@ class Cross_Flow_Heat_Exchanger(Component):
         append_cross_flow_heat_exchanger_conditions(self,segment,coolant_line,add_additional_network_equation)
         return         
 
-    def compute_heat_removed(self,battery_conditions,state,dt,i):
+    def compute_heat_exchanger_performance(self,state,coolant_line, dt,i):
         """This computes the heat being reomved from the liquid in the corss flow heat exchanger.
 
         Assumptions:
@@ -148,7 +148,7 @@ class Cross_Flow_Heat_Exchanger(Component):
         ''' 
         """          
 
-        cross_flow_hex_rating_model(self,battery_conditions,state,dt,i)
+        cross_flow_hex_rating_model(self,state,coolant_line, dt,i)
 
         return 
 

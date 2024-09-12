@@ -17,6 +17,7 @@ from Legacy.trunk.S.Attributes.Solids.Epoxy import Epoxy
 from Legacy.trunk.S.Attributes.Solids.Aluminum_Rib import Aluminum_Rib
 from Legacy.trunk.S.Attributes.Solids.Paint import Paint
 from .Aluminum import Aluminum
+from .Polyetherimide import  Polyetherimide
 from Legacy.trunk.S.Attributes.Solids.Acrylic import Acrylic
 from Legacy.trunk.S.Attributes.Solids.Steel import Steel
 from Legacy.trunk.S.Attributes.Solids.Nickel import Nickel

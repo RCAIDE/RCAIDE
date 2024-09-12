@@ -10,7 +10,7 @@
  
 from RCAIDE.Library.Components import Component 
 from RCAIDE.Library.Attributes.Coolants.Glycol_Water                                import Glycol_Water
-#from RCAIDE.Library.Attributes.Materials.Polyetherimide                             import Polyetherimide
+from RCAIDE.Library.Attributes.Materials.Polyetherimide                             import Polyetherimide
 from RCAIDE.Library.Methods.Thermal_Management.Reservoirs.Reservoir_Tank           import compute_mixing_temperature, compute_reservoir_temperature, append_reservoir_conditions
 
 
@@ -37,8 +37,8 @@ class Reservoir(Component):
         Source:
         Values commonly available  
         """
-        self.tag                          = 'Coolant Reservoir'
-        #self.material                     = Polyetherimide()
+        self.tag                          = 'Coolant_Reservoir'
+        self.material                     = Polyetherimide()
         self.coolant                      = Glycol_Water()
         self.length                       = 0.3                                      # [m]
         self.width                        = 0.3                                      # [m]
@@ -54,17 +54,11 @@ class Reservoir(Component):
         append_reservoir_conditions(self,segment,coolant_line,add_additional_network_equation)
         return    
 
-    def compute_reservior_coolant_temperature(RES,battery_conditions,state,dt,i):
+    def compute_reservior_coolant_temperature(self,state,coolant_line,dt,i):
         '''
-      COMMENTS SAI 
-      ''' 
-        compute_mixing_temperature(RES,battery_conditions,state,dt,i)   
+         COMMENTS SAI 
+        ''' 
+        compute_mixing_temperature(self,state,coolant_line,dt,i)
+        compute_reservoir_temperature(self,state,coolant_line,dt,i)
         return
-    
-    def compute_reservior_heat_transfer(RES,battery_conditions,state,dt,i):
-        '''
-      COMMENTS SAI 
-      ''' 
-        compute_reservoir_temperature(RES,battery_conditions,state,dt,i)
-        
-        return
+   

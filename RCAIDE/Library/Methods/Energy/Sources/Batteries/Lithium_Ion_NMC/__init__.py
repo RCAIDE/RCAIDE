@@ -9,5 +9,4 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 from .compute_current_state   import compute_current_state
-from .compute_future_state    import compute_future_state
 from .update_nmc_cell_age     import update_nmc_cell_age

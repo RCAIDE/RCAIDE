@@ -11,9 +11,11 @@
 import RCAIDE  
 from RCAIDE.Framework.Mission.Common                      import Residuals
 from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import bus_unknowns
-from .Network                                             import Network, Container                 
+from .Network                                             import Network              
 from RCAIDE.Library.Methods.Propulsors.Common.compute_avionics_power_draw import compute_avionics_power_draw
 from RCAIDE.Library.Methods.Propulsors.Common.compute_payload_power_draw  import compute_payload_power_draw
+# Python imports
+import  numpy as  np 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  All Electric
@@ -89,7 +91,7 @@ class Electric(Network):
         recharging_flag = conditions.energy.recharging 
         reverse_thrust  = self.reverse_thrust
 
-        for bus in busses:  
+        for bus in busses:
             if bus.active:             
                 avionics        = bus.avionics
                 payload         = bus.payload  
@@ -153,19 +155,26 @@ class Electric(Network):
                         battery_conditions.pack.current_draw  = battery_conditions.pack.power_draw/bus_voltage
                         #battery.energy_calc(state,bus,coolant_lines,recharging_flag)
         
-        
+        time               = state.conditions.frames.inertial.time[:,0] 
+        delta_t            = np.diff(time)
         for t_idx in range(state.numerics.number_of_control_points):
             if recharging_flag:
                 pass # add later 
             else:
                 for bus in  busses:
-                    for battery in  batteries:
-                        battery.compute_current_state(state,busses,t_idx, recharging_flag)
-                #Future State Calculation        
-                
-                
-                
-    
+                    for battery in  bus.batteries:
+                        battery.energy_calc(state,bus,coolant_lines, t_idx, delta_t, recharging_flag)
+                    for coolant_line in  coolant_lines:
+                        if t_idx != state.numerics.number_of_control_points-1:
+                            for tag, item in  coolant_line.items(): 
+                                if tag == 'heat_exchangers':
+                                    for heat_exchanger in  item:
+                                            heat_exchanger.compute_heat_exchanger_performance(state,coolant_line,delta_t[t_idx],t_idx)
+                                if tag == 'reservoirs':
+                                    for reservoir in  item:
+                                        reservoir.compute_reservior_coolant_temperature(state,coolant_line,delta_t[t_idx],t_idx)      
+                                
+
 
         if reverse_thrust ==  True:
             total_thrust =  total_thrust * -1     
@@ -314,10 +323,10 @@ class Electric(Network):
                             btms.append_operating_conditions(segment,coolant_line)
                 if tag == 'heat_exchangers':
                     for heat_exchanger in  item:
-                        heat_exchanger.append_operate_conditions(segment, coolant_line)
+                        heat_exchanger.append_operating_conditions(segment, coolant_line)
                 if tag == 'reservoirs':
                     for reservoir in  item:
-                        reservoir.append_operate_conditions(segment, coolant_line)                
+                        reservoir.append_operating_conditions(segment, coolant_line)                
 
         
         # Ensure the mission knows how to pack and unpack the unknowns and residuals

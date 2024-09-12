@@ -10,7 +10,6 @@ from RCAIDE.Framework.Mission.Common     import   Conditions
 def append_wavy_channel_conditions(wavy_channel,segment,coolant_line,add_additional_network_equation):
      ones_row                                                                                        = segment.state.ones_row
      segment.state.conditions.energy[coolant_line.tag][wavy_channel.tag]                            = Conditions()
-     segment.state.conditions.energy[coolant_line.tag][wavy_channel.tag].inlet_coolant_pressure     = 0 * ones_row(1) 
      segment.state.conditions.energy[coolant_line.tag][wavy_channel.tag].heat_removed               = 0 * ones_row(1) 
      segment.state.conditions.energy[coolant_line.tag][wavy_channel.tag].inlet_coolant_temperature  = 0 * ones_row(1)   
      segment.state.conditions.energy[coolant_line.tag][wavy_channel.tag].outlet_coolant_temperature = 0 * ones_row(1) 

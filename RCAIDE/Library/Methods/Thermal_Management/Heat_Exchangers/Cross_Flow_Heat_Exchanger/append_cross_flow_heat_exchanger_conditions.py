@@ -17,7 +17,6 @@ def append_cross_flow_heat_exchanger_conditions(cross_flow_hex,segment,coolant_l
     segment.state.conditions.energy[coolant_line.tag][cross_flow_hex.tag].air_mass_flow_rate         = 0 * ones_row(1) 
     segment.state.conditions.energy[coolant_line.tag][cross_flow_hex.tag].air_inlet_pressure         = 0 * ones_row(1) 
     segment.state.conditions.energy[coolant_line.tag][cross_flow_hex.tag].coolant_inlet_pressure     = 0 * ones_row(1) 
-    segment.state.conditions.energy[coolant_line.tag][cross_flow_hex.tag].coolant_mass_flow_rate     = 0 * ones_row(1) 
     segment.state.conditions.energy[coolant_line.tag][cross_flow_hex.tag].pressure_diff_air          = 0 * ones_row(1)
     segment.state.conditions.energy[coolant_line.tag][cross_flow_hex.tag].effectiveness_HEX          = 0 * ones_row(1)
     
