@@ -68,7 +68,7 @@ def design_wavy_channel(HAS,battery,single_side_contact=True, dry_mass=True,
 
     # print optimization results 
     print (output)   
-    HAS_opt = optimization_problem.hrs_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_acquisition_system
+    HAS_opt = optimization_problem.hrs_configurations.optimized.networks.electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_acquisition_system
     HAS.mass_properties.mass       = HAS_opt.mass_properties.mass      
     HAS.design_power_draw          = HAS_opt.design_power_draw         
     HAS.design_heat_removed        = HAS_opt.design_heat_removed       
@@ -129,7 +129,7 @@ def wavy_channel_design_problem_setup(HAS,battery,print_iterations):
     #  Aliases
     # ---------------------------------------------------------------------------------------------------------- 
     aliases = [] 
-    btms = 'hrs_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_acquisition_system'  
+    btms = 'hrs_configurations.optimized.networks.electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_acquisition_system'  
     aliases.append([ 'm_dot'       , btms + '.coolant_flow_rate'])    
     aliases.append([ 'b'           , btms + '.channel_side_thickness']) 
     aliases.append([ 'd'           , btms + '.channel_width']) 

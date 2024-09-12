@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
   
 from RCAIDE.Library.Components import Component  
-from RCAIDE.Library.Methods.Thermal_Management.Batteries.Air_Cooled import append_air_cooled_conditions, air_cooling_performance
+from RCAIDE.Library.Methods.Thermal_Management.Batteries.Air_Cooled import append_air_cooled_conditions, air_cooling_performance, append_air_cooled_segment_conditions
 from RCAIDE.Library.Attributes.Gases import Air 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -37,6 +37,9 @@ class Air_Cooled(Component):
     
     def append_operating_conditions(self,segment,coolant_line,add_additional_network_equation = False):
         append_air_cooled_conditions(self,segment,coolant_line,add_additional_network_equation)
+        return
+    def append_segment_conditions(self, segment,coolant_line, conditions):
+        append_air_cooled_segment_conditions(self, segment,coolant_line, conditions)
         return
     
     

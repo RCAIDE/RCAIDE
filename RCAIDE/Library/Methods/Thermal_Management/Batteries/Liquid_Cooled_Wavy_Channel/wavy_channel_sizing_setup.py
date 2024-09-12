@@ -43,7 +43,7 @@ def modify_wavy_channel_HAS(nexus):
           Source:
              None
     """        
-    battery       = nexus.hrs_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc 
+    battery       = nexus.hrs_configurations.optimized.networks.electric.busses.bus.batteries.lithium_ion_nmc 
     has_opt       = battery.thermal_management_system.heat_acquisition_system
 
     # ------------------------------------------------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ def modify_wavy_channel_HAS(nexus):
 # ----------------------------------------------------------------------   
 def post_process(nexus): 
     summary              = nexus.summary  
-    battery              = nexus.hrs_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc       
+    battery              = nexus.hrs_configurations.optimized.networks.electric.busses.bus.batteries.lithium_ion_nmc       
     has_opt              = battery.thermal_management_system.heat_acquisition_system 
     Q_line_rem           = has_opt.heat_removed
     Q_line_gen           = has_opt.heat_generated  

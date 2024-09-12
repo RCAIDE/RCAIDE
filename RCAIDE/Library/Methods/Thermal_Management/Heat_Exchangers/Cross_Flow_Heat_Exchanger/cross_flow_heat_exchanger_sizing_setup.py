@@ -45,7 +45,7 @@ def modify_crossflow_hex_size(nexus):
           Source:
              None
     """           
-    hex_opt       = nexus.hex_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_exchanger_system
+    hex_opt       = nexus.hex_configurations.optimized.networks.electric.busses.bus.batteries.lithium_ion_nmc.thermal_management_system.heat_exchanger_system
   
     # ------------------------------------------------------------------------------------------------------------------------
     # Unpack paramters  
@@ -105,8 +105,8 @@ def modify_crossflow_hex_size(nexus):
     coolant          = hex_opt.coolant    
     # Enterance and Exit pressure loss coefficients 
    
-    kc_vals          = hex_opt.kc_values   
-    ke_vals          = hex_opt.ke_values      
+    #kc_vals          = hex_opt.kc_values   
+    #ke_vals          = hex_opt.ke_values      
                     
     # Assumed inital values of j/f and efficiency 
     j_f_h,j_f_c        = 0.25,0.25
@@ -386,7 +386,7 @@ def equation(NTU,*data):
 def post_process(nexus):
     
     summary              = nexus.summary  
-    battery              = nexus.hex_configurations.optimized.networks.all_electric.busses.bus.batteries.lithium_ion_nmc       
+    battery              = nexus.hex_configurations.optimized.networks.electric.busses.bus.batteries.lithium_ion_nmc       
     hex_opt              = battery.thermal_management_system.heat_exchanger_system
   
     # -------------------------------------------------------

@@ -137,4 +137,68 @@ def append_battery_conditions(battery,segment,bus):
      
     return 
     
- 
+def append_battery_segment_conditions(battery, bus, conditions, segment): 
+    """ Packs the initial battery conditions
+    
+        Assumptions:
+        Battery temperature is set to one degree hotter than ambient 
+        temperature for robust convergence. Initial mission energy, maxed aged energy, and 
+        initial segment energy are the same. Cycle day is zero unless specified, resistance_growth_factor and
+        capacity_fade_factor is one unless specified in the segment
+    
+        Source:
+        N/A
+    
+        Inputs:  
+            atmosphere.temperature             [Kelvin]
+            
+            Optional:
+            segment.
+                 battery.cycle_in_day               [unitless]
+                 battery.pack.temperature           [Kelvin]
+                 battery.charge_throughput          [Ampere-Hours] 
+                 battery.resistance_growth_factor   [unitless]
+                 battery.capacity_fade_factor       [unitless]
+                 battery.discharge                  [boolean]
+                 increment_battery_age_by_one_day     [boolean]
+               
+        Outputs:
+            segment
+               battery_discharge                    [boolean]
+               increment_battery_age_by_one_day     [boolean]
+               segment.state.conditions.energy
+               battery.battery_discharge_flag       [boolean]
+               battery.pack.maximum_initial_energy  [watts]
+               battery.pack.energy                  [watts] 
+               battery.pack.temperature             [kelvin]
+               battery.cycle_in_day                 [int]
+               battery.cell.charge_throughput       [Ampere-Hours] 
+               battery.resistance_growth_factor     [unitless]
+               battery.capacity_fade_factor         [unitless] 
+    
+        Properties Used:
+        None
+    """
+
+    battery_conditions = conditions[bus.tag][battery.tag]
+    if segment.state.initials:  
+        battery_initials                                        = segment.state.initials.conditions.energy[bus.tag][battery.tag]  
+        if type(segment) ==  RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:             
+            battery_conditions.battery_discharge_flag           = False 
+        else:                   
+            battery_conditions.battery_discharge_flag           = True             
+        battery_conditions.pack.maximum_initial_energy          = battery_initials.pack.maximum_initial_energy 
+        battery_conditions.pack.energy[:,0]                     = battery_initials.pack.energy[-1,0]
+        battery_conditions.pack.temperature[:,0]                = battery_initials.pack.temperature[-1,0]
+        battery_conditions.cell.temperature[:,0]                = battery_initials.cell.temperature[-1,0]
+        battery_conditions.cell.cycle_in_day                    = battery_initials.cell.cycle_in_day      
+        battery_conditions.cell.charge_throughput[:,0]          = battery_initials.cell.charge_throughput[-1,0]
+        battery_conditions.cell.resistance_growth_factor        = battery_initials.cell.resistance_growth_factor 
+        battery_conditions.cell.capacity_fade_factor            = battery_initials.cell.capacity_fade_factor 
+        battery_conditions.cell.state_of_charge[:,0]            = battery_initials.cell.state_of_charge[-1,0]
+
+    if 'battery_cell_temperature' in segment:       
+        battery_conditions.pack.temperature[:,0]       = segment.battery_cell_temperature 
+        battery_conditions.cell.temperature[:,0]       = segment.battery_cell_temperature     
+
+    return    

@@ -12,7 +12,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core        import Data
 from RCAIDE.Library.Components    import Component   
-from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common.append_battery_conditions import append_battery_conditions
+from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common.append_battery_conditions import append_battery_conditions, append_battery_segment_conditions
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery
@@ -59,5 +59,8 @@ class Battery(Component):
         return
     
     
-    
+    def append_battery_segment_conditions(self,bus, conditions, segment):
+        append_battery_segment_conditions(self,bus, conditions, segment)
+        return
+
  

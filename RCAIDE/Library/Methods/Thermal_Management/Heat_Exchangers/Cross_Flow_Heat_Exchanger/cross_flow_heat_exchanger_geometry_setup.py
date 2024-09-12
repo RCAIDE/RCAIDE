@@ -27,9 +27,9 @@ def cross_flow_heat_exchanger_geometry_setup(HEX):
              None
     """            
     vehicle                                        = RCAIDE.Vehicle()  
-    net                                            = RCAIDE.Framework.Networks.All_Electric_Network()  
-    bus                                            = RCAIDE.Library.Components.Energy.Distribution.Electrical_Bus()
-    bat                                            = RCAIDE.Library.Components.Energy.Batteries.Lithium_Ion_NMC()   
+    net                                            = RCAIDE.Framework.Networks.Electric()  
+    bus                                            = RCAIDE.Library.Components.Energy.Distributors.Electrical_Bus()
+    bat                                            = RCAIDE.Library.Components.Energy.Sources.Batteries.Lithium_Ion_NMC()   
      
     HEX.coolant_temperature_of_hot_fluid                  = 313 # Temperature from reservior
     bat.thermal_management_system.heat_exchanger_system   = HEX 

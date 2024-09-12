@@ -11,7 +11,7 @@
 from RCAIDE.Library.Components import Component 
 from RCAIDE.Library.Attributes.Coolants.Glycol_Water                                import Glycol_Water
 from RCAIDE.Library.Attributes.Materials.Polyetherimide                             import Polyetherimide
-from RCAIDE.Library.Methods.Thermal_Management.Reservoirs.Reservoir_Tank           import compute_mixing_temperature, compute_reservoir_temperature, append_reservoir_conditions
+from RCAIDE.Library.Methods.Thermal_Management.Reservoirs.Reservoir_Tank           import compute_mixing_temperature, compute_reservoir_temperature, append_reservoir_conditions, append_reservoir_segment_conditions
 
 
 # ----------------------------------------------------------------------
@@ -52,6 +52,10 @@ class Reservoir(Component):
     
     def append_operating_conditions(self,segment,coolant_line,add_additional_network_equation = False):
         append_reservoir_conditions(self,segment,coolant_line,add_additional_network_equation)
+        return
+    
+    def append_segment_conditions(self,segment,coolant_line,conditions):
+        append_reservoir_segment_conditions(self,segment,coolant_line,conditions)
         return    
 
     def compute_reservior_coolant_temperature(self,state,coolant_line,dt,i):

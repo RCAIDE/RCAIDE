@@ -12,7 +12,7 @@ from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Components import Component  
 from RCAIDE.Library.Attributes.Coolants.Glycol_Water                   import Glycol_Water  
 from RCAIDE.Library.Attributes.Gases                                   import Air
-from RCAIDE.Library.Methods.Thermal_Management.Heat_Exchangers.Cross_Flow_Heat_Exchanger  import  cross_flow_hex_rating_model, append_cross_flow_heat_exchanger_conditions
+from RCAIDE.Library.Methods.Thermal_Management.Heat_Exchangers.Cross_Flow_Heat_Exchanger  import  cross_flow_hex_rating_model, append_cross_flow_heat_exchanger_conditions, append_cross_flow_hex_segment_conditions
  
 
 import os 
@@ -126,7 +126,12 @@ class Cross_Flow_Heat_Exchanger(Component):
 
     def append_operating_conditions(self,segment,coolant_line,add_additional_network_equation = False):
         append_cross_flow_heat_exchanger_conditions(self,segment,coolant_line,add_additional_network_equation)
-        return         
+        return
+  
+    def append_segment_conditions(self,segment,coolant_line,conditions):
+        append_cross_flow_hex_segment_conditions(self,segment,coolant_line,conditions)
+        return
+       
 
     def compute_heat_exchanger_performance(self,state,coolant_line, dt,i):
         """This computes the heat being reomved from the liquid in the corss flow heat exchanger.
