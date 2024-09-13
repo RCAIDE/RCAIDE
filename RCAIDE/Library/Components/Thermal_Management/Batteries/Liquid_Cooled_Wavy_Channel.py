@@ -114,12 +114,12 @@ class Liquid_Cooled_Wavy_Channel(Component):
 
         return  T_battery_current
     
-    def plot_operating_conditions(results, coolant_line, save_figure = False,
+    def plot_operating_conditions(self, results, coolant_line, save_figure = False,
                                   show_legend = False,
                                   save_filename = "Heat Acquisition System",
                                   file_type = ".png",
                                   width = 12, height = 7):
-        plot_wavy_channel_conditions(results, coolant_line, save_figure = False,
+        plot_wavy_channel_conditions(self, results, coolant_line, save_figure = False,
                                   show_legend = False,
                                   save_filename = "Heat Acquisition System",
                                   file_type = ".png",

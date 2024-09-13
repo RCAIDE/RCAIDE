@@ -18,7 +18,7 @@ import numpy as np
 #   plot_heat_exchanger_system_conditions
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Visualization-Performance-Energy-Thermal_Management
-def plot_wavy_channel_conditions(results,coolant_line,
+def plot_wavy_channel_conditions(wavy_channel, results,coolant_line,
                                   save_figure = False,
                                   show_legend = False,
                                   save_filename = "Heat Acquisition System",
@@ -110,7 +110,7 @@ def plot_wavy_channel_conditions(results,coolant_line,
     fig.subplots_adjust(top=0.8) 
     
     # set title of plot 
-    title_text   = ''       
+    title_text   = 'Wavy_Channel_Properties'       
     fig.suptitle(title_text) 
     
     if save_figure:
