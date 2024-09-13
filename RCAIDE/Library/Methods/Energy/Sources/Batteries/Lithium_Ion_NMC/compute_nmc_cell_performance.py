@@ -1,8 +1,8 @@
-## @ingroup Methods-Energy-Sources-Battery-Lithium_Ion_NMC
 # RCAIDE/Methods/Energy/Sources/Battery/Lithium_Ion_NMC/.py
 # 
 # 
-# Created:  F
+# Created:  Feb 2024, M. Clarke
+# Modified: Sep 2024, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -13,8 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_nmc_cell_performance
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Energy-Sources-Batteries-Lithium_Ion_NMC 
-def compute_current_state(battery,state,bus,coolant_lines, t_idx, delta_t, battery_discharge_flag): 
+def compute_nmc_cell_performance(battery,state,bus,coolant_lines,t_idx, delta_t,battery_discharge_flag): 
     '''This is an electric cycle model for 18650 lithium-nickel-manganese-cobalt-oxide
        battery cells. The model uses experimental data performed
        by the Automotive Industrial Systems Company of Panasonic Group 

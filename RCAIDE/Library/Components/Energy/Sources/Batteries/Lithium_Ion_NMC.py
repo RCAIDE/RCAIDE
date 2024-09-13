@@ -11,7 +11,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core                                            import Units , Data
 from .Lithium_Ion_Generic                                             import Lithium_Ion_Generic   
-from RCAIDE.Library.Methods.Energy.Sources.Batteries.Lithium_Ion_NMC  import compute_current_state, update_nmc_cell_age
+from RCAIDE.Library.Methods.Energy.Sources.Batteries.Lithium_Ion_NMC  import compute_nmc_cell_performance, update_nmc_cell_age
 
 # package imports 
 import numpy as np
@@ -104,7 +104,7 @@ class Lithium_Ion_NMC(Lithium_Ion_Generic):
         Returns: 
             None
         """        
-        compute_current_state(self,state,bus,coolant_lines, t_idx,delta_t,discharge) 
+        compute_nmc_cell_performance(self,state,bus,coolant_lines, t_idx,delta_t,discharge) 
         
         return 
     

@@ -8,5 +8,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .compute_current_state   import compute_current_state
-from .update_nmc_cell_age     import update_nmc_cell_age
+from .compute_nmc_cell_performance   import compute_nmc_cell_performance
+from .update_nmc_cell_age            import update_nmc_cell_age
