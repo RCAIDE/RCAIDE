@@ -18,12 +18,7 @@ import numpy as np
 #   plot_heat_exchanger_system_conditions
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Visualization-Performance-Energy-Thermal_Management
-def plot_reservoir_conditions(results,
-                                  save_figure = False,
-                                  show_legend = False,
-                                  save_filename = "Reservoir_Conditions",
-                                  file_type = ".png",
-                                  width = 12, height = 7):
+def plot_reservoir_conditions(reservoir, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
     """Plots the cell-level conditions of the battery throughout flight.
 
     Assumptions:
@@ -63,24 +58,20 @@ def plot_reservoir_conditions(results,
     axis_1 = plt.subplot(1,1,1)
     set_axes(axis_1)     
              
-    b_i = 0 
-    for network in results.segments[0].analyses.energy.networks: 
-        busses  = network.busses
-        for bus in busses: 
-            for battery in bus.batteries:  
-                for i in range(len(results.segments)):  
-                    time                  = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
-                    battery_conditions    = results.segments[i].conditions.energy[bus.tag][battery.tag]   
-                    reservoir_temperature =  battery_conditions.thermal_management_system.RES.coolant_temperature[:,0]
-                    
-                    segment_tag  = results.segments[i].tag
-                    segment_name = segment_tag.replace('_', ' ')  
-                    if b_i == 0:                     
-                        axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)
-                    else:
-                        axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-                    axis_1.set_ylabel(r'Coolant Temp. (K)')  
-                b_i += 1     
+    b_i = 0  
+    for i in range(len(results.segments)):  
+        time                  = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
+        reservoir_conditions    = results.segments[i].conditions.energy[coolant_line.tag][reservoir.tag]   
+        reservoir_temperature =  reservoir_conditions.coolant_temperature[:,0]
+        
+        segment_tag  = results.segments[i].tag
+        segment_name = segment_tag.replace('_', ' ')  
+        if b_i == 0:                     
+            axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)
+        else:
+            axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
+        axis_1.set_ylabel(r'Coolant Temp. (K)')  
+    b_i += 1     
             
     if show_legend:      
         h, l = axis_1.get_legend_handles_labels()

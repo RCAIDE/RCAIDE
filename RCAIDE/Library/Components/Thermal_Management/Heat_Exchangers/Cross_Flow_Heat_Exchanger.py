@@ -13,7 +13,7 @@ from RCAIDE.Library.Components import Component
 from RCAIDE.Library.Attributes.Coolants.Glycol_Water                   import Glycol_Water  
 from RCAIDE.Library.Attributes.Gases                                   import Air
 from RCAIDE.Library.Methods.Thermal_Management.Heat_Exchangers.Cross_Flow_Heat_Exchanger  import  cross_flow_hex_rating_model, append_cross_flow_heat_exchanger_conditions, append_cross_flow_hex_segment_conditions
- 
+from RCAIDE.Library.Plots.Thermal_Management.plot_cross_flow_heat_exchanger_conditions import plot_cross_flow_heat_exchanger_conditions 
 
 import os 
 
@@ -156,8 +156,9 @@ class Cross_Flow_Heat_Exchanger(Component):
         cross_flow_hex_rating_model(self,state,coolant_line, dt,i)
 
         return
-    def plot_operating_conditions(results):
-      
+    def plot_operating_conditions(self, results,coolant_line,save_figure = False,show_legend = True,save_filename = "Heat_Exchanger_System",file_type = ".png",
+                                  width = 12, height = 7):
+        plot_cross_flow_heat_exchanger_conditions(self, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height)
       
       
         return    
