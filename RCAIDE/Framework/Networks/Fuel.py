@@ -11,7 +11,7 @@
 import  RCAIDE 
 from RCAIDE.Framework.Mission.Common                      import Residuals , Conditions 
 from RCAIDE.Library.Mission.Common.Unpack_Unknowns.energy import fuel_line_unknowns
-from .Network                                             import Network, Container   
+from .Network                                             import Network   
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Fuel

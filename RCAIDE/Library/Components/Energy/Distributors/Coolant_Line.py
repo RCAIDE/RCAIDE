@@ -1,4 +1,3 @@
-## @defgroup Library-Compoments-Energy-Networks-Distribution
 # RCAIDE/Library/Compoments/Energy/Networks/Distribution/Coolant_Line.py 
 # 
 # Created:  Aug 2024, S. Shekar
@@ -6,7 +5,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-
 # RCAIDE imports  
 from RCAIDE.Library.Components                                import Component
 from RCAIDE.Library.Components.Component                      import Container    
@@ -14,9 +12,8 @@ from RCAIDE.Library.Components.Component                      import Container
 # ----------------------------------------------------------------------------------------------------------------------
 #  Coolant Line
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Library-Compoments-Energy-Networks-Distribution
 class Coolant_Line(Component):
-    """ Fuel line class.
+    """ Coolant line class.
     """ 
     
     def __defaults__(self):
@@ -29,15 +26,12 @@ class Coolant_Line(Component):
             None
         """          
         self.tag                           = 'coolant_Line'  
-        #self.reservoirs                     = Container()
-        #self.heat_exchangers               = Container()
-        #self.active                        = True 
-        #self.efficiency                    = 1.0
 
                     
     def __init__ (self, distributor=None):
         
-        """This sets the default values.
+        """This initializes empty containers to add heat acqusition systems
+           for batteries that are present on a particular bus.
     
         Assumptions:
             None

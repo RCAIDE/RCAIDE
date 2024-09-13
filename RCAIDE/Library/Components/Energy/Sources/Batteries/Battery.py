@@ -3,13 +3,12 @@
 # 
 # 
 # Created:  Mar 2024, M. Clarke
+# Modified: Sep 2024, S. Shekar
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
- # RCAIDE imports
-import RCAIDE
+# RCAIDE imports
 from RCAIDE.Framework.Core        import Data
 from RCAIDE.Library.Components    import Component   
 from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common.append_battery_conditions import append_battery_conditions, append_battery_segment_conditions
