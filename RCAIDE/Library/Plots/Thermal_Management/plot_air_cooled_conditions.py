@@ -1,5 +1,5 @@
 ## @ingroup Visualization-Performance-Energy-Thermal_Management
-# RCAIDE/Visualization/Performance/Energy/Thermal_Management/plot_reservoir_conditions.py
+# RCAIDE/Visualization/Performance/Energy/Thermal_Management/plot_heat_acquisition_system_conditions.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -18,7 +18,7 @@ import numpy as np
 #   plot_heat_exchanger_system_conditions
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Visualization-Performance-Energy-Thermal_Management
-def plot_reservoir_conditions(reservoir, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
+def plot_air_cooled_conditions(air_cooled, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
     """Plots the cell-level conditions of the battery throughout flight.
 
     Assumptions:
@@ -29,10 +29,7 @@ def plot_reservoir_conditions(reservoir, results, coolant_line, save_figure,show
 
     Inputs:
     results.segments.conditions.
-        freestream.altitude
-        weights.total_mass
-        weights.vehicle_mass_rate
-        frames.body.thrust_force_vector
+       ADD SAI
 
     Outputs: 
     Plots
@@ -54,38 +51,50 @@ def plot_reservoir_conditions(reservoir, results, coolant_line, save_figure,show
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
 
     fig = plt.figure(save_filename)
-    fig.set_size_inches(width,height)  
-    axis_1 = plt.subplot(1,1,1)
-    set_axes(axis_1)     
-             
-    b_i = 0  
+    fig.set_size_inches(width,height) 
+    axis_0 = plt.subplot(1,1,1)
+    axis_1 = plt.subplot(2,1,1)
+    axis_2 = plt.subplot(2,1,2)        
+    b_i = 0 
+   
+    axis_0.plot(np.zeros(2),np.nan*np.zeros(2), color = line_colors[0], marker = ps.markers[b_i], linewidth = ps.line_width, label = wavy_channel.tag) 
+    axis_0.grid(False)
+    axis_0.axis('off')  
+   
     for i in range(len(results.segments)):  
-        time                  = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
-        reservoir_conditions    = results.segments[i].conditions.energy[coolant_line.tag][reservoir.tag]   
-        reservoir_temperature =  reservoir_conditions.coolant_temperature[:,0]
-        
-        segment_tag  = results.segments[i].tag
-        segment_name = segment_tag.replace('_', ' ')  
+        time                       = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
+        air_cooled_conditions      = results.segments[i].conditions.energy[coolant_line.tag][air_cooled.tag]   
+        effectiveness              = air_cooled_conditions.effectiveness[:,0]
+        total_heat_removed         = air_cooled_conditions.coolant_mass_flow_rate[:,0]
+        segment_tag                = results.segments[i].tag
+        segment_name               = segment_tag.replace('_', ' ') 
+
         if b_i == 0:                     
-            axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)
+            axis_1.plot(time, effectiveness, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)
         else:
-            axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
-        axis_1.set_ylabel(r'Coolant Temp. (K)')  
-    b_i += 1     
+            axis_1.plot(time, effectiveness, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
+        axis_1.set_ylabel(r'Effectiveness') 
+        set_axes(axis_1)     
+         
+        axis_2.plot(time, total_heat_removed, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
+        axis_2.set_ylabel(r'Total Heat Removed (W)')
+        set_axes(axis_2) 
+              
+        b_i += 1 
             
     if show_legend:      
         h, l = axis_1.get_legend_handles_labels()
         axis_1.legend(h, l)    
         leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
-        leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})
-                    
+        leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})     
+    
     # Adjusting the sub-plots for legend 
     fig.subplots_adjust(top=0.8) 
     
     # set title of plot 
-    title_text   = 'Reservoir Temperature'       
+    title_text   = 'Air_Cooled_Properties'       
     fig.suptitle(title_text) 
     
     if save_figure:
-        plt.savefig(save_filename + reservoir.tag + file_type)    
-    return fig 
+        plt.savefig(save_filename + air_cooled.tag + file_type)    
+    return fig     

@@ -112,13 +112,11 @@ def plot_cross_flow_heat_exchanger_conditions(cross_flow_hex, results, coolant_l
        
         b_i += 1 
             
-    if show_legend: 
-        h1, l1 = axis_1.get_legend_handles_labels()
-        leg1 = fig.legend(h1, l1, loc='upper center', ncol = 5, bbox_to_anchor=(0.5, 0.95))
-        leg1.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'}) 
-        axis_1.add_artist(leg1) 
-        h0, l0 = axis_0.get_legend_handles_labels()   
-        axis_2.legend(h0, l0)     
+    if show_legend:      
+        h, l = axis_1.get_legend_handles_labels()
+        axis_1.legend(h, l)    
+        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
+        leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})  
     
     # Adjusting the sub-plots for legend 
     fig.subplots_adjust(top=0.8) 

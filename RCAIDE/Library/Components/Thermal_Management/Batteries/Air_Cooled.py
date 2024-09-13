@@ -11,7 +11,8 @@
   
 from RCAIDE.Library.Components import Component  
 from RCAIDE.Library.Methods.Thermal_Management.Batteries.Air_Cooled import append_air_cooled_conditions, air_cooling_performance, append_air_cooled_segment_conditions
-from RCAIDE.Library.Attributes.Gases import Air 
+from RCAIDE.Library.Attributes.Gases import Air
+from RCAIDE.Library.Plots.Thermal_Management.plot_air_cooled_conditions import  plot_air_cooled_conditions
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Atmospheric_Air_Convection_Heat_Exchanger
@@ -69,4 +70,10 @@ class Air_Cooled(Component):
         T_battery_current = air_cooling_performance(self, battery, coolant_line, Q_heat_gen, T_cell, state, dt, i)
          
         return T_battery_current
+
+    def plot_operating_conditions(self, results, coolant_line, save_figure = False,show_legend = True,save_filename = "Heat Acquisition System",file_type = ".png",
+                                  width = 12, height = 7):
+        plot_air_cooled_conditions(self, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height)
+        
+        return
         
