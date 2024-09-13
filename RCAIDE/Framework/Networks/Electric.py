@@ -2,7 +2,8 @@
 # RCAIDE/Energy/Networks/Electric.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Jul 2023, M. Clarke
+# Modified: Sep 2024, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -25,9 +26,12 @@ class Electric(Network):
     """ A network comprising battery pack(s) to power rotors using electric motors via a bus.
         Electronic speed controllers, thermal management system, avionics, and other eletric 
         power systes paylaods are also modelled. Rotors and motors are arranged into groups,
-        called propulsor groups, to siginify how they are connected in the network.     
+        called propulsor groups, to siginify how they are connected in the network.
+        The network also takes into consideration thermal management components that are
+        connected to a coolant line.
         The network adds additional unknowns and residuals to the mission to determinge 
-        the torque matching between motors and rotors in each propulsor group.  
+        the torque matching between motors and rotors in each propulsor group.
+         
 
         Assumptions:
         The y axis rotation is used for rotating the rotor about the Y-axis for tilt rotors and tiltwings
@@ -153,7 +157,7 @@ class Electric(Network):
                         battery_conditions                    = state.conditions.energy[bus.tag][battery.tag] 
                         battery_conditions.pack.power_draw    = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
                         battery_conditions.pack.current_draw  = battery_conditions.pack.power_draw/bus_voltage
-                        #battery.energy_calc(state,bus,coolant_lines,recharging_flag)
+                       
         
         time               = state.conditions.frames.inertial.time[:,0] 
         delta_t            = np.diff(time)
@@ -161,7 +165,16 @@ class Electric(Network):
             if recharging_flag:
                 for bus in  busses:
                     for battery in  bus.batteries:
-                        battery.energy_calc(state,bus,coolant_lines, t_idx, delta_t, recharging_flag)                
+                        battery.energy_calc(state,bus,coolant_lines, t_idx, delta_t, recharging_flag)
+                        for coolant_line in  coolant_lines:
+                            if t_idx != state.numerics.number_of_control_points-1:
+                                for tag, item in  coolant_line.items(): 
+                                    if tag == 'heat_exchangers':
+                                        for heat_exchanger in  item:
+                                                heat_exchanger.compute_heat_exchanger_performance(state,coolant_line,delta_t[t_idx],t_idx)
+                                    if tag == 'reservoirs':
+                                        for reservoir in  item:
+                                            reservoir.compute_reservior_coolant_temperature(state,coolant_line,delta_t[t_idx],t_idx)                     
             else:
                 for bus in  busses:
                     for battery in  bus.batteries:
@@ -308,8 +321,7 @@ class Electric(Network):
                                 sub_item.append_operating_conditions(segment,bus,propulsor)  
                 elif issubclass(type(item), RCAIDE.Library.Components.Component):
                     item.append_operating_conditions(segment,bus)
-                    
-        #ZIP does not work when there is none in the coolant line             
+                   
         for coolant_line_i, coolant_line in enumerate(coolant_lines):  
             # ------------------------------------------------------------------------------------------------------            
             # Create coolant_lines results data structure  
