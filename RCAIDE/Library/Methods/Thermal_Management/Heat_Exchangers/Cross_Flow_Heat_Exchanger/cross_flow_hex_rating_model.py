@@ -123,10 +123,10 @@ def cross_flow_hex_rating_model(HEX,state,coolant_line, dt,i):
     T_i_c           = state.conditions.freestream.temperature[i,0]     
     #turndown_ratio  = battery_conditions.thermal_management_system.HEX.percent_operation[i,0]
     #fan_operation   = battery_conditions.thermal_management_system.HEX.fan_operation[i,0]
-    m_dot_h         = 3#HEX.design_coolant_mass_flow_rate#*turndown_ratio
-    m_dot_c         = 3#HEX.design_air_mass_flow_rate#*turndown_ratio 
-    P_i_c           = 3000#HEX.design_air_inlet_pressure#*turndown_ratio
-    P_i_h           = 3000#HEX.design_coolant_inlet_pressure#*turndown_ratio 
+    m_dot_h         = HEX.design_coolant_mass_flow_rate * 0.1#*turndown_ratio
+    m_dot_c         = HEX.design_air_mass_flow_rate#*turndown_ratio 
+    P_i_c           = HEX.design_air_inlet_pressure#*turndown_ratio
+    P_i_h           = HEX.design_coolant_inlet_pressure* 0.1#*turndown_ratio 
     rho_c_i         = air.compute_density(T_i_h,P_i_c)
     rho_h_i         = coolant.compute_density(T_i_h)  
      

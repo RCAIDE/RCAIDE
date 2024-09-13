@@ -155,7 +155,12 @@ class Cross_Flow_Heat_Exchanger(Component):
 
         cross_flow_hex_rating_model(self,state,coolant_line, dt,i)
 
-        return 
+        return
+    def plot_operating_conditions(results):
+      
+      
+      
+        return    
 
 def load_kc_values(): 
     ospath    = os.path.abspath(__file__)

@@ -18,6 +18,7 @@ from RCAIDE.Library.Components.Component                      import Container
 
 from RCAIDE.Library.Methods.Thermal_Management.Batteries.Liquid_Cooled_Wavy_Channel import  wavy_channel_rating_model,append_wavy_channel_conditions,append_wavy_channel_segment_conditions 
 
+from RCAIDE.Library.Plots.Thermal_Management import plot_wavy_channel_conditions
 # ----------------------------------------------------------------------------------------------------------------------
 # Conjugate_Heat_Removal_System  
 # ----------------------------------------------------------------------------------------------------------------------
@@ -112,3 +113,15 @@ class Liquid_Cooled_Wavy_Channel(Component):
         T_battery_current =  wavy_channel_rating_model(self, battery,coolant_line, Q_heat_gen, T_cell, state, dt, i)
 
         return  T_battery_current
+    
+    def plot_operating_conditions(results, coolant_line, save_figure = False,
+                                  show_legend = False,
+                                  save_filename = "Heat Acquisition System",
+                                  file_type = ".png",
+                                  width = 12, height = 7):
+        plot_wavy_channel_conditions(results, coolant_line, save_figure = False,
+                                  show_legend = False,
+                                  save_filename = "Heat Acquisition System",
+                                  file_type = ".png",
+                                  width = 12, height = 7)
+        return

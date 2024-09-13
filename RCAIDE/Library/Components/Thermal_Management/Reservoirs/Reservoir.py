@@ -40,9 +40,9 @@ class Reservoir(Component):
         self.tag                          = 'Coolant_Reservoir'
         self.material                     = Polyetherimide()
         self.coolant                      = Glycol_Water()
-        self.length                       = 0.3                                      # [m]
-        self.width                        = 0.3                                      # [m]
-        self.height                       = 0.3                                      # [m]
+        self.length                       = 0.5                                      # [m]
+        self.width                        = 0.5                                      # [m]
+        self.height                       = 0.5                                      # [m]
         self.thickness                    = 5e-3                                     # [m] 
         self.surface_area                 = 2*(self.length*self.width+self.width*
                                                self.height+self.length*self.height)  # [m^2]
@@ -65,4 +65,10 @@ class Reservoir(Component):
         compute_mixing_temperature(self,state,coolant_line,dt,i)
         compute_reservoir_temperature(self,state,coolant_line,dt,i)
         return
+    
+    def plot_operating_conditions(results):
+      
+        
+        
+        return    
    

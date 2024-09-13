@@ -120,7 +120,7 @@ class Electric(Network):
                         battery_conditions                   = state.conditions.energy[bus.tag][battery.tag] 
                         battery_conditions.pack.power_draw   = ((avionics_power + payload_power + total_esc_power) - charging_power)/bus.efficiency
                         battery_conditions.pack.current_draw = -battery_conditions.pack.power_draw/bus_voltage
-                        battery.energy_calc(state,bus,recharging_flag)  
+
                 else:       
                     # compute energy consumption of each battery on bus  
                     for battery in batteries: 
@@ -159,7 +159,9 @@ class Electric(Network):
         delta_t            = np.diff(time)
         for t_idx in range(state.numerics.number_of_control_points):
             if recharging_flag:
-                pass # add later 
+                for bus in  busses:
+                    for battery in  bus.batteries:
+                        battery.energy_calc(state,bus,coolant_lines, t_idx, delta_t, recharging_flag)                
             else:
                 for bus in  busses:
                     for battery in  bus.batteries:

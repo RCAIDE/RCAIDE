@@ -191,12 +191,10 @@ def  wavy_channel_rating_model(HAS,battery,coolant_line, Q_heat_gen,T_cell,state
     T_cell_new              = T_cell + dT_dt*dt 
    
     state.conditions.energy[coolant_line.tag][HAS.tag].heat_removed[i+1]               = Q_convec*number_of_modules
-    state.conditions.energy[coolant_line.tag][HAS.tag].inlet_coolant_temperature[i+1]  = T_inlet 
     state.conditions.energy[coolant_line.tag][HAS.tag].outlet_coolant_temperature[i+1] = T_o
     state.conditions.energy[coolant_line.tag][HAS.tag].coolant_mass_flow_rate[i+1]     = m_coolant
     state.conditions.energy[coolant_line.tag][HAS.tag].effectiveness[i+1]              = heat_transfer_efficiency
     state.conditions.energy[coolant_line.tag][HAS.tag].power[i+1]                      = Power
-
 
 
     # To be introduced when turndown ratio is a thing in the future. 
