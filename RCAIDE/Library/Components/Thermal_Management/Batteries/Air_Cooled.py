@@ -71,9 +71,9 @@ class Air_Cooled(Component):
          
         return T_battery_current
 
-    def plot_operating_conditions(self, results, coolant_line, save_figure = False,show_legend = True,save_filename = "Heat Acquisition System",file_type = ".png",
+    def plot_operating_conditions(self, results, coolant_line, save_filename, save_figure = False,show_legend = True,file_type = ".png",
                                   width = 12, height = 7):
-        plot_air_cooled_conditions(self, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height)
+        plot_air_cooled_conditions(self, results, coolant_line,save_filename, save_figure,show_legend,file_type , width, height)
         
         return
         

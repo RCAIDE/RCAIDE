@@ -66,16 +66,12 @@ def plot_reservoir_conditions(reservoir, results, coolant_line, save_figure,show
         
         segment_tag  = results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ')  
-        if b_i == 0:                     
-            axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)
-        else:
-            axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
+                          
+        axis_1.plot(time, reservoir_temperature, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)
         axis_1.set_ylabel(r'Coolant Temp. (K)')  
     b_i += 1     
             
-    if show_legend:      
-        h, l = axis_1.get_legend_handles_labels()
-        axis_1.legend(h, l)    
+    if show_legend:        
         leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
         leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})
                     

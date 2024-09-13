@@ -1,6 +1,4 @@
-## @ingroup Visualization-Performance-Energy-Thermal_Management
 # RCAIDE/Visualization/Performance/Energy/Thermal_Management/plot_heat_exchanger_system_conditions.py
-# 
 # 
 # Created:  Jul 2023, M. Clarke
 
@@ -17,7 +15,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #   plot_heat_exchanger_system_conditions
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Visualization-Performance-Energy-Thermal_Management
 def plot_cross_flow_heat_exchanger_conditions(cross_flow_hex, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
     """Plots the cell-level conditions of the battery throughout flight.
 
@@ -79,11 +76,8 @@ def plot_cross_flow_heat_exchanger_conditions(cross_flow_hex, results, coolant_l
 
         segment_tag  = results.segments[i].tag
         segment_name = segment_tag.replace('_', ' ') 
-
-        if b_i == 0:                     
-            axis_1.plot(time, effectiveness_HEX, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name)
-        else:
-            axis_1.plot(time, effectiveness_HEX, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width)
+ 
+        axis_1.plot(time, effectiveness_HEX, color = line_colors[i], marker = ps.markers[b_i], linewidth = ps.line_width, label = segment_name) 
         axis_1.set_ylabel(r'Effectiveness') 
         set_axes(axis_1)      
 
@@ -112,9 +106,7 @@ def plot_cross_flow_heat_exchanger_conditions(cross_flow_hex, results, coolant_l
        
         b_i += 1 
             
-    if show_legend:      
-        h, l = axis_1.get_legend_handles_labels()
-        axis_1.legend(h, l)    
+    if show_legend:     
         leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5) 
         leg.set_title('Flight Segment', prop={'size': ps.legend_font_size, 'weight': 'heavy'})  
     
@@ -126,5 +118,5 @@ def plot_cross_flow_heat_exchanger_conditions(cross_flow_hex, results, coolant_l
     fig.suptitle(title_text) 
     
     if save_figure:
-        plt.savefig(save_filename + battery.tag + file_type)    
+        plt.savefig(save_filename + cross_flow_hex.tag + file_type)    
     return fig 

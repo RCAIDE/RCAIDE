@@ -66,9 +66,9 @@ class Reservoir(Component):
         compute_reservoir_temperature(self,state,coolant_line,dt,i)
         return
     
-    def plot_operating_conditions(self, results,coolant_line,save_figure = False,show_legend = True,save_filename = "Reservoir",file_type = ".png",
+    def plot_operating_conditions(self, results,coolant_line,save_filename, save_figure = False,show_legend = True,file_type = ".png",
                                   width = 12, height = 7):
-        plot_reservoir_conditions(self, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height)
+        plot_reservoir_conditions(self, results, coolant_line,save_filename,save_figure,show_legend,file_type , width, height)
       
       
         return    
