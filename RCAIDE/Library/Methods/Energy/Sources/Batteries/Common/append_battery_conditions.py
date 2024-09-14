@@ -3,6 +3,7 @@
 # 
 # 
 # Created:  Jul 2023, M. Clarke
+# Modified: Sep 2024, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -12,7 +13,7 @@ import RCAIDE
 from RCAIDE.Framework.Mission.Common     import   Conditions
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  METHOD
+#  METHODS
 # ---------------------------------------------------------------------------------------------------------------------- 
 ## @ingroup Methods-Energy-Sources-Battery 
 def append_battery_conditions(battery,segment,bus): 

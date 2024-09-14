@@ -1,34 +1,32 @@
-## @ingroup Library-Compoments-Thermal_Management-Batteries-Heat_Acquisition_Systems
-# RCAIDE/Library/Components/Thermal_Management/Common/Heat_Exchanger_Systems/Cross_flow_Heat_Exchanger.py
+# RCAIDE/Library/Components/Thermal_Management/Heat_Exchangers/Cross_flow_Heat_Exchanger.py
 # 
-# Created:  Apr 2024, M. Clarke 
+# Created:  Apr 2024, S. Shekar 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-import numpy as np 
-from RCAIDE.Framework.Core import Data 
-from RCAIDE.Library.Components import Component  
-from RCAIDE.Library.Attributes.Coolants.Glycol_Water                   import Glycol_Water  
-from RCAIDE.Library.Attributes.Gases                                   import Air
+# RCAIDE Imports
+from RCAIDE.Framework.Core                                                                import Data 
+from RCAIDE.Library.Components                                                            import Component  
+from RCAIDE.Library.Attributes.Coolants.Glycol_Water                                      import Glycol_Water  
+from RCAIDE.Library.Attributes.Gases                                                      import Air
 from RCAIDE.Library.Methods.Thermal_Management.Heat_Exchangers.Cross_Flow_Heat_Exchanger  import  cross_flow_hex_rating_model, append_cross_flow_heat_exchanger_conditions, append_cross_flow_hex_segment_conditions
-from RCAIDE.Library.Plots.Thermal_Management.plot_cross_flow_heat_exchanger_conditions import plot_cross_flow_heat_exchanger_conditions 
+from RCAIDE.Library.Plots.Thermal_Management.plot_cross_flow_heat_exchanger_conditions    import plot_cross_flow_heat_exchanger_conditions 
 
-import os 
+import os
+import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Cross Flow Heat Exchanger 
-# ----------------------------------------------------------------------------------------------------------------------
-## @ingroup Library-Compoments-Thermal_Management-Batteries-Heat_Acquisition_Systems   
+# ----------------------------------------------------------------------------------------------------------------------  
 class Cross_Flow_Heat_Exchanger(Component):
     """ This provides outlet fluid properties from a cross flow heat exchanger
     Assumptions:
-    Coolant being used is Glycol Water 50-50
-    Assume a constant Kc and Kp 
+         Coolant being used is Glycol Water 50-50
+         Assume a constant Kc and Kp 
 
-    Source:
-    N/A
+    Source: N/A
+   
     """
 
     def __defaults__(self):
@@ -132,48 +130,25 @@ class Cross_Flow_Heat_Exchanger(Component):
         append_cross_flow_hex_segment_conditions(self,segment,coolant_line,conditions)
         return
        
-
     def compute_heat_exchanger_performance(self,state,coolant_line, dt,i):
-        """This computes the heat being reomved from the liquid in the corss flow heat exchanger.
-
-        Assumptions:
-        Surface Designation of 1/8-19.86 with strip fins. 
-
-        Source:
-        Kays, W.M. and London, A.L. (1998) Compact Heat Exchangers. 3rd Edition, McGraw-Hill, New York.
-        
-        Inputs:
-        HEX                   - heat exchanger   system                        [-]
-        battery_conditions    - battery pack conditions                        [-]  
-        state                 - conditions of system                           [-]
-        dt                    - time step                                      [s]
-        i                     - control point                                  [-]
-        
-        Outputs  
-        ''' 
-        """          
-
         cross_flow_hex_rating_model(self,state,coolant_line, dt,i)
-
         return
     def plot_operating_conditions(self, results,coolant_line,save_filename,save_figure = False,show_legend = True,file_type = ".png",
                                   width = 12, height = 7):
-        plot_cross_flow_heat_exchanger_conditions(self, results, coolant_line,save_filename,save_figure,show_legend,file_type , width, height)
-      
-      
+        plot_cross_flow_heat_exchanger_conditions(self, results, coolant_line,save_filename,save_figure,show_legend,file_type , width, height)     
         return    
 
-def load_kc_values(): 
-    ospath    = os.path.abspath(__file__)
-    separator = os.path.sep
-    rel_path  = os.path.dirname(ospath) + separator   
-    x         = np.loadtxt(rel_path + 'rectangular_passage_Kc.csv', dtype=float, delimiter=',', comments='Kc') 
-    return x 
-
-def load_ke_values():  
-    ospath    = os.path.abspath(__file__)
-    separator = os.path.sep
-    rel_path  = os.path.dirname(ospath) + separator 
-    x         = np.loadtxt(rel_path +'rectangular_passage_Ke.csv', dtype=float, delimiter=',', comments='Ke')
-    return x 
+    def load_kc_values(): 
+        ospath    = os.path.abspath(__file__)
+        separator = os.path.sep
+        rel_path  = os.path.dirname(ospath) + separator   
+        x         = np.loadtxt(rel_path + 'rectangular_passage_Kc.csv', dtype=float, delimiter=',', comments='Kc') 
+        return x 
+    
+    def load_ke_values():  
+        ospath    = os.path.abspath(__file__)
+        separator = os.path.sep
+        rel_path  = os.path.dirname(ospath) + separator 
+        x         = np.loadtxt(rel_path +'rectangular_passage_Ke.csv', dtype=float, delimiter=',', comments='Ke')
+        return x 
 

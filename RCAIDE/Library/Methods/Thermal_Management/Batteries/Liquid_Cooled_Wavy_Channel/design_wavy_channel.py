@@ -1,6 +1,4 @@
-## @ingroup Library-Energy-Methods-Thermal_Management-Batteries
-# RCAIDE/Library/Methods/Energy/Propulsors/design_wavy_channel.py
-
+# RCAIDE/Library/Methods/Thermal_Management/Batteries/Liquid_Cooled_Wavy_Channel/design_wavy_channel
 
 # Created:  Apr 2024, S. Shekar 
 
@@ -8,19 +6,19 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports   
-from RCAIDE.Framework.Core import Units , Data  
+from RCAIDE.Framework.Core                                                                                         import Units , Data  
 from RCAIDE.Library.Methods.Thermal_Management.Batteries.Liquid_Cooled_Wavy_Channel.wavy_channel_sizing_setup      import wavy_channel_sizing_setup
 from RCAIDE.Library.Methods.Thermal_Management.Batteries.Liquid_Cooled_Wavy_Channel.wavy_channel_geometry_setup    import wavy_channel_geometry_setup
-from RCAIDE.Framework.Optimization.Common             import Nexus
-from RCAIDE.Framework.Optimization.Packages.scipy     import scipy_setup
+from RCAIDE.Framework.Optimization.Common                                                                          import Nexus
+from RCAIDE.Framework.Optimization.Packages.scipy                                                                  import scipy_setup
 
 # Python package imports  
 import numpy as np  
 import time 
 
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 #  Wavy Channel Design
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 def design_wavy_channel(HAS,battery,single_side_contact=True, dry_mass=True,
                         solver_name= 'SLSQP',iterations = 200,solver_sense_step = 1E-4,
                                        solver_tolerance = 1E-3,print_iterations = False):  
@@ -86,7 +84,6 @@ def design_wavy_channel(HAS,battery,single_side_contact=True, dry_mass=True,
 
     return HAS
 
-## @ingroup Methods-Thermal_Management-Batteries-Sizing
 def wavy_channel_design_problem_setup(HAS,battery,print_iterations):  
 
     nexus                        = Nexus()
@@ -103,10 +100,10 @@ def wavy_channel_design_problem_setup(HAS,battery,print_iterations):
     # ----------------------------------------------------------------------------------------------------------       
     inputs = []   
     #               variable   initial      lower limit           upper limit       scaling       units 
-    inputs.append([ 'm_dot' ,  m_dot_0     ,   0.05         ,  2.5                 , 1E-1       ,  1*Units.less])   
-    inputs.append([ 'd'     ,  d_0         ,   0.001        ,  0.01              , 1E-3       ,  1*Units.less])  
+    inputs.append([ 'm_dot' ,  m_dot_0     ,   0.05         ,  2.5                , 1E-1       ,  1*Units.less])   
+    inputs.append([ 'd'     ,  d_0         ,   0.001        ,  0.01               , 1E-3       ,  1*Units.less])  
     inputs.append([ 'b'     ,  b_0         ,   0.001        ,  0.002              , 1E-3       ,  1*Units.less]) 
-    inputs.append([ 'theta' ,  theta_0     ,48*Units.degrees, 70*Units.degrees   , 1.0        ,  1*Units.less])         
+    inputs.append([ 'theta' ,  theta_0     ,48*Units.degrees, 70*Units.degrees    , 1.0        ,  1*Units.less])         
     problem.inputs = np.array(inputs,dtype=object)    
 
     # ----------------------------------------------------------------------------------------------------------

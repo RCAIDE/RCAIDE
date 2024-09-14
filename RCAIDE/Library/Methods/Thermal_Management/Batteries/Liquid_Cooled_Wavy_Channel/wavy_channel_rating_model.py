@@ -1,4 +1,3 @@
-## @ingroup Methods-Energy-Thermal_Management-Batteries-Heat_Acquisition_Systems
 # RCAIDE/Methods/Energy/Thermal_Management/Batteries/Heat_Acquisition_Systems/wavy_channel_rating_model.py
 # 
 # 
@@ -17,10 +16,10 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Wavy Channel Rating Model
 # ----------------------------------------------------------------------------------------------------------------------
-def  wavy_channel_rating_model(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt,i):
+def  wavy_channel_rating_model(HAS,battery,coolant_line,Q_heat_gen,T_cell,state,dt,i):
     """ 
           
-          Inputs: REDOOOOOo
+          Inputs: 
           
           HAS.
              channel_side_thicknes
@@ -44,16 +43,10 @@ def  wavy_channel_rating_model(HAS,battery,coolant_line, Q_heat_gen,T_cell,state
                              cell.temperature
                              
           Outputs:
-                battery_conditions.
-                                   thermal_management_system.heat_generated                 
-                                   thermal_management_system.HAS.heat_removed               
-                                   thermal_management_system.HAS.outlet_coolant_temperature
-                                   thermal_management_system.HAS.coolant_mass_flow_rate     
-                                   thermal_management_system.HAS.power 
-                                   thermal_management_system.HAS.effectiveness              
-                                   cell.temperature                            
+                Battery Cell Temperature
+                                                               
           Assumptions: 
-             The wavy channel extracts from the battery pack considering it to be a lumped mass.    battery_conditions.thermal_management_system.RES.coolant_temperature[i+1,0]
+             The wavy channel extracts from the battery pack considering it to be a lumped mass
         
           Source:
             Zhao, C., Clarke, M., Kellermann H., Verstraete D., “Design of a Liquid Cooling System for Lithium-Ion Battery Packs for eVTOL Aircraft" 

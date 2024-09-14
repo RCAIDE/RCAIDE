@@ -1,13 +1,12 @@
-## @ingroup Library-Methods-Energy-Thermal_Management-Common-Heat-Exchanger-Systems
-# cross_flow_heat_exchanger_geometry_setup.py 
+# RCAIDE/Library/Methods/Thermal_Management/Heat_Exchangers/Cross_Flow_Heat_Exchanger/cross_flow_heat_exchanger_sizing_setup.py
 #
 # Created: Jun 2023, M. Clarke
 
-# ----------------------------------------------------------------------        
-#   Imports
-# ----------------------------------------------------------------------  
-# RCAIDE Imports 
-import RCAIDE 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports 
+import RCAIDE   
 from RCAIDE.Framework.Core                                                  import Units   
 from RCAIDE.Framework.Analyses.Process                                      import Process     
 
@@ -15,7 +14,9 @@ from RCAIDE.Framework.Analyses.Process                                      impo
 from scipy.optimize import fsolve 
 import numpy as np 
 
-## @ingroup Methods-Thermal_Management-Batteries-Sizing 
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Cross Flow Heat Exchanger Geometry Setup 
+# ----------------------------------------------------------------------------------------------------------------------   
 def cross_flow_heat_exchanger_sizing_setup(): 
     
     # size the base config
@@ -85,8 +86,8 @@ def modify_crossflow_hex_size(nexus):
     l_s_c       = hex_opt.fin_exposed_strip_edge_cold 
     
     #Fin and wall Conductivity 
-    k_f         = hex_opt.k_f  
-    k_w         = hex_opt.k_w 
+    fin_conductivity         = hex_opt.fin_conductivity  
+    wall_conductivity        = hex_opt.wall_conductivity 
     
     # Ratio of finned area to total area 
     Af_A_h      = hex_opt.finned_area_to_total_area_hot  
@@ -154,18 +155,18 @@ def modify_crossflow_hex_size(nexus):
             
     # Fluid Properties are now evaluated based off the new outlet temperatures. 
     #Prandtl Number 
-    Pr_h    =  coolant.compute_prandtl_number(T_m_h+273)#0.721
-    Pr_c    =  air.compute_prandtl_number(T_m_c+273)    #0.692
+    Pr_h    =  coolant.compute_prandtl_number(T_m_h+273)
+    Pr_c    =  air.compute_prandtl_number(T_m_c+273)   
     
     #Absolute viscosity 
-    mu_h    = coolant.compute_absolute_viscosity(T_m_h+273)#39.3e-6
-    mu_c    = air.compute_absolute_viscosity(T_m_c+273)    #34.7e-6
+    mu_h    = coolant.compute_absolute_viscosity(T_m_h+273)
+    mu_c    = air.compute_absolute_viscosity(T_m_c+273)    
 
     # from the inlet and outlet pressures given the mean density is calcualted. 
-    rho_h_i  =  coolant.compute_density(T_i_h+273)#0.4751
-    rho_c_i  =  air.compute_density(T_i_c+273,P_i_c)    #1.4726 
-    rho_h_o  =  coolant.compute_density(T_o_h+273)#0.8966 
-    rho_c_o  =  air.compute_density(T_o_c + 273,P_o_c)    #0.6817
+    rho_h_i  =  coolant.compute_density(T_i_h+273)
+    rho_c_i  =  air.compute_density(T_i_c+273,P_i_c)   
+    rho_h_o  =  coolant.compute_density(T_o_h+273)
+    rho_c_o  =  air.compute_density(T_o_c + 273,P_o_c)   
     
     
     rho_h_m  = 2 / (1 / rho_h_i + 1 / rho_h_o)
@@ -188,7 +189,7 @@ def modify_crossflow_hex_size(nexus):
 
     # Assumed Values of NTU_h and NTU_c (Inital Guess)
     ntu_c   = NTU*2*C_r
-    ntu_h   = NTU*2    # replace it with thr right values later 
+    ntu_h   = NTU*2    
     
     # Inital Compute Core Mass Velcoity
     G_h        = np.sqrt(2 * rho_h_m * delta_p_h / (Pr_h**(2/3)) * (eta_o_h * j_f_h) / ntu_h)
@@ -218,8 +219,8 @@ def modify_crossflow_hex_size(nexus):
         h_h = j_h * G_h * c_p_h / (Pr_h**(2/3))
         h_c = j_c * G_c * c_p_c / (Pr_c**(2/3))
 
-        m_f_h = (np.sqrt((2*h_h)/(k_f*delta_h)))*np.sqrt(1+(delta_h/l_s_h))
-        m_f_c = (np.sqrt((2*h_c)/(k_f*delta_c)))*np.sqrt(1+(delta_c/l_s_c))
+        m_f_h = (np.sqrt((2*h_h)/(fin_conductivity*delta_h)))*np.sqrt(1+(delta_h/l_s_h))
+        m_f_c = (np.sqrt((2*h_c)/(fin_conductivity*delta_c)))*np.sqrt(1+(delta_c/l_s_c))
 
 
         l_f_h = b_h / 2 - delta_h
@@ -270,11 +271,6 @@ def modify_crossflow_hex_size(nexus):
         # ----------------------------------------------------------------------------------------------------------
         # Pressure Drop
         # ----------------------------------------------------------------------------------------------------------
-
-        # Compute entrance and exit pressure loss coefficients 
-
-        # Kc_c, Ke_c     = compute_heat_exhanger_factors(kc_vals,ke_vals,sigma_c, Re_c) 
-        # Need to check if the values obtained from the function are close to what is obtained ere 
         k_c_c = 0.36
         k_c_h = 0.36
 
@@ -350,16 +346,14 @@ def modify_crossflow_hex_size(nexus):
     hex_opt.mass_flow_rate_coolant          = m_dot_h
     hex_opt.mass_flow_rate_air              = m_dot_c
     hex_opt.stack_height                    = L_3_h
-    hex_opt.stack_width                     = L_h
+    hex_opt.stacwall_conductivityidth       = L_h
     hex_opt.stack_length                    = L_c
     hex_opt.heat_exchanger_mass             = mass_hex
     hex_opt.power_draw                      = P_hex 
     hex_opt.air_frontal_area                = A_f_c
     hex_opt.pressure_diff_air               = delta_p_c_updated
     
-    #Include other variables that are needed for the rating problem, code that up and list the variables here.
-  
-  
+   
  
     return nexus   
 
@@ -403,6 +397,6 @@ def post_process(nexus):
     # Constraints 
     # -------------------------------------------------------       
     summary.stack_height           = hex_opt.stack_height           
-    summary.stack_width            = hex_opt.stack_width                     
+    summary.stacwall_conductivityidth            = hex_opt.stacwall_conductivityidth                     
     summary.stack_length           = hex_opt.stack_length      
     return nexus     

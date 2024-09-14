@@ -1,5 +1,4 @@
-## @ingroup Methods-Energy-Sources-Battery 
-# compute_heat_exhanger_factors.py
+# RCAIDE/Library/Methods/Thermal_Management/Heat_Exchangers/Cross_Flow_Heat_Exchanger/compute_heat_exhanger_factors.py
 # 
 # Created : Dec 2022, C.R. Zhao
 # Modified: Jun 2023, M. Clarke

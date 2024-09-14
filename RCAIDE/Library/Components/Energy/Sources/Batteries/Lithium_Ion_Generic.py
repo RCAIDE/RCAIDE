@@ -3,6 +3,7 @@
 # 
 # 
 # Created:  Mar 2024, M. Clarke
+# Modified: Sep 2024, S. Shekar
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -73,7 +74,7 @@ class Lithium_Ion_Generic(Battery):
         return           
 
 
-    def energy_calc(self,state,bus, discharge= True): 
+    def energy_calc(self,state,bus,coolant_lines, t_idx, delta_t, discharge= True): 
         """Computes the state of a generic battery cell.
            
         Assumptions:
@@ -91,7 +92,7 @@ class Lithium_Ion_Generic(Battery):
         Returns: 
             None
         """     
-        compute_generic_li_cell_performance(self,state,bus,discharge) 
+        compute_generic_li_cell_performance(self,state,bus,coolant_lines, t_idx, delta_t, discharge= True) 
                         
         return       
     

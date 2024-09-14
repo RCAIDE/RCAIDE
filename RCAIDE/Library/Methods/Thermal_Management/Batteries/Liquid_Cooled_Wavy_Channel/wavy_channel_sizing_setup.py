@@ -1,11 +1,11 @@
-## @ingroup Components-Methods-Thermal_Management-Batteries-Sizing
-# RCAIDE/Library/Methods/Energy/Thermal_Management/Batteries/heat_acquisition_system/Wavy_Channel_Heat_Acquisition/wavy_channel_sizing_setup.py
-#
+# RCAIDE/Library/Methods/Thermal_Management/Batteries/Liquid_Cooled_Wavy_Channel/wavy_channel_sizing_setup.py
+
+
 # Created: Apr 2024 S. Shekar 
 #
-# ----------------------------------------------------------------------        
-#   Imports
-# ----------------------------------------------------------------------  
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports  
 from RCAIDE.Framework.Analyses.Process   import Process 
 from RCAIDE.Library.Components.Thermal_Management.Accessories import Pump 
@@ -13,7 +13,9 @@ from RCAIDE.Library.Components.Thermal_Management.Accessories import Pump
 # Python package imports  
 import numpy as np  
 
-## @ingroup Methods-Thermal_Management-Batteries-Sizing 
+# ----------------------------------------------------------------------------------------------------------------------
+#  Sizing Setup for Wavy Channel
+# ----------------------------------------------------------------------------------------------------------------------
 def wavy_channel_sizing_setup(): 
 
     # size the base config
@@ -76,11 +78,10 @@ def modify_wavy_channel_HAS(nexus):
     k_chan           = channel.thermal_conductivity  
 
     # Pump
-    n_pump   = 0.7 # Replce with Pump Class
+    n_pump           = 0.7 # Replce with Pump Class
 
 
     # Considering a lumped mass model  
-    
     N_cells = battery.module.geometrtic_configuration.parallel_count*battery.module.geometrtic_configuration.normal_count
     
     # Contact Surface area of the channel 
@@ -190,7 +191,7 @@ def post_process(nexus):
     summary.mass_power_objective =  (spacing**2+Power**2 + total_mass**2)**(0.5)  
 
     # calculate heat constraint  
-    summary.heat_energy_constraint  = Q_line_rem - Q_line_gen  # abs(Q_line_gen  -  Q_line_rem)  
-    summary.thickness_constraint    = channel_width-(2*channel_thickness)# abs(channel_width-2*channel_thickness)
+    summary.heat_energy_constraint  = Q_line_rem - Q_line_gen  
+    summary.thickness_constraint    = channel_width-(2*channel_thickness)
 
     return nexus     

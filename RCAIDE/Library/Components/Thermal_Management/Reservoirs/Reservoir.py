@@ -1,29 +1,28 @@
-## @ingroup Library-Compoments-Thermal_Management-Common-Reservoirs
-# RCAIDE/Library/Compoments/Thermal_Management/Common/Reservoirs/Reservoir.py
+# RCAIDE/Library/Compoments/Thermal_Management/Reservoirs/Reservoir.py
 # 
 # 
-# Created:  Mar 2024, S S. Shekar
+# Created:  Mar 2024, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
  
-from RCAIDE.Library.Components import Component 
+from RCAIDE.Library.Components                                                      import Component 
 from RCAIDE.Library.Attributes.Coolants.Glycol_Water                                import Glycol_Water
 from RCAIDE.Library.Attributes.Materials.Polyetherimide                             import Polyetherimide
-from RCAIDE.Library.Methods.Thermal_Management.Reservoirs.Reservoir_Tank           import compute_mixing_temperature, compute_reservoir_temperature, append_reservoir_conditions, append_reservoir_segment_conditions
+from RCAIDE.Library.Methods.Thermal_Management.Reservoirs.Reservoir_Tank            import compute_mixing_temperature, compute_reservoir_temperature, append_reservoir_conditions, append_reservoir_segment_conditions
 from RCAIDE.Library.Plots.Thermal_Management.plot_reservoir_conditions              import plot_reservoir_conditions
 
 # ----------------------------------------------------------------------
-#  Class
+#  Reservoir
 # ----------------------------------------------------------------------
 ## @ingroup Attributes-Coolants
 class Reservoir(Component):
     """Holds values for a coolant reservoir
 
     Assumptions:
-    Thermally Insulated coolant storage device.
-
+    None
+    
     Source:
     None
     """
@@ -59,9 +58,6 @@ class Reservoir(Component):
         return    
 
     def compute_reservior_coolant_temperature(self,state,coolant_line,dt,i):
-        '''
-         COMMENTS SAI 
-        ''' 
         compute_mixing_temperature(self,state,coolant_line,dt,i)
         compute_reservoir_temperature(self,state,coolant_line,dt,i)
         return
@@ -69,6 +65,4 @@ class Reservoir(Component):
     def plot_operating_conditions(self, results,coolant_line,save_filename, save_figure = False,show_legend = True,file_type = ".png",
                                   width = 12, height = 7):
         plot_reservoir_conditions(self, results, coolant_line,save_filename,save_figure,show_legend,file_type , width, height)
-      
-      
         return    

@@ -1,11 +1,15 @@
 # RCAIDE/Library/Methods/Thermal_Management/Batteries/Air_Cooled/append_air_cooling_conditions.py
 # 
 # Created:  Aug 2024, S. Shekar
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Framework.Mission.Common     import   Conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  append_turbofan_conditions
+#  append_wavy_channel_conditions
 # ----------------------------------------------------------------------------------------------------------------------    
 def append_wavy_channel_conditions(wavy_channel,segment,coolant_line,add_additional_network_equation):
      
@@ -30,8 +34,7 @@ def append_wavy_channel_segment_conditions(wavy_channel,segment,coolant_line,con
 
      wavy_channel_conditions = conditions[coolant_line.tag][wavy_channel.tag]
      if segment.state.initials:  
-          wavy_channel_initials                                       = segment.state.initials.conditions.energy[coolant_line.tag][wavy_channel.tag]
-          
+          wavy_channel_initials                                    = segment.state.initials.conditions.energy[coolant_line.tag][wavy_channel.tag]
           wavy_channel_conditions.outlet_coolant_temperature[:,0] = wavy_channel_initials.outlet_coolant_temperature[-1,0]
           wavy_channel_conditions.power[:,0]                      = wavy_channel_initials.power[-1,0] 
           wavy_channel_conditions.coolant_mass_flow_rate[:,0]     = wavy_channel_initials.coolant_mass_flow_rate[-1,0]     

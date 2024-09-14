@@ -1,4 +1,3 @@
-## @defgroup Energy-Thermal_Management-Heat_Exchangers
 # RCAIDE/Energy/Thermal_Management/Heat_Exchangers/__init__.py
 # 
 

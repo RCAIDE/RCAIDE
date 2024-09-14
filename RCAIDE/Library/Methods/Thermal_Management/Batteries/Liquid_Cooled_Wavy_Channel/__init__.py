@@ -1,5 +1,4 @@
-## @ingroup Library-Methods-Thermal_Management-Batteries-Heat_Acquisition_System-Wavy_Channel_Heat_Acquisition  
-# RCAIDE/Library/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/Wavy_Channel_Heat_Acquisition/__init__.py
+# RCAIDE/Library/Methods/Thermal_Management/Batteries/Liquid_Cooled_Wavy_Channel/__init__.py
 
 """ RCAIDE Package Setup
 """

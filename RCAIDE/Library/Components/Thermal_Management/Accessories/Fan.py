@@ -1,19 +1,16 @@
-## @ingroup Library-Compoments-Thermal_Management-Batteries-Accessories
-# RCAIDE/Library/Compoments/Thermal_Management/Batteries/Accessories/Fan.py
+# RCAIDE/Library/Compoments/Thermal_Management/Accessories/Fan.py
 # 
 #
-# Created: March 2024 S S. Shekar
+# Created: March 2024  S. Shekar
 
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-
 from RCAIDE.Framework.Core import Data
 
 # ----------------------------------------------------------------------
-#  Class
+#  Fan
 # ----------------------------------------------------------------------
-## @ingroup Attributes-Coolants
 class Fan(Data):
     """Holds values for a model Fan 
 
@@ -31,7 +28,7 @@ class Fan(Data):
         None
 
         Source:
-        Values commonly available
+        None
 
         Inputs:
         None

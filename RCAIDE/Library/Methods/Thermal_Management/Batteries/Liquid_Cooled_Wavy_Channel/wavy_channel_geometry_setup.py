@@ -1,18 +1,18 @@
-## @ingroup Library-Methods-Energy-Thermal_Management-Batteries-Wavy_Channel_Heat_Acquisition
-# RCAIDE/Library/Methods/Energy/Thermal_Management/Wavy_Channel_Heat_Acquisition/wavy_channel_geometry_setup.py
+
+#RCAIDE/Library/Methods/Thermal_Management/Batteries/Liquid_Cooled_Wavy_Channel/wavy_channel_geometry_setup.py
 #
 # Created: Apr 2024, S. Shekar 2024
 
-# ----------------------------------------------------------------------        
-#   Imports
-# ----------------------------------------------------------------------  
-# RCAIDE Imports 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports 
 import RCAIDE     
-#
+
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Wavy Channel Geometry Setup 
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Methods-Energy-Thermal_Management-Batteries-Wavy_Channel_Heat_Acquisition
+
 def wavy_channel_geometry_setup(HAS,battery): 
     """ Defines a dummy vehicle for wavy channel geometry optimization.
           

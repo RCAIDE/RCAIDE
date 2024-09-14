@@ -1,7 +1,6 @@
-## @ingroup Library-Compoments-Thermal_Management-Batteries-Accessories
-# RCAIDE/Library/Compoments/Thermal_Management/Batteries/Accessories/Pump.py
+# RCAIDE/Library/Compoments/Thermal_Management/Accessories/Pump.py
 # 
-# Created: March 2024 S S. Shekar 
+# Created: March 2024  S. Shekar 
 
 # ----------------------------------------------------------------------
 #  Imports

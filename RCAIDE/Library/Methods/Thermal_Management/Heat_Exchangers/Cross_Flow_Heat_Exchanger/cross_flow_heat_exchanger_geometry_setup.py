@@ -1,16 +1,16 @@
-## @ingroup Library-Energy-Thermal_Management-Common-Heat-Exchanger-Systems
-# cross_flow_heat_exchanger_geometry_setup.py 
+# RCAIDE/Library/Methods/Thermal_Management/Heat_Exchangers/Cross_Flow_Heat_Exchanger/cross_flow_heat_exchanger_geometry_setup.py
 #
 # Created: Jun 2023, M. Clarke
 
-# ----------------------------------------------------------------------        
-#   Imports
-# ----------------------------------------------------------------------  
-# RCAIDE Imports 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports 
 import RCAIDE     
 
-
-## @ingroup Methods-Thermal_Management-Batteries-Sizing
+# ----------------------------------------------------------------------------------------------------------------------  
+#  Cross Flow Heat Exchanger Geometry Setup 
+# ----------------------------------------------------------------------------------------------------------------------   
 def cross_flow_heat_exchanger_geometry_setup(HEX): 
     """ Modifies geometry of Cross Flow Heat Exchanger  
           

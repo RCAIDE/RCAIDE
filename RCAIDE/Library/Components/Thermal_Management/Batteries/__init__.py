@@ -1,4 +1,3 @@
-## @defgroup Energy-Thermal_Management-Batteries Batteries
 # RCAIDE/Energy/Thermal_Management/Batteries/__init__.py
 # 
 
@@ -8,6 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-from .Air_Cooled  import Air_Cooled
-from .Cryocooler  import Cryocooler
+from .Air_Cooled                 import Air_Cooled
+from .Cryocooler                 import Cryocooler
 from .Liquid_Cooled_Wavy_Channel import Liquid_Cooled_Wavy_Channel

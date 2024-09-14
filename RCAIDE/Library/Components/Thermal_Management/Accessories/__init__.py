@@ -1,4 +1,3 @@
-## @defgroup Library-Compoments-Thermal_Management-Batteries-Accessories 
 # RCAIDE/Library/Compoments/Thermal_Management/Accessories/__init__.py 
 
 """ RCAIDE Package Setup

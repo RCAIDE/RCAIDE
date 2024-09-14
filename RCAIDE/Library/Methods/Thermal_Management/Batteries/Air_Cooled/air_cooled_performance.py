@@ -1,4 +1,3 @@
-## @ingroup Methods-Thermal_Management-Batteries-Heat_Acquisition_System-Direct_Air_Heat_Acquisition
 # RCAIDE/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/Direct_Air_Heat_Acquisition/direct_convection_model.py
 # 
 # 
@@ -8,13 +7,11 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 import numpy as np
-from RCAIDE.Framework.Core import Data
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Net Convected Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
-## @ingroup Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling 
-def air_cooling_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt,i):
+def air_cooled_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt,i):
     '''Computes the net heat removed by direct air heat acquisition system.
 
     Assumptions:
@@ -29,7 +26,6 @@ def air_cooling_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt
     NJ (2007), 997 pp." (2007): 1683-1684.,  Chapter 7 pg 437-446 
 
     Inputs:  
-        battery. 
               h                         (heat transfer coefficient)  [W/(m^2*K)] 
               As_cell                   (battery cell surface area)  [meters^2]
               H_cell                    (battery cell height)        [meters]
@@ -39,13 +35,12 @@ def air_cooling_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt
               heat_transfer_efficiency                               [unitless]
       
       Outputs:
-        battery. 
-             net_power                                               [Watts] 
- 
-
+             T_cell                     (Updated battery cell temperature) [Kelvin]
+  
     Properties Used:
     None 
-    ''' 
+    '''
+    
     
     # battery properties  
     As_cell                  = battery.cell.surface_area 
@@ -104,8 +99,6 @@ def air_cooling_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt
     Q_net                     = Q_heat_gen_tot - Q_convec  
     dT_dt                     = Q_net/(cell_mass*n_total_module*Cp)
     T_current                 = T_cell + dT_dt*dt     
-    #HAS_outputs               = Data(total_heat_generated = Q_heat_gen_tot, 
-                                     #total_heat_removed   = Q_convec,
-                                     #current_battery_temperature = T_current)    
+       
     
     return  T_current

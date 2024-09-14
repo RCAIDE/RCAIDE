@@ -1,12 +1,16 @@
-# RCAIDE/Library/Methods/Thermal_Management/Batteries/Air_Cooled/append_air_cooling_conditions.py
+# RCAIDE/Library/Methods/Thermal_Management/Heat_Exchangers/Cross_Flow_Heat_Exchanger/append_cross_flow_heat_exchanger_conditions.py
 # 
 # Created:  Aug 2024, S. Shekar
 
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Framework.Mission.Common     import   Conditions
 
+
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  append_turbofan_conditions
+#  append_cross_flow_heat_exchanger_conditions
 # ----------------------------------------------------------------------------------------------------------------------    
 def append_cross_flow_heat_exchanger_conditions(cross_flow_hex,segment,coolant_line,add_additional_network_equation):
     
@@ -15,7 +19,6 @@ def append_cross_flow_heat_exchanger_conditions(cross_flow_hex,segment,coolant_l
     if segment.temperature_deviation != None:
         temp_dev = segment.temperature_deviation    
     atmo_data    = atmosphere.compute_values(altitude = alt,temperature_deviation=temp_dev)
-    
     
     ones_row                                                                                         = segment.state.ones_row
     segment.state.conditions.energy[coolant_line.tag][cross_flow_hex.tag]                            = Conditions()
