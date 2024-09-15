@@ -1,14 +1,16 @@
-# RCAIDE/Library/Methods/Thermal_Management/Batteries/Air_Cooled/append_air_cooling_conditions.py
+# RCAIDE/Library/Methods/Thermal_Management/Reservoirs/Reservoir_Tank/append_reservoir_conditions.py
 # 
 # Created:  Aug 2024, S. Shekar
 
+# ---------------------------------------------------------------------------------------------------------------------- 
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
 from RCAIDE.Framework.Mission.Common     import   Conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  append_turbofan_conditions
+#  append_reservoir_conditions
 # ---------------------------------------------------------------------------------------------------------------------- 
-
 def append_reservoir_conditions(reservoir,segment,coolant_line,add_additional_network_equation):
     
     atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()

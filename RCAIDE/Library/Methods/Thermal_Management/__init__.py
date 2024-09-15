@@ -1,4 +1,4 @@
-# RCAIDE/Methods/Energy/Thermal_Management/__init__.py
+# RCAIDE/Library/Methods/Thermal_Management/__init__.py
 # 
 
 """ RCAIDE Package Setup

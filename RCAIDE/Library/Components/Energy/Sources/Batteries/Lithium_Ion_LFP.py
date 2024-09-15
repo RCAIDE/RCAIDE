@@ -2,7 +2,8 @@
 # RCAIDE/Library/Compoments/Energy/Sources/Batteries/Lithium_Ion_LiFePO4_18650.py
 # 
 # 
-# Created:  Mar 2024, M. Clarke 
+# Created:  Mar 2024, M. Clarke
+# Modified: Sep 2024, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -84,7 +85,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         return
     
 
-    def energy_calc(self,state,bus,discharge= True): 
+    def energy_calc(self,state,bus,coolant_lines, t_idx, delta_t, discharge= True): 
         """Computes the state of the LFP battery cell.
            
         Assumptions:
@@ -102,7 +103,7 @@ class Lithium_Ion_LFP(Lithium_Ion_Generic):
         Returns: 
             None
         """      
-        compute_lfp_cell_performance(self,state,bus,discharge) 
+        compute_lfp_cell_performance(self,state,bus,coolant_lines, t_idx,delta_t,discharge) 
                         
         return     
     

@@ -92,8 +92,8 @@ class Cross_Flow_Heat_Exchanger(Component):
         self.air_hydraulic_diameter                                 = 1.54e-3  #m
 
         # Fin and wall Conductivity 
-        self.k_f                                                    = 121    # W/m.K
-        self.k_w                                                    = 121    # W/m.K        
+        self.fin_conductivity                                        = 121    # W/m.K
+        self.wall_conductivity                                       = 121    # W/m.K        
 
         # Fan
         self.fan                                                    = Data() # Replace with RCAIDE Fan 

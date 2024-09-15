@@ -1,5 +1,4 @@
-## @ingroup Library-Energy-Methods-Thermal_Management-Common-Batteries
-# RCAIDE/Library/Methods/Energy/Thermal_Management/Common/design_cross_flow_heat_exchanger.py
+# RCAIDE/Library/Methods/Thermal_Management/Heat_Exchangers/Cross_Flow_Heat_Exchanger/design_cross_flow_heat_exchanger.py
 
 
 # Created:  Apr 2024, S. Shekar 
@@ -66,12 +65,12 @@ def crossflow_heat_exchanger_design_problem_setup(HEX,HAS,print_iterations):
     Optimizer function
     
            Inputs: 
-          HAS.
+          HEX.
               Inlet Pressures of the HEX
               Inlet mass flow rates of the HEX
               
             Contraints: 
-          HAS.
+          HEX.
                Length, Height and width of the Heat Exchanger System
             Objective:
              HAS.

@@ -1,8 +1,7 @@
-## @ingroup Visualization-Performance-Energy-Thermal_Management
-# RCAIDE/Visualization/Performance/Energy/Thermal_Management/plot_heat_acquisition_system_conditions.py
+# RCAIDE/Library/Plots/Thermal_Management/plot_air_cooled_conditions.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Sep 2024, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -15,9 +14,8 @@ import matplotlib.cm as cm
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#   plot_heat_exchanger_system_conditions
+#   plot_air_cooled_conditions
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Visualization-Performance-Energy-Thermal_Management
 def plot_air_cooled_conditions(air_cooled, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
     """Plots the cell-level conditions of the battery throughout flight.
 

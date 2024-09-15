@@ -1,5 +1,4 @@
-## @ingroup Library-Methods-Energy-Thermal_Management-Common-Heat_Exchanger_System
-# cross_flow_hex_rating_model.py
+# RCAIDE/Library/Methods/Thermal_Management/Heat_Exchangers/Cross_Flow_Heat_Exchanger/cross_flow_hex_rating_model.py
 # 
 # 
 # Created:  Apr 2024, S. Shekar
@@ -16,36 +15,12 @@ def cross_flow_hex_rating_model(HEX,state,coolant_line, dt,i):
     """ 
           
           Inputs: 
-          HAS.
-             channel_side_thicknes
-             channel_width        
-             channel_contact_angle
-             channel_top_thickness
-             channel
-             heat_transfer_efficiency
-             coolant  
-             coolant_flow_rate
-          battery.
-                  cell.diameter
-                  cell.height  
-                  module.geometrtic_configuration.parallel_count
-                  module.geometrtic_configuration.series_count
-                  pack.number_of_modules 
-                  cell.specific_heat_capacity
-          battery_conditions.
-                             thermal_management_system.RES.coolant_temperature 
-                             thermal_management_system.percent_operation
-                             cell.temperature
+          HEX.[all optimized properties]
+            
+          state.conditions.energy.coolant_Line.reservoir.coolant_temperature
                              
           Outputs:
-                battery_conditions.
-                                   thermal_management_system.heat_generated                 
-                                   thermal_management_system.HAS.heat_removed               
-                                   thermal_management_system.HAS.outlet_coolant_temperature
-                                   thermal_management_system.HAS.coolant_mass_flow_rate     
-                                   thermal_management_system.HAS.power 
-                                   thermal_management_system.HAS.effectiveness              
-                                   cell.temperature                            
+               None                   
           Assumptions: 
             
           Source:
@@ -83,8 +58,8 @@ def cross_flow_hex_rating_model(HEX,state,coolant_line, dt,i):
     l_s_c       = HEX.fin_exposed_strip_edge_cold 
     
     #Fin and wall Conductivity 
-    k_f         =HEX.k_f   # Spell it out   SAI 
-    k_w         =HEX.k_w # Spell it out   SAI 
+    fin_conductivity          =HEX.fin_conductivity   
+    wall_conductivity         =HEX.wall_conductivity 
                  
     # Ratio of finned area to total area 
     Af_A_h      = HEX.finned_area_to_total_area_hot  
@@ -175,8 +150,8 @@ def cross_flow_hex_rating_model(HEX,state,coolant_line, dt,i):
         h_h = j_h * G_h * c_p_h / (Pr_h**(2/3))
         h_c = j_c * G_c * c_p_c / (Pr_c**(2/3))
     
-        m_f_h = (np.sqrt((2*h_h)/(k_f*delta_h)))*np.sqrt(1+(delta_h/l_s_h))
-        m_f_c = (np.sqrt((2*h_c)/(k_f*delta_c)))*np.sqrt(1+(delta_c/l_s_c))
+        m_f_h = (np.sqrt((2*h_h)/(fin_conductivity*delta_h)))*np.sqrt(1+(delta_h/l_s_h))
+        m_f_c = (np.sqrt((2*h_c)/(fin_conductivity*delta_c)))*np.sqrt(1+(delta_c/l_s_c))
     
     
         l_f_h = b_h / 2 - delta_h
@@ -192,7 +167,7 @@ def cross_flow_hex_rating_model(HEX,state,coolant_line, dt,i):
     
         # Wall ressistance 
         A_w   = L_c*L_h*(2*N_p+2)
-        R_w   = delta_w/(k_w*A_w)
+        R_w   = delta_w/(wall_conductivity*A_w)
     
         # Calculate overall heat transfer without fouling
         UA    = 1 / ((1 / (eta_o_h * h_h*A_h)) +R_w+ (1 / (eta_o_c* h_c*A_c)))

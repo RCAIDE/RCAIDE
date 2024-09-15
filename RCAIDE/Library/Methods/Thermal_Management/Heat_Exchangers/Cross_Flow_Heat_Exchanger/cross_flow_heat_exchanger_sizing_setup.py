@@ -346,7 +346,7 @@ def modify_crossflow_hex_size(nexus):
     hex_opt.mass_flow_rate_coolant          = m_dot_h
     hex_opt.mass_flow_rate_air              = m_dot_c
     hex_opt.stack_height                    = L_3_h
-    hex_opt.stacwall_conductivityidth       = L_h
+    hex_opt.stack_width                     = L_h
     hex_opt.stack_length                    = L_c
     hex_opt.heat_exchanger_mass             = mass_hex
     hex_opt.power_draw                      = P_hex 
@@ -397,6 +397,6 @@ def post_process(nexus):
     # Constraints 
     # -------------------------------------------------------       
     summary.stack_height           = hex_opt.stack_height           
-    summary.stacwall_conductivityidth            = hex_opt.stacwall_conductivityidth                     
+    summary.stack_width            = hex_opt.stack_width                     
     summary.stack_length           = hex_opt.stack_length      
     return nexus     

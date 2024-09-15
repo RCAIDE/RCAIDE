@@ -1,13 +1,11 @@
-## @ingroup Library-Energy-Methods-Thermal_Management-Common
-# RCAIDE/Library/Methods/Energy/Thermal_Management/Common/Reservoir/No_Reservoir/compute_reservoir_temperature.py
-
-
+# RCAIDE/Library/Methods/Thermal_Management/Reservoirs/Reservoir_Tank/compute_reservoir_temperature.py
+#
+#
 # Created:  Apr 2024, S. Shekar 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute heat loss to environment 
 # ----------------------------------------------------------------------------------------------------------------------
-
 def compute_reservoir_temperature(RES,state,coolant_line,dt,i):
     """
      Computes the resultant temperature of the reservoir at each time step with coolant exchanging heat to the environment

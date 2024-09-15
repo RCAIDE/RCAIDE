@@ -42,7 +42,8 @@ class Lithium_Ion_Generic(Battery):
         self.cell.charging_current                                    = 1.0     # [Amps]
         self.cell.charging_voltage                                    = 3       # [Volts]
         self.cell.specific_heat_capacity                              = 1115    # [J/kgK] 
-        self.cell.maximum_voltage                                     = 3.6     # [V]   
+        self.cell.maximum_voltage                                     = 3.6     # [V]
+        self.cell.nominal_voltage                                     = 3.6     # [V] 
                                      
         self.convective_heat_transfer_coefficient                     = 35.     # [W/m^2K] 
         self.heat_transfer_efficiency                                 = 1.0       

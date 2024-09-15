@@ -1,6 +1,5 @@
-## @defgroup Library-Plots-Energy 
-# RCAIDE/Library/Plots/Energy/__init__.py
-# 
+# RCAIDE/Library/Plots/Thermal_Management/__init__.py
+
 
 """RCAIDE Package Setup
 """

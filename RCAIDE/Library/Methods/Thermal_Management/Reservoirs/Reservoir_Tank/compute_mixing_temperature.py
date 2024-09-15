@@ -1,10 +1,11 @@
-## @ingroup Library-Energy-Methods-Thermal_Management-Common
-# RCAIDE/Library/Methods/Energy/Thermal_Management/Common/Reservoir/No_Reservoir/compute_mixing_temperature.py
+# RRCAIDE/Library/Methods/Thermal_Management/Reservoirs/Reservoir_Tank/compute_mixing_temperature.py
 
 
 # Created:  Apr 2024, S. Shekar 
 
-
+# ---------------------------------------------------------------------------------------------------------------------- 
+#  IMPORT
+# ---------------------------------------------------------------------------------------------------------------------- 
 import  RCAIDE
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -60,7 +61,6 @@ def compute_mixing_temperature(RES,state,coolant_line,dt,i):
                 pass
     
     for HEX in  coolant_line.heat_exchangers:
-        #if isinstance(HEX, RCAIDE.Library.Components.Thermal_Management.Heat_Exchangers):
         mass_flow_HEX.append(state.conditions.energy[coolant_line.tag][HEX.tag].coolant_mass_flow_rate[i+1] * dt)
         T_outlet_HEX .append(state.conditions.energy[coolant_line.tag][HEX.tag].outlet_coolant_temperature[i+1])
         Cp_HEX.append( coolant.compute_cp(T_outlet_HEX))

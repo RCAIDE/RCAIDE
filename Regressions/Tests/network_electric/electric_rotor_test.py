@@ -1,4 +1,4 @@
-# Regression/scripts/Tests/network_all_electric/all_electric_network_test.py
+# Regression/scripts/Tests/network_electric/electric_network_test.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
