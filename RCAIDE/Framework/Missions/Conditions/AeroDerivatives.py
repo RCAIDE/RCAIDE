@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from dataclasses import field
+from dataclasses import dataclass, field
 
 # package imports
 import numpy as np
@@ -20,18 +20,18 @@ from RCAIDE.Framework.Missions.Conditions import Conditions
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-@dataclasses(kw_only=True)
+@dataclass(kw_only=True)
 class AeroDerivativesConditions(Conditions):
 
     #Attribute      Type        Default Value
     name:           str         = 'Aerodynamic Derivatives'
 
-    dCL_dAlpha:     np.ndarrary = field(default_factory=lambda: np.ndarrary((1, 1)))
-    dCL_dBeta:      np.ndarrary = field(default_factory=lambda: np.ndarrary((1, 1)))
-    dCL_dV:         np.ndarrary = field(default_factory=lambda: np.ndarrary((1, 1)))
-    dCL_dThrottle:  np.ndarrary = field(default_factory=lambda: np.ndarrary((1, 1)))
+    dCL_dAlpha:     np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
+    dCL_dBeta:      np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
+    dCL_dV:         np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
+    dCL_dThrottle:  np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
 
-    dCD_dAlpha:     np.ndarrary = field(default_factory=lambda: np.ndarrary((1, 1)))
-    dCD_dBeta:      np.ndarrary = field(default_factory=lambda: np.ndarrary((1, 1)))
-    dCD_dV:         np.ndarrary = field(default_factory=lambda: np.ndarrary((1, 1)))
-    dCD_dThrottle:  np.ndarrary = field(default_factory=lambda: np.ndarrary((1, 1)))
+    dCD_dAlpha:     np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
+    dCD_dBeta:      np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
+    dCD_dV:         np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
+    dCD_dThrottle:  np.ndarray = field(default_factory=lambda: np.ndarray((1, 1)))
