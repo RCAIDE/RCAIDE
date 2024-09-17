@@ -1,8 +1,8 @@
-## @ingroup Visualization-Performance-Energy-Thermal_Management
-# RCAIDE/Visualization/Performance/Energy/Thermal_Management/plot_reservoir_conditions.py
+# RCAIDE/Library/Plots/Thermal_Management/plot_reservoir_conditions.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Sep 2024, S. Shekar
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -19,28 +19,23 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Visualization-Performance-Energy-Thermal_Management
 def plot_reservoir_conditions(reservoir, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
-    """Plots the cell-level conditions of the battery throughout flight.
-
-    Assumptions:
-    None
-
-    Source:
-    None
-
-    Inputs:
-    results.segments.conditions.
-        freestream.altitude
-        weights.total_mass
-        weights.vehicle_mass_rate
-        frames.body.thrust_force_vector
-
-    Outputs: 
-    Plots
-
-    Properties Used:
-    N/A	
-    """ 
+    """Plots the Reservoir conditions throughout flight.
     
+     Assumptions:
+     None
+    
+     Source:
+     None
+    
+     Inputs:
+     results.segments.conditions.energy[coolant_line.tag][reservoir.tag].
+                                                                        coolant_temperature
+     Outputs:
+     Plots
+    
+     Properties Used:
+     N/A	
+     """ 
     # get plotting style 
     ps      = plot_style()  
 

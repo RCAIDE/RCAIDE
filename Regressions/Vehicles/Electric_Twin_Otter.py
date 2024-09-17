@@ -521,13 +521,11 @@ def vehicle_setup(cell_chemistry, btms_type):
         ##------------------------------------------------------------------------------------------------------------------------------------  
         # Coolant Line
         #------------------------------------------------------------------------------------------------------------------------------------  
-        coolant_line                      = RCAIDE.Library.Components.Energy.Distributors.Coolant_Line(bus)
-        
+        coolant_line                                 = RCAIDE.Library.Components.Energy.Distributors.Coolant_Line(bus)
+        net.coolant_lines.append(coolant_line)
         HAS                                         = RCAIDE.Library.Components.Thermal_Management.Batteries.Air_Cooled() 
-        HAS.convective_heat_transfer_coefficient    = 7.17        
-        
-        
-        
+        HAS.convective_heat_transfer_coefficient    = 7.17
+        coolant_line.batteries[bat.tag].append(HAS)
         
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Starboard Propulsor

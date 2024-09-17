@@ -61,27 +61,23 @@ def design_cross_flow_heat_exchanger(HEX,HAS,battery, single_side_contact=True, 
 
 ## @ingroup Methods-Thermal_Management-Batteries-Sizing
 def crossflow_heat_exchanger_design_problem_setup(HEX,HAS,print_iterations): 
-    """
-    Optimizer function
-    
-           Inputs: 
-          HEX.
-              Inlet Pressures of the HEX
-              Inlet mass flow rates of the HEX
-              
-            Contraints: 
-          HEX.
-               Length, Height and width of the Heat Exchanger System
-            Objective:
-             HAS.
-              Power and Mass of the Heat Exchanger System
+    """ Sets up cross flow heat exchanger optimization problem including design variables,
+        constraints and objective function using RCAIDE's Nexus optimization framework.
+        Appends methodolody of planform modification to Nexus.
+          Inputs:
+             HEX     - heat exchanger data structure            [None]
+             HAS     - heat acqusition data structure           [None]
              
-          Outputs:
-                 Length, Height, and Width of the Heat Exchanger System
-                 Mass of Heat Exchanger System
-                 Power Consumed by Heat Exchanger System 
-                 
-    """
+          Outputs: 
+              nexus    - RCAIDE's optimization framework [None]
+              
+          Assumptions:
+            None
+        
+          Source:
+             None
+    """        
+   
     nexus                        = Nexus()
     problem                      = Data()
     nexus.optimization_problem   = problem    

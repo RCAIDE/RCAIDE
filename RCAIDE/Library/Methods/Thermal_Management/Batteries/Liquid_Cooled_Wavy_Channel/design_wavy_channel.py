@@ -84,7 +84,21 @@ def design_wavy_channel(HAS,battery,single_side_contact=True, dry_mass=True,
 
     return HAS
 
-def wavy_channel_design_problem_setup(HAS,battery,print_iterations):  
+def wavy_channel_design_problem_setup(HAS,battery,print_iterations):
+    """ Sets up wavy channel optimization problem including design variables, constraints and objective function
+        using RCAIDE's Nexus optimization framework. Appends methodolody of planform modification to Nexus.
+          Inputs: 
+             HAS     - heat acqusition data structure           [None]
+             
+          Outputs: 
+              nexus    - RCAIDE's optimization framework [None]
+              
+          Assumptions:
+            None
+        
+          Source:
+             None
+    """        
 
     nexus                        = Nexus()
     problem                      = Data()

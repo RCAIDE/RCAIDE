@@ -10,8 +10,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # @ingroup Methods-Energy-Sources-Battery
 
-from .append_battery_conditions             import append_battery_conditions
-from .append_battery_conditions             import append_battery_segment_conditions
+from .append_battery_conditions             import append_battery_conditions, append_battery_segment_conditions
 from .compute_net_generated_battery_heat    import compute_net_generated_battery_heat
 from .find_ragone_properties                import find_ragone_properties
 from .find_specific_power                   import find_specific_power

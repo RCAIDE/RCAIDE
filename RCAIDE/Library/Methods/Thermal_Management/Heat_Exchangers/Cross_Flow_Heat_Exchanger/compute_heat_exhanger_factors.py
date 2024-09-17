@@ -12,7 +12,22 @@ from scipy import interpolate
 ## @ingroup Methods-Thermal_Management-Batteries-Channel_Cooling
 def compute_heat_exhanger_factors(kc_vals,ke_vals,delta, Re):
     '''
-    core library about Kc & Ke factors for different types of HEX"
+    Core library about Kc & Ke factors for different types of HEX"
+    
+     Inputs:  
+             kc_vals
+             ke_vals
+             Re
+              
+          Outputs:   
+             Kc
+             Ke
+              
+          Assumptions: 
+             N/A 
+        
+          Source:
+             None
     
     '''
     Kc = np.zeros(shape=Re.shape)

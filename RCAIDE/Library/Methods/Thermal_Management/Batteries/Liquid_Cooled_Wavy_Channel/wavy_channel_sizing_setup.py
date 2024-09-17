@@ -173,7 +173,23 @@ def modify_wavy_channel_HAS(nexus):
 # ----------------------------------------------------------------------
 #   Post Process Results to give back to the optimizer
 # ----------------------------------------------------------------------   
-def post_process(nexus): 
+def post_process(nexus):
+    """ Post processes the outputs obtained from the optimizer  
+          
+          Inputs:  
+             nexus     - RCAIDE optmization framework with Wavy Channel geometry data structure [None]
+              
+          Outputs:   
+             nexus     - Objective Function calculation 
+              
+              
+          Assumptions: 
+             N/A 
+        
+          Source:
+             None
+    """            
+    
     summary              = nexus.summary  
     battery_list         = list(nexus.hrs_configurations.optimized.networks.electric.busses.bus.batteries.keys())
     battery              = nexus.hrs_configurations.optimized.networks.electric.busses.bus.batteries[battery_list[0]]

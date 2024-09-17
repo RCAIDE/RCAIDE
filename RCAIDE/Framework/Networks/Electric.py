@@ -292,10 +292,10 @@ class Electric(Network):
             segment
 
             Properties Used:
-            N/Abattery_tms in item
+            N/A
         """              
-        busses          = segment.analyses.energy.vehicle.networks.electric.busses
-        coolant_lines  = segment.analyses.energy.vehicle.networks.electric.coolant_lines 
+        busses                          = segment.analyses.energy.vehicle.networks.electric.busses
+        coolant_lines                   = segment.analyses.energy.vehicle.networks.electric.coolant_lines 
         segment.state.residuals.network = Residuals()
 
         for bus_i, bus in enumerate(busses):  
@@ -342,7 +342,6 @@ class Electric(Network):
                     for reservoir in  item:
                         reservoir.append_operating_conditions(segment, coolant_line)                
 
-        
         # Ensure the mission knows how to pack and unpack the unknowns and residuals
         segment.process.iterate.unknowns.network            = self.unpack_unknowns
         segment.process.iterate.residuals.network           = self.residuals        
@@ -350,4 +349,3 @@ class Electric(Network):
         return segment
 
     __call__ = evaluate 
-

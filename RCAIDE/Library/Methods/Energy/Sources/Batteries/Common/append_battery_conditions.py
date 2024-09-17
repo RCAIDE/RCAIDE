@@ -39,7 +39,7 @@ def append_battery_conditions(battery,segment,bus):
                  battery.resistance_growth_factor   [unitless]
                  battery.capacity_fade_factor       [unitless]
                  battery.discharge                  [boolean]
-                 increment_battery_age_by_one_day     [boolean]
+                 increment_battery_age_by_one_day   [boolean]
                
         Outputs:
             segment
@@ -139,43 +139,19 @@ def append_battery_conditions(battery,segment,bus):
     return 
     
 def append_battery_segment_conditions(battery, bus, conditions, segment): 
-    """ Packs the initial battery conditions
+    """Sets the initial battery energy at the start of each segment as the last point from the previous segment 
     
         Assumptions:
-        Battery temperature is set to one degree hotter than ambient 
-        temperature for robust convergence. Initial mission energy, maxed aged energy, and 
-        initial segment energy are the same. Cycle day is zero unless specified, resistance_growth_factor and
-        capacity_fade_factor is one unless specified in the segment
+        None
     
         Source:
         N/A
     
         Inputs:  
-            atmosphere.temperature             [Kelvin]
-            
-            Optional:
-            segment.
-                 battery.cycle_in_day               [unitless]
-                 battery.pack.temperature           [Kelvin]
-                 battery.charge_throughput          [Ampere-Hours] 
-                 battery.resistance_growth_factor   [unitless]
-                 battery.capacity_fade_factor       [unitless]
-                 battery.discharge                  [boolean]
-                 increment_battery_age_by_one_day     [boolean]
+         battery          (data structure)              [None]
                
         Outputs:
-            segment
-               battery_discharge                    [boolean]
-               increment_battery_age_by_one_day     [boolean]
-               segment.state.conditions.energy
-               battery.battery_discharge_flag       [boolean]
-               battery.pack.maximum_initial_energy  [watts]
-               battery.pack.energy                  [watts] 
-               battery.pack.temperature             [kelvin]
-               battery.cycle_in_day                 [int]
-               battery.cell.charge_throughput       [Ampere-Hours] 
-               battery.resistance_growth_factor     [unitless]
-               battery.capacity_fade_factor         [unitless] 
+        None
     
         Properties Used:
         None

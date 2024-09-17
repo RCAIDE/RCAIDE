@@ -12,6 +12,28 @@ from RCAIDE.Framework.Mission.Common     import   Conditions
 #  append_wavy_channel_conditions
 # ----------------------------------------------------------------------------------------------------------------------    
 def append_wavy_channel_conditions(wavy_channel,segment,coolant_line,add_additional_network_equation):
+     """ Packs the initial wavy channel heat acquisition conditions
+
+         Assumptions:
+         None
+
+         Source:
+         N/A
+
+         Inputs:  
+              wavy_channel          (data structure)              [None]
+
+         Outputs:
+             segment
+               heat_removed                                       [watts]           
+               outlet_coolant_temperature                         [Kelvin]
+               coolant_mass_flow_rate                             [kg/s]
+               effectiveness                                      [None]
+               power                                              [watts]    
+               
+         Properties Used:
+         None
+     """             
      
      atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
      alt           = -segment.conditions.frames.inertial.position_vector[:,2] 
@@ -31,6 +53,24 @@ def append_wavy_channel_conditions(wavy_channel,segment,coolant_line,add_additio
      return
 
 def append_wavy_channel_segment_conditions(wavy_channel,segment,coolant_line,conditions):
+     """Sets the initial wavy channel heat acquisition properties at the
+        start of each segment as the last point from the previous segment 
+
+         Assumptions:
+         None
+
+         Source:
+         N/A
+
+         Inputs:  
+          wavy_channel          (data structure)              [None]
+
+         Outputs:
+         None
+
+         Properties Used:
+         None
+     """     
 
      wavy_channel_conditions = conditions[coolant_line.tag][wavy_channel.tag]
      if segment.state.initials:  

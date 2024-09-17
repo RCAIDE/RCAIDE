@@ -11,17 +11,21 @@ import numpy as np
 # ----------------------------------------------------------------------
 #  Methods
 # ----------------------------------------------------------------------
-def cross_flow_hex_rating_model(HEX,state,coolant_line, dt,i):
-    """ 
+def cross_flow_hex_rating_model(HEX,state,coolant_line, delta_t,t_idx):
+    """ Computes the net heat removed by a cross flow heat exchanger and
+        resultant coolant and air temperatures. 
           
           Inputs: 
-          HEX.[all optimized properties]
-            
-          state.conditions.energy.coolant_Line.reservoir.coolant_temperature
-                             
+          HEX.
+              (all optimized and default properties)
+          state.
+               conditions.energy.coolant_line.
+                                              reservoir.inlet_coolant_temperature [Kelvin]
           Outputs:
-               None                   
-          Assumptions: 
+               None
+               
+          Assumptions:
+               None
             
           Source:
             Shah RK, Sekulić DP. Fundamentals of Heat Exchanger Design. John Wiley & Sons; 2003 
@@ -94,10 +98,10 @@ def cross_flow_hex_rating_model(HEX,state,coolant_line, dt,i):
 
     # Inlet temperatures 
     for reservoir in  coolant_line.reservoirs:
-        T_i_h                  = state.conditions.energy.coolant_Line[reservoir.tag].coolant_temperature[i,0] 
-    T_i_c           = state.conditions.freestream.temperature[i,0]     
-    #turndown_ratio  = battery_conditions.thermal_management_system.HEX.percent_operation[i,0]
-    #fan_operation   = battery_conditions.thermal_management_system.HEX.fan_operation[i,0]
+        T_i_h                  = state.conditions.energy.coolant_line[reservoir.tag].coolant_temperature[t_idx,0] 
+    T_i_c           = state.conditions.freestream.temperature[t_idx,0]     
+    #turndown_ratio  = battery_conditions.thermal_management_system.HEX.percent_operation[t_idx,0]
+    #fan_operation   = battery_conditions.thermal_management_system.HEX.fan_operation[t_idx,0]
     m_dot_h         = HEX.design_coolant_mass_flow_rate#*turndown_ratio
     m_dot_c         = HEX.design_air_mass_flow_rate#*turndown_ratio 
     P_i_c           = HEX.design_air_inlet_pressure#*turndown_ratio
@@ -284,26 +288,26 @@ def cross_flow_hex_rating_model(HEX,state,coolant_line, dt,i):
     P_hex     = P_air+P_coolant
     
     #if turndown_ratio == 0: 
-        #battery_conditions.thermal_management_system.HEX.coolant_mass_flow_rate[i+1]        =  0
-        #battery_conditions.thermal_management_system.HEX.outlet_coolant_temperature[i+1]    =  battery_conditions.thermal_management_system.HEX.outlet_coolant_temperature[i]
-        #battery_conditions.thermal_management_system.HEX.power[i+1]                         =  0
-        #battery_conditions.thermal_management_system.HEX.air_inlet_pressure[i+1]            =  0
-        #battery_conditions.thermal_management_system.HEX.inlet_air_temperature[i+1]         =  battery_conditions.thermal_management_system.HEX.inlet_air_temperature[i]
-        #battery_conditions.thermal_management_system.HEX.air_mass_flow_rate[i+1]            =  0
-        #battery_conditions.thermal_management_system.HEX.pressure_diff_air[i+1]             =  0
-        #battery_conditions.thermal_management_system.HEX.coolant_inlet_pressure[i+1]        =  0
-        #battery_conditions.thermal_management_system.HEX.effectiveness_HEX[i+1]             =  0
+        #battery_conditions.thermal_management_system.HEX.coolant_mass_flow_rate[t_idx+1]        =  0
+        #battery_conditions.thermal_management_system.HEX.outlet_coolant_temperature[t_idx+1]    =  battery_conditions.thermal_management_system.HEX.outlet_coolant_temperature[t_idx]
+        #battery_conditions.thermal_management_system.HEX.power[t_idx+1]                         =  0
+        #battery_conditions.thermal_management_system.HEX.air_inlet_pressure[t_idx+1]            =  0
+        #battery_conditions.thermal_management_system.HEX.inlet_air_temperature[t_idx+1]         =  battery_conditions.thermal_management_system.HEX.inlet_air_temperature[t_idx]
+        #battery_conditions.thermal_management_system.HEX.air_mass_flow_rate[t_idx+1]            =  0
+        #battery_conditions.thermal_management_system.HEX.pressure_diff_air[t_idx+1]             =  0
+        #battery_conditions.thermal_management_system.HEX.coolant_inlet_pressure[t_idx+1]        =  0
+        #battery_conditions.thermal_management_system.HEX.effectiveness_HEX[t_idx+1]             =  0
         
     #else:
 
-    state.conditions.energy[coolant_line.tag][HEX.tag].coolant_mass_flow_rate[i+1]     = m_dot_h  
-    state.conditions.energy[coolant_line.tag][HEX.tag].power[i+1]                      = P_hex
-    state.conditions.energy[coolant_line.tag][HEX.tag].inlet_air_temperature[i+1]      = T_i_c 
-    state.conditions.energy[coolant_line.tag][HEX.tag].outlet_coolant_temperature[i+1] = T_o_h_updated
-    state.conditions.energy[coolant_line.tag][HEX.tag].air_mass_flow_rate[i+1]         = m_dot_c  
-    state.conditions.energy[coolant_line.tag][HEX.tag].air_inlet_pressure[i+1]         = P_i_c 
-    state.conditions.energy[coolant_line.tag][HEX.tag].coolant_inlet_pressure[i+1]     = P_i_h
-    state.conditions.energy[coolant_line.tag][HEX.tag].pressure_diff_air[i+1]          = delta_p_c[iteraion_counter_1]
-    state.conditions.energy[coolant_line.tag][HEX.tag].effectiveness_HEX[i+1]          = eff_hex   
+    state.conditions.energy[coolant_line.tag][HEX.tag].coolant_mass_flow_rate[t_idx+1]     = m_dot_h  
+    state.conditions.energy[coolant_line.tag][HEX.tag].power[t_idx+1]                      = P_hex
+    state.conditions.energy[coolant_line.tag][HEX.tag].inlet_air_temperature[t_idx+1]      = T_i_c 
+    state.conditions.energy[coolant_line.tag][HEX.tag].outlet_coolant_temperature[t_idx+1] = T_o_h_updated
+    state.conditions.energy[coolant_line.tag][HEX.tag].air_mass_flow_rate[t_idx+1]         = m_dot_c  
+    state.conditions.energy[coolant_line.tag][HEX.tag].air_inlet_pressure[t_idx+1]         = P_i_c 
+    state.conditions.energy[coolant_line.tag][HEX.tag].coolant_inlet_pressure[t_idx+1]     = P_i_h
+    state.conditions.energy[coolant_line.tag][HEX.tag].pressure_diff_air[t_idx+1]          = delta_p_c[iteraion_counter_1]
+    state.conditions.energy[coolant_line.tag][HEX.tag].effectiveness_HEX[t_idx+1]          = eff_hex   
    
     return  

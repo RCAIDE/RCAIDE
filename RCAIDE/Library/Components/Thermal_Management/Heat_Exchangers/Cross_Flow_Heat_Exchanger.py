@@ -41,7 +41,7 @@ class Cross_Flow_Heat_Exchanger(Component):
        
         """         
 
-        self.tag                                                    = 'Cross_flow_Heat_Exchanger'
+        self.tag                                                    = 'cross_flow_heat_exchanger'
         self.coolant                                                = Glycol_Water() 
         self.air                                                    = Air() 
 
@@ -60,7 +60,6 @@ class Cross_Flow_Heat_Exchanger(Component):
         self.design_air_inlet_pressure                              = None 
         self.design_coolant_inlet_pressure                          = None 
 
-        
         # heat exchanger: geometric properties      
         # Plate thickness                       
         self.t_w                                                    = 5e-4   # m
@@ -119,7 +118,6 @@ class Cross_Flow_Heat_Exchanger(Component):
         # Enterance and Exit pressure loss coefficients  
         self.kc_values                                              = load_kc_values()
         self.ke_values                                              = load_ke_values()
-
         return  
 
     def append_operating_conditions(self,segment,coolant_line,add_additional_network_equation = False):
@@ -130,12 +128,11 @@ class Cross_Flow_Heat_Exchanger(Component):
         append_cross_flow_hex_segment_conditions(self,segment,coolant_line,conditions)
         return
        
-    def compute_heat_exchanger_performance(self,state,coolant_line, dt,i):
-        cross_flow_hex_rating_model(self,state,coolant_line, dt,i)
+    def compute_heat_exchanger_performance(self,state,coolant_line, delta_t,t_idx):
+        cross_flow_hex_rating_model(self,state,coolant_line, delta_t,t_idx)
         return
-    def plot_operating_conditions(self, results,coolant_line,save_filename,save_figure = False,show_legend = True,file_type = ".png",
-                                  width = 12, height = 7):
-        plot_cross_flow_heat_exchanger_conditions(self, results, coolant_line,save_filename,save_figure,show_legend,file_type , width, height)     
+    def plot_operating_conditions(self,results, coolant_line,save_filename,save_figure,show_legend,file_type ,width, height):
+        plot_cross_flow_heat_exchanger_conditions(self,results,coolant_line,save_filename,save_figure,show_legend,file_type,width,height)     
         return    
 
     def load_kc_values(): 
@@ -151,4 +148,3 @@ class Cross_Flow_Heat_Exchanger(Component):
         rel_path  = os.path.dirname(ospath) + separator 
         x         = np.loadtxt(rel_path +'rectangular_passage_Ke.csv', dtype=float, delimiter=',', comments='Ke')
         return x 
-

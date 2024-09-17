@@ -1,8 +1,7 @@
-## @ingroup Visualization-Performance-Energy-Thermal_Management
-# RCAIDE/Visualization/Performance/Energy/Thermal_Management/plot_heat_acquisition_system_conditions.py
+# RCAIDE/Library/Plots/Thermal_Management/plot_wavy_channel_conditions.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke
+# Created:  Sep 2024, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -15,28 +14,31 @@ import matplotlib.cm as cm
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#   plot_heat_exchanger_system_conditions
+#   plot_wavy_channel_conditions
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Visualization-Performance-Energy-Thermal_Management
 def plot_wavy_channel_conditions(wavy_channel, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
-    """Plots the cell-level conditions of the battery throughout flight.
-
-    Assumptions:
-    None
-
-    Source:
-    None
-
-    Inputs:
-    results.segments.conditions.
-       ADD SAI
-
-    Outputs: 
-    Plots
-
-    Properties Used:
-    N/A	
-    """ 
+    """Plots the Wavy Channel Heat Acqusition conditions throughout flight.
+    
+     Assumptions:
+     None
+    
+     Source:
+     None
+    
+     Inputs:
+     results.segments.conditions.energy[coolant_line.tag][wavy_channel.tag].
+                                                                       outlet_coolant_temperature
+                                                                       coolant_mass_flow_rate
+                                                                       power
+                                                                
+                                                                       
+     Outputs:
+     Plots
+    
+     Properties Used:
+     N/A	
+     """ 
     
     # get plotting style 
     ps      = plot_style()  

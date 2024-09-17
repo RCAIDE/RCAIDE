@@ -12,6 +12,25 @@ from RCAIDE.Framework.Mission.Common     import   Conditions
 #  append_reservoir_conditions
 # ---------------------------------------------------------------------------------------------------------------------- 
 def append_reservoir_conditions(reservoir,segment,coolant_line,add_additional_network_equation):
+    """ Packs the initial reservoir conditions
+    
+        Assumptions:
+        None
+    
+        Source:
+        N/A
+    
+        Inputs:  
+             reservoir          (data structure)              [None]
+           
+        Outputs:
+            segment
+               coolant_temperature                            [Kelvin]
+               
+    
+        Properties Used:
+        None
+    """        
     
     atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     alt           = -segment.conditions.frames.inertial.position_vector[:,2] 
@@ -25,6 +44,23 @@ def append_reservoir_conditions(reservoir,segment,coolant_line,add_additional_ne
     return
 
 def append_reservoir_segment_conditions(reservoir,segment,coolant_line,conditions):
+    """Sets the initial reservoir conditions at the start of each segment as the last point from the previous segment 
+    
+        Assumptions:
+        None
+    
+        Source:
+        N/A
+    
+        Inputs:  
+         reservoir          (data structure)              [None]
+               
+        Outputs:
+        None
+    
+        Properties Used:
+        None
+    """    
     
     reservoir_conditions = conditions[coolant_line.tag][reservoir.tag]
     if segment.state.initials:  

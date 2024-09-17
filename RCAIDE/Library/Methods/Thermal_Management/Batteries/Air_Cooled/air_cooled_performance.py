@@ -11,7 +11,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Net Convected Heat 
 # ---------------------------------------------------------------------------------------------------------------------- 
-def air_cooled_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt,i):
+def air_cooled_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,delta_t,t_idx):
     '''Computes the net heat removed by direct air heat acquisition system.
 
     Assumptions:
@@ -33,6 +33,7 @@ def air_cooled_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt,
               T_current                 (pack temperature)           [Kelvin]
               T_cell                    (battery cell temperature)   [Kelvin] 
               heat_transfer_efficiency                               [unitless]
+              
       
       Outputs:
              T_cell                     (Updated battery cell temperature) [Kelvin]
@@ -53,7 +54,7 @@ def air_cooled_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt,
     n_total_module           = Nn*Np  
     h                        = HAS.convective_heat_transfer_coefficient 
     heat_transfer_efficiency = HAS.heat_transfer_efficiency   
-    T_ambient                = state.conditions.freestream.temperature[i,:] 
+    T_ambient                = state.conditions.freestream.temperature[t_idx,:] 
     
     if n_total_module == 1: 
         # Using lumped model   
@@ -61,11 +62,11 @@ def air_cooled_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt,
         Q_heat_gen_tot = Q_heat_gen 
 
     else:   
-        K_coolant                    = state.conditions.freestream.thermal_conductivity[i,:]
-        nu_coolant                   = state.conditions.freestream.kinematic_viscosity[i,:]
-        Pr_coolant                   = state.conditions.freestream.prandtl_number[i,:]
-        rho_coolant                  = state.conditions.freestream.density[i,:]    
-        Cp_coolant                   = HAS.cooling_fluid.compute_cp(state.conditions.freestream.temperature[i,:],state.conditions.freestream.pressure[i,:] )
+        K_coolant                    = state.conditions.freestream.thermal_conductivity[t_idx,:]
+        nu_coolant                   = state.conditions.freestream.kinematic_viscosity[t_idx,:]
+        Pr_coolant                   = state.conditions.freestream.prandtl_number[t_idx,:]
+        rho_coolant                  = state.conditions.freestream.density[t_idx,:]    
+        Cp_coolant                   = HAS.cooling_fluid.compute_cp(state.conditions.freestream.temperature[t_idx,:],state.conditions.freestream.pressure[t_idx,:] )
         V_coolant                    = HAS.cooling_fluid.flowspeed  
         
         # Chapter 7 pg 437-446 of Fundamentals of heat and mass transfer 
@@ -98,7 +99,11 @@ def air_cooled_performance(HAS,battery,coolant_line, Q_heat_gen,T_cell,state,dt,
         Q_heat_gen_tot        = Q_heat_gen*n_total_module  
     Q_net                     = Q_heat_gen_tot - Q_convec  
     dT_dt                     = Q_net/(cell_mass*n_total_module*Cp)
-    T_current                 = T_cell + dT_dt*dt     
+    T_current                 = T_cell + dT_dt*delta_t
+    heat_transfer_efficiency  = (Tw_To - T_ambient) / (T_cell - T_ambient)
+    
+    state.conditions.energy[coolant_line.tag][HAS.tag].total_heat_removed[t_idx+1]               = Q_convec
+    state.conditions.energy[coolant_line.tag][HAS.tag].effectiveness[t_idx+1]                    = heat_transfer_efficiency
        
     
     return  T_current

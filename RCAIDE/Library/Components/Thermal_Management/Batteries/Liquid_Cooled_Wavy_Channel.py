@@ -25,19 +25,18 @@ class Liquid_Cooled_Wavy_Channel(Component):
     
     def __defaults__(self):  
         """This sets the default values.
-    
+        
         Assumptions:
            The wavy channel heat Acquisition loops through the battery pack.
            The coolant is assumed to be Glycol Water unless specified otherwise. 
            The geometry parameters are set based on nomrinal values to be further optmized.
            
-        
         Source:
            None
         
         """            
          
-        self.tag                           = 'Wavy_Channel_Heat_Acquisition' 
+        self.tag                           = 'wavy_channel_heat_acquisition' 
         self.heat_transfer_efficiency      = 1
         self.coolant                       = Glycol_Water()
         self.coolant_Reynolds_number       = 1.
@@ -85,11 +84,10 @@ class Liquid_Cooled_Wavy_Channel(Component):
         append_wavy_channel_segment_conditions(self, segment,coolant_line, conditions)
         return
     
-    def compute_thermal_performance(self,battery,coolant_line, Q_heat_gen,T_cell,state,dt,i):
-        T_battery_current =  wavy_channel_rating_model(self, battery,coolant_line, Q_heat_gen, T_cell, state, dt, i)
+    def compute_thermal_performance(self,battery,coolant_line, Q_heat_gen,T_cell,state,delta_t,t_idx):
+        T_battery_current =  wavy_channel_rating_model(self, battery,coolant_line, Q_heat_gen, T_cell, state, delta_t, t_idx)
         return  T_battery_current
     
-    def plot_operating_conditions(self, results, coolant_line,save_filename,save_figure = False,show_legend = True,file_type = ".png",
-                                  width = 12, height = 7):
+    def plot_operating_conditions(self, results, coolant_line,save_filename, save_figure,show_legend,file_type , width, height):
         plot_wavy_channel_conditions(self, results, coolant_line,save_filename,save_figure,show_legend,file_type , width, height)
         return

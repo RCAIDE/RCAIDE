@@ -17,24 +17,24 @@ import numpy as np
 #   plot_air_cooled_conditions
 # ----------------------------------------------------------------------------------------------------------------------   
 def plot_air_cooled_conditions(air_cooled, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
-    """Plots the cell-level conditions of the battery throughout flight.
-
-    Assumptions:
-    None
-
-    Source:
-    None
-
-    Inputs:
-    results.segments.conditions.
-       ADD SAI
-
-    Outputs: 
-    Plots
-
-    Properties Used:
-    N/A	
-    """ 
+    """Plots the Air Cooled Heat Acqusition conditions throughout flight.
+    
+     Assumptions:
+     None
+    
+     Source:
+     None
+    
+     Inputs:
+     results.segments.conditions.energy[coolant_line.tag][air_cooled.tag].
+                                                                       effectiveness
+                                                                       total_heat_removed
+     Outputs:
+     Plots
+    
+     Properties Used:
+     N/A	
+     """ 
     
     # get plotting style 
     ps      = plot_style()  
@@ -55,7 +55,7 @@ def plot_air_cooled_conditions(air_cooled, results, coolant_line, save_figure,sh
     axis_2 = plt.subplot(2,1,2)        
     b_i = 0 
    
-    axis_0.plot(np.zeros(2),np.nan*np.zeros(2), color = line_colors[0], marker = ps.markers[b_i], linewidth = ps.line_width, label = wavy_channel.tag) 
+    axis_0.plot(np.zeros(2),np.nan*np.zeros(2), color = line_colors[0], marker = ps.markers[b_i], linewidth = ps.line_width, label = air_cooled.tag) 
     axis_0.grid(False)
     axis_0.axis('off')  
    
@@ -63,7 +63,7 @@ def plot_air_cooled_conditions(air_cooled, results, coolant_line, save_figure,sh
         time                       = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
         air_cooled_conditions      = results.segments[i].conditions.energy[coolant_line.tag][air_cooled.tag]   
         effectiveness              = air_cooled_conditions.effectiveness[:,0]
-        total_heat_removed         = air_cooled_conditions.coolant_mass_flow_rate[:,0]
+        total_heat_removed         = air_cooled_conditions.total_heat_removed[:,0]
         segment_tag                = results.segments[i].tag
         segment_name               = segment_tag.replace('_', ' ') 
 

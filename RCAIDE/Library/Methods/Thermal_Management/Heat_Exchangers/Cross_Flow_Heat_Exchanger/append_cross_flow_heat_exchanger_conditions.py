@@ -13,6 +13,32 @@ from RCAIDE.Framework.Mission.Common     import   Conditions
 #  append_cross_flow_heat_exchanger_conditions
 # ----------------------------------------------------------------------------------------------------------------------    
 def append_cross_flow_heat_exchanger_conditions(cross_flow_hex,segment,coolant_line,add_additional_network_equation):
+    """ Packs the initial cross flow heat exchanger conditions
+    
+        Assumptions:
+        None
+    
+        Source:
+        N/A
+    
+        Inputs:  
+             cross_flow_hex          (data structure)              [None]
+           
+        Outputs:
+            segment
+               coolant_mass_flow_rate                              [kg/s]
+               power                                               [watts]
+               inlet_air_temperature                               [Kelvin]
+               outlet_coolant_temperature                          [Kelvin]
+               air_mass_flow_rate                                  [kg/s]
+               air_inlet_pressure                                  [Pascal]
+               coolant_inlet_pressure                              [Pascal]
+               pressure_diff_air                                   [Pascal]
+               effectiveness_HEX                                   [unitless]
+               
+        Properties Used:
+        None
+    """        
     
     atmosphere    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     alt           = -segment.conditions.frames.inertial.position_vector[:,2] 
@@ -35,6 +61,23 @@ def append_cross_flow_heat_exchanger_conditions(cross_flow_hex,segment,coolant_l
     return
 
 def append_cross_flow_hex_segment_conditions(cross_flow_hex,segment,coolant_line,conditions):
+    """Sets the initial cross flow heat exchanger properties at the start of each segment as the last point from the previous segment 
+    
+        Assumptions:
+        None
+    
+        Source:
+        N/A
+    
+        Inputs:  
+         cross_flow_hex            (data structure)              [None]
+               
+        Outputs:
+        None
+    
+        Properties Used:
+        None
+    """    
 
     cross_flow_hex_conditions = conditions[coolant_line.tag][cross_flow_hex.tag]
     if segment.state.initials:  

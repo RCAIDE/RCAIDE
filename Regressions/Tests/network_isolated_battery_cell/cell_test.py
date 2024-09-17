@@ -80,8 +80,8 @@ def lithium_ion_battery_test(Ereq,Preq):
         C_rat                 = [0.5,1]  
         marker_size           = 5 
         mAh                   = np.array([3550,1500]) 
-        V_ul_true             = np.array([[3.975168373018457,3.6014784556230786], [3.9183378825662967,3.6144686722140595]])
-        bat_temp_true         = np.array([[289.97131015127644,288.5183202197621], [293.3954825563414,289.1586753541579]])  
+        V_ul_true             = np.array([[3.975183741087232,3.6014784556230786], [3.91835673395705,3.6144686722140595]])
+        bat_temp_true         = np.array([[292.3879080392878,288.85811904395115], [296.3978928496251,289.567165791677]])  
      
         plt.rcParams.update({'font.size': 12})
         fig1 = plt.figure('Cell Test') 
@@ -119,7 +119,7 @@ def lithium_ion_battery_test(Ereq,Preq):
             V_ul_diff   = np.abs(V_ul - V_ul_true[j,i])
             print('Under load voltage difference')
             print(V_ul_diff)
-            assert np.abs((V_ul_diff)/V_ul_true[j,i]) < 5e-6 
+            assert np.abs((V_ul_diff)/V_ul_true[j,i]) < 1e-6 
             
             # Temperature Regression
             bat_temp        = results.segments[1].conditions.energy.bus[battery_chemistry[i]].cell.temperature[2][0]  
@@ -127,7 +127,7 @@ def lithium_ion_battery_test(Ereq,Preq):
             bat_temp_diff   = np.abs(bat_temp  - bat_temp_true[j,i]) 
             print('cell temperature difference')
             print(bat_temp_diff)
-            assert np.abs((bat_temp_diff)/bat_temp_true[j,i]) < 0.9
+            assert np.abs((bat_temp_diff)/bat_temp_true[j,i]) < 1e-6
        
             for segment in results.segments.values(): 
                 volts         = segment.conditions.energy.bus[battery_chemistry[i]].pack.voltage_under_load[:,0] 

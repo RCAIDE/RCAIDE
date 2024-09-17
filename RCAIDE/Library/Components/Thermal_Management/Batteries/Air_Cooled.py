@@ -35,7 +35,7 @@ class Air_Cooled(Component):
         Source:
             None
         """                 
-        self.tag                                      = 'Air_Cooled'
+        self.tag                                      = 'air_cooled_heat_acquisition'
         self.cooling_fluid                            = Air()    
         self.cooling_fluid.flowspeed                  = 0.01                                          
         self.convective_heat_transfer_coefficient     = 35.     # [W/m^2K] 
@@ -49,12 +49,11 @@ class Air_Cooled(Component):
         append_air_cooled_segment_conditions(self, segment,coolant_line, conditions)
         return
     
-    def compute_thermal_performance(self,battery,coolant_line, Q_heat_gen,T_cell,state,dt,i): 
-        T_battery_current = air_cooled_performance(self, battery, coolant_line, Q_heat_gen, T_cell, state, dt, i)
+    def compute_thermal_performance(self,battery,coolant_line, Q_heat_gen,T_cell,state,delta_t,t_idx): 
+        T_battery_current = air_cooled_performance(self, battery, coolant_line, Q_heat_gen, T_cell, state, delta_t, t_idx)
         return T_battery_current
 
-    def plot_operating_conditions(self, results, coolant_line, save_filename, save_figure = False,show_legend = True,file_type = ".png",
-                                  width = 12, height = 7):
+    def plot_operating_conditions(self, results, coolant_line,save_filename, save_figure,show_legend,file_type , width, height):
         plot_air_cooled_conditions(self, results, coolant_line,save_filename, save_figure,show_legend,file_type , width, height)
         return
         

@@ -6,8 +6,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports 
-import RCAIDE   
-from RCAIDE.Framework.Core                                                  import Units   
 from RCAIDE.Framework.Analyses.Process                                      import Process     
 
 # Python package imports 
@@ -378,6 +376,21 @@ def equation(NTU,*data):
 #   Post Process Results to give back to the optimizer
 # ----------------------------------------------------------------------   
 def post_process(nexus):
+    """ Post processes the outputs obtained from the optimizer  
+          
+          Inputs:  
+             nexus     - RCAIDE optmization framework with Wavy Channel geometry data structure [None]
+              
+          Outputs:   
+             nexus     - Objective Function calculation 
+              
+              
+          Assumptions: 
+             N/A 
+        
+          Source:
+             None
+    """        
     
     summary              = nexus.summary  
     battery              = nexus.hex_configurations.optimized.networks.electric.busses.bus.batteries.lithium_ion_nmc       

@@ -46,4 +46,3 @@ class Fan(Data):
    
     def compute_power_consumed (pressure_differerntial, density, mass_flow_rate,efficiency):
         return mass_flow_rate*pressure_differerntial/(density*efficiency)
-    

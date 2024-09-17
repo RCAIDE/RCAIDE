@@ -36,7 +36,7 @@ class Reservoir(Component):
         Source:
         Values commonly available  
         """
-        self.tag                          = 'Coolant_Reservoir'
+        self.tag                          = 'coolant_reservoir'
         self.material                     = Polyetherimide()
         self.coolant                      = Glycol_Water()
         self.length                       = 0.5                                      # [m]
@@ -57,12 +57,11 @@ class Reservoir(Component):
         append_reservoir_segment_conditions(self,segment,coolant_line,conditions)
         return    
 
-    def compute_reservior_coolant_temperature(self,state,coolant_line,dt,i):
-        compute_mixing_temperature(self,state,coolant_line,dt,i)
-        compute_reservoir_temperature(self,state,coolant_line,dt,i)
+    def compute_reservior_coolant_temperature(self,state,coolant_line,delta_t,t_idx):
+        compute_mixing_temperature(self,state,coolant_line,delta_t,t_idx)
+        compute_reservoir_temperature(self,state,coolant_line,delta_t,t_idx)
         return
     
-    def plot_operating_conditions(self, results,coolant_line,save_filename, save_figure = False,show_legend = True,file_type = ".png",
-                                  width = 12, height = 7):
+    def plot_operating_conditions(self,results, coolant_line,save_filename, save_figure,show_legend,file_type , width, height):
         plot_reservoir_conditions(self, results, coolant_line,save_filename,save_figure,show_legend,file_type , width, height)
         return    

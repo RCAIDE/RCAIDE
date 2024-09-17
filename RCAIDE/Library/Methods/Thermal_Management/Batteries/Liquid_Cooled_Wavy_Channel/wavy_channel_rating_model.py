@@ -16,51 +16,49 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Wavy Channel Rating Model
 # ----------------------------------------------------------------------------------------------------------------------
-def  wavy_channel_rating_model(HAS,battery,coolant_line,Q_heat_gen,T_cell,state,dt,i):
-    """ 
-          
-          Inputs: 
-          
+def  wavy_channel_rating_model(HAS,battery,coolant_line,Q_heat_gen,T_cell,state,delta_t,t_idx):
+    """ Computes the net heat removed by a wavy channel heat acquisition system.
+
+    Assumptions:
+    1) Battery pack cell heat transfer can be modelled as a cooling columns in a cross-flow
+    2) Isothermal battery cell - the temperature at the center of the cell is the same at 
+    the surface of the cell
+
+    Source: 
+    Zhao, C., Clarke, M., Kellermann H., Verstraete D.,
+    “Design of a Liquid Cooling System for Lithium-Ion Battery Packs for eVTOL Aircraft" 
+
+    Inputs:  
+              T_current                 (pack temperature)           [Kelvin]
+              T_cell                    (battery cell temperature)   [Kelvin] 
+              heat_transfer_efficiency                               [unitless]
           HAS.
-             channel_side_thicknes
-             channel_width        
-             channel_contact_angle
-             channel_top_thickness
-             channel
-             heat_transfer_efficiency
-             coolant  
-             coolant_flow_rate
-          battery.
-                  cell.diameter
-                  cell.height  
-                  module.geometrtic_configuration.parallel_count
-                  module.geometrtic_configuration.series_count
-                  pack.number_of_modules 
-                  cell.specific_heat_capacity
-          battery_conditions.
-                             thermal_management_system.RES.coolant_temperature 
-                             thermal_management_system.percent_operation
-                             cell.temperature
-                             
-          Outputs:
-                Battery Cell Temperature
-                                                               
-          Assumptions: 
-             The wavy channel extracts from the battery pack considering it to be a lumped mass
-        
-          Source:
-            Zhao, C., Clarke, M., Kellermann H., Verstraete D., “Design of a Liquid Cooling System for Lithium-Ion Battery Packs for eVTOL Aircraft" 
+              channel_side_thickness                                 [meter]
+              channel_width                                          [meter]
+              channel_contact_angle                                  [degree]
+              channel_top_thickness                                  [meter]
+              channel                   (Properties of channel)     [unitless]
+              coolant                   (Properties of coolant)    [unitless]
+              coolant_flow_rate                                       [kg/s]
+              
+              
+      
+      Outputs:
+             T_cell                     (Updated battery cell temperature) [Kelvin]
+  
+    Properties Used:
+    None 
     """        
  
     # Inlet Properties from mission solver.
     for reservoir in  coolant_line.reservoirs:
-        T_inlet                  = state.conditions.energy.coolant_Line[reservoir.tag].coolant_temperature[i, 0] 
-    #turndown_ratio           = battery_conditions.thermal_management_system.HAS.percent_operation[i,0] 
-    T_cell                   = state.conditions.energy.bus[battery.tag].cell.temperature[i, 0]  
+        T_inlet                  = state.conditions.energy.coolant_line[reservoir.tag].coolant_temperature[t_idx, 0] 
+    #turndown_ratio           = battery_conditions.thermal_management_system.HAS.percent_operation[t_idx,0] 
+    T_cell                   = state.conditions.energy.bus[battery.tag].cell.temperature[t_idx, 0]  
     heat_transfer_efficiency = HAS.heat_transfer_efficiency   
 
     # Coolant Properties
-    opt_coolant                 = compute_coolant_properties(HAS,T_inlet,state,dt,i)
+    opt_coolant                 = compute_coolant_properties(HAS,T_inlet,state,delta_t,t_idx)
     m_coolant                   = opt_coolant.flowrate#*turndown_ratio 
     rho                         = opt_coolant.inlet_density    
     mu                          = opt_coolant.inlet_visc       
@@ -181,31 +179,31 @@ def  wavy_channel_rating_model(HAS,battery,coolant_line,Q_heat_gen,T_cell,state,
         
         
     dT_dt                   = P_net/(cell_mass*N_cells*Cp_bat)
-    T_cell_new              = T_cell + dT_dt*dt 
+    T_cell_new              = T_cell + dT_dt*delta_t 
    
-    state.conditions.energy[coolant_line.tag][HAS.tag].heat_removed[i+1]               = Q_convec*number_of_modules
-    state.conditions.energy[coolant_line.tag][HAS.tag].outlet_coolant_temperature[i+1] = T_o
-    state.conditions.energy[coolant_line.tag][HAS.tag].coolant_mass_flow_rate[i+1]     = m_coolant
-    state.conditions.energy[coolant_line.tag][HAS.tag].effectiveness[i+1]              = heat_transfer_efficiency
-    state.conditions.energy[coolant_line.tag][HAS.tag].power[i+1]                      = Power
+    state.conditions.energy[coolant_line.tag][HAS.tag].heat_removed[t_idx+1]               = Q_convec*number_of_modules
+    state.conditions.energy[coolant_line.tag][HAS.tag].outlet_coolant_temperature[t_idx+1] = T_o
+    state.conditions.energy[coolant_line.tag][HAS.tag].coolant_mass_flow_rate[t_idx+1]     = m_coolant
+    state.conditions.energy[coolant_line.tag][HAS.tag].effectiveness[t_idx+1]              = heat_transfer_efficiency
+    state.conditions.energy[coolant_line.tag][HAS.tag].power[t_idx+1]                      = Power
 
 
     # To be introduced when turndown ratio is a thing in the future. 
     #if turndown_ratio == 0:
-    #battery_conditions.thermal_management_system.heat_generated[i+1]                    = Q_pack
-    #battery_conditions.thermal_management_system.HAS.heat_removed[i+1]                  = 0
-    #battery_conditions.thermal_management_system.HAS.outlet_coolant_temperature[i+1]    = T_cell_new     
-    #battery_conditions.thermal_management_system.HAS.coolant_mass_flow_rate[i+1]        = 0
-    #battery_conditions.thermal_management_system.HAS.power[i+1]                         = 0
-    #battery_conditions.thermal_management_system.HAS.effectiveness[i+1]                 = 0
-    #battery_conditions.cell.temperature[i+1]                                            = T_cell_new     
+    #battery_conditions.thermal_management_system.heat_generated[t_idx+1]                    = Q_pack
+    #battery_conditions.thermal_management_system.HAS.heat_removed[t_idx+1]                  = 0
+    #battery_conditions.thermal_management_system.HAS.outlet_coolant_temperature[t_idx+1]    = T_cell_new     
+    #battery_conditions.thermal_management_system.HAS.coolant_mass_flow_rate[t_idx+1]        = 0
+    #battery_conditions.thermal_management_system.HAS.power[t_idx+1]                         = 0
+    #battery_conditions.thermal_management_system.HAS.effectiveness[t_idx+1]                 = 0
+    #battery_conditions.cell.temperature[t_idx+1]                                            = T_cell_new     
 
     #else: 
 
 
     return T_cell_new
 
-def compute_coolant_properties(HAS,T_inlet,state,dt,i):
+def compute_coolant_properties(HAS,T_inlet,state,delta_t,t_idx):
     
     coolant    = HAS.coolant  
     m_coolant  = HAS.coolant_flow_rate 
@@ -225,9 +223,3 @@ def compute_coolant_properties(HAS,T_inlet,state,dt,i):
 
 
     return opt_coolant_properties
-
-
-
-
-
-

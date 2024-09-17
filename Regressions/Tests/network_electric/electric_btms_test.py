@@ -28,10 +28,14 @@ from Electric_Twin_Otter    import vehicle_setup, configs_setup
 def main():           
          
     battery_types = ['lithium_ion_lfp', 'lithium_ion_nmc']
-    btms_types   =  ['Liquid_Cooled_Wavy_Channel', 'Air_Cooled', None]
+    btms_types    = ['Liquid_Cooled_Wavy_Channel', 'Air_Cooled', None]
+    
+    Q_lcwc       = [4369.9597280060625,4833.9588488503705] 
+    Q_air        = [2.8480820206293767,2.9015512546268516]
+     
     # vehicle data
-    for battery_type in  battery_types:
-        for btms_type in  btms_types:
+    for i , battery_type in enumerate(battery_types):
+        for j , btms_type in enumerate(btms_types):
             vehicle  = vehicle_setup(battery_type, btms_type)
 
             # plot vehicle 
@@ -55,7 +59,21 @@ def main():
             mission  = mission_setup(analyses)
             missions = missions_setup(mission) 
              
-            results = missions.base_mission.evaluate() 
+            results = missions.base_mission.evaluate()
+            
+            if btms_type == "Liquid_Cooled_Wavy_Channel":
+                Q     = results.segments.cruise.conditions.energy.coolant_line.wavy_channel_heat_acquisition.heat_removed[5, 0] 
+                Q_t   = Q_lcwc[i]
+                error =  abs(Q - Q_t) /Q_t
+            elif btms_type == 'Air_Cooled': 
+                Q     = results.segments.cruise.conditions.energy.coolant_line.air_cooled_heat_acquisition.total_heat_removed[5, 0] 
+                Q_t   = Q_air[i]
+                error =  abs(Q - Q_t) /Q_t
+            else:
+                error =  0
+               
+                 
+            assert(abs(error)<1e-6)
              
             # plot the results 
             plot_mission(results)

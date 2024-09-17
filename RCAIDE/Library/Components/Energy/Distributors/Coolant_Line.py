@@ -25,7 +25,7 @@ class Coolant_Line(Component):
         Source:
             None
         """          
-        self.tag                           = 'coolant_Line'  
+        self.tag                           = 'coolant_line'  
 
                     
     def __init__ (self, distributor=None):
@@ -47,6 +47,3 @@ class Coolant_Line(Component):
                 self.batteries  = Container()
                 for battery in item:
                     self.batteries[battery.tag] = Container()
-                
-                    
-        

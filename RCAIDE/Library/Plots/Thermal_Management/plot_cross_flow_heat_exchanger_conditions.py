@@ -1,6 +1,7 @@
-# RCAIDE/Visualization/Performance/Energy/Thermal_Management/plot_heat_exchanger_system_conditions.py
+# RCAIDE/Library/Plots/Thermal_Management/plot_cross_flow_heat_exchanger_conditions.py
 # 
-# Created:  Jul 2023, M. Clarke
+# 
+# Created:  Sep 2024, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -16,23 +17,29 @@ import numpy as np
 #   plot_heat_exchanger_system_conditions
 # ----------------------------------------------------------------------------------------------------------------------   
 def plot_cross_flow_heat_exchanger_conditions(cross_flow_hex, results, coolant_line, save_figure,show_legend ,save_filename,file_type , width, height):
-    """Plots the cell-level conditions of the battery throughout flight.
-
-    Assumptions:
-    None
-
-    Source:
-    None
-
-    Inputs:
-    SAI
-
-    Outputs: 
-    Plots
-
-    Properties Used:
-    N/A	
-    """ 
+    """Plots the Cross Flow Heat Exchanger conditions throughout flight.
+    
+     Assumptions:
+     None
+    
+     Source:
+     None
+    
+     Inputs:
+     results.segments.conditions.energy[coolant_line.tag][cross_flow_hex.tag].
+                                                                             coolant_mass_flow_rate
+                                                                             effectiveness_HEX   
+                                                                             power          
+                                                                             air_inlet_pressure
+                                                                             inlet_air_temperature 
+                                                                             air_mass_flow_rate    
+                                                                       
+     Outputs:
+     Plots
+    
+     Properties Used:
+     N/A	
+     """ 
     
     # get plotting style 
     ps      = plot_style()  

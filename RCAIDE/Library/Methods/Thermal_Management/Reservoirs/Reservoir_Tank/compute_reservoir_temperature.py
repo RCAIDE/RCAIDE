@@ -6,46 +6,44 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute heat loss to environment 
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_reservoir_temperature(RES,state,coolant_line,dt,i):
+def compute_reservoir_temperature(reservoir,state,coolant_line,delta_t,t_idx):
     """
      Computes the resultant temperature of the reservoir at each time step with coolant exchanging heat to the environment
           
           Inputs: 
-                 HAS
-                 HEX
-                 battery_conditions
-                 dt
-                 i 
+                 reservoir          (Reservoir Data Structure)
+                 coolant_line       (Coolant Line Data Structure)
+                 delta_t
+                 t_idx 
              
           Outputs:
-                 RES.coolant.temperature
+                 reservoir.coolant.temperature
                  
           Assumptions: 
              N/A
         
           Source:
-
-    
+          None
     """  
     
     # Ambient Air Temperature 
-    T_ambient                   = state.conditions.freestream.temperature[i,0] 
+    T_ambient                   = state.conditions.freestream.temperature[t_idx,0] 
     
     # properties of Reservoir
-    A_surface                  = RES.surface_area
-    volume                     = RES.volume
-    T_current                  =state.conditions.energy.coolant_Line[RES.tag].coolant_temperature[i+1,0]
-    thickness                  = RES.thickness
-    conductivity               = RES.material.conductivity
-    emissivity_res             = RES.material.emissivity
+    A_surface                  = reservoir.surface_area
+    volume                     = reservoir.volume
+    T_current                  = state.conditions.energy.coolant_line[reservoir.tag].coolant_temperature[t_idx+1,0]
+    thickness                  = reservoir.thickness
+    conductivity               = reservoir.material.conductivity
+    emissivity_res             = reservoir.material.emissivity
     
     #Coolant Properties
-    coolant                    = RES.coolant 
+    coolant                    = reservoir.coolant 
     Cp                         = coolant.compute_cp(T_current)
     rho_coolant                = coolant.compute_density(T_current)
 
     # Heat Transfer properties
-    conductivity               = RES.material.conductivity / 10
+    conductivity               = reservoir.material.conductivity / 10
     sigma                       = 5.69e-8   #Stefan Boltzman Constant
     h                           = 1        #[W/m^2-k]
     emissivity_air              = 0.9
@@ -65,10 +63,11 @@ def compute_reservoir_temperature(RES,state,coolant_line,dt,i):
     # Compute mass of coolant present in the reservoir
     mass_coolant               = rho_coolant*volume
     
+    # Compute the change in temperature due to the heat lost or gained from the environment
     dT_dt                       = dQ_dt/(mass_coolant*Cp)
-    T_current                   = T_current - dT_dt*dt
+    T_current                   = T_current - dT_dt*delta_t
     
-    # Update the reservoir temperaure. 
-    state.conditions.energy[coolant_line.tag][RES.tag].coolant_temperature[i+1,0] = T_current
+    # Update the reservoir temperature
+    state.conditions.energy[coolant_line.tag][reservoir.tag].coolant_temperature[t_idx+1,0] = T_current
 
     return
