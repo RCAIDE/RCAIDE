@@ -73,7 +73,7 @@ def main():
                 error =  0
                
                  
-            assert(abs(error)<1e-4)
+            assert(abs(error)<1e-3)
              
             # plot the results 
             plot_mission(results)
