@@ -3,16 +3,15 @@
 # 
 # 
 # Created:  Mar 2024, M. Clarke
+# Modified: Sep 2024, S. Shekar
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
- # RCAIDE imports
-import RCAIDE
+# RCAIDE imports
 from RCAIDE.Framework.Core        import Data
 from RCAIDE.Library.Components    import Component   
-from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common.append_battery_conditions import append_battery_conditions
+from RCAIDE.Library.Methods.Energy.Sources.Batteries.Common.append_battery_conditions import append_battery_conditions, append_battery_segment_conditions
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery
@@ -52,10 +51,15 @@ class Battery(Component):
         self.ragone.i                                          = 0.0 
                       
         self.thermal_management_system                         = Data()    
-        self.thermal_management_system.heat_acquisition_system = RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition()
-        self.thermal_management_system.heat_exchanger_system   = RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Exchanger_Systems.No_Heat_Exchanger()
         
          
     def append_operating_conditions(self,segment,bus):  
         append_battery_conditions(self,segment,bus)  
-        return                                 
+        return
+    
+    
+    def append_battery_segment_conditions(self,bus, conditions, segment):
+        append_battery_segment_conditions(self,bus, conditions, segment)
+        return
+
+ 

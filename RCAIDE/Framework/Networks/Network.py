@@ -8,8 +8,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
- 
-from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Components import Component
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -27,12 +25,10 @@ class Network(Component):
             Source:
                 None 
         """
-        self.tag                          = 'network'  
-        self.busses                       = Container()     
+        self.tag                          = 'network'
+        self.busses                       = Container()
+        self.coolant_lines                = Container()
         self.fuel_lines                   = Container()
-        self.system_voltage               = None   
-        self.reverse_thrust               = False
-        self.wing_mounted                 = True
 
 # ----------------------------------------------------------------------
 #  Component Container

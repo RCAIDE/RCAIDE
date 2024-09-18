@@ -3,6 +3,7 @@
 # 
 # 
 # Created:  Mar 2024, M. Clarke
+# Modified: Sep 2024, S. Shekar
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -41,7 +42,8 @@ class Lithium_Ion_Generic(Battery):
         self.cell.charging_current                                    = 1.0     # [Amps]
         self.cell.charging_voltage                                    = 3       # [Volts]
         self.cell.specific_heat_capacity                              = 1115    # [J/kgK] 
-        self.cell.maximum_voltage                                     = 3.6     # [V]   
+        self.cell.maximum_voltage                                     = 3.6     # [V]
+        self.cell.nominal_voltage                                     = 3.6     # [V] 
                                      
         self.convective_heat_transfer_coefficient                     = 35.     # [W/m^2K] 
         self.heat_transfer_efficiency                                 = 1.0       
@@ -73,7 +75,7 @@ class Lithium_Ion_Generic(Battery):
         return           
 
 
-    def energy_calc(self,state,bus,discharge= True): 
+    def energy_calc(self,state,bus,coolant_lines, t_idx, delta_t, discharge= True): 
         """Computes the state of a generic battery cell.
            
         Assumptions:
@@ -91,7 +93,7 @@ class Lithium_Ion_Generic(Battery):
         Returns: 
             None
         """     
-        compute_generic_li_cell_performance(self,state,bus,discharge) 
+        compute_generic_li_cell_performance(self,state,bus,coolant_lines, t_idx, delta_t, discharge= True) 
                         
         return       
     

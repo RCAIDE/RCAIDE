@@ -26,5 +26,5 @@ from Legacy.trunk.S.Components.Energy.Networks import Solar                     
  
 from .Network       import Network
 from .Fuel          import Fuel
-from .Electric      import Electric 
+from .Electric      import Electric
  
