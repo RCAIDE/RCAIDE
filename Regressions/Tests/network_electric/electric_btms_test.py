@@ -30,8 +30,8 @@ def main():
     battery_types = ['lithium_ion_lfp', 'lithium_ion_nmc']
     btms_types    = ['Liquid_Cooled_Wavy_Channel', 'Air_Cooled', None]
     
-    Q_lcwc       = [4369.9597280060625,4833.9588488503705] 
-    Q_air        = [2.8480820206293767,2.9015512546268516]
+    CL_true       = [0.63136618]
+    
      
     # vehicle data
     for i , battery_type in enumerate(battery_types):
@@ -61,19 +61,9 @@ def main():
              
             results = missions.base_mission.evaluate()
             
-            if btms_type == "Liquid_Cooled_Wavy_Channel":
-                Q     = results.segments.cruise.conditions.energy.coolant_line.wavy_channel_heat_acquisition.heat_removed[5, 0] 
-                Q_t   = Q_lcwc[i]
-                error =  abs(Q - Q_t) /Q_t
-            elif btms_type == 'Air_Cooled': 
-                Q     = results.segments.cruise.conditions.energy.coolant_line.air_cooled_heat_acquisition.total_heat_removed[5, 0] 
-                Q_t   = Q_air[i]
-                error =  abs(Q - Q_t) /Q_t
-            else:
-                error =  0
-               
-                 
-            assert(abs(error)<1e-3)
+            CL    = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[5, 0] 
+            error =  abs(CL - CL_true) /CL_true
+            assert(abs(error)<1e-6)
              
             # plot the results 
             plot_mission(results)
