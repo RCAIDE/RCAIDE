@@ -16,7 +16,21 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Sizing Setup for Wavy Channel
 # ----------------------------------------------------------------------------------------------------------------------
-def wavy_channel_sizing_setup(): 
+def wavy_channel_sizing_setup():
+    """ Creates a process to modify and analyze the heat acquistion system
+          
+          Inputs:  
+             None
+             
+          Outputs:   
+             procedure - optimization methodology                                       
+              
+          Assumptions: 
+             N/A 
+        
+          Source:
+             None
+    """            
 
     # size the base config
     procedure = Process()

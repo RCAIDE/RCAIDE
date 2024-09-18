@@ -16,7 +16,20 @@ import numpy as np
 #  Cross Flow Heat Exchanger Geometry Setup 
 # ----------------------------------------------------------------------------------------------------------------------   
 def cross_flow_heat_exchanger_sizing_setup(): 
-    
+    """ Creates a process to modify and analyze the heat exchanger system
+          
+          Inputs:  
+             None
+             
+          Outputs:   
+             procedure - optimization methodology                                       
+              
+          Assumptions: 
+             N/A 
+        
+          Source:
+             None
+    """           
     # size the base config
     procedure = Process()
     
