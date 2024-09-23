@@ -56,7 +56,7 @@ class Conditions:
     number_of_rows: int = 1
     number_of_columns: int = 1
     number_of_arrays: int = 0
-    adjustment_from_parent: int = 0
+    row_size_adjustment: int = 0
 
     def __post_init__(self):
         self.expand_rows(self.number_of_rows)
