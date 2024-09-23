@@ -21,7 +21,7 @@ import numpy as np
 @dataclass(kw_only=True)
 class Conditions:
     """
-    A class representing a set of conditions for aerospace simulations.
+    A class representing a set of conditions for engineering simulations.
 
     This class is designed to hold various attributes and methods related to
     simulation conditions, allowing for dynamic expansion of rows and packing
