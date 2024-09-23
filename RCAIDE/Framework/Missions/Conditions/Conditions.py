@@ -54,10 +54,19 @@ class Conditions:
     name: str = 'Conditions'
 
     number_of_rows: int = 1
+    number_of_columns: int = 1
+    number_of_arrays: int = 0
     adjustment_from_parent: int = 0
 
     def __post_init__(self):
         self.expand_rows(self.number_of_rows)
+        self.number_of_arrays = sum(1 for v in vars(self).values() if isinstance(v, np.ndarray))
+
+    def __setattr__(self, name, value):
+        if isinstance(vars(self)[name], np.ndarray) and isinstance(value, float):
+            vars(self)[name] = np.resize(value, (self.number_of_rows, self.number_of_columns))
+        else:
+            super().__setattr__(name, value)
 
     def expand_rows(self, rows: int):
         """
@@ -94,7 +103,14 @@ class Conditions:
             elif isinstance(v, np.ndarray):
                 vars(self)[k] = np.resize(v, (self.number_of_rows, v.shape[1]))
 
-    def expand_columns
+    def expand_columns(self, columns: int):
+
+        for k, v in vars(self).items():
+            if isinstance(v, np.ndarray):
+                vars(self)[k] = np.resize(v, (self.number_of_rows, columns))
+                vars(self)[k] = vars(self)[k][:, :columns]
+            elif isinstance(v, Conditions):
+                v.expand_columns(columns)
 
     def pack_array(self):
         """
@@ -113,7 +129,30 @@ class Conditions:
         - Only considers attributes that are numpy arrays.
         - The order of concatenation is determined by the order of attributes in vars(self).
         """
-        return np.concatenate([v.flatten() for v  in vars(self).values() if isinstance(v, np.ndarray)], axis=0)
+        return np.concatenate([v.flatten() for v in vars(self).values() if isinstance(v, np.ndarray)], axis=0)
+
+    def unpack_array(self, array):
+        """
+        Unpacks a 1-dimensional array into numpy arrays, placing them in the object's attributes.
+
+        Parameters
+        ----------
+        array : numpy.ndarray
+            A 1-dimensional array containing all flattened numpy arrays.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        - Only considers attributes that are numpy arrays.
+        - The order of unpacking is determined by the order of attributes in vars(self).
+        """
+        for k, v in vars(self).items():
+            if isinstance(v, np.ndarray):
+                vars(self)[k] = array[i:i+v.size].reshape(v.shape)
+                i += v.size
 
 
 class TestConditions(unittest.TestCase):
