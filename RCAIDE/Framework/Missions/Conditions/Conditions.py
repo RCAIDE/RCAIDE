@@ -149,6 +149,7 @@ class Conditions:
         - Only considers attributes that are numpy arrays.
         - The order of unpacking is determined by the order of attributes in vars(self).
         """
+        i = 0
         for k, v in vars(self).items():
             if isinstance(v, np.ndarray):
                 vars(self)[k] = array[i:i+v.size].reshape(v.shape)
