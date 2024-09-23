@@ -139,7 +139,6 @@ class System(Component):
 
         self.mass_properties.subcomponent_total = np.sum([c.mass_properties.total for c in self.subcomponents])
 
-
     def sum_moments_of_inertia(self):
 
         def _subcomponent_MOI(c: Component) -> np.ndarray:
@@ -149,6 +148,19 @@ class System(Component):
 
         self.mass_properties.subcomponent_moments_of_inertia = [self.sum_moments_of_inertia._subcomponent_MOI(c) for c in self.subcomponents]
 
+        # for k, v in vars(self):
+        #     if isinstance(v, Component):
+        #         self.mass_properties.moments_of_inertia += (
+        #                 v.mass_properties.moments_of_inertia
+        #                 + v.mass_properties.total * r ** 2 * np.eye(3)
+        #         )
+        #
+        #     if len(self.segments) > 0:
+        #         r_seg = np.asarray([np.linalg.norm(s.origin + s.mass_properties.center_of_gravity)-self.origin
+        #                             for s in self.segments])
+        #         I_seg = np.sum(np.asarray([s.mass_properties.total for s in self.segments]) * r_seg ** 2) * np.eye(3)
+        #         self.mass_properties.moments_of_inertia += I_seg
+        return None
 
         for k, v in vars(self).items():
             if isinstance(v, Component):

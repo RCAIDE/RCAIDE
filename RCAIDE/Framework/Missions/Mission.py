@@ -144,8 +144,8 @@ class MissionSegment(Process):
             self.update.append(analysis)
 
         self.append(self.initialize)
-        self.append(self.converge)
         self.append(self.update)
+        self.append(self.converge)
         self.append(self.finalize)
 
 

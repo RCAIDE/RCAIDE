@@ -94,6 +94,8 @@ class Conditions:
             elif isinstance(v, np.ndarray):
                 vars(self)[k] = np.resize(v, (self.number_of_rows, v.shape[1]))
 
+    def expand_columns
+
     def pack_array(self):
         """
         Pack all numpy arrays in the Conditions object into a single flattened array.
