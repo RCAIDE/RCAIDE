@@ -59,7 +59,7 @@ def train_model(aerodynamics, Mach):
         None    
     """    
 
-    geometry       = aerodynamics.geometry
+    vehicle        = aerodynamics.vehicle
     settings       = aerodynamics.settings
     AoA            = aerodynamics.training.angle_of_attack                  
     Beta           = aerodynamics.training.sideslip_angle
@@ -67,7 +67,7 @@ def train_model(aerodynamics, Mach):
     training.Mach  = Mach 
     
     # loop through wings to determine what control surfaces are present 
-    for wing in aerodynamics.geometry.wings: 
+    for wing in aerodynamics.vehicle.wings: 
         for control_surface in wing.control_surfaces:
             control_surface.deflection  =  0.0
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:  
@@ -121,7 +121,7 @@ def train_model(aerodynamics, Mach):
     conditions.freestream.mach_number               = Machs
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs 
     
-    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res, S_ref,b_ref,c_ref,X_ref,Y_ref ,Z_ref, Clift_wing_res, Cdrag_wing_res,_= evaluate_VLM(conditions,settings,geometry)
+    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res, S_ref,b_ref,c_ref,X_ref,Y_ref ,Z_ref, Clift_wing_res, Cdrag_wing_res,_= evaluate_VLM(conditions,settings,vehicle)
     
     Clift_alpha   = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
     Cdrag_alpha   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
@@ -152,7 +152,7 @@ def train_model(aerodynamics, Mach):
     
     Clift_wing_alpha = Data()
     Cdrag_wing_alpha = Data() 
-    for wing in  geometry.wings: 
+    for wing in vehicle.wings: 
         Clift_wing_alpha[wing.tag] = np.reshape(Clift_wing_res[wing.tag],(len_Mach,len_AoA)).T    
         Cdrag_wing_alpha[wing.tag] = np.reshape(Cdrag_wing_res[wing.tag],(len_Mach,len_AoA)).T  
  
@@ -169,7 +169,7 @@ def train_model(aerodynamics, Mach):
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
     conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas   
     
-    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
+    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)
     
     Clift_beta = np.reshape(Clift_res,(len_Mach,len_Beta)).T - Clift_alpha_0
     Cdrag_beta = np.reshape(Cdrag_res,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
@@ -190,7 +190,7 @@ def train_model(aerodynamics, Mach):
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
     conditions.freestream.mach_number               = Machs + Machs*u_s 
     
-    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
+    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)
     
     Clift_u     = np.reshape(Clift_res,(len_Mach,len_u)).T - Clift_alpha_0
     Cdrag_u     = np.reshape(Cdrag_res,(len_Mach,len_u)).T - Cdrag_alpha_0
@@ -213,7 +213,7 @@ def train_model(aerodynamics, Mach):
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
     conditions.aerodynamics.angles.beta             = np.arcsin(v_s)       
     
-    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
+    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)
     
     Clift_v     = np.reshape(Clift_res,(len_Mach,len_v)).T - Clift_alpha_0
     Cdrag_v     = np.reshape(Cdrag_res,(len_Mach,len_v)).T - Cdrag_alpha_0
@@ -235,7 +235,7 @@ def train_model(aerodynamics, Mach):
     conditions.aerodynamics.angles.alpha            = np.arcsin(w_s)
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
     
-    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
+    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)
     
     Clift_w     = np.reshape(Clift_res,(len_Mach,len_w)).T - Clift_alpha_0
     Cdrag_w     = np.reshape(Cdrag_res,(len_Mach,len_w)).T - Cdrag_alpha_0
@@ -259,7 +259,7 @@ def train_model(aerodynamics, Mach):
     conditions.static_stability.pitch_rate          = np.ones_like(Machs)*q_s     
     conditions.freestream.velocity                  = Machs * 343 # speed of sound   
     
-    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
+    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)
     
     Clift_q     = np.reshape(Clift_res,(len_Mach,len_q)).T - Clift_alpha_0
     Cdrag_q     = np.reshape(Cdrag_res,(len_Mach,len_q)).T - Cdrag_alpha_0
@@ -283,7 +283,7 @@ def train_model(aerodynamics, Mach):
     conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s 
     conditions.freestream.velocity                  = Machs * 343 # speed of sound           
         
-    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)  
+    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)  
         
     Clift_p     = np.reshape(Clift_res,(len_Mach,len_p)).T - Clift_alpha_0
     Cdrag_p     = np.reshape(Cdrag_res,(len_Mach,len_p)).T - Cdrag_alpha_0
@@ -307,7 +307,7 @@ def train_model(aerodynamics, Mach):
     conditions.static_stability.yaw_rate            = np.ones_like(Machs)*r_s
     conditions.freestream.velocity                  = Machs * 343 # speed of sound  
     
-    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
+    Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)
     
     Clift_r     = np.reshape(Clift_res,(len_Mach,len_r)).T - Clift_alpha_0
     Cdrag_r     = np.reshape(Cdrag_res,(len_Mach,len_r)).T - Cdrag_alpha_0
@@ -478,7 +478,7 @@ def train_model(aerodynamics, Mach):
     # Aileron 
     # --------------------------------------------------------------------------------------------------------------   
     if aerodynamics.aileron_flag:  
-        for wing in aerodynamics.geometry.wings: 
+        for wing in aerodynamics.vehicle.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
                     
@@ -501,7 +501,7 @@ def train_model(aerodynamics, Mach):
                         conditions.control_surfaces.aileron.deflection  = np.ones_like(Machs)*Delta_a_s
                         control_surface.deflection                      = delta_a[a_i]
                         
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)   
                         Clift_d_a[a_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
                         Cdrag_d_a[a_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
                         CX_d_a[a_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
@@ -537,7 +537,7 @@ def train_model(aerodynamics, Mach):
     # Elevator 
     # -------------------------------------------------------------------------------------------------------------- 
     if aerodynamics.elevator_flag: 
-        for wing in aerodynamics.geometry.wings: 
+        for wing in aerodynamics.vehicle.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
                 
@@ -561,7 +561,7 @@ def train_model(aerodynamics, Mach):
                         conditions.control_surfaces.elevator.deflection = np.ones_like(Machs)*Delta_e_s
                         control_surface.deflection                      = delta_e[e_i]
                         
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)   
                         Clift_d_e[e_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
                         Cdrag_d_e[e_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
                         CX_d_e[e_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
@@ -596,7 +596,7 @@ def train_model(aerodynamics, Mach):
     # Rudder 
     # -------------------------------------------------------------------------------------------------------------- 
     if aerodynamics.rudder_flag:
-        for wing in aerodynamics.geometry.wings: 
+        for wing in aerodynamics.vehicle.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
                     Clift_d_r      = np.zeros((len_d_r,len_Mach)) 
@@ -619,7 +619,7 @@ def train_model(aerodynamics, Mach):
                         conditions.control_surfaces.rudder.deflection  = np.ones_like(Machs)*Delta_r_s
                         control_surface.deflection                      = delta_r[r_i]
                         
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)   
                         Clift_d_r[r_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
                         Cdrag_d_r[r_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
                         CX_d_r[r_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
@@ -653,7 +653,7 @@ def train_model(aerodynamics, Mach):
     # Flap
     # -------------------------------------------------------------------------------------------------------------- 
     if aerodynamics.flap_flag:
-        for wing in aerodynamics.geometry.wings: 
+        for wing in aerodynamics.vehicle.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:
                     Clift_d_f      = np.zeros((len_d_f,len_Mach)) 
@@ -676,7 +676,7 @@ def train_model(aerodynamics, Mach):
                         conditions.control_surfaces.flap.deflection     = np.ones_like(Machs)*Delta_f_s
                         control_surface.deflection                      = delta_f[f_i]
                         
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)   
                         Clift_d_f[f_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
                         Cdrag_d_f[f_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
                         CX_d_f[f_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
@@ -710,7 +710,7 @@ def train_model(aerodynamics, Mach):
     # Slat
     # -------------------------------------------------------------------------------------------------------------- 
     if aerodynamics.slat_flag:
-        for wing in aerodynamics.geometry.wings: 
+        for wing in aerodynamics.vehicle.wings: 
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
                     
@@ -734,7 +734,7 @@ def train_model(aerodynamics, Mach):
                         conditions.control_surfaces.slat.deflection     = np.ones_like(Machs)*Delta_s_s
                         control_surface.deflection                      = delta_s[s_i]
                         
-                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
+                        Clift_res,Cdrag_res,CX_res,CY_res,CZ_res,CL_res,CM_res,CN_res ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,vehicle)   
                         Clift_d_s[s_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
                         Cdrag_d_s[s_i,:] = Cdrag_res[:,0]  - Cdrag_alpha_0[0,:]                                
                         CX_d_s[s_i,:]    = CX_res[:,0]   - CX_alpha_0[0,:]   
@@ -785,7 +785,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
         None    
     """    
 
-    geometry       = aerodynamics.geometry 
+    vehicle        = aerodynamics.vehicle 
     AoA            = aerodynamics.training.angle_of_attack                  
     Beta           = aerodynamics.training.sideslip_angle
     training       = Data() 
@@ -812,7 +812,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
 
     Clift_wing_alpha = Data()
     Cdrag_wing_alpha = Data() 
-    for wing in  geometry.wings: 
+    for wing in vehicle.wings: 
         Clift_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Clift_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Clift_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
         Cdrag_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Cdrag_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Cdrag_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
     
@@ -1174,7 +1174,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
 # ----------------------------------------------------------------------
 #  Evaluate VLM
 # ----------------------------------------------------------------------
-def evaluate_VLM(conditions,settings,geometry):
+def evaluate_VLM(conditions,settings,vehicle):
     """Calculate aerodynamics coefficients inluding specific wing coefficients using the VLM
         
     Assumptions:
@@ -1186,7 +1186,7 @@ def evaluate_VLM(conditions,settings,geometry):
     Args: 
         conditions : flight conditions     [unitless]
         settings   : VLM analysis settings [unitless]
-        geometry   : vehicle configuration [unitless] 
+        vehicle   : vehicle configuration [unitless] 
         
     Returns: 
         None  
@@ -1196,7 +1196,7 @@ def evaluate_VLM(conditions,settings,geometry):
     Cdrag_wings         = Data()
     AoA_wing_induced = Data()
     
-    results = VLM(conditions,settings,geometry)
+    results = VLM(conditions,settings,vehicle)
     Clift   = results.CL       
     Cdrag   = results.CDi     
     Clift_w = results.CL_wing        
@@ -1217,13 +1217,13 @@ def evaluate_VLM(conditions,settings,geometry):
     
 
     # Dimensionalize the lift and drag for each wing
-    areas = geometry.vortex_distribution.wing_areas
+    areas = vehicle.vortex_distribution.wing_areas
     dim_wing_lifts = Clift_w  * areas
     dim_wing_drags = Cdrag_w * areas
     
     i = 0
     # Assign the lift and drag and non-dimensionalize
-    for wing in geometry.wings.values():
+    for wing in vehicle.wings.values():
         ref = wing.areas.reference
         if wing.symmetric:
             Clift_wings[wing.tag]      = np.atleast_2d(np.sum(dim_wing_lifts[:,i:(i+2)],axis=1)).T/ref

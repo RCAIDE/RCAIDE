@@ -1,5 +1,5 @@
 ## @ingroup Library-Missions-Segments-Cruise
-# RCAIDE/Library/Missions/Segments/Cruise/Curved_Constant_Radius_Constant_Speed_Constant_Altitude.py
+# RCAIDE/Library/Missions/Segments/Cruise/Curved_Constant_Radius_Constant_Speed_Constant_Altitude/initialize_conditions.py
 # 
 # 
 # Created:  September 2024, A. Molloy + M. Clarke
@@ -41,13 +41,13 @@ def initialize_conditions(segment):
     """        
     
     # unpack 
-    alt        = segment.altitude
-    air_speed  = segment.air_speed       
-    beta       = segment.sideslip_angle
-    radius = segment.radius
+    alt               = segment.altitude
+    air_speed         = segment.air_speed       
+    beta              = segment.sideslip_angle
+    radius            = segment.turn_radius
     start_true_course = segment.start_true_course
-    arc_sector = segment.turn_angle
-    conditions = segment.state.conditions 
+    arc_sector        = segment.turn_angle
+    conditions        = segment.state.conditions 
 
     # check for initial velocity
     if air_speed is None: 
@@ -69,10 +69,11 @@ def initialize_conditions(segment):
         arc_sector = 0.0 # aircraft does not turn    
 
     # dimensionalize time
-    v_x         = np.cos(beta + arc_sector + start_true_course)*air_speed # Updated to reflect final heading. Original: np.cos(beta)*air_speed
-    v_y         = np.sin(beta + arc_sector + start_true_course)*air_speed # Updated to refelct final heading. Original: np.sin(beta)*air_speed
+    v_x         = np.cos(beta)*air_speed # np.cos(beta + arc_sector + start_true_course)*air_speed # Updated to reflect final heading. Original: np.cos(beta)*air_speed
+    v_y         = np.sin(beta)*air_speed # np.sin(beta + arc_sector + start_true_course)*air_speed # Updated to refelct final heading. Original: np.sin(beta)*air_speed
     t_initial   = conditions.frames.inertial.time[0,0]
-    t_final     = (np.abs(arc_sector) *np.pi /180) * radius / air_speed + t_initial # updated
+    omega       = v_x / radius
+    t_final     = arc_sector /omega + t_initial  # (np.abs(arc_sector) *np.pi /180) * radius / air_speed + t_initial # updated
     t_nondim    = segment.state.numerics.dimensionless.control_points
     time        = t_nondim * (t_final-t_initial) + t_initial
     

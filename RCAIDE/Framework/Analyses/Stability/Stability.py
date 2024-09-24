@@ -38,7 +38,7 @@ class Stability(Analysis):
         N/A
         """   
         self.tag    = 'stability'
-        self.geometry = Data()
+        self.vehicle = Data()
         self.settings = Data()
  
         return

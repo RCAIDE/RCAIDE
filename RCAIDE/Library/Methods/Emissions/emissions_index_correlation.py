@@ -34,7 +34,7 @@ def emissions_index_correlation(emissions_analysis,segment):
     """    
     # unpack
     state           = segment.state
-    vehicle         = emissions_analysis.geometry 
+    vehicle         = emissions_analysis.vehicle 
     I               = state.numerics.time.integrate
     
     NOx_total  = 0 * state.ones_row(1)  

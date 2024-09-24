@@ -77,7 +77,7 @@ def evaluate_surrogate(state,settings,geometry):
                 delta_f        = np.ones_like(Mach) * control_surface.deflection
     
  
-    geometry      = aerodynamics.geometry 
+    geometry      = aerodynamics.vehicle 
     hsub_min      = aerodynamics.hsub_min
     hsub_max      = aerodynamics.hsub_max
     hsup_min      = aerodynamics.hsup_min

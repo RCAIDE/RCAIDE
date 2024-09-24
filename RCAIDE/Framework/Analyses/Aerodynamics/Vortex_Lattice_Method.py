@@ -61,7 +61,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         N/A
         """          
         self.tag                                                    = 'Vortex_Lattice_Method'  
-        self.geometry                                               = Data()  
+        self.vehicle                                                = Data()  
         self.process                                                = Process()
         self.process.initialize                                     = Process()  
                    
@@ -218,10 +218,10 @@ class Vortex_Lattice_Method(Aerodynamics):
 
         Properties Used:
         self.settings
-        self.geometry
+        self.vehicle
         """          
         settings = self.settings
-        geometry = self.geometry 
-        results  = self.process.compute(state,settings,geometry)
+        vehicle  = self.vehicle
+        results  = self.process.compute(state,settings,vehicle)
         
         return results

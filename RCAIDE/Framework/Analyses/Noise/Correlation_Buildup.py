@@ -116,12 +116,11 @@ class Correlation_Buildup(Noise):
         Outputs:
         None
     
-        Properties Used:
-        self.geometry
+        Properties Used: 
         """         
     
         # unpack 
-        config        = segment.analyses.noise.geometry
+        config        = segment.analyses.noise.vehicle
         analyses      = segment.analyses
         settings      = self.settings  
         print_flag    = settings.print_noise_output  

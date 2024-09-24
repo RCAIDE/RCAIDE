@@ -46,7 +46,7 @@ class Noise(Analysis):
             """                   
         self.tag    = 'Noise'        
   
-        self.geometry = Data()
+        self.vehicle = Data()
         self.settings = Data()
         
         
