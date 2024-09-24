@@ -83,6 +83,8 @@ def initialize_conditions(segment):
     ''' Appears to be at the beginning of the segment as it does not change for various turn angles'''
     segment.state.conditions.freestream.altitude[:,0]             = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_x  #This needs to be updated
-    segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_y
+    segment.state.conditions.frames.inertial.velocity_vector[:,0] = 0 #This needs to be updated
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = 0
+    segment.state.conditions.frames.body.velocity_vector[:,0]     = v_x  #This needs to be updated
+    segment.state.conditions.frames.body.velocity_vector[:,1]     = v_y
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]
