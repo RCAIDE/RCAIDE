@@ -50,12 +50,12 @@ def curvilinear_inertial_horizontal_position(segment):
     
     theta = arc_length[:,0]/R
     
-    delta_x = R * np.sin(theta)
+    delta_x = sign * R * np.sin(theta)
     delta_y = R * (1 - np.cos(theta))
     
     # pack
     conditions.frames.inertial.position_vector[:,0] = x0 + delta_x 
-    conditions.frames.inertial.position_vector[:,1] = y0 + sign * delta_y 
+    conditions.frames.inertial.position_vector[:,1] = y0 - sign * delta_y 
     conditions.frames.inertial.aircraft_range[:,0]  = R0 + arc_length[:,0]  
     
     return
