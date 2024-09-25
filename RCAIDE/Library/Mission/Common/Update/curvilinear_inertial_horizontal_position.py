@@ -10,6 +10,7 @@
 
 # Package imports 
 import numpy as np
+from RCAIDE.Framework.Core import Units   
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Integrate Position
@@ -37,10 +38,8 @@ def curvilinear_inertial_horizontal_position(segment):
     """        
 
     conditions  = segment.state.conditions 
-    psi_seg     = segment.true_course       # sign convetion is clockwise positive
-    #psi_cond    = conditions.frames.inertial.true_course
-    psi_init    =  0
-    x0          = conditions.frames.inertial.position_vector[0, 0]
+    psi         = conditions.frames.planet.true_heading
+    x0          = conditions.frames.inertial.position_vector[0, 0] # Is this the very very beginning of the flight?
     y0          = conditions.frames.inertial.position_vector[0, 1]
     R0          = conditions.frames.inertial.aircraft_range[0,None,0:1+1]
     vx          = conditions.frames.inertial.velocity_vector[:,0:1+1]
@@ -51,14 +50,17 @@ def curvilinear_inertial_horizontal_position(segment):
     # integrate
     arc_length = np.dot(I,vx)
     
-    theta = arc_length[:,0]/R
+    theta = psi - sign * 90 *Units.degrees #+ sign * arc_length[:,0]/R # Angle from circle center to the flight trajectory
+    beta =  psi[0, 0] + sign * 90 * Units.degrees # Angle to the center of the circle from the start point
     
-    delta_x = sign * R * np.sin(theta)
-    delta_y = R * (1 - np.cos(theta))
+    delta_x = x0 + R * np.cos(beta) + R * np.cos(theta)
+    delta_y = y0 - R * np.sin(beta) - R * np.sin(theta)
+    x_position = x0 + delta_x
+    y_position = y0 + delta_y
     
     # pack
-    conditions.frames.inertial.position_vector[:,0] = x0 + delta_x 
-    conditions.frames.inertial.position_vector[:,1] = y0 - sign * delta_y 
+    conditions.frames.inertial.position_vector[:,0] = x_position[:,0]
+    conditions.frames.inertial.position_vector[:,1] = y_position[:,0]
     conditions.frames.body.position_vector[:,0]     = 0 
     conditions.frames.body.position_vector[:,1]     = 0     
     conditions.frames.inertial.aircraft_range[:,0]  = R0 + arc_length[:,0]

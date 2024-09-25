@@ -19,6 +19,7 @@ def initialize_conditions(segment):
 
     Assumptions:
     Curved segment with constant radius, constant speed and constant altitude
+    Assume that it is a coordinated turn
 
     Source:
     N/A
@@ -57,8 +58,7 @@ def initialize_conditions(segment):
     # check for initial altitude
     if alt is None:
         if not segment.state.initials: raise AttributeError('altitude not set')
-        alt = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2]
-    
+        alt = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2][:,0]
     # check for initial altitude
     if radius is None:
         if not segment.state.initials: raise AttributeError('radius not set')
@@ -73,18 +73,22 @@ def initialize_conditions(segment):
     v_y         = np.sin(beta)*air_speed # np.sin(beta + arc_sector + start_true_course)*air_speed # Updated to refelct final heading. Original: np.sin(beta)*air_speed
     t_initial   = conditions.frames.inertial.time[0,0]
     omega       = v_x / radius
-    t_final     = arc_sector /omega + t_initial  # (np.abs(arc_sector) *np.pi /180) * radius / air_speed + t_initial # updated
+    t_final     = abs(arc_sector) /omega + t_initial  # (np.abs(arc_sector) *np.pi /180) * radius / air_speed + t_initial # updated
     t_nondim    = segment.state.numerics.dimensionless.control_points
     time        = t_nondim * (t_final-t_initial) + t_initial
     
-    # pack
-    '''Is this at the end of the the segment?'''
+    true_course_control_points = start_true_course + t_nondim * arc_sector
     
-    ''' Appears to be at the beginning of the segment as it does not change for various turn angles'''
+    v_inertial_x = air_speed * np.cos(true_course_control_points)
+    v_inertial_y = air_speed * np.sin(true_course_control_points)
+    
+    # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = 0 #This needs to be updated
-    segment.state.conditions.frames.inertial.velocity_vector[:,1] = 0
-    segment.state.conditions.frames.body.velocity_vector[:,0]     = v_x  #This needs to be updated
+    segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_inertial_x[:,0] #This needs to be updated
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_inertial_y[:,0] #This needs to be updated
+    segment.state.conditions.frames.body.velocity_vector[:,0]     = v_x
     segment.state.conditions.frames.body.velocity_vector[:,1]     = v_y
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]
+    segment.state.conditions.frames.planet.true_heading[:,0]      = true_course_control_points[:,0]
+    segment.state.conditions.frames.planet.true_course[:,0]      = true_course_control_points[:,0]

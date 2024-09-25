@@ -102,12 +102,14 @@ class Results(Conditions):
         self.frames.inertial.total_moment_vector                               = ones_3col * 0
         self.frames.inertial.time                                              = ones_1col * 0
         self.frames.inertial.aircraft_range                                    = ones_1col * 0
+
                                                                                
         # body conditions                                                      
         self.frames.body                                                       = Conditions()        
         self.frames.body.inertial_rotations                                    = ones_3col * 0
         self.frames.body.thrust_force_vector                                   = ones_3col * 0
         self.frames.body.moment_vector                                         = ones_3col * 0
+        self.frames.body.velocity_vector                                       = ones_3col * 0
         self.frames.body.transform_to_inertial                                 = np.empty([0,0,0])
                                                                                
         # wind frame conditions                                                
@@ -123,7 +125,8 @@ class Results(Conditions):
         self.frames.planet.start_time                                          = None
         self.frames.planet.latitude                                            = ones_1col * 0
         self.frames.planet.longitude                                           = ones_1col * 0
-        self.frames.planet.true_course                                         = np.empty([0,0,0])
+        self.frames.planet.true_course                                         = ones_1col * 0
+        self.frames.planet.true_heading                                        = ones_1col * 0
 
         # ----------------------------------------------------------------------------------------------------------------------         
         # Freestream 
@@ -409,7 +412,7 @@ class Results(Conditions):
         
 
         # ----------------------------------------------------------------------------------------------------------------------         
-        # Noise 
+        # Noise v_inertial_x
         # ----------------------------------------------------------------------------------------------------------------------       
         self.noise                                            = Conditions() 
 
