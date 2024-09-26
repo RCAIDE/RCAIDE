@@ -19,10 +19,12 @@ from RCAIDE.Library.Mission                       import Common,Segments
 
 ## @ingroup Analyses-Mission-Segments-Cruise
 class Curved_Constant_Radius_Constant_Speed_Constant_Altitude(Evaluate):
-    """ Curved path with fixed true airspeed and altitude and a set sector arc witha  constant radius.
+    """ Curved path with fixed true airspeed and altitude and a set sector arc with a constant radius.
        
         Assumptions:
-        None
+        Constant radius
+        Constant speed
+        Constant altitude
         
         Source:
         None
@@ -56,7 +58,7 @@ class Curved_Constant_Radius_Constant_Speed_Constant_Altitude(Evaluate):
         self.start_true_course = 0.0 * Units.degrees
         self.bank_angle        = 0.0 * Units.degrees
         self.turn_angle        = 0.0 * Units.degrees # + indicated right hand turn, negative indicates left-hand turn defaults to straight flight/won't actually turn? 
-        self.true_course       = 0.0 * Units.degrees  ### look into
+        self.true_course       = 0.0 * Units.degrees 
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 

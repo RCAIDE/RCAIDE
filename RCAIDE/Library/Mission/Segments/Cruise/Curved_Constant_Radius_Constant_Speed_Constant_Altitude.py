@@ -19,7 +19,7 @@ def initialize_conditions(segment):
 
     Assumptions:
     Curved segment with constant radius, constant speed and constant altitude
-    Assume that it is a coordinated turn
+    Assumes that it is a coordinated turn (true course and true heading are aligned)
 
     Source:
     N/A
@@ -69,8 +69,8 @@ def initialize_conditions(segment):
         arc_sector = 0.0 # aircraft does not turn    
 
     # dimensionalize time
-    v_x         = np.cos(beta)*air_speed # np.cos(beta + arc_sector + start_true_course)*air_speed # Updated to reflect final heading. Original: np.cos(beta)*air_speed
-    v_y         = np.sin(beta)*air_speed # np.sin(beta + arc_sector + start_true_course)*air_speed # Updated to refelct final heading. Original: np.sin(beta)*air_speed
+    v_x         = np.cos(beta)*air_speed # x-velocity in the body frame. 
+    v_y         = np.sin(beta)*air_speed # y-velocity in the body frame
     t_initial   = conditions.frames.inertial.time[0,0]
     omega       = v_x / radius
     t_final     = abs(arc_sector) /omega + t_initial  # (np.abs(arc_sector) *np.pi /180) * radius / air_speed + t_initial # updated
@@ -91,4 +91,4 @@ def initialize_conditions(segment):
     segment.state.conditions.frames.body.velocity_vector[:,1]     = v_y
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]
     segment.state.conditions.frames.planet.true_heading[:,0]      = true_course_control_points[:,0]
-    segment.state.conditions.frames.planet.true_course[:,0]      = true_course_control_points[:,0]
+    segment.state.conditions.frames.planet.true_course[:,0]       = true_course_control_points[:,0]

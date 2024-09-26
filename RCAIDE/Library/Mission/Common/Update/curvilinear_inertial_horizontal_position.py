@@ -17,7 +17,7 @@ from RCAIDE.Framework.Core import Units
 # ----------------------------------------------------------------------------------------------------------------------
 ## @ingroup Library-Missions-Common-Update 
 def curvilinear_inertial_horizontal_position(segment):
-    """ Determines how far the airplane has traveled. 
+    """ Determines how far the airplane has traveled and calculates position. 
     
         Assumptions:
         Assumes a flat earth, this is planar motion.
@@ -47,24 +47,22 @@ def curvilinear_inertial_horizontal_position(segment):
     R           = segment.turn_radius
     sign        = np.sign(segment.turn_angle)
     
+    speed = np.sqrt(vx[:, 0]**2+vx[:, 1]**2)
     # integrate
-    arc_length = np.dot(I,vx)
+    distance = np.dot(I,speed)
+    #arc_distance_scalar = [np.sqrt(distance[:, 0]**2 + distance[:, 1]**2)]
+    arc_length = distance 
     
-    theta = psi - sign * 90 *Units.degrees #+ sign * arc_length[:,0]/R # Angle from circle center to the flight trajectory
-    beta =  psi[0, 0] + sign * 90 * Units.degrees # Angle to the center of the circle from the start point
+    theta = psi - sign * 90 *Units.degrees         # Angle from circle center to the flight trajectory
+    beta =  psi[0, 0] + sign * 90 * Units.degrees  # Angle to the center of the circle from the initial position
     
-    delta_x = x0 + R * np.cos(beta) + R * np.cos(theta)
-    delta_y = y0 - R * np.sin(beta) - R * np.sin(theta)
+    delta_x = R * np.cos(beta) + R * np.cos(theta) # 
+    delta_y = R * np.sin(beta) + R * np.sin(theta)
     x_position = x0 + delta_x
     y_position = y0 + delta_y
     
     # pack
     conditions.frames.inertial.position_vector[:,0] = x_position[:,0]
-    conditions.frames.inertial.position_vector[:,1] = y_position[:,0]
-    conditions.frames.body.position_vector[:,0]     = 0 
-    conditions.frames.body.position_vector[:,1]     = 0     
-    conditions.frames.inertial.aircraft_range[:,0]  = R0 + arc_length[:,0]
-    #conditions.frames.inertial.true_course[:,0]     =  0
-    
-    
+    conditions.frames.inertial.position_vector[:,1] = y_position[:,0] 
+    conditions.frames.inertial.aircraft_range[:,0]  = R0 + arc_length
     return
