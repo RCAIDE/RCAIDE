@@ -767,7 +767,7 @@ def mission_setup(analyses):
     segment.air_speed                                                           = 240 * Units['mph']
     segment.turn_radius                                                         = 1000 * Units.mile  
     segment.start_true_course                                                   = 10 * Units.degrees 
-    segment.turn_angle                                                          = -1.0 * Units.degrees # + indicated right hand turn, negative indicates left-hand turn defaults to straight flight/won't actually turn?
+    segment.turn_angle                                                          = -1.0 * Units.degrees # + indicated right hand turn, negative indicates left-hand turn
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                                             = True    
