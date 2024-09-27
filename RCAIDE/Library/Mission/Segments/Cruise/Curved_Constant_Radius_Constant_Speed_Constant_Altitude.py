@@ -46,7 +46,7 @@ def initialize_conditions(segment):
     air_speed         = segment.air_speed       
     beta              = segment.sideslip_angle
     radius            = segment.turn_radius
-    start_true_course = segment.start_true_course
+    start_true_course = segment.true_course
     arc_sector        = segment.turn_angle
     conditions        = segment.state.conditions 
 
@@ -59,21 +59,23 @@ def initialize_conditions(segment):
     if alt is None:
         if not segment.state.initials: raise AttributeError('altitude not set')
         alt = -1.0 * segment.state.initials.conditions.frames.inertial.position_vector[-1,2][:,0]
-    # check for initial altitude
+    
+    # check for turn radius
     if radius is None:
         if not segment.state.initials: raise AttributeError('radius not set')
         radius = 0.1 # minimum radius so as to approximate a near instantaneous curve
     
+    # check for turn angle
     if arc_sector is None:
         if not segment.state.initials: raise AttributeError('turn angle not set')
         arc_sector = 0.0 # aircraft does not turn    
 
     # dimensionalize time
-    v_x         = np.cos(beta)*air_speed # x-velocity in the body frame. 
-    v_y         = np.sin(beta)*air_speed # y-velocity in the body frame
+    v_body_x    = np.cos(beta)*air_speed # x-velocity in the body frame. 
+    v_body_y    = np.sin(beta)*air_speed # y-velocity in the body frame
     t_initial   = conditions.frames.inertial.time[0,0]
-    omega       = v_x / radius
-    t_final     = abs(arc_sector) /omega + t_initial  # (np.abs(arc_sector) *np.pi /180) * radius / air_speed + t_initial # updated
+    omega       = v_body_x / radius
+    t_final     = abs(arc_sector) / omega + t_initial  # Time to complete the turn
     t_nondim    = segment.state.numerics.dimensionless.control_points
     time        = t_nondim * (t_final-t_initial) + t_initial
     
@@ -85,10 +87,10 @@ def initialize_conditions(segment):
     # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt # z points down
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_inertial_x[:,0] #This needs to be updated
-    segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_inertial_y[:,0] #This needs to be updated
-    segment.state.conditions.frames.body.velocity_vector[:,0]     = v_x
-    segment.state.conditions.frames.body.velocity_vector[:,1]     = v_y
+    segment.state.conditions.frames.inertial.velocity_vector[:,0] = v_inertial_x[:,0]
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = v_inertial_y[:,0]
+    segment.state.conditions.frames.body.velocity_vector[:,0]     = v_body_x
+    segment.state.conditions.frames.body.velocity_vector[:,1]     = v_body_y
     segment.state.conditions.frames.inertial.time[:,0]            = time[:,0]
     segment.state.conditions.frames.planet.true_heading[:,0]      = true_course_control_points[:,0]
     segment.state.conditions.frames.planet.true_course[:,0]       = true_course_control_points[:,0]

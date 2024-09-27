@@ -2,7 +2,7 @@
 # RCAIDE/Library/Missions/Common/Update/curvilinear_inertial_horizontal_position.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  September 2023, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -39,7 +39,7 @@ def curvilinear_inertial_horizontal_position(segment):
 
     conditions  = segment.state.conditions 
     psi         = conditions.frames.planet.true_heading
-    x0          = conditions.frames.inertial.position_vector[0, 0] # Is this the very very beginning of the flight?
+    x0          = conditions.frames.inertial.position_vector[0, 0] 
     y0          = conditions.frames.inertial.position_vector[0, 1]
     R0          = conditions.frames.inertial.aircraft_range[0,None,0:1+1]
     vx          = conditions.frames.inertial.velocity_vector[:,0:1+1]
@@ -47,19 +47,17 @@ def curvilinear_inertial_horizontal_position(segment):
     R           = segment.turn_radius
     sign        = np.sign(segment.turn_angle)
     
-    speed = np.sqrt(vx[:, 0]**2+vx[:, 1]**2)
     # integrate
-    distance = np.dot(I,speed)
-    #arc_distance_scalar = [np.sqrt(distance[:, 0]**2 + distance[:, 1]**2)]
-    arc_length = distance 
+    speed       = np.sqrt(vx[:, 0]**2+vx[:, 1]**2)
+    arc_length  = np.dot(I,speed)
     
-    theta = psi - sign * 90 *Units.degrees         # Angle from circle center to the flight trajectory
-    beta =  psi[0, 0] + sign * 90 * Units.degrees  # Angle to the center of the circle from the initial position
+    theta       = psi - sign * 90 * Units.degrees         # Angle from circle center to the flight trajectory
+    beta        =  psi[0, 0] + sign * 90 * Units.degrees  # Angle to the center of the circle from the initial position
     
-    delta_x = R * np.cos(beta) + R * np.cos(theta) # 
-    delta_y = R * np.sin(beta) + R * np.sin(theta)
-    x_position = x0 + delta_x
-    y_position = y0 + delta_y
+    delta_x     = R * np.cos(beta) + R * np.cos(theta) # vector addition with a vector from the starting point to the center and then from the center to the position
+    delta_y     = R * np.sin(beta) + R * np.sin(theta)
+    x_position  = x0 + delta_x
+    y_position  = y0 + delta_y
     
     # pack
     conditions.frames.inertial.position_vector[:,0] = x_position[:,0]
