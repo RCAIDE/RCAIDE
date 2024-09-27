@@ -74,6 +74,7 @@ def main():
     reserve_2_CL       = results.segments.reserve_cruise.conditions.aerodynamics.coefficients.lift.total[2][0]
     descent_throttle_3 = results.segments.descent_3.conditions.energy['fuel_line']['port_propulsor'].throttle[3][0]
     landing_thrust     = results.segments.landing.conditions.energy['fuel_line']['port_propulsor'].thrust[3][0]
+    curved_cruise_CL   = results.segments.curved_cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
     
     #print values for resetting regression
     show_vals = True
@@ -82,7 +83,7 @@ def main():
                 climb_throttle_6,   climb_throttle_7,   climb_throttle_8,   climb_throttle_9,   climb_10_CL,  
                 cruise_CL_1,  cruise_CL_2,  cruise_CL_3,        descent_throttle_1, descent_throttle_2,
                 single_pt_CL_1,     single_pt_CL_2,     loiter_1_CL,   loiter_2_CL, reserve_1_CL,reserve_2_CL,
-                descent_throttle_3,  landing_thrust]
+                descent_throttle_3,  landing_thrust,  curved_cruise_CL]
         for val in data:
             print(val)
     
@@ -111,6 +112,7 @@ def main():
     reserve_2_CL_truth       = 0.3401664118270215
     descent_throttle_3_truth = 0.1330281782216745
     landing_thrust_truth     = 12727.161869285535
+    curved_cruise_CL_truth   = 0.9688367341100749
     
     # Store errors 
     error = Data()
@@ -137,7 +139,8 @@ def main():
     error.reserve_1_CL       = np.max(np.abs(reserve_1_CL          - reserve_1_CL_truth ))      
     error.reserve_2_CL       = np.max(np.abs(reserve_2_CL          - reserve_2_CL_truth ))         
     error.descent_throttle_3 = np.max(np.abs(descent_throttle_3   - descent_throttle_3_truth))  
-    error.landing_thrust     = np.max(np.abs(landing_thrust   - landing_thrust_truth))  
+    error.landing_thrust     = np.max(np.abs(landing_thrust   - landing_thrust_truth))
+    error.curved_cruise_CL   = np.max(np.abs(curved_cruise_CL     - curved_cruise_CL_truth))
      
     print('Errors:')
     print(error)
@@ -178,7 +181,7 @@ def base_analysis(vehicle):
  
     #  Aerodynamics Analysis
     aerodynamics                                     = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.geometry                            = vehicle
+    aerodynamics.vehicle                            = vehicle
     aerodynamics.settings.number_of_spanwise_vortices   = 5
     aerodynamics.settings.number_of_chordwise_vortices  = 2       
     aerodynamics.settings.drag_coefficient_increment = 0.0000
@@ -752,16 +755,19 @@ def mission_setup(analyses):
     segment.assigned_control_variables.acceleration.active           = True          
     segment.assigned_control_variables.body_angle.active             = True                
     
-    mission.append_segment(segment)     
-
+    mission.append_segment(segment)
+    
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    #   Curved Cruise Segment : Constant Radius Constant Speed Constant Altltude
+    # ------------------------------------------------------------------------------------------------------------------------------------  
     segment     = Segments.Cruise.Curved_Constant_Radius_Constant_Speed_Constant_Altitude(base_segment)
     segment.tag = "curved_cruise" 
     segment.analyses.extend( analyses.base )   
     segment.altitude                                                            = 8000. * Units.feet
     segment.air_speed                                                           = 240 * Units['mph']
-    segment.turn_radius                                                              = 100 * Units.mile  
-    segment.start_true_course                                                   = 30.0 * Units.degrees 
-    segment.turn_angle                                                          = -150.0 * Units.degrees # + indicated right hand turn, negative indicates left-hand turn defaults to straight flight/won't actually turn?
+    segment.turn_radius                                                         = 1000 * Units.mile  
+    segment.start_true_course                                                   = 10 * Units.degrees 
+    segment.turn_angle                                                          = -1.0 * Units.degrees # + indicated right hand turn, negative indicates left-hand turn defaults to straight flight/won't actually turn?
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                                             = True    
@@ -772,28 +778,8 @@ def mission_setup(analyses):
     segment.assigned_control_variables.throttle.assigned_propulsors             = [['starboard_propulsor','port_propulsor']]   
     segment.assigned_control_variables.body_angle.active                        = True   
     
-    '''# Longidinal Flight Mechanics
-    segment.flight_dynamics.moment_y                                            = True 
-    segment.assigned_control_variables.elevator_deflection.active               = True    
-    segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']]
-    segment.assigned_control_variables.elevator_deflection.initial_guess_values = [[0]]     
-   
-    # Lateral Flight Mechanics 
-    segment.flight_dynamics.force_y                                             = True     
-    segment.flight_dynamics.moment_x                                            = True
-    segment.flight_dynamics.moment_z                                            = True 
-    segment.assigned_control_variables.aileron_deflection.active                = True    
-    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
-    segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[0]] 
-    segment.assigned_control_variables.rudder_deflection.active                 = True    
-    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
-    segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[0]]
-    segment.assigned_control_variables.bank_angle.active                        = True    
-    segment.assigned_control_variables.bank_angle.initial_guess_values          = [[0]]     
-    '''
     mission.append_segment(segment)     
     
-        
     # ------------------------------------------------------------------------------------------------------------------------------------ 
     #   Mission definition complete    
     # ------------------------------------------------------------------------------------------------------------------------------------  
