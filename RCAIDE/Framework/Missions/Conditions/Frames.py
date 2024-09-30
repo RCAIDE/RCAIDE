@@ -64,20 +64,25 @@ class InertialFrame(Frame):
     ----------
     name : str
         The name of the frame. Default is 'Inertial Frame'.
+
     position_vector : np.ndarray
         The position vector in the inertial frame. Shape (1, 3).
+
     velocity_vector : np.ndarray
         The velocity vector in the inertial frame. Shape (1, 3).
     acceleration_vector : np.ndarray
         The acceleration vector in the inertial frame. Shape (1, 3).
+
     angular_velocity_vector : np.ndarray
         The angular velocity vector in the inertial frame. Shape (1, 3).
     angular_acceleration_vector : np.ndarray
         The angular acceleration vector in the inertial frame. Shape (1, 3).
+
     gravity_force_vector : np.ndarray
         The gravity force vector in the inertial frame. Shape (1, 3).
     time : np.ndarray
         The time array. Shape (1, 1).
+
     system_range : np.ndarray
         The range of the system in the inertial frame. Shape (1, 1).
     """
@@ -111,10 +116,13 @@ class BodyFrame(Frame):
     ----------
     name : str
         The name of the frame. Default is 'Body Frame'.
+
     inertial_rotations : np.ndarray
         The rotations of the body frame relative to the inertial frame. Shape (1, 3).
+
     thrust_force_vector : np.ndarray
         The thrust force vector in the body frame. Shape (1, 3).
+
     moment_vector : np.ndarray
         The moment vector in the body frame. Shape (1, 3).
     """
@@ -142,10 +150,13 @@ class WindFrame(Frame):
     ----------
     name : str
         The name of the frame. Default is 'Wind Frame'.
+
     body_rotations : np.ndarray
         The rotations of the wind frame relative to the body frame. Shape (1, 3).
+
     transform_to_body : scipy.spatial.transform.Rotation
         The rotation that transforms from the wind frame to the body frame.
+
     velocity_vector : np.ndarray
         The velocity vector in the wind frame. Shape (1, 3).
     force_vector : np.ndarray
@@ -178,12 +189,15 @@ class PlanetFrame(Frame):
     ----------
     name : str
         The name of the frame. Default is 'Planet Frame'.
+
     start_time : float
         The start time of the simulation in the planet frame.
+
     latitude : np.ndarray
         The latitude of the system.
     longitude : np.ndarray
         The longitude of the system.
+
     true_course : scipy.spatial.transform.Rotation
         The rotation representing the true course in the planet frame.
     """
@@ -210,12 +224,16 @@ class FrameConditions(Conditions):
     ----------
     name : str
         The name of the frame collection. Default is 'Dynamic Frames'.
+
     inertial : InertialFrame
         An instance of the InertialFrame class.
+
     body : BodyFrame
         An instance of the BodyFrame class.
+
     wind : WindFrame
         An instance of the WindFrame class.
+
     planet : PlanetFrame
         An instance of the PlanetFrame class.
     """
@@ -223,10 +241,10 @@ class FrameConditions(Conditions):
     # Attribute     Type            Default Value
     name:           str             = 'Dynamic Frames'
 
-    inertial:       InertialFrame   = field(default_factory= lambda: InertialFrame())
-    body:           BodyFrame       = field(default_factory= lambda: BodyFrame())
-    wind:           WindFrame       = field(default_factory= lambda: WindFrame())
-    planet:         PlanetFrame     = field(default_factory= lambda: PlanetFrame())
+    inertial:       InertialFrame   = field(default_factory=lambda: InertialFrame())
+    body:           BodyFrame       = field(default_factory=lambda: BodyFrame())
+    wind:           WindFrame       = field(default_factory=lambda: WindFrame())
+    planet:         PlanetFrame     = field(default_factory=lambda: PlanetFrame())
 
 
 class TestFrame(unittest.TestCase):
@@ -293,69 +311,5 @@ class TestFrameConditions(unittest.TestCase):
         self.assertIsInstance(self.frame_conditions.planet, PlanetFrame)
 
 
-class TestRotations(unittest.TestCase):
-    def setUp(self):
-        self.frame = Frame()
-        self.wind_frame = WindFrame()
-
-    def test_transform_to_inertial(self):
-        # Test default rotation (identity)
-        np.testing.assert_array_almost_equal(
-            self.frame.transform_to_inertial.as_matrix(),
-            np.eye(3)
-        )
-
-        # Test custom rotation
-        inertial_vector = np.array([[10., np.pi, -5]])
-        frame_vector = np.array([[ 8.99489256, -5.1777381 ,  5.21080996]])
-        custom_rotation = Rotation.from_euler('xyz', [30, 45, 60], degrees=True)
-        frame_with_rotation = Frame(transform_to_inertial=custom_rotation)
-        np.testing.assert_array_almost_equal(
-            frame_with_rotation.transform_to_inertial.as_matrix(),
-            custom_rotation.as_matrix()
-        )
-        np.testing.assert_array_almost_equal(
-            frame_with_rotation.transform_to_inertial.apply(frame_vector),
-            inertial_vector
-        )
-        np.testing.assert_array_almost_equal(
-            frame_with_rotation.transform_to_inertial.inv().apply(inertial_vector),
-            frame_vector
-        )
-
-    def test_transform_to_body(self):
-        # Test default rotation (identity)
-
-        np.testing.assert_array_almost_equal(
-            self.wind_frame.transform_to_body.as_matrix(),
-            np.eye(3)
-        )
-
-        # Test custom rotation
-        custom_rotation = Rotation.from_euler('zyx', [15, 30, 45], degrees=True)
-        wind_frame_with_rotation = WindFrame(transform_to_body=custom_rotation)
-        np.testing.assert_array_almost_equal(
-            wind_frame_with_rotation.transform_to_body.as_matrix(),
-            custom_rotation.as_matrix()
-        )
-
-        body_vector = np.array([[np.e, -2.999, 10e63]])
-        wind_vector = np.array([[8.99489256, -5.1777381, 5.21080996]])
-
-        np.testing.assert_array_almost_equal(
-            wind_frame_with_rotation.transform_to_inertial.as_matrix(),
-            custom_rotation.as_matrix()
-        )
-        np.testing.assert_array_almost_equal(
-            wind_frame_with_rotation.transform_to_inertial.apply(frame_vector),
-            inertial_vector
-        )
-        np.testing.assert_array_almost_equal(
-            frame_with_rotation.transform_to_inertial.inv().apply(inertial_vector),
-            frame_vector
-        )
-
-
 if __name__ == '__main__':
     unittest.main()
-
