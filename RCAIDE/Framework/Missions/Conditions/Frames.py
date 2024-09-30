@@ -223,10 +223,10 @@ class FrameConditions(Conditions):
     # Attribute     Type            Default Value
     name:           str             = 'Dynamic Frames'
 
-    inertial:       InertialFrame   = InertialFrame()
-    body:           BodyFrame       = BodyFrame()
-    wind:           WindFrame       = WindFrame()
-    planet:         PlanetFrame     = PlanetFrame()
+    inertial:       InertialFrame   = field(default_factory= lambda: InertialFrame())
+    body:           BodyFrame       = field(default_factory= lambda: BodyFrame())
+    wind:           WindFrame       = field(default_factory= lambda: WindFrame())
+    planet:         PlanetFrame     = field(default_factory= lambda: PlanetFrame())
 
 
 class TestFrame(unittest.TestCase):
@@ -291,6 +291,69 @@ class TestFrameConditions(unittest.TestCase):
         self.assertIsInstance(self.frame_conditions.body, BodyFrame)
         self.assertIsInstance(self.frame_conditions.wind, WindFrame)
         self.assertIsInstance(self.frame_conditions.planet, PlanetFrame)
+
+
+class TestRotations(unittest.TestCase):
+    def setUp(self):
+        self.frame = Frame()
+        self.wind_frame = WindFrame()
+
+    def test_transform_to_inertial(self):
+        # Test default rotation (identity)
+        np.testing.assert_array_almost_equal(
+            self.frame.transform_to_inertial.as_matrix(),
+            np.eye(3)
+        )
+
+        # Test custom rotation
+        inertial_vector = np.array([[10., np.pi, -5]])
+        frame_vector = np.array([[ 8.99489256, -5.1777381 ,  5.21080996]])
+        custom_rotation = Rotation.from_euler('xyz', [30, 45, 60], degrees=True)
+        frame_with_rotation = Frame(transform_to_inertial=custom_rotation)
+        np.testing.assert_array_almost_equal(
+            frame_with_rotation.transform_to_inertial.as_matrix(),
+            custom_rotation.as_matrix()
+        )
+        np.testing.assert_array_almost_equal(
+            frame_with_rotation.transform_to_inertial.apply(frame_vector),
+            inertial_vector
+        )
+        np.testing.assert_array_almost_equal(
+            frame_with_rotation.transform_to_inertial.inv().apply(inertial_vector),
+            frame_vector
+        )
+
+    def test_transform_to_body(self):
+        # Test default rotation (identity)
+
+        np.testing.assert_array_almost_equal(
+            self.wind_frame.transform_to_body.as_matrix(),
+            np.eye(3)
+        )
+
+        # Test custom rotation
+        custom_rotation = Rotation.from_euler('zyx', [15, 30, 45], degrees=True)
+        wind_frame_with_rotation = WindFrame(transform_to_body=custom_rotation)
+        np.testing.assert_array_almost_equal(
+            wind_frame_with_rotation.transform_to_body.as_matrix(),
+            custom_rotation.as_matrix()
+        )
+
+        body_vector = np.array([[np.e, -2.999, 10e63]])
+        wind_vector = np.array([[8.99489256, -5.1777381, 5.21080996]])
+
+        np.testing.assert_array_almost_equal(
+            wind_frame_with_rotation.transform_to_inertial.as_matrix(),
+            custom_rotation.as_matrix()
+        )
+        np.testing.assert_array_almost_equal(
+            wind_frame_with_rotation.transform_to_inertial.apply(frame_vector),
+            inertial_vector
+        )
+        np.testing.assert_array_almost_equal(
+            frame_with_rotation.transform_to_inertial.inv().apply(inertial_vector),
+            frame_vector
+        )
 
 
 if __name__ == '__main__':

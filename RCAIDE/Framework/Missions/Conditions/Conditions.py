@@ -33,7 +33,7 @@ class Conditions:
         The name of the conditions set. Default is 'Conditions'.
     number_of_rows : int
         The number of rows in the conditions set. Default is 1.
-    adjustment_from_parent : int
+    row_size_adjustment : int
         An adjustment factor for row calculations. Default is 0.
 
     Methods
@@ -63,8 +63,9 @@ class Conditions:
         self.number_of_arrays = sum(1 for v in vars(self).values() if isinstance(v, np.ndarray))
 
     def __setattr__(self, name, value):
-        if isinstance(vars(self)[name], np.ndarray) and isinstance(value, float):
-            vars(self)[name] = np.resize(value, (self.number_of_rows, self.number_of_columns))
+        if name in vars(self):
+            if isinstance(vars(self)[name], np.ndarray) and isinstance(value, float):
+                vars(self)[name] = np.resize(value, (self.number_of_rows, self.number_of_columns))
         else:
             super().__setattr__(name, value)
 
@@ -88,14 +89,14 @@ class Conditions:
         Notes
         -----
         - The actual number of rows after expansion is determined by subtracting
-          `self.adjustment_from_parent` from the input `rows`.
+          `self.row_size_adjustment` from the input `rows`.
         - Numpy arrays are resized to match the new number of rows while maintaining
           their original number of columns.
         - Nested Conditions objects are expanded recursively.
 
         """
 
-        self.number_of_rows = np.maximum(rows - self.adjustment_from_parent, 0)
+        self.number_of_rows = np.maximum(rows - self.row_size_adjustment, 0)
 
         for k, v in vars(self).items():
             if isinstance(v, Conditions):
@@ -163,14 +164,14 @@ class TestConditions(unittest.TestCase):
     def test_initial_state(self):
         self.assertEqual(self.conditions.name, 'Conditions')
         self.assertEqual(self.conditions.number_of_rows, 1)
-        self.assertEqual(self.conditions.adjustment_from_parent, 0)
+        self.assertEqual(self.conditions.row_size_adjustment, 0)
 
     def test_expand_rows(self):
         self.conditions.expand_rows(5)
         self.assertEqual(self.conditions.number_of_rows, 5)
 
     def test_expand_rows_with_adjustment(self):
-        self.conditions.adjustment_from_parent = 2
+        self.conditions.row_size_adjustment = 2
         self.conditions.expand_rows(5)
         self.assertEqual(self.conditions.number_of_rows, 3)
 
