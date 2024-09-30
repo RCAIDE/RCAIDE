@@ -21,7 +21,7 @@ from RCAIDE.Framework.Missions.Conditions import Conditions
 
 
 @dataclass(kw_only=True)
-class NoiseBreakdown(Conditions):
+class RotorBreakdown(Conditions):
 
     #Attribute      Type        Default Value
     name:           str         = 'Noise Breakdown'
@@ -37,5 +37,3 @@ class NoiseConditions(Conditions):
     name:           str             = 'Noise'
 
     total:          np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
-
-    breakdown:      NoiseBreakdown  = NoiseBreakdown()

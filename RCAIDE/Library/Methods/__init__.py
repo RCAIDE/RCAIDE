@@ -16,6 +16,7 @@ from . import Propulsors
 from . import Performance
 from . import Stability
 from . import Utilities
+from . import Numerical
 from . import Weights
 
 from . import Mass

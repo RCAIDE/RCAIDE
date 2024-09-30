@@ -22,9 +22,39 @@ from RCAIDE.Framework.Missions.Conditions import Conditions
 
 @dataclass(kw_only=True)
 class MassConditions(Conditions):
+    """
+    Represents the mass conditions for a vehicle or system.
 
-    #Attribute          Type        Default Value
-    total:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    rate_of_change:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    This class extends the Conditions base class to specifically handle mass-related
+    parameters and calculations.
 
-    breakdown:          Conditions  = Conditions(name='Mass Breakdown')
+    Attributes
+    ----------
+    name : str
+        The name of the mass conditions.
+
+    total : np.ndarray
+        The total mass of the system.
+    rate_of_change : np.ndarray
+        The rate of change of mass.
+
+    total_moment_of_inertia : np.ndarray
+        The total moment of inertia.
+
+    breakdown : Conditions
+        A nested Conditions object representing the breakdown of mass components.
+
+    Notes
+    -----
+    All attributes are initialized using default factories to ensure each instance
+    has its own copy of mutable objects.
+    """
+
+    name:                       str         = 'Mass Conditions'
+
+    total:                      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    rate_of_change:             np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+
+    total_moment_of_inertia:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+
+    breakdown:                  Conditions  = Conditions(name='Mass Breakdown')

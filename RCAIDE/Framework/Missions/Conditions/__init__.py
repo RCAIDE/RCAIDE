@@ -12,5 +12,5 @@ from Freestream         import FreestreamConditions
 from Mass               import MassConditions
 from Noise              import NoiseConditions
 from Numerics           import Numerics
-from Stability          import StabilityConditions
+from Stability          import StabilityConditions, StaticCoefficients
 

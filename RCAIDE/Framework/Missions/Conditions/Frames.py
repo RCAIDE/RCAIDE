@@ -64,20 +64,25 @@ class InertialFrame(Frame):
     ----------
     name : str
         The name of the frame. Default is 'Inertial Frame'.
+
     position_vector : np.ndarray
         The position vector in the inertial frame. Shape (1, 3).
+
     velocity_vector : np.ndarray
         The velocity vector in the inertial frame. Shape (1, 3).
     acceleration_vector : np.ndarray
         The acceleration vector in the inertial frame. Shape (1, 3).
+
     angular_velocity_vector : np.ndarray
         The angular velocity vector in the inertial frame. Shape (1, 3).
     angular_acceleration_vector : np.ndarray
         The angular acceleration vector in the inertial frame. Shape (1, 3).
+
     gravity_force_vector : np.ndarray
         The gravity force vector in the inertial frame. Shape (1, 3).
     time : np.ndarray
         The time array. Shape (1, 1).
+
     system_range : np.ndarray
         The range of the system in the inertial frame. Shape (1, 1).
     """
@@ -111,10 +116,13 @@ class BodyFrame(Frame):
     ----------
     name : str
         The name of the frame. Default is 'Body Frame'.
+
     inertial_rotations : np.ndarray
         The rotations of the body frame relative to the inertial frame. Shape (1, 3).
+
     thrust_force_vector : np.ndarray
         The thrust force vector in the body frame. Shape (1, 3).
+
     moment_vector : np.ndarray
         The moment vector in the body frame. Shape (1, 3).
     """
@@ -142,10 +150,13 @@ class WindFrame(Frame):
     ----------
     name : str
         The name of the frame. Default is 'Wind Frame'.
+
     body_rotations : np.ndarray
         The rotations of the wind frame relative to the body frame. Shape (1, 3).
+
     transform_to_body : scipy.spatial.transform.Rotation
         The rotation that transforms from the wind frame to the body frame.
+
     velocity_vector : np.ndarray
         The velocity vector in the wind frame. Shape (1, 3).
     force_vector : np.ndarray
@@ -178,12 +189,15 @@ class PlanetFrame(Frame):
     ----------
     name : str
         The name of the frame. Default is 'Planet Frame'.
+
     start_time : float
         The start time of the simulation in the planet frame.
+
     latitude : np.ndarray
         The latitude of the system.
     longitude : np.ndarray
         The longitude of the system.
+
     true_course : scipy.spatial.transform.Rotation
         The rotation representing the true course in the planet frame.
     """
@@ -210,12 +224,16 @@ class FrameConditions(Conditions):
     ----------
     name : str
         The name of the frame collection. Default is 'Dynamic Frames'.
+
     inertial : InertialFrame
         An instance of the InertialFrame class.
+
     body : BodyFrame
         An instance of the BodyFrame class.
+
     wind : WindFrame
         An instance of the WindFrame class.
+
     planet : PlanetFrame
         An instance of the PlanetFrame class.
     """
