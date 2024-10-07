@@ -77,6 +77,8 @@ class Conditions:
             if isinstance(vars(self)[name], np.ndarray) and isinstance(value, float):
                 return np.resize(value, (self.number_of_rows, self.number_of_columns))
             elif isinstance(vars(self)[name], np.ndarray) and isinstance(value, np.ndarray):
+                if len(value.shape) > 2:
+                    return np.reshape(value, (self.number_of_rows, self.number_of_columns, value.shape[2]))
                 try:
                     return np.reshape(value, (self.number_of_rows, self.number_of_columns))
                 except ValueError:
@@ -128,19 +130,28 @@ class Conditions:
         for k, v in vars(self).items():
             if isinstance(v, Conditions):
                 v.expand_rows(rows)
-            elif isinstance(v, np.ndarray):
+            elif isinstance(v, np.ndarray) and len(v.shape) <= 2:
                 vars(self)[k] = np.resize(v, (self.number_of_rows, v.shape[1]))
+            elif isinstance(v, np.ndarray):
+                new_shape = list(v.shape)
+                new_shape[:2] = [self.number_of_rows, self.number_of_columns]
+                vars(self)[k] = np.resize(v, tuple(new_shape))
 
     def expand_columns(self, columns: int):
 
         super(Conditions, self).__setattr__('number_of_columns', columns)
 
         for k, v in vars(self).items():
-            if isinstance(v, np.ndarray):
-                vars(self)[k] = np.resize(v, (self.number_of_rows, columns))
-                vars(self)[k] = vars(self)[k][:, :columns]
-            elif isinstance(v, Conditions):
+            if isinstance(v, Conditions):
                 v.expand_columns(columns)
+            elif isinstance(v, np.ndarray) and len(v.shape) <= 2:
+                vars(self)[k] = np.resize(v, (self.number_of_rows, columns))
+            elif isinstance(v, np.ndarray):
+                new_shape = list(v.shape)
+                new_shape[:2] = [self.number_of_rows, self.number_of_columns]
+                vars(self)[k] = np.resize(v, tuple(new_shape))
+
+
 
     def pack_array(self):
         """

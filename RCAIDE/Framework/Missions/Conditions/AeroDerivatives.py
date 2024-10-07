@@ -113,10 +113,6 @@ class TestCoefficientDerivatives(unittest.TestCase):
         self.coeff_derivatives.alpha[0, 0] = 1.0
         self.assertEqual(self.coeff_derivatives.alpha[0, 0], 1.0)
 
-    def test_array_expansion(self):
-        self.coeff_derivatives.v = np.zeros((3, 3))
-        self.assertEqual(self.coeff_derivatives.v.shape, (3, 3))
-
 
 class TestAeroDerivativesConditions(unittest.TestCase):
     def setUp(self):

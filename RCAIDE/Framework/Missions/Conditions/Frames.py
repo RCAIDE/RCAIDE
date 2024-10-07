@@ -48,8 +48,8 @@ class Frame(Conditions):
 
     transform_to_inertial:  Rotation  = Rotation.from_euler('zyx', [0., 0., 0.])
 
-    total_force_vector:     np.ndarray = field(default_factory=lambda: np.zeros((1, 3)))
-    total_moment_vector:    np.ndarray = field(default_factory=lambda: np.zeros((1, 3)))
+    total_force_vector:     np.ndarray = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    total_moment_vector:    np.ndarray = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
 
 @dataclass(kw_only=True)
@@ -90,15 +90,15 @@ class InertialFrame(Frame):
     # Attribute                     Type        Default Value
     name:                           str         = 'Inertial Frame'
 
-    position_vector:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    position_vector:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
-    velocity_vector:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    acceleration_vector:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    velocity_vector:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    acceleration_vector:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
-    angular_velocity_vector:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    angular_acceleration_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    angular_velocity_vector:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    angular_acceleration_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
-    gravity_force_vector:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    gravity_force_vector:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
     time:                           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
     system_range:                   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
@@ -130,11 +130,11 @@ class BodyFrame(Frame):
     # Attribute             Type        Default Value
     name:                   str         = 'Body Frame'
 
-    inertial_rotations:     np.ndarray  = field(default_factory=lambda: np.ones((1, 3)))
+    inertial_rotations:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
-    thrust_force_vector:    np.ndarray  = field(default_factory=lambda: np.ones((1, 3)))
+    thrust_force_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
-    moment_vector:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    moment_vector:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
 
 @dataclass(kw_only=True)
@@ -168,13 +168,13 @@ class WindFrame(Frame):
     # Attribute         Type        Default Value
     name:               str         = 'Wind Frame'
 
-    body_rotations:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    body_rotations:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
     transform_to_body:  Rotation    = Rotation.from_euler('zyx', [0., 0., 0.])
 
-    velocity_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    velocity_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
-    force_vector:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    moment_vector:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    force_vector:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    moment_vector:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
 
 @dataclass(kw_only=True)
@@ -253,8 +253,8 @@ class TestFrame(unittest.TestCase):
 
     def test_default_values(self):
         self.assertEqual(self.frame.name, 'Frame')
-        np.testing.assert_array_equal(self.frame.total_force_vector, np.zeros((1, 3)))
-        np.testing.assert_array_equal(self.frame.total_moment_vector, np.zeros((1, 3)))
+        np.testing.assert_array_equal(self.frame.total_force_vector, np.zeros((1, 1, 3)))
+        np.testing.assert_array_equal(self.frame.total_moment_vector, np.zeros((1, 1, 3)))
 
 
 class TestInertialFrame(unittest.TestCase):
@@ -263,8 +263,8 @@ class TestInertialFrame(unittest.TestCase):
 
     def test_default_values(self):
         self.assertEqual(self.inertial_frame.name, 'Inertial Frame')
-        np.testing.assert_array_equal(self.inertial_frame.position_vector, np.zeros((1, 3)))
-        np.testing.assert_array_equal(self.inertial_frame.velocity_vector, np.zeros((1, 3)))
+        np.testing.assert_array_equal(self.inertial_frame.position_vector, np.zeros((1, 1, 3)))
+        np.testing.assert_array_equal(self.inertial_frame.velocity_vector, np.zeros((1, 1, 3)))
         np.testing.assert_array_equal(self.inertial_frame.time, np.zeros((1, 1)))
 
 
@@ -274,8 +274,8 @@ class TestBodyFrame(unittest.TestCase):
 
     def test_default_values(self):
         self.assertEqual(self.body_frame.name, 'Body Frame')
-        np.testing.assert_array_equal(self.body_frame.inertial_rotations, np.ones((1, 3)))
-        np.testing.assert_array_equal(self.body_frame.thrust_force_vector, np.ones((1, 3)))
+        np.testing.assert_array_equal(self.body_frame.inertial_rotations, np.zeros((1, 1, 3)))
+        np.testing.assert_array_equal(self.body_frame.thrust_force_vector, np.zeros((1, 1, 3)))
 
 
 class TestWindFrame(unittest.TestCase):
@@ -284,8 +284,8 @@ class TestWindFrame(unittest.TestCase):
 
     def test_default_values(self):
         self.assertEqual(self.wind_frame.name, 'Wind Frame')
-        np.testing.assert_array_equal(self.wind_frame.body_rotations, np.zeros((1, 3)))
-        np.testing.assert_array_equal(self.wind_frame.velocity_vector, np.zeros((1, 3)))
+        np.testing.assert_array_equal(self.wind_frame.body_rotations, np.zeros((1, 1, 3)))
+        np.testing.assert_array_equal(self.wind_frame.velocity_vector, np.zeros((1, 1, 3)))
 
 
 class TestPlanetFrame(unittest.TestCase):
