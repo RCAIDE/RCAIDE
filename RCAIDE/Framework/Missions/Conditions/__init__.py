@@ -17,6 +17,8 @@ from .Freestream import FreestreamConditions
 
 from .Mass import MassConditions
 
+from .Numerics import NumericalTime, Numerics
+
 from .Stability import (StaticCoefficients, StaticForces, StaticMoments, CoefficientDerivatives, StaticDerivatives,
                         StaticStability, DynamicStability, StabilityConditions)
 
