@@ -141,12 +141,14 @@ class System(Component):
 
     def sum_moments_of_inertia(self):
 
-        def _subcomponent_MOI(c: Component) -> np.ndarray:
-            r = np.linalg.norm((c.origin + c.mass_properties.center_of_gravity) - self.origin)
-            sc_MOI = c.mass_properties.moments_of_inertia + c.mass_properties.total * r ** 2 * np.eye(3)
-            return sc_MOI
+        raise NotImplementedError("Subcomponent moments of inertia calculation is not implemented for the System class.")
 
-        self.mass_properties.subcomponent_moments_of_inertia = [self.sum_moments_of_inertia._subcomponent_MOI(c) for c in self.subcomponents]
+        # def _subcomponent_MOI(c: Component) -> np.ndarray:
+        #     r = np.linalg.norm((c.origin + c.mass_properties.center_of_gravity) - self.origin)
+        #     sc_MOI = c.mass_properties.moments_of_inertia + c.mass_properties.total * r ** 2 * np.eye(3)
+        #     return sc_MOI
+        #
+        # self.mass_properties.subcomponent_moments_of_inertia = [self.sum_moments_of_inertia._subcomponent_MOI(c) for c in self.subcomponents]
 
         # for k, v in vars(self):
         #     if isinstance(v, Component):
@@ -160,22 +162,21 @@ class System(Component):
         #                             for s in self.segments])
         #         I_seg = np.sum(np.asarray([s.mass_properties.total for s in self.segments]) * r_seg ** 2) * np.eye(3)
         #         self.mass_properties.moments_of_inertia += I_seg
-        return None
-
-        for k, v in vars(self).items():
-            if isinstance(v, Component):
-
-
-                self.mass_properties.moments_of_inertia += (
-                        v.mass_properties.moments_of_inertia
-                        + v.mass_properties.total * r ** 2 * np.eye(3)
-                )
-
-            if len(self.segments) > 0:
-                r_seg = np.asarray([np.linalg.norm(s.origin + s.mass_properties.center_of_gravity)-self.origin
-                                    for s in self.segments])
-                I_seg = np.sum(np.asarray([s.mass_properties.total for s in self.segments]) * r_seg ** 2) * np.eye(3)
-                self.mass_properties.moments_of_inertia += I_seg
+        #
+        # for k, v in vars(self).items():
+        #     if isinstance(v, Component):
+        #
+        #
+        #         self.mass_properties.moments_of_inertia += (
+        #                 v.mass_properties.moments_of_inertia
+        #                 + v.mass_properties.total * r ** 2 * np.eye(3)
+        #         )
+        #
+        #     if len(self.segments) > 0:
+        #         r_seg = np.asarray([np.linalg.norm(s.origin + s.mass_properties.center_of_gravity)-self.origin
+        #                             for s in self.segments])
+        #         I_seg = np.sum(np.asarray([s.mass_properties.total for s in self.segments]) * r_seg ** 2) * np.eye(3)
+        #         self.mass_properties.moments_of_inertia += I_seg
 
     def sum_center_of_gravity(self):
 
@@ -210,6 +211,7 @@ class System(Component):
                 self.sum_center_of_gravity()
             if sum_moments_of_inertia:
                 self.sum_moments_of_inertia()
+
 
 if __name__ == '__main__':
     B737 = System(name='Boeing 737')
