@@ -23,6 +23,36 @@ from RCAIDE.Framework.Missions.Conditions import Conditions
 
 @dataclass
 class NetworkConditions(Conditions):
+    """
+    Represents the conditions of an energy network in a simulation.
+
+    This class encapsulates various attributes related to the energy state,
+    efficiency, power, and forces acting on an energy network.
+
+    Attributes
+    ----------
+    name : str
+        The name of the energy network. Default is 'Energy Network'.
+    
+    total_energy : np.ndarray
+        The total energy in the network. Shape: (1, 1).
+    total_efficiency : np.ndarray
+        The overall efficiency of the network. Shape: (1, 1).
+    
+    throttle : np.ndarray
+        The throttle setting of the network. Shape: (1, 1).
+    
+    total_power : np.ndarray
+        The total power output of the network. Shape: (1, 1).
+    total_force_vector : np.ndarray
+        The total force vector acting on the network. Shape: (1, 1, 3).
+    total_moment_vector : np.ndarray
+        The total moment vector acting on the network. Shape: (1, 1, 3).
+
+    Notes
+    -----
+    All numpy array attributes are initialized with zero values.
+    """
 
     # Attribute             Type        Default Value
     name:                   str         = 'Energy Network'
@@ -39,6 +69,28 @@ class NetworkConditions(Conditions):
 
 @dataclass(kw_only=True)
 class EnergyStoreConditions(Conditions):
+    """
+    Represents the conditions of an energy store in a simulation.
+
+    This class encapsulates various attributes related to the energy store,
+    including its name, gravitational effects, and total energy.
+
+    Attributes
+    ----------
+    name : str
+        The name of the energy store. Default is 'Energy Store'.
+    gravity : np.ndarray
+        The gravitational acceleration affecting the energy store.
+        Shape: (1, 1). Default is a zero array.
+    total_energy : np.ndarray
+        The total energy contained in the store.
+        Shape: (1, 1). Default is a zero array.
+
+    Notes
+    -----
+    This class inherits from the Conditions base class and uses the dataclass
+    decorator with keyword-only arguments.
+    """
 
     # Attribute         Type        Default Value
     name:               str         = 'Energy Store'
@@ -50,6 +102,38 @@ class EnergyStoreConditions(Conditions):
 
 @dataclass(kw_only=True)
 class EnergyConverterConditions(Conditions):
+    """
+    Represents the conditions of an energy converter in a simulation.
+
+    This class encapsulates various attributes related to the energy converter,
+    including its name, efficiency, power output, thrust vector, and rotational properties.
+
+    Attributes
+    ----------
+    name : str
+        The name of the energy converter. Default is 'Energy Converter'.
+    
+    efficiency : np.ndarray
+        The efficiency of the energy converter. Shape: (1, 1).
+    power : np.ndarray
+        The power output of the energy converter. Shape: (1, 1).
+    
+    thrust_vector : np.ndarray
+        The thrust vector produced by the energy converter. Shape: (1, 1, 3).
+    
+    x_axis_rotation : np.ndarray
+        The rotation around the x-axis. Shape: (1, 1).
+    y_axis_rotation : np.ndarray
+        The rotation around the y-axis. Shape: (1, 1).
+    z_axis_rotation : np.ndarray
+        The rotation around the z-axis. Shape: (1, 1).
+
+    Notes
+    -----
+    This class inherits from the Conditions base class and uses the dataclass
+    decorator with keyword-only arguments. All numpy array attributes are
+    initialized with zero values.
+    """
 
     # Attribute         Type        Default Value
     name:               str         = 'Energy Converter'
@@ -71,6 +155,39 @@ class EnergyConverterConditions(Conditions):
 
 @dataclass(kw_only=True)
 class BatteryCellConditions(EnergyStoreConditions):
+    """
+    Represents the conditions of a battery cell in a simulation.
+
+    This class encapsulates various attributes related to a battery cell,
+    including its name, cycling information, degradation factors, and physical properties.
+
+    Attributes
+    ----------
+    name : str
+        The name of the battery cell. Default is 'Battery Cell'.
+    
+    cycle_in_day : int
+        The number of charge/discharge cycles completed in a day. Default is 0.
+    resistance_growth_factor : float
+        Factor representing the increase in internal resistance over time. Default is 0.0.
+    capacity_fade_factor : float
+        Factor representing the decrease in battery capacity over time. Default is 0.0.
+    
+    mass : np.ndarray
+        The mass of the battery cell. Shape: (1, 1). Default is a zero array.
+    temperature : np.ndarray
+        The temperature of the battery cell. Shape: (1, 1). Default is a zero array.
+    charge_throughput : np.ndarray
+        The cumulative charge that has passed through the battery. Shape: (1, 1). Default is a zero array.
+    state_of_charge : np.ndarray
+        The current state of charge of the battery cell. Shape: (1, 1). Default is a zero array.
+
+    Notes
+    -----
+    This class inherits from EnergyStoreConditions and uses the dataclass
+    decorator with keyword-only arguments. All numpy array attributes are
+    initialized with zero values.
+    """
 
     # Attribute                 Type        Default Value
     name:                       str         = 'Battery Cell'
@@ -87,6 +204,38 @@ class BatteryCellConditions(EnergyStoreConditions):
 
 @dataclass(kw_only=True)
 class BatteryPackConditions(EnergyStoreConditions):
+    """
+    Represents the conditions of a battery pack in a simulation.
+
+    This class encapsulates various attributes related to a battery pack,
+    including its name, maximum total energy, cell conditions, mass, and temperature.
+
+    Attributes
+    ----------
+    name : str
+        The name of the battery pack. Default is 'Battery Pack'.
+    
+    maximum_total_energy : float
+        The maximum total energy capacity of the battery pack in watt-hours (Wh).
+        Default is 0.0.
+    
+    cell : BatteryCellConditions
+        An instance of BatteryCellConditions representing the conditions of a 
+        single cell in the battery pack. Default is a new BatteryCellConditions instance.
+    
+    mass : np.ndarray
+        The mass of the battery pack in kilograms (kg). Shape: (1, 1).
+        Default is a zero array.
+    temperature : np.ndarray
+        The temperature of the battery pack in degrees Celsius (°C). Shape: (1, 1).
+        Default is a zero array.
+
+    Notes
+    -----
+    This class inherits from EnergyStoreConditions and uses the dataclass
+    decorator with keyword-only arguments. All numpy array attributes are
+    initialized with zero values.
+    """
 
     # Attribute             Type                    Default Value
     name:                   str                     = 'Battery Pack'
@@ -106,6 +255,27 @@ class BatteryPackConditions(EnergyStoreConditions):
 
 @dataclass(kw_only=True)
 class FuelConditions(EnergyStoreConditions):
+    """
+    Represents the conditions of a fuel energy store in a simulation.
+
+    This class encapsulates attributes related to fuel storage, including
+    its name and mass. It inherits from EnergyStoreConditions and uses
+    keyword-only arguments.
+
+    Attributes
+    ----------
+    name : str
+        The name of the fuel store. Default is 'Fuel'.
+
+    mass : np.ndarray
+        The mass of the fuel in kilograms (kg). Shape: (1, 1).
+        Default is a zero array.
+
+    Notes
+    -----
+    This class uses the dataclass decorator with keyword-only arguments.
+    The mass attribute is initialized as a zero-filled numpy array.
+    """
 
     # Attribute     Type        Default Value
     name:           str         = 'Fuel'
@@ -127,8 +297,8 @@ class TestNetworkConditions(unittest.TestCase):
         np.testing.assert_array_equal(self.network.total_efficiency, np.zeros((1, 1)))
         np.testing.assert_array_equal(self.network.throttle, np.zeros((1, 1)))
         np.testing.assert_array_equal(self.network.total_power, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.network.total_force_vector, np.zeros((1, 3)))
-        np.testing.assert_array_equal(self.network.total_moment_vector, np.zeros((1, 3)))
+        np.testing.assert_array_equal(self.network.total_force_vector, np.zeros((1, 1, 3)))
+        np.testing.assert_array_equal(self.network.total_moment_vector, np.zeros((1, 1, 3)))
 
 
 class TestEnergyStoreConditions(unittest.TestCase):
@@ -149,7 +319,7 @@ class TestEnergyConverterConditions(unittest.TestCase):
         self.assertEqual(self.converter.name, 'Energy Converter')
         np.testing.assert_array_equal(self.converter.efficiency, np.zeros((1, 1)))
         np.testing.assert_array_equal(self.converter.power, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.converter.thrust_vector, np.zeros((1, 3)))
+        np.testing.assert_array_equal(self.converter.thrust_vector, np.zeros((1, 1, 3)))
         np.testing.assert_array_equal(self.converter.x_axis_rotation, np.zeros((1, 1)))
         np.testing.assert_array_equal(self.converter.y_axis_rotation, np.zeros((1, 1)))
         np.testing.assert_array_equal(self.converter.z_axis_rotation, np.zeros((1, 1)))
