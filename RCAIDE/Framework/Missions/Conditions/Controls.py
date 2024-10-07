@@ -198,25 +198,25 @@ class ControlsConditions(Conditions):
 
     name:           str                         = 'Controls'
 
-    dynamics:       DynamicsVariables           = DynamicsVariables()
+    dynamics:       DynamicsVariables           = field(default_factory=lambda: DynamicsVariables())
 
-    body_angle:     ControlVariable             = ControlVariable(name='Body Angle')
-    bank_angle:     ControlVariable             = ControlVariable(name='Bank Angle')
-    wind_angle:     ControlVariable             = ControlVariable(name='Wind Angle')
+    body_angle:     ControlVariable             = field(default_factory=lambda: ControlVariable(name='Body Angle'))
+    bank_angle:     ControlVariable             = field(default_factory=lambda: ControlVariable(name='Bank Angle'))
+    wind_angle:     ControlVariable             = field(default_factory=lambda: ControlVariable(name='Wind Angle'))
 
-    elapsed_time:   ControlVariable             = ControlVariable(name='Elapsed Time')
-    velocity:       ControlVariable             = ControlVariable(name='Velocity')
-    acceleration:   ControlVariable             = ControlVariable(name='Velocity')
-    altitude:       ControlVariable             = ControlVariable(name='Altitude')
+    elapsed_time:   ControlVariable             = field(default_factory=lambda: ControlVariable(name='Elapsed Time'))
+    velocity:       ControlVariable             = field(default_factory=lambda: ControlVariable(name='Velocity'))
+    acceleration:   ControlVariable             = field(default_factory=lambda: ControlVariable(name='Velocity'))
+    altitude:       ControlVariable             = field(default_factory=lambda: ControlVariable(name='Altitude'))
 
-    thrust:         PropulsionControlVariable   = PropulsionControlVariable(name='Thrust Vector')
-    throttle:       PropulsionControlVariable   = PropulsionControlVariable(name='Throttle')
+    thrust:         PropulsionControlVariable   = field(default_factory=lambda: PropulsionControlVariable(name='Thrust Vector'))
+    throttle:       PropulsionControlVariable   = field(default_factory=lambda: PropulsionControlVariable(name='Throttle'))
 
-    elevator:       SurfaceControlVariable      = SurfaceControlVariable(name='Elevator Controls')
-    rudder:         SurfaceControlVariable      = SurfaceControlVariable(name='Rudder Controls')
-    flaps:          SurfaceControlVariable      = SurfaceControlVariable(name='Flap Controls')
-    slats:          SurfaceControlVariable      = SurfaceControlVariable(name='Slat Controls')
-    ailerons:       SurfaceControlVariable      = SurfaceControlVariable(name='Aileron Controls')
+    elevator:       SurfaceControlVariable      = field(default_factory=lambda: SurfaceControlVariable(name='Elevator Controls'))
+    rudder:         SurfaceControlVariable      = field(default_factory=lambda: SurfaceControlVariable(name='Rudder Controls'))
+    flaps:          SurfaceControlVariable      = field(default_factory=lambda: SurfaceControlVariable(name='Flap Controls'))
+    slats:          SurfaceControlVariable      = field(default_factory=lambda: SurfaceControlVariable(name='Slat Controls'))
+    ailerons:       SurfaceControlVariable      = field(default_factory=lambda: SurfaceControlVariable(name='Aileron Controls'))
 
 
 class TestDynamicsVariables(unittest.TestCase):
