@@ -14,7 +14,8 @@ from dataclasses import dataclass, field
 import numpy as np
 
 # RCAIDE imports
-from RCAIDE.Framework.Missions.Conditions import Conditions, StaticCoefficients
+from RCAIDE.Framework.Missions.Conditions import Conditions
+from RCAIDE.Framework.Missions.Conditions.Stability import StaticCoefficients
 from RCAIDE.Framework import Component
 
 # ----------------------------------------------------------------------------------------------------------------------
