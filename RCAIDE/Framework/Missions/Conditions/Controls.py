@@ -7,6 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+import unittest
 from dataclasses import dataclass, field
 
 # package imports
@@ -218,6 +219,85 @@ class ControlsConditions(Conditions):
     ailerons:       SurfaceControlVariable      = SurfaceControlVariable(name='Aileron Controls')
 
 
+class TestDynamicsVariables(unittest.TestCase):
+    def test_default_values(self):
+        dv = DynamicsVariables()
+        self.assertEqual(dv.name, 'Dynamics')
+        self.assertFalse(dv.force_x)
+        self.assertFalse(dv.force_y)
+        self.assertFalse(dv.force_z)
+        self.assertFalse(dv.moment_x)
+        self.assertFalse(dv.moment_y)
+        self.assertFalse(dv.moment_z)
+
+    def test_custom_values(self):
+        dv = DynamicsVariables(force_x=True, moment_z=True)
+        self.assertTrue(dv.force_x)
+        self.assertFalse(dv.force_y)
+        self.assertTrue(dv.moment_z)
 
 
+class TestControlVariable(unittest.TestCase):
+    def test_default_values(self):
+        cv = ControlVariable()
+        self.assertEqual(cv.name, 'Control Variable')
+        self.assertFalse(cv.active)
+        self.assertIsNone(cv.initial_guess)
+        np.testing.assert_array_equal(cv.value, np.zeros((1, 1)))
 
+    def test_custom_values(self):
+        cv = ControlVariable(name='Test', active=True, initial_guess=5.0)
+        self.assertEqual(cv.name, 'Test')
+        self.assertTrue(cv.active)
+        self.assertEqual(cv.initial_guess, 5.0)
+
+
+class TestSurfaceControlVariable(unittest.TestCase):
+    def test_default_values(self):
+        scv = SurfaceControlVariable()
+        self.assertEqual(scv.name, 'Surface Control Variable')
+        self.assertEqual(scv.surfaces, [])
+        np.testing.assert_array_equal(scv.deflection, np.zeros((1, 1)))
+        self.assertIsInstance(scv.static_stability, StaticCoefficients)
+
+    def test_custom_values(self):
+        surface = Component()
+        scv = SurfaceControlVariable(name='Elevator', surfaces=[surface])
+        self.assertEqual(scv.name, 'Elevator')
+        self.assertEqual(len(scv.surfaces), 1)
+        self.assertIs(scv.surfaces[0], surface)
+
+
+class TestPropulsionControlVariable(unittest.TestCase):
+    def test_default_values(self):
+        pcv = PropulsionControlVariable()
+        self.assertEqual(pcv.name, 'Propulsion Control Variable')
+        self.assertEqual(pcv.propulsors, [])
+
+    def test_custom_values(self):
+        propulsor = Component()
+        pcv = PropulsionControlVariable(name='Thrust', propulsors=[propulsor])
+        self.assertEqual(pcv.name, 'Thrust')
+        self.assertEqual(len(pcv.propulsors), 1)
+        self.assertIs(pcv.propulsors[0], propulsor)
+
+
+class TestControlsConditions(unittest.TestCase):
+    def test_default_values(self):
+        cc = ControlsConditions()
+        self.assertEqual(cc.name, 'Controls')
+        self.assertIsInstance(cc.dynamics, DynamicsVariables)
+        self.assertIsInstance(cc.body_angle, ControlVariable)
+        self.assertIsInstance(cc.thrust, PropulsionControlVariable)
+        self.assertIsInstance(cc.elevator, SurfaceControlVariable)
+
+    def test_custom_values(self):
+        cc = ControlsConditions(name='Custom Controls')
+        self.assertEqual(cc.name, 'Custom Controls')
+        self.assertEqual(cc.body_angle.name, 'Body Angle')
+        self.assertEqual(cc.thrust.name, 'Thrust Vector')
+        self.assertEqual(cc.elevator.name, 'Elevator Controls')
+
+
+if __name__ == '__main__':
+    unittest.main()
