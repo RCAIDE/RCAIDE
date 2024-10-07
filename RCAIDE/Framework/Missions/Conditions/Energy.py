@@ -7,6 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+import unittest
 from dataclasses import dataclass, field
 
 # package imports
@@ -23,17 +24,17 @@ from RCAIDE.Framework.Missions.Conditions import Conditions
 @dataclass
 class NetworkConditions(Conditions):
 
-    # Attribute         Type        Default Value
-    name:               str         = 'Energy Network'
+    # Attribute             Type        Default Value
+    name:                   str         = 'Energy Network'
 
-    total_energy:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    total_efficiency:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    total_energy:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    total_efficiency:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
-    throttle:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    total_power:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    throttle:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    total_power:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
-    total_force:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    total_moment:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    total_force_vector:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    total_moment_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
 
 
 @dataclass(kw_only=True)
@@ -110,3 +111,78 @@ class FuelConditions(EnergyStoreConditions):
     name:           str         = 'Fuel'
 
     mass:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Unit Tests
+# ----------------------------------------------------------------------------------------------------------------------
+
+class TestNetworkConditions(unittest.TestCase):
+    def setUp(self):
+        self.network = NetworkConditions()
+
+    def test_default_values(self):
+        self.assertEqual(self.network.name, 'Energy Network')
+        np.testing.assert_array_equal(self.network.total_energy, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.network.total_efficiency, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.network.throttle, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.network.total_power, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.network.total_force_vector, np.zeros((1, 3)))
+        np.testing.assert_array_equal(self.network.total_moment_vector, np.zeros((1, 3)))
+
+class TestEnergyStoreConditions(unittest.TestCase):
+    def setUp(self):
+        self.store = EnergyStoreConditions()
+
+    def test_default_values(self):
+        self.assertEqual(self.store.name, 'Energy Store')
+        np.testing.assert_array_equal(self.store.gravity, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.store.total_energy, np.zeros((1, 1)))
+
+class TestEnergyConverterConditions(unittest.TestCase):
+    def setUp(self):
+        self.converter = EnergyConverterConditions()
+
+    def test_default_values(self):
+        self.assertEqual(self.converter.name, 'Energy Converter')
+        np.testing.assert_array_equal(self.converter.efficiency, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.converter.power, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.converter.thrust, np.zeros((1, 3)))
+        np.testing.assert_array_equal(self.converter.x_axis_rotation, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.converter.y_axis_rotation, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.converter.z_axis_rotation, np.zeros((1, 1)))
+
+class TestBatteryCellConditions(unittest.TestCase):
+    def setUp(self):
+        self.cell = BatteryCellConditions()
+
+    def test_default_values(self):
+        self.assertEqual(self.cell.name, 'Battery Cell')
+        self.assertEqual(self.cell.cycle_in_day, 0)
+        self.assertEqual(self.cell.resistance_growth_factor, 0.0)
+        self.assertEqual(self.cell.capacity_fade_factor, 0.0)
+        np.testing.assert_array_equal(self.cell.mass, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.cell.temperature, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.cell.charge_throughput, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.cell.state_of_charge, np.zeros((1, 1)))
+
+class TestBatteryPackConditions(unittest.TestCase):
+    def setUp(self):
+        self.pack = BatteryPackConditions()
+
+    def test_default_values(self):
+        self.assertEqual(self.pack.name, 'Battery Pack')
+        self.assertEqual(self.pack.maximum_total_energy, 0.0)
+        self.assertIsInstance(self.pack.cell, BatteryCellConditions)
+        np.testing.assert_array_equal(self.pack.mass, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.pack.temperature, np.zeros((1, 1)))
+
+class TestFuelConditions(unittest.TestCase):
+    def setUp(self):
+        self.fuel = FuelConditions()
+
+    def test_default_values(self):
+        self.assertEqual(self.fuel.name, 'Fuel')
+        np.testing.assert_array_equal(self.fuel.mass, np.zeros((1, 1)))
+
+if __name__ == '__main__':
+    unittest.main()
