@@ -95,8 +95,6 @@ class EnergyStoreConditions(Conditions):
     # Attribute         Type        Default Value
     name:               str         = 'Energy Store'
 
-    gravity:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-
     total_energy:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
 
@@ -277,10 +275,11 @@ class FuelConditions(EnergyStoreConditions):
     The mass attribute is initialized as a zero-filled numpy array.
     """
 
-    # Attribute     Type        Default Value
-    name:           str         = 'Fuel'
+    # Attribute         Type        Default Value
+    name:               str         = 'Fuel'
 
-    mass:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    mass:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    specific_gravity:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Unit Tests

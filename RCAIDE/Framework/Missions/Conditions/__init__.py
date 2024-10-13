@@ -1,11 +1,9 @@
 from .Conditions import Conditions
 
-from .AeroDerivatives import AeroDerivativesConditions
-
 from .Aerodynamics import (AerodynamicAngles, LiftCoefficients, InducedDrag, DragCoefficients, AerodynamicCoefficients,
                            AerodynamicsConditions)
 
-from .Controls import (DynamicsVariables, ControlVariable, SurfaceControlVariable, PropulsionControlVariable,
+from .Controls import (DynamicsResiduals, ControlVariable, SurfaceControlVariable, PropulsionControlVariable,
                        ControlsConditions)
 
 from .Energy import (NetworkConditions, EnergyStoreConditions, EnergyConverterConditions, BatteryCellConditions,

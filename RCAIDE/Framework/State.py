@@ -26,22 +26,20 @@ class State(Conditions):
 
     # Attribute         Type                        Default Value
     name:               str                         = 'State'
-    numerics:           Numerics                    = Numerics()
     initials:           Self                        = None
+    numerics:           Numerics                    = field(default_factory=lambda: Numerics())
 
-    frames:             FrameConditions             = FrameConditions()
-    freestream:         FreestreamConditions        = FreestreamConditions()
+    frames:             FrameConditions             = field(default_factory=lambda: FrameConditions())
+    freestream:         FreestreamConditions        = field(default_factory=lambda: FreestreamConditions())
 
-    mass:               MassConditions              = MassConditions()
-    energy:             NetworkConditions           = NetworkConditions()
+    mass:               MassConditions              = field(default_factory=lambda: MassConditions())
+    energy:             NetworkConditions           = field(default_factory=lambda: NetworkConditions())
 
-    aerodynamics:       AerodynamicsConditions      = AerodynamicsConditions()
-    aero_derivatives:   AeroDerivativesConditions   = AeroDerivativesConditions()
+    aerodynamics:       AerodynamicsConditions      = field(default_factory=lambda: AerodynamicsConditions())
+    controls:           ControlsConditions          = field(default_factory=lambda: ControlsConditions())
 
-    controls:           ControlsConditions          = ControlsConditions()
-
-    unknowns:           Conditions                  = Conditions(name='Unknowns')
-    residuals:          Conditions                  = Conditions(name='Residuals')
+    unknowns:           Conditions                  = field(default_factory=lambda: Conditions(name='Unknowns'))
+    residuals:          Conditions                  = field(default_factory=lambda: Conditions(name='Residuals'))
 
     def __post_init__(self):
         self.initials = State(name='Initial State')

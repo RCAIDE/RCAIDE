@@ -4,7 +4,7 @@
 # Created: Aug 2024, RCAIDE Team
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
+#  Import
 # ----------------------------------------------------------------------------------------------------------------------
 
 import unittest
@@ -200,6 +200,9 @@ class CoefficientDerivatives(Conditions):
 
     # Attribute     Type        Default Value
     name:           str         = 'Coefficient Static Stability Derivatives'
+
+    # Throttle Derivative
+    throttle:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
     # Stability Axis Derivatives
     alpha:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))

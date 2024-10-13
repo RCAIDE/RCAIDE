@@ -79,7 +79,8 @@ class FreestreamConditions(Conditions):
 
     name:               str         = 'Freestream'
 
-    velocity:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    speed:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+
     u:                  np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
     v:                  np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
     w:                  np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))

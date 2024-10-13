@@ -24,7 +24,7 @@ from RCAIDE.Framework import Component
 
 
 @dataclass(kw_only=True)
-class DynamicsVariables(Conditions):
+class DynamicsResiduals(Conditions):
     """
     Represents the dynamics variables for a simulation.
 
@@ -103,8 +103,6 @@ class SurfaceControlVariable(Conditions):
     ----------
     name : str
         The name of the surface control variable. Defaults to 'Surface Control Variable'.
-    surfaces : list[Component]
-        A list of Component objects representing the surfaces associated with this control variable.
     deflection : np.ndarray
         An array representing the deflection of the surface. Initialized as a 1x1 zero array.
     static_stability : StaticCoefficients
@@ -118,8 +116,6 @@ class SurfaceControlVariable(Conditions):
 
     #Attribute          Type                Default Value
     name:               str                 = 'Surface Control Variable'
-
-    surfaces:           list[Component]     = field(default_factory=list)
 
     deflection:         np.ndarray          = field(default_factory=lambda: np.zeros((1, 1)))
 
@@ -145,7 +141,7 @@ class PropulsionControlVariable(Conditions):
     #Attribute  Type            Default Value
     name:       str             = 'Propulsion Control Variable'
 
-    propulsors: list[Component] = field(default_factory=list)
+    value:      np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
 
 
 @dataclass(kw_only=True)
@@ -161,7 +157,7 @@ class ControlsConditions(Conditions):
     ----------
     name : str
         The name of the control conditions, default is 'Controls'.
-    dynamics : DynamicsVariables
+    dynamics : DynamicsResiduals
         Object representing the dynamic variables of the simulation.
 
     body_angle : ControlVariable
@@ -199,7 +195,7 @@ class ControlsConditions(Conditions):
 
     name:           str                         = 'Controls'
 
-    dynamics:       DynamicsVariables           = field(default_factory=lambda: DynamicsVariables())
+    dynamics:       DynamicsResiduals           = field(default_factory=lambda: DynamicsResiduals())
 
     body_angle:     ControlVariable             = field(default_factory=lambda: ControlVariable(name='Body Angle'))
     bank_angle:     ControlVariable             = field(default_factory=lambda: ControlVariable(name='Bank Angle'))
@@ -210,7 +206,7 @@ class ControlsConditions(Conditions):
     acceleration:   ControlVariable             = field(default_factory=lambda: ControlVariable(name='Velocity'))
     altitude:       ControlVariable             = field(default_factory=lambda: ControlVariable(name='Altitude'))
 
-    thrust:         PropulsionControlVariable   = field(default_factory=lambda: PropulsionControlVariable(name='Thrust Vector'))
+    thrust:         PropulsionControlVariable   = field(default_factory=lambda: PropulsionControlVariable(name='Thrust'))
     throttle:       PropulsionControlVariable   = field(default_factory=lambda: PropulsionControlVariable(name='Throttle'))
 
     elevator:       SurfaceControlVariable      = field(default_factory=lambda: SurfaceControlVariable(name='Elevator Controls'))
@@ -222,7 +218,7 @@ class ControlsConditions(Conditions):
 
 class TestDynamicsVariables(unittest.TestCase):
     def test_default_values(self):
-        dv = DynamicsVariables()
+        dv = DynamicsResiduals()
         self.assertEqual(dv.name, 'Dynamics')
         self.assertFalse(dv.force_x)
         self.assertFalse(dv.force_y)
@@ -232,7 +228,7 @@ class TestDynamicsVariables(unittest.TestCase):
         self.assertFalse(dv.moment_z)
 
     def test_custom_values(self):
-        dv = DynamicsVariables(force_x=True, moment_z=True)
+        dv = DynamicsResiduals(force_x=True, moment_z=True)
         self.assertTrue(dv.force_x)
         self.assertFalse(dv.force_y)
         self.assertTrue(dv.moment_z)
@@ -257,37 +253,22 @@ class TestSurfaceControlVariable(unittest.TestCase):
     def test_default_values(self):
         scv = SurfaceControlVariable()
         self.assertEqual(scv.name, 'Surface Control Variable')
-        self.assertEqual(scv.surfaces, [])
         np.testing.assert_array_equal(scv.deflection, np.zeros((1, 1)))
         self.assertIsInstance(scv.static_stability, StaticCoefficients)
-
-    def test_custom_values(self):
-        surface = Component()
-        scv = SurfaceControlVariable(name='Elevator', surfaces=[surface])
-        self.assertEqual(scv.name, 'Elevator')
-        self.assertEqual(len(scv.surfaces), 1)
-        self.assertIs(scv.surfaces[0], surface)
 
 
 class TestPropulsionControlVariable(unittest.TestCase):
     def test_default_values(self):
         pcv = PropulsionControlVariable()
         self.assertEqual(pcv.name, 'Propulsion Control Variable')
-        self.assertEqual(pcv.propulsors, [])
-
-    def test_custom_values(self):
-        propulsor = Component()
-        pcv = PropulsionControlVariable(name='Thrust', propulsors=[propulsor])
-        self.assertEqual(pcv.name, 'Thrust')
-        self.assertEqual(len(pcv.propulsors), 1)
-        self.assertIs(pcv.propulsors[0], propulsor)
+        np.testing.assert_array_equal(pcv.value, np.zeros((1, 1)))
 
 
 class TestControlsConditions(unittest.TestCase):
     def test_default_values(self):
         cc = ControlsConditions()
         self.assertEqual(cc.name, 'Controls')
-        self.assertIsInstance(cc.dynamics, DynamicsVariables)
+        self.assertIsInstance(cc.dynamics, DynamicsResiduals)
         self.assertIsInstance(cc.body_angle, ControlVariable)
         self.assertIsInstance(cc.thrust, PropulsionControlVariable)
         self.assertIsInstance(cc.elevator, SurfaceControlVariable)
@@ -296,7 +277,7 @@ class TestControlsConditions(unittest.TestCase):
         cc = ControlsConditions(name='Custom Controls')
         self.assertEqual(cc.name, 'Custom Controls')
         self.assertEqual(cc.body_angle.name, 'Body Angle')
-        self.assertEqual(cc.thrust.name, 'Thrust Vector')
+        self.assertEqual(cc.thrust.name, 'Thrust')
         self.assertEqual(cc.elevator.name, 'Elevator Controls')
 
 

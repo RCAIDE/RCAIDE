@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 
 # package imports
 import numpy as np
-from scipy.spatial.transform import Rotation
+from scipy.spatial.transform import Rotation as SP_Rotation
 
 # RCAIDE imports
 from RCAIDE.Framework.Missions.Conditions import Conditions
@@ -43,13 +43,13 @@ class Frame(Conditions):
             The total moment vector acting on the frame.
         """
 
-    # Attribute             Type        Default Value
-    name:                   str         = 'Frame'
+    # Attribute             Type            Default Value
+    name:                   str             = 'Frame'
 
-    transform_to_inertial:  Rotation  = Rotation.from_euler('zyx', [0., 0., 0.])
+    transform_to_inertial:  SP_Rotation     = SP_Rotation.from_euler('zyx', [0., 0., 0.])
 
-    total_force_vector:     np.ndarray = field(default_factory=lambda: np.zeros((1, 1, 3)))
-    total_moment_vector:    np.ndarray = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    total_force_vector:     np.ndarray      = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    total_moment_vector:    np.ndarray      = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
 
 @dataclass(kw_only=True)
@@ -165,16 +165,16 @@ class WindFrame(Frame):
         The moment vector in the wind frame. Shape (1, 3).
     """
 
-    # Attribute         Type        Default Value
-    name:               str         = 'Wind Frame'
+    # Attribute         Type            Default Value
+    name:               str             = 'Wind Frame'
 
-    body_rotations:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
-    transform_to_body:  Rotation    = Rotation.from_euler('zyx', [0., 0., 0.])
+    body_rotations:     np.ndarray      = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    transform_to_body:  SP_Rotation     = SP_Rotation.from_euler('zyx', [0., 0., 0.])
 
-    velocity_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    velocity_vector:    np.ndarray      = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
-    force_vector:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
-    moment_vector:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    force_vector:       np.ndarray      = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    moment_vector:      np.ndarray      = field(default_factory=lambda: np.zeros((1, 1, 3)))
 
 
 @dataclass(kw_only=True)
@@ -202,14 +202,14 @@ class PlanetFrame(Frame):
         The rotation representing the true course in the planet frame.
     """
 
-    # Attribute         Type        Default Value
-    name:               str         = 'Planet Frame'
-    start_time:         float       = None
+    # Attribute     Type        Default Value
+    name:           str         = 'Planet Frame'
+    start_time:     float       = None
 
-    latitude:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    longitude:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    latitude:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    longitude:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
-    true_course:        Rotation    = Rotation.from_euler('zyx', [0., 0., 0.])
+    true_course:    SP_Rotation = SP_Rotation.from_euler('zyx', [0., 0., 0.])
 
 
 @dataclass(kw_only=True)
