@@ -16,6 +16,8 @@ import numpy as np
 
 # RCAIDE imports
 
+ComponentType = TypeVar("ComponentType", bound="Component")
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Components
 # ----------------------------------------------------------------------------------------------------------------------
@@ -24,54 +26,58 @@ import numpy as np
 @dataclass(kw_only=True)
 class ComponentRatios:
 
-    effective:  float   = 1.0
-    nose:       float   = 0.0
-    tail:       float   = 0.0
+    # Attribute     Type    Default Value
+    effective:      float   = 1.0
+    nose:           float   = 0.0
+    tail:           float   = 0.0
 
 
 @dataclass(kw_only=True)
 class ComponentDimensions:
 
-    ordinal_direction: bool  = field(default=False)
+    # Attribute         Type    Default Value
+    ordinal_direction:  bool    = field(default=False)
 
-    reference: float = field(default=0.0)
-    total: float = field(default=0.0)
-    maximum: float = field(default=0.0)
-    effective: float = field(default=0.0)
+    reference:          float   = field(default=0.0)
+    total:              float   = field(default=0.0)
+    maximum:            float   = field(default=0.0)
+    effective:          float   = field(default=0.0)
 
-    projected: float = field(default=0.0)
-    front_projected: float = field(default=0.0)
-    top_projected: float = field(default=0.0)
-    side_projected: float = field(default=0.0)
+    projected:          float   = field(default=0.0)
+    front_projected:    float   = field(default=0.0)
+    top_projected:      float   = field(default=0.0)
+    side_projected:     float   = field(default=0.0)
 
 
 @dataclass(kw_only=True)
 class ComponentAreas:
 
-    reference: float = field(default=0.0)
-    total: float = field(default=0.0)
-    maximum: float = field(default=0.0)
-    effective: float = field(default=0.0)
+    # Attribute         Type    Default Value
+    reference:          float   = field(default=0.0)
+    total:              float   = field(default=0.0)
+    maximum:            float   = field(default=0.0)
+    effective:          float   = field(default=0.0)
 
-    inflow: float = field(default=0.0)
-    outflow: float = field(default=0.0)
-    exit: float = field(default=0.0)
+    inflow:             float   = field(default=0.0)
+    outflow:            float   = field(default=0.0)
+    exit:               float   = field(default=0.0)
 
-    projected: float = field(default=0.0)
-    front_projected: float = field(default=0.0)
-    top_projected: float = field(default=0.0)
-    side_projected: float = field(default=0.0)
+    projected:          float   = field(default=0.0)
+    front_projected:    float   = field(default=0.0)
+    top_projected:      float   = field(default=0.0)
+    side_projected:     float   = field(default=0.0)
 
-    wetted: float = field(default=0.0)
-    exposed: float = field(default=0.0)
+    wetted:             float   = field(default=0.0)
+    exposed:            float   = field(default=0.0)
 
 
 @dataclass(kw_only=True)
 class MaterialProperties:
 
-    tensile_stress_carrier: dataclass  = field(default_factory=dataclass)
-    torsional_stress_carrier: dataclass  = field(default_factory=dataclass)
-    shear_stress_carrier: dataclass  = field(default_factory=dataclass)
+    # Attribute                 Type        Default Value
+    tensile_stress_carrier:     dataclass   = field(default_factory=dataclass)
+    torsional_stress_carrier:   dataclass   = field(default_factory=dataclass)
+    shear_stress_carrier:       dataclass   = field(default_factory=dataclass)
 
 
 @dataclass(kw_only=True)
@@ -95,9 +101,6 @@ class MassProperties:
                     self.density = self.total / self.volume
                 except ValueError:
                     warn("Error in calculating component density. Check mass and volume specifications.")
-
-
-ComponentType = TypeVar("ComponentType", bound="Component")
 
 
 @dataclass(kw_only=True)
@@ -143,50 +146,15 @@ class System(Component):
 
         raise NotImplementedError("Subcomponent moments of inertia calculation is not implemented for the System class.")
 
-        # def _subcomponent_MOI(c: Component) -> np.ndarray:
-        #     r = np.linalg.norm((c.origin + c.mass_properties.center_of_gravity) - self.origin)
-        #     sc_MOI = c.mass_properties.moments_of_inertia + c.mass_properties.total * r ** 2 * np.eye(3)
-        #     return sc_MOI
-        #
-        # self.mass_properties.subcomponent_moments_of_inertia = [self.sum_moments_of_inertia._subcomponent_MOI(c) for c in self.subcomponents]
-
-        # for k, v in vars(self):
-        #     if isinstance(v, Component):
-        #         self.mass_properties.moments_of_inertia += (
-        #                 v.mass_properties.moments_of_inertia
-        #                 + v.mass_properties.total * r ** 2 * np.eye(3)
-        #         )
-        #
-        #     if len(self.segments) > 0:
-        #         r_seg = np.asarray([np.linalg.norm(s.origin + s.mass_properties.center_of_gravity)-self.origin
-        #                             for s in self.segments])
-        #         I_seg = np.sum(np.asarray([s.mass_properties.total for s in self.segments]) * r_seg ** 2) * np.eye(3)
-        #         self.mass_properties.moments_of_inertia += I_seg
-        #
-        # for k, v in vars(self).items():
-        #     if isinstance(v, Component):
-        #
-        #
-        #         self.mass_properties.moments_of_inertia += (
-        #                 v.mass_properties.moments_of_inertia
-        #                 + v.mass_properties.total * r ** 2 * np.eye(3)
-        #         )
-        #
-        #     if len(self.segments) > 0:
-        #         r_seg = np.asarray([np.linalg.norm(s.origin + s.mass_properties.center_of_gravity)-self.origin
-        #                             for s in self.segments])
-        #         I_seg = np.sum(np.asarray([s.mass_properties.total for s in self.segments]) * r_seg ** 2) * np.eye(3)
-        #         self.mass_properties.moments_of_inertia += I_seg
-
     def sum_center_of_gravity(self):
 
         self.mass_properties.center_of_gravity = np.zeros(3)
 
-        for k, v in vars(self).items():
-            rel_origin = v.origin - self.origin
-            rel_cg = rel_origin + v.mass_properties.center_of_gravity
+        for sc in self.subcomponents:
+            rel_origin = sc.origin - self.origin
+            rel_cg = rel_origin + sc.mass_properties.center_of_gravity
 
-            mass_fraction = v.mass_properties.total / self.mass_properties.total
+            mass_fraction = sc.mass_properties.total / self.mass_properties.total
             weighted_cg = rel_cg * mass_fraction
 
             self.mass_properties.center_of_gravity += weighted_cg
@@ -195,7 +163,7 @@ class System(Component):
                          subcomponent: Component,
                          sum_mass=True,
                          sum_center_of_gravity=True,
-                         sum_moments_of_inertia=True
+                         sum_moments_of_inertia=False
                          ):
 
         if isinstance(subcomponent, Component):
