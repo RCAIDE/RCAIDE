@@ -288,6 +288,59 @@ class TestWindFrame(unittest.TestCase):
         np.testing.assert_array_equal(self.wind_frame.velocity_vector, np.zeros((1, 1, 3)))
 
 
+class TestRotationUsage(unittest.TestCase):
+    def setUp(self):
+        self.frame = Frame()
+        self.wind_frame = WindFrame()
+
+    def test_frame_transform_to_inertial(self):
+        # Test default initialization
+        self.assertIsInstance(self.frame.transform_to_inertial, SP_Rotation)
+        np.testing.assert_array_almost_equal(
+            self.frame.transform_to_inertial.as_euler('zyx'),
+            [0, 0, 0]
+        )
+
+        # Test with custom rotation
+        custom_rotation = SP_Rotation.from_euler('zyx', [np.pi/4, np.pi/6, np.pi/3])
+        self.frame.transform_to_inertial = custom_rotation
+        np.testing.assert_array_almost_equal(
+            self.frame.transform_to_inertial.as_euler('zyx'),
+            [np.pi/4, np.pi/6, np.pi/3]
+        )
+
+    def test_wind_frame_transform_to_body(self):
+        # Test default initialization
+        self.assertIsInstance(self.wind_frame.transform_to_body, SP_Rotation)
+        np.testing.assert_array_almost_equal(
+            self.wind_frame.transform_to_body.as_euler('zyx'),
+            [0, 0, 0]
+        )
+
+        # Test with custom rotation
+        custom_rotation = SP_Rotation.from_euler('zyx', [np.pi/2, np.pi/4, np.pi/6])
+        self.wind_frame.transform_to_body = custom_rotation
+        np.testing.assert_array_almost_equal(
+            self.wind_frame.transform_to_body.as_euler('zyx'),
+            [np.pi/2, np.pi/4, np.pi/6]
+        )
+
+    def test_rotation_composition(self):
+        # Test composition of rotations
+        body_to_inertial = SP_Rotation.from_euler('zyx', [np.pi/4, 0, 0])
+        wind_to_body = SP_Rotation.from_euler('zyx', [0, np.pi/4, 0])
+
+        self.frame.transform_to_inertial = body_to_inertial
+        self.wind_frame.transform_to_body = wind_to_body
+
+        wind_to_inertial = wind_to_body * body_to_inertial
+
+        np.testing.assert_array_almost_equal(
+            wind_to_inertial.as_euler('zyx'),
+            [np.pi/4, np.pi/4, 0]
+        )
+
+
 class TestPlanetFrame(unittest.TestCase):
     def setUp(self):
         self.planet_frame = PlanetFrame()
