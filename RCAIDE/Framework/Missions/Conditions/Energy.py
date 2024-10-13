@@ -35,19 +35,19 @@ class NetworkConditions(Conditions):
         The name of the energy network. Default is 'Energy Network'.
     
     total_energy : np.ndarray
-        The total energy in the network. Shape: (1, 1).
+        The total energy in the network.
     total_efficiency : np.ndarray
-        The overall efficiency of the network. Shape: (1, 1).
+        The overall efficiency of the network.
     
     throttle : np.ndarray
-        The throttle setting of the network. Shape: (1, 1).
+        The throttle setting of the network.
     
     total_power : np.ndarray
-        The total power output of the network. Shape: (1, 1).
+        The total power output of the network.
     total_force_vector : np.ndarray
-        The total force vector acting on the network. Shape: (1, 1, 3).
+        The total force vector acting on the network.
     total_moment_vector : np.ndarray
-        The total moment vector acting on the network. Shape: (1, 1, 3).
+        The total moment vector acting on the network.
 
     Notes
     -----
@@ -79,9 +79,7 @@ class EnergyStoreConditions(Conditions):
     ----------
     name : str
         The name of the energy store. Default is 'Energy Store'.
-    gravity : np.ndarray
-        The gravitational acceleration affecting the energy store.
-        Shape: (1, 1). Default is a zero array.
+
     total_energy : np.ndarray
         The total energy contained in the store.
         Shape: (1, 1). Default is a zero array.
@@ -112,19 +110,19 @@ class EnergyConverterConditions(Conditions):
         The name of the energy converter. Default is 'Energy Converter'.
     
     efficiency : np.ndarray
-        The efficiency of the energy converter. Shape: (1, 1).
+        The efficiency of the energy converter.
     power : np.ndarray
-        The power output of the energy converter. Shape: (1, 1).
+        The power output of the energy converter.
     
     thrust_vector : np.ndarray
-        The thrust vector produced by the energy converter. Shape: (1, 1, 3).
+        The thrust vector produced by the energy converter.
     
     x_axis_rotation : np.ndarray
-        The rotation around the x-axis. Shape: (1, 1).
+        The rotation around the x-axis.
     y_axis_rotation : np.ndarray
-        The rotation around the y-axis. Shape: (1, 1).
+        The rotation around the y-axis.
     z_axis_rotation : np.ndarray
-        The rotation around the z-axis. Shape: (1, 1).
+        The rotation around the z-axis.
 
     Notes
     -----
@@ -172,13 +170,13 @@ class BatteryCellConditions(EnergyStoreConditions):
         Factor representing the decrease in battery capacity over time. Default is 0.0.
     
     mass : np.ndarray
-        The mass of the battery cell. Shape: (1, 1). Default is a zero array.
+        The mass of the battery cell. Default is a zero array.
     temperature : np.ndarray
-        The temperature of the battery cell. Shape: (1, 1). Default is a zero array.
+        The temperature of the battery cell. Default is a zero array.
     charge_throughput : np.ndarray
-        The cumulative charge that has passed through the battery. Shape: (1, 1). Default is a zero array.
+        The cumulative charge that has passed through the battery. Default is a zero array.
     state_of_charge : np.ndarray
-        The current state of charge of the battery cell. Shape: (1, 1). Default is a zero array.
+        The current state of charge of the battery cell. Default is a zero array.
 
     Notes
     -----
@@ -222,10 +220,10 @@ class BatteryPackConditions(EnergyStoreConditions):
         single cell in the battery pack. Default is a new BatteryCellConditions instance.
     
     mass : np.ndarray
-        The mass of the battery pack in kilograms (kg). Shape: (1, 1).
+        The mass of the battery pack in kilograms (kg).
         Default is a zero array.
     temperature : np.ndarray
-        The temperature of the battery pack in degrees Celsius (°C). Shape: (1, 1).
+        The temperature of the battery pack in degrees Celsius (°C).
         Default is a zero array.
 
     Notes
@@ -266,7 +264,7 @@ class FuelConditions(EnergyStoreConditions):
         The name of the fuel store. Default is 'Fuel'.
 
     mass : np.ndarray
-        The mass of the fuel in kilograms (kg). Shape: (1, 1).
+        The mass of the fuel in kilograms (kg).
         Default is a zero array.
 
     Notes

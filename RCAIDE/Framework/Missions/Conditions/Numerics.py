@@ -25,6 +25,30 @@ from RCAIDE.Library.Methods.Numerical import chebyshev_matrices
 
 @dataclass(kw_only=True)
 class NumericalTime(Conditions):
+    """
+    A class representing numerical time conditions.
+
+    This class extends the Conditions class and provides attributes for
+    control points, differentiation, and integration arrays.
+
+    Attributes
+    ----------
+    control_points : np.ndarray
+        Array of control points for numerical time calculations.
+        Default is a 1x1 array of zeros.
+    differentiate : np.ndarray
+        Array for differentiation operations in numerical time calculations.
+        Default is a 1x1 array of zeros.
+    integrate : np.ndarray
+        Array for integration operations in numerical time calculations.
+        Default is a 1x1 array of zeros.
+
+    Notes
+    -----
+    All attributes are initialized as 1x1 numpy arrays of zeros by default.
+    The class uses kw_only=True, meaning all attributes must be specified as
+    keyword arguments when instantiating the class.
+    """
 
     # Attribute     Type        Default Value
     control_points: np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
@@ -34,6 +58,46 @@ class NumericalTime(Conditions):
 
 @dataclass(kw_only=True)
 class Numerics(Conditions):
+
+    """
+    A class representing numerical conditions for solving differential equations.
+
+    This class extends the Conditions class and provides attributes for
+    configuring and storing numerical solution parameters and results.
+
+    Attributes
+    ----------
+    name : str
+        The name of the numerical condition. Default is 'Numerics'.
+    number_of_control_points : int
+        The number of control points used in the discretization. Default is 16.
+    control_point_spacing : str
+        The spacing method for control points. Default is 'cosine'.
+    calculate_integration : bool
+        Flag to determine if integration should be calculated. Default is True.
+    discretization_method : Callable
+        The method used for discretization. Default is None.
+    solver_jacobian : str
+        The type of Jacobian used by the solver. Default is None.
+    solution_tolerance : float
+        The tolerance for the solution convergence. Default is 1e-8.
+    max_evaluations : int
+        The maximum number of evaluations allowed. Default is 10000.
+    step_size : float
+        The step size for the numerical method. Default is None.
+    converged : bool
+        Flag indicating whether the solution has converged. Default is False.
+    dimensionless : NumericalTime
+        NumericalTime object for dimensionless time calculations.
+    time : NumericalTime
+        NumericalTime object for time-based calculations.
+
+    Methods
+    -------
+    __post_init__()
+        Initializes the discretization method and computes control points,
+        differentiation, and integration matrices.
+    """
 
     # Attribute                 Type            Default Value
     name:                       str             = 'Numerics'
@@ -54,9 +118,22 @@ class Numerics(Conditions):
     time:                       NumericalTime   = field(default_factory=lambda: NumericalTime(name='Time'))
 
     def __post_init__(self):
-        self.discretization_method = lambda: chebyshev_matrices(n=self.number_of_control_points,
-                                                                calculate_integration=self.calculate_integration,
-                                                                spacing=self.control_point_spacing)
+
+        """
+        Post-initialization method to set up the discretization method and compute matrices.
+
+        This method is automatically called after the object is initialized. It defaults
+        the discretization_method to use Chebyshev PS matrices if no other method is specified
+        and computes the control points, differentiation, and integration matrices for dimensionless time.
+
+        Returns
+        -------
+        None
+        """
+        if not self.discretization_method:
+            self.discretization_method = lambda: chebyshev_matrices(n=self.number_of_control_points,
+                                                                    calculate_integration=self.calculate_integration,
+                                                                    spacing=self.control_point_spacing)
 
         (self.dimensionless.control_points,
          self.dimensionless.differentiate,
