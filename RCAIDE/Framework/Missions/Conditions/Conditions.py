@@ -7,7 +7,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from warnings import warn
 import unittest
 
 # package imports
@@ -31,9 +32,9 @@ class Conditions:
     ----------
     name : str
         The name of the conditions set. Default is 'Conditions'.
-    number_of_rows : int
+    _number_of_rows : int
         The number of rows in the conditions set. Default is 1.
-    adjustment_from_parent : int
+    row_size_adjustment : int
         An adjustment factor for row calculations. Default is 0.
 
     Methods
@@ -53,20 +54,14 @@ class Conditions:
 
     name: str = 'Conditions'
 
-    number_of_rows: int = 1
-    number_of_columns: int = 1
-    number_of_arrays: int = 0
-    row_size_adjustment: int = 0
+    _number_of_rows:        int = field(default=1, init=False)
+    _number_of_columns:     int = field(default=1, init=False)
+
+    row_size_adjustment:    int = 0
 
     def __post_init__(self):
-        self.expand_rows(self.number_of_rows)
-        self.number_of_arrays = sum(1 for v in vars(self).values() if isinstance(v, np.ndarray))
-
-    def __setattr__(self, name, value):
-        if isinstance(vars(self)[name], np.ndarray) and isinstance(value, float):
-            vars(self)[name] = np.resize(value, (self.number_of_rows, self.number_of_columns))
-        else:
-            super().__setattr__(name, value)
+        self.expand_rows(self._number_of_rows)
+        self.expand_columns(self._number_of_columns)
 
     def expand_rows(self, rows: int):
         """
@@ -88,29 +83,40 @@ class Conditions:
         Notes
         -----
         - The actual number of rows after expansion is determined by subtracting
-          `self.adjustment_from_parent` from the input `rows`.
+          `self.row_size_adjustment` from the input `rows`.
         - Numpy arrays are resized to match the new number of rows while maintaining
           their original number of columns.
         - Nested Conditions objects are expanded recursively.
 
         """
-
-        self.number_of_rows = np.maximum(rows - self.adjustment_from_parent, 0)
+        rows = max(1, int(rows) + self.row_size_adjustment)
+        self._number_of_rows = rows
 
         for k, v in vars(self).items():
             if isinstance(v, Conditions):
                 v.expand_rows(rows)
-            elif isinstance(v, np.ndarray):
-                vars(self)[k] = np.resize(v, (self.number_of_rows, v.shape[1]))
+            elif isinstance(v, np.ndarray) and len(v.shape) <= 2:  # Scalar-valued arrays
+                vars(self)[k] = np.resize(v, (self._number_of_rows, v.shape[1]))
+            elif isinstance(v, np.ndarray):  # Vector-valued arrays
+                new_shape = list(v.shape)
+                new_shape[:2] = [self._number_of_rows, self._number_of_columns]
+                vars(self)[k] = np.resize(v, tuple(new_shape))
 
     def expand_columns(self, columns: int):
 
+        super(Conditions, self).__setattr__('number_of_columns', columns)
+
         for k, v in vars(self).items():
-            if isinstance(v, np.ndarray):
-                vars(self)[k] = np.resize(v, (self.number_of_rows, columns))
-                vars(self)[k] = vars(self)[k][:, :columns]
-            elif isinstance(v, Conditions):
+            if isinstance(v, Conditions):
                 v.expand_columns(columns)
+            elif isinstance(v, np.ndarray) and len(v.shape) <= 2:  # Scalar-valued arrays
+                vars(self)[k] = np.resize(v, (self._number_of_rows, columns))
+            elif isinstance(v, np.ndarray):  # Vector-valued arrays
+                new_shape = list(v.shape)
+                new_shape[:2] = [self._number_of_rows, self._number_of_columns]
+                vars(self)[k] = np.resize(v, tuple(new_shape))
+
+
 
     def pack_array(self):
         """
@@ -156,28 +162,100 @@ class Conditions:
                 i += v.size
 
 
+@dataclass(kw_only=True)
+class _ArrayConditions(Conditions):
+    test_array: np.ndarray = field(default_factory=lambda: np.zeros((1, 1)))
+
+
 class TestConditions(unittest.TestCase):
     def setUp(self):
         self.conditions = Conditions()
 
     def test_initial_state(self):
         self.assertEqual(self.conditions.name, 'Conditions')
-        self.assertEqual(self.conditions.number_of_rows, 1)
-        self.assertEqual(self.conditions.adjustment_from_parent, 0)
+        self.assertEqual(self.conditions._number_of_rows, 1)
+        self.assertEqual(self.conditions.row_size_adjustment, 0)
 
-    def test_expand_rows(self):
-        self.conditions.expand_rows(5)
-        self.assertEqual(self.conditions.number_of_rows, 5)
+    def test_expand_rows_detailed(self):
+        # Initialize Conditions
+        self.conditions = Conditions()
 
-    def test_expand_rows_with_adjustment(self):
-        self.conditions.adjustment_from_parent = 2
-        self.conditions.expand_rows(5)
-        self.assertEqual(self.conditions.number_of_rows, 3)
+        # Test initial state
+        self.assertEqual(self.conditions._number_of_rows, 1)
 
-    def test_expand_rows_with_numpy_array(self):
-        self.conditions.test_array = np.zeros((1, 3))
+        # Test basic expansion
         self.conditions.expand_rows(5)
-        self.assertEqual(self.conditions.test_array.shape, (5, 3))
+        self.assertEqual(self.conditions._number_of_rows, 5)
+
+        # Test expansion with row_size_adjustment
+        self.conditions.row_size_adjustment = -2
+        self.conditions.expand_rows(10)
+        self.assertEqual(self.conditions._number_of_rows, 8)  # 10 - 2 = 8
+
+        # Test with numpy arrays
+        self.conditions.array1 = np.zeros((1, 3))
+        self.conditions.array2 = np.ones((2, 2))
+        self.conditions.expand_rows(12)
+        self.assertEqual(self.conditions._number_of_rows, 10)  # 12 - 2 = 10
+        self.assertEqual(self.conditions.array1.shape, (10, 3))
+        self.assertEqual(self.conditions.array2.shape, (10, 2))
+
+        # Test preserving data in numpy arrays
+        original_data = np.array([[1, 2, 3], [4, 5, 6]])
+        self.conditions.data_array = original_data
+        self.conditions.expand_rows(15)
+        np.testing.assert_array_equal(self.conditions.data_array[:2, :], original_data)
+        self.assertEqual(self.conditions.data_array.shape, (13, 3))  # 15 - 2 = 13
+
+        # Test with nested Conditions
+        self.conditions.nested = _ArrayConditions()
+        self.conditions.nested.test_array = np.zeros((1, 4))
+        self.conditions.expand_rows(20)
+        self.assertEqual(self.conditions._number_of_rows, 18)  # 20 - 2 = 18
+        self.assertEqual(self.conditions.nested.test_array.shape, (18, 4))
+
+        # Test with zero or negative input
+        self.conditions.expand_rows(0)
+        self.assertEqual(self.conditions._number_of_rows, 1)
+        self.conditions.expand_rows(-5)
+        self.assertEqual(self.conditions._number_of_rows, 1)
+
+    def test_expand_columns(self):
+        # Initialize Conditions with a numpy array
+        self.conditions = _ArrayConditions()
+        self.conditions.test_array = np.zeros((1, 2))
+
+        # Test expanding columns
+        self.conditions.expand_columns(4)
+        self.assertEqual(self.conditions.test_array.shape, (1, 4))
+
+        # Test that existing data is preserved
+        self.conditions.test_array[:, :2] = 1
+        self.conditions.expand_columns(6)
+        np.testing.assert_array_equal(self.conditions.test_array[:, :2], np.ones((1, 2)))
+        self.assertEqual(self.conditions.test_array.shape, (1, 6))
+
+    def test_expand_columns_with_nested_conditions(self):
+        # Initialize nested Conditions
+        self.conditions = _ArrayConditions()
+        self.conditions.nested = _ArrayConditions()
+        self.conditions.test_array = np.zeros((1, 2))
+        self.conditions.nested.test_array = np.zeros((1, 2))
+
+        # Test expanding columns in nested structure
+        self.conditions.expand_columns(4)
+        self.assertEqual(self.conditions.test_array.shape, (1, 4))
+        self.assertEqual(self.conditions.nested.test_array.shape, (1, 4))
+
+    def test_expand_columns_reduce(self):
+        # Initialize Conditions with a larger array
+        self.conditions = _ArrayConditions()
+        self.conditions.test_array = np.ones((1, 5))
+
+        # Test reducing columns
+        self.conditions.expand_columns(3)
+        self.assertEqual(self.conditions.test_array.shape, (1, 3))
+        np.testing.assert_array_equal(self.conditions.test_array, np.ones((1, 3)))
 
     def test_pack_array(self):
         self.conditions.array1 = np.array([1, 2, 3])
