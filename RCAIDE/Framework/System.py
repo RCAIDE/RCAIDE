@@ -7,6 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
+import unittest
 from dataclasses import dataclass, field
 from warnings import warn
 from typing import TypeVar, List
@@ -96,11 +97,10 @@ class MassProperties:
 
     def __post_init__(self):
         if not np.any(self.density):
-            if np.any(self.total) and np.any(self.volume):
-                try:
-                    self.density = self.total / self.volume
-                except ValueError:
-                    warn("Error in calculating component density. Check mass and volume specifications.")
+            try:
+                self.density = self.total / self.volume
+            except (ValueError, ZeroDivisionError) as e:
+                warn("Error in calculating component density. Check mass and volume specifications.")
 
 
 @dataclass(kw_only=True)
@@ -181,6 +181,88 @@ class System(Component):
                 self.sum_moments_of_inertia()
 
 
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Unit Tests
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+class TestComponent(unittest.TestCase):
+    def setUp(self):
+        self.component = Component(name="TestComponent")
+
+    def test_default_values(self):
+        self.assertEqual(self.component.name, "TestComponent")
+        self.assertEqual(self.component.segments, [])
+        np.testing.assert_array_equal(self.component.origin, np.zeros(3))
+
+    def test_add_segment(self):
+        segment = Component(name="Segment")
+        self.component.add_segment(segment)
+        self.assertEqual(len(self.component.segments), 1)
+        self.assertEqual(self.component.segments[0].name, "Segment")
+
+
+class TestSystem(unittest.TestCase):
+    def setUp(self):
+        self.system = System(name="TestSystem")
+        self.system.mass_properties.total = 300
+
+    def test_default_values(self):
+        self.assertEqual(self.system.name, "TestSystem")
+        self.assertEqual(self.system.subcomponents, [])
+
+    def test_add_subcomponent(self):
+        subcomponent = Component(name="Subcomponent", mass_properties=MassProperties(total=100))
+        self.system.add_subcomponent(subcomponent)
+        self.assertEqual(len(self.system.subcomponents), 1)
+        self.assertEqual(self.system.subcomponents[0].name, "Subcomponent")
+        self.assertEqual(self.system.mass_properties.subcomponent_total, 100)
+
+    def test_sum_mass(self):
+        self.system.add_subcomponent(Component(name="Sub1", mass_properties=MassProperties(total=100)))
+        self.system.add_subcomponent(Component(name="Sub2", mass_properties=MassProperties(total=200)))
+        self.system.sum_mass()
+        self.assertEqual(self.system.mass_properties.subcomponent_total, 300)
+
+    def test_sum_center_of_gravity(self):
+        sub1 = Component(name="Sub1", mass_properties=MassProperties(total=100, center_of_gravity=np.array([1, 0, 0])))
+        sub2 = Component(name="Sub2", mass_properties=MassProperties(total=200, center_of_gravity=np.array([0, 1, 0])))
+        self.system.add_subcomponent(sub1)
+        self.system.add_subcomponent(sub2)
+        self.system.sum_center_of_gravity()
+        np.testing.assert_array_almost_equal(self.system.mass_properties.center_of_gravity, np.array([1/3, 2/3, 0]))
+
+    def test_add_subcomponent_type_error(self):
+        with self.assertRaises(TypeError):
+            self.system.add_subcomponent("Not a Component")
+
+class TestMassProperties(unittest.TestCase):
+    def test_density_calculation(self):
+        mp = MassProperties(total=1000, volume=2)
+        self.assertEqual(mp.density, 500)
+
+    def test_density_warning(self):
+        with self.assertWarns(UserWarning):
+            mp = MassProperties(total=1000, volume=0)
+
+
+class TestComponentAreas(unittest.TestCase):
+    def test_default_values(self):
+        areas = ComponentAreas()
+        self.assertEqual(areas.reference, 0.0)
+        self.assertEqual(areas.wetted, 0.0)
+        self.assertEqual(areas.exposed, 0.0)
+
+
+class TestComponentDimensions(unittest.TestCase):
+    def test_default_values(self):
+        dimensions = ComponentDimensions()
+        self.assertFalse(dimensions.ordinal_direction)
+        self.assertEqual(dimensions.reference, 0.0)
+        self.assertEqual(dimensions.total, 0.0)
+
+
 if __name__ == '__main__':
-    B737 = System(name='Boeing 737')
-    print(B737)
+    unittest.main()
+
