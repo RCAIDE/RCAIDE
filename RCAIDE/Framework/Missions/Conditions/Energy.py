@@ -277,7 +277,6 @@ class FuelConditions(EnergyStoreConditions):
     name:               str         = 'Fuel'
 
     mass:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    specific_gravity:   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Unit Tests

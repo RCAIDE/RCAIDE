@@ -67,13 +67,13 @@ class LiftCoefficients(Conditions):
         Lift coefficients for compressible wing calculations. Initialized as a Conditions object with name 'Compressible Wings'.
     """
 
-    # Attribute         Type            Default Value
-    name:               str             = 'Lift Coefficients'
+    # Attribute     Type            Default Value
+    name:           str             = 'Lift Coefficients'
 
-    total:              np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    total:          np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
 
-    inviscid_wings:     Conditions      = field(default_factory=lambda: Conditions(name='Inviscid Wings'))
-    compressible_wings: Conditions      = field(default_factory=lambda: Conditions(name='Compressible Wings'))
+    inviscid:       Conditions      = field(default_factory=lambda: Conditions(name='Inviscid Bodies'))
+    compressible:   Conditions      = field(default_factory=lambda: Conditions(name='Compressible Bodies'))
 
 
 @dataclass(kw_only=True)
