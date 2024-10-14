@@ -51,14 +51,16 @@ class MassConditions(Conditions):
     has its own copy of mutable objects.
     """
 
-    name:                       str         = 'Mass Conditions'
+    # Attribute             Type    Default Value
+    name:                   str         = 'Mass Conditions'
 
-    total:                      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    rate_of_change:             np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    total:                  np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    rate_of_change:         np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
 
-    total_moment_of_inertia:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    center_of_gravity:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3)))
+    moments_of_inertia:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1, 3, 3)))
 
-    breakdown:                  Conditions  = field(default_factory=lambda: Conditions(name='Mass Breakdown'))
+    breakdown:              Conditions  = field(default_factory=lambda: Conditions(name='Mass Breakdown'))
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Unit Tests
