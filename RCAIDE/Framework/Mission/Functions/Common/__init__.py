@@ -12,6 +12,4 @@ from .   import Initialize
 from .   import Residuals
 from .   import Unpack_Unknowns
 from .   import Update
-
-from .compute_point_to_point_geospatial_data import compute_point_to_point_geospatial_data
  
