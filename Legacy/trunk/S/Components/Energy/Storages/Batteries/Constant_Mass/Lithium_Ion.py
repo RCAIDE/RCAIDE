@@ -16,7 +16,7 @@ from Legacy.trunk.S.Components.Energy.Storages.Batteries  import Battery
 
 # package imports
 import numpy as np 
-from scipy.integrate import  cumtrapz
+from scipy.integrate import cumulative_trapezoid as cum_trapz
 
 # ----------------------------------------------------------------------
 #  Lithium_Ion

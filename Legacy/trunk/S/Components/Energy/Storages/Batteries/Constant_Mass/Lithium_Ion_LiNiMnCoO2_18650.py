@@ -15,7 +15,7 @@ from Legacy.trunk.S.Methods.Power.Battery.compute_net_generated_battery_heat    
 
 import numpy as np
 import os
-from scipy.integrate    import  cumtrapz
+from scipy.integrate import cumulative_trapezoid as cum_trapz
 from scipy.interpolate  import RegularGridInterpolator 
 
 ## @ingroup Components-Energy-Storages-Batteries-Constant_Mass
