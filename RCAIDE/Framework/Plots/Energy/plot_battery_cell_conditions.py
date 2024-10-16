@@ -11,7 +11,7 @@ from RCAIDE.Framework.Core import Units
 from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -48,7 +48,7 @@ def plot_battery_cell_conditions(results,
     plt.rcParams.update(parameters)
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
+    line_colors   = cm.inferno(rp.linspace(0,0.9,len(results.segments)))     
 
     fig = plt.figure(save_filename)
     fig.set_size_inches(width,height) 
@@ -64,7 +64,7 @@ def plot_battery_cell_conditions(results,
         busses  = network.busses
         for bus in busses: 
             for battery in bus.batteries:   
-                axis_0.plot(np.zeros(2),np.zeros(2), color = line_colors[0], marker = ps.markers[b_i], linewidth = ps.line_width,label= battery.tag) 
+                axis_0.plot(rp.zeros(2),rp.zeros(2), color = line_colors[0], marker = ps.markers[b_i], linewidth = ps.line_width,label= battery.tag) 
                 axis_0.grid(False)
                 axis_0.axis('off')  
                

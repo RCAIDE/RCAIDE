@@ -9,7 +9,7 @@
 from RCAIDE.Framework.Core import Units
 
 # python imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Post Stall Coefficients
@@ -49,11 +49,11 @@ def post_stall_coefficients(state,settings,wing):
             
     # Eqn 9a and b
     F1        = 1.190*(1.0-(t_c*t_c))
-    F2        = 0.65 + 0.35*np.exp(-(9.0/AR)**2.3)
+    F2        = 0.65 + 0.35*rp.exp(-(9.0/AR)**2.3)
     
     # Eqn 10b and c
-    G1        = 2.3*np.exp(-(0.65*t_c)**0.9)
-    G2        = 0.52 + 0.48*np.exp(-(6.5/AR)**1.1)
+    G1        = 2.3*rp.exp(-(0.65*t_c)**0.9)
+    G2        = 0.52 + 0.48*rp.exp(-(6.5/AR)**1.1)
     
     # Eqn 8a and b
     CL2max    = F1*F2
@@ -67,17 +67,17 @@ def post_stall_coefficients(state,settings,wing):
     
     # Eqn 11a,b,c
     if wing.vertical == True:
-        alpha = np.zeros_like(alpha)    
-    con2      = np.logical_and(ACL1<=alpha,alpha<=(92.0*Units.deg))
+        alpha = rp.zeros_like(alpha)    
+    con2      = rp.logical_and(ACL1<=alpha,alpha<=(92.0*Units.deg))
     con3      = alpha>=(92.0*Units.deg)
-    CL2       = np.zeros_like(alpha) 
+    CL2       = rp.zeros_like(alpha) 
     CL2[con2] = -0.032*(alpha[con2]/Units.deg-92.0) - RCL2*((92.*Units.deg-alpha[con2])/(51.0*Units.deg))**N2
     CL2[con3] = -0.032*(alpha[con3]/Units.deg-92.0) + RCL2*((alpha[con3]-92.*Units.deg)/(51.0*Units.deg))**N2
     
     # Invert lift for negative alpha  
     alphan    = -alpha+2*A0
-    con4      = np.logical_and(0<alphan, alphan<ACL1)
-    con5      = np.logical_and(ACL1<=alphan, alphan<=(92.0*Units.deg))
+    con4      = rp.logical_and(0<alphan, alphan<ACL1)
+    con5      = rp.logical_and(ACL1<=alphan, alphan<=(92.0*Units.deg))
     con6      = alphan>=(92.0*Units.deg)
     CL2[con4] = 0.
     CL2[con5] = 0.032*(alphan[con5]/Units.deg-92.0) + RCL2*((92.*Units.deg-alphan[con5])/(51.0*Units.deg))**N2
@@ -85,15 +85,15 @@ def post_stall_coefficients(state,settings,wing):
     
     # Eqn 12a  
     con8      = alpha>ACD1
-    CD2       = np.zeros_like(alpha) 
-    CD2[con8] = CD1max[con8] + (CD2max - CD1max[con8]) * np.sin((alpha[con8]-ACD1[con8])/(np.pi/2-ACD1[con8]))
+    CD2       = rp.zeros_like(alpha) 
+    CD2[con8] = CD1max[con8] + (CD2max - CD1max[con8]) * rp.sin((alpha[con8]-ACD1[con8])/(rp.pi/2-ACD1[con8]))
     
     # Invert drag for negative alpha 
     alphan    = -alpha + 2*A0
-    con9      = np.logical_and((2*A0-ACL1)<alphan,alphan<ACL1)
+    con9      = rp.logical_and((2*A0-ACL1)<alphan,alphan<ACL1)
     con10     = alphan>=ACD1
     CD2[con9] = 0.0
-    CD2[con10]= CD1max[con10] + (CD2max - CD1max[con10]) * np.sin((alphan[con10]-ACD1[con10])/(np.pi/2-ACD1[con10]))        
+    CD2[con10]= CD1max[con10] + (CD2max - CD1max[con10]) * rp.sin((alphan[con10]-ACD1[con10])/(rp.pi/2-ACD1[con10]))        
         
     # Pack results  
     state.conditions.aerodynamics.post_stall_coefficients[wing.tag].lift =  CL2

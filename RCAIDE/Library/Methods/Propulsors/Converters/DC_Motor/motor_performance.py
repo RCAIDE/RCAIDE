@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
 # package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_Q_from_omega_and_V
@@ -105,10 +105,10 @@ def compute_RPM_and_torque_from_power_coefficent_and_voltage(motor,motor_conditi
     Cp    = motor_conditions.inputs.rotor_power_coefficient 
 
     # compute angular velocity, omega 
-    omega   =   ((np.pi**(3./2.))*((- 16.*Cp*I0*rho*(KV*KV*KV)*(R*R*R*R*R)*(Res*Res) +
-                16.*Cp*rho*v*(KV*KV*KV)*(R*R*R*R*R)*Res + (np.pi*np.pi*np.pi))**(0.5) - 
-                np.pi**(3./2.)))/(8.*Cp*(KV*KV)*(R*R*R*R*R)*Res*rho)
-    omega [np.isnan(omega )] = 0.0
+    omega   =   ((rp.pi**(3./2.))*((- 16.*Cp*I0*rho*(KV*KV*KV)*(R*R*R*R*R)*(Res*Res) +
+                16.*Cp*rho*v*(KV*KV*KV)*(R*R*R*R*R)*Res + (rp.pi*rp.pi*rp.pi))**(0.5) - 
+                rp.pi**(3./2.)))/(8.*Cp*(KV*KV)*(R*R*R*R*R)*Res*rho)
+    omega [rp.isnan(omega )] = 0.0
     
     # compute torque 
     Q = ((v-omega /KV)/Res -I0)/KV 

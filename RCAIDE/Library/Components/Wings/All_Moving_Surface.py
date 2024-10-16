@@ -9,7 +9,7 @@
 # RCAIDE imports     
 from RCAIDE.Library.Components     import Component 
 from RCAIDE.Framework.Core         import DataOrdered 
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  All_Moving_Surface
@@ -48,4 +48,4 @@ class All_Moving_Surface(Component):
         self.deflection                  = 0.0   
         self.Segments                    = Data()   
         self.use_constant_hinge_fraction = False
-        self.hinge_vector                = np.array([0.,0.,0.])
+        self.hinge_vector                = rp.array([0.,0.,0.])

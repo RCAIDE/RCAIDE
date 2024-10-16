@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Mission.Functions.Common.Update.atmosphere import atmosphere
 
 # package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -54,7 +54,7 @@ def initialize_conditions(segment):
     # check for initial velocity
     if mach_number is None: 
         if not segment.state.initials: raise AttributeError('mach not set')
-        v_mag  = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])*segment.state.ones_row(1)   
+        v_mag  = rp.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])*segment.state.ones_row(1)   
     else: 
         # Update freestream to get speed of sound
         atmosphere(segment)
@@ -62,10 +62,10 @@ def initialize_conditions(segment):
         
         # process velocity vector
         v_mag = mach_number * a
-    v_xy  = v_mag * np.cos(climb_angle)
-    v_z   = -v_mag * np.sin(climb_angle)
-    v_x   = np.cos(beta)*v_xy
-    v_y   = np.sin(beta)*v_xy
+    v_xy  = v_mag * rp.cos(climb_angle)
+    v_z   = -v_mag * rp.sin(climb_angle)
+    v_x   = rp.cos(beta)*v_xy
+    v_y   = rp.sin(beta)*v_xy
     
     # pack conditions    
     conditions.freestream.altitude[:,0]              = -conditions.frames.inertial.position_vector[:,2]  
@@ -129,7 +129,7 @@ def update_differentials(segment):
     vz = -v[:,2,None] # maintain column array
 
     # get overall time step
-    dt = (dz/np.dot(I,vz))[-1]
+    dt = (dz/rp.dot(I,vz))[-1]
 
     # rescale operators
     x = x * dt
@@ -137,7 +137,7 @@ def update_differentials(segment):
     I = I * dt
     
     # Calculate the altitudes
-    alt = np.dot(I,vz) + alt0
+    alt = rp.dot(I,vz) + alt0
     
     # pack
     t_initial                                       = segment.state.conditions.frames.inertial.time[0,0]

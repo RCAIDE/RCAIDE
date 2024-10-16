@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
  
 from .Gas import Gas 
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------  
 # Air Class
@@ -77,9 +77,9 @@ class Air(Gas):
         if variable_gamma:
             g = self.compute_gamma(T,p)
         else:
-            g = 1.4*np.ones_like(T)
+            g = 1.4*rp.ones_like(T)
             
-        return np.sqrt(g*self.gas_specific_constant*T)
+        return rp.sqrt(g*self.gas_specific_constant*T)
 
     def compute_cp(self,T=300.,p=101325.):
         """Computes Cp by 3rd-order polynomial data fit:

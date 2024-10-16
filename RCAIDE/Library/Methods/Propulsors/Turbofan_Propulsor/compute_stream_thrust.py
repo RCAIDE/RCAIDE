@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # Python package imports
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_stream_thrust
@@ -89,7 +89,7 @@ def compute_stream_thrust(turbofan,turbofan_conditions,freestream):
     Isp       = Fsp*a0/(f*g)     
 
     # Compute the core mass flow 
-    mdot_core = mdhc*np.sqrt(Tref/Tt_ref)*(Pt_ref/Pref) 
+    mdot_core = mdhc*rp.sqrt(Tref/Tt_ref)*(Pt_ref/Pref) 
 
     # Compute ensional thrust 
     FD2       = Fsp*a0*mdot_core*no_eng*throttle
@@ -98,7 +98,7 @@ def compute_stream_thrust(turbofan,turbofan_conditions,freestream):
     power     = FD2*u0
     
     # Compute fuel flow rate         
-    fuel_flow_rate   = np.fmax(FD2*TSFC/g,np.array([0.]))  
+    fuel_flow_rate   = rp.fmax(FD2*TSFC/g,rp.array([0.]))  
  
     # Pack turbofan outptus      
     turbofan_conditions.thrust                            = FD2    

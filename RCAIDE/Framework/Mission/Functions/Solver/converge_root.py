@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # Package imports 
 import scipy.optimize
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # converge root
@@ -82,7 +82,7 @@ def iterate(unknowns, segment):
 
 
     """       
-    if isinstance(unknowns,np.ndarray):
+    if isinstance(unknowns,rp.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns

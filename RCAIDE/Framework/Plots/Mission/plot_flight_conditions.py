@@ -11,7 +11,7 @@ from RCAIDE.Framework.Core import Units
 from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -49,7 +49,7 @@ def plot_flight_conditions(results,
     plt.rcParams.update(parameters)
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
+    line_colors   = cm.inferno(rp.linspace(0,0.9,len(results.segments)))     
      
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height) 

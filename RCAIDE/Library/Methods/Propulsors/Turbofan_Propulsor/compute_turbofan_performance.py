@@ -257,7 +257,7 @@ def compute_performance(state,fuel_line,turbofan,total_thrust,total_moment,total
     moment_vector[:,0] =  turbofan.origin[0][0] -   center_of_gravity[0][0] 
     moment_vector[:,1] =  turbofan.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2] =  turbofan.origin[0][2]  -  center_of_gravity[0][2]
-    M                  =  np.cross(moment_vector, F)   
+    M                  =  rp.cross(moment_vector, F)   
     total_moment       += M 
     total_power        += turbofan_conditions.power
     total_thrust       += F
@@ -325,7 +325,7 @@ def reuse_stored_data(state,fuel_line,turbofan,stored_propulsor_tag,total_thrust
     moment_vector[:,0] = turbofan.origin[0][0] -   center_of_gravity[0][0] 
     moment_vector[:,1] = turbofan.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2] = turbofan.origin[0][2]  -  center_of_gravity[0][2]
-    M                  = np.cross(moment_vector, F)          
+    M                  = rp.cross(moment_vector, F)          
     
     turbofan_conditions.throttle            = turbofan_conditions_0.throttle
     turbofan_conditions.thrust              = turbofan_conditions_0.thrust   

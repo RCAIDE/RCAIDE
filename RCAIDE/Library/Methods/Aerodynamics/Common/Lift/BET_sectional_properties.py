@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import interp2d
 
 # package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_section_coefficients
@@ -51,7 +51,7 @@ def compute_section_coefficients(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
        W                (numpy.ndaray) :  Sectional velocitty                       [m/s]
        Re               (numpy.ndaray) :  Reynolds Number                           [unitless] 
     """ 
-    AoA      = beta - np.arctan2(Wa,Wt)
+    AoA      = beta - rp.arctan2(Wa,Wt)
     W        = (Wa*Wa + Wt*Wt)**0.5
     Ma       = W/a
     Re       = (W*c)/nu
@@ -66,39 +66,39 @@ def compute_section_coefficients(beta,c,r,R,B,Wa,Wt,a,nu,airfoils,a_loc,ctrl_pts
         Cl1maxp    = Cl_max_ref * ( Re / Re_ref ) **0.1
 
         # If not airfoil polar provided, use 2*pi as lift curve slope
-        Cl                 = 2.*np.pi*AoA 
+        Cl                 = 2.*rp.pi*AoA 
         Cl[Cl>Cl1maxp]     = Cl1maxp[Cl>Cl1maxp] # use Cl max value 
-        Cl[AoA>=np.pi/2] = 0. # stall if blade angle is greater than 90 degrees 
+        Cl[AoA>=rp.pi/2] = 0. # stall if blade angle is greater than 90 degrees 
 
         # Apply Karmen_Tsien Mach scaling 
-        KT_cond         = np.logical_and((Ma[:,:]<1.),(Cl>0))
+        KT_cond         = rp.logical_and((Ma[:,:]<1.),(Cl>0))
         Cl[KT_cond]     = Cl[KT_cond]/((1-Ma[KT_cond]*Ma[KT_cond])**0.5+((Ma[KT_cond]*Ma[KT_cond])/(1+(1-Ma[KT_cond]*Ma[KT_cond])**0.5))*Cl[KT_cond]/2) 
         Cl[Ma[:,:]>=1.] = Cl[Ma[:,:]>=1.] # If the blade segments are supersonic, don't scale
 
         # DAE51 data Approximation
         Cdval = (0.108*(Cl**4)-0.2612*(Cl**3)+0.181*(Cl**2)-0.0139*Cl+0.0278)*((50000./Re)**0.2)
-        Cdval[AoA>=np.pi/2] = 2. # limit if blade angle is greater than 90 degrees
+        Cdval[AoA>=rp.pi/2] = 2. # limit if blade angle is greater than 90 degrees
         
     else: 
         # Compute blade Cl and Cd distribution from the airfoil data 
         if use_2d_analysis:# return the 2D Cl and CDval of shape (ctrl_pts, Nr, Na)
-            Cl      = np.zeros((ctrl_pts,Nr,Na))
-            Cdval   = np.zeros((ctrl_pts,Nr,Na))
+            Cl      = rp.zeros((ctrl_pts,Nr,Na))
+            Cdval   = rp.zeros((ctrl_pts,Nr,Na))
             for jj,airfoil in enumerate(airfoils):
                 pd              = airfoil.polars
                 Cl_af           = interp2d(Re,AoA,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients) 
                 Cdval_af        = interp2d(Re,AoA,pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
-                locs            = np.where(np.array(a_loc) == jj )
+                locs            = rp.where(rp.array(a_loc) == jj )
                 Cl[:,locs,:]    = Cl_af[:,locs,:]
                 Cdval[:,locs,:] = Cdval_af[:,locs,:]
         else: # return the 1D Cl and CDval of shape (ctrl_pts, Nr)
-            Cl      = np.zeros((ctrl_pts,Nr))
-            Cdval   = np.zeros((ctrl_pts,Nr)) 
+            Cl      = rp.zeros((ctrl_pts,Nr))
+            Cdval   = rp.zeros((ctrl_pts,Nr)) 
             for jj,airfoil in enumerate(airfoils):
                 pd            = airfoil.polars
                 Cl_af         = interp2d(Re,AoA,pd.reynolds_numbers, pd.angle_of_attacks, pd.lift_coefficients)
                 Cdval_af      = interp2d(Re,AoA,pd.reynolds_numbers, pd.angle_of_attacks, pd.drag_coefficients)
-                locs          = np.where(np.array(a_loc) == jj )
+                locs          = rp.where(rp.array(a_loc) == jj )
                 Cl[:,locs]    = Cl_af[:,locs]
                 Cdval[:,locs] = Cdval_af[:,locs]        
         
@@ -137,7 +137,7 @@ def compute_inflow_and_tip_loss(r,R,Wa,Wt,B,et1=1.0,et2=1.0,et3=1.0):
     lamdaw             = r*Wa/(R*Wt)
     lamdaw[lamdaw<=0.] = 1e-12 
     tipfactor          = B/2.0*(  (R/r)**et1 - 1  )**et2/lamdaw**et3  
-    piece              = np.exp(-tipfactor)
-    Ftip               = 2.*np.arccos(piece)/np.pi   
+    piece              = rp.exp(-tipfactor)
+    Ftip               = 2.*rp.arccos(piece)/rp.pi   
 
     return lamdaw, Ftip, piece

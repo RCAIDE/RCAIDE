@@ -9,7 +9,7 @@
 from RCAIDE.Framework.Core import Units
 from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -57,11 +57,11 @@ def plot_battery_degradation(results,
                 fig = plt.figure(save_filename + '_' + battery.tag)
                 fig.set_size_inches(width,height)  
                 num_segs          = len(results.segments)
-                time_hrs          = np.zeros(num_segs)  
-                capacity_fade     = np.zeros_like(time_hrs)
-                resistance_growth = np.zeros_like(time_hrs)
-                cycle_day         = np.zeros_like(time_hrs)
-                charge_throughput = np.zeros_like(time_hrs)    
+                time_hrs          = rp.zeros(num_segs)  
+                capacity_fade     = rp.zeros_like(time_hrs)
+                resistance_growth = rp.zeros_like(time_hrs)
+                cycle_day         = rp.zeros_like(time_hrs)
+                charge_throughput = rp.zeros_like(time_hrs)    
                      
                 for i in range(len(results.segments)): 
                     time_hrs[i]    = segment.conditions.frames.inertial.time[-1,0]  / Units.hour   

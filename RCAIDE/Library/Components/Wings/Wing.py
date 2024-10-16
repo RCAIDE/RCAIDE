@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import Data,Container
 from RCAIDE.Library.Components import Mass_Properties, Component  
 
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Wing
@@ -30,7 +30,7 @@ class Wing(Component):
 
         self.tag                               = 'wing'
         self.mass_properties                   = Mass_Properties()
-        self.origin                            = np.array([[0.0,0.0,0.0]])
+        self.origin                            = rp.array([[0.0,0.0,0.0]])
                                                
         self.symmetric                         = True
         self.vertical                          = False

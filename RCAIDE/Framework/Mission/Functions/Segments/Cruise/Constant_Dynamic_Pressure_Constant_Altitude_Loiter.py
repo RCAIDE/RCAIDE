@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Mission.Functions.Common.Update.atmosphere import atmosphere
 
 # Package imports  
-import numpy as np
+import RNUMPY as rp
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
@@ -57,18 +57,18 @@ def initialize_conditions(segment):
     # check for initial velocity
     if q is None: 
         if not segment.state.initials: raise AttributeError('dynamic pressure not set')
-        air_speed = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])
+        air_speed = rp.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])
         
     else: # compute speed, constant with constant altitude
-        air_speed = np.sqrt(q/(rho*0.5))
+        air_speed = rp.sqrt(q/(rho*0.5))
     
     # dimensionalize time
     t_initial = conditions.frames.inertial.time[0,0]
     t_final   = final_time + t_initial
     t_nondim  = segment.state.numerics.dimensionless.control_points
     time      = t_nondim * (t_final-t_initial) + t_initial
-    v_x       = np.cos(beta)*air_speed 
-    v_y       = np.sin(beta)*air_speed 
+    v_x       = rp.cos(beta)*air_speed 
+    v_y       = rp.sin(beta)*air_speed 
     
     # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt

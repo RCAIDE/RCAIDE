@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import Data 
 
 # package imports  
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # heads_method
@@ -25,11 +25,11 @@ def heads_method(npanel: int,
                  CF_0: float,
                  ShapeFactor_0: float,
                  THETA_0: float,
-                 TURBULENT_SURF: np.ndarray,
-                 RE_L: np.ndarray,
-                 TURBULENT_COORD: np.ndarray,
-                 VE_I: np.ndarray,
-                 DVE_I: np.ndarray,
+                 TURBULENT_SURF: rp.ndarray,
+                 RE_L: rp.ndarray,
+                 TURBULENT_COORD: rp.ndarray,
+                 VE_I: rp.ndarray,
+                 DVE_I: rp.ndarray,
                  ERR_0: float = 0.2,
                  TOL: float = 1E-5):
     """ Computes the boundary layer characteristics in turbulent
@@ -70,14 +70,14 @@ def heads_method(npanel: int,
         RESULTS.DELTA_H      (numpy.ndarray): boundary layer thickness                            [m] 
     """    
     # Initialize vectors 
-    X_H          = np.zeros((npanel,ncases,ncpts))
-    THETA_H      = np.zeros_like(X_H)
-    DELTA_STAR_H = np.zeros_like(X_H)
-    H_H          = np.zeros_like(X_H)
-    CF_H         = np.zeros_like(X_H) 
-    RE_THETA_H   = np.zeros_like(X_H)
-    RE_X_H       = np.zeros_like(X_H)
-    DELTA_H      = np.zeros_like(X_H)      
+    X_H          = rp.zeros((npanel,ncases,ncpts))
+    THETA_H      = rp.zeros_like(X_H)
+    DELTA_STAR_H = rp.zeros_like(X_H)
+    H_H          = rp.zeros_like(X_H)
+    CF_H         = rp.zeros_like(X_H) 
+    RE_THETA_H   = rp.zeros_like(X_H)
+    RE_X_H       = rp.zeros_like(X_H)
+    DELTA_H      = rp.zeros_like(X_H)      
     
     for case in range(ncases):
         for cpt in range(ncpts):  
@@ -114,19 +114,19 @@ def heads_method(npanel: int,
                 Re_L         = RE_L[case,cpt] 
                 nu           = l/Re_L 
                 n            = len(x_i)
-                dx           = np.diff(x_i) 
-                H            = np.zeros(n) 
+                dx           = rp.diff(x_i) 
+                H            = rp.zeros(n) 
                 H[0]         = ShapeFactor_0[case,cpt]
-                Theta        = np.zeros(n)
+                Theta        = rp.zeros(n)
                 Theta[0]     = THETA_0[case,cpt]
-                H1           = np.zeros(n) 
+                H1           = rp.zeros(n) 
                 H1[0]        = (DEL_0[case,cpt] - DELTA_STAR_0[case,cpt])/THETA_0[case,cpt]
                 if H1[0] < 3.3:
                     H1[0] = 3.417285
                 
-                cf           = np.zeros(n)
+                cf           = rp.zeros(n)
                 cf[0]        = CF_0[case,cpt] 
-                VeThetaH1    = np.zeros(n)
+                VeThetaH1    = rp.zeros(n)
                 VeThetaH1[0] = Ve_i[0]*Theta[0]*H1[0]
                 
                 for i in range(1, n):
@@ -149,7 +149,7 @@ def heads_method(npanel: int,
                         
                         # get Theta and VeThetaH1
                         Theta[i], VeThetaH1[i] = RK4(i-1, dx, x_i, Theta, VeThetaH1, dTheta_by_dx, dVeThetaH1_by_dx)
-                        if np.isnan(VeThetaH1[i]):
+                        if rp.isnan(VeThetaH1[i]):
                             VeThetaH1[i] = VeThetaH1[i-1]
                        
                         # get H1
@@ -179,15 +179,15 @@ def heads_method(npanel: int,
                 Re_x         = (Ve_i*x_i)/nu
                 delta        = (Theta*H1) + delta_star
                 
-                indices = np.where(TURBULENT_COORD.mask[:,case,cpt] == False)
-                np.put(X_H[:,case,cpt],indices,x_i )
-                np.put(THETA_H[:,case,cpt],indices,Theta)
-                np.put(DELTA_STAR_H[:,case,cpt],indices,delta_star)
-                np.put(H_H[:,case,cpt],indices,H)
-                np.put(CF_H[:,case,cpt],indices,cf)
-                np.put(RE_THETA_H[:,case,cpt],indices,Re_theta)
-                np.put(RE_X_H[:,case,cpt],indices,Re_x)
-                np.put(DELTA_H[:,case,cpt],indices,delta)
+                indices = rp.where(TURBULENT_COORD.mask[:,case,cpt] == False)
+                rp.put(X_H[:,case,cpt],indices,x_i )
+                rp.put(THETA_H[:,case,cpt],indices,Theta)
+                rp.put(DELTA_STAR_H[:,case,cpt],indices,delta_star)
+                rp.put(H_H[:,case,cpt],indices,H)
+                rp.put(CF_H[:,case,cpt],indices,cf)
+                rp.put(RE_THETA_H[:,case,cpt],indices,Re_theta)
+                rp.put(RE_X_H[:,case,cpt],indices,Re_x)
+                rp.put(DELTA_H[:,case,cpt],indices,delta)
 
     RESULTS = Data(
             X_H          = X_H,      

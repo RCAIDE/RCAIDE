@@ -10,7 +10,7 @@ from RCAIDE.Framework.Core import Units
 from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -47,7 +47,7 @@ def plot_aircraft_velocities(results,
     plt.rcParams.update(parameters)
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
+    line_colors   = cm.inferno(rp.linspace(0,0.9,len(results.segments)))     
      
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
@@ -57,7 +57,7 @@ def plot_aircraft_velocities(results,
         velocity = segment.conditions.freestream.velocity[:,0] / Units.kts
         density  = segment.conditions.freestream.density[:,0]
         PR       = density/1.225
-        EAS      = velocity * np.sqrt(PR)
+        EAS      = velocity * rp.sqrt(PR)
         mach     = segment.conditions.freestream.mach_number[:,0]
         CAS      = EAS * (1+((1/8)*((1-PR)*mach**2))+((3/640)*(1-10*PR+(9*PR**2)*(mach**4))))
 

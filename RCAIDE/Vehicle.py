@@ -11,7 +11,7 @@
 from RCAIDE                    import Framework
 from RCAIDE.Framework.Core     import Data 
 from RCAIDE.Library            import Components, Attributes 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vehicle
@@ -170,7 +170,7 @@ class Vehicle(Data):
             Source:
                 None
         """   
-        total = np.array([[0.0,0.0,0.0]])
+        total = rp.array([[0.0,0.0,0.0]])
 
         for key in self.keys():
             item = self[key]
@@ -271,4 +271,4 @@ class Vehicle_Mass_Properties(Components.Mass_Properties):
         self.max_fuel                    = 0.0
         self.max_zero_fuel               = 0.0
         self.center_of_gravity           = [[0.0,0.0,0.0]]
-        self.zero_fuel_center_of_gravity = np.array([[0.0,0.0,0.0]])    
+        self.zero_fuel_center_of_gravity = rp.array([[0.0,0.0,0.0]])    

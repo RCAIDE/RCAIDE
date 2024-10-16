@@ -11,7 +11,7 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units
 
 # package imports
-import numpy as np 
+import RNUMPY as rp 
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # calculate_fuel_flow_rate_from_torque
@@ -77,8 +77,8 @@ def compute_fuel_flow_rate_from_torque(engine,engine_conditions, freestream):
     
     # compute SFC, fuel flow rate and throtttle 
     SFC             = PSFC * Units['lb/hp/hr']
-    a               = np.zeros_like(altitude)
-    fuel_flow_rate  = np.fmax(P*SFC,a)
+    a               = rp.zeros_like(altitude)
+    fuel_flow_rate  = rp.fmax(P*SFC,a)
     throttle        = P/Pavailable
 
     # Store results as engine outputs

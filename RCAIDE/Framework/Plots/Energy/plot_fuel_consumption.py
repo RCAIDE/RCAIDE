@@ -10,7 +10,7 @@ from RCAIDE.Framework.Core import Units
 from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -47,7 +47,7 @@ def plot_fuel_consumption(results,
     plt.rcParams.update(parameters)
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))       
+    line_colors   = cm.inferno(rp.linspace(0,0.9,len(results.segments)))       
   
     fig = plt.figure(save_filename)
     fig.set_size_inches(width,height)
@@ -73,12 +73,12 @@ def plot_fuel_consumption(results,
 
             if i == 0:
 
-                plot_fuel     = np.negative(fuel)
-                plot_alt_fuel = np.negative(alt_fuel)
+                plot_fuel     = rp.negative(fuel)
+                plot_alt_fuel = rp.negative(alt_fuel)
 
                 axes.plot( time , plot_fuel , 'ro-', marker = ps.markers[0], linewidth = ps.line_width , label = 'fuel')
                 axes.plot( time , plot_alt_fuel , 'bo-', marker = ps.markers[0], linewidth = ps.line_width, label = 'additional fuel' )
-                axes.plot( time , np.add(plot_fuel, plot_alt_fuel), 'go-', marker = ps.markers[0], linewidth = ps.line_width, label = 'total fuel' )
+                axes.plot( time , rp.add(plot_fuel, plot_alt_fuel), 'go-', marker = ps.markers[0], linewidth = ps.line_width, label = 'total fuel' )
 
                 axes.legend(loc='center right')   
 
@@ -86,19 +86,19 @@ def plot_fuel_consumption(results,
                 prev_seg_fuel       += results.segments[i-1].conditions.weights.fuel_mass[-1]
                 prev_seg_extra_fuel += results.segments[i-1].conditions.weights.additional_fuel_mass[-1]
 
-                current_fuel         = np.add(fuel, prev_seg_fuel)
-                current_alt_fuel     = np.add(alt_fuel, prev_seg_extra_fuel)
+                current_fuel         = rp.add(fuel, prev_seg_fuel)
+                current_alt_fuel     = rp.add(alt_fuel, prev_seg_extra_fuel)
 
-                axes.plot( time , np.negative(current_fuel)  , 'ro-' , marker = ps.markers[0], linewidth = ps.line_width)
-                axes.plot( time , np.negative(current_alt_fuel ), 'bo-', marker = ps.markers[0], linewidth = ps.line_width)
-                axes.plot( time , np.negative(current_fuel + current_alt_fuel), 'go-', marker = ps.markers[0], linewidth = ps.line_width)
+                axes.plot( time , rp.negative(current_fuel)  , 'ro-' , marker = ps.markers[0], linewidth = ps.line_width)
+                axes.plot( time , rp.negative(current_alt_fuel ), 'bo-', marker = ps.markers[0], linewidth = ps.line_width)
+                axes.plot( time , rp.negative(current_fuel + current_alt_fuel), 'go-', marker = ps.markers[0], linewidth = ps.line_width)
 
         else:
             
             initial_weight  = results.segments[0].conditions.weights.total_mass[:,0][0] 
             fuel            = segment.conditions.weights.total_mass[:,0]
             time            = segment.conditions.frames.inertial.time[:,0] / Units.min 
-            total_fuel      = np.negative(segment.conditions.weights.total_mass[:,0] - initial_weight )
+            total_fuel      = rp.negative(segment.conditions.weights.total_mass[:,0] - initial_weight )
             axes.plot( time, total_fuel, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = segment_name)
 
     axes.set_ylabel('Fuel (kg)')

@@ -7,7 +7,7 @@
 #  IMPORT 
 # ----------------------------------------------------------------------------------------------------------------------  
 # package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Initialize Conditions
@@ -54,7 +54,7 @@ def initialize_conditions(segment):
     # check for initial velocity vector
     if air_speed is None:
         if not segment.state.initials: raise AttributeError('initial airspeed not set')
-        air_speed  =  np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])   
+        air_speed  =  rp.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])   
             
     # discretize on altitude
     alt = t_nondim * (altf-alt0) + alt0
@@ -62,9 +62,9 @@ def initialize_conditions(segment):
     # process velocity vector
     v_xy_mag    = air_speed
     v_z         = descent_rate 
-    v_xy        = np.sqrt(v_xy_mag**2 - v_z**2 )
-    v_x         = np.cos(beta)*v_xy
-    v_y         = np.sin(beta)*v_xy
+    v_xy        = rp.sqrt(v_xy_mag**2 - v_z**2 )
+    v_x         = rp.cos(beta)*v_xy
+    v_y         = rp.sin(beta)*v_xy
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0] = v_x

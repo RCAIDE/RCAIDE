@@ -13,7 +13,7 @@ from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import compute_wi
 from RCAIDE.Library.Methods.Aerodynamics.Common.Lift           import generate_wing_wake_grid
 
 # python imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Compute Wing Wake 
@@ -97,7 +97,7 @@ def compute_wing_wake(vehicle, conditions, X_wake, grid_settings, VLM_settings,e
     w_inviscid    = (C_mn[:,:,:,2]@gammaT)[0,:,0]     
      
     # Impart the wake deficit from BL of wing if x is behind the wing 
-    Va_deficit = np.zeros_like(VD.YC) 
+    Va_deficit = rp.zeros_like(VD.YC) 
     if viscous_wake and (X_wake>=x0_wing):
         
         # impart viscous wake to grid points within the span of the wing
@@ -108,16 +108,16 @@ def compute_wing_wake(vehicle, conditions, X_wake, grid_settings, VLM_settings,e
         Rex_prop_plane     = Vv*(VD.XC[y_inside]-x0_wing)/nu
         
         # boundary layer development distance
-        x_dev      = np.ones_like(chord_distribution) * (VD.XC[y_inside]-x0_wing)  
+        x_dev      = rp.ones_like(chord_distribution) * (VD.XC[y_inside]-x0_wing)  
         
         # For turbulent flow
         theta_turb  = 0.036*x_dev/(Rex_prop_plane**(1/5))
         x_theta     = (x_dev-chord_distribution)/theta_turb
 
         # axial velocity deficit due to turbulent BL from the wing (correlation from Ramaprian et al.)
-        W0  = Vv/np.sqrt(4*np.pi*0.032*x_theta)
-        b   = 2*theta_turb*np.sqrt(16*0.032*np.log(2)*x_theta)
-        Va_deficit[y_inside] = W0*np.exp(-4*np.log(2)*(abs(VD.ZC[y_inside])/b)**2) 
+        W0  = Vv/rp.sqrt(4*rp.pi*0.032*x_theta)
+        b   = 2*theta_turb*rp.sqrt(16*0.032*rp.log(2)*x_theta)
+        Va_deficit[y_inside] = W0*rp.exp(-4*rp.log(2)*(abs(VD.ZC[y_inside])/b)**2) 
   
     wing_wake = Data()
     wing_wake.u_velocities = u_inviscid - Va_deficit/Vv

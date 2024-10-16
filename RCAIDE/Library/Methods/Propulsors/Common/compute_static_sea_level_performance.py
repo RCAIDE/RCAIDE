@@ -12,7 +12,7 @@ import RCAIDE
 from RCAIDE.Framework.Mission.Common      import  Conditions
 
 # Python package imports
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Design Turbofan
@@ -55,18 +55,18 @@ def compute_static_sea_level_performance(propulsor):
     conditions = RCAIDE.Framework.Mission.Common.Results()
 
     # freestream conditions    
-    conditions.freestream.altitude                    = np.atleast_1d(0)
-    conditions.freestream.mach_number                 = np.atleast_1d(0.01)
-    conditions.freestream.pressure                    = np.atleast_1d(p)
-    conditions.freestream.temperature                 = np.atleast_1d(T)
-    conditions.freestream.density                     = np.atleast_1d(rho)
-    conditions.freestream.dynamic_viscosity           = np.atleast_1d(mu)
-    conditions.freestream.gravity                     = np.atleast_2d(planet.sea_level_gravity)
-    conditions.freestream.isentropic_expansion_factor = np.atleast_1d(propulsor.working_fluid.compute_gamma(T,p))
-    conditions.freestream.Cp                          = np.atleast_1d(propulsor.working_fluid.compute_cp(T,p))
-    conditions.freestream.R                           = np.atleast_1d(propulsor.working_fluid.gas_specific_constant)
-    conditions.freestream.speed_of_sound              = np.atleast_1d(a)
-    conditions.freestream.velocity                    = np.atleast_1d(a*0.01)   
+    conditions.freestream.altitude                    = rp.atleast_1d(0)
+    conditions.freestream.mach_number                 = rp.atleast_1d(0.01)
+    conditions.freestream.pressure                    = rp.atleast_1d(p)
+    conditions.freestream.temperature                 = rp.atleast_1d(T)
+    conditions.freestream.density                     = rp.atleast_1d(rho)
+    conditions.freestream.dynamic_viscosity           = rp.atleast_1d(mu)
+    conditions.freestream.gravity                     = rp.atleast_2d(planet.sea_level_gravity)
+    conditions.freestream.isentropic_expansion_factor = rp.atleast_1d(propulsor.working_fluid.compute_gamma(T,p))
+    conditions.freestream.Cp                          = rp.atleast_1d(propulsor.working_fluid.compute_cp(T,p))
+    conditions.freestream.R                           = rp.atleast_1d(propulsor.working_fluid.gas_specific_constant)
+    conditions.freestream.speed_of_sound              = rp.atleast_1d(a)
+    conditions.freestream.velocity                    = rp.atleast_1d(a*0.01)   
 
 
 
@@ -84,16 +84,16 @@ def compute_static_sea_level_performance(propulsor):
     # initialize data structure for propulsor operating conditions (for energy ) 
     conditions.energy[fuel_line.tag]                                                        = Conditions()  
     conditions.energy[fuel_line.tag][fuel_tank.tag]                                         = Conditions()  
-    conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate                          = np.zeros((1,1))     
-    conditions.energy[fuel_line.tag][fuel_tank.tag].mass                                    = np.zeros((1,1))   
+    conditions.energy[fuel_line.tag][fuel_tank.tag].mass_flow_rate                          = rp.zeros((1,1))     
+    conditions.energy[fuel_line.tag][fuel_tank.tag].mass                                    = rp.zeros((1,1))   
     conditions.energy[fuel_line.tag][propulsor.tag]                                         = Conditions() 
-    conditions.energy[fuel_line.tag][propulsor.tag].throttle                                = np.array([[1.0]])
-    conditions.energy[fuel_line.tag][propulsor.tag].y_axis_rotation                         = np.zeros((1,1)) 
-    conditions.energy[fuel_line.tag][propulsor.tag].thrust                                  = np.zeros((1,1))
-    conditions.energy[fuel_line.tag][propulsor.tag].power                                   = np.zeros((1,1)) 
+    conditions.energy[fuel_line.tag][propulsor.tag].throttle                                = rp.array([[1.0]])
+    conditions.energy[fuel_line.tag][propulsor.tag].y_axis_rotation                         = rp.zeros((1,1)) 
+    conditions.energy[fuel_line.tag][propulsor.tag].thrust                                  = rp.zeros((1,1))
+    conditions.energy[fuel_line.tag][propulsor.tag].power                                   = rp.zeros((1,1)) 
     conditions.energy[fuel_line.tag][propulsor.tag][combustor.tag]                          = Conditions() 
     conditions.energy[fuel_line.tag][propulsor.tag][combustor.tag].inputs                   = Conditions() 
-    conditions.energy[fuel_line.tag][propulsor.tag][combustor.tag].inputs.nondim_mass_ratio = np.array([[1.0]])     
+    conditions.energy[fuel_line.tag][propulsor.tag][combustor.tag].inputs.nondim_mass_ratio = rp.array([[1.0]])     
     conditions.energy[fuel_line.tag][propulsor.tag][combustor.tag].outputs                  = Conditions() 
     conditions.energy[fuel_line.tag][propulsor.tag][ram.tag]                                = Conditions() 
     conditions.energy[fuel_line.tag][propulsor.tag][ram.tag].inputs                         = Conditions() 
@@ -129,9 +129,9 @@ def compute_static_sea_level_performance(propulsor):
     conditions.noise[fuel_line.tag]                                 = RCAIDE.Framework.Mission.Common.Conditions()              
     conditions.noise[fuel_line.tag][propulsor.tag]                  = RCAIDE.Framework.Mission.Common.Conditions() 
     
-    total_power     = np.zeros((1,1))
-    total_thrust    = np.zeros((1,3))
-    total_moment    = np.zeros((1,3))
+    total_power     = rp.zeros((1,1))
+    total_thrust    = rp.zeros((1,3))
+    total_moment    = rp.zeros((1,3))
     
     state            = RCAIDE.Framework.Mission.Common.Conditions()
     state._size      = 1 

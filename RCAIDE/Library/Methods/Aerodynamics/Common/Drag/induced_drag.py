@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import Data
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Induced Drag Aircraft
@@ -82,7 +82,7 @@ def induced_drag(state,settings,geometry):
         total_induced_drag = total_induced_viscous_drag +  CDi  
 
         # Calculate the vehicle level oswald efficiency
-        e_osw = (CL**2)/(np.pi*AR*total_induced_drag)
+        e_osw = (CL**2)/(rp.pi*AR*total_induced_drag)
 
     # If the user specifies a vehicle level oswald efficiency factor
     else: 
@@ -95,7 +95,7 @@ def induced_drag(state,settings,geometry):
                 S  = wing.areas.reference 
 
         # Calculate the induced drag       
-        total_induced_drag = CL **2 / (np.pi*AR*e_osw)
+        total_induced_drag = CL **2 / (rp.pi*AR*e_osw)
         total_induced_viscous_drag = total_induced_drag - CDi
 
     aero.drag.induced.total                    = total_induced_drag

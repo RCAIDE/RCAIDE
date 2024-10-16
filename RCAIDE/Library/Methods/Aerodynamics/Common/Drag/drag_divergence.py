@@ -10,7 +10,7 @@
 from RCAIDE.Library.Components.Wings          import Main_Wing 
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # drag_divergence
@@ -53,11 +53,11 @@ def drag_divergence(Mach,geometry, Cl):
     # If so use arbitrary divergence point as correlation will not work
     if high_mach == True: 
         # Divergence Mach number, fit to Concorde data 
-        Mcc    =  0.95 * np.ones_like(Mach)  
+        Mcc    =  0.95 * rp.ones_like(Mach)  
     else:  
         # Get effective Cl_wings and sweep 
-        tc = t_c_w / np.cos(sweep_w)
-        cl = Cl/ (np.cos(sweep_w) ** 2)
+        tc = t_c_w / rp.cos(sweep_w)
+        cl = Cl/ (rp.cos(sweep_w) ** 2)
 
         # Compressibility drag based on regressed fits from AA241
     
@@ -69,7 +69,7 @@ def drag_divergence(Mach,geometry, Cl):
                    + 0.087490431201549*cl*cl
          
         # Crest-critical Mach number, corrected for wing sweep
-        Mcc = mcc_cos_ws/ np.cos(sweep_w)      
+        Mcc = mcc_cos_ws/ rp.cos(sweep_w)      
 
     # Divergence ratio
     mo_Mach = Mach/Mcc
@@ -82,6 +82,6 @@ def drag_divergence(Mach,geometry, Cl):
     if high_mach is True:
         cd_c = dcdc_cos3g
     else:
-        cd_c = dcdc_cos3g * (np.cos(sweep_w)**3)
+        cd_c = dcdc_cos3g * (rp.cos(sweep_w)**3)
           
     return cd_c 

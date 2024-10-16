@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------------------------------------------------------- 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Update Acceleration
@@ -32,7 +32,7 @@ def angular_acceleration(segment):
     D     = segment.state.numerics.time.differentiate
     
     # accelerations
-    ang_acc = np.dot(D,omega)
+    ang_acc = rp.dot(D,omega)
     
     # pack conditions
     segment.state.conditions.frames.inertial.angular_acceleration_vector[:,:] = ang_acc[:,:]   

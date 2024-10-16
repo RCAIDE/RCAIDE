@@ -11,7 +11,7 @@ from RCAIDE.Framework.Core import Units
 from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np  
+import RNUMPY as rp  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -48,7 +48,7 @@ def plot_battery_pack_C_rates(results,
     plt.rcParams.update(parameters)
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
+    line_colors   = cm.inferno(rp.linspace(0,0.9,len(results.segments)))     
     
     for network in results.segments[0].analyses.energy.vehicle.networks: 
         busses  = network.busses
@@ -65,7 +65,7 @@ def plot_battery_pack_C_rates(results,
             
                     pack_battery_amp_hr = (pack_energy/ Units.Wh )/pack_volts
                     pack_C_instant      = pack_current/pack_battery_amp_hr
-                    pack_C_nominal      = pack_current/np.max(pack_battery_amp_hr) 
+                    pack_C_nominal      = pack_current/rp.max(pack_battery_amp_hr) 
             
                     segment_tag  =  segment.tag
                     segment_name = segment_tag.replace('_', ' ') 

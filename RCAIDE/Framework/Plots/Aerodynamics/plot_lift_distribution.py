@@ -9,7 +9,7 @@
 
 from RCAIDE.Framework.Plots.Common import plot_style
 import matplotlib.pyplot as plt 
-import numpy as np 
+import RNUMPY as rp 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
@@ -45,7 +45,7 @@ def plot_lift_distribution(results,vehicle,
 
     VD         = vehicle.vortex_distribution	 	
     n_w        = VD.n_w
-    b_sw       = np.concatenate(([0],np.cumsum(VD.n_sw)))
+    b_sw       = rp.concatenate(([0],rp.cumsum(VD.n_sw)))
 
     img_idx    = 1
     seg_idx    = 1

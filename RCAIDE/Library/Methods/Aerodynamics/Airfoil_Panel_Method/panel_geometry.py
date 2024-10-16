@@ -7,7 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports
-import numpy as np  
+import RNUMPY as rp  
 
 # ----------------------------------------------------------------------------------------------------------------------
 # panel_geometry
@@ -31,19 +31,19 @@ def panel_geometry(x,y,npanel,ncases,ncpts):
                                                                      
     Returns:                                             
     l       (numpy.ndarray): Panel lengths                              [unitless]
-    st      (numpy.ndarray): np.sin(theta) for each panel               [radians]
-    ct      (numpy.ndarray): np.cos(theta) for each panel               [radians]
+    st      (numpy.ndarray): rp.sin(theta) for each panel               [radians]
+    ct      (numpy.ndarray): rp.cos(theta) for each panel               [radians]
     xbar    (numpy.ndarray): x-coordinate of the midpoint of each panel [unitless]              
     ybar    (numpy.ndarray): y-coordinate of the midpoint of each panel [unitless]              
     norm    (numpy.ndarray): normal vectors                             [unitless]       
     """     
      
-    l              = np.sqrt((x[1:] -x[:-1])**2 +(y[1:] -y[:-1])**2)
+    l              = rp.sqrt((x[1:] -x[:-1])**2 +(y[1:] -y[:-1])**2)
     st             = (y[1:] -y[:-1])/l 
     ct             = (x[1:] -x[:-1])/l 
     xbar           = (x[1:] +x[:-1])/2
     ybar           = (y[1:] +y[:-1])/2  
-    norm           = np.zeros((npanel,2,ncases,ncpts))
+    norm           = rp.zeros((npanel,2,ncases,ncpts))
     norm[:,0,:,:]  = -st
     norm[:,1,:,:]  = ct 
     

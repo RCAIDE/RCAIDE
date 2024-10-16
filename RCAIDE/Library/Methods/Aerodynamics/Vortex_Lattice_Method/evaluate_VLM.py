@@ -55,25 +55,25 @@ def evaluate_surrogate(state,settings,geometry):
     sup_trans_spline = Cubic_Spline_Blender(hsup_max, hsup_min) 
     h_sup            = lambda M:sup_trans_spline.compute(M)    
 
-    AoA         = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
-    Beta        = np.atleast_2d(conditions.aerodynamics.angles.beta)    
-    Mach        = np.atleast_2d(conditions.freestream.mach_number)       
-    u           = np.atleast_2d(conditions.freestream.u)
-    v           = np.atleast_2d(conditions.freestream.v)
-    w           = np.atleast_2d(conditions.freestream.w)
-    p           = np.atleast_2d(conditions.static_stability.roll_rate)        
-    q           = np.atleast_2d(conditions.static_stability.pitch_rate)
-    r           = np.atleast_2d(conditions.static_stability.yaw_rate)  
+    AoA         = rp.atleast_2d(conditions.aerodynamics.angles.alpha)  
+    Beta        = rp.atleast_2d(conditions.aerodynamics.angles.beta)    
+    Mach        = rp.atleast_2d(conditions.freestream.mach_number)       
+    u           = rp.atleast_2d(conditions.freestream.u)
+    v           = rp.atleast_2d(conditions.freestream.v)
+    w           = rp.atleast_2d(conditions.freestream.w)
+    p           = rp.atleast_2d(conditions.static_stability.roll_rate)        
+    q           = rp.atleast_2d(conditions.static_stability.pitch_rate)
+    r           = rp.atleast_2d(conditions.static_stability.yaw_rate)  
 
     # Query surrogates  
-    pts_alpha            = np.hstack((AoA,Mach))
-    pts_beta             = np.hstack((Beta,Mach))  
-    pts_u                = np.hstack((u,Mach))
-    pts_v                = np.hstack((v,Mach))
-    pts_w                = np.hstack((w,Mach))
-    pts_p                = np.hstack((p,Mach))
-    pts_q                = np.hstack((q,Mach))
-    pts_r                = np.hstack((r,Mach))
+    pts_alpha            = rp.hstack((AoA,Mach))
+    pts_beta             = rp.hstack((Beta,Mach))  
+    pts_u                = rp.hstack((u,Mach))
+    pts_v                = rp.hstack((v,Mach))
+    pts_w                = rp.hstack((w,Mach))
+    pts_p                = rp.hstack((p,Mach))
+    pts_q                = rp.hstack((q,Mach))
+    pts_r                = rp.hstack((r,Mach))
     
     # Alpha 
     results_alpha    = compute_coefficients( sub_sur.Clift_alpha,  sub_sur.Cdrag_alpha,  sub_sur.CX_alpha,  sub_sur.CY_alpha,  sub_sur.CZ_alpha,  sub_sur.CL_alpha,  sub_sur.CM_alpha,   sub_sur.CN_alpha,
@@ -216,21 +216,21 @@ def evaluate_surrogate(state,settings,geometry):
  
 
     # loop through wings to determine what control surfaces are present
-    delta_a = np.zeros_like(Mach)
-    delta_e = np.zeros_like(Mach)
-    delta_r = np.zeros_like(Mach)
-    delta_s = np.zeros_like(Mach)
-    delta_f = np.zeros_like(Mach)
+    delta_a = rp.zeros_like(Mach)
+    delta_e = rp.zeros_like(Mach)
+    delta_r = rp.zeros_like(Mach)
+    delta_s = rp.zeros_like(Mach)
+    delta_f = rp.zeros_like(Mach)
     
     for wing in geometry.wings: 
         for control_surface in wing.control_surfaces:  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
                 if trim ==  True: 
-                    delta_a        = np.atleast_2d(conditions.control_surfaces.aileron.deflection)
+                    delta_a        = rp.atleast_2d(conditions.control_surfaces.aileron.deflection)
                 else:
-                    delta_a        = np.ones_like(Mach) * control_surface.deflection 
+                    delta_a        = rp.ones_like(Mach) * control_surface.deflection 
             
-                pts_delta_a    = np.hstack((delta_a,Mach))
+                pts_delta_a    = rp.hstack((delta_a,Mach))
                 
                 results_delta_a =  compute_coefficients(sub_sur.Clift_delta_a,sub_sur.Cdrag_delta_a,sub_sur.CX_delta_a,sub_sur.CY_delta_a,sub_sur.CZ_delta_a,sub_sur.CL_delta_a,sub_sur.CM_delta_a, sub_sur.CN_delta_a,
                  trans_sur.Clift_delta_a,trans_sur.Cdrag_delta_a,trans_sur.CX_delta_a,trans_sur.CY_delta_a,trans_sur.CZ_delta_a,trans_sur.CL_delta_a,trans_sur.CM_delta_a, trans_sur.CN_delta_a,
@@ -258,11 +258,11 @@ def evaluate_surrogate(state,settings,geometry):
                 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
                 if trim ==  True: 
-                    delta_e        = np.atleast_2d(conditions.control_surfaces.elevator.deflection)
+                    delta_e        = rp.atleast_2d(conditions.control_surfaces.elevator.deflection)
                 else:  
-                    delta_e        = np.ones_like(Mach) * control_surface.deflection 
+                    delta_e        = rp.ones_like(Mach) * control_surface.deflection 
             
-                pts_delta_e    = np.hstack((delta_e,Mach))
+                pts_delta_e    = rp.hstack((delta_e,Mach))
         
                 results_delta_e =  compute_coefficients(sub_sur.Clift_delta_e,sub_sur.Cdrag_delta_e,sub_sur.CX_delta_e,sub_sur.CY_delta_e,sub_sur.CZ_delta_e,sub_sur.CL_delta_e,sub_sur.CM_delta_e, sub_sur.CN_delta_e,
                  trans_sur.Clift_delta_e,trans_sur.Cdrag_delta_e,trans_sur.CX_delta_e,trans_sur.CY_delta_e,trans_sur.CZ_delta_e,trans_sur.CL_delta_e,trans_sur.CM_delta_e, trans_sur.CN_delta_e,
@@ -289,12 +289,12 @@ def evaluate_surrogate(state,settings,geometry):
                 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
                 if trim ==  True: 
-                    delta_r        = np.atleast_2d(conditions.control_surfaces.rudder.deflection)
+                    delta_r        = rp.atleast_2d(conditions.control_surfaces.rudder.deflection)
                 else:  
-                    delta_r        = np.ones_like(Mach) * control_surface.deflection
+                    delta_r        = rp.ones_like(Mach) * control_surface.deflection
                     
         
-                pts_delta_r    = np.hstack((delta_r,Mach))
+                pts_delta_r    = rp.hstack((delta_r,Mach))
                 
                 results_delta_r =  compute_coefficients(sub_sur.Clift_delta_r,sub_sur.Cdrag_delta_r,sub_sur.CX_delta_r,sub_sur.CY_delta_r,sub_sur.CZ_delta_r,sub_sur.CL_delta_r,sub_sur.CM_delta_r, sub_sur.CN_delta_r,
                  trans_sur.Clift_delta_r,trans_sur.Cdrag_delta_r,trans_sur.CX_delta_r,trans_sur.CY_delta_r,trans_sur.CZ_delta_r,trans_sur.CL_delta_r,trans_sur.CM_delta_r, trans_sur.CN_delta_r,
@@ -320,9 +320,9 @@ def evaluate_surrogate(state,settings,geometry):
                 conditions.control_surfaces.rudder.static_stability.coefficients.N          = results_delta_r.CN
                 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                delta_s        = np.ones_like(Mach) * control_surface.deflection
+                delta_s        = rp.ones_like(Mach) * control_surface.deflection
         
-                pts_delta_s    = np.hstack((delta_s,Mach)) 
+                pts_delta_s    = rp.hstack((delta_s,Mach)) 
                 
                 results_delta_s =  compute_coefficients(sub_sur.Clift_delta_s,sub_sur.Cdrag_delta_s,sub_sur.CX_delta_s,sub_sur.CY_delta_s,sub_sur.CZ_delta_s,sub_sur.CL_delta_s,sub_sur.CM_delta_s, sub_sur.CN_delta_s,
                  trans_sur.Clift_delta_s,trans_sur.Cdrag_delta_s,trans_sur.CX_delta_s,trans_sur.CY_delta_s,trans_sur.CZ_delta_s,trans_sur.CL_delta_s,trans_sur.CM_delta_s, trans_sur.CN_delta_s,
@@ -348,9 +348,9 @@ def evaluate_surrogate(state,settings,geometry):
                 conditions.control_surfaces.slat.static_stability.coefficients.N          = results_delta_s.CN
                 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:   
-                delta_f        = np.ones_like(Mach) * control_surface.deflection
+                delta_f        = rp.ones_like(Mach) * control_surface.deflection
         
-                pts_delta_f    = np.hstack((delta_f,Mach))
+                pts_delta_f    = rp.hstack((delta_f,Mach))
                 
                 results_delta_f =  compute_coefficients(sub_sur.Clift_delta_f,sub_sur.Cdrag_delta_f,sub_sur.CX_delta_f,sub_sur.CY_delta_f,sub_sur.CZ_delta_f,sub_sur.CL_delta_f,sub_sur.CM_delta_f, sub_sur.CN_delta_f,
                  trans_sur.Clift_delta_f,trans_sur.Cdrag_delta_f,trans_sur.CX_delta_f,trans_sur.CY_delta_f,trans_sur.CZ_delta_f,trans_sur.CL_delta_f,trans_sur.CM_delta_f, trans_sur.CN_delta_f,
@@ -476,12 +476,12 @@ def evaluate_no_surrogate(state,settings,geometry):
     for wing in geometry.wings:
         ref = wing.areas.reference
         if wing.symmetric:
-            Clift_wing  = np.atleast_2d(np.sum(dim_wing_lifts[:,i:(i+2)],axis=1)).T/ref
-            Cdrag_wing  = np.atleast_2d(np.sum(dim_wing_drags[:,i:(i+2)],axis=1)).T/ref 
+            Clift_wing  = rp.atleast_2d(rp.sum(dim_wing_lifts[:,i:(i+2)],axis=1)).T/ref
+            Cdrag_wing  = rp.atleast_2d(rp.sum(dim_wing_drags[:,i:(i+2)],axis=1)).T/ref 
             i+=1
         else:
-            Clift_wing  = np.atleast_2d(dim_wing_lifts[:,i]).T/ref
-            Cdrag_wing  = np.atleast_2d(dim_wing_drags[:,i]).T/ref 
+            Clift_wing  = rp.atleast_2d(dim_wing_lifts[:,i]).T/ref
+            Cdrag_wing  = rp.atleast_2d(dim_wing_drags[:,i]).T/ref 
         i+=1
          
         conditions.aerodynamics.coefficients.lift.inviscid_wings[wing.tag]         = Clift_wing
@@ -506,34 +506,34 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
                          h_sub,h_sup,Mach, pts): 
 
     #  subsonic 
-    sub_Clift  = np.atleast_2d(sub_sur_Clift(pts)).T  
-    sub_Cdrag  = np.atleast_2d(sub_sur_Cdrag(pts)).T  
-    sub_CX     = np.atleast_2d(sub_sur_CX(pts)).T 
-    sub_CY     = np.atleast_2d(sub_sur_CY(pts)).T     
-    sub_CZ     = np.atleast_2d(sub_sur_CZ(pts)).T     
-    sub_CL     = np.atleast_2d(sub_sur_CL(pts)).T     
-    sub_CM     = np.atleast_2d(sub_sur_CM(pts)).T     
-    sub_CN     = np.atleast_2d(sub_sur_CN(pts)).T
+    sub_Clift  = rp.atleast_2d(sub_sur_Clift(pts)).T  
+    sub_Cdrag  = rp.atleast_2d(sub_sur_Cdrag(pts)).T  
+    sub_CX     = rp.atleast_2d(sub_sur_CX(pts)).T 
+    sub_CY     = rp.atleast_2d(sub_sur_CY(pts)).T     
+    sub_CZ     = rp.atleast_2d(sub_sur_CZ(pts)).T     
+    sub_CL     = rp.atleast_2d(sub_sur_CL(pts)).T     
+    sub_CM     = rp.atleast_2d(sub_sur_CM(pts)).T     
+    sub_CN     = rp.atleast_2d(sub_sur_CN(pts)).T
   
     # transonic 
-    trans_Clift  = np.atleast_2d(trans_sur_Clift(pts)).T  
-    trans_Cdrag  = np.atleast_2d(trans_sur_Cdrag(pts)).T  
-    trans_CX     = np.atleast_2d(trans_sur_CX(pts)).T 
-    trans_CY     = np.atleast_2d(trans_sur_CY(pts)).T     
-    trans_CZ     = np.atleast_2d(trans_sur_CZ(pts)).T     
-    trans_CL     = np.atleast_2d(trans_sur_CL(pts)).T     
-    trans_CM     = np.atleast_2d(trans_sur_CM(pts)).T     
-    trans_CN     = np.atleast_2d(trans_sur_CN(pts)).T
+    trans_Clift  = rp.atleast_2d(trans_sur_Clift(pts)).T  
+    trans_Cdrag  = rp.atleast_2d(trans_sur_Cdrag(pts)).T  
+    trans_CX     = rp.atleast_2d(trans_sur_CX(pts)).T 
+    trans_CY     = rp.atleast_2d(trans_sur_CY(pts)).T     
+    trans_CZ     = rp.atleast_2d(trans_sur_CZ(pts)).T     
+    trans_CL     = rp.atleast_2d(trans_sur_CL(pts)).T     
+    trans_CM     = rp.atleast_2d(trans_sur_CM(pts)).T     
+    trans_CN     = rp.atleast_2d(trans_sur_CN(pts)).T
     
     # supersonic 
-    sup_Clift  = np.atleast_2d(sup_sur_Clift(pts)).T  
-    sup_Cdrag  = np.atleast_2d(sup_sur_Cdrag(pts)).T  
-    sup_CX     = np.atleast_2d(sup_sur_CX(pts)).T 
-    sup_CY     = np.atleast_2d(sup_sur_CY(pts)).T     
-    sup_CZ     = np.atleast_2d(sup_sur_CZ(pts)).T     
-    sup_CL     = np.atleast_2d(sup_sur_CL(pts)).T     
-    sup_CM     = np.atleast_2d(sup_sur_CM(pts)).T     
-    sup_CN     = np.atleast_2d(sup_sur_CN(pts)).T            
+    sup_Clift  = rp.atleast_2d(sup_sur_Clift(pts)).T  
+    sup_Cdrag  = rp.atleast_2d(sup_sur_Cdrag(pts)).T  
+    sup_CX     = rp.atleast_2d(sup_sur_CX(pts)).T 
+    sup_CY     = rp.atleast_2d(sup_sur_CY(pts)).T     
+    sup_CZ     = rp.atleast_2d(sup_sur_CZ(pts)).T     
+    sup_CL     = rp.atleast_2d(sup_sur_CL(pts)).T     
+    sup_CM     = rp.atleast_2d(sup_sur_CM(pts)).T     
+    sup_CN     = rp.atleast_2d(sup_sur_CN(pts)).T            
     
     # apply 
     results       = Data() 
@@ -552,13 +552,13 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
 def compute_coefficient(sub_sur_coef,trans_sur_coef, sup_sur_coef, h_sub,h_sup,Mach, pts): 
 
     #  subsonic 
-    sub_coef  = np.atleast_2d(sub_sur_coef(pts)).T     
+    sub_coef  = rp.atleast_2d(sub_sur_coef(pts)).T     
   
     # transonic 
-    trans_coef  = np.atleast_2d(trans_sur_coef(pts)).T    
+    trans_coef  = rp.atleast_2d(trans_sur_coef(pts)).T    
     
     # supersonic 
-    sup_coef  = np.atleast_2d(sub_sur_coef(pts)).T             
+    sup_coef  = rp.atleast_2d(sub_sur_coef(pts)).T             
     
     # apply  
     coef = h_sub(Mach)*sub_coef +   (1 - (h_sup(Mach) + h_sub(Mach)))*trans_coef  + h_sub(Mach)*sup_coef 

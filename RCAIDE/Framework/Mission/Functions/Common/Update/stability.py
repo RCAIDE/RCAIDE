@@ -3,7 +3,7 @@
 # 
 # Created: Jun 2024, RCAIDE Team
 
-import numpy as np  
+import RNUMPY as rp  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Stability
 # ----------------------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ def stability(segment):
         # to implement when doing lateral stability
         phi    = conditions.frames.body.inertial_rotations[:,0]
         W      = conditions.weights.total_mass * conditions.freestream.gravity
-        F[:,1] = F[:,1] + W[:,0]*np.sin(phi) 
+        F[:,1] = F[:,1] + W[:,0]*rp.sin(phi) 
 
         # rewrite aerodynamic CL and CD
         conditions.aerodynamics.coefficients.lift.total  = CL

@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------     
 
 # package imports
-import numpy as np 
+import RNUMPY as rp 
 from Legacy.trunk.S.Methods.Propulsion.rayleigh  import rayleigh
 from Legacy.trunk.S.Methods.Propulsion.fm_solver import fm_solver
 
@@ -64,18 +64,18 @@ def compute_rayleigh(combustor,conditions):
     ar     = combustor.area_ratio 
 
     # Isentropic decceleration through divergent nozzle
-    Mach   = np.atleast_2d(fm_solver(ar,Mach[:,0],gamma[:,0])).T
+    Mach   = rp.atleast_2d(fm_solver(ar,Mach[:,0],gamma[:,0])).T
     
     # Determine max stagnation temperature to thermally choke flow                                     
     Tt4_ray = Tt_in*(1.+gamma*Mach*Mach)**2./((2.*(1.+gamma)*Mach*Mach)*(1.+(gamma-1.)/2.*Mach*Mach))
 
     # Rayleigh limitations define Tt4, taking max temperature before choking
-    Tt4                 = np.ones_like(Tt4_ray) * Tt4 
+    Tt4                 = rp.ones_like(Tt4_ray) * Tt4 
     Tt4[Tt4_ray <= Tt4] = Tt4_ray[Tt4_ray <= Tt4]
     
     # Rayleigh calculations
-    M_out                = np.zeros_like(Pt_in)
-    Ptr                  = np.zeros_like(Pt_in)
+    M_out                = rp.zeros_like(Pt_in)
+    Ptr                  = rp.zeros_like(Pt_in)
     M_out[:,0], Ptr[:,0] = rayleigh(gamma[:,0],Mach[:,0],Tt4[:,0]/Tt_in[:,0]) 
     Pt_out               = Ptr*Pt_in
          

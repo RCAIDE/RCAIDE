@@ -12,7 +12,7 @@ from RCAIDE.Framework.Core     import Data
 from RCAIDE.Framework.Analyses import Analysis  
 
 # package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Aerodynamics
@@ -32,4 +32,4 @@ class Aerodynamics(Analysis):
         self.tag                               = 'aerodynamics'  
         self.vehicle                           = Data()
         self.settings                          = Data()
-        self.settings.maximum_lift_coefficient = np.inf
+        self.settings.maximum_lift_coefficient = rp.inf

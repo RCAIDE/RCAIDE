@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE Imports  
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # unpack unknowns
@@ -45,7 +45,7 @@ def initialize_conditions(segment):
         alt = -1.0 *segment.state.initials.conditions.frames.inertial.position_vector[-1,2]   
 
     if v0  is None: 
-        v0 = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])
+        v0 = rp.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])
         
     # avoid having zero velocity since aero and propulsion models need non-zero Reynolds number
     if v0 == 0.0: v0 = 0.01

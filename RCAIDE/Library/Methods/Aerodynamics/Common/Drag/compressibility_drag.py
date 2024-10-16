@@ -15,7 +15,7 @@ from .supersonic_wave_drag_volume_raymer      import supersonic_wave_drag_volume
 from .supersonic_wave_drag_volume_sears_haack import supersonic_wave_drag_volume_sears_haack
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compressibility Drag Total
@@ -72,10 +72,10 @@ def compressibility_drag(state,settings,geometry):
     if settings.supersonic.cross_sectional_area_calculation_type != 'Fixed':
         raise NotImplementedError
 
-    low_cutoff_volume_total  = np.zeros_like(Mach)
-    high_cutoff_volume_total = np.zeros_like(Mach)     
-    low_cutoff_volume_total  = drag_divergence(low_mach_cutoff*np.ones_like(Mach), geometry,Cl) 
-    high_cutoff_volume_total = wave_drag_volume(geometry,low_mach_cutoff*np.ones_like(Mach),scaling_factor)
+    low_cutoff_volume_total  = rp.zeros_like(Mach)
+    high_cutoff_volume_total = rp.zeros_like(Mach)     
+    low_cutoff_volume_total  = drag_divergence(low_mach_cutoff*rp.ones_like(Mach), geometry,Cl) 
+    high_cutoff_volume_total = wave_drag_volume(geometry,low_mach_cutoff*rp.ones_like(Mach),scaling_factor)
     
     peak_volume_total = high_cutoff_volume_total*peak_factor
      
@@ -94,12 +94,12 @@ def compressibility_drag(state,settings,geometry):
     low_inds = Mach[:,0]<peak_mach
     hi_inds  = Mach[:,0]>=peak_mach
 
-    cd_c_v_base                  = np.zeros_like(Mach) 
+    cd_c_v_base                  = rp.zeros_like(Mach) 
     cd_c_v_base[low_inds]        = drag_divergence(Mach[low_inds], geometry,Cl[low_inds]) 
     cd_c_l_base                  = lift_wave_drag(conditions, settings, geometry)
     cd_c_v_base[Mach>=peak_mach] = wave_drag_volume(geometry, Mach[Mach>=peak_mach], scaling_factor) 
     
-    cd_c_v = np.zeros_like(Mach)
+    cd_c_v = rp.zeros_like(Mach)
     cd_c_v[low_inds] = cd_c_v_base[low_inds]*(sub_h00(Mach[low_inds])) + transonic_drag_function(Mach[low_inds],a1[low_inds], peak_mach, peak_volume_total[low_inds])*(1-sub_h00(Mach[low_inds]))
     cd_c_v[hi_inds]  = transonic_drag_function(Mach[hi_inds],a2[hi_inds], peak_mach, peak_volume_total[hi_inds])*(sup_h00(Mach[hi_inds])) + cd_c_v_base[hi_inds]*(1-sup_h00(Mach[hi_inds]))
 
@@ -136,7 +136,7 @@ def transonic_drag_function(Mach,a_vertex, peak_mach, peak_volume_total):
     transonic_drag
     """ 
     transonic_drag = a_vertex*(Mach-peak_mach)*(Mach-peak_mach)+peak_volume_total
-    transonic_drag = transonic_drag.reshape(np.shape(Mach))
+    transonic_drag = transonic_drag.reshape(rp.shape(Mach))
     return transonic_drag
 
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -166,7 +166,7 @@ def lift_wave_drag(conditions,configuration,geometry):
             Mach       = conditions.freestream.mach_number
         
             # Initalize cd arrays
-            cd_c_l = np.zeros_like(Mach) 
+            cd_c_l = rp.zeros_like(Mach) 
         
             # Calculate wing values at all Mach numbers
             cd_lift_wave = wave_drag(conditions,wing)

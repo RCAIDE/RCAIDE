@@ -9,7 +9,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units, Data
 from scipy.interpolate import griddata
-import numpy as np
+import RNUMPY as rp
 from geopy.distance import geodesic as GD
 
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -45,11 +45,11 @@ def compute_point_to_point_geospatial_data(topography_file                      
            
     """     
     # convert cooordinates to array 
-    origin_coord_deg      = np.asarray(origin_coord_deg)
-    destination_coord_deg = np.asarray(destination_coord_deg)
+    origin_coord_deg      = rp.asarray(origin_coord_deg)
+    destination_coord_deg = rp.asarray(destination_coord_deg)
     
     # extract data from file   
-    data  = np.loadtxt(topography_file)
+    data  = rp.loadtxt(topography_file)
     Long  = data[:,0]
     Lat   = data[:,1]
     Elev  = data[:,2]
@@ -61,17 +61,17 @@ def compute_point_to_point_geospatial_data(topography_file                      
     # Compute distance between origin and destimation points
     origin_coord_rad      = origin_coord_deg*Units.degrees
     destination_coord_rad = destination_coord_deg*Units.degrees  
-    angle                 = np.arccos(np.sin(origin_coord_rad[0])*np.sin(destination_coord_rad[0]) + 
-                           np.cos(origin_coord_rad[0])*np.cos(destination_coord_rad[0])*np.cos(origin_coord_rad[1] - destination_coord_rad[1])) 
+    angle                 = rp.arccos(rp.sin(origin_coord_rad[0])*rp.sin(destination_coord_rad[0]) + 
+                           rp.cos(origin_coord_rad[0])*rp.cos(destination_coord_rad[0])*rp.cos(origin_coord_rad[1] - destination_coord_rad[1])) 
 
     # Compute heading from origin to destination    
-    gamma = np.arcsin( np.sin(np.pi/2 - destination_coord_rad[0])* np.sin(destination_coord_rad[1] - origin_coord_rad[1])/np.sin(angle)) 
+    gamma = rp.arcsin( rp.sin(rp.pi/2 - destination_coord_rad[0])* rp.sin(destination_coord_rad[1] - origin_coord_rad[1])/rp.sin(angle)) 
     angle_vector   = destination_coord_deg - origin_coord_deg 
     if angle_vector[0] < 0:
-        gamma = np.pi - gamma  
+        gamma = rp.pi - gamma  
  
-    x_min_coord = np.min(Lat)
-    y_min_coord = np.min(Long)
+    x_min_coord = rp.min(Lat)
+    y_min_coord = rp.min(Long)
     ori_lat     = origin_coord_deg[0]
     ori_long    = origin_coord_deg[1]
     des_lat     = destination_coord_deg[0]
@@ -82,11 +82,11 @@ def compute_point_to_point_geospatial_data(topography_file                      
         des_long = des_long-360  
     
     # compute location of origin and destimation 
-    bottom_left_map_coords           = np.array([x_min_coord,y_min_coord])  
-    x0_coord                         = np.array([ori_lat,y_min_coord])
-    y0_coord                         = np.array([x_min_coord,ori_long])
-    x1_coord                         = np.array([des_lat,y_min_coord])
-    y1_coord                         = np.array([x_min_coord,des_long])
+    bottom_left_map_coords           = rp.array([x_min_coord,y_min_coord])  
+    x0_coord                         = rp.array([ori_lat,y_min_coord])
+    y0_coord                         = rp.array([x_min_coord,ori_long])
+    x1_coord                         = rp.array([des_lat,y_min_coord])
+    y1_coord                         = rp.array([x_min_coord,des_long])
     
     # get bounds of computational domain 
     x0                               = GD(x0_coord,bottom_left_map_coords).m 
@@ -95,14 +95,14 @@ def compute_point_to_point_geospatial_data(topography_file                      
     y1                               = GD(y1_coord,bottom_left_map_coords).m
     
     # compute topography data 
-    lat_flag                         = np.where(origin_coord_deg<0)[0]
+    lat_flag                         = rp.where(origin_coord_deg<0)[0]
     origin_coord_deg[lat_flag]       = origin_coord_deg[lat_flag] + 360 
-    long_flag                        = np.where(destination_coord_deg<0)[0]
+    long_flag                        = rp.where(destination_coord_deg<0)[0]
     destination_coord_deg[long_flag] = destination_coord_deg[long_flag] + 360   
-    z0                               = griddata((Lat,Long), Elev, (np.array([origin_coord_deg[0]]),np.array([origin_coord_deg[1]])), method='linear')[0]
-    z1                               = griddata((Lat,Long), Elev, (np.array([destination_coord_deg[0]]),np.array([destination_coord_deg[1]])), method='linear')[0] 
-    ori_location                     = np.array([x0,y0,z0])
-    des_location                     = np.array([x1,y1,z1])
+    z0                               = griddata((Lat,Long), Elev, (rp.array([origin_coord_deg[0]]),rp.array([origin_coord_deg[1]])), method='linear')[0]
+    z1                               = griddata((Lat,Long), Elev, (rp.array([destination_coord_deg[0]]),rp.array([destination_coord_deg[1]])), method='linear')[0] 
+    ori_location                     = rp.array([x0,y0,z0])
+    des_location                     = rp.array([x1,y1,z1])
     
     # pack data 
     geospacial_data = Data( 

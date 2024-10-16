@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
 from  RCAIDE.Framework.Core import Units   
-import numpy as np    
+import RNUMPY as rp    
 import matplotlib.pyplot as plt  
 import matplotlib.cm as cm   
 
@@ -44,7 +44,7 @@ def plot_evtol_weight_breakdown(vehicle,
     if aircraft_name == None:
         aircraft_name = vehicle.tag
         
-    vals_unorm =  np.array([b.rotors,
+    vals_unorm =  rp.array([b.rotors,
                             b.hubs,
                             b.booms,
                             b.fuselage,
@@ -66,30 +66,30 @@ def plot_evtol_weight_breakdown(vehicle,
     fig.set_size_inches(width,height)
     ax = fig.add_subplot(111, projection='polar') 
     size  = 0.2
-    vals  = vals_unorm/np.sum(vals_unorm)*2*np.pi
+    vals  = vals_unorm/rp.sum(vals_unorm)*2*rp.pi
     
-    inner_colors  = cm.gray(np.linspace(0.2,0.8,3))  
-    middle_colors = cm.viridis(np.linspace(0.2,0.8,9))  
-    outer_colors  = cm.plasma(np.linspace(0.2,0.8,6))  
+    inner_colors  = cm.gray(rp.linspace(0.2,0.8,3))  
+    middle_colors = cm.viridis(rp.linspace(0.2,0.8,9))  
+    outer_colors  = cm.plasma(rp.linspace(0.2,0.8,6))  
     
-    inner_vals   = np.array([np.sum(vals[0:14]),vals[14],vals[15]])
-    middle_vals  = np.array([np.sum(vals[0:6]),vals[6],vals[7],vals[8],vals[9],vals[10],vals[11],vals[12],vals[13] ])
+    inner_vals   = rp.array([rp.sum(vals[0:14]),vals[14],vals[15]])
+    middle_vals  = rp.array([rp.sum(vals[0:6]),vals[6],vals[7],vals[8],vals[9],vals[10],vals[11],vals[12],vals[13] ])
     outer_vals   = vals[0:6]   
     
-    inner_v  = np.cumsum(np.append(0, inner_vals[:-1]))
-    middle_v = np.cumsum(np.append(0, middle_vals[:-1])) 
-    outer_v = np.cumsum(np.append(0, outer_vals[:-1]))     
+    inner_v  = rp.cumsum(rp.append(0, inner_vals[:-1]))
+    middle_v = rp.cumsum(rp.append(0, middle_vals[:-1])) 
+    outer_v = rp.cumsum(rp.append(0, outer_vals[:-1]))     
     w1 = ax.bar(x=inner_v ,
            width=inner_vals, bottom=1-3*size, height=size,
            color=inner_colors, edgecolor='w', linewidth=1, align="edge",
-           label = ['OEW = ' + str(round(100*np.sum(vals_unorm[0:14])/weight,1)) + ' %',
+           label = ['OEW = ' + str(round(100*rp.sum(vals_unorm[0:14])/weight,1)) + ' %',
                     'Payload = ' + str(round(100*vals_unorm[14]/weight,1)) + ' %',
                     'Passengers = ' + str(round(100*vals_unorm[15]/weight,1)) + ' %',] )   
     
     w2 =  ax.bar(x=middle_v,
            width=middle_vals, bottom=1-2*size, height=size,
            color=middle_colors, edgecolor='w', linewidth=1, align="edge",
-           label = ['Structural = ' + str(round(100*np.sum(vals_unorm[0:6])/weight,1)) + ' %',
+           label = ['Structural = ' + str(round(100*rp.sum(vals_unorm[0:6])/weight,1)) + ' %',
                     'Seats = '    + str(round(100*vals_unorm[6]/weight ,1)) + ' %',
                     'Avionics = ' + str(round(100*vals_unorm[7]/weight ,1)) + ' %',
                     'E.C.S. = '   + str(round(100*vals_unorm[8]/weight ,1)) + ' %',
@@ -114,8 +114,8 @@ def plot_evtol_weight_breakdown(vehicle,
     if not SI_Units:    
         weight = weight/Units.lbs
         weight_text = str((round(weight,1))) + ' lbs.' 
-    ax.annotate('MTOW', (np.pi*3/4,0.2), size= 20) 
-    ax.annotate(weight_text, (np.pi,0.2), size= 20)   
+    ax.annotate('MTOW', (rp.pi*3/4,0.2), size= 20) 
+    ax.annotate(weight_text, (rp.pi,0.2), size= 20)   
     
     if show_legend:
         lns = w1+w2+w3

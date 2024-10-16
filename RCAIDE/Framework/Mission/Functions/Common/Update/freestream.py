@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
-import numpy as np 
+import RNUMPY as rp 
     
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Freestream
@@ -41,8 +41,8 @@ def freestream(segment):
     mu         = conditions.freestream.dynamic_viscosity
 
     # velocity magnitude
-    Vmag2 = np.sum( V**2, axis=1)[:,None]  
-    Vmag  = np.sqrt(Vmag2)
+    Vmag2 = rp.sum( V**2, axis=1)[:,None]  
+    Vmag  = rp.sqrt(Vmag2)
 
     # dynamic pressure
     q = 0.5 * rho * Vmag2 # Pa

@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core              import Data 
 from RCAIDE.Library.Components          import Component   
 import scipy as sp
-import numpy as np
+import RNUMPY as rp
  
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Nacalle
@@ -90,18 +90,18 @@ class Nacelle(Component):
         """
         
         # Go from body to vehicle frame
-        body_2_vehicle = sp.spatial.transform.Rotation.from_rotvec([0,np.pi,0]).as_matrix()
+        body_2_vehicle = sp.spatial.transform.Rotation.from_rotvec([0,rp.pi,0]).as_matrix()
         
         # Go from vehicle frame to nacelle vehicle frame: rot 1 including the extra body rotation
-        rots    = np.array(self.orientation_euler_angles) * 1. 
+        rots    = rp.array(self.orientation_euler_angles) * 1. 
         vehicle_2_nac_vec = sp.spatial.transform.Rotation.from_rotvec(rots).as_matrix()        
         
         # GO from the nacelle vehicle frame to the nacelle velocity frame: rot 2
         nac_vec_2_nac_vel = self.rotor_to_velocity_frame_rotation()
         
         # Do all the matrix multiplies
-        rot1    = np.matmul(body_2_vehicle,vehicle_2_nac_vec)
-        rot_mat = np.matmul(rot1,nac_vec_2_nac_vel) 
+        rot1    = rp.matmul(body_2_vehicle,vehicle_2_nac_vec)
+        rot_mat = rp.matmul(rot1,nac_vec_2_nac_vel) 
         return rot_mat    
     
 
@@ -123,7 +123,7 @@ class Nacelle(Component):
             rot_mat (numpy.ndarray) : rotated matrix array 
         """
         
-        rot_mat = sp.spatial.transform.Rotation.from_rotvec([0,np.pi,0]).as_matrix()
+        rot_mat = sp.spatial.transform.Rotation.from_rotvec([0,rp.pi,0]).as_matrix()
         
         return rot_mat
     

@@ -11,7 +11,7 @@
 from .wave_drag  import wave_drag  
 
 # package imports
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compressibility Drag Total
@@ -35,7 +35,7 @@ def lift_wave_drag(conditions,wing,Sref):
     
     cd_lift_wave         = wave_drag(conditions,wing) 
     mach                 = conditions.freestream.mach_number 
-    cd_c_l               = np.zeros_like(mach)  
+    cd_c_l               = rp.zeros_like(mach)  
     cd_c_l[mach >= 1.01] = cd_lift_wave[0:len(mach[mach >= 1.01]),0] 
     cd_c_l               = cd_c_l*wing.areas.reference/Sref
 

@@ -11,7 +11,7 @@
 import RCAIDE
  
 # package imports 
-import numpy as np  
+import RNUMPY as rp  
 
 #------------------------------------------------------------------------------
 # Stall Speed Estimation
@@ -43,6 +43,6 @@ def estimate_stall_speed(vehicle_mass,
 
     atmo    = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     rho     = atmo.compute_values(altitude, delta_ISA).density
-    V_stall = float(np.sqrt(2.*vehicle_mass*g/(rho*reference_area*maximum_lift_coefficient)))  
+    V_stall = float(rp.sqrt(2.*vehicle_mass*g/(rho*reference_area*maximum_lift_coefficient)))  
     
     return V_stall

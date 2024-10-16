@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Mission.Functions.Common.Update.atmosphere import atmosphere
 
 # package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Initialize Conditions
@@ -64,7 +64,7 @@ def initialize_conditions(segment):
     # check for initial velocity vector
     if M0 is None:
         if not segment.state.initials: raise AttributeError('initial mach number not set')
-        M0  =  np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])/a[0,:]         
+        M0  =  rp.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])/a[0,:]         
         
     # discretize on altitude
     alt = t_nondim * (altf-alt0) + alt0
@@ -73,9 +73,9 @@ def initialize_conditions(segment):
     mach_number = (Mf-M0)*t_nondim + M0
     v_xy_mag    = mach_number * a
     v_z         = descent_rate 
-    v_xy        = np.sqrt( v_xy_mag**2 - v_z**2 ) 
-    v_x         = np.cos(beta)*v_xy
-    v_y         = np.sin(beta)*v_xy
+    v_xy        = rp.sqrt( v_xy_mag**2 - v_z**2 ) 
+    v_x         = rp.cos(beta)*v_xy
+    v_y         = rp.sin(beta)*v_xy
     
     # pack conditions    
     conditions.freestream.altitude[:,0]             =  alt[:,0]   

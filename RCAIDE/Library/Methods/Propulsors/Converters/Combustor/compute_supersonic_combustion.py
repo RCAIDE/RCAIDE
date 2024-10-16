@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------     
 
 # package imports
-import numpy as np 
+import RNUMPY as rp 
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # calculate_power_from_throttle
@@ -90,7 +90,7 @@ def compute_supersonic_combustion(combustor,conditions):
     # compute output velocity, mach and temperature 
     V_out  = V_in*(((1.+f*Vfx_V3)/(1.+f))-(Cfb/(2.*(1.+f)))) 
     T_out  = ((T_in/(1.+f))*(1.+(1./(Cpb*T_in ))*(eta_b*f*htf+f*hf+f*Cpb*Tref+(1.+f*Vf_V3*Vf_V3)*V_in*V_in/2.))) - V_out*V_out/(2.*Cpb) 
-    M_out  = V_out/(np.sqrt(gamma_b*R*T_out)) 
+    M_out  = V_out/(rp.sqrt(gamma_b*R*T_out)) 
     Tt_out = T_out*(1.+(gamma_b-1.)/2.)*M_out*M_out
     
     # compute the exity static and stagnation conditions 

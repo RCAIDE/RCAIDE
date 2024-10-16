@@ -12,7 +12,7 @@ from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry
 from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series
 
 # python imports 
-import numpy as np 
+import RNUMPY as rp 
 import plotly.graph_objects as go     
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -54,18 +54,18 @@ def plot_3d_rotor(rotor,save_filename = "Rotor", save_figure = False, plot_data 
         # ------------------------------------------------------------------------
         for sec in range(dim-1):
             for loc in range(af_pts):
-                X = np.array([[G.XA1[cpt,sec,loc],G.XA2[cpt,sec,loc]],
+                X = rp.array([[G.XA1[cpt,sec,loc],G.XA2[cpt,sec,loc]],
                      [G.XB1[cpt,sec,loc],G.XB2[cpt,sec,loc]]])
-                Y = np.array([[G.YA1[cpt,sec,loc],G.YA2[cpt,sec,loc]],
+                Y = rp.array([[G.YA1[cpt,sec,loc],G.YA2[cpt,sec,loc]],
                      [G.YB1[cpt,sec,loc],G.YB2[cpt,sec,loc]]])
-                Z = np.array([[G.ZA1[cpt,sec,loc],G.ZA2[cpt,sec,loc]],
+                Z = rp.array([[G.ZA1[cpt,sec,loc],G.ZA2[cpt,sec,loc]],
                      [G.ZB1[cpt,sec,loc],G.ZB2[cpt,sec,loc]]]) 
                  
-                values      = np.ones_like(X) 
+                values      = rp.ones_like(X) 
                 verts       = contour_surface_slice(X, Y, Z ,values,color_map)
                 plot_data.append(verts)      
             
-    axis_limits = np.maximum(np.max(G.XA1), np.maximum(np.max(G.YA1),np.max(G.ZA1)))*2 
+    axis_limits = rp.maximum(rp.max(G.XA1), rp.maximum(rp.max(G.YA1),rp.max(G.ZA1)))*2 
     if plot_propeller_only:
         fig = go.Figure(data=plot_data)
         fig.update_scenes(aspectmode   = 'auto',
@@ -127,82 +127,82 @@ def generate_3d_blade_points(rotor,n_points,dim,i,aircraftRefFrame=True):
         b    = -b    
         beta = -beta
 
-    theta  = np.linspace(0,2*np.pi,num_B+1)[:-1] 
-    flip_2 =  (np.pi/2)
+    theta  = rp.linspace(0,2*rp.pi,num_B+1)[:-1] 
+    flip_2 =  (rp.pi/2)
 
-    MCA_2d             = np.repeat(np.atleast_2d(MCA).T,n_points,axis=1)
-    b_2d               = np.repeat(np.atleast_2d(b).T  ,n_points,axis=1)
-    t_2d               = np.repeat(np.atleast_2d(t).T  ,n_points,axis=1)
-    r_2d               = np.repeat(np.atleast_2d(r).T  ,n_points,axis=1)
-    airfoil_le_offset  = np.repeat(b[:,None], n_points, axis=1)/2  
+    MCA_2d             = rp.repeat(rp.atleast_2d(MCA).T,n_points,axis=1)
+    b_2d               = rp.repeat(rp.atleast_2d(b).T  ,n_points,axis=1)
+    t_2d               = rp.repeat(rp.atleast_2d(t).T  ,n_points,axis=1)
+    r_2d               = rp.repeat(rp.atleast_2d(r).T  ,n_points,axis=1)
+    airfoil_le_offset  = rp.repeat(b[:,None], n_points, axis=1)/2  
 
     # get airfoil coordinate geometry
     if len(airfoils.keys())>0:
-        xpts  = np.zeros((dim,n_points))
-        zpts  = np.zeros((dim,n_points))
-        max_t = np.zeros(dim)
+        xpts  = rp.zeros((dim,n_points))
+        zpts  = rp.zeros((dim,n_points))
+        max_t = rp.zeros(dim)
         for af_idx,airfoil in enumerate(airfoils):
             geometry     = import_airfoil_geometry(airfoil.coordinate_file,n_points)
-            locs         = np.where(np.array(a_loc) == af_idx)
+            locs         = rp.where(rp.array(a_loc) == af_idx)
             xpts[locs]   = geometry.x_coordinates  
             zpts[locs]   = geometry.y_coordinates  
             max_t[locs]  = geometry.thickness_to_chord 
 
     else: 
         airfoil_data = compute_naca_4series('2410',n_points)
-        xpts         = np.repeat(np.atleast_2d(airfoil_data.x_coordinates) ,dim,axis=0)
-        zpts         = np.repeat(np.atleast_2d(airfoil_data.y_coordinates) ,dim,axis=0)
-        max_t        = np.repeat(airfoil_data.thickness_to_chord,dim,axis=0)
+        xpts         = rp.repeat(rp.atleast_2d(airfoil_data.x_coordinates) ,dim,axis=0)
+        zpts         = rp.repeat(rp.atleast_2d(airfoil_data.y_coordinates) ,dim,axis=0)
+        max_t        = rp.repeat(airfoil_data.thickness_to_chord,dim,axis=0)
 
     # store points of airfoil in similar format as Vortex Points (i.e. in vertices)
-    max_t2d = np.repeat(np.atleast_2d(max_t).T ,n_points,axis=1)
+    max_t2d = rp.repeat(rp.atleast_2d(max_t).T ,n_points,axis=1)
 
     xp      = (- MCA_2d + xpts*b_2d - airfoil_le_offset)     # x-coord of airfoil
-    yp      = r_2d*np.ones_like(xp)                          # radial location
+    yp      = r_2d*rp.ones_like(xp)                          # radial location
     zp      = zpts*(t_2d/max_t2d)                            # former airfoil y coord
 
     velocity_to_vehicle_frame_rotation = rotor.velocity_to_vehicle_frame_rotation()
     cpts              = len(velocity_to_vehicle_frame_rotation[:,0,0])
 
-    matrix        = np.zeros((len(zp),n_points,3)) # radial location, airfoil pts (same y)
+    matrix        = rp.zeros((len(zp),n_points,3)) # radial location, airfoil pts (same y)
     matrix[:,:,0] = xp
     matrix[:,:,1] = yp
     matrix[:,:,2] = zp
-    matrix        = np.repeat(matrix[None,:,:,:], cpts, axis=0)
+    matrix        = rp.repeat(matrix[None,:,:,:], cpts, axis=0)
 
 
     # ROTATION MATRICES FOR INNER SECTION
     # rotation about y axis to create twist and position blade upright
-    trans_1        = np.zeros((dim,3,3))
-    trans_1[:,0,0] = np.cos(- beta)
-    trans_1[:,0,2] = -np.sin(- beta)
+    trans_1        = rp.zeros((dim,3,3))
+    trans_1[:,0,0] = rp.cos(- beta)
+    trans_1[:,0,2] = -rp.sin(- beta)
     trans_1[:,1,1] = 1
-    trans_1[:,2,0] = np.sin(- beta)
-    trans_1[:,2,2] = np.cos(- beta)
-    trans_1        = np.repeat(trans_1[None,:,:,:], cpts, axis=0)
+    trans_1[:,2,0] = rp.sin(- beta)
+    trans_1[:,2,2] = rp.cos(- beta)
+    trans_1        = rp.repeat(trans_1[None,:,:,:], cpts, axis=0)
 
     # rotation about x axis to create azimuth locations
-    trans_2 = np.array([[1 , 0 , 0],
-                        [0 , np.cos(theta[i] + a_o + flip_2 ), -np.sin(theta[i] +a_o +  flip_2)],
-                        [0,np.sin(theta[i] + a_o + flip_2), np.cos(theta[i] + a_o + flip_2)]])
-    trans_2 = np.repeat(trans_2[None,:,:], dim, axis=0)
-    trans_2 = np.repeat(trans_2[None,:,:,:], cpts, axis=0)
+    trans_2 = rp.array([[1 , 0 , 0],
+                        [0 , rp.cos(theta[i] + a_o + flip_2 ), -rp.sin(theta[i] +a_o +  flip_2)],
+                        [0,rp.sin(theta[i] + a_o + flip_2), rp.cos(theta[i] + a_o + flip_2)]])
+    trans_2 = rp.repeat(trans_2[None,:,:], dim, axis=0)
+    trans_2 = rp.repeat(trans_2[None,:,:,:], cpts, axis=0)
 
     # rotation about y to orient propeller/rotor to thrust angle (from propeller frame to aircraft frame)
     trans_3 =  velocity_to_vehicle_frame_rotation
-    trans_3 =  np.repeat(trans_3[:, None,:,: ],dim,axis=1) 
+    trans_3 =  rp.repeat(trans_3[:, None,:,: ],dim,axis=1) 
 
-    trans     = np.matmul(trans_2,trans_1)
-    rot_mat   = np.repeat(trans[:,:, None,:,:],n_points,axis=2)    
+    trans     = rp.matmul(trans_2,trans_1)
+    rot_mat   = rp.repeat(trans[:,:, None,:,:],n_points,axis=2)    
 
     # ---------------------------------------------------------------------------------------------
     # ROTATE POINTS
     if aircraftRefFrame:
         # rotate all points to the thrust angle with trans_3
-        mat  =  np.matmul(np.matmul(rot_mat,matrix[...,None]).squeeze(axis=-1), trans_3)
+        mat  =  rp.matmul(rp.matmul(rot_mat,matrix[...,None]).squeeze(axis=-1), trans_3)
     else:
         # use the rotor frame
-        mat  =  np.matmul(rot_mat,matrix[...,None]).squeeze(axis=-1)
+        mat  =  rp.matmul(rot_mat,matrix[...,None]).squeeze(axis=-1)
     # ---------------------------------------------------------------------------------------------
     # create empty data structure for storing geometry
     G = Data()

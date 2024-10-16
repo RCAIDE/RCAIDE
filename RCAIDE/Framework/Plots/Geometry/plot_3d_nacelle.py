@@ -11,7 +11,7 @@ from RCAIDE.Framework.Plots.Geometry.Common.contour_surface_slice import contour
 from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry
 from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series 
 
-import numpy as np  
+import RNUMPY as rp  
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -43,14 +43,14 @@ def plot_3d_nacelle(plot_data,nacelle,tessellation = 24,number_of_airfoil_points
     tesselation  = len(nac_pts[0,:,0]) 
     for i_seg in range(num_nac_segs-1):
         for i_tes in range(tesselation-1):
-            X = np.array([[nac_pts[i_seg  ,i_tes  ,0],nac_pts[i_seg+1,i_tes  ,0]],
+            X = rp.array([[nac_pts[i_seg  ,i_tes  ,0],nac_pts[i_seg+1,i_tes  ,0]],
                  [nac_pts[i_seg  ,i_tes+1,0],nac_pts[i_seg+1,i_tes+1,0]]])
-            Y = np.array([[nac_pts[i_seg  ,i_tes  ,1],nac_pts[i_seg+1,i_tes  ,1]],
+            Y = rp.array([[nac_pts[i_seg  ,i_tes  ,1],nac_pts[i_seg+1,i_tes  ,1]],
                  [nac_pts[i_seg  ,i_tes+1,1],nac_pts[i_seg+1,i_tes+1,1]]])
-            Z = np.array([[nac_pts[i_seg  ,i_tes  ,2],nac_pts[i_seg+1,i_tes  ,2]],
+            Z = rp.array([[nac_pts[i_seg  ,i_tes  ,2],nac_pts[i_seg+1,i_tes  ,2]],
                  [nac_pts[i_seg  ,i_tes+1,2],nac_pts[i_seg+1,i_tes+1,2]]])
              
-            values = np.zeros_like(X) 
+            values = rp.zeros_like(X) 
             verts = contour_surface_slice(X, Y, Z ,values,color_map)
             plot_data.append(verts)    
 
@@ -72,39 +72,39 @@ def generate_3d_stack_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_po
     """ 
     
     num_nac_segs = len(nac.Segments.keys())   
-    theta        = np.linspace(0,2*np.pi,tessellation)  
+    theta        = rp.linspace(0,2*rp.pi,tessellation)  
  
-    nac_pts = np.zeros((num_nac_segs,tessellation,3))  
+    nac_pts = rp.zeros((num_nac_segs,tessellation,3))  
     for i_seg, segment in enumerate(nac.Segments): 
         a = segment.width/2
         b = segment.height/2
-        theta                   = np.linspace(0,2*np.pi,tessellation) 
-        section_points          = np.zeros((24, 3, 1))
-        section_points[:, 1, 0] = (abs((np.cos(theta))))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
-        section_points[:, 2, 0] = (abs((np.sin(theta))))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+        theta                   = rp.linspace(0,2*rp.pi,tessellation) 
+        section_points          = rp.zeros((24, 3, 1))
+        section_points[:, 1, 0] = (abs((rp.cos(theta))))*a * ((rp.cos(theta)>0)*1 - (rp.cos(theta)<0)*1) 
+        section_points[:, 2, 0] = (abs((rp.sin(theta))))*b * ((rp.sin(theta)>0)*1 - (rp.sin(theta)<0)*1)  
         
-        x_rotation = np.zeros((tessellation, 3, 3))
+        x_rotation = rp.zeros((tessellation, 3, 3))
         x_rotation[:,0,0] = 1
-        x_rotation[:,1,1] = np.cos(segment.orientation_euler_angles[0])
-        x_rotation[:,1,2] = -np.sin(segment.orientation_euler_angles[0])
-        x_rotation[:,2,1] = np.sin(segment.orientation_euler_angles[0])
-        x_rotation[:,2,2] = np.cos(segment.orientation_euler_angles[0])
+        x_rotation[:,1,1] = rp.cos(segment.orientation_euler_angles[0])
+        x_rotation[:,1,2] = -rp.sin(segment.orientation_euler_angles[0])
+        x_rotation[:,2,1] = rp.sin(segment.orientation_euler_angles[0])
+        x_rotation[:,2,2] = rp.cos(segment.orientation_euler_angles[0])
         
-        y_rotation = np.zeros((tessellation, 3, 3))
-        y_rotation[:,0,0] = np.cos(segment.orientation_euler_angles[1])
-        y_rotation[:,0,2] = np.sin(segment.orientation_euler_angles[1])
+        y_rotation = rp.zeros((tessellation, 3, 3))
+        y_rotation[:,0,0] = rp.cos(segment.orientation_euler_angles[1])
+        y_rotation[:,0,2] = rp.sin(segment.orientation_euler_angles[1])
         y_rotation[:,1,1] = 1
-        y_rotation[:,2,0] = -np.sin(segment.orientation_euler_angles[1])
-        y_rotation[:,2,2] = np.cos(segment.orientation_euler_angles[1]) 
+        y_rotation[:,2,0] = -rp.sin(segment.orientation_euler_angles[1])
+        y_rotation[:,2,2] = rp.cos(segment.orientation_euler_angles[1]) 
 
-        z_rotation = np.zeros((tessellation, 3, 3))
-        z_rotation[:,0,0] = np.cos(segment.orientation_euler_angles[2])
-        z_rotation[:,0,1] = -np.sin(segment.orientation_euler_angles[2])
-        z_rotation[:,1,0] = np.sin(segment.orientation_euler_angles[2])
-        z_rotation[:,1,1] = np.cos(segment.orientation_euler_angles[2])
+        z_rotation = rp.zeros((tessellation, 3, 3))
+        z_rotation[:,0,0] = rp.cos(segment.orientation_euler_angles[2])
+        z_rotation[:,0,1] = -rp.sin(segment.orientation_euler_angles[2])
+        z_rotation[:,1,0] = rp.sin(segment.orientation_euler_angles[2])
+        z_rotation[:,1,1] = rp.cos(segment.orientation_euler_angles[2])
         z_rotation[:,2,2] = 1
         
-        rotated_pts = np.matmul(z_rotation,np.matmul(y_rotation,np.matmul(x_rotation,section_points))) 
+        rotated_pts = rp.matmul(z_rotation,rp.matmul(y_rotation,rp.matmul(x_rotation,section_points))) 
 
         nac_pts[i_seg] = rotated_pts[:,:,0]   
 
@@ -114,9 +114,9 @@ def generate_3d_stack_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_po
             
     # rotation about y to orient propeller/rotor to thrust angle
     rot_trans =  nac.nac_vel_to_body()
-    rot_trans =  np.repeat( np.repeat(rot_trans[ np.newaxis,:,: ],tessellation,axis=0)[ np.newaxis,:,:,: ],num_nac_segs,axis=0)    
+    rot_trans =  rp.repeat( rp.repeat(rot_trans[ rp.newaxis,:,: ],tessellation,axis=0)[ rp.newaxis,:,:,: ],num_nac_segs,axis=0)    
     
-    NAC_PTS  =  np.matmul(rot_trans,nac_pts[...,None]).squeeze()  
+    NAC_PTS  =  rp.matmul(rot_trans,nac_pts[...,None]).squeeze()  
      
     # translate to body 
     NAC_PTS[:,:,0] = NAC_PTS[:,:,0] + nac.origin[0][0]
@@ -140,36 +140,36 @@ def generate_3d_BOR_nacelle_points(nac,tessellation = 24 ,number_of_airfoil_poin
     number_of_airfoil_points   - discretization of airfoil geometry  
     """ 
      
-    theta        = np.linspace(0,2*np.pi,tessellation)  
-    num_nac_segs = int(np.ceil(number_of_airfoil_points/2))
-    nac_pts      = np.zeros((num_nac_segs,tessellation,3))
+    theta        = rp.linspace(0,2*rp.pi,tessellation)  
+    num_nac_segs = int(rp.ceil(number_of_airfoil_points/2))
+    nac_pts      = rp.zeros((num_nac_segs,tessellation,3))
     af_tag       = list(nac.Airfoil.keys())[0]
     naf          =  nac.Airfoil[af_tag]
     
     if type(naf) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: 
         a_geo        = compute_naca_4series(naf.NACA_4_Series_code,num_nac_segs)
-        xpts         = np.repeat(np.atleast_2d(a_geo.x_coordinates).T,tessellation,axis = 1)*nac.length
-        zpts         = np.repeat(np.atleast_2d(a_geo.y_coordinates).T,tessellation,axis = 1)*nac.length  
+        xpts         = rp.repeat(rp.atleast_2d(a_geo.x_coordinates).T,tessellation,axis = 1)*nac.length
+        zpts         = rp.repeat(rp.atleast_2d(a_geo.y_coordinates).T,tessellation,axis = 1)*nac.length  
     
     elif naf.coordinate_file != None: 
         a_geo        = import_airfoil_geometry(naf.coordinate_file,num_nac_segs)
-        xpts         = np.repeat(np.atleast_2d(np.take(a_geo.x_coordinates,axis=0)).T,tessellation,axis = 1)*nac.length
-        zpts         = np.repeat(np.atleast_2d(np.take(a_geo.y_coordinates,axis=0)).T,tessellation,axis = 1)*nac.length 
+        xpts         = rp.repeat(rp.atleast_2d(rp.take(a_geo.x_coordinates,axis=0)).T,tessellation,axis = 1)*nac.length
+        zpts         = rp.repeat(rp.atleast_2d(rp.take(a_geo.y_coordinates,axis=0)).T,tessellation,axis = 1)*nac.length 
 
     if nac.flow_through: 
         zpts = zpts + nac.diameter/2  
             
     # create geometry 
-    theta_2d = np.repeat(np.atleast_2d(theta),num_nac_segs,axis =0) 
+    theta_2d = rp.repeat(rp.atleast_2d(theta),num_nac_segs,axis =0) 
     nac_pts[:,:,0] =  xpts
-    nac_pts[:,:,1] =  zpts*np.cos(theta_2d)
-    nac_pts[:,:,2] =  zpts*np.sin(theta_2d)   
+    nac_pts[:,:,1] =  zpts*rp.cos(theta_2d)
+    nac_pts[:,:,2] =  zpts*rp.sin(theta_2d)   
             
     # rotation about y to orient propeller/rotor to thrust angle
     rot_trans =  nac.nac_vel_to_body()
-    rot_trans =  np.repeat( np.repeat(rot_trans[ np.newaxis,:,: ],tessellation,axis=0)[ np.newaxis,:,:,: ],num_nac_segs,axis=0)    
+    rot_trans =  rp.repeat( rp.repeat(rot_trans[ rp.newaxis,:,: ],tessellation,axis=0)[ rp.newaxis,:,:,: ],num_nac_segs,axis=0)    
     
-    NAC_PTS  =  np.matmul(rot_trans,nac_pts[...,None]).squeeze()  
+    NAC_PTS  =  rp.matmul(rot_trans,nac_pts[...,None]).squeeze()  
      
     # translate to body 
     NAC_PTS[:,:,0] = NAC_PTS[:,:,0] + nac.origin[0][0]
@@ -195,30 +195,30 @@ def generate_3d_basic_nacelle_points(nac,tessellation,number_of_airfoil_points):
       
 
     num_nac_segs = 10
-    nac_pts      = np.zeros((num_nac_segs,tessellation,3)) 
-    theta        = np.linspace(0,2*np.pi,tessellation)  
+    nac_pts      = rp.zeros((num_nac_segs,tessellation,3)) 
+    theta        = rp.linspace(0,2*rp.pi,tessellation)  
           
     # if no airfoil defined, use super ellipse as default
     a    =  nac.length/2 
     b    =  nac.diameter/2  
-    xpts =  np.repeat(np.atleast_2d(np.linspace(-a,a,num_nac_segs)).T,tessellation,axis = 1) 
-    zpts = np.sqrt((b**2)*(1 - (xpts**2)/(a**2) ))  
+    xpts =  rp.repeat(rp.atleast_2d(rp.linspace(-a,a,num_nac_segs)).T,tessellation,axis = 1) 
+    zpts = rp.sqrt((b**2)*(1 - (xpts**2)/(a**2) ))  
     xpts = (xpts+a)  
 
     if nac.flow_through: 
         zpts = zpts + nac.inlet_diameter/2  
             
     # create geometry 
-    theta_2d = np.repeat(np.atleast_2d(theta),num_nac_segs,axis =0) 
+    theta_2d = rp.repeat(rp.atleast_2d(theta),num_nac_segs,axis =0) 
     nac_pts[:,:,0] =  xpts
-    nac_pts[:,:,1] =  zpts*np.cos(theta_2d)
-    nac_pts[:,:,2] =  zpts*np.sin(theta_2d)  
+    nac_pts[:,:,1] =  zpts*rp.cos(theta_2d)
+    nac_pts[:,:,2] =  zpts*rp.sin(theta_2d)  
                  
     # rotation about y to orient propeller/rotor to thrust angle
     rot_trans =  nac.nac_vel_to_body()
-    rot_trans =  np.repeat( np.repeat(rot_trans[ np.newaxis,:,: ],tessellation,axis=0)[ np.newaxis,:,:,: ],num_nac_segs,axis=0)    
+    rot_trans =  rp.repeat( rp.repeat(rot_trans[ rp.newaxis,:,: ],tessellation,axis=0)[ rp.newaxis,:,:,: ],num_nac_segs,axis=0)    
     
-    NAC_PTS  =  np.matmul(rot_trans,nac_pts[...,None]).squeeze()  
+    NAC_PTS  =  rp.matmul(rot_trans,nac_pts[...,None]).squeeze()  
      
     # translate to body 
     NAC_PTS[:,:,0] = NAC_PTS[:,:,0] + nac.origin[0][0]

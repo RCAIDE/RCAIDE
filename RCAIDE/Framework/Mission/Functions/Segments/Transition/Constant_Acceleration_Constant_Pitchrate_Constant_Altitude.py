@@ -7,7 +7,7 @@
 # IMPORTS 
 # ----------------------------------------------------------------------------------------------------------------------   
 # Package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -70,8 +70,8 @@ def initialize_conditions(segment):
     
     # Figure out vx
     v_mag = v0+(time - t_initial)*ax
-    v_x   = np.cos(beta)*v_mag
-    v_y   = np.sin(beta)*v_mag
+    v_x   = rp.cos(beta)*v_mag
+    v_y   = rp.sin(beta)*v_mag
     
     # set the body angle
     if Tf > T0:

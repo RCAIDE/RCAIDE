@@ -11,7 +11,7 @@ from RCAIDE.Framework.Core import Data
 from RCAIDE.Framework.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry
 from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series 
-import numpy as np     
+import RNUMPY as rp     
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -44,35 +44,35 @@ def plot_3d_wing(plot_data,wing,number_of_airfoil_points = 21, color_map='greys'
     # ------------------------------------------------------------------------
     for sec in range(dim-1):
         for loc in range(af_pts):
-            X = np.array([[G.XA1[sec,loc],G.XA2[sec,loc]],
+            X = rp.array([[G.XA1[sec,loc],G.XA2[sec,loc]],
                  [G.XB1[sec,loc],G.XB2[sec,loc]]])
-            Y = np.array([[G.YA1[sec,loc],G.YA2[sec,loc]],
+            Y = rp.array([[G.YA1[sec,loc],G.YA2[sec,loc]],
                  [G.YB1[sec,loc],G.YB2[sec,loc]]])
-            Z = np.array([[G.ZA1[sec,loc],G.ZA2[sec,loc]],
+            Z = rp.array([[G.ZA1[sec,loc],G.ZA2[sec,loc]],
                  [G.ZB1[sec,loc],G.ZB2[sec,loc]]]) 
              
-            values      = np.ones_like(X) 
+            values      = rp.ones_like(X) 
             verts       = contour_surface_slice(X, Y, Z ,values,color_map)
             plot_data.append(verts)
     if wing.symmetric:
         if wing.vertical: 
             for sec in range(dim-1):
                 for loc in range(af_pts):
-                    X = np.array([[G.XA1[sec,loc],G.XA2[sec,loc]],[G.XB1[sec,loc],G.XB2[sec,loc]]])
-                    Y = np.array([[G.YA1[sec,loc],G.YA2[sec,loc]],[G.YB1[sec,loc],G.YB2[sec,loc]]])
-                    Z = np.array([[-G.ZA1[sec,loc], -G.ZA2[sec,loc]],[-G.ZB1[sec,loc], -G.ZB2[sec,loc]]]) 
+                    X = rp.array([[G.XA1[sec,loc],G.XA2[sec,loc]],[G.XB1[sec,loc],G.XB2[sec,loc]]])
+                    Y = rp.array([[G.YA1[sec,loc],G.YA2[sec,loc]],[G.YB1[sec,loc],G.YB2[sec,loc]]])
+                    Z = rp.array([[-G.ZA1[sec,loc], -G.ZA2[sec,loc]],[-G.ZB1[sec,loc], -G.ZB2[sec,loc]]]) 
                      
-                    values      = np.ones_like(X) 
+                    values      = rp.ones_like(X) 
                     verts       = contour_surface_slice(X, Y, Z ,values,color_map)
                     plot_data.append(verts)
         else:
             for sec in range(dim-1):
                 for loc in range(af_pts):
-                    X = np.array([[G.XA1[sec,loc],G.XA2[sec,loc]],[G.XB1[sec,loc],G.XB2[sec,loc]]])
-                    Y = np.array([[-G.YA1[sec,loc], -G.YA2[sec,loc]], [-G.YB1[sec,loc], -G.YB2[sec,loc]]])
-                    Z = np.array([[G.ZA1[sec,loc],G.ZA2[sec,loc]], [G.ZB1[sec,loc],G.ZB2[sec,loc]]]) 
+                    X = rp.array([[G.XA1[sec,loc],G.XA2[sec,loc]],[G.XB1[sec,loc],G.XB2[sec,loc]]])
+                    Y = rp.array([[-G.YA1[sec,loc], -G.YA2[sec,loc]], [-G.YB1[sec,loc], -G.YB2[sec,loc]]])
+                    Z = rp.array([[G.ZA1[sec,loc],G.ZA2[sec,loc]], [G.ZB1[sec,loc],G.ZB2[sec,loc]]]) 
                      
-                    values      = np.ones_like(X) 
+                    values      = rp.ones_like(X) 
                     verts       = contour_surface_slice(X, Y, Z ,values,color_map)
                     plot_data.append(verts)
             
@@ -105,12 +105,12 @@ def generate_3d_wing_points(wing,n_points,dim):
     origin               = wing.origin   
         
     if n_segments > 0: 
-        pts              = np.zeros((dim,n_points, 3,1))  
-        section_twist    = np.zeros((dim,n_points, 3,3))
+        pts              = rp.zeros((dim,n_points, 3,1))  
+        section_twist    = rp.zeros((dim,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
         section_twist[:, :, 1, 1] = 1
         section_twist[:, :, 2, 2] = 1 
-        translation        = np.zeros((dim,n_points, 3,1)) 
+        translation        = rp.zeros((dim,n_points, 3,1)) 
         translation[0, :, 0,:] = origin[0][0]  
         translation[0, :, 1,:] = origin[0][1]  
         translation[0, :, 2,:] = origin[0][2]  
@@ -142,61 +142,61 @@ def generate_3d_wing_points(wing,n_points,dim):
                     segment_root_chord  = root_chord*wing.Segments[current_seg].root_chord_percent
                     segment_tip_chord   = root_chord*wing.Segments[next_seg].root_chord_percent
                     segment_span        = semispan*(wing.Segments[next_seg].percent_span_location - wing.Segments[current_seg].percent_span_location )
-                    sweep               = np.arctan(((segment_root_chord*chord_fraction) + (np.tan(sweep_quarter_chord )*segment_span - chord_fraction*segment_tip_chord)) /segment_span) 
+                    sweep               = rp.arctan(((segment_root_chord*chord_fraction) + (rp.tan(sweep_quarter_chord )*segment_span - chord_fraction*segment_tip_chord)) /segment_span) 
             dihedral = wing.Segments[current_seg].dihedral_outboard    
             twist    = wing.Segments[current_seg].twist
             
             if wing.vertical: 
                 pts[i,:,0,0]   = geometry.x_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root 
                 pts[i,:,1,0]   = geometry.y_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root 
-                pts[i,:,2,0]   = np.zeros_like(geometry.y_coordinates) 
+                pts[i,:,2,0]   = rp.zeros_like(geometry.y_coordinates) 
               
-                section_twist[i,:,0,0] = np.cos(twist) 
-                section_twist[i,:,0,1] = -np.sin(twist)  
-                section_twist[i,:,1,0] = np.sin(twist) 
-                section_twist[i,:,1,1] = np.cos(twist) 
+                section_twist[i,:,0,0] = rp.cos(twist) 
+                section_twist[i,:,0,1] = -rp.sin(twist)  
+                section_twist[i,:,1,0] = rp.sin(twist) 
+                section_twist[i,:,1,1] = rp.cos(twist) 
             
             else: 
                 pts[i,:,0,0]   = geometry.x_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
-                pts[i,:,1,0]   = np.zeros_like(geometry.y_coordinates) 
+                pts[i,:,1,0]   = rp.zeros_like(geometry.y_coordinates) 
                 pts[i,:,2,0]   = geometry.y_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root  
                                  
 
-                section_twist[i,:,0,0] = np.cos(twist) 
-                section_twist[i,:,0,2] = np.sin(twist)  
-                section_twist[i,:,2,0] = -np.sin(twist) 
-                section_twist[i,:,2,2] =  np.cos(twist)  
+                section_twist[i,:,0,0] = rp.cos(twist) 
+                section_twist[i,:,0,2] = rp.sin(twist)  
+                section_twist[i,:,2,0] = -rp.sin(twist) 
+                section_twist[i,:,2,2] =  rp.cos(twist)  
              
             if (i != n_segments-1):
                 # update origin for next segment 
                 segment_percent_span =    wing.Segments[next_seg].percent_span_location - wing.Segments[current_seg].percent_span_location     
                 if wing.vertical:
-                    inverted_wing = -np.sign(abs(dihedral) - np.pi/2)
+                    inverted_wing = -rp.sign(abs(dihedral) - rp.pi/2)
                     if inverted_wing  == 0:
                         inverted_wing  = 1
                     dz = inverted_wing*semispan*segment_percent_span
-                    dy = dz*np.tan(dihedral)
-                    l  = dz/np.cos(dihedral)
-                    dx = l*np.tan(sweep)
+                    dy = dz*rp.tan(dihedral)
+                    l  = dz/rp.cos(dihedral)
+                    dx = l*rp.tan(sweep)
                 else:
-                    inverted_wing = np.sign(dihedral)
+                    inverted_wing = rp.sign(dihedral)
                     if inverted_wing  == 0:
                         inverted_wing  = 1
                     dy = inverted_wing*semispan*segment_percent_span
-                    dz = dy*np.tan(dihedral)
-                    l  = dy/np.cos(dihedral)
-                    dx = l*np.tan(sweep)
+                    dz = dy*rp.tan(dihedral)
+                    l  = dy/rp.cos(dihedral)
+                    dx = l*rp.tan(sweep)
                 translation[i+1,:,0,:] = translation[i,:,0,:] + dx
                 translation[i+1,:,1,:] = translation[i,:,1,:] + dy
                 translation[i+1,:,2,:] = translation[i,:,2,:] + dz  
     else:
 
-        pts              = np.zeros((dim,n_points, 3,1))  
-        section_twist    = np.zeros((dim,n_points, 3,3))
+        pts              = rp.zeros((dim,n_points, 3,1))  
+        section_twist    = rp.zeros((dim,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
         section_twist[:, :, 1, 1] = 1
         section_twist[:, :, 2, 2] = 1
-        translation      = np.zeros((dim,n_points, 3,1))
+        translation      = rp.zeros((dim,n_points, 3,1))
 
         airfoil = wing.Airfoil 
         if len(list(airfoil.keys())) > 0:
@@ -218,7 +218,7 @@ def generate_3d_wing_points(wing,n_points,dim):
             segment_root_chord  = wing.chords.root
             segment_tip_chord   = wing.chords.tip
             segment_span        = semispan 
-            sweep       = np.arctan(((segment_root_chord*chord_fraction) + (np.tan(sweep_quarter_chord )*segment_span - chord_fraction*segment_tip_chord)) /segment_span)  
+            sweep       = rp.arctan(((segment_root_chord*chord_fraction) + (rp.tan(sweep_quarter_chord )*segment_span - chord_fraction*segment_tip_chord)) /segment_span)  
            
         # append root section     
         translation[:, :, 0,:] = origin[0][0]  
@@ -228,52 +228,52 @@ def generate_3d_wing_points(wing,n_points,dim):
         if wing.vertical: 
             pts[0,:,0,0]   = geometry.x_coordinates *  wing.chords.root
             pts[0,:,1,0]   = geometry.y_coordinates *  wing.chords.root
-            pts[0,:,2,0]   = np.zeros_like(geometry.y_coordinates)
+            pts[0,:,2,0]   = rp.zeros_like(geometry.y_coordinates)
             
             pts[1,:,0,0]   = geometry.x_coordinates *  wing.chords.tip  
             pts[1,:,1,0]   = geometry.y_coordinates *  wing.chords.tip  
-            pts[1,:,2,0]   = np.zeros_like(geometry.y_coordinates)   
+            pts[1,:,2,0]   = rp.zeros_like(geometry.y_coordinates)   
             
-            translation[1, :, 0,:] += semispan*np.tan(sweep)
-            translation[1, :, 1,:] += semispan*np.tan(dihedral) 
+            translation[1, :, 0,:] += semispan*rp.tan(sweep)
+            translation[1, :, 1,:] += semispan*rp.tan(dihedral) 
             translation[1, :, 2,:] += semispan 
 
-            section_twist[0,:,0,0] = np.cos(wing.twists.root) 
-            section_twist[0,:,0,1] = -np.sin(wing.twists.root)  
-            section_twist[0,:,1,0] = np.sin(wing.twists.root) 
-            section_twist[0,:,1,1] = np.cos(wing.twists.root)
+            section_twist[0,:,0,0] = rp.cos(wing.twists.root) 
+            section_twist[0,:,0,1] = -rp.sin(wing.twists.root)  
+            section_twist[0,:,1,0] = rp.sin(wing.twists.root) 
+            section_twist[0,:,1,1] = rp.cos(wing.twists.root)
              
-            section_twist[1,:,0,0] = np.cos(wing.twists.tip) 
-            section_twist[1,:,0,1] = -np.sin(wing.twists.tip)  
-            section_twist[1,:,1,0] = np.sin(wing.twists.tip) 
-            section_twist[1,:,1,1] = np.cos(wing.twists.tip)
+            section_twist[1,:,0,0] = rp.cos(wing.twists.tip) 
+            section_twist[1,:,0,1] = -rp.sin(wing.twists.tip)  
+            section_twist[1,:,1,0] = rp.sin(wing.twists.tip) 
+            section_twist[1,:,1,1] = rp.cos(wing.twists.tip)
             
             
         else:
             pts[0,:,0,0]   = geometry.x_coordinates *  wing.chords.root
-            pts[0,:,1,0]   = np.zeros_like(geometry.y_coordinates) 
+            pts[0,:,1,0]   = rp.zeros_like(geometry.y_coordinates) 
             pts[0,:,2,0]   = geometry.y_coordinates *  wing.chords.root
             
             pts[1,:,0,0]   = geometry.x_coordinates *  wing.chords.tip  
-            pts[1,:,1,0]   = np.zeros_like(geometry.y_coordinates)  
+            pts[1,:,1,0]   = rp.zeros_like(geometry.y_coordinates)  
             pts[1,:,2,0]   = geometry.y_coordinates *  wing.chords.tip  
             
     
-            translation[1, :, 0,:] +=  semispan*np.tan(sweep)
+            translation[1, :, 0,:] +=  semispan*rp.tan(sweep)
             translation[1, :, 1,:] += semispan 
-            translation[1, :, 2,:] += semispan*np.tan(dihedral)     
+            translation[1, :, 2,:] += semispan*rp.tan(dihedral)     
 
-            section_twist[0,:,0,0] = np.cos(wing.twists.root) 
-            section_twist[0,:,0,2] = np.sin(wing.twists.root)  
-            section_twist[0,:,2,0] = -np.sin(wing.twists.root) 
-            section_twist[0,:,2,2] =  np.cos(wing.twists.root)
+            section_twist[0,:,0,0] = rp.cos(wing.twists.root) 
+            section_twist[0,:,0,2] = rp.sin(wing.twists.root)  
+            section_twist[0,:,2,0] = -rp.sin(wing.twists.root) 
+            section_twist[0,:,2,2] =  rp.cos(wing.twists.root)
              
-            section_twist[1,:,0,0] = np.cos(wing.twists.tip) 
-            section_twist[1,:,0,2] = np.sin(wing.twists.tip)  
-            section_twist[1,:,2,0] = -np.sin(wing.twists.tip) 
-            section_twist[1,:,2,2] =  np.cos(wing.twists.tip) 
+            section_twist[1,:,0,0] = rp.cos(wing.twists.tip) 
+            section_twist[1,:,0,2] = rp.sin(wing.twists.tip)  
+            section_twist[1,:,2,0] = -rp.sin(wing.twists.tip) 
+            section_twist[1,:,2,2] =  rp.cos(wing.twists.tip) 
  
-    mat     = translation + np.matmul(section_twist ,pts)
+    mat     = translation + rp.matmul(section_twist ,pts)
     
     # ---------------------------------------------------------------------------------------------
     # create empty data structure for storing geometry

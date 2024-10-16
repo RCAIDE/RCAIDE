@@ -22,7 +22,7 @@ from RCAIDE.Library.Methods.Propulsors.Common                        import comp
 
 
 # Python package imports
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Design Turbofan
@@ -63,18 +63,18 @@ def design_turbofan(turbofan):
         conditions = RCAIDE.Framework.Mission.Common.Results()
     
         # freestream conditions    
-        conditions.freestream.altitude                    = np.atleast_1d(turbofan.design_altitude)
-        conditions.freestream.mach_number                 = np.atleast_1d(turbofan.design_mach_number)
-        conditions.freestream.pressure                    = np.atleast_1d(p)
-        conditions.freestream.temperature                 = np.atleast_1d(T)
-        conditions.freestream.density                     = np.atleast_1d(rho)
-        conditions.freestream.dynamic_viscosity           = np.atleast_1d(mu)
-        conditions.freestream.gravity                     = np.atleast_1d(planet.compute_gravity(turbofan.design_altitude))
-        conditions.freestream.isentropic_expansion_factor = np.atleast_1d(turbofan.working_fluid.compute_gamma(T,p))
-        conditions.freestream.Cp                          = np.atleast_1d(turbofan.working_fluid.compute_cp(T,p))
-        conditions.freestream.R                           = np.atleast_1d(turbofan.working_fluid.gas_specific_constant)
-        conditions.freestream.speed_of_sound              = np.atleast_1d(a)
-        conditions.freestream.velocity                    = np.atleast_1d(a*turbofan.design_mach_number) 
+        conditions.freestream.altitude                    = rp.atleast_1d(turbofan.design_altitude)
+        conditions.freestream.mach_number                 = rp.atleast_1d(turbofan.design_mach_number)
+        conditions.freestream.pressure                    = rp.atleast_1d(p)
+        conditions.freestream.temperature                 = rp.atleast_1d(T)
+        conditions.freestream.density                     = rp.atleast_1d(rho)
+        conditions.freestream.dynamic_viscosity           = rp.atleast_1d(mu)
+        conditions.freestream.gravity                     = rp.atleast_1d(planet.compute_gravity(turbofan.design_altitude))
+        conditions.freestream.isentropic_expansion_factor = rp.atleast_1d(turbofan.working_fluid.compute_gamma(T,p))
+        conditions.freestream.Cp                          = rp.atleast_1d(turbofan.working_fluid.compute_cp(T,p))
+        conditions.freestream.R                           = rp.atleast_1d(turbofan.working_fluid.gas_specific_constant)
+        conditions.freestream.speed_of_sound              = rp.atleast_1d(a)
+        conditions.freestream.velocity                    = rp.atleast_1d(a*turbofan.design_mach_number) 
     
     ram                       = turbofan.ram
     inlet_nozzle              = turbofan.inlet_nozzle
@@ -92,7 +92,7 @@ def design_turbofan(turbofan):
     turbofan_conditions[combustor.tag]                          = Conditions() 
     turbofan_conditions[combustor.tag].inputs                   = Conditions() 
     turbofan_conditions[combustor.tag].outputs                  = Conditions() 
-    turbofan_conditions[combustor.tag].inputs.nondim_mass_ratio = np.array([[1.0]])  
+    turbofan_conditions[combustor.tag].inputs.nondim_mass_ratio = rp.array([[1.0]])  
     turbofan_conditions[ram.tag]                                = Conditions() 
     turbofan_conditions[ram.tag].inputs                         = Conditions() 
     turbofan_conditions[ram.tag].outputs                        = Conditions() 

@@ -12,7 +12,7 @@ from RCAIDE.Framework.Mission.Segments.Transition import (Constant_Acceleration_
 from RCAIDE.Framework.Mission.Segments.Ground import Landing, Takeoff, Ground
 
 # Python imports 
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Residual Total Forces
@@ -36,7 +36,7 @@ def flight_dynamics(segment):
     if transition_seg_flag or ground_seg_flag: 
         v       = segment.state.conditions.frames.inertial.velocity_vector
         D       = segment.state.numerics.time.differentiate 
-        segment.state.conditions.frames.inertial.acceleration_vector = np.dot(D,v)
+        segment.state.conditions.frames.inertial.acceleration_vector = rp.dot(D,v)
 
     FT = segment.state.conditions.frames.inertial.total_force_vector
     a  = segment.state.conditions.frames.inertial.acceleration_vector    
@@ -44,7 +44,7 @@ def flight_dynamics(segment):
     if transition_seg_flag: 
         omega = segment.state.conditions.frames.inertial.angular_velocity_vector
         D  = segment.state.numerics.time.differentiate   
-        segment.state.conditions.frames.inertial.angular_acceleration_vector = np.dot(D, omega)
+        segment.state.conditions.frames.inertial.angular_acceleration_vector = rp.dot(D, omega)
 
     MT      = segment.state.conditions.frames.inertial.total_moment_vector    
     ang_acc = segment.state.conditions.frames.inertial.angular_acceleration_vector  

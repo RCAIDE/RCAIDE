@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import Data
 
 # package imports  
-import numpy as np  
+import RNUMPY as rp  
 
 # ----------------------------------------------------------------------------------------------------------------------
 # aero_coeff
@@ -44,13 +44,13 @@ def aero_coeff(x,y,cp,al,npanel):
     dca     = cp*dy   
     
     # compute differential forces
-    cn      = np.sum(dcn,axis=0).T
-    ca      = np.sum(dca,axis=0).T
-    cm      = np.sum((-dcn*xa + dca*ya),axis=0).T
+    cn      = rp.sum(dcn,axis=0).T
+    ca      = rp.sum(dca,axis=0).T
+    cm      = rp.sum((-dcn*xa + dca*ya),axis=0).T
     
     # orient normal and axial forces 
-    cl      = cn*np.cos(al) - ca*np.sin(al) 
-    cdpi    = cn*np.sin(al) + ca*np.cos(al)  
+    cl      = cn*rp.cos(al) - ca*rp.sin(al) 
+    cdpi    = cn*rp.sin(al) + ca*rp.cos(al)  
     
     # pack results
     AERO_RES = Data(

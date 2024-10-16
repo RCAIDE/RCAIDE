@@ -13,7 +13,7 @@ from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender
 from Legacy.trunk.S.Methods.Flight_Dynamics.Static_Stability.Approximations.Supporting_Functions.convert_sweep import convert_sweep 
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Supersonic Wave Drag Due to Volume - Raymer Method 
@@ -48,22 +48,22 @@ def supersonic_wave_drag_volume_raymer(vehicle,mach,scaling_factor):
     
     L =  0 
     for fuselage in  vehicle.fuselages:
-        L =  np.maximum(L, fuselage.lengths.total)
+        L =  rp.maximum(L, fuselage.lengths.total)
     LE_sweep = main_wing.sweeps.leading_edge / Units.deg
     Ae       = vehicle.maximum_cross_sectional_area
     S        = vehicle.reference_area
     
     # Compute sears-hack D/q
-    Dq_SH = 9*np.pi/2*(Ae/L)*(Ae/L)
+    Dq_SH = 9*rp.pi/2*(Ae/L)*(Ae/L)
     
     spline = Cubic_Spline_Blender(1.2,1.3)
     h00    = lambda M:spline.compute(M)    
     
     # Compute full vehicle D/q
-    Dq_vehicle           = np.zeros_like(mach)
-    Dq_vehicle_simpified = np.zeros_like(mach)
+    Dq_vehicle           = rp.zeros_like(mach)
+    Dq_vehicle_simpified = rp.zeros_like(mach)
     
-    Dq_vehicle[mach>=1.2] = scaling_factor*(1-0.2*(mach[mach>=1.2]-1.2)**0.57*(1-np.pi*LE_sweep**.77/100))*Dq_SH
+    Dq_vehicle[mach>=1.2] = scaling_factor*(1-0.2*(mach[mach>=1.2]-1.2)**0.57*(1-rp.pi*LE_sweep**.77/100))*Dq_SH
     Dq_vehicle_simpified  = scaling_factor*Dq_SH
     
     Dq_vehicle = Dq_vehicle_simpified*h00(mach) + Dq_vehicle*(1-h00(mach))

@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------      
 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  atleast_2d_col
@@ -74,10 +74,10 @@ def atleast_2d(A,oned_as='row'):
     """       
     
     # not an array yet
-    if not isinstance(A,(np.ndarray,np.matrixlib.defmatrix.matrix)):
+    if not isinstance(A,(rp.ndarray,rp.matrixlib.defmatrix.matrix)):
         if not isinstance(A,(list,tuple)):
             A = [A]
-        A = np.array(A)
+        A = rp.array(A)
         
     # check rank
     if A.ndim < 2:
@@ -108,7 +108,7 @@ def append_array(A=None,B=None):
         Returns:
             array
     """       
-    if isinstance(A,np.ndarray) and isinstance(B,np.ndarray):
-        return np.vstack([A,B])
+    if isinstance(A,rp.ndarray) and isinstance(B,rp.ndarray):
+        return rp.vstack([A,B])
     else:
         return None

@@ -10,7 +10,7 @@ from RCAIDE.Framework.Core import Units
 from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np 
+import RNUMPY as rp 
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ def plot_airfoil_polar_files(polar_data,
         
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,n_Re))     
+    line_colors   = cm.inferno(rp.linspace(0,0.9,n_Re))     
      
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height) 

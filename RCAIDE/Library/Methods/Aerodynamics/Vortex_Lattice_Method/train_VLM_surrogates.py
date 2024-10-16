@@ -96,34 +96,34 @@ def train_model(aerodynamics, Mach):
             
     # Setup new array shapes for vectorization 
     # stakcing 9x9 matrices into one horizontal line(81)  
-    AoAs       = np.atleast_2d(np.tile(AoA,len_Mach).T.flatten()).T 
-    Machs      = np.atleast_2d(np.repeat(Mach,len_AoA)).T        
+    AoAs       = rp.atleast_2d(rp.tile(AoA,len_Mach).T.flatten()).T 
+    Machs      = rp.atleast_2d(rp.repeat(Mach,len_AoA)).T        
     
     # reset conditions  
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
     conditions.freestream.mach_number               = Machs
-    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs 
+    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs)*AoAs 
     
     Clift_res_alpha,Cdrag_res_alpha,CX_res_alpha,CY_res_alpha,CZ_res_alpha,CL_res_alpha,CM_res_alpha,CN_res_alpha, S_ref,b_ref,c_ref,X_ref,Y_ref ,Z_ref, Clift_wing_res, Cdrag_wing_res,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_alpha   = np.reshape(Clift_res_alpha,(len_Mach,len_AoA)).T 
-    Cdrag_alpha   = np.reshape(Cdrag_res_alpha,(len_Mach,len_AoA)).T 
-    CX_alpha      = np.reshape(CX_res_alpha,(len_Mach,len_AoA)).T 
-    CY_alpha      = np.reshape(CY_res_alpha,(len_Mach,len_AoA)).T 
-    CZ_alpha      = np.reshape(CZ_res_alpha,(len_Mach,len_AoA)).T 
-    CL_alpha      = np.reshape(CL_res_alpha,(len_Mach,len_AoA)).T 
-    CM_alpha      = np.reshape(CM_res_alpha,(len_Mach,len_AoA)).T 
-    CN_alpha      = np.reshape(CN_res_alpha,(len_Mach,len_AoA)).T  
+    Clift_alpha   = rp.reshape(Clift_res_alpha,(len_Mach,len_AoA)).T 
+    Cdrag_alpha   = rp.reshape(Cdrag_res_alpha,(len_Mach,len_AoA)).T 
+    CX_alpha      = rp.reshape(CX_res_alpha,(len_Mach,len_AoA)).T 
+    CY_alpha      = rp.reshape(CY_res_alpha,(len_Mach,len_AoA)).T 
+    CZ_alpha      = rp.reshape(CZ_res_alpha,(len_Mach,len_AoA)).T 
+    CL_alpha      = rp.reshape(CL_res_alpha,(len_Mach,len_AoA)).T 
+    CM_alpha      = rp.reshape(CM_res_alpha,(len_Mach,len_AoA)).T 
+    CN_alpha      = rp.reshape(CN_res_alpha,(len_Mach,len_AoA)).T  
     
     # Angle of Attack at 0 Degrees 
-    Clift_alpha_0   =  np.tile(Clift_alpha[2][None,:],(3,1))
-    Cdrag_alpha_0   =  np.tile(Cdrag_alpha[2][None,:],(3,1))
-    CX_alpha_0      =  np.tile(CX_alpha[2][None,:],(3, 1)) 
-    CY_alpha_0      =  np.tile(CY_alpha[2][None,:],(3, 1)) 
-    CZ_alpha_0      =  np.tile(CZ_alpha[2][None,:],(3, 1)) 
-    CL_alpha_0      =  np.tile(CL_alpha[2][None,:],(3, 1)) 
-    CM_alpha_0      =  np.tile(CM_alpha[2][None,:],(3, 1)) 
-    CN_alpha_0      =  np.tile(CN_alpha[2][None,:],(3, 1))  
+    Clift_alpha_0   =  rp.tile(Clift_alpha[2][None,:],(3,1))
+    Cdrag_alpha_0   =  rp.tile(Cdrag_alpha[2][None,:],(3,1))
+    CX_alpha_0      =  rp.tile(CX_alpha[2][None,:],(3, 1)) 
+    CY_alpha_0      =  rp.tile(CY_alpha[2][None,:],(3, 1)) 
+    CZ_alpha_0      =  rp.tile(CZ_alpha[2][None,:],(3, 1)) 
+    CL_alpha_0      =  rp.tile(CL_alpha[2][None,:],(3, 1)) 
+    CM_alpha_0      =  rp.tile(CM_alpha[2][None,:],(3, 1)) 
+    CN_alpha_0      =  rp.tile(CN_alpha[2][None,:],(3, 1))  
 
     aerodynamics.reference_values.S_ref = S_ref
     aerodynamics.reference_values.b_ref = b_ref
@@ -136,170 +136,170 @@ def train_model(aerodynamics, Mach):
     Clift_wing_alpha = Data()
     Cdrag_wing_alpha = Data() 
     for wing in  geometry.wings: 
-        Clift_wing_alpha[wing.tag] = np.reshape(Clift_wing_res[wing.tag],(len_Mach,len_AoA)).T    
-        Cdrag_wing_alpha[wing.tag] = np.reshape(Cdrag_wing_res[wing.tag],(len_Mach,len_AoA)).T
+        Clift_wing_alpha[wing.tag] = rp.reshape(Clift_wing_res[wing.tag],(len_Mach,len_AoA)).T    
+        Cdrag_wing_alpha[wing.tag] = rp.reshape(Cdrag_wing_res[wing.tag],(len_Mach,len_AoA)).T
         
          
     # --------------------------------------------------------------------------------------------------------------
     # Beta 
     # --------------------------------------------------------------------------------------------------------------
-    Betas         = np.atleast_2d(np.tile(Beta,len_Mach).T.flatten()).T 
-    Machs         = np.atleast_2d(np.repeat(Mach,len_Beta)).T        
+    Betas         = rp.atleast_2d(rp.tile(Beta,len_Mach).T.flatten()).T 
+    Machs         = rp.atleast_2d(rp.repeat(Mach,len_Beta)).T        
 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
     conditions.expand_rows(rows= len(Machs))
     conditions.freestream.mach_number               = Machs 
-    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-    conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas   
+    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+    conditions.aerodynamics.angles.beta             = rp.ones_like(Machs)*Betas   
     
     Clift_res_beta,Cdrag_res_beta,CX_res_beta,CY_res_beta,CZ_res_beta,CL_res_beta,CM_res_beta,CN_res_beta ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_beta = np.reshape(Clift_res_beta,(len_Mach,len_Beta)).T - Clift_alpha_0
-    Cdrag_beta = np.reshape(Cdrag_res_beta,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
-    CX_beta    = np.reshape(CX_res_beta,(len_Mach,len_Beta)).T    - CX_alpha_0   
-    CY_beta    = np.reshape(CY_res_beta,(len_Mach,len_Beta)).T    - CY_alpha_0  
-    CZ_beta    = np.reshape(CZ_res_beta,(len_Mach,len_Beta)).T    - CZ_alpha_0   
-    CL_beta    = np.reshape(CL_res_beta,(len_Mach,len_Beta)).T    - CL_alpha_0   
-    CM_beta    = np.reshape(CM_res_beta,(len_Mach,len_Beta)).T    - CM_alpha_0   
-    CN_beta    = np.reshape(CN_res_beta,(len_Mach,len_Beta)).T    - CN_alpha_0
+    Clift_beta = rp.reshape(Clift_res_beta,(len_Mach,len_Beta)).T - Clift_alpha_0
+    Cdrag_beta = rp.reshape(Cdrag_res_beta,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
+    CX_beta    = rp.reshape(CX_res_beta,(len_Mach,len_Beta)).T    - CX_alpha_0   
+    CY_beta    = rp.reshape(CY_res_beta,(len_Mach,len_Beta)).T    - CY_alpha_0  
+    CZ_beta    = rp.reshape(CZ_res_beta,(len_Mach,len_Beta)).T    - CZ_alpha_0   
+    CL_beta    = rp.reshape(CL_res_beta,(len_Mach,len_Beta)).T    - CL_alpha_0   
+    CM_beta    = rp.reshape(CM_res_beta,(len_Mach,len_Beta)).T    - CM_alpha_0   
+    CN_beta    = rp.reshape(CN_res_beta,(len_Mach,len_Beta)).T    - CN_alpha_0
  
     # -------------------------------------------------------      
     # Velocity u 
     # -------------------------------------------------------
-    u_s     = np.atleast_2d(np.tile(u, len_Mach).T.flatten()).T 
-    Machs   = np.atleast_2d(np.repeat(Mach,len_u)).T                   
+    u_s     = rp.atleast_2d(rp.tile(u, len_Mach).T.flatten()).T 
+    Machs   = rp.atleast_2d(rp.repeat(Mach,len_u)).T                   
     conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
-    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12 
-    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12 
+    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
     conditions.freestream.mach_number               = Machs + Machs*u_s 
     
     Clift_res_u,Cdrag_res_u,CX_res_u,CY_res_u,CZ_res_u,CL_res_u,CM_res_u,CN_res_u ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_u     = np.reshape(Clift_res_u,(len_Mach,len_u)).T - Clift_alpha_0
-    Cdrag_u     = np.reshape(Cdrag_res_u,(len_Mach,len_u)).T - Cdrag_alpha_0
-    CX_u        = np.reshape(CX_res_u,(len_Mach,len_u)).T    - CX_alpha_0   
-    CY_u        = np.reshape(CY_res_u,(len_Mach,len_u)).T    - CY_alpha_0   
-    CZ_u        = np.reshape(CZ_res_u,(len_Mach,len_u)).T    - CZ_alpha_0   
-    CL_u        = np.reshape(CL_res_u,(len_Mach,len_u)).T    - CL_alpha_0   
-    CM_u        = np.reshape(CM_res_u,(len_Mach,len_u)).T    - CM_alpha_0   
-    CN_u        = np.reshape(CN_res_u,(len_Mach,len_u)).T    - CN_alpha_0   
+    Clift_u     = rp.reshape(Clift_res_u,(len_Mach,len_u)).T - Clift_alpha_0
+    Cdrag_u     = rp.reshape(Cdrag_res_u,(len_Mach,len_u)).T - Cdrag_alpha_0
+    CX_u        = rp.reshape(CX_res_u,(len_Mach,len_u)).T    - CX_alpha_0   
+    CY_u        = rp.reshape(CY_res_u,(len_Mach,len_u)).T    - CY_alpha_0   
+    CZ_u        = rp.reshape(CZ_res_u,(len_Mach,len_u)).T    - CZ_alpha_0   
+    CL_u        = rp.reshape(CL_res_u,(len_Mach,len_u)).T    - CL_alpha_0   
+    CM_u        = rp.reshape(CM_res_u,(len_Mach,len_u)).T    - CM_alpha_0   
+    CN_u        = rp.reshape(CN_res_u,(len_Mach,len_u)).T    - CN_alpha_0   
     
     # -------------------------------------------------------               
     # Velocity v 
     # -------------------------------------------------------
-    v_s     = np.atleast_2d(np.tile(v, len_Mach).T.flatten()).T 
-    Machs         = np.atleast_2d(np.repeat(Mach,len_v)).T    
+    v_s     = rp.atleast_2d(rp.tile(v, len_Mach).T.flatten()).T 
+    Machs         = rp.atleast_2d(rp.repeat(Mach,len_v)).T    
 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.freestream.mach_number               = Machs
-    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-    conditions.aerodynamics.angles.beta             = np.arcsin(v_s)       
+    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
+    conditions.aerodynamics.angles.beta             = rp.arcsin(v_s)       
     
     Clift_res_v,Cdrag_res_v,CX_res_v,CY_res_v,CZ_res_v,CL_res_v,CM_res_v,CN_res_v ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_v     = np.reshape(Clift_res_v,(len_Mach,len_v)).T - Clift_alpha_0
-    Cdrag_v     = np.reshape(Cdrag_res_v,(len_Mach,len_v)).T - Cdrag_alpha_0
-    CX_v        = np.reshape(CX_res_v,(len_Mach,len_v)).T    - CX_alpha_0   
-    CY_v        = np.reshape(CY_res_v,(len_Mach,len_v)).T    - CY_alpha_0   
-    CZ_v        = np.reshape(CZ_res_v,(len_Mach,len_v)).T    - CZ_alpha_0   
-    CL_v        = np.reshape(CL_res_v,(len_Mach,len_v)).T    - CL_alpha_0   
-    CM_v        = np.reshape(CM_res_v,(len_Mach,len_v)).T    - CM_alpha_0   
-    CN_v        = np.reshape(CN_res_v,(len_Mach,len_v)).T    - CN_alpha_0   
+    Clift_v     = rp.reshape(Clift_res_v,(len_Mach,len_v)).T - Clift_alpha_0
+    Cdrag_v     = rp.reshape(Cdrag_res_v,(len_Mach,len_v)).T - Cdrag_alpha_0
+    CX_v        = rp.reshape(CX_res_v,(len_Mach,len_v)).T    - CX_alpha_0   
+    CY_v        = rp.reshape(CY_res_v,(len_Mach,len_v)).T    - CY_alpha_0   
+    CZ_v        = rp.reshape(CZ_res_v,(len_Mach,len_v)).T    - CZ_alpha_0   
+    CL_v        = rp.reshape(CL_res_v,(len_Mach,len_v)).T    - CL_alpha_0   
+    CM_v        = rp.reshape(CM_res_v,(len_Mach,len_v)).T    - CM_alpha_0   
+    CN_v        = rp.reshape(CN_res_v,(len_Mach,len_v)).T    - CN_alpha_0   
     
     # -------------------------------------------------------               
     # Velocity w 
     # -------------------------------------------------------
-    w_s     = np.atleast_2d(np.tile(w, len_Mach).T.flatten()).T 
-    Machs   = np.atleast_2d(np.repeat(Mach,len_w)).T
+    w_s     = rp.atleast_2d(rp.tile(w, len_Mach).T.flatten()).T 
+    Machs   = rp.atleast_2d(rp.repeat(Mach,len_w)).T
      
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.freestream.mach_number               = Machs 
-    conditions.aerodynamics.angles.alpha            = np.arcsin(w_s)
-    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+    conditions.aerodynamics.angles.alpha            = rp.arcsin(w_s)
+    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
     
     Clift_res_w,Cdrag_res_w,CX_res_w,CY_res_w,CZ_res_w,CL_res_w,CM_res_w,CN_res_w ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_w     = np.reshape(Clift_res_w,(len_Mach,len_w)).T - Clift_alpha_0
-    Cdrag_w     = np.reshape(Cdrag_res_w,(len_Mach,len_w)).T - Cdrag_alpha_0
-    CX_w        = np.reshape(CX_res_w,(len_Mach,len_w)).T    - CX_alpha_0   
-    CY_w        = np.reshape(CY_res_w,(len_Mach,len_w)).T    - CY_alpha_0   
-    CZ_w        = np.reshape(CZ_res_w,(len_Mach,len_w)).T    - CZ_alpha_0   
-    CL_w        = np.reshape(CL_res_w,(len_Mach,len_w)).T    - CL_alpha_0   
-    CM_w        = np.reshape(CM_res_w,(len_Mach,len_w)).T    - CM_alpha_0   
-    CN_w        = np.reshape(CN_res_w,(len_Mach,len_w)).T    - CN_alpha_0           
+    Clift_w     = rp.reshape(Clift_res_w,(len_Mach,len_w)).T - Clift_alpha_0
+    Cdrag_w     = rp.reshape(Cdrag_res_w,(len_Mach,len_w)).T - Cdrag_alpha_0
+    CX_w        = rp.reshape(CX_res_w,(len_Mach,len_w)).T    - CX_alpha_0   
+    CY_w        = rp.reshape(CY_res_w,(len_Mach,len_w)).T    - CY_alpha_0   
+    CZ_w        = rp.reshape(CZ_res_w,(len_Mach,len_w)).T    - CZ_alpha_0   
+    CL_w        = rp.reshape(CL_res_w,(len_Mach,len_w)).T    - CL_alpha_0   
+    CM_w        = rp.reshape(CM_res_w,(len_Mach,len_w)).T    - CM_alpha_0   
+    CN_w        = rp.reshape(CN_res_w,(len_Mach,len_w)).T    - CN_alpha_0           
                     
     # -------------------------------------------------------               
     # Pitch Rate 
     # -------------------------------------------------------
-    q_s     = np.atleast_2d(np.tile(pitch_rate, len_Mach).T.flatten()).T 
-    Machs   = np.atleast_2d(np.repeat(Mach,len_q)).T
+    q_s     = rp.atleast_2d(rp.tile(pitch_rate, len_Mach).T.flatten()).T 
+    Machs   = rp.atleast_2d(rp.repeat(Mach,len_q)).T
 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
     conditions.freestream.mach_number               = Machs 
-    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-    conditions.static_stability.pitch_rate          = np.ones_like(Machs)*q_s     
+    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
+    conditions.static_stability.pitch_rate          = rp.ones_like(Machs)*q_s     
     conditions.freestream.velocity                  = Machs * 343 # speed of sound   
     
     Clift_res_q,Cdrag_res_q,CX_res_q,CY_res_q,CZ_res_q,CL_res_q,CM_res_q,CN_res_q ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_q     = np.reshape(Clift_res_q,(len_Mach,len_q)).T - Clift_alpha_0
-    Cdrag_q     = np.reshape(Cdrag_res_q,(len_Mach,len_q)).T - Cdrag_alpha_0
-    CX_q        = np.reshape(CX_res_q,(len_Mach,len_q)).T    - CX_alpha_0   
-    CY_q        = np.reshape(CY_res_q,(len_Mach,len_q)).T    - CY_alpha_0   
-    CZ_q        = np.reshape(CZ_res_q,(len_Mach,len_q)).T    - CZ_alpha_0   
-    CL_q        = np.reshape(CL_res_q,(len_Mach,len_q)).T    - CL_alpha_0   
-    CM_q        = np.reshape(CM_res_q,(len_Mach,len_q)).T    - CM_alpha_0   
-    CN_q        = np.reshape(CN_res_q,(len_Mach,len_q)).T    - CN_alpha_0   
+    Clift_q     = rp.reshape(Clift_res_q,(len_Mach,len_q)).T - Clift_alpha_0
+    Cdrag_q     = rp.reshape(Cdrag_res_q,(len_Mach,len_q)).T - Cdrag_alpha_0
+    CX_q        = rp.reshape(CX_res_q,(len_Mach,len_q)).T    - CX_alpha_0   
+    CY_q        = rp.reshape(CY_res_q,(len_Mach,len_q)).T    - CY_alpha_0   
+    CZ_q        = rp.reshape(CZ_res_q,(len_Mach,len_q)).T    - CZ_alpha_0   
+    CL_q        = rp.reshape(CL_res_q,(len_Mach,len_q)).T    - CL_alpha_0   
+    CM_q        = rp.reshape(CM_res_q,(len_Mach,len_q)).T    - CM_alpha_0   
+    CN_q        = rp.reshape(CN_res_q,(len_Mach,len_q)).T    - CN_alpha_0   
 
     # -------------------------------------------------------               
     # Roll  Rate 
     # -------------------------------------------------------    
-    p_s         = -np.atleast_2d(np.tile(roll_rate, len_Mach).T.flatten()).T 
-    Machs       = np.atleast_2d(np.repeat(Mach,len_p)).T
+    p_s         = -rp.atleast_2d(rp.tile(roll_rate, len_Mach).T.flatten()).T 
+    Machs       = rp.atleast_2d(rp.repeat(Mach,len_p)).T
 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
     conditions.freestream.mach_number               = Machs  
-    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12 
-    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-    conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s 
+    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12 
+    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
+    conditions.static_stability.roll_rate           = rp.ones_like(Machs)*p_s 
     conditions.freestream.velocity                  = Machs * 343 # speed of sound           
         
     Clift_res_p,Cdrag_res_p,CX_res_p,CY_res_p,CZ_res_p,CL_res_p,CM_res_p,CN_res_p ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)  
         
-    Clift_p     = np.reshape(Clift_res_p,(len_Mach,len_p)).T - Clift_alpha_0
-    Cdrag_p     = np.reshape(Cdrag_res_p,(len_Mach,len_p)).T - Cdrag_alpha_0
-    CX_p        = np.reshape(CX_res_p,(len_Mach,len_p)).T    - CX_alpha_0   
-    CY_p        = np.reshape(CY_res_p,(len_Mach,len_p)).T    - CY_alpha_0   
-    CZ_p        = np.reshape(CZ_res_p,(len_Mach,len_p)).T    - CZ_alpha_0   
-    CL_p        = np.reshape(CL_res_p,(len_Mach,len_p)).T    - CL_alpha_0   
-    CM_p        = np.reshape(CM_res_p,(len_Mach,len_p)).T    - CM_alpha_0   
-    CN_p        = np.reshape(CN_res_p,(len_Mach,len_p)).T    - CN_alpha_0       
+    Clift_p     = rp.reshape(Clift_res_p,(len_Mach,len_p)).T - Clift_alpha_0
+    Cdrag_p     = rp.reshape(Cdrag_res_p,(len_Mach,len_p)).T - Cdrag_alpha_0
+    CX_p        = rp.reshape(CX_res_p,(len_Mach,len_p)).T    - CX_alpha_0   
+    CY_p        = rp.reshape(CY_res_p,(len_Mach,len_p)).T    - CY_alpha_0   
+    CZ_p        = rp.reshape(CZ_res_p,(len_Mach,len_p)).T    - CZ_alpha_0   
+    CL_p        = rp.reshape(CL_res_p,(len_Mach,len_p)).T    - CL_alpha_0   
+    CM_p        = rp.reshape(CM_res_p,(len_Mach,len_p)).T    - CM_alpha_0   
+    CN_p        = rp.reshape(CN_res_p,(len_Mach,len_p)).T    - CN_alpha_0       
 
     # -------------------------------------------------------               
     # Yaw Rate 
     # -------------------------------------------------------        
-    r_s     = np.atleast_2d(np.tile(yaw_rate, len_Mach).T.flatten()).T 
-    Machs         = np.atleast_2d(np.repeat(Mach,len_r)).T
+    r_s     = rp.atleast_2d(rp.tile(yaw_rate, len_Mach).T.flatten()).T 
+    Machs         = rp.atleast_2d(rp.repeat(Mach,len_r)).T
 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
-    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
     conditions.freestream.mach_number               = Machs 
-    conditions.static_stability.yaw_rate            = np.ones_like(Machs)*r_s
+    conditions.static_stability.yaw_rate            = rp.ones_like(Machs)*r_s
     conditions.freestream.velocity                  = Machs * 343 # speed of sound  
     
     Clift_res_r,Cdrag_res_r,CX_res_r,CY_res_r,CZ_res_r,CL_res_r,CM_res_r,CN_res_r ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)
     
-    Clift_r     = np.reshape(Clift_res_r,(len_Mach,len_r)).T - Clift_alpha_0
-    Cdrag_r     = np.reshape(Cdrag_res_r,(len_Mach,len_r)).T - Cdrag_alpha_0
-    CX_r        = np.reshape(CX_res_r,(len_Mach,len_r)).T    - CX_alpha_0   
-    CY_r        = np.reshape(CY_res_r,(len_Mach,len_r)).T    - CY_alpha_0   
-    CZ_r        = np.reshape(CZ_res_r,(len_Mach,len_r)).T    - CZ_alpha_0   
-    CL_r        = np.reshape(CL_res_r,(len_Mach,len_r)).T    - CL_alpha_0   
-    CM_r        = np.reshape(CM_res_r,(len_Mach,len_r)).T    - CM_alpha_0   
-    CN_r        = np.reshape(CN_res_r,(len_Mach,len_r)).T    - CN_alpha_0   
+    Clift_r     = rp.reshape(Clift_res_r,(len_Mach,len_r)).T - Clift_alpha_0
+    Cdrag_r     = rp.reshape(Cdrag_res_r,(len_Mach,len_r)).T - Cdrag_alpha_0
+    CX_r        = rp.reshape(CX_res_r,(len_Mach,len_r)).T    - CX_alpha_0   
+    CY_r        = rp.reshape(CY_res_r,(len_Mach,len_r)).T    - CY_alpha_0   
+    CZ_r        = rp.reshape(CZ_res_r,(len_Mach,len_r)).T    - CZ_alpha_0   
+    CL_r        = rp.reshape(CL_res_r,(len_Mach,len_r)).T    - CL_alpha_0   
+    CM_r        = rp.reshape(CM_res_r,(len_Mach,len_r)).T    - CM_alpha_0   
+    CN_r        = rp.reshape(CN_res_r,(len_Mach,len_r)).T    - CN_alpha_0   
         
     # STABILITY COEFFICIENTS  
     training.Clift_alpha       = Clift_alpha 
@@ -466,23 +466,23 @@ def train_model(aerodynamics, Mach):
                 len_d_a                    = len(delta_a)
                 aerodynamics.aileron_flag  = True
                 
-                Clift_d_a      = np.zeros((len_d_a,len_Mach)) 
-                Cdrag_d_a      = np.zeros((len_d_a,len_Mach)) 
-                CX_d_a         = np.zeros((len_d_a,len_Mach)) 
-                CY_d_a         = np.zeros((len_d_a,len_Mach)) 
-                CZ_d_a         = np.zeros((len_d_a,len_Mach)) 
-                CL_d_a         = np.zeros((len_d_a,len_Mach)) 
-                CM_d_a         = np.zeros((len_d_a,len_Mach)) 
-                CN_d_a         = np.zeros((len_d_a,len_Mach))
+                Clift_d_a      = rp.zeros((len_d_a,len_Mach)) 
+                Cdrag_d_a      = rp.zeros((len_d_a,len_Mach)) 
+                CX_d_a         = rp.zeros((len_d_a,len_Mach)) 
+                CY_d_a         = rp.zeros((len_d_a,len_Mach)) 
+                CZ_d_a         = rp.zeros((len_d_a,len_Mach)) 
+                CL_d_a         = rp.zeros((len_d_a,len_Mach)) 
+                CM_d_a         = rp.zeros((len_d_a,len_Mach)) 
+                CN_d_a         = rp.zeros((len_d_a,len_Mach))
                 config_delta_a = 1 * control_surface.deflection
                 for a_i in range(len_d_a):   
-                    Delta_a_s                                       = np.atleast_2d(np.tile(delta_a[a_i],len_Mach).T.flatten()).T 
-                    Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                    Delta_a_s                                       = rp.atleast_2d(rp.tile(delta_a[a_i],len_Mach).T.flatten()).T 
+                    Machs                                           = rp.atleast_2d(rp.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+                    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs 
-                    conditions.control_surfaces.aileron.deflection  = np.ones_like(Machs)*Delta_a_s
+                    conditions.control_surfaces.aileron.deflection  = rp.ones_like(Machs)*Delta_a_s
                     control_surface.deflection                      = delta_a[a_i]
                     
                     Clift_res_d_a,Cdrag_res_d_a,CX_res_d_a,CY_res_d_a,CZ_res_d_a,CL_res_d_a,CM_res_d_a,CN_res_d_a ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
@@ -522,24 +522,24 @@ def train_model(aerodynamics, Mach):
                 aerodynamics.elevator_flag = True
 
             
-                Clift_d_e      = np.zeros((len_d_e,len_Mach)) 
-                Cdrag_d_e      = np.zeros((len_d_e,len_Mach)) 
-                CX_d_e         = np.zeros((len_d_e,len_Mach)) 
-                CY_d_e         = np.zeros((len_d_e,len_Mach)) 
-                CZ_d_e         = np.zeros((len_d_e,len_Mach)) 
-                CL_d_e         = np.zeros((len_d_e,len_Mach)) 
-                CM_d_e         = np.zeros((len_d_e,len_Mach)) 
-                CN_d_e         = np.zeros((len_d_e,len_Mach))
+                Clift_d_e      = rp.zeros((len_d_e,len_Mach)) 
+                Cdrag_d_e      = rp.zeros((len_d_e,len_Mach)) 
+                CX_d_e         = rp.zeros((len_d_e,len_Mach)) 
+                CY_d_e         = rp.zeros((len_d_e,len_Mach)) 
+                CZ_d_e         = rp.zeros((len_d_e,len_Mach)) 
+                CL_d_e         = rp.zeros((len_d_e,len_Mach)) 
+                CM_d_e         = rp.zeros((len_d_e,len_Mach)) 
+                CN_d_e         = rp.zeros((len_d_e,len_Mach))
 
                 config_delta_e = 1 * control_surface.deflection                
                 for e_i in range(len_d_e):   
-                    Delta_e_s                                       = np.atleast_2d(np.tile(delta_e[e_i],len_Mach).T.flatten()).T 
-                    Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                    Delta_e_s                                       = rp.atleast_2d(rp.tile(delta_e[e_i],len_Mach).T.flatten()).T 
+                    Machs                                           = rp.atleast_2d(rp.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+                    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs 
-                    conditions.control_surfaces.elevator.deflection = np.ones_like(Machs)*Delta_e_s
+                    conditions.control_surfaces.elevator.deflection = rp.ones_like(Machs)*Delta_e_s
                     control_surface.deflection                      = delta_e[e_i]
                     
                     Clift_res_d_e,Cdrag_res_d_e,CX_res_d_e,CY_res_d_e,CZ_res_d_e,CL_res_d_e,CM_res_d_e,CN_res_d_e ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
@@ -578,24 +578,24 @@ def train_model(aerodynamics, Mach):
                 aerodynamics.rudder_flag   = True
                 len_d_r                    = len(delta_r)
 
-                Clift_d_r      = np.zeros((len_d_r,len_Mach)) 
-                Cdrag_d_r      = np.zeros((len_d_r,len_Mach)) 
-                CX_d_r         = np.zeros((len_d_r,len_Mach)) 
-                CY_d_r         = np.zeros((len_d_r,len_Mach)) 
-                CZ_d_r         = np.zeros((len_d_r,len_Mach)) 
-                CL_d_r         = np.zeros((len_d_r,len_Mach)) 
-                CM_d_r         = np.zeros((len_d_r,len_Mach)) 
-                CN_d_r         = np.zeros((len_d_r,len_Mach))
+                Clift_d_r      = rp.zeros((len_d_r,len_Mach)) 
+                Cdrag_d_r      = rp.zeros((len_d_r,len_Mach)) 
+                CX_d_r         = rp.zeros((len_d_r,len_Mach)) 
+                CY_d_r         = rp.zeros((len_d_r,len_Mach)) 
+                CZ_d_r         = rp.zeros((len_d_r,len_Mach)) 
+                CL_d_r         = rp.zeros((len_d_r,len_Mach)) 
+                CM_d_r         = rp.zeros((len_d_r,len_Mach)) 
+                CN_d_r         = rp.zeros((len_d_r,len_Mach))
 
                 config_delta_r = 1 * control_surface.deflection                  
                 for r_i in range(len_d_r):   
-                    Delta_r_s                                       = np.atleast_2d(np.tile(delta_r[r_i],len_Mach).T.flatten()).T 
-                    Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                    Delta_r_s                                       = rp.atleast_2d(rp.tile(delta_r[r_i],len_Mach).T.flatten()).T 
+                    Machs                                           = rp.atleast_2d(rp.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+                    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs 
-                    conditions.control_surfaces.rudder.deflection  = np.ones_like(Machs)*Delta_r_s
+                    conditions.control_surfaces.rudder.deflection  = rp.ones_like(Machs)*Delta_r_s
                     control_surface.deflection                      = delta_r[r_i]
                     
                     Clift_res_d_r,Cdrag_res_d_r,CX_res_d_r,CY_res_d_r,CZ_res_d_r,CL_res_d_r,CM_res_d_r,CN_res_d_r ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
@@ -631,24 +631,24 @@ def train_model(aerodynamics, Mach):
                 delta_s                = aerodynamics.training.slat_deflection
                 len_d_s                = len(delta_s)   
                 aerodynamics.slat_flag = True
-                Clift_d_s      = np.zeros((len_d_s,len_Mach)) 
-                Cdrag_d_s      = np.zeros((len_d_s,len_Mach)) 
-                CX_d_s         = np.zeros((len_d_s,len_Mach)) 
-                CY_d_s         = np.zeros((len_d_s,len_Mach)) 
-                CZ_d_s         = np.zeros((len_d_s,len_Mach)) 
-                CL_d_s         = np.zeros((len_d_s,len_Mach)) 
-                CM_d_s         = np.zeros((len_d_s,len_Mach)) 
-                CN_d_s         = np.zeros((len_d_s,len_Mach))
+                Clift_d_s      = rp.zeros((len_d_s,len_Mach)) 
+                Cdrag_d_s      = rp.zeros((len_d_s,len_Mach)) 
+                CX_d_s         = rp.zeros((len_d_s,len_Mach)) 
+                CY_d_s         = rp.zeros((len_d_s,len_Mach)) 
+                CZ_d_s         = rp.zeros((len_d_s,len_Mach)) 
+                CL_d_s         = rp.zeros((len_d_s,len_Mach)) 
+                CM_d_s         = rp.zeros((len_d_s,len_Mach)) 
+                CN_d_s         = rp.zeros((len_d_s,len_Mach))
 
                 config_delta_s = 1 * control_surface.deflection                  
                 for s_i in range(len_d_s):   
-                    Delta_s_s                                       = np.atleast_2d(np.tile(delta_s[s_i],len_Mach).T.flatten()).T 
-                    Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                    Delta_s_s                                       = rp.atleast_2d(rp.tile(delta_s[s_i],len_Mach).T.flatten()).T 
+                    Machs                                           = rp.atleast_2d(rp.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+                    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs 
-                    conditions.control_surfaces.slat.deflection     = np.ones_like(Machs)*Delta_s_s
+                    conditions.control_surfaces.slat.deflection     = rp.ones_like(Machs)*Delta_s_s
                     control_surface.deflection                      = delta_s[s_i]
                     
                     Clift_res_d_s,Cdrag_res_d_s,CX_res_d_s,CY_res_d_s,CZ_res_d_s,CL_res_d_s,CM_res_d_s,CN_res_d_s ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
@@ -687,24 +687,24 @@ def train_model(aerodynamics, Mach):
                 len_d_f                     = len(delta_f)  
                 aerodynamics.flap_flag      = True
 
-                Clift_d_f      = np.zeros((len_d_f,len_Mach)) 
-                Cdrag_d_f      = np.zeros((len_d_f,len_Mach)) 
-                CX_d_f         = np.zeros((len_d_f,len_Mach)) 
-                CY_d_f         = np.zeros((len_d_f,len_Mach)) 
-                CZ_d_f         = np.zeros((len_d_f,len_Mach)) 
-                CL_d_f         = np.zeros((len_d_f,len_Mach)) 
-                CM_d_f         = np.zeros((len_d_f,len_Mach)) 
-                CN_d_f         = np.zeros((len_d_f,len_Mach))
+                Clift_d_f      = rp.zeros((len_d_f,len_Mach)) 
+                Cdrag_d_f      = rp.zeros((len_d_f,len_Mach)) 
+                CX_d_f         = rp.zeros((len_d_f,len_Mach)) 
+                CY_d_f         = rp.zeros((len_d_f,len_Mach)) 
+                CZ_d_f         = rp.zeros((len_d_f,len_Mach)) 
+                CL_d_f         = rp.zeros((len_d_f,len_Mach)) 
+                CM_d_f         = rp.zeros((len_d_f,len_Mach)) 
+                CN_d_f         = rp.zeros((len_d_f,len_Mach))
 
                 config_delta_f = 1 * control_surface.deflection                      
                 for f_i in range(len_d_f):   
-                    Delta_f_s                                       = np.atleast_2d(np.tile(delta_f[f_i],len_Mach).T.flatten()).T 
-                    Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                    Delta_f_s                                       = rp.atleast_2d(rp.tile(delta_f[f_i],len_Mach).T.flatten()).T 
+                    Machs                                           = rp.atleast_2d(rp.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-                    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.aerodynamics.angles.alpha            = rp.ones_like(Machs) *1E-12
+                    conditions.aerodynamics.angles.beta             = rp.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs 
-                    conditions.control_surfaces.flap.deflection     = np.ones_like(Machs)*Delta_f_s
+                    conditions.control_surfaces.flap.deflection     = rp.ones_like(Machs)*Delta_f_s
                     control_surface.deflection                      = delta_f[f_i]
                     
                     Clift_res_d_f,Cdrag_res_d_f,CX_res_d_f,CY_res_d_f,CZ_res_d_f,CL_res_d_f,CM_res_d_f,CN_res_d_f ,_,_,_,_,_,_,_,_,_= evaluate_VLM(conditions,settings,geometry)   
@@ -764,7 +764,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     AoA            = aerodynamics.training.angle_of_attack                  
     Beta           = aerodynamics.training.sideslip_angle
     training       = Data() 
-    training.Mach  = np.array([sub_Mach[-1], sup_Mach[0]])
+    training.Mach  = rp.array([sub_Mach[-1], sup_Mach[0]])
     u              = aerodynamics.training.u
     v              = aerodynamics.training.v
     w              = aerodynamics.training.w
@@ -776,109 +776,109 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     # Alpha
     # -------------------------------------------------------------------------------------------------------------- 
     
-    Clift_alpha   =  np.concatenate((training_subsonic.Clift_alpha[:,-1][:,None] , training_supersonic.Clift_alpha[:,0][:,None] ), axis = 1)
-    Cdrag_alpha   =  np.concatenate((training_subsonic.Cdrag_alpha[:,-1][:,None]  , training_supersonic.Cdrag_alpha[:,0][:,None] ), axis = 1) 
-    CX_alpha      =  np.concatenate((training_subsonic.CX_alpha[:,-1][:,None]    , training_supersonic.CX_alpha[:,0][:,None] ), axis = 1)   
-    CY_alpha      =  np.concatenate((training_subsonic.CY_alpha[:,-1][:,None]    , training_supersonic.CY_alpha[:,0][:,None] ), axis = 1)   
-    CZ_alpha      =  np.concatenate((training_subsonic.CZ_alpha[:,-1][:,None]    , training_supersonic.CZ_alpha[:,0][:,None] ), axis = 1)   
-    CL_alpha      =  np.concatenate((training_subsonic.CL_alpha[:,-1][:,None]    , training_supersonic.CL_alpha[:,0][:,None] ), axis = 1)   
-    CM_alpha      =  np.concatenate((training_subsonic.CM_alpha[:,-1][:,None]    , training_supersonic.CM_alpha[:,0][:,None] ), axis = 1)   
-    CN_alpha      =  np.concatenate((training_subsonic.CN_alpha[:,-1][:,None]    , training_supersonic.CN_alpha[:,0][:,None] ), axis = 1)   
+    Clift_alpha   =  rp.concatenate((training_subsonic.Clift_alpha[:,-1][:,None] , training_supersonic.Clift_alpha[:,0][:,None] ), axis = 1)
+    Cdrag_alpha   =  rp.concatenate((training_subsonic.Cdrag_alpha[:,-1][:,None]  , training_supersonic.Cdrag_alpha[:,0][:,None] ), axis = 1) 
+    CX_alpha      =  rp.concatenate((training_subsonic.CX_alpha[:,-1][:,None]    , training_supersonic.CX_alpha[:,0][:,None] ), axis = 1)   
+    CY_alpha      =  rp.concatenate((training_subsonic.CY_alpha[:,-1][:,None]    , training_supersonic.CY_alpha[:,0][:,None] ), axis = 1)   
+    CZ_alpha      =  rp.concatenate((training_subsonic.CZ_alpha[:,-1][:,None]    , training_supersonic.CZ_alpha[:,0][:,None] ), axis = 1)   
+    CL_alpha      =  rp.concatenate((training_subsonic.CL_alpha[:,-1][:,None]    , training_supersonic.CL_alpha[:,0][:,None] ), axis = 1)   
+    CM_alpha      =  rp.concatenate((training_subsonic.CM_alpha[:,-1][:,None]    , training_supersonic.CM_alpha[:,0][:,None] ), axis = 1)   
+    CN_alpha      =  rp.concatenate((training_subsonic.CN_alpha[:,-1][:,None]    , training_supersonic.CN_alpha[:,0][:,None] ), axis = 1)   
 
     Clift_wing_alpha = Data()
     Cdrag_wing_alpha = Data() 
     for wing in  geometry.wings: 
-        Clift_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Clift_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Clift_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
-        Cdrag_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Cdrag_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Cdrag_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
+        Clift_wing_alpha[wing.tag] =  rp.concatenate((training_subsonic.Clift_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Clift_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
+        Cdrag_wing_alpha[wing.tag] =  rp.concatenate((training_subsonic.Cdrag_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Cdrag_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
     
     # --------------------------------------------------------------------------------------------------------------
     # Beta 
     # -------------------------------------------------------------------------------------------------------------- 
     
-    Clift_beta =  np.concatenate((training_subsonic.Clift_beta[:,-1][:,None] , training_supersonic.Clift_beta[:,0][:,None] ), axis = 1)      
-    Cdrag_beta =  np.concatenate((training_subsonic.Cdrag_beta[:,-1][:,None] , training_supersonic.Cdrag_beta[:,0][:,None] ), axis = 1)             
-    CX_beta    =  np.concatenate((training_subsonic.CX_beta[:,-1][:,None]    , training_supersonic.CX_beta[:,0][:,None] ), axis = 1)        
-    CY_beta    =  np.concatenate((training_subsonic.CY_beta[:,-1][:,None]    , training_supersonic.CY_beta[:,0][:,None] ), axis = 1)        
-    CZ_beta    =  np.concatenate((training_subsonic.CZ_beta[:,-1][:,None]    , training_supersonic.CZ_beta[:,0][:,None] ), axis = 1)        
-    CL_beta    =  np.concatenate((training_subsonic.CL_beta[:,-1][:,None]    , training_supersonic.CL_beta[:,0][:,None] ), axis = 1)        
-    CM_beta    =  np.concatenate((training_subsonic.CM_beta[:,-1][:,None]    , training_supersonic.CM_beta[:,0][:,None] ), axis = 1)        
-    CN_beta    =  np.concatenate((training_subsonic.CN_beta[:,-1][:,None]    , training_supersonic.CN_beta[:,0][:,None] ), axis = 1)        
+    Clift_beta =  rp.concatenate((training_subsonic.Clift_beta[:,-1][:,None] , training_supersonic.Clift_beta[:,0][:,None] ), axis = 1)      
+    Cdrag_beta =  rp.concatenate((training_subsonic.Cdrag_beta[:,-1][:,None] , training_supersonic.Cdrag_beta[:,0][:,None] ), axis = 1)             
+    CX_beta    =  rp.concatenate((training_subsonic.CX_beta[:,-1][:,None]    , training_supersonic.CX_beta[:,0][:,None] ), axis = 1)        
+    CY_beta    =  rp.concatenate((training_subsonic.CY_beta[:,-1][:,None]    , training_supersonic.CY_beta[:,0][:,None] ), axis = 1)        
+    CZ_beta    =  rp.concatenate((training_subsonic.CZ_beta[:,-1][:,None]    , training_supersonic.CZ_beta[:,0][:,None] ), axis = 1)        
+    CL_beta    =  rp.concatenate((training_subsonic.CL_beta[:,-1][:,None]    , training_supersonic.CL_beta[:,0][:,None] ), axis = 1)        
+    CM_beta    =  rp.concatenate((training_subsonic.CM_beta[:,-1][:,None]    , training_supersonic.CM_beta[:,0][:,None] ), axis = 1)        
+    CN_beta    =  rp.concatenate((training_subsonic.CN_beta[:,-1][:,None]    , training_supersonic.CN_beta[:,0][:,None] ), axis = 1)        
  
     # -------------------------------------------------------      
     # Velocity u 
     # ------------------------------------------------------- 
     
-    Clift_u     =   np.concatenate((training_subsonic.Clift_u[:,-1][:,None] , training_supersonic.Clift_u[:,0][:,None] ), axis = 1)     
-    Cdrag_u     =   np.concatenate((training_subsonic.Cdrag_u[:,-1][:,None] , training_supersonic.Cdrag_u[:,0][:,None] ), axis = 1)     
-    CX_u        =   np.concatenate((training_subsonic.CX_u[:,-1][:,None]    , training_supersonic.CX_u[:,0][:,None] ), axis = 1)        
-    CY_u        =   np.concatenate((training_subsonic.CY_u[:,-1][:,None]    , training_supersonic.CY_u[:,0][:,None] ), axis = 1)        
-    CZ_u        =   np.concatenate((training_subsonic.CZ_u[:,-1][:,None]    , training_supersonic.CZ_u[:,0][:,None] ), axis = 1)        
-    CL_u        =   np.concatenate((training_subsonic.CL_u[:,-1][:,None]    , training_supersonic.CL_u[:,0][:,None] ), axis = 1)        
-    CM_u        =   np.concatenate((training_subsonic.CM_u[:,-1][:,None]    , training_supersonic.CM_u[:,0][:,None] ), axis = 1)        
-    CN_u        =   np.concatenate((training_subsonic.CN_u[:,-1][:,None]    , training_supersonic.CN_u[:,0][:,None] ), axis = 1)        
+    Clift_u     =   rp.concatenate((training_subsonic.Clift_u[:,-1][:,None] , training_supersonic.Clift_u[:,0][:,None] ), axis = 1)     
+    Cdrag_u     =   rp.concatenate((training_subsonic.Cdrag_u[:,-1][:,None] , training_supersonic.Cdrag_u[:,0][:,None] ), axis = 1)     
+    CX_u        =   rp.concatenate((training_subsonic.CX_u[:,-1][:,None]    , training_supersonic.CX_u[:,0][:,None] ), axis = 1)        
+    CY_u        =   rp.concatenate((training_subsonic.CY_u[:,-1][:,None]    , training_supersonic.CY_u[:,0][:,None] ), axis = 1)        
+    CZ_u        =   rp.concatenate((training_subsonic.CZ_u[:,-1][:,None]    , training_supersonic.CZ_u[:,0][:,None] ), axis = 1)        
+    CL_u        =   rp.concatenate((training_subsonic.CL_u[:,-1][:,None]    , training_supersonic.CL_u[:,0][:,None] ), axis = 1)        
+    CM_u        =   rp.concatenate((training_subsonic.CM_u[:,-1][:,None]    , training_supersonic.CM_u[:,0][:,None] ), axis = 1)        
+    CN_u        =   rp.concatenate((training_subsonic.CN_u[:,-1][:,None]    , training_supersonic.CN_u[:,0][:,None] ), axis = 1)        
     
     # -------------------------------------------------------               
     # Velocity v 
     # -------------------------------------------------------  
     
-    Clift_v     =  np.concatenate((training_subsonic.Clift_v[:,-1][:,None] , training_supersonic.Clift_v[:,0][:,None] ), axis = 1)       
-    Cdrag_v     =  np.concatenate((training_subsonic.Cdrag_v[:,-1][:,None] , training_supersonic.Cdrag_v[:,0][:,None] ), axis = 1)       
-    CX_v        =  np.concatenate((training_subsonic.CX_v[:,-1][:,None]    , training_supersonic.CX_v[:,0][:,None] ), axis = 1)          
-    CY_v        =  np.concatenate((training_subsonic.CY_v[:,-1][:,None]    , training_supersonic.CY_v[:,0][:,None] ), axis = 1)          
-    CZ_v        =  np.concatenate((training_subsonic.CZ_v[:,-1][:,None]    , training_supersonic.CZ_v[:,0][:,None] ), axis = 1)          
-    CL_v        =  np.concatenate((training_subsonic.CL_v[:,-1][:,None]    , training_supersonic.CL_v[:,0][:,None] ), axis = 1)          
-    CM_v        =  np.concatenate((training_subsonic.CM_v[:,-1][:,None]    , training_supersonic.CM_v[:,0][:,None] ), axis = 1)          
-    CN_v        =  np.concatenate((training_subsonic.CN_v[:,-1][:,None]    , training_supersonic.CN_v[:,0][:,None] ), axis = 1)          
+    Clift_v     =  rp.concatenate((training_subsonic.Clift_v[:,-1][:,None] , training_supersonic.Clift_v[:,0][:,None] ), axis = 1)       
+    Cdrag_v     =  rp.concatenate((training_subsonic.Cdrag_v[:,-1][:,None] , training_supersonic.Cdrag_v[:,0][:,None] ), axis = 1)       
+    CX_v        =  rp.concatenate((training_subsonic.CX_v[:,-1][:,None]    , training_supersonic.CX_v[:,0][:,None] ), axis = 1)          
+    CY_v        =  rp.concatenate((training_subsonic.CY_v[:,-1][:,None]    , training_supersonic.CY_v[:,0][:,None] ), axis = 1)          
+    CZ_v        =  rp.concatenate((training_subsonic.CZ_v[:,-1][:,None]    , training_supersonic.CZ_v[:,0][:,None] ), axis = 1)          
+    CL_v        =  rp.concatenate((training_subsonic.CL_v[:,-1][:,None]    , training_supersonic.CL_v[:,0][:,None] ), axis = 1)          
+    CM_v        =  rp.concatenate((training_subsonic.CM_v[:,-1][:,None]    , training_supersonic.CM_v[:,0][:,None] ), axis = 1)          
+    CN_v        =  rp.concatenate((training_subsonic.CN_v[:,-1][:,None]    , training_supersonic.CN_v[:,0][:,None] ), axis = 1)          
     
     # -------------------------------------------------------               
     # Velocity w 
     # -------------------------------------------------------  
-    Clift_w     =  np.concatenate((training_subsonic.Clift_w[:,-1][:,None] , training_supersonic.Clift_w[:,0][:,None] ), axis = 1)   
-    Cdrag_w     =  np.concatenate((training_subsonic.Cdrag_w[:,-1][:,None] , training_supersonic.Cdrag_w[:,0][:,None] ), axis = 1)   
-    CX_w        =  np.concatenate((training_subsonic.CX_w[:,-1][:,None]    , training_supersonic.CX_w[:,0][:,None] ), axis = 1)      
-    CY_w        =  np.concatenate((training_subsonic.CY_w[:,-1][:,None]    , training_supersonic.CY_w[:,0][:,None] ), axis = 1)      
-    CZ_w        =  np.concatenate((training_subsonic.CZ_w[:,-1][:,None]    , training_supersonic.CZ_w[:,0][:,None] ), axis = 1)      
-    CL_w        =  np.concatenate((training_subsonic.CL_w[:,-1][:,None]    , training_supersonic.CL_w[:,0][:,None] ), axis = 1)      
-    CM_w        =  np.concatenate((training_subsonic.CM_w[:,-1][:,None]    , training_supersonic.CM_w[:,0][:,None] ), axis = 1)      
-    CN_w        =  np.concatenate((training_subsonic.CN_w[:,-1][:,None]    , training_supersonic.CN_w[:,0][:,None] ), axis = 1)      
+    Clift_w     =  rp.concatenate((training_subsonic.Clift_w[:,-1][:,None] , training_supersonic.Clift_w[:,0][:,None] ), axis = 1)   
+    Cdrag_w     =  rp.concatenate((training_subsonic.Cdrag_w[:,-1][:,None] , training_supersonic.Cdrag_w[:,0][:,None] ), axis = 1)   
+    CX_w        =  rp.concatenate((training_subsonic.CX_w[:,-1][:,None]    , training_supersonic.CX_w[:,0][:,None] ), axis = 1)      
+    CY_w        =  rp.concatenate((training_subsonic.CY_w[:,-1][:,None]    , training_supersonic.CY_w[:,0][:,None] ), axis = 1)      
+    CZ_w        =  rp.concatenate((training_subsonic.CZ_w[:,-1][:,None]    , training_supersonic.CZ_w[:,0][:,None] ), axis = 1)      
+    CL_w        =  rp.concatenate((training_subsonic.CL_w[:,-1][:,None]    , training_supersonic.CL_w[:,0][:,None] ), axis = 1)      
+    CM_w        =  rp.concatenate((training_subsonic.CM_w[:,-1][:,None]    , training_supersonic.CM_w[:,0][:,None] ), axis = 1)      
+    CN_w        =  rp.concatenate((training_subsonic.CN_w[:,-1][:,None]    , training_supersonic.CN_w[:,0][:,None] ), axis = 1)      
 
                     
     # -------------------------------------------------------               
     # Pitch Rate 
     # -------------------------------------------------------
-    Clift_q     =  np.concatenate((training_subsonic.Clift_q[:,-1][:,None] , training_supersonic.Clift_q[:,0][:,None] ), axis = 1)     
-    Cdrag_q     =  np.concatenate((training_subsonic.Cdrag_q[:,-1][:,None] , training_supersonic.Cdrag_q[:,0][:,None] ), axis = 1)     
-    CX_q        =  np.concatenate((training_subsonic.CX_q[:,-1][:,None]    , training_supersonic.CX_q[:,0][:,None] ), axis = 1)        
-    CY_q        =  np.concatenate((training_subsonic.CY_q[:,-1][:,None]    , training_supersonic.CY_q[:,0][:,None] ), axis = 1)        
-    CZ_q        =  np.concatenate((training_subsonic.CZ_q[:,-1][:,None]    , training_supersonic.CZ_q[:,0][:,None] ), axis = 1)        
-    CL_q        =  np.concatenate((training_subsonic.CL_q[:,-1][:,None]    , training_supersonic.CL_q[:,0][:,None] ), axis = 1)        
-    CM_q        =  np.concatenate((training_subsonic.CM_q[:,-1][:,None]    , training_supersonic.CM_q[:,0][:,None] ), axis = 1)        
-    CN_q        =  np.concatenate((training_subsonic.CN_q[:,-1][:,None]    , training_supersonic.CN_q[:,0][:,None] ), axis = 1)        
+    Clift_q     =  rp.concatenate((training_subsonic.Clift_q[:,-1][:,None] , training_supersonic.Clift_q[:,0][:,None] ), axis = 1)     
+    Cdrag_q     =  rp.concatenate((training_subsonic.Cdrag_q[:,-1][:,None] , training_supersonic.Cdrag_q[:,0][:,None] ), axis = 1)     
+    CX_q        =  rp.concatenate((training_subsonic.CX_q[:,-1][:,None]    , training_supersonic.CX_q[:,0][:,None] ), axis = 1)        
+    CY_q        =  rp.concatenate((training_subsonic.CY_q[:,-1][:,None]    , training_supersonic.CY_q[:,0][:,None] ), axis = 1)        
+    CZ_q        =  rp.concatenate((training_subsonic.CZ_q[:,-1][:,None]    , training_supersonic.CZ_q[:,0][:,None] ), axis = 1)        
+    CL_q        =  rp.concatenate((training_subsonic.CL_q[:,-1][:,None]    , training_supersonic.CL_q[:,0][:,None] ), axis = 1)        
+    CM_q        =  rp.concatenate((training_subsonic.CM_q[:,-1][:,None]    , training_supersonic.CM_q[:,0][:,None] ), axis = 1)        
+    CN_q        =  rp.concatenate((training_subsonic.CN_q[:,-1][:,None]    , training_supersonic.CN_q[:,0][:,None] ), axis = 1)        
   
     # -------------------------------------------------------               
     # Roll  Rate 
     # -------------------------------------------------------     
-    Clift_p     =  np.concatenate((training_subsonic.Clift_p[:,-1][:,None] , training_supersonic.Clift_p[:,0][:,None] ), axis = 1)    
-    Cdrag_p     =  np.concatenate((training_subsonic.Cdrag_p[:,-1][:,None] , training_supersonic.Cdrag_p[:,0][:,None] ), axis = 1)    
-    CX_p        =  np.concatenate((training_subsonic.CX_p[:,-1][:,None]    , training_supersonic.CX_p[:,0][:,None] ), axis = 1)       
-    CY_p        =  np.concatenate((training_subsonic.CY_p[:,-1][:,None]    , training_supersonic.CY_p[:,0][:,None] ), axis = 1)       
-    CZ_p        =  np.concatenate((training_subsonic.CZ_p[:,-1][:,None]    , training_supersonic.CZ_p[:,0][:,None] ), axis = 1)       
-    CL_p        =  np.concatenate((training_subsonic.CL_p[:,-1][:,None]    , training_supersonic.CL_p[:,0][:,None] ), axis = 1)       
-    CM_p        =  np.concatenate((training_subsonic.CM_p[:,-1][:,None]    , training_supersonic.CM_p[:,0][:,None] ), axis = 1)       
-    CN_p        =  np.concatenate((training_subsonic.CN_p[:,-1][:,None]    , training_supersonic.CN_p[:,0][:,None] ), axis = 1)       
+    Clift_p     =  rp.concatenate((training_subsonic.Clift_p[:,-1][:,None] , training_supersonic.Clift_p[:,0][:,None] ), axis = 1)    
+    Cdrag_p     =  rp.concatenate((training_subsonic.Cdrag_p[:,-1][:,None] , training_supersonic.Cdrag_p[:,0][:,None] ), axis = 1)    
+    CX_p        =  rp.concatenate((training_subsonic.CX_p[:,-1][:,None]    , training_supersonic.CX_p[:,0][:,None] ), axis = 1)       
+    CY_p        =  rp.concatenate((training_subsonic.CY_p[:,-1][:,None]    , training_supersonic.CY_p[:,0][:,None] ), axis = 1)       
+    CZ_p        =  rp.concatenate((training_subsonic.CZ_p[:,-1][:,None]    , training_supersonic.CZ_p[:,0][:,None] ), axis = 1)       
+    CL_p        =  rp.concatenate((training_subsonic.CL_p[:,-1][:,None]    , training_supersonic.CL_p[:,0][:,None] ), axis = 1)       
+    CM_p        =  rp.concatenate((training_subsonic.CM_p[:,-1][:,None]    , training_supersonic.CM_p[:,0][:,None] ), axis = 1)       
+    CN_p        =  rp.concatenate((training_subsonic.CN_p[:,-1][:,None]    , training_supersonic.CN_p[:,0][:,None] ), axis = 1)       
 
 
     # -------------------------------------------------------               
     # Yaw Rate 
     # -------------------------------------------------------         
-    Clift_r     =  np.concatenate((training_subsonic.Clift_r[:,-1][:,None] , training_supersonic.Clift_r[:,0][:,None] ), axis = 1)      
-    Cdrag_r     =  np.concatenate((training_subsonic.Cdrag_r[:,-1][:,None] , training_supersonic.Cdrag_r[:,0][:,None] ), axis = 1)      
-    CX_r        =  np.concatenate((training_subsonic.CX_r[:,-1][:,None]    , training_supersonic.CX_r[:,0][:,None] ), axis = 1)         
-    CY_r        =  np.concatenate((training_subsonic.CY_r[:,-1][:,None]    , training_supersonic.CY_r[:,0][:,None] ), axis = 1)         
-    CZ_r        =  np.concatenate((training_subsonic.CZ_r[:,-1][:,None]    , training_supersonic.CZ_r[:,0][:,None] ), axis = 1)         
-    CL_r        =  np.concatenate((training_subsonic.CL_r[:,-1][:,None]    , training_supersonic.CL_r[:,0][:,None] ), axis = 1)         
-    CM_r        =  np.concatenate((training_subsonic.CM_r[:,-1][:,None]    , training_supersonic.CM_r[:,0][:,None] ), axis = 1)         
-    CN_r        =  np.concatenate((training_subsonic.CN_r[:,-1][:,None]    , training_supersonic.CN_r[:,0][:,None] ), axis = 1)         
+    Clift_r     =  rp.concatenate((training_subsonic.Clift_r[:,-1][:,None] , training_supersonic.Clift_r[:,0][:,None] ), axis = 1)      
+    Cdrag_r     =  rp.concatenate((training_subsonic.Cdrag_r[:,-1][:,None] , training_supersonic.Cdrag_r[:,0][:,None] ), axis = 1)      
+    CX_r        =  rp.concatenate((training_subsonic.CX_r[:,-1][:,None]    , training_supersonic.CX_r[:,0][:,None] ), axis = 1)         
+    CY_r        =  rp.concatenate((training_subsonic.CY_r[:,-1][:,None]    , training_supersonic.CY_r[:,0][:,None] ), axis = 1)         
+    CZ_r        =  rp.concatenate((training_subsonic.CZ_r[:,-1][:,None]    , training_supersonic.CZ_r[:,0][:,None] ), axis = 1)         
+    CL_r        =  rp.concatenate((training_subsonic.CL_r[:,-1][:,None]    , training_supersonic.CL_r[:,0][:,None] ), axis = 1)         
+    CM_r        =  rp.concatenate((training_subsonic.CM_r[:,-1][:,None]    , training_supersonic.CM_r[:,0][:,None] ), axis = 1)         
+    CN_r        =  rp.concatenate((training_subsonic.CN_r[:,-1][:,None]    , training_supersonic.CN_r[:,0][:,None] ), axis = 1)         
  
     # STABILITY COEFFICIENTS 
     training.Clift_wing_alpha  = Clift_wing_alpha   
@@ -1041,107 +1041,107 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     # Aileron 
     # --------------------------------------------------------------------------------------------------------------   
     if aerodynamics.aileron_flag:   
-        training.Clift_delta_a   =  np.concatenate((training_subsonic.Clift_delta_a[:,-1][:,None] , training_supersonic.Clift_delta_a[:,0][:,None] ), axis = 1) 
-        training.Cdrag_delta_a   =  np.concatenate((training_subsonic.Cdrag_delta_a[:,-1][:,None] , training_supersonic.Cdrag_delta_a[:,0][:,None] ), axis = 1) 
-        training.CX_delta_a      =  np.concatenate((training_subsonic.CX_delta_a[:,-1][:,None]    , training_supersonic.CX_delta_a[:,0][:,None]    ), axis = 1) 
-        training.CY_delta_a      =  np.concatenate((training_subsonic.CY_delta_a[:,-1][:,None]    , training_supersonic.CY_delta_a[:,0][:,None]    ), axis = 1) 
-        training.CZ_delta_a      =  np.concatenate((training_subsonic.CZ_delta_a[:,-1][:,None]    , training_supersonic.CZ_delta_a[:,0][:,None]    ), axis = 1) 
-        training.CL_delta_a      =  np.concatenate((training_subsonic.CL_delta_a[:,-1][:,None]    , training_supersonic.CL_delta_a[:,0][:,None]    ), axis = 1) 
-        training.CM_delta_a      =  np.concatenate((training_subsonic.CM_delta_a[:,-1][:,None]    , training_supersonic.CM_delta_a[:,0][:,None]    ), axis = 1) 
-        training.CN_delta_a      =  np.concatenate((training_subsonic.CN_delta_a[:,-1][:,None]    , training_supersonic.CN_delta_a[:,0][:,None]    ), axis = 1) 
-        training.dClift_ddelta_a =  np.array([training_subsonic.dClift_ddelta_a[-1] , training_subsonic.dClift_ddelta_a[0]])
-        training.dCdrag_ddelta_a =  np.array([training_subsonic.dCdrag_ddelta_a[-1] , training_subsonic.dCdrag_ddelta_a[0]])
-        training.dCX_ddelta_a    =  np.array([training_subsonic.dCX_ddelta_a[-1]    , training_subsonic.dCX_ddelta_a[0]   ])
-        training.dCY_ddelta_a    =  np.array([training_subsonic.dCY_ddelta_a[-1]    , training_subsonic.dCY_ddelta_a[0]   ])
-        training.dCZ_ddelta_a    =  np.array([training_subsonic.dCZ_ddelta_a[-1]    , training_subsonic.dCZ_ddelta_a[0]   ])
-        training.dCL_ddelta_a    =  np.array([training_subsonic.dCL_ddelta_a[-1]    , training_subsonic.dCL_ddelta_a[0]   ])
-        training.dCM_ddelta_a    =  np.array([training_subsonic.dCM_ddelta_a[-1]    , training_subsonic.dCM_ddelta_a[0]   ])
-        training.dCN_ddelta_a    =  np.array([training_subsonic.dCN_ddelta_a[-1]    , training_subsonic.dCN_ddelta_a[0]   ])
+        training.Clift_delta_a   =  rp.concatenate((training_subsonic.Clift_delta_a[:,-1][:,None] , training_supersonic.Clift_delta_a[:,0][:,None] ), axis = 1) 
+        training.Cdrag_delta_a   =  rp.concatenate((training_subsonic.Cdrag_delta_a[:,-1][:,None] , training_supersonic.Cdrag_delta_a[:,0][:,None] ), axis = 1) 
+        training.CX_delta_a      =  rp.concatenate((training_subsonic.CX_delta_a[:,-1][:,None]    , training_supersonic.CX_delta_a[:,0][:,None]    ), axis = 1) 
+        training.CY_delta_a      =  rp.concatenate((training_subsonic.CY_delta_a[:,-1][:,None]    , training_supersonic.CY_delta_a[:,0][:,None]    ), axis = 1) 
+        training.CZ_delta_a      =  rp.concatenate((training_subsonic.CZ_delta_a[:,-1][:,None]    , training_supersonic.CZ_delta_a[:,0][:,None]    ), axis = 1) 
+        training.CL_delta_a      =  rp.concatenate((training_subsonic.CL_delta_a[:,-1][:,None]    , training_supersonic.CL_delta_a[:,0][:,None]    ), axis = 1) 
+        training.CM_delta_a      =  rp.concatenate((training_subsonic.CM_delta_a[:,-1][:,None]    , training_supersonic.CM_delta_a[:,0][:,None]    ), axis = 1) 
+        training.CN_delta_a      =  rp.concatenate((training_subsonic.CN_delta_a[:,-1][:,None]    , training_supersonic.CN_delta_a[:,0][:,None]    ), axis = 1) 
+        training.dClift_ddelta_a =  rp.array([training_subsonic.dClift_ddelta_a[-1] , training_subsonic.dClift_ddelta_a[0]])
+        training.dCdrag_ddelta_a =  rp.array([training_subsonic.dCdrag_ddelta_a[-1] , training_subsonic.dCdrag_ddelta_a[0]])
+        training.dCX_ddelta_a    =  rp.array([training_subsonic.dCX_ddelta_a[-1]    , training_subsonic.dCX_ddelta_a[0]   ])
+        training.dCY_ddelta_a    =  rp.array([training_subsonic.dCY_ddelta_a[-1]    , training_subsonic.dCY_ddelta_a[0]   ])
+        training.dCZ_ddelta_a    =  rp.array([training_subsonic.dCZ_ddelta_a[-1]    , training_subsonic.dCZ_ddelta_a[0]   ])
+        training.dCL_ddelta_a    =  rp.array([training_subsonic.dCL_ddelta_a[-1]    , training_subsonic.dCL_ddelta_a[0]   ])
+        training.dCM_ddelta_a    =  rp.array([training_subsonic.dCM_ddelta_a[-1]    , training_subsonic.dCM_ddelta_a[0]   ])
+        training.dCN_ddelta_a    =  rp.array([training_subsonic.dCN_ddelta_a[-1]    , training_subsonic.dCN_ddelta_a[0]   ])
     
     # --------------------------------------------------------------------------------------------------------------
     # Elevator 
     # -------------------------------------------------------------------------------------------------------------- 
     if aerodynamics.elevator_flag:  
                     
-        training.Clift_delta_e   =  np.concatenate((training_subsonic.Clift_delta_e[:,-1][:,None] , training_supersonic.Clift_delta_e[:,0][:,None] ), axis = 1)   
-        training.Cdrag_delta_e   =  np.concatenate((training_subsonic.Cdrag_delta_e[:,-1][:,None] , training_supersonic.Cdrag_delta_e[:,0][:,None] ), axis = 1)   
-        training.CX_delta_e      =  np.concatenate((training_subsonic.CX_delta_e[:,-1][:,None]    , training_supersonic.CX_delta_e[:,0][:,None]    ), axis = 1)   
-        training.CY_delta_e      =  np.concatenate((training_subsonic.CY_delta_e[:,-1][:,None]    , training_supersonic.CY_delta_e[:,0][:,None]    ), axis = 1)   
-        training.CZ_delta_e      =  np.concatenate((training_subsonic.CZ_delta_e[:,-1][:,None]    , training_supersonic.CZ_delta_e[:,0][:,None]    ), axis = 1)   
-        training.CL_delta_e      =  np.concatenate((training_subsonic.CL_delta_e[:,-1][:,None]    , training_supersonic.CL_delta_e[:,0][:,None]    ), axis = 1)   
-        training.CM_delta_e      =  np.concatenate((training_subsonic.CM_delta_e[:,-1][:,None]    , training_supersonic.CM_delta_e[:,0][:,None]    ), axis = 1)   
-        training.CN_delta_e      =  np.concatenate((training_subsonic.CN_delta_e[:,-1][:,None]    , training_supersonic.CN_delta_e[:,0][:,None]    ), axis = 1)   
-        training.dClift_ddelta_e =  np.array([training_subsonic.dClift_ddelta_e[-1] , training_subsonic.dClift_ddelta_e[0]])
-        training.dCdrag_ddelta_e =  np.array([training_subsonic.dCdrag_ddelta_e[-1] , training_subsonic.dCdrag_ddelta_e[0]])
-        training.dCX_ddelta_e    =  np.array([training_subsonic.dCX_ddelta_e[-1]    , training_subsonic.dCX_ddelta_e[0]   ])
-        training.dCY_ddelta_e    =  np.array([training_subsonic.dCY_ddelta_e[-1]    , training_subsonic.dCY_ddelta_e[0]   ])
-        training.dCZ_ddelta_e    =  np.array([training_subsonic.dCZ_ddelta_e[-1]    , training_subsonic.dCZ_ddelta_e[0]   ])
-        training.dCL_ddelta_e    =  np.array([training_subsonic.dCL_ddelta_e[-1]    , training_subsonic.dCL_ddelta_e[0]   ])
-        training.dCM_ddelta_e    =  np.array([training_subsonic.dCM_ddelta_e[-1]    , training_subsonic.dCM_ddelta_e[0]   ])
-        training.dCN_ddelta_e    =  np.array([training_subsonic.dCN_ddelta_e[-1]    , training_subsonic.dCN_ddelta_e[0]   ])
+        training.Clift_delta_e   =  rp.concatenate((training_subsonic.Clift_delta_e[:,-1][:,None] , training_supersonic.Clift_delta_e[:,0][:,None] ), axis = 1)   
+        training.Cdrag_delta_e   =  rp.concatenate((training_subsonic.Cdrag_delta_e[:,-1][:,None] , training_supersonic.Cdrag_delta_e[:,0][:,None] ), axis = 1)   
+        training.CX_delta_e      =  rp.concatenate((training_subsonic.CX_delta_e[:,-1][:,None]    , training_supersonic.CX_delta_e[:,0][:,None]    ), axis = 1)   
+        training.CY_delta_e      =  rp.concatenate((training_subsonic.CY_delta_e[:,-1][:,None]    , training_supersonic.CY_delta_e[:,0][:,None]    ), axis = 1)   
+        training.CZ_delta_e      =  rp.concatenate((training_subsonic.CZ_delta_e[:,-1][:,None]    , training_supersonic.CZ_delta_e[:,0][:,None]    ), axis = 1)   
+        training.CL_delta_e      =  rp.concatenate((training_subsonic.CL_delta_e[:,-1][:,None]    , training_supersonic.CL_delta_e[:,0][:,None]    ), axis = 1)   
+        training.CM_delta_e      =  rp.concatenate((training_subsonic.CM_delta_e[:,-1][:,None]    , training_supersonic.CM_delta_e[:,0][:,None]    ), axis = 1)   
+        training.CN_delta_e      =  rp.concatenate((training_subsonic.CN_delta_e[:,-1][:,None]    , training_supersonic.CN_delta_e[:,0][:,None]    ), axis = 1)   
+        training.dClift_ddelta_e =  rp.array([training_subsonic.dClift_ddelta_e[-1] , training_subsonic.dClift_ddelta_e[0]])
+        training.dCdrag_ddelta_e =  rp.array([training_subsonic.dCdrag_ddelta_e[-1] , training_subsonic.dCdrag_ddelta_e[0]])
+        training.dCX_ddelta_e    =  rp.array([training_subsonic.dCX_ddelta_e[-1]    , training_subsonic.dCX_ddelta_e[0]   ])
+        training.dCY_ddelta_e    =  rp.array([training_subsonic.dCY_ddelta_e[-1]    , training_subsonic.dCY_ddelta_e[0]   ])
+        training.dCZ_ddelta_e    =  rp.array([training_subsonic.dCZ_ddelta_e[-1]    , training_subsonic.dCZ_ddelta_e[0]   ])
+        training.dCL_ddelta_e    =  rp.array([training_subsonic.dCL_ddelta_e[-1]    , training_subsonic.dCL_ddelta_e[0]   ])
+        training.dCM_ddelta_e    =  rp.array([training_subsonic.dCM_ddelta_e[-1]    , training_subsonic.dCM_ddelta_e[0]   ])
+        training.dCN_ddelta_e    =  rp.array([training_subsonic.dCN_ddelta_e[-1]    , training_subsonic.dCN_ddelta_e[0]   ])
         
     # --------------------------------------------------------------------------------------------------------------
     # Rudder 
     # -------------------------------------------------------------------------------------------------------------- 
     if aerodynamics.rudder_flag: 
-        training.Clift_delta_r   =  np.concatenate((training_subsonic.Clift_delta_r[:,-1][:,None] , training_supersonic.Clift_delta_r[:,0][:,None] ), axis = 1)  
-        training.Cdrag_delta_r   =  np.concatenate((training_subsonic.Cdrag_delta_r[:,-1][:,None] , training_supersonic.Cdrag_delta_r[:,0][:,None] ), axis = 1)  
-        training.CX_delta_r      =  np.concatenate((training_subsonic.CX_delta_r[:,-1][:,None]    , training_supersonic.CX_delta_r[:,0][:,None]    ), axis = 1)  
-        training.CY_delta_r      =  np.concatenate((training_subsonic.CY_delta_r[:,-1][:,None]    , training_supersonic.CY_delta_r[:,0][:,None]    ), axis = 1)  
-        training.CZ_delta_r      =  np.concatenate((training_subsonic.CZ_delta_r[:,-1][:,None]    , training_supersonic.CZ_delta_r[:,0][:,None]    ), axis = 1)  
-        training.CL_delta_r      =  np.concatenate((training_subsonic.CL_delta_r[:,-1][:,None]    , training_supersonic.CL_delta_r[:,0][:,None]    ), axis = 1)  
-        training.CM_delta_r      =  np.concatenate((training_subsonic.CM_delta_r[:,-1][:,None]    , training_supersonic.CM_delta_r[:,0][:,None]    ), axis = 1)  
-        training.CN_delta_r      =  np.concatenate((training_subsonic.CN_delta_r[:,-1][:,None]    , training_supersonic.CN_delta_r[:,0][:,None]    ), axis = 1)  
-        training.dClift_ddelta_r =  np.array([training_subsonic.dClift_ddelta_r[-1] , training_subsonic.dClift_ddelta_r[0]])
-        training.dCdrag_ddelta_r =  np.array([training_subsonic.dCdrag_ddelta_r[-1] , training_subsonic.dCdrag_ddelta_r[0]])
-        training.dCX_ddelta_r    =  np.array([training_subsonic.dCX_ddelta_r[-1]    , training_subsonic.dCX_ddelta_r[0]   ])
-        training.dCY_ddelta_r    =  np.array([training_subsonic.dCY_ddelta_r[-1]    , training_subsonic.dCY_ddelta_r[0]   ])
-        training.dCZ_ddelta_r    =  np.array([training_subsonic.dCZ_ddelta_r[-1]    , training_subsonic.dCZ_ddelta_r[0]   ])
-        training.dCL_ddelta_r    =  np.array([training_subsonic.dCL_ddelta_r[-1]    , training_subsonic.dCL_ddelta_r[0]   ])
-        training.dCM_ddelta_r    =  np.array([training_subsonic.dCM_ddelta_r[-1]    , training_subsonic.dCM_ddelta_r[0]   ])
-        training.dCN_ddelta_r    =  np.array([training_subsonic.dCN_ddelta_r[-1]    , training_subsonic.dCN_ddelta_r[0]   ])
+        training.Clift_delta_r   =  rp.concatenate((training_subsonic.Clift_delta_r[:,-1][:,None] , training_supersonic.Clift_delta_r[:,0][:,None] ), axis = 1)  
+        training.Cdrag_delta_r   =  rp.concatenate((training_subsonic.Cdrag_delta_r[:,-1][:,None] , training_supersonic.Cdrag_delta_r[:,0][:,None] ), axis = 1)  
+        training.CX_delta_r      =  rp.concatenate((training_subsonic.CX_delta_r[:,-1][:,None]    , training_supersonic.CX_delta_r[:,0][:,None]    ), axis = 1)  
+        training.CY_delta_r      =  rp.concatenate((training_subsonic.CY_delta_r[:,-1][:,None]    , training_supersonic.CY_delta_r[:,0][:,None]    ), axis = 1)  
+        training.CZ_delta_r      =  rp.concatenate((training_subsonic.CZ_delta_r[:,-1][:,None]    , training_supersonic.CZ_delta_r[:,0][:,None]    ), axis = 1)  
+        training.CL_delta_r      =  rp.concatenate((training_subsonic.CL_delta_r[:,-1][:,None]    , training_supersonic.CL_delta_r[:,0][:,None]    ), axis = 1)  
+        training.CM_delta_r      =  rp.concatenate((training_subsonic.CM_delta_r[:,-1][:,None]    , training_supersonic.CM_delta_r[:,0][:,None]    ), axis = 1)  
+        training.CN_delta_r      =  rp.concatenate((training_subsonic.CN_delta_r[:,-1][:,None]    , training_supersonic.CN_delta_r[:,0][:,None]    ), axis = 1)  
+        training.dClift_ddelta_r =  rp.array([training_subsonic.dClift_ddelta_r[-1] , training_subsonic.dClift_ddelta_r[0]])
+        training.dCdrag_ddelta_r =  rp.array([training_subsonic.dCdrag_ddelta_r[-1] , training_subsonic.dCdrag_ddelta_r[0]])
+        training.dCX_ddelta_r    =  rp.array([training_subsonic.dCX_ddelta_r[-1]    , training_subsonic.dCX_ddelta_r[0]   ])
+        training.dCY_ddelta_r    =  rp.array([training_subsonic.dCY_ddelta_r[-1]    , training_subsonic.dCY_ddelta_r[0]   ])
+        training.dCZ_ddelta_r    =  rp.array([training_subsonic.dCZ_ddelta_r[-1]    , training_subsonic.dCZ_ddelta_r[0]   ])
+        training.dCL_ddelta_r    =  rp.array([training_subsonic.dCL_ddelta_r[-1]    , training_subsonic.dCL_ddelta_r[0]   ])
+        training.dCM_ddelta_r    =  rp.array([training_subsonic.dCM_ddelta_r[-1]    , training_subsonic.dCM_ddelta_r[0]   ])
+        training.dCN_ddelta_r    =  rp.array([training_subsonic.dCN_ddelta_r[-1]    , training_subsonic.dCN_ddelta_r[0]   ])
                         
     # --------------------------------------------------------------------------------------------------------------
     # Flap
     # -------------------------------------------------------------------------------------------------------------- 
     if aerodynamics.flap_flag: 
-        training.Clift_delta_f   = np.concatenate((training_subsonic.Clift_delta_f[:,-1][:,None] , training_supersonic.Clift_delta_f[:,0][:,None] ), axis = 1)   
-        training.Cdrag_delta_f   = np.concatenate((training_subsonic.Cdrag_delta_f[:,-1][:,None] , training_supersonic.Cdrag_delta_f[:,0][:,None] ), axis = 1)   
-        training.CX_delta_f      = np.concatenate((training_subsonic.CX_delta_f[:,-1][:,None]    , training_supersonic.CX_delta_f[:,0][:,None]    ), axis = 1)   
-        training.CY_delta_f      = np.concatenate((training_subsonic.CY_delta_f[:,-1][:,None]    , training_supersonic.CY_delta_f[:,0][:,None]    ), axis = 1)   
-        training.CZ_delta_f      = np.concatenate((training_subsonic.CZ_delta_f[:,-1][:,None]    , training_supersonic.CZ_delta_f[:,0][:,None]    ), axis = 1)   
-        training.CL_delta_f      = np.concatenate((training_subsonic.CL_delta_f[:,-1][:,None]    , training_supersonic.CL_delta_f[:,0][:,None]    ), axis = 1)   
-        training.CM_delta_f      = np.concatenate((training_subsonic.CM_delta_f[:,-1][:,None]    , training_supersonic.CM_delta_f[:,0][:,None]    ), axis = 1)   
-        training.CN_delta_f      = np.concatenate((training_subsonic.CN_delta_f[:,-1][:,None]    , training_supersonic.CN_delta_f[:,0][:,None]    ), axis = 1)   
-        training.dClift_ddelta_f = np.array([training_subsonic.dClift_ddelta_f[-1] , training_subsonic.dClift_ddelta_f[0]])
-        training.dCdrag_ddelta_f = np.array([training_subsonic.dCdrag_ddelta_f[-1] , training_subsonic.dCdrag_ddelta_f[0]])
-        training.dCX_ddelta_f    = np.array([training_subsonic.dCX_ddelta_f[-1]    , training_subsonic.dCX_ddelta_f[0]   ])
-        training.dCY_ddelta_f    = np.array([training_subsonic.dCY_ddelta_f[-1]    , training_subsonic.dCY_ddelta_f[0]   ])
-        training.dCZ_ddelta_f    = np.array([training_subsonic.dCZ_ddelta_f[-1]    , training_subsonic.dCZ_ddelta_f[0]   ])
-        training.dCL_ddelta_f    = np.array([training_subsonic.dCL_ddelta_f[-1]    , training_subsonic.dCL_ddelta_f[0]   ])
-        training.dCM_ddelta_f    = np.array([training_subsonic.dCM_ddelta_f[-1]    , training_subsonic.dCM_ddelta_f[0]   ])
-        training.dCN_ddelta_f    = np.array([training_subsonic.dCN_ddelta_f[-1]    , training_subsonic.dCN_ddelta_f[0]   ])
+        training.Clift_delta_f   = rp.concatenate((training_subsonic.Clift_delta_f[:,-1][:,None] , training_supersonic.Clift_delta_f[:,0][:,None] ), axis = 1)   
+        training.Cdrag_delta_f   = rp.concatenate((training_subsonic.Cdrag_delta_f[:,-1][:,None] , training_supersonic.Cdrag_delta_f[:,0][:,None] ), axis = 1)   
+        training.CX_delta_f      = rp.concatenate((training_subsonic.CX_delta_f[:,-1][:,None]    , training_supersonic.CX_delta_f[:,0][:,None]    ), axis = 1)   
+        training.CY_delta_f      = rp.concatenate((training_subsonic.CY_delta_f[:,-1][:,None]    , training_supersonic.CY_delta_f[:,0][:,None]    ), axis = 1)   
+        training.CZ_delta_f      = rp.concatenate((training_subsonic.CZ_delta_f[:,-1][:,None]    , training_supersonic.CZ_delta_f[:,0][:,None]    ), axis = 1)   
+        training.CL_delta_f      = rp.concatenate((training_subsonic.CL_delta_f[:,-1][:,None]    , training_supersonic.CL_delta_f[:,0][:,None]    ), axis = 1)   
+        training.CM_delta_f      = rp.concatenate((training_subsonic.CM_delta_f[:,-1][:,None]    , training_supersonic.CM_delta_f[:,0][:,None]    ), axis = 1)   
+        training.CN_delta_f      = rp.concatenate((training_subsonic.CN_delta_f[:,-1][:,None]    , training_supersonic.CN_delta_f[:,0][:,None]    ), axis = 1)   
+        training.dClift_ddelta_f = rp.array([training_subsonic.dClift_ddelta_f[-1] , training_subsonic.dClift_ddelta_f[0]])
+        training.dCdrag_ddelta_f = rp.array([training_subsonic.dCdrag_ddelta_f[-1] , training_subsonic.dCdrag_ddelta_f[0]])
+        training.dCX_ddelta_f    = rp.array([training_subsonic.dCX_ddelta_f[-1]    , training_subsonic.dCX_ddelta_f[0]   ])
+        training.dCY_ddelta_f    = rp.array([training_subsonic.dCY_ddelta_f[-1]    , training_subsonic.dCY_ddelta_f[0]   ])
+        training.dCZ_ddelta_f    = rp.array([training_subsonic.dCZ_ddelta_f[-1]    , training_subsonic.dCZ_ddelta_f[0]   ])
+        training.dCL_ddelta_f    = rp.array([training_subsonic.dCL_ddelta_f[-1]    , training_subsonic.dCL_ddelta_f[0]   ])
+        training.dCM_ddelta_f    = rp.array([training_subsonic.dCM_ddelta_f[-1]    , training_subsonic.dCM_ddelta_f[0]   ])
+        training.dCN_ddelta_f    = rp.array([training_subsonic.dCN_ddelta_f[-1]    , training_subsonic.dCN_ddelta_f[0]   ])
                     
     # --------------------------------------------------------------------------------------------------------------
     # Slat
     # -------------------------------------------------------------------------------------------------------------- 
     if aerodynamics.slat_flag: 
-        training.Clift_delta_s   =  np.concatenate((training_subsonic.Clift_delta_s[:,-1][:,None] , training_supersonic.Clift_delta_s[:,0][:,None] ), axis = 1)   
-        training.Cdrag_delta_s   =  np.concatenate((training_subsonic.Cdrag_delta_s[:,-1][:,None] , training_supersonic.Cdrag_delta_s[:,0][:,None] ), axis = 1)   
-        training.CX_delta_s      =  np.concatenate((training_subsonic.CX_delta_s[:,-1][:,None]    , training_supersonic.CX_delta_s[:,0][:,None]    ), axis = 1)   
-        training.CY_delta_s      =  np.concatenate((training_subsonic.CY_delta_s[:,-1][:,None]    , training_supersonic.CY_delta_s[:,0][:,None]    ), axis = 1)   
-        training.CZ_delta_s      =  np.concatenate((training_subsonic.CZ_delta_s[:,-1][:,None]    , training_supersonic.CZ_delta_s[:,0][:,None]    ), axis = 1)   
-        training.CL_delta_s      =  np.concatenate((training_subsonic.CL_delta_s[:,-1][:,None]    , training_supersonic.CL_delta_s[:,0][:,None]    ), axis = 1)   
-        training.CM_delta_s      =  np.concatenate((training_subsonic.CM_delta_s[:,-1][:,None]    , training_supersonic.CM_delta_s[:,0][:,None]    ), axis = 1)   
-        training.CN_delta_s      =  np.concatenate((training_subsonic.CN_delta_s[:,-1][:,None]    , training_supersonic.CN_delta_s[:,0][:,None]    ), axis = 1)   
-        training.dClift_ddelta_s =  np.array([training_subsonic.dClift_ddelta_s[-1] , training_subsonic.dClift_ddelta_s[0]])
-        training.dCdrag_ddelta_s =  np.array([training_subsonic.dCdrag_ddelta_s[-1] , training_subsonic.dCdrag_ddelta_s[0]])
-        training.dCX_ddelta_s    =  np.array([training_subsonic.dCX_ddelta_s[-1]    , training_subsonic.dCX_ddelta_s[0]   ])
-        training.dCY_ddelta_s    =  np.array([training_subsonic.dCY_ddelta_s[-1]    , training_subsonic.dCY_ddelta_s[0]   ])
-        training.dCZ_ddelta_s    =  np.array([training_subsonic.dCZ_ddelta_s[-1]    , training_subsonic.dCZ_ddelta_s[0]   ])
-        training.dCL_ddelta_s    =  np.array([training_subsonic.dCL_ddelta_s[-1]    , training_subsonic.dCL_ddelta_s[0]   ])
-        training.dCM_ddelta_s    =  np.array([training_subsonic.dCM_ddelta_s[-1]    , training_subsonic.dCM_ddelta_s[0]   ])
-        training.dCN_ddelta_s    =  np.array([training_subsonic.dCN_ddelta_s[-1]    , training_subsonic.dCN_ddelta_s[0]   ])
+        training.Clift_delta_s   =  rp.concatenate((training_subsonic.Clift_delta_s[:,-1][:,None] , training_supersonic.Clift_delta_s[:,0][:,None] ), axis = 1)   
+        training.Cdrag_delta_s   =  rp.concatenate((training_subsonic.Cdrag_delta_s[:,-1][:,None] , training_supersonic.Cdrag_delta_s[:,0][:,None] ), axis = 1)   
+        training.CX_delta_s      =  rp.concatenate((training_subsonic.CX_delta_s[:,-1][:,None]    , training_supersonic.CX_delta_s[:,0][:,None]    ), axis = 1)   
+        training.CY_delta_s      =  rp.concatenate((training_subsonic.CY_delta_s[:,-1][:,None]    , training_supersonic.CY_delta_s[:,0][:,None]    ), axis = 1)   
+        training.CZ_delta_s      =  rp.concatenate((training_subsonic.CZ_delta_s[:,-1][:,None]    , training_supersonic.CZ_delta_s[:,0][:,None]    ), axis = 1)   
+        training.CL_delta_s      =  rp.concatenate((training_subsonic.CL_delta_s[:,-1][:,None]    , training_supersonic.CL_delta_s[:,0][:,None]    ), axis = 1)   
+        training.CM_delta_s      =  rp.concatenate((training_subsonic.CM_delta_s[:,-1][:,None]    , training_supersonic.CM_delta_s[:,0][:,None]    ), axis = 1)   
+        training.CN_delta_s      =  rp.concatenate((training_subsonic.CN_delta_s[:,-1][:,None]    , training_supersonic.CN_delta_s[:,0][:,None]    ), axis = 1)   
+        training.dClift_ddelta_s =  rp.array([training_subsonic.dClift_ddelta_s[-1] , training_subsonic.dClift_ddelta_s[0]])
+        training.dCdrag_ddelta_s =  rp.array([training_subsonic.dCdrag_ddelta_s[-1] , training_subsonic.dCdrag_ddelta_s[0]])
+        training.dCX_ddelta_s    =  rp.array([training_subsonic.dCX_ddelta_s[-1]    , training_subsonic.dCX_ddelta_s[0]   ])
+        training.dCY_ddelta_s    =  rp.array([training_subsonic.dCY_ddelta_s[-1]    , training_subsonic.dCY_ddelta_s[0]   ])
+        training.dCZ_ddelta_s    =  rp.array([training_subsonic.dCZ_ddelta_s[-1]    , training_subsonic.dCZ_ddelta_s[0]   ])
+        training.dCL_ddelta_s    =  rp.array([training_subsonic.dCL_ddelta_s[-1]    , training_subsonic.dCL_ddelta_s[0]   ])
+        training.dCM_ddelta_s    =  rp.array([training_subsonic.dCM_ddelta_s[-1]    , training_subsonic.dCM_ddelta_s[0]   ])
+        training.dCN_ddelta_s    =  rp.array([training_subsonic.dCN_ddelta_s[-1]    , training_subsonic.dCN_ddelta_s[0]   ])
     training.NP            = 0  
     
     return training
@@ -1201,13 +1201,13 @@ def evaluate_VLM(conditions,settings,geometry):
     for wing in geometry.wings.values():
         ref = wing.areas.reference
         if wing.symmetric:
-            Clift_wings[wing.tag]      = np.atleast_2d(np.sum(dim_wing_lifts[:,i:(i+2)],axis=1)).T/ref
-            Cdrag_wings[wing.tag]      = np.atleast_2d(np.sum(dim_wing_drags[:,i:(i+2)],axis=1)).T/ref
-            AoA_wing_induced[wing.tag] = np.concatenate((alpha_i[i],alpha_i[i+1]),axis=1)
+            Clift_wings[wing.tag]      = rp.atleast_2d(rp.sum(dim_wing_lifts[:,i:(i+2)],axis=1)).T/ref
+            Cdrag_wings[wing.tag]      = rp.atleast_2d(rp.sum(dim_wing_drags[:,i:(i+2)],axis=1)).T/ref
+            AoA_wing_induced[wing.tag] = rp.concatenate((alpha_i[i],alpha_i[i+1]),axis=1)
             i+=1
         else:
-            Clift_wings[wing.tag]      = np.atleast_2d(dim_wing_lifts[:,i]).T/ref
-            Cdrag_wings[wing.tag]      = np.atleast_2d(dim_wing_drags[:,i]).T/ref
+            Clift_wings[wing.tag]      = rp.atleast_2d(dim_wing_lifts[:,i]).T/ref
+            Cdrag_wings[wing.tag]      = rp.atleast_2d(dim_wing_drags[:,i]).T/ref
             AoA_wing_induced[wing.tag] = alpha_i[i]
         i+=1
         

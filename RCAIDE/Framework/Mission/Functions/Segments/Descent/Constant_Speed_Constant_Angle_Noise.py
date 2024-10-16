@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import Units 
 
 # package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Expand State
@@ -37,11 +37,11 @@ def expand_state(segment):
     dt            = 0.5  # time step in seconds for noise calculation - Certification requirement    
     air_speed     = segment.air_speed  
     s0            = 4000. # Defining the initial position of the measureament will start at 4 km from the threshold
-    v_x           = air_speed * np.cos(segment.descent_angle) 
+    v_x           = air_speed * rp.cos(segment.descent_angle) 
     
     #number of time steps (space discretization)  
     total_time    = s0/v_x    
-    n_points      = np.ceil(total_time/dt +1)       
+    n_points      = rp.ceil(total_time/dt +1)       
     
     segment.state.numerics.number_of_control_points = n_points
     segment.state.expand_rows(int(n_points),override=True)   
@@ -88,7 +88,7 @@ def initialize_conditions(segment):
     altf = 50. * Units.feet #(50ft last point for the noise measureament)
     
     # Linear equation: y-y0=m(x-x0)
-    m_xx0 = 2000 * np.tan(descent_angle)
+    m_xx0 = 2000 * rp.tan(descent_angle)
     y0    =  m_xx0 + altf  #(Altitude at the microphone X position) 
     alt0  = y0 + m_xx0 #(Initial altitude of the aircraft)
 
@@ -98,13 +98,13 @@ def initialize_conditions(segment):
     # check for initial velocity vector
     if air_speed is None:
         if not segment.state.initials: raise AttributeError('initial airspeed not set')
-        air_speed  =  np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])     
+        air_speed  =  rp.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])     
         
     # process velocity vector
     v_mag = air_speed
-    v_x   = np.cos(beta) * v_mag * np.cos(-descent_angle)
-    v_y   = np.sin(beta) * v_mag * np.cos(-descent_angle)
-    v_z   = -v_mag * np.sin(-descent_angle)
+    v_x   = rp.cos(beta) * v_mag * rp.cos(-descent_angle)
+    v_y   = rp.sin(beta) * v_mag * rp.cos(-descent_angle)
+    v_z   = -v_mag * rp.sin(-descent_angle)
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0] = v_x

@@ -8,7 +8,7 @@
 from RCAIDE.Library.Methods.Propulsors.Turbofan_Propulsor            import compute_stream_thrust
 
 # Python package imports
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #   size_stream_thrust
@@ -54,7 +54,7 @@ def size_stream_thrust(turbofan,turbofan_conditions,freestream):
     #compute dimensional mass flow rates 
     Fsp                         = turbofan_conditions.non_dimensional_thrust 
     mdot_core                   = turbofan.design_thrust/(Fsp*a0*turbofan_conditions.throttle)   
-    mdhc                        = mdot_core/ (np.sqrt(Tref/Tt_ref)*(Pt_ref/Pref)) 
+    mdhc                        = mdot_core/ (rp.sqrt(Tref/Tt_ref)*(Pt_ref/Pref)) 
     
     # Store results on turbofan data structure 
     turbofan.mass_flow_rate_design               = mdot_core 

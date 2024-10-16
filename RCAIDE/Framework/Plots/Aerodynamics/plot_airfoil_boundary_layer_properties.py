@@ -12,7 +12,7 @@ from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 # python imports 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -52,8 +52,8 @@ def plot_airfoil_boundary_layer_properties(ap,
     n_cases  = len(ap.AoA[0,:]) 
 
     # create array of colors for difference reynolds numbers        
-    blues = cm.winter(np.linspace(0,0.9,n_cases))     
-    reds  = cm.autumn(np.linspace(0,0.9,n_cases))   
+    blues = cm.winter(rp.linspace(0,0.9,n_cases))     
+    reds  = cm.autumn(rp.linspace(0,0.9,n_cases))   
 
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
@@ -113,7 +113,7 @@ def plot_quantity(ap, q, qaxis, qname,ylim_low,ylim_high,file_type,show_legend,s
     axis  = fig.add_subplot(1,1,1)   
     
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,n_cases))      
+    line_colors   = cm.inferno(rp.linspace(0,0.9,n_cases))      
     
     for i in range(n_cpts):   
         for j in range(n_cases): 

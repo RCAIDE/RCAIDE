@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  interp2d
@@ -27,8 +27,8 @@ def interp2d(x,y,xp,yp,zp,fill_value= None):
     Returns:
         1D array `z` satisfying `z[i] = f(x[i], y[i])`.
     """ 
-    ix = np.clip(np.searchsorted(xp, x, side="right"), 1, len(xp) - 1)
-    iy = np.clip(np.searchsorted(yp, y, side="right"), 1, len(yp) - 1)
+    ix = rp.clip(rp.searchsorted(xp, x, side="right"), 1, len(xp) - 1)
+    iy = rp.clip(rp.searchsorted(yp, y, side="right"), 1, len(yp) - 1)
 
     # Using Wikipedia's notation (https://en.wikipedia.org/wiki/Bilinear_interpolation)
     z_11 = zp[ix - 1, iy - 1]
@@ -48,10 +48,10 @@ def interp2d(x,y,xp,yp,zp,fill_value= None):
     ) * z_xy2
 
     if fill_value is not None:
-        oob = np.logical_or(
-            x < xp[0], np.logical_or(x > xp[-1], np.logical_or(y < yp[0], y > yp[-1]))
+        oob = rp.logical_or(
+            x < xp[0], rp.logical_or(x > xp[-1], rp.logical_or(y < yp[0], y > yp[-1]))
         )
-        z = np.where(oob, fill_value, z)
+        z = rp.where(oob, fill_value, z)
 
     return z
 
@@ -81,9 +81,9 @@ def orientation_product(T,Bb):
     assert T.ndim == 3
     
     if Bb.ndim == 3:
-        C = np.einsum('aij,ajk->aik', T, Bb )
+        C = rp.einsum('aij,ajk->aik', T, Bb )
     elif Bb.ndim == 2:
-        C = np.einsum('aij,aj->ai', T, Bb )
+        C = rp.einsum('aij,aj->ai', T, Bb )
     else:
         raise Exception('bad B rank')
         
@@ -113,7 +113,7 @@ def orientation_transpose(T):
     
     assert T.ndim == 3
     
-    Tt = np.swapaxes(T,1,2)
+    Tt = rp.swapaxes(T,1,2)
         
     return Tt
 
@@ -172,8 +172,8 @@ def T0(a):
         T  (float):  rotation matrix  [-]  
     """       
     
-    cos = np.cos(a)
-    sin = np.sin(a) 
+    cos = rp.cos(a)
+    sin = rp.sin(a) 
     T = new_tensor(a)
     
     T[:,1,1] = cos
@@ -201,12 +201,12 @@ def T1(a):
     Returns:
         T  (float):  rotation matrix  [-]  
     """      
-    # T = np.array([[cos,0,-sin],
+    # T = rp.array([[cos,0,-sin],
     #               [0  ,1,   0],
     #               [sin,0, cos]])
     
-    cos = np.cos(a)
-    sin = np.sin(a)     
+    cos = rp.cos(a)
+    sin = rp.sin(a)     
     
     T = new_tensor(a)
     
@@ -236,12 +236,12 @@ def T2(a):
         T  (float):  rotation matrix  [-]  
     
     """      
-    # T = np.array([[cos ,sin,0],
+    # T = rp.array([[cos ,sin,0],
     #               [-sin,cos,0],
     #               [0   ,0  ,1]])
         
-    cos = np.cos(a)
-    sin = np.sin(a)     
+    cos = rp.cos(a)
+    sin = rp.sin(a)     
     
     T = new_tensor(a)
     
@@ -273,8 +273,8 @@ def new_tensor(a):
     """      
     assert a.ndim == 1
     n_a = len(a) 
-    T   = np.eye(3)
+    T   = rp.eye(3)
     
-    if a.dtype is np.dtype('complex'):  T = T + 0j 
-    T = np.resize(T,[n_a,3,3]) 
+    if a.dtype is rp.dtype('complex'):  T = T + 0j 
+    T = rp.resize(T,[n_a,3,3]) 
     return T    

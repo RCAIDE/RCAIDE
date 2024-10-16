@@ -10,7 +10,7 @@ from RCAIDE.Framework.Core import Units
 
 # python imports   
 import matplotlib.pyplot as plt 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -34,8 +34,8 @@ def plot_rotor_disc_performance(rotor,outputs,i=0,title=None,save_figure=False):
     # Now plotting:
     psi  = outputs.disc_azimuthal_distribution[i,:,:]
     r    = outputs.disc_radial_distribution[i,:,:]
-    psi  = np.append(psi,np.atleast_2d(np.ones_like(psi[:,0])).T*2*np.pi,axis=1)
-    r    = np.append(r,np.atleast_2d(r[:,0]).T,axis=1)
+    psi  = rp.append(psi,rp.atleast_2d(rp.ones_like(psi[:,0])).T*2*rp.pi,axis=1)
+    r    = rp.append(r,rp.atleast_2d(r[:,0]).T,axis=1)
     
     T    = outputs.disc_thrust_distribution[i]
     Q    = outputs.disc_torque_distribution[i]
@@ -44,12 +44,12 @@ def plot_rotor_disc_performance(rotor,outputs,i=0,title=None,save_figure=False):
     vt   = outputs.disc_tangential_induced_velocity[i]
         
     
-    T    = np.append(T,np.atleast_2d(T[:,0]).T,axis=1)
-    Q    = np.append(Q,np.atleast_2d(Q[:,0]).T,axis=1)
-    alf  = np.append(alf,np.atleast_2d(alf[:,0]).T,axis=1)
+    T    = rp.append(T,rp.atleast_2d(T[:,0]).T,axis=1)
+    Q    = rp.append(Q,rp.atleast_2d(Q[:,0]).T,axis=1)
+    alf  = rp.append(alf,rp.atleast_2d(alf[:,0]).T,axis=1)
     
-    va   = np.append(va, np.atleast_2d(va[:,0]).T, axis=1)
-    vt   = np.append(vt, np.atleast_2d(vt[:,0]).T, axis=1)
+    va   = rp.append(va, rp.atleast_2d(va[:,0]).T, axis=1)
+    vt   = rp.append(vt, rp.atleast_2d(vt[:,0]).T, axis=1)
     
     lev = 101
     cm  = 'jet'

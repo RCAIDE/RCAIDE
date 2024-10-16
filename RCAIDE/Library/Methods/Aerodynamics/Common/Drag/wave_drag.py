@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports   
-import numpy as np
+import RNUMPY as rp
 from RCAIDE.Library.Components.Wings import Main_Wing
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -42,20 +42,20 @@ def wave_drag(conditions,wing):
     # Lift coefficient 
     if isinstance(wing,Main_Wing):
         CL = conditions.aerodynamics.coefficients.lift.total 
-        l  = np.maximum(wing.total_length,wing.chords.root)        
+        l  = rp.maximum(wing.total_length,wing.chords.root)        
     else:
-        CL = np.zeros_like(conditions.aerodynamics.coefficients.lift.total)
-        l  = np.maximum(wing.total_length,wing.chords.root) 
+        CL = rp.zeros_like(conditions.aerodynamics.coefficients.lift.total)
+        l  = rp.maximum(wing.total_length,wing.chords.root) 
  
     s    = wing.spans.projected / 2
     AR   = wing.aspect_ratio
     p    = 2/AR*s/l
-    beta = np.sqrt(Mach[Mach >= 1.01]**2-1) 
+    beta = rp.sqrt(Mach[Mach >= 1.01]**2-1) 
     Kw   = (1+1/p)*func(beta*s/l)/(2*beta**2*(s/l)**2)
     
     # Ignore area comparison since this is full vehicle CL
-    CDwl           = CL[Mach >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
-    wave_drag_lift = np.zeros_like(Mach)
+    CDwl           = CL[Mach >= 1.01]**2 * (beta**2/rp.pi*p*(s/l)*Kw)
+    wave_drag_lift = rp.zeros_like(Mach)
     wave_drag_lift[Mach >= 1.01] = CDwl
 
 
@@ -77,7 +77,7 @@ def func(x):
     Returns:
         ret (float): variable    [unitless] 
     """   
-    ret = np.zeros_like(x) 
+    ret = rp.zeros_like(x) 
     ret[x > 0.178] = 0.4935 - 0.2382*x[x > 0.178] + 1.6306*x[x > 0.178]**2 - \
         0.86*x[x > 0.178]**3 + 0.2232*x[x > 0.178]**4 - 0.0365*x[x > 0.178]**5 - 0.5
     

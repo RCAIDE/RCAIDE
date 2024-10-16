@@ -7,7 +7,7 @@
 # Imports 
 # ----------------------------------------------------------------------------------------------------------------------    
 # python imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Pre Stall Coefficients
@@ -57,16 +57,16 @@ def pre_stall_coefficients(state,settings,wing):
     
     # Eqn 6a or 6b depending on the alpha
     if wing.vertical == True:
-        alpha      = np.zeros_like(alpha)
-    CL1            = np.zeros_like(alpha)
+        alpha      = rp.zeros_like(alpha)
+    CL1            = rp.zeros_like(alpha)
     CL1[alpha>A0]  = S1*(alpha[alpha>A0]-A0)-RCL1[alpha>A0]*((alpha[alpha>A0]-A0)/(ACL1[alpha>A0]-A0))**N1[alpha>A0] 
     CL1[alpha<A0]  = S1*(alpha[alpha<A0]-A0)+RCL1[alpha<A0]*((A0-alpha[alpha<A0])/(ACL1[alpha<A0]-A0))**N1[alpha<A0]
      
     # Eqn 7a or 7b depending on the alph
-    con      = np.logical_and((2*A0-ACD1)<=alpha,alpha<=ACD1)
-    CD1      = np.ones_like(alpha)
+    con      = rp.logical_and((2*A0-ACD1)<=alpha,alpha<=ACD1)
+    CD1      = rp.ones_like(alpha)
     CD1[con] = CDmin[con] + (CD1max[con]-CDmin[con])*((alpha[con] - ACDmin)/(ACD1[con]-ACDmin))**2     
-    CD1[np.logical_not(con)] = 0.
+    CD1[rp.logical_not(con)] = 0.
     
     # Pack outputs 
     state.conditions.aerodynamics.pre_stall_coefficients[wing.tag].lift =  CL1

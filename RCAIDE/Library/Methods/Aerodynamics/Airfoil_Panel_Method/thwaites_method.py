@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import Data 
 
 # package imports  
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # thwaites_method
@@ -49,14 +49,14 @@ def thwaites_method(npanel,ncases,nRe,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
         RESULTS.DELTA_T      (numpy.ndarray): boundary layer thickness                                             [m]  
     """ 
     # Initialize vectors
-    X_T          = np.zeros((npanel,ncases,nRe))
-    THETA_T      = np.zeros_like(X_T)
-    DELTA_STAR_T = np.zeros_like(X_T)
-    H_T          = np.zeros_like(X_T)
-    CF_T         = np.zeros_like(X_T)
-    RE_THETA_T   = np.zeros_like(X_T)
-    RE_X_T       = np.zeros_like(X_T)
-    DELTA_T      = np.zeros_like(X_T)  
+    X_T          = rp.zeros((npanel,ncases,nRe))
+    THETA_T      = rp.zeros_like(X_T)
+    DELTA_STAR_T = rp.zeros_like(X_T)
+    H_T          = rp.zeros_like(X_T)
+    CF_T         = rp.zeros_like(X_T)
+    RE_THETA_T   = rp.zeros_like(X_T)
+    RE_X_T       = rp.zeros_like(X_T)
+    DELTA_T      = rp.zeros_like(X_T)  
       
     for case in range(ncases):
         for cpt in range(nRe): 
@@ -70,8 +70,8 @@ def thwaites_method(npanel,ncases,nRe,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
             Ve_i           = VE_I.data[:,case,cpt][VE_I.mask[:,case,cpt] ==False]
             dVe_i          = DVE_I.data[:,case,cpt][DVE_I.mask[:,case,cpt] ==False]
             n              = len(x_i)
-            dx_i           = np.diff(x_i)
-            theta2_Ve6     = np.zeros(n)
+            dx_i           = rp.diff(x_i)
+            theta2_Ve6     = rp.zeros(n)
             theta2_Ve6[0]  = (theta_0**2)*Ve_i[0]**6
             
             # determine (Theta**2)*(Ve**6)
@@ -79,12 +79,12 @@ def thwaites_method(npanel,ncases,nRe,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
                 theta2_Ve6[i] = RK4(i-1, dx_i, x_i, theta2_Ve6, dy_by_dx)
             
             # Compute momentum thickness
-            theta       = np.sqrt(theta2_Ve6/Ve_i**6)
+            theta       = rp.sqrt(theta2_Ve6/Ve_i**6)
             
             # find theta values that do not converge and replace them with neighbor
-            idx1        = np.where(abs((theta[1:] - theta[:-1])/theta[:-1]) > tol)[0] 
+            idx1        = rp.where(abs((theta[1:] - theta[:-1])/theta[:-1]) > tol)[0] 
             if len(idx1)> 1:  
-                np.put(theta,idx1 + 1, theta[idx1])
+                rp.put(theta,idx1 + 1, theta[idx1])
                 
             # Thwaites separation criteria 
             lambda_val  = theta**2*dVe_i/nu 
@@ -93,9 +93,9 @@ def thwaites_method(npanel,ncases,nRe,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
             H           = getH(lambda_val)
             H[H<0]      = 1E-6   # H cannot be negative 
             # find H values that do not converge and replace them with neighbor
-            idx1        = np.where(abs((H[1:] - H[:-1])/H[:-1]) > tol)[0]
+            idx1        = rp.where(abs((H[1:] - H[:-1])/H[:-1]) > tol)[0]
             if len(idx1)> 1: 
-                np.put(H,idx1 + 1, H[idx1]) 
+                rp.put(H,idx1 + 1, H[idx1]) 
             
             # Compute Reynolds numbers based on momentum thickness  
             Re_theta    = Ve_i*theta/nu
@@ -110,24 +110,24 @@ def thwaites_method(npanel,ncases,nRe,L,RE_L,X_I,VE_I, DVE_I,tol,THETA_0):
             del_star    = H*theta   
             
             # Compute boundary layer thickness 
-            delta       = 5.2*x_i/np.sqrt(Re_x)
+            delta       = 5.2*x_i/rp.sqrt(Re_x)
             delta[0]    = 0   
             
             # Reynolds number at x=0 cannot be negative 
             Re_x[0]     = 1E-5
             
             # Find where matrices are not masked 
-            indices = np.where(X_I.mask[:,case,cpt] == False)
+            indices = rp.where(X_I.mask[:,case,cpt] == False)
             
             # Store results 
-            np.put(X_T[:,case,cpt],indices,x_i)
-            np.put(THETA_T[:,case,cpt],indices,theta)
-            np.put(DELTA_STAR_T[:,case,cpt],indices,del_star)
-            np.put(H_T[:,case,cpt],indices,H)
-            np.put(CF_T[:,case,cpt],indices ,cf)
-            np.put(RE_THETA_T[:,case,cpt],indices,Re_theta)
-            np.put(RE_X_T[:,case,cpt],indices,Re_x)
-            np.put(DELTA_T[:,case,cpt],indices,delta)
+            rp.put(X_T[:,case,cpt],indices,x_i)
+            rp.put(THETA_T[:,case,cpt],indices,theta)
+            rp.put(DELTA_STAR_T[:,case,cpt],indices,del_star)
+            rp.put(H_T[:,case,cpt],indices,H)
+            rp.put(CF_T[:,case,cpt],indices ,cf)
+            rp.put(RE_THETA_T[:,case,cpt],indices,Re_theta)
+            rp.put(RE_X_T[:,case,cpt],indices,Re_x)
+            rp.put(DELTA_T[:,case,cpt],indices,delta)
     
     RESULTS = Data(
         X_T          = X_T,      

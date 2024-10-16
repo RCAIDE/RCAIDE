@@ -10,7 +10,7 @@ import RCAIDE
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method  import generate_vortex_distribution
 from RCAIDE.Framework.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 
-import numpy as np  
+import RNUMPY as rp  
 import plotly.graph_objects as go 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -66,11 +66,11 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
     n_cp      = VD.n_cp 
     color_map = 'greys'
     for i in range(n_cp):  
-        X = np.array([[VD.XA1[i],VD.XA2[i]],[VD.XB1[i],VD.XB2[i]]])
-        Y = np.array([[VD.YA1[i],VD.YA2[i]],[VD.YB1[i],VD.YB2[i]]])
-        Z = np.array([[VD.ZA1[i],VD.ZA2[i]],[VD.ZB1[i],VD.ZB2[i]]])           
+        X = rp.array([[VD.XA1[i],VD.XA2[i]],[VD.XB1[i],VD.XB2[i]]])
+        Y = rp.array([[VD.YA1[i],VD.YA2[i]],[VD.YB1[i],VD.YB2[i]]])
+        Z = rp.array([[VD.ZA1[i],VD.ZA2[i]],[VD.ZB1[i],VD.ZB2[i]]])           
         
-        values      = np.ones_like(X) 
+        values      = rp.ones_like(X) 
         verts       = contour_surface_slice(X, Y, Z ,values,color_map)
         plot_data.append(verts)                 
   

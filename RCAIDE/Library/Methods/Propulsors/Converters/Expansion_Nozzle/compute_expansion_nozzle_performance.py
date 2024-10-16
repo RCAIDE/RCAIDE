@@ -7,7 +7,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
 # package imports
-import numpy as np 
+import RNUMPY as rp 
 from Legacy.trunk.S.Methods.Propulsion.fm_id import fm_id
 
 # exceptions/warnings
@@ -81,15 +81,15 @@ def compute_expansion_nozzle_performance(expansion_nozzle,nozzle_conditions, fre
     Pt_out[Pt_out<P0] = P0[Pt_out<P0]
     
     # Compute the output Mach number, static quantities and the output velocity
-    Mach          = np.sqrt((((Pt_out/P0)**((gamma-1)/gamma))-1)*2/(gamma-1)) 
+    Mach          = rp.sqrt((((Pt_out/P0)**((gamma-1)/gamma))-1)*2/(gamma-1)) 
     
     #initializing the Pout array
-    P_out         = np.ones_like(Mach)
+    P_out         = rp.ones_like(Mach)
     
     # Computing output pressure and Mach number for the case Mach <1.0
     i_low         = Mach < 1.0
     P_out[i_low]  = P0[i_low]
-    Mach[i_low]   = np.sqrt((((Pt_out[i_low]/P0[i_low])**((gamma[i_low]-1.)/gamma[i_low]))-1.)*2./(gamma[i_low]-1.))
+    Mach[i_low]   = rp.sqrt((((Pt_out[i_low]/P0[i_low])**((gamma[i_low]-1.)/gamma[i_low]))-1.)*2./(gamma[i_low]-1.))
     
     # Computing output pressure and Mach number for the case Mach >=1.0     
     i_high        = Mach >=1.0   
@@ -97,18 +97,18 @@ def compute_expansion_nozzle_performance(expansion_nozzle,nozzle_conditions, fre
     P_out[i_high] = Pt_out[i_high]/(1.+(gamma[i_high]-1.)/2.*Mach[i_high]*Mach[i_high])**(gamma[i_high]/(gamma[i_high]-1.))
     
     # A cap to make sure Mach doesn't go to zero:
-    if np.any(Mach<=0.0):
+    if rp.any(Mach<=0.0):
         warn('Pressures Result in Negative Mach Number, making positive',RuntimeWarning)
         Mach[Mach<=0.0] = 0.001
     
     # Compute the output temperature,enthalpy,velocity and density
     T_out         = Tt_out/(1+(gamma-1)/2*Mach*Mach)
     h_out         = T_out * Cp
-    u_out         = np.sqrt(2*(ht_out-h_out))
+    u_out         = rp.sqrt(2*(ht_out-h_out))
     rho_out       = P_out/(R*T_out)
     
     # Compute the freestream to nozzle area ratio  
-    area_ratio    = (fm_id(M0,gamma)/fm_id(Mach,gamma)*(1/(Pt_out/Pt0))*(np.sqrt(Tt_out/Tt0)))
+    area_ratio    = (fm_id(M0,gamma)/fm_id(Mach,gamma)*(1/(Pt_out/Pt0))*(rp.sqrt(Tt_out/Tt0)))
     
     #pack computed quantities into outputs
     nozzle_conditions.outputs.area_ratio              = area_ratio

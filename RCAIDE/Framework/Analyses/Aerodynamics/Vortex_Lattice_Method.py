@@ -16,7 +16,7 @@ from RCAIDE.Framework.Analyses.Common.Process_Geometry import Process_Geometry
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import *   
 
 # package imports 
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice_Method
@@ -52,7 +52,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         settings.viscous_lift_dependent_drag_factor                 = 0.38
         settings.drag_coefficient_increment                         = 0.0
         settings.spoiler_drag_increment                             = 0.0
-        settings.maximum_lift_coefficient                           = np.inf 
+        settings.maximum_lift_coefficient                           = rp.inf 
         settings.use_surrogate                                      = True
         settings.recalculate_total_wetted_area                      = False
         settings.propeller_wake_model                               = False 
@@ -82,29 +82,29 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.settings.vortex_distribution                           = Data()  
         self.settings.leading_edge_suction_multiplier               = 1.0  
         self.settings.use_VORLAX_matrix_calculation                 = False
-        self.settings.floating_point_precision                      = np.float32 
+        self.settings.floating_point_precision                      = rp.float32 
     
         # conditions for surrogate model training
         self.training                                               = Data()
-        self.training.angle_of_attack                               = np.array([-5., -2. , 1E-12 , 2.0, 5.0, 8.0, 10.0 , 12., 45., 75.]) * Units.deg 
-        self.training.Mach                                          = np.array([1E-12, 0.1  , 0.2 , 0.3,  0.5,  0.75 , 0.85 , 0.9, 1.3, 1.35 , 1.5 , 2.0, 2.25 , 2.5  , 3.0  , 3.5])               
+        self.training.angle_of_attack                               = rp.array([-5., -2. , 1E-12 , 2.0, 5.0, 8.0, 10.0 , 12., 45., 75.]) * Units.deg 
+        self.training.Mach                                          = rp.array([1E-12, 0.1  , 0.2 , 0.3,  0.5,  0.75 , 0.85 , 0.9, 1.3, 1.35 , 1.5 , 2.0, 2.25 , 2.5  , 3.0  , 3.5])               
                       
         self.training.subsonic                                      = None
         self.training.supersonic                                    = None
         self.training.transonic                                     = None
                                
-        self.training.sideslip_angle                                = np.array([30  , 10.0 , 1E-12]) * Units.deg
-        self.training.aileron_deflection                            = np.array([30  , 10.0 , 1E-12]) * Units.deg
-        self.training.elevator_deflection                           = np.array([30  , 10.0 , 1E-12]) * Units.deg   
-        self.training.rudder_deflection                             = np.array([30  , 10.0 , 1E-12]) * Units.deg
-        self.training.flap_deflection                               = np.array([30  , 10.0 , 1E-12]) * Units.deg 
-        self.training.slat_deflection                               = np.array([30  , 10.0 , 1E-12]) * Units.deg                      
-        self.training.u                                             = np.array([0.2 , 0.1  , 1E-12])  
-        self.training.v                                             = np.array([0.2 , 0.1  , 1E-12])  
-        self.training.w                                             = np.array([0.2 , 0.1  , 1E-12])    
-        self.training.pitch_rate                                    = np.array([0.3 ,0.15  , 0.0 ])  * Units.rad / Units.sec
-        self.training.roll_rate                                     = np.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
-        self.training.yaw_rate                                      = np.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
+        self.training.sideslip_angle                                = rp.array([30  , 10.0 , 1E-12]) * Units.deg
+        self.training.aileron_deflection                            = rp.array([30  , 10.0 , 1E-12]) * Units.deg
+        self.training.elevator_deflection                           = rp.array([30  , 10.0 , 1E-12]) * Units.deg   
+        self.training.rudder_deflection                             = rp.array([30  , 10.0 , 1E-12]) * Units.deg
+        self.training.flap_deflection                               = rp.array([30  , 10.0 , 1E-12]) * Units.deg 
+        self.training.slat_deflection                               = rp.array([30  , 10.0 , 1E-12]) * Units.deg                      
+        self.training.u                                             = rp.array([0.2 , 0.1  , 1E-12])  
+        self.training.v                                             = rp.array([0.2 , 0.1  , 1E-12])  
+        self.training.w                                             = rp.array([0.2 , 0.1  , 1E-12])    
+        self.training.pitch_rate                                    = rp.array([0.3 ,0.15  , 0.0 ])  * Units.rad / Units.sec
+        self.training.roll_rate                                     = rp.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
+        self.training.yaw_rate                                      = rp.array([0.3 ,0.15  , 0.0])  * Units.rad / Units.sec
                       
         # control surface flags                  
         self.aileron_flag                                           = False 

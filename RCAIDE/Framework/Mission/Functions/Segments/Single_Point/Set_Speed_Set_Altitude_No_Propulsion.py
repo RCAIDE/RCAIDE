@@ -7,7 +7,7 @@
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -51,7 +51,7 @@ def initialize_conditions(segment):
     # pack
     conditions.freestream.altitude[:,0]             = alt
     conditions.frames.inertial.position_vector[:,2] = -alt 
-    conditions.frames.inertial.velocity_vector[:,0] = np.cos(sideslip)*air_speed
-    conditions.frames.inertial.velocity_vector[:,1] = np.sin(sideslip)*air_speed
-    conditions.frames.inertial.acceleration_vector  = np.array([[0.0,0.0,acceleration_z]])   
+    conditions.frames.inertial.velocity_vector[:,0] = rp.cos(sideslip)*air_speed
+    conditions.frames.inertial.velocity_vector[:,1] = rp.sin(sideslip)*air_speed
+    conditions.frames.inertial.acceleration_vector  = rp.array([[0.0,0.0,acceleration_z]])   
      

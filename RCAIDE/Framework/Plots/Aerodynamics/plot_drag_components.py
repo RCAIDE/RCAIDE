@@ -10,7 +10,7 @@ from RCAIDE.Framework.Core import Units
 from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -45,7 +45,7 @@ def plot_drag_components(results,
     plt.rcParams.update(parameters)
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
+    line_colors   = cm.inferno(rp.linspace(0,0.9,len(results.segments)))     
      
     fig   = plt.figure(save_filename)
     fig.set_size_inches(12,height)
@@ -57,7 +57,7 @@ def plot_drag_components(results,
         cdi    = drag.induced.total[:,0]
         cdc    = drag.compressible.total[:,0]
         cdm    = drag.miscellaneous.total[:,0]
-        cde    = np.ones_like(cdm)*drag.drag_coefficient_increment
+        cde    = rp.ones_like(cdm)*drag.drag_coefficient_increment
         cd     = drag.total[:,0]
          
             

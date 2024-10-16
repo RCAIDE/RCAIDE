@@ -14,7 +14,7 @@ from Legacy.trunk.S.Methods.Aerodynamics.Common.Fidelity_Zero.Helper_Functions i
 from Legacy.trunk.S.Methods.Aerodynamics.Supersonic_Zero.Drag.Cubic_Spline_Blender import Cubic_Spline_Blender
  
 # package imports
-import numpy as np  
+import RNUMPY as rp  
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #   Parasite Drag Wing 
@@ -111,15 +111,15 @@ def parasite_drag_wing(state, settings, geometry):
         seg_cf_w_l, seg_k_comp_l, seg_k_reyn_l = compressible_mixed_flat_plate(re_w, Mc, Tc, xtl)
 
         # Compute airfoil correction
-        cos_sweep = np.cos(sweep)
+        cos_sweep = rp.cos(sweep)
 
         # Mask for subsonic analysis points
-        seg_k_w = np.ones_like(Mc)
+        seg_k_w = rp.ones_like(Mc)
         subsonic = Mc <= 1.
 
         seg_kw[subsonic] = (1.
                             + (2. * C * (t_c_w * cos_sweepv ** 2))
-                            / (np.sqrt(1. - (Mc[subsonic] * cos_sweep) ** 2))
+                            / (rp.sqrt(1. - (Mc[subsonic] * cos_sweep) ** 2))
                             + ((C * cos_sweep * t_c_w) ** 2 * (1. + 5. * cos_sweep ** 2))
                             / (2. * (1. - (Mc[ind] * cos_sweep) ** 2.)))
 
@@ -140,14 +140,14 @@ def parasite_drag_wing(state, settings, geometry):
         segments = [geometry]
 
     segment_results     = [_single_segmented(segment) for segment in segments]
-    total_parasite_drag = np.sum([r[0]*r[8] for r in segment_results])/Sref
-    k_w                 = np.sum([r[1]*r[8] for r in segment_results])/Sref
-    cf_w_u              = np.sum([r[2]*r[8] for r in segment_results])/Sref
-    cf_w_l              = np.sum([r[3]*r[8] for r in segment_results])/Sref
-    k_comp_u            = np.sum([r[4]*r[8] for r in segment_results])/Sref
-    k_comp_l            = np.sum([r[5]*r[8] for r in segment_results])/Sref
-    k_reyn_u            = np.sum([r[6]*r[8] for r in segment_results])/Sref
-    k_reyn_l            = np.sum([r[7]*r[8] for r in segment_results])/Sref
+    total_parasite_drag = rp.sum([r[0]*r[8] for r in segment_results])/Sref
+    k_w                 = rp.sum([r[1]*r[8] for r in segment_results])/Sref
+    cf_w_u              = rp.sum([r[2]*r[8] for r in segment_results])/Sref
+    cf_w_l              = rp.sum([r[3]*r[8] for r in segment_results])/Sref
+    k_comp_u            = rp.sum([r[4]*r[8] for r in segment_results])/Sref
+    k_comp_l            = rp.sum([r[5]*r[8] for r in segment_results])/Sref
+    k_reyn_u            = rp.sum([r[6]*r[8] for r in segment_results])/Sref
+    k_reyn_l            = rp.sum([r[7]*r[8] for r in segment_results])/Sref
 
     # Dump data to conditions
     wing_result = Data(

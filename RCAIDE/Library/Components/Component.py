@@ -12,7 +12,7 @@ from RCAIDE.Framework.Core import Data
 from .Mass_Properties import Mass_Properties
 
 # package imports 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Component
@@ -36,7 +36,7 @@ class Component(Data):
             """         
         self.tag             = 'Component' 
         self.mass_properties = Mass_Properties()
-        self.origin          = np.array([[0.0,0.0,0.0]]) 
+        self.origin          = rp.array([[0.0,0.0,0.0]]) 
         self.inputs          = Data()
         self.outputs         = Data()
     
@@ -91,12 +91,12 @@ class Container(ContainerBase):
             Returns:
                 total (float): total moment of vehicle [Nm] 
         """   
-        total = np.array([[0.0,0.0,0.0]])
+        total = rp.array([[0.0,0.0,0.0]])
         for key,Comp in self.items():
             if isinstance(Comp,Component.Container):
                 total += Comp.total_moment() # recursive!
             elif isinstance(Comp,Component):
-                total += Comp.mass_properties.mass*(np.sum(np.array(Comp.origin),axis=0)/len(Comp.origin)+Comp.mass_properties.center_of_gravity)
+                total += Comp.mass_properties.mass*(rp.sum(rp.array(Comp.origin),axis=0)/len(Comp.origin)+Comp.mass_properties.center_of_gravity)
 
         return total
     

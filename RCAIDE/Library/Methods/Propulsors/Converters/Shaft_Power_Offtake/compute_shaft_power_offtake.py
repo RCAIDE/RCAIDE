@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------    
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_shaft_power_offtake
@@ -36,7 +36,7 @@ def compute_shaft_power_offtake(offtake_shaft, state):
         None 
     """  
     if offtake_shaft.power_draw == 0.0:
-        offtake_shaft.outputs.work_done = np.array([0.0]) 
+        offtake_shaft.outputs.work_done = rp.array([0.0]) 
     else: 
         # unpack 
         total_temperature_reference = offtake_shaft.inputs.total_temperature_reference
@@ -46,7 +46,7 @@ def compute_shaft_power_offtake(offtake_shaft, state):
         Pref                        = offtake_shaft.reference_pressure
         
         # compute core mass flow rate 
-        mdot_core = mdhc * np.sqrt(Tref / total_temperature_reference) * (total_pressure_reference / Pref)
+        mdot_core = mdhc * rp.sqrt(Tref / total_temperature_reference) * (total_pressure_reference / Pref)
 
         offtake_shaft.outputs.power     = offtake_shaft.power_draw
         offtake_shaft.outputs.work_done = offtake_shaft.outputs.power / mdot_core  # normalize 

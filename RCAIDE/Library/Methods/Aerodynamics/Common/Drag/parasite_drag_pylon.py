@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core import Data 
 
 # python imports 
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Pylon Drag Fuselage
@@ -66,9 +66,9 @@ def parasite_drag_pylon(state,settings,geometry):
                                              + pylon * drag.parasite[nacelle.tag].reynolds_factor),
                     form_factor            =(0
                                                 + pylon * drag.parasite[nacelle.tag].form_factor),
-                    total                  =(np.zeros_like(drag.parasite[nacelle.tag].skin_friction)
+                    total                  =(rp.zeros_like(drag.parasite[nacelle.tag].skin_friction)
                                              + pylon * pylon_factor * drag.parasite[nacelle.tag].total
-                                             * (nacelle.diameter ** 2 / 4 * np.pi / geometry.reference_area))
+                                             * (nacelle.diameter ** 2 / 4 * rp.pi / geometry.reference_area))
                 )
                 drag.parasite[nacelle.tag + '_pylon'] = pylon_result
 

@@ -7,7 +7,7 @@
 #  Initialize Conditions
 # ----------------------------------------------------------------------------------------------------------------------  
 
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Initialize Conditions
@@ -53,9 +53,9 @@ def initialize_conditions(segment):
     # pack
     segment.state.conditions.freestream.altitude[:,0]             = alt
     segment.state.conditions.frames.inertial.position_vector[:,2] = -alt 
-    segment.state.conditions.frames.inertial.velocity_vector[:,0] = np.cos(beta)*air_speed
-    segment.state.conditions.frames.inertial.velocity_vector[:,1] = np.sin(beta)*air_speed
-    segment.state.conditions.frames.inertial.acceleration_vector  = np.array([[acceleration,0.0,acceleration_z]]) 
+    segment.state.conditions.frames.inertial.velocity_vector[:,0] = rp.cos(beta)*air_speed
+    segment.state.conditions.frames.inertial.velocity_vector[:,1] = rp.sin(beta)*air_speed
+    segment.state.conditions.frames.inertial.acceleration_vector  = rp.array([[acceleration,0.0,acceleration_z]]) 
     
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Unpack Unknowns 

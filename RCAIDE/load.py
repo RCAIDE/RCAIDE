@@ -10,7 +10,7 @@
 import json
 import pickle
 from RCAIDE.Framework.Core import Data
-import numpy as np
+import RNUMPY as rp
 from collections import OrderedDict
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -106,7 +106,7 @@ def build_data_r(v):
             k = str(k)
             ret[k] = build_data_r(v[k])
     elif tv == list:
-        ret = np.array(v)
+        ret = rp.array(v)
     elif (tv == str): 
         ret = str(v)
     elif (tv == bool):

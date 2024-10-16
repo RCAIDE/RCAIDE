@@ -10,7 +10,7 @@
 # python imports 
 import matplotlib.patches as patches 
 import matplotlib.pyplot as plt 
-import numpy as np
+import RNUMPY as rp
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ def plot_rotor_disc_inflow(rotor,velocities, grid_points):
     u = velocities.u_velocities
     v = velocities.v_velocities
     w = velocities.w_velocities
-    vtot = np.sqrt(u**2 + v**2 + w**2)
+    vtot = rp.sqrt(u**2 + v**2 + w**2)
     
     # plot the velocities at rotor
     y = grid_points.ymesh
@@ -43,11 +43,11 @@ def plot_rotor_disc_inflow(rotor,velocities, grid_points):
 
     R  = rotor.tip_radius
     Rh = rotor.hub_radius
-    psi_360 = np.linspace(0,2*np.pi,40)
+    psi_360 = rp.linspace(0,2*rp.pi,40)
     
-    vmin = round(np.min([u,v,w,vtot]),3)
-    vmax = round(np.max([u,v,w,vtot]),3)
-    levels = np.linspace(vmin,vmax, 21)
+    vmin = round(rp.min([u,v,w,vtot]),3)
+    vmax = round(rp.max([u,v,w,vtot]),3)
+    levels = rp.linspace(vmin,vmax, 21)
     
     # plot the grid point velocities
     fig  = plt.figure(figsize=(10,8))
@@ -69,16 +69,16 @@ def plot_rotor_disc_inflow(rotor,velocities, grid_points):
     plt.colorbar(c4, ax=ax4)  
     
     # plot the rotor radius
-    ax1.plot(R*np.cos(psi_360), R*np.sin(psi_360), 'k')
-    ax2.plot(R*np.cos(psi_360), R*np.sin(psi_360), 'k')
-    ax3.plot(R*np.cos(psi_360), R*np.sin(psi_360), 'k')
-    ax4.plot(R*np.cos(psi_360), R*np.sin(psi_360), 'k')
+    ax1.plot(R*rp.cos(psi_360), R*rp.sin(psi_360), 'k')
+    ax2.plot(R*rp.cos(psi_360), R*rp.sin(psi_360), 'k')
+    ax3.plot(R*rp.cos(psi_360), R*rp.sin(psi_360), 'k')
+    ax4.plot(R*rp.cos(psi_360), R*rp.sin(psi_360), 'k')
     
     # plot the rotor hub
-    ax1.plot(Rh*np.cos(psi_360), Rh*np.sin(psi_360), 'k')
-    ax2.plot(Rh*np.cos(psi_360), Rh*np.sin(psi_360), 'k')
-    ax3.plot(Rh*np.cos(psi_360), Rh*np.sin(psi_360), 'k')
-    ax4.plot(Rh*np.cos(psi_360), Rh*np.sin(psi_360), 'k')
+    ax1.plot(Rh*rp.cos(psi_360), Rh*rp.sin(psi_360), 'k')
+    ax2.plot(Rh*rp.cos(psi_360), Rh*rp.sin(psi_360), 'k')
+    ax3.plot(Rh*rp.cos(psi_360), Rh*rp.sin(psi_360), 'k')
+    ax4.plot(Rh*rp.cos(psi_360), Rh*rp.sin(psi_360), 'k')
     
     # plot rotation direction
     style = "Simple, tail_width=0.5, head_width=4, head_length=8"

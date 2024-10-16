@@ -11,7 +11,7 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units
 
 # package imports
-import numpy as np 
+import RNUMPY as rp 
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 # compute_power_from_throttle
@@ -81,8 +81,8 @@ def compute_power_from_throttle(engine,engine_conditions,freestream):
     torque = P/omega
     
     # Determine fuel flow rate
-    alt_0           = np.zeros_like(altitude)
-    fuel_flow_rate  = np.fmax(P*SFC,alt_0) 
+    alt_0           = rp.zeros_like(altitude)
+    fuel_flow_rate  = rp.fmax(P*SFC,alt_0) 
     
     # Store results 
     engine_conditions.power                           = P

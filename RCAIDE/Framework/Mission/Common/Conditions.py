@@ -10,7 +10,7 @@
 from RCAIDE.Framework.Core                    import Data 
 
 # python imports 
-import numpy as np 
+import RNUMPY as rp 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Conditions
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -36,7 +36,7 @@ class Conditions(Data):
             Returns:
                 vector (numpy.ndarray): expanded vector  
         """     
-        return np.ones([self._size,cols])
+        return rp.ones([self._size,cols])
     
     def ones_row_m1(self,cols):
         """ returns an N-1 row vector of ones with given number of columns
@@ -88,7 +88,7 @@ class Conditions(Data):
                 self[k] = v.resize(rows) 
             elif rank == 2: # Check if it's already expanded
                 if v.shape[0]<=1 or override:
-                    self[k] = np.resize(v,[rows,v.shape[1]])
+                    self[k] = rp.resize(v,[rows,v.shape[1]])
         
         return
               
@@ -117,7 +117,7 @@ class expanded_array(Data):
         
         self._adjustment = adjustment
         self._cols       = cols
-        self._array      = np.array([[1]])
+        self._array      = rp.array([[1]])
         
         
     def resize(self,rows: int):
@@ -141,7 +141,7 @@ class expanded_array(Data):
         self._size = rows
         value      = self._array
         
-        return np.resize(value,[rows-adjustment,value.shape[1]])
+        return rp.resize(value,[rows-adjustment,value.shape[1]])
     
     def __call__(self):
         """ This returns the value and shape of the array as is
@@ -178,7 +178,7 @@ class expanded_array(Data):
                  self (numpy.ndarray): array
         """          
         
-        self._array = np.resize(A,[1,1])
+        self._array = rp.resize(A,[1,1])
         
         return self
 
@@ -199,7 +199,7 @@ class expanded_array(Data):
                 self (numpy.ndarray): array  
         """                 
         
-        self._array = np.resize(A,[1,1])
+        self._array = rp.resize(A,[1,1])
         
         return self    
         

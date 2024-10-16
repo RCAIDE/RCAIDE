@@ -11,7 +11,7 @@ import RCAIDE
 from RCAIDE.Library.Components.Fuselages import Blended_Wing_Body_Fuselage as BWB_Fuselage
  
 # package imports
-import numpy as np  
+import RNUMPY as rp  
 
 # ----------------------------------------------------------------------------------------------------------------------  
 #  Total Parasite Drag 
@@ -76,12 +76,12 @@ def parasite_total(state, settings, geometry):
             nacelle_propulsors = [p for p in carrier.propulsors if 'nacelle' in p]
             for propulsor in nacelle_propulsors:
                 total_parasite_drag += renormalize(propulsor.nacelle.tag,
-                                                   propulsor.nacelle.diameter**2 / 4 * np.pi,
+                                                   propulsor.nacelle.diameter**2 / 4 * rp.pi,
                                                    conditions,
                                                    vehicle_reference_area)
                 if propulsor.nacelle.has_pylon:
                     total_parasite_drag += renormalize(propulsor.nacelle.tag+'_pylon',
-                                                       propulsor.nacelle.diameter**2 / 4 * np.pi,
+                                                       propulsor.nacelle.diameter**2 / 4 * rp.pi,
                                                        conditions,
                                                        vehicle_reference_area)
     

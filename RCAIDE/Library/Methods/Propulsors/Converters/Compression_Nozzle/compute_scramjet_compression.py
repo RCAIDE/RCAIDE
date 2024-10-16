@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------     
 
 # package imports
-import numpy as np 
+import RNUMPY as rp 
 from Legacy.trunk.S.Methods.Propulsion.shock_train import shock_train
 
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -78,10 +78,10 @@ def compute_scramjet_compression(compression_nozzle,conditions):
     Cp_c        = Cp
     
     # Compute propertis 
-    Mach        = np.sqrt((2./(gamma_c-1.))*((T0/T_out)*(1.+(gamma_c-1.)/2.*M0*M0)-1.)) 
+    Mach        = rp.sqrt((2./(gamma_c-1.))*((T0/T_out)*(1.+(gamma_c-1.)/2.*M0*M0)-1.)) 
     P_out       = P0*(T_ratio/(T_ratio*(1.-eta)+eta))**(Cp_c/R) 
     T_out       = T_ratio*T0 
-    U_out       = np.sqrt(U0*U0-2.*Cp_c*T0*(T_ratio-1.)) 
+    U_out       = rp.sqrt(U0*U0-2.*Cp_c*T0*(T_ratio-1.)) 
     h_out       = T_out * Cp_c
     Tt_out      = Tt_in 
     ht_out      = Tt_out * Cp_c

@@ -11,7 +11,7 @@ from RCAIDE.Framework.Mission.Functions.Common.Update.atmosphere import atmosphe
 from RCAIDE.Framework.Core import Units
 
 # Package imports  
-import numpy as np
+import RNUMPY as rp
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
@@ -61,7 +61,7 @@ def initialize_conditions(segment):
 
     if CAS is None:
         if not segment.state.initials: raise AttributeError('initial equivalent airspeed not set')
-        v_mag =  np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])    
+        v_mag =  rp.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1,:])    
     else:  
         # determine airspeed from calibrated airspeed
         atmosphere(segment) # get density for airspeed
@@ -76,13 +76,13 @@ def initialize_conditions(segment):
         mach      = 2.236*((((1+4.575e-7*kCAS**2)**3.5-1)/delta + 1)**0.2857 - 1)**0.5 
         qc        = pressure * ((1+0.2*mach**2)**3.5 - 1)
         EAS       = CAS * (pressure/pressure0)**0.5*(((qc/pressure+1)**0.286-1)/((qc/pressure0+1)**0.286-1))**0.5 
-        v_mag     = EAS/np.sqrt(density/MSL_data.density[0])    
+        v_mag     = EAS/rp.sqrt(density/MSL_data.density[0])    
     
     # process velocity vector 
     v_z   = -climb_rate  
-    v_xy  = np.sqrt( v_mag**2 - v_z**2 )
-    v_x   = np.cos(beta)*v_xy 
-    v_y   = np.sin(beta)*v_xy 
+    v_xy  = rp.sqrt( v_mag**2 - v_z**2 )
+    v_x   = rp.cos(beta)*v_xy 
+    v_y   = rp.sin(beta)*v_xy 
     
     # pack conditions    
     conditions.frames.inertial.velocity_vector[:,0] = v_x

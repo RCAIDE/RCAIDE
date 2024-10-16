@@ -11,7 +11,7 @@
 from RCAIDE.Framework.Core  import  angles_to_dcms, orientation_product, orientation_transpose
 
 # package imports 
-import numpy as np
+import RNUMPY as rp
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Update Orientations
@@ -62,13 +62,13 @@ def orientations(segment):
     # project inertial velocity into body x-z plane
     V_stability = V_body * 1.
     V_stability[:,1] = 0
-    V_stability_magnitude = np.sqrt( np.sum(V_stability**2,axis=1) )[:,None]
+    V_stability_magnitude = rp.sqrt( rp.sum(V_stability**2,axis=1) )[:,None]
 
     # calculate angle of attack
-    alpha = np.arctan2(V_stability[:,2],V_stability[:,0])[:,None]
+    alpha = rp.arctan2(V_stability[:,2],V_stability[:,0])[:,None]
 
     # calculate side slip
-    beta = np.arctan2(V_body[:,1],V_stability_magnitude[:,0])[:,None]
+    beta = rp.arctan2(V_body[:,1],V_stability_magnitude[:,0])[:,None]
 
     # pack aerodynamics angles
     conditions.aerodynamics.angles.alpha[:,0] = alpha[:,0]

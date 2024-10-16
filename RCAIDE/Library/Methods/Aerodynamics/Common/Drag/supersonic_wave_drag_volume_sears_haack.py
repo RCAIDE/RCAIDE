@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Supersonic Wave Drag Due to Volume - Sears Haack
@@ -37,13 +37,13 @@ def supersonic_wave_drag_volume_sears_haack(vehicle, mach, scaling_factor, sears
     Amax     = vehicle.maximum_cross_sectional_area
     S        = vehicle.reference_area
 
-    rmax     = np.sqrt(Amax/np.pi)
+    rmax     = rp.sqrt(Amax/rp.pi)
     d        = rmax*2
 
     if sears_haack_type == 3:
         # Compute drag from Sears-Haack type III body
         # Source formula uses front projected area as a reference
-        CD = 3/2*np.pi*np.pi*(d/L)*(d/L)*Amax/S
+        CD = 3/2*rp.pi*rp.pi*(d/L)*(d/L)*Amax/S
     else:
         raise NotImplementedError # can add other Sears-Haack types here
         

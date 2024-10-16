@@ -7,7 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 # Package imports 
-import numpy as np
+import RNUMPY as rp
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
@@ -27,7 +27,7 @@ def unpack_unknowns(segment):
 
     # build acceleration
     N          = segment.state.numerics.number_of_control_points
-    a          = np.zeros((N, 3))
+    a          = rp.zeros((N, 3))
     a[:, 0]    = accel_x[:,0]
     
     # apply unknowns
@@ -51,9 +51,9 @@ def integrate_velocity(segment):
     a          = conditions.frames.inertial.acceleration_vector
     
     # compute x-velocity
-    velocity_xy = v0 + np.dot(I, a)[:,0]   
-    v_x         = np.cos(beta)*velocity_xy
-    v_y         = np.sin(beta)*velocity_xy
+    velocity_xy = v0 + rp.dot(I, a)[:,0]   
+    v_x         = rp.cos(beta)*velocity_xy
+    v_y         = rp.sin(beta)*velocity_xy
 
     # pack velocity
     conditions.frames.inertial.velocity_vector[:,0] = v_x
@@ -99,7 +99,7 @@ def initialize_conditions(segment):
 
     if v0  is None: 
         if not segment.state.initials: raise AttributeError('airspeed not set')
-        v0 = np.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])
+        v0 = rp.linalg.norm(segment.state.initials.conditions.frames.inertial.velocity_vector[-1])
         
     # avoid having zero velocity since aero and propulsion models need non-zero Reynolds number
     if v0 == 0.0: v0 = 0.01
@@ -147,6 +147,6 @@ def solve_velocity(segment):
     vf         = segment.air_speed_end
     v          = conditions.frames.inertial.velocity_vector 
     
-    segment.state.residuals.final_velocity_error = (np.linalg.norm(v[-1,:])- vf)
+    segment.state.residuals.final_velocity_error = (rp.linalg.norm(v[-1,:])- vf)
 
     return

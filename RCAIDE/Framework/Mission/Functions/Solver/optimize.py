@@ -11,7 +11,7 @@
 # ----------------------------------------------------------------------
 
 import scipy.optimize as opt
-import numpy as np  
+import RNUMPY as rp  
 
 # ----------------------------------------------------------------------
 #  Converge Root
@@ -73,12 +73,12 @@ def get_objective(unknowns, segment):
                                 
     """      
     
-    if isinstance(unknowns,np.ndarray):
+    if isinstance(unknowns,rp.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns
         
-    if not np.all(segment.state.inputs_last == segment.state.unknowns):       
+    if not rp.all(segment.state.inputs_last == segment.state.unknowns):       
         segment.process.iterate(segment)
         
     objective = segment.state.objective_value
@@ -102,12 +102,12 @@ def get_econstraints(unknowns, segment):
                                 
     """       
     
-    if isinstance(unknowns,np.ndarray):
+    if isinstance(unknowns,rp.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns
         
-    if not np.all(segment.state.inputs_last == segment.state.unknowns):       
+    if not rp.all(segment.state.inputs_last == segment.state.unknowns):       
         segment.process.iterate(segment)
 
     constraints = segment.state.constraint_values
@@ -138,15 +138,15 @@ def make_bnds(unknowns, segment):
     ones_m2 = segment.state.ones_row_m2(1).resize(segment.state._size)
     
     throttle_bnds = ones*(0.,1.)
-    body_angle    = ones*(0., np.pi/2.)
-    gamma         = ones*(0., np.pi/2.)
+    body_angle    = ones*(0., rp.pi/2.)
+    gamma         = ones*(0., rp.pi/2.)
     
     if segment.air_speed_end is None:
         vels      = ones_m1*(0.,2000.)
     elif segment.air_speed_end is not None:    
         vels      = ones_m2*(0.,2000.)
     
-    bnds = np.vstack([throttle_bnds,gamma,body_angle,vels])
+    bnds = rp.vstack([throttle_bnds,gamma,body_angle,vels])
     
     bnds = list(map(tuple, bnds))
     
@@ -173,12 +173,12 @@ def get_ieconstraints(unknowns, segment):
                                 
     """      
 
-    if isinstance(unknowns,np.ndarray):
+    if isinstance(unknowns,rp.ndarray):
         segment.state.unknowns.unpack_array(unknowns)
     else:
         segment.state.unknowns = unknowns
         
-    if not np.all(segment.state.inputs_last == segment.state.unknowns):
+    if not rp.all(segment.state.inputs_last == segment.state.unknowns):
         segment.process.iterate(segment)
     
     # Time goes forward, not backward
@@ -196,6 +196,6 @@ def get_ieconstraints(unknowns, segment):
     # Acceleration constraint, go faster not slower
     acc_con   = segment.state.conditions.frames.inertial.acceleration_vector[:,0]
     
-    constraints = np.concatenate((time_con,CL_con,CL_con2,alt_con,acc_con))
+    constraints = rp.concatenate((time_con,CL_con,CL_con2,alt_con,acc_con))
     
     return constraints 

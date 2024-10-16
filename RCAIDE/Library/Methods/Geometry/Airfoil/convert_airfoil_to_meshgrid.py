@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
-import numpy as np
+import RNUMPY as rp
 
 # ----------------------------------------------------------------------------------------------------------------------
 # convert_airfoil_to_meshgrid
@@ -44,8 +44,8 @@ def convert_airfoil_to_meshgrid(airfoil_geometry, *args, **kwargs):
     # separation between any two points in the meshgrid is equal to the minimum
     # separation between any two x-coordinates.
 
-    x_length = (np.max(x_lower_surf)) 
-    Nx       = int(np.ceil(x_length / np.abs(np.min(np.diff(x_lower_surf)))))
+    x_length = (rp.max(x_lower_surf)) 
+    Nx       = int(rp.ceil(x_length / rp.abs(rp.min(rp.diff(x_lower_surf)))))
 
     # We determine the necessary number of y-coordinate points by taking the
     # maximum separation between the highest point of the upper surface and the
@@ -53,36 +53,36 @@ def convert_airfoil_to_meshgrid(airfoil_geometry, *args, **kwargs):
     # x-points in order to re-normalize to our future meshgrid coordinates,
     # then ciel-rounding to an int.
 
-    Ny = int(np.ceil(Nx * ( np.max(y_upper_surface) - np.min(y_lower_surf) )))
+    Ny = int(rp.ceil(Nx * ( rp.max(y_upper_surface) - rp.min(y_lower_surf) )))
 
     # Instantiate the meshgrid, using ij-indexing so that X[i,j] returns i
     # for all points, and Y[i,j] returns j for all coordinates. 
-    X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing="ij")
+    X, Y = rp.meshgrid(rp.arange(Nx), rp.arange(Ny), indexing="ij")
 
     # Create the indexing arrays for the meshgrid. These convert the airfoil
     # geometry coordinates into meshgrid array indices. The x_indices are found
     # just by multplying/stretching the x_lower_surface coordinates across the
     # number of x-coodinates in the meshgrid. 
-    x_indices = int(np.ceil(Nx / x_length * x_lower_surf))
+    x_indices = int(rp.ceil(Nx / x_length * x_lower_surf))
 
     # The Y_INDICES are similarly stretched, but first are offset by the
     # minimum of the lower surface to bring them to a relative zero 
-    y_lower_indices = int(np.floor( Nx / x_length * ( y_lower_surf - np.min(y_lower_surf)))) 
-    y_upper_indices = int(np.ceil( Nx /x_length * ( y_upper_surface - np.min(y_lower_surf))))
+    y_lower_indices = int(rp.floor( Nx / x_length * ( y_lower_surf - rp.min(y_lower_surf)))) 
+    y_upper_indices = int(rp.ceil( Nx /x_length * ( y_upper_surface - rp.min(y_lower_surf))))
 
     # We then repeat the elements of the Y_INDICES by the number of gridpoints
     # between each x-coordinate, essentially treating the y-surface as flat
     # between those points. We trim the final point by telling it to repeat 0
     # times 
-    num_reps = np.append(np.diff(x_indices), 0 )
+    num_reps = rp.append(rp.diff(x_indices), 0 )
 
     # Need to hand the case where the x_indices aren't sorted, and swap
     # some elements around to allow the masks to be created
 
-    if np.any(num_reps<0): 
-        reg_reps = np.where(num_reps<0)[0]
+    if rp.any(num_reps<0): 
+        reg_reps = rp.where(num_reps<0)[0]
 
-        if np.any(np.diff(reg_reps) == 1):
+        if rp.any(rp.diff(reg_reps) == 1):
             print("Airfoil geometry contains sequential negative x-steps. Meshing Failed.")
             return None
 
@@ -92,22 +92,22 @@ def convert_airfoil_to_meshgrid(airfoil_geometry, *args, **kwargs):
 
         (y_upper_indices[reg_reps], y_upper_indices[reg_reps + 1]) = (y_upper_indices[reg_reps + 1], y_upper_indices[reg_reps])
 
-        num_reps = np.append( np.diff(x_indices), 0 )
+        num_reps = rp.append( rp.diff(x_indices), 0 )
 
-        Nx = np.sum(num_reps) 
-        Ny = int(np.ceil( Nx * (np.max(y_upper_surface) - np.min(y_lower_surf))))
+        Nx = rp.sum(num_reps) 
+        Ny = int(rp.ceil( Nx * (rp.max(y_upper_surface) - rp.min(y_lower_surf))))
 
-        X, Y = np.meshgrid(np.arange(Nx), np.arange(Ny), indexing="ij")
+        X, Y = rp.meshgrid(rp.arange(Nx), rp.arange(Ny), indexing="ij")
 
-    y_lower_indices = np.repeat(y_lower_indices, num_reps)
-    y_upper_indices = np.repeat(y_upper_indices, num_reps)
+    y_lower_indices = rp.repeat(y_lower_indices, num_reps)
+    y_upper_indices = rp.repeat(y_upper_indices, num_reps)
 
     # We then create masks for the upper and lower surfaces by tiling the
     # indices over the meshgrid (taking a transpose to comport with our earlier
     # indexing style).
 
-    y_lower_grid = np.tile(y_lower_indices, (Ny,1)).T
-    y_upper_grid = np.tile(y_upper_indices, (Ny,1)).T
+    y_lower_grid = rp.tile(y_lower_indices, (Ny,1)).T
+    y_upper_grid = rp.tile(y_upper_indices, (Ny,1)).T
 
     # We then create our airfoil meshgrid mask by comparing our Y coordinates
     # from the meshgrid to our upper and lower grids, intermediately treating

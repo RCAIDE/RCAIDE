@@ -15,7 +15,7 @@ from RCAIDE.Library.Methods.Geometry.Planform import convert_sweep
 from RCAIDE.Library.Components import  Component
 
 # package imports 
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity
@@ -47,17 +47,17 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
                 wing.mass_properties.center_of_gravity[0][0] = .05*wing.chords.mean_aerodynamic +wing.aerodynamic_center[0]   
         elif isinstance(wing,Comp.Wings.Horizontal_Tail):
             chord_length_h_tail_35_percent_semi_span  = compute_chord_length_from_span_location(wing,.35*wing.spans.projected*.5)
-            h_tail_35_percent_semi_span_offset        = np.tan(wing.sweeps.quarter_chord)*.35*.5*wing.spans.projected   
+            h_tail_35_percent_semi_span_offset        = rp.tan(wing.sweeps.quarter_chord)*.35*.5*wing.spans.projected   
             wing.mass_properties.center_of_gravity[0][0] = .3*chord_length_h_tail_35_percent_semi_span + \
                                                                           h_tail_35_percent_semi_span_offset             
         elif isinstance(wing,Comp.Wings.Vertical_Tail):
             chord_length_v_tail_35_percent_semi_span  = compute_chord_length_from_span_location(wing,.35*wing.spans.projected)
-            v_tail_35_percent_semi_span_offset        = np.tan(wing.sweeps.quarter_chord)*.35*.5*wing.spans.projected
+            v_tail_35_percent_semi_span_offset        = rp.tan(wing.sweeps.quarter_chord)*.35*.5*wing.spans.projected
             wing.mass_properties.center_of_gravity[0][0] = .3*chord_length_v_tail_35_percent_semi_span + \
                                                                         v_tail_35_percent_semi_span_offset
         else:
             span_location_mac = compute_span_location_from_chord_length(wing, wing.chords.mean_aerodynamic)
-            mac_le_offset     = np.tan(wing.sweeps.leading_edge)*span_location_mac 
+            mac_le_offset     = rp.tan(wing.sweeps.leading_edge)*span_location_mac 
             wing.mass_properties.center_of_gravity[0][0] = .3*wing.chords.mean_aerodynamic + mac_le_offset
              
         
@@ -71,14 +71,14 @@ def compute_component_centers_of_gravity(vehicle, nose_load = 0.06):
     for net in vehicle.networks:  
         for key,Comp in net.items():
             if isinstance(Comp,Component):
-                network_moment += net[key].mass_properties.mass*(np.sum(np.array(net[key].origin),axis=0) +
+                network_moment += net[key].mass_properties.mass*(rp.sum(rp.array(net[key].origin),axis=0) +
                                                                      net[key].mass_properties.center_of_gravity)
                 network_mass   += net[key].mass_properties.mass*len(net[key].origin)
 
     if network_mass!= 0.:
         propulsion_cg = network_moment/network_mass
     else:
-        propulsion_cg = np.array([[0.,0.,0.]])
+        propulsion_cg = rp.array([[0.,0.,0.]])
     
     
     # All remaining compoments 

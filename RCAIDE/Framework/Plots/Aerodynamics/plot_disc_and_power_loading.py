@@ -12,7 +12,7 @@ from RCAIDE.Framework.Plots.Common import set_axes, plot_style
 # python imports 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np 
+import RNUMPY as rp 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
@@ -48,7 +48,7 @@ def plot_disc_and_power_loading(results,
     plt.rcParams.update(parameters)
      
     # get line colors for plots 
-    line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))    
+    line_colors   = cm.inferno(rp.linspace(0,0.9,len(results.segments)))    
     
     fig = plt.figure(save_filename)
     fig.set_size_inches(width,height) 
@@ -61,12 +61,12 @@ def plot_disc_and_power_loading(results,
             for bus in network.busses:    
                 for p_i, propulsor in enumerate(bus.propulsors): 
                     if p_i == 0:
-                        axis_0.plot(np.zeros(2),np.zeros(2), color = line_colors[0], marker = ps.markers[pi], linewidth = ps.line_width,label= propulsor.tag) 
+                        axis_0.plot(rp.zeros(2),rp.zeros(2), color = line_colors[0], marker = ps.markers[pi], linewidth = ps.line_width,label= propulsor.tag) 
                         axis_0.grid(False)
                         axis_0.axis('off')
                         plot_propulsor_data(results,bus,propulsor,axis_1,axis_2,line_colors,ps,pi)
                     elif (bus.identical_propulsors == False) and p_i !=0: 
-                        axis_0.plot(np.zeros(2),np.zeros(2), color = line_colors[0], marker = ps.markers[pi], linewidth = ps.line_width,label= propulsor.tag) 
+                        axis_0.plot(rp.zeros(2),rp.zeros(2), color = line_colors[0], marker = ps.markers[pi], linewidth = ps.line_width,label= propulsor.tag) 
                         axis_0.grid(False)
                         axis_0.axis('off')
                         plot_propulsor_data(results,bus,propulsor,axis_1,axis_2,line_colors,ps,pi)  
@@ -76,12 +76,12 @@ def plot_disc_and_power_loading(results,
             for fuel_line in network.fuel_lines:    
                 for p_i, propulsor in enumerate(fuel_line.propulsors):   
                     if p_i == 0:
-                        axis_0.plot(np.zeros(2),np.zeros(2), color = line_colors[0], marker = ps.markers[pi], linewidth = ps.line_width,label= propulsor.tag) 
+                        axis_0.plot(rp.zeros(2),rp.zeros(2), color = line_colors[0], marker = ps.markers[pi], linewidth = ps.line_width,label= propulsor.tag) 
                         axis_0.grid(False)
                         axis_0.axis('off')
                         plot_propulsor_data(results,fuel_line,propulsor,axis_1,axis_2,line_colors,ps,pi)
                     elif (fuel_line.identical_propulsors == False) and p_i !=0: 
-                        axis_0.plot(np.zeros(2),np.zeros(2), color = line_colors[0], marker = ps.markers[pi], linewidth = ps.line_width,label= propulsor.tag) 
+                        axis_0.plot(rp.zeros(2),rp.zeros(2), color = line_colors[0], marker = ps.markers[pi], linewidth = ps.line_width,label= propulsor.tag) 
                         axis_0.grid(False)
                         axis_0.axis('off')
                         plot_propulsor_data(results,fuel_line,propulsor,axis_1,axis_2,line_colors,ps,pi)  

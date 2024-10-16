@@ -8,7 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 # Package imports  
-import numpy as np
+import RNUMPY as rp
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Initialize Conditions
@@ -117,10 +117,10 @@ def update_differentials_altitude(segment):
     # get overall time step
     vz = -v[:,2,None] # Inertial velocity is z down
     dz = altf- alt0    
-    dt = dz / np.dot(I[-1,:],vz)[-1] # maintain column array
+    dt = dz / rp.dot(I[-1,:],vz)[-1] # maintain column array
     
     # Integrate vz to get altitudes
-    alt = alt0 + np.dot(I*dt,vz)
+    alt = alt0 + rp.dot(I*dt,vz)
 
     # rescale operators
     t = t * dt
@@ -149,9 +149,9 @@ def update_velocity_vector_from_wind_angle(segment):
     gamma = theta-alpha
 
     # process
-    v_x =   np.cos(beta) *v_mag * np.cos(gamma)
-    v_y =   np.sin(beta) *v_mag * np.cos(gamma)
-    v_z = -v_mag * np.sin(gamma) 
+    v_x =   rp.cos(beta) *v_mag * rp.cos(gamma)
+    v_y =   rp.sin(beta) *v_mag * rp.cos(gamma)
+    v_z = -v_mag * rp.sin(gamma) 
 
     # pack
     conditions.frames.inertial.velocity_vector[:,0] = v_x[:,0]
