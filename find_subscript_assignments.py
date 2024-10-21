@@ -21,7 +21,7 @@ class SubscriptAssignmentFinder(ast.NodeVisitor):
         self.generic_visit(node)
 
 def find_assignments(file_path):
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         tree = ast.parse(file.read())
 
     finder = SubscriptAssignmentFinder()
@@ -53,7 +53,10 @@ def process_directory(directory):
 
     print(f"\nTotal matches overall: {total_matches}")
 
+
 if __name__ == "__main__":
-    directory = Path('./RCAIDE/')
-    process_directory(directory)
-    
+    directories = [Path('./RCAIDE'),
+                   Path('./Legacy/trunk/S/')]
+
+    for d in directories:
+        process_directory(d)
