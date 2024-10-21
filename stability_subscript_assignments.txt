@@ -1,0 +1,39 @@
+File: RCAIDE\Library\Methods\Stability\Center_of_Gravity\compute_component_centers_of_gravity.py
+  Line 47: Subscript Assignment: wing.mass_properties.center_of_gravity[0][0] = 0.05 * wing.chords.mean_aerodynamic + wing.aerodynamic_center[0]
+  Line 51: Subscript Assignment: wing.mass_properties.center_of_gravity[0][0] = 0.3 * chord_length_h_tail_35_percent_semi_span + h_tail_35_percent_semi_span_offset
+  Line 56: Subscript Assignment: wing.mass_properties.center_of_gravity[0][0] = 0.3 * chord_length_v_tail_35_percent_semi_span + v_tail_35_percent_semi_span_offset
+  Line 61: Subscript Assignment: wing.mass_properties.center_of_gravity[0][0] = 0.3 * wing.chords.mean_aerodynamic + mac_le_offset
+  Line 66: Subscript Assignment: fuselage.mass_properties.center_of_gravity[0][0] = 0.45 * fuselage.lengths.total
+  Line 74: Augmented Assignment: network_moment += net[key].mass_properties.mass * (rp.sum(rp.array(net[key].origin), axis=0) + net[key].mass_properties.center_of_gravity)
+  Line 76: Augmented Assignment: network_mass += net[key].mass_properties.mass * len(net[key].origin)
+  Line 106: Subscript Assignment: passengers.origin[0][0] = 0.51 * length_scale
+  Line 107: Subscript Assignment: passengers.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 116: Subscript Assignment: main_gear.origin[0][0] = main_gear_location
+  Line 124: Subscript Assignment: nose_gear.origin[0][0] = 0.25 * nose_length
+  Line 125: Subscript Assignment: nose_gear.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 132: Subscript Assignment: baggage.origin[0][0] = 0.51 * length_scale
+  Line 133: Subscript Assignment: baggage.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 140: Subscript Assignment: cargo.origin[0][0] = 0.51 * length_scale
+  Line 141: Subscript Assignment: cargo.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 149: Subscript Assignment: avionics.origin[0][0] = 0.4 * nose_length
+  Line 150: Subscript Assignment: avionics.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 157: Subscript Assignment: furnishings.origin[0][0] = 0.51 * length_scale
+  Line 158: Subscript Assignment: furnishings.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 165: Subscript Assignment: apu.origin[0][0] = 0.9 * length_scale
+  Line 166: Subscript Assignment: apu.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 173: Subscript Assignment: air_conditioner.origin[0][0] = nose_length
+  Line 174: Subscript Assignment: air_conditioner.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 181: Subscript Assignment: optionals.origin[0][0] = 0.51 * length_scale
+  Line 182: Subscript Assignment: optionals.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 189: Subscript Assignment: control_systems.origin[0][0] = vehicle.wings.main_wing.origin[0][0]
+  Line 190: Subscript Assignment: control_systems.mass_properties.center_of_gravity[0][0] = vehicle.wings.main_wing.mass_properties.center_of_gravity[0][0] + 0.1 * vehicle.wings.main_wing.chords.mean_aerodynamic
+  Line 198: Subscript Assignment: electrical_systems.origin[0][0] = 0.75 * (0.5 * length_scale) + propulsion_cg[0][0] * 0.25
+  Line 199: Subscript Assignment: electrical_systems.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 206: Subscript Assignment: hydraulics.origin[0][0] = 0.75 * (vehicle.wings.main_wing.origin[0][0] + wing.mass_properties.center_of_gravity[0][0]) + 0.25 * length_scale * 0.95
+  Line 207: Subscript Assignment: hydraulics.mass_properties.center_of_gravity[0][0] = 0.0
+  Total matches in this file: 32
+
+Matches per subdirectory:
+  RCAIDE\Library\Methods\Stability\Center_of_Gravity: 32
+
+Total matches overall: 32

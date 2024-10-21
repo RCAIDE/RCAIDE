@@ -1,0 +1,20 @@
+File: RCAIDE\Library\Components\Component.py
+  Line 72: Augmented Assignment: total += Comp.sum_mass()
+  Line 74: Augmented Assignment: total += Comp.mass_properties.mass
+  Line 97: Augmented Assignment: total += Comp.total_moment()
+  Line 99: Augmented Assignment: total += Comp.mass_properties.mass * (rp.sum(rp.array(Comp.origin), axis=0) / len(Comp.origin) + Comp.mass_properties.center_of_gravity)
+  Total matches in this file: 4
+
+File: RCAIDE\Library\Components\Wings\Vertical_Tail.py
+  Line 60: Augmented Assignment: wing.origin[0][1] *= -1
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Components\Wings\Vertical_Tail_All_Moving.py
+  Line 61: Augmented Assignment: wing.hinge_vector[1] *= -1
+  Total matches in this file: 1
+
+Matches per subdirectory:
+  RCAIDE\Library\Components: 4
+  RCAIDE\Library\Components\Wings: 2
+
+Total matches overall: 6

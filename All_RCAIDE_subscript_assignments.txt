@@ -1,0 +1,1253 @@
+File: RCAIDE\load.py
+  Line 79: Subscript Assignment: RCAIDE_data[k] = build_data_r(v)
+  Line 107: Subscript Assignment: ret[k] = build_data_r(v[k])
+  Total matches in this file: 2
+
+File: RCAIDE\save.py
+  Line 79: Subscript Assignment: base_dict[k] = build_dict_r(v)
+  Line 126: Subscript Assignment: ret[k] = build_dict_r(v[k])
+  Total matches in this file: 2
+
+File: RCAIDE\Vehicle.py
+  Line 158: Augmented Assignment: total += item.sum_mass()
+  Line 178: Augmented Assignment: total += item.total_moment()
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Analyses\Analysis.py
+  Line 133: Subscript Assignment: results[tag] = result
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Analyses\Process.py
+  Line 46: Subscript Assignment: results[tag] = result
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Analyses\Vehicle_Analyses.py
+  Line 60: Subscript Assignment: self[key] = analysis
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Analyses\Common\Process_Geometry.py
+  Line 69: Subscript Assignment: results[key] = result
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Core\Utilities.py
+  Line 179: Subscript Assignment: T[:, 1, 1] = cos
+  Line 180: Subscript Assignment: T[:, 1, 2] = sin
+  Line 181: Subscript Assignment: T[:, 2, 1] = -sin
+  Line 182: Subscript Assignment: T[:, 2, 2] = cos
+  Line 213: Subscript Assignment: T[:, 0, 0] = cos
+  Line 214: Subscript Assignment: T[:, 0, 2] = -sin
+  Line 215: Subscript Assignment: T[:, 2, 0] = sin
+  Line 216: Subscript Assignment: T[:, 2, 2] = cos
+  Line 248: Subscript Assignment: T[:, 0, 0] = cos
+  Line 249: Subscript Assignment: T[:, 0, 1] = sin
+  Line 250: Subscript Assignment: T[:, 1, 0] = -sin
+  Line 251: Subscript Assignment: T[:, 1, 1] = cos
+  Total matches in this file: 12
+
+File: RCAIDE\Framework\Mission\Sequential_Segments.py
+  Line 108: Subscript Assignment: results[key] = result
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Common\Conditions.py
+  Line 88: Subscript Assignment: self[k] = v.resize(rows)
+  Line 91: Subscript Assignment: self[k] = rp.resize(v, [rows, v.shape[1]])
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Mission\Common\State.py
+  Line 75: Subscript Assignment: self[k] = rp.resize(v, [rows, v.shape[1]])
+  Line 115: Subscript Assignment: state_out[key] = state_out[key].do_recursive(append_array, sub_state[key])
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Mission\Functions\Common\Initialize\differentials_altitude.py
+  Line 45: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = t_initial + t[:, 0]
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Common\Initialize\energy.py
+  Line 45: Subscript Assignment: battery_conditions.pack.energy[:, 0] = battery_initials.pack.energy[-1, 0]
+  Line 46: Subscript Assignment: battery_conditions.pack.temperature[:, 0] = battery_initials.pack.temperature[-1, 0]
+  Line 47: Subscript Assignment: battery_conditions.cell.temperature[:, 0] = battery_initials.cell.temperature[-1, 0]
+  Line 49: Subscript Assignment: battery_conditions.cell.charge_throughput[:, 0] = battery_initials.cell.charge_throughput[-1, 0]
+  Line 52: Subscript Assignment: battery_conditions.cell.state_of_charge[:, 0] = battery_initials.cell.state_of_charge[-1, 0]
+  Line 55: Subscript Assignment: battery_conditions.pack.temperature[:, 0] = segment.battery_cell_temperature
+  Line 56: Subscript Assignment: battery_conditions.cell.temperature[:, 0] = segment.battery_cell_temperature
+  Line 64: Subscript Assignment: fuel_tank_conditions.mass[:, 0] = fuel_tank_initials.mass[-1, 0]
+  Line 66: Subscript Assignment: fuel_tank_conditions.mass[:, 0] = segment.analyses.energy.vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
+  Total matches in this file: 9
+
+File: RCAIDE\Framework\Mission\Functions\Common\Initialize\inertial_position.py
+  Line 28: Subscript Assignment: r_initial[-1, None, -1] = -segment.altitude
+  Line 30: Subscript Assignment: r_initial[-1, None, -1] = -segment.altitude_start
+  Line 34: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, :] = r_current + (r_initial[-1, None, :] - r_current[0, None, :])
+  Line 35: Subscript Assignment: segment.state.conditions.frames.inertial.aircraft_range[:, :] = R_current + (R_initial[-1, None, :] - R_current[0, None, :])
+  Total matches in this file: 4
+
+File: RCAIDE\Framework\Mission\Functions\Common\Initialize\planet_position.py
+  Line 32: Subscript Assignment: segment.state.conditions.frames.planet.longitude[:, 0] = longitude_initial
+  Line 33: Subscript Assignment: segment.state.conditions.frames.planet.latitude[:, 0] = latitude_initial
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Mission\Functions\Common\Initialize\time.py
+  Line 25: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, :] = t_current + (t_initial[-1, 0] - t_current[0, 0])
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Common\Initialize\weights.py
+  Line 33: Subscript Assignment: segment.state.conditions.weights.total_mass[:, :] = m_current + (m_initial - m_current[0, 0])
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Common\Residuals\flight_dynamics.py
+  Line 57: Subscript Assignment: segment.state.residuals.force_x[:, 0] = FT[1:, 0] / m[1:, 0] - a[1:, 0]
+  Line 61: Subscript Assignment: segment.state.residuals.force_x[:, 0] = FT[:, 0] / m[:, 0] - a[:, 0]
+  Line 63: Subscript Assignment: segment.state.residuals.force_y[:, 0] = FT[:, 1] / m[:, 0] - a[:, 1]
+  Line 65: Subscript Assignment: segment.state.residuals.force_z[:, 0] = FT[:, 2] / m[:, 0] - a[:, 2]
+  Line 69: Subscript Assignment: segment.state.residuals.moment_x[:, 0] = MT[:, 0] / I[0, 0] - ang_acc[:, 0]
+  Line 73: Subscript Assignment: segment.state.residuals.moment_y[:, 0] = MT[:, 1] / I[1, 1] - ang_acc[:, 1]
+  Line 77: Subscript Assignment: segment.state.residuals.moment_z[:, 0] = MT[:, 2] / I[2, 2] - ang_acc[:, 2]
+  Total matches in this file: 7
+
+File: RCAIDE\Framework\Mission\Functions\Common\Unpack_Unknowns\attitude.py
+  Line 25: Subscript Assignment: segment.state.conditions.frames.body.inertial_rotations[:, 1] = segment.state.unknowns.body_angle[:, 0]
+  Line 29: Subscript Assignment: segment.state.conditions.frames.body.inertial_rotations[:, 0] = segment.state.unknowns.bank_angle[:, 0]
+  Line 33: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = segment.state.unknowns.velocity[:, 0]
+  Line 37: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -segment.state.unknowns.altitude[:, 0]
+  Total matches in this file: 4
+
+File: RCAIDE\Framework\Mission\Functions\Common\Unpack_Unknowns\energy.py
+  Line 29: Subscript Assignment: state.conditions.energy[fuel_line.tag][propulsor.tag].throttle[:, 0] = segment.throttle
+  Line 68: Subscript Assignment: state.conditions.energy[bus.tag][propulsor.tag].throttle[:, 0] = segment.throttle
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Mission\Functions\Common\Unpack_Unknowns\ground.py
+  Line 41: Subscript Assignment: conditions.frames.inertial.velocity_vector[1:, 0] = ground_velocity
+  Line 42: Subscript Assignment: conditions.frames.inertial.velocity_vector[0, 0] = v0
+  Line 43: Subscript Assignment: conditions.frames.inertial.time[:, 0] = times[:, 0]
+  Total matches in this file: 3
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\acceleration.py
+  Line 35: Subscript Assignment: segment.state.conditions.frames.inertial.acceleration_vector[:, :] = acc[:, :]
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\aerodynamics.py
+  Line 45: Boolean Indexing: CL[q <= 0.0] = 0.0
+  Line 46: Boolean Indexing: CD[q <= 0.0] = 0.0
+  Line 49: Boolean Indexing: CL[CL > CLmax] = CLmax
+  Line 50: Boolean Indexing: CL[CL < -CLmax] = -CLmax
+  Line 55: Subscript Assignment: F[:, 2] = (-CL * q * Sref)[:, 0]
+  Line 56: Subscript Assignment: F[:, 0] = (-CD * q * Sref)[:, 0]
+  Line 61: Subscript Assignment: conditions.frames.wind.force_vector[:, :] = F[:, :]
+  Total matches in this file: 7
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\altitude.py
+  Line 23: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = altitude
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\angular_acceleration.py
+  Line 38: Subscript Assignment: segment.state.conditions.frames.inertial.angular_acceleration_vector[:, :] = ang_acc[:, :]
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\forces.py
+  Line 59: Subscript Assignment: conditions.frames.inertial.total_force_vector[:, :] = F_tot[:, :]
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\gravity.py
+  Line 31: Subscript Assignment: segment.state.conditions.freestream.gravity[:, 0] = g[:, 0]
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\ground_forces.py
+  Line 52: Subscript Assignment: conditions.frames.inertial.ground_force_vector[:, 2] = N[:, 0]
+  Line 53: Subscript Assignment: conditions.frames.inertial.ground_force_vector[:, 0] = Ff[:, 0]
+  Line 66: Subscript Assignment: conditions.frames.inertial.total_force_vector[:, :] = F[:, :]
+  Total matches in this file: 3
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\inertial_horizontal_position.py
+  Line 44: Subscript Assignment: x[:, 1] = x[:, 0]
+  Line 47: Subscript Assignment: conditions.frames.inertial.position_vector[:, 0:1 + 1] = x0 + x[:, :] * trajectory
+  Line 48: Subscript Assignment: conditions.frames.inertial.aircraft_range[:, 0] = R0 + x[:, 0]
+  Total matches in this file: 3
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\orientations.py
+  Line 64: Subscript Assignment: V_stability[:, 1] = 0
+  Line 74: Subscript Assignment: conditions.aerodynamics.angles.alpha[:, 0] = alpha[:, 0]
+  Line 75: Subscript Assignment: conditions.aerodynamics.angles.beta[:, 0] = beta[:, 0]
+  Line 76: Subscript Assignment: conditions.aerodynamics.angles.phi[:, 0] = phi[:, 0]
+  Line 87: Subscript Assignment: wind_body_rotations[:, 0] = 0
+  Line 88: Subscript Assignment: wind_body_rotations[:, 1] = alpha[:, 0]
+  Line 89: Subscript Assignment: wind_body_rotations[:, 2] = beta[:, 0]
+  Total matches in this file: 7
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\stability.py
+  Line 42: Boolean Indexing: CL[q <= 0.0] = 0.0
+  Line 43: Boolean Indexing: CD[q <= 0.0] = 0.0
+  Line 44: Boolean Indexing: CL[CL > CLmax] = CLmax
+  Line 45: Boolean Indexing: CL[CL < -CLmax] = -CLmax
+  Line 49: Subscript Assignment: F[:, 2] = (-CL * q * Sref)[:, 0]
+  Line 50: Subscript Assignment: F[:, 1] = (CY * q * Sref * span)[:, 0]
+  Line 51: Subscript Assignment: F[:, 0] = (-CD * q * Sref)[:, 0]
+  Line 56: Subscript Assignment: F[:, 1] = F[:, 1] + W[:, 0] * rp.sin(phi)
+  Line 61: Subscript Assignment: conditions.frames.wind.force_vector[:, :] = F[:, :]
+  Line 70: Boolean Indexing: CM[q <= 0.0] = 0.0
+  Line 74: Subscript Assignment: M[:, 0] = CL[:, 0] * q[:, 0] * Sref * span
+  Line 75: Subscript Assignment: M[:, 1] = CM[:, 0] * q[:, 0] * Sref * MAC
+  Line 76: Subscript Assignment: M[:, 2] = CN[:, 0] * q[:, 0] * Sref * span
+  Line 79: Subscript Assignment: conditions.frames.wind.moment_vector[:, :] = M[:, :]
+  Total matches in this file: 14
+
+File: RCAIDE\Framework\Mission\Functions\Common\Update\weights.py
+  Line 46: Subscript Assignment: fuel_line_results[fuel_tank.tag].mass[:, 0] = fuel_line_results[fuel_tank.tag].mass[0, 0] + rp.dot(I, -fuel_line_results[fuel_tank.tag].mass_flow_rate[:, 0])
+  Line 55: Subscript Assignment: conditions.weights.total_mass[1:, 0] = m[1:, 0]
+  Line 56: Subscript Assignment: conditions.frames.inertial.gravity_force_vector[:, 2] = W[:, 0]
+  Total matches in this file: 3
+
+File: RCAIDE\Framework\Mission\Functions\Initialize\set_residuals_and_unknowns.py
+  Line 49: Augmented Assignment: num_DOF += 1
+  Line 52: Augmented Assignment: num_DOF += 1
+  Line 55: Augmented Assignment: num_DOF += 1
+  Line 58: Augmented Assignment: num_DOF += 1
+  Line 61: Augmented Assignment: num_DOF += 1
+  Line 64: Augmented Assignment: num_DOF += 1
+  Line 68: Augmented Assignment: num_DOF += 1
+  Line 75: Augmented Assignment: num_ctrls += 1
+  Line 83: Augmented Assignment: num_ctrls += 1
+  Line 92: Augmented Assignment: num_ctrls += 1
+  Line 101: Augmented Assignment: num_ctrls += 1
+  Line 107: Subscript Assignment: segment.state.unknowns['throttle_' + str(i)] = ones_row(1) * ctrls.throttle.initial_guess[i][0]
+  Line 109: Subscript Assignment: segment.state.unknowns['throttle_' + str(i)] = ones_row(1) * 0.5
+  Line 110: Augmented Assignment: num_ctrls += 1
+  Line 118: Augmented Assignment: num_ctrls += 1
+  Line 127: Augmented Assignment: num_ctrls += 1
+  Line 135: Augmented Assignment: num_ctrls += 1
+  Line 141: Subscript Assignment: segment.state.unknowns['elevator_' + str(i)] = ones_row(1) * ctrls.elevator_deflection.initial_guess[i][0]
+  Line 143: Subscript Assignment: segment.state.unknowns['elevator_' + str(i)] = ones_row(1) * 0.0 * Units.degrees
+  Line 144: Augmented Assignment: num_ctrls += 1
+  Line 150: Subscript Assignment: segment.state.unknowns['rudder_' + str(i)] = ones_row(1) * ctrls.rudder_deflection.initial_guess[i][0]
+  Line 152: Subscript Assignment: segment.state.unknowns['rudder_' + str(i)] = ones_row(1) * 0.0 * Units.degrees
+  Line 153: Augmented Assignment: num_ctrls += 1
+  Line 159: Subscript Assignment: segment.state.unknowns['flap_' + str(i)] = ones_row(1) * ctrls.flap_deflection.initial_guess[i][0]
+  Line 161: Subscript Assignment: segment.state.unknowns['flap_' + str(i)] = ones_row(1) * 0.0 * Units.degrees
+  Line 162: Augmented Assignment: num_ctrls += 1
+  Line 167: Subscript Assignment: segment.state.unknowns['slat_' + str(i)] = ones_row(1) * ctrls.slat_deflection.initial_guess[i][0]
+  Line 169: Subscript Assignment: segment.state.unknowns['slat_' + str(i)] = ones_row(1) * 0.0 * Units.degrees
+  Line 170: Augmented Assignment: num_ctrls += 1
+  Line 176: Subscript Assignment: segment.state.unknowns['aileron_' + str(i)] = ones_row(1) * ctrls.aileron_deflection.initial_guess[i][0]
+  Line 178: Subscript Assignment: segment.state.unknowns['aileron_' + str(i)] = ones_row(1) * 0.0 * Units.degrees
+  Line 179: Augmented Assignment: num_ctrls += 1
+  Line 185: Subscript Assignment: segment.state.unknowns['thrust_vector_' + str(i)] = ones_row(1) * ctrls.thrust_vector_angle.initial_guess[i][0]
+  Line 187: Subscript Assignment: segment.state.unknowns['thrust_vector_' + str(i)] = ones_row(1) * 0.0 * Units.degrees
+  Line 188: Augmented Assignment: num_ctrls += 1
+  Total matches in this file: 35
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_CAS_Constant_Rate.py
+  Line 88: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 89: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 90: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 91: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 92: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Dynamic_Pressure_Constant_Angle.py
+  Line 79: Subscript Assignment: conditions.freestream.altitude[:, 0] = -alts
+  Line 80: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 81: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 82: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 108: Subscript Assignment: segment.state.residuals.altitude[:, 0] = (alt_in - alt_out) / alt_out[-1]
+  Line 171: Subscript Assignment: conditions.frames.inertial.time[1:, 0] = t_initial + x[1:, 0]
+  Line 172: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 173: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 8
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Dynamic_Pressure_Constant_Rate.py
+  Line 78: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 79: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 80: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 81: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 82: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_EAS_Constant_Rate.py
+  Line 79: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 80: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 81: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 82: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 83: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Mach_Constant_Angle.py
+  Line 71: Subscript Assignment: conditions.freestream.altitude[:, 0] = -conditions.frames.inertial.position_vector[:, 2]
+  Line 72: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 73: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 74: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z[:, 0]
+  Line 84: Subscript Assignment: segment.state.residuals.altitude[:, 0] = (alt_in - alt_out) / alt_out[-1]
+  Line 147: Subscript Assignment: conditions.frames.inertial.time[1:, 0] = t_initial + x[1:, 0]
+  Line 148: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 149: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 8
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Mach_Constant_Rate.py
+  Line 77: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 78: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 79: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 80: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 81: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 82: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Mach_Linear_Altitude.py
+  Line 80: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 81: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 82: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 83: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 84: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = -v_z[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Speed_Constant_Angle.py
+  Line 70: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 71: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 72: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 73: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 74: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Speed_Constant_Rate.py
+  Line 72: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 73: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 74: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 75: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 76: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Speed_Linear_Altitude.py
+  Line 68: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 69: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 70: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 71: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 72: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = -v_z
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Constant_Throttle_Constant_Speed.py
+  Line 36: Subscript Assignment: segment.state.conditions.frames.body.inertial_rotations[:, 1] = theta[:, 0]
+  Line 77: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = air_speed
+  Line 129: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = segment.state.conditions.frames.inertial.time[0, 0] + t[:, 0]
+  Line 130: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 131: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 157: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 158: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 159: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z[:, 0]
+  Total matches in this file: 8
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Linear_Mach_Constant_Rate.py
+  Line 80: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 81: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 82: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 83: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 84: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Climb\Linear_Speed_Constant_Rate.py
+  Line 72: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 73: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 74: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 75: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 76: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Acceleration_Constant_Altitude.py
+  Line 68: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 69: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 70: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 71: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 72: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Dynamic_Pressure_Constant_Altitude.py
+  Line 74: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 75: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 76: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 77: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 78: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Dynamic_Pressure_Constant_Altitude_Loiter.py
+  Line 74: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 75: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 76: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 77: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 78: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Mach_Constant_Altitude.py
+  Line 52: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 74: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 75: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 76: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 77: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 78: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Mach_Constant_Altitude_Loiter.py
+  Line 52: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 75: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 76: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 77: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 78: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 79: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Pitch_Rate_Constant_Altitude.py
+  Line 61: Subscript Assignment: segment.state.conditions.frames.body.inertial_rotations[:, 1] = body_angle[:, 0]
+  Line 62: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 63: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 64: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 4
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Speed_Constant_Altitude.py
+  Line 64: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 65: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 66: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 67: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 68: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Speed_Constant_Altitude_Loiter.py
+  Line 64: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 65: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 66: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 67: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 68: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Cruise\Constant_Throttle_Constant_Altitude.py
+  Line 31: Subscript Assignment: a[:, 0] = accel_x[:, 0]
+  Line 36: Subscript Assignment: conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Line 59: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 60: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 117: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 118: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Descent\Constant_CAS_Constant_Rate.py
+  Line 89: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 90: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 91: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 92: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 93: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Descent\Constant_EAS_Constant_Rate.py
+  Line 62: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 83: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 84: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 85: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 86: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Descent\Constant_Speed_Constant_Angle.py
+  Line 69: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 70: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 71: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 72: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 73: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Descent\Constant_Speed_Constant_Angle_Noise.py
+  Line 110: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 111: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 112: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 113: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 114: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Descent\Constant_Speed_Constant_Rate.py
+  Line 70: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x
+  Line 71: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y
+  Line 72: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 73: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 74: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Descent\Linear_Mach_Constant_Rate.py
+  Line 81: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 82: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 83: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 84: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 85: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 86: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Descent\Linear_Speed_Constant_Rate.py
+  Line 73: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 74: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 75: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 76: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 77: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Ground\Battery_Charge_Discharge.py
+  Line 35: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Ground\Landing.py
+  Line 67: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = initialized_velocity[:, 0]
+  Line 68: Subscript Assignment: conditions.ground.friction_coefficient[:, 0] = segment.friction_coefficient
+  Line 69: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt
+  Line 70: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt
+  Total matches in this file: 4
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Ground\Takeoff.py
+  Line 69: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = initialized_velocity[:, 0]
+  Line 70: Subscript Assignment: conditions.ground.friction_coefficient[:, 0] = segment.friction_coefficient
+  Line 71: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt
+  Line 72: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 73: Subscript Assignment: conditions.weights.total_mass[:, 0] = segment.analyses.weights.vehicle.mass_properties.takeoff
+  Line 74: Subscript Assignment: conditions.frames.inertial.position_vector[:, :] = conditions.frames.inertial.position_vector[0, :][None, :][:, :]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Single_Point\Set_Speed_Set_Altitude.py
+  Line 54: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 55: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 56: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = rp.cos(sideslip) * air_speed
+  Line 57: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = rp.sin(sideslip) * air_speed
+  Total matches in this file: 4
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Single_Point\Set_Speed_Set_Altitude_No_Propulsion.py
+  Line 52: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt
+  Line 53: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 54: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = rp.cos(sideslip) * air_speed
+  Line 55: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 1] = rp.sin(sideslip) * air_speed
+  Total matches in this file: 4
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Single_Point\Set_Speed_Set_Throttle.py
+  Line 54: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 55: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 56: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = rp.cos(beta) * air_speed
+  Line 57: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = rp.sin(beta) * air_speed
+  Line 86: Subscript Assignment: segment.state.conditions.frames.inertial.acceleration_vector[0, 0] = acceleration
+  Line 87: Subscript Assignment: segment.state.conditions.frames.body.inertial_rotations[:, 1] = body_angle[:, 0]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Transition\Constant_Acceleration_Constant_Angle_Linear_Climb.py
+  Line 104: Subscript Assignment: segment.state.conditions.frames.body.inertial_rotations[:, 1] = body_angle[:, 0]
+  Line 105: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 106: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 107: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = vx[:, 0]
+  Line 108: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = vy[:, 0]
+  Line 109: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 2] = -vz[:, 0]
+  Line 110: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 7
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Transition\Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py
+  Line 83: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 84: Subscript Assignment: segment.state.conditions.frames.body.inertial_rotations[:, 1] = body_angle[:, 0]
+  Line 85: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 86: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = v_x[:, 0]
+  Line 87: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 1] = v_y[:, 0]
+  Line 88: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Vertical_Flight\Climb.py
+  Line 59: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = t_initial + t[:, 0]
+  Line 62: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = 0.0
+  Line 63: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 64: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 65: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 66: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = t_initial + t[:, 0]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Vertical_Flight\Descent.py
+  Line 59: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = t_initial + t[:, 0]
+  Line 62: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 0] = 0.0
+  Line 63: Subscript Assignment: conditions.frames.inertial.velocity_vector[:, 2] = v_z
+  Line 64: Subscript Assignment: conditions.frames.inertial.position_vector[:, 2] = -alt[:, 0]
+  Line 65: Subscript Assignment: conditions.freestream.altitude[:, 0] = alt[:, 0]
+  Line 66: Subscript Assignment: conditions.frames.inertial.time[:, 0] = t_initial + t[:, 0]
+  Total matches in this file: 6
+
+File: RCAIDE\Framework\Mission\Functions\Segments\Vertical_Flight\Hover.py
+  Line 50: Subscript Assignment: segment.state.conditions.freestream.altitude[:, 0] = alt
+  Line 51: Subscript Assignment: segment.state.conditions.frames.inertial.position_vector[:, 2] = -alt
+  Line 52: Subscript Assignment: segment.state.conditions.frames.inertial.velocity_vector[:, 0] = 0.0
+  Line 53: Subscript Assignment: segment.state.conditions.frames.inertial.time[:, 0] = time[:, 0]
+  Total matches in this file: 4
+
+File: RCAIDE\Framework\Networks\Turbofan_Engine_Network.py
+  Line 102: Augmented Assignment: total_thrust += fuel_line_T
+  Line 103: Augmented Assignment: total_moment += fuel_line_M
+  Line 104: Augmented Assignment: total_power += fuel_line_P
+  Line 112: Augmented Assignment: mdot += conditions.energy[fuel_line.tag][turbofan.tag].fuel_flow_rate
+  Line 119: Augmented Assignment: total_mdot += fuel_tank_mdot
+  Line 209: Subscript Assignment: segment.state.conditions.energy[fuel_line.tag] = Conditions()
+  Line 211: Subscript Assignment: segment.state.conditions.noise[fuel_line.tag] = Conditions()
+  Line 215: Subscript Assignment: fuel_line_results[fuel_tank.tag] = Conditions()
+  Line 235: Subscript Assignment: fuel_line_results[turbofan.tag] = Conditions()
+  Line 240: Subscript Assignment: fuel_line_results[turbofan.tag][combustor.tag] = Conditions()
+  Line 244: Subscript Assignment: fuel_line_results[turbofan.tag][ram.tag] = Conditions()
+  Line 247: Subscript Assignment: fuel_line_results[turbofan.tag][fan.tag] = Conditions()
+  Line 250: Subscript Assignment: fuel_line_results[turbofan.tag][high_pressure_compressor.tag] = Conditions()
+  Line 253: Subscript Assignment: fuel_line_results[turbofan.tag][low_pressure_compressor.tag] = Conditions()
+  Line 256: Subscript Assignment: fuel_line_results[turbofan.tag][high_pressure_turbine.tag] = Conditions()
+  Line 259: Subscript Assignment: fuel_line_results[turbofan.tag][low_pressure_turbine.tag] = Conditions()
+  Line 262: Subscript Assignment: fuel_line_results[turbofan.tag][core_nozzle.tag] = Conditions()
+  Line 265: Subscript Assignment: fuel_line_results[turbofan.tag][fan_nozzle.tag] = Conditions()
+  Line 268: Subscript Assignment: fuel_line_results[turbofan.tag][inlet_nozzle.tag] = Conditions()
+  Line 274: Subscript Assignment: noise_conditions[turbofan.tag] = Conditions()
+  Total matches in this file: 20
+
+File: RCAIDE\Framework\Plots\Aerodynamics\plot_disc_and_power_loading.py
+  Line 73: Augmented Assignment: pi += 1
+  Line 88: Augmented Assignment: pi += 1
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Plots\Aerodynamics\plot_lift_distribution.py
+  Line 70: Augmented Assignment: img_idx += 1
+  Line 71: Augmented Assignment: seg_idx += 1
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Plots\Aerodynamics\plot_rotor_conditions.py
+  Line 74: Augmented Assignment: pi += 1
+  Line 89: Augmented Assignment: pi += 1
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Plots\Energy\plot_battery_cell_conditions.py
+  Line 112: Augmented Assignment: b_i += 1
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Plots\Energy\plot_battery_degradation.py
+  Line 67: Subscript Assignment: time_hrs[i] = segment.conditions.frames.inertial.time[-1, 0] / Units.hour
+  Line 69: Subscript Assignment: cycle_day[i] = battery_conditions.cell.cycle_in_day
+  Line 70: Subscript Assignment: capacity_fade[i] = battery_conditions.cell.capacity_fade_factor
+  Line 71: Subscript Assignment: resistance_growth[i] = battery_conditions.cell.resistance_growth_factor
+  Line 72: Subscript Assignment: charge_throughput[i] = battery_conditions.cell.charge_throughput[-1, 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Framework\Plots\Energy\plot_battery_pack_conditions.py
+  Line 113: Augmented Assignment: b_i += 1
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Plots\Energy\plot_battery_temperature.py
+  Line 92: Augmented Assignment: b_i += 1
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Plots\Energy\plot_electric_propulsor_efficiencies.py
+  Line 72: Augmented Assignment: pi += 1
+  Total matches in this file: 1
+
+File: RCAIDE\Framework\Plots\Energy\plot_fuel_consumption.py
+  Line 86: Augmented Assignment: prev_seg_fuel += results.segments[i - 1].conditions.weights.fuel_mass[-1]
+  Line 87: Augmented Assignment: prev_seg_extra_fuel += results.segments[i - 1].conditions.weights.additional_fuel_mass[-1]
+  Total matches in this file: 2
+
+File: RCAIDE\Framework\Plots\Geometry\plot_3d_fuselage.py
+  Line 70: Subscript Assignment: fuselage_points[i_seg, :, 0] = segment.percent_x_location * fuselage.lengths.total + fuselage.origin[0][0]
+  Line 71: Subscript Assignment: fuselage_points[i_seg, :, 1] = fus_ypts + segment.percent_y_location * fuselage.lengths.total + fuselage.origin[0][1]
+  Line 72: Subscript Assignment: fuselage_points[i_seg, :, 2] = fus_zpts + segment.percent_z_location * fuselage.lengths.total + fuselage.origin[0][2]
+  Total matches in this file: 3
+
+File: RCAIDE\Framework\Plots\Geometry\plot_3d_nacelle.py
+  Line 83: Subscript Assignment: section_points[:, 1, 0] = abs(rp.cos(theta)) * a * ((rp.cos(theta) > 0) * 1 - (rp.cos(theta) < 0) * 1)
+  Line 84: Subscript Assignment: section_points[:, 2, 0] = abs(rp.sin(theta)) * b * ((rp.sin(theta) > 0) * 1 - (rp.sin(theta) < 0) * 1)
+  Line 87: Subscript Assignment: x_rotation[:, 0, 0] = 1
+  Line 88: Subscript Assignment: x_rotation[:, 1, 1] = rp.cos(segment.orientation_euler_angles[0])
+  Line 89: Subscript Assignment: x_rotation[:, 1, 2] = -rp.sin(segment.orientation_euler_angles[0])
+  Line 90: Subscript Assignment: x_rotation[:, 2, 1] = rp.sin(segment.orientation_euler_angles[0])
+  Line 91: Subscript Assignment: x_rotation[:, 2, 2] = rp.cos(segment.orientation_euler_angles[0])
+  Line 94: Subscript Assignment: y_rotation[:, 0, 0] = rp.cos(segment.orientation_euler_angles[1])
+  Line 95: Subscript Assignment: y_rotation[:, 0, 2] = rp.sin(segment.orientation_euler_angles[1])
+  Line 96: Subscript Assignment: y_rotation[:, 1, 1] = 1
+  Line 97: Subscript Assignment: y_rotation[:, 2, 0] = -rp.sin(segment.orientation_euler_angles[1])
+  Line 98: Subscript Assignment: y_rotation[:, 2, 2] = rp.cos(segment.orientation_euler_angles[1])
+  Line 101: Subscript Assignment: z_rotation[:, 0, 0] = rp.cos(segment.orientation_euler_angles[2])
+  Line 102: Subscript Assignment: z_rotation[:, 0, 1] = -rp.sin(segment.orientation_euler_angles[2])
+  Line 103: Subscript Assignment: z_rotation[:, 1, 0] = rp.sin(segment.orientation_euler_angles[2])
+  Line 104: Subscript Assignment: z_rotation[:, 1, 1] = rp.cos(segment.orientation_euler_angles[2])
+  Line 105: Subscript Assignment: z_rotation[:, 2, 2] = 1
+  Line 109: Subscript Assignment: nac_pts[i_seg] = rotated_pts[:, :, 0]
+  Line 111: Augmented Assignment: nac_pts[i_seg, :, 0] += segment.percent_x_location * nac.length
+  Line 112: Augmented Assignment: nac_pts[i_seg, :, 1] += segment.percent_y_location * nac.length
+  Line 113: Augmented Assignment: nac_pts[i_seg, :, 2] += segment.percent_z_location * nac.length
+  Line 122: Subscript Assignment: NAC_PTS[:, :, 0] = NAC_PTS[:, :, 0] + nac.origin[0][0]
+  Line 123: Subscript Assignment: NAC_PTS[:, :, 1] = NAC_PTS[:, :, 1] + nac.origin[0][1]
+  Line 124: Subscript Assignment: NAC_PTS[:, :, 2] = NAC_PTS[:, :, 2] + nac.origin[0][2]
+  Line 164: Subscript Assignment: nac_pts[:, :, 0] = xpts
+  Line 165: Subscript Assignment: nac_pts[:, :, 1] = zpts * rp.cos(theta_2d)
+  Line 166: Subscript Assignment: nac_pts[:, :, 2] = zpts * rp.sin(theta_2d)
+  Line 175: Subscript Assignment: NAC_PTS[:, :, 0] = NAC_PTS[:, :, 0] + nac.origin[0][0]
+  Line 176: Subscript Assignment: NAC_PTS[:, :, 1] = NAC_PTS[:, :, 1] + nac.origin[0][1]
+  Line 177: Subscript Assignment: NAC_PTS[:, :, 2] = NAC_PTS[:, :, 2] + nac.origin[0][2]
+  Line 213: Subscript Assignment: nac_pts[:, :, 0] = xpts
+  Line 214: Subscript Assignment: nac_pts[:, :, 1] = zpts * rp.cos(theta_2d)
+  Line 215: Subscript Assignment: nac_pts[:, :, 2] = zpts * rp.sin(theta_2d)
+  Line 224: Subscript Assignment: NAC_PTS[:, :, 0] = NAC_PTS[:, :, 0] + nac.origin[0][0]
+  Line 225: Subscript Assignment: NAC_PTS[:, :, 1] = NAC_PTS[:, :, 1] + nac.origin[0][1]
+  Line 226: Subscript Assignment: NAC_PTS[:, :, 2] = NAC_PTS[:, :, 2] + nac.origin[0][2]
+  Total matches in this file: 36
+
+File: RCAIDE\Framework\Plots\Geometry\plot_3d_rotor.py
+  Line 147: Subscript Assignment: xpts[locs] = geometry.x_coordinates
+  Line 148: Subscript Assignment: zpts[locs] = geometry.y_coordinates
+  Line 149: Subscript Assignment: max_t[locs] = geometry.thickness_to_chord
+  Line 168: Subscript Assignment: matrix[:, :, 0] = xp
+  Line 169: Subscript Assignment: matrix[:, :, 1] = yp
+  Line 170: Subscript Assignment: matrix[:, :, 2] = zp
+  Line 177: Subscript Assignment: trans_1[:, 0, 0] = rp.cos(-beta)
+  Line 178: Subscript Assignment: trans_1[:, 0, 2] = -rp.sin(-beta)
+  Line 179: Subscript Assignment: trans_1[:, 1, 1] = 1
+  Line 180: Subscript Assignment: trans_1[:, 2, 0] = rp.sin(-beta)
+  Line 181: Subscript Assignment: trans_1[:, 2, 2] = rp.cos(-beta)
+  Total matches in this file: 11
+
+File: RCAIDE\Framework\Plots\Geometry\plot_3d_wing.py
+  Line 110: Subscript Assignment: section_twist[:, :, 0, 0] = 1
+  Line 111: Subscript Assignment: section_twist[:, :, 1, 1] = 1
+  Line 112: Subscript Assignment: section_twist[:, :, 2, 2] = 1
+  Line 114: Subscript Assignment: translation[0, :, 0, :] = origin[0][0]
+  Line 115: Subscript Assignment: translation[0, :, 1, :] = origin[0][1]
+  Line 116: Subscript Assignment: translation[0, :, 2, :] = origin[0][2]
+  Line 150: Subscript Assignment: pts[i, :, 0, 0] = geometry.x_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
+  Line 151: Subscript Assignment: pts[i, :, 1, 0] = geometry.y_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
+  Line 152: Subscript Assignment: pts[i, :, 2, 0] = rp.zeros_like(geometry.y_coordinates)
+  Line 154: Subscript Assignment: section_twist[i, :, 0, 0] = rp.cos(twist)
+  Line 155: Subscript Assignment: section_twist[i, :, 0, 1] = -rp.sin(twist)
+  Line 156: Subscript Assignment: section_twist[i, :, 1, 0] = rp.sin(twist)
+  Line 157: Subscript Assignment: section_twist[i, :, 1, 1] = rp.cos(twist)
+  Line 160: Subscript Assignment: pts[i, :, 0, 0] = geometry.x_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
+  Line 161: Subscript Assignment: pts[i, :, 1, 0] = rp.zeros_like(geometry.y_coordinates)
+  Line 162: Subscript Assignment: pts[i, :, 2, 0] = geometry.y_coordinates * wing.Segments[current_seg].root_chord_percent * wing.chords.root
+  Line 165: Subscript Assignment: section_twist[i, :, 0, 0] = rp.cos(twist)
+  Line 166: Subscript Assignment: section_twist[i, :, 0, 2] = rp.sin(twist)
+  Line 167: Subscript Assignment: section_twist[i, :, 2, 0] = -rp.sin(twist)
+  Line 168: Subscript Assignment: section_twist[i, :, 2, 2] = rp.cos(twist)
+  Line 189: Subscript Assignment: translation[i + 1, :, 0, :] = translation[i, :, 0, :] + dx
+  Line 190: Subscript Assignment: translation[i + 1, :, 1, :] = translation[i, :, 1, :] + dy
+  Line 191: Subscript Assignment: translation[i + 1, :, 2, :] = translation[i, :, 2, :] + dz
+  Line 196: Subscript Assignment: section_twist[:, :, 0, 0] = 1
+  Line 197: Subscript Assignment: section_twist[:, :, 1, 1] = 1
+  Line 198: Subscript Assignment: section_twist[:, :, 2, 2] = 1
+  Line 224: Subscript Assignment: translation[:, :, 0, :] = origin[0][0]
+  Line 225: Subscript Assignment: translation[:, :, 1, :] = origin[0][1]
+  Line 226: Subscript Assignment: translation[:, :, 2, :] = origin[0][2]
+  Line 229: Subscript Assignment: pts[0, :, 0, 0] = geometry.x_coordinates * wing.chords.root
+  Line 230: Subscript Assignment: pts[0, :, 1, 0] = geometry.y_coordinates * wing.chords.root
+  Line 231: Subscript Assignment: pts[0, :, 2, 0] = rp.zeros_like(geometry.y_coordinates)
+  Line 233: Subscript Assignment: pts[1, :, 0, 0] = geometry.x_coordinates * wing.chords.tip
+  Line 234: Subscript Assignment: pts[1, :, 1, 0] = geometry.y_coordinates * wing.chords.tip
+  Line 235: Subscript Assignment: pts[1, :, 2, 0] = rp.zeros_like(geometry.y_coordinates)
+  Line 237: Augmented Assignment: translation[1, :, 0, :] += semispan * rp.tan(sweep)
+  Line 238: Augmented Assignment: translation[1, :, 1, :] += semispan * rp.tan(dihedral)
+  Line 239: Augmented Assignment: translation[1, :, 2, :] += semispan
+  Line 241: Subscript Assignment: section_twist[0, :, 0, 0] = rp.cos(wing.twists.root)
+  Line 242: Subscript Assignment: section_twist[0, :, 0, 1] = -rp.sin(wing.twists.root)
+  Line 243: Subscript Assignment: section_twist[0, :, 1, 0] = rp.sin(wing.twists.root)
+  Line 244: Subscript Assignment: section_twist[0, :, 1, 1] = rp.cos(wing.twists.root)
+  Line 246: Subscript Assignment: section_twist[1, :, 0, 0] = rp.cos(wing.twists.tip)
+  Line 247: Subscript Assignment: section_twist[1, :, 0, 1] = -rp.sin(wing.twists.tip)
+  Line 248: Subscript Assignment: section_twist[1, :, 1, 0] = rp.sin(wing.twists.tip)
+  Line 249: Subscript Assignment: section_twist[1, :, 1, 1] = rp.cos(wing.twists.tip)
+  Line 253: Subscript Assignment: pts[0, :, 0, 0] = geometry.x_coordinates * wing.chords.root
+  Line 254: Subscript Assignment: pts[0, :, 1, 0] = rp.zeros_like(geometry.y_coordinates)
+  Line 255: Subscript Assignment: pts[0, :, 2, 0] = geometry.y_coordinates * wing.chords.root
+  Line 257: Subscript Assignment: pts[1, :, 0, 0] = geometry.x_coordinates * wing.chords.tip
+  Line 258: Subscript Assignment: pts[1, :, 1, 0] = rp.zeros_like(geometry.y_coordinates)
+  Line 259: Subscript Assignment: pts[1, :, 2, 0] = geometry.y_coordinates * wing.chords.tip
+  Line 262: Augmented Assignment: translation[1, :, 0, :] += semispan * rp.tan(sweep)
+  Line 263: Augmented Assignment: translation[1, :, 1, :] += semispan
+  Line 264: Augmented Assignment: translation[1, :, 2, :] += semispan * rp.tan(dihedral)
+  Line 266: Subscript Assignment: section_twist[0, :, 0, 0] = rp.cos(wing.twists.root)
+  Line 267: Subscript Assignment: section_twist[0, :, 0, 2] = rp.sin(wing.twists.root)
+  Line 268: Subscript Assignment: section_twist[0, :, 2, 0] = -rp.sin(wing.twists.root)
+  Line 269: Subscript Assignment: section_twist[0, :, 2, 2] = rp.cos(wing.twists.root)
+  Line 271: Subscript Assignment: section_twist[1, :, 0, 0] = rp.cos(wing.twists.tip)
+  Line 272: Subscript Assignment: section_twist[1, :, 0, 2] = rp.sin(wing.twists.tip)
+  Line 273: Subscript Assignment: section_twist[1, :, 2, 0] = -rp.sin(wing.twists.tip)
+  Line 274: Subscript Assignment: section_twist[1, :, 2, 2] = rp.cos(wing.twists.tip)
+  Total matches in this file: 63
+
+File: RCAIDE\Library\Components\Component.py
+  Line 72: Augmented Assignment: total += Comp.sum_mass()
+  Line 74: Augmented Assignment: total += Comp.mass_properties.mass
+  Line 97: Augmented Assignment: total += Comp.total_moment()
+  Line 99: Augmented Assignment: total += Comp.mass_properties.mass * (rp.sum(rp.array(Comp.origin), axis=0) / len(Comp.origin) + Comp.mass_properties.center_of_gravity)
+  Total matches in this file: 4
+
+File: RCAIDE\Library\Components\Wings\Vertical_Tail.py
+  Line 60: Augmented Assignment: wing.origin[0][1] *= -1
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Components\Wings\Vertical_Tail_All_Moving.py
+  Line 61: Augmented Assignment: wing.hinge_vector[1] *= -1
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Aerodynamics\AERODAS\post_stall_coefficients.py
+  Line 74: Subscript Assignment: CL2[con2] = -0.032 * (alpha[con2] / Units.deg - 92.0) - RCL2 * ((92.0 * Units.deg - alpha[con2]) / (51.0 * Units.deg)) ** N2
+  Line 75: Subscript Assignment: CL2[con3] = -0.032 * (alpha[con3] / Units.deg - 92.0) + RCL2 * ((alpha[con3] - 92.0 * Units.deg) / (51.0 * Units.deg)) ** N2
+  Line 82: Subscript Assignment: CL2[con4] = 0.0
+  Line 83: Subscript Assignment: CL2[con5] = 0.032 * (alphan[con5] / Units.deg - 92.0) + RCL2 * ((92.0 * Units.deg - alphan[con5]) / (51.0 * Units.deg)) ** N2
+  Line 84: Subscript Assignment: CL2[con6] = 0.032 * (alphan[con6] / Units.deg - 92.0) - RCL2 * ((alphan[con6] - 92.0 * Units.deg) / (51.0 * Units.deg)) ** N2
+  Line 89: Subscript Assignment: CD2[con8] = CD1max[con8] + (CD2max - CD1max[con8]) * rp.sin((alpha[con8] - ACD1[con8]) / (rp.pi / 2 - ACD1[con8]))
+  Line 95: Subscript Assignment: CD2[con9] = 0.0
+  Line 96: Subscript Assignment: CD2[con10] = CD1max[con10] + (CD2max - CD1max[con10]) * rp.sin((alphan[con10] - ACD1[con10]) / (rp.pi / 2 - ACD1[con10]))
+  Total matches in this file: 8
+
+File: RCAIDE\Library\Methods\Aerodynamics\AERODAS\pre_stall_coefficients.py
+  Line 53: Boolean Indexing: RCL1[RCL1 <= 0] = 1e-16
+  Line 62: Boolean Indexing: CL1[alpha > A0] = S1 * (alpha[alpha > A0] - A0) - RCL1[alpha > A0] * ((alpha[alpha > A0] - A0) / (ACL1[alpha > A0] - A0)) ** N1[alpha > A0]
+  Line 63: Boolean Indexing: CL1[alpha < A0] = S1 * (alpha[alpha < A0] - A0) + RCL1[alpha < A0] * ((A0 - alpha[alpha < A0]) / (ACL1[alpha < A0] - A0)) ** N1[alpha < A0]
+  Line 68: Subscript Assignment: CD1[con] = CDmin[con] + (CD1max[con] - CDmin[con]) * ((alpha[con] - ACDmin) / (ACD1[con] - ACDmin)) ** 2
+  Line 69: Subscript Assignment: CD1[rp.logical_not(con)] = 0.0
+  Total matches in this file: 5
+
+File: RCAIDE\Library\Methods\Aerodynamics\Airfoil_Panel_Method\airfoil_analysis.py
+  Line 107: Subscript Assignment: X_BOT[1:] = rp.cumsum(rp.sqrt((X_BOT_VALS[1:] - X_BOT_VALS[:-1]) ** 2 + (Y_BOT[1:] - Y_BOT[:-1]) ** 2), axis=0)
+  Line 116: Subscript Assignment: X_BOT.mask[first_panel, aoas, res] = False
+  Line 126: Subscript Assignment: DVE_BOT[1:-1] = ((b * DVE_BOT_TEMP[:-1] + a * DVE_BOT_TEMP[1:]) / (a + b)).data
+  Line 128: Subscript Assignment: DVE_BOT[first_panel, aoas, res] = DVE_BOT_TEMP[first_panel, aoas, res]
+  Line 129: Subscript Assignment: DVE_BOT[last_panel, aoas, res] = DVE_BOT_TEMP[last_paneldve, aoas, res]
+  Line 151: Boolean Indexing: mask_count[mask_count == npanel] = npanel - 1
+  Line 251: Subscript Assignment: X_TOP[1:] = rp.cumsum(rp.sqrt((X_TOP_VALS[1:] - X_TOP_VALS[:-1]) ** 2 + (Y_TOP[1:] - Y_TOP[:-1]) ** 2), axis=0)
+  Line 260: Subscript Assignment: X_TOP.mask[first_panel, aoas, res] = False
+  Line 270: Subscript Assignment: DVE_TOP[1:-1] = ((b * DVE_TOP_TEMP[:-1] + a * DVE_TOP_TEMP[1:]) / (a + b)).data
+  Line 272: Subscript Assignment: DVE_TOP[first_panel, aoas, res] = DVE_TOP_TEMP[first_panel, aoas, res]
+  Line 273: Subscript Assignment: DVE_TOP[last_panel, aoas, res] = DVE_TOP_TEMP[last_paneldve, aoas, res]
+  Line 294: Boolean Indexing: mask_count[mask_count == npanel] = npanel - 1
+  Line 421: Subscript Assignment: X_BL_BOT[1:] = rp.cumsum(rp.sqrt((X_BL_BOT_VALS[1:] - X_BL_BOT_VALS[:-1]) ** 2 + (Y_BL_BOT[1:] - Y_BL_BOT[:-1]) ** 2), axis=0)
+  Line 430: Subscript Assignment: X_BL_BOT.mask[first_panel, aoas, res] = False
+  Line 444: Subscript Assignment: X_BL_TOP[1:] = rp.cumsum(rp.sqrt((X_BL_TOP_VALS[1:] - X_BL_TOP_VALS[:-1]) ** 2 + (Y_BL_TOP[1:] - Y_BL_TOP[:-1]) ** 2), axis=0)
+  Line 453: Subscript Assignment: X_BL_TOP.mask[first_panel, aoas, res] = False
+  Line 525: Subscript Assignment: FUNC[:, case, cpt] = rp.concatenate([bot_func[::-1], top_func])
+  Total matches in this file: 17
+
+File: RCAIDE\Library\Methods\Aerodynamics\Airfoil_Panel_Method\heads_method.py
+  Line 119: Subscript Assignment: H[0] = ShapeFactor_0[case, cpt]
+  Line 121: Subscript Assignment: Theta[0] = THETA_0[case, cpt]
+  Line 123: Subscript Assignment: H1[0] = (DEL_0[case, cpt] - DELTA_STAR_0[case, cpt]) / THETA_0[case, cpt]
+  Line 125: Subscript Assignment: H1[0] = 3.417285
+  Line 128: Subscript Assignment: cf[0] = CF_0[case, cpt]
+  Line 130: Subscript Assignment: VeThetaH1[0] = Ve_i[0] * Theta[0] * H1[0]
+  Line 140: Subscript Assignment: H[i] = H[i - 1]
+  Line 141: Subscript Assignment: cf[i] = cf[i - 1]
+  Line 153: Subscript Assignment: VeThetaH1[i] = VeThetaH1[i - 1]
+  Line 156: Subscript Assignment: H1[i] = VeThetaH1[i] / (Ve_i[i] * Theta[i])
+  Line 159: Subscript Assignment: H[i] = getH(H1[i])
+  Line 162: Subscript Assignment: cf[i] = getcf(i, H[i], Theta[i])
+  Total matches in this file: 12
+
+File: RCAIDE\Library\Methods\Aerodynamics\Airfoil_Panel_Method\hess_smith.py
+  Line 54: Subscript Assignment: b_2d[:-1, :, :] = st * rp.cos(alpha_2d) - rp.sin(alpha_2d) * ct
+  Line 55: Subscript Assignment: b_2d[-1, :, :] = -(ct[0, :, :] * rp.cos(alpha_2d[-1, :, :]) + st[0, :, :] * rp.sin(alpha_2d[-1, :, :])) - (ct[-1, :, :] * rp.cos(alpha_2d[-1, :, :]) + st[-1, :, :] * rp.sin(alpha_2d[-1, :, :]))
+  Total matches in this file: 2
+
+File: RCAIDE\Library\Methods\Aerodynamics\Airfoil_Panel_Method\infl_coeff.py
+  Line 45: Subscript Assignment: ainfl[:, :, :-1, :-1] = pi2inv * (st_i_j * rp.log(r_ij[:, :, :, 1:] / r_ij[:, :, :, :-1]) + ct_i_j * beta_ij)
+  Line 47: Subscript Assignment: ainfl[:, :, :-1, -1] = pi2inv * rp.sum(mat2, axis=3)
+  Line 49: Subscript Assignment: ainfl[:, :, -1, :-1] = pi2inv * rp.sum(mat3, axis=2)
+  Line 51: Subscript Assignment: ainfl[:, :, -1, -1] = rp.sum(rp.sum(mat4, axis=3), axis=2)
+  Line 71: Boolean Indexing: r_ratio[r_ratio > 1.0] = 1.0
+  Line 76: Subscript Assignment: betaij[aoas, res, diag_indices, diag_indices] = rp.pi
+  Line 78: Subscript Assignment: ainfl[:, :, :-1, :-1] = pi2inv * (sti_minus_j * rp.log(rij_plus_1 / rij) + cti_minus_j * betaij)
+  Line 80: Subscript Assignment: ainfl[:, :, :-1, -1] = mat_1
+  Line 83: Subscript Assignment: ainfl[:, :, -1, :-1] = mat_2[:, :, 0] + mat_2[:, :, -1]
+  Line 84: Subscript Assignment: ainfl[:, :, -1, -1] = rp.sum(mat_3, axis=3)[:, :, 0] + rp.sum(mat_3, axis=3)[:, :, -1]
+  Total matches in this file: 10
+
+File: RCAIDE\Library\Methods\Aerodynamics\Airfoil_Panel_Method\panel_geometry.py
+  Line 47: Subscript Assignment: norm[:, 0, :, :] = -st
+  Line 48: Subscript Assignment: norm[:, 1, :, :] = ct
+  Total matches in this file: 2
+
+File: RCAIDE\Library\Methods\Aerodynamics\Airfoil_Panel_Method\thwaites_method.py
+  Line 75: Subscript Assignment: theta2_Ve6[0] = theta_0 ** 2 * Ve_i[0] ** 6
+  Line 79: Subscript Assignment: theta2_Ve6[i] = RK4(i - 1, dx_i, x_i, theta2_Ve6, dy_by_dx)
+  Line 94: Boolean Indexing: H[H < 0] = 1e-06
+  Line 114: Subscript Assignment: delta[0] = 0
+  Line 117: Subscript Assignment: Re_x[0] = 1e-05
+  Line 162: Subscript Assignment: H[idx1] = 2.61 - 3.75 * lambda_val[idx1] + 5.24 * lambda_val[idx1] ** 2
+  Line 184: Subscript Assignment: l[idx1] = 0.22 + 1.57 * lambda_val[idx1] - 1.8 * lambda_val[idx1] ** 2
+  Total matches in this file: 7
+
+File: RCAIDE\Library\Methods\Aerodynamics\Airfoil_Panel_Method\velocity_distribution.py
+  Line 61: Boolean Indexing: r_ratio[r_ratio > 1.0] = 1.0
+  Line 74: Augmented Assignment: vt_2d += rp.sum(qg_2d / 2 / rp.pi * (sti_minus_j_2d * betaij_2d - cti_minus_j_2d * rp.log(rij_plus_1_2d / rij_2d)), 1) + rp.sum(gamma / 2 / rp.pi * (sti_minus_j_2d * rp.log(rij_plus_1_2d / rij_2d) + cti_minus_j_2d * betaij_2d), 1)
+  Total matches in this file: 2
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\compressibility_drag.py
+  Line 98: Subscript Assignment: cd_c_v_base[low_inds] = drag_divergence(Mach[low_inds], geometry, Cl[low_inds])
+  Line 100: Boolean Indexing: cd_c_v_base[Mach >= peak_mach] = wave_drag_volume(geometry, Mach[Mach >= peak_mach], scaling_factor)
+  Line 103: Subscript Assignment: cd_c_v[low_inds] = cd_c_v_base[low_inds] * sub_h00(Mach[low_inds]) + transonic_drag_function(Mach[low_inds], a1[low_inds], peak_mach, peak_volume_total[low_inds]) * (1 - sub_h00(Mach[low_inds]))
+  Line 104: Subscript Assignment: cd_c_v[hi_inds] = transonic_drag_function(Mach[hi_inds], a2[hi_inds], peak_mach, peak_volume_total[hi_inds]) * sup_h00(Mach[hi_inds]) + cd_c_v_base[hi_inds] * (1 - sup_h00(Mach[hi_inds]))
+  Line 175: Boolean Indexing: cd_c_l[Mach >= 1.01] = cd_lift_wave[0:len(Mach[Mach >= 1.01]), 0]
+  Total matches in this file: 5
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\lift_wave_drag.py
+  Line 39: Boolean Indexing: cd_c_l[mach >= 1.01] = cd_lift_wave[0:len(mach[mach >= 1.01]), 0]
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\miscellaneous_drag.py
+  Line 43: Augmented Assignment: swet_tot += wing.areas.wetted
+  Line 45: Augmented Assignment: swet_tot += fuselage.areas.wetted
+  Line 47: Augmented Assignment: swet_tot += boom.areas.wetted
+  Line 53: Augmented Assignment: swet_tot += propulsor.nacelle.areas.wetted
+  Line 58: Augmented Assignment: swet_tot += propulsor.nacelle.areas.wetted
+  Line 76: Subscript Assignment: nacelle_base_drag_results[propulsor.nacelle.tag] = nacelle_base_drag * rp.ones_like(Mach)
+  Line 77: Augmented Assignment: total_nacelle_base_drag += nacelle_base_drag
+  Line 84: Subscript Assignment: nacelle_base_drag_results[propulsor.nacelle.tag] = nacelle_base_drag * rp.ones_like(Mach)
+  Line 85: Augmented Assignment: total_nacelle_base_drag += nacelle_base_drag
+  Total matches in this file: 9
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\parasite_drag_fuselage.py
+  Line 68: Boolean Indexing: D[Mach < 0.95] = rp.sqrt(1 - (1 - Mach[Mach < 0.95] ** 2) * d_d ** 2)
+  Line 69: Boolean Indexing: D[Mach >= 0.95] = rp.sqrt(1 - d_d ** 2)
+  Line 72: Boolean Indexing: a[Mach < 0.95] = 2 * (1 - Mach[Mach < 0.95] ** 2) * d_d ** 2 * (rp.arctanh(D[Mach < 0.95]) - D[Mach < 0.95]) / D[Mach < 0.95] ** 3
+  Line 75: Boolean Indexing: a[Mach >= 0.95] = 2 * d_d ** 2 * (rp.arctanh(D[Mach >= 0.95]) - D[Mach >= 0.95]) / D[Mach >= 0.95] ** 3
+  Line 80: Boolean Indexing: du_max_u[Mach < 0.95] = a[Mach < 0.95] / ((2 - a[Mach < 0.95]) * (1 - Mach[Mach < 0.95] ** 2) ** 0.5)
+  Line 81: Boolean Indexing: du_max_u[Mach >= 0.95] = a[Mach >= 0.95] / (2 - a[Mach >= 0.95])
+  Line 91: Subscript Assignment: D_low[low_inds] = rp.sqrt(1 - (1 - Mach[low_inds] ** 2) * d_d ** 2)
+  Line 92: Subscript Assignment: a_low[low_inds] = 2 * (1 - Mach[low_inds] ** 2) * d_d ** 2 * (rp.arctanh(D_low[low_inds]) - D_low[low_inds]) / D_low[low_inds] ** 3
+  Line 95: Subscript Assignment: du_max_u_low[low_inds] = a_low[low_inds] / ((2 - a_low[low_inds]) * (1 - Mach[low_inds] ** 2) ** 0.5)
+  Line 97: Subscript Assignment: D_high[high_inds] = rp.sqrt(1 - d_d ** 2)
+  Line 98: Subscript Assignment: a_high[high_inds] = 2 * d_d ** 2 * (rp.arctanh(D_high[high_inds]) - D_high[high_inds]) / D_high[high_inds] ** 3
+  Line 100: Subscript Assignment: du_max_u_high[high_inds] = a_high[high_inds] / (2 - a_high[high_inds])
+  Line 121: Subscript Assignment: state.conditions.aerodynamics.coefficients.drag.parasite[fuselage.tag] = results
+  Total matches in this file: 13
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\parasite_drag_nacelle.py
+  Line 123: Subscript Assignment: state.conditions.aerodynamics.coefficients.drag.parasite[nacelle.tag] = results
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\parasite_drag_pylon.py
+  Line 73: Subscript Assignment: drag.parasite[nacelle.tag + '_pylon'] = pylon_result
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\parasite_drag_wing.py
+  Line 120: Subscript Assignment: seg_kw[subsonic] = 1.0 + 2.0 * C * (t_c_w * cos_sweepv ** 2) / rp.sqrt(1.0 - (Mc[subsonic] * cos_sweep) ** 2) + (C * cos_sweep * t_c_w) ** 2 * (1.0 + 5.0 * cos_sweep ** 2) / (2.0 * (1.0 - (Mc[ind] * cos_sweep) ** 2.0))
+  Line 127: Augmented Assignment: seg_k_w *= transonic_spline.compute(Mc)
+  Line 128: Augmented Assignment: seg_k_w += 1 - transonic_spline.compute(Mc)
+  Line 163: Subscript Assignment: state.conditions.aerodynamics.coefficients.drag.parasite[geometry.tag] = wing_result
+  Total matches in this file: 4
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\parasite_total.py
+  Line 55: Augmented Assignment: total_parasite_drag += renormalize(wing.tag, wing.areas.reference, conditions, vehicle_reference_area)
+  Line 63: Augmented Assignment: total_parasite_drag += renormalize(fuselage.tag, fuselage.areas.front_projected, conditions, vehicle_reference_area)
+  Line 78: Augmented Assignment: total_parasite_drag += renormalize(propulsor.nacelle.tag, propulsor.nacelle.diameter ** 2 / 4 * rp.pi, conditions, vehicle_reference_area)
+  Line 83: Augmented Assignment: total_parasite_drag += renormalize(propulsor.nacelle.tag + '_pylon', propulsor.nacelle.diameter ** 2 / 4 * rp.pi, conditions, vehicle_reference_area)
+  Total matches in this file: 4
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\supersonic_wave_drag_volume_raymer.py
+  Line 66: Boolean Indexing: Dq_vehicle[mach >= 1.2] = scaling_factor * (1 - 0.2 * (mach[mach >= 1.2] - 1.2) ** 0.57 * (1 - rp.pi * LE_sweep ** 0.77 / 100)) * Dq_SH
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Drag\wave_drag.py
+  Line 59: Boolean Indexing: wave_drag_lift[Mach >= 1.01] = CDwl
+  Line 81: Boolean Indexing: ret[x > 0.178] = 0.4935 - 0.2382 * x[x > 0.178] + 1.6306 * x[x > 0.178] ** 2 - 0.86 * x[x > 0.178] ** 3 + 0.2232 * x[x > 0.178] ** 4 - 0.0365 * x[x > 0.178] ** 5 - 0.5
+  Total matches in this file: 2
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Lift\BET_sectional_properties.py
+  Line 64: Boolean Indexing: Cl_max_ref[Cl_max_ref < 0.7] = 0.7
+  Line 70: Boolean Indexing: Cl[Cl > Cl1maxp] = Cl1maxp[Cl > Cl1maxp]
+  Line 71: Boolean Indexing: Cl[AoA >= rp.pi / 2] = 0.0
+  Line 75: Subscript Assignment: Cl[KT_cond] = Cl[KT_cond] / ((1 - Ma[KT_cond] * Ma[KT_cond]) ** 0.5 + Ma[KT_cond] * Ma[KT_cond] / (1 + (1 - Ma[KT_cond] * Ma[KT_cond]) ** 0.5) * Cl[KT_cond] / 2)
+  Line 76: Boolean Indexing: Cl[Ma[:, :] >= 1.0] = Cl[Ma[:, :] >= 1.0]
+  Line 80: Boolean Indexing: Cdval[AoA >= rp.pi / 2] = 2.0
+  Line 92: Subscript Assignment: Cl[:, locs, :] = Cl_af[:, locs, :]
+  Line 93: Subscript Assignment: Cdval[:, locs, :] = Cdval_af[:, locs, :]
+  Line 102: Subscript Assignment: Cl[:, locs] = Cl_af[:, locs]
+  Line 103: Subscript Assignment: Cdval[:, locs] = Cdval_af[:, locs]
+  Line 106: Boolean Indexing: Cl[Cl == 0] = 1e-12
+  Line 138: Boolean Indexing: lamdaw[lamdaw <= 0.0] = 1e-12
+  Total matches in this file: 12
+
+File: RCAIDE\Library\Methods\Aerodynamics\Common\Lift\compute_wing_wake.py
+  Line 120: Subscript Assignment: Va_deficit[y_inside] = W0 * rp.exp(-4 * rp.log(2) * (abs(VD.ZC[y_inside]) / b) ** 2)
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Aerodynamics\Vortex_Lattice_Method\build_VLM_surrogates.py
+  Line 65: Subscript Assignment: surrogates.Clift_wing_alpha[wing.tag] = RegularGridInterpolator((AoA_data, mach_data), training.Clift_wing_alpha[wing.tag], method='linear', bounds_error=False, fill_value=None)
+  Line 66: Subscript Assignment: surrogates.Cdrag_wing_alpha[wing.tag] = RegularGridInterpolator((AoA_data, mach_data), training.Cdrag_wing_alpha[wing.tag], method='linear', bounds_error=False, fill_value=None)
+  Total matches in this file: 2
+
+File: RCAIDE\Library\Methods\Aerodynamics\Vortex_Lattice_Method\evaluate_VLM.py
+  Line 438: Subscript Assignment: conditions.aerodynamics.coefficients.lift.inviscid_wings[wing.tag] = inviscid_wing_lifts
+  Line 439: Subscript Assignment: conditions.aerodynamics.coefficients.lift.compressible_wings[wing.tag] = inviscid_wing_lifts
+  Line 440: Subscript Assignment: conditions.aerodynamics.coefficients.drag.induced.inviscid_wings[wing.tag] = inviscid_wing_drags
+  Line 481: Augmented Assignment: i += 1
+  Line 485: Augmented Assignment: i += 1
+  Line 487: Subscript Assignment: conditions.aerodynamics.coefficients.lift.inviscid_wings[wing.tag] = Clift_wing
+  Line 488: Subscript Assignment: conditions.aerodynamics.coefficients.lift.compressible_wings[wing.tag] = Clift_wing
+  Line 489: Subscript Assignment: conditions.aerodynamics.coefficients.drag.induced.inviscid_wings[wing.tag] = Cdrag_wing
+  Total matches in this file: 8
+
+File: RCAIDE\Library\Methods\Aerodynamics\Vortex_Lattice_Method\train_VLM_surrogates.py
+  Line 139: Subscript Assignment: Clift_wing_alpha[wing.tag] = rp.reshape(Clift_wing_res[wing.tag], (len_Mach, len_AoA)).T
+  Line 140: Subscript Assignment: Cdrag_wing_alpha[wing.tag] = rp.reshape(Cdrag_wing_res[wing.tag], (len_Mach, len_AoA)).T
+  Line 489: Subscript Assignment: Clift_d_a[a_i, :] = Clift_res_d_a[:, 0] - Clift_alpha_0[0, :]
+  Line 490: Subscript Assignment: Cdrag_d_a[a_i, :] = Cdrag_res_d_a[:, 0] - Cdrag_alpha_0[0, :]
+  Line 491: Subscript Assignment: CX_d_a[a_i, :] = CX_res_d_a[:, 0] - CX_alpha_0[0, :]
+  Line 492: Subscript Assignment: CY_d_a[a_i, :] = CY_res_d_a[:, 0] - CY_alpha_0[0, :]
+  Line 493: Subscript Assignment: CZ_d_a[a_i, :] = CZ_res_d_a[:, 0] - CZ_alpha_0[0, :]
+  Line 494: Subscript Assignment: CL_d_a[a_i, :] = -(CL_res_d_a[:, 0] - CL_alpha_0[0, :])
+  Line 495: Subscript Assignment: CM_d_a[a_i, :] = CM_res_d_a[:, 0] - CM_alpha_0[0, :]
+  Line 496: Subscript Assignment: CN_d_a[a_i, :] = CN_res_d_a[:, 0] - CN_alpha_0[0, :]
+  Line 546: Subscript Assignment: Clift_d_e[e_i, :] = Clift_res_d_e[:, 0] - Clift_alpha_0[0, :]
+  Line 547: Subscript Assignment: Cdrag_d_e[e_i, :] = Cdrag_res_d_e[:, 0] - Cdrag_alpha_0[0, :]
+  Line 548: Subscript Assignment: CX_d_e[e_i, :] = CX_res_d_e[:, 0] - CX_alpha_0[0, :]
+  Line 549: Subscript Assignment: CY_d_e[e_i, :] = CY_res_d_e[:, 0] - CY_alpha_0[0, :]
+  Line 550: Subscript Assignment: CZ_d_e[e_i, :] = CZ_res_d_e[:, 0] - CZ_alpha_0[0, :]
+  Line 551: Subscript Assignment: CL_d_e[e_i, :] = CL_res_d_e[:, 0] - CL_alpha_0[0, :]
+  Line 552: Subscript Assignment: CM_d_e[e_i, :] = CM_res_d_e[:, 0] - CM_alpha_0[0, :]
+  Line 553: Subscript Assignment: CN_d_e[e_i, :] = CN_res_d_e[:, 0] - CN_alpha_0[0, :]
+  Line 602: Subscript Assignment: Clift_d_r[r_i, :] = Clift_res_d_r[:, 0] - Clift_alpha_0[0, :]
+  Line 603: Subscript Assignment: Cdrag_d_r[r_i, :] = Cdrag_res_d_r[:, 0] - Cdrag_alpha_0[0, :]
+  Line 604: Subscript Assignment: CX_d_r[r_i, :] = CX_res_d_r[:, 0] - CX_alpha_0[0, :]
+  Line 605: Subscript Assignment: CY_d_r[r_i, :] = CY_res_d_r[:, 0] - CY_alpha_0[0, :]
+  Line 606: Subscript Assignment: CZ_d_r[r_i, :] = CZ_res_d_r[:, 0] - CZ_alpha_0[0, :]
+  Line 607: Subscript Assignment: CL_d_r[r_i, :] = CL_res_d_r[:, 0] - CL_alpha_0[0, :]
+  Line 608: Subscript Assignment: CM_d_r[r_i, :] = CM_res_d_r[:, 0] - CM_alpha_0[0, :]
+  Line 609: Subscript Assignment: CN_d_r[r_i, :] = -(CN_res_d_r[:, 0] - CN_alpha_0[0, :])
+  Line 655: Subscript Assignment: Clift_d_s[s_i, :] = Clift_res_d_s[:, 0] - Clift_alpha_0[0, :]
+  Line 656: Subscript Assignment: Cdrag_d_s[s_i, :] = Cdrag_res_d_s[:, 0] - Cdrag_alpha_0[0, :]
+  Line 657: Subscript Assignment: CX_d_s[s_i, :] = CX_res_d_s[:, 0] - CX_alpha_0[0, :]
+  Line 658: Subscript Assignment: CY_d_s[s_i, :] = CY_res_d_s[:, 0] - CY_alpha_0[0, :]
+  Line 659: Subscript Assignment: CZ_d_s[s_i, :] = CZ_res_d_s[:, 0] - CZ_alpha_0[0, :]
+  Line 660: Subscript Assignment: CL_d_s[s_i, :] = CL_res_d_s[:, 0] - CL_alpha_0[0, :]
+  Line 661: Subscript Assignment: CM_d_s[s_i, :] = CM_res_d_s[:, 0] - CM_alpha_0[0, :]
+  Line 662: Subscript Assignment: CN_d_s[s_i, :] = CN_res_d_s[:, 0] - CN_alpha_0[0, :]
+  Line 711: Subscript Assignment: Clift_d_f[f_i, :] = Clift_res_d_f[:, 0] - Clift_alpha_0[0, :]
+  Line 712: Subscript Assignment: Cdrag_d_f[f_i, :] = Cdrag_res_d_f[:, 0] - Cdrag_alpha_0[0, :]
+  Line 713: Subscript Assignment: CX_d_f[f_i, :] = CX_res_d_f[:, 0] - CX_alpha_0[0, :]
+  Line 714: Subscript Assignment: CY_d_f[f_i, :] = CY_res_d_f[:, 0] - CY_alpha_0[0, :]
+  Line 715: Subscript Assignment: CZ_d_f[f_i, :] = CZ_res_d_f[:, 0] - CZ_alpha_0[0, :]
+  Line 716: Subscript Assignment: CL_d_f[f_i, :] = CL_res_d_f[:, 0] - CL_alpha_0[0, :]
+  Line 717: Subscript Assignment: CM_d_f[f_i, :] = CM_res_d_f[:, 0] - CM_alpha_0[0, :]
+  Line 718: Subscript Assignment: CN_d_f[f_i, :] = CN_res_d_f[:, 0] - CN_alpha_0[0, :]
+  Line 791: Subscript Assignment: Clift_wing_alpha[wing.tag] = rp.concatenate((training_subsonic.Clift_wing_alpha[wing.tag][:, -1][:, None], training_supersonic.Clift_wing_alpha[wing.tag][:, 0][:, None]), axis=1)
+  Line 792: Subscript Assignment: Cdrag_wing_alpha[wing.tag] = rp.concatenate((training_subsonic.Cdrag_wing_alpha[wing.tag][:, -1][:, None], training_supersonic.Cdrag_wing_alpha[wing.tag][:, 0][:, None]), axis=1)
+  Line 1204: Subscript Assignment: Clift_wings[wing.tag] = rp.atleast_2d(rp.sum(dim_wing_lifts[:, i:i + 2], axis=1)).T / ref
+  Line 1205: Subscript Assignment: Cdrag_wings[wing.tag] = rp.atleast_2d(rp.sum(dim_wing_drags[:, i:i + 2], axis=1)).T / ref
+  Line 1206: Subscript Assignment: AoA_wing_induced[wing.tag] = rp.concatenate((alpha_i[i], alpha_i[i + 1]), axis=1)
+  Line 1207: Augmented Assignment: i += 1
+  Line 1209: Subscript Assignment: Clift_wings[wing.tag] = rp.atleast_2d(dim_wing_lifts[:, i]).T / ref
+  Line 1210: Subscript Assignment: Cdrag_wings[wing.tag] = rp.atleast_2d(dim_wing_drags[:, i]).T / ref
+  Line 1211: Subscript Assignment: AoA_wing_induced[wing.tag] = alpha_i[i]
+  Line 1212: Augmented Assignment: i += 1
+  Total matches in this file: 52
+
+File: RCAIDE\Library\Methods\Geometry\Airfoil\compute_airfoil_properties.py
+  Line 209: Boolean Indexing: CL_ij[AoA_sweep_radians <= A0] = rp.fmin(CL1[AoA_sweep_radians <= A0], CL2[AoA_sweep_radians <= A0])
+  Line 253: Subscript Assignment: CL[aoa_locs] = airfoil_cl[abs(aoa_in_data[:, None] - airfoil_aoa[None, :]).argmin(axis=-1)]
+  Line 254: Subscript Assignment: CD[aoa_locs] = airfoil_cd[abs(aoa_in_data[:, None] - airfoil_aoa[None, :]).argmin(axis=-1)]
+  Line 259: Subscript Assignment: CD[0:data_lb] = rp.maximum(CD[0:data_lb], CD[data_lb] * rp.ones_like(CD[0:data_lb]))
+  Line 260: Subscript Assignment: CD[data_ub:] = rp.maximum(CD[data_ub:], CD[data_ub] * rp.ones_like(CD[data_ub:]))
+  Total matches in this file: 5
+
+File: RCAIDE\Library\Methods\Geometry\Airfoil\compute_naca_4series.py
+  Line 44: Augmented Assignment: npoints += 1
+  Line 72: Subscript Assignment: c_us[I_us] = camber / camber_loc ** 2 * (2 * camber_loc * x_us[I_us] - x_us[I_us] ** 2)
+  Line 73: Subscript Assignment: c_ls[I_ls] = camber / camber_loc ** 2 * (2 * camber_loc * x_ls[I_ls] - x_ls[I_ls] ** 2)
+  Total matches in this file: 3
+
+File: RCAIDE\Library\Methods\Geometry\Airfoil\generate_interpolated_airfoils.py
+  Line 68: Subscript Assignment: new_files[file] = open(save_filename + '_' + str(j + 1) + '.txt', 'w+')
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Geometry\Airfoil\import_airfoil_polars.py
+  Line 64: Subscript Assignment: Re[j] = float(line[25:40].strip().replace(' ', ''))
+  Line 66: Subscript Assignment: Ma[j] = float(line[7:20].strip().replace(' ', ''))
+  Line 86: Subscript Assignment: airfoil_AoA[line_count] = float(data_block[line_count][0:8].strip())
+  Line 87: Subscript Assignment: airfoil_cl[line_count] = float(data_block[line_count][10:17].strip())
+  Line 88: Subscript Assignment: airfoil_cd[line_count] = float(data_block[line_count][20:27].strip())
+  Line 90: Subscript Assignment: AoA[j, :] = AoA_interp
+  Line 91: Subscript Assignment: CL[j, :] = rp.interp(AoA_interp, airfoil_AoA, airfoil_cl)
+  Line 92: Subscript Assignment: CD[j, :] = rp.interp(AoA_interp, airfoil_AoA, airfoil_cd)
+  Total matches in this file: 8
+
+File: RCAIDE\Library\Methods\Geometry\Planform\wing_segmented_planform.py
+  Line 111: Subscript Assignment: integral[rp.isnan(integral)] = A[rp.isnan(integral)] ** 2 * lengths_ndim[rp.isnan(integral)]
+  Line 140: Subscript Assignment: single_side_aerodynamic_center[0] = single_side_aerodynamic_center[0] - MAC * 0.25
+  Line 142: Subscript Assignment: aerodynamic_center[1] = 0
+  Line 143: Subscript Assignment: aerodynamic_center[0] = single_side_aerodynamic_center[0]
+  Line 248: Augmented Assignment: total_wetted_area += Swet_seg
+  Line 249: Augmented Assignment: total_reference_area += Sref_seg
+  Total matches in this file: 6
+
+File: RCAIDE\Library\Methods\Propulsors\Common\compute_static_sea_level_performance.py
+  Line 85: Subscript Assignment: conditions.energy[fuel_line.tag] = Conditions()
+  Line 86: Subscript Assignment: conditions.energy[fuel_line.tag][fuel_tank.tag] = Conditions()
+  Line 89: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag] = Conditions()
+  Line 94: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][combustor.tag] = Conditions()
+  Line 98: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][ram.tag] = Conditions()
+  Line 101: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][fan.tag] = Conditions()
+  Line 104: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][high_pressure_compressor.tag] = Conditions()
+  Line 107: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][low_pressure_compressor.tag] = Conditions()
+  Line 110: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][high_pressure_turbine.tag] = Conditions()
+  Line 113: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][low_pressure_turbine.tag] = Conditions()
+  Line 116: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][core_nozzle.tag] = Conditions()
+  Line 119: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][fan_nozzle.tag] = Conditions()
+  Line 122: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][inlet_nozzle.tag] = Conditions()
+  Line 129: Subscript Assignment: conditions.noise[fuel_line.tag] = RCAIDE.Framework.Mission.Common.Conditions()
+  Line 130: Subscript Assignment: conditions.noise[fuel_line.tag][propulsor.tag] = RCAIDE.Framework.Mission.Common.Conditions()
+  Total matches in this file: 15
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Combustor\compute_rayleigh.py
+  Line 74: Boolean Indexing: Tt4[Tt4_ray <= Tt4] = Tt4_ray[Tt4_ray <= Tt4]
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Compression_Nozzle\compute_compression_nozzle_performance.py
+  Line 82: Subscript Assignment: Pt_out[i_low] = Pt_in[i_low] * PR
+  Line 83: Subscript Assignment: Mach[i_low] = rp.sqrt(((Pt_out[i_low] / P0[i_low]) ** ((gamma[i_low] - 1.0) / gamma[i_low]) - 1.0) * 2.0 / (gamma[i_low] - 1.0))
+  Line 84: Subscript Assignment: T_out[i_low] = Tt_out[i_low] / (1.0 + (gamma[i_low] - 1.0) / 2.0 * Mach[i_low] * Mach[i_low])
+  Line 88: Subscript Assignment: Mach[i_high] = rp.sqrt((1.0 + (gamma[i_high] - 1.0) / 2.0 * M0[i_high] ** 2.0) / (gamma[i_high] * M0[i_high] ** 2 - (gamma[i_high] - 1.0) / 2.0))
+  Line 89: Subscript Assignment: T_out[i_high] = Tt_out[i_high] / (1.0 + (gamma[i_high] - 1.0) / 2 * Mach[i_high] * Mach[i_high])
+  Line 90: Subscript Assignment: Pt_out[i_high] = PR * Pt_in[i_high] * ((gamma[i_high] + 1.0) * M0[i_high] ** 2.0 / ((gamma[i_high] - 1.0) * M0[i_high] ** 2.0 + 2.0)) ** (gamma[i_high] / (gamma[i_high] - 1.0)) * ((gamma[i_high] + 1.0) / (2.0 * gamma[i_high] * M0[i_high] ** 2.0 - (gamma[i_high] - 1.0))) ** (1.0 / (gamma[i_high] - 1.0))
+  Line 93: Subscript Assignment: P_out[i_high] = Pt_out[i_high] * (1.0 + (gamma[i_high] - 1.0) / 2.0 * Mach[i_high] ** 2.0) ** (-gamma[i_high] / (gamma[i_high] - 1.0))
+  Line 98: Boolean Indexing: Pt_out[Pt_out < P0] = P0[Pt_out < P0]
+  Total matches in this file: 8
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\DC_Motor\motor_performance.py
+  Line 111: Subscript Assignment: omega[rp.isnan(omega)] = 0.0
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Engine\compute_fuel_flow_rate_from_torque.py
+  Line 62: Boolean Indexing: altitude_virtual[altitude_virtual < 0.0] = 0.0
+  Line 74: Boolean Indexing: Pavailable[h_flat > altitude] = PSLS
+  Line 76: Boolean Indexing: P[P < 0.0] = 0.0
+  Total matches in this file: 3
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Engine\compute_power_from_throttle.py
+  Line 59: Boolean Indexing: altitude_virtual[altitude_virtual < 0.0] = 0.0
+  Line 73: Boolean Indexing: Pavailable[h_flat > altitude] = PSLS
+  Line 77: Boolean Indexing: P[P < 0.0] = 0.0
+  Total matches in this file: 3
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Engine\compute_throttle_from_power.py
+  Line 59: Boolean Indexing: altitude_virtual[altitude_virtual < 0.0] = 0.0
+  Line 69: Boolean Indexing: Pavailable[h_flat > altitude] = PSLS
+  Line 73: Boolean Indexing: P[P < 0.0] = 0.0
+  Total matches in this file: 3
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Expansion_Nozzle\compute_expansion_nozzle_performance.py
+  Line 81: Boolean Indexing: Pt_out[Pt_out < P0] = P0[Pt_out < P0]
+  Line 91: Subscript Assignment: P_out[i_low] = P0[i_low]
+  Line 92: Subscript Assignment: Mach[i_low] = rp.sqrt(((Pt_out[i_low] / P0[i_low]) ** ((gamma[i_low] - 1.0) / gamma[i_low]) - 1.0) * 2.0 / (gamma[i_low] - 1.0))
+  Line 96: Subscript Assignment: Mach[i_high] = Mach[i_high] / Mach[i_high]
+  Line 97: Subscript Assignment: P_out[i_high] = Pt_out[i_high] / (1.0 + (gamma[i_high] - 1.0) / 2.0 * Mach[i_high] * Mach[i_high]) ** (gamma[i_high] / (gamma[i_high] - 1.0))
+  Line 102: Boolean Indexing: Mach[Mach <= 0.0] = 0.001
+  Total matches in this file: 6
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Shaft_Power_Offtake\compute_shaft_power_offtake.py
+  Line 53: Boolean Indexing: offtake_shaft.outputs.work_done[mdot_core == 0] = 0
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Propulsors\Modulators\compute_esc_performance.py
+  Line 26: Boolean Indexing: throttle[throttle >= 1.0] = 1.0
+  Line 27: Boolean Indexing: throttle[throttle <= 0.0] = 0.0
+  Line 57: Boolean Indexing: throttle[throttle <= 0.0] = 0.0
+  Line 58: Boolean Indexing: throttle[throttle >= 1.0] = 1.0
+  Line 91: Boolean Indexing: throttle[throttle <= 0.0] = 0.0
+  Line 92: Boolean Indexing: throttle[throttle >= 1.0] = 1.0
+  Total matches in this file: 6
+
+File: RCAIDE\Library\Methods\Propulsors\Turbofan_Propulsor\compute_turbofan_performance.py
+  Line 256: Subscript Assignment: F[:, 0] = turbofan_conditions.thrust[:, 0]
+  Line 257: Subscript Assignment: moment_vector[:, 0] = turbofan.origin[0][0] - center_of_gravity[0][0]
+  Line 258: Subscript Assignment: moment_vector[:, 1] = turbofan.origin[0][1] - center_of_gravity[0][1]
+  Line 259: Subscript Assignment: moment_vector[:, 2] = turbofan.origin[0][2] - center_of_gravity[0][2]
+  Line 261: Augmented Assignment: total_moment += M
+  Line 262: Augmented Assignment: total_power += turbofan_conditions.power
+  Line 263: Augmented Assignment: total_thrust += F
+  Line 324: Subscript Assignment: F[:, 0] = turbofan_conditions_0.thrust[:, 0]
+  Line 325: Subscript Assignment: moment_vector[:, 0] = turbofan.origin[0][0] - center_of_gravity[0][0]
+  Line 326: Subscript Assignment: moment_vector[:, 1] = turbofan.origin[0][1] - center_of_gravity[0][1]
+  Line 327: Subscript Assignment: moment_vector[:, 2] = turbofan.origin[0][2] - center_of_gravity[0][2]
+  Line 337: Augmented Assignment: total_moment += M
+  Line 338: Augmented Assignment: total_power += turbofan_conditions.power
+  Line 339: Augmented Assignment: total_thrust += turbofan_conditions.thrust
+  Total matches in this file: 14
+
+File: RCAIDE\Library\Methods\Propulsors\Turbofan_Propulsor\design_turbofan.py
+  Line 92: Subscript Assignment: turbofan_conditions[combustor.tag] = Conditions()
+  Line 96: Subscript Assignment: turbofan_conditions[ram.tag] = Conditions()
+  Line 99: Subscript Assignment: turbofan_conditions[fan.tag] = Conditions()
+  Line 102: Subscript Assignment: turbofan_conditions[high_pressure_compressor.tag] = Conditions()
+  Line 105: Subscript Assignment: turbofan_conditions[low_pressure_compressor.tag] = Conditions()
+  Line 108: Subscript Assignment: turbofan_conditions[high_pressure_turbine.tag] = Conditions()
+  Line 111: Subscript Assignment: turbofan_conditions[low_pressure_turbine.tag] = Conditions()
+  Line 114: Subscript Assignment: turbofan_conditions[core_nozzle.tag] = Conditions()
+  Line 117: Subscript Assignment: turbofan_conditions[fan_nozzle.tag] = Conditions()
+  Line 120: Subscript Assignment: turbofan_conditions[inlet_nozzle.tag] = Conditions()
+  Total matches in this file: 10
+
+File: RCAIDE\Library\Methods\Stability\Center_of_Gravity\compute_component_centers_of_gravity.py
+  Line 47: Subscript Assignment: wing.mass_properties.center_of_gravity[0][0] = 0.05 * wing.chords.mean_aerodynamic + wing.aerodynamic_center[0]
+  Line 51: Subscript Assignment: wing.mass_properties.center_of_gravity[0][0] = 0.3 * chord_length_h_tail_35_percent_semi_span + h_tail_35_percent_semi_span_offset
+  Line 56: Subscript Assignment: wing.mass_properties.center_of_gravity[0][0] = 0.3 * chord_length_v_tail_35_percent_semi_span + v_tail_35_percent_semi_span_offset
+  Line 61: Subscript Assignment: wing.mass_properties.center_of_gravity[0][0] = 0.3 * wing.chords.mean_aerodynamic + mac_le_offset
+  Line 66: Subscript Assignment: fuselage.mass_properties.center_of_gravity[0][0] = 0.45 * fuselage.lengths.total
+  Line 74: Augmented Assignment: network_moment += net[key].mass_properties.mass * (rp.sum(rp.array(net[key].origin), axis=0) + net[key].mass_properties.center_of_gravity)
+  Line 76: Augmented Assignment: network_mass += net[key].mass_properties.mass * len(net[key].origin)
+  Line 106: Subscript Assignment: passengers.origin[0][0] = 0.51 * length_scale
+  Line 107: Subscript Assignment: passengers.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 116: Subscript Assignment: main_gear.origin[0][0] = main_gear_location
+  Line 124: Subscript Assignment: nose_gear.origin[0][0] = 0.25 * nose_length
+  Line 125: Subscript Assignment: nose_gear.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 132: Subscript Assignment: baggage.origin[0][0] = 0.51 * length_scale
+  Line 133: Subscript Assignment: baggage.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 140: Subscript Assignment: cargo.origin[0][0] = 0.51 * length_scale
+  Line 141: Subscript Assignment: cargo.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 149: Subscript Assignment: avionics.origin[0][0] = 0.4 * nose_length
+  Line 150: Subscript Assignment: avionics.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 157: Subscript Assignment: furnishings.origin[0][0] = 0.51 * length_scale
+  Line 158: Subscript Assignment: furnishings.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 165: Subscript Assignment: apu.origin[0][0] = 0.9 * length_scale
+  Line 166: Subscript Assignment: apu.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 173: Subscript Assignment: air_conditioner.origin[0][0] = nose_length
+  Line 174: Subscript Assignment: air_conditioner.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 181: Subscript Assignment: optionals.origin[0][0] = 0.51 * length_scale
+  Line 182: Subscript Assignment: optionals.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 189: Subscript Assignment: control_systems.origin[0][0] = vehicle.wings.main_wing.origin[0][0]
+  Line 190: Subscript Assignment: control_systems.mass_properties.center_of_gravity[0][0] = vehicle.wings.main_wing.mass_properties.center_of_gravity[0][0] + 0.1 * vehicle.wings.main_wing.chords.mean_aerodynamic
+  Line 198: Subscript Assignment: electrical_systems.origin[0][0] = 0.75 * (0.5 * length_scale) + propulsion_cg[0][0] * 0.25
+  Line 199: Subscript Assignment: electrical_systems.mass_properties.center_of_gravity[0][0] = 0.0
+  Line 206: Subscript Assignment: hydraulics.origin[0][0] = 0.75 * (vehicle.wings.main_wing.origin[0][0] + wing.mass_properties.center_of_gravity[0][0]) + 0.25 * length_scale * 0.95
+  Line 207: Subscript Assignment: hydraulics.mass_properties.center_of_gravity[0][0] = 0.0
+  Total matches in this file: 32
+
+Matches per subdirectory:
+  RCAIDE: 6
+  RCAIDE\Framework\Analyses: 3
+  RCAIDE\Framework\Analyses\Common: 1
+  RCAIDE\Framework\Core: 12
+  RCAIDE\Framework\Mission: 1
+  RCAIDE\Framework\Mission\Common: 4
+  RCAIDE\Framework\Mission\Functions\Common\Initialize: 18
+  RCAIDE\Framework\Mission\Functions\Common\Residuals: 7
+  RCAIDE\Framework\Mission\Functions\Common\Unpack_Unknowns: 9
+  RCAIDE\Framework\Mission\Functions\Common\Update: 42
+  RCAIDE\Framework\Mission\Functions\Initialize: 35
+  RCAIDE\Framework\Mission\Functions\Segments\Climb: 75
+  RCAIDE\Framework\Mission\Functions\Segments\Cruise: 47
+  RCAIDE\Framework\Mission\Functions\Segments\Descent: 36
+  RCAIDE\Framework\Mission\Functions\Segments\Ground: 11
+  RCAIDE\Framework\Mission\Functions\Segments\Single_Point: 14
+  RCAIDE\Framework\Mission\Functions\Segments\Transition: 13
+  RCAIDE\Framework\Mission\Functions\Segments\Vertical_Flight: 16
+  RCAIDE\Framework\Networks: 20
+  RCAIDE\Framework\Plots\Aerodynamics: 6
+  RCAIDE\Framework\Plots\Energy: 11
+  RCAIDE\Framework\Plots\Geometry: 113
+  RCAIDE\Library\Components: 4
+  RCAIDE\Library\Components\Wings: 2
+  RCAIDE\Library\Methods\Aerodynamics\AERODAS: 13
+  RCAIDE\Library\Methods\Aerodynamics\Airfoil_Panel_Method: 52
+  RCAIDE\Library\Methods\Aerodynamics\Common\Drag: 41
+  RCAIDE\Library\Methods\Aerodynamics\Common\Lift: 13
+  RCAIDE\Library\Methods\Aerodynamics\Vortex_Lattice_Method: 62
+  RCAIDE\Library\Methods\Geometry\Airfoil: 17
+  RCAIDE\Library\Methods\Geometry\Planform: 6
+  RCAIDE\Library\Methods\Propulsors\Common: 15
+  RCAIDE\Library\Methods\Propulsors\Converters\Combustor: 1
+  RCAIDE\Library\Methods\Propulsors\Converters\Compression_Nozzle: 8
+  RCAIDE\Library\Methods\Propulsors\Converters\DC_Motor: 1
+  RCAIDE\Library\Methods\Propulsors\Converters\Engine: 9
+  RCAIDE\Library\Methods\Propulsors\Converters\Expansion_Nozzle: 6
+  RCAIDE\Library\Methods\Propulsors\Converters\Shaft_Power_Offtake: 1
+  RCAIDE\Library\Methods\Propulsors\Modulators: 6
+  RCAIDE\Library\Methods\Propulsors\Turbofan_Propulsor: 24
+  RCAIDE\Library\Methods\Stability\Center_of_Gravity: 32
+
+Total matches overall: 813

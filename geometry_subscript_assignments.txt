@@ -1,0 +1,43 @@
+File: RCAIDE\Library\Methods\Geometry\Airfoil\compute_airfoil_properties.py
+  Line 209: Boolean Indexing: CL_ij[AoA_sweep_radians <= A0] = rp.fmin(CL1[AoA_sweep_radians <= A0], CL2[AoA_sweep_radians <= A0])
+  Line 253: Subscript Assignment: CL[aoa_locs] = airfoil_cl[abs(aoa_in_data[:, None] - airfoil_aoa[None, :]).argmin(axis=-1)]
+  Line 254: Subscript Assignment: CD[aoa_locs] = airfoil_cd[abs(aoa_in_data[:, None] - airfoil_aoa[None, :]).argmin(axis=-1)]
+  Line 259: Subscript Assignment: CD[0:data_lb] = rp.maximum(CD[0:data_lb], CD[data_lb] * rp.ones_like(CD[0:data_lb]))
+  Line 260: Subscript Assignment: CD[data_ub:] = rp.maximum(CD[data_ub:], CD[data_ub] * rp.ones_like(CD[data_ub:]))
+  Total matches in this file: 5
+
+File: RCAIDE\Library\Methods\Geometry\Airfoil\compute_naca_4series.py
+  Line 44: Augmented Assignment: npoints += 1
+  Line 72: Subscript Assignment: c_us[I_us] = camber / camber_loc ** 2 * (2 * camber_loc * x_us[I_us] - x_us[I_us] ** 2)
+  Line 73: Subscript Assignment: c_ls[I_ls] = camber / camber_loc ** 2 * (2 * camber_loc * x_ls[I_ls] - x_ls[I_ls] ** 2)
+  Total matches in this file: 3
+
+File: RCAIDE\Library\Methods\Geometry\Airfoil\generate_interpolated_airfoils.py
+  Line 68: Subscript Assignment: new_files[file] = open(save_filename + '_' + str(j + 1) + '.txt', 'w+')
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Geometry\Airfoil\import_airfoil_polars.py
+  Line 64: Subscript Assignment: Re[j] = float(line[25:40].strip().replace(' ', ''))
+  Line 66: Subscript Assignment: Ma[j] = float(line[7:20].strip().replace(' ', ''))
+  Line 86: Subscript Assignment: airfoil_AoA[line_count] = float(data_block[line_count][0:8].strip())
+  Line 87: Subscript Assignment: airfoil_cl[line_count] = float(data_block[line_count][10:17].strip())
+  Line 88: Subscript Assignment: airfoil_cd[line_count] = float(data_block[line_count][20:27].strip())
+  Line 90: Subscript Assignment: AoA[j, :] = AoA_interp
+  Line 91: Subscript Assignment: CL[j, :] = rp.interp(AoA_interp, airfoil_AoA, airfoil_cl)
+  Line 92: Subscript Assignment: CD[j, :] = rp.interp(AoA_interp, airfoil_AoA, airfoil_cd)
+  Total matches in this file: 8
+
+File: RCAIDE\Library\Methods\Geometry\Planform\wing_segmented_planform.py
+  Line 111: Subscript Assignment: integral[rp.isnan(integral)] = A[rp.isnan(integral)] ** 2 * lengths_ndim[rp.isnan(integral)]
+  Line 140: Subscript Assignment: single_side_aerodynamic_center[0] = single_side_aerodynamic_center[0] - MAC * 0.25
+  Line 142: Subscript Assignment: aerodynamic_center[1] = 0
+  Line 143: Subscript Assignment: aerodynamic_center[0] = single_side_aerodynamic_center[0]
+  Line 248: Augmented Assignment: total_wetted_area += Swet_seg
+  Line 249: Augmented Assignment: total_reference_area += Sref_seg
+  Total matches in this file: 6
+
+Matches per subdirectory:
+  RCAIDE\Library\Methods\Geometry\Airfoil: 17
+  RCAIDE\Library\Methods\Geometry\Planform: 6
+
+Total matches overall: 23

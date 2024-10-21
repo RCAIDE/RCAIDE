@@ -1,0 +1,119 @@
+File: RCAIDE\Library\Methods\Propulsors\Common\compute_static_sea_level_performance.py
+  Line 85: Subscript Assignment: conditions.energy[fuel_line.tag] = Conditions()
+  Line 86: Subscript Assignment: conditions.energy[fuel_line.tag][fuel_tank.tag] = Conditions()
+  Line 89: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag] = Conditions()
+  Line 94: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][combustor.tag] = Conditions()
+  Line 98: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][ram.tag] = Conditions()
+  Line 101: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][fan.tag] = Conditions()
+  Line 104: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][high_pressure_compressor.tag] = Conditions()
+  Line 107: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][low_pressure_compressor.tag] = Conditions()
+  Line 110: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][high_pressure_turbine.tag] = Conditions()
+  Line 113: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][low_pressure_turbine.tag] = Conditions()
+  Line 116: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][core_nozzle.tag] = Conditions()
+  Line 119: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][fan_nozzle.tag] = Conditions()
+  Line 122: Subscript Assignment: conditions.energy[fuel_line.tag][propulsor.tag][inlet_nozzle.tag] = Conditions()
+  Line 129: Subscript Assignment: conditions.noise[fuel_line.tag] = RCAIDE.Framework.Mission.Common.Conditions()
+  Line 130: Subscript Assignment: conditions.noise[fuel_line.tag][propulsor.tag] = RCAIDE.Framework.Mission.Common.Conditions()
+  Total matches in this file: 15
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Combustor\compute_rayleigh.py
+  Line 74: Boolean Indexing: Tt4[Tt4_ray <= Tt4] = Tt4_ray[Tt4_ray <= Tt4]
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Compression_Nozzle\compute_compression_nozzle_performance.py
+  Line 82: Subscript Assignment: Pt_out[i_low] = Pt_in[i_low] * PR
+  Line 83: Subscript Assignment: Mach[i_low] = rp.sqrt(((Pt_out[i_low] / P0[i_low]) ** ((gamma[i_low] - 1.0) / gamma[i_low]) - 1.0) * 2.0 / (gamma[i_low] - 1.0))
+  Line 84: Subscript Assignment: T_out[i_low] = Tt_out[i_low] / (1.0 + (gamma[i_low] - 1.0) / 2.0 * Mach[i_low] * Mach[i_low])
+  Line 88: Subscript Assignment: Mach[i_high] = rp.sqrt((1.0 + (gamma[i_high] - 1.0) / 2.0 * M0[i_high] ** 2.0) / (gamma[i_high] * M0[i_high] ** 2 - (gamma[i_high] - 1.0) / 2.0))
+  Line 89: Subscript Assignment: T_out[i_high] = Tt_out[i_high] / (1.0 + (gamma[i_high] - 1.0) / 2 * Mach[i_high] * Mach[i_high])
+  Line 90: Subscript Assignment: Pt_out[i_high] = PR * Pt_in[i_high] * ((gamma[i_high] + 1.0) * M0[i_high] ** 2.0 / ((gamma[i_high] - 1.0) * M0[i_high] ** 2.0 + 2.0)) ** (gamma[i_high] / (gamma[i_high] - 1.0)) * ((gamma[i_high] + 1.0) / (2.0 * gamma[i_high] * M0[i_high] ** 2.0 - (gamma[i_high] - 1.0))) ** (1.0 / (gamma[i_high] - 1.0))
+  Line 93: Subscript Assignment: P_out[i_high] = Pt_out[i_high] * (1.0 + (gamma[i_high] - 1.0) / 2.0 * Mach[i_high] ** 2.0) ** (-gamma[i_high] / (gamma[i_high] - 1.0))
+  Line 98: Boolean Indexing: Pt_out[Pt_out < P0] = P0[Pt_out < P0]
+  Total matches in this file: 8
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\DC_Motor\motor_performance.py
+  Line 111: Subscript Assignment: omega[rp.isnan(omega)] = 0.0
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Engine\compute_fuel_flow_rate_from_torque.py
+  Line 62: Boolean Indexing: altitude_virtual[altitude_virtual < 0.0] = 0.0
+  Line 74: Boolean Indexing: Pavailable[h_flat > altitude] = PSLS
+  Line 76: Boolean Indexing: P[P < 0.0] = 0.0
+  Total matches in this file: 3
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Engine\compute_power_from_throttle.py
+  Line 59: Boolean Indexing: altitude_virtual[altitude_virtual < 0.0] = 0.0
+  Line 73: Boolean Indexing: Pavailable[h_flat > altitude] = PSLS
+  Line 77: Boolean Indexing: P[P < 0.0] = 0.0
+  Total matches in this file: 3
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Engine\compute_throttle_from_power.py
+  Line 59: Boolean Indexing: altitude_virtual[altitude_virtual < 0.0] = 0.0
+  Line 69: Boolean Indexing: Pavailable[h_flat > altitude] = PSLS
+  Line 73: Boolean Indexing: P[P < 0.0] = 0.0
+  Total matches in this file: 3
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Expansion_Nozzle\compute_expansion_nozzle_performance.py
+  Line 81: Boolean Indexing: Pt_out[Pt_out < P0] = P0[Pt_out < P0]
+  Line 91: Subscript Assignment: P_out[i_low] = P0[i_low]
+  Line 92: Subscript Assignment: Mach[i_low] = rp.sqrt(((Pt_out[i_low] / P0[i_low]) ** ((gamma[i_low] - 1.0) / gamma[i_low]) - 1.0) * 2.0 / (gamma[i_low] - 1.0))
+  Line 96: Subscript Assignment: Mach[i_high] = Mach[i_high] / Mach[i_high]
+  Line 97: Subscript Assignment: P_out[i_high] = Pt_out[i_high] / (1.0 + (gamma[i_high] - 1.0) / 2.0 * Mach[i_high] * Mach[i_high]) ** (gamma[i_high] / (gamma[i_high] - 1.0))
+  Line 102: Boolean Indexing: Mach[Mach <= 0.0] = 0.001
+  Total matches in this file: 6
+
+File: RCAIDE\Library\Methods\Propulsors\Converters\Shaft_Power_Offtake\compute_shaft_power_offtake.py
+  Line 53: Boolean Indexing: offtake_shaft.outputs.work_done[mdot_core == 0] = 0
+  Total matches in this file: 1
+
+File: RCAIDE\Library\Methods\Propulsors\Modulators\compute_esc_performance.py
+  Line 26: Boolean Indexing: throttle[throttle >= 1.0] = 1.0
+  Line 27: Boolean Indexing: throttle[throttle <= 0.0] = 0.0
+  Line 57: Boolean Indexing: throttle[throttle <= 0.0] = 0.0
+  Line 58: Boolean Indexing: throttle[throttle >= 1.0] = 1.0
+  Line 91: Boolean Indexing: throttle[throttle <= 0.0] = 0.0
+  Line 92: Boolean Indexing: throttle[throttle >= 1.0] = 1.0
+  Total matches in this file: 6
+
+File: RCAIDE\Library\Methods\Propulsors\Turbofan_Propulsor\compute_turbofan_performance.py
+  Line 256: Subscript Assignment: F[:, 0] = turbofan_conditions.thrust[:, 0]
+  Line 257: Subscript Assignment: moment_vector[:, 0] = turbofan.origin[0][0] - center_of_gravity[0][0]
+  Line 258: Subscript Assignment: moment_vector[:, 1] = turbofan.origin[0][1] - center_of_gravity[0][1]
+  Line 259: Subscript Assignment: moment_vector[:, 2] = turbofan.origin[0][2] - center_of_gravity[0][2]
+  Line 261: Augmented Assignment: total_moment += M
+  Line 262: Augmented Assignment: total_power += turbofan_conditions.power
+  Line 263: Augmented Assignment: total_thrust += F
+  Line 324: Subscript Assignment: F[:, 0] = turbofan_conditions_0.thrust[:, 0]
+  Line 325: Subscript Assignment: moment_vector[:, 0] = turbofan.origin[0][0] - center_of_gravity[0][0]
+  Line 326: Subscript Assignment: moment_vector[:, 1] = turbofan.origin[0][1] - center_of_gravity[0][1]
+  Line 327: Subscript Assignment: moment_vector[:, 2] = turbofan.origin[0][2] - center_of_gravity[0][2]
+  Line 337: Augmented Assignment: total_moment += M
+  Line 338: Augmented Assignment: total_power += turbofan_conditions.power
+  Line 339: Augmented Assignment: total_thrust += turbofan_conditions.thrust
+  Total matches in this file: 14
+
+File: RCAIDE\Library\Methods\Propulsors\Turbofan_Propulsor\design_turbofan.py
+  Line 92: Subscript Assignment: turbofan_conditions[combustor.tag] = Conditions()
+  Line 96: Subscript Assignment: turbofan_conditions[ram.tag] = Conditions()
+  Line 99: Subscript Assignment: turbofan_conditions[fan.tag] = Conditions()
+  Line 102: Subscript Assignment: turbofan_conditions[high_pressure_compressor.tag] = Conditions()
+  Line 105: Subscript Assignment: turbofan_conditions[low_pressure_compressor.tag] = Conditions()
+  Line 108: Subscript Assignment: turbofan_conditions[high_pressure_turbine.tag] = Conditions()
+  Line 111: Subscript Assignment: turbofan_conditions[low_pressure_turbine.tag] = Conditions()
+  Line 114: Subscript Assignment: turbofan_conditions[core_nozzle.tag] = Conditions()
+  Line 117: Subscript Assignment: turbofan_conditions[fan_nozzle.tag] = Conditions()
+  Line 120: Subscript Assignment: turbofan_conditions[inlet_nozzle.tag] = Conditions()
+  Total matches in this file: 10
+
+Matches per subdirectory:
+  RCAIDE\Library\Methods\Propulsors\Common: 15
+  RCAIDE\Library\Methods\Propulsors\Converters\Combustor: 1
+  RCAIDE\Library\Methods\Propulsors\Converters\Compression_Nozzle: 8
+  RCAIDE\Library\Methods\Propulsors\Converters\DC_Motor: 1
+  RCAIDE\Library\Methods\Propulsors\Converters\Engine: 9
+  RCAIDE\Library\Methods\Propulsors\Converters\Expansion_Nozzle: 6
+  RCAIDE\Library\Methods\Propulsors\Converters\Shaft_Power_Offtake: 1
+  RCAIDE\Library\Methods\Propulsors\Modulators: 6
+  RCAIDE\Library\Methods\Propulsors\Turbofan_Propulsor: 24
+
+Total matches overall: 71
