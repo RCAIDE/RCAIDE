@@ -17,6 +17,7 @@ from . import Performance
 from . import Stability
 from . import Utilities
 from . import Weights
+from . import Numerical
 
 from .skip import skip
 

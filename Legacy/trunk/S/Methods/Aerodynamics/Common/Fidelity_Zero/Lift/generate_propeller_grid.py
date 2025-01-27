@@ -8,7 +8,7 @@
 #  Imports
 # ----------------------------------------------------------------------
 import numpy as np
-import pylab as plt
+import matplotlib.pyplot as plt
 from Legacy.trunk.S.Core import Data
 
 def generate_propeller_grid(prop, grid_settings, plot_grid=True):
