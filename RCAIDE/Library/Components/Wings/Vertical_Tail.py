@@ -57,7 +57,7 @@ class Vertical_Tail(Wing):
         """   
         wing = deepcopy(self)
         wing.dihedral     *= -1
-        wing.origin[0][1] *= -1
+        wing.origin[0][1] *= -1  #TODO: requires manual review
         
         for segment in wing.Segments:
             segment.dihedral_outboard *= -1

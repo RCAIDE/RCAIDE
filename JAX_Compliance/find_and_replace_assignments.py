@@ -1,4 +1,4 @@
-import ast, os, fileinput, termios, sys, tty
+import ast, os, fileinput, termios, sys, tty, re
 
 
 
@@ -49,9 +49,13 @@ def process_file(file_path):
         print(f"Line {line_number}: {assignment_type}")
         print(f"Current Version:\n\t{code}")
 
-        if assignment_type == 'Boolean Indexing' or assignment_type == 'Subscript Assignment':
+        if assignment_type == 'Subscript Assignment':
             lhs, rhs = code.split('=', 1)
             jax_code = f"{lhs.strip()} = {lhs.strip()}.at[{lhs.split('[')[1].split(']')[0]}].set({rhs.strip()})"
+        elif assignment_type == 'Boolean Indexing':
+            lhs, rhs = re.split(r'\]\s*=', code, 1)
+            jax_code = f"{lhs.strip()}] = jnp.where({lhs.split('[')[1]}, {rhs.strip()}, {lhs.split('[')[0]})"
+
         elif assignment_type == 'Augmented Assignment':
             lhs, op, rhs = code.split(' ', 2)
             lhs = lhs.strip().split('[')
@@ -112,4 +116,4 @@ def process_directory(directory):
 
 
 if __name__ == "__main__":
-    process_directory('/home/jordan/dev/ARC/RCAIDE/RCAIDE/Framework/Mission/Functions/Initialize')
+    process_directory('/home/jordan/dev/ARC/RCAIDE/RCAIDE/')

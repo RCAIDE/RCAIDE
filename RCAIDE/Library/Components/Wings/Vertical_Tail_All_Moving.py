@@ -58,5 +58,5 @@ class Vertical_Tail_All_Moving(Vertical_Tail, All_Moving_Surface):
         """       
         wing                  = super().make_x_z_reflection()
         wing.deflection      *= -1*self.sign_duplicate
-        wing.hinge_vector[1] *= -1
+        wing.hinge_vector = wing.hinge_vector.at[1].multiply(-1)
         return wing
