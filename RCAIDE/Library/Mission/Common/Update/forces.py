@@ -45,8 +45,7 @@ def forces(segment):
     # unpack transformation matrices
     T_body2inertial = conditions.frames.body.transform_to_inertial
     T_wind2inertial = conditions.frames.wind.transform_to_inertial   
-    T_wind2body     = conditions.frames.wind.transform_to_body     
-    T_inertia2wind  = orientation_transpose(T_wind2inertial)
+    T_wind2body     = conditions.frames.wind.transform_to_body      
     T_inertial2body = orientation_transpose(T_body2inertial)
     T_body2wind     = orientation_transpose(T_wind2body) 
 
@@ -57,12 +56,12 @@ def forces(segment):
     F_weight_body = orientation_product(T_inertial2body, F_weight_i)
     F_weight_wind = orientation_product(T_body2wind,F_weight_body)
     
-    if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb:
+    if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb or \
+        type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:        
         F_aero_i =  np.zeros_like(F_thrust_i)
-    elif type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover:
-        F_aero_i =  np.zeros_like(F_thrust_i)
-    elif type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:
-        F_aero_i =  np.zeros_like(F_thrust_i)  
+        F_aero_w =  np.zeros_like(F_thrust_i)
+        F_weight_wind[:, [0, 2]] = F_weight_wind[:, [2, 0]]
+        F_thrust_wind[:, [0, 2]] = F_thrust_wind[:, [2, 0]]
     
     F_weight_i[:,1] *= -1        
     F_weight_wind[:,1] *= -1

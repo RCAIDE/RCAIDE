@@ -37,7 +37,7 @@ def main():
     tiltwing_transition_test(update_regression_values)
     
     # TEST 2
-    #stopped_rotor_transition_test(update_regression_values)
+    stopped_rotor_transition_test(update_regression_values)
     
     return 
 

@@ -64,7 +64,7 @@ def configs_setup(vehicle):
     
     charge_config     = RCAIDE.Library.Components.Configs.Config(vehicle)
     charge_config.tag = 'charge'
-    charge_config.networks.electric.busses.bus.payload.power_draw =  0
+    charge_config.networks.electric.busses.bus.system.power_draw =  0
     configs.append(charge_config)
    
     

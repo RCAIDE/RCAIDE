@@ -239,8 +239,7 @@ def BWB_Aircraft_Test(update_regression_values,show_figure):
                 weight_analysis.settings.PRSEUS = False
             for wing in weight_analysis.vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-                    compute_layout_of_passenger_accommodations(wing)  
-                    update_blended_wing_body_planform(wing)
+                    compute_layout_of_passenger_accommodations(wing)
                     bwb_wing_planform(wing,overwrite_reference = True)
                     weight_analysis.vehicle.reference_area = wing.areas.reference 
             weight_analysis.settings.FLOPS.complexity = 'Simple' if FLOPS_number == 0 else 'Complex'

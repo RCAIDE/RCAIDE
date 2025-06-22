@@ -92,8 +92,8 @@ def orientations(segment):
     wind_body_rotations[:,2] = beta       
 
     # wind frame tranformation matricies
-    T_wind2body     = angles_to_dcms(wind_body_rotations,(2,1,0))   # CHECK 
-    T_wind2inertial = orientation_product(T_wind2body,T_body2inertial) # CHECK   
+    T_wind2body     = angles_to_dcms(wind_body_rotations,(2,1,0))       
+    T_wind2inertial = orientation_product(T_wind2body,T_body2inertial) 
 
     # pack wind rotations
     conditions.frames.wind.body_rotations = wind_body_rotations
