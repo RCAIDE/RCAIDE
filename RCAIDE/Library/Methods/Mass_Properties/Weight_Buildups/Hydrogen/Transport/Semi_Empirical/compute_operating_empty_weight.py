@@ -146,11 +146,11 @@ def compute_operating_empty_weight(vehicle, settings=None):
         if len(fuselage.cabins) == 0:
             print("No cabin defined for weights method. Defining default cabin.")
             cabin =  RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
-            cabin.mass_properties.mass = (W_oper.total + payload.passengers + output.W_systems)
+            cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total)
             fuselage.append_cabin(cabin)
         else: 
             for cabin in fuselage.cabins:
-                cabin.mass_properties.mass = (W_oper.total + payload.passengers + output.W_systems) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
+                cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
     ##-------------------------------------------------------------------------------
@@ -343,15 +343,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
                 for fuel_tank in fuel_line.fuel_tanks:
                     fuel_weight =  total_fuel_weight/number_of_tanks  
                     fuel_tank.fuel.mass_properties.mass = fuel_weight
-
-    output.takeoff_weight = output.zero_fuel_weight + total_fuel_weight
-
-    if vehicle.mass_properties.takeoff != 0:
-        #print('Takeoff weight prescribed, overwritting computed values')
-        output.takeoff_weight = vehicle.mass_properties.takeoff
-    
-    if vehicle.mass_properties.max_takeoff < output.takeoff_weight:
-        print('Warning: Takeoff weight exceeds aircrafts limits')
                     
     nose_landing_gear = False
     main_landing_gear =  False

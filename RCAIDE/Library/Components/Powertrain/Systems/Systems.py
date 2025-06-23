@@ -1,4 +1,4 @@
-# RCAIDE/Library/Components/Powertrain/Systems/System.py
+# RCAIDE/Library/Components/Powertrain/Systems/Systems.py
 # 
 # Created:  Mar 2024, M. Clarke 
 
@@ -7,12 +7,12 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Methods.Powertrain.Systems.append_system_conditions import append_system_conditions
+from RCAIDE.Library.Methods.Powertrain.Systems.append_systems_conditions import append_systems_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------
 # System
 # ----------------------------------------------------------------------------------------------------------------------            
-class System(Component):
+class Systems(Component):
     """
     Base class for aircraft systems providing core functionality for modeling 
     onboard equipment and subsystems.
@@ -63,13 +63,10 @@ class System(Component):
         """
         Sets default values for the system attributes.
         """        
-        self.tag         = 'System'
-        self.origin      = [[0.0,0.0,0.0]]
-        self.power_draw = 0.0
+        self.tag         = 'System' 
+        self.power_draw  = 0.0
         self.control     = None
-        self.accessories = None
-        
-      
+        self.accessories = None 
 
     def append_operating_conditions(self, segment, bus): 
         """
@@ -82,7 +79,7 @@ class System(Component):
         bus : Data
             Electrical bus supplying power to the avionics
         """
-        append_system_conditions(self, segment, bus)
+        append_systems_conditions(self, segment, bus)
         return
             
     def power(self):

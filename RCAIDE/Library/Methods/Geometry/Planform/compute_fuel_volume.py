@@ -27,9 +27,9 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
     for network in vehicle.networks: 
         for fuel_line in network.fuel_lines:
             for fuel_tank in fuel_line.fuel_tanks: 
-                fuel_tank.internal_volume = 0 
-                tank_moment = 0
-                tank_mass   = 1E-6
+                fuel_tank.internal_volume = 0
+                tank_c_g    =  [[0, 0, 0]]
+                tank_mass   = 0
 
                 # fuel tanks integrated into wings 
                 if fuel_tank.wing_tag != None:
@@ -37,6 +37,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
 
                         if len(wing.segments) > 1:
+                            segment_tank_moment = np.array([0, 0, 0])
                             seg_tags = list(wing.segments.keys())
                             for i in range(len(seg_tags)-1):
                                 inner_segment = wing.segments[seg_tags[i]]
@@ -49,10 +50,12 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                     # compute volume of fuel in wing
                                     volume = compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment)
                                     fuel_tank.internal_volume += volume 
-                                    total_fuel_volume += volume
-                                    total_fuel_mass   += volume * fuel_tank.fuel.density
-                                    tank_mass         += volume * fuel_tank.fuel.density
-                                    tank_moment       += (inner_segment.origin + inner_segment.mass_properties.center_of_gravity ) * tank_mass
+                                    total_fuel_volume     += volume
+                                    total_fuel_mass       += volume * fuel_tank.fuel.density
+                                    tank_mass             += volume * fuel_tank.fuel.density
+                                    segment_tank_moment   += np.array(inner_segment.mass_properties.center_of_gravity) * tank_mass
+                          
+                            tank_c_g = list(segment_tank_moment / tank_mass)
                         else: 
                             # get orgin of fuel tank     
                             fuel_tank.origin = wing.origin 
@@ -63,7 +66,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                             total_fuel_volume += volume
                             total_fuel_mass   += volume * fuel_tank.fuel.density
                             tank_mass         += volume * fuel_tank.fuel.density
-                            tank_moment       += wing.aerodynamic_center * tank_mass
+                            tank_c_g          = wing.aerodynamic_center  
 
                     elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank: 
                         if len(wing.segments) > 1: 
@@ -78,7 +81,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                     total_fuel_volume += volume  
                                     total_fuel_mass   += volume * fuel_tank.fuel.density 
                                     tank_mass         += volume * fuel_tank.fuel.density   
-                                    tank_moment       += fuel_tank.length /2 * tank_mass                                    
+                                    tank_c_g          = [[fuel_tank.length /2, 0, fuel_tank.outer_diameter / 2]]             
 
                 # fuel tanks integrated fuselage
                 elif fuel_tank.fuselage_tag != None: 
@@ -97,7 +100,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                     total_fuel_volume += volume  
                                     total_fuel_mass   += volume * fuel_tank.fuel.density
                                     tank_mass         += volume * fuel_tank.fuel.density  
-                                    tank_moment       += (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 * tank_mass  
+                                    tank_c_g           = [[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0,  (inner_segment.height  + outer_segment.height)/2]]
 
                     elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
 
@@ -106,9 +109,9 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                         fuel_tank.internal_volume += volume 
                         total_fuel_volume += volume  
                         total_fuel_mass   += volume * fuel_tank.fuel.density
-                        tank_moment       +=  fuel_tank.length /2 * tank_mass   
+                        tank_c_g           = [[fuel_tank.length /2, 0, fuel_tank.outer_diameter / 2]]
 
-                fuel_tank.mass_properties.center_of_gravity =  tank_moment / tank_mass
+                fuel_tank.mass_properties.center_of_gravity =  tank_c_g
                 fuel_tank.mass_properties.mass = tank_mass
     if update_max_fuel:
         vehicle.mass_properties.max_fuel = total_fuel_mass
@@ -238,6 +241,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
         volume *= 2
 
     fuel_tank.length = l
+    fuel_tank.heg = l
     
     return volume ,  tank_percent_span_location
 

@@ -167,66 +167,68 @@ class Wing(Component):
         """
         Sets default values for the wing attributes.
         """         
-        self.tag                               = 'wing'
-        self.mass_properties                   = Mass_Properties()
-        self.origin                            = np.array([[0.0,0.0,0.0]])
-                                               
-        self.symmetric                         = True
-        self.vertical                          = False
-        self.t_tail                            = False
-        self.taper                             = 0.0
-        self.dihedral                          = 0.0
-        self.aspect_ratio                      = 0.0
-        self.thickness_to_chord                = 0.0
-        self.aerodynamic_center                = [0.0,0.0,0.0]
-        self.percent_span_unexposed            = 0.0
-        self.total_length                      = 0.0
+        self.tag                                    = 'wing'
+        self.mass_properties                        = Mass_Properties()
+        self.origin                                 = np.array([[0.0,0.0,0.0]])
+                                                    
+        self.symmetric                              = True
+        self.vertical                               = False
+        self.t_tail                                 = False
+        self.taper                                  = 0.0
+        self.dihedral                               = 0.0
+        self.aspect_ratio                           = 0.0
+        self.thickness_to_chord                     = 0.0
+        self.aerodynamic_center                     = [0.0,0.0,0.0]
+        self.percent_span_unexposed                 = 0.0
+        self.total_length                           = 0.0
+             
+        self.fuel_tank                              = Data()      
+        self.fuel_tank.percent_chord_start_location = 0.1  
+        self.fuel_tank.percent_chord_end_location   = 0.6     
+        self.has_fuel_tank                          = False
+             
+        self.spans                                  = Data()
+        self.spans.projected                        = 0.0
+        self.spans.total                            = 0.0
+                                                    
+        self.areas                                  = Data()
+        self.areas.reference                        = 0.0
+        self.areas.exposed                          = 0.0
+        self.areas.affected                         = 0.0
+        self.areas.wetted                           = 0.0
+                                                    
+        self.chords                                 = Data()
+        self.chords.mean_aerodynamic                = 0.0
+        self.chords.mean_geometric                  = 0.0
+        self.chords.root                            = 0.0
+        self.chords.tip                             = 0.0
+                                                    
+        self.sweeps                                 = Data()
+        self.sweeps.quarter_chord                   = None
+        self.sweeps.leading_edge                    = None
+        self.sweeps.half_chord                      = 0.0        
+                                                    
+        self.twists                                 = Data()
+        self.twists.root                            = 0.0
+        self.twists.tip                             = 0.0
+                                                    
+        self.high_lift                              = False
+        self.symbolic                               = False 
+        self.high_mach                              = False
+        self.vortex_lift                            = False
+                                                    
+        self.transition_x_upper                     = 0.0
+        self.transition_x_lower                     = 0.0 
+        self.airfoil                                = None 
         
-        self.fuel_tanl                         = Data()        
-        self.has_fuel_tank                     = False
-        
-        self.spans                             = Data()
-        self.spans.projected                   = 0.0
-        self.spans.total                       = 0.0
-                                               
-        self.areas                             = Data()
-        self.areas.reference                   = 0.0
-        self.areas.exposed                     = 0.0
-        self.areas.affected                    = 0.0
-        self.areas.wetted                      = 0.0
-                                               
-        self.chords                            = Data()
-        self.chords.mean_aerodynamic           = 0.0
-        self.chords.mean_geometric             = 0.0
-        self.chords.root                       = 0.0
-        self.chords.tip                        = 0.0
-                                               
-        self.sweeps                            = Data()
-        self.sweeps.quarter_chord              = None
-        self.sweeps.leading_edge               = None
-        self.sweeps.half_chord                 = 0.0        
-                                               
-        self.twists                            = Data()
-        self.twists.root                       = 0.0
-        self.twists.tip                        = 0.0
-                                               
-        self.high_lift                         = False
-        self.symbolic                          = False 
-        self.high_mach                         = False
-        self.vortex_lift                       = False
-                                               
-        self.transition_x_upper                = 0.0
-        self.transition_x_lower                = 0.0 
-        self.airfoil                           = None 
-        
-        self.segments                          = Container()
-        self.control_surfaces                  = Container()
-
-        self.structural                          = Data()  
-        self.structural.rib                      = False   
-        self.structural.front_spar_percent_chord = 0.1  
-        self.structural.rear_spar_percent_chord  = 0.6  
-        self.structural.stringer_percent_chords  = []         
+        self.segments                               = Container()
+        self.control_surfaces                       = Container()
+   
+        self.structural                             = Data()  
+        self.structural.rib                         = False   
+        self.structural.front_spar_percent_chord    = 0.1  
+        self.structural.rear_spar_percent_chord     = 0.6  
+        self.structural.stringer_percent_chords     = []         
 
     def append_segment(self, segment):
         """

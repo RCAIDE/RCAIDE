@@ -45,7 +45,7 @@ def main():
     fuel_line.fuel_tanks.append(refueling_tank_1)
     
     #------------------------------------------------------------------------------------------------------------------------------------  
-    # Refuling Tanks
+    # Refueling Tanks
     #------------------------------------------------------------------------------------------------------------------------------------       
     refueling_tank_2 = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank(vehicle.fuselages.fuselage)
     refueling_tank_2.tag = 'refueling_tank_2'# for regression, aircraft has two tanks

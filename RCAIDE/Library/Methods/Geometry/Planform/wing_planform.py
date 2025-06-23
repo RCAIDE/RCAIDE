@@ -128,8 +128,7 @@ def wing_planform(wing, overwrite_reference = True):
         As = (lengths_dim*chords_dim[:-1]-(chords_dim[:-1]-chords_dim[1:])*(lengths_dim/2))
         
         # Calculate the weighted area, this should not include any unexposed area 
-        A_wets = 2*(1+0.2*t_cs[:-1])*As
-        wet_area = np.sum(A_wets)
+        A_wets = 2*(1+0.2*t_cs[:-1])*As 
         
         # Calculate the wing area
         ref_area = np.sum(As)*(1+sym)

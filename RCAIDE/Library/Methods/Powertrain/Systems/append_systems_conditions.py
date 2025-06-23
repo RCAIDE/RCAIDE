@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Powertrain/Systems/append_system_conditions.py
+# RCAIDE/Library/Methods/Powertrain/Systems/append_systems_conditions.py
 # 
 # Created:  Jun 2024, M. Clarke  
 
@@ -7,7 +7,7 @@ from RCAIDE.Framework.Mission.Common     import   Conditions
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  append_system_conditions
 # ----------------------------------------------------------------------------------------------------------------------    
-def append_system_conditions(system, segment, bus):  
+def append_systems_conditions(system, segment, bus):  
     """
     Initializes and appends empty system conditions data structures to the segment state conditions.
     

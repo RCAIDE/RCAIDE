@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component
-from RCAIDE.Library.Methods.Powertrain.Systems.append_avionics_conditions import append_avionics_conditions
+from RCAIDE.Library.Methods.Powertrain.Systems.append_avionics_conditions import append_avionics_conditions 
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Avionics
@@ -48,7 +48,7 @@ class Avionics(Component):
 
     See Also
     --------
-    RCAIDE.Library.Components.Powertrain.Systems.System
+    RCAIDE.Library.Components.Powertrain.Systems.Systems
         Base system class
     """        
     def __defaults__(self):
@@ -56,6 +56,7 @@ class Avionics(Component):
         Sets default values for the avionics system attributes.
         """                  
         self.tag        = 'Avionics'
+        self.power_draw = 0
 
     def append_operating_conditions(self, segment, bus): 
         """

@@ -41,9 +41,9 @@ def vehicle_setup(current,C_rat,cell_chemistry,electrical_config):
     bus.initialize_bus_properties()
     
     #------------------------------------------------------------------------------------------------------------------------------------  
-    # Avionics
+    # Systems
     #------------------------------------------------------------------------------------------------------------------------------------  
-    systems                     = RCAIDE.Library.Components.Powertrain.Systems.System()
+    systems                     = RCAIDE.Library.Components.Powertrain.Systems.Systems()
     systems.power_draw          = current * bus.voltage  
     bus.systems                 = systems 
       
@@ -64,7 +64,7 @@ def configs_setup(vehicle):
     
     charge_config     = RCAIDE.Library.Components.Configs.Config(vehicle)
     charge_config.tag = 'charge'
-    charge_config.networks.electric.busses.bus.system.power_draw =  0
+    charge_config.networks.electric.busses.bus.systems.power_draw =  0
     configs.append(charge_config)
    
     

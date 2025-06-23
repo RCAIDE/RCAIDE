@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Powertrain/Systems/compute_system_power_draw.py
+# RCAIDE/Library/Methods/Powertrain/Systems/compute_systems_power_draw.py
 # 
 # Created:  Jul 2024, RCAIDE Team 
 
@@ -6,7 +6,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
 # package imports
-def compute_system_power_draw(system,bus,conditions):
+def compute_systems_power_draw(system,bus,conditions):
     """
     Computes the power draw of a generic system.
     
