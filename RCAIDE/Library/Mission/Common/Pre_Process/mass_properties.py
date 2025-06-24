@@ -36,7 +36,10 @@ def mass_properties(mission):
     
                 # Max fuel weight of aircraft 
                 if weights_analysis.vehicle.mass_properties.max_fuel == None:
-                    raise AttributeError("Define maximum fuel weight of aircraft")            
+                    if weights_analysis.propulsion_architecture == 'Electric':
+                        weights_analysis.vehicle.mass_properties.max_fuel = 0
+                    else:
+                        raise AttributeError("Define maximum fuel weight of aircraft")            
     
                 # Max payload weight 
                 if weights_analysis.vehicle.mass_properties.max_payload == None:  
