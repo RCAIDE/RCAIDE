@@ -33,6 +33,7 @@ def vehicle_setup(rotor_type):
     vehicle.mass_properties.takeoff                   = 2712. * Units.pounds
     vehicle.mass_properties.max_zero_fuel             = 2712. * Units.pounds 
     vehicle.mass_properties.max_payload               = 50.  * Units.pounds  #
+    vehicle.mass_properties.cargo                     = 0. * Units.pounds
     
     
     vehicle.flight_envelope.ultimate_load             = 3.75
