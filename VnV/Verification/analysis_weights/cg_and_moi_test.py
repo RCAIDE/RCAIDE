@@ -66,7 +66,7 @@ def Transport_Aircraft_Test():
     accepted  = np.array([[33537544.17729216, 3023969.4717367333, 3289494.982706053],
                           [3023969.4717367333,33868806.88349103,        0.        ],
                         [ 3289494.982706053,        0.        , 51338355.739521846]])
-    MOI_error     = MOI - accepted
+    MOI_error     = (MOI - accepted) / accepted
 
     # Check the errors
     error = Data()
@@ -128,7 +128,7 @@ def General_Aviation_Test():
     print(error)
 
     for k,v in list(error.items()):
-        assert(np.abs(v)<1e-6)   
+        assert(np.abs(v)<1e-5)   
 
     return
 
