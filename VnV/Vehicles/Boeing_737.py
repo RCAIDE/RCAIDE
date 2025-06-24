@@ -11,6 +11,7 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units         
 from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan  import design_turbofan    
 from RCAIDE.Library.Plots                                   import *     
+from RCAIDE.Library.Methods.Geometry.Planform.wing_planform import wing_planform
  
 # python imports 
 import numpy as np  
@@ -179,6 +180,8 @@ def vehicle_setup():
     aileron.chord_fraction        = 0.16
     wing.append_control_surface(aileron)
 
+    wing_planform(wing)
+
     # add to vehicle
     vehicle.append_component(wing)
 
@@ -239,6 +242,8 @@ def vehicle_setup():
     elevator.deflection            = 0.0  * Units.deg
     elevator.chord_fraction        = 0.3
     wing.append_control_surface(elevator)
+
+    wing_planform(wing)
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -310,6 +315,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = .1  
     wing.append_segment(segment)
            
+    wing_planform(wing)
 
     # add to vehicle
     vehicle.append_component(wing)

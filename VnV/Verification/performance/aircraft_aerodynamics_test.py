@@ -31,12 +31,7 @@ def main():
     
     aerodynamics_analysis_routine     = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics_analysis_routine.vehicle = vehicle
-    analyses = RCAIDE.Framework.Analyses.Vehicle()
-    geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
-    analyses.append(geometry)
-    analyses.evaluate()
-
+    
     results                           = aircraft_aerodynamic_analysis(aerodynamics_analysis = aerodynamics_analysis_routine,
                                                                       angle_of_attack_range = angle_of_attack_range,
                                                                       Mach_number_range = Mach_number_range,
