@@ -75,7 +75,7 @@ def vehicle_setup(new_regression=True):
     # add to vehicle                                          
     vehicle.append_component(wing)                            
                                                 
-    wing                                        = RCAIDE.Library.Components.Wings.Main_Wing()
+    wing                                        = RCAIDE.Library.Components.Wings.Wing()
     wing.tag                                    = 'main_wing'  
     wing.aspect_ratio                           = 11.37706641  
     wing.sweeps.quarter_chord                   = 0.0

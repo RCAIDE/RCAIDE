@@ -170,7 +170,7 @@ def mission_setup(analyses):
     #   Climb Segment : Constant Speed Constant Rate
     # ------------------------------------------------------------------ 
     segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
-    segment.tag = "climb"
+    segment.tag = "climb"  
     segment.analyses.extend( analyses.base )
     segment.altitude_start                                                      = 0.0 * Units.feet
     segment.altitude_end                                                        = 12000 * Units.feet

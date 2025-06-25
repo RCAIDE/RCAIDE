@@ -180,7 +180,8 @@ def TW_base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Weights
     weights         = RCAIDE.Framework.Analyses.Weights.Electric_VTOL() 
-    weights.vehicle = vehicle
+    weights.vehicle = vehicle 
+    weights.settings.update_center_of_gravity    = True    
     analyses.append(weights)
 
     # ------------------------------------------------------------------
