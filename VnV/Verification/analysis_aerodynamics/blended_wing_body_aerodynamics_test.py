@@ -24,6 +24,12 @@ def main():
                     save_filename               = "BWB_Top_View", 
                     axis_limit                  = 100,  
                     show_figure=False)
+
+    plot_3d_vehicle_vlm_panelization(vehicle,
+                    save_filename               = "BWB_Top_View", 
+                    axis_limit                  = 100,  
+                    show_figure=False)
+    
     
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs)  

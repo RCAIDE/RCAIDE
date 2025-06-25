@@ -80,21 +80,4 @@ class Systems(Component):
             Electrical bus supplying power to the avionics
         """
         append_systems_conditions(self, segment, bus)
-        return
-            
-    def power(self):
-        """
-        Calculates the power draw from the avionics system.
-
-        Returns
-        -------
-        float
-            Power draw in Watts
-
-        Notes
-        -----
-        Sets both the input power and returns the power draw value for use
-        in energy calculations.
-        """                 
-        self.inputs.power = self.power_draw
-        return self.power_draw        
+        return        

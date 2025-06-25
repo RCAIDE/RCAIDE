@@ -342,7 +342,7 @@ def compute_operating_empty_weight(vehicle,settings = None):
         output.total              = output.empty.total + output.payload.total 
         
         # check if cargo bays defined in aircraft, if none, define one 
-        if len(vehicle.cargo_bays) == None:
+        if len(vehicle.cargo_bays) == 0:
             print("No cargo bay defined for weights method. Defining default cargo bay.")
             cargo_bay =  RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
             vehicle.cargo_bays.append(cargo_bay) 

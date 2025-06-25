@@ -1,11 +1,23 @@
- 
+# RCAIDE/Framework/Analyses/Stability/Vortex_Lattice_Method.py
+# 
+# 
+# Created:  Jul 2023, M. Clarke
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+
+# RCAIDE imports  
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Framework.Analyses import Analysis
 
 
-# ----------------------------------------------------------------------
-#  Analysis
-# ---------------------------------------------------------------------- 
+# package imports 
+import numpy as np 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Stability
+# ----------------------------------------------------------------------------------------------------------------------
 class Stability(Analysis):
     """This is the base class for stability analyses. It contains functions
     that are built into the default class.

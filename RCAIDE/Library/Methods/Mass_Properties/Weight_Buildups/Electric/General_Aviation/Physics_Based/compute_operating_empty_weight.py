@@ -27,10 +27,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     """
 
     if settings == None:
-        W_factors = Data()
-        use_max_fuel_weight = True
-    else:
-        use_max_fuel_weight = settings.use_max_fuel_weight
+        W_factors = Data() 
 
     # Set the factors
     if not hasattr(settings, 'weight_reduction_factors'):
@@ -118,8 +115,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     W_energy_network.W_nacelle         = 0 
     W_energy_network.W_battery         = 0
     W_energy_network.W_motor           = 0
-    number_of_engines                  = 0
-    number_of_tanks                    = 0
+    number_of_engines                  = 0 
     W_energy_network_cumulative        = 0 
 
     for network in vehicle.networks: 
@@ -166,10 +162,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
 
     ##-------------------------------------------------------------------------------                 
     # Wing Weights 
-    ##------------------------------------------------------------------------------- 
-    Al_rho   = Aluminum().density
-    Al_sigma = Aluminum().yield_tensile_strength      
-    
+    ##-------------------------------------------------------------------------------  
     num_main_wings      = 0
     W_main_wing        = 0.0
     W_tail_horizontal  = 0.0
