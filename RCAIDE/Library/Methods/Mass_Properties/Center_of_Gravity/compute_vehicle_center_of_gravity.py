@@ -108,36 +108,37 @@ def compute_vehicle_center_of_gravity(vehicle, nose_load = 0.06, update_CG=True)
     #---------------------------------------------------------------------------------
     # Cabin (Includes Systems,Operating Items)
     #---------------------------------------------------------------------------------
-    #for fuselage in vehicle.fuselages:
-        #for cabin in fuselage.cabins:
-            #cabin.origin[0][0] = fuselage.lengths.nose 
-            #num_seats  = cabin.number_of_passengers
-            #cabin_mass = cabin.mass_properties.mass
-            #if len(cabin.layout_of_passenger_accommodations) == 0:
-                #cabin.mass_properties.center_of_gravity[0][0] = 0.51 * length_scale
-            #else:
-                #LOPA       = cabin.layout_of_passenger_accommodations.object_coordinates
-                #point_mass = cabin_mass/num_seats
-                #cg_x       = (LOPA[:,2]*point_mass)/cabin_mass
-                #cg_y       = (LOPA[:,3]*point_mass)/cabin_mass
-                #cg_z       = (LOPA[:,4]*point_mass)/cabin_mass  
-                #cabin.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]] 
+    for fuselage in vehicle.fuselages:
+        for cabin in fuselage.cabins:
+            cabin.origin[0][0] = fuselage.lengths.nose 
+            num_seats  = cabin.number_of_passengers
+            cabin_mass = cabin.mass_properties.mass
+            if len(cabin.layout_of_passenger_accommodations) == 0:
+                cabin.mass_properties.center_of_gravity[0][0] = 0.51 * length_scale
+            else:
+                pass
+                # LOPA       = cabin.layout_of_passenger_accommodations.object_coordinates
+                # point_mass = cabin_mass/num_seats
+                # cg_x       = (LOPA[:,2]*point_mass)/cabin_mass
+                # cg_y       = (LOPA[:,3]*point_mass)/cabin_mass
+                # cg_z       = (LOPA[:,4]*point_mass)/cabin_mass  
+                # cabin.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]] 
             
-    #for wing in  vehicle.wings:
-        #if isinstance(wing, C.Wings.Blended_Wing_Body):
-            #for cabin in wing.cabins:
-                #cabin.origin[0][0] = wing.lengths.nose 
-                #num_seats  = cabin.number_of_passengers
-                #cabin_mass = cabin.mass_properties.mass
-                #if len(cabin.layout_of_passenger_accommodations) == 0:
-                    #cabin.mass_properties.center_of_gravity[0][0] = 0.51 * length_scale
-                #else:
-                    #LOPA       = cabin.layout_of_passenger_accommodations.object_coordinates
-                    #point_mass = cabin_mass/num_seats
-                    #cg_x       = (LOPA[:,2]*point_mass)/cabin_mass
-                    #cg_y       = (LOPA[:,3]*point_mass)/cabin_mass
-                    #cg_z       = (LOPA[:,4]*point_mass)/cabin_mass  
-                    #cabin.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]] 
+    # for wing in  vehicle.wings:
+    #     if isinstance(wing, C.Wings.Blended_Wing_Body):
+    #         for cabin in wing.cabins:
+    #             cabin.origin[0][0] = wing.lengths.nose 
+    #             num_seats  = cabin.number_of_passengers
+    #             cabin_mass = cabin.mass_properties.mass
+    #             if len(cabin.layout_of_passenger_accommodations) == 0:
+    #                 cabin.mass_properties.center_of_gravity[0][0] = 0.51 * length_scale
+    #             else:
+                    # LOPA       = cabin.layout_of_passenger_accommodations.object_coordinates
+                    # point_mass = cabin_mass/num_seats
+                    # cg_x       = (LOPA[:,2]*point_mass)/cabin_mass
+                    # cg_y       = (LOPA[:,3]*point_mass)/cabin_mass
+                    # cg_z       = (LOPA[:,4]*point_mass)/cabin_mass  
+                    # cabin.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]] 
 
     #---------------------------------------------------------------------------------
     # Cargo Bays 
