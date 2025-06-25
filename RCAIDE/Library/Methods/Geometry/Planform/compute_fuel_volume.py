@@ -37,7 +37,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
 
                         if len(wing.segments) > 1:
-                            segment_tank_moment = np.array([0, 0, 0])
+                            segment_tank_moment = np.array([0.0, 0.0, 0.0])
                             seg_tags = list(wing.segments.keys())
                             for i in range(len(seg_tags)-1):
                                 inner_segment = wing.segments[seg_tags[i]]
@@ -53,7 +53,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                     total_fuel_volume     += volume
                                     total_fuel_mass       += volume * fuel_tank.fuel.density
                                     tank_mass             += volume * fuel_tank.fuel.density
-                                    segment_tank_moment   += np.array(inner_segment.mass_properties.center_of_gravity) * tank_mass
+                                    segment_tank_moment   += np.array(inner_segment.mass_properties.center_of_gravity)[0] * tank_mass
                           
                             tank_c_g = list(segment_tank_moment / tank_mass)
                         else: 
