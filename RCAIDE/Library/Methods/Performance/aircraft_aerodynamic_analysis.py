@@ -17,12 +17,12 @@ import numpy as np
 #------------------------------------------------------------------------------
 # aircraft_aerodynamic_analysis
 #------------------------------------------------------------------------------  
-def aircraft_aerodynamic_analysis(aerodynamics_analysis = None,
-                                  angle_of_attack_range = None,
-                                  Mach_number_range= None,
-                                  control_surface_deflection_range = np.array([[0]]),
-                                  altitude = 0,
-                                  delta_ISA=0):
+def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None, 
+                                  angle_of_attacks                 = None,
+                                  mach_numbers                     = None,
+                                  non_dimensional_reynolds_numbers = None,
+                                  temperatures                     = None, 
+                                  altitude = None ):
     """
     Computes aerodynamic coefficients across ranges of angle of attack and Mach numbers using vortex lattice methods.
  
@@ -31,21 +31,12 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis = None,
     --------
     vehicle : Vehicle
         The vehicle instance to be analyzed
-    angle_of_attack_range : ndarray
+    angle_of_attacks : ndarray
         Array of angle of attack values to evaluate [radians]
-    Mach_number_range : ndarray
-        Array of Mach numbers to evaluate
-    control_surface_deflection_range : ndarray, optional
-        Array of control surface deflection angles [radians], default [[0]]
+    mach_numbers : ndarray
+        Array of Mach numbers to evaluate 
     altitude : float, optional
-        Altitude for atmospheric properties [m], default 0
-    delta_ISA : float, optional
-        Temperature offset from ISA conditions [K], default 0
-    use_surrogate : bool, optional
-        Flag for using surrogate model in analysis, default True
-    model_fuselage : bool, optional
-        Flag for including fuselage effects, default True. Of note, fuselage modeling can 
-        sometimes be difficult for VLM solvers.
+        Altitude for atmospheric properties [m], default 0 
  
     Returns
     --------
@@ -59,6 +50,8 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis = None,
                 Computed lift coefficients
             * drag_coefficient : ndarray
                 Computed drag coefficients
+            * moment_coefficient : ndarray
+                Computed Y-moment coefficients
  
     Notes
     -----
@@ -77,65 +70,98 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis = None,
     RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method
     RCAIDE.Library.Attributes.Atmospheres.Earth.US_Standard_1976
     """
+    #------------------------------------------------------------------------  
+    # Check size of arrays 
+    #------------------------------------------------------------------------
+    if angle_of_attacks is None:
+        raise ValueError("Angle of attack range must be defined as nx1 2d-array")
+    if mach_numbers is None:
+        raise ValueError("Mach number range must be defined as nx1 2d-array ")
+    
+    dim_AoA   = len(angle_of_attacks[:, 0] )
+    dim_Mach  = len(mach_numbers[:, 0] )
+    
+    if dim_Mach != dim_AoA:
+        raise ValueError("Angle of attack and Mach number range must same dimension")
+    
 
     #------------------------------------------------------------------------
     # setup flight conditions
-    #------------------------------------------------------------------------   
-    atmosphere     = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmo_data      = atmosphere.compute_values(altitude,delta_ISA)
-    P              = atmo_data.pressure 
-    T              = atmo_data.temperature 
-    rho            = atmo_data.density 
-    a              = atmo_data.speed_of_sound 
-    mu             = atmo_data.dynamic_viscosity
+    #------------------------------------------------------------------------
+    # if altitude is specified 
+    if altitude is not None:   
+        atmosphere     = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
+        atmo_data      = atmosphere.compute_values(altitude)
+        P              = atmo_data.pressure 
+        T              = atmo_data.temperature 
+        rho            = atmo_data.density 
+        a              = atmo_data.speed_of_sound  
+        mu             = atmo_data.dynamic_viscosity
+        V              = mach_numbers * a 
+        non_dimensional_reynolds_numbers  = V * rho / mu 
+    
+    # if non_dimensional_reynolds_numbers and temperatures are specified 
+    elif non_dimensional_reynolds_numbers is not  None and temperatures is not None:  
+        dim_Re   = len(non_dimensional_reynolds_numbers[:, 0] )
+        dim_T    = len(temperatures[:, 0] ) 
+        if dim_Re != dim_T:
+            raise ValueError("Reynolds number and temperature range must same dimension") 
+        elif dim_AoA != dim_T: 
+            raise ValueError("Angle of attack and temperature range must same dimension")      
+        
+
+        atmosphere     = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
+        atmo_data      = atmosphere.compute_values(0)
+        P              = atmo_data.pressure 
+        T              = temperatures
+        a              = RCAIDE.Library.Attributes.Gases.Air().compute_speed_of_sound(T=T) 
+        V              = mach_numbers * a 
+        mu             = RCAIDE.Library.Attributes.Gases.Air().compute_absolute_viscosity(T=T)
+        rho            = non_dimensional_reynolds_numbers * mu / V
+    else:
+        raise ValueError("Specify either 1) altitude or combination or 2) non dimensional reynolds numbers and temperature arrays")            
        
     # -----------------------------------------------------------------
     # Evaluate Without Surrogate
     # ----------------------------------------------------------------- 
-    ctrl_pts = len(angle_of_attack_range[:, 0] )
+    ctrl_pts = len(angle_of_attacks[:, 0] )
     state                                         = RCAIDE.Framework.Mission.Common.State()
     state.conditions                              = RCAIDE.Framework.Mission.Common.Results() 
-    state.conditions.freestream.density           = rho * np.ones_like(angle_of_attack_range)
-    state.conditions.freestream.dynamic_viscosity = mu  * np.ones_like(angle_of_attack_range)
-    state.conditions.freestream.temperature       = T   * np.ones_like(angle_of_attack_range)
-    state.conditions.freestream.pressure          = P   * np.ones_like(angle_of_attack_range)
-    state.conditions.aerodynamics.angles.alpha    = angle_of_attack_range  
-    state.conditions.aerodynamics.angles.beta     = angle_of_attack_range *0  
-    state.conditions.freestream.u                 = angle_of_attack_range *0       
-    state.conditions.freestream.v                 = angle_of_attack_range *0       
-    state.conditions.freestream.w                 = angle_of_attack_range *0       
-    state.conditions.static_stability.roll_rate   = angle_of_attack_range *0       
-    state.conditions.static_stability.pitch_rate  = angle_of_attack_range *0 
-    state.conditions.static_stability.yaw_rate    = angle_of_attack_range *0  
+    state.conditions.freestream.density           = rho * np.ones_like(angle_of_attacks)
+    state.conditions.freestream.dynamic_viscosity = mu  * np.ones_like(angle_of_attacks)
+    state.conditions.freestream.temperature       = T   * np.ones_like(angle_of_attacks)
+    state.conditions.freestream.pressure          = P   * np.ones_like(angle_of_attacks)
+    state.conditions.aerodynamics.angles.alpha    = angle_of_attacks  
+    state.conditions.aerodynamics.angles.beta     = angle_of_attacks *0  
+    state.conditions.freestream.u                 = angle_of_attacks *0       
+    state.conditions.freestream.v                 = angle_of_attacks *0       
+    state.conditions.freestream.w                 = angle_of_attacks *0       
+    state.conditions.static_stability.roll_rate   = angle_of_attacks *0       
+    state.conditions.static_stability.pitch_rate  = angle_of_attacks *0 
+    state.conditions.static_stability.yaw_rate    = angle_of_attacks *0  
     state.conditions.expand_rows(ctrl_pts)
- 
-    CL_vals    = np.zeros((len(angle_of_attack_range),len(Mach_number_range)))  
-    CD_vals    = np.zeros((len(angle_of_attack_range),len(Mach_number_range))) 
- 
-    state.analyses                                  =  Data()
+  
+    state.analyses  =  Data()
     aerodynamics_analysis.initialize()            
     state.analyses.aerodynamics = aerodynamics_analysis 
-    
-    for i in range (len(Mach_number_range)):  
-        state.conditions.freestream.mach_number                 = Mach_number_range[i, 0] * np.ones_like(angle_of_attack_range)
-        state.conditions.freestream.velocity                    = Mach_number_range[i, 0] * a   * np.ones_like(angle_of_attack_range)   
-        state.conditions.freestream.reynolds_number             = state.conditions.freestream.density * state.conditions.freestream.velocity / state.conditions.freestream.dynamic_viscosity 
-        state.conditions.frames.inertial.velocity_vector[:,0]   = Mach_number_range[i, 0] * a[0, 0]   *  angle_of_attack_range[:, 0] 
-        
      
-        # ---------------------------------------------------------------------------------------
-        # Evaluate With Surrogate
-        # ---------------------------------------------------------------------------------------  
-        _                 = state.analyses.aerodynamics.evaluate(state)        
-        CL_vals[:,i]      = state.conditions.aerodynamics.coefficients.lift.total[:, 0]
-        CD_vals[:,i]      = state.conditions.aerodynamics.coefficients.drag.total[:, 0] 
-
+    state.conditions.freestream.mach_number                 = mach_numbers
+    state.conditions.freestream.velocity                    = V
+    state.conditions.freestream.reynolds_number             = non_dimensional_reynolds_numbers # state.conditions.freestream.density * state.conditions.freestream.velocity / state.conditions.freestream.dynamic_viscosity 
+    state.conditions.frames.inertial.velocity_vector[:,0]   = V[:,0] 
+    
+ 
+    # ---------------------------------------------------------------------------------------
+    # Evaluate With Surrogate
+    # ---------------------------------------------------------------------------------------  
+    _                 = state.analyses.aerodynamics.evaluate(state)         
   
     results = Data(
-        Mach              = Mach_number_range, 
-        alpha             = angle_of_attack_range, 
-        lift_coefficient  = CL_vals, 
-        drag_coefficient  = CD_vals, 
+        Mach              = mach_numbers, 
+        alpha             = angle_of_attacks, 
+        lift_coefficient  = state.conditions.aerodynamics.coefficients.lift.total, 
+        drag_coefficient  = state.conditions.aerodynamics.coefficients.drag.total,
+        moment_coefficient = state.conditions.static_stability.coefficients.M, 
     )  
           
     return results  

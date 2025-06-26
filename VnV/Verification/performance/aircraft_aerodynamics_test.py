@@ -27,20 +27,18 @@ def main():
 
     vehicle                           = vehicle_setup()  
     for wing in vehicle.wings: 
-         wing_planform(wing,overwrite_reference =  True) 
-         if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
+        wing_planform(wing,overwrite_reference =  True) 
+        if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
             vehicle.reference_area = wing.areas.reference
     Mach_number_range                 = np.atleast_2d(np.linspace(0.1, 0.9, 10)).T
-    angle_of_attack_range             = np.atleast_2d(np.linspace(-5, 12, 18)).T*Units.degrees 
-    control_surface_deflection_range  = np.atleast_2d(np.linspace(0,30,7)).T*Units.degrees
+    angle_of_attack_range             = np.atleast_2d(np.linspace(-5, 12, 18)).T*Units.degrees  
     
     aerodynamics_analysis_routine     = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics_analysis_routine.vehicle = vehicle
     
     results                           = aircraft_aerodynamic_analysis(aerodynamics_analysis = aerodynamics_analysis_routine,
-                                                                      angle_of_attack_range = angle_of_attack_range,
-                                                                      Mach_number_range = Mach_number_range,
-                                                                      control_surface_deflection_range= control_surface_deflection_range)
+                                                                      angle_of_attacks = angle_of_attack_range,
+                                                                      mach_numbers = Mach_number_range)
   
     plot_aircraft_aerodynamics(results) 
     
