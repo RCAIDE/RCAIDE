@@ -31,7 +31,7 @@ from Hydrogen_Fuel_Cell_Twin_Otter   import vehicle_setup , configs_setup
 
 def main():  
  
-    mdot_H2_true         = [0.01781285061698235,0.01742038278605377]
+    mdot_H2_true         = [0.01758012660486991,0.017232611503614347]
     fuel_cell_models     = ['PEM', 'Larminie', ]
     
     for i in range(2): 
@@ -42,12 +42,7 @@ def main():
         configs  = configs_setup(vehicle)  
     
         plot_3d_vehicle(vehicle, 
-                                min_x_axis_limit            = -50,
-                                max_x_axis_limit            = 50,
-                                min_y_axis_limit            = -50,
-                                max_y_axis_limit            = 50,
-                                min_z_axis_limit            = -50,
-                                max_z_axis_limit            = 50, 
+                                axis_limit                  = 50, 
                                 wing_alpha                  = 0.2,
                                 front_view                  = True, 
                                 show_figure                 = False 
@@ -106,8 +101,7 @@ def base_analysis(vehicle):
  
     # ------------------------------------------------------------------
     #  Weights
-    weights          = RCAIDE.Framework.Analyses.Weights.Electric()
-    weights.aircraft_type   = 'General_Aviation'
+    weights          = RCAIDE.Framework.Analyses.Weights.Electric_General_Aviation() 
     weights.settings.update_mass_properties         = False
     weights.settings.update_center_of_gravity       = False
     weights.settings.update_moment_of_inertia       = False 

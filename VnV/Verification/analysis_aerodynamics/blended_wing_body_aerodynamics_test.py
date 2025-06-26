@@ -21,14 +21,15 @@ def main():
 
     # plot vehicle 
     plot_3d_vehicle(vehicle,
-                    save_filename               = "BWB_Top_View",
-                    min_x_axis_limit            = -100,
-                    max_x_axis_limit            = 100,
-                    min_y_axis_limit            = -100,
-                    max_y_axis_limit            = 100,
-                    min_z_axis_limit            = -100,
-                    max_z_axis_limit            = 100,  
+                    save_filename               = "BWB_Top_View", 
+                    axis_limit                  = 100,  
                     show_figure=False)
+
+    plot_3d_vehicle_vlm_panelization(vehicle,
+                    save_filename               = "BWB_Top_View", 
+                    axis_limit                  = 100,  
+                    show_figure=False)
+    
     
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs)  
@@ -37,7 +38,7 @@ def main():
     results  = missions.base_mission.evaluate() 
 
     Cruise_CL        = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
-    Cruise_CL_true   = 0.3521929512828953
+    Cruise_CL_true   = 0.4109412376798259
     Cruise_CL_diff   = np.abs(Cruise_CL - Cruise_CL_true)
     print('Error: ',Cruise_CL_diff)
     assert np.abs((Cruise_CL - Cruise_CL_true)/Cruise_CL_true) < 1e-6   
@@ -84,9 +85,8 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Framework.Analyses.Weights.Conventional()
-    weights.vehicle = vehicle
-    weights.aircraft_type  = 'BWB'
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional_BWB()
+    weights.vehicle = vehicle 
     weights.settings.FLOPS.complexity   = 'Complex'  
     analyses.append(weights)
 

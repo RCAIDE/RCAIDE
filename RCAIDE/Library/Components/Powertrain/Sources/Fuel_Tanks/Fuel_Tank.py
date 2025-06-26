@@ -61,7 +61,7 @@ class Fuel_Tank(Component):
         self.outer_diameter              = 0.0  
         self.wall_clearance              = 0.0
         self.wall_thickness              = 0.0
-        self.length                      = 0.0 
+        self.length                      = 0.0  
         self.fuel                        = None
         self.symmetric                   = True
         self.wing_tag                    = None 

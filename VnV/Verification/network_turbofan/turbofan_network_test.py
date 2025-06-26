@@ -37,24 +37,14 @@ def main():
     
     # plot vehicle 
     plot_3d_vehicle(vehicle, 
-                    min_x_axis_limit            = -100,
-                    max_x_axis_limit            = 100,
-                    min_y_axis_limit            = -100,
-                    max_y_axis_limit            = 100,
-                    min_z_axis_limit            = -100,
-                    max_z_axis_limit            = 100, 
+                    axis_limit                  = 50, 
                     show_figure                 = False 
                     )
 
     # plot vehicle 
     plot_3d_vehicle(vehicle,
                     save_filename               = "Boeing_737_Top_View",
-                    min_x_axis_limit            = -100,
-                    max_x_axis_limit            = 100,
-                    min_y_axis_limit            = -100,
-                    max_y_axis_limit            = 100,
-                    min_z_axis_limit            = -100,
-                    max_z_axis_limit            = 100, 
+                    axis_limit                  = 50, 
                     top_view                    = True, 
                     side_view                   = False, 
                     front_view                  = False, 
@@ -63,12 +53,7 @@ def main():
 
     plot_3d_vehicle(vehicle,
                     save_filename               = "Boeing_737_Side_View",
-                    min_x_axis_limit            = -100,
-                    max_x_axis_limit            = 100,
-                    min_y_axis_limit            = -100,
-                    max_y_axis_limit            = 100,
-                    min_z_axis_limit            = -100,
-                    max_z_axis_limit            = 100, 
+                    axis_limit                  = 50, 
                     top_view                    = False, 
                     side_view                   = True, 
                     front_view                  = False, 
@@ -77,12 +62,7 @@ def main():
    
     plot_3d_vehicle(vehicle,
                     save_filename               = "Boeing_737_Front_View",
-                    min_x_axis_limit            = -100,
-                    max_x_axis_limit            = 100,
-                    min_y_axis_limit            = -100,
-                    max_y_axis_limit            = 100,
-                    min_z_axis_limit            = -100,
-                    max_z_axis_limit            = 100, 
+                    axis_limit                  = 50, 
                     top_view                    = False, 
                     side_view                   = False, 
                     front_view                  = True,
@@ -145,30 +125,30 @@ def main():
     
     # Truth values
     takeoff_thrust_truth     = 99134.30160723036
-    climb_throttle_1_truth   = 0.7016348361953055
-    climb_throttle_2_truth   = 0.6267106563383659
-    climb_throttle_3_truth   = 0.43884398757845344
-    climb_throttle_4_truth   = 0.6971081223777067
-    climb_throttle_5_truth   = 0.7823649510641854
-    climb_throttle_6_truth   = 1.1171989705927245
-    climb_throttle_7_truth   = 1.2652452024699403
-    climb_throttle_8_truth   = 0.4947058195543865
-    climb_throttle_9_truth   = 0.7539099454103763
-    climb_10_CL_truth        = 1.3775058917676974
-    cruise_CL_1_truth        = 0.6763840368442674
-    cruise_CL_2_truth        = 0.6725417842032294
-    cruise_CL_3_truth        = 0.44500405036957136
-    descent_throttle_1_truth = -0.09527399671284391
-    curved_cruise_CL_truth   = 1.3196282880722987
-    descent_throttle_2_truth = 0.049643290239086604
-    single_pt_CL_1_truth     = 0.0006241344069661738
-    single_pt_CL_2_truth     = 0.0006476245841509315
-    cruise_4_CL_truth        = 0.5011980469324114
-    cruise_5_CL_truth        = 0.5011937462215134
-    cruise_6_CL_truth        = 0.3393786532899428
-    cruise_7_CL_truth        = 0.33137610888686897
-    cruise_8_CL_truth        = 0.324257259526527
-    descent_throttle_3_truth = 0.005344319083569369
+    climb_throttle_1_truth   = 0.7110549987823255
+    climb_throttle_2_truth   = 0.652851839507073
+    climb_throttle_3_truth   = 0.4593199009598425
+    climb_throttle_4_truth   = 0.7141126170628679
+    climb_throttle_5_truth   = 0.798592657556121
+    climb_throttle_6_truth   = 1.1487912485728402
+    climb_throttle_7_truth   = 1.3258581574701889
+    climb_throttle_8_truth   = 0.5353511433741139
+    climb_throttle_9_truth   = 0.9934711032570244
+    climb_10_CL_truth        = 1.369552659639704
+    cruise_CL_1_truth        = 0.6709704927310448
+    cruise_CL_2_truth        = 0.6670824032809666
+    cruise_CL_3_truth        = 0.47372768582052316
+    descent_throttle_1_truth = -0.07261872011915588
+    curved_cruise_CL_truth   = 1.305646777449746
+    descent_throttle_2_truth = 0.06577426504082755
+    single_pt_CL_1_truth     = 0.24316524632891692
+    single_pt_CL_2_truth     = 0.0007477042169639135
+    cruise_4_CL_truth        = 0.49547987570334445
+    cruise_5_CL_truth        = 0.4954753911628035
+    cruise_6_CL_truth        = 0.33532665895771235
+    cruise_7_CL_truth        = 0.3271259245655435
+    cruise_8_CL_truth        = 0.31983937725305056
+    descent_throttle_3_truth = 0.018473400590390692
     landing_thrust_truth     = 10914.922642740088
     
     # Store errors 
@@ -241,8 +221,7 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Weights
-    weights                                          = RCAIDE.Framework.Analyses.Weights.Conventional()
-    weights.aircraft_type                            =  "Transport"
+    weights                                          = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     weights.vehicle                                  = vehicle
     analyses.append(weights)
  
@@ -824,7 +803,7 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------------------------------------------------------------------------ 
     segment = Segments.Descent.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "descent_3" 
-    segment.analyses.extend( analyses.base ) 
+    segment.analyses.extend( analyses.landing ) 
     segment.altitude_start                                           = 2500  * Units.feet
     segment.altitude_end                                             = 0  * Units.feet 
     segment.descent_rate                                             = 3.  * Units.m / Units.s
@@ -848,7 +827,7 @@ def mission_setup(analyses):
     segment = Segments.Ground.Landing(base_segment)
     segment.tag = "landing"
 
-    segment.analyses.extend( analyses.landing )
+    segment.analyses.extend( analyses.reverse_thrust )
     segment.velocity_start                                                = 150 * Units.knots
     segment.velocity_end                                                  = 100 * Units.knots 
     segment.friction_coefficient                                          = 0.4

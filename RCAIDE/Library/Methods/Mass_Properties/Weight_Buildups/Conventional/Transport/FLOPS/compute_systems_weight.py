@@ -115,9 +115,10 @@ def compute_systems_weight(vehicle):
                 FNEW += 1
             else:
                 FNEF += 1
-            if 'nacelle' in propulsor:
-                nacelle =  propulsor.nacelle
-                FNAC    = nacelle.diameter / Units.ft
+            if 'nacelle' in propulsor: 
+                if propulsor.nacelle !=  None:                
+                    nacelle =  propulsor.nacelle
+                    FNAC    = nacelle.diameter / Units.ft
             else:
                 FNAC    = 0
     VMAX     = vehicle.flight_envelope.design_mach_number
@@ -176,5 +177,5 @@ def compute_systems_weight(vehicle):
     output.W_ac                = WAC * Units.lbs
     output.W_furnish           = WFURN * Units.lbs
     output.W_anti_ice          = WAI * Units.lbs
-    output.W_systems           = WSC + WAPU + WIN + WHYD + WELEC + WAVONC + WFURN + WAC + WAI
+    output.total               = WSC + WAPU + WIN + WHYD + WELEC + WAVONC + WFURN + WAC + WAI
     return output

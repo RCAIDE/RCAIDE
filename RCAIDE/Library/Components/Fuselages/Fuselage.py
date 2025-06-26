@@ -154,7 +154,7 @@ class Fuselage(Component):
         self.origin                                 = [[0.0,0.0,0.0]]
         self.aerodynamic_center                     = [0.0,0.0,0.0] 
         self.differential_pressure                  = 0.0
-        self.number_of_passengers                   = 0.0  
+        self.number_of_passengers                   = 1.0  
         self.layout_of_passenger_accommodations     = None
 
         self.areas                                  = Data()
@@ -183,7 +183,8 @@ class Fuselage(Component):
         self.fineness.nose                          = 0.0 
         self.fineness.tail                          = 0.0  
         self.nose_curvature                         = 1.5
-        self.tail_curvature                         = 1.5   
+        self.tail_curvature                         = 1.5
+        self.fuel_tank                              = Data()
         self.has_fuel_tank                          = False  
         self.vsp_data                               = Data()
         self.vsp_data.xsec_surf_id                  = ''    # There is only one XSecSurf in each VSP geom.

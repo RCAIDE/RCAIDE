@@ -30,17 +30,15 @@ def vehicle_setup(rotor_type):
     vehicle                                           = RCAIDE.Vehicle()
     vehicle.tag                                       = 'X57_Maxwell_Mod2' 
     vehicle.mass_properties.max_takeoff               = 2712. * Units.pounds
+    vehicle.mass_properties.takeoff                   = 2712. * Units.pounds
     vehicle.mass_properties.max_zero_fuel             = 2712. * Units.pounds 
     vehicle.mass_properties.max_payload               = 50.  * Units.pounds  #
+    vehicle.mass_properties.cargo                     = 0. * Units.pounds
     
     
     vehicle.flight_envelope.ultimate_load             = 3.75
     vehicle.flight_envelope.positive_limit_load       = 2.5 
-    vehicle.flight_envelope.design_mach_number        = 0.78 
-    # vehicle.flight_envelope.design_cruise_altitude    = 2500. * Units.ft
-    # vehicle.flight_envelope.design_range              = 200 * Units.nmi 
-    # vehicle.flight_envelope.design_dynamic_pressure   = 2072.1614727510914
-    # vehicle.flight_envelope.design_mach_number        = 0.17734782770792362
+    vehicle.flight_envelope.design_mach_number        = 0.78  
     vehicle.flight_envelope.design_cruise_altitude    = 30
     vehicle.flight_envelope.design_range              = 1 * Units.nmi 
     vehicle.flight_envelope.design_dynamic_pressure   = 3735.49
@@ -535,20 +533,11 @@ def vehicle_setup(rotor_type):
     # append propulsor to distribution line 
     net.propulsors.append(port_propulsor) 
 
-
-    #------------------------------------------------------------------------------------------------------------------------------------           
-    # Payload 
-    #------------------------------------------------------------------------------------------------------------------------------------  
-    payload                      = RCAIDE.Library.Components.Payloads.Payload()
-    payload.power_draw           = 10. # Watts
-    payload.mass_properties.mass = 1.0 * Units.kg
-    bus.payload                  = payload
-
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Avionics
     #------------------------------------------------------------------------------------------------------------------------------------  
     avionics                     = RCAIDE.Library.Components.Powertrain.Systems.Avionics()
-    avionics.power_draw          = 20. # Watts
+    avionics.power_draw          = 30. # Watts
     bus.avionics                 = avionics   
  
     #------------------------------------------------------------------------------------------------------------------------------------   

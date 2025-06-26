@@ -642,7 +642,7 @@ def compute_induced_drag(cl, alpha, x_dist, y_dist, z_dist, chord_dist, SURF, n_
    
     wing_span_index = 0
     # Induced velocity calculation for this case
-    
+
     for wing_index,wing_segments in enumerate(n_sw):
         wing_span_index_previous = wing_span_index
         wing_span_index += wing_segments

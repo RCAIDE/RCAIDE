@@ -54,7 +54,7 @@ def fuel_aircraft_payload_range():
     payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission)
                                 
     fuel_r                 = payload_range_results.range[-1]  
-    fuel_r_true            = 6270653.20657544 # Spot on with Airport planning manual! " https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf"
+    fuel_r_true            = 5747146.584254536 # " https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf"
     print('Fuel Range: ' + str(fuel_r))
     fuel_error =  abs(fuel_r - fuel_r_true) /fuel_r_true
     assert(abs(fuel_error)<1e-6)
@@ -146,8 +146,7 @@ def fuel_aircraft_base_analysis(vehicle):
     analyses.append(geometry)
     # ------------------------------------------------------------------
     #  Weights 
-    weights         = RCAIDE.Framework.Analyses.Weights.Conventional()
-    weights.aircraft_type =  "Transport"
+    weights         = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     weights.vehicle = vehicle 
     weights.settings.update_mass_properties         = True
     weights.settings.update_center_of_gravity       = False
@@ -200,8 +199,7 @@ def electric_aircraft_base_analysis(vehicle):
     analyses.append(geometry)
     # ------------------------------------------------------------------
     #  Weights 
-    weights = RCAIDE.Framework.Analyses.Weights.Electric()
-    weights.aircraft_type   = 'General_Aviation'
+    weights = RCAIDE.Framework.Analyses.Weights.Electric_General_Aviation() 
     weights.settings.update_mass_properties         = True
     weights.vehicle = vehicle
     analyses.append(weights)

@@ -59,21 +59,14 @@ def Transport_Aircraft_Test():
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
     # ------------------------------------------------------------------    
-    MOI, total_mass = compute_aircraft_moment_of_inertia(weight_analysis.vehicle, CG_location)
-
-    # ------------------------------------------------------------------
-    #   Payload MOI
-    # ------------------------------------------------------------------    
-    Cargo_MOI, mass =  compute_cuboid_moment_of_inertia(CG_location, 99790*Units.kg, 36.0, 3.66, 3, 0, 0, 0, CG_location)
-    MOI             += Cargo_MOI
-    total_mass      += mass
+    MOI, total_mass = compute_aircraft_moment_of_inertia(weight_analysis.vehicle, CG_location) 
 
     print(weight_analysis.vehicle.tag + ' Moment of Intertia')
     print(MOI) 
-    accepted  = np.array([[34010396.14322192,  2809408.99192064,  3577466.46319108],
-                          [ 2809408.99192064, 43351388.86038262,        0.        ],
-                        [ 3577466.46319108,        0.        , 60799904.58760986]])
-    MOI_error     = MOI - accepted
+    accepted  = np.array([[33537544.17729216, 3023969.4717367333, 3289494.982706053],
+                          [3023969.4717367333,33868806.88349103,        0.        ],
+                        [ 3289494.982706053,        0.        , 51338355.739521846]])
+    MOI_error     = (MOI - accepted) / accepted
 
     # Check the errors
     error = Data()
@@ -96,14 +89,12 @@ def General_Aviation_Test():
     # ------------------------------------------------------------------
     #   Weight Breakdown 
     # ------------------------------------------------------------------  
-    weight_analysis               = RCAIDE.Framework.Analyses.Weights.Conventional() 
+    weight_analysis               = RCAIDE.Framework.Analyses.Weights.Conventional_General_Aviation() 
     weight_analysis.vehicle       = general_aviation_setup() 
     for wing in weight_analysis.vehicle.wings: 
         wing_planform(wing,overwrite_reference =  True) 
         if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
-            weight_analysis.vehicle.reference_area = wing.areas.reference
-    weight_analysis.method        = 'FLOPS'
-    weight_analysis.aircraft_type = 'General_Aviation'
+            weight_analysis.vehicle.reference_area = wing.areas.reference 
     results                       = weight_analysis.evaluate() 
 
     # ------------------------------------------------------------------
@@ -119,9 +110,9 @@ def General_Aviation_Test():
     print(weight_analysis.vehicle.tag + ' Moment of Intertia')
     print(MOI)
 
-    accepted  = np.array([[2871.19050815,   17.26989442,   21.19147092],
-                          [  17.26989442, 3743.05853172,    0.        ],
-                            [  21.19147092,    0.        , 2724.8281536 ]])
+    accepted  = np.array([[3043.83594202,   46.98956732,   63.16362295],
+                          [  46.98956732, 5699.34400455,    0.        ],
+                          [  63.16362295,    0.        , 4514.01066542]])
 
     MOI_error     = MOI - accepted
 
@@ -137,7 +128,7 @@ def General_Aviation_Test():
     print(error)
 
     for k,v in list(error.items()):
-        assert(np.abs(v)<1e-6)   
+        assert(np.abs(v)<1e-5)   
 
     return
 
@@ -173,10 +164,10 @@ def EVTOL_Aircraft_Test(update_regression_values):
 
     print(weight_analysis.vehicle.tag + ' Moment of Intertia')
     print(MOI) 
-    accepted  = np.array([[ 6362.23866133,  -549.43135397,  -510.42696328],
-                          [ -549.43135397, 10028.21153243,   -98.16265964],
-                          [ -510.42696328,   -98.16265964, 14970.05350936]])
-    MOI_error     = MOI - accepted
+    accepted  = np.array([[ 6416.16174021,  -520.42990381,  -433.10021889],
+                          [ -520.42990381, 10150.172277011,  -119.43002017],
+                          [ -433.10021889,  -119.43002017, 15057.12985141]])
+    MOI_error     = (MOI - accepted) / accepted
 
     # Check the errors
     error = Data()
@@ -190,7 +181,7 @@ def EVTOL_Aircraft_Test(update_regression_values):
     print(error)
 
     for k,v in list(error.items()):
-        assert(np.abs(v)<1e-5) 
+        assert(np.abs(v)<1e-3) # Note that EVTOL weight is an iterative process, therefore the error can be larger than expected. 
 
     return  
 

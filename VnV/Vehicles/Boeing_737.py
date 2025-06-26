@@ -11,6 +11,7 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units         
 from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan  import design_turbofan    
 from RCAIDE.Library.Plots                                   import *     
+from RCAIDE.Library.Methods.Geometry.Planform.wing_planform import wing_planform
  
 # python imports 
 import numpy as np  
@@ -32,9 +33,10 @@ def vehicle_setup():
     vehicle.mass_properties.takeoff                   = 79015.8 * Units.kilogram    
     vehicle.mass_properties.operating_empty           = 62746.4 * Units.kilogram  
     vehicle.mass_properties.max_fuel                  = 20897.0 * Units.kilogram 
-    vehicle.mass_properties.max_zero_fuel             = 62732.0 * Units.kilogram 
+    vehicle.mass_properties.max_zero_fuel             = 62732.0 * Units.kilogram
+    vehicle.mass_properties.max_payload               = 20540.0 * Units.kilogram
     vehicle.mass_properties.cargo                     = 10000.  * Units.kilogram  
-    vehicle.mass_properties.center_of_gravity         = [[21,0, 0, 0]]
+    vehicle.mass_properties.center_of_gravity         = [[21,0, 0]]
     vehicle.flight_envelope.ultimate_load             = 3.75
     vehicle.flight_envelope.positive_limit_load       = 2.5 
     vehicle.flight_envelope.design_mach_number        = 0.78 
@@ -178,6 +180,8 @@ def vehicle_setup():
     aileron.chord_fraction        = 0.16
     wing.append_control_surface(aileron)
 
+    wing_planform(wing)
+
     # add to vehicle
     vehicle.append_component(wing)
 
@@ -238,6 +242,8 @@ def vehicle_setup():
     elevator.deflection            = 0.0  * Units.deg
     elevator.chord_fraction        = 0.3
     wing.append_control_surface(elevator)
+
+    wing_planform(wing)
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -309,6 +315,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = .1  
     wing.append_segment(segment)
            
+    wing_planform(wing)
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -741,6 +748,7 @@ def configs_setup(vehicle):
     config.tag = 'reverse_thrust'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
+    config.networks.fuel.reverse_thrust             = True
     config.landing_gears.main_gear.gear_extended    = True
     config.landing_gears.nose_gear.gear_extended    = True  
     configs.append(config)    

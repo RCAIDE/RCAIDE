@@ -62,8 +62,8 @@ def main():
             print(val)
     
     # Truth values
-    thrust_truth     = 23430.543770201555
-    throttle_truth   = 0.6393113980017499
+    thrust_truth     = 21899.796264158238
+    throttle_truth   = 0.5975443635840153
     
     # Store errors 
     error = Data()
@@ -106,8 +106,7 @@ def base_analysis(vehicle):
     
     # ------------------------------------------------------------------
     #  Weights
-    weights                 = RCAIDE.Framework.Analyses.Weights.Conventional()
-    weights.aircraft_type   = 'Transport'
+    weights                 = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     weights.settings.update_mass_properties         = False
     weights.settings.update_center_of_gravity       = False
     weights.settings.update_moment_of_inertia       = False

@@ -27,14 +27,39 @@ from Boeing_737    import vehicle_setup, configs_setup
 
 def main():
     
-    # delete wing segments and add tank flag to wing
+    
     vehicle = vehicle_setup()
+
+    fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
+    #############################################################################################################################    
+    #------------------------------------------------------------------------------------------------------------------------------------  
+    #  Main Wing Tanks
+    #------------------------------------------------------------------------------------------------------------------------------------      
+    vehicle.wings.main_wing.segments.root.has_fuel_tank   =  True
+    vehicle.wings.main_wing.segments.yehudi.has_fuel_tank =  True
+     
+    wing_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
+    wing_tank.fuel_selector_ratio  = 0.5
+    wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
+    fuel_line.fuel_tanks.append(wing_tank)
+        
+ 
+    plot_3d_vehicle(vehicle,
+                    save_filename               = "Boeing_737_front_View", 
+                    axis_limit                  = 100, 
+                    top_view                    = False,  
+                    front_view                  = True, 
+                    show_figure=False)    
+    
+    #############################################################################################################################
+    # (only for regression) delete wing segments and add tank flag to wing    
     vehicle.wings.main_wing.segments.clear()
     
 
     vehicle.fuselages.fuselage.segments.segment_13.has_fuel_tank                       = True
     vehicle.fuselages.fuselage.segments.segment_14.has_fuel_tank                       = True     
-    fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
+    
+    
     
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Main Wing Tanks
@@ -45,7 +70,7 @@ def main():
     fuel_line.fuel_tanks.append(refueling_tank_1)
     
     #------------------------------------------------------------------------------------------------------------------------------------  
-    # Refuling Tanks
+    # Refueling Tanks
     #------------------------------------------------------------------------------------------------------------------------------------       
     refueling_tank_2 = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank(vehicle.fuselages.fuselage)
     refueling_tank_2.tag = 'refueling_tank_2'# for regression, aircraft has two tanks
@@ -65,13 +90,8 @@ def main():
     fuel_line.fuel_tanks.append(refueling_tank_3)        
 
     plot_3d_vehicle(vehicle,
-                    save_filename               = "Boeing_737_Side_View",
-                    min_x_axis_limit            = -100,
-                    max_x_axis_limit            = 100,
-                    min_y_axis_limit            = -100,
-                    max_y_axis_limit            = 100,
-                    min_z_axis_limit            = -100,
-                    max_z_axis_limit            = 100, 
+                    save_filename               = "Boeing_737_Side_View", 
+                    axis_limit                  = 100, 
                     top_view                    = False, 
                     side_view                   = True, 
                     front_view                  = False, 

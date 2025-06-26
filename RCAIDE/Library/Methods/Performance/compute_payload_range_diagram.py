@@ -11,7 +11,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units , Data  
 from RCAIDE.Library.Plots.Common import set_axes, plot_style    
-from RCAIDE.Library.Mission.Common.Pre_Process import mass_properties
+from RCAIDE.Library.Mission.Common.Pre_Process import mass_properties,geometry
  
 # Pacakge imports 
 import numpy as np
@@ -20,7 +20,7 @@ from matplotlib import pyplot as plt
 # ----------------------------------------------------------------------
 #  Calculate vehicle Payload Range Diagram
 # ----------------------------------------------------------------------  
-def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise", fuel_reserve_percentage=0., plot_diagram = True, fuel_name=None):  
+def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise", fuel_reserve_percentage=0.05, plot_diagram = True, fuel_name=None):  
     """
     Calculate and plot the payload range diagram for an aircraft by modifying the cruise segment and weights.
     
@@ -98,7 +98,14 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     
     initial_segment =  list(mission.segments.keys())[0]
     
-    # perform inital weights analysis 
+    # remove takeoff weight from aircraft if defined
+    for segment in  mission.segments:
+        if segment.analyses.weights == None:
+            AssertionError('Weights analysis not defined!')
+        segment.analyses.weights.vehicle.mass_properties.takeoff = None
+    
+    # perform inital weights analysis
+    geometry(mission)
     mass_properties(mission)
     vehicle = mission.segments[initial_segment].analyses.weights.vehicle
     
@@ -128,7 +135,7 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
         Outputs: 
             payload_range       data structure of payload range properties   [m/s]
     """ 
-    #unpack
+    # unpack
     mass = vehicle.mass_properties
     if not mass.operating_empty:
         raise AttributeError("Error calculating Payload Range Diagram: Vehicle Operating Empty not defined") 
@@ -157,7 +164,6 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
         MaxFuel = vehicle.mass_properties.max_fuel  # If max fuel capacity not defined
         MaxFuel = min(MaxFuel, MTOW - OEW)
 
-
     # Define payload range points
     #Point  = [ RANGE WITH MAX. PLD   , RANGE WITH MAX. FUEL , FERRY RANGE   ]
     TOW     = [ MTOW                               , MTOW                   , OEW + MaxFuel ]
@@ -170,7 +176,6 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
 
     # loop for each point of Payload Range Diagram
     for i in range(len(TOW)):
-        ##    for i in [2]: 
         # Define takeoff weight
         mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff  = TOW[i]
         mission.segments[0].analyses.weights.vehicle.mass_properties.payload  = PLD[i]

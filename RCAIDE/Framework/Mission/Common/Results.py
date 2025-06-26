@@ -117,6 +117,10 @@ class Results(Conditions):
         self.frames.wind.velocity_vector                                       = ones_3col * 0
         self.frames.wind.force_vector                                          = ones_3col * 0
         self.frames.wind.moment_vector                                         = ones_3col * 0
+        self.frames.wind.angular_velocity_vector                               = ones_3col * 0
+        self.frames.wind.angular_acceleration_vector                           = ones_3col * 0
+        self.frames.wind.total_force_vector                                    = ones_3col * 0
+        self.frames.wind.total_moment_vector                                   = ones_3col * 0
         self.frames.wind.transform_to_inertial                                 = np.empty([0,0,0]) 
                                                                                
         # planet frame conditions                                              
@@ -167,7 +171,7 @@ class Results(Conditions):
         self.aerodynamics.coefficients                                         = Conditions()
         self.aerodynamics.coefficients.surface_pressure                        = None
         self.aerodynamics.coefficients.lift                                    = Conditions()
-        self.aerodynamics.coefficients.lift.total                              = None
+        self.aerodynamics.coefficients.lift.total                              = ones_1col * 0  #None
         self.aerodynamics.coefficients.lift.induced                            = Conditions()
         self.aerodynamics.coefficients.lift.induced.inviscid_wings             = Conditions()
         self.aerodynamics.coefficients.lift.compressible_wings                 = Conditions() 

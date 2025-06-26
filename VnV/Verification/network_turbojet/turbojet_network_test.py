@@ -36,15 +36,10 @@ def main():
 
     # plot vehicle 
     plot_3d_vehicle(vehicle, 
-                            min_x_axis_limit            = -50,
-                            max_x_axis_limit            = 50,
-                            min_y_axis_limit            = -50,
-                            max_y_axis_limit            = 50,
-                            min_z_axis_limit            = -50,
-                            max_z_axis_limit            = 50, 
-                            wing_alpha                  = 0.2,
-                            front_view                  = True, 
-                            show_figure                 = False 
+                            axis_limit            = 50,  
+                            wing_alpha            = 0.2,
+                            front_view            = True, 
+                            show_figure           = False 
                             )    
     
     # Set up vehicle configs
@@ -76,9 +71,9 @@ def main():
             print(val)
     
     # Truth values
-    thrust_truth     = 122213.30891792665
-    throttle_truth   = 0.6933988884939217
-    CL_truth         = 0.15299182983511703
+    thrust_truth     = 129589.1511407357
+    throttle_truth   = 0.6735222442794269
+    CL_truth         = 0.15420991506753357
     
     # Store errors 
     error = Data()
@@ -129,8 +124,7 @@ def base_analysis(vehicle):
     
     # ------------------------------------------------------------------
     #  Weights
-    weights                 = RCAIDE.Framework.Analyses.Weights.Conventional()
-    weights.aircraft_type  =  "Transport"
+    weights                 = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     weights.settings.update_mass_properties         = False
     weights.settings.update_center_of_gravity       = False
     weights.settings.update_moment_of_inertia       = False
