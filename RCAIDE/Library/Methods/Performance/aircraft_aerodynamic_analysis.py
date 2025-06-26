@@ -125,20 +125,21 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     # Evaluate Without Surrogate
     # ----------------------------------------------------------------- 
     ctrl_pts = len(angle_of_attacks[:, 0] )
-    state                                         = RCAIDE.Framework.Mission.Common.State()
-    state.conditions                              = RCAIDE.Framework.Mission.Common.Results() 
-    state.conditions.freestream.density           = rho * np.ones_like(angle_of_attacks)
-    state.conditions.freestream.dynamic_viscosity = mu  * np.ones_like(angle_of_attacks)
-    state.conditions.freestream.temperature       = T   * np.ones_like(angle_of_attacks)
-    state.conditions.freestream.pressure          = P   * np.ones_like(angle_of_attacks)
-    state.conditions.aerodynamics.angles.alpha    = angle_of_attacks  
-    state.conditions.aerodynamics.angles.beta     = angle_of_attacks *0  
-    state.conditions.freestream.u                 = angle_of_attacks *0       
-    state.conditions.freestream.v                 = angle_of_attacks *0       
-    state.conditions.freestream.w                 = angle_of_attacks *0       
-    state.conditions.static_stability.roll_rate   = angle_of_attacks *0       
-    state.conditions.static_stability.pitch_rate  = angle_of_attacks *0 
-    state.conditions.static_stability.yaw_rate    = angle_of_attacks *0  
+    state                                              = RCAIDE.Framework.Mission.Common.State()
+    state.conditions                                   = RCAIDE.Framework.Mission.Common.Results() 
+    state.conditions.freestream.density                = rho * np.ones_like(angle_of_attacks)
+    state.conditions.freestream.dynamic_viscosity      = mu  * np.ones_like(angle_of_attacks)
+    state.conditions.freestream.temperature            = T   * np.ones_like(angle_of_attacks)
+    state.conditions.freestream.pressure               = P   * np.ones_like(angle_of_attacks)
+    state.conditions.aerodynamics.angles.alpha         = angle_of_attacks  
+    state.conditions.aerodynamics.angles.beta          = angle_of_attacks *0  
+    state.conditions.freestream.u                      = angle_of_attacks *0       
+    state.conditions.freestream.v                      = angle_of_attacks *0       
+    state.conditions.freestream.w                      = angle_of_attacks *0       
+    state.conditions.static_stability.roll_rate        = angle_of_attacks *0       
+    state.conditions.static_stability.pitch_rate       = angle_of_attacks *0 
+    state.conditions.static_stability.yaw_rate         = angle_of_attacks *0 
+    state.conditions.frames.wind.transform_to_inertial = np.tile( np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) , ( ctrl_pts,  1, 1)  ) 
     state.conditions.expand_rows(ctrl_pts)
   
     state.analyses  =  Data()
@@ -147,7 +148,8 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
      
     state.conditions.freestream.mach_number                 = mach_numbers
     state.conditions.freestream.velocity                    = V
-    state.conditions.freestream.reynolds_number             = non_dimensional_reynolds_numbers # state.conditions.freestream.density * state.conditions.freestream.velocity / state.conditions.freestream.dynamic_viscosity 
+    state.conditions.freestream.reynolds_number             = non_dimensional_reynolds_numbers
+    state.conditions.frames.inertial.velocity_vector        = np.tile(np.array([[0, 0, 0]]), ( ctrl_pts,  1))
     state.conditions.frames.inertial.velocity_vector[:,0]   = V[:,0] 
     
  
