@@ -32,6 +32,7 @@ def geometry(mission):
                 compute_layout_of_passenger_accommodations(fuselage)
                 fuselage_planform(fuselage) 
         
+        # update wing properties 
         for wing in segment.analyses.geometry.vehicle.wings: 
 
             # --------------------------------------------------------------------------------------------------------------------
@@ -41,7 +42,7 @@ def geometry(mission):
                 if segment.analyses.geometry.settings.update_fuselage_properties:
                     compute_layout_of_passenger_accommodations(wing)  
                 if segment.analyses.geometry.settings.update_wing_properties and segment.analyses.geometry.settings.overwrite_reference:
-                    bwb_wing_planform(wing,overwrite_reference = True)
+                    bwb_wing_planform(wing,segment.analyses.geometry.settings.overwrite_airfoil_properties,segment.analyses.geometry.settings.overwrite_reference)
                     segment.analyses.geometry.vehicle.reference_area = wing.areas.reference
 
             # --------------------------------------------------------------------------------------------------------------------
@@ -49,7 +50,7 @@ def geometry(mission):
             # --------------------------------------------------------------------------------------------------------------------
             else:
                 if segment.analyses.geometry.settings.update_wing_properties:
-                    wing_planform(wing,overwrite_reference =  segment.analyses.geometry.settings.overwrite_reference) 
+                    wing_planform(wing,segment.analyses.geometry.settings.overwrite_airfoil_properties, segment.analyses.geometry.settings.overwrite_reference) 
                     if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and segment.analyses.geometry.settings.overwrite_reference:
                         segment.analyses.geometry.vehicle.reference_area = wing.areas.reference
                 

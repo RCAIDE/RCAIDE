@@ -1,7 +1,9 @@
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/fuselage_correction.py
 # (c) Copyright 2023 Aerospace Research Community LLC
 #  
-# Created: Mar 2024 M. Carke     
+# Created: Mar 2024 M. Carke
+
+from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuselage Correction
@@ -30,7 +32,8 @@ def fuselage_correction(state,settings,geometry):
     wings_lift_comp = state.conditions.aerodynamics.coefficients.lift.total
     
     # total lift, assuming one fuselage
-    aircraft_total_lift = wings_lift_comp * fus_correction  
+    aoa_deg              = state.conditions.aerodynamics.angles.alpha / Units.degree
+    aircraft_total_lift = wings_lift_comp * fus_correction  #-  (0.0002* (aoa_deg**3) + 0.0045* (aoa_deg**2) - 0.0134* (aoa_deg) + 0.0162)
 
     state.conditions.aerodynamics.coefficients.lift.total = aircraft_total_lift
 

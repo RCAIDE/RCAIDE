@@ -11,6 +11,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units, Data  
+from RCAIDE.Library.Methods.Geometry.Planform  import  fuselage_planform 
 import numpy as np
 try:
     import vsp as vsp
@@ -185,6 +186,7 @@ def read_vsp_fuselage(fuselage_id,fux_idx,sym_flag, units_type='SI', fineness=Tr
 
     fuselage = compute_fuselage_fineness(fuselage, x_locs, eff_diams, eff_diam_gradients_fwd)	
 
+    fuselage_planform(fuselage)  
     return fuselage
 
 # ---------------------------------------------------------------------------------------------------------------------- 

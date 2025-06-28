@@ -156,8 +156,7 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     # ---------------------------------------------------------------------------------------
     # Evaluate With Surrogate
     # ---------------------------------------------------------------------------------------  
-    _                 = state.analyses.aerodynamics.evaluate(state)         
-  
+    _                 = state.analyses.aerodynamics.evaluate(state)   
     results = Data(
         Mach              = mach_numbers, 
         alpha             = angle_of_attacks, 

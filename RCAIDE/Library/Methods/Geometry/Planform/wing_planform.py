@@ -6,8 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-import RCAIDE
-from RCAIDE.Framework.Core import Data
+import RCAIDE 
 from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments, convert_sweep
 from RCAIDE.Library.Methods.Geometry.Airfoil import  import_airfoil_geometry , compute_naca_4series
 
@@ -17,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Wing Segmented Planform
 # ----------------------------------------------------------------------------------------------------------------------    
-def wing_planform(wing, overwrite_reference = True):
+def wing_planform(wing,overwrite_airfoil_properties = True, overwrite_reference = True):
     """Computes standard wing planform values.
     
     Assumptions:
@@ -98,14 +97,17 @@ def wing_planform(wing, overwrite_reference = True):
                 else:
                     raise AssertionError("Quarter chord or leading edge sweep must be defined") 
     
-            if seg.airfoil != None: 
-                if type(seg.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
-                    airfoil_geo_data = compute_naca_4series(seg.airfoil.NACA_4_Series_code)
-                    t_c_seg =  airfoil_geo_data.thickness_to_chord
+            if seg.airfoil != None:
+                if overwrite_airfoil_properties:
+                    if type(seg.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
+                        airfoil_geo_data = compute_naca_4series(seg.airfoil.NACA_4_Series_code) 
+                        t_c_seg = airfoil_geo_data.thickness_to_chord 
+                    else:
+                        airfoil_geo_data = import_airfoil_geometry(seg.airfoil.coordinate_file) 
+                        t_c_seg =  airfoil_geo_data.thickness_to_chord 
+                    seg.thickness_to_chord = t_c_seg
                 else:
-                    airfoil_geo_data = import_airfoil_geometry(seg.airfoil.coordinate_file)    
-                    t_c_seg =  airfoil_geo_data.thickness_to_chord 
-                seg.thickness_to_chord = t_c_seg                
+                    t_c_seg =  seg.thickness_to_chord
             else:
                 t_c_seg =  seg.thickness_to_chord
             t_cs.append(t_c_seg)
@@ -326,9 +328,9 @@ def wing_planform(wing, overwrite_reference = True):
                  
     return wing
 
-def bwb_wing_planform(wing,overwrite_reference = True):
+def bwb_wing_planform(wing,overwrite_airfoil_properties = True, overwrite_reference = True):
 
-    wing_planform(wing,overwrite_reference) 
+    wing_planform(wing,overwrite_airfoil_properties,overwrite_reference) 
 
     seg_keys = list(wing.segments.keys())  
     for tag, segment in enumerate(wing.segments): 

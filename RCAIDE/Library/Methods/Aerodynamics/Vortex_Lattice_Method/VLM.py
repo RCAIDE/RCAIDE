@@ -550,6 +550,10 @@ def VLM(conditions,settings,geometry):
         
     results.CLift_wings         = Clift_wings
     results.CDrag_induced_wings = Cdrag_wings
+    
+    ## OLD (previous VLM)
+    DRAG                             = CDC*ES 
+    results.CDrag_induced            = np.atleast_2d(np.sum(DRAG,axis=1)/SREF).T 
     return results
 
 # ----------------------------------------------------------------------

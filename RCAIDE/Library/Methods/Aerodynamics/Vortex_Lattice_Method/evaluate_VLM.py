@@ -6,11 +6,11 @@
 
 # RCAIDE imports  
 import RCAIDE 
-from RCAIDE.Framework.Core                                           import Data, orientation_product 
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM   import VLM
-from RCAIDE.Library.Methods.Utilities                                import Cubic_Spline_Blender  
-from RCAIDE.Library.Mission.Common.Update  import orientations
-from RCAIDE.Library.Mission.Common.Unpack_Unknowns import orientation
+from RCAIDE.Framework.Core                                               import Data, orientation_product 
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM       import VLM
+from RCAIDE.Library.Methods.Utilities                                    import Cubic_Spline_Blender 
+from RCAIDE.Library.Mission.Common.Update                                import orientations
+from RCAIDE.Library.Mission.Common.Unpack_Unknowns                       import orientation
 
 # package imports
 import numpy   as np
@@ -398,8 +398,10 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
         conditions.aerodynamics.coefficients.drag.induced.inviscid        = Cdrag
         conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced 
         conditions.aerodynamics.chord_sections                            = VLM_results.chord_sections    
-        conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations  
-        
+        conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations
+     
+        # corrections 
+        RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(state,settings,vehicle)         
         for wing in  vehicle.wings: 
             RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_wing(state,settings,wing)
         for fuslage in vehicle.fuselages: 

@@ -98,9 +98,7 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
         VL.settings.number_of_spanwise_vortices  = 25
         VL.settings.number_of_chordwise_vortices = 5
         VL.settings.spanwise_cosine_spacing      = False
-        VL.settings.model_fuselage               = False
-        VL.settings.model_nacelle                = False
-        
+        VL.settings.model_fuselage               = False         
     
         # -------------------------------------------------------------------------
         # Run Geoemtry Analysis
