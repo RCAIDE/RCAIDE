@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Analyses/Aerodynamics/Vortex_Lattice_Method.py
+# RCAIDE/Framework/Analyses/Aerodynamics/Coupled_2D_Viscous_Vortex_Lattice_Method.py
 #  
 # Created:  Jul 2023, M. Clarke
 
@@ -7,11 +7,12 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports   
-from RCAIDE.Framework.Core                             import Data, Units
-from RCAIDE.Framework.Analyses                         import Process 
-from RCAIDE.Library.Methods.Aerodynamics               import Common
-from .Aerodynamics                                     import Aerodynamics 
-from RCAIDE.Framework.Analyses.Common.Process_Geometry import Process_Geometry 
+from RCAIDE.Framework.Core                                     import Data, Units
+from RCAIDE.Framework.Analyses                                 import Process 
+from RCAIDE.Library.Methods.Aerodynamics                       import Common
+from .Aerodynamics                                             import Aerodynamics 
+from RCAIDE.Framework.Analyses.Common.Process_Geometry         import Process_Geometry 
+from RCAIDE.Library.Methods.Geometry.Airfoil                   import compute_airfoil_properties, compute_naca_4series, import_airfoil_geometry
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import *   
 
 # package imports 
@@ -20,7 +21,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice_Method
 # ---------------------------------------------------------------------------------------------------------------------- 
-class Vortex_Lattice_Method(Aerodynamics):
+class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
     """This is a subsonic aerodynamic buildup analysis based on the vortex lattice method
 
      Assumptions:
@@ -62,8 +63,8 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.process                                                = Process()
         self.process.initialize                                     = Process()  
                     
-        # correction factors  
-        self.settings.viscous_VLM_flag                              = False             
+        # correction factors
+        self.settings.viscous_VLM_flag                              = True 
         self.settings.use_surrogate                                 = True  
         self.settings.propeller_wake_model                          = False 
         self.settings.discretize_control_surfaces                   = True
@@ -74,8 +75,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.settings.flap_flag                                     = False
         self.settings.elevator_flag                                 = False
         self.settings.slat_flag                                     = False   
-        self.settings.number_of_spanwise_vortices                   = 15
-        self.settings.number_of_chordwise_vortices                  = 5
+        self.settings.number_of_spanwise_vortices                   = 15 
         self.settings.wing_spanwise_vortices                        = None
         self.settings.wing_chordwise_vortices                       = None
         self.settings.fuselage_spanwise_vortices                    = None
@@ -160,7 +160,39 @@ class Vortex_Lattice_Method(Aerodynamics):
         
 
     def initialize(self):  
-        use_surrogate   = self.settings.use_surrogate  
+        use_surrogate   = self.settings.use_surrogate 
+         
+        vehicle  =  self.vehicle 
+        for wing in vehicle.wings: 
+            polar_flag = False
+            if wing.airfoil != None:
+                airfoil = seg.airfoil
+                if type(airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil:
+                    airfoil.geometry = compute_naca_4series(airfoil.NACA_4_Series_code, airfoil.number_of_points)
+                elif type(airfoil) == RCAIDE.Library.Components.Airfoils.Airfoil: 
+                    airfoil.geometry = import_airfoil_geometry(airfoil.coordinate_file, airfoil.number_of_points)
+                     
+                if airfoil.polars == None: # compute airfoil polars for airfoils
+                    airfoil.polars = compute_airfoil_properties(airfoil.geometry, airfoil_polar_files= airfoil.polar_files)
+                else:
+                    raise AssertionError('Airfoil polars must be defined for Coupled 2D Viscous Vortex Lattice Method!') 
+                
+            for seg in  wing.segments: 
+                if seg.airfoil != None: 
+                    airfoil = seg.airfoil
+                    if type(airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
+                        airfoil.geometry = compute_naca_4series(airfoil.NACA_4_Series_code,airfoil.number_of_points)
+                    else:
+                        airfoil.geometry = import_airfoil_geometry(airfoil.coordinate_file,airfoil.number_of_points) 
+        
+                    if airfoil.polars == None: # compute airfoil polars for airfoils
+                        airfoil.polars = compute_airfoil_properties(airfoil.geometry, airfoil_polar_files= airfoil.polar_files)
+                    else:
+                        raise AssertionError('Airfoil polars must be defined for Coupled 2D Viscous Vortex Lattice Method!')
+                         
+            if not polar_flag:
+                raise AssertionError('Airfoil polars must be defined for Coupled 2D Viscous Vortex Lattice Method!')
+            
 
         # If we are using the surrogate
         if use_surrogate == True: 

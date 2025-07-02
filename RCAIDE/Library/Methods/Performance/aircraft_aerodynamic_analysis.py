@@ -158,11 +158,12 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     # ---------------------------------------------------------------------------------------  
     _                 = state.analyses.aerodynamics.evaluate(state)   
     results = Data(
-        Mach              = mach_numbers, 
-        alpha             = angle_of_attacks, 
-        lift_coefficient  = state.conditions.aerodynamics.coefficients.lift.total, 
-        drag_coefficient  = state.conditions.aerodynamics.coefficients.drag.total,
-        moment_coefficient = state.conditions.static_stability.coefficients.M, 
+        Mach                        = mach_numbers, 
+        alpha                       = angle_of_attacks, 
+        lift_coefficient            = state.conditions.aerodynamics.coefficients.lift.total, 
+        drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.total,
+        parasite_drag_coefficient   = state.conditions.aerodynamics.coefficients.drag.parasite.total,
+        moment_coefficient          = state.conditions.static_stability.coefficients.M, 
     )  
           
     return results  

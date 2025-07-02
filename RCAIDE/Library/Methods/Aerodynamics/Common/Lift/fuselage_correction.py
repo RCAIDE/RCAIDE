@@ -33,7 +33,7 @@ def fuselage_correction(state,settings,geometry):
     
     # total lift, assuming one fuselage
     aoa_deg              = state.conditions.aerodynamics.angles.alpha / Units.degree
-    aircraft_total_lift = wings_lift_comp * fus_correction  #-  (0.0002* (aoa_deg**3) + 0.0045* (aoa_deg**2) - 0.0134* (aoa_deg) + 0.0162)
+    aircraft_total_lift = wings_lift_comp * fus_correction  # NEED TO ADD ATTENUATION FUNCTION 
 
     state.conditions.aerodynamics.coefficients.lift.total = aircraft_total_lift
 
