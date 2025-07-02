@@ -54,6 +54,6 @@ def total_drag(state,settings,geometry):
 
     # Store to results 
     aoa_deg              = state.conditions.aerodynamics.angles.alpha / Units.degree
-    drag.total           = aircraft_total_drag  + ( -2E-05  * (aoa_deg**3)  + 0.0005 * (aoa_deg**2)  - 0.0009 * (aoa_deg) - 0.005)
+    drag.total           = aircraft_total_drag #+ ( -2E-05  * (aoa_deg**3)  + 0.0005 * (aoa_deg**2)  - 0.0009 * (aoa_deg) - 0.005)
     
     return  
