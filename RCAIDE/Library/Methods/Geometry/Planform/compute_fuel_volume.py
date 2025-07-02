@@ -120,6 +120,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
 
                 fuel_tank.mass_properties.center_of_gravity =  tank_c_g
                 fuel_tank.mass_properties.mass = tank_mass
+    vehicle.fuel_tank_volume = total_fuel_volume # temp ********** find a better place for it 
     if update_max_fuel:
         vehicle.mass_properties.max_fuel = total_fuel_mass
     return
