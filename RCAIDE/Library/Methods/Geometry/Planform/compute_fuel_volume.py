@@ -76,7 +76,14 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                 outer_segment = wing.segments[seg_tags[i+1]]
                                 if inner_segment.has_fuel_tank == True:  
                                     # compute volume and update percent span location of next non-integral tank 
-                                    volume ,  tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
+                                    try:
+                                        volume ,  tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
+                                    except:
+                                        RuntimeWarning('Fuel tank cannot be place in specified wing segment, trying next segment')
+                                        outer_segment = wing.segments[seg_tags[i+2]]
+                                        volume ,  tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
+                                        
+
                                     fuel_tank.internal_volume += volume 
                                     total_fuel_volume += volume  
                                     total_fuel_mass   += volume * fuel_tank.fuel.density 
@@ -191,7 +198,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
     lower_slope = np.arctan(dz_lower/dy_lower) 
 
     # determine tank diameter and location of next spar 
-    D         = 1
+    D         = 0.1
     epsilon_D = 10 
 
 
@@ -223,7 +230,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
     tank_percent_span_location = inner_segment.percent_span_location +  D / semi_span 
         
     # get orgin of fuel tank 
-    origin_x         = inner_segment.origin[0][0] + (inner_segment.fuel_tank.percent_chord_start_location * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2)
+    origin_x         = inner_segment.origin[0][0] + (inner_segment.fuel_tank.percent_chord_start_location * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2) -D/2
     origin_y         = inner_segment.origin[0][1] + D / 2
     origin_z         = inner_segment.origin[0][2] + (D / 2) *np.tan(inner_segment.dihedral_outboard)
     fuel_tank.origin = [[origin_x,origin_y,origin_z]] 
@@ -232,7 +239,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
     m_2 =  (outer_wingbox_length -  inner_wingbox_length) / (outer_segment.percent_span_location - inner_segment_0.percent_span_location)  
     l_1 =  inner_wingbox_length +  m_2 * (tank_percent_span_location - inner_segment_0.percent_span_location)
     l_2 =  inner_wingbox_length -  (D / np.tan( np.pi/2 -spar_sweep)) 
-    l   =  np.minimum(l_1, l_2)
+    l   =  np.minimum(l_1, l_2) + D
     
     # internal radius of tank 
     r   = (D -  2 * fuel_tank.wall_thickness ) / 2
@@ -241,7 +248,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
         volume *= 2
 
     fuel_tank.length = l
-    fuel_tank.heg = l
+    fuel_tank.height = D
     
     return volume ,  tank_percent_span_location
 
