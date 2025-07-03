@@ -340,6 +340,9 @@ def compute_operating_empty_weight(vehicle,settings = None):
         output.zero_fuel_weight   = output.empty.total + output.payload.total
         output.fuel               = 0
         output.total              = output.empty.total + output.payload.total 
+
+        output.operational_items = Data()
+        output.operational_items.total = 0
         
         # check if cargo bays defined in aircraft, if none, define one 
         if len(vehicle.cargo_bays) == 0:
