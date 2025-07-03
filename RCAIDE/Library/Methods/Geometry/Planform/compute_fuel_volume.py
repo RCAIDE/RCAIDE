@@ -26,7 +26,8 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
     tank_percent_span_location = 0
     for network in vehicle.networks: 
         for fuel_line in network.fuel_lines:
-            for fuel_tank in fuel_line.fuel_tanks: 
+            fuel_tanks = deepcopy(fuel_line.fuel_tanks)
+            for fuel_tank in fuel_tanks: 
                 fuel_tank.internal_volume = 0
                 tank_c_g    =  [[0, 0, 0]]
                 tank_mass   = 0
@@ -82,8 +83,8 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                         RuntimeWarning('Fuel tank cannot be place in specified wing segment, trying next segment')
                                         outer_segment = wing.segments[seg_tags[i+2]]
                                         volume ,  tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
-                                        
-
+                                       
+                                    fuel_tanks.pop(fuel_tank.tag)
                                     fuel_tank.internal_volume += volume 
                                     total_fuel_volume += volume  
                                     total_fuel_mass   += volume * fuel_tank.fuel.density 
