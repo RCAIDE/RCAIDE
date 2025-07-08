@@ -72,6 +72,10 @@ def compressibility_drag(state,settings,geometry):
     if settings.supersonic.cross_sectional_area_calculation_type != 'Fixed':
         raise NotImplementedError
 
+    x = np.array([-0.417184699337467, 0.0, 0.417184699337467, 0.45862155954167055, 0.5013290492186359, 0.5384919739235497, 0.5871622608441653, 0.6285553062389633, 0.6587038782744932, 0.8, 1.0])
+    y = np.array([1.1480189359872706, 0.0, 1.1480189359872706, 5.775673779192156, 12.836939011494024, 20.414496506330114, 34.447683899469276, 49.59172983603965, 65.49874978998449, 160, 240]) *10**-4
+    wave_drag = np.interp(Cl, x, y) # This is only for M = 0.78 and a transport aircraft style wing. may not be applicable to other cases. 
+
     low_cutoff_volume_total  = np.zeros_like(Mach)
     high_cutoff_volume_total = np.zeros_like(Mach)     
     low_cutoff_volume_total  = drag_divergence(low_mach_cutoff*np.ones_like(Mach), geometry,Cl) 
@@ -107,8 +111,8 @@ def compressibility_drag(state,settings,geometry):
         print('Warning: a peak Mach number of less than 1.01 will cause a small discontinuity in lift wave drag')
     cd_c_l = cd_c_l_base*(1-sup_h00(Mach))
     
-    cd_c = cd_c_v + cd_c_l 
-    
+    cd_c = cd_c_v + cd_c_l + wave_drag
+
     # Save drag breakdown 
     drag = conditions.aerodynamics.coefficients.drag.compressible.total   = cd_c
         
