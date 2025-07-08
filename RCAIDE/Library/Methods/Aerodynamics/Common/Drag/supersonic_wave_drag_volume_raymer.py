@@ -49,7 +49,7 @@ def supersonic_wave_drag_volume_raymer(vehicle,mach,scaling_factor):
         main_wing.sweeps.leading_edge  = convert_sweep(main_wing,old_ref_chord_fraction = 0.25 ,new_ref_chord_fraction = 0.0) 
      
     for fuselage in vehicle.fuselages:
-        L =  np.maximum(L, fuselage.lengths.total)
+        L =  np.maximum(L, fuselage.lengths.total) # Note that areas with constant cross sectional area are to be subtracted from the total length
         
     LE_sweep = main_wing.sweeps.leading_edge / Units.deg
     Ae       = vehicle.maximum_cross_sectional_area
@@ -65,7 +65,8 @@ def supersonic_wave_drag_volume_raymer(vehicle,mach,scaling_factor):
     Dq_vehicle           = np.zeros_like(mach)
     Dq_vehicle_simpified = np.zeros_like(mach)
     
-    Dq_vehicle[mach>=1.2] = scaling_factor*(1-0.2*(mach[mach>=1.2]-1.2)**0.57*(1-np.pi*LE_sweep**.77/100))*Dq_SH
+    #Dq_vehicle[mach>=1.2] = scaling_factor*(1-0.2*(mach[mach>=1.2]-1.2)**0.57*(1-(np.pi*LE_sweep**.77)/100))*Dq_SH # Typo in equation
+    Dq_vehicle[mach>=1.2] = scaling_factor*(1-0.368*(mach[mach>=1.2]-1.2)**0.57*(1-(np.pi*LE_sweep**.77)/100))*Dq_SH
     Dq_vehicle_simpified  = scaling_factor*Dq_SH
     
     Dq_vehicle = Dq_vehicle_simpified*h00(mach) + Dq_vehicle*(1-h00(mach))
