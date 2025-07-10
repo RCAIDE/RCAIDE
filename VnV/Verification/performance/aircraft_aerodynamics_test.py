@@ -25,15 +25,10 @@ from Boeing_737    import vehicle_setup as vehicle_setup
 # ---------------------------------------------------------------------- 
 def main(): 
 
-    vehicle                           = vehicle_setup()  
-    for wing in vehicle.wings: 
-        wing_planform(wing,overwrite_reference =  True) 
-        if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
-            vehicle.reference_area = wing.areas.reference
-    Mach_number_range                 = np.atleast_2d(np.linspace(0.1, 0.9, 10)).T
-    angle_of_attack_range             = np.atleast_2d(np.linspace(-5, 12, 18)).T*Units.degrees  
-    
-    aerodynamics_analysis_routine     = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
+    vehicle                               = vehicle_setup()   
+    Mach_number_range                     = np.atleast_2d(np.linspace(0.1, 0.9, 10)).T
+    angle_of_attack_range                 = np.atleast_2d(np.linspace(-5, 12, 18)).T*Units.degrees   
+    aerodynamics_analysis_routine         = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics_analysis_routine.vehicle = vehicle
     
     results                           = aircraft_aerodynamic_analysis(aerodynamics_analysis = aerodynamics_analysis_routine,

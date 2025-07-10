@@ -9,7 +9,9 @@
 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Framework.Core import  Data 
+from RCAIDE.Framework.Core import  Data  
+from RCAIDE.Library.Methods.Geometry.Planform  import  fuselage_planform, wing_planform, bwb_wing_planform  
+
  
 # Pacakge imports 
 import numpy as np  
@@ -21,7 +23,11 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
                                   angle_of_attacks                 = None,
                                   mach_numbers                     = None,
                                   non_dimensional_reynolds_numbers = None,
-                                  temperatures                     = None, 
+                                  temperatures                     = None,
+                                  update_fuselage_properties       = True, 
+                                  overwrite_reference              = True,
+                                  overwrite_airfoil_properties     = True,
+                                  update_wing_properties           = True, 
                                   altitude = None ):
     """
     Computes aerodynamic coefficients across ranges of angle of attack and Mach numbers using vortex lattice methods.
@@ -70,6 +76,30 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method
     RCAIDE.Library.Attributes.Atmospheres.Earth.US_Standard_1976
     """
+
+    #------------------------------------------------------------------------  
+    # Preprocess Geometry
+    #------------------------------------------------------------------------     
+    vehicle =  aerodynamics_analysis.vehicle
+    # update fuselage properties
+    if update_fuselage_properties:
+        for fuselage in vehicle.fuselages: 
+            fuselage_planform(fuselage) 
+
+    # update wing properties 
+    for wing in vehicle.wings:  
+        #  Blended Wing Body 
+        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
+            if update_wing_properties and overwrite_reference:
+                bwb_wing_planform(wing,overwrite_airfoil_properties,overwrite_reference)
+                vehicle.reference_area = wing.areas.reference 
+        # All other wing surfaces 
+        else:
+            if update_wing_properties:
+                wing_planform(wing,overwrite_airfoil_properties, overwrite_reference) 
+                if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_reference:
+                    vehicle.reference_area = wing.areas.reference
+    
     #------------------------------------------------------------------------  
     # Check size of arrays 
     #------------------------------------------------------------------------

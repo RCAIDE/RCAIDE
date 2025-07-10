@@ -325,8 +325,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     """          
 
     # unpack 
-    conditions    = state.conditions
-    viscous_VLM   = settings.viscous_VLM_flag 
+    conditions    = state.conditions 
     aerodynamics  = state.analyses.aerodynamics
     vehicle       = aerodynamics.vehicle 
     Mach          = state.conditions.freestream.mach_number
@@ -372,7 +371,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:   
                     conditions.control_surfaces.flap.deflection[i, 0] = control_surface.deflection
         
-        VLM_results = VLM(conditions,settings,vehicle,viscous_VLM)
+        VLM_results = VLM(conditions,settings,vehicle)
         Clift = VLM_results.CLift
         Cdrag = VLM_results.CDrag_induced
         CX    = VLM_results.CX
@@ -468,7 +467,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     equilibrium_conditions.freestream.dynamic_pressure                 = 0.5 * equilibrium_conditions.freestream.density *  (equilibrium_conditions.freestream.velocity ** 2)
     equilibrium_conditions.freestream.reynolds_number                  = equilibrium_conditions.freestream.density * equilibrium_conditions.freestream.velocity * wing.chords.mean_aerodynamic/ equilibrium_conditions.freestream.dynamic_viscosity  
     
-    VLM_results = VLM(equilibrium_conditions,settings,vehicle,viscous_VLM)
+    VLM_results = VLM(equilibrium_conditions,settings,vehicle)
     Clift_0 = VLM_results.CLift
     Cdrag_0 = VLM_results.CDrag_induced
     CX_0    = VLM_results.CX
@@ -520,7 +519,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     pertubation_conditions                             = deepcopy(equilibrium_conditions)   
     pertubation_conditions.aerodynamics.angles.alpha   += delta_angle
     
-    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+    VLM_results = VLM(pertubation_conditions,settings,vehicle)
     Clift_alpha_prime = VLM_results.CLift
     Cdrag_alpha_prime = VLM_results.CDrag_induced 
     CY_alpha_prime    = VLM_results.CY
@@ -584,7 +583,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     vehicle_shifted_CG.mass_properties.center_of_gravity[0][0] +=delta_cg
     
     
-    VLM_results = VLM(pertubation_conditions,settings,vehicle_shifted_CG,viscous_VLM)  
+    VLM_results = VLM(pertubation_conditions,settings,vehicle_shifted_CG)  
     CM_alpha_cg_prime  = VLM_results.CM  
   
     dCM_dalpha_cg = (CM_alpha_cg_prime   - CM_0) / (delta_angle)    
@@ -603,7 +602,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     pertubation_conditions                             = deepcopy(equilibrium_conditions)   
     pertubation_conditions.aerodynamics.angles.beta    += delta_angle 
 
-    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+    VLM_results = VLM(pertubation_conditions,settings,vehicle)
     Clift_beta_prime = VLM_results.CLift
     Cdrag_beta_prime = VLM_results.CDrag_induced
     CX_beta_prime    = VLM_results.CX
@@ -633,7 +632,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     pertubation_conditions.freestream.reynolds_number            = pertubation_conditions.freestream.density * pertubation_conditions.freestream.velocity * wing.chords.mean_aerodynamic/equilibrium_conditions.freestream.dynamic_viscosity   
     pertubation_conditions.freestream.dynamic_pressure           = 0.5 * pertubation_conditions.freestream.density * np.sum( pertubation_conditions.freestream.velocity**2, axis=1)[:,None] 
         
-    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+    VLM_results = VLM(pertubation_conditions,settings,vehicle)
     Clift_u_prime = VLM_results.CLift
     Cdrag_u_prime = VLM_results.CDrag_induced
     CX_u_prime    = VLM_results.CX
@@ -699,7 +698,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     pertubation_conditions.freestream.dynamic_pressure           = 0.5 * pertubation_conditions.freestream.density * np.sum( pertubation_conditions.freestream.velocity**2, axis=1)[:,None] 
     
 
-    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+    VLM_results = VLM(pertubation_conditions,settings,vehicle)
     Clift_v_prime = VLM_results.CLift
     Cdrag_v_prime = VLM_results.CDrag_induced
     CX_v_prime    = VLM_results.CX
@@ -728,7 +727,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     pertubation_conditions.freestream.reynolds_number            = pertubation_conditions.freestream.density * pertubation_conditions.freestream.velocity /  pertubation_conditions.freestream.dynamic_viscosity 
     pertubation_conditions.freestream.dynamic_pressure           = 0.5 * pertubation_conditions.freestream.density * np.sum( pertubation_conditions.freestream.velocity**2, axis=1)[:,None] 
      
-    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+    VLM_results = VLM(pertubation_conditions,settings,vehicle)
     Clift_w_prime = VLM_results.CLift
     Cdrag_w_prime = VLM_results.CDrag_induced
     CX_w_prime    = VLM_results.CX
@@ -754,7 +753,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     pertubation_conditions                                 = deepcopy(equilibrium_conditions)    
     pertubation_conditions.static_stability.roll_rate[:,0] += delta_rate
     
-    VLM_results   = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+    VLM_results   = VLM(pertubation_conditions,settings,vehicle)
     Clift_p_prime = VLM_results.CLift
     Cdrag_p_prime = VLM_results.CDrag_induced
     CX_p_prime    = VLM_results.CX
@@ -780,7 +779,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     pertubation_conditions                                  = deepcopy(equilibrium_conditions)   
     pertubation_conditions.static_stability.pitch_rate[:,0] += delta_rate  
      
-    VLM_results   = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+    VLM_results   = VLM(pertubation_conditions,settings,vehicle)
     Clift_q_prime = VLM_results.CLift
     Cdrag_q_prime = VLM_results.CDrag_induced
     CX_q_prime    = VLM_results.CX
@@ -840,7 +839,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     pertubation_conditions                                = deepcopy(equilibrium_conditions)   
     pertubation_conditions.static_stability.yaw_rate[:,0] += delta_rate   
     
-    VLM_results   = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+    VLM_results   = VLM(pertubation_conditions,settings,vehicle)
     Clift_r_prime = VLM_results.CLift
     Cdrag_r_prime = VLM_results.CDrag_induced
     CX_r_prime    = VLM_results.CX
@@ -867,7 +866,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:  
                     vehicle.wings[wing.tag].control_surfaces.aileron.deflection =  delta_ctrl_surf
                     
-                    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+                    VLM_results = VLM(pertubation_conditions,settings,vehicle)
                     Clift_res = VLM_results.CLift
                     Cdrag_res = VLM_results.CDrag_induced
                     CX_res    = VLM_results.CX
@@ -912,7 +911,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:  
                     vehicle.wings[wing.tag].control_surfaces.elevator.deflection =  delta_ctrl_surf
 
-                    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+                    VLM_results = VLM(pertubation_conditions,settings,vehicle)
                     Clift_res = VLM_results.CLift
                     Cdrag_res = VLM_results.CDrag_induced
                     CX_res    = VLM_results.CX
@@ -957,7 +956,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
                     vehicle.wings[wing.tag].control_surfaces.rudder.deflection =  delta_ctrl_surf 
-                    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+                    VLM_results = VLM(pertubation_conditions,settings,vehicle)
                     Clift_res = VLM_results.CLift
                     Cdrag_res = VLM_results.CDrag_induced
                     CX_res    = VLM_results.CX
@@ -1002,7 +1001,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
             for control_surface in wing.control_surfaces:  
                 if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
                     vehicle.wings[wing.tag].control_surfaces.flap.deflection =  delta_ctrl_surf 
-                    VLM_results = VLM(pertubation_conditions,settings,vehicle,viscous_VLM)
+                    VLM_results = VLM(pertubation_conditions,settings,vehicle)
                     Clift_res = VLM_results.CLift
                     Cdrag_res = VLM_results.CDrag_induced
                     CX_res    = VLM_results.CX

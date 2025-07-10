@@ -210,8 +210,11 @@ def make_VLM_wings(geometry, settings):
                     else:
                         raise ValueError('VLM does not support multiple control surfaces on the same edge at this time')
                 
+        
+        
         # pack span_breaks
         wing.span_breaks = reprocess_span_breaks(span_breaks)
+        wing.seg_breaks  = seg_breaks 
         
     # ------------------------------------------------------------------
     # Give cs_wings span_breaks arrays
@@ -226,6 +229,7 @@ def make_VLM_wings(geometry, settings):
         span_break  = make_span_break_from_segment(cs_wing.segments[cs_w_segs[1]])
         span_breaks.append(span_break) 
         cs_wing.span_breaks = span_breaks
+        cs_wing.seg_breaks  = cs_wing.segments
     
     return wings
   
@@ -331,6 +335,7 @@ def get_paths(type_str):
                 'vertical',
                 'taper',
                 'dihedral',
+                'aspect_ratio',
                 'thickness_to_chord',
                 'spans.projected',
                 'chords.root',

@@ -274,25 +274,6 @@ def wing_planform(wing,overwrite_airfoil_properties = True, overwrite_reference 
         # Total length calculation
         total_length = np.tan(le_sweep)*span/2. + chord_tip
             
-        # Computing flap geometry
-        affected_area = 0.
-        if wing.high_lift:
-            flap = wing.control_surfaces.flap
-            #compute wing chords at flap start and end
-            delta_chord = chord_tip - chord_root
-            
-            wing_chord_cs_start = chord_root + delta_chord * flap.span_fraction_start 
-            wing_chord_cs_end   = chord_root + delta_chord * flap.span_fraction_end
-            wing_mac_flap = 2./3.*( wing_chord_cs_start+wing_chord_cs_end - \
-                                    wing_chord_cs_start*wing_chord_cs_end/  \
-                                    (wing_chord_cs_start+wing_chord_cs_end) )
-            
-            flap.chord_dimensional = wing_mac_flap * flap.chord_fraction
-            cs_chord_start        = wing_chord_cs_start * flap.chord_fraction
-            cs_chord_end          = wing_chord_cs_end * flap.chord_fraction
-            flap.area               = (cs_chord_start + cs_chord_end) * (flap.span_fraction_end- flap.span_fraction_start)*span / 2.    
-            affected_area           = (wing_chord_cs_start + wing_chord_cs_end) * (flap.span_fraction_end- flap.span_fraction_start)*span / 2.          
-             
         # update
         wing.chords.root                = chord_root
         wing.chords.tip                 = chord_tip
@@ -300,7 +281,6 @@ def wing_planform(wing,overwrite_airfoil_properties = True, overwrite_reference 
         wing.chords.mean_geometric      = mgc
         wing.sweeps.leading_edge        = le_sweep
         wing.areas.wetted               = swet
-        wing.areas.affected             = affected_area
         wing.spans.projected            = span
         wing.spans.total                = span_total
         wing.aerodynamic_center         = [x_coord , y_coord, z_coord]

@@ -65,7 +65,8 @@ class Vortex_Lattice_Method(Stability):
         self.process.initialize                                         = Process()  
                    
         # correction factors  
-        self.settings.use_surrogate                                      = True  
+        self.settings.use_surrogate                                      = True
+        self.settings.viscous_VLM_flag                                   = False
         self.settings.propeller_wake_model                               = False 
         self.settings.discretize_control_surfaces                        = True
         self.settings.model_fuselage                                     = False
