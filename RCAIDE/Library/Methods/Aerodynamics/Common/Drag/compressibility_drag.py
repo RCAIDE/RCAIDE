@@ -163,20 +163,68 @@ def lift_wave_drag(conditions,configuration,geometry):
 
     Returns:
     cd_c_l                            [-] Wave drag CD due to lift 
-    """ 
+    """
+
+    # Initalize cd arrays
+    cd_c_l = np.zeros_like(Mach)
+    
     for wing in  geometry.wings:
         if isinstance(wing, Main_Wing):  
             # Unpack Mach number
             Mach       = conditions.freestream.mach_number
         
-            # Initalize cd arrays
-            cd_c_l = np.zeros_like(Mach) 
         
             # Calculate wing values at all Mach numbers
-            cd_lift_wave = wave_drag(conditions,wing)
         
+            freestream  = conditions.freestream 
+            Mach        = freestream.mach_number * 1.0
+            
+            # Lift coefficient  
+            CL = conditions.aerodynamics.coefficients.lift.total 
+            l  = np.maximum(wing.total_length,wing.chords.root)     
+        
+            # JAXA method
+            s    = wing.spans.projected / 2
+            AR   = wing.aspect_ratio
+            p    = 2/AR*s/l
+            beta = np.sqrt(Mach[Mach >= 1.01]**2-1)
+            
+            Kw = (1+1/p)*fw(beta*s/l)/(2*beta**2*(s/l)**2)
+            
+            # Ignore area comparison since this is full vehicle CL
+            CDwl         = CL[Mach >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
+            cd_lift_wave = np.zeros_like(Mach)
+            cd_lift_wave[Mach >= 1.01] = CDwl
+             
             # Pack supersonic results into correct elements
             cd_c_l[Mach >= 1.01] = cd_lift_wave[0:len(Mach[Mach >= 1.01]),0] 
 
     return cd_c_l
 
+
+def fw(x):
+    """Helper function for lift wave drag computations.
+
+    Assumptions:
+    N/A
+
+    Source:
+    Yoshida, Kenji. "Supersonic drag reduction technology in the scaled supersonic 
+    experimental airplane project by JAXA."
+
+    Args:
+    x    [Unitless]
+
+    Returns:
+    ret  [Unitless]
+
+    Properties Used:
+    N/A
+    """  
+    
+    ret = np.zeros_like(x)
+    
+    ret[x > 0.178] = 0.4935 - 0.2382*x[x > 0.178] + 1.6306*x[x > 0.178]**2 - \
+        0.86*x[x > 0.178]**3 + 0.2232*x[x > 0.178]**4 - 0.0365*x[x > 0.178]**5 - 0.5
+    
+    return ret
