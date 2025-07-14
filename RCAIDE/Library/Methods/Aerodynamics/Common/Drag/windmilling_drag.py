@@ -6,14 +6,13 @@
 
 # RCAIDE Imports
 from  RCAIDE import * 
-from   RCAIDE                    import * 
-from   RCAIDE.Library.Components import Wings
-from   RCAIDE.Framework.Core     import Units, Data
+from  RCAIDE                    import * 
+from  RCAIDE.Library.Components import Wings
+from  RCAIDE.Framework.Core     import Data
 
 # ----------------------------------------------------------------------
 #  Compute drag of turbofan in windmilling condition
-# ----------------------------------------------------------------------
-
+# ---------------------------------------------------------------------- 
 def windmilling_drag(geometry,state):
     """Computes windmilling drag for turbofan engines
 

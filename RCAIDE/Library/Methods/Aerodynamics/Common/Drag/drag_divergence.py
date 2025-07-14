@@ -59,8 +59,7 @@ def drag_divergence(Mach,geometry, Cl):
         tc = t_c_w / np.cos(sweep_w)
         cl = Cl/ (np.cos(sweep_w) ** 2)
 
-        # Compressibility drag based on regressed fits from AA241
-    
+        # Compressibility drag based on regressed fits from AA241 
         mcc_cos_ws = 0.922321524499352       \
                    - 1.153885166170620*tc    \
                    - 0.304541067183461*cl    \

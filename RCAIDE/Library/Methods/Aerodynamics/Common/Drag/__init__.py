@@ -12,7 +12,6 @@ from .parasite_drag_wing                        import parasite_drag_wing
 from .parasite_drag_pylon                       import parasite_drag_pylon
 from .parasite_total                            import parasite_total
 from .induced_drag                              import induced_drag
-from .lift_wave_drag                            import lift_wave_drag 
 from .parasite_drag_fuselage                    import parasite_drag_fuselage
 from .compressibility_drag                      import compressibility_drag
 from .miscellaneous_drag                        import miscellaneous_drag  
