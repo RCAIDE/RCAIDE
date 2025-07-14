@@ -1,12 +1,11 @@
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/compressibility_drag_total.py
-# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jul 2024, RCAIDE Team 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
-   
+# ----------------------------------------------------------------------------------------------------------------------
+from RCAIDE.Framework.Core                    import Data
 from RCAIDE.Library.Components.Wings          import Main_Wing
 from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender
 from .drag_divergence                         import drag_divergence 
@@ -115,8 +114,8 @@ def compressibility_drag(state,settings,geometry):
     cd_c = cd_compressibility_volume + cd_wave_supersonic_lift + wave_drag
 
     # Save drag breakdown 
-    drag = conditions.aerodynamics.coefficients.drag.compressible.total   = cd_c 
-    drag = conditions.aerodynamics.coefficients.drag.compressible.wave    = wave_drag  
+    conditions.aerodynamics.coefficients.drag.compressible = Data(total   = cd_c, 
+                                                                  wave    = wave_drag)  
         
     return
 
@@ -124,10 +123,13 @@ def compressibility_drag(state,settings,geometry):
 #  transonic_wave_drag
 # ----------------------------------------------------------------------------------------------------------------------
 def transonic_wave_drag(conditions, settings, geometry): 
-    Cl               = conditions.aerodynamics.coefficients.lift.total    
+    Cl         = conditions.aerodynamics.coefficients.lift.total  
+    Mach       = conditions.freestream.mach_number   
     CD_wave    = np.array([-0.417184699337467, 0.0, 0.417184699337467, 0.45862155954167055, 0.5013290492186359, 0.5384919739235497, 0.5871622608441653, 0.6285553062389633, 0.6587038782744932, 0.8, 1.0])
     CLs        = np.array([1.1480189359872706, 0.0, 1.1480189359872706, 5.775673779192156, 12.836939011494024, 20.414496506330114, 34.447683899469276, 49.59172983603965, 65.49874978998449, 160, 240]) *10**-4
-    wave_drag = np.interp(Cl, CD_wave, CLs)
+    wave_drag  = np.interp(Cl, CD_wave, CLs)
+    
+    wave_drag[Mach<0.7] = 0.0 
     
     return wave_drag
 
