@@ -54,7 +54,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                     total_fuel_mass       += volume * fuel_tank.fuel.density
                                     tank_mass             += volume * fuel_tank.fuel.density
                                     segment_tank_moment   += np.array(inner_segment.mass_properties.center_of_gravity)[0] * tank_mass
-                          
+
                             tank_c_g = list(segment_tank_moment / tank_mass)
                         else: 
                             # get orgin of fuel tank     
@@ -76,14 +76,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                 outer_segment = wing.segments[seg_tags[i+1]]
                                 if inner_segment.has_fuel_tank == True:  
                                     # compute volume and update percent span location of next non-integral tank 
-                                    try:
-                                        volume ,  tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
-                                    except:
-                                        RuntimeWarning('Fuel tank cannot be place in specified wing segment, trying next segment')
-                                        outer_segment = wing.segments[seg_tags[i+2]]
-                                        volume ,  tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
-                                        
-
+                                    volume ,  tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
                                     fuel_tank.internal_volume += volume 
                                     total_fuel_volume += volume  
                                     total_fuel_mass   += volume * fuel_tank.fuel.density 
@@ -112,32 +105,68 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                     elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
 
                         # compute volume and update percent span location of next non-integral tank 
-                        volume  = compute_fuselage_non_integral_tank_fuel_volume(fuel_tank,fuselage)
+                        volume  = compute_non_integral_tank_fuel_volume(fuel_tank)
                         fuel_tank.internal_volume += volume 
                         total_fuel_volume += volume  
                         total_fuel_mass   += volume * fuel_tank.fuel.density
                         tank_c_g           = [[fuel_tank.length /2, 0, fuel_tank.outer_diameter / 2]]
 
+
+                else: 
+                    # compute volume and update percent span location of next non-integral tank 
+                    volume  = compute_non_integral_tank_fuel_volume(fuel_tank)
+                    fuel_tank.internal_volume += volume 
+                    total_fuel_volume += volume  
+                    total_fuel_mass   += volume * fuel_tank.fuel.density
+                    tank_c_g           = [[fuel_tank.length /2, 0, fuel_tank.outer_diameter / 2]]                    
+
                 fuel_tank.mass_properties.center_of_gravity =  tank_c_g
                 fuel_tank.mass_properties.mass = tank_mass
-    vehicle.fuel_tank_volume = total_fuel_volume # temp ********** find a better place for it 
+
+
     if update_max_fuel:
         vehicle.mass_properties.max_fuel = total_fuel_mass
     return
 
+def perform_fuel_tank_structural_analysis(fuel_tank):
+
+    if fuel_tank.cryogenic:
+        a =  0 
+        '''SAI ADD ROHIT's CODE'''
+    else:
+        pass
+    return
+
+
+def perform_fuel_tank_thermal_analysis(fuel_tank): 
+    # updates wall thickness
+    if fuel_tank.cryogenic:
+        a =  0 
+        '''SAI ADD ROHIT's CODE'''
+    else:
+        pass
+    return 
+
 def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage,fus_first_segment,fus_second_segment,tank_section_percent_x): 
 
     # volume of truncated  
-    A_1    = np.pi * fus_first_segment.height /2  *  fus_first_segment.width/2
-    A_2    = np.pi * fus_second_segment.height/2  *  fus_second_segment.width/2
+    A_1    = np.pi * (fus_first_segment.height /2 -fuel_tank.wall_thickness)   * ( fus_first_segment.width/2-fuel_tank.wall_thickness) 
+    A_2    = np.pi * (fus_second_segment.height/2 -fuel_tank.wall_thickness) *  (fus_second_segment.width/2-fuel_tank.wall_thickness) 
     h      = fuselage.lengths.total * (fus_second_segment.percent_x_location  - fus_first_segment.percent_x_location)
     volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *h 
 
     return volume
 
 
-def compute_fuselage_non_integral_tank_fuel_volume(fuel_tank,fuselage):  
+def compute_non_integral_tank_fuel_volume(fuel_tank):  
     l      = fuel_tank.length - fuel_tank.outer_diameter # assuming rounded end cylindrical tank
+
+    ''' 
+    # SAI TO MODIFY -------------     
+    perform_fuel_tank_structural_analysis(fuel_tank)
+    perform_fuel_tank_thermal_analysis(fuel_tank) # updates wall thickness
+    # SAI TO MODIFY -------------     
+    '''
     r      = (fuel_tank.outer_diameter - 2 * fuel_tank.wall_thickness) / 2
     volume = np.pi * ( r** 2) * l +  4 / 3 * np.pi * ( r** 3)       
     return volume
@@ -153,22 +182,22 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
         m        =  (outer_segment.root_chord_percent -  inner_segment_0.root_chord_percent) / (outer_segment.percent_span_location - inner_segment_0.percent_span_location)
         delta_y_percent  =  (tank_percent_span_location - inner_segment_0.percent_span_location)
         inner_segment.root_chord_percent = inner_segment_0.root_chord_percent + m*delta_y_percent
-        
+
         # update segment origin
         delta_y                    = delta_y_percent * semi_span
         inner_segment.origin[0][0] = inner_segment_0.origin[0][0] + delta_y * np.tan( np.pi/2 -inner_segment_0.sweeps.leading_edge) 
         inner_segment.origin[0][1] = inner_segment.percent_span_location * semi_span
         inner_segment.origin[0][2] = inner_segment_0.origin[0][2] +  delta_y *np.tan(inner_segment.dihedral_outboard)
-        
+
     inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment)
     inner_segment_chord     = wing.chords.root * inner_segment.root_chord_percent
     inner_front_rib_length  = inner_segment_chord * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl)) 
     inner_rear_rib_length   = inner_segment_chord * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl) )
     inner_wingbox_length    = inner_segment_chord * (inner_segment.fuel_tank.percent_chord_end_location -inner_segment.fuel_tank.percent_chord_start_location)
-          
+
     clearance  = fuel_tank.wall_clearance
     delta_span = (outer_segment.percent_span_location - inner_segment.percent_span_location) * semi_span
-        
+
     outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment)
     outer_segment_chord     = wing.chords.root * outer_segment.root_chord_percent
     outer_front_rib_length  = outer_segment_chord * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl)) 
@@ -199,7 +228,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
     lower_slope = np.arctan(dz_lower/dy_lower) 
 
     # determine tank diameter and location of next spar 
-    D         = 0.1
+    D         = 1
     epsilon_D = 10 
 
 
@@ -223,15 +252,15 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
         detla_D    = delta_AD *  np.cos(upper_slope)
 
         D += detla_D 
-    
+
     # store tank diamter (this will set the location of the next segment)
     fuel_tank.outer_diameter = D 
 
     # update tank percent span location
     tank_percent_span_location = inner_segment.percent_span_location +  D / semi_span 
-        
+
     # get orgin of fuel tank 
-    origin_x         = inner_segment.origin[0][0] + (inner_segment.fuel_tank.percent_chord_start_location * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2) -D/2
+    origin_x         = inner_segment.origin[0][0] + (inner_segment.fuel_tank.percent_chord_start_location * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2)
     origin_y         = inner_segment.origin[0][1] + D / 2
     origin_z         = inner_segment.origin[0][2] + (D / 2) *np.tan(inner_segment.dihedral_outboard)
     fuel_tank.origin = [[origin_x,origin_y,origin_z]] 
@@ -240,17 +269,25 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
     m_2 =  (outer_wingbox_length -  inner_wingbox_length) / (outer_segment.percent_span_location - inner_segment_0.percent_span_location)  
     l_1 =  inner_wingbox_length +  m_2 * (tank_percent_span_location - inner_segment_0.percent_span_location)
     l_2 =  inner_wingbox_length -  (D / np.tan( np.pi/2 -spar_sweep)) 
-    l   =  np.minimum(l_1, l_2) + D
-    
+    l   =  np.minimum(l_1, l_2)
+
+    fuel_tank.length         = l
+    fuel_tank.outer_diameter = D
+
+
+    ''' 
+    # SAI TO MODIFY -------------     
+    perform_fuel_tank_structural_analysis(fuel_tank)
+    perform_fuel_tank_thermal_analysis(fuel_tank) # updates wall thickness
+    # SAI TO MODIFY -------------
+    ''' 
+
     # internal radius of tank 
-    r   = (D -  2 * fuel_tank.wall_thickness ) / 2
+    r      = (D -  2 * fuel_tank.wall_thickness ) / 2
     volume = np.pi * ( r** 2) * (l - D)  +  4 / 3 * np.pi * ( r** 3) 
     if fuel_tank.symmetric:
         volume *= 2
 
-    fuel_tank.length = l
-    fuel_tank.height = D
-    
     return volume ,  tank_percent_span_location
 
 def compute_wing_integral_tank_fuel_volume(fuel_tank,wing):     
@@ -320,6 +357,3 @@ def compute_non_dimensional_rib_coordinates(compoment):
     rear_rib_nondim_y_lower  = f_lower([rear_rib_nondim_x])[0]  + clearance   
 
     return front_rib_nondim_y_upper,rear_rib_nondim_y_upper, front_rib_nondim_y_lower, rear_rib_nondim_y_lower 
- 
-
-
