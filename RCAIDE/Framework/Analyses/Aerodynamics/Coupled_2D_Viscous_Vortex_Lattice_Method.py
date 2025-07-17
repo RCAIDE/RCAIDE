@@ -64,7 +64,8 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
         self.process.initialize                                     = Process()  
                     
         # correction factors
-        self.settings.viscous_VLM_flag                              = True 
+        self.settings.viscous_VLM_flag                              = True
+        self.settings.wing_polars                                   = False  
         self.settings.use_surrogate                                 = True  
         self.settings.propeller_wake_model                          = False 
         self.settings.discretize_control_surfaces                   = True
@@ -161,8 +162,6 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
         
 
     def initialize(self):  
-        use_surrogate   = self.settings.use_surrogate 
-         
         vehicle  =  self.vehicle
 
         self.settings.number_of_chordwise_vortices  = 1       # make sure it is one
@@ -198,7 +197,14 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
                          
             if not polar_flag:
                 raise AssertionError('Airfoil polars must be defined on ' + wing.tag + ' for Coupled 2D Viscous Vortex Lattice Method!')
-            
+    
+        self.settings.wing_polars = polar_flag
+        
+        # form drag    
+        if polar_flag == False: 
+            self.training.form_drag_polars = form_drag_surrogate(self) 
+        
+        use_surrogate   = self.settings.use_surrogate 
 
         # If we are using the surrogate
         if use_surrogate == True: 

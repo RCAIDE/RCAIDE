@@ -34,7 +34,6 @@ def compressibility_drag(state,settings,geometry):
       peak_mach_number                                               [Unitless]
       transonic_drag_multiplier                                      [Unitless]
       volume_wave_drag_scaling                                       [Unitless]
-    state.conditions.aerodynamics.lift_breakdown.compressible_wings  [Unitless]
     state.conditions.freestream.mach_number                          [Unitless]
     geometry.maximum_cross_sectional_area                            [m^2] (used in subfunctions)
     geometry.total_length                                            [m]   (used in subfunctions)

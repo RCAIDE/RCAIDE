@@ -16,7 +16,8 @@ from .parasite_drag_fuselage                    import parasite_drag_fuselage
 from .compressibility_drag                      import compressibility_drag
 from .miscellaneous_drag                        import miscellaneous_drag  
 from .parasite_drag_nacelle                     import parasite_drag_nacelle   
-from .spoiler_drag                              import spoiler_drag 
+from .spoiler_drag                              import spoiler_drag
+from .form_drag                                 import * 
 from .total_drag                                import total_drag 
 from .drag_divergence                           import drag_divergence
 from .supersonic_wave_drag_volume_raymer        import supersonic_wave_drag_volume_raymer

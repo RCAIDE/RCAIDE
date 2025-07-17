@@ -152,6 +152,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.compressibility                                = Process() 
         compute.drag.compressibility.total                          = Common.Drag.compressibility_drag
         compute.drag.miscellaneous                                  = Common.Drag.miscellaneous_drag 
+        compute.drag.form                                           = Common.Drag.form_drag 
         compute.drag.spoiler                                        = Common.Drag.spoiler_drag
         compute.drag.total                                          = Common.Drag.total_drag
         compute.stability                                           = Process()
@@ -159,16 +160,16 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.process.compute                                        = compute
         
 
-    def initialize(self):  
-        use_surrogate   = self.settings.use_surrogate  
-
+    def initialize(self): 
+        
+        use_surrogate   = self.settings.use_surrogate   
         # If we are using the surrogate
         if use_surrogate == True: 
-            # sample training data
+            # train training data
             train_VLM_surrogates(self)
 
             # build surrogate
-            build_VLM_surrogates(self)  
+            build_VLM_surrogates(self)
     
         # build the evaluation process
         compute   =  self.process.compute                  

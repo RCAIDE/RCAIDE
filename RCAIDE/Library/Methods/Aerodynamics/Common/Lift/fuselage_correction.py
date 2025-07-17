@@ -29,11 +29,10 @@ def fuselage_correction(state,settings,geometry):
     """        
     # unpack 
     fus_correction  = settings.fuselage_lift_correction
-    wings_lift_comp = state.conditions.aerodynamics.coefficients.lift.total
+    wings_lift_comp = state.conditions.aerodynamics.coefficients.lift.inviscid
     
-    # total lift, assuming one fuselage
-    aoa_deg              = state.conditions.aerodynamics.angles.alpha / Units.degree
-    aircraft_total_lift = wings_lift_comp * fus_correction  # NEED TO ADD ATTENUATION FUNCTION 
+    # total lift, assuming one fuselage 
+    aircraft_total_lift = wings_lift_comp * fus_correction   
 
     state.conditions.aerodynamics.coefficients.lift.total = aircraft_total_lift
 

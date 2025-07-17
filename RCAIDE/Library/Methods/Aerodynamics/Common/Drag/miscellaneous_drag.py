@@ -1,7 +1,6 @@
-# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/supersonic_miscellaneous_drag_aircraft.py
-# (c) Copyright 2023 Aerospace Research Community LLC
+# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/miscellaneous_drag.py 
 # 
-# Created:  Jun 2024, M. Clarke 
+# Created:  Jun 2025, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -13,7 +12,7 @@ from RCAIDE.Framework.Core                    import Data
 import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  Supersonic Miscellaneous Drag Total
+#  Miscellaneous Drag Total
 # ----------------------------------------------------------------------------------------------------------------------   
 def miscellaneous_drag(state,settings,geometry):
     """Computes the miscellaneous drag associated with an aircraft
