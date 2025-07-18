@@ -160,19 +160,22 @@ def VLM(conditions,settings,geometry):
     
 
     # ---------------------------------------------------------------------------------------
-    # STEPS 1-9: Generate Panelization and Vortex Distribution
+    # Generate Panelization and Vortex Distribution
     # ------------------ --------------------------------------------------------------------    
-    # generate vortex distribution (VLM steps 1-9)
-    VD   = generate_vortex_distribution(geometry,settings)  
+    VD   = generate_vortex_distribution(geometry,settings) 
+    settings.vortex_distribution =  VD
     
     if not VD.is_postprocessed:
         raise ValueError('postprocess_VD has not been called since the panels have been modified')
      
     zeta =  0.05
+
+    # ---------------------------------------------------------------------------------------
+    # Evaluate VLM
+    # ------------------ --------------------------------------------------------------------       
     if settings.viscous_VLM_flag: 
 
-        # create arrays of delta_alpha_i for each strip
-    
+        # create arrays of delta_alpha_i for each strip 
         LE_ind               = VD.leading_edge_indices 
         CHORD                = VD.chord_lengths[0,:]
         delta_alpha_induced  = np.repeat(conditions.aerodynamics.angles.alpha*0, VD.n_cp, axis = 1)
@@ -184,14 +187,13 @@ def VLM(conditions,settings,geometry):
         error_diff                 =  1
      
         non_dim_Re = np.tile(conditions.freestream.reynolds_number, (1, len(CHORD[LE_ind]) ))
-        AoA        =  np.tile(conditions.aerodynamics.angles.alpha , (1, len(CHORD[LE_ind]) ))
-        
-        tol =  1E-3
+        AoA        = np.tile(conditions.aerodynamics.angles.alpha , (1, len(CHORD[LE_ind]) )) 
+        tol        = 1E-3
         prev_error = 1
         while error_diff > tol: 
          
             # Update induced AoA, sideslop and solve the VLM
-            RESULTS =  VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced)
+            RESULTS =  VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced)
             
             # compute lift distribtion 
             Clift_y =  RESULTS.sectional_CLift   
@@ -199,16 +201,14 @@ def VLM(conditions,settings,geometry):
             # compute alpha_ind for each section
             aoa_i_y =  RESULTS.alpha_induced
             
-            n_sw =  VD.n_sw
-            ws = 0 
-                
+            ws      = 0  
             counter = 0
             for w_i, wing in enumerate(VD.VLM_wings):
                 
                 for seg_i in range(len(wing.seg_breaks) - 1):
     
                     ws_prev = ws
-                    ws         += n_sw[counter]                
+                    ws         += VD.n_sw[counter]                
                      
                     # get polar at section break
                     inboard_airfoil_polar  = wing.seg_breaks[seg_i].airfoil.polars
@@ -218,8 +218,8 @@ def VLM(conditions,settings,geometry):
                     segment_chords         = np.tile(CHORD[ws_prev:ws],(num_cp,1))
                     chord_Res              = segment_chords * non_dim_Re[:,ws_prev:ws]
  
-                    linear_smoothing       = np.tile(np.linspace(0,1,n_sw[counter])[None,:],(num_cp , 1))
-                    twist_distribution     = np.tile(np.linspace(wing.seg_breaks[seg_i].twist, wing.seg_breaks[seg_i+1].twist,n_sw[counter])[None,:] ,(num_cp,1)) 
+                    linear_smoothing       = np.tile(np.linspace(0,1,VD.n_sw[counter])[None,:],(num_cp , 1))
+                    #twist_distribution     = np.tile(np.linspace(wing.seg_breaks[seg_i].twist, wing.seg_breaks[seg_i+1].twist,n_sw[counter])[None,:] ,(num_cp,1)) 
                     AoA_eff                = AoA[:,ws_prev:ws] # - twist_distribution - delta_alpha_induced[:,ws_prev:ws] 
   
                     # function for converting 2D polars into 3D polars considering the effect of sweep and boundary layer growth 
@@ -262,29 +262,28 @@ def VLM(conditions,settings,geometry):
                                    
                         if wing.symmetric: 
                             ws_prev = ws 
-                            ws         += n_sw[counter]
+                            ws         += VD.n_sw[counter]
                             
-                            Clift_y_visc[:,ws_prev:ws]        = Clift_y_visc[:,ws_prev - n_sw[counter]:ws_prev] 
-                            delta_alpha_induced[:,ws_prev:ws] = delta_alpha_induced[:,ws_prev - n_sw[counter]:ws_prev] 
+                            Clift_y_visc[:,ws_prev:ws]        = Clift_y_visc[:,ws_prev - VD.n_sw[counter]:ws_prev] 
+                            delta_alpha_induced[:,ws_prev:ws] = delta_alpha_induced[:,ws_prev - VD.n_sw[counter]:ws_prev] 
             # compute error          
             error = np.max( Clift_y - Clift_y_visc) 
-            error_diff =  np.abs(error - prev_error)
-            #print(error_diff)
+            error_diff =  np.abs(error - prev_error) 
             prev_error =  error
     
     else:
         delta_alpha_induced =  np.repeat(conditions.aerodynamics.angles.alpha*0, VD.n_cp, axis = 1)  
-        RESULTS = VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced)
+        RESULTS = VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced)
         
     return RESULTS
 
 
-def VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced):
-    
+def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced): 
         
     # unpack conditions--------------------------------------------------------------
     pwm      = settings.propeller_wake_model
     K_SPC    = settings.leading_edge_suction_multiplier
+    VD       = settings.vortex_distribution
     aoa      = conditions.aerodynamics.angles.alpha 
     mach     = conditions.freestream.mach_number
     ones     = np.atleast_2d(np.ones_like(mach)) 
@@ -580,7 +579,7 @@ def VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,de
 
     # Now calculate the coefficients for each wing
     Clift_y   = LIFT/CHORD_strip/ES 
-    results   = compute_induced_drag(Clift_y, aoa, X, Y, Z, CHORD_strip, SURF,VD.n_sw,S_ref)    
+    results   = compute_trefftz_plane_induced_drag(conditions, VD,Clift_y, X, Y, Z, CHORD_strip, SURF,S_ref,b_ref)    
     CL_wing   = np.add.reduceat(LIFT,span_breaks,axis=1)/SURF 
     
     # Now calculate total coefficients
@@ -599,8 +598,7 @@ def VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,de
     # ------------------ --------------------------------------------------------------------     
     precision      = settings.floating_point_precision
 
-    #VORLAX _TOT outputs
-    # force coefficients
+    #VORLAX _TOT outputs 
     results.S_ref             = S_ref
     results.b_ref             = b_ref
     results.c_ref             = c_bar  
@@ -613,14 +611,12 @@ def VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,de
     results.CZ                = -CZ 
     results.CL                = CL_mom 
     results.CM                = CM  
-    results.CN                = CN 
-    results.chord_sections    = VD.n_cp
+    results.CN                = CN  
     results.spanwise_stations = Y 
     results.CLift_wing        = CL_wing   
     results.sectional_CLift   = Clift_y     
     results.CP                = np.array(CP    , dtype=precision)
-    results.gamma             = np.array(GAMMA , dtype=precision)
-    results.VD                = VD
+    results.gamma             = np.array(GAMMA , dtype=precision) 
     results.V_distribution    = rhs.V_distribution
     results.V_x               = rhs.Vx_ind_total
     results.V_z               = rhs.Vz_ind_total 
@@ -719,11 +715,16 @@ def strip_cumsum(arr, chord_breaks, strip_lengths):
     return cumsum - offsets
     
     
-def compute_induced_drag(cl, alpha, x_dist, y_dist, z_dist, chord_dist, SURF, n_sw,SREF, v_inf=1):
-      
+def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dist, chord_dist, SURF,SREF,b_ref, v_inf=1):
+     
+    alpha = conditions.aerodynamics.angles.alpha 
     n_cases = len(alpha) 
-    n_wings = len(n_sw)
-    rho = 1    
+    n_wings = len(VD.n_sw)
+    rho = 1
+    
+    # ------------------------------------------------------------------------------------------
+    # Trefftz Plane Drag 
+    # ------------------------------------------------------------------------------------------
 
     # Initialize results storage
     CDi_total         = np.zeros(n_cases)
@@ -736,9 +737,8 @@ def compute_induced_drag(cl, alpha, x_dist, y_dist, z_dist, chord_dist, SURF, n_
     circulation_dist = 0.5 * chord_dist * v_inf * cl 
    
     ws = 0
-    # Induced velocity calculation for this case
-
-    for wing_index,wing_segments in enumerate(n_sw):
+    # Induced velocity calculation for this case 
+    for wing_index,wing_segments in enumerate(VD.n_sw):
         ws_prev = ws
         ws += wing_segments
         circulation_segments = circulation_dist[:,ws_prev:ws]
@@ -808,12 +808,12 @@ def compute_induced_drag(cl, alpha, x_dist, y_dist, z_dist, chord_dist, SURF, n_
         Cd_i_distribution[:,ws_prev:ws] = cl_segments * np.sin(-alpha_i_case)
         alpha_i[:,ws_prev:ws] = alpha_i_case
 
-    CDi_total = np.sum(D_induced, axis=1) / (0.5 * rho * v_inf**2 * SREF)
-
+    CDi_total = np.sum(D_induced, axis=1) / (0.5 * rho * v_inf**2 * SREF) 
+ 
     # Package results
     results                          = Data()
     results.CDrag_induced            = CDi_total[:, np.newaxis]
     results.sectional_CDrag_induced  = Cd_i_distribution
     results.CDrag_induced_wing       = CDi_wing
-    results.alpha_induced            = alpha_i
+    results.alpha_induced            = alpha_i 
     return results

@@ -17,7 +17,7 @@ from .compressibility_drag                      import compressibility_drag
 from .miscellaneous_drag                        import miscellaneous_drag  
 from .parasite_drag_nacelle                     import parasite_drag_nacelle   
 from .spoiler_drag                              import spoiler_drag
-from .form_drag                                 import * 
+from .form_drag                                 import form_drag
 from .total_drag                                import total_drag 
 from .drag_divergence                           import drag_divergence
 from .supersonic_wave_drag_volume_raymer        import supersonic_wave_drag_volume_raymer
@@ -26,6 +26,5 @@ from .cooling_drag                              import cooling_drag
 from .windmilling_drag                          import windmilling_drag
 from .asymmetry_drag                            import asymmetry_drag
 from .compressible_mixed_flat_plate             import compressible_mixed_flat_plate
-from .estimate_2ndseg_lift_drag_ratio           import estimate_2ndseg_lift_drag_ratio
 from .compressible_turbulent_flat_plate         import compressible_turbulent_flat_plate
 from .compressible_mixed_flat_plate             import compressible_mixed_flat_plate

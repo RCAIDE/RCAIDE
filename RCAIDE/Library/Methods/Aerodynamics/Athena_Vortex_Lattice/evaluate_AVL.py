@@ -50,7 +50,7 @@ def evaluate_AVL_surrogate(state,settings,vehicle):
   
     pts   = np.hstack((AoA,Mach))     
     conditions.aerodynamics.coefficients.lift.total                   = np.atleast_2d(lift_model(pts)).T  
-    conditions.aerodynamics.coefficients.drag.induced.inviscid        = np.atleast_2d(drag_model(pts)).T  
+    conditions.aerodynamics.coefficients.drag.induced.total        = np.atleast_2d(drag_model(pts)).T  
     conditions.aerodynamics.span_efficiency                           = np.atleast_2d(e_model(pts)).T  
     conditions.control_surfaces.slat.static_stability.coefficients.M  = np.atleast_2d(moment_model(pts)).T  
     conditions.static_stability.derivatives.CM_alpha                  = np.atleast_2d(Cm_alpha_model(pts)).T  

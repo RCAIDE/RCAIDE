@@ -64,12 +64,11 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
         self.process.initialize                                     = Process()  
                     
         # correction factors
-        self.settings.viscous_VLM_flag                              = True
-        self.settings.wing_polars                                   = False  
+        self.settings.viscous_VLM_flag                              = True 
         self.settings.use_surrogate                                 = True  
         self.settings.propeller_wake_model                          = False 
         self.settings.discretize_control_surfaces                   = True
-        self.settings.model_fuselage                                = False
+        self.settings.model_fuselage                                = False 
         self.settings.trim_aircraft                                 = True
         self.settings.aileron_flag                                  = False
         self.settings.rudder_flag                                   = False
@@ -83,7 +82,7 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
         self.settings.fuselage_spanwise_vortices                    = None
         self.settings.fuselage_chordwise_vortices                   = None  
         self.settings.spanwise_cosine_spacing                       = True
-        self.settings.vortex_distribution                           = Data()  
+        self.settings.vortex_distribution                           = None
         self.settings.leading_edge_suction_multiplier               = 1.0  
         self.settings.use_VORLAX_matrix_calculation                 = False
         self.settings.floating_point_precision                      = np.float32     
@@ -154,6 +153,7 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
         compute.drag.compressibility                                = Process() 
         compute.drag.compressibility.total                          = Common.Drag.compressibility_drag
         compute.drag.miscellaneous                                  = Common.Drag.miscellaneous_drag 
+        compute.drag.form                                           = Common.Drag.form_drag 
         compute.drag.spoiler                                        = Common.Drag.spoiler_drag
         compute.drag.total                                          = Common.Drag.total_drag
         compute.stability                                           = Process()
@@ -164,8 +164,8 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
     def initialize(self):  
         vehicle  =  self.vehicle
 
-        self.settings.number_of_chordwise_vortices  = 1       # make sure it is one
-        self.settings.model_fuselage                = False   # make sure it is false
+        self.settings.number_of_chordwise_vortices  = 1        
+        self.settings.model_fuselage                = False    
         for wing in vehicle.wings: 
             polar_flag = False
             if wing.airfoil != None:
@@ -197,12 +197,7 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
                          
             if not polar_flag:
                 raise AssertionError('Airfoil polars must be defined on ' + wing.tag + ' for Coupled 2D Viscous Vortex Lattice Method!')
-    
-        self.settings.wing_polars = polar_flag
-        
-        # form drag    
-        if polar_flag == False: 
-            self.training.form_drag_polars = form_drag_surrogate(self) 
+     
         
         use_surrogate   = self.settings.use_surrogate 
 

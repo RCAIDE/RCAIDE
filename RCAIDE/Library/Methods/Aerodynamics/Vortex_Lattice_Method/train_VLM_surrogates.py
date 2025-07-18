@@ -172,6 +172,7 @@ def train_model(aerodynamics, Mach):
         wing.control_surfaces = []
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
     Clift_res        = VLM_results.CLift
+    VD_0             = settings.vortex_distribution
     Cdrag_res        = VLM_results.CDrag_induced
     CX_res           = VLM_results.CX
     CY_res           = VLM_results.CY
@@ -504,8 +505,9 @@ def train_model(aerodynamics, Mach):
                 training.dClift_ddelta_f  = (Clift_d_f[0,:] - Clift_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
                 training.dCM_ddelta_f    = (CM_d_f[0,:] - CM_d_f[1,:]) / (delta_f[0] - delta_f[1])  
                 vehicle.wings[wing.tag].control_surfaces.flap.deflection = delta_f_0
-    
-    
+                
+    # reset vortex distribution after training 
+    settings.vortex_distribution = VD_0
     return training
         
         
