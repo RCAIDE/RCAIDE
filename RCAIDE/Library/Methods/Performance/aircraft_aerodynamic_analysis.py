@@ -25,8 +25,7 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
                                   non_dimensional_reynolds_numbers = None,
                                   temperatures                     = None,
                                   update_fuselage_properties       = True, 
-                                  overwrite_reference              = True,
-                                  overwrite_airfoil_properties     = True,
+                                  overwrite_reference              = True, 
                                   update_wing_properties           = True, 
                                   altitude = None ):
     """
@@ -91,12 +90,12 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
         #  Blended Wing Body 
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
             if update_wing_properties and overwrite_reference:
-                bwb_wing_planform(wing,overwrite_airfoil_properties,overwrite_reference)
+                bwb_wing_planform(wing,overwrite_reference)
                 vehicle.reference_area = wing.areas.reference 
         # All other wing surfaces 
         else:
             if update_wing_properties:
-                wing_planform(wing,overwrite_airfoil_properties, overwrite_reference) 
+                wing_planform(wing, overwrite_reference) 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_reference:
                     vehicle.reference_area = wing.areas.reference
     

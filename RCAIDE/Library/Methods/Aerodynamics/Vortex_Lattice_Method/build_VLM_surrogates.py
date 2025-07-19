@@ -8,7 +8,7 @@
 from RCAIDE.Framework.Core import  Data 
 
 # package imports 
-from scipy.interpolate                                           import RegularGridInterpolator
+from scipy.interpolate   import RegularGridInterpolator
 from scipy import interpolate
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -92,22 +92,22 @@ def build_surrogate(aerodynamics, training):
      
     # Pack the outputs
     surrogates.Clift_alpha        = RegularGridInterpolator((AoA_data ,mach_data),training.Clift_alpha        ,method = 'linear',   bounds_error=False, fill_value=None)      
-    surrogates.Cdrag_induced_alpha= RegularGridInterpolator((AoA_data ,mach_data),training.Cdrag_induced_alpha        ,method = 'linear',   bounds_error=False, fill_value=None)      
-    surrogates.CM_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CM_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)  
-    surrogates.CX_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CX_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)  
-    surrogates.CZ_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CZ_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)
-    surrogates.CY_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CY_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)
-    surrogates.CL_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CL_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)
-    surrogates.CN_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CN_alpha       ,method = 'linear',   bounds_error=False, fill_value=None)       
+    surrogates.Cdrag_induced_alpha= RegularGridInterpolator((AoA_data ,mach_data),training.Cdrag_induced_alpha,method = 'linear',   bounds_error=False, fill_value=None)      
+    surrogates.CM_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CM_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)  
+    surrogates.CX_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CX_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)  
+    surrogates.CZ_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CZ_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)
+    surrogates.CY_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CY_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)
+    surrogates.CL_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CL_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)
+    surrogates.CN_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CN_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)       
 
     surrogates.Clift_beta         = RegularGridInterpolator((Beta_data ,mach_data),training.Clift_beta        ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.Cdrag_induced_beta = RegularGridInterpolator((Beta_data ,mach_data),training.Cdrag_induced_beta        ,method = 'linear',   bounds_error=False, fill_value=None)    
-    surrogates.CX_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CX_beta        ,method = 'linear',   bounds_error=False, fill_value=None)    
-    surrogates.CZ_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CZ_beta        ,method = 'linear',   bounds_error=False, fill_value=None)    
-    surrogates.CY_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CY_beta        ,method = 'linear',   bounds_error=False, fill_value=None)      
-    surrogates.CL_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CL_beta        ,method = 'linear',   bounds_error=False, fill_value=None)      
-    surrogates.CN_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CN_beta        ,method = 'linear',   bounds_error=False, fill_value=None)  
-    surrogates.CM_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CM_beta        ,method = 'linear',   bounds_error=False, fill_value=None) 
+    surrogates.Cdrag_induced_beta = RegularGridInterpolator((Beta_data ,mach_data),training.Cdrag_induced_beta,method = 'linear',   bounds_error=False, fill_value=None)    
+    surrogates.CX_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CX_beta           ,method = 'linear',   bounds_error=False, fill_value=None)    
+    surrogates.CZ_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CZ_beta           ,method = 'linear',   bounds_error=False, fill_value=None)    
+    surrogates.CY_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CY_beta           ,method = 'linear',   bounds_error=False, fill_value=None)      
+    surrogates.CL_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CL_beta           ,method = 'linear',   bounds_error=False, fill_value=None)      
+    surrogates.CN_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CN_beta           ,method = 'linear',   bounds_error=False, fill_value=None)  
+    surrogates.CM_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CM_beta           ,method = 'linear',   bounds_error=False, fill_value=None) 
 
 
     # Use interpolat.interp1d below

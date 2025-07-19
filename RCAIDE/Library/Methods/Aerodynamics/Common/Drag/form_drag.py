@@ -7,9 +7,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
   
 from RCAIDE.Framework.Core                    import Data ,  Units
-from RCAIDE.Library.Methods.Geometry.Airfoil  import compute_naca_4series
-from RCAIDE.Framework.Core                    import interp2d 
+from RCAIDE.Library.Methods.Geometry.Airfoil  import compute_naca_4series 
 from RCAIDE.Library.Methods.Aerodynamics.Airfoil_Panel_Method.airfoil_analysis      import airfoil_analysis
+from scipy.interpolate   import RegularGridInterpolator
 # package imports
 import numpy as np
 
@@ -58,7 +58,9 @@ def form_drag(state,settings,geometry):
             chord_Res              = segment_chords * non_dim_Re[:,ws_prev:ws]
 
             linear_smoothing       = np.tile(np.linspace(0,1,n_sw[counter])[None,:],(n_cases , 1)) 
-            AoA_eff                = alpha[:,ws_prev:ws] 
+            #AoA_eff                = alpha[:,ws_prev:ws] 
+            twist_distribution     = np.tile(np.linspace(wing.seg_breaks[seg_i].twist, wing.seg_breaks[seg_i+1].twist,n_sw[counter])[None,:] ,(n_cases,1)) 
+            AoA_eff                = alpha[:,ws_prev:ws] + twist_distribution #  - delta_alpha_induced[:,ws_prev:ws]             
 
             # function for converting 2D polars into 3D polars considering the effect of sweep and boundary layer growth 
             eta                    =  2 * np.tile(VD.YC[ws_prev:ws][None,:],(n_cases , 1))/b_ref
@@ -81,10 +83,16 @@ def form_drag(state,settings,geometry):
             inboard_AoA_2_5_D      = (AoA_eff - inboard_AoA_0) * F_sweep +  inboard_AoA_0 
             outboard_AoA_2_5_D     = (AoA_eff - outboard_AoA_0) * F_sweep +  outboard_AoA_0
                                 
-            # compute 2.5 D effective Cl and CDs for the two sections use linear blending for CLs between section breaks  
-            inboard_Cdrag_eff_i    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.drag_coefficients) 
-            outboard_Cdrag_eff_i   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.drag_coefficients)
-            CDrag_form_distribution[:,ws_prev:ws] = inboard_Cdrag_eff_i* (1- linear_smoothing)  + outboard_Cdrag_eff_i*linear_smoothing   
+            # compute 2.5 D effective Cl and CDs for the two sections use linear blending for CLs between section breaks
+
+            inboard_Cdrag_func     = RegularGridInterpolator((inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks),inboard_airfoil_polar.drag_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)
+            outboard_Cdrag_func    = RegularGridInterpolator((outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks),outboard_airfoil_polar.drag_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)
+            
+            inboard_pts            = np.hstack((chord_Res.reshape(num_cp * VD.n_sw[counter]      , 1),inboard_AoA_2_5_D.reshape(num_cp * VD.n_sw[counter]      , 1))) 
+            outboard_pts           = np.hstack((chord_Res.reshape(num_cp * VD.n_sw[counter]      , 1),outboard_AoA_2_5_D.reshape(num_cp * VD.n_sw[counter]      , 1))) 
+            inboard_Cdrag_eff_i    = np.atleast_2d(inboard_Cdrag_func(inboard_pts)).reshape(num_cp, VD.n_sw[counter]      )
+            outboard_Cdrag_eff_i   = np.atleast_2d(outboard_Cdrag_func(outboard_pts)).reshape(num_cp, VD.n_sw[counter]      ) 
+            CDrag_form_distribution[:,ws_prev:ws] = inboard_Cdrag_eff_i* (1- linear_smoothing)  + outboard_Cdrag_eff_i*linear_smoothing             
       
     CDraf_form =  CDrag_form_distribution
     return  

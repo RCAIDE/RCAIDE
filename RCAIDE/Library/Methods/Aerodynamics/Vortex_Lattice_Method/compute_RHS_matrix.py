@@ -1,7 +1,7 @@
 # RCAIDE/Methods/Aerodynamics/Common/Lift/compute_RHS_matrix.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created: Aug 2025, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -15,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute RHS matrix 
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_RHS_matrix(delta,phi,delta_alpha_induced,conditions,settings,geometry,propeller_wake_model):
+def compute_RHS_matrix(VD,delta,phi,delta_alpha_induced,conditions,settings,geometry,propeller_wake_model):
 
     """ This computes the right hand side matrix for the VLM. In this
     function, induced velocites from propeller wake are also included
@@ -63,18 +63,17 @@ def compute_RHS_matrix(delta,phi,delta_alpha_induced,conditions,settings,geometr
     N/A
     """
 
-    # unpack
-    VD               = geometry.vortex_distribution 
+    # unpack 
     aoa              = conditions.aerodynamics.angles.alpha
-    aoa_distribution = np.repeat(aoa, VD.n_cp, axis = 1) - delta_alpha_induced
+    aoa_distribution = VD.n_cp - delta_alpha_induced
     PSI              = conditions.aerodynamics.angles.beta
-    PSI_distribution = np.repeat(PSI, VD.n_cp, axis = 1)
+    num_eval_pts     = len(VD.XC[0])
+    PSI_distribution = np.repeat(PSI,num_eval_pts, axis = 1)
     V_inf            = conditions.freestream.velocity
-    V_distribution   = np.repeat(V_inf , VD.n_cp, axis = 1)
+    V_distribution   = np.repeat(V_inf ,num_eval_pts, axis = 1)
     num_ctrl_pts     = len(aoa)  
-    num_eval_pts     = len(VD.XC)
 
-    rot_V_wake_ind   = np.zeros((num_ctrl_pts, VD.n_cp,3))
+    rot_V_wake_ind   = np.zeros((num_ctrl_pts,num_eval_pts,3))
     Vx_ind_total     = np.zeros_like(V_distribution)
     Vy_ind_total     = np.zeros_like(V_distribution)
     Vz_ind_total     = np.zeros_like(V_distribution) 
@@ -172,13 +171,13 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     XBAR   = VD.XBAR
     ZBAR   = VD.ZBAR
 
-    CHORD  = VD.chord_lengths[0,:]
+    CHORD  = VD.chord_lengths 
     DELTAX = 0.5/RNMAX
 
     # LOCATE VORTEX LATTICE CONTROL POINT WITH RESPECT TO THE
     # ROTATION CENTER (XBAR, 0, ZBAR). THE RELATIVE COORDINATES
     # ARE XGIRO, YGIRO, AND ZGIRO.
-    XGIRO = X + CHORD*DELTAX - np.repeat(XBAR, RNMAX[LE_ind])
+    XGIRO = X + CHORD*DELTAX - np.repeat(XBAR, RNMAX[LE_ind]) # CHECK ##########
     YGIRO = YY
     ZGIRO = ZZ - np.repeat(ZBAR, RNMAX[LE_ind])
 
@@ -192,7 +191,7 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     #COMPUTE DIRECTION COSINES.
     SCNTL  = VD.SLOPE/np.sqrt(1. + VD.SLOPE **2)
     CCNTL  = 1. / np.sqrt(1.0 + SCNTL**2)
-    phi_LE = np.repeat(phi[:,LE_ind]  , RNMAX[LE_ind], axis=1)
+    phi_LE = np.repeat(phi[:,LE_ind]  , RNMAX[LE_ind], axis=1) # CHECK ##########
     COD    = np.cos(phi_LE)
     SID    = np.sin(phi_LE)
 

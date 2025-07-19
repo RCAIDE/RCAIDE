@@ -152,7 +152,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.compressibility                                = Process() 
         compute.drag.compressibility.total                          = Common.Drag.compressibility_drag
         compute.drag.miscellaneous                                  = Common.Drag.miscellaneous_drag 
-        compute.drag.form                                           = Common.Drag.form_drag 
+        #compute.drag.form                                           = Common.Drag.form_drag 
         compute.drag.spoiler                                        = Common.Drag.spoiler_drag
         compute.drag.total                                          = Common.Drag.total_drag
         compute.stability                                           = Process()

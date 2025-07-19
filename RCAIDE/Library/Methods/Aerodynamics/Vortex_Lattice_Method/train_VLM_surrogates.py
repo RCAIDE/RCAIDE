@@ -57,23 +57,23 @@ def train_VLM_surrogates(aerodynamics):
     conditions.freestream.mach_number               = np.array([[0.5]])
     conditions.aerodynamics.angles.alpha            = np.array([[0.0]])
 
-    np_vehicle = deepcopy(aerodynamics.vehicle)
-    CG =  np_vehicle.mass_properties.center_of_gravity[0][0]
-    np_settings = deepcopy(aerodynamics.settings) 
+    np_vehicle    = deepcopy(aerodynamics.vehicle)
+    CG            = np_vehicle.mass_properties.center_of_gravity[0][0]
+    np_settings   = deepcopy(aerodynamics.settings) 
     VLM_results_0 = VLM(conditions,np_settings,np_vehicle) 
-    CM_0    = VLM_results_0.CM  
+    CM_0          = VLM_results_0.CM  
 
     # Angle of Attack Perturbation      
-    delta_angle  = aerodynamics.training.angle_purtubation  
+    delta_angle       = aerodynamics.training.angle_purtubation  
     conditions.aerodynamics.angles.alpha   += delta_angle 
-    VLM_results_1 = VLM(conditions,np_settings,np_vehicle) 
+    VLM_results_1     = VLM(conditions,np_settings,np_vehicle) 
     CM_alpha_prime    = VLM_results_1.CM 
     
     # Center of Gravity Perturbation      
     vehicle_shifted_CG = deepcopy(aerodynamics.vehicle)
-    delta_cg = 0.1
+    delta_cg           = 0.1
     vehicle_shifted_CG.mass_properties.center_of_gravity[0][0] +=delta_cg
-    VLM_results_2 = VLM(conditions,np_settings,vehicle_shifted_CG)  
+    VLM_results_2      = VLM(conditions,np_settings,vehicle_shifted_CG)  
     CM_alpha_cg_prime  = VLM_results_2.CM  
   
     dCM_dalpha_cg = (CM_alpha_cg_prime   - CM_0) / (delta_angle)    
@@ -187,18 +187,18 @@ def train_model(aerodynamics, Mach):
     Y_ref            = VLM_results.Y_ref
     Z_ref            = VLM_results.Z_ref        
     
-    Clift_alpha   = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-    Cdrag_alpha   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-    CX_alpha      = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-    CY_alpha      = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-    CZ_alpha      = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-    CL_alpha      = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-    CM_alpha      = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-    CN_alpha      = np.reshape(CN_res,(len_Mach,len_AoA)).T  
+    Clift_alpha           = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
+    Cdrag_induced_alpha   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
+    CX_alpha              = np.reshape(CX_res,(len_Mach,len_AoA)).T 
+    CY_alpha              = np.reshape(CY_res,(len_Mach,len_AoA)).T 
+    CZ_alpha              = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
+    CL_alpha              = np.reshape(CL_res,(len_Mach,len_AoA)).T 
+    CM_alpha              = np.reshape(CM_res,(len_Mach,len_AoA)).T 
+    CN_alpha              = np.reshape(CN_res,(len_Mach,len_AoA)).T  
     
     # Angle of Attack at 0 Degrees .
     Clift_alpha_0   =  np.tile(Clift_alpha[2][None,:],(2,1))
-    Cdrag_alpha_0   =  np.tile(Cdrag_alpha[2][None,:],(2,1))
+    Cdrag_alpha_0   =  np.tile(Cdrag_induced_alpha[2][None,:],(2,1))
     CX_alpha_0      =  np.tile(CX_alpha[2][None,:],(2, 1)) 
     CY_alpha_0      =  0 * np.tile(CY_alpha[2][None,:],(2, 1)) 
     CZ_alpha_0      =  np.tile(CZ_alpha[2][None,:],(2, 1)) 
@@ -215,10 +215,10 @@ def train_model(aerodynamics, Mach):
     aerodynamics.reference_values.aspect_ratio = (b_ref ** 2) / S_ref
     
     Clift_wing_alpha = Data()
-    Cdrag_wing_alpha = Data() 
+    Cdrag_induced_wing_alpha = Data() 
     for wing in vehicle.wings: 
         Clift_wing_alpha[wing.tag] = np.reshape(VLM_results.CLift_wings[wing.tag],(len_Mach,len_AoA)).T    
-        Cdrag_wing_alpha[wing.tag] = np.reshape(VLM_results.CDrag_induced_wings[wing.tag],(len_Mach,len_AoA)).T  
+        Cdrag_induced_wing_alpha[wing.tag] = np.reshape(VLM_results.CDrag_induced_wings[wing.tag],(len_Mach,len_AoA)).T  
   
     # --------------------------------------------------------------------------------------------------------------
     # Beta 
@@ -243,7 +243,7 @@ def train_model(aerodynamics, Mach):
     CN_res    = VLM_results.CN
     
     Clift_beta =    np.reshape(Clift_res,(len_Mach,len_Beta)).T - Clift_alpha_0
-    Cdrag_beta =    np.reshape(Cdrag_res,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
+    Cdrag_induced_beta =    np.reshape(Cdrag_res,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
     CX_beta    =    np.reshape(CX_res,(len_Mach,len_Beta)).T    - CX_alpha_0   
     CY_beta    =    - np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0   # Note correction
     CZ_beta    =    np.reshape(CZ_res,(len_Mach,len_Beta)).T    - CZ_alpha_0   
@@ -330,42 +330,42 @@ def train_model(aerodynamics, Mach):
     CY_r        = (np.reshape(CY_res,(len_Mach,len_r)).T    - CY_alpha_0   )
         
     # STABILITY COEFFICIENTS  
-    training.Clift_alpha       = Clift_alpha 
-    training.Clift_wing_alpha  = Clift_wing_alpha
-    training.Cdrag_wing_alpha  = Cdrag_wing_alpha  
-    training.Cdrag_alpha       = Cdrag_alpha   
-    training.CX_alpha          = CX_alpha
-    training.CY_alpha          = CY_alpha 
-    training.CZ_alpha          = CZ_alpha  
-    training.CL_alpha          = CL_alpha   
-    training.CM_alpha          = CM_alpha 
-    training.CN_alpha          = CN_alpha    
-    training.CM_0              = CM_alpha_0[0]
-    
-    
-    training.Clift_beta        = Clift_beta 
-    training.Cdrag_beta        = Cdrag_beta  
-    training.CX_beta           = CX_beta
-    training.CY_beta           = CY_beta 
-    training.CZ_beta           = CZ_beta
-    training.CL_beta           = CL_beta  
-    training.CM_beta           = CM_beta
-    training.CN_beta           = CN_beta 
-
-    training.CX_u              = CX_u
-    training.CZ_u              = CZ_u
-    training.CM_u              = CM_u
-
-    training.CM_q              = CM_q
-    training.CZ_q              = CZ_q
-
-    training.CL_p              = CL_p
-    training.CN_p              = CN_p
-    training.CY_p              = CY_p
-
-    training.CL_r              = CL_r
-    training.CN_r              = CN_r
-    training.CY_r              = CY_r 
+    training.Clift_alpha               = Clift_alpha 
+    training.Clift_wing_alpha          = Clift_wing_alpha
+    training.Cdrag_induced_wing_alpha  = Cdrag_induced_wing_alpha  
+    training.Cdrag_induced_alpha       = Cdrag_induced_alpha   
+    training.CX_alpha                  = CX_alpha
+    training.CY_alpha                  = CY_alpha 
+    training.CZ_alpha                  = CZ_alpha  
+    training.CL_alpha                  = CL_alpha   
+    training.CM_alpha                  = CM_alpha 
+    training.CN_alpha                  = CN_alpha    
+    training.CM_0                      = CM_alpha_0[0]
+            
+            
+    training.Clift_beta                = Clift_beta 
+    training.Cdrag_induced_beta        = Cdrag_induced_beta  
+    training.CX_beta                   = CX_beta
+    training.CY_beta                   = CY_beta 
+    training.CZ_beta                   = CZ_beta
+    training.CL_beta                   = CL_beta  
+    training.CM_beta                   = CM_beta
+    training.CN_beta                   = CN_beta 
+        
+    training.CX_u                      = CX_u
+    training.CZ_u                      = CZ_u
+    training.CM_u                      = CM_u
+        
+    training.CM_q                      = CM_q
+    training.CZ_q                      = CZ_q
+        
+    training.CL_p                      = CL_p
+    training.CN_p                      = CN_p
+    training.CY_p                      = CY_p
+        
+    training.CL_r                      = CL_r
+    training.CN_r                      = CN_r
+    training.CY_r                      = CY_r 
       
 
     correction_factor = Data() # If a correction factor is not included below then there is no correction
@@ -543,7 +543,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     # -------------------------------------------------------------------------------------------------------------- 
     
     Clift_alpha   =  np.concatenate((training_subsonic.Clift_alpha[:,-1][:,None] , training_supersonic.Clift_alpha[:,0][:,None] ), axis = 1)
-    Cdrag_alpha   =  np.concatenate((training_subsonic.Cdrag_alpha[:,-1][:,None]  , training_supersonic.Cdrag_alpha[:,0][:,None] ), axis = 1) 
+    Cdrag_induced_alpha   =  np.concatenate((training_subsonic.Cdrag_induced_alpha[:,-1][:,None]  , training_supersonic.Cdrag_induced_alpha[:,0][:,None] ), axis = 1) 
     CX_alpha      =  np.concatenate((training_subsonic.CX_alpha[:,-1][:,None]    , training_supersonic.CX_alpha[:,0][:,None] ), axis = 1)   
     CY_alpha      =  np.concatenate((training_subsonic.CY_alpha[:,-1][:,None]    , training_supersonic.CY_alpha[:,0][:,None] ), axis = 1)   
     CZ_alpha      =  np.concatenate((training_subsonic.CZ_alpha[:,-1][:,None]    , training_supersonic.CZ_alpha[:,0][:,None] ), axis = 1)   
@@ -553,17 +553,17 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     CM_0          =  np.concatenate((training_subsonic.CM_0[:][-1,None]    , training_supersonic.CM_0[:][0,None] ))     
 
     Clift_wing_alpha = Data()
-    Cdrag_wing_alpha = Data() 
+    Cdrag_induced_wing_alpha = Data() 
     for wing in vehicle.wings: 
         Clift_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Clift_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Clift_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
-        Cdrag_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Cdrag_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Cdrag_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
+        Cdrag_induced_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Cdrag_induced_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Cdrag_induced_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
     
     # --------------------------------------------------------------------------------------------------------------
     # Beta 
     # -------------------------------------------------------------------------------------------------------------- 
     
     Clift_beta =  np.concatenate((training_subsonic.Clift_beta[:,-1][:,None] , training_supersonic.Clift_beta[:,0][:,None] ), axis = 1)      
-    Cdrag_beta =  np.concatenate((training_subsonic.Cdrag_beta[:,-1][:,None] , training_supersonic.Cdrag_beta[:,0][:,None] ), axis = 1)             
+    Cdrag_induced_beta =  np.concatenate((training_subsonic.Cdrag_induced_beta[:,-1][:,None] , training_supersonic.Cdrag_induced_beta[:,0][:,None] ), axis = 1)             
     CX_beta    =  np.concatenate((training_subsonic.CX_beta[:,-1][:,None]    , training_supersonic.CX_beta[:,0][:,None] ), axis = 1)        
     CY_beta    =  np.concatenate((training_subsonic.CY_beta[:,-1][:,None]    , training_supersonic.CY_beta[:,0][:,None] ), axis = 1)        
     CZ_beta    =  np.concatenate((training_subsonic.CZ_beta[:,-1][:,None]    , training_supersonic.CZ_beta[:,0][:,None] ), axis = 1)        
@@ -587,8 +587,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
   
     # -------------------------------------------------------               
     # Roll  Rate 
-    # -------------------------------------------------------            
-    #CY_p        =  np.concatenate((training_subsonic.CY_p[:,-1][:,None]    , training_supersonic.CY_p[:,0][:,None] ), axis = 1)         
+    # -------------------------------------------------------                     
     CL_p        =  np.concatenate((training_subsonic.CL_p[:,-1][:,None]    , training_supersonic.CL_p[:,0][:,None] ), axis = 1)         
     CN_p        =  np.concatenate((training_subsonic.CN_p[:,-1][:,None]    , training_supersonic.CN_p[:,0][:,None] ), axis = 1)       
 
@@ -601,34 +600,34 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     CN_r        =  np.concatenate((training_subsonic.CN_r[:,-1][:,None]    , training_supersonic.CN_r[:,0][:,None] ), axis = 1)         
  
     # STABILITY COEFFICIENTS 
-    training.Clift_alpha       = Clift_alpha
-    training.Clift_wing_alpha  = Clift_wing_alpha 
-    training.Cdrag_alpha       = Cdrag_alpha  
-    training.Cdrag_wing_alpha  = Cdrag_wing_alpha  
-    training.CX_alpha          = CX_alpha   
-    training.CY_alpha          = CY_alpha
-    training.CZ_alpha          = CZ_alpha  
-    training.CL_alpha          = CL_alpha
-    training.CM_alpha          = CM_alpha  
-    training.CN_alpha          = CN_alpha
-    training.CM_0              = CM_0 
+    training.Clift_alpha              = Clift_alpha
+    training.Clift_wing_alpha         = Clift_wing_alpha 
+    training.Cdrag_induced_alpha       = Cdrag_induced_alpha  
+    training.Cdrag_induced_wing_alpha  = Cdrag_induced_wing_alpha  
+    training.CX_alpha                  = CX_alpha   
+    training.CY_alpha                  = CY_alpha
+    training.CZ_alpha                  = CZ_alpha  
+    training.CL_alpha                  = CL_alpha
+    training.CM_alpha                  = CM_alpha  
+    training.CN_alpha                  = CN_alpha
+    training.CM_0                      = CM_0 
     
     
-    training.Clift_beta        = Clift_beta
-    training.Cdrag_beta        = Cdrag_beta
-    training.CX_beta           = CX_beta
-    training.CY_beta           = CY_beta  
-    training.CZ_beta           = CZ_beta
-    training.CL_beta           = CL_beta
-    training.CM_beta           = CM_beta
-    training.CN_beta           = CN_beta  
+    training.Clift_beta                = Clift_beta
+    training.Cdrag_induced_beta        = Cdrag_induced_beta
+    training.CX_beta                   = CX_beta
+    training.CY_beta                   = CY_beta  
+    training.CZ_beta                   = CZ_beta
+    training.CL_beta                   = CL_beta
+    training.CM_beta                   = CM_beta
+    training.CN_beta                   = CN_beta  
       
-    correction_factor = Data() # If a correction factor is not included below then there is no correction
-    correction_factor.dCY_dbeta = 1#10
-    correction_factor.dCL_dp    = 1#-2
-    correction_factor.dCM_dq    = 1#10
-    correction_factor.dCN_dp    = 1#-3
-    correction_factor.dCN_dr    = 1#3
+    correction_factor                  = Data() # If a correction factor is not included below then there is no correction
+    correction_factor.dCY_dbeta        = 1#10
+    correction_factor.dCL_dp           = 1#-2
+    correction_factor.dCM_dq           = 1#10
+    correction_factor.dCN_dp           = 1#-3
+    correction_factor.dCN_dr           = 1#3
 
     # STABILITY DERIVATIVES 
     training.dClift_dalpha = (Clift_alpha[0,:] - Clift_alpha[1,:]) / (AoA[0] - AoA[1])          

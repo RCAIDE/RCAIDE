@@ -36,7 +36,7 @@ t_table = str.maketrans( chars          + string.ascii_uppercase ,
 # ----------------------------------------------------------------------------------------------------------------------  
 #  vsp read wing
 # ----------------------------------------------------------------------------------------------------------------------  
-def read_vsp_wing(wing_id, main_wing_tag = None, overwrite_airfoil_properties = True,blended_wing_body = False , last_blended_wing_body_center_body_section_index = None,  units_type='SI', write_airfoil_file=True, use_scaling=True):
+def read_vsp_wing(wing_id, main_wing_tag = None,blended_wing_body = False , last_blended_wing_body_center_body_section_index = None,  units_type='SI', write_airfoil_file=True, use_scaling=True):
     """This reads an OpenVSP wing vehicle geometry and writes it into a RCAIDE wing format.
 
     Assumptions:
@@ -291,9 +291,9 @@ def read_vsp_wing(wing_id, main_wing_tag = None, overwrite_airfoil_properties = 
 
         # Just double calculate and fix things:
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):  
-            bwb_wing_planform(wing,overwrite_airfoil_properties)  
+            bwb_wing_planform(wing)  
         else: 
-            wing_planform(wing, overwrite_airfoil_properties) 
+            wing_planform(wing) 
 
 
     else:
@@ -325,9 +325,9 @@ def read_vsp_wing(wing_id, main_wing_tag = None, overwrite_airfoil_properties = 
 
         # Just double calculate and fix things:
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):  
-            bwb_wing_planform(wing,overwrite_airfoil_properties)  
+            bwb_wing_planform(wing)  
         else: 
-            wing_planform(wing,overwrite_airfoil_properties) 
+            wing_planform(wing) 
 
     # Twists
     wing.twists.root      = vsp.GetParmVal(wing_id, 'Twist', 'XSec_0') * Units.deg +  y_rot

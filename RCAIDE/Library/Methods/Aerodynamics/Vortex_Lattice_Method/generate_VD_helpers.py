@@ -1,7 +1,6 @@
  # generate_VD_helpers.py
 # 
-# Created:  Aug 2022, A. Blaufox
-# Modified: 
+# Created:  Aug 2025, M. Clarke
 #           
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -98,9 +97,9 @@ def postprocess_VD(VD, settings):
     VD.ZA_TE  = ZA_TE_wings
     VD.XB_TE  = XB_TE_wings
     VD.YB_TE  = YB_TE_wings
-    VD.ZB_TE  = ZB_TE_wings   
-    
-    VD.is_postprocessed = True
+    VD.ZB_TE  = ZB_TE_wings
+
+    VD.is_postprocessed = True    
     
     return VD 
 
