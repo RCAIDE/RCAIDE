@@ -167,38 +167,7 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
 
         self.settings.number_of_chordwise_vortices  = 1        
         self.settings.model_fuselage                = False
-        
-        for wing in vehicle.wings:  
-            if len(wing.segments) == 0: 
-                if wing.airfoil != None:
-                    airfoil = wing.airfoil
-                    if type(airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil:
-                        airfoil.geometry = compute_naca_4series(airfoil.NACA_4_Series_code, airfoil.number_of_points)
-                    elif type(airfoil) == RCAIDE.Library.Components.Airfoils.Airfoil: 
-                        airfoil.geometry = import_airfoil_geometry(airfoil.coordinate_file, airfoil.number_of_points)
-                         
-                    if airfoil.polar_files != None: # compute airfoil polars for airfoils
-                        airfoil.polars = compute_airfoil_properties(airfoil.geometry, airfoil_polar_files= airfoil.polar_files)
-                        airfoil_polars = True
-                    else: 
-                        raise AssertionError('Airfoil polars must be defined on ' + wing.tag + 'for Coupled 2D Viscous Vortex Lattice Method!') 
-            else:   
-                for seg in  wing.segments: 
-                    if seg.airfoil != None: 
-                        airfoil = seg.airfoil
-                        if type(airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
-                            airfoil.geometry = compute_naca_4series(airfoil.NACA_4_Series_code,airfoil.number_of_points)
-                        else:
-                            airfoil.geometry = import_airfoil_geometry(airfoil.coordinate_file,airfoil.number_of_points) 
-            
-                        if airfoil.polar_files != None: # compute airfoil polars for airfoils
-                            airfoil.polars = compute_airfoil_properties(airfoil.geometry, airfoil_polar_files= airfoil.polar_files)
-                            airfoil_polars = True
-                        else:
-                            raise AssertionError('Airfoil polars must be defined on ' + wing.tag + ' segment for Coupled 2D Viscous Vortex Lattice Method!')
-                     
-        
-        use_surrogate   = self.settings.use_surrogate 
+        use_surrogate                                = self.settings.use_surrogate 
 
         # If we are using the surrogate
         if use_surrogate == True: 
