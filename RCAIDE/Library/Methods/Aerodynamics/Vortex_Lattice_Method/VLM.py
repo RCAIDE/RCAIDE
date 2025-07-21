@@ -426,7 +426,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     
     # cumsum GANT loop if KTOP > 0 (don't actually need KTOP with vectorized arrays and np.roll)
     GFX    = np.tile((1 /CHORD), (len_mach,1))
-    GANT   = strip_cumsum(GFX*GAMMA, chord_breaks, RNMAX[LE_ind])
+    GANT   = strip_cumsum(GFX*GAMMA, chord_breaks, RNMAX[LE_ind].reshape(len(FORLAT), len(CHORD_strip))  )
     GANT   = np.roll(GANT,1)
     GANT[:,LE_ind]   = 0 
     
