@@ -400,10 +400,11 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     ROLL   = ROLLQ /VINF
     YAW    = YAWQ /VINF    
     
-    # reshape CHORD
-    CHORD  = CHORD[0,:]
-    CHORD_strip = CHORD[LE_ind[0]]
-
+    # reshape CHORD 
+    dim_1 = len(np.sum(LE_ind, axis=1))
+    dim_2 = np.sum(LE_ind, axis=1)[0]
+    CHORD_strip = CHORD[LE_ind].reshape(dim_1,dim_2)   
+    
     # COMPUTE EFFECT OF SIDESLIP on DCP intermediate variables. needs change if cosine chorwise spacing added
     FORAXL = COSCOS
     FORLAT = COSIN
@@ -411,10 +412,8 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     TAN_LEi =            (VD.XB1[:,LE_ind[0]]-VD.XA1[:,LE_ind[0]])/ \
                 np.sqrt((VD.ZB1[:,LE_ind[0]]-VD.ZA1[:,LE_ind[0]])**2 + \
                         (VD.YB1[:,LE_ind[0]]-VD.YA1[:,LE_ind[0]])**2)  
-    TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2)
-    
-    #TAN_LE = np.broadcast_to(np.repeat(TAN_LE,RNMAX[LE_ind]),np.shape(B2)) 
-    TAN_LE  = np.repeat( TAN_LEi, RNMAX[LE_ind].reshape(len(FORLAT), len(CHORD_strip))[0] , axis=1)
+    TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2) 
+    TAN_LE = np.repeat( TAN_LEi, RNMAX[LE_ind].reshape(dim_1,dim_2)[0] , axis=1)
     
     TAN_LE = TAN_LE
     TNL    = TAN_LE * 1 # VORLAX's SIGN variable not needed, as these are taken directly from geometry
@@ -425,15 +424,15 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     TANB   = TNL *(1. - XIB) + TNT *XIB
     
     # cumsum GANT loop if KTOP > 0 (don't actually need KTOP with vectorized arrays and np.roll)
-    GFX    = np.tile((1 /CHORD), (len_mach,1))
-    GANT   = strip_cumsum(GFX*GAMMA, chord_breaks, RNMAX[LE_ind].reshape(len(FORLAT), len(CHORD_strip))  )
+    GFX    = VD.chord_lengths
+    GANT   = strip_cumsum(GFX*GAMMA, chord_breaks[0], RNMAX[LE_ind].reshape(dim_1,dim_2)[0]  )
     GANT   = np.roll(GANT,1)
-    GANT[:,LE_ind]   = 0 
+    GANT[LE_ind] = 0 
     
     GLAT   = GANT *(TANA - TANB) - GFX *GAMMA *TANB
-    COS_DL = (YBH-YAH)[LE_ind]/VD.D
-    cos_DL = np.broadcast_to(np.repeat(COS_DL,RNMAX[LE_ind]),np.shape(B2))
-    DCPSID = FORLAT * cos_DL *GLAT /(XIB - XIA)
+    cos_DL = (YBH-YAH)[LE_ind].reshape(dim_1,dim_2)/VD.D
+    COS_DL = np.repeat( cos_DL, RNMAX[LE_ind].reshape(dim_1,dim_2)[0] , axis=1)
+    DCPSID = FORLAT * COS_DL *GLAT /(XIB - XIA)
     FACTOR = FORAXL + ONSET
     
     # COMPUTE LOAD COEFFICIENT
@@ -444,29 +443,23 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
 
     # ---------------------------------------------------------------------------------------
     # STEP 12: Compute aerodynamic coefficients 
-    # ------------------ -------------------------------------------------------------------- 
-    #VORLAX subroutine = AERO
-
-    # Work panel by panel
-    SURF = np.array(VD.wing_areas) 
-
+    # ------------------ --------------------------------------------------------------------  
     # Flip coordinates on the other side of the wing
     boolean = YBH<0. 
     XA1[boolean], XB1[boolean] = XB1[boolean], XA1[boolean]
     YAH[boolean], YBH[boolean] = YBH[boolean], YAH[boolean]
 
     # Leading edge sweep. VORLAX does it panel by panel. This will be spanwise.
-    TLE   = TAN_LE[:,LE_ind]
-    B2_LE = B2[:,LE_ind]
+    TLE   = TAN_LE[LE_ind].reshape(dim_1,dim_2)
+    B2_LE = B2[LE_ind].reshape(dim_1,dim_2)
     T2    = TLE*TLE
     STB   = np.zeros_like(B2_LE)
     STB[B2_LE<T2] = np.sqrt(T2[B2_LE<T2]-B2_LE[B2_LE<T2])
     
     # DL IS THE DIHEDRAL ANGLE (WITH RESPECT TO THE X-Y PLANE) OF
     # THE IR STREAMWISE STRIP OF HORSESHOE VORTICES. 
-    COD = np.cos(phi[0,LE_ind])  # Just the LE values
-    
-    SID = np.sin(phi[0,LE_ind])  # Just the LE values
+    COD = np.cos(phi[LE_ind]).reshape(dim_1,dim_2)  # Just the LE values 
+    SID = np.sin(phi[LE_ind]).reshape(dim_1,dim_2)  # Just the LE values
 
     # Now on to each strip
     PION = 2.0 /RNMAX
@@ -491,8 +484,8 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
 
     # Split into chordwise strengths and sum into strips    
     # SICPLE = COUPLE (ABOUT STRIP CENTERLINE) DUE TO SIDESLIP.
-    CNC    = np.add.reduceat(SINF       ,chord_breaks,axis=1)
-    SICPLE = np.add.reduceat(SINF*CORMED,chord_breaks,axis=1)
+    CNC    = np.add.reduceat(SINF       ,chord_breaks[0],axis=1)
+    SICPLE = np.add.reduceat(SINF*CORMED,chord_breaks[0],axis=1)
 
     # COMPUTE SLOPE (TX) WITH RESPECT TO X-AXIS AT LOAD POINTS BY INTER
     # POLATING BETWEEN CONTROL POINTS AND TAKING INTO ACCOUNT THE LOCAL
@@ -503,11 +496,11 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     BMLE  = (XLE-XX)*SINF        # These are moment on each panel
     
     # Sum onto the panel
-    CAXL = np.add.reduceat(CAXL,chord_breaks,axis=1)
-    BMLE = np.add.reduceat(BMLE,chord_breaks,axis=1)
+    CAXL = np.add.reduceat(CAXL,chord_breaks[0],axis=1)
+    BMLE = np.add.reduceat(BMLE,chord_breaks[0],axis=1)
     
     SICPLE *= (-1) * COSIN * COD * GAF
-    DCP_LE = DCP[:,LE_ind]
+    DCP_LE = DCP[LE_ind].reshape(dim_1,dim_2)
     
     # COMPUTE LEADING EDGE THRUST COEFF. (CSUC) BY CALCULATING
     # THE TOTAL INDUCED FLOW AT THE LEADING EDGE. THIS COMPUTATION
@@ -528,14 +521,14 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     SPC[SPC_cond] = -1.
     SPC           = SPC * exposed_leading_edge_flag
     
-    CLE  = CLE + 0.5* DCP_LE *np.sqrt(XLE[LE_ind])
+    CLE  = CLE + 0.5* DCP_LE *np.sqrt(XLE[LE_ind].reshape(dim_1,dim_2))
     CSUC = 0.5*np.pi*np.abs(SPC)*(CLE**2)*STB 
 
     # TFX AND TFZ ARE THE COMPONENTS OF LEADING EDGE FORCE VECTOR ALONG
     # ALONG THE X AND Z BODY AXES.   
     
-    SLE  = VD.SLOPE[LE_ind]
-    ZETA = ZETA[LE_ind]
+    SLE  = VD.SLOPE[LE_ind].reshape(dim_1,dim_2)
+    ZETA = ZETA[LE_ind].reshape(dim_1,dim_2)
     XCOS = np.broadcast_to(np.cos(SLE-ZETA),np.shape(DCP_LE))
     XSIN = np.broadcast_to(np.sin(SLE-ZETA),np.shape(DCP_LE))
     TFX  =  1.*XCOS
@@ -567,9 +560,9 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
 
     # BMX, BMY, AND BMZ ARE THE COMPONENTS ALONG THE BODY AXES
     # OF THE STRIP MOMENT (ABOUT MOM. REF. POINT) CONTRIBUTION.
-    X      = VD.XCH[LE_ind]  # These are all LE values
-    Y      = VD.YCH[LE_ind]  # These are all LE values
-    Z      = VD.ZCH[LE_ind]  # These are all LE values
+    X      = VD.XCH[LE_ind].reshape(dim_1,dim_2)  # These are all LE values
+    Y      = VD.YCH[LE_ind].reshape(dim_1,dim_2)  # These are all LE values
+    Z      = VD.ZCH[LE_ind].reshape(dim_1,dim_2)  # These are all LE values
     BMX    = BFZ * Y - BFY * (Z - VD.ZBAR)
     BMX    = BMX + SICPLE
     BMY    = BMLE * COD + BFX * (Z - VD.ZBAR) - BFZ * (X - VD.XBAR)
@@ -577,7 +570,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     CDC    = BFZ * SINALF +  (BFX *COPSI + BFY *SINPSI) * COSALF
     CDC    = CDC * CHORD_strip 
 
-    ES     = 2*s[0,LE_ind]
+    ES     = 2*s[LE_ind].reshape(dim_1,dim_2)
     STRIP  = ES *CHORD_strip
     LIFT   = (BFZ *COSALF - (BFX *COPSI + BFY *SINPSI) *SINALF)*STRIP    
     MOMENT = STRIP * (BMY *COPSI - BMX *SINPSI)  
@@ -587,8 +580,8 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
 
     # Now calculate the coefficients for each wing
     Clift_y   = LIFT/CHORD_strip/ES 
-    results   = compute_trefftz_plane_induced_drag(conditions, VD,Clift_y, X, Y, Z, CHORD_strip, SURF,S_ref,b_ref)    
-    CL_wing   = np.add.reduceat(LIFT,span_breaks,axis=1)/SURF 
+    results   = compute_trefftz_plane_induced_drag(conditions, VD,Clift_y, X, Y, Z, CHORD_strip,S_ref,b_ref)    
+    CL_wing   = np.add.reduceat(LIFT,span_breaks,axis=1)/VD.wing_areas 
     
     # Now calculate total coefficients
     CL       = np.atleast_2d(np.sum(LIFT,axis=1)/S_ref).T          # CLTOT in VORLAX
@@ -597,10 +590,10 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     CM       = np.atleast_2d(np.sum(MOMENT,axis=1)/S_ref).T/c_bar  # CMTOT in VORLAX 1. check deflection is accounted for correctly. 2. check this is right
     CY       = np.atleast_2d(np.sum(FY,axis=1)/S_ref).T   # total y force coeff
     CRTOT    = np.atleast_2d(np.sum(RM,axis=1)/S_ref).T   # rolling moment coeff (unscaled)
-    CL_mom   = CRTOT/b_ref*(-1)                         # rolling moment coeff
+    CL_mom   = CRTOT/b_ref*(-1)                           # rolling moment coeff
     CNTOT    = np.atleast_2d(np.sum(YM,axis=1)/S_ref).T   # yawing  moment coeff (unscaled)
-    CN       = CNTOT/b_ref*(-1)                         # yawing  moment coeff
-  
+    CN       = CNTOT/b_ref*(-1)                           # yawing  moment coeff
+   
     # ---------------------------------------------------------------------------------------
     # STEP 13: Pack outputs
     # ------------------ --------------------------------------------------------------------     
@@ -654,7 +647,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
 # ----------------------------------------------------------------------
 #  CLE rotation effects helper function
 # ----------------------------------------------------------------------
-def compute_rotation_effects(VD, settings, EW_small, GAMMA, len_mach, X, CHORD, XLE, XBAR, 
+def compute_rotation_effects(VD, settings, EW, GAMMA, len_mach, X, CHORD, XLE, XBAR, 
                              rhs, COSINP, SINALF,COSCOS, PITCH, ROLL, YAW, STB, RNMAX):
     """ This computes the effects of the freestream and aircraft rotation rate on 
     CLE, the induced flow at the leading edge
@@ -668,14 +661,10 @@ def compute_rotation_effects(VD, settings, EW_small, GAMMA, len_mach, X, CHORD, 
     """
     LE_ind      = VD.leading_edge_indices
     RNMAX       = VD.panels_per_strip
-
-    ##spacing = settings.spanwise_cosine_spacing
-    ##if spacing == False: # linear spacing is LAX==1 in VORLAX
-    ##    return 0 #CLE not calculated till later for linear spacing
     
     # Computate rotational effects (pitch, roll, yaw rates) on LE suction
     # pick leading edge strip values for EW and reshape GAMMA -> gamma accordingly
-    EW    = EW_small[: ,LE_ind, :]
+    #EW    = EW_small[: ,LE_ind, :]
     n_tot_strips = EW.shape[1]
     gamma = np.array(np.split(np.repeat(GAMMA, n_tot_strips, axis=0), len_mach))
     CLE = (EW*gamma).sum(axis=2)
@@ -723,9 +712,9 @@ def strip_cumsum(arr, chord_breaks, strip_lengths):
     return cumsum - offsets
     
     
-def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dist, chord_dist, SURF,SREF,b_ref, v_inf=1):
+def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dist, chord_dist,SREF,b_ref, v_inf=1):
      
-    alpha = conditions.aerodynamics.angles.alpha 
+    alpha   = conditions.aerodynamics.angles.alpha 
     n_cases = len(alpha) 
     n_wings = len(VD.n_sw)
     rho = 1
@@ -809,7 +798,7 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         D_induced[:,wing_index] = -0.5 * rho * trapezoid(V_induced * circulation_segments, s_wake, axis=1)
 
         # Per-wing CDi (using wing's reference area)
-        CDi_wing[:,wing_index] = D_induced[:,wing_index] / (0.5 * rho * v_inf**2 * SURF[wing_index])
+        CDi_wing[:,wing_index] = D_induced[:,wing_index] / (0.5 * rho * v_inf**2 * VD.wing_areas[:,wing_index])
 
         # Store results for this case
         alpha_i_case = np.arctan(V_induced/ v_inf)
