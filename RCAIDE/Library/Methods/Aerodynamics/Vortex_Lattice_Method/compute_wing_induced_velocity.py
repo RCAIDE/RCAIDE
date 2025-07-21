@@ -160,8 +160,8 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     XSQ2   = X2 *X2
     
     # Split the vectors into subsonic and supersonic
-    sub      = (B2<0)[:,:,0,0]
-    B2_sub   = B2[:,sub,:,:]
+    sub      = (B2<0)[:,0,0]
+    B2_sub   = B2[sub,:,:]
     RO1_sub  = B2_sub*RTV1
     RO2_sub  = B2_sub*RTV2
     
