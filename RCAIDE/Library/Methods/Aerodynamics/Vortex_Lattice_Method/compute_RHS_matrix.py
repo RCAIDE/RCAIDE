@@ -173,15 +173,11 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
 
     # LOCATE VORTEX LATTICE CONTROL POINT WITH RESPECT TO THE
     # ROTATION CENTER (XBAR, 0, ZBAR). THE RELATIVE COORDINATES
-    # ARE XGIRO, YGIRO, AND ZGIRO.
-    X_MAT  = np.zeros_like(X)
-    Z_MAT  = np.zeros_like(X)
-    phi_LE  = np.zeros_like(X)
-    for i in  range(len(ZBAR)):
-        X_MAT[i] = np.repeat(XBAR[i], RNMAX[i][LE_ind[i]])
-        Z_MAT[i] = np.repeat(ZBAR[i], RNMAX[i][LE_ind[i]])
-        phi_LE[i]= np.repeat(phi[i][LE_ind[i]]  , RNMAX[i][LE_ind[i]])  
-    
+    # ARE XGIRO, YGIRO, AND ZGIRO. 
+    X_MAT  = np.repeat( XBAR, RNMAX[LE_ind].reshape(len(ZBAR), len(ZBAR[0]))[0] , axis=1) 
+    Z_MAT  = np.repeat( ZBAR, RNMAX[LE_ind].reshape(len(ZBAR), len(ZBAR[0]))[0] , axis=1) 
+    phi_LE = np.repeat(phi[LE_ind].reshape(len(ZBAR), len(ZBAR[0]))  ,RNMAX[LE_ind].reshape(len(ZBAR), len(ZBAR[0]))[0] , axis=1) 
+     
     XGIRO = X + CHORD*DELTAX - X_MAT
     YGIRO = YY
     ZGIRO = ZZ - Z_MAT

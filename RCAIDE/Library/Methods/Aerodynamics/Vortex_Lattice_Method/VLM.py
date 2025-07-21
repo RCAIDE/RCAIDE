@@ -326,7 +326,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     chord_breaks = VD.chordwise_breaks
     span_breaks  = VD.spanwise_breaks
     RNMAX        = VD.panels_per_strip    
-    LE_ind       = VD.leading_edge_indices[0]
+    LE_ind       = VD.leading_edge_indices
     ZETA         = VD.tangent_incidence_angle
     RK           = VD.chordwise_panel_number
     
@@ -338,8 +338,8 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     XB1 = VD.XB1*1. 
     
     # Compute X and Z BAR ouside of generate_vortex_distribution to avoid requiring x_m and z_m as inputs 
-    VD.XBAR = np.ones(( len_mach,sum(LE_ind))) * x_m # CHECK !!! 
-    VD.ZBAR = np.ones(( len_mach,sum(LE_ind))) * z_m # CHECK !!! 
+    VD.XBAR = np.ones(( len_mach,sum(LE_ind[0]))) * x_m # CHECK !!! 
+    VD.ZBAR = np.ones(( len_mach,sum(LE_ind[0]))) * z_m # CHECK !!! 
     
     # ---------------------------------------------------------------------------------------
     # STEP 10: Generate A and RHS matrices from VD and geometry
@@ -402,22 +402,20 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     
     # reshape CHORD
     CHORD  = CHORD[0,:]
-    CHORD_strip = CHORD[LE_ind]
+    CHORD_strip = CHORD[LE_ind[0]]
 
     # COMPUTE EFFECT OF SIDESLIP on DCP intermediate variables. needs change if cosine chorwise spacing added
     FORAXL = COSCOS
     FORLAT = COSIN
     
-    TAN_LEs =            (VD.XB1[:,LE_ind]-VD.XA1[:,LE_ind])/ \
-                np.sqrt((VD.ZB1[:,LE_ind]-VD.ZA1[:,LE_ind])**2 + \
-                        (VD.YB1[:,LE_ind]-VD.YA1[:,LE_ind])**2)  
+    TAN_LEi =            (VD.XB1[:,LE_ind[0]]-VD.XA1[:,LE_ind[0]])/ \
+                np.sqrt((VD.ZB1[:,LE_ind[0]]-VD.ZA1[:,LE_ind[0]])**2 + \
+                        (VD.YB1[:,LE_ind[0]]-VD.YA1[:,LE_ind[0]])**2)  
     TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2)
     
-
-    TAN_LE  = np.zeros_like(X)
-    for i in  range(len(TAN_TE)):
-        TAN_LE[i] = np.repeat(TAN_LEs[i], RNMAX[i][LE_ind[i]]) 
-        
+    #TAN_LE = np.broadcast_to(np.repeat(TAN_LE,RNMAX[LE_ind]),np.shape(B2)) 
+    TAN_LE  = np.repeat( TAN_LEi, RNMAX[LE_ind].reshape(len(FORLAT), len(CHORD_strip))[0] , axis=1)
+    
     TAN_LE = TAN_LE
     TNL    = TAN_LE * 1 # VORLAX's SIGN variable not needed, as these are taken directly from geometry
     TNT    = TAN_TE * 1
