@@ -412,23 +412,23 @@ def supersonic(Z,XSQ1,RO1,XSQ2,RO2,XTY,T,B2,ZSQ,TOLSQ,TOL,TOLSQ2,X1,Y1,X2,Y2,RTV
     # LINE)? IF SO THEN RFLAG = 0.0, OTHERWISE RFLAG = 1.0.
     size   = shape[1]
     n_mach = shape[0]    
-    T2S = np.atleast_2d(T2[0,:])*np.ones((n_mach,1))
-    T2F = np.zeros((n_mach,size))
-    T2A = np.zeros((n_mach,size))
+    T2S    = T2[:,0,:] 
+    T2F    = np.zeros((n_mach,size))
+    T2A    = np.zeros((n_mach,size))
     
     # Setup masks
     F_mask = np.ones((n_mach,size),dtype=bool) 
     A_mask = np.ones((n_mach,size),dtype=bool) 
-    F_mask[:,TE_ind] = False
-    A_mask[:,LE_ind] = False
+    F_mask[TE_ind] = False
+    A_mask[LE_ind] = False
     
     # Apply the mask
     T2F[A_mask] = T2S[F_mask]
     T2A[F_mask] = T2S[A_mask]
     
     # Zero out terms on the LE and TE
-    T2F[:,TE_ind] = 0.
-    T2A[:,LE_ind] = 0.
+    T2F[TE_ind] = 0.
+    T2A[LE_ind] = 0.
 
     TRANS = (B2[:,:,0]-T2F)*(B2[:,:,0]-T2A)
     
