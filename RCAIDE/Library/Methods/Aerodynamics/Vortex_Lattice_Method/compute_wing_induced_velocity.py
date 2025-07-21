@@ -176,16 +176,15 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
 
     
     # COMPUTATION FOR SUPERSONIC HORSESHOE VORTEX. some values computed in a preprocessing section in VLM
-    sup         = (B2>=0)[:,0,0]
-    B2_sup      = B2[sup,:,:]
-    RO1_sup     = B2[sup,:,:]*RTV1
-    RO2_sup     = B2[sup,:,:]*RTV2
-    RNMAX       = VD.panels_per_strip
-    CHORD       = VD.chord_lengths
-    CHORD       = np.repeat(CHORD,shape[1],axis=1)
-    RFLAG       = np.ones((n_mach,shape[2]),dtype=np.int8)
-    
+    sup = (B2>=0)[:,0,0]
     if np.sum(sup)>0:
+        B2_sup      = B2[sup,:]
+        RO1_sup     = B2_sup*RTV1
+        RO2_sup     = B2_sup*RTV2
+        RNMAX       = VD.panels_per_strip
+        CHORD       = VD.chord_lengths
+        CHORD       = np.repeat(CHORD,shape[1],axis=1)
+        RFLAG       = np.ones((n_mach,shape[2]),dtype=np.int8)
         U[sup], V[sup], W[sup], RFLAG[sup,:] = supersonic(zobar,XSQ1,RO1_sup,XSQ2,RO2_sup,XTY,t,B2_sup,ZSQ,TOLSQ,TOL,TOLSQ2,\
                                                     X1,Y1,X2,Y2,RTV1,RTV2,CUTOFF,CHORD,RNMAX,n_cp,TE_ind,LE_ind)
          
