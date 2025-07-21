@@ -407,11 +407,8 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     
     # COMPUTE EFFECT OF SIDESLIP on DCP intermediate variables. needs change if cosine chorwise spacing added
     FORAXL = COSCOS
-    FORLAT = COSIN
-    
-    TAN_LEi =            (VD.XB1[:,LE_ind[0]]-VD.XA1[:,LE_ind[0]])/ \
-                np.sqrt((VD.ZB1[:,LE_ind[0]]-VD.ZA1[:,LE_ind[0]])**2 + \
-                        (VD.YB1[:,LE_ind[0]]-VD.YA1[:,LE_ind[0]])**2)  
+    FORLAT = COSIN 
+    TAN_LEi= (VD.XB1[:,LE_ind[0]]-VD.XA1[:,LE_ind[0]])/  np.sqrt((VD.ZB1[:,LE_ind[0]]-VD.ZA1[:,LE_ind[0]])**2 +  (VD.YB1[:,LE_ind[0]]-VD.YA1[:,LE_ind[0]])**2)  
     TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2) 
     TAN_LE = np.repeat( TAN_LEi, RNMAX[LE_ind].reshape(dim_1,dim_2)[0] , axis=1)
     
@@ -507,8 +504,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     # ONLY PERFORMED FOR COSINE CHORDWISE SPACING (LAX = 0).    
     # ** TO DO ** Add cosine spacing (earlier in VLM) to properly capture the magnitude of these earlier.
     # Right now, this computation still happens with linear spacing, though its effects are underestimated.
-    CLE = compute_rotation_effects(VD, settings, EW, GAMMA, len_mach, X, CHORD, XLE, VD.XBAR, 
-                                   rhs, COSINP, SINALF,COSCOS, PITCH, ROLL, YAW, STB, RNMAX)    
+    CLE = compute_rotation_effects(VD, settings, EW, GAMMA, X, CHORD, XLE, VD.XBAR, rhs, COSINP, SINALF,COSCOS, PITCH, ROLL, YAW, STB, RNMAX)    
     
     # Leading edge suction multiplier. See documentation. This is a negative integer if used
     # Default to 1 unless specified otherwise
@@ -647,7 +643,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
 # ----------------------------------------------------------------------
 #  CLE rotation effects helper function
 # ----------------------------------------------------------------------
-def compute_rotation_effects(VD, settings, EW, GAMMA, len_mach, X, CHORD, XLE, XBAR, 
+def compute_rotation_effects(VD, settings, EW_large, GAMMA, X, CHORD, XLE, XBAR, 
                              rhs, COSINP, SINALF,COSCOS, PITCH, ROLL, YAW, STB, RNMAX):
     """ This computes the effects of the freestream and aircraft rotation rate on 
     CLE, the induced flow at the leading edge
@@ -659,22 +655,24 @@ def compute_rotation_effects(VD, settings, EW, GAMMA, len_mach, X, CHORD, XLE, X
     chordwise spacing (the if statement below). However, since the trends are correct, 
     albeit underestimated, this calculation is being forced here.    
     """
-    LE_ind      = VD.leading_edge_indices
-    RNMAX       = VD.panels_per_strip
+    LE_ind   = VD.leading_edge_indices
+    RNMAX    = VD.panels_per_strip
+    dim_1    = len(np.sum(LE_ind, axis=1))
+    dim_2    = np.sum(LE_ind, axis=1)[0]
+    dim_3    = len(LE_ind[0])
     
     # Computate rotational effects (pitch, roll, yaw rates) on LE suction
     # pick leading edge strip values for EW and reshape GAMMA -> gamma accordingly
-    #EW    = EW_small[: ,LE_ind, :]
-    n_tot_strips = EW.shape[1]
-    gamma = np.array(np.split(np.repeat(GAMMA, n_tot_strips, axis=0), len_mach))
-    CLE = (EW*gamma).sum(axis=2)
+    EW    = EW_large[LE_ind, :].reshape(dim_1, dim_2, dim_3) 
+    gamma = np.array(np.split(np.repeat(GAMMA, dim_2, axis=0), dim_1))
+    CLE   = (EW*gamma).sum(axis=2)
     
     # Up till EFFINC, some of the following values were computed in compute_RHS_matrix().
     #     EFFINC and ALOC are calculated the exact same way, except for the XGIRO term.
     # LOCATE VORTEX LATTICE CONTROL POINT WITH RESPECT TO THE
     # ROTATION CENTER (XBAR, 0, ZBAR). THE RELATIVE COORDINATES
     # ARE XGIRO, YGIRO, AND ZGIRO. 
-    XGIRO = X - CHORD*XLE - np.repeat(XBAR, RNMAX[LE_ind])
+    XGIRO = X - CHORD*XLE - np.repeat( XBAR, RNMAX[LE_ind].reshape(dim_1,dim_2)[0] , axis=1) 
     YGIRO = rhs.YGIRO
     ZGIRO = rhs.ZGIRO
     
@@ -690,8 +688,8 @@ def compute_rotation_effects(VD, settings, EW, GAMMA, len_mach, X, CHORD, XLE, X
     # EFFINC = COMPONENT OF ONSET FLOW ALONG NORMAL TO CAMBERLINE AT
     #          LEADING EDGE.
     EFFINC = VX *rhs.SCNTL + VY *rhs.CCNTL *rhs.SID - VZ *rhs.CCNTL *rhs.COD 
-    CLE = CLE - EFFINC[:,LE_ind] 
-    CLE = np.where(STB > 0, CLE /RNMAX[LE_ind] /STB, CLE)
+    CLE = CLE - EFFINC[LE_ind].reshape(dim_1,dim_2) 
+    CLE = np.where(STB > 0, CLE /RNMAX[LE_ind].reshape(dim_1,dim_2) /STB, CLE)
     
     return CLE
 

@@ -142,8 +142,10 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     Properties Used:
     N/A
     """
-    LE_ind      = VD.leading_edge_indices
-    RNMAX       = VD.panels_per_strip 
+    LE_ind  = VD.leading_edge_indices
+    RNMAX   = VD.panels_per_strip 
+    dim_1   = len(np.sum(LE_ind, axis=1))
+    dim_2   = np.sum(LE_ind, axis=1)[0]
 
 
     # VORLAX frame RHS calculation---------------------------------------------------------
@@ -174,9 +176,9 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     # LOCATE VORTEX LATTICE CONTROL POINT WITH RESPECT TO THE
     # ROTATION CENTER (XBAR, 0, ZBAR). THE RELATIVE COORDINATES
     # ARE XGIRO, YGIRO, AND ZGIRO. 
-    X_MAT  = np.repeat( XBAR, RNMAX[LE_ind].reshape(len(ZBAR), len(ZBAR[0]))[0] , axis=1) 
-    Z_MAT  = np.repeat( ZBAR, RNMAX[LE_ind].reshape(len(ZBAR), len(ZBAR[0]))[0] , axis=1) 
-    phi_LE = np.repeat(phi[LE_ind].reshape(len(ZBAR), len(ZBAR[0]))  ,RNMAX[LE_ind].reshape(len(ZBAR), len(ZBAR[0]))[0] , axis=1) 
+    X_MAT  = np.repeat( XBAR, RNMAX[LE_ind].reshape(dim_1,dim_2)[0] , axis=1) 
+    Z_MAT  = np.repeat( ZBAR, RNMAX[LE_ind].reshape(dim_1,dim_2)[0] , axis=1) 
+    phi_LE = np.repeat(phi[LE_ind].reshape(dim_1,dim_2)  ,RNMAX[LE_ind].reshape(dim_1,dim_2)[0] , axis=1) 
      
     XGIRO = X + CHORD*DELTAX - X_MAT
     YGIRO = YY
