@@ -98,12 +98,12 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     XA_TE[boolean], XB_TE[boolean] = XB_TE[boolean], XA_TE[boolean]
     
     # These vortices will use AH and BH, rather than the typical location
-    xa = XAH
-    ya = YAH
-    za = ZAH
-    xb = XBH
-    yb = YBH
-    zb = ZBH
+    xa = XAH[:,None,:]
+    ya = YAH[:,None,:]
+    za = ZAH[:,None,:]
+    xb = XBH[:,None,:]
+    yb = YBH[:,None,:]
+    zb = ZBH[:,None,:]
     
     # This is not the control point for the panel, its the middle front of the vortex
     xc = 0.5*(xa+xb)
@@ -111,9 +111,9 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     zc = 0.5*(za+zb)
     
     # This is the receiving point, or the control points
-    xo = XC 
-    yo = YC 
-    zo = ZC 
+    xo = XC[:,:,None] 
+    yo = YC[:,:,None] 
+    zo = ZC[:,:,None] 
     
     # Incline the vortex
     theta    = np.arctan2(zb-za,yb-ya)
