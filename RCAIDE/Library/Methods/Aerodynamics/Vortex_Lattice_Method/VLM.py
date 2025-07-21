@@ -408,10 +408,17 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     FORAXL = COSCOS
     FORLAT = COSIN
     
-    TAN_LE =            (VD.XB1[:,LE_ind]-VD.XA1[:,LE_ind])/ \
+    TAN_LEs =            (VD.XB1[:,LE_ind]-VD.XA1[:,LE_ind])/ \
                 np.sqrt((VD.ZB1[:,LE_ind]-VD.ZA1[:,LE_ind])**2 + \
                         (VD.YB1[:,LE_ind]-VD.YA1[:,LE_ind])**2)  
-    TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2)  
+    TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2)
+    
+
+    TAN_LE  = np.zeros_like(X)
+    for i in  range(len(TAN_TE)):
+        TAN_LE[i] = np.repeat(TAN_LEs[i], RNMAX[i][LE_ind[i]]) 
+        
+    TAN_LE = TAN_LE
     TNL    = TAN_LE * 1 # VORLAX's SIGN variable not needed, as these are taken directly from geometry
     TNT    = TAN_TE * 1
     XIA    = np.broadcast_to((RK-1)/RNMAX, np.shape(B2))
