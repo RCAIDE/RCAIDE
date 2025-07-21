@@ -68,9 +68,8 @@ def compute_RHS_matrix(VD,delta,phi,delta_alpha_induced,conditions,settings,geom
     aoa_distribution = VD.n_cp - delta_alpha_induced
     PSI              = conditions.aerodynamics.angles.beta
     num_eval_pts     = len(VD.XC[0])
-    PSI_distribution = np.repeat(PSI,num_eval_pts, axis = 1)
-    V_inf            = conditions.freestream.velocity
-    V_distribution   = np.repeat(V_inf ,num_eval_pts, axis = 1)
+    PSI_distribution = np.repeat(PSI,num_eval_pts, axis = 1) 
+    V_distribution   =  np.ones_like(aoa_distribution) * conditions.freestream.velocity
     num_ctrl_pts     = len(aoa)  
 
     rot_V_wake_ind   = np.zeros((num_ctrl_pts,num_eval_pts,3))
@@ -144,12 +143,10 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     N/A
     """
     LE_ind      = VD.leading_edge_indices
-    RNMAX       = VD.panels_per_strip
+    RNMAX       = VD.panels_per_strip 
 
 
     # VORLAX frame RHS calculation---------------------------------------------------------
-    #VORLAX subroutine = BOUNDY
-    #unpack conditions
     ALFA   = aoa_distribution
     PSIRAD = PSI_distribution
     PITCHQ = conditions.static_stability.pitch_rate
@@ -164,7 +161,7 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     ROLL   = ROLLQ  / VINF
     YAW    = YAWQ   / VINF
 
-    #unpack/rename variables from VD
+    # unpack/rename variables from VD
     X      = VD.XCH
     YY     = VD.YCH
     ZZ     = VD.ZCH
@@ -177,9 +174,17 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     # LOCATE VORTEX LATTICE CONTROL POINT WITH RESPECT TO THE
     # ROTATION CENTER (XBAR, 0, ZBAR). THE RELATIVE COORDINATES
     # ARE XGIRO, YGIRO, AND ZGIRO.
-    XGIRO = X + CHORD*DELTAX - np.repeat(XBAR, RNMAX[LE_ind]) # CHECK ##########
+    X_MAT  = np.zeros_like(X)
+    Z_MAT  = np.zeros_like(X)
+    phi_LE  = np.zeros_like(X)
+    for i in  range(len(ZBAR)):
+        X_MAT[i] = np.repeat(XBAR[i], RNMAX[i][LE_ind[i]])
+        Z_MAT[i] = np.repeat(ZBAR[i], RNMAX[i][LE_ind[i]])
+        phi_LE[i]= np.repeat(phi[i][LE_ind[i]]  , RNMAX[i][LE_ind[i]])  
+    
+    XGIRO = X + CHORD*DELTAX - X_MAT
     YGIRO = YY
-    ZGIRO = ZZ - np.repeat(ZBAR, RNMAX[LE_ind])
+    ZGIRO = ZZ - Z_MAT
 
     # VX, VY, VZ ARE THE FLOW ONSET VELOCITY COMPONENTS AT THE LEADING
     # EDGE (STRIP MIDPOINT). VX, VY, VZ AND THE ROTATION RATES ARE
@@ -190,8 +195,7 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     
     #COMPUTE DIRECTION COSINES.
     SCNTL  = VD.SLOPE/np.sqrt(1. + VD.SLOPE **2)
-    CCNTL  = 1. / np.sqrt(1.0 + SCNTL**2)
-    phi_LE = np.repeat(phi[:,LE_ind]  , RNMAX[LE_ind], axis=1) # CHECK ##########
+    CCNTL  = 1. / np.sqrt(1.0 + SCNTL**2) 
     COD    = np.cos(phi_LE)
     SID    = np.sin(phi_LE)
 
@@ -217,9 +221,9 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     PSI_distribution  = np.arctan(Vy / Vx)
 
     # compute RHS: dot(v, panel_normals)
-    V_unit_vector    = (np.array([Vx,Vy,Vz])/V_distribution).T
-    panel_normals    = VD.normals[:,np.newaxis,:]
-    RHS_from_normals = np.sum(V_unit_vector*panel_normals, axis=2).T    
+    V_unit_vector    = (np.array([Vx,Vy,Vz])/V_distribution).T # CHECK 
+    panel_normals    = VD.normals[:, :,np.newaxis,:]          # CHECK 
+    RHS_from_normals = np.sum(V_unit_vector*panel_normals, axis=3).T     # CHECK 
 
     #pack values--------------------------------------------------------------------------
     use_VORLAX_RHS = settings.use_VORLAX_matrix_calculation

@@ -108,8 +108,7 @@ def generate_vortex_distribution(conditions,settings,geometry):
         VD_i = generate_control_point_vortex_distribution(geometry,settings) 
     
         if i ==  0: 
-            VD_seg.XAH    = np.atleast_2d(VD_i.XAH)
-            VD_seg.XAH     = np.atleast_2d(VD_i.XAH   )
+            VD_seg.XAH    = np.atleast_2d(VD_i.XAH   ) 
             VD_seg.YAH    = np.atleast_2d(VD_i.YAH   )
             VD_seg.ZAH    = np.atleast_2d(VD_i.ZAH   )
             VD_seg.XBH    = np.atleast_2d(VD_i.XBH   )
@@ -174,7 +173,7 @@ def generate_vortex_distribution(conditions,settings,geometry):
             VD_seg.vortex_lift               =  np.atleast_2d(VD_i.vortex_lift              )
             VD_seg.counter                   =  np.atleast_2d(VD_i.counter                  ) 
             VD_seg.panel_areas               =  np.atleast_2d(VD_i.panel_areas              )
-            VD_seg.normals                   =  np.atleast_2d(VD_i.normals                  ) 
+            VD_seg.normals                   =  VD_i.normals[None,:, :]
             VD_seg.SLOPE                     =  np.atleast_2d(VD_i.SLOPE                    )
             VD_seg.SLE                       =  np.atleast_2d(VD_i.SLE                      )
             VD_seg.D                         =  np.atleast_2d(VD_i.D                        )
@@ -185,6 +184,7 @@ def generate_vortex_distribution(conditions,settings,geometry):
             
         else:
 
+            VD_seg.XAH    = np.vstack(( VD_seg.XAH  , np.atleast_2d(VD_i.XAH   )))
             VD_seg.YAH    = np.vstack(( VD_seg.YAH  , np.atleast_2d(VD_i.YAH   )))
             VD_seg.ZAH    = np.vstack(( VD_seg.ZAH  , np.atleast_2d(VD_i.ZAH   )))
             VD_seg.XBH    = np.vstack(( VD_seg.XBH  , np.atleast_2d(VD_i.XBH   )))
@@ -250,7 +250,7 @@ def generate_vortex_distribution(conditions,settings,geometry):
             VD_seg.vortex_lift               = np.vstack((VD_seg.vortex_lift                , np.atleast_2d(VD_i.vortex_lift              )))
             VD_seg.counter                   = np.vstack((VD_seg.counter                    , np.atleast_2d(VD_i.counter                  ))) 
             VD_seg.panel_areas               = np.vstack((VD_seg.panel_areas                , np.atleast_2d(VD_i.panel_areas              )))
-            VD_seg.normals                   = np.vstack((VD_seg.normals                    , np.atleast_2d(VD_i.normals                  )))
+            VD_seg.normals                   = np.vstack((VD_seg.normals                    , VD_i.normals[None, :, :]                    ))
             VD_seg.SLOPE                     = np.vstack((VD_seg.SLOPE                      , np.atleast_2d(VD_i.SLOPE                    )))
             VD_seg.SLE                       = np.vstack((VD_seg.SLE                        , np.atleast_2d(VD_i.SLE                      )))
             VD_seg.D                         = np.vstack((VD_seg.D                          , np.atleast_2d(VD_i.D                        )))   

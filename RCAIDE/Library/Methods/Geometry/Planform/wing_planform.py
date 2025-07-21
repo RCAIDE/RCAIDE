@@ -7,8 +7,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE 
-from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments, convert_sweep
-from RCAIDE.Library.Methods.Geometry.Airfoil import  import_airfoil_geometry , compute_naca_4series
+from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments, convert_sweep 
+from RCAIDE.Library.Methods.Geometry.Airfoil  import compute_airfoil_properties, compute_naca_4series, import_airfoil_geometry
 
 # package imports 
 import numpy as np
@@ -99,18 +99,17 @@ def wing_planform(wing,overwrite_reference = True):
              
             if seg.airfoil != None: 
                 if type(seg.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
-                    airfoil.geometry = compute_naca_4series(seg.airfoil.NACA_4_Series_code) 
-                    seg.thickness_to_chord = airfoil.geometry.thickness_to_chord 
+                    seg.airfoil.geometry = compute_naca_4series(seg.airfoil.NACA_4_Series_code) 
+                    seg.thickness_to_chord = seg.airfoil.geometry.thickness_to_chord 
                 else:
-                    airfoil.geometry = import_airfoil_geometry(seg.airfoil.coordinate_file) 
-                    seg.thickness_to_chord =  airfoil.geometry.thickness_to_chord
-                   
+                    seg.airfoil.geometry = import_airfoil_geometry(seg.airfoil.coordinate_file) 
+                    seg.thickness_to_chord =  seg.airfoil.geometry.thickness_to_chord
+
                 if seg.airfoil.polar_files != None: 
                     seg.airfoil.polars = compute_airfoil_properties(seg.airfoil.geometry, airfoil_polar_files= seg.airfoil.polar_files)
-                     
+                    seg.airfoil_2D_polars = True
                 else:
-                    raise AssertionError('Airfoil polars must be defined on ' + wing.tag + ' segment for Coupled 2D Viscous Vortex Lattice Method!')
-                
+                    seg.airfoil_2D_polars = False                    
             
                 t_cs.append(seg.thickness_to_chord) 
             else: 
@@ -241,9 +240,7 @@ def wing_planform(wing,overwrite_reference = True):
         ar          = wing.aspect_ratio
         dihedral    = wing.dihedral 
         vertical    = wing.vertical
-        symmetric   = wing.symmetric 
-        
-        
+        symmetric   = wing.symmetric  
         if wing.airfoil != None: 
             if type(wing.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
                 wing.airfoil.geometry = compute_naca_4series(wing.airfoil.NACA_4_Series_code) 
@@ -251,18 +248,14 @@ def wing_planform(wing,overwrite_reference = True):
             else:
                 wing.airfoil.geometry = import_airfoil_geometry(wing.airfoil.coordinate_file) 
                 wing.thickness_to_chord =  wing.airfoil.geometry.thickness_to_chord
-    
+
             if wing.airfoil.polar_files != None: 
                 wing.airfoil.polars = compute_airfoil_properties(wing.airfoil.geometry, airfoil_polar_files= wing.airfoil.polar_files)
-    
+                wing.airfoil_2D_polars = True
             else:
-                raise AssertionError('Airfoil polars must be defined on ' + wing.tag + ' for Coupled 2D Viscous Vortex Lattice Method!')
-    
-    
-        t_c_w  = wing.thickness_to_chord       
-        
-        
-        
+                wing.airfoil_2D_polars = False
+                
+        t_c_w  = wing.thickness_to_chord   
         
         # calculate
         span       = (ar*sref)**.5

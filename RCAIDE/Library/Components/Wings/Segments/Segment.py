@@ -99,6 +99,7 @@ class Segment(Component):
         self.root_chord_percent                        = 0.0
         self.dihedral_outboard                         = 0.0
         self.thickness_to_chord                        = 0.0 
+        self.airfoil_2D_polars                         = False   
         self.sweeps                                    = Data()
         self.sweeps.quarter_chord                      = None
         self.sweeps.leading_edge                       = None 

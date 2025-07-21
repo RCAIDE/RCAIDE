@@ -111,9 +111,9 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     zc = 0.5*(za+zb)
     
     # This is the receiving point, or the control points
-    xo = XC.T
-    yo = YC.T
-    zo = ZC.T
+    xo = XC 
+    yo = YC 
+    zo = ZC 
     
     # Incline the vortex
     theta    = np.arctan2(zb-za,yb-ya)

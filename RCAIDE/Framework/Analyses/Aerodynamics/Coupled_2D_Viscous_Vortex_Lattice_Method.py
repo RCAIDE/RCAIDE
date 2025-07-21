@@ -67,7 +67,6 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
         self.settings.viscous_VLM_flag                              = True 
         self.settings.use_surrogate                                 = True  
         self.settings.propeller_wake_model                          = False
-        self.settings.airfoil_polars                                = False
         self.settings.discretize_control_surfaces                   = True
         self.settings.model_fuselage                                = False 
         self.settings.trim_aircraft                                 = True
@@ -162,13 +161,11 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
         self.process.compute                                        = compute
         
 
-    def initialize(self):  
-        vehicle  =  self.vehicle
-
+    def initialize(self):   
         self.settings.number_of_chordwise_vortices  = 1        
         self.settings.model_fuselage                = False
-        use_surrogate                                = self.settings.use_surrogate 
-
+        use_surrogate                               = self.settings.use_surrogate  
+        
         # If we are using the surrogate
         if use_surrogate == True: 
             # sample training data
@@ -183,7 +180,7 @@ class Coupled_2D_Viscous_Vortex_Lattice_Method(Aerodynamics):
             compute.lift.inviscid_wings  = evaluate_surrogate
         else:
             compute.lift.inviscid_wings  = evaluate_no_surrogate
-        return 
+        return
     
          
     def evaluate(self,state):

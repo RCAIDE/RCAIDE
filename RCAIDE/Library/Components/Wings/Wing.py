@@ -180,7 +180,8 @@ class Wing(Component):
         self.thickness_to_chord                     = 0.0
         self.aerodynamic_center                     = [0.0,0.0,0.0]
         self.percent_span_unexposed                 = 0.0
-        self.total_length                           = 0.0
+        self.total_length                           = 0.0 
+        self.airfoil_2D_polars                      = False        
              
         self.fuel_tank                              = Data()      
         self.fuel_tank.percent_chord_start_location = 0.1  
