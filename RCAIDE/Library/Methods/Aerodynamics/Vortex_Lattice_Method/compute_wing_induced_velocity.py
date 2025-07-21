@@ -196,8 +196,8 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     if compute_EW == True:
         # Calculate the W velocity in the VORLAX frame for later calcs
         # The angles are Dihedral angle of the current panel - dihedral angle of the influencing panel
-        COS1   = np.cos(DL.T - DL)
-        SIN1   = np.sin(DL.T - DL) 
+        COS1   = np.cos(DL[:,:,None] - DL[:,None,:])
+        SIN1   = np.sin(DL[:,:,None] - DL[:,None,:]) 
         WEIGHT = 1
         
         EW = (W*COS1-V*SIN1)*WEIGHT
