@@ -182,7 +182,7 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     RO2_sup     = B2[sup,:,:]*RTV2
     RNMAX       = VD.panels_per_strip
     CHORD       = VD.chord_lengths
-    CHORD       = np.repeat(CHORD,shape[1],axis=0)
+    CHORD       = np.repeat(CHORD,shape[1],axis=1)
     RFLAG       = np.ones((n_mach,shape[2]),dtype=np.int8)
     
     if np.sum(sup)>0:
