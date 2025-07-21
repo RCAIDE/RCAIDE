@@ -65,7 +65,7 @@ def compute_RHS_matrix(VD,delta,phi,delta_alpha_induced,conditions,settings,geom
 
     # unpack 
     aoa              = conditions.aerodynamics.angles.alpha
-    aoa_distribution = VD.n_cp - delta_alpha_induced
+    aoa_distribution = aoa - delta_alpha_induced
     PSI              = conditions.aerodynamics.angles.beta
     num_eval_pts     = len(VD.XC[0])
     PSI_distribution = np.repeat(PSI,num_eval_pts, axis = 1) 
@@ -221,9 +221,9 @@ def build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distri
     PSI_distribution  = np.arctan(Vy / Vx)
 
     # compute RHS: dot(v, panel_normals)
-    V_unit_vector    = (np.array([Vx,Vy,Vz])/V_distribution).T # CHECK 
+    V_unit_vector    = ((np.array([Vx,Vy,Vz])/V_distribution).T).swapaxes(0,1)[:, :,np.newaxis,:] # CHECK 
     panel_normals    = VD.normals[:, :,np.newaxis,:]          # CHECK 
-    RHS_from_normals = np.sum(V_unit_vector*panel_normals, axis=3).T     # CHECK 
+    RHS_from_normals = np.sum(np.sum(V_unit_vector*panel_normals, axis=2), axis=2 )    # CHECK 
 
     #pack values--------------------------------------------------------------------------
     use_VORLAX_RHS = settings.use_VORLAX_matrix_calculation
