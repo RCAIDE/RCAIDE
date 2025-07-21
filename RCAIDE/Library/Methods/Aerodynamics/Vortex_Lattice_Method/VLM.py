@@ -326,7 +326,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     chord_breaks = VD.chordwise_breaks
     span_breaks  = VD.spanwise_breaks
     RNMAX        = VD.panels_per_strip    
-    LE_ind       = VD.leading_edge_indices
+    LE_ind       = VD.leading_edge_indices[0]
     ZETA         = VD.tangent_incidence_angle
     RK           = VD.chordwise_panel_number
     
@@ -338,8 +338,8 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     XB1 = VD.XB1*1. 
     
     # Compute X and Z BAR ouside of generate_vortex_distribution to avoid requiring x_m and z_m as inputs 
-    VD.XBAR = np.ones(( len_mach,sum(LE_ind[0]))) * x_m # CHECK !!! 
-    VD.ZBAR = np.ones(( len_mach,sum(LE_ind[0]))) * z_m # CHECK !!! 
+    VD.XBAR = np.ones(( len_mach,sum(LE_ind))) * x_m # CHECK !!! 
+    VD.ZBAR = np.ones(( len_mach,sum(LE_ind))) * z_m # CHECK !!! 
     
     # ---------------------------------------------------------------------------------------
     # STEP 10: Generate A and RHS matrices from VD and geometry
@@ -353,16 +353,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     RHS     = rhs.RHS*1 # this matches numpy=1.26 in terms of dimension
     ONSET   = rhs.ONSET*1
 
-    # Build induced velocity matrix, C_mn
-    # This is not affected by AoA, so we can use unique mach numbers only
-    m_unique, inv = np.unique(mach,return_inverse=True)
-    m_unique      = np.atleast_2d(m_unique).T
-    inv           = inv.reshape(-1) # this is done to ensure compatibility across numpy1.0 and numpy2.0
-    #C_mn_small, s, RFLAG_small, EW_small = compute_wing_induced_velocity(VD,m_unique,compute_EW=True)
-    #C_mn  = C_mn_small[inv,:,:,:]
-    #RFLAG = RFLAG_small[inv,:]
-    #EW    = EW_small[inv,:,:]
-    
+    # Build induced velocity matrix, C_mn  
     C_mn, s, RFLAG, EW = compute_wing_induced_velocity(VD,mach,compute_EW=True)
     
     # Turn off sonic vortices when Mach>1
@@ -396,7 +387,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     RJTS = 0                         
     
     # COMPUTE FREE-STREAM AND ONSET FLOW PARAMETERS. Used throughout the remainder of VLM
-    B2     = np.tile((mach**2 - 1),VD.n_cp)
+    B2     = np.tile((mach**2 - 1),VD.n_cp[0])
     SINALF = np.sin(aoa)
     COSALF = np.cos(aoa)
     TANALF = np.tan(aoa)
@@ -417,12 +408,12 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     FORAXL = COSCOS
     FORLAT = COSIN
     
-    TAN_LE = (XB1[LE_ind] - XA1[LE_ind])/ \
-                np.sqrt((VD.ZB1[LE_ind]-VD.ZA1[LE_ind])**2 + \
-                        (VD.YB1[LE_ind]-VD.YA1[LE_ind])**2)  
+    TAN_LE =            (VD.XB1[:,LE_ind]-VD.XA1[:,LE_ind])/ \
+                np.sqrt((VD.ZB1[:,LE_ind]-VD.ZA1[:,LE_ind])**2 + \
+                        (VD.YB1[:,LE_ind]-VD.YA1[:,LE_ind])**2)  
     TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2) # _TE variables already have np.repeat built in 
-    TAN_LE = np.broadcast_to(np.repeat(TAN_LE,RNMAX[LE_ind]),np.shape(B2)) 
-    TAN_TE = np.broadcast_to(TAN_TE                         ,np.shape(B2))    
+    #TAN_LE = np.broadcast_to(np.repeat(TAN_LE,RNMAX[LE_ind]),np.shape(B2)) 
+    #TAN_TE = np.broadcast_to(TAN_TE                         ,np.shape(B2))    
     
     TNL    = TAN_LE * 1 # VORLAX's SIGN variable not needed, as these are taken directly from geometry
     TNT    = TAN_TE * 1
