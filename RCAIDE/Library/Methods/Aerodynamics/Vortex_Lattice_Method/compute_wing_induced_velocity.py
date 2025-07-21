@@ -129,13 +129,9 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     zobar =-(yo - yc)*sintheta + (zo - zc)*costheta
     
     # COMPUTE COORDINATES OF RECEIVING POINT WITH RESPECT TO END POINTS OF SKEWED LEG.
-    shape   = np.shape(xobar)
-    shape_0 = shape[1]
-    shape_1 = shape[2]
-    s       = np.abs(y1bar)
-    t       = x1bar/y1bar  
-    s       = np.repeat(s,shape_0,axis=0)
-    t       = np.repeat(t,shape_0,axis=0)
+    shape   = np.shape(xobar)  
+    s       = np.repeat(np.abs(y1bar),shape[1],axis=1)
+    t       = np.repeat(x1bar/y1bar ,shape[1],axis=1)
     
     X1 = xobar + t*s # In a planar case XC-XAH
     Y1 = yobar + s   # In a planar case YC-YAH
@@ -170,9 +166,9 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     RO2_sub  = B2_sub*RTV2
     
     # ZERO-OUT PERTURBATION VELOCITY COMPONENTS
-    U = np.zeros((n_mach,shape_0,shape_1),dtype=np.float32)
-    V = np.zeros((n_mach,shape_0,shape_1),dtype=np.float32)
-    W = np.zeros((n_mach,shape_0,shape_1),dtype=np.float32)    
+    U = np.zeros((n_mach,shape[1],shape[2] ),dtype=np.float32)
+    V = np.zeros((n_mach,shape[1],shape[2] ),dtype=np.float32)
+    W = np.zeros((n_mach,shape[1],shape[2] ),dtype=np.float32)    
     
     if np.sum(sub)>0:
         # COMPUTATION FOR SUBSONIC HORSESHOE VORTEX
@@ -186,8 +182,8 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     RO2_sup     = B2[sup,:,:]*RTV2
     RNMAX       = VD.panels_per_strip
     CHORD       = VD.chord_lengths
-    CHORD       = np.repeat(CHORD,shape_0,axis=0)
-    RFLAG       = np.ones((n_mach,shape_1),dtype=np.int8)
+    CHORD       = np.repeat(CHORD,shape[1],axis=0)
+    RFLAG       = np.ones((n_mach,shape[2]),dtype=np.int8)
     
     if np.sum(sup)>0:
         U[sup], V[sup], W[sup], RFLAG[sup,:] = supersonic(zobar,XSQ1,RO1_sup,XSQ2,RO2_sup,XTY,t,B2_sup,ZSQ,TOLSQ,TOL,TOLSQ2,\
