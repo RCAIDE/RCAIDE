@@ -358,7 +358,8 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     m_unique, inv = np.unique(mach,return_inverse=True)
     m_unique      = np.atleast_2d(m_unique).T
     inv           = inv.reshape(-1) # this is done to ensure compatibility across numpy1.0 and numpy2.0
-    C_mn_small, s, RFLAG_small, EW_small = compute_wing_induced_velocity(VD,m_unique,compute_EW=True)
+    #C_mn_small, s, RFLAG_small, EW_small = compute_wing_induced_velocity(VD,m_unique,compute_EW=True)
+    C_mn_small, s, RFLAG_small, EW_small = compute_wing_induced_velocity(VD,mach,compute_EW=True)
     
     C_mn  = C_mn_small[inv,:,:,:]
     RFLAG = RFLAG_small[inv,:]
