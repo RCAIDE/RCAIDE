@@ -411,10 +411,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     TAN_LE =            (VD.XB1[:,LE_ind]-VD.XA1[:,LE_ind])/ \
                 np.sqrt((VD.ZB1[:,LE_ind]-VD.ZA1[:,LE_ind])**2 + \
                         (VD.YB1[:,LE_ind]-VD.YA1[:,LE_ind])**2)  
-    TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2) # _TE variables already have np.repeat built in 
-    #TAN_LE = np.broadcast_to(np.repeat(TAN_LE,RNMAX[LE_ind]),np.shape(B2)) 
-    #TAN_TE = np.broadcast_to(TAN_TE                         ,np.shape(B2))    
-    
+    TAN_TE = (VD.XB_TE - VD.XA_TE)/ np.sqrt((VD.ZB_TE-VD.ZA_TE)**2 + (VD.YB_TE-VD.YA_TE)**2)  
     TNL    = TAN_LE * 1 # VORLAX's SIGN variable not needed, as these are taken directly from geometry
     TNT    = TAN_TE * 1
     XIA    = np.broadcast_to((RK-1)/RNMAX, np.shape(B2))
