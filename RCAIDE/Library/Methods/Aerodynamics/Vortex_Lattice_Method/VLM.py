@@ -511,7 +511,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     SPC  = K_SPC*np.ones_like(DCP_LE)
     
     # If the vehicle is subsonic and there is vortex lift enabled then SPC changes to -1
-    VL   = np.repeat(VD.vortex_lift,VD.n_sw)
+    VL   = np.repeat(VD.vortex_lift,VD.n_sw[0], axis=1)
     m_b  = np.atleast_2d(mach[:,0]<1.)
     SPC_cond      = VL*m_b.T
     SPC[SPC_cond] = -1.
@@ -525,8 +525,8 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     
     SLE  = VD.SLOPE[LE_ind].reshape(dim_1,dim_2)
     ZETA = ZETA[LE_ind].reshape(dim_1,dim_2)
-    XCOS = np.broadcast_to(np.cos(SLE-ZETA),np.shape(DCP_LE))
-    XSIN = np.broadcast_to(np.sin(SLE-ZETA),np.shape(DCP_LE))
+    XCOS = np.cos(SLE-ZETA) 
+    XSIN = np.sin(SLE-ZETA) 
     TFX  =  1.*XCOS
     TFZ  = -1.*XSIN
 
@@ -574,28 +574,27 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     RM     = STRIP *(BMX *COSALF *COPSI + BMY *COSALF *SINPSI + BMZ *SINALF)
     YM     = STRIP *(BMZ *COSALF - (BMX *COPSI + BMY *SINPSI) *SINALF)
 
-    # Now calculate the coefficients for each wing
-    Clift_y   = LIFT/CHORD_strip/ES 
-    results   = compute_trefftz_plane_induced_drag(conditions, VD,Clift_y, X, Y, Z, CHORD_strip,S_ref,b_ref)    
-    CL_wing   = np.add.reduceat(LIFT,span_breaks,axis=1)/VD.wing_areas 
+    # Lift coefficient
+    Clift_y   = LIFT/CHORD_strip/ES  
+    CL_wing   = np.add.reduceat(LIFT,span_breaks,axis=1)/VD.wing_areas  
+    CL        = np.atleast_2d(np.sum(LIFT,axis=1)/S_ref).T          # CLTOT in VORLAX
+
+    # Drag coefficient
+    results   = compute_trefftz_plane_induced_drag(conditions, VD,Clift_y, X, Y, Z, CHORD_strip,S_ref,b_ref)       
     
-    # Now calculate total coefficients
-    CL       = np.atleast_2d(np.sum(LIFT,axis=1)/S_ref).T          # CLTOT in VORLAX
-    CX       = (TANALF * CL -  results.CDrag_induced)/(COSALF - SINALF*TANALF)
-    CZ       = (results.CDrag_induced+ CX*COSALF)/SINALF 
-    CM       = np.atleast_2d(np.sum(MOMENT,axis=1)/S_ref).T/c_bar  # CMTOT in VORLAX 1. check deflection is accounted for correctly. 2. check this is right
-    CY       = np.atleast_2d(np.sum(FY,axis=1)/S_ref).T   # total y force coeff
-    CRTOT    = np.atleast_2d(np.sum(RM,axis=1)/S_ref).T   # rolling moment coeff (unscaled)
-    CL_mom   = CRTOT/b_ref*(-1)                           # rolling moment coeff
-    CNTOT    = np.atleast_2d(np.sum(YM,axis=1)/S_ref).T   # yawing  moment coeff (unscaled)
-    CN       = CNTOT/b_ref*(-1)                           # yawing  moment coeff
+    # force coefficeints 
+    CX_for   = (TANALF * CL -  results.CDrag_induced)/(COSALF - SINALF*TANALF)
+    CZ_for   = (results.CDrag_induced+ CX_for*COSALF)/SINALF  
+    CY_for   = np.atleast_2d(np.sum(FY,axis=1)/S_ref).T  
+
+    # moment coefficients 
+    CM_mom   = np.atleast_2d(np.sum(MOMENT,axis=1)/S_ref).T/c_bar  
+    CL_mom   = np.atleast_2d(np.sum(RM,axis=1)/S_ref).T    /b_ref*(-1)                             
+    CN_mom   = np.atleast_2d(np.sum(YM,axis=1)/S_ref).T    /b_ref*(-1)                            
    
     # ---------------------------------------------------------------------------------------
     # STEP 13: Pack outputs
-    # ------------------ --------------------------------------------------------------------     
-    precision      = settings.floating_point_precision
-
-    #VORLAX _TOT outputs 
+    # ------------------ --------------------------------------------------------------------      
     results.S_ref             = S_ref
     results.b_ref             = b_ref
     results.c_ref             = c_bar  
@@ -603,22 +602,21 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     results.Y_ref             = 0
     results.Z_ref             = z_m 
     results.CLift             = CL  
-    results.CX                = CX
-    results.CY                = CY 
-    results.CZ                = -CZ 
+    results.CX                = CX_for 
+    results.CY                = CY_for  
+    results.CZ                = -CZ_for 
     results.CL                = CL_mom 
-    results.CM                = CM  
-    results.CN                = CN  
+    results.CM                = CM_mom  
+    results.CN                = CN_mom  
     results.spanwise_stations = Y 
     results.CLift_wing        = CL_wing   
     results.sectional_CLift   = Clift_y     
-    results.CP                = np.array(CP    , dtype=precision)
-    results.gamma             = np.array(GAMMA , dtype=precision) 
+    results.CP                = np.array(CP    , dtype=settings.floating_point_precision )
+    results.gamma             = np.array(GAMMA , dtype=settings.floating_point_precision ) 
     results.V_distribution    = rhs.V_distribution
     results.V_x               = rhs.Vx_ind_total
     results.V_z               = rhs.Vz_ind_total 
-
-    # Dimensionalize the lift and drag for each wing 
+ 
     i = 0 
     dim_wing_lifts      = results.CLift_wing * VD.wing_areas
     dim_wing_drags      = results.CDrag_induced_wing * VD.wing_areas
@@ -634,10 +632,10 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
         else:
             Clift_wings[wing.tag]      = np.atleast_2d(dim_wing_lifts[:,i]).T/ref
             Cdrag_wings[wing.tag]      = np.atleast_2d(dim_wing_drags[:,i]).T/ref
-        i+=1
-        
+        i+=1 
     results.CLift_wings         = Clift_wings
-    results.CDrag_induced_wings = Cdrag_wings 
+    results.CDrag_induced_wings = Cdrag_wings
+    
     return results
 
 # ----------------------------------------------------------------------
