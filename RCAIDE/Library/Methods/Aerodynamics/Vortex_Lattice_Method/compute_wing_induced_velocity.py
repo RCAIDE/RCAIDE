@@ -162,8 +162,8 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     # Split the vectors into subsonic and supersonic
     sub      = (B2<0)[:,0,0]
     B2_sub   = B2[sub,:]
-    RO1_sub  = B2_sub*RTV1
-    RO2_sub  = B2_sub*RTV2
+    RO1_sub  = B2_sub*RTV1[sub,:]
+    RO2_sub  = B2_sub*RTV2[sub,:]
     
     # ZERO-OUT PERTURBATION VELOCITY COMPONENTS
     U = np.zeros((n_mach,shape[1],shape[2] ),dtype=np.float32)
@@ -172,22 +172,22 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     
     if np.sum(sub)>0:
         # COMPUTATION FOR SUBSONIC HORSESHOE VORTEX
-        U[sub], V[sub], W[sub] = subsonic(zobar,XSQ1,RO1_sub,XSQ2,RO2_sub,XTY,t,B2_sub,ZSQ,TOLSQ,X1,Y1,X2,Y2,RTV1,RTV2)   
-
+        U_sub, V_sub, W_sub = subsonic(zobar,XSQ1,RO1_sub,XSQ2,RO2_sub,XTY,t,B2_sub,ZSQ,TOLSQ,X1,Y1,X2,Y2,RTV1,RTV2)   
+        U[sub], V[sub], W[sub] = U_sub[sub], V_sub[sub], W_sub[sub]
     
     # COMPUTATION FOR SUPERSONIC HORSESHOE VORTEX. some values computed in a preprocessing section in VLM
     sup = (B2>=0)[:,0,0]
     RFLAG = np.ones((n_mach,shape[2]),dtype=np.int8)
     if np.sum(sup)>0:
         B2_sup      = B2[sup,:]
-        RO1_sup     = B2_sup*RTV1
-        RO2_sup     = B2_sup*RTV2
+        RO1_sup     = B2_sup*RTV1[sup,:]
+        RO2_sup     = B2_sup*RTV2[sup,:]
         RNMAX       = VD.panels_per_strip
         CHORD       = VD.chord_lengths
         CHORD       = np.repeat(CHORD,shape[1],axis=1)
-        U[sup], V[sup], W[sup], RFLAG[sup,:] = supersonic(zobar,XSQ1,RO1_sup,XSQ2,RO2_sup,XTY,t,B2_sup,ZSQ,TOLSQ,TOL,TOLSQ2,\
+        U_sup, V_sup, W_sup, RFLAG_sup  = supersonic(zobar,XSQ1,RO1_sup,XSQ2,RO2_sup,XTY,t,B2_sup,ZSQ,TOLSQ,TOL,TOLSQ2,\
                                                     X1,Y1,X2,Y2,RTV1,RTV2,CUTOFF,CHORD,RNMAX,n_cp,TE_ind,LE_ind)
-         
+        U[sup], V[sup], W[sup], RFLAG[sup,:]  = U_sup[sup], V_sup[sup], W_sup[sup], RFLAG_sup[sup,:] 
     
     # Rotate into the vehicle frame and pack into a velocity matrix
     C_mn = np.stack([U, V*costheta - W*sintheta, V*sintheta + W*costheta],axis=-1)

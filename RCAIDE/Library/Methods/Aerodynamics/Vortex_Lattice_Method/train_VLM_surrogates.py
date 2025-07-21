@@ -259,16 +259,15 @@ def train_model(aerodynamics, Mach):
     conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12 
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-    conditions.freestream.mach_number               = Machs + Machs*u_s 
+    conditions.freestream.mach_number               = Machs + Machs*u_s # Machs + u_s/343
     
-
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
     CX_res    = VLM_results.CX
     CZ_res    = VLM_results.CZ
     CM_res    = VLM_results.CM
-    CX_u        = np.reshape(VLM_results.CX,(len_Mach,len_u)).T    - CX_alpha_0   
-    CZ_u        = np.reshape(VLM_results.CZ,(len_Mach,len_u)).T    - CZ_alpha_0   
-    CM_u        = np.reshape(VLM_results.CM,(len_Mach,len_u)).T    - CM_alpha_0  
+    CX_u      = np.reshape(VLM_results.CX,(len_Mach,len_u)).T    - CX_alpha_0   
+    CZ_u      = np.reshape(VLM_results.CZ,(len_Mach,len_u)).T    - CZ_alpha_0   
+    CM_u      = np.reshape(VLM_results.CM,(len_Mach,len_u)).T    - CM_alpha_0  
                     
     # -------------------------------------------------------               
     # Pitch Rate 

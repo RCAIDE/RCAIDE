@@ -403,7 +403,6 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     # reshape CHORD 
     dim_1 = len(np.sum(LE_ind, axis=1))
     dim_2 = np.sum(LE_ind, axis=1)[0]
-    CHORD_strip = CHORD[LE_ind].reshape(dim_1,dim_2)   
     
     # COMPUTE EFFECT OF SIDESLIP on DCP intermediate variables. needs change if cosine chorwise spacing added
     FORAXL = COSCOS
@@ -551,8 +550,9 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     BFZ =   (CNC *FCOS + CAXL *FSIN) *COD
 
     # CONVERT CNC FROM CN INTO CNC (COEFF. *CHORD).
-    CNC  = CNC  * CHORD_strip
-    BMLE = BMLE * CHORD_strip
+    CHORD_strip = CHORD[LE_ind].reshape(dim_1,dim_2)   
+    CNC         = CNC  * CHORD_strip
+    BMLE        = BMLE * CHORD_strip
 
     # BMX, BMY, AND BMZ ARE THE COMPONENTS ALONG THE BODY AXES
     # OF THE STRIP MOMENT (ABOUT MOM. REF. POINT) CONTRIBUTION.
@@ -566,7 +566,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
     CDC    = BFZ * SINALF +  (BFX *COPSI + BFY *SINPSI) * COSALF
     CDC    = CDC * CHORD_strip 
 
-    ES     = 2*s[LE_ind].reshape(dim_1,dim_2)
+    ES     = 2*s[:,0,:][LE_ind].reshape(dim_1,dim_2)
     STRIP  = ES *CHORD_strip
     LIFT   = (BFZ *COSALF - (BFX *COPSI + BFY *SINPSI) *SINALF)*STRIP    
     MOMENT = STRIP * (BMY *COPSI - BMX *SINPSI)  
@@ -576,7 +576,7 @@ def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta
 
     # Lift coefficient
     Clift_y   = LIFT/CHORD_strip/ES  
-    CL_wing   = np.add.reduceat(LIFT,span_breaks,axis=1)/VD.wing_areas  
+    CL_wing   = np.add.reduceat(LIFT,span_breaks[0],axis=1)/VD.wing_areas  
     CL        = np.atleast_2d(np.sum(LIFT,axis=1)/S_ref).T          # CLTOT in VORLAX
 
     # Drag coefficient
@@ -712,7 +712,7 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
      
     alpha   = conditions.aerodynamics.angles.alpha 
     n_cases = len(alpha) 
-    n_wings = len(VD.n_sw)
+    n_wings = len(VD.n_sw[0])
     rho = 1
     
     # ------------------------------------------------------------------------------------------
@@ -727,20 +727,20 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     alpha_i           = np.zeros_like(cl) 
 
     # Calculate circulation for this case
-    circulation_dist = 0.5 * chord_dist * v_inf * cl 
+    circulation_dist = 0.5 * chord_dist[0] * v_inf * cl 
    
     ws = 0
     # Induced velocity calculation for this case 
-    for wing_index,wing_segments in enumerate(VD.n_sw):
+    for wing_index,wing_segments in enumerate(VD.n_sw[0]):
         ws_prev = ws
         ws += wing_segments
         circulation_segments = circulation_dist[:,ws_prev:ws]
         cl_segments = cl[:, ws_prev:ws]
         
         # Control points 
-        y_control_points = np.tile(y_dist[ws_prev:ws][None,:],(n_cases,1))
-        z_control_points = np.tile(z_dist[ws_prev:ws][None,:],(n_cases,1))
-        x_control_points = np.tile(x_dist[ws_prev:ws][None,:],(n_cases,1))
+        y_control_points = y_dist[:,ws_prev:ws] 
+        z_control_points = z_dist[:,ws_prev:ws] 
+        x_control_points = x_dist[:,ws_prev:ws] 
 
         # Centerpoints 
         y_centerpoints = (y_control_points[:,:-1] + y_control_points[:,1:]) / 2
