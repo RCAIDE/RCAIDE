@@ -160,10 +160,9 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     XSQ2   = X2 *X2
     
     # Split the vectors into subsonic and supersonic
-    sub      = (B2<0)[:,0,0]
-    B2_sub   = B2[sub,:]
-    RO1_sub  = B2_sub*RTV1[sub,:]
-    RO2_sub  = B2_sub*RTV2[sub,:]
+    sub      = (B2<0)[:,0,0] 
+    RO1      = B2*RTV1 
+    RO2      = B2*RTV2 
     
     # ZERO-OUT PERTURBATION VELOCITY COMPONENTS
     U = np.zeros((n_mach,shape[1],shape[2] ),dtype=np.float32)
@@ -172,20 +171,16 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     
     if np.sum(sub)>0:
         # COMPUTATION FOR SUBSONIC HORSESHOE VORTEX
-        U_sub, V_sub, W_sub = subsonic(zobar,XSQ1,RO1_sub,XSQ2,RO2_sub,XTY,t,B2_sub,ZSQ,TOLSQ,X1,Y1,X2,Y2,RTV1,RTV2)   
+        U_sub, V_sub, W_sub = subsonic(zobar,XSQ1,RO1,XSQ2,RO2,XTY,t,B2,ZSQ,TOLSQ,X1,Y1,X2,Y2,RTV1,RTV2)   
         U[sub], V[sub], W[sub] = U_sub[sub], V_sub[sub], W_sub[sub]
     
     # COMPUTATION FOR SUPERSONIC HORSESHOE VORTEX. some values computed in a preprocessing section in VLM
     sup = (B2>=0)[:,0,0]
     RFLAG = np.ones((n_mach,shape[2]),dtype=np.int8)
-    if np.sum(sup)>0:
-        B2_sup      = B2[sup,:]
-        RO1_sup     = B2_sup*RTV1[sup,:]
-        RO2_sup     = B2_sup*RTV2[sup,:]
-        RNMAX       = VD.panels_per_strip
-        CHORD       = VD.chord_lengths
-        CHORD       = np.repeat(CHORD,shape[1],axis=1)
-        U_sup, V_sup, W_sup, RFLAG_sup  = supersonic(zobar,XSQ1,RO1_sup,XSQ2,RO2_sup,XTY,t,B2_sup,ZSQ,TOLSQ,TOL,TOLSQ2,\
+    if np.sum(sup)>0:  
+        RNMAX       = VD.panels_per_strip 
+        CHORD       = np.repeat(VD.chord_lengths[:, np.newaxis, :],shape[1],axis=1)
+        U_sup, V_sup, W_sup, RFLAG_sup  = supersonic(zobar,XSQ1,RO1,XSQ2,RO2,XTY,t,B2,ZSQ,TOLSQ,TOL,TOLSQ2,\
                                                     X1,Y1,X2,Y2,RTV1,RTV2,CUTOFF,CHORD,RNMAX,n_cp,TE_ind,LE_ind)
         U[sup], V[sup], W[sup], RFLAG[sup,:]  = U_sup[sup], V_sup[sup], W_sup[sup], RFLAG_sup[sup,:] 
     
@@ -346,9 +341,9 @@ def supersonic(Z,XSQ1,RO1,XSQ2,RO2,XTY,T,B2,ZSQ,TOLSQ,TOL,TOLSQ2,X1,Y1,X2,Y2,RTV
     
     # Create a boolean for various conditions for F1 that goes to zero
     bool1           = np.ones(shape,dtype=bool)  
-    bool1[:,X1<TOL] = False
+    bool1[X1<TOL]   = False
     bool1[RAD1==0.] = False
-    RAD1[:,X1<TOL]  = 0.0
+    RAD1[X1<TOL]    = 0.0
     
     REPS = CUTOFF*XSQ1
     FRAD = RAD1
@@ -369,9 +364,9 @@ def supersonic(Z,XSQ1,RO1,XSQ2,RO2,XTY,T,B2,ZSQ,TOLSQ,TOL,TOLSQ2,X1,Y1,X2,Y2,RTV
     # Round 2
     # Create a boolean for various conditions for F2 that goes to zero
     bool2           = np.ones(shape,dtype=bool)  
-    bool2[:,X2<TOL] = False
+    bool2[X2<TOL] = False
     bool2[RAD2==0.] = False
-    RAD2[:,X2<TOL]  = 0.0
+    RAD2[X2<TOL]  = 0.0
     
     REPS = CUTOFF *XSQ2
     FRAD = RAD2    
