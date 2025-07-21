@@ -145,7 +145,7 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     XTY = xobar - t*yobar
     
     # The notation in this method is flipped from the paper
-    B2 = np.atleast_3d(mach**2-1.)
+    B2 = np.tile(np.atleast_3d(mach**2-1.)[None,:, :, :], ( len(XTY), 1,1,1))
     
     # SET VALUES OF NUMERICAL TOLERANCE CONSTANTS.
     TOL    = s /500.0
@@ -160,8 +160,8 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     XSQ2   = X2 *X2
     
     # Split the vectors into subsonic and supersonic
-    sub      = (B2<0)[:,0,0]
-    B2_sub   = B2[sub,:,:]
+    sub      = (B2<0)[:,:,0,0]
+    B2_sub   = B2[:,sub,:,:]
     RO1_sub  = B2_sub*RTV1
     RO2_sub  = B2_sub*RTV2
     
