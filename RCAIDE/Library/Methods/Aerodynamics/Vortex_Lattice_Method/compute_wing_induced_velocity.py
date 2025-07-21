@@ -130,8 +130,8 @@ def compute_wing_induced_velocity(VD,mach,compute_EW=False):
     
     # COMPUTE COORDINATES OF RECEIVING POINT WITH RESPECT TO END POINTS OF SKEWED LEG.
     shape   = np.shape(xobar)
-    shape_0 = shape[0]
-    shape_1 = shape[1]
+    shape_0 = shape[1]
+    shape_1 = shape[2]
     s       = np.abs(y1bar)
     t       = x1bar/y1bar  
     s       = np.repeat(s,shape_0,axis=0)
