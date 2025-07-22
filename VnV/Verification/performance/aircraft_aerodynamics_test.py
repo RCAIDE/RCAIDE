@@ -25,8 +25,8 @@ from Boeing_737    import vehicle_setup as vehicle_setup
 def main(): 
 
     vehicle                               = vehicle_setup()   
-    angle_of_attack_range                 = np.atleast_2d(np.linspace(-5, 12, 18)).T*Units.degrees   
-    Mach_number_range                     = np.ones_like(angle_of_attack_range) * 0.6
+    angle_of_attack_range                 = np.atleast_2d(np.linspace(-5, 25, 31)).T*Units.degrees   
+    Mach_number_range                     = np.ones_like(angle_of_attack_range) * 0.78
     aerodynamics_analysis_routine         = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics_analysis_routine.vehicle = vehicle
     
@@ -43,10 +43,8 @@ def main():
     CD_truth = np.array([0.02559086, 0.02399367, 0.02259914, 0.02140821, 0.02135306,
                          0.02150681, 0.02263618, 0.02397833, 0.02648091, 0.02918689,
                          0.03208667, 0.03624975, 0.04057963, 0.04507509, 0.05084044,
-                         0.05677429, 0.06288579, 0.0691809 ])
-
-
-  
+                         0.05677429, 0.06288579, 0.0691809 ]) 
+ 
     plot_aircraft_aerodynamics(results)
     
     #------------------------------------------------------------------------

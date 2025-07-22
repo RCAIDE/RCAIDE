@@ -114,7 +114,7 @@ def compressibility_drag(state,settings,geometry):
 
     # Save drag breakdown 
     conditions.aerodynamics.coefficients.drag.compressible = Data(total   = cd_c, 
-                                                                  wave    = wave_drag)  
+                                                                  wave    = wave_drag+cd_wave_supersonic_lift)  
         
     return
 
@@ -122,15 +122,103 @@ def compressibility_drag(state,settings,geometry):
 #  transonic_wave_drag
 # ----------------------------------------------------------------------------------------------------------------------
 def transonic_wave_drag(conditions, settings, geometry): 
-    Cl         = conditions.aerodynamics.coefficients.lift.total  
-    Mach       = conditions.freestream.mach_number   
-    CD_wave    = np.array([-0.417184699337467, 0.0, 0.417184699337467, 0.45862155954167055, 0.5013290492186359, 0.5384919739235497, 0.5871622608441653, 0.6285553062389633, 0.6587038782744932, 0.8, 1.0])
-    CLs        = np.array([1.1480189359872706, 0.0, 1.1480189359872706, 5.775673779192156, 12.836939011494024, 20.414496506330114, 34.447683899469276, 49.59172983603965, 65.49874978998449, 160, 240]) *10**-4
-    wave_drag  = np.interp(Cl, CD_wave, CLs)
     
-    wave_drag[Mach<0.7] = 0.0 
+    Mach        = conditions.freestream.mach_number 
+    alpha       = conditions.aerodynamics.angles.alpha
+    Re          = conditions.freestream.reynolds_number 
+    n           = settings.number_of_spanwise_vortices
     
-    return wave_drag
+    CD_wave_transonic = np.zeros_like(Mach)
+    for wing in geometry.wings:
+        if wing.vertical == False:
+            if len(wing.segments) > 0: 
+                for seg_i in range(len(wing.segments)-1):
+                    segs = list(wing.segments.keys())
+                    if wing.segments[segs[seg_i]].airfoil_2D_polars: 
+                        inboard_segment        = wing.segments[segs[seg_i]]
+                        outboard_segment       = wing.segments[segs[seg_i+1]]
+                        inboard_airfoil_polar  = inboard_segment.airfoil.polars
+                        outboard_airfoil_polar = outboard_segment.airfoil.polars 
+                        aspect_ratio = wing.segments[segs[seg_i]]
+                        root_chord   = wing.chords.root * wing.segments[segs[seg_i]].percent_root_chord
+                        tip_chord    = wing.chords.root * wing.segments[segs[seg_i+1]].percent_root_chord
+                        root_twist   = wing.segments[seg_i].twist
+                        tip_twist    = wing.segments[segs[seg_i+1]].twist
+                        sweep_le     = wing.segments[segs[seg_i]].sweeps.leading_edge 
+                        CD_wave_seg  = compute_wing_wave_drag(Re,alpha,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n) 
+                        CD_wave_seg[Mach<0.7] = 0.0
+                        CD_wave_transonic += CD_wave_seg* (wing.segments[segs[seg_i]].areas.reference/ geometry.reference_area)                        
+                    else:
+                        Cl                   = conditions.aerodynamics.coefficients.lift.inviscid.wings[wing.tag] 
+                        CD_wave_seg          = np.array([-0.417184699337467, 0.0, 0.417184699337467, 0.45862155954167055, 0.5013290492186359, 0.5384919739235497, 0.5871622608441653, 0.6285553062389633, 0.6587038782744932, 0.8, 1.0])
+                        CLs                  = np.array([1.1480189359872706, 0.0, 1.1480189359872706, 5.775673779192156, 12.836939011494024, 20.414496506330114, 34.447683899469276, 49.59172983603965, 65.49874978998449, 160, 240]) *10**-4
+                        CD_wave_seg          = np.interp(Cl, CD_wave_seg, CLs)    
+                        CD_wave_seg[Mach<0.7] = 0.0
+                        CD_wave_transonic    += CD_wave_seg * (wing.segments[segs[seg_i]].areas.reference/ geometry.reference_area) 
+            else:
+                if wing.airfoil_2D_polars:
+                    inboard_airfoil_polar  = wing.airfoil.polars
+                    outboard_airfoil_polar = wing.airfoil.polars 
+                    aspect_ratio           = wing.aspect_ratio
+                    root_chord             = wing.chords.root 
+                    tip_chord              = wing.chords.root * wing.taper
+                    root_twist             = wing.twists.root
+                    tip_twist              = wing.twists.tip
+                    sweep_le               = wing.sweeps.leading_edge 
+                    CD_wave_wing           = compute_wing_wave_drag(Re,alpha,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n)     
+                    CD_wave_wing[Mach<0.7] = 0.0 
+                    CD_wave_transonic     += CD_wave_wing * (wing.areas.reference / geometry.reference_area)                                            
+                else:
+                    Cl                   = conditions.aerodynamics.coefficients.lift.inviscid.wings[wing.tag] 
+                    CD_wave_wing         = np.array([-0.417184699337467, 0.0, 0.417184699337467, 0.45862155954167055, 0.5013290492186359, 0.5384919739235497, 0.5871622608441653, 0.6285553062389633, 0.6587038782744932, 0.8, 1.0])
+                    CLs                  = np.array([1.1480189359872706, 0.0, 1.1480189359872706, 5.775673779192156, 12.836939011494024, 20.414496506330114, 34.447683899469276, 49.59172983603965, 65.49874978998449, 160, 240]) *10**-4
+                    CD_wave_wing         = np.interp(Cl, CD_wave_wing, CLs)  
+                    CD_wave_wing[Mach<0.7] = 0.0 
+                    CD_wave_transonic    += CD_wave_wing * (wing.segments[segs[seg_i]].areas.reference/ geometry.reference_area) 
+             
+    return CD_wave_transonic
+
+
+# ---------------------------------------------------------------------------------------------------------------------- 
+#  transonic wave drag
+# ----------------------------------------------------------------------------------------------------------------------
+def compute_wing_wave_drag(non_dim_Re,alpha,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n):
+    
+    n_cases =  len(alpha)
+    
+    # get dimensional reynolds number                     
+    segment_chords         = np.linspace(root_chord,tip_chord,n)
+    chord_Res              = segment_chords * non_dim_Re 
+
+    linear_smoothing       = np.tile(np.linspace(0,1,n)[None,:],(n_cases , 1)) 
+    twist_distribution     = np.tile(np.linspace(root_twist,tip_twist,n)[None,:] ,(n_cases,1)) 
+    AoA_eff                = alpha + twist_distribution 
+
+
+    # AIDAN TO UPDATE 
+    ## function for converting 2D polars into 3D polars considering the effect of sweep and boundary layer growth 
+    #eta                    =  np.linspace(0,1,n) 
+    #kappa_tip              = aspect_ratio * (eta)
+    #kappa_root             = aspect_ratio * (eta - 1)
+    #kappa                  = 1 +  kappa_root  +  kappa_tip  
+    #sweep_eff              = sweep_le * kappa
+    #F_sweep                = np.cos(sweep_eff)
+ 
+    #inboard_pts            = np.hstack((chord_Res.reshape(n_cases * n , 1),inboard_AoA_2_5_D.reshape(n_cases * n , 1))) 
+    #outboard_pts           = np.hstack((chord_Res.reshape(n_cases * n, 1),outboard_AoA_2_5_D.reshape(n_cases * n , 1))) 
+    #inboard_Cdrag_eff_i    = np.atleast_2d(inboard_Cdrag_func(inboard_pts)).reshape(n_cases, n  )
+    #outboard_Cdrag_eff_i   = np.atleast_2d(outboard_Cdrag_func(outboard_pts)).reshape(n_cases, n ) 
+    #CD_wave_wing            = inboard_Cdrag_eff_i* (1- linear_smoothing)  + outboard_Cdrag_eff_i*linear_smoothing
+    
+    #CD_wave_y              = inboard_Cdrag_eff_i* (1- eta)  + outboard_Cdrag_eff_i*eta 
+    #spacing                = np.linspace(0,1,n+1)  
+    #delta_y                = np.diff(spacing * span)
+    #D_wave_wing            = np.atleast_2d(np.sum(CD_form_y  * segment_chords * delta_y, axis=1)).T 
+    #CD_wave_wing           = D_wave_wing /(S_ref)
+    
+        
+    CD_wave_wing = alpha * 0
+    return CD_wave_wing
 
 
 # ---------------------------------------------------------------------------------------------------------------------- 

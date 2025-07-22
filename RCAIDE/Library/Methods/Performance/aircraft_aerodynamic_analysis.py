@@ -160,6 +160,7 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     state.conditions.freestream.dynamic_viscosity      = mu  * np.ones_like(angle_of_attacks)
     state.conditions.freestream.temperature            = T   * np.ones_like(angle_of_attacks)
     state.conditions.freestream.pressure               = P   * np.ones_like(angle_of_attacks)
+    state.conditions.freestream.dynamic_pressure       = 0.5 * rho * V**2  
     state.conditions.aerodynamics.angles.alpha         = angle_of_attacks  
     state.conditions.aerodynamics.angles.beta          = angle_of_attacks *0  
     state.conditions.freestream.u                      = angle_of_attacks *0       
@@ -187,12 +188,19 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     # ---------------------------------------------------------------------------------------  
     _                 = state.analyses.aerodynamics.evaluate(state)   
     results = Data(
-        Mach                        = mach_numbers, 
-        alpha                       = angle_of_attacks, 
-        lift_coefficient            = state.conditions.aerodynamics.coefficients.lift.total, 
-        drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.total,
-        parasite_drag_coefficient   = state.conditions.aerodynamics.coefficients.drag.parasite.total,
-        moment_coefficient          = state.conditions.static_stability.coefficients.M, 
+        Mach                             = mach_numbers, 
+        alpha                            = angle_of_attacks, 
+        lift_coefficient                 = state.conditions.aerodynamics.coefficients.lift.total, 
+        drag_coefficient                 = state.conditions.aerodynamics.coefficients.drag.total,
+        parasite_drag_coefficient        = state.conditions.aerodynamics.coefficients.drag.parasite.total,
+        form_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.form.total,
+        induced_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.induced.total,
+        miscellaneous_drag_coefficient   = state.conditions.aerodynamics.coefficients.drag.miscellaneous.total,
+        compressibility_drag_coefficient = state.conditions.aerodynamics.coefficients.drag.compressible.total,
+        cooling_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.cooling.total,
+        spoiler_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.spoiler.total,
+        moment_coefficient               = state.conditions.static_stability.coefficients.M, 
+        
     )  
           
     return results  

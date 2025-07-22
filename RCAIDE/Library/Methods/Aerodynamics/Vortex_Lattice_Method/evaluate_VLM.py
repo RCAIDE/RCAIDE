@@ -92,7 +92,6 @@ def evaluate_surrogate(state,settings,vehicle):
                                          trans_sur.Clift_alpha,trans_sur.Cdrag_induced_alpha,trans_sur.CX_alpha,trans_sur.CY_alpha,trans_sur.CZ_alpha,trans_sur.CL_alpha,trans_sur.CM_alpha, trans_sur.CN_alpha,
                                          sup_sur.Clift_alpha,  sup_sur.Cdrag_induced_alpha,  sup_sur.CX_alpha,  sup_sur.CY_alpha,  sup_sur.CZ_alpha,  sup_sur.CL_alpha,  sup_sur.CM_alpha,   sup_sur.CN_alpha,
                                          h_sub,h_sup,Mach, pts_alpha)      
-
     Clift_alpha             = results_alpha.Clift   
     Cdrag_induced_alpha     = results_alpha.Cdrag
 
@@ -100,8 +99,8 @@ def evaluate_surrogate(state,settings,vehicle):
     for wing in vehicle.wings:   
         inviscid_wing_lifts = compute_coefficient(sub_sur.Clift_wing_alpha[wing.tag],trans_sur.Clift_wing_alpha[wing.tag],sup_sur.Cdrag_induced_wing_alpha[wing.tag] ,h_sub,h_sup,Mach,pts_alpha)
         inviscid_wing_drags = compute_coefficient(sub_sur.Cdrag_induced_wing_alpha[wing.tag],trans_sur.Cdrag_induced_wing_alpha[wing.tag],sup_sur.Cdrag_induced_wing_alpha[wing.tag] ,h_sub,h_sup,Mach,pts_alpha) 
-        conditions.aerodynamics.coefficients.lift.inviscid.wings[wing.tag]         =  inviscid_wing_lifts  
-        conditions.aerodynamics.coefficients.drag.induced.wings[wing.tag] =  inviscid_wing_drags       
+        conditions.aerodynamics.coefficients.lift.inviscid.wings[wing.tag] =  inviscid_wing_lifts  
+        conditions.aerodynamics.coefficients.drag.induced.wings[wing.tag]  =  inviscid_wing_drags       
     
     # -----------------------------------------------------------------------------------------------------------------------
     # Query control surface surrogates if derivatives are not user defined
@@ -412,6 +411,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(state,settings,vehicle)
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(state,settings,vehicle) 
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.spoiler_drag(state,settings,vehicle)
+        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(state,settings,vehicle)
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(state,settings,vehicle)  
 
         T_wind2inertial = conditions.frames.wind.transform_to_inertial 

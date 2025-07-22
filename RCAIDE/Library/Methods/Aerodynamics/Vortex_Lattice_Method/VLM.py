@@ -181,15 +181,15 @@ def VLM(conditions,settings,geometry):
 
         # create arrays of delta_alpha_i for each strip 
         LE_ind               = VD.leading_edge_indices 
-        CHORD                = VD.chord_lengths[0,:]
-        delta_alpha_induced  = np.repeat(conditions.aerodynamics.angles.alpha*0, VD.n_cp, axis = 1) 
-        Cdrag_eff_i          = np.zeros((num_cp,len(CHORD[LE_ind])))
-        Clift_eff_i          = np.zeros((num_cp,len(CHORD[LE_ind])))
-        Clift_y_visc         = np.zeros((num_cp,len(CHORD[LE_ind])))
+        CHORD                = VD.chord_lengths 
+        delta_alpha_induced  = np.zeros(np.shape(LE_ind))
+        Cdrag_eff_i          = np.zeros(np.shape(LE_ind))
+        Clift_eff_i          = np.zeros(np.shape(LE_ind))
+        Clift_y_visc         = np.zeros(np.shape(LE_ind))
         error_diff           =  1
      
-        non_dim_Re = np.tile(conditions.freestream.reynolds_number, (1, len(CHORD[LE_ind]) ))
-        AoA        = np.tile(conditions.aerodynamics.angles.alpha , (1, len(CHORD[LE_ind]) )) 
+        non_dim_Re = np.tile(conditions.freestream.reynolds_number, (1, len(CHORD[0,:]) ))
+        AoA        = np.tile(conditions.aerodynamics.angles.alpha , (1, len(CHORD[0,:]) )) 
         tol        = 1E-3
         prev_error = 1
         while error_diff > tol: 
@@ -210,23 +210,22 @@ def VLM(conditions,settings,geometry):
                 for seg_i in range(len(wing.seg_breaks) - 1):
     
                     ws_prev = ws
-                    ws     += VD.n_sw[counter]                
-                    
+                    ws_next =  VD.n_sw[0][counter] 
+                    ws     += ws_next
                      
                     # get polar at section break
                     inboard_airfoil_polar  = wing.seg_breaks[seg_i].airfoil.polars
                     outboard_airfoil_polar = wing.seg_breaks[seg_i+1].airfoil.polars 
 
-                    # get dimensional reynolds number                     
-                    segment_chords         = np.tile(CHORD[ws_prev:ws],(num_cp,1))
-                    chord_Res              = segment_chords * non_dim_Re[:,ws_prev:ws]
+                    # get dimensional reynolds number                  
+                    chord_Res              = CHORD[:,ws_prev:ws]  * non_dim_Re[:,ws_prev:ws]
  
-                    linear_smoothing       = np.tile(np.linspace(0,1,VD.n_sw[counter])[None,:],(num_cp , 1))
-                    twist_distribution     = np.tile(np.linspace(wing.seg_breaks[seg_i].twist, wing.seg_breaks[seg_i+1].twist,VD.n_sw[counter])[None,:] ,(num_cp,1)) 
+                    linear_smoothing       = np.tile(np.linspace(0,1,ws_next)[None,:],(num_cp , 1))
+                    twist_distribution     = np.tile(np.linspace(wing.seg_breaks[seg_i].twist, wing.seg_breaks[seg_i+1].twist,ws_next)[None,:] ,(num_cp,1)) 
                     AoA_eff                = AoA[:,ws_prev:ws] +  twist_distribution # - delta_alpha_induced[:,ws_prev:ws] 
   
                     # function for converting 2D polars into 3D polars considering the effect of sweep and boundary layer growth 
-                    eta                    =  2 * np.tile(VD.YC[ws_prev:ws][None,:],(num_cp , 1))/b_ref
+                    eta                    =  2 * VD.YC[:, ws_prev:ws][None,:]/b_ref
                     kappa_tip              =  wing.aspect_ratio * (eta)
                     kappa_root             =  wing.aspect_ratio * (eta - 1)
                     kappa                  =  1 +  kappa_root  +  kappa_tip  
@@ -248,25 +247,25 @@ def VLM(conditions,settings,geometry):
                                         
                     # compute 2.5 D effective Cl and CDs for the two sections use linear blending for CLs between section breaks  
                     # OPTION 1
-                    inboard_Clift_eff_i_2    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.lift_coefficients)
-                    inboard_Cdrag_eff_i_2    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.drag_coefficients)
-                    outboard_Clift_eff_i_2   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.lift_coefficients)
-                    outboard_Cdrag_eff_i_2   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.drag_coefficients)
+                    inboard_Clift_eff_i    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.lift_coefficients)[0]
+                    inboard_Cdrag_eff_i    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.drag_coefficients)[0]
+                    outboard_Clift_eff_i   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.lift_coefficients)[0]
+                    outboard_Cdrag_eff_i   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.drag_coefficients)[0]
                  
                  
-                    # OPTION 1
-                    inboard_Cdrag_func     = RegularGridInterpolator((inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks),inboard_airfoil_polar.drag_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)
-                    outboard_Cdrag_func    = RegularGridInterpolator((outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks),outboard_airfoil_polar.drag_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)
+                    ## OPTION 2
+                    #inboard_Cdrag_func     = RegularGridInterpolator((inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks),inboard_airfoil_polar.drag_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)
+                    #outboard_Cdrag_func    = RegularGridInterpolator((outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks),outboard_airfoil_polar.drag_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)                 
+                    #inboard_Clift_func     = RegularGridInterpolator((inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks),inboard_airfoil_polar.lift_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)
+                    #outboard_Clift_func    = RegularGridInterpolator((outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks),outboard_airfoil_polar.lift_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)              
+                    #inboard_pts            = np.hstack((chord_Res.reshape(num_cp * ws_next, 1),inboard_AoA_2_5_D.reshape(num_cp *ws_next, 1))) 
+                    #outboard_pts           = np.hstack((chord_Res.reshape(num_cp * ws_next, 1),outboard_AoA_2_5_D.reshape(num_cp *ws_next, 1))) 
+                    #inboard_Cdrag_eff_i    = np.atleast_2d(inboard_Cdrag_func(inboard_pts)).reshape(num_cp,ws_next)
+                    #outboard_Cdrag_eff_i   = np.atleast_2d(outboard_Cdrag_func(outboard_pts)).reshape(num_cp,ws_next)
+                    #inboard_Clift_eff_i    = np.atleast_2d(inboard_Clift_func(inboard_pts)).reshape(num_cp,ws_next)   
+                    #outboard_Clift_eff_i   = np.atleast_2d(outboard_Clift_func(outboard_pts)).reshape(num_cp, ws_next )
                     
-                    inboard_Clift_func     = RegularGridInterpolator((inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks),inboard_airfoil_polar.lift_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)
-                    outboard_Clift_func    = RegularGridInterpolator((outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks),outboard_airfoil_polar.lift_coefficients       ,method = 'nearest',   bounds_error=False, fill_value=None)
                     
-                    inboard_pts            = np.hstack((chord_Res.reshape(num_cp * VD.n_sw[counter]      , 1),inboard_AoA_2_5_D.reshape(num_cp * VD.n_sw[counter]      , 1))) 
-                    outboard_pts           = np.hstack((chord_Res.reshape(num_cp * VD.n_sw[counter]      , 1),outboard_AoA_2_5_D.reshape(num_cp * VD.n_sw[counter]      , 1))) 
-                    inboard_Cdrag_eff_i    = np.atleast_2d(inboard_Cdrag_func(inboard_pts)).reshape(num_cp, VD.n_sw[counter]      )
-                    outboard_Cdrag_eff_i   = np.atleast_2d(outboard_Cdrag_func(outboard_pts)).reshape(num_cp, VD.n_sw[counter]      )
-                    inboard_Clift_eff_i    = np.atleast_2d(inboard_Clift_func(inboard_pts)).reshape(num_cp, VD.n_sw[counter]      )   
-                    outboard_Clift_eff_i   = np.atleast_2d(outboard_Clift_func(outboard_pts)).reshape(num_cp, VD.n_sw[counter]      )
                     Cdrag_eff_i[:,ws_prev:ws] = inboard_Cdrag_eff_i* (1- linear_smoothing)  + outboard_Cdrag_eff_i*linear_smoothing  
                     Clift_eff_i[:,ws_prev:ws] = (inboard_Clift_eff_i* (1- linear_smoothing)  + outboard_Clift_eff_i*linear_smoothing ) * (F_sweep ** 2)
                     
@@ -281,10 +280,11 @@ def VLM(conditions,settings,geometry):
                                    
                         if wing.symmetric: 
                             ws_prev = ws 
-                            ws         += VD.n_sw[counter]
+                            ws_next =  VD.n_sw[0][counter] 
+                            ws     += ws_next 
                             
-                            Clift_y_visc[:,ws_prev:ws]        = Clift_y_visc[:,ws_prev - VD.n_sw[counter]:ws_prev] 
-                            delta_alpha_induced[:,ws_prev:ws] = delta_alpha_induced[:,ws_prev - VD.n_sw[counter]:ws_prev] 
+                            Clift_y_visc[:,ws_prev:ws]        = Clift_y_visc[:,ws_prev -ws_next:ws_prev] 
+                            delta_alpha_induced[:,ws_prev:ws] = delta_alpha_induced[:,ws_prev -ws_next:ws_prev] 
             # compute error          
             error = np.max( Clift_y - Clift_y_visc) 
             error_diff =  np.abs(error - prev_error) 
@@ -341,8 +341,8 @@ def VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,de
     XB1 = VD.XB1*1. 
     
     # Compute X and Z BAR ouside of generate_vortex_distribution to avoid requiring x_m and z_m as inputs 
-    VD.XBAR = np.ones(( len_mach,sum(LE_ind[0]))) * x_m # CHECK !!! 
-    VD.ZBAR = np.ones(( len_mach,sum(LE_ind[0]))) * z_m # CHECK !!! 
+    VD.XBAR = np.ones(( len_mach,sum(LE_ind[0]))) * x_m 
+    VD.ZBAR = np.ones(( len_mach,sum(LE_ind[0]))) * z_m  
     
     # ---------------------------------------------------------------------------------------
     # STEP 10: Generate A and RHS matrices from VD and geometry

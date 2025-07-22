@@ -49,23 +49,17 @@ def parasite_drag_wing(state,settings,geometry):
     """
     
     # unpack inputs
-    C          = settings.wing_parasite_drag_form_factor  
-    freestream = state.conditions.freestream
-    
-    # conditions
-    Mc  = freestream.mach_number
-    Tc  = freestream.temperature    
-    re  = freestream.reynolds_number
-    
-    
-    wing = geometry
-    wing_parasite_drag = 0.0 
+    C             = settings.wing_parasite_drag_form_factor  
+    freestream    = state.conditions.freestream 
+    Mc            = freestream.mach_number
+    Tc            = freestream.temperature    
+    re            = freestream.reynolds_number 
+    wing          = geometry
     t_c_w         = wing.thickness_to_chord
     Sref          = wing.areas.reference   
-    num_segments  = len(wing.segments.keys())     
+    num_segments  = len(wing.segments.keys())
 
-    # TO DO # correction factor based on a regression of multiple aircraft
-    K = 1
+    wing_parasite_drag = 0.0     
     
     # if wing has segments, compute and sum parasite drag of each segment 
     xtu       = wing.transition_x_upper
@@ -94,7 +88,7 @@ def parasite_drag_wing(state,settings,geometry):
             # compute parasite drag coef., form factor, skin friction coef., compressibility factor and reynolds number for segments
             segment_parasite_drag , segment_k_w, segment_cf_w_u, segment_cf_w_l, segment_k_comp_u, segment_k_comp_l, k_reyn_u ,k_reyn_l = compute_parasite_drag(re,mac_seg,Mc,Tc,xtu,xtl,sweep_seg,avg_t_c_s,Sref_seg,Swet_seg,C)
             
-            total_segment_parasite_drag  += K * segment_parasite_drag*Sref_seg   
+            total_segment_parasite_drag  += segment_parasite_drag*Sref_seg   
             total_segment_k_w            += segment_k_w*Sref_seg 
             total_segment_cf_w_u         += segment_cf_w_u*Sref_seg 
             total_segment_cf_w_l         += segment_cf_w_l*Sref_seg 
@@ -127,7 +121,7 @@ def parasite_drag_wing(state,settings,geometry):
     wing_result = Data(
         wetted_area               = wing.areas.wetted,
         reference_area            = Sref   , 
-        total                     = K * wing_parasite_drag ,
+        total                     = wing_parasite_drag ,
         skin_friction             = (cf_w_u+cf_w_l)/2.   ,
         compressibility_factor    = (k_comp_u+k_comp_l)/2 ,
         reynolds_factor           = (k_reyn_u+k_reyn_l)/2 , 

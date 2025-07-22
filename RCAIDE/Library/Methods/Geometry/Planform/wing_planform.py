@@ -246,7 +246,7 @@ def wing_planform(wing,overwrite_reference = True):
                 wing.airfoil.geometry = compute_naca_4series(wing.airfoil.NACA_4_Series_code) 
                 wing.thickness_to_chord = wing.airfoil.geometry.thickness_to_chord 
             else:
-                wing.airfoil.geometry = import_airfoil_geometry(wing.airfoil.coordinate_file) 
+                wing.airfoil.geometry   = import_airfoil_geometry(wing.airfoil.coordinate_file) 
                 wing.thickness_to_chord =  wing.airfoil.geometry.thickness_to_chord
 
             if wing.airfoil.polar_files != None: 
@@ -422,7 +422,8 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
                 S_exposed_seg = Sref_seg
 
             if wing.symmetric:
-                Sref_seg = Sref_seg*2
+                Sref_seg      = Sref_seg*2
+                span_seg      = span_seg * 2
                 S_exposed_seg = S_exposed_seg*2
             
             # compute wetted area of segment
@@ -434,6 +435,8 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
             segment.taper                   = taper 
             segment.chords.mean_aerodynamic = mac_seg 
             segment.areas.reference         = Sref_seg
+            segment.spans.projected         = span_seg 
+            segment.aspect_ratio            = (span_seg **2) / Sref_seg
             segment.areas.exposed           = S_exposed_seg
             segment.areas.wetted            = Swet_seg 
             total_wetted_area               += Swet_seg 
