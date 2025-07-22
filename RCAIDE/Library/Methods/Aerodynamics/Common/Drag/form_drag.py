@@ -45,19 +45,17 @@ def form_drag(state,settings,geometry):
     CD_form_total = np.zeros_like(Mach)
     for wing in geometry.wings:
         if wing.vertical == False:
-            if len(wing.segments) > 0:
-                CD_form_seg =  0
+            if len(wing.segments) > 0: 
                 for segment in wing.segments:
                     if segment.airfoil_2D_polars:
                         # use polars 
                         CD_form  = 0 
                     else:
                         # use simple form drag estimate
-                        CD_form  = 0
+                        CD_form  = 2.5633 * (alpha**2) - 0.0411 * alpha - 0.0053
                         
-                    CD_form[alpha<0.055] = alpha[alpha<0.055]
-                    CD_form_seg += CD_form
-                CD_form_total += CD_form_seg* (wing.areas.reference / geometry.reference_area)
+                    CD_form[alpha<0.055] = alpha[alpha<0.055] 
+                    CD_form_total += CD_form* (segment.areas.reference / geometry.reference_area)
             else:
                 if wing.airfoil_2D_polars:
                     # use polars 
