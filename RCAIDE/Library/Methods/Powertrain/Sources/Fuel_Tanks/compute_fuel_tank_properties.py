@@ -1,5 +1,6 @@
 # RCAIDE/Methods/Powertrain/Sources/Fuel_Tanks/compute_fuel_tank_properties.py
 # 
+# 
 # Created:  Jul 2023, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ import RCAIDE
 # ----------------------------------------------------------------------------------------------------------------------  
 def compute_fuel_tank_properties(tank,state,distributor):
     '''
-    Input from Rohit
+    SAI HEADER
     ''' 
     
     if type(distributor) == RCAIDE.Library.Components.Powertrain.Distributors.Electrical_Bus:
@@ -43,8 +44,7 @@ def compute_fuel_tank_properties(tank,state,distributor):
          
         tank_conditions.boil_off_flow_rate =  m_dot_boil_off 
                     
-    tank_conditions.mass_flow_rate  = tank.fuel_selector_ratio*distributor_conditions.fuel_flow_rate +\
-                                      tank_conditions.boil_off_flow_rate +  tank_conditions.secondary_fuel_flow_rate
+    tank_conditions.mass_flow_rate  = tank.fuel_selector_ratio*distributor_conditions.fuel_flow_rate + tank_conditions.boil_off_flow_rate +  tank_conditions.secondary_fuel_flow_rate
     tank_conditions.mass -= tank_conditions.mass_flow_rate 
   
     return 

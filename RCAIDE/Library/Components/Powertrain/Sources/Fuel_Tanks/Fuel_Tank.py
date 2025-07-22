@@ -62,10 +62,6 @@ class Fuel_Tank(Component):
         self.wall_clearance              = 0.0
         self.wall_thickness              = 0.0
         self.length                      = 0.0  
-        self.design_altitude             = 0.0  
-        self.design_pressure             = 0.0  
-        self.design_boiloff_rate         = 0.0
-        self.cryogenic                   = False
         self.fuel                        = None
         self.symmetric                   = True
         self.wing_tag                    = None 
