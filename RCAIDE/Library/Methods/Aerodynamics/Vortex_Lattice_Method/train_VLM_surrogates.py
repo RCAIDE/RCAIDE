@@ -160,10 +160,8 @@ def train_model(aerodynamics, Mach):
     # Setup new array shapes for vectorization 
     # stakcing 9x9 matrices into one horizontal line(81)  
     AoAs       = np.atleast_2d(np.tile(AoA,len_Mach).T.flatten()).T 
-    Machs      = np.atleast_2d(np.repeat(Mach,len_AoA)).T        
-    
-    # reset conditions  
-    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+    Machs      = np.atleast_2d(np.repeat(Mach,len_AoA)).T      
+    conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
     conditions.freestream.mach_number               = Machs
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs 
    
@@ -224,9 +222,8 @@ def train_model(aerodynamics, Mach):
     # Beta 
     # --------------------------------------------------------------------------------------------------------------
     Betas         = np.atleast_2d(np.tile(Beta,len_Mach).T.flatten()).T 
-    Machs         = np.atleast_2d(np.repeat(Mach,len_Beta)).T        
-
-    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+    Machs         = np.atleast_2d(np.repeat(Mach,len_Beta)).T      
+    conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
     conditions.expand_rows(rows= len(Machs))
     conditions.freestream.mach_number               = Machs 
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
@@ -245,9 +242,9 @@ def train_model(aerodynamics, Mach):
     Clift_beta =    np.reshape(Clift_res,(len_Mach,len_Beta)).T - Clift_alpha_0
     Cdrag_induced_beta =    np.reshape(Cdrag_res,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
     CX_beta    =    np.reshape(CX_res,(len_Mach,len_Beta)).T    - CX_alpha_0   
-    CY_beta    =    - np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0   # Note correction
+    CY_beta    =    - np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0    
     CZ_beta    =    np.reshape(CZ_res,(len_Mach,len_Beta)).T    - CZ_alpha_0   
-    CL_beta    = - (np.reshape(CL_res,(len_Mach,len_Beta)).T    - CL_alpha_0) # Note correction
+    CL_beta    = - (np.reshape(CL_res,(len_Mach,len_Beta)).T    - CL_alpha_0)  
     CM_beta    =    np.reshape(CM_res,(len_Mach,len_Beta)).T    - CM_alpha_0   
     CN_beta    =    np.reshape(CN_res,(len_Mach,len_Beta)).T    - CN_alpha_0  
  
@@ -256,11 +253,10 @@ def train_model(aerodynamics, Mach):
     # -------------------------------------------------------
     u_s     = np.atleast_2d(np.tile(u, len_Mach).T.flatten()).T 
     Machs   = np.atleast_2d(np.repeat(Mach,len_u)).T                   
-    conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+    conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12 
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-    conditions.freestream.mach_number               = Machs + Machs*u_s # Machs + u_s/343
-    
+    conditions.freestream.mach_number               = Machs + u_s/343 
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
     CX_res    = VLM_results.CX
     CZ_res    = VLM_results.CZ
@@ -273,9 +269,8 @@ def train_model(aerodynamics, Mach):
     # Pitch Rate 
     # -------------------------------------------------------
     q_s     = np.atleast_2d(np.tile(pitch_rate, len_Mach).T.flatten()).T 
-    Machs   = np.atleast_2d(np.repeat(Mach,len_q)).T
-
-    conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+    Machs   = np.atleast_2d(np.repeat(Mach,len_q)).T 
+    conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.freestream.mach_number               = Machs 
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
@@ -290,10 +285,9 @@ def train_model(aerodynamics, Mach):
     # -------------------------------------------------------               
     # Roll  Rate 
     # -------------------------------------------------------    
-    p_s     = np.atleast_2d(np.tile(roll_rate, len_Mach).T.flatten()).T 
-    Machs         = np.atleast_2d(np.repeat(Mach,len_p)).T
-
-    conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+    p_s           = np.atleast_2d(np.tile(roll_rate, len_Mach).T.flatten()).T 
+    Machs         = np.atleast_2d(np.repeat(Mach,len_p)).T 
+    conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.freestream.mach_number               = Machs  
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12 
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
@@ -313,7 +307,7 @@ def train_model(aerodynamics, Mach):
     r_s     = np.atleast_2d(np.tile(yaw_rate, len_Mach).T.flatten()).T 
     Machs         = np.atleast_2d(np.repeat(Mach,len_r)).T
 
-    conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+    conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*1E-2 
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
     conditions.freestream.mach_number               = Machs 
@@ -413,6 +407,7 @@ def train_model(aerodynamics, Mach):
                 for a_i in range(len_d_a):    
                     Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.expand_rows(len(Mach),override=False)
                     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
                     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs    
@@ -421,7 +416,6 @@ def train_model(aerodynamics, Mach):
                     CY_res    = VLM_results.CY
                     CL_res    = VLM_results.CL
                     CN_res    = VLM_results.CN
-                
                     CY_d_a[a_i,:]    =  -(CY_res[:,0]   - CY_alpha_0[0,:]  ) # Negative sign is due to convention
                     CL_d_a[a_i,:]    =  -(CL_res[:,0]   - CL_alpha_0[0,:]) # Negative sign is due to convention
                     CN_d_a[a_i,:]    =  (CN_res[:,0]   - CN_alpha_0[0,:]  ) 
@@ -440,11 +434,11 @@ def train_model(aerodynamics, Mach):
                 for e_i in range(len_d_e): 
                     Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.expand_rows(len(Mach),override=False)
                     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
                     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs     
                     vehicle.wings[wing.tag].control_surfaces.elevator.deflection =  delta_e[e_i]
-                
                     VLM_results = VLM(conditions,settings,vehicle)
                     Clift_res = VLM_results.CLift
                     CM_res    = VLM_results.CM
@@ -465,6 +459,7 @@ def train_model(aerodynamics, Mach):
                 for r_i in range(len_d_r): 
                     Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.expand_rows(len(Mach),override=False)
                     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
                     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs    
@@ -491,6 +486,7 @@ def train_model(aerodynamics, Mach):
                 for f_i in range(len_d_f): 
                     Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.expand_rows(len(Mach),override=False)
                     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
                     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs    

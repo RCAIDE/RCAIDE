@@ -39,9 +39,10 @@ def spoiler_drag(state,settings,geometry):
     compressibility_total = state.conditions.aerodynamics.coefficients.drag.compressible.total     
     miscellaneous_drag    = state.conditions.aerodynamics.coefficients.drag.miscellaneous.total
     cooling_drag          = state.conditions.aerodynamics.coefficients.drag.cooling.total  
+    form_drag             = state.conditions.aerodynamics.coefficients.drag.form.total  
 
     # untrimmed drag 
-    drag  =  parasite_total + induced_total  + compressibility_total + miscellaneous_drag + cooling_drag 
+    drag  =  parasite_total + induced_total  + compressibility_total + miscellaneous_drag + cooling_drag + form_drag
     
     spoiler_drag_coef =  np.zeros_like(drag)
     for wing in geometry.wings: 

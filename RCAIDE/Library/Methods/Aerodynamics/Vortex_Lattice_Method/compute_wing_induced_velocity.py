@@ -443,11 +443,10 @@ def supersonic(Z,XSQ1,RO1,XSQ2,RO2,XTY,T,B2,ZSQ,TOLSQ,TOL,TOLSQ2,X1,Y1,X2,Y2,RTV
     # COMPUTE THE GENERALIZED PRINCIPAL PART OF THE VORTEX-INDUCED VELOCITY INTEGRAL, WWAVE.
     # FROM LINE 2647 VORLAX, the IR .NE. IRR means that we're looking at vortices that affect themselves
     WWAVE   = np.zeros(shape,dtype=np.float32)
-    COX     = CHORD /RNMAX
-    eye     = np.eye(n_cp,dtype=np.int8)
-    T2      = np.broadcast_to(T2,shape)*eye
-    B2_full = np.broadcast_to(B2,shape)*eye
-    COX     = np.broadcast_to(COX,shape)*eye
+    COX     = CHORD /RNMAX[:, :, None] 
+    T2      = np.broadcast_to(T2,shape)*np.eye(n_cp[0, 0],dtype=np.int8)
+    B2_full = np.broadcast_to(B2,shape)*np.eye(n_cp[0, 0],dtype=np.int8)
+    COX     = np.broadcast_to(COX,shape)*np.eye(n_cp[0, 0],dtype=np.int8)
     WWAVE[B2_full>T2] = - 0.5 *np.sqrt(B2_full[B2_full>T2] -T2[B2_full>T2] )/COX[B2_full>T2] 
 
     W = W + WWAVE    

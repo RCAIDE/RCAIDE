@@ -53,7 +53,7 @@ def wing_planform(wing,overwrite_reference = True):
     
     Properties Used:
     N/A
-    """    
+    """ 
     if len(wing.segments) > 1: 
         # Unpack
         span     = wing.spans.projected

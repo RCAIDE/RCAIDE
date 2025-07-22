@@ -177,10 +177,9 @@ def generate_vortex_distribution(conditions,settings,geometry):
             VD_seg.SLOPE                     =  np.atleast_2d(VD_i.SLOPE                    )
             VD_seg.SLE                       =  np.atleast_2d(VD_i.SLE                      )
             VD_seg.D                         =  np.atleast_2d(VD_i.D                        )
-            VD_seg.tangent_incidence_angle   =  np.atleast_2d(VD_i.tangent_incidence_angle  )
-
+            VD_seg.tangent_incidence_angle   =  np.atleast_2d(VD_i.tangent_incidence_angle  ) 
             VD_seg.VLM_wings                 =  VD_i.VLM_wings
-            VD_seg.is_postprocessed          =   VD_i.is_postprocessed
+            VD_seg.is_postprocessed          =  VD_i.is_postprocessed
             
         else:
 

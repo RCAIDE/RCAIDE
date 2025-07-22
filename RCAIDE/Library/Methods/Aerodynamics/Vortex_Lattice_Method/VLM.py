@@ -162,8 +162,12 @@ def VLM(conditions,settings,geometry):
     # Generate Panelization and Vortex Distribution
     # ------------------ --------------------------------------------------------------------
     num_cp = len(conditions.aerodynamics.angles.alpha)
-    VD     = generate_vortex_distribution(conditions,settings,geometry) 
-    settings.vortex_distribution =  VD # TO CHANGE DO NOT STORE ALL THE DATA, JUST RELELVANT PARTS 
+    VD     = generate_vortex_distribution(conditions,settings,geometry)  
+    settings.vortex_distribution.leading_edge_indices     = VD.leading_edge_indices 
+    settings.vortex_distribution.chord_lengths            = VD.chord_lengths 
+    settings.vortex_distribution.n_sw                     = VD.n_sw
+    settings.vortex_distribution.Y                        = VD.Y 
+    settings.vortex_distribution.VLM_wings                = VD.VLM_wings 
     
     if not VD.is_postprocessed:
         raise ValueError('postprocess_VD has not been called since the panels have been modified')
@@ -179,10 +183,10 @@ def VLM(conditions,settings,geometry):
         LE_ind               = VD.leading_edge_indices 
         CHORD                = VD.chord_lengths[0,:]
         delta_alpha_induced  = np.repeat(conditions.aerodynamics.angles.alpha*0, VD.n_cp, axis = 1) 
-        Cdrag_eff_i               = np.zeros((num_cp,len(CHORD[LE_ind])))
-        Clift_eff_i               = np.zeros((num_cp,len(CHORD[LE_ind])))
-        Clift_y_visc              = np.zeros((num_cp,len(CHORD[LE_ind])))
-        error_diff                 =  1
+        Cdrag_eff_i          = np.zeros((num_cp,len(CHORD[LE_ind])))
+        Clift_eff_i          = np.zeros((num_cp,len(CHORD[LE_ind])))
+        Clift_y_visc         = np.zeros((num_cp,len(CHORD[LE_ind])))
+        error_diff           =  1
      
         non_dim_Re = np.tile(conditions.freestream.reynolds_number, (1, len(CHORD[LE_ind]) ))
         AoA        = np.tile(conditions.aerodynamics.angles.alpha , (1, len(CHORD[LE_ind]) )) 
@@ -191,7 +195,7 @@ def VLM(conditions,settings,geometry):
         while error_diff > tol: 
          
             # Update induced AoA, sideslop and solve the VLM
-            RESULTS =  VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced)
+            RESULTS =  VLM_Routine(VD, conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced)
             
             # compute lift distribtion 
             Clift_y =  RESULTS.sectional_CLift   
@@ -244,10 +248,10 @@ def VLM(conditions,settings,geometry):
                                         
                     # compute 2.5 D effective Cl and CDs for the two sections use linear blending for CLs between section breaks  
                     # OPTION 1
-                    #inboard_Clift_eff_i    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.lift_coefficients)
-                    #inboard_Cdrag_eff_i    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.drag_coefficients)
-                    #outboard_Clift_eff_i   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.lift_coefficients)
-                    #outboard_Cdrag_eff_i   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.drag_coefficients)
+                    inboard_Clift_eff_i_2    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.lift_coefficients)
+                    inboard_Cdrag_eff_i_2    = interp2d(chord_Res,inboard_AoA_2_5_D,inboard_airfoil_polar.reynolds_numbers, inboard_airfoil_polar.angle_of_attacks, inboard_airfoil_polar.drag_coefficients)
+                    outboard_Clift_eff_i_2   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.lift_coefficients)
+                    outboard_Cdrag_eff_i_2   = interp2d(chord_Res,outboard_AoA_2_5_D,outboard_airfoil_polar.reynolds_numbers, outboard_airfoil_polar.angle_of_attacks, outboard_airfoil_polar.drag_coefficients)
                  
                  
                     # OPTION 1
@@ -288,17 +292,16 @@ def VLM(conditions,settings,geometry):
     
     else:
         delta_alpha_induced = np.repeat(conditions.aerodynamics.angles.alpha*0, VD.n_cp[0], axis = 1)  
-        RESULTS             = VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced)
+        RESULTS             = VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced)
         
     return RESULTS
 
 
-def VLM_Routine(conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced): 
+def VLM_Routine(VD,conditions,settings,geometry, x_m, z_m, S_ref, b_ref,c_bar,delta_alpha_induced): 
         
     # unpack conditions--------------------------------------------------------------
     pwm      = settings.propeller_wake_model
-    K_SPC    = settings.leading_edge_suction_multiplier
-    VD       = settings.vortex_distribution
+    K_SPC    = settings.leading_edge_suction_multiplier 
     aoa      = conditions.aerodynamics.angles.alpha 
     mach     = conditions.freestream.mach_number 
     len_mach = len(mach)

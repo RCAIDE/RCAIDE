@@ -81,7 +81,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.settings.fuselage_spanwise_vortices                    = None
         self.settings.fuselage_chordwise_vortices                   = None  
         self.settings.spanwise_cosine_spacing                       = True
-        self.settings.vortex_distribution                           = None
+        self.settings.vortex_distribution                           = Data()
         self.settings.leading_edge_suction_multiplier               = 1.0  
         self.settings.use_VORLAX_matrix_calculation                 = False
         self.settings.floating_point_precision                      = np.float32     
@@ -152,7 +152,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.compressibility                                = Process() 
         compute.drag.compressibility.total                          = Common.Drag.compressibility_drag
         compute.drag.miscellaneous                                  = Common.Drag.miscellaneous_drag 
-        #compute.drag.form                                           = Common.Drag.form_drag 
+        compute.drag.form                                           = Common.Drag.form_drag 
         compute.drag.spoiler                                        = Common.Drag.spoiler_drag
         compute.drag.total                                          = Common.Drag.total_drag
         compute.stability                                           = Process()
