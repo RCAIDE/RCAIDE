@@ -57,7 +57,7 @@ def compressible_mixed_flat_plate(Re,Ma,Tc,xt):
     cf_lam   = 1.328/(Rex**0.5)
     
     if xt > 0.0:
-        cf_start = np.interp(Re*xeff, x, y) #0.455/(np.log10(Re*xeff)**2.58)
+        cf_start = np.interp(Re*xeff, x, y)  
     else:
         cf_start = 0.0
     

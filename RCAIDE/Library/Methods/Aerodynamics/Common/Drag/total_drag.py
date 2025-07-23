@@ -1,9 +1,6 @@
 # RCAIDE/Library/Methods/Aerodynamics/Common/Drag/total_drag.py
-# (c) Copyright 2023 Aerospace Research Community LLC
 # 
 # Created:  Jun 2024, M. Clarke
-
-from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Wave Drag 

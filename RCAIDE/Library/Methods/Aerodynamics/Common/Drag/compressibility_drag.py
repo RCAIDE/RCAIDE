@@ -97,15 +97,15 @@ def compressibility_drag(state,settings,geometry):
     cd_compressibility_volume[low_inds] = cd_compressibility_volume_base[low_inds]*(sub_h00(Mach[low_inds])) + transonic_compressibility_drag(Mach[low_inds],a1[low_inds], peak_mach, peak_volume_total[low_inds])*(1-sub_h00(Mach[low_inds]))
     cd_compressibility_volume[hi_inds]  = transonic_compressibility_drag(Mach[hi_inds],a2[hi_inds], peak_mach, peak_volume_total[hi_inds])*(sup_h00(Mach[hi_inds])) + cd_compressibility_volume_base[hi_inds]*(1-sup_h00(Mach[hi_inds]))
  
+    # ---------------------------------------------------------------------    
+    # transonic wave drag 
+    # --------------------------------------------------------------------- 
+    wave_drag = transonic_wave_drag(conditions, settings, geometry)
+
     # ---------------------------------------------------------------------        
     # wave drag due to lift at supersonic speeds 
     # ---------------------------------------------------------------------
     cd_wave_supersonic_lift  = supersonic_lift_wave_drag(conditions, settings, geometry)*(1-sup_h00(Mach))   
-    
-    # ---------------------------------------------------------------------    
-    # transonic wave drag 
-    # --------------------------------------------------------------------- 
-    wave_drag = transonic_wave_drag(conditions, settings, geometry)  
 
     # ---------------------------------------------------------------------     
     # total compressibility drag

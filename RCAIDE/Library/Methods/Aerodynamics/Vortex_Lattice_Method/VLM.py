@@ -222,7 +222,7 @@ def VLM(conditions,settings,geometry):
  
                     linear_smoothing       = np.tile(np.linspace(0,1,ws_next)[None,:],(num_cp , 1))
                     twist_distribution     = np.tile(np.linspace(wing.seg_breaks[seg_i].twist, wing.seg_breaks[seg_i+1].twist,ws_next)[None,:] ,(num_cp,1)) 
-                    AoA_eff                = AoA[:,ws_prev:ws] +  twist_distribution # - delta_alpha_induced[:,ws_prev:ws] 
+                    AoA_eff                = AoA[:,ws_prev:ws] #+  twist_distribution # - delta_alpha_induced[:,ws_prev:ws] 
   
                     # function for converting 2D polars into 3D polars considering the effect of sweep and boundary layer growth 
                     eta                    =  2 * VD.YC[:, ws_prev:ws][None,:]/b_ref
