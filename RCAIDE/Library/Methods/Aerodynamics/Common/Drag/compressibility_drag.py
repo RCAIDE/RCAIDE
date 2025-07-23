@@ -145,7 +145,7 @@ def transonic_wave_drag(conditions, settings, geometry):
                         root_twist   = wing.segments[seg_i].twist
                         tip_twist    = wing.segments[segs[seg_i+1]].twist
                         sweep_le     = wing.segments[segs[seg_i]].sweeps.leading_edge 
-                        CD_wave_seg  = compute_wing_wave_drag(Re,alpha,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n) 
+                        CD_wave_seg  = compute_wing_wave_drag(Re,alpha,Mach,inboard_airfoil_polar, outboard_airfoil_polar, aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n) 
                         CD_wave_seg[Mach<0.7] = 0.0
                         CD_wave_transonic += CD_wave_seg* (wing.segments[segs[seg_i]].areas.reference/ geometry.reference_area)                        
                     else:
@@ -165,7 +165,7 @@ def transonic_wave_drag(conditions, settings, geometry):
                     root_twist             = wing.twists.root
                     tip_twist              = wing.twists.tip
                     sweep_le               = wing.sweeps.leading_edge 
-                    CD_wave_wing           = compute_wing_wave_drag(Re,alpha,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n)     
+                    CD_wave_wing           = compute_wing_wave_drag(Re,alpha,Mach, inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n)     
                     CD_wave_wing[Mach<0.7] = 0.0 
                     CD_wave_transonic     += CD_wave_wing * (wing.areas.reference / geometry.reference_area)                                            
                 else:
@@ -182,17 +182,17 @@ def transonic_wave_drag(conditions, settings, geometry):
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  transonic wave drag
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_wing_wave_drag(non_dim_Re,alpha,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n):
+def compute_wing_wave_drag(non_dim_Re,alpha,Mach, inboard_airfoil_polar, outboard_airfoil_polar, aspect_ratio, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n):
     
     n_cases =  len(alpha)
     
     # get dimensional reynolds number                     
-    segment_chords         = np.linspace(root_chord,tip_chord,n)
-    chord_Res              = segment_chords * non_dim_Re 
+    # segment_chords         = np.linspace(root_chord,tip_chord,n)
+    # chord_Res              = segment_chords * non_dim_Re 
 
-    linear_smoothing       = np.tile(np.linspace(0,1,n)[None,:],(n_cases , 1)) 
-    twist_distribution     = np.tile(np.linspace(root_twist,tip_twist,n)[None,:] ,(n_cases,1)) 
-    AoA_eff                = alpha + twist_distribution 
+    # linear_smoothing       = np.tile(np.linspace(0,1,n)[None,:],(n_cases , 1)) 
+    # twist_distribution     = np.tile(np.linspace(root_twist,tip_twist,n)[None,:] ,(n_cases,1)) 
+    # AoA_eff                = alpha + twist_distribution 
 
 
     # AIDAN TO UPDATE 
@@ -215,10 +215,32 @@ def compute_wing_wave_drag(non_dim_Re,alpha,inboard_airfoil_polar, outboard_airf
     #delta_y                = np.diff(spacing * span)
     #D_wave_wing            = np.atleast_2d(np.sum(CD_form_y  * segment_chords * delta_y, axis=1)).T 
     #CD_wave_wing           = D_wave_wing /(S_ref)
+
+    delta = sweep_le # Wing sweep angle
+    segment_CL = segment.CL # Segment CL
+    c_kappa = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
+
+    # ------------------------------------------------------------------
+    # Cp Data (as function of CL) from paper
+    # ------------------------------------------------------------------
+    CL_data = np.array([0.32, 0.42, 0.55, 0.66])
+    Cp_data = np.array([-0.6, -0.846, -1.098, -1.25]) # Data was for M = 0.78, but appears to be valid for similar Mach numbers. 
+
+    Cp_shock = np.interp(segment_CL, CL_data, Cp_data) # Cp vlaue right before the shock wave
+
+    # ------------------------------------------------------------------
+    # Wave Drag Calculation
+    # ------------------------------------------------------------------
+    if Cp_shock < -0.6: # If the Cp > -0.6 then there is likely no shock wave
+        # Calcualte the local mach number right before the shock wave
+        M1_0_star = np.sqrt((5+Mach**2*np.cos(delta)**2)/(1+0.7*Mach**2*Cp_shock)**(2/7) - 5)
+        constant = (np.cos(delta)**4)/c_kappa * 0.243*((1+0.2*Mach*np.cos(delta))/(Mach*np.cos(delta)))**3
+        CD_wave_segment = constant*(M1_0_star - 1)**4*(2-M1_0_star)/(M1_0_star*(1+0.2*M1_0_star**2)) * 0.5
+    else:
+        CD_wave_segment = 0.0
     
-        
-    CD_wave_wing = alpha * 0
-    return CD_wave_wing
+    
+    return CD_wave_segment
 
 
 # ---------------------------------------------------------------------------------------------------------------------- 
