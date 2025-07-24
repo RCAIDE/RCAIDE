@@ -626,30 +626,30 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
         fuel_tank_points[6+j,:,1] = tank_ypts 
         fuel_tank_points[6+j,:,2] = tank_zpts 
     
-    x_rotation = np.zeros((tessellation, 3, 3))
-    x_rotation[:,0,0] = 1
-    x_rotation[:,1,1] = np.cos(fuel_tank.orientation_euler_angles[0])
-    x_rotation[:,1,2] = -np.sin(fuel_tank.orientation_euler_angles[0])
-    x_rotation[:,2,1] = np.sin(fuel_tank.orientation_euler_angles[0])
-    x_rotation[:,2,2] = np.cos(fuel_tank.orientation_euler_angles[0])
+    x_rotation = np.zeros((12,tessellation, 3, 3))
+    x_rotation[:,:,0,0] = 1
+    x_rotation[:,:,1,1] = np.cos(fuel_tank.orientation_euler_angles[0])
+    x_rotation[:,:,1,2] = -np.sin(fuel_tank.orientation_euler_angles[0])
+    x_rotation[:,:,2,1] = np.sin(fuel_tank.orientation_euler_angles[0])
+    x_rotation[:,:,2,2] = np.cos(fuel_tank.orientation_euler_angles[0])
 
-    y_rotation = np.zeros((tessellation, 3, 3))
-    y_rotation[:,0,0] = np.cos(fuel_tank.orientation_euler_angles[1])
-    y_rotation[:,0,2] = np.sin(fuel_tank.orientation_euler_angles[1])
-    y_rotation[:,1,1] = 1
-    y_rotation[:,2,0] = -np.sin(fuel_tank.orientation_euler_angles[1])
-    y_rotation[:,2,2] = np.cos(fuel_tank.orientation_euler_angles[1]) 
+    y_rotation = np.zeros((12,tessellation, 3, 3))
+    y_rotation[:,:,0,0] = np.cos(fuel_tank.orientation_euler_angles[1])
+    y_rotation[:,:,0,2] = np.sin(fuel_tank.orientation_euler_angles[1])
+    y_rotation[:,:,1,1] = 1
+    y_rotation[:,:,2,0] = -np.sin(fuel_tank.orientation_euler_angles[1])
+    y_rotation[:,:,2,2] = np.cos(fuel_tank.orientation_euler_angles[1]) 
 
-    z_rotation = np.zeros((tessellation, 3, 3))
-    z_rotation[:,0,0] = np.cos(fuel_tank.orientation_euler_angles[2])
-    z_rotation[:,0,1] = -np.sin(fuel_tank.orientation_euler_angles[2])
-    z_rotation[:,1,0] = np.sin(fuel_tank.orientation_euler_angles[2])
-    z_rotation[:,1,1] = np.cos(fuel_tank.orientation_euler_angles[2])
-    z_rotation[:,2,2] = 1
+    z_rotation = np.zeros((12,tessellation, 3, 3))
+    z_rotation[:,:,0,0] = np.cos(fuel_tank.orientation_euler_angles[2])
+    z_rotation[:,:,0,1] = -np.sin(fuel_tank.orientation_euler_angles[2])
+    z_rotation[:,:,1,0] = np.sin(fuel_tank.orientation_euler_angles[2])
+    z_rotation[:,:,1,1] = np.cos(fuel_tank.orientation_euler_angles[2])
+    z_rotation[:,:,2,2] = 1
     
     
     # shift to centroid
-    delta_x = -(fuel_tank.length/2)
+    delta_x = -(np.max(fuel_tank_points[:, :, 0])/2)
     delta_y = 0
     delta_z = 0
     fuel_tank_points[:, :, 0] += delta_x
@@ -657,7 +657,7 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     fuel_tank_points[:, :, 2] += delta_z 
     
     # find min point in x direction
-    fuel_tank_points = np.matmul(z_rotation,np.matmul(y_rotation,np.matmul(x_rotation,fuel_tank_points)))
+    fuel_tank_points = np.matmul(z_rotation,np.matmul(y_rotation,np.matmul(x_rotation,fuel_tank_points[...,None]))).squeeze(-1)
     
     # translate back to front of object
     delta_x2 = np.min(fuel_tank_points) 
@@ -672,6 +672,7 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     fuel_tank_points[:, :, 1] += fuel_tank.origin[0][1]
     fuel_tank_points[:, :, 2] += fuel_tank.origin[0][2]
      
+    G = Data()
     G.PTS  = fuel_tank_points 
 
     return G 

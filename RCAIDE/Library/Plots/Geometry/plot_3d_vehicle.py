@@ -343,14 +343,13 @@ def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,na
         - Rotors (using plot_3d_rotor)
         - Propellers (using plot_3d_rotor)
     """ 
-    show_axis     = False 
-    save_figure   = False 
-    show_figure   = False
-    save_filename = 'propulsor'
+    show_axis                = False 
+    save_figure              = False 
+    show_figure              = False
+    save_filename            = 'propulsor'  
+    tessellation             = 24
 
-    for propulsor in network.propulsors:   
-        number_of_airfoil_points = 21
-        tessellation             = 24
+    for propulsor in network.propulsors:  
         if 'nacelle' in propulsor: 
             if propulsor.nacelle !=  None: 
                 plot_data = plot_3d_nacelle(plot_data,propulsor.nacelle,tessellation,number_of_airfoil_points,nacelle_color,nacelle_alpha) 
