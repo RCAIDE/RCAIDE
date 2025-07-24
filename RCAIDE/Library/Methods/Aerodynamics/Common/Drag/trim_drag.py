@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/spoiler_drag.py
+# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/trim_drag.py
 # 
 # Created:  Mar 2025, M. Clarke
 
@@ -13,7 +13,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Spolier Drag 
 # ---------------------------------------------------------------------------------------------------------------------- 
-def spoiler_drag(state,settings,geometry):
+def trim_drag(state,settings,geometry):
     """Updates the aerodynamic performance of an aircraft given the influence of deflected spoilers
   
     Parameters
@@ -39,18 +39,19 @@ def spoiler_drag(state,settings,geometry):
     compressibility_total = state.conditions.aerodynamics.coefficients.drag.compressible.total     
     miscellaneous_drag    = state.conditions.aerodynamics.coefficients.drag.miscellaneous.total
     cooling_drag          = state.conditions.aerodynamics.coefficients.drag.cooling.total  
-    form_drag             = state.conditions.aerodynamics.coefficients.drag.form.total  
+    form_drag             = state.conditions.aerodynamics.coefficients.drag.form.total   
+    wave_drag             = state.conditions.aerodynamics.coefficients.drag.wave.total  
 
     # untrimmed drag 
-    drag  =  parasite_total + induced_total  + compressibility_total + miscellaneous_drag + cooling_drag + form_drag
+    drag  =  parasite_total + induced_total  + compressibility_total + miscellaneous_drag + cooling_drag + form_drag + wave_drag
     
-    spoiler_drag_coef =  np.zeros_like(drag)
+    trim_drag_coef =  np.zeros_like(drag)
     for wing in geometry.wings: 
         for cs in wing.control_surfaces:
             if type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Spoiler:
-                spoiler_drag_coef += drag * (0.0011 * (cs.deflection / Units.degrees))  
+                trim_drag_coef += drag * (0.0011 * (cs.deflection / Units.degrees))  
                 state.conditions.aerodynamics.coefficients.lift.total  +=  -0.0075 *(cs.deflection / Units.degrees)  
                 state.conditions.static_stability.coefficients.M       +=  0.0053 *(cs.deflection / Units.degrees)  
     
-    state.conditions.aerodynamics.coefficients.drag.spoiler.total =  spoiler_drag_coef 
+    state.conditions.aerodynamics.coefficients.drag.trim.total =  trim_drag_coef 
     return  

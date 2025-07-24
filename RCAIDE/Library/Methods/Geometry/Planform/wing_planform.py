@@ -435,7 +435,7 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
             segment.taper                   = taper 
             segment.chords.mean_aerodynamic = mac_seg 
             segment.areas.reference         = Sref_seg
-            segment.spans.projected         = span_seg 
+            #segment.spans.projected         = span_seg 
             segment.aspect_ratio            = (span_seg **2) / Sref_seg
             segment.areas.exposed           = S_exposed_seg
             segment.areas.wetted            = Swet_seg 

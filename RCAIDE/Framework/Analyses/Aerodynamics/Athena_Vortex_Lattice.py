@@ -149,7 +149,7 @@ class Athena_Vortex_Lattice(Aerodynamics):
         compute.drag.compressibility               = Process() 
         compute.drag.compressibility.total         = Common.Drag.compressibility_drag
         compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag 
-        compute.drag.spoiler                       = Common.Drag.spoiler_drag
+        compute.drag.trim                          = Common.Drag.trim_drag
         compute.drag.total                         = Common.Drag.total_drag
         self.process.compute                       = compute
         

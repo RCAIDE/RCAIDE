@@ -72,8 +72,7 @@ class Aerodynamics(Analysis):
         self.settings.maximum_lift_coefficient_factor                    = 1.0        
         self.settings.lift_to_drag_adjustment                            = 0.0   
         self.settings.viscous_lift_dependent_drag_factor                 = 0.38
-        self.settings.drag_coefficient_increment                         = 0.0
-        self.settings.spoiler_drag_increment                             = 0.0
+        self.settings.drag_coefficient_increment                         = 0.0 
         self.settings.maximum_lift_coefficient                           = np.inf  
         self.settings.recalculate_total_wetted_area                      = False
         self.settings.oswald_efficiency_factor                           = None

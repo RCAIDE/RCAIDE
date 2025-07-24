@@ -163,10 +163,12 @@ def generate_vortex_distribution(conditions,settings,geometry):
             VD_seg.surface_ID                =  np.atleast_2d(VD_i.surface_ID               )
             VD_seg.surface_ID_full           =  np.atleast_2d(VD_i.surface_ID_full          )
             VD_seg.leading_edge_indices      =  np.atleast_2d(VD_i.leading_edge_indices     )
+            VD_seg.leading_edge_sweeps       =  np.atleast_2d(VD_i.leading_edge_sweeps      )
             VD_seg.trailing_edge_indices     =  np.atleast_2d(VD_i.trailing_edge_indices    )
             VD_seg.panels_per_strip          =  np.atleast_2d(VD_i.panels_per_strip         )
             VD_seg.chordwise_panel_number    =  np.atleast_2d(VD_i.chordwise_panel_number   )
             VD_seg.chord_lengths             =  np.atleast_2d(VD_i.chord_lengths            )
+            VD_seg.chord_widths              =  np.atleast_2d(VD_i.chord_widths            )
             VD_seg.tangent_incidence_angle   =  np.atleast_2d(VD_i.tangent_incidence_angle  )
             VD_seg.exposed_leading_edge_flag =  np.atleast_2d(VD_i.exposed_leading_edge_flag) 
             VD_seg.wing_areas                =  np.atleast_2d(VD_i.wing_areas               )
@@ -239,10 +241,12 @@ def generate_vortex_distribution(conditions,settings,geometry):
             VD_seg.surface_ID                = np.vstack((VD_seg.surface_ID                 , np.atleast_2d(VD_i.surface_ID               )))
             VD_seg.surface_ID_full           = np.vstack((VD_seg.surface_ID_full            , np.atleast_2d(VD_i.surface_ID_full          )))
             VD_seg.leading_edge_indices      = np.vstack((VD_seg.leading_edge_indices       , np.atleast_2d(VD_i.leading_edge_indices     )))
+            VD_seg.leading_edge_sweeps       = np.vstack((VD_seg.leading_edge_sweeps        , np.atleast_2d(VD_i.leading_edge_sweeps     )))
             VD_seg.trailing_edge_indices     = np.vstack((VD_seg.trailing_edge_indices      , np.atleast_2d(VD_i.trailing_edge_indices    )))
             VD_seg.panels_per_strip          = np.vstack((VD_seg.panels_per_strip           , np.atleast_2d(VD_i.panels_per_strip         )))
             VD_seg.chordwise_panel_number    = np.vstack((VD_seg.chordwise_panel_number     , np.atleast_2d(VD_i.chordwise_panel_number   )))
             VD_seg.chord_lengths             = np.vstack((VD_seg.chord_lengths              , np.atleast_2d(VD_i.chord_lengths            )))
+            VD_seg.chord_widths              = np.vstack((VD_seg.chord_widths              , np.atleast_2d(VD_i.chord_widths              )))
             VD_seg.tangent_incidence_angle   = np.vstack((VD_seg.tangent_incidence_angle    , np.atleast_2d(VD_i.tangent_incidence_angle  )))
             VD_seg.exposed_leading_edge_flag = np.vstack((VD_seg.exposed_leading_edge_flag  , np.atleast_2d(VD_i.exposed_leading_edge_flag)))
             VD_seg.wing_areas                = np.vstack((VD_seg.wing_areas                 , np.atleast_2d(VD_i.wing_areas               )))
@@ -420,14 +424,15 @@ def generate_control_point_vortex_distribution(geometry,settings):
     VD.spanwise_breaks  = np.array([], dtype=np.int32) # indices of the first strip of panels in a wing (given chordwise_breaks)    
     VD.symmetric_wings  = np.array([], dtype=np.int32)
     VD.surface_ID       = np.empty(shape=[0,1], dtype=np.int16) 
-    VD.surface_ID_full  = np.empty(shape=[0,1], dtype=np.int16)     
-    
+    VD.surface_ID_full  = np.empty(shape=[0,1], dtype=np.int16)   
     VD.leading_edge_indices      = np.array([], dtype=bool)      # bool array of leading  edge indices (all false except for panels at leading  edge)
+    VD.leading_edge_sweeps       = np.array([], dtype=bool)      # bool array of leading  edge indices (all false except for panels at leading  edge)
     VD.trailing_edge_indices     = np.array([], dtype=bool)      # bool array of trailing edge indices (all false except for panels at trailing edge)    
     VD.panels_per_strip          = np.array([], dtype=np.int16)  # array of the number of panels per strip (RNMAX); this is assigned for all panels  
     VD.chordwise_panel_number    = np.array([], dtype=np.int16)  # array of panels' numbers in their strips.     
     VD.chord_lengths             = np.array([], dtype=precision) # Chord length, this is assigned for all panels.
     VD.tangent_incidence_angle   = np.array([], dtype=precision) # Tangent Incidence Angles of the chordwise strip. LE to TE, ZETA
+    VD.chord_widths              = np.array([], dtype=precision) # Chord width, this is assigned for all panels.
     VD.exposed_leading_edge_flag = np.array([], dtype=np.int16)  # 0 or 1 per strip. 0 turns off leading edge suction for non-slat control surfaces
     
     # ---------------------------------------------------------------------------------------
@@ -474,14 +479,8 @@ def generate_control_point_vortex_distribution(geometry,settings):
             
     # ---------------------------------------------------------------------------------------
     # Postprocess VD information
-    # ---------------------------------------------------------------------------------------  
-    
-    VD = postprocess_VD(VD, settings)
-    
-    ## pack VD into geometry
-    #geometry.vortex_distribution = VD
-    
-    #if show_prints: print('finish discretization')     
+    # ---------------------------------------------------------------------------------------   
+    VD = postprocess_VD(VD, settings) 
     
     return VD 
 

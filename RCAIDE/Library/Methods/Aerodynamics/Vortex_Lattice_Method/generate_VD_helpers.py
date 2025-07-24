@@ -60,6 +60,15 @@ def postprocess_VD(VD, settings):
     SLE   = SLOPE[LE_ind]    
     D     = np.sqrt((VD.YAH-VD.YBH)**2+(VD.ZAH-VD.ZBH)**2)[LE_ind]
     
+    # Leading edge sweeps 
+    panel_sweeps = np.arctan((VD.XA1-VD.XB1) /(VD.YA1-VD.YB1))
+    panel_sweeps[VD.YA1 > VD.YB1] = -panel_sweeps[VD.YA1 > VD.YB1]
+    VD.leading_edge_sweeps =  panel_sweeps[LE_ind] 
+
+    # Chord widths
+    Del_Y =  VD.XB1-VD.XA1 
+    VD.chord_widths  = Del_Y[LE_ind]  
+    
     # Compute strip-wise values
     LE_X           = X1c[LE_ind]
     LE_Z           = Z1c[LE_ind]

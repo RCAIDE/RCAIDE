@@ -410,8 +410,9 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(state,settings,vehicle)     
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(state,settings,vehicle)
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(state,settings,vehicle) 
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.spoiler_drag(state,settings,vehicle)
+        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(state,settings,vehicle)
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(state,settings,vehicle)
+        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.wave_drag(state,settings,vehicle)
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(state,settings,vehicle)  
 
         T_wind2inertial = conditions.frames.wind.transform_to_inertial 
@@ -499,7 +500,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(equilibrium_state,settings,vehicle)     
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(equilibrium_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(equilibrium_state,settings,vehicle) 
-    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.spoiler_drag(equilibrium_state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(equilibrium_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(equilibrium_state,settings,vehicle)
     
     
@@ -550,7 +551,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(perturbation_state,settings,vehicle)     
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(perturbation_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(perturbation_state,settings,vehicle) 
-    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.spoiler_drag(perturbation_state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(perturbation_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(perturbation_state,settings,vehicle) 
 
     T_wind2inertial   = pertubation_conditions.frames.wind.transform_to_inertial 
@@ -663,7 +664,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(perturbation_state,settings,vehicle)     
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(perturbation_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(perturbation_state,settings,vehicle) 
-    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.spoiler_drag(perturbation_state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(perturbation_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(perturbation_state,settings,vehicle) 
 
     T_wind2inertial   = pertubation_conditions.frames.wind.transform_to_inertial 
@@ -809,7 +810,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(perturbation_state,settings,vehicle)     
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(perturbation_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(perturbation_state,settings,vehicle) 
-    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.spoiler_drag(perturbation_state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(perturbation_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(perturbation_state,settings,vehicle) 
 
     T_wind2inertial   = pertubation_conditions.frames.wind.transform_to_inertial 

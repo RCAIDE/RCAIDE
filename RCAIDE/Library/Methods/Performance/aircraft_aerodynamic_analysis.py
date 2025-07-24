@@ -194,11 +194,12 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
         drag_coefficient                 = state.conditions.aerodynamics.coefficients.drag.total,
         parasite_drag_coefficient        = state.conditions.aerodynamics.coefficients.drag.parasite.total,
         form_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.form.total,
+        wave_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.wave.total,
         induced_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.induced.total,
         miscellaneous_drag_coefficient   = state.conditions.aerodynamics.coefficients.drag.miscellaneous.total,
         compressibility_drag_coefficient = state.conditions.aerodynamics.coefficients.drag.compressible.total,
         cooling_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.cooling.total,
-        spoiler_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.spoiler.total,
+        trim_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.trim.total,
         moment_coefficient               = state.conditions.static_stability.coefficients.M, 
         
     )  

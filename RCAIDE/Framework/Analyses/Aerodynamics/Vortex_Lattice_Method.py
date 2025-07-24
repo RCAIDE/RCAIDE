@@ -62,8 +62,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.process                                                = Process()
         self.process.initialize                                     = Process()  
                     
-        # correction factors  
-        self.settings.viscous_VLM_flag                              = False             
+        # correction factors               
         self.settings.use_surrogate                                 = True  
         self.settings.propeller_wake_model                          = False 
         self.settings.discretize_control_surfaces                   = True
@@ -153,7 +152,8 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.compressibility.total                          = Common.Drag.compressibility_drag
         compute.drag.miscellaneous                                  = Common.Drag.miscellaneous_drag 
         compute.drag.form                                           = Common.Drag.form_drag 
-        compute.drag.spoiler                                        = Common.Drag.spoiler_drag
+        compute.drag.wave                                           = Common.Drag.wave_drag
+        compute.drag.trim                                           = Common.Drag.trim_drag
         compute.drag.total                                          = Common.Drag.total_drag
         compute.stability                                           = Process()
         compute.stability.dynamic_modes                             = RCAIDE.Library.Methods.Stability.compute_dynamic_flight_modes  

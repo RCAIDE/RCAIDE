@@ -15,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute RHS matrix 
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_RHS_matrix(VD,delta,phi,delta_alpha_induced,conditions,settings,geometry,propeller_wake_model):
+def compute_RHS_matrix(VD,delta,phi,conditions,settings,geometry,propeller_wake_model):
 
     """ This computes the right hand side matrix for the VLM. In this
     function, induced velocites from propeller wake are also included
@@ -65,7 +65,7 @@ def compute_RHS_matrix(VD,delta,phi,delta_alpha_induced,conditions,settings,geom
 
     # unpack 
     aoa              = conditions.aerodynamics.angles.alpha
-    aoa_distribution = aoa - delta_alpha_induced
+    aoa_distribution = aoa 
     PSI              = conditions.aerodynamics.angles.beta
     num_eval_pts     = len(VD.XC[0])
     PSI_distribution = np.repeat(PSI,num_eval_pts, axis = 1) 
