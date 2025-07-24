@@ -63,7 +63,7 @@ class Non_Integral_Tank(Fuel_Tank):
         Sets default values for central fuel tank attributes
         """          
         self.tag                         = 'non_integral_tank' 
-        self.transform                   = 0.0
+        self.orientation_euler_angles    = [0.,0.,0.]
         self.bwb_aft_tank                = False
         self.aft_tank_start_root_chord   = None
         self.aft_tank_end_rood_chord     = None
