@@ -630,4 +630,35 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     
     G.PTS  = fuel_tank_points
 
+    if hasattr(fuel_tank, 'transform') and fuel_tank.transform != 0:
+        theta  = fuel_tank.transform # check with axis                     # rotation angle in radians
+        origin = np.array(fuel_tank.origin[0])           # the [x,y,z] pivot
+
+        # translate points so 'origin' is at (0,0,0)
+        pts = G.PTS - origin[np.newaxis, np.newaxis, :]
+
+        # build an x‑axis rotation matrix
+        c, s = np.cos(theta), np.sin(theta)
+        
+        # add functionationlyy to transform about x and y axis as wel
+
+        # Rx = np.array([[1, 0,  0],
+        #                [0, c, -s],
+        #                [0, s,  c]])
+        
+
+        # Ry = np.array([[  c, 0, s],
+        #            [  0, 1, 0],
+        #            [ -s, 0, c]])
+
+        Rz = np.array([[ c, -s, 0],
+                   [ s,  c, 0],
+                   [ 0,  0, 1]])
+
+        # apply rotation
+        pts_rot = pts.dot(Rz.T)
+
+        # translate back to original location
+        G.PTS = pts_rot + origin[np.newaxis, np.newaxis, :]
+
     return G 

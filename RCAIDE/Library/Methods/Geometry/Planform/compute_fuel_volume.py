@@ -9,11 +9,15 @@
 import RCAIDE 
 from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry,  compute_naca_4series  
 from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments 
+from RCAIDE.Framework.Core import Units
+import matplotlib.pyplot as plt
 
 # python imports 
 import numpy as np   
 from scipy.interpolate import interp1d
+from shapely.geometry import Polygon, Point
 from copy import  deepcopy
+import os 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_fuel_volume 
@@ -35,7 +39,6 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                 if fuel_tank.wing_tag != None:
                     wing = wings[fuel_tank.wing_tag]  
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
-
                         if len(wing.segments) > 1:
                             segment_tank_moment = np.array([0.0, 0.0, 0.0])
                             seg_tags = list(wing.segments.keys())
@@ -117,13 +120,153 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                         total_fuel_volume += volume  
                         total_fuel_mass   += volume * fuel_tank.fuel.density
                         tank_c_g           = [[fuel_tank.length /2, 0, fuel_tank.outer_diameter / 2]]
+                else:
+                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank: 
+                        if fuel_tank.transform == 90*Units.degree and fuel_tank.bwb_aft_tank == True:
+                            # Check if there are enough properties to accurately compute the maximum possible tank volume 
+                            if any(val is None for val in [
+                                fuel_tank.aft_tank_start_root_chord,
+                                fuel_tank.aft_tank_end_rood_chord,
+                                fuel_tank.aft_tank_end_segment_tag,
+                                fuel_tank.wing_root_tag
+                                ]):
+                                raise ValueError("One or more required aft tank parameters are not set in 'fuel_tank'.")
+                            
+                            wing = wings[fuel_tank.wing_root_tag] 
+                            if fuel_tank.aft_tank_end_segment_tag not in seg_tags:
+                                raise ValueError(f"Segment tag '{fuel_tank.aft_tank_end_segment_tag}' not found in wing.segments. Hint: check tag case")
+                            
+                            if len(wing.segments) > 1: 
+                              seg_tags = list(wing.segments.keys())
+                            index = seg_tags.index(fuel_tank.aft_tank_end_segment_tag)
+                            aft_tank_seg_tags = seg_tags[:index + 1]
+                            
+                            circle_coordiantes =[]
+                            for i,tag in enumerate(aft_tank_seg_tags):
+                                segment = wing.segments[tag]
 
+                                #baseline dimensions  
+                                chord_root = wing.chords.root
+                                start = fuel_tank.aft_tank_start_root_chord * chord_root
+                                end   = fuel_tank.aft_tank_end_rood_chord   * chord_root
+
+                                # Need to get Z coordinates from airfoil data
+                                af = segment.airfoil   
+                                coord_file = af.get('coordinate_file', None)
+                                if coord_file and os.path.isfile(coord_file):
+                                    # Load and scale coordinates
+                                    coords = np.loadtxt(coord_file, skiprows=1)
+                                    scale = wing.chords.root * segment.root_chord_percent
+                                    coords *= scale
+
+                                # Extract and shift to segment origin
+                                orig_x, orig_y, orig_z = segment.origin[0]
+                                x = coords[:, 0] + orig_x
+                                z = coords[:, 1] + orig_z
+                                y = orig_y  
+
+                                # Flip the first half so upper and lower surfaces line up
+                                half = len(x) // 2
+                                x = np.concatenate((x[:half][::-1], x[half:]))
+                                z = np.concatenate((z[:half][::-1], z[half:]))
+
+                                # Mask points within the aft‑tank region
+                                mask = (x >= start) & (x <= end)
+                                x_tank_possible = x[mask]
+                                z_tank_possible = z[mask]
+
+                                # separate positive and negative z
+                                mask_pos = z_tank_possible >= 0
+                                mask_neg = z_tank_possible <  0
+
+                                x_pos, z_pos = x_tank_possible[mask_pos], z_tank_possible[mask_pos]
+                                x_neg, z_neg = x_tank_possible[mask_neg], z_tank_possible[mask_neg]
+
+                                # sort each pair by x
+                                pos_idx = np.argsort(x_pos)
+                                x_pos, z_pos = x_pos[pos_idx], z_pos[pos_idx]
+
+                                neg_idx = np.argsort(x_neg)
+                                x_neg, z_neg = x_neg[neg_idx], z_neg[neg_idx]
+
+                                # build interpolators 
+                                z_interp_pos = interp1d(x_pos, z_pos, kind='linear', fill_value="extrapolate")
+                                z_interp_neg = interp1d(x_neg, z_neg, kind='linear', fill_value="extrapolate")
+                                
+                                new_x = np.linspace(x_tank_possible.min(), x_tank_possible.max(), 10)
+                                z_upper = z_interp_pos(new_x)
+                                z_lower = z_interp_neg(new_x)
+
+                                max_diameter,x_center,z_center = compute_largest_circle(new_x,z_upper,z_lower)
+                                circle_coordiantes.append([max_diameter, x_center,y, z_center])
+
+                            circle_coordiantes = np.array(circle_coordiantes)
+
+                            # Now that we have x,y,z and  max circle diamteres we will start computing the volumes for all the possible cases. 
+                            max_dia, x_ctr, y, z_ctr = circle_coordiantes.T
+                            # define new, equispaced y
+                            y_new = np.linspace(y.min(), y.max(), 100)
+                            f_dia = interp1d(y, max_dia, kind='cubic', fill_value='extrapolate')
+                            f_x   = interp1d(y, x_ctr,   kind='cubic', fill_value='extrapolate')
+                            f_z   = interp1d(y, z_ctr,   kind='cubic', fill_value='extrapolate')
+
+                            max_dia_cub = f_dia(y_new)
+                            x_cub       = f_x(y_new)
+                            z_cub       = f_z(y_new)
+
+                            interpolated_circle_coordinates  = np.column_stack([max_dia_cub/2, x_cub, y_new, z_cub])
+                                                                                # Radii,        x,     y,      z
+                            d = np.hypot((interpolated_circle_coordinates[1:,1]-interpolated_circle_coordinates[0,1]),(interpolated_circle_coordinates[1:,3]-interpolated_circle_coordinates[0,3]))
+                            r = (interpolated_circle_coordinates[0,0] + interpolated_circle_coordinates[1:,0] - d) / 2
+                            t = (interpolated_circle_coordinates[0,0] - r) / d
+                            xc = interpolated_circle_coordinates[0,1] + t * (interpolated_circle_coordinates[1:,1] - interpolated_circle_coordinates[0,1])
+                            zc = interpolated_circle_coordinates[0,3] + t * (interpolated_circle_coordinates[1:,3] - interpolated_circle_coordinates[0,3])
+
+                            maximum_circle_coordinates  = np.column_stack([r*2, xc, interpolated_circle_coordinates[1:,2], zc])
+                                                                           #Dia, x,     y,      z
+
+
+
+                            l      = maximum_circle_coordinates[:,2]#- interpolated_circle_coordinates[:,0] # assuming rounded end cylindrical tank
+                            r      = (maximum_circle_coordinates[:,0] - 2 * fuel_tank.wall_thickness) / 2
+                            volume = (np.pi * ( r** 2) * l +  4 / 3 * np.pi * ( r** 3))*2 # multiply the volume by 2 as it is symmetric about root chord
+
+                            max_volume_index = np.argmax(volume)    
+
+                            fuel_tank.internal_volume += volume[max_volume_index]
+                            total_fuel_volume += volume[max_volume_index]
+                            total_fuel_mass   += volume[max_volume_index] * fuel_tank.fuel.density
+                            # Geometric Properties for Plotting 
+
+                            fuel_tank.outer_diameter = maximum_circle_coordinates[max_volume_index,0]
+                            fuel_tank.length         = 2*maximum_circle_coordinates[max_volume_index,2] +  fuel_tank.outer_diameter # because it is bbeing added in plotting funciton 
+                            fuel_tank.origin[0][0]   = maximum_circle_coordinates[max_volume_index,1]
+                            fuel_tank.origin[0][1]   = -maximum_circle_coordinates[max_volume_index,2]
+                            fuel_tank.origin[0][2]   = maximum_circle_coordinates[max_volume_index,3]
+
+                        else:
+                            volume  = compute_non_integral_tank_fuel_volume(fuel_tank)
+                            fuel_tank.internal_volume += volume 
+                            total_fuel_volume += volume  
+                            total_fuel_mass   += volume * fuel_tank.fuel.density
+                            tank_c_g           = [[fuel_tank.length /2, 0, fuel_tank.outer_diameter / 2]]
+                                
                 fuel_tank.mass_properties.center_of_gravity =  tank_c_g
                 fuel_tank.mass_properties.mass = tank_mass
     vehicle.fuel_tank_volume = total_fuel_volume # temp ********** find a better place for it 
     if update_max_fuel:
         vehicle.mass_properties.max_fuel = total_fuel_mass
     return
+
+
+def compute_non_integral_tank_fuel_volume(fuel_tank):  
+
+    l      = fuel_tank.length - fuel_tank.outer_diameter # assuming rounded end cylindrical tank
+    r      = (fuel_tank.outer_diameter - 2 * fuel_tank.wall_thickness) / 2
+    volume = np.pi * ( r** 2) * l +  4 / 3 * np.pi * ( r** 3)       
+    
+    return volume
+
 
 def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage,fus_first_segment,fus_second_segment,tank_section_percent_x): 
 
@@ -321,5 +464,54 @@ def compute_non_dimensional_rib_coordinates(compoment):
 
     return front_rib_nondim_y_upper,rear_rib_nondim_y_upper, front_rib_nondim_y_lower, rear_rib_nondim_y_lower 
  
+def compute_largest_circle(x_points,z_upper,z_lower):
+
+    coords = list(zip(x_points, z_upper)) + list(zip(x_points[::-1], z_lower[::-1]))
+    poly   = Polygon(coords)
+
+    #scan a fine grid inside the polygon’s bounding box to find the best center
+    minx, minz, maxx, maxz = poly.bounds
+    nx, nz = 200, 200  
+    xs = np.linspace(minx, maxx, nx)
+    zs = np.linspace(minz, maxz, nz)
+
+    best_r = 0.0
+    best_pt = None
+
+    for x in xs:
+        for z in zs:
+            p = Point(x, z)
+            if not poly.contains(p):
+                continue
+            # the radius is limited by the closest polygon edge
+            r = p.distance(poly.exterior)
+            if r > best_r:
+                best_r = r
+                best_pt = (x, z)
+
+    # 3) report the result
+    max_diameter = 2 * best_r
+
+    circle_center = (best_pt[0], best_pt[1])
+    circle_radius = max_diameter / 2
+    # Delete Later
+    print(f"Largest inscribed circle diameter ≈ {max_diameter:.4f}")
+    print(f" Center at x={best_pt[0]:.3f}, z={best_pt[1]:.3f}")
+    # # Plotting
+    # fig, ax = plt.subplots()
+    # ax.plot(x_points, z_upper, label='Upper Surface')
+    # ax.plot(x_points, z_lower, label='Lower Surface')
+
+    # # Draw the inscribed circle
+    # circle = plt.Circle(circle_center, circle_radius, fill=False)
+    # ax.add_patch(circle)
+
+    # ax.set_aspect('equal', 'box')
+    # ax.set_xlabel("x")
+    # ax.set_ylabel("z")
+    # ax.legend()
+    # plt.show()
+
+    return max_diameter , best_pt[0],best_pt[1]
 
 

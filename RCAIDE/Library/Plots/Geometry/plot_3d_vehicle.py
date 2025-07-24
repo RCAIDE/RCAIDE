@@ -382,5 +382,9 @@ def plot_fuel_tanks(vehicle, distributor,plot_data,tessellation):
                 plot_3d_integral_fuselage_tank(plot_data, fuselage, fuel_tank, tessellation, color_map = 'oranges') 
             elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
                 plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
+        else:
+            if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
+                plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
+
     return 
         
