@@ -141,10 +141,10 @@ def plot_3d_integral_fuselage_tank(plot_data, fuselage, fuel_tank, tessellation 
                 segment_list.append(next_seg.tag)  
         
     G  = generate_integral_fuel_tank_points(fuselage,fuel_tank, segment_list,tessellation = 24 ) 
-    num_fus_segs = len(G.PTS[:,0,0])
-    if num_fus_segs > 0:
+    num_tank_segs = len(G.PTS[:,0,0])
+    if num_tank_segs > 0:
         tesselation  = len(G.PTS[0,:,0])
-        for i_seg in range(num_fus_segs-1):
+        for i_seg in range(num_tank_segs-1):
             for i_tes in range(tesselation-1):
                 X = np.array([[G.PTS[i_seg  ,i_tes,0],G.PTS[i_seg+1,i_tes  ,0]],
                               [G.PTS[i_seg  ,i_tes+1,0],G.PTS[i_seg+1,i_tes+1,0]]])
@@ -511,47 +511,47 @@ def generate_integral_fuel_tank_points(fuselage,fuel_tank, segment_list, tessell
     --------
     plot_3d_fuel_tank : Function to visualize the generated surface
     """ 
-    fus_segs         = fuselage.segments
-    num_fus_segs     = len(segment_list) 
-    fuel_tank_points = np.zeros((num_fus_segs+2,tessellation ,3))
+    tank_segs         = fuselage.segments
+    num_tank_segs     = len(segment_list) 
+    fuel_tank_points = np.zeros((num_tank_segs+2,tessellation ,3))
         
-    if num_fus_segs > 0: 
+    if num_tank_segs > 0: 
         # first segment
-        segment_start = fus_segs[segment_list[0]]
+        segment_start = tank_segs[segment_list[0]]
         a        = 1E-6
         b        = 1E-6
         n        = segment_start.curvature
         theta    = np.linspace(0,2*np.pi,tessellation) 
-        fus_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
-        fus_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+        tank_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
+        tank_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
         fuel_tank_points[0,:,0] = segment_start.percent_x_location*fuselage.lengths.total + fuselage.origin[0][0]
-        fuel_tank_points[0,:,1] = fus_ypts + segment_start.percent_y_location*fuselage.lengths.total + fuselage.origin[0][1]
-        fuel_tank_points[0,:,2] = fus_zpts + segment_start.percent_z_location*fuselage.lengths.total + fuselage.origin[0][2]
+        fuel_tank_points[0,:,1] = tank_ypts + segment_start.percent_y_location*fuselage.lengths.total + fuselage.origin[0][1]
+        fuel_tank_points[0,:,2] = tank_zpts + segment_start.percent_z_location*fuselage.lengths.total + fuselage.origin[0][2]
         
                 
-        for i in range(num_fus_segs):  
-            segment = fus_segs[segment_list[i]]  
+        for i in range(num_tank_segs):  
+            segment = tank_segs[segment_list[i]]  
             a = segment.width/2
             b = segment.height/2
             n = segment.curvature
             theta    = np.linspace(0,2*np.pi,tessellation) 
-            fus_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
-            fus_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+            tank_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
+            tank_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
             fuel_tank_points[i+1,:,0] = segment.percent_x_location*fuselage.lengths.total + fuselage.origin[0][0]
-            fuel_tank_points[i+1,:,1] = fus_ypts + segment.percent_y_location*fuselage.lengths.total + fuselage.origin[0][1]
-            fuel_tank_points[i+1,:,2] = fus_zpts + segment.percent_z_location*fuselage.lengths.total + fuselage.origin[0][2] 
+            fuel_tank_points[i+1,:,1] = tank_ypts + segment.percent_y_location*fuselage.lengths.total + fuselage.origin[0][1]
+            fuel_tank_points[i+1,:,2] = tank_zpts + segment.percent_z_location*fuselage.lengths.total + fuselage.origin[0][2] 
        
         # last segment
-        segment_start = fus_segs[segment_list[-1]]
+        segment_start = tank_segs[segment_list[-1]]
         a        = 1E-6
         b        = 1E-6
         n        = segment_start.curvature
         theta    = np.linspace(0,2*np.pi,tessellation) 
-        fus_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
-        fus_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+        tank_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
+        tank_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
         fuel_tank_points[-1,:,0] = segment_start.percent_x_location*fuselage.lengths.total + fuselage.origin[0][0]
-        fuel_tank_points[-1,:,1] = fus_ypts + segment_start.percent_y_location*fuselage.lengths.total + fuselage.origin[0][1]
-        fuel_tank_points[-1,:,2] = fus_zpts + segment_start.percent_z_location*fuselage.lengths.total + fuselage.origin[0][2]
+        fuel_tank_points[-1,:,1] = tank_ypts + segment_start.percent_y_location*fuselage.lengths.total + fuselage.origin[0][1]
+        fuel_tank_points[-1,:,2] = tank_zpts + segment_start.percent_z_location*fuselage.lengths.total + fuselage.origin[0][2]
         
     G = Data()
     
@@ -606,11 +606,11 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
         b        = np.sin(front_angles[i]) * R 
         n        = 2
         theta    = np.linspace(0,2*np.pi,tessellation) 
-        fus_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
-        fus_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
-        fuel_tank_points[i,:,0] = R  * (1 -  np.cos(front_angles[i])) +  fuel_tank.origin[0][0]
-        fuel_tank_points[i,:,1] = fus_ypts  + fuel_tank.origin[0][1]
-        fuel_tank_points[i,:,2] = fus_zpts  + fuel_tank.origin[0][2]
+        tank_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
+        tank_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+        fuel_tank_points[i,:,0] = R  * (1 -  np.cos(front_angles[i])) 
+        fuel_tank_points[i,:,1] = tank_ypts 
+        fuel_tank_points[i,:,2] = tank_zpts 
       
        
     # rear angles 
@@ -620,45 +620,58 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
         b        = np.sin(rear_angles[j]) *R 
         n        = 2
         theta    = np.linspace(0,2*np.pi,tessellation) 
-        fus_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
-        fus_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
-        fuel_tank_points[6+j,:,0] = R *(np.cos(rear_angles[j]))  +  L + fuel_tank.origin[0][0] 
-        fuel_tank_points[6+j,:,1] = fus_ypts + fuel_tank.origin[0][1]
-        fuel_tank_points[6+j,:,2] = fus_zpts + fuel_tank.origin[0][2]
-        
-    G = Data()
+        tank_ypts =  (abs((np.cos(theta)))**(2/n))*a * ((np.cos(theta)>0)*1 - (np.cos(theta)<0)*1) 
+        tank_zpts =  (abs((np.sin(theta)))**(2/n))*b * ((np.sin(theta)>0)*1 - (np.sin(theta)<0)*1)  
+        fuel_tank_points[6+j,:,0] = R *(np.cos(rear_angles[j]))  +  L  
+        fuel_tank_points[6+j,:,1] = tank_ypts 
+        fuel_tank_points[6+j,:,2] = tank_zpts 
     
-    G.PTS  = fuel_tank_points
+    x_rotation = np.zeros((tessellation, 3, 3))
+    x_rotation[:,0,0] = 1
+    x_rotation[:,1,1] = np.cos(fuel_tank.orientation_euler_angles[0])
+    x_rotation[:,1,2] = -np.sin(fuel_tank.orientation_euler_angles[0])
+    x_rotation[:,2,1] = np.sin(fuel_tank.orientation_euler_angles[0])
+    x_rotation[:,2,2] = np.cos(fuel_tank.orientation_euler_angles[0])
 
-    if hasattr(fuel_tank, 'transform') and fuel_tank.transform != 0:
-        theta  = fuel_tank.transform # check with axis                     # rotation angle in radians
-        origin = np.array(fuel_tank.origin[0])           # the [x,y,z] pivot
+    y_rotation = np.zeros((tessellation, 3, 3))
+    y_rotation[:,0,0] = np.cos(fuel_tank.orientation_euler_angles[1])
+    y_rotation[:,0,2] = np.sin(fuel_tank.orientation_euler_angles[1])
+    y_rotation[:,1,1] = 1
+    y_rotation[:,2,0] = -np.sin(fuel_tank.orientation_euler_angles[1])
+    y_rotation[:,2,2] = np.cos(fuel_tank.orientation_euler_angles[1]) 
 
-        # translate points so 'origin' is at (0,0,0)
-        pts = G.PTS - origin[np.newaxis, np.newaxis, :]
-
-        # build an x‑axis rotation matrix
-        c, s = np.cos(theta), np.sin(theta)
-        
-        # add functionationlyy to transform about x and y axis as wel
-
-        # Rx = np.array([[1, 0,  0],
-        #                [0, c, -s],
-        #                [0, s,  c]])
-        
-
-        # Ry = np.array([[  c, 0, s],
-        #            [  0, 1, 0],
-        #            [ -s, 0, c]])
-
-        Rz = np.array([[ c, -s, 0],
-                   [ s,  c, 0],
-                   [ 0,  0, 1]])
-
-        # apply rotation
-        pts_rot = pts.dot(Rz.T)
-
-        # translate back to original location
-        G.PTS = pts_rot + origin[np.newaxis, np.newaxis, :]
+    z_rotation = np.zeros((tessellation, 3, 3))
+    z_rotation[:,0,0] = np.cos(fuel_tank.orientation_euler_angles[2])
+    z_rotation[:,0,1] = -np.sin(fuel_tank.orientation_euler_angles[2])
+    z_rotation[:,1,0] = np.sin(fuel_tank.orientation_euler_angles[2])
+    z_rotation[:,1,1] = np.cos(fuel_tank.orientation_euler_angles[2])
+    z_rotation[:,2,2] = 1
+    
+    
+    # shift to centroid
+    delta_x = -(fuel_tank.length/2)
+    delta_y = 0
+    delta_z = 0
+    fuel_tank_points[:, :, 0] += delta_x
+    fuel_tank_points[:, :, 1] += delta_y
+    fuel_tank_points[:, :, 2] += delta_z 
+    
+    # find min point in x direction
+    fuel_tank_points = np.matmul(z_rotation,np.matmul(y_rotation,np.matmul(x_rotation,fuel_tank_points)))
+    
+    # translate back to front of object
+    delta_x2 = np.min(fuel_tank_points) 
+    delta_y2 = 0
+    delta_z2 = 0 
+    fuel_tank_points[:, :, 0] -= delta_x2
+    fuel_tank_points[:, :, 1] -= delta_y2
+    fuel_tank_points[:, :, 2] -= delta_z2
+     
+    # translate to location on aircraft 
+    fuel_tank_points[:, :, 0] += fuel_tank.origin[0][0]
+    fuel_tank_points[:, :, 1] += fuel_tank.origin[0][1]
+    fuel_tank_points[:, :, 2] += fuel_tank.origin[0][2]
+     
+    G.PTS  = fuel_tank_points 
 
     return G 
