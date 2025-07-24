@@ -93,7 +93,11 @@ def wave_drag(state,settings,geometry):
 #  transonic_lift_wave_drag
 # ----------------------------------------------------------------------------------------------------------------------
 def transonic_lift_wave_drag(conditions, settings, geometry): 
+    """
+    Theory comes from: "The Prediciton of the Drag of Aerofoils and Wings at High Subsonic Speeds" by R.C. Lock, 1986, Aeronautical journal 
     
+    CL vs the CP value before the shock wave comes from the same source as well as NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
+    """
     Mach     = conditions.freestream.mach_number  
     Re       = conditions.freestream.reynolds_number  
     chords   = settings.vortex_distribution.chord_lengths
@@ -113,53 +117,42 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
         
         CD_wave_total = np.zeros_like(Mach)
         CL_y =  conditions.aerodynamics.coefficients.lift.inviscid.spanwise
+            
+        # get dimensional reynolds number                  
+        segment_chords  = chords # chord length for each spanwise location
+        segment_CL = CL_y # lift coefficient for spanwise locations
+        dy         = dys # incremental span distance for each spanwise location
+        delta      = sweep_le # Wing sweep angle at each spanwise location
+
         
-        ws      = 0  
-        counter = 0
-        num_segments = len(n_sw[0])
-        CD_wave_total = np.zeros((len(Mach), num_segments))
-        for counter in range(num_segments): 
-
-            ws_prev = ws
-            ws_next = n_sw[0][counter] 
-            ws     += ws_next
-              
-            # get dimensional reynolds number                  
-            segment_chords  = chords[:,ws_prev:ws]
-            segment_CL = CL_y[:,ws_prev:ws]
-            dy         = dys[:,ws_prev:ws] # 
-            delta      = sweep_le[:,ws_prev:ws] # Wing sweep angle 
-
-            
-            for i in range(len(segment_CL)): # Iterate over each wing segment
-                c_kappa = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
-            
-                # ------------------------------------------------------------------
-                # Cp Data (as function of CL) from "The Prediciton of the Drag of Aerofoils and Wings at High Subsonic Speeds" by R.C. Lock, 1986, Aeronautical journal and NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
-                # ------------------------------------------------------------------
-                CL_data = np.array([0, 0.32, 0.42, 0.55, 0.66, 1.315])
-                Cp_data = np.array([0.0, -0.6, -0.846, -1.098, -1.25, -1.57]) # Data was for M = 0.78, but appears to be valid for similar Mach numbers. Composite data ebtween RAE 5225 and NASA supercritical airfoil. ADD FULL REFERENCE HERE
-            
-                Cp_shock = np.interp(segment_CL[i], CL_data, Cp_data) # Cp vlaue right before the shock wave
-            
-                # ------------------------------------------------------------------
-                # Wave Drag Calculation
-                # ------------------------------------------------------------------
+        c_kappa = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
     
-                # Calculate the local mach number right before the shock wave
-                M1_0_star = np.sqrt((5+Mach[i]**2*np.cos(delta[0])**2)/(1+0.7*Mach[i]**2*Cp_shock)**(2/7) - 5)
-                
-                # Calculate the wave drag coefficient
-                constant = (np.cos(delta[0])**4)/c_kappa * 0.243*((1+0.2*Mach[i]*np.cos(delta[0]))/(Mach[i]*np.cos(delta[0])))**3 # note, delta is assumed to remain constant across all conditions. 
-                CD_wave_segment = constant*(M1_0_star - 1)**4*(2-M1_0_star)/(M1_0_star*(1+0.2*M1_0_star**2)) * 0.5
-                
-                # Set the wave drag coefficient to 0 if there is no shock wave
-                CD_wave_segment[Cp_shock > -0.6] = 0.0 # If the Cp > -0.6 then there is likely no shock wave
+        # ------------------------------------------------------------------
+        # Cp Data (as function of CL) from "The Prediciton of the Drag of Aerofoils and Wings at High Subsonic Speeds" by R.C. Lock, 1986, Aeronautical journal and NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
+        # ------------------------------------------------------------------
+        CL_data = np.array([0, 0.32, 0.42, 0.55, 0.66, 1.315])
+        Cp_data = np.array([0.0, -0.6, -0.846, -1.098, -1.25, -1.57]) # Data was for M = 0.78, but appears to be valid for similar Mach numbers. Composite data ebtween RAE 5225 and NASA supercritical airfoil. ADD FULL REFERENCE HERE
+    
+        Cp_shock = np.interp(segment_CL, CL_data, Cp_data) # Cp vlaue right before the shock wave
+        
+        # ------------------------------------------------------------------
+        # Wave Drag Calculation
+        # ------------------------------------------------------------------
 
-                S_segment = segment_chords[0]*dy[0]
-                CD_wave_total[i, counter] = np.sum(CD_wave_segment*S_segment/S_ref)
+        # Calculate the local mach number right before the shock wave
+        M1_0_star = np.sqrt((5+Mach**2*np.cos(delta[0])**2)/(1+0.7*Mach**2*Cp_shock)**(2/7) - 5)
+        
+        # Calculate the wave drag coefficient
+        constant = (np.cos(delta[0])**4)/c_kappa * 0.243*((1+0.2*Mach*np.cos(delta[0]))/(Mach*np.cos(delta[0])))**3 # note, delta is assumed to remain constant across all conditions. 
+        CD_wave_segment = constant*(M1_0_star - 1)**4*(2-M1_0_star)/(M1_0_star*(1+0.2*M1_0_star**2)) * 0.5
+        
+        # Set the wave drag coefficient to 0 if there is no shock wave
+        CD_wave_segment[Cp_shock > -0.6] = 0.0 # If the Cp > -0.6 then there is likely no shock wave
 
-        CD_wave_transonic = np.sum(CD_wave_total, axis=1, keepdims=True)
+        S_segment = segment_chords[0]*dy[0]
+        CD_wave_total = np.sum(CD_wave_segment*S_segment/S_ref, axis=1, keepdims=True)
+
+        CD_wave_transonic = CD_wave_total
         
     return CD_wave_transonic 
  
