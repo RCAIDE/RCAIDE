@@ -131,6 +131,16 @@ def post_process_noise_data(results,
         noise_data.aircraft_destination_coordinates   = settings.aircraft_destination_coordinates         
     else:    
         microphone_locations =  generate_zero_elevation_microphone_locations(settings)   
+
+    # r     = settings.noise_hemisphere_radius                  
+    # phi   = settings.noise_hemisphere_phi_angles   
+    # theta = settings.noise_hemisphere_theta_angles   
+ 
+    # x     = r * np.outer(np.sin(phi), np.cos(theta))
+    # y     = r * np.outer(np.sin(phi), np.sin(theta))
+    # z     = r * np.outer(np.cos(phi), np.ones(np.size(theta))) 
+ 
+    # microphone_locations = np.array([x,y,z])
     noise_data.microphone_y_resolution       = N_gm_y
     noise_data.microphone_x_resolution       = N_gm_x              
     noise_data.microphone_locations          = microphone_locations.reshape(N_gm_x,N_gm_y,3)         
@@ -177,14 +187,14 @@ def post_process_noise_data(results,
             # Step 5.2.1 :Noise interpolation 
             delta_t         = (noise_time[i] -time[cpt]) / (time[cpt+1] - time[cpt])
             SPL_lower       = conditions.noise.hemisphere_SPL_dBA[cpt].reshape(len(phi),len(theta))
-            SPL_uppper      = conditions.noise.hemisphere_SPL_dBA[cpt+1].reshape(len(phi),len(theta))
-            SPL_gradient    = SPL_uppper -  SPL_lower
+            SPL_upper      = conditions.noise.hemisphere_SPL_dBA[cpt+1].reshape(len(phi),len(theta))
+            SPL_gradient    = SPL_upper -  SPL_lower
             SPL_interp      = SPL_lower + SPL_gradient *delta_t
             
 
             SPL_lower_1_3_spectrum       = conditions.noise.hemisphere_SPL_1_3_spectrum_dBA[cpt].reshape(len(phi),len(theta),num_f)
-            SPL_uppper_1_3_spectrum      = conditions.noise.hemisphere_SPL_1_3_spectrum_dBA[cpt+1].reshape(len(phi),len(theta),num_f)
-            SPL_gradient_1_3_spectrum    = SPL_uppper_1_3_spectrum -  SPL_lower_1_3_spectrum
+            SPL_upper_1_3_spectrum      = conditions.noise.hemisphere_SPL_1_3_spectrum_dBA[cpt+1].reshape(len(phi),len(theta),num_f)
+            SPL_gradient_1_3_spectrum    = SPL_upper_1_3_spectrum -  SPL_lower_1_3_spectrum
             SPL_interp_1_3_spectrum      = SPL_lower_1_3_spectrum + SPL_gradient_1_3_spectrum *delta_t
             
      
@@ -196,7 +206,7 @@ def post_process_noise_data(results,
             R                              = np.linalg.norm(RML[i], axis=1) 
             locs                           = np.argsort(R)[:n]
             pts                            = (PHI[i][locs],THETA[i][locs]) 
-            SPL_dBA_unscaled               = SPL_dBA_surrogate(pts) 
+            SPL_dBA_unscaled               = SPL_dBA_surrogate(pts) # What happens for phi = 0 ? Does it know that the data wraps around?
             SPL_dBA_1_3_spectrum_unscaled  = SPL_dBA_1_3_spectrum_surrogate(pts) 
             
             #  Step 5.2.4 Scale data using radius  
