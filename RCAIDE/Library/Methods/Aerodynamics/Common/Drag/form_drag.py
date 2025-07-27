@@ -44,14 +44,15 @@ def form_drag(state,settings,geometry):
                         sweep_le     = wing.segments[segs[seg_i]].sweeps.leading_edge
                         area         = wing.segments[seg_i].area 
                         span         = wing.segments[seg_i].spans.projected
-                        CD_form  = compute_wing_form_drag(conditions,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio,area,span, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n)
+                        CD_form      = compute_wing_form_drag(conditions,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio,area,span, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n)
                         
                     else:
+                        pass
                         # use simple form drag estimate 
-                        CD_form  =   Mach*(107.9 * (alpha**4) - 17.888 * (alpha**3) + 2.2026 * (alpha**2) + 0.0512 * (alpha) - 0.0021) 
-                        
-                    CD_form[Mach>1]  = 0
-                    CD_form_total += CD_form* (wing.segments[segs[seg_i]].areas.reference/ geometry.reference_area)
+                        #CD_form  =   Mach* (107.9 * (alpha**4) - 17.888 * (alpha**3) + 2.2026 * (alpha**2) + 0.0512 * (alpha) - 0.0021) 
+                        #CD_form[Mach<0.0225705]  = 0
+                        #CD_form[Mach>1]  = 0
+                    #CD_form_total += CD_form* (wing.segments[segs[seg_i]].areas.reference/ geometry.reference_area)
             else:
                 if wing.airfoil_2D_polars:
                     inboard_airfoil_polar  = wing.airfoil.polars
@@ -67,10 +68,11 @@ def form_drag(state,settings,geometry):
                     CD_form                = compute_wing_form_drag(conditions, inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, area,span,root_chord,tip_chord,root_twist,tip_twist,sweep_le,n)
                                             
                 else:
+                    pass
                     # use simple form drag estimate  
-                    CD_form      =   Mach*(107.9 * (alpha**4) - 17.888 * (alpha**3) + 2.2026 * (alpha**2) + 0.0512 * (alpha) - 0.0021) 
-                CD_form[Mach>1]  = 0
-                CD_form_total    += CD_form * (wing.areas.reference / geometry.reference_area)
+                    #CD_form      =   Mach*(107.9 * (alpha**4) - 17.888 * (alpha**3) + 2.2026 * (alpha**2) + 0.0512 * (alpha) - 0.0021) 
+                    #CD_form[Mach>1]  = 0
+                #CD_form_total    += CD_form * (wing.areas.reference / geometry.reference_area)
             
     state.conditions.aerodynamics.coefficients.drag.form.total = CD_form_total 
     return  

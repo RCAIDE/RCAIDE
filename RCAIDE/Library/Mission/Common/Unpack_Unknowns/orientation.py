@@ -103,7 +103,7 @@ def orientation(segment):
     else:
         segment.state.conditions.frames.body.inertial_rotations[:,0] = -segment.bank_angle
         
-    segment.state.conditions.frames.body.inertial_rotations[:,2] =  segment.state.conditions.frames.planet.true_heading[:,0] 
+    segment.state.conditions.frames.body.inertial_rotations[:,2] = segment.state.conditions.frames.planet.true_heading[:,0] 
     
     # Velocity Control
     if ctrls.velocity.active:

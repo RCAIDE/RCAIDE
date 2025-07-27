@@ -99,11 +99,9 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     CL vs the CP value before the shock wave comes from the same source as well as NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
     """
     Mach     = conditions.freestream.mach_number  
-    Re       = conditions.freestream.reynolds_number  
     chords   = settings.vortex_distribution.chord_lengths
-    sweep_le = settings.vortex_distribution.leading_edge_sweeps
-    n_sw     = settings.vortex_distribution.n_sw  
-    dys      = settings.vortex_distribution.chord_widths 
+    delta    = settings.vortex_distribution.leading_edge_sweeps 
+    dy       = settings.vortex_distribution.chord_widths 
     S_ref    = geometry.reference_area
     
     CD_wave_transonic = np.zeros_like(Mach)
@@ -117,24 +115,15 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
         
         CD_wave_total = np.zeros_like(Mach)
         CL_y =  conditions.aerodynamics.coefficients.lift.inviscid.spanwise
-            
-        # get dimensional reynolds number                  
-        segment_chords  = chords # chord length for each spanwise location
-        segment_CL = CL_y # lift coefficient for spanwise locations
-        dy         = dys # incremental span distance for each spanwise location
-        delta      = sweep_le # Wing sweep angle at each spanwise location
-
-        
+             
         c_kappa = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
     
         # ------------------------------------------------------------------
         # Cp Data (as function of CL) from "The Prediciton of the Drag of Aerofoils and Wings at High Subsonic Speeds" by R.C. Lock, 1986, Aeronautical journal and NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
         # ------------------------------------------------------------------
-        CL_data = np.array([0, 0.32, 0.42, 0.55, 0.66, 1.315])
-        Cp_data = np.array([0.0, -0.6, -0.846, -1.098, -1.25, -1.57]) # Data was for M = 0.78, but appears to be valid for similar Mach numbers. Composite data ebtween RAE 5225 and NASA supercritical airfoil. ADD FULL REFERENCE HERE
-    
-        Cp_shock = np.interp(segment_CL, CL_data, Cp_data) # Cp vlaue right before the shock wave
-        
+        # Data was for M = 0.78, but appears to be valid for similar Mach numbers. Composite data ebtween RAE 5225 and NASA supercritical airfoil. ADD FULL REFERENCE HERE
+                   
+        Cp_shock =  0.9825 *(CL_y**2)  - 2.5132 *(CL_y) + 0.0279 # Cp vlaue right before the shock wave 
         # ------------------------------------------------------------------
         # Wave Drag Calculation
         # ------------------------------------------------------------------
@@ -149,7 +138,7 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
         # Set the wave drag coefficient to 0 if there is no shock wave
         CD_wave_segment[Cp_shock > -0.6] = 0.0 # If the Cp > -0.6 then there is likely no shock wave
 
-        S_segment = segment_chords[0]*dy[0]
+        S_segment = chords[0]*dy[0]
         CD_wave_total = np.sum(CD_wave_segment*S_segment/S_ref, axis=1, keepdims=True)
 
         CD_wave_transonic = CD_wave_total

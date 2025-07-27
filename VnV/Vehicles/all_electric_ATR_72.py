@@ -52,7 +52,30 @@ def vehicle_setup():
     vehicle.systems.control                           = "fully powered"
     vehicle.systems.accessories                       = "short range"  
 
+    # ################################################# Landing Gear #############################################################    
+    
+    main_gear                                = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear() 
+    main_gear.tire_diameter                  = 34  *  Units.inches 
+    main_gear.rim_diameter                   = 16  *  Units.inches 
+    main_gear.tire_width                     = 10  *  Units.inches 
+    main_gear.strut_length                   = 1 *  Units.meter 
+    main_gear.wheels                         = 4   
+    main_gear.number_of_gear_types_in_tandem = 1
+    main_gear.number_of_wheels_in_gear_type  = 2  
+    main_gear.symmetric                      = True
+    vehicle.append_component(main_gear)  
+
+    nose_gear                                = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()   
+    nose_gear.tire_diameter                  = 17   *  Units.inches   
+    nose_gear.rim_diameter                   = 7    *  Units.inches 
+    nose_gear.tire_width                     = 17   *  Units.inches 
+    nose_gear.strut_length                   = 1 *  Units.meter 
+    nose_gear.wheels                         = 2   
+    nose_gear.number_of_gear_types_in_tandem = 1
+    nose_gear.number_of_wheels_in_gear_type  = 2    
+    vehicle.append_component(nose_gear)
  
+    # ################################################# Wings #############################################################   
     # ------------------------------------------------------------------
     #   Main Wing
     # ------------------------------------------------------------------
@@ -374,21 +397,7 @@ def vehicle_setup():
     
     # add to vehicle
     vehicle.append_component(fuselage)  
-    
-    # ################################################# Landing Gear #############################################################   
-    # ------------------------------------------------------------------        
-    #  Landing Gear
-    # ------------------------------------------------------------------  
-    main_gear               = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear() 
-    main_gear.strut_length  = 12. * Units.inches  
-    main_gear.wheels        = 2   
-    vehicle.append_component(main_gear)  
-
-    nose_gear               = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()      
-    nose_gear.wheels        = 2    
-    nose_gear.strut_length  = 6. * Units.inches 
-    vehicle.append_component(nose_gear)  
-    
+     
     # ########################################################  Energy Network  #########################################################  
     net                                         = RCAIDE.Framework.Networks.Electric()    
     #------------------------------------------------------------------------------------------------------------------------------------  

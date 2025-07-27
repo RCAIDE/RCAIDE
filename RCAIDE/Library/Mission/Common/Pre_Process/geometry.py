@@ -30,7 +30,14 @@ def geometry(mission):
         if segment.analyses.geometry.settings.update_fuselage_properties:
             for fuselage in segment.analyses.geometry.vehicle.fuselages:
                 compute_layout_of_passenger_accommodations(fuselage)
-                fuselage_planform(fuselage) 
+                fuselage_planform(fuselage)
+                 
+        # update landing gear properties 
+        for landing_gear in  segment.analyses.geometry.vehicle.landing_gears:
+            if (landing_gear.number_of_gear_types_in_tandem != None) and  (landing_gear.number_of_wheels_in_gear_type != None):
+                landing_gear.wheels = landing_gear.number_of_gear_types_in_tandem * landing_gear.number_of_wheels_in_gear_type
+                if landing_gear.symmetric:
+                    landing_gear.wheels *= 2
         
         # update wing properties 
         for wing in segment.analyses.geometry.vehicle.wings: 

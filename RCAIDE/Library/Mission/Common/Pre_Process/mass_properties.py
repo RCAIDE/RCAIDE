@@ -119,7 +119,7 @@ def mass_properties(mission):
                 if weights_analysis.print_weight_analysis_report:
                     if i == 0: 
                         print("\nPerforming Weights Analysis")
-                        print("--------------------------------------------------------")
+                        print("----------------------------------------")
                         print("Propulsion Architecture:", weights_analysis.propulsion_architecture) 
                         print("Method                 :", weights_analysis.method)
                         def print_section(title, data):
@@ -132,7 +132,7 @@ def mass_properties(mission):
                             print("-" * 40)
                             print(f"{'Total':<25}{data.get('total', 0):>15.2f}\n")
     
-                        print("\n=== WEIGHT BREAKDOWN REPORT ===\n")
+                        print("\n======= WEIGHT BREAKDOWN REPORT =======\n")
     
                         # Extract data
                         structural = weights_analysis.vehicle.mass_properties.weight_breakdown.empty.get('structural', {})
@@ -158,7 +158,7 @@ def mass_properties(mission):
                         print(f"{'Takeoff Weight':<25}{weights_analysis.vehicle.mass_properties.takeoff:>15.2f}")
                         print(f"{'Zero Fuel Weight':<25}{weights_analysis.vehicle.mass_properties.weight_breakdown.get('zero_fuel_weight', 0):>15.2f}")
                         print(f"{'Max Takeoff Weight':<25}{weights_analysis.vehicle.mass_properties.weight_breakdown.get('max_takeoff', 0):>15.2f}")
-                        print("\n===============================\n")
+                        print("\n========================================\n")
             
             if weights_analysis.vehicle.mass_properties.takeoff > weights_analysis.vehicle.mass_properties.max_takeoff:
                 print('\n Warning: Takeoff Weight is greater than Maximum Takeoff Weight')

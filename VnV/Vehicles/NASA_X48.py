@@ -7,14 +7,12 @@
 
 # RCAIDE imports 
 import RCAIDE
-from RCAIDE.Framework.Core import Units, Data       
+from RCAIDE.Framework.Core import Units 
 from RCAIDE.Library.Plots                                                   import *     
 from RCAIDE.Library.Methods.Powertrain.Propulsors.Electric_Ducted_Fan       import design_electric_ducted_fan
 
-# python imports 
-import numpy as np  
-from copy import deepcopy 
-import os
+# python imports  
+from copy import deepcopy  
 
 # ----------------------------------------------------------------------
 #   Define the Vehicle

@@ -54,6 +54,34 @@ def vehicle_setup():
     vehicle.design_range                   = 4505 * Units.miles
     vehicle.design_cruise_alt              = 60000.0 * Units.ft
     
+
+    
+    #------------------------------------------------------------------------------------------------------------------------------------
+    # ##################################################### Landing Gear ################################################################    
+    #------------------------------------------------------------------------------------------------------------------------------------ 
+    main_gear                                = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear() 
+    main_gear.tire_diameter                  =  47    *  Units.inches  
+    main_gear.rim_diameter                   =  22.1  *  Units.inches 
+    main_gear.tire_width                     =  15.75 *  Units.inches 
+    main_gear.strut_length                   =  12    * Units.ft 
+    main_gear.wheels                         = 8   
+    main_gear.number_of_gear_types_in_tandem = 2
+    main_gear.number_of_wheels_in_gear_type  = 2  
+    main_gear.symmetric                      = True
+    vehicle.append_component(main_gear)  
+
+    nose_gear                                = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()   
+    nose_gear.tire_diameter                  = 31 *  Units.inches    
+    nose_gear.rim_diameter                   = 14  *  Units.inches 
+    nose_gear.tire_width                     = 10.75  *  Units.inches 
+    nose_gear.strut_length                   = 12 * Units.ft 
+    nose_gear.wheels                         = 2   
+    nose_gear.number_of_gear_types_in_tandem = 1
+    nose_gear.number_of_wheels_in_gear_type  = 2    
+    vehicle.append_component(nose_gear)
+    
+        
+    
     #------------------------------------------------------------------------------------------------------------------------------------
     # ######################################################## Wings ####################################################################  
     #------------------------------------------------------------------------------------------------------------------------------------
@@ -285,27 +313,7 @@ def vehicle_setup():
     fuselage.areas.wetted                           = 442.
     fuselage.areas.front_projected                  = 11.9 
     fuselage.effective_diameter                     = 3.1 
-    fuselage.differential_pressure                  = 7.4e4 * Units.pascal    # Maximum differential pressure 
-    
-    fuselage.OpenVSP_values = Data() # VSP uses degrees directly
-    
-    fuselage.OpenVSP_values.nose = Data()
-    fuselage.OpenVSP_values.nose.top = Data()
-    fuselage.OpenVSP_values.nose.side = Data()
-    fuselage.OpenVSP_values.nose.top.angle = 20.0
-    fuselage.OpenVSP_values.nose.top.strength = 0.75
-    fuselage.OpenVSP_values.nose.side.angle = 20.0
-    fuselage.OpenVSP_values.nose.side.strength = 0.75  
-    fuselage.OpenVSP_values.nose.TB_Sym = True
-    fuselage.OpenVSP_values.nose.z_pos = -.01
-    
-    fuselage.OpenVSP_values.tail = Data()
-    fuselage.OpenVSP_values.tail.top = Data()
-    fuselage.OpenVSP_values.tail.side = Data()    
-    fuselage.OpenVSP_values.tail.bottom = Data()
-    fuselage.OpenVSP_values.tail.top.angle = 0.0
-    fuselage.OpenVSP_values.tail.top.strength = 0.0 
-    
+    fuselage.differential_pressure                  = 7.4e4 * Units.pascal    # Maximum differential pressure  
     
     # Segment  
     segment                                     = RCAIDE.Library.Components.Fuselages.Segments.Segment() 

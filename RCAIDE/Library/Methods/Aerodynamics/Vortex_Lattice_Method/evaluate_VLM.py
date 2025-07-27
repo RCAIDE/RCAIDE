@@ -396,7 +396,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
         conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations
 
         # corrections 
-        RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(state,settings,vehicle)         
+        RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(state,settings,vehicle)     
         for wing in  vehicle.wings: 
             RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_wing(state,settings,wing)
         for fuslage in vehicle.fuselages: 

@@ -1,9 +1,6 @@
 # RCAIDE/Library/Methods/Aerodynamics/Common/Lift/fuselage_correction.py
-# (c) Copyright 2023 Aerospace Research Community LLC
 #  
 # Created: Mar 2024 M. Carke
-
-from RCAIDE.Framework.Core import Units
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuselage Correction

@@ -134,7 +134,7 @@ class Athena_Vortex_Lattice(Stability):
         compute                                    = Process() 
         compute.lift                               = Process() 
         compute.lift.inviscid_wings                = None 
-        compute.lift.fuselage                      = Common.Lift.fuselage_correction 
+        compute.lift.fuselage                      = Common.Lift.fuselage_correction
         compute.drag                               = Process()
         compute.drag.parasite                      = Process()
         compute.drag.parasite.wings                = Process_Geometry('wings')
