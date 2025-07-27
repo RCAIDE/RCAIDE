@@ -450,13 +450,13 @@ def VLM(conditions,settings,geometry):
     # Lift coefficient
     Clift_y   = LIFT/CHORD_strip/ES  
     CL_wing   = np.add.reduceat(LIFT,span_breaks[0],axis=1)/VD.wing_areas  
-    CL        = np.atleast_2d(np.sum(LIFT,axis=1)/S_ref).T          
+    CLift     = np.atleast_2d(np.sum(LIFT,axis=1)/S_ref).T          
 
     # Drag coefficient
     results   = compute_trefftz_plane_induced_drag(conditions, VD,Clift_y, X, Y, Z, CHORD_strip,S_ref,b_ref)       
     
     # force coefficeints 
-    CX_for   = (TANALF * CL -  results.CDrag_induced)/(COSALF - SINALF*TANALF)
+    CX_for   = (TANALF * CLift -  results.CDrag_induced)/(COSALF - SINALF*TANALF)
     CZ_for   = (results.CDrag_induced+ CX_for*COSALF)/SINALF  
     CY_for   = np.atleast_2d(np.sum(FY,axis=1)/S_ref).T  
 
@@ -474,7 +474,7 @@ def VLM(conditions,settings,geometry):
     results.X_ref             = x_m
     results.Y_ref             = 0
     results.Z_ref             = z_m 
-    results.CLift             = CL  
+    results.CLift             = CLift  
     results.CX                = CX_for 
     results.CY                = CY_for  
     results.CZ                = -CZ_for 
