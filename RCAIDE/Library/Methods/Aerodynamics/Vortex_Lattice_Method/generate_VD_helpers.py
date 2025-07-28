@@ -108,7 +108,7 @@ def postprocess_VD(VD, settings):
     VD.YB_TE  = YB_TE_wings
     VD.ZB_TE  = ZB_TE_wings
 
-    VD.is_postprocessed = True    
+    VD.is_postprocessed = True
     
     return VD 
 

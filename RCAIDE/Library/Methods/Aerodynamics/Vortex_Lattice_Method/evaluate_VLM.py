@@ -298,7 +298,7 @@ def evaluate_surrogate(state,settings,vehicle):
     #conditions.static_stability.coefficients.lift            = Clift_alpha 
     #conditions.static_stability.coefficients.drag            = Cdrag_induced_alpha 
     conditions.aerodynamics.coefficients.lift.inviscid.total  = Clift_alpha
-    conditions.aerodynamics.coefficients.drag.induced.total   = Cdrag_induced_alpha
+    conditions.aerodynamics.coefficients.drag.induced.inviscid  = Cdrag_induced_alpha
     
     return
 
@@ -390,7 +390,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
         conditions.aerodynamics.coefficients.lift.inviscid.spanwise       = VLM_results.sectional_CLift
         conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
         conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
-        conditions.aerodynamics.coefficients.drag.induced.total           = Cdrag
+        conditions.aerodynamics.coefficients.drag.induced.inviscid        = Cdrag
         conditions.aerodynamics.coefficients.surface_pressure             = VLM_results.CP
         conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced    
         conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations
