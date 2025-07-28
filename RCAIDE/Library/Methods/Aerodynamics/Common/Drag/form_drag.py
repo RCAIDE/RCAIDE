@@ -21,58 +21,13 @@ def form_drag(state,settings,geometry):
 
     conditions  = state.conditions   
     Mach        = conditions.freestream.mach_number 
-    alpha       = conditions.aerodynamics.angles.alpha  
-    n           = settings.number_of_spanwise_vortices
+    alpha       = conditions.aerodynamics.angles.alpha   
     
-    CD_form_total = np.zeros_like(Mach)
-    for wing in geometry.wings:
-        if wing.vertical == False:
-            if len(wing.segments) > 0: 
-                for seg_i in range(len(wing.segments)-1):
-                    segs = list(wing.segments.keys())
-                    if wing.segments[segs[seg_i]].airfoil_2D_polars: 
-                        inboard_segment        = wing.segments[segs[seg_i]]
-                        outboard_segment       = wing.segments[segs[seg_i+1]]
-                        inboard_airfoil_polar  = inboard_segment.airfoil.polars
-                        outboard_airfoil_polar = outboard_segment.airfoil.polars
-                        
-                        aspect_ratio = wing.segments[segs[seg_i]]
-                        root_chord   = wing.chords.root * wing.segments[segs[seg_i]].percent_root_chord
-                        tip_chord    = wing.chords.root * wing.segments[segs[seg_i+1]].percent_root_chord
-                        root_twist   = wing.segments[seg_i].twist
-                        tip_twist    = wing.segments[segs[seg_i+1]].twist
-                        sweep_le     = wing.segments[segs[seg_i]].sweeps.leading_edge
-                        area         = wing.segments[seg_i].area 
-                        span         = wing.segments[seg_i].spans.projected
-                        CD_form      = compute_wing_form_drag(conditions,inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio,area,span, root_chord,tip_chord,root_twist,tip_twist,sweep_le,n)
-                        
-                    else:
-                        pass
-                        # use simple form drag estimate 
-                        #CD_form  =   Mach* (107.9 * (alpha**4) - 17.888 * (alpha**3) + 2.2026 * (alpha**2) + 0.0512 * (alpha) - 0.0021) 
-                        #CD_form[Mach<0.0225705]  = 0
-                        #CD_form[Mach>1]  = 0
-                    #CD_form_total += CD_form* (wing.segments[segs[seg_i]].areas.reference/ geometry.reference_area)
-            else:
-                if wing.airfoil_2D_polars:
-                    inboard_airfoil_polar  = wing.airfoil.polars
-                    outboard_airfoil_polar = wing.airfoil.polars 
-                    aspect_ratio           = wing.aspect_ratio
-                    root_chord             = wing.chords.root 
-                    tip_chord              = wing.chords.root * wing.taper
-                    root_twist             = wing.twists.root
-                    tip_twist              = wing.twists.tip
-                    sweep_le               = wing.sweeps.leading_edge 
-                    area                   = wing.areas.reference 
-                    span                   = wing.spans.projected 
-                    CD_form                = compute_wing_form_drag(conditions, inboard_airfoil_polar, outboard_airfoil_polar,aspect_ratio, area,span,root_chord,tip_chord,root_twist,tip_twist,sweep_le,n)
-                                            
-                else:
-                    pass
-                    # use simple form drag estimate  
-                    #CD_form      =   Mach*(107.9 * (alpha**4) - 17.888 * (alpha**3) + 2.2026 * (alpha**2) + 0.0512 * (alpha) - 0.0021) 
-                    #CD_form[Mach>1]  = 0
-                #CD_form_total    += CD_form * (wing.areas.reference / geometry.reference_area)
+    CD_form_total = np.zeros_like(Mach) 
+    # use simple form drag estimate  
+    #CD_form      =   Mach*(107.9 * (alpha**4) - 17.888 * (alpha**3) + 2.2026 * (alpha**2) + 0.0512 * (alpha) - 0.0021) 
+    #CD_form[Mach>1]  = 0
+    #CD_form_total    += CD_form * (wing.areas.reference / geometry.reference_area)
             
     state.conditions.aerodynamics.coefficients.drag.form.total = CD_form_total 
     return  

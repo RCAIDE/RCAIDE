@@ -343,6 +343,12 @@ def import_vsp_vehicle(tag,
             rotor           = read_vsp_rotor(rotor_id,units_type)
             rotor.tag       = vsp.GetGeomName(rotor_id) 
             propulsor.rotor = rotor
+
+            # Nacelle 
+            nacelle = read_vsp_nacelle(nacelle_id,vsp_nacelle_type[idx], units_type)
+            if calculate_wetted_area:
+                nacelle.areas.wetted = measurements[vsp.GetGeomName(nacelle_id)] * (units_factor**2)           
+            propulsor.nacelle = nacelle                      
             
             # Append to Network 
             network.propulsors.append(propulsor)

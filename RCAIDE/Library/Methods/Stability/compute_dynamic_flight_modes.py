@@ -51,29 +51,18 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         vertical_fligth_flag = True
     
     if (np.count_nonzero(vehicle.mass_properties.moments_of_inertia.tensor) > 0) and  (vertical_fligth_flag !=  True) and (np.all(np.isnan(AoA)) !=  True):
-        g          = conditions.freestream.gravity  
-        rho        = conditions.freestream.density
-        u0         = conditions.freestream.velocity
-        qDyn0      = conditions.freestream.dynamic_pressure  
-        theta0     = np.arctan(conditions.frames.inertial.velocity_vector[:,2]/conditions.frames.inertial.velocity_vector[:,0])[:,None] 
-        SS         = conditions.static_stability
-        SSD        = SS.derivatives 
-        DS         = conditions.dynamic_stability 
-        num_cases  = len(AoA)
-        S_ref      = vehicle.reference_area              
-     
-        if 'main_wing' in vehicle.wings:
-            c_ref      = vehicle.wings['main_wing'].chords.mean_aerodynamic
-            b_ref      = vehicle.wings['main_wing'].spans.projected
-        else:
-            c_ref  = 0.
-            b_ref  = 0.
-            for wing in vehicle.wings:
-                if wing.vertical == False:
-                    if c_ref <= wing.chords.mean_aerodynamic:
-                        c_ref  = wing.chords.mean_aerodynamic
-                        b_ref  = wing.spans.projected
-        
+        g                  = conditions.freestream.gravity  
+        rho                = conditions.freestream.density
+        u0                 = conditions.freestream.velocity
+        qDyn0              = conditions.freestream.dynamic_pressure  
+        theta0             = np.arctan(conditions.frames.inertial.velocity_vector[:,2]/conditions.frames.inertial.velocity_vector[:,0])[:,None] 
+        SS                 = conditions.static_stability
+        SSD                = SS.derivatives 
+        DS                 = conditions.dynamic_stability 
+        num_cases          = len(AoA)
+        S_ref              = settings.reference_values.S_ref
+        c_ref              = settings.reference_values.c_ref
+        b_ref              = settings.reference_values.b_ref   
         moments_of_inertia = vehicle.mass_properties.moments_of_inertia.tensor
         Ixx    = moments_of_inertia[0][0]
         Iyy    = moments_of_inertia[1][1]

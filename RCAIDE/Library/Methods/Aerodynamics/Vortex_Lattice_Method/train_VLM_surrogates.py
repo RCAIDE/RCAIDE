@@ -359,39 +359,30 @@ def train_model(aerodynamics, Mach):
     training.CL_r                      = CL_r
     training.CN_r                      = CN_r
     training.CY_r                      = CY_r 
-      
-
-    correction_factor = Data() # If a correction factor is not included below then there is no correction
-    correction_factor.dCY_dbeta = -1
-    correction_factor.dCL_dp    = 1
-    correction_factor.dCM_dq    = 1
-    correction_factor.dCN_dp    = 1
-    correction_factor.dCN_dr    = 1
-    correction_factor.dCN_ddelta_r = -1
-
+       
     # STABILITY DERIVATIVES 
     training.dClift_dalpha = (Clift_alpha[0,:] - Clift_alpha[1,:]) / (AoA[0] - AoA[1])       
     training.dCX_dalpha = (CX_alpha[0,:] - CX_alpha[1,:]) / (AoA[0] - AoA[1])       
-    training.dCX_du = (CX_u[0,:] - CX_u[1,:]) / (u[0] - u[1])                                     
+    training.dCX_du     = (CX_u[0,:] - CX_u[1,:]) / (u[0] - u[1])                                     
 
-    training.dCY_dbeta = correction_factor.dCY_dbeta*((CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])) # Note correction 
+    training.dCY_dbeta  = -1 *((CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])) # Note correction 
     training.dCY_dr     = (CY_r[0,:] - CY_r[1,:]) / (yaw_rate[0]-yaw_rate[1]) 
 
     training.dCZ_dalpha = (CZ_alpha[0,:] - CZ_alpha[1,:]) / (AoA[0] - AoA[1])             
-    training.dCZ_du = (CZ_u[0,:] - CZ_u[1,:]) / (u[0] - u[1])    
+    training.dCZ_du     = (CZ_u[0,:] - CZ_u[1,:]) / (u[0] - u[1])    
     training.dCZ_dq     = (CZ_q[0,:] - CZ_q[1,:]) / (pitch_rate[0]-pitch_rate[1])    
     
-    training.dCL_dbeta = ((CL_beta[0,:] - CL_beta[1,:]) / (Beta[0] - Beta[1]))  
-    training.dCL_dp = correction_factor.dCL_dp*((CL_p[0,:] - CL_p[1,:]) / (roll_rate[0]-roll_rate[1]))    # Note correction 
-    training.dCL_dr = (CL_r[0,:] - CL_r[1,:]) / (yaw_rate[0]-yaw_rate[1])    
+    training.dCL_dbeta  = ((CL_beta[0,:] - CL_beta[1,:]) / (Beta[0] - Beta[1]))  
+    training.dCL_dp     = ((CL_p[0,:] - CL_p[1,:]) / (roll_rate[0]-roll_rate[1]))    
+    training.dCL_dr     = (CL_r[0,:] - CL_r[1,:]) / (yaw_rate[0]-yaw_rate[1])    
 
     training.dCM_dalpha = (CM_alpha[0,:] - CM_alpha[1,:]) / (AoA[0] - AoA[1])          
-    training.dCM_du = (CM_u[0,:] - CM_u[1,:]) / (u[0] - u[1])                                               
-    training.dCM_dq = correction_factor.dCM_dq*((CM_q[0,:] - CM_q[1,:]) / (pitch_rate[0]-pitch_rate[1]))  # Note correction           
+    training.dCM_du     = (CM_u[0,:] - CM_u[1,:]) / (u[0] - u[1])                                               
+    training.dCM_dq     = ((CM_q[0,:] - CM_q[1,:]) / (pitch_rate[0]-pitch_rate[1]))        
             
-    training.dCN_dbeta = (CN_beta[0,:] - CN_beta[1,:]) / (Beta[0] - Beta[1]) 
-    training.dCN_dp = correction_factor.dCN_dp*((CN_p[0,:] - CN_p[1,:]) / (roll_rate[0]-roll_rate[1]))   # Note correction               
-    training.dCN_dr = correction_factor.dCN_dr*((CN_r[0,:] - CN_r[1,:]) / (yaw_rate[0]-yaw_rate[1])) # Note correction 
+    training.dCN_dbeta  = (CN_beta[0,:] - CN_beta[1,:]) / (Beta[0] - Beta[1]) 
+    training.dCN_dp     = ((CN_p[0,:] - CN_p[1,:]) / (roll_rate[0]-roll_rate[1]))    
+    training.dCN_dr     = ((CN_r[0,:] - CN_r[1,:]) / (yaw_rate[0]-yaw_rate[1])) 
 
     '''  for control surfaces, subtract inflence WITHOUT control surface deflected from coefficients WITH control surfaces'''
       
@@ -408,17 +399,17 @@ def train_model(aerodynamics, Mach):
                     Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
                     conditions                                      = RCAIDE.Framework.Mission.Common.Results()
                     conditions.expand_rows(len(Mach),override=False)
-                    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-                    conditions.freestream.mach_number               = Machs    
+                    conditions.aerodynamics.angles.alpha                        = np.ones_like(Machs) *1E-12
+                    conditions.aerodynamics.angles.beta                         = np.zeros_like(Machs) 
+                    conditions.freestream.mach_number                           = Machs    
                     vehicle.wings[wing.tag].control_surfaces.aileron.deflection =  delta_a[a_i]
-                    VLM_results = VLM(conditions,settings,vehicle)
-                    CY_res    = VLM_results.CY
-                    CL_res    = VLM_results.CL
-                    CN_res    = VLM_results.CN
-                    CY_d_a[a_i,:]    =  -(CY_res[:,0]   - CY_alpha_0[0,:]  ) # Negative sign is due to convention
-                    CL_d_a[a_i,:]    =  -(CL_res[:,0]   - CL_alpha_0[0,:]) # Negative sign is due to convention
-                    CN_d_a[a_i,:]    =  (CN_res[:,0]   - CN_alpha_0[0,:]  ) 
+                    VLM_results          = VLM(conditions,settings,vehicle)
+                    CY_res               = VLM_results.CY
+                    CL_res               = VLM_results.CL
+                    CN_res               = VLM_results.CN
+                    CY_d_a[a_i,:]        =  -(CY_res[:,0]   - CY_alpha_0[0,:]  ) # Negative sign is due to convention
+                    CL_d_a[a_i,:]        =  -(CL_res[:,0]   - CL_alpha_0[0,:])   # Negative sign is due to convention
+                    CN_d_a[a_i,:]        =  (CN_res[:,0]   - CN_alpha_0[0,:]  ) 
                 training.dCY_ddelta_a    = (CY_d_a[0,:] - CY_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
                 training.dCL_ddelta_a    = ((CL_d_a[0,:] - CL_d_a[1,:]) / (delta_a[0] - delta_a[1]))
                 training.dCN_ddelta_a    = (CN_d_a[0,:] - CN_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
@@ -439,12 +430,11 @@ def train_model(aerodynamics, Mach):
                     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs     
                     vehicle.wings[wing.tag].control_surfaces.elevator.deflection =  delta_e[e_i]
-                    VLM_results = VLM(conditions,settings,vehicle)
-                    Clift_res = VLM_results.CLift
-                    CM_res    = VLM_results.CM
-                    
-                    Clift_d_e[e_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]
-                    CM_d_e[e_i,:]    = CM_res[:,0]   - CM_alpha_0[0,:]    
+                    VLM_results          = VLM(conditions,settings,vehicle)
+                    Clift_res            = VLM_results.CLift
+                    CM_res               = VLM_results.CM 
+                    Clift_d_e[e_i,:]     = Clift_res[:,0]  - Clift_alpha_0[0,:]
+                    CM_d_e[e_i,:]        = CM_res[:,0]   - CM_alpha_0[0,:]    
                 training.dClift_ddelta_e = ((Clift_d_e[0,:] - Clift_d_e[1,:]) / (delta_e[0] - delta_e[1]))
                 training.dCM_ddelta_e    = (CM_d_e[0,:] - CM_d_e[1,:]) / (delta_e[0] - delta_e[1])  
                 vehicle.wings[wing.tag].control_surfaces.elevator.deflection = delta_e_0
@@ -465,16 +455,16 @@ def train_model(aerodynamics, Mach):
                     conditions.freestream.mach_number               = Machs    
                     vehicle.wings[wing.tag].control_surfaces.rudder.deflection =  delta_r[r_i]
                     VLM_results = VLM(conditions,settings,vehicle)
-                    CY_res    = VLM_results.CY
-                    CL_res    = VLM_results.CL
-                    CN_res    = VLM_results.CN
+                    CY_res      = VLM_results.CY
+                    CL_res      = VLM_results.CL
+                    CN_res      = VLM_results.CN
                     CY_d_r[r_i,:]    =   -(CY_res[:,0]   - CY_alpha_0[0,:]  ) # Negative sign is due to convention
                     CL_d_r[r_i,:]    =   -(CL_res[:,0]   - CL_alpha_0[0,:]  ) # Negative sign is due to convention
                     CN_d_r[r_i,:]    =   (CN_res[:,0]   - CN_alpha_0[0,:] )
                   
                 training.dCY_ddelta_r    = (CY_d_r[0,:] - CY_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
                 training.dCL_ddelta_r    = (CL_d_r[0,:] - CL_d_r[1,:]) / (delta_r[0] - delta_r[1])  
-                training.dCN_ddelta_r    = correction_factor.dCN_ddelta_r*(CN_d_r[0,:] - CN_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
+                training.dCN_ddelta_r    = -1*(CN_d_r[0,:] - CN_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
                 vehicle.wings[wing.tag].control_surfaces.rudder.deflection = delta_r_0
                     
             # --------------------------------------------------------------------------------------------------------------
@@ -491,14 +481,14 @@ def train_model(aerodynamics, Mach):
                     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs    
                     vehicle.wings[wing.tag].control_surfaces.flap.deflection = delta_f[f_i]
-                    VLM_results = VLM(conditions,settings,vehicle)
+                    VLM_results  = VLM(conditions,settings,vehicle)
                     CM_res       = VLM_results.CM
                     Clift_res    = VLM_results.CLift
                     vehicle.wings[wing.tag].control_surfaces.flap.deflection = 0 
-                    Clift_d_f[f_i,:] = Clift_res[:,0]  - Clift_alpha_0[0,:]  
-                    CM_d_f[f_i,:]    = CM_res[:,0]   - CM_alpha_0[0,:]            
+                    Clift_d_f[f_i,:]      = Clift_res[:,0]  - Clift_alpha_0[0,:]  
+                    CM_d_f[f_i,:]         = CM_res[:,0]   - CM_alpha_0[0,:]            
                 training.dClift_ddelta_f  = (Clift_d_f[0,:] - Clift_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
-                training.dCM_ddelta_f    = (CM_d_f[0,:] - CM_d_f[1,:]) / (delta_f[0] - delta_f[1])  
+                training.dCM_ddelta_f     = (CM_d_f[0,:] - CM_d_f[1,:]) / (delta_f[0] - delta_f[1])  
                 vehicle.wings[wing.tag].control_surfaces.flap.deflection = delta_f_0
                 
     # reset vortex distribution after training 
@@ -615,21 +605,14 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     training.CZ_beta                   = CZ_beta
     training.CL_beta                   = CL_beta
     training.CM_beta                   = CM_beta
-    training.CN_beta                   = CN_beta  
-      
-    correction_factor                  = Data() # If a correction factor is not included below then there is no correction
-    correction_factor.dCY_dbeta        = 1#10
-    correction_factor.dCL_dp           = 1#-2
-    correction_factor.dCM_dq           = 1#10
-    correction_factor.dCN_dp           = 1#-3
-    correction_factor.dCN_dr           = 1#3
+    training.CN_beta                   = CN_beta   
 
     # STABILITY DERIVATIVES 
     training.dClift_dalpha = (Clift_alpha[0,:] - Clift_alpha[1,:]) / (AoA[0] - AoA[1])          
     training.dCX_dalpha    = (CX_alpha[0,:] - CX_alpha[1,:]) / (AoA[0] - AoA[1])            
     training.dCX_du        = (CX_u[0,:] - CX_u[1,:]) / (u[0] - u[1])                                 
          
-    training.dCY_dbeta  = correction_factor.dCY_dbeta * (CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])    
+    training.dCY_dbeta  = (CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])    
     training.dCY_dr     = (CY_r[0,:] - CY_r[1,:]) / (yaw_rate[0]-yaw_rate[1])                     
     
     training.dCZ_dalpha = (CZ_alpha[0,:] - CZ_alpha[1,:]) / (AoA[0] - AoA[1])             
@@ -637,7 +620,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     training.dCZ_dq     = (CZ_q[0,:] - CZ_q[1,:]) / (pitch_rate[0]-pitch_rate[1])    
 
     training.dCL_dbeta  = (CL_beta[0,:] - CL_beta[1,:]) / (Beta[0] - Beta[1])                                                    
-    training.dCL_dp     = correction_factor.dCL_dp * (CL_p[0,:] - CL_p[1,:]) / (roll_rate[0]-roll_rate[1])                
+    training.dCL_dp     = (CL_p[0,:] - CL_p[1,:]) / (roll_rate[0]-roll_rate[1])                
     training.dCL_dr     = (CL_r[0,:] - CL_r[1,:]) / (yaw_rate[0]-yaw_rate[1])                    
     
     training.dCM_dalpha = (CM_alpha[0,:] - CM_alpha[1,:]) / (AoA[0] - AoA[1])          
@@ -645,8 +628,8 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     training.dCM_dq     = (CM_q[0,:] - CM_q[1,:]) / (pitch_rate[0]-pitch_rate[1])             
     
     training.dCN_dbeta  = (CN_beta[0,:] - CN_beta[1,:]) / (Beta[0] - Beta[1])                
-    training.dCN_dp = correction_factor.dCN_dp * (CN_p[0,:] - CN_p[1,:]) / (roll_rate[0]-roll_rate[1])                 
-    training.dCN_dr = correction_factor.dCN_dr * (CN_r[0,:] - CN_r[1,:]) / (yaw_rate[0]-yaw_rate[1])
+    training.dCN_dp =  (CN_p[0,:] - CN_p[1,:]) / (roll_rate[0]-roll_rate[1])                 
+    training.dCN_dr =  (CN_r[0,:] - CN_r[1,:]) / (yaw_rate[0]-yaw_rate[1])
 
 
     '''  for control surfaces, subtract inflence WITHOUT control surface deflected from coefficients WITH control surfaces'''

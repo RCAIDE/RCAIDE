@@ -103,13 +103,7 @@ def wing_planform(wing,overwrite_reference = True):
                     seg.thickness_to_chord = seg.airfoil.geometry.thickness_to_chord 
                 else:
                     seg.airfoil.geometry = import_airfoil_geometry(seg.airfoil.coordinate_file) 
-                    seg.thickness_to_chord =  seg.airfoil.geometry.thickness_to_chord
-
-                if seg.airfoil.polar_files != None: 
-                    seg.airfoil.polars = compute_airfoil_properties(seg.airfoil.geometry, airfoil_polar_files= seg.airfoil.polar_files)
-                    seg.airfoil_2D_polars = True
-                else:
-                    seg.airfoil_2D_polars = False                    
+                    seg.thickness_to_chord =  seg.airfoil.geometry.thickness_to_chord                 
             
                 t_cs.append(seg.thickness_to_chord) 
             else: 
@@ -247,13 +241,7 @@ def wing_planform(wing,overwrite_reference = True):
                 wing.thickness_to_chord = wing.airfoil.geometry.thickness_to_chord 
             else:
                 wing.airfoil.geometry   = import_airfoil_geometry(wing.airfoil.coordinate_file) 
-                wing.thickness_to_chord =  wing.airfoil.geometry.thickness_to_chord
-
-            if wing.airfoil.polar_files != None: 
-                wing.airfoil.polars = compute_airfoil_properties(wing.airfoil.geometry, airfoil_polar_files= wing.airfoil.polar_files)
-                wing.airfoil_2D_polars = True
-            else:
-                wing.airfoil_2D_polars = False
+                wing.thickness_to_chord =  wing.airfoil.geometry.thickness_to_chord 
                 
         t_c_w  = wing.thickness_to_chord   
         
@@ -325,7 +313,7 @@ def wing_planform(wing,overwrite_reference = True):
                  
     return wing
 
-def bwb_wing_planform(wing, overwrite_reference = True):
+def bwb_wing_planform(wing,overwrite_reference = True):
 
     wing_planform(wing,overwrite_reference) 
 
@@ -422,8 +410,7 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
                 S_exposed_seg = Sref_seg
 
             if wing.symmetric:
-                Sref_seg      = Sref_seg*2
-                span_seg      = span_seg * 2
+                Sref_seg = Sref_seg*2
                 S_exposed_seg = S_exposed_seg*2
             
             # compute wetted area of segment
@@ -435,7 +422,6 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
             segment.taper                   = taper 
             segment.chords.mean_aerodynamic = mac_seg 
             segment.areas.reference         = Sref_seg
-            #segment.spans.projected         = span_seg 
             segment.aspect_ratio            = (span_seg **2) / Sref_seg
             segment.areas.exposed           = S_exposed_seg
             segment.areas.wetted            = Swet_seg 
