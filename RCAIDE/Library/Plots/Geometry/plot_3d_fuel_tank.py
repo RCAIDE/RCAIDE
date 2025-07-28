@@ -647,7 +647,6 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     z_rotation[:,:,1,1] = np.cos(fuel_tank.orientation_euler_angles[2])
     z_rotation[:,:,2,2] = 1
     
-    
     # shift to centroid
     delta_x = -(np.max(fuel_tank_points[:, :, 0])/2)
     delta_y = 0
@@ -657,22 +656,22 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     fuel_tank_points[:, :, 2] += delta_z 
     
     # find min point in x direction
-    fuel_tank_points = np.matmul(z_rotation,np.matmul(y_rotation,np.matmul(x_rotation,fuel_tank_points[...,None]))).squeeze(-1)
+    fuel_tank_points_2 = np.matmul(z_rotation,np.matmul(y_rotation,np.matmul(x_rotation,fuel_tank_points[...,None]))).squeeze(-1)
     
     # translate back to front of object
-    delta_x2 = np.min(fuel_tank_points) 
+    delta_x2 = -(np.max(fuel_tank_points_2[:, :, 0])/2)
     delta_y2 = 0
     delta_z2 = 0 
-    fuel_tank_points[:, :, 0] -= delta_x2
-    fuel_tank_points[:, :, 1] -= delta_y2
-    fuel_tank_points[:, :, 2] -= delta_z2
+    fuel_tank_points_2[:, :, 0] += delta_x2
+    fuel_tank_points_2[:, :, 1] += delta_y2
+    fuel_tank_points_2[:, :, 2] += delta_z2
      
     # translate to location on aircraft 
-    fuel_tank_points[:, :, 0] += fuel_tank.origin[0][0]
-    fuel_tank_points[:, :, 1] += fuel_tank.origin[0][1]
-    fuel_tank_points[:, :, 2] += fuel_tank.origin[0][2]
+    fuel_tank_points_2[:, :, 0] += fuel_tank.origin[0][0]
+    fuel_tank_points_2[:, :, 1] += fuel_tank.origin[0][1]
+    fuel_tank_points_2[:, :, 2] += fuel_tank.origin[0][2]
      
     G = Data()
-    G.PTS  = fuel_tank_points 
+    G.PTS  = fuel_tank_points_2 
 
     return G 

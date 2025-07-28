@@ -226,7 +226,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
 
 
                             l      = maximum_circle_coordinates[:,2]#- interpolated_circle_coordinates[:,0] # assuming rounded end cylindrical tank
-                            r      = (maximum_circle_coordinates[:,0] - 2 * fuel_tank.wall_thickness) / 2
+                            r      = (maximum_circle_coordinates[:,0] -  fuel_tank.offset - 2 * fuel_tank.wall_thickness) / 2
                             volume = (np.pi * ( r** 2) * l +  4 / 3 * np.pi * ( r** 3))*2 # multiply the volume by 2 as it is symmetric about root chord
 
                             max_volume_index = np.argmax(volume)    
@@ -236,11 +236,12 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                             total_fuel_mass   += volume[max_volume_index] * fuel_tank.fuel.density
                             # Geometric Properties for Plotting 
 
-                            fuel_tank.outer_diameter = maximum_circle_coordinates[max_volume_index,0]
-                            fuel_tank.length         = 2*maximum_circle_coordinates[max_volume_index,2] +  fuel_tank.outer_diameter # because it is bbeing added in plotting funciton 
-                            #fuel_tank.origin[0][0]   = maximum_circle_coordinates[max_volume_index,1]
+                            fuel_tank.outer_diameter = maximum_circle_coordinates[max_volume_index,0]  -  fuel_tank.offset
+                            fuel_tank.length         = 2*maximum_circle_coordinates[max_volume_index,2] 
+                            
+                            fuel_tank.origin[0][0]   = maximum_circle_coordinates[max_volume_index,1] - fuel_tank.outer_diameter/2
                             #fuel_tank.origin[0][1]   = -maximum_circle_coordinates[max_volume_index,2]
-                            #fuel_tank.origin[0][2]   = maximum_circle_coordinates[max_volume_index,3]
+                            fuel_tank.origin[0][2]   = maximum_circle_coordinates[max_volume_index,3]
 
                         else:
                             volume  = compute_non_integral_tank_fuel_volume(fuel_tank)
