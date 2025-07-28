@@ -199,7 +199,7 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
         miscellaneous_drag_coefficient   = state.conditions.aerodynamics.coefficients.drag.miscellaneous.total,
         compressibility_drag_coefficient = state.conditions.aerodynamics.coefficients.drag.compressible.total,
         cooling_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.cooling.total,
-        trim_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.trim.total,
+        trim_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.trim.total,
         moment_coefficient               = state.conditions.static_stability.coefficients.M, 
         
     )  
