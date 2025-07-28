@@ -60,9 +60,8 @@ class Aerodynamics(Analysis):
         self.settings.unique_segment_surrogate                           = False
         self.settings.maximum_lift_coefficient                           = np.inf 
         self.settings.fuselage_lift_correction                           = 1.14
-        self.settings.trim_drag_correction_factor                        = 1.05
-        self.settings.wing_parasite_drag_form_factor                     = 1.2 
-        self.settings.pylon_parasite_drag_factor                         = 0.0
+        self.settings.trim_drag_correction_factor                        = 1.02
+        self.settings.wing_parasite_drag_form_factor                     = 1.2  
         self.settings.fuselage_parasite_drag_form_factor                 = 2.3  
 
         self.settings.drag_reduction_factors                             = Data()

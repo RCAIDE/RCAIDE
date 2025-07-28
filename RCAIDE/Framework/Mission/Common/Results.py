@@ -182,7 +182,9 @@ class Results(Conditions):
         self.aerodynamics.coefficients.drag.compressible                       = Conditions() 
         self.aerodynamics.coefficients.drag.induced                            = Conditions()
         self.aerodynamics.coefficients.drag.induced.total                      = ones_1col * 0  
-        self.aerodynamics.coefficients.drag.induced.wings                      = Conditions()
+        self.aerodynamics.coefficients.drag.induced.wings                      = Conditions() 
+        self.aerodynamics.coefficients.drag.induced.viscous                    = ones_1col * 0 
+        self.aerodynamics.coefficients.drag.induced.inviscid                   = ones_1col * 0 
         self.aerodynamics.coefficients.drag.induced.efficiency_factor          = ones_1col * 0 
         self.aerodynamics.coefficients.drag.cooling                            = Conditions()
         self.aerodynamics.coefficients.drag.cooling.total                      = ones_1col * 0

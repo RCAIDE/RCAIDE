@@ -35,16 +35,16 @@ def trim_drag(state,settings,geometry):
       
     """    
     # unpack   
-    parasite_total        = state.conditions.aerodynamics.coefficients.drag.parasite.total            
-    induced_total         = state.conditions.aerodynamics.coefficients.drag.induced.total            
-    compressibility_total = state.conditions.aerodynamics.coefficients.drag.compressible.total    
-    form_drag             = state.conditions.aerodynamics.coefficients.drag.form.total 
+    parasite_total          = state.conditions.aerodynamics.coefficients.drag.parasite.total            
+    induced_total           = state.conditions.aerodynamics.coefficients.drag.induced.total            
+    compressibility_total   = state.conditions.aerodynamics.coefficients.drag.compressible.total    
+    form_drag               = state.conditions.aerodynamics.coefficients.drag.form.total  
 
     # untrimmed drag 
-    CD_0  =  parasite_total + induced_total  + compressibility_total + form_drag  
-     
-    control_surface_drag = np.zeros_like(CD_0)
+    CD_0  =  parasite_total + induced_total  + compressibility_total + form_drag
     
+    # control surface drag 
+    control_surface_drag = np.zeros_like(CD_0)
     for wing in geometry.wings: 
         for cs in wing.control_surfaces:
             if type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Spoiler:

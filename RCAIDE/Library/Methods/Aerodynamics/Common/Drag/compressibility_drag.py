@@ -1,14 +1,11 @@
-# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/compressibility_drag_total.py
+# RCAIDE/Library/Methods/Aerodynamics/Common/Drag/compressibility_drag.py
 # 
 # Created:  Jul 2024, RCAIDE Team 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Framework.Core                    import Data
-from RCAIDE.Library.Components.Wings          import Main_Wing
-from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender
-from .drag_divergence                         import drag_divergence  
+# ---------------------------------------------------------------------------------------------------------------------- 
+from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender 
 
 # package imports
 import numpy as np
@@ -47,24 +44,47 @@ def compressibility_drag(state,settings,geometry):
 
     # Unpack
     conditions       = state.conditions
-    Mach             = conditions.freestream.mach_number 
-    Cl               = conditions.aerodynamics.coefficients.lift.total   
+    Mach             = conditions.freestream.mach_number  
     low_mach_cutoff  = settings.supersonic.begin_drag_rise_mach_number 
     peak_mach        = settings.supersonic.peak_mach_number 
-   
+
     sub_spline = Cubic_Spline_Blender(low_mach_cutoff, peak_mach-(peak_mach-low_mach_cutoff)*3/4) 
     sub_h00    = lambda M:sub_spline.compute(M)  
-    low_inds   = Mach[:,0]<peak_mach 
+    low_inds   = Mach[:,0]<peak_mach   
 
-    cd_compressibility           = np.zeros_like(Mach) 
-    cd_compressibility[low_inds] = drag_divergence(Mach[low_inds], geometry,Cl[low_inds])  
-    
-    cd_c           = np.zeros_like(Mach)
-    cd_c[low_inds] = cd_compressibility[low_inds]*(sub_h00(Mach[low_inds]))   
-  
-    # ---------------------------------------------------------------------     
-    # total compressibility drag
-    # --------------------------------------------------------------------- 
-    conditions.aerodynamics.coefficients.drag.compressible = Data(total   = cd_c)  
-        
+    cd_compressibility  = np.zeros_like(Mach)  
+    for wing in  geometry.wings:  
+        sweep_w   = wing.sweeps.leading_edge 
+
+        # Get effective CLift_wings and sweep
+        tc = wing.thickness_to_chord / np.cos(sweep_w)
+        cl = conditions.aerodynamics.coefficients.lift.inviscid.wings[wing.tag]/ (np.cos(sweep_w) ** 2)
+
+        # Compressibility drag based on regressed fits from AA241 
+        mcc_cos_ws = 0.922321524499352       \
+                - 1.153885166170620*tc    \
+                       - 0.304541067183461*cl    \
+                       + 0.332881324404729*tc*tc \
+                       + 0.467317361111105*tc*cl \
+                       + 0.087490431201549*cl*cl
+
+        # Crest-critical Mach number, corrected for wing sweep
+        Mcc = mcc_cos_ws/ np.cos(sweep_w)      
+
+        # Divergence ratio
+        mo_Mach = Mach/Mcc
+
+        # Compressibility correlation, Shevell
+        dcdc_cos3g = 0.0019*mo_Mach**14.641
+
+        # Compressibility drag  
+        cd_c = dcdc_cos3g * (np.cos(sweep_w)**3) 
+         
+        cd_compressibility += cd_c * (wing.areas.reference / geometry.reference_area)  
+ 
+    cd_compressibility[low_inds] = cd_compressibility[low_inds]*(sub_h00(Mach[low_inds]))   
+   
+    # store results  
+    conditions.aerodynamics.coefficients.drag.compressible.total = cd_compressibility
+
     return  

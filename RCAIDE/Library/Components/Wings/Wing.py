@@ -116,10 +116,7 @@ class Wing(Component):
         Flag indicating presence of high-lift devices, defaults to False
         
     symbolic : bool
-        Flag for symbolic computation mode, defaults to False
-        
-    high_mach : bool
-        Flag for high Mach number flow, defaults to False
+        Flag for symbolic computation mode, defaults to False 
         
     vortex_lift : bool
         Flag for vortex lift modeling, defaults to False
@@ -213,8 +210,7 @@ class Wing(Component):
         self.twists.tip                             = 0.0
                                                     
         self.high_lift                              = False
-        self.symbolic                               = False 
-        self.high_mach                              = False
+        self.symbolic                               = False  
         self.vortex_lift                            = False
                                                     
         self.transition_x_upper                     = 0.0

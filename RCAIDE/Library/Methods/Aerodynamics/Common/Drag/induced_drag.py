@@ -105,7 +105,7 @@ def induced_drag(state,settings,geometry):
         total_viscous_induced_drag = total_induced_drag - CDi
         
     aero.drag.induced.total                    = total_induced_drag
-    aero.drag.induced.viscous                  = total_viscous_induced_drag
+    aero.drag.induced.viscous                  = total_viscous_induced_drag 
     aero.drag.induced.oswald_efficiency_factor = e_osw
     aero.drag.induced.viscous_wings_drag       = wing_viscous_induced_drags 
     

@@ -19,7 +19,6 @@ from .parasite_drag_nacelle                     import parasite_drag_nacelle
 from .trim_drag                                 import trim_drag
 from .form_drag                                 import form_drag
 from .total_drag                                import total_drag 
-from .drag_divergence                           import drag_divergence 
 from .wave_drag                                 import wave_drag
 from .cooling_drag                              import cooling_drag
 from .windmilling_drag                          import windmilling_drag

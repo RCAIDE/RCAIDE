@@ -295,9 +295,9 @@ def evaluate_surrogate(state,settings,vehicle):
     # -----------------------------------------------------------------------------------------------------------------------
     # Pack Aero and Stability Results 
     # -----------------------------------------------------------------------------------------------------------------------  
-    #conditions.static_stability.coefficients.lift            = Clift_alpha 
-    #conditions.static_stability.coefficients.drag            = Cdrag_induced_alpha 
-    conditions.aerodynamics.coefficients.lift.inviscid.total  = Clift_alpha
+    #conditions.static_stability.coefficients.lift              = Clift_alpha 
+    #conditions.static_stability.coefficients.drag              = Cdrag_induced_alpha 
+    conditions.aerodynamics.coefficients.lift.inviscid.total    = Clift_alpha
     conditions.aerodynamics.coefficients.drag.induced.inviscid  = Cdrag_induced_alpha
     
     return

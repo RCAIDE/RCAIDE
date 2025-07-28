@@ -72,14 +72,14 @@ def wave_drag(state,settings,geometry):
     # ---------------------------------------------------------------------    
     # wave drag due to lift 
     # --------------------------------------------------------------------- 
-    transonic_CDw_lift   = transonic_lift_wave_drag(conditions, settings, geometry) 
-    supersonic_CDw_lift  = supersonic_lift_wave_drag(conditions, settings, geometry) # *(1-sup_h00(Mach))  NEED TO CHECK  
+    transonic_CDw_lift   = transonic_lift_wave_drag(conditions, settings, geometry)  # add smoothing function 
+    supersonic_CDw_lift  = supersonic_lift_wave_drag(conditions, settings, geometry) # add smoothing function  # *(1-sup_h00(Mach))  NEED TO CHECK  
 
     # ---------------------------------------------------------------------     
     # total wave drag
     # ---------------------------------------------------------------------
-    CD_wave_lift   = supersonic_CDw_volume  
-    CD_wave_volume = supersonic_CDw_lift + transonic_CDw_lift
+    CD_wave_volume = supersonic_CDw_volume  
+    CD_wave_lift   = supersonic_CDw_lift + transonic_CDw_lift
     CD_wave        = CD_wave_lift + CD_wave_volume
 
     # Save drag breakdown 

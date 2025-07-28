@@ -15,11 +15,8 @@ def total_drag(state,settings,geometry):
         None 
 
     Args:
-        settings.
-          drag_coefficient_increment                          (float): drag_coefficient_increment [Unitless] 
-        state.conditions.aerodynamics.coefficients.drag.
-          trim_corrected_drag                         (numpy.ndarray): trim corrected drag        [Unitless]
-          trim_drag                                (numpy.ndarray): spoiler drag               [Unitless]
+        settings. 
+        state.conditions.aerodynamics.coefficients.drag. 
         geometry                                               (dict): aircraft data structure    [-]
 
 
@@ -27,10 +24,8 @@ def total_drag(state,settings,geometry):
         None 
     """
 
-    # unpack inputs  
-    trim_correction_factor     = settings.trim_drag_correction_factor    
-    drag_coefficient_increment = settings.drag_coefficient_increment  
-    drag                       = state.conditions.aerodynamics.coefficients.drag
+    # unpack inputs    
+    drag                 = state.conditions.aerodynamics.coefficients.drag
 
     # various drag components
     parasite_total        = drag.parasite.total            
@@ -41,11 +36,9 @@ def total_drag(state,settings,geometry):
     trim_drag             = drag.trim.total  
     form_drag             = drag.form.total  
     wave_drag             = drag.wave.total  
-
-    # untrimmed drag 
-    untrimmed_drag  =  parasite_total + induced_total  + compressibility_total + miscellaneous_drag + cooling_drag + trim_drag + form_drag + wave_drag
-     
+ 
     # total drag 
-    drag.total =  trim_correction_factor * untrimmed_drag      + drag_coefficient_increment
+    drag.total =  settings.trim_drag_correction_factor * (parasite_total + induced_total  + compressibility_total + miscellaneous_drag \
+                  + cooling_drag + trim_drag + form_drag + wave_drag     + settings.drag_coefficient_increment)  
 
     return  
