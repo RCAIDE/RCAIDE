@@ -224,7 +224,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                                                             #Dia, x,     y,      z
 
                            
-                            r      = (maximum_circle_coordinates[:,0] -  fuel_tank.offset - 2 * fuel_tank.wall_thickness) / 2
+                            r      = (maximum_circle_coordinates[:,0] -  fuel_tank.radial_offset - 2 * fuel_tank.wall_thickness) / 2
                             l      = maximum_circle_coordinates[:,2] - maximum_circle_coordinates[:,0]/2 # Length of cylinder Section of the rounded edge tank 
                             volume = (np.pi * ( r** 2) * l +  4 / 3 * np.pi * ( r** 3))*2 # multiply the volume by 2 as it is symmetric about root chord
 
@@ -235,7 +235,7 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                             total_fuel_mass   += volume[max_volume_index] * fuel_tank.fuel.density
                             # Geometric Properties for Plotting 
 
-                            fuel_tank.outer_diameter = maximum_circle_coordinates[max_volume_index,0]  -  fuel_tank.offset - 2 * fuel_tank.wall_thickness
+                            fuel_tank.outer_diameter = maximum_circle_coordinates[max_volume_index,0]  -  fuel_tank.radial_offset - 2 * fuel_tank.wall_thickness
                             fuel_tank.length         = 2*(r[max_volume_index]+l[max_volume_index]) # Length of whole tank with rounded edges
                             
                             fuel_tank.origin[0][0]   = maximum_circle_coordinates[max_volume_index,1] - fuel_tank.outer_diameter/2

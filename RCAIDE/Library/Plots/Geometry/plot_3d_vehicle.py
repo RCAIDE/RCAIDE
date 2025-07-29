@@ -346,10 +346,11 @@ def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,na
     show_axis                = False 
     save_figure              = False 
     show_figure              = False
-    save_filename            = 'propulsor'  
-    tessellation             = 24
+    save_filename            = 'propulsor'
 
     for propulsor in network.propulsors:  
+        number_of_airfoil_points = 21
+        tessellation             = 24
         if 'nacelle' in propulsor: 
             if propulsor.nacelle !=  None: 
                 plot_data = plot_3d_nacelle(plot_data,propulsor.nacelle,tessellation,number_of_airfoil_points,nacelle_color,nacelle_alpha) 
@@ -383,7 +384,7 @@ def plot_fuel_tanks(vehicle, distributor,plot_data,tessellation):
                 plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
         else:
             if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
-                plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
+                 plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
 
     return 
         
