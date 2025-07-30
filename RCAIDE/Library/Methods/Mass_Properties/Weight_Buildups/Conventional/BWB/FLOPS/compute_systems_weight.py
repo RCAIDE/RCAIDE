@@ -108,6 +108,7 @@ def compute_systems_weight(vehicle):
     NENG = 0
     FNEW = 0
     FNEF = 0
+    
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet):
@@ -138,11 +139,9 @@ def compute_systems_weight(vehicle):
                 ref_wing = wing
                 
     DG    = vehicle.mass_properties.max_takeoff / Units.lbs
-    WSC   = 1.1 * VMAX ** 0.52 * SFLAP ** 0.6 * DG ** 0.32  # surface controls weight
-    
-    XL = 0
-    WF = 0
-    L_fus = 0
+    WSC   = 1.1 * VMAX ** 0.52 * SFLAP ** 0.6 * DG ** 0.32  # surface controls weight 
+    XL    = 0
+    WF    = 0 
     NFUSE = 0
     
     for wing in  vehicle.wings:

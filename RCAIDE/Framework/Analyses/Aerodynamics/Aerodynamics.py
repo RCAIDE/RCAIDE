@@ -59,17 +59,15 @@ class Aerodynamics(Analysis):
         self.settings                                                    = Data()
         self.settings.unique_segment_surrogate                           = False
         self.settings.maximum_lift_coefficient                           = np.inf 
-        self.settings.fuselage_lift_correction                           = 1.14
+        self.settings.fuselage_lift_correction                           = 1.20
         self.settings.trim_drag_correction_factor                        = 1.02
-        self.settings.wing_parasite_drag_form_factor                     = 1.2  
-        self.settings.fuselage_parasite_drag_form_factor                 = 2.3  
-
+        self.settings.wing_parasite_drag_form_factor                     = 1.1  
+        self.settings.fuselage_parasite_drag_form_factor                 = 2.1  
         self.settings.drag_reduction_factors                             = Data()
         self.settings.drag_reduction_factors.parasite_drag               = 0.0  # Reduction factors are proportional (.1 is a 10% weight reduction)
         self.settings.drag_reduction_factors.induced_drag                = 0.0  # Reduction factors are proportional (.1 is a 10% weight reduction)
         self.settings.drag_reduction_factors.compressibility_drag        = 0.0  # Reduction factors are proportional (.1 is a 10% weight reduction) 
-        self.settings.maximum_lift_coefficient_factor                    = 1.0        
-        self.settings.lift_to_drag_adjustment                            = 0.0   
+        self.settings.maximum_lift_coefficient_factor                    = 1.0    
         self.settings.viscous_lift_dependent_drag_factor                 = 0.38
         self.settings.drag_coefficient_increment                         = 0.0 
         self.settings.maximum_lift_coefficient                           = np.inf  

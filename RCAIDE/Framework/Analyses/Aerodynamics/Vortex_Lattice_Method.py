@@ -153,8 +153,6 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.wave                                           = Common.Drag.wave_drag
         compute.drag.trim                                           = Common.Drag.trim_drag 
         compute.drag.total                                          = Common.Drag.total_drag
-        compute.stability                                           = Process()
-        compute.stability.dynamic_modes                             = RCAIDE.Library.Methods.Stability.compute_dynamic_flight_modes  
         self.process.compute                                        = compute
         
 

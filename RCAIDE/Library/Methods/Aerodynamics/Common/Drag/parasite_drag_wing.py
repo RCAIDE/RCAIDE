@@ -83,7 +83,7 @@ def parasite_drag_wing(state,settings,geometry):
             mac_seg       = segment.chords.mean_aerodynamic
             Sref_seg      = segment.areas.reference
             Swet_seg      = segment.areas.wetted
-            sweep_seg     = segment.sweeps.quarter_chord
+            sweep_seg     = segment.sweeps.leading_edge  
     
             # compute parasite drag coef., form factor, skin friction coef., compressibility factor and reynolds number for segments
             segment_parasite_drag , segment_k_w, segment_cf_w_u, segment_cf_w_l, segment_k_comp_u, segment_k_comp_l, k_reyn_u ,k_reyn_l = compute_parasite_drag(re,mac_seg,Mc,Tc,xtu,xtl,sweep_seg,avg_t_c_s,Sref_seg,Swet_seg,C)
@@ -110,7 +110,7 @@ def parasite_drag_wing(state,settings,geometry):
     else:              
         # wing
         mac_w      = wing.chords.mean_aerodynamic
-        sweep_w    = wing.sweeps.quarter_chord  
+        sweep_w    = wing.sweeps.leading_edge 
         Sref       = wing.areas.reference 
         Swet       = wing.areas.wetted                         
 

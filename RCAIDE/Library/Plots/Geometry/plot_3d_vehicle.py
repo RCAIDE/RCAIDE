@@ -30,16 +30,16 @@ def plot_3d_vehicle(vehicle,
                     save_figure                 = False,
                     save_filename               = "Vehicle_Geometry",
                     alpha                       = 1.0,   
-                    axis_limit                  = 35,
+                    axis_limit                  = 40,
                     top_view                    = False, 
                     side_view                   = False, 
                     front_view                  = False, 
                     camera_eye_x                = -1.5,
                     camera_eye_y                = -1.5,
                     camera_eye_z                = 1.0,
-                    camera_center_x             = 0.,
-                    camera_center_y             = 0.,
-                    camera_center_z             = 0,
+                    camera_center_x             = 2,
+                    camera_center_y             = 2.,
+                    camera_center_z             = -2,
                     wing_color                  = 'greys', 
                     fuselage_color              = 'teal', 
                     nacelle_color               = 'darkmint', 
@@ -171,21 +171,23 @@ def plot_3d_vehicle(vehicle,
     
     # Use update_layout instead of update_scenes
     fig.update_layout(
-        width=1500,
-        height=1500,
-        scene=dict( 
+        width = 1400,
+        height= 1400,
+        scene=dict(   
             xaxis=dict(backgroundcolor="grey", gridcolor="white", showbackground=show_axis,
-                       zerolinecolor="white", range=[0, 2 * axis_limit], visible=show_axis),
+                       zerolinecolor="white",   range=[0, 2 * axis_limit], visible=show_axis),
             yaxis=dict(backgroundcolor="grey", gridcolor="white", showbackground=show_axis, 
-                       zerolinecolor="white", range=[-axis_limit, axis_limit], visible=show_axis),
+                       zerolinecolor="white",  range=[-axis_limit, axis_limit], visible=show_axis),
             zaxis=dict(backgroundcolor="grey", gridcolor="white", showbackground=show_axis,
-                       zerolinecolor="white", range=[-axis_limit , axis_limit ], visible=show_axis)
+                       zerolinecolor="white", range=[-axis_limit  , axis_limit ], visible=show_axis),  
+            aspectratio=dict(x=1, y=1, z=1),   
         ),
         scene_camera=camera
     )
+      
     
-    fig.update_coloraxes(showscale=False)   
-    fig.update_traces(opacity=alpha)
+    #fig.update_coloraxes(showscale=False)   
+    #fig.update_traces(opacity=alpha)
 
     # Use the first path from sys.path
     save_filename = os.path.join(sys.path[0], save_filename)

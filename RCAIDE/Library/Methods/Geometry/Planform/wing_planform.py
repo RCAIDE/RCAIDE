@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE 
 from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments, convert_sweep 
-from RCAIDE.Library.Methods.Geometry.Airfoil  import compute_airfoil_properties, compute_naca_4series, import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Airfoil                import  compute_naca_4series, import_airfoil_geometry
 
 # package imports 
 import numpy as np
@@ -124,10 +124,7 @@ def wing_planform(wing,overwrite_reference = True):
         tapers       = chords[1:]/chords[:-1]
         
         # Calculate the areas of each segment
-        As = (lengths_dim*chords_dim[:-1]-(chords_dim[:-1]-chords_dim[1:])*(lengths_dim/2))
-        
-        # Calculate the weighted area, this should not include any unexposed area 
-        A_wets = 2*(1+0.2*t_cs[:-1])*As 
+        As = (lengths_dim*chords_dim[:-1]-(chords_dim[:-1]-chords_dim[1:])*(lengths_dim/2)) 
         
         # Calculate the wing area
         ref_area = np.sum(As)*(1+sym)

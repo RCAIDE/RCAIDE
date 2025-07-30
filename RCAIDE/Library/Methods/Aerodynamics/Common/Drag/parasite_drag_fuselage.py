@@ -72,7 +72,7 @@ def parasite_drag_fuselage(state,settings,fuselage):
         a[Mach < 0.95]  = 2 * (1-Mach[Mach < 0.95]**2) * (d_d**2) *(np.arctanh(D[Mach < 0.95])-D[Mach < 0.95]) / (D[Mach < 0.95]**3)
         a[Mach >= 0.95] = 2  * (d_d**2) *(np.arctanh(D[Mach >= 0.95])-D[Mach >= 0.95]) / (D[Mach >= 0.95]**3)
     
-        du_max_u             = np.zeros_like(Mach)    
+        du_max_u               = np.zeros_like(Mach)    
         du_max_u[Mach < 0.95]  = a[Mach < 0.95] / ( (2-a[Mach < 0.95]) * (1-Mach[Mach < 0.95]**2)**0.5 ) 
         du_max_u[Mach >= 0.95] = a[Mach >= 0.95] / ( (2-a[Mach >= 0.95]) )
         
@@ -111,8 +111,8 @@ def parasite_drag_fuselage(state,settings,fuselage):
     
         fuselage_parasite_drag = k_fus * cf_fus * Swet / Sref
          
-    # Store data
-    results = Data(
+    # Store data 
+    state.conditions.aerodynamics.coefficients.drag.parasite[fuselage.tag] = Data(
         wetted_area               = Swet   , 
         reference_area            = Sref   , 
         total                     = fuselage_parasite_drag ,
@@ -120,7 +120,6 @@ def parasite_drag_fuselage(state,settings,fuselage):
         compressibility_factor    = k_comp ,
         reynolds_factor           = k_reyn , 
         form_factor               = k_fus  ,
-    ) 
-    state.conditions.aerodynamics.coefficients.drag.parasite[fuselage.tag] = results        
+    )    
         
     return  

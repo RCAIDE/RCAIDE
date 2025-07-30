@@ -38,9 +38,6 @@ def main():
     configuration = configs.takeoff
     configuration.wings['main_wing'].flaps_angle =  20. * Units.deg
     configuration.wings['main_wing'].slats_angle  = 25. * Units.deg
-    
-    # V2_V2_ratio may be informed by user. If not, use default value (1.2)
-    configuration.V2_VS_ratio = 1.21
     analyses = RCAIDE.Framework.Analyses.Analysis.Container()
     analyses = base_analysis(vehicle)
     analyses.aerodynamics.settings.maximum_lift_coefficient_factor = 0.90

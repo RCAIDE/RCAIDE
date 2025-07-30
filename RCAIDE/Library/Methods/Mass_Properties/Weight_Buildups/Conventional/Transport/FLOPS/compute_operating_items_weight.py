@@ -58,6 +58,9 @@ def compute_operating_items_weight(vehicle):
         Properties Used:
             N/A
     """ 
+    NPF = vehicle.number_of_first_class_passengers      
+    NPB = vehicle.number_of_business_class_passengers   
+    NPT = vehicle.number_of_economy_class_passengers   
     NENG =  0 
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
@@ -76,36 +79,13 @@ def compute_operating_items_weight(vehicle):
     number_of_tanks = 0  
     for network in  vehicle.networks:
         for fuel_line in network.fuel_lines:
-            for fuel_tank in fuel_line.fuel_tanks:
+            for _ in fuel_line.fuel_tanks:
                 number_of_tanks += 1 
     if number_of_tanks == 0:
         number_of_tanks = 5    
     
-    WUF             = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
-    WOIL            = 0.082 * NENG * THRUST ** 0.65  # engine oil weight
-            
-    if len(vehicle.fuselages) > 0: 
-        for fuselage in  vehicle.fuselages: 
-            if len(fuselage.cabins) > 0:
-                NPT =  0
-                NPF =  0
-                NPB =  0
-                for cabin in fuselage.cabins:
-                    for cabin_class in cabin.classes:
-                        if type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy:
-                            NPT =  cabin_class.number_of_seats_abrest *  cabin_class.number_of_rows
-                        elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business:
-                            NPB =  cabin_class.number_of_seats_abrest *  cabin_class.number_of_rows
-                        elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.First:
-                            NPF =  cabin_class.number_of_seats_abrest *  cabin_class.number_of_rows
-            else:
-                NPF = vehicle.passengers / 20.
-                NPB = vehicle.passengers / 10.
-                NPT = vehicle.passengers - NPF - NPB
-            
-    vehicle.NPF = NPF
-    vehicle.NPB = NPB
-    vehicle.NPT = NPT
+    WUF         = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
+    WOIL        = 0.082 * NENG * THRUST ** 0.65  # engine oil weight  
     WSRV        = (5.164 * NPF + 3.846 * NPB + 2.529 * NPT) * (DESRNG / VMAX) ** 0.255  # passenger service weight
 
     W_cargo = 0

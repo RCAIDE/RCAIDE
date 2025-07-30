@@ -29,9 +29,7 @@ def compute_propulsion_system_weight(vehicle,network):
             - fuselages : list
                 List of fuselage components
             - flight_envelope : Data()
-                Contains design_mach_number
-            - mass_properties : Data()
-                Contains max_zero_fuel
+                Contains design_mach_number 
     network : RCAIDE.Network()
         Network component containing:
             - fuel_lines : list
@@ -223,9 +221,7 @@ def compute_fuel_system_weight(vehicle, NENG):
             Aircraft Design: A Conceptual Approach
 
         Inputs:
-            vehicle - data dictionary with vehicle properties                   [dimensionless]
-                -.design_mach_number: design mach number
-                -.mass_properties.max_zero_fuel: maximum zero fuel weight   [kg]
+            vehicle - data dictionary with vehicle properties                   [dimensionless] 
 
         Outputs:
             WFSYS: Fuel system weight                                       [kg]

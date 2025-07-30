@@ -24,13 +24,15 @@ def fuselage_correction(state,settings,geometry):
     Returns:
         aircraft_total_lift               (numpy.ndarray): lift coefficient [unitless]   
     """        
-    # unpack 
-    fus_correction  = settings.fuselage_lift_correction
-    wings_lift_comp = state.conditions.aerodynamics.coefficients.lift.inviscid.total
+    # unpack
+    invs_lift       = state.conditions.aerodynamics.coefficients.lift.inviscid.total
+        
+    if len(geometry.fuselages) > 0:  
+        # total lift, assuming one fuselage 
+        aircraft_total_lift = invs_lift * settings.fuselage_lift_correction   
     
-    # total lift, assuming one fuselage 
-    aircraft_total_lift = wings_lift_comp * fus_correction   
-
-    state.conditions.aerodynamics.coefficients.lift.total = aircraft_total_lift
+        state.conditions.aerodynamics.coefficients.lift.total = aircraft_total_lift
+    else:
+        state.conditions.aerodynamics.coefficients.lift.total = invs_lift
 
     return 

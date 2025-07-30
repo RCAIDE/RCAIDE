@@ -28,8 +28,7 @@ def compute_propulsion_system_weight(vehicle,network):
             - networks : list
                 List of all propulsion networks
             - design_mach_number : float
-                Design cruise Mach number
-            - mass_properties.max_zero_fuel : float
+                Design cruise Mach number 
                 Maximum zero fuel weight [kg]
     network : RCAIDE.Network()
         Network data structure

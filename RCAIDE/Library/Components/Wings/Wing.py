@@ -100,9 +100,7 @@ class Wing(Component):
         - quarter_chord : float
             Quarter-chord sweep angle, defaults to 0.0
         - leading_edge : float
-            Leading edge sweep angle, defaults to None
-        - half_chord : float
-            Half-chord sweep angle, defaults to 0.0
+            Leading edge sweep angle, defaults to None 
             
     twists : Data
         Collection of twist angles
@@ -202,8 +200,7 @@ class Wing(Component):
                                                     
         self.sweeps                                 = Data()
         self.sweeps.quarter_chord                   = None
-        self.sweeps.leading_edge                    = None
-        self.sweeps.half_chord                      = 0.0        
+        self.sweeps.leading_edge                    = None         
                                                     
         self.twists                                 = Data()
         self.twists.root                            = 0.0
@@ -213,8 +210,8 @@ class Wing(Component):
         self.symbolic                               = False  
         self.vortex_lift                            = False
                                                     
-        self.transition_x_upper                     = 0.0
-        self.transition_x_lower                     = 0.0 
+        self.transition_x_upper                     = 0.45
+        self.transition_x_lower                     = 0.45
         self.airfoil                                = None 
         
         self.segments                               = Container()

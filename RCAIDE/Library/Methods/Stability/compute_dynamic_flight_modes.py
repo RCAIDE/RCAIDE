@@ -43,6 +43,9 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
 
     conditions = state.conditions 
     AoA        = conditions.aerodynamics.angles.alpha
+    S_ref      = state.analyses.stability.reference_values
+    c_ref      = state.analyses.stability.reference_values
+    b_ref      = state.analyses.stability.reference_values 
     
     vertical_fligth_flag = False
     if isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb) or \
@@ -59,10 +62,7 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         SS                 = conditions.static_stability
         SSD                = SS.derivatives 
         DS                 = conditions.dynamic_stability 
-        num_cases          = len(AoA)
-        S_ref              = settings.reference_values.S_ref
-        c_ref              = settings.reference_values.c_ref
-        b_ref              = settings.reference_values.b_ref   
+        num_cases          = len(AoA)  
         moments_of_inertia = vehicle.mass_properties.moments_of_inertia.tensor
         Ixx    = moments_of_inertia[0][0]
         Iyy    = moments_of_inertia[1][1]

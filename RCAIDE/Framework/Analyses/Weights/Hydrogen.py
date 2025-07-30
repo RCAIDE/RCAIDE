@@ -51,8 +51,7 @@ class Hydrogen(Weights):
         self.method                                        = 'Semi_Empirical'
         self.aircraft_type                                 = 'Transport'
         self.propulsion_architecture                       = 'Hydrogen'
-
-        self.settings.use_max_fuel_weight                  = True 
+ 
         self.settings.advanced_composites                  = False
         self.settings.fuselage_mounted_landing_gear_factor = 1.12 # assumes fuselage mounted landing gear. Change to 1 if False
         self.settings.cargo_doors_number                   = 1 # 0 if no cargo doors, 1 if 1 cargo door, 2 if 2 cargo doors

@@ -53,9 +53,7 @@ class Conventional(Weights):
         """
         self.method                                        = 'FLOPS'
         self.aircraft_type                                 = 'Transport'
-        self.propulsion_architecture                       = 'Conventional'
-                 
-        self.settings.use_max_fuel_weight                  = True 
+        self.propulsion_architecture                       = 'Conventional' 
         self.settings.advanced_composites                  = False
         self.settings.PRSEUS                               = True
         self.settings.fuselage_mounted_landing_gear_factor = 1.12 # assumes fuselage mounted landing gear. Change to 1 if False

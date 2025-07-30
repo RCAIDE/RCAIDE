@@ -65,7 +65,11 @@ class Vehicle(Data):
         self.costs                                                         = Data()      
         self.reference_area                                                = 0.0
         self.passengers                                                    = 0.0
+        self.first_class_passengers                                        = 0.0
+        self.business_class_passengers                                     = 0.0
+        self.economy_class_passengers                                      = 0.0
         self.maximum_cross_sectional_area                                  = 0.0
+        self.length                                                        = 0.0
         
         self.flight_envelope                                               = Data()
         self.flight_envelope.design_dynamic_pressure                       = None 
@@ -81,7 +85,7 @@ class Vehicle(Data):
         self.flight_envelope.alt_vc                                        = 0.0
         self.flight_envelope.alt_gust                                      = 0.0
         self.flight_envelope.max_ceiling                                   = 0.0
-        self.flight_envelope.V2_VS_ratio                                   = 1.2
+        self.flight_envelope.V2_VS_ratio                                   = 1.21
         self.flight_envelope.maximum_dynamic_pressure                      = 0.0
         self.flight_envelope.maximum_mach_operational                      = 0.0
         self.flight_envelope.maximum_lift_coefficient                      = None

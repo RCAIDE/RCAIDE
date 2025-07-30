@@ -20,7 +20,7 @@ def plot_drag_components(results,
                          show_legend= True,
                          save_filename="Drag_Components",
                          file_type=".png",
-                        width = 5.5, height = 4):
+                         width = 11, height = 7):
     """
     Generate plots showing the breakdown of aircraft drag components over time.
 

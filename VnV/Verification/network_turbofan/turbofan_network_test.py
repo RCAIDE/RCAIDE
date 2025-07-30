@@ -530,9 +530,9 @@ def mission_setup(analyses):
     segment = Segments.Cruise.Constant_Throttle_Constant_Altitude(base_segment)
     segment.tag = "cruise_2" 
     segment.analyses.extend(analyses.base)  
-    segment.state.numerics.number_of_control_points                        = 32 
+    #segment.state.numerics.number_of_control_points                        = 32 
     segment.altitude                                                       = 11. * Units.km  
-    segment.air_speed_end                                                  = 215 * Units.m / Units.s  
+    segment.air_speed_end                                                  = 223 * Units.m / Units.s  
     segment.throttle                                                       = 0.75
     segment.distance                                                       = 200 * Units.km  
                      
@@ -543,13 +543,13 @@ def mission_setup(analyses):
     # define flight controls       
     segment.assigned_control_variables.elapsed_time.active                 = True  
     segment.assigned_control_variables.elapsed_time.initial_guess          = True 
-    segment.assigned_control_variables.elapsed_time.initial_guess_values   = [[10.]]  
+    #segment.assigned_control_variables.elapsed_time.initial_guess_values   = [[10.]]  
     segment.assigned_control_variables.acceleration.active                 = True              
     segment.assigned_control_variables.acceleration.initial_guess          = True
-    segment.assigned_control_variables.acceleration.initial_guess_values   = [[-1]] 
+    #segment.assigned_control_variables.acceleration.initial_guess_values   = [[-1]] 
     segment.assigned_control_variables.body_angle.active                   = True   
     segment.assigned_control_variables.body_angle.initial_guess            = True 
-    segment.assigned_control_variables.body_angle.initial_guess_values     = [[0*Units.degrees]]     
+    #segment.assigned_control_variables.body_angle.initial_guess_values     = [[0*Units.degrees]]     
 
     mission.append_segment(segment)   
     

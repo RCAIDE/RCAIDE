@@ -18,7 +18,7 @@ def mass_properties(mission):
     """
     for i , segment in enumerate(mission.segments):
         if segment.analyses.weights != None: 
-            weights_analysis = segment.analyses.weights
+            weights_analysis         = segment.analyses.weights          
          
             # --------------------------------------------------------------------------------------------
             # Pre-checks for weights analysis 
@@ -41,6 +41,10 @@ def mass_properties(mission):
                     else:
                         raise AttributeError("Define maximum fuel weight of aircraft")            
     
+                # Max payload weight 
+                if weights_analysis.vehicle.mass_properties.max_payload == None:  
+                    raise AttributeError("Define maximum payload weight of aircraft")
+                    
                 # Max payload weight 
                 if weights_analysis.vehicle.mass_properties.max_payload == None:  
                     raise AttributeError("Define maximum payload weight of aircraft")
@@ -106,12 +110,7 @@ def mass_properties(mission):
                 # Compute takeoff weight 
                 weights_analysis.vehicle.mass_properties.takeoff       = weights_analysis.vehicle.mass_properties.operating_empty \
                                                                         + weights_analysis.vehicle.mass_properties.payload \
-                                                                        + weights_analysis.vehicle.mass_properties.fuel                    
-               
-                # Max zero fuel  
-                weights_analysis.vehicle.mass_properties.max_zero_fuel = weights_analysis.vehicle.mass_properties.operating_empty\
-                                                                       + weights_analysis.vehicle.mass_properties.max_payload
-                   
+                                                                        + weights_analysis.vehicle.mass_properties.fuel     
                     
                 # --------------------------------------------------------------------------------------------
                 # Print Weight Analysis Report  
@@ -161,7 +160,8 @@ def mass_properties(mission):
                         print("\n========================================\n")
             
             if weights_analysis.vehicle.mass_properties.takeoff > weights_analysis.vehicle.mass_properties.max_takeoff:
-                print('\n Warning: Takeoff Weight is greater than Maximum Takeoff Weight')
+                if i == 0: # only print on the first segment
+                    print('\n Warning: Takeoff Weight is greater than Maximum Takeoff Weight')
                 
             # --------------------------------------------------------------------------------------------
             # Compute Center of Gravity  

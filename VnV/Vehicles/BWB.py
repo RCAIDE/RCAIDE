@@ -138,7 +138,7 @@ def vehicle_setup():
     segment.sweeps.quarter_chord           = 60 *  Units.degrees  
     segment.percent_chord_cabin_start     = 0.05 
     root_airfoil =  RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    root_airfoil.NACA_4_Series_code    = '0010'
+    root_airfoil.NACA_4_Series_code    = '3409'
     segment.append_airfoil(root_airfoil)
     wing.append_segment(segment)
 
@@ -153,7 +153,7 @@ def vehicle_setup():
     segment.sweeps.quarter_chord           =  62.06 *  Units.degrees  
     segment.percent_chord_cabin_start     = 0.04 
     root_airfoil =  RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    root_airfoil.NACA_4_Series_code    = '0010'
+    root_airfoil.NACA_4_Series_code    = '3409'
     segment.append_airfoil(root_airfoil)
     wing.append_segment(segment)
 
@@ -480,7 +480,7 @@ def vehicle_setup():
     nacelle.origin                              = [[30, 3, 3]] 
     nacelle.areas.wetted                        = np.pi*nacelle.diameter*nacelle.length
     nacelle_airfoil                             = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    nacelle_airfoil.NACA_4_Series_code          = '0010'
+    nacelle_airfoil.NACA_4_Series_code          = '3409'
     nacelle.append_airfoil(nacelle_airfoil) 
     turbofan1.nacelle                            = nacelle
     
@@ -551,8 +551,8 @@ def configs_setup(vehicle):
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'reverse_thrust' 
     config.networks.fuel.reverse_thrust             = True    
-    config.landing_gears.main_gear.gear_extended    = True
-    config.landing_gears.nose_gear.gear_extended    = True  
+    for landing_gear in  config.landing_gears:
+        landing_gear.gear_extended = True 
     configs.append(config)    
   
     return configs

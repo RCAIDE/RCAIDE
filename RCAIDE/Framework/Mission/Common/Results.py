@@ -208,9 +208,7 @@ class Results(Conditions):
         self.control_surfaces.aileron                                          = Conditions()
         self.control_surfaces.aileron.deflection                               = ones_1col * 0 
         self.control_surfaces.aileron.static_stability                         = Conditions()
-        self.control_surfaces.aileron.static_stability.coefficients            = Conditions() 
-        self.control_surfaces.aileron.static_stability.coefficients.lift       = ones_1col * 0        
-        self.control_surfaces.aileron.static_stability.coefficients.drag       = ones_1col * 0           
+        self.control_surfaces.aileron.static_stability.coefficients            = Conditions()          
         self.control_surfaces.aileron.static_stability.coefficients.X          = ones_1col * 0           
         self.control_surfaces.aileron.static_stability.coefficients.Y          = ones_1col * 0           
         self.control_surfaces.aileron.static_stability.coefficients.Z          = ones_1col * 0         
@@ -222,9 +220,7 @@ class Results(Conditions):
         self.control_surfaces.elevator                                         = Conditions()
         self.control_surfaces.elevator.deflection                              = ones_1col * 0 
         self.control_surfaces.elevator.static_stability                        = Conditions()
-        self.control_surfaces.elevator.static_stability.coefficients           = Conditions() 
-        self.control_surfaces.elevator.static_stability.coefficients.lift      = ones_1col * 0        
-        self.control_surfaces.elevator.static_stability.coefficients.drag      = ones_1col * 0           
+        self.control_surfaces.elevator.static_stability.coefficients           = Conditions()         
         self.control_surfaces.elevator.static_stability.coefficients.X         = ones_1col * 0           
         self.control_surfaces.elevator.static_stability.coefficients.Y         = ones_1col * 0           
         self.control_surfaces.elevator.static_stability.coefficients.Z         = ones_1col * 0         
@@ -236,9 +232,7 @@ class Results(Conditions):
         self.control_surfaces.rudder                                           = Conditions()
         self.control_surfaces.rudder.deflection                                = ones_1col * 0 
         self.control_surfaces.rudder.static_stability                          = Conditions()
-        self.control_surfaces.rudder.static_stability.coefficients             = Conditions() 
-        self.control_surfaces.rudder.static_stability.coefficients.lift        = ones_1col * 0         
-        self.control_surfaces.rudder.static_stability.coefficients.drag        = ones_1col * 0          
+        self.control_surfaces.rudder.static_stability.coefficients             = Conditions()          
         self.control_surfaces.rudder.static_stability.coefficients.X           = ones_1col * 0          
         self.control_surfaces.rudder.static_stability.coefficients.Y           = ones_1col * 0          
         self.control_surfaces.rudder.static_stability.coefficients.Z           = ones_1col * 0         
@@ -250,9 +244,7 @@ class Results(Conditions):
         self.control_surfaces.flap                                             = Conditions()
         self.control_surfaces.flap.deflection                                  = ones_1col * 0 
         self.control_surfaces.flap.static_stability                            = Conditions()
-        self.control_surfaces.flap.static_stability.coefficients               = Conditions() 
-        self.control_surfaces.flap.static_stability.coefficients.lift          = ones_1col * 0        
-        self.control_surfaces.flap.static_stability.coefficients.drag          = ones_1col * 0           
+        self.control_surfaces.flap.static_stability.coefficients               = Conditions()           
         self.control_surfaces.flap.static_stability.coefficients.X             = ones_1col * 0           
         self.control_surfaces.flap.static_stability.coefficients.Y             = ones_1col * 0           
         self.control_surfaces.flap.static_stability.coefficients.Z             = ones_1col * 0         
@@ -264,9 +256,7 @@ class Results(Conditions):
         self.control_surfaces.slat                                             = Conditions()
         self.control_surfaces.slat.deflection                                  = ones_1col * 0 
         self.control_surfaces.slat.static_stability                            = Conditions()
-        self.control_surfaces.slat.static_stability.coefficients               = Conditions() 
-        self.control_surfaces.slat.static_stability.coefficients.lift          = ones_1col * 0         
-        self.control_surfaces.slat.static_stability.coefficients.drag          = ones_1col * 0          
+        self.control_surfaces.slat.static_stability.coefficients               = Conditions()          
         self.control_surfaces.slat.static_stability.coefficients.X             = ones_1col * 0          
         self.control_surfaces.slat.static_stability.coefficients.Y             = ones_1col * 0          
         self.control_surfaces.slat.static_stability.coefficients.Z             = ones_1col * 0         
@@ -303,9 +293,7 @@ class Results(Conditions):
         self.static_stability.roll_rate                                        = ones_1col * 0
         self.static_stability.yaw_rate                                         = ones_1col * 0 
                                                                                
-        self.static_stability.coefficients                                     = Conditions()
-        self.static_stability.coefficients.lift                                = ones_1col * 0
-        self.static_stability.coefficients.drag                                = ones_1col * 0
+        self.static_stability.coefficients                                     = Conditions() 
         self.static_stability.coefficients.X                                   = ones_1col * 0
         self.static_stability.coefficients.Y                                   = ones_1col * 0
         self.static_stability.coefficients.Z                                   = ones_1col * 0

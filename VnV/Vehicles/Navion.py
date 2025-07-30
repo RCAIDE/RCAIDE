@@ -408,8 +408,7 @@ def configs_setup(vehicle):
     # ------------------------------------------------------------------ 
     config                                                     = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag                                                 = 'takeoff' 
-    config.wings['main_wing'].control_surfaces.flap.deflection = 20. * Units.deg
-    config.V2_VS_ratio                                         = 1.21
+    config.wings['main_wing'].control_surfaces.flap.deflection = 20. * Units.deg 
     config.maximum_lift_coefficient                            = 2.
     
     configs.append(config)

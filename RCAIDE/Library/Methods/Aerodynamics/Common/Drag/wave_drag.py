@@ -47,44 +47,34 @@ def wave_drag(state,settings,geometry):
     # Unpack
     conditions       = state.conditions
     Mach             = conditions.freestream.mach_number  
-    low_mach_cutoff  = settings.supersonic.begin_drag_rise_mach_number
     high_mach_cutoff = settings.supersonic.end_drag_rise_mach_number
     peak_mach        = settings.supersonic.peak_mach_number
 
-    # ---------------------------------------------------------------------     
-    # Wave drag due to volume 
-    # --------------------------------------------------------------------- 
-    sub_spline = Cubic_Spline_Blender(low_mach_cutoff, peak_mach-(peak_mach-low_mach_cutoff)*3/4)
-    sup_spline = Cubic_Spline_Blender(peak_mach,high_mach_cutoff)
-    sub_h00    = lambda M:sub_spline.compute(M)
-    sup_h00    = lambda M:sup_spline.compute(M) 
-    
-    low_inds = Mach[:,0]<peak_mach
-    hi_inds  = Mach[:,0]>=peak_mach
+    # supersonic smoothing 
+    sup_spline = Cubic_Spline_Blender(peak_mach,high_mach_cutoff) 
+    sup_h00    = lambda M:sup_spline.compute(M)
 
-    cd_compressibility_volume_base                  = np.zeros_like(Mach)  
-    cd_compressibility_volume_base[Mach>=peak_mach] = supersonic_volume_wave_drag(conditions, settings, geometry) 
+    sup_spline2 = Cubic_Spline_Blender(peak_mach,1.5) 
+    sup_h002    = lambda M:sup_spline2.compute(M)     
     
-    supersonic_CDw_volume = np.zeros_like(Mach)
-    supersonic_CDw_volume[low_inds] = cd_compressibility_volume_base[low_inds]*(sub_h00(Mach[low_inds])) 
-    supersonic_CDw_volume[hi_inds]  = cd_compressibility_volume_base[hi_inds]*(1-sup_h00(Mach[hi_inds]))
- 
-    # ---------------------------------------------------------------------    
-    # wave drag due to lift 
-    # --------------------------------------------------------------------- 
-    transonic_CDw_lift   = transonic_lift_wave_drag(conditions, settings, geometry)  # add smoothing function 
-    supersonic_CDw_lift  = supersonic_lift_wave_drag(conditions, settings, geometry) # add smoothing function  # *(1-sup_h00(Mach))  NEED TO CHECK  
-
-    # ---------------------------------------------------------------------     
-    # total wave drag
-    # ---------------------------------------------------------------------
+    # Wave drag due to volume  
+    supersonic_CDw_volume = supersonic_volume_wave_drag(conditions, settings, geometry) *(1-sup_h00(Mach))
+    
+    # wave drag due to lift  
+    transonic_CDw_lift           = transonic_lift_wave_drag(conditions, settings, geometry) *sup_h00(Mach)
+    transonic_CDw_lift[Mach<0.7] = 0
+    transonic_CDw_lift[Mach>0.95]= 0
+    supersonic_CDw_lift          = supersonic_lift_wave_drag(conditions, settings, geometry) *(1-sup_h002(Mach))
+    supersonic_CDw_lift[Mach<1]  = 0   
+   
+    # total wave drag 
     CD_wave_volume = supersonic_CDw_volume  
     CD_wave_lift   = supersonic_CDw_lift + transonic_CDw_lift
-    CD_wave        = CD_wave_lift + CD_wave_volume
+    CD_wave        = CD_wave_lift + CD_wave_volume 
 
     # Save drag breakdown 
-    conditions.aerodynamics.coefficients.drag.wave = Data(total = CD_wave, 
-                                                          lift  = CD_wave_lift,
+    conditions.aerodynamics.coefficients.drag.wave = Data(total  = CD_wave, 
+                                                          lift   = CD_wave_lift,
                                                           volume = CD_wave_volume,)  
         
     return
@@ -114,7 +104,7 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     else:
         
         CD_wave_total = np.zeros_like(Mach)
-        CL_y =  conditions.aerodynamics.coefficients.lift.inviscid.spanwise
+        CL_y          =  conditions.aerodynamics.coefficients.lift.inviscid.spanwise
              
         c_kappa = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
     
@@ -169,37 +159,29 @@ def supersonic_lift_wave_drag(conditions,configuration,geometry):
     """
 
     # Initalize cd arrays 
-    Mach        = conditions.freestream.mach_number  
-    cd_wave_supersonic_lift = np.zeros_like(Mach)
+    Mach         = conditions.freestream.mach_number
+    cd_lift_wave = np.zeros_like(Mach)
     
     for wing in  geometry.wings:
         if isinstance(wing, Main_Wing):   
             # Lift coefficient  
             CL = conditions.aerodynamics.coefficients.lift.total 
-            l  = np.maximum(wing.total_length,wing.chords.root)     
+            l  = wing.chords.root  
         
             # JAXA method
             s    = wing.spans.projected / 2
             AR   = wing.aspect_ratio
             p    = 2/AR*s/l
-            beta = np.sqrt(Mach[Mach >= 1.01]**2-1)
-            
+            beta = np.sqrt(Mach**2-1) 
             x    =  beta*s/l
         
-            ret = np.zeros_like(x)
-            
-            ret[x > 0.178] = 0.4935 - 0.2382*x[x > 0.178] + 1.6306*x[x > 0.178]**2 - \
-                0.86*x[x > 0.178]**3 + 0.2232*x[x > 0.178]**4 - 0.0365*x[x > 0.178]**5 - 0.5            
+            ret = np.zeros_like(x) 
+            ret[x > 0.178] = 0.4935 - 0.2382*x[x > 0.178] + 1.6306*x[x > 0.178]**2 - 0.86*x[x > 0.178]**3 + 0.2232*x[x > 0.178]**4 - 0.0365*x[x > 0.178]**5 - 0.5            
             
             Kw           = (1+1/p)*ret/(2*beta**2*(s/l)**2) 
-            CDwl         = CL[Mach >= 1.01]**2 * (beta**2/np.pi*p*(s/l)*Kw)
-            cd_lift_wave = np.zeros_like(Mach)
-            cd_lift_wave[Mach >= 1.01] = CDwl
-             
-            # Pack supersonic results into correct elements
-            cd_wave_supersonic_lift[Mach >= 1.01] = cd_lift_wave[0:len(Mach[Mach >= 1.01]),0] 
+            cd_lift_wave = CL**2 * (beta**2/np.pi*p*(s/l)*Kw) 
 
-    return cd_wave_supersonic_lift
+    return cd_lift_wave
 
 def supersonic_volume_wave_drag(conditions, settings, geometry):
     """Computes the volume drag
@@ -220,22 +202,13 @@ def supersonic_volume_wave_drag(conditions, settings, geometry):
     Returns:
     vehicle_wave_drag                     [Unitless] 
     """
- 
-    scaling_factor   = settings.supersonic.volume_wave_drag_scaling    
-     
-    L =  0
-    for fuselage in geometry.fuselages:
-        L = np.maximum(L, fuselage.lengths.total) 
-    Amax     = geometry.maximum_cross_sectional_area
-    S        = geometry.reference_area 
-    rmax     = np.sqrt(Amax/np.pi)
-    d        = rmax*2
- 
-    # Compute drag from Sears-Haack type III body
-    # Source formula uses front projected area as a reference
-    CD = 3/2*np.pi*np.pi*(d/L)*(d/L)*Amax/S 
-        
-    # Scale to account for non-ideal shaping
-    CD_scaled = CD*scaling_factor
-
-    return CD_scaled 
+   
+    S_ref = geometry.reference_area
+    L     = geometry.length
+    Amax  = geometry.maximum_cross_sectional_area 
+  
+    volume      = (3 / 16) * np.pi* Amax *  L 
+    CD_wave_vol = (128 * (volume ** 2)) / (S_ref *  np.pi * (L ** 4)) 
+    
+    CD_wave_v   =  CD_wave_vol *  np.ones_like(conditions.freestream.mach_number)
+    return CD_wave_v 
