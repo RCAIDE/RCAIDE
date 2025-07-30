@@ -24,12 +24,6 @@ def main():
                     save_filename               = "BWB_Top_View", 
                     axis_limit                  = 100,  
                     show_figure=False)
-
-    plot_3d_vehicle_vlm_panelization(vehicle,
-                    save_filename               = "BWB_Top_View", 
-                    axis_limit                  = 100,  
-                    show_figure=False)
-    
     
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs)  
@@ -37,11 +31,19 @@ def main():
     missions = missions_setup(mission)  
     results  = missions.base_mission.evaluate() 
 
+    vortex_distribution = results.segments.cruise.analyses.aerodynamics.settings.vortex_distribution
+    plot_3d_vehicle_vlm_panelization(vortex_distribution=vortex_distribution,
+                    save_filename               = "BWB_Top_View", 
+                    axis_limit                  = 100,  
+                    show_figure=False)
+
+
     Cruise_CL        = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
     Cruise_CL_true   = 0.4109412376798259
     Cruise_CL_diff   = np.abs(Cruise_CL - Cruise_CL_true)
     print('Error: ',Cruise_CL_diff)
-    assert np.abs((Cruise_CL - Cruise_CL_true)/Cruise_CL_true) < 1e-6   
+    assert np.abs((Cruise_CL - Cruise_CL_true)/Cruise_CL_true) < 1e-6
+    
     
     return 
 

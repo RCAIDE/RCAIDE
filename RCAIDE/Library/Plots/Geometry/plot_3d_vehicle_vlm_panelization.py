@@ -5,12 +5,8 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------  
-import RCAIDE
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method  import generate_vortex_distribution
-from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice 
-from RCAIDE.Library.Methods.Geometry.LOPA                       import compute_layout_of_passenger_accommodations 
-from RCAIDE.Library.Methods.Geometry.Planform                   import fuselage_planform, wing_planform, bwb_wing_planform , compute_fuel_volume
+# ----------------------------------------------------------------------------------------------------------------------   
+from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice  
 
 import numpy as np  
 import plotly.graph_objects as go 
@@ -18,7 +14,7 @@ import plotly.graph_objects as go
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-def plot_3d_vehicle_vlm_panelization(vehicle,
+def plot_3d_vehicle_vlm_panelization(vortex_distribution,
                                      alpha = 1.0,
                                      plot_axis = False,
                                      save_figure = False,
@@ -90,40 +86,8 @@ def plot_3d_vehicle_vlm_panelization(vehicle,
         Discrete element of lifting surface
     """
 
-    # unpack vortex distribution
-    try:
-        VD = vehicle.vortex_distribution
-    except:
-        VL = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
-        VL.settings.number_of_spanwise_vortices  = 25
-        VL.settings.number_of_chordwise_vortices = 5
-        VL.settings.spanwise_cosine_spacing      = False
-        VL.settings.model_fuselage               = False         
-    
-        # -------------------------------------------------------------------------
-        # Run Geoemtry Analysis
-        # ------------------------------------------------------------------------- 
-        if overwrite_geometry:
-            for fuselage in vehicle.fuselages:
-                compute_layout_of_passenger_accommodations(fuselage)
-                fuselage_planform(fuselage) 
-    
-        for wing in vehicle.wings:  
-            if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-                if overwrite_geometry:
-                    compute_layout_of_passenger_accommodations(wing)
-                if overwrite_geometry:
-                    bwb_wing_planform(wing,overwrite_reference = True)
-                    vehicle.reference_area = wing.areas.reference 
-            else:
-                if overwrite_geometry:
-                    wing_planform(wing,overwrite_reference =  overwrite_geometry) 
-                    if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_geometry:
-                        vehicle.reference_area = wing.areas.reference
-             
-        compute_fuel_volume(vehicle, update_max_fuel=False)
-        
-        VD = generate_vortex_distribution(vehicle,VL.settings) 
+    # unpack vortex distribution 
+    VD = vortex_distribution  
 
     camera        = dict(up=dict(x=0.5, y=0.5, z=1), center=dict(x=0, y=0, z=-.75), eye=dict(x=-1.5, y=-1.5, z=.8))
     plot_data     = []      

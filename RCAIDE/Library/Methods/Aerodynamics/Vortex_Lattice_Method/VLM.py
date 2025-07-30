@@ -164,11 +164,19 @@ def VLM(conditions,settings,geometry):
     settings.vortex_distribution.n_sw                     = VD.n_sw 
     settings.vortex_distribution.chord_widths             = VD.chord_widths 
     settings.vortex_distribution.leading_edge_sweeps      = VD.leading_edge_sweeps 
-    
-    if not VD.is_postprocessed:
-        raise ValueError('postprocess_VD has not been called since the panels have been modified')
-      
-        
+    settings.vortex_distribution.XA1                      = VD.XA1
+    settings.vortex_distribution.XA2                      = VD.XA2
+    settings.vortex_distribution.XB1                      = VD.XB1
+    settings.vortex_distribution.XB2                      = VD.XB2
+    settings.vortex_distribution.YA1                      = VD.YA1
+    settings.vortex_distribution.YA2                      = VD.YA2
+    settings.vortex_distribution.YB1                      = VD.YB1
+    settings.vortex_distribution.YB2                      = VD.YB2
+    settings.vortex_distribution.ZA1                      = VD.ZA1
+    settings.vortex_distribution.ZA2                      = VD.ZA2
+    settings.vortex_distribution.ZB1                      = VD.ZB1
+    settings.vortex_distribution.ZB2                      = VD.ZB2   
+     
     # unpack conditions--------------------------------------------------------------
     pwm      = settings.propeller_wake_model
     K_SPC    = settings.leading_edge_suction_multiplier 

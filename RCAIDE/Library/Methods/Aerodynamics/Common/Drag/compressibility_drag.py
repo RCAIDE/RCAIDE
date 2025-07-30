@@ -4,7 +4,8 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
+# ----------------------------------------------------------------------------------------------------------------------
+import RCAIDE
 from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender 
 
 # package imports
@@ -47,36 +48,35 @@ def compressibility_drag(state,settings,geometry):
     Mach             = conditions.freestream.mach_number  
     low_mach_cutoff  = settings.supersonic.begin_drag_rise_mach_number 
     high_mach_cutoff = settings.supersonic.end_drag_rise_mach_number
-    K                = 0.85
    
     sub_spline = Cubic_Spline_Blender(low_mach_cutoff, high_mach_cutoff)  
     sub_h00    = lambda M:sub_spline.compute(M)   
 
-    cd_compressibility  = np.zeros_like(Mach)  
-    for wing in  geometry.wings:  
-        sweep_w   = wing.sweeps.leading_edge 
-
-        # Get effective CLift_wings and sweep
-        tc = wing.thickness_to_chord / np.cos(sweep_w)
-        cl = conditions.aerodynamics.coefficients.lift.inviscid.wings[wing.tag]/ (np.cos(sweep_w) ** 2)
-
-        # Compressibility drag based on regressed fits from AA241 
-        mcc_cos_ws = 0.922321524499352  - 1.153885166170620*tc  - 0.304541067183461*cl    \
-                       + 0.332881324404729*tc*tc  + 0.467317361111105*tc*cl   + 0.087490431201549*cl*cl
-
-        # Crest-critical Mach number, corrected for wing sweep
-        Mcc = mcc_cos_ws/ np.cos(sweep_w)      
-
-        # Divergence ratio
-        mo_Mach = Mach/Mcc
-
-        # Compressibility correlation, Shevell
-        dcdc_cos3g = 0.0019*mo_Mach**14.641
-
-        # Compressibility drag  
-        cd_c = dcdc_cos3g * (np.cos(sweep_w)**3) 
-         
-        cd_compressibility += K * cd_c * (wing.areas.reference / geometry.reference_area)  
+    cd_compressibility  = np.zeros_like(Mach)
+    cl                  = conditions.aerodynamics.coefficients.lift.total
+    for wing in  geometry.wings:
+        if isinstance(wing,RCAIDE.Library.Components.Wings.Main_Wing) or isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body):
+            sweep_w   = wing.sweeps.leading_edge 
+    
+            # Get effective CLift_wings and sweep
+            tc = wing.thickness_to_chord / np.cos(sweep_w)
+            cl = conditions.aerodynamics.coefficients.lift.total/ (np.cos(sweep_w) ** 2)
+    
+            # Compressibility drag based on regressed fits from AA241 
+            mcc_cos_ws = 0.922321524499352  - 1.153885166170620*tc  - 0.304541067183461*cl    \
+                           + 0.332881324404729*tc*tc  + 0.467317361111105*tc*cl   + 0.087490431201549*cl*cl
+    
+            # Crest-critical Mach number, corrected for wing sweep
+            Mcc = mcc_cos_ws/ np.cos(sweep_w)      
+    
+            # Divergence ratio
+            mo_Mach = Mach/Mcc
+    
+            # Compressibility correlation, Shevell
+            dcdc_cos3g = 0.0019*mo_Mach**14.641
+    
+            # Compressibility drag  
+            cd_compressibility = dcdc_cos3g * (np.cos(sweep_w)**3)  
  
     cd_comp  = cd_compressibility*(sub_h00(Mach))   
    

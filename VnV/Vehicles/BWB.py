@@ -150,10 +150,10 @@ def vehicle_setup():
     segment.root_chord_percent            =  0.9
     segment.dihedral_outboard             =  0.02652900463031381 
     segment.thickness_to_chord            =  0.1379
-    segment.sweeps.quarter_chord           =  62.06 *  Units.degrees  
+    segment.sweeps.quarter_chord          =  62.06 *  Units.degrees  
     segment.percent_chord_cabin_start     = 0.04 
-    root_airfoil =  RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    root_airfoil.NACA_4_Series_code    = '3409'
+    root_airfoil                          =  RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
+    root_airfoil.NACA_4_Series_code       = '0010'
     segment.append_airfoil(root_airfoil)
     wing.append_segment(segment)
 
@@ -168,7 +168,7 @@ def vehicle_setup():
     segment.sweeps.quarter_chord          = 60 *  Units.degrees   
     segment.percent_chord_cabin_start     = 0.03 
     root_airfoil =  RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    root_airfoil.NACA_4_Series_code    = '0016'
+    root_airfoil.NACA_4_Series_code       = '0016'
     segment.append_airfoil(root_airfoil)
     wing.append_segment(segment)
 
@@ -183,7 +183,7 @@ def vehicle_setup():
     segment.sweeps.quarter_chord           = 60 *  Units.degrees 
     segment.percent_chord_cabin_start     = 0.02 
     yehudi_airfoil                        = RCAIDE.Library.Components.Airfoils.Airfoil()
-    yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'B737b.txt'
+    yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'transonic_wing_inboard_section_airfoil.txt'
     segment.append_airfoil(yehudi_airfoil)
     wing.append_segment(segment)     
 
@@ -199,7 +199,7 @@ def vehicle_setup():
     segment.sweeps.quarter_chord           = 26.*  Units.degrees
     segment.has_fuel_tank                 = True 
     yehudi_airfoil                        = RCAIDE.Library.Components.Airfoils.Airfoil()
-    yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'B737b.txt'
+    yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'transonic_wing_inboard_section_airfoil.txt'
     segment.append_airfoil(yehudi_airfoil)
     wing.append_segment(segment)
 
@@ -215,7 +215,7 @@ def vehicle_setup():
     segment.sweeps.quarter_chord          = 30.*  Units.degrees 
     segment.reference_area_root           = True 
     yehudi_airfoil                        = RCAIDE.Library.Components.Airfoils.Airfoil()
-    yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'B737b.txt'
+    yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'transonic_wing_inboard_section_airfoil.txt'
     segment.append_airfoil(yehudi_airfoil)
     wing.append_segment(segment)  
 
@@ -229,7 +229,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = 0.0972 
     segment.sweeps.quarter_chord          = 60 *  Units.degrees  
     end_airfoil                           =  RCAIDE.Library.Components.Airfoils.Airfoil()
-    end_airfoil.coordinate_file           = rel_path + 'Airfoils' + separator + 'B737c.txt'    
+    end_airfoil.coordinate_file           = rel_path + 'Airfoils' + separator + 'transonic_wing_outboard_section_airfoil.txt'    
     segment.append_airfoil(end_airfoil)
     wing.append_segment(segment)  
 
@@ -243,7 +243,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = 0.098 
     segment.sweeps.quarter_chord          = 0.0 
     tip_airfoil                           =  RCAIDE.Library.Components.Airfoils.Airfoil()
-    tip_airfoil.coordinate_file           = rel_path + 'Airfoils' + separator + 'B737d.txt'    
+    tip_airfoil.coordinate_file           = rel_path + 'Airfoils' + separator + 'transonic_wing_tip_section_airfoil.txt'    
     segment.append_airfoil(tip_airfoil)
     wing.append_segment(segment)
 
