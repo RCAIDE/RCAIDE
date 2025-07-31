@@ -112,7 +112,7 @@ def vehicle_setup():
  
     ospath                                = os.path.abspath(__file__)
     separator                             = os.path.sep
-    rel_path                              = os.path.dirname(ospath) + separator + '..' + separator  
+    rel_path                              = os.path.dirname(ospath) + separator 
     
     segment = RCAIDE.Library.Components.Wings.Segments.Segment()
     segment.tag                           = 'root'
