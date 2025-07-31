@@ -29,7 +29,7 @@ import matplotlib.pyplot                as plt
 #   Main
 # ----------------------------------------------------------------------
 def main():
-    update_regression_values = True  # should be false unless code functionally changes
+    update_regression_values = False  # should be false unless code functionally changes
     
     # all-moving surface deflection cases
     deflection_configs = get_array_of_deflection_configs()

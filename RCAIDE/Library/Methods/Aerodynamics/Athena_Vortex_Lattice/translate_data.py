@@ -95,10 +95,10 @@ def translate_results_to_conditions(cases,res,results):
     dim       = len(cases)
          
     # aero results 1: total surface forces and coefficeints
-    res.aerodynamics.coefficients.lift.total       = np.zeros((dim,1))
-    res.aerodynamics.wing_areas                    = np.zeros((dim,num_wings)) 
-    res.aerodynamics.wing_CLs                      = np.zeros_like(res.aerodynamics.wing_areas) 
-    res.aerodynamics.wing_CDs                      = np.zeros_like(res.aerodynamics.wing_areas) 
+    res.aerodynamics.coefficients.lift.inviscid.total = np.zeros((dim,1))
+    res.aerodynamics.wing_areas                       = np.zeros((dim,num_wings)) 
+    res.aerodynamics.wing_CLs                         = np.zeros_like(res.aerodynamics.wing_areas) 
+    res.aerodynamics.wing_CDs                         = np.zeros_like(res.aerodynamics.wing_areas) 
 
     # aero results 2 : sectional forces and coefficients 
     res.aerodynamics.wing_local_spans              = np.zeros((dim,num_wings,n_sw))
