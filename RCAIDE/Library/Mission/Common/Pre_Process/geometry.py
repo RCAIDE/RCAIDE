@@ -36,6 +36,10 @@ def geometry(mission):
             NPF      = vehicle.passengers / 20.
             NPB      = vehicle.passengers / 10.
             NPT      = vehicle.passengers - NPF - NPB 
+        else:
+            NPF = 0
+            NPB = 0
+            NPT = 0
             
         # update fuselage properties
         total_length = 0
