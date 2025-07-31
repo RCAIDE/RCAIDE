@@ -69,6 +69,7 @@ def vehicle_setup():
     main_gear.wheels                         = 4   
     main_gear.number_of_gear_types_in_tandem = 1
     main_gear.number_of_wheels_in_gear_type  = 2  
+    main_gear.units                          = 2
     main_gear.symmetric                      = True
     vehicle.append_component(main_gear)  
 

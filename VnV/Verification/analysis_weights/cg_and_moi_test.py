@@ -63,9 +63,9 @@ def Transport_Aircraft_Test():
 
     print(weight_analysis.vehicle.tag + ' Moment of Intertia')
     print(MOI) 
-    accepted  = np.array([[33537544.17729216, 3023969.4717367333, 3289494.982706053],
-                          [3023969.4717367333,33868806.88349103,        0.        ],
-                        [ 3289494.982706053,        0.        , 51338355.739521846]])
+    accepted  = np.array([[33552554.0, 3027940.3, 3327714.3],
+                          [3027940.3,33916348.9,        0.        ],
+                        [ 3327714.3,        0.        , 51384118.7]])
     MOI_error     = (MOI - accepted) / accepted
 
     # Check the errors

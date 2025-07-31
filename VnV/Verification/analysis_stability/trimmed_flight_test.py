@@ -190,7 +190,7 @@ def mission_setup(analyses):
     segment.flight_dynamics.moment_y                                            = True 
     segment.assigned_control_variables.elevator_deflection.active               = True    
     segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']]
-    segment.assigned_control_variables.elevator_deflection.initial_guess_values = [[0]]
+    segment.assigned_control_variables.elevator_deflection.initial_guess_values = [[0.02]]
    
     # Lateral Flight Mechanics 
     segment.flight_dynamics.force_y                                             = True     
