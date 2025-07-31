@@ -46,14 +46,10 @@ def main():
     # run VLM
     for deflection in deflections:
         geometry    = get_deflected_b737(deflection)
-        data        = VLM(conditions, settings, geometry)
-        
-        plot_title  = "{}, deflection = {} degrees".format(geometry.tag, round(deflection/Units.degrees))
-        plot_3d_vehicle_vlm_panelization(geometry, show_wing_control_points=False, save_filename=plot_title, show_figure=False)        
-        
+        data        = VLM(conditions, settings, geometry) 
         results.CL  = np.append(results.CL , data.CLift.flatten() )
         results.CDi = np.append(results.CDi, data.CDrag_induced.flatten())
-        results.CM  = np.append(results.CM , data.CM.flatten() )
+        results.CM  = np.append(results.CM , data.CM.flatten() ) 
         
     # save/load results
     if update_regression_values:
@@ -103,6 +99,7 @@ def get_conditions():
     aoas       = np.array([-6.  ,0.   ,6.   ,])  *Units.degrees   
     
     conditions = RCAIDE.Framework.Mission.Common.Results()
+    conditions.expand_rows(3)
     atmosphere                              =  RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     speeds_of_sound                         = atmosphere.compute_values(altitudes).speed_of_sound
     v_infs                                  = machs * speeds_of_sound.flatten()

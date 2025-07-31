@@ -88,25 +88,24 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     
     CL vs the CP value before the shock wave comes from the same source as well as NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
     """
-    Mach     = conditions.freestream.mach_number  
-    chords   = settings.vortex_distribution.chord_lengths
-    delta    = settings.vortex_distribution.leading_edge_sweeps 
-    dy       = settings.vortex_distribution.chord_widths 
-    S_ref    = geometry.reference_area
-    
+    Mach              = conditions.freestream.mach_number  
+    S_ref             = geometry.reference_area 
     CD_wave_transonic = np.zeros_like(Mach)
     
-    if settings.use_surrogate: 
+    if settings.use_surrogate or (settings.vortex_distribution == None): 
         Cl                   = conditions.aerodynamics.coefficients.lift.total
         CD_wave_transonic    = np.array([1.1480189359872706, 0.0, 1.1480189359872706, 5.775673779192156, 12.836939011494024, 20.414496506330114, 34.447683899469276, 49.59172983603965, 65.49874978998449, 160, 240]) *10**-4
         CLs                  = np.array([-0.417184699337467, 0.0, 0.417184699337467, 0.45862155954167055, 0.5013290492186359, 0.5384919739235497, 0.5871622608441653, 0.6285553062389633, 0.6587038782744932, 0.8, 1.0])
         CD_wave_transonic    = np.interp(Cl, CLs, CD_wave_transonic) *( 12.5 * Mach - 8.75 ) 
-    else:
+    else: 
+        chords   = settings.vortex_distribution.chord_lengths
+        delta    = settings.vortex_distribution.leading_edge_sweeps 
+        dy       = settings.vortex_distribution.chord_widths
         
         CD_wave_total = np.zeros_like(Mach)
-        CL_y          =  conditions.aerodynamics.coefficients.lift.inviscid.spanwise
+        CL_y          = conditions.aerodynamics.coefficients.lift.inviscid.spanwise
              
-        c_kappa = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
+        c_kappa       = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
     
         # ------------------------------------------------------------------
         # Cp Data (as function of CL) from "The Prediciton of the Drag of Aerofoils and Wings at High Subsonic Speeds" by R.C. Lock, 1986, Aeronautical journal and NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris

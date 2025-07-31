@@ -20,8 +20,7 @@ def plot_3d_vehicle_vlm_panelization(vortex_distribution,
                                      save_figure = False,
                                      show_wing_control_points = True,
                                      save_filename = "VLM_Panelization",
-                                     axis_limit                  =  20, 
-                                     overwrite_geometry          =True, 
+                                     axis_limit                  =  20,  
                                      show_figure = True):
     """
     Creates a 3D visualization of vehicle vortex lattice method (VLM) panelization.

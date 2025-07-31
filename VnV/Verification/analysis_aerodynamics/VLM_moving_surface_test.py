@@ -52,10 +52,7 @@ def main():
     for i,deflection_config in enumerate(deflection_configs):
         geometry    = vehicle_setup(deflection_config=deflection_config)
         data        = VLM(conditions, settings, geometry)
-        
-        plot_title  = "Deflection Configuration #{}".format(i+1)
-        plot_3d_vehicle_vlm_panelization(geometry, show_wing_control_points=False, save_filename=plot_title, show_figure=False)        
-        
+         
         results.CL         = np.vstack((results.CL     , data.CLift.flatten()    ))
         results.CDi        = np.vstack((results.CDi    , data.CDrag_induced.flatten()   ))
         results.CM         = np.vstack((results.CM     , data.CM.flatten()    ))

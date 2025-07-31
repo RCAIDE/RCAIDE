@@ -9,8 +9,7 @@
 # RCAIDE imports 
 import RCAIDE
 from RCAIDE.Framework.Core import Units, Data           
-from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan    import design_turbofan    
-from RCAIDE.Library.Methods.Geometry.Planform                             import segment_properties   
+from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan    import design_turbofan      
 from RCAIDE.Library.Plots                                                 import *     
 import RCAIDE.Framework.External_Interfaces.OpenVSP as openvsp
 
