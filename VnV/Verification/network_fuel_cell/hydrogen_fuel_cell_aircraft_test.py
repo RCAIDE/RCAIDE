@@ -31,7 +31,7 @@ from Hydrogen_Fuel_Cell_Twin_Otter   import vehicle_setup , configs_setup
 
 def main():  
  
-    mdot_H2_true         = [0.01758012660486991,0.017232611503614347]
+    mdot_H2_true         = [0.01784442741506134,0.01744586038792788]
     fuel_cell_models     = ['PEM', 'Larminie', ]
     
     for i in range(2): 
