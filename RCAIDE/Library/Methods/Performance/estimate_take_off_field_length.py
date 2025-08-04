@@ -309,7 +309,7 @@ def estimate_2ndseg_lift_drag_ratio(state,settings,geometry):
 
     # getting geometrical data (aspect ratio) 
     for wing in geometry.wings:
-        if not (isinstance(wing,Wings.Main_Wing) or isinstance(wing,Wings.Blended_Wing_Body)): continue 
+        if not (isinstance(wing,RCAIDE.Library.Components.Wings.Main_Wing) or isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body)): continue 
         aspect_ratio = wing.aspect_ratio  
 
     # ==============================================
