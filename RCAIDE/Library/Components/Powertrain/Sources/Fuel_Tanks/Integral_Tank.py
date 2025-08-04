@@ -85,4 +85,15 @@ class Integral_Tank(Fuel_Tank):
             Connected fuel line component
         """
         append_fuel_tank_conditions(self,segment, fuel_line)  
-        return                                          
+        return       
+
+    def compute_volume(self,wings,fuselages):
+        if self.wing_tag != None:
+            wing = wings[self.wing_tag]  
+            compute
+        elif self.fuselage_tag != None: 
+            fuselage = fuselages[self.fuselage_tag]  
+
+
+
+        return                                   

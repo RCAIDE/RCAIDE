@@ -17,3 +17,4 @@ RCAIDE.Library.Methods.Powertrain.Sources.Cryogenic_Tanks
 
 from .append_fuel_tank_conditions  import append_fuel_tank_conditions
 from .compute_fuel_tank_properties import compute_fuel_tank_properties
+from .compute_integral_tank_volume import compute_fuselage_integral_tank_fuel_volume, compute_wing_integral_tank_fuel_volume

@@ -35,41 +35,8 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                 tank_c_g    =  [[0, 0, 0]]
                 tank_mass   = 0
 
-                # fuel tanks integrated into wings 
-                if fuel_tank.wing_tag != None:
-                    wing = wings[fuel_tank.wing_tag]  
-                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
-                        if len(wing.segments) > 1:
-                            segment_tank_moment = np.array([0.0, 0.0, 0.0])
-                            seg_tags = list(wing.segments.keys())
-                            for i in range(len(seg_tags)-1):
-                                inner_segment = wing.segments[seg_tags[i]]
-                                outer_segment = wing.segments[seg_tags[i+1]]
-                                if inner_segment.has_fuel_tank == True:
+                fuel_tank.compute_volume(wings,fuselages)
 
-                                    # get orgin of fuel tank     
-                                    fuel_tank.origin = wing.origin # NEED TO UPDATE
-
-                                    # compute volume of fuel in wing
-                                    volume = compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment)
-                                    fuel_tank.internal_volume += volume 
-                                    total_fuel_volume     += volume
-                                    total_fuel_mass       += volume * fuel_tank.fuel.density
-                                    tank_mass             += volume * fuel_tank.fuel.density
-                                    segment_tank_moment   += np.array(inner_segment.mass_properties.center_of_gravity)[0] * tank_mass
-
-                            tank_c_g = list(segment_tank_moment / tank_mass)
-                        else: 
-                            # get orgin of fuel tank     
-                            fuel_tank.origin = wing.origin 
-
-                            # assume whole wing has fuel 
-                            volume = compute_wing_integral_tank_fuel_volume(fuel_tank,wing)                         
-                            fuel_tank.internal_volume += volume 
-                            total_fuel_volume += volume
-                            total_fuel_mass   += volume * fuel_tank.fuel.density
-                            tank_mass         += volume * fuel_tank.fuel.density
-                            tank_c_g          = wing.aerodynamic_center  
 
                     elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank: 
                         if len(wing.segments) > 1: 
@@ -140,6 +107,8 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                             aft_tank_seg_tags = seg_tags[:index + 1]
 
                             circle_coordiantes =[]
+                            fig, ax = plt.subplots(figsize=(6, 3))
+                            i = 0 
                             for i,tag in enumerate(aft_tank_seg_tags):
                                 segment = wing.segments[tag]
 
@@ -194,11 +163,14 @@ def compute_fuel_volume(vehicle, update_max_fuel =True):
                                 new_x = np.linspace(x_tank_possible.min(), x_tank_possible.max(), 10)
                                 z_upper = z_interp_pos(new_x)
                                 z_lower = z_interp_neg(new_x)
-
-                                max_diameter,x_center,z_center = compute_largest_circle(new_x,z_upper,z_lower)
+                                
+                                
+                                max_diameter,x_center,z_center = compute_largest_circle(new_x,z_upper,z_lower,ax,i,segment)
+                                
                                 circle_coordiantes.append([max_diameter, x_center,y, z_center])
 
                             circle_coordiantes = np.array(circle_coordiantes)
+                            plt.show()
 
                             # Now that we have x,y,z and  max circle diamteres we will start computing the volumes for all the possible cases. 
                             max_dia, x_ctr, y, z_ctr = circle_coordiantes.T
@@ -298,7 +270,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
 
         # update segment origin
         delta_y                    = delta_y_percent * semi_span
-        inner_segment.origin[0][0] = inner_segment_0.origin[0][0] + delta_y * np.tan( np.pi/2 -inner_segment_0.sweeps.leading_edge) 
+        inner_segment.origin[0][0] = inner_segment_0.origin[0][0] + delta_y * np.tan(inner_segment_0.sweeps.leading_edge) 
         inner_segment.origin[0][1] = inner_segment.percent_span_location * semi_span
         inner_segment.origin[0][2] = inner_segment_0.origin[0][2] +  delta_y *np.tan(inner_segment.dihedral_outboard)
 
@@ -395,75 +367,13 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
 
     return volume ,  tank_percent_span_location
 
-def compute_wing_integral_tank_fuel_volume(fuel_tank,wing):     
 
-    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing) 
-    inner_front_rib_length  = wing.chords.root * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl))
-    inner_rear_rib_length   = wing.chords.root * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl))
-    inner_wingbox_length    = wing.chords.root * (wing.fuel_tank.percent_chord_end_location -wing.fuel_tank.percent_chord_start_location)  
 
-    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing) 
-    outer_front_rib_length  = wing.chords.tip * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl))
-    outer_rear_rib_length   = wing.chords.tip * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl))
-    outer_wingbox_length    = wing.chords.tip * (wing.fuel_tank.percent_chord_end_location -wing.fuel_tank.percent_chord_start_location)   
 
-    # volume of truncated prism
-    A_1 = inner_wingbox_length * (inner_front_rib_length + inner_rear_rib_length) / 2 
-    A_2 = outer_wingbox_length * (outer_front_rib_length + outer_rear_rib_length) / 2
-    h =  wing.spans.projected
-    volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *h   
 
-    return volume
 
-def compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment):   
 
-    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment)
-    inner_segment_chord     = wing.chords.root * inner_segment.root_chord_percent
-    inner_front_rib_length  = inner_segment_chord * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl))
-    inner_rear_rib_length   = inner_segment_chord * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl) )
-    inner_wingbox_length    = inner_segment_chord * (inner_segment.fuel_tank.percent_chord_end_location -inner_segment.fuel_tank.percent_chord_start_location)  
-
-    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment)
-    outer_segment_chord     = wing.chords.root * outer_segment.root_chord_percent
-    outer_front_rib_length  = outer_segment_chord * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl) )
-    outer_rear_rib_length   = outer_segment_chord * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl) )
-    outer_wingbox_length    = outer_segment_chord * (outer_segment.fuel_tank.percent_chord_end_location -outer_segment.fuel_tank.percent_chord_start_location)  
-
-    # volume of truncated prism
-    A_1 = inner_wingbox_length * (inner_front_rib_length + inner_rear_rib_length) / 2 
-    A_2 = outer_wingbox_length * (outer_front_rib_length + outer_rear_rib_length) / 2
-    h   =  (outer_segment.percent_span_location -  inner_segment.percent_span_location) *  wing.spans.projected /2    # assumes wing is symmetric
-    volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *h
-
-    if wing.symmetric:
-        volume *= 2    
-
-    return volume
-
-def compute_non_dimensional_rib_coordinates(compoment): 
-    if compoment.airfoil != None: 
-        if type(compoment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil:
-            geometry = compute_naca_4series(compoment.airfoil.NACA_4_Series_code)
-        elif type(compoment.airfoil) == RCAIDE.Library.Components.Airfoils.Airfoil: 
-            geometry = import_airfoil_geometry(compoment.airfoil.coordinate_file)
-    else:
-        geometry = compute_naca_4series('0012')
-
-    clearance = 1.5E-2
-    front_rib_nondim_x       = compoment.fuel_tank.percent_chord_start_location   
-    rear_rib_nondim_x        = compoment.fuel_tank.percent_chord_end_location 
-    f_upper = interp1d(geometry.x_upper_surface  ,geometry.y_upper_surface, kind='linear')
-    f_lower = interp1d(geometry.x_lower_surface  , geometry.y_lower_surface, kind='linear')
-
-    # non-wing box dimension coordinates 
-    front_rib_nondim_y_upper = f_upper([front_rib_nondim_x])[0] - clearance
-    rear_rib_nondim_y_upper  = f_upper([rear_rib_nondim_x])[0]  - clearance   
-    front_rib_nondim_y_lower = f_lower([front_rib_nondim_x])[0] + clearance   
-    rear_rib_nondim_y_lower  = f_lower([rear_rib_nondim_x])[0]  + clearance   
-
-    return front_rib_nondim_y_upper,rear_rib_nondim_y_upper, front_rib_nondim_y_lower, rear_rib_nondim_y_lower 
-
-def compute_largest_circle(x_points,z_upper,z_lower):
+def compute_largest_circle(x_points,z_upper,z_lower,ax,i,segment):
 
     coords = list(zip(x_points, z_upper)) + list(zip(x_points[::-1], z_lower[::-1]))
     poly   = Polygon(coords)
@@ -493,23 +403,44 @@ def compute_largest_circle(x_points,z_upper,z_lower):
 
     circle_center = (best_pt[0], best_pt[1])
     circle_radius = max_diameter / 2
-    # Delete Later
+    ########Delete Later
     print(f"Largest inscribed circle diameter ≈ {max_diameter:.4f}")
     print(f" Center at x={best_pt[0]:.3f}, z={best_pt[1]:.3f}")
-    # # Plotting
-    # fig, ax = plt.subplots()
-    # ax.plot(x_points, z_upper, label='Upper Surface')
-    # ax.plot(x_points, z_lower, label='Lower Surface')
+    ##Plotting
+    ax.plot(x_points, z_upper)#, label='Upper Surface')
+    ax.plot(x_points, z_lower)#, label='Lower Surface')
+    
+    fill_color = f"C{i}"
+    # Draw the inscribed circle
+    circle = plt.Circle(circle_center, circle_radius, facecolor=fill_color,      # fill color
+        alpha=0.3,                 # transparency
+        edgecolor="black",         # border color
+        linewidth=1.0,
+        label=f"Section {i}"
+    )
+    ax.add_patch(circle)
 
-    # # Draw the inscribed circle
-    # circle = plt.Circle(circle_center, circle_radius, fill=False)
-    # ax.add_patch(circle)
+    ax.set_aspect('equal', 'box')
+    ax.set_xlabel("x")
+    ax.set_ylabel("z")
 
-    # ax.set_aspect('equal', 'box')
-    # ax.set_xlabel("x")
-    # ax.set_ylabel("z")
+    af = segment.airfoil
+    coord_file = af.get('coordinate_file', None)
+    if coord_file and os.path.isfile(coord_file):
+        coords = np.loadtxt(coord_file, skiprows=1)
+    else:
+        coords = np.array(af.get('geometry'))
+
+
+    coords *= 36 * segment.root_chord_percent
+    x, z = coords[:,0], coords[:,1]
+    x += segment.origin[0][0]
+    z += segment.origin[0][2]
+    y = segment.origin[0][1] *np.ones_like(z)
+    ax.plot(x, z, '-k',color=fill_color)
+
+    ax.set_aspect('equal', 'box')
     # ax.legend()
-    # plt.show()
 
     return max_diameter , best_pt[0],best_pt[1]
 
