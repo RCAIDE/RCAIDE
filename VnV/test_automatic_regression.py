@@ -41,7 +41,7 @@ modules = [
     'Verification/network_electric/electric_ducted_fan_aircraft_test.py',
     'Verification/network_fuel_cell/hydrogen_fuel_cell_aircraft_test.py', 
     'Verification/network_hybrid/hybrid_network_test.py',  
-    #'Verification/network_turbofan/turbofan_network_test.py', # TO FIX 
+    'Verification/network_turbofan/turbofan_network_test.py',  
     'Verification/network_turbojet/turbojet_network_test.py',
     'Verification/network_turboprop/turboprop_network_test.py',
     'Verification/network_turboshaft/turboshaft_network_test.py',

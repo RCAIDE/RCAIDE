@@ -97,8 +97,7 @@ def main():
     climb_throttle_9   = results.segments.climb_9.conditions.energy.propulsors['propulsor_1'].throttle[3][0]
     climb_10_CL        = results.segments.climb_10.conditions.aerodynamics.coefficients.lift.total[2][0]
     cruise_CL_1        = results.segments.cruise_1.conditions.aerodynamics.coefficients.lift.total[2][0]
-    cruise_CL_2        = results.segments.cruise_2.conditions.aerodynamics.coefficients.lift.total[2][0]
-    cruise_CL_3        = results.segments.cruise_3.conditions.aerodynamics.coefficients.lift.total[2][0] 
+    cruise_CL_2        = results.segments.cruise_2.conditions.aerodynamics.coefficients.lift.total[2][0] 
     descent_throttle_1 = results.segments.descent_1.conditions.energy.propulsors['propulsor_1'].throttle[3][0]
     curved_cruise_CL   = results.segments.curved_cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
     descent_throttle_2 = results.segments.descent_2.conditions.energy.propulsors['propulsor_1'].throttle[3][0]
@@ -117,39 +116,38 @@ def main():
     if show_vals:
         data = [takeoff_thrust, climb_throttle_1,   climb_throttle_2,   climb_throttle_3,   climb_throttle_4,   climb_throttle_5,  
                 climb_throttle_6,   climb_throttle_7,   climb_throttle_8,   climb_throttle_9,   climb_10_CL,
-                cruise_CL_1,  cruise_CL_2,  cruise_CL_3,   descent_throttle_1,  curved_cruise_CL, descent_throttle_2,
+                cruise_CL_1,  cruise_CL_2,   descent_throttle_1,  curved_cruise_CL, descent_throttle_2,
                 single_pt_CL_1,     single_pt_CL_2,     cruise_4_CL,   cruise_5_CL, cruise_6_CL,cruise_7_CL,cruise_8_CL, 
                 descent_throttle_3,  landing_thrust]
         for val in data:
             print(val)
     
     # Truth values
-    takeoff_thrust_truth     = 98694.23114812141 #99134.30160723036
-    climb_throttle_1_truth   = 1.2504696231027317 #0.7110549987823255
-    climb_throttle_2_truth   = 0.9856967911342751 #0.652851839507073
-    climb_throttle_3_truth   = 0.44465917635141144 #0.4593199009598425
-    climb_throttle_4_truth   = 0.8124992185828095 #0.7141126170628679
-    climb_throttle_5_truth   = 0.8289062338855353 #0.798592657556121
-    climb_throttle_6_truth   = 1.0801477070864847#1.1487912485728402
-    climb_throttle_7_truth   = 1.2156643887000256 #1.3258581574701889
-    climb_throttle_8_truth   = 0.44490915437924916 #0.5353511433741139
-    climb_throttle_9_truth   = 0.7925047487161128 #0.9934711032570244
-    climb_10_CL_truth        = 1.4052504796127316 #1.369552659639704
-    cruise_CL_1_truth        = 0.6865133470719523 #0.6709704927310448
-    cruise_CL_2_truth        = 0 #0.6400030103189683 #0.6670824032809666
-    cruise_CL_3_truth        = 0.5645695289734827 #0.47372768582052316
-    descent_throttle_1_truth = -0.11478629326706513 #-0.07261872011915588
-    curved_cruise_CL_truth   = 1.3245517572364578 #1.305646777449746
-    descent_throttle_2_truth = 0.0878913712078045 #0.06577426504082755
-    single_pt_CL_1_truth     = 0.24691518031250773 #0.24316524632891692
-    single_pt_CL_2_truth     = 0.0009902472254927053 #0.0007477042169639135
-    cruise_4_CL_truth        = 0.5031192999905193 #0.49547987570334445
-    cruise_5_CL_truth        = 0.5031148753522029 #0.4954753911628035
-    cruise_6_CL_truth        = 0.34093490418344347 #0.33532665895771235
-    cruise_7_CL_truth        = 0.33319454751897737 #0.3271259245655435
-    cruise_8_CL_truth        = 0.32631366830326336 #0.31983937725305056
-    descent_throttle_3_truth = 0.05198193010685686 #0.018473400590390692
-    landing_thrust_truth     = 0 #32599.413094134165 #10914.922642740088
+    takeoff_thrust_truth     = 98694.23114812141
+    climb_throttle_1_truth   = 1.2274487457545222
+    climb_throttle_2_truth   = 0.9530274701539685
+    climb_throttle_3_truth   = 0.42721010579039587
+    climb_throttle_4_truth   = 0.7912339260398358
+    climb_throttle_5_truth   = 0.8056365802311284
+    climb_throttle_6_truth   = 1.0524309184845355
+    climb_throttle_7_truth   = 1.1844740767481787
+    climb_throttle_8_truth   = 0.4190934220364731
+    climb_throttle_9_truth   = 0.7484914623089416
+    climb_10_CL_truth        = 1.40942059713027
+    cruise_CL_1_truth        = 0.6893897462686972
+    cruise_CL_2_truth        = 0.5654308626231408
+    descent_throttle_1_truth = -0.1378605239469412
+    curved_cruise_CL_truth   = 1.333232156597361
+    descent_throttle_2_truth = 0.07751837476804418
+    single_pt_CL_1_truth     = 0.24870629839984368
+    single_pt_CL_2_truth     = 0.000990247225492658535
+    cruise_4_CL_truth        = 0.5068388150048242
+    cruise_5_CL_truth        = 0.5068346676745502
+    cruise_6_CL_truth        = 0.34385432045822495
+    cruise_7_CL_truth        = 0.3366151602359357
+    cruise_8_CL_truth        = 0.33017999040693996
+    descent_throttle_3_truth = 0.08434646951234483
+    landing_thrust_truth     = 39880.99351455314
     
     # Store errors 
     error = Data()
@@ -164,9 +162,8 @@ def main():
     error.climb_throttle_8   = np.max((np.abs(climb_throttle_8     - climb_throttle_8_truth))/climb_throttle_8_truth)  
     error.climb_throttle_9   = np.max((np.abs(climb_throttle_9     - climb_throttle_9_truth))/climb_throttle_9_truth)
     error.climb_10_CL        = np.max((np.abs(climb_10_CL          - climb_10_CL_truth ))/climb_10_CL_truth)
-    error.cruise_CL_1        = np.max((np.abs(cruise_CL_1          - cruise_CL_1_truth ))/cruise_CL_1_truth)     
-    error.cruise_CL_2        = np.max((np.abs(cruise_CL_2          - cruise_CL_2_truth ))/cruise_CL_2_truth)      
-    error.cruise_CL_3        = np.max((np.abs(cruise_CL_3          - cruise_CL_3_truth ))/cruise_CL_3_truth)     
+    error.cruise_CL_1        = np.max((np.abs(cruise_CL_1          - cruise_CL_1_truth ))/cruise_CL_1_truth)      
+    error.cruise_CL_2        = np.max((np.abs(cruise_CL_2         - cruise_CL_2_truth ))/cruise_CL_2_truth)     
     error.descent_throttle_1 = np.max((np.abs(descent_throttle_1   - descent_throttle_1_truth))/descent_throttle_1_truth) 
     error.curved_cruise_CL   = np.max((np.abs(curved_cruise_CL     - curved_cruise_CL_truth))/curved_cruise_CL_truth)
     error.descent_throttle_2 = np.max((np.abs(descent_throttle_2   - descent_throttle_2_truth))/descent_throttle_2_truth)
@@ -522,42 +519,13 @@ def mission_setup(analyses):
     segment.assigned_control_variables.throttle.assigned_propulsors  = [['propulsor_1','propulsor_2']] 
     segment.assigned_control_variables.body_angle.active             = True                
     
-    mission.append_segment(segment)    
-
-    # ------------------------------------------------------------------------------------------------------------------------------------ 
-    #   Cruise Segment 2: Constant Throttle Constant Altltude
-    # ------------------------------------------------------------------------------------------------------------------------------------ 
-    segment = Segments.Cruise.Constant_Throttle_Constant_Altitude(base_segment)
-    segment.tag = "cruise_2" 
-    segment.analyses.extend(analyses.base)  
-    segment.state.numerics.number_of_control_points                        = 32 
-    segment.altitude                                                       = 11. * Units.km  
-    segment.air_speed_end                                                  = 223 * Units.m / Units.s  
-    segment.throttle                                                       = 0.95
-    segment.distance                                                       = 200 * Units.km  
-                     
-    # define flight dynamics to model                  
-    segment.flight_dynamics.force_x                                        = True  
-    segment.flight_dynamics.force_z                                        = True     
-          
-    # define flight controls       
-    segment.assigned_control_variables.elapsed_time.active                 = True  
-    segment.assigned_control_variables.elapsed_time.initial_guess          = True 
-    #segment.assigned_control_variables.elapsed_time.initial_guess_values   = [[10.]]  
-    segment.assigned_control_variables.acceleration.active                 = True              
-    segment.assigned_control_variables.acceleration.initial_guess          = True
-    #segment.assigned_control_variables.acceleration.initial_guess_values   = [[-1]] 
-    segment.assigned_control_variables.body_angle.active                   = True   
-    segment.assigned_control_variables.body_angle.initial_guess            = True 
-    #segment.assigned_control_variables.body_angle.initial_guess_values     = [[0*Units.degrees]]     
-
-    mission.append_segment(segment)   
+    mission.append_segment(segment)     
     
     # ------------------------------------------------------------------------------------------------------------------------------------ 
-    #   Cruise Segment 3 : Constant Pitch Rate Constant Altltude
+    #   Cruise Segment 2 : Constant Pitch Rate Constant Altltude
     # ------------------------------------------------------------------------------------------------------------------------------------ 
     segment = Segments.Cruise.Constant_Pitch_Rate_Constant_Altitude(base_segment)
-    segment.tag = "cruise_3" 
+    segment.tag = "cruise_2" 
     segment.analyses.extend(analyses.base) 
     segment.altitude                                                = 11. * Units.km    
     segment.pitch_rate                                              = 0.0001  * Units['rad/s/s']
@@ -829,23 +797,22 @@ def mission_setup(analyses):
 
     segment.analyses.extend( analyses.reverse_thrust )
     segment.velocity_start                                                = 150 * Units.knots
-    segment.velocity_end                                                  = 100 * Units.knots 
+    segment.velocity_end                                                  = 10 * Units.knots 
     segment.friction_coefficient                                          = 0.4
     segment.altitude                                                      = 0.0 
     segment.assigned_control_variables.elapsed_time.active                = True   
     segment.assigned_control_variables.elapsed_time.initial_guess_values  = [[30.]]  
-    mission.append_segment(segment)      
-
+    mission.append_segment(segment)       
 
     # ------------------------------------------------------------------------------------------------------------------------------------ 
-    #   Non Converged Segment : Constant Throttle Constant Altltude
+    #   Non Converged Segment : Constant_Dynamic_Pressure_Constant_Altitude_Loiter
     # ------------------------------------------------------------------------------------------------------------------------------------  
-    segment = Segments.Cruise.Constant_Throttle_Constant_Altitude(base_segment)
+
+    segment = Segments.Cruise.Constant_Dynamic_Pressure_Constant_Altitude_Loiter(base_segment)
     segment.tag = "cruise_non_converged" 
-    segment.analyses.extend(analyses.base)    
-    segment.air_speed_end                                            = 150 * Units.knots
-    segment.throttle                                                 = 0
-    segment.distance                                                 = 10 * Units.km 
+    segment.analyses.extend(analyses.base) 
+    segment.altitude                                                 = 2500  * Units.feet
+    segment.dynamic_pressure                                         = 12000 * Units.pascals  
     segment.state.numerics.number_of_control_points                  = 2
     segment.state.numerics.max_evaluations                           = 10  
                 
@@ -854,12 +821,11 @@ def mission_setup(analyses):
     segment.flight_dynamics.force_z                                  = True     
     
     # define flight controls 
-    segment.assigned_control_variables.elapsed_time.active           = True   
-    segment.assigned_control_variables.acceleration.active           = True          
+    segment.assigned_control_variables.throttle.active               = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors  = [['propulsor_1','propulsor_2']] 
     segment.assigned_control_variables.body_angle.active             = True                
     
-    mission.append_segment(segment)
-    
+    mission.append_segment(segment)    
     
     # ------------------------------------------------------------------------------------------------------------------------------------ 
     #   Mission definition complete    
