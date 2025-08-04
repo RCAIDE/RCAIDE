@@ -7,15 +7,14 @@
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
-# RCAIDE imports
-import  RCAIDE
+# RCAIDE imports 
 from RCAIDE.Framework.Core import Data 
 
 # package imports
 import numpy as np 
 
  
-def extract_wing_collocation_points(geometry, wing_instance_idx):
+def extract_wing_collocation_points(VD,conditions,settings,geometry, wing_instance_idx):
 
     """ This extracts the collocation points of the vehicle vortex distribution
     belonging to the specified wing instance index. This is useful for slipstream
@@ -26,7 +25,7 @@ def extract_wing_collocation_points(geometry, wing_instance_idx):
     None
 
     Inputs:
-    geometry      -    SUAVE vehicle 
+    geometry      -    RCAIDE vehicle 
     wing_instance -    wing instance tag
 
     Outputs:
@@ -36,14 +35,7 @@ def extract_wing_collocation_points(geometry, wing_instance_idx):
     Properties Used:
     N/A
     """
-    # unpack vortex distribution properties
-    try:
-        VD           = geometry.vortex_distribution
-    except:
-        print("No vortex distribution defined. Creating default vortex distribution from vehicle.")
-        settings = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method().settings
-        VD = RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution(geometry,settings)        
-        
+    # unpack vortex distribution properties 
     sym          = VD.symmetric_wings
     
     # Find the beginning and end indices of the wing
@@ -55,7 +47,7 @@ def extract_wing_collocation_points(geometry, wing_instance_idx):
     start_pt         = breaks[semispan_idx]
     
     # Find the final index of the wing
-    end_semispan_idx = semispan_idx + 1 + sym[wing_instance_idx]
+    end_semispan_idx    = semispan_idx + 1 + sym[wing_instance_idx]
     end_pt              = breaks[end_semispan_idx]
     
     # Make ranges of points

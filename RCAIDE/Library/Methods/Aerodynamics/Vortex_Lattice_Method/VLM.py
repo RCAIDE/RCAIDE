@@ -233,7 +233,7 @@ def VLM(conditions,settings,geometry):
     delta = np.arctan((VD.ZC - VD.ZCH)/((VD.XC - VD.XCH))) # mean camber surface angle 
 
     # Build the RHS vector    
-    rhs = compute_RHS_matrix(VD,delta,phi,conditions,settings,geometry,pwm) 
+    rhs     = compute_RHS_matrix(VD,delta,phi,conditions,settings,geometry,pwm) 
     RHS     = rhs.RHS*1 # this matches numpy=1.26 in terms of dimension
     ONSET   = rhs.ONSET*1
 

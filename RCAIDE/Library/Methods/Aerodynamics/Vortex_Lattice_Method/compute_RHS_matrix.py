@@ -32,12 +32,12 @@ def compute_RHS_matrix(VD,delta,phi,conditions,settings,geometry,propeller_wake_
         networks                                 [Unitless]
         vehicle vortex distribution              [Unitless]
 
-    conditions.aerodynamics.angles.alpha      [radians]
-    conditions.aerodynamics.angles.beta     [radians]
+    conditions.aerodynamics.angles.alpha         [radians]
+    conditions.aerodynamics.angles.beta          [radians]
     conditions.freestream.velocity               [m/s]
-    conditions.static_stability.pitch_rate      [radians/s]
-    conditions.static_stability.roll_rate       [radians/s]
-    conditions.static_stability.yaw_rate        [radians/s]
+    conditions.static_stability.pitch_rate       [radians/s]
+    conditions.static_stability.roll_rate        [radians/s]
+    conditions.static_stability.yaw_rate         [radians/s]
 
     sur_flag    - use_surrogate flag             [Unitless]
     slipstream  - propeller_wake_model flag      [Unitless]
@@ -85,9 +85,8 @@ def compute_RHS_matrix(VD,delta,phi,conditions,settings,geometry,propeller_wake_
                     rotor =  propulsor.rotor
                 elif 'propeller' in  propulsor :
                     rotor =  propulsor.propeller
-                rotor_conditions =  conditions.energy.converters[rotor.tag]
                 if rotor.fidelity == "Blade_Element_Momentum_Theory_Helmholtz_Wake":                 
-                    rot_V_wake_ind += RCAIDE.Library.Methods.Powertrain.Converters.Rotor.Performance.Blade_Element_Momentum_Theory_Helmholtz_Wake.wake_model.evaluate_slipstream(rotor,rotor_conditions,geometry,num_ctrl_pts) 
+                    rot_V_wake_ind += RCAIDE.Library.Methods.Powertrain.Converters.Rotor.Performance.Blade_Element_Momentum_Theory_Helmholtz_Wake.wake_model.evaluate_slipstream(rotor,VD,conditions,settings,geometry,num_ctrl_pts) 
                     
             # update the total induced velocity distribution
             Vx_ind_total = Vx_ind_total  + rot_V_wake_ind[:,:,0]
