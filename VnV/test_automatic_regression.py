@@ -19,8 +19,8 @@ modules = [
     'Verification/analysis_aerodynamics/blended_wing_body_aerodynamics_test.py',
     'Verification/atmosphere/atmosphere.py',
     'Verification/atmosphere/constant_temperature.py',
-    #'Verification/analysis_emissions/emissions_test.py',  # TO FIX 
-    #'Verification/analysis_emissions/LTO_Emissions.py',   # TO FIX 
+    'Verification/analysis_emissions/emissions_test.py',  
+    'Verification/analysis_emissions/LTO_Emissions.py',   
     'Verification/analysis_noise/digital_elevation_test.py',  
     'Verification/analysis_noise/frequency_domain_test.py', 
     'Verification/analysis_noise/empirical_jet_noise_test.py',    
