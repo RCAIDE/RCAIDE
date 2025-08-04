@@ -28,6 +28,7 @@ def vehicle_setup():
     vehicle.mass_properties.takeoff             = 2550. * Units.pounds 
     vehicle.mass_properties.max_zero_fuel       = 1680  * Units.pounds 
     vehicle.mass_properties.max_fuel            = 152.407
+    vehicle.mass_properties.max_payload         = 910  * Units.pounds 
     vehicle.mass_properties.cargo               = 0. 
                                                
     # envelope properties                       

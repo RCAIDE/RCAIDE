@@ -338,7 +338,7 @@ def vehicle_setup(new_regression=True) :
     boom.index                              = 1
     
     # Segment  
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment() 
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment() 
     segment.tag                       = 'segment_1'   
     segment.percent_x_location        = 0.
     segment.percent_z_location        = 0.0 
@@ -347,7 +347,7 @@ def vehicle_setup(new_regression=True) :
     boom.append_segment(segment)           
     
     # Segment                                   
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment()
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment()
     segment.tag                       = 'segment_2'   
     segment.percent_x_location        = 0.03
     segment.percent_z_location        = 0. 
@@ -356,7 +356,7 @@ def vehicle_setup(new_regression=True) :
     boom.append_segment(segment) 
     
     # Segment                                   
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment()
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment()
     segment.tag                       = 'segment_3'    
     segment.percent_x_location        = 0.97
     segment.percent_z_location        = 0. 
@@ -365,7 +365,7 @@ def vehicle_setup(new_regression=True) :
     boom.append_segment(segment)           
     
     # Segment                                  
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment()
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment()
     segment.tag                       = 'segment_4'   
     segment.percent_x_location        = 1.   
     segment.percent_z_location        = 0.   

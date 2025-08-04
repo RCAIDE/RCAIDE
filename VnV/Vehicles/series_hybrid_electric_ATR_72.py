@@ -261,7 +261,7 @@ def vehicle_setup():
     landing_gear_pod.differential_pressure              = 0.   
     
     # Segment  
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment() 
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment() 
     segment.tag                       = 'segment_1'   
     segment.percent_x_location        = 0
     segment.percent_z_location        = 0 
@@ -270,7 +270,7 @@ def vehicle_setup():
     landing_gear_pod.append_segment(segment)           
     
     # Segment                                   
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment()
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment()
     segment.tag                       = 'segment_2'   
     segment.percent_x_location        = 1.14 / landing_gear_pod.lengths.total 
     segment.percent_z_location        = -0.25 / landing_gear_pod.lengths.total 
@@ -279,7 +279,7 @@ def vehicle_setup():
     landing_gear_pod.append_segment(segment)
 
     # Segment                                   
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment()
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment()
     segment.tag                       = 'segment_3'   
     segment.percent_x_location        = 3 / landing_gear_pod.lengths.total  
     segment.percent_z_location        = -0.25 /landing_gear_pod.lengths.total   
@@ -289,7 +289,7 @@ def vehicle_setup():
 
 
     # Segment                                   
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment()
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment()
     segment.tag                       = 'segment_4'   
     segment.percent_x_location        = 4.86 /landing_gear_pod.lengths.total
     segment.percent_z_location        =  -0.25 /landing_gear_pod.lengths.total
@@ -298,7 +298,7 @@ def vehicle_setup():
     landing_gear_pod.append_segment(segment)     
     
     # Segment                                   
-    segment                           = RCAIDE.Library.Components.Fuselages.Segments.Segment()
+    segment                           = RCAIDE.Library.Components.Booms.Segments.Segment()
     segment.tag                       = 'segment_5'    
     segment.percent_x_location        = 6  /landing_gear_pod.lengths.total
     segment.percent_z_location        = 0 

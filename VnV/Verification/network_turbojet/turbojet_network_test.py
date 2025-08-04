@@ -58,8 +58,8 @@ def main():
     results = missions.base_mission.evaluate()   
     plot_mission(results)    
  
-    CL          = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
-    CD          = results.segments.cruise.conditions.aerodynamics.coefficients.drag.total[2][0] 
+    CL          = results.segments.level_cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
+    CD          = results.segments.level_cruise.conditions.aerodynamics.coefficients.drag.total[2][0] 
     L_D  = CL / CD
     #print values for resetting regression
     show_vals = True
@@ -69,7 +69,7 @@ def main():
             print(val)
     
     # Truth values 
-    L_D_truth         = 0.1281467849539085
+    L_D_truth         = 7.176356375661485
     
     # Store errors 
     error = Data() 

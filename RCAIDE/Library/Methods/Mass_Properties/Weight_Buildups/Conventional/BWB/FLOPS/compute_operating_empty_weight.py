@@ -10,8 +10,7 @@ from RCAIDE.Framework.Core                                                      
 from .compute_aft_center_body_weight                                               import compute_aft_center_body_weight
 from .compute_cabin_weight                                                         import compute_cabin_weight
 from .compute_systems_weight                                                       import compute_systems_weight
-from .compute_bwb_wing_weight                                                      import compute_wing_weight
-from .compute_operating_items                                                      import compute_operating_items_weight
+from .compute_bwb_wing_weight                                                      import compute_wing_weight 
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common    import compute_payload_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport import FLOPS 
 from RCAIDE.Library.Methods.Geometry.Planform                                      import segment_properties  
@@ -346,10 +345,11 @@ def compute_operating_empty_weight(vehicle,settings=None):
         else: 
             for cabin in fuselage.cabins:
                 cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
-    
-    output.operational_items    = W_oper  
-    output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
-    output.max_takeoff          = vehicle.mass_properties.max_takeoff    
+     
+    output.operational_items    = W_oper 
+    output.empty.total          += output.operational_items.total # update OEW 
+    output.zero_fuel_weight     = output.empty.total + output.payload.total
+    output.max_takeoff          = vehicle.mass_properties.max_takeoff      
     return output
 
 

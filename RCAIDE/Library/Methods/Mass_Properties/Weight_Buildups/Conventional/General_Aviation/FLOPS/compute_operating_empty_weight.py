@@ -7,8 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Framework.Core import Data ,  Units 
-from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common import compute_payload_weight
-from RCAIDE.Library.Attributes.Materials.Aluminum import Aluminum
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common import compute_payload_weight 
 import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.General_Aviation.FLOPS as FLOPS
 # python imports 
 import numpy as np
@@ -149,10 +148,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
 
     ##-------------------------------------------------------------------------------                 
     # Wing Weights 
-    ##------------------------------------------------------------------------------- 
-    Al_rho   = Aluminum().density
-    Al_sigma = Aluminum().yield_tensile_strength      
-    
+    ##-------------------------------------------------------------------------------  
     num_main_wings      = 0
     W_main_wing        = 0.0
     W_tail_horizontal  = 0.0
@@ -253,10 +249,13 @@ def compute_operating_empty_weight(vehicle, settings=None):
                                                     + output.empty.systems.hydraulics + output.empty.systems.furnishings \
                                                     + output.empty.systems.air_conditioner + output.empty.systems.instruments 
 
+    output.payload              = payload  
+    output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total  
+    
     ##-------------------------------------------------------------------------------             
     # Operating Items Weight
     ##------------------------------------------------------------------------------- 
-    vehicle.mass_properties.max_zero_fuel = output.empty.total + vehicle.mass_properties.max_payload
+    vehicle.mass_properties.max_zero_fuel = output.empty.total + vehicle.mass_properties.max_payload # inital value of MZFW
     W_oper = FLOPS.compute_operating_items_weight(vehicle) 
     for fuselage in vehicle.fuselages:
         if len(fuselage.cabins) == 0: 
@@ -267,8 +266,9 @@ def compute_operating_empty_weight(vehicle, settings=None):
             for cabin in fuselage.cabins:
                 cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
     
-    output.operational_items    = W_oper  
-    output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
+    output.operational_items    = W_oper 
+    output.empty.total          += output.operational_items.total # update OEW 
+    output.zero_fuel_weight     = output.empty.total + output.payload.total
     output.max_takeoff          = vehicle.mass_properties.max_takeoff      
      
     return output

@@ -44,8 +44,8 @@ def main():
     # mission analysis 
     results = missions.base_mission.evaluate()   
     
-    P_truth     = 39482.73644976058
-    mdot_truth  = 0.0034690430170655428
+    P_truth     = 36458.222465531326
+    mdot_truth  = 0.0032033023399886578
     
     P    = results.segments.cruise.state.conditions.energy.converters['internal_combustion_engine'].power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle_mass_rate[-1,0]     

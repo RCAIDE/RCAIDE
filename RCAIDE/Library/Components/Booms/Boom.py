@@ -180,7 +180,7 @@ class Boom(Component):
         """
 
         # Assert database type
-        if not isinstance(segment,RCAIDE.Library.Components.Boom.Segments.Segment):
+        if not isinstance(segment,RCAIDE.Library.Components.Booms.Segments.Segment):
             raise Exception('input component must be of type Segment')
 
         # Store data

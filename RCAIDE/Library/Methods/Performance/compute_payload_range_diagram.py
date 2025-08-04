@@ -98,13 +98,15 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     
     initial_segment =  list(mission.segments.keys())[0]
     
-    # remove takeoff weight from aircraft if defined
-    for segment in  mission.segments:
+    # if weights analysis is defined, remove takeoff weight to allow mass properties function to perform calculations
+    for i , segment in enumerate(mission.segments):
         if segment.analyses.weights == None:
-            AssertionError('Weights analysis not defined!')
-        segment.analyses.weights.vehicle.mass_properties.takeoff = None
+            if i == 0:
+                print('Weights analysis not defined, using user specified values')
+        else:
+            segment.analyses.weights.vehicle.mass_properties.takeoff = None
     
-    # perform inital weights analysis
+    # perform initial weights analysis
     geometry(mission)
     mass_properties(mission)
     vehicle = mission.segments[initial_segment].analyses.weights.vehicle
