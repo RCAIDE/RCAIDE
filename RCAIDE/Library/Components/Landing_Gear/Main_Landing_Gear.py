@@ -66,3 +66,4 @@ class Main_Landing_Gear(Landing_Gear):
         """
         self.tag           = 'main_gear'  
         self.symmetric     = True       
+        self.units         = 1
