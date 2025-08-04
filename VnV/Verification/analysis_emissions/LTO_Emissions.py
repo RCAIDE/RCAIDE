@@ -93,7 +93,7 @@ def LTO_emisions_mission_setup(analyses):
     segment.velocity                                    = 157.0 * Units['knots']  
     segment.altitude                                    = 5.0   
     segment.throttle                                    = 1
-    segment.time                                        = 0.7 *  Units.minutes
+    segment.time                                        = 0.7 *  Units.minutes 
     mission.append_segment(segment)
  
     return mission   
