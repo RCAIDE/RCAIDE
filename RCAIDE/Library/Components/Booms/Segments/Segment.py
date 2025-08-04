@@ -79,7 +79,7 @@ class Segment(Component):
         self.percent_z_location       = 0 
         self.height                   = 0 
         self.width                    = 0 
-        self.curvature                = 2  
+        self.curvature                = 2 # super ellipse 
          
 class Segment_Container(Container):
     """

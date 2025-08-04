@@ -68,8 +68,7 @@ class Vortex_Lattice_Method(Stability):
         self.settings.use_surrogate                                      = True
         self.settings.propeller_wake_model                               = False 
         self.settings.discretize_control_surfaces                        = True 
-        self.settings.model_fuselage                                     = False
-        self.settings.trim_aircraft                                      = True
+        self.settings.model_fuselage                                     = False 
         self.settings.aileron_flag                                       = False
         self.settings.rudder_flag                                        = False
         self.settings.flap_flag                                          = False

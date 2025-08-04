@@ -197,8 +197,7 @@ def missions_setup(mission):
 
 def plot_results(results):
     # Plots fligh conditions 
-    plot_flight_conditions(results)
-    plot_fuel_consumption(results) 
+    plot_flight_conditions(results) 
     return
 
 

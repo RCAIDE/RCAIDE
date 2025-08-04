@@ -6,7 +6,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-# RCAIDE imports 
+# RCAIDE imports
+import RCAIDE
 from RCAIDE.Library.Components import Component 
 from RCAIDE.Framework.Core     import Data, Container 
  
@@ -126,16 +127,7 @@ class Boom(Component):
     """
     
     def __defaults__(self):
-        """ :meta private:"""
-        #This sets the default values.
-    
-        #Assumptions:
-        #    None
-        
-        #Source:
-        #    None
-              
-        
+        """ :meta private:"""         
         self.tag                                    = 'boom'
         self.origin                                 = [[0.0,0.0,0.0]]
         self.aerodynamic_center                     = [0.0,0.0,0.0]  
@@ -176,31 +168,25 @@ class Boom(Component):
         self.vsp_data.xsec_num                      = None  # Number if XSecs in rotor_boom geom.
                         
         self.segments                               = Container()
-        
+         
     def append_segment(self,segment):
         """
-        Assumptions:
-           None
-            
-        Source:
-           None
-        
-        Args:
-           self       : boom                  [unitless]
-           segment    : cross-section of boom [unitless]   
-            
-        Outputs:
-           None 
+        Adds a new segment to the boom's segment container.
+
+        Parameters
+        ----------
+        segment : Data
+            Boom segment to be added
         """
 
         # Assert database type
-        if not isinstance(segment,Data):
-            raise Exception('input component must be of type Data()')
+        if not isinstance(segment,RCAIDE.Library.Components.Boom.Segments.Segment):
+            raise Exception('input component must be of type Segment')
 
         # Store data
-        self.segments.append(segment) 
-        
-        return 
+        self.segments.append(segment)
+
+        return
 
 class Container(Component.Container):
     def get_children(self):

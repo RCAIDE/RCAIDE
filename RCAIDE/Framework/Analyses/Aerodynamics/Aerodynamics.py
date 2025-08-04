@@ -78,13 +78,9 @@ class Aerodynamics(Analysis):
         self.settings.supersonic                                         = Data()
         self.settings.supersonic.peak_mach_number                        = 1.04  
         self.settings.supersonic.begin_drag_rise_mach_number             = 0.95
-        self.settings.supersonic.end_drag_rise_mach_number               = 1.2
-        self.settings.supersonic.transonic_drag_multiplier               = 1.25  
-        self.settings.supersonic.volume_wave_drag_scaling                = 3.2  
+        self.settings.supersonic.end_drag_rise_mach_number               = 1.2    
         self.settings.supersonic.fuselage_parasite_drag_begin_blend_mach = 0.91
-        self.settings.supersonic.fuselage_parasite_drag_end_blend_mach   = 0.99    
-        self.settings.supersonic.cross_sectional_area_calculation_type   = 'Fixed'     
-        self.settings.supersonic.wave_drag_type                          = 'Raymer'
+        self.settings.supersonic.fuselage_parasite_drag_end_blend_mach   = 0.99        
     
         # Stability derivatives. If these are not user defined, then they will be calculated. 
         self.stability_derivatives                                       = Data()   

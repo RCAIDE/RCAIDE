@@ -28,9 +28,7 @@ def wave_drag(state,settings,geometry):
     settings.
       begin_drag_rise_mach_number                                    [Unitless]
       end_drag_rise_mach_number                                      [Unitless]
-      peak_mach_number                                               [Unitless]
-      transonic_drag_multiplier                                      [Unitless]
-      volume_wave_drag_scaling                                       [Unitless]
+      peak_mach_number                                               [Unitless] 
     state.conditions.freestream.mach_number                          [Unitless]
     geometry.maximum_cross_sectional_area                            [m^2] (used in subfunctions)
     geometry.total_length                                            [m]   (used in subfunctions)
@@ -58,7 +56,7 @@ def wave_drag(state,settings,geometry):
     sup_h002    = lambda M:sup_spline2.compute(M)     
     
     # Wave drag due to volume  
-    supersonic_CDw_volume = supersonic_volume_wave_drag(conditions, settings, geometry) *(1-sup_h00(Mach))
+    CD_wave_volume = supersonic_volume_wave_drag(conditions, settings, geometry) *(1-sup_h00(Mach))
     
     # wave drag due to lift  
     transonic_CDw_lift           = transonic_lift_wave_drag(conditions, settings, geometry) *sup_h00(Mach)
@@ -67,8 +65,7 @@ def wave_drag(state,settings,geometry):
     supersonic_CDw_lift          = supersonic_lift_wave_drag(conditions, settings, geometry) *(1-sup_h002(Mach))
     supersonic_CDw_lift[Mach<1]  = 0   
    
-    # total wave drag 
-    CD_wave_volume = supersonic_CDw_volume  
+    # total wave drag  
     CD_wave_lift   = supersonic_CDw_lift + transonic_CDw_lift
     CD_wave        = CD_wave_lift + CD_wave_volume 
 
@@ -182,7 +179,7 @@ def supersonic_lift_wave_drag(conditions,configuration,geometry):
 
     return cd_lift_wave
 
-def supersonic_volume_wave_drag(conditions, settings, geometry):
+def supersonic_volume_wave_drag(conditions, settings, vehicle):
     """Computes the volume drag
     
     Assumptions:
@@ -202,12 +199,16 @@ def supersonic_volume_wave_drag(conditions, settings, geometry):
     vehicle_wave_drag                     [Unitless] 
     """
    
-    S_ref = geometry.reference_area
-    L     = geometry.length
-    Amax  = geometry.maximum_cross_sectional_area 
-  
-    volume      = (3 / 16) * np.pi* Amax *  L 
-    CD_wave_vol = (128 * (volume ** 2)) / (S_ref *  np.pi * (L ** 4)) 
+    S_ref = vehicle.reference_area
+    L     = vehicle.length
+    Amax  = vehicle.maximum_cross_sectional_area
+     
+    # compute volume drag referenced to frontal area
+    Rmax = 0
+    for fuselage in vehicle.fuselages:
+        Rmax =  np.maximum(Rmax, fuselage.width)
+    volume      =  (3 / 16) * (np.pi ** 2) * (Rmax ** 2)  *  L 
+    CD_wave_vol_frontal = 24 *volume /(L **3)
     
-    CD_wave_v   =  CD_wave_vol *  np.ones_like(conditions.freestream.mach_number)
-    return CD_wave_v 
+    CD_wave_vol =  CD_wave_vol_frontal * ( Amax / S_ref) *  np.ones_like(conditions.freestream.mach_number) 
+    return CD_wave_vol 

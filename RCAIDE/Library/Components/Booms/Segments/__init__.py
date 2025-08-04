@@ -6,7 +6,7 @@ Module containing nacelle segments for aircraft propulsion system integration.
 See Also
 --------
 RCAIDE.Library.Components.Fuselages
-    Related module for nacelle components that may interface with engine nacelles
+    Related module for boom components that may interface with engine nacelles
 RCAIDE.Library.Components.Landing_Gear
     Related module for landing gear design which may affect nacelle ground clearance
 RCAIDE.Library.Components.Airfoils
@@ -15,8 +15,8 @@ RCAIDE.Library.Components.Airfoils
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
-
+# ----------------------------------------------------------------------------------------------------------------------
+ 
 from .Segment                    import Segment 
 from .Circle_Segment             import Circle_Segment
 from .Ellipse_Segment            import Ellipse_Segment

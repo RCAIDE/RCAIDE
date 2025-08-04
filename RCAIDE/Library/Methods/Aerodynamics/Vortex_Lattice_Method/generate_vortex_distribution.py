@@ -75,38 +75,9 @@ def generate_vortex_distribution(conditions,settings,geometry):
     VD_seg.Z      = np.empty(shape=[0,1], dtype=precision)
     VD_seg.Y_SW   = np.empty(shape=[0,1], dtype=precision)
     VD_seg.DY     = np.empty(shape=[0,1], dtype=precision)
-    
      
-    control_points =  len(conditions.aerodynamics.angles.alpha)
-    for i in range(control_points): # this loops over the control points due to changes in the vortex distribtion
-        for wing in geometry.wings: 
-            for control_surface in wing.control_surfaces:  
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:  
-                    if settings.trim_aircraft ==  True:
-                        control_surface.deflection = conditions.control_surfaces.aileron.deflection[i,0]
-                    else: 
-                        conditions.control_surfaces.aileron.deflection[i, 0] = control_surface.deflection
-                        
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:    
-                    if settings.trim_aircraft ==  True: 
-                        control_surface.deflection = conditions.control_surfaces.elevator.deflection[i,0]
-                    else:   
-                        conditions.control_surfaces.elevator.deflection[i, 0] = control_surface.deflection
-                        
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:    
-                    if settings.trim_aircraft ==  True: 
-                        control_surface.deflection = conditions.control_surfaces.rudder.deflection[i,0]
-                    else:   
-                        conditions.control_surfaces.rudder.deflection[i, 0] = control_surface.deflection
-                                            
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
-                    conditions.control_surfaces.slat.deflection[i, 0] = control_surface.deflection
-                    
-                if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:   
-                    conditions.control_surfaces.flap.deflection[i, 0] = control_surface.deflection     
-    
-        VD_i = generate_control_point_vortex_distribution(geometry,settings) 
-    
+    for i in range(len(conditions.aerodynamics.angles.alpha)):
+        VD_i = generate_control_point_vortex_distribution(geometry,settings)  
         if i ==  0: 
             VD_seg.XAH    = np.atleast_2d(VD_i.XAH   ) 
             VD_seg.YAH    = np.atleast_2d(VD_i.YAH   )

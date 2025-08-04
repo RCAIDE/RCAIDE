@@ -108,6 +108,9 @@ def compute_systems_weight(vehicle):
     NENG = 0
     FNEW = 0
     FNEF = 0
+    NPF  = vehicle.first_class_passengers      
+    NPB  = vehicle.business_class_passengers   
+    NPT  = vehicle.economy_class_passengers  
     
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
@@ -175,7 +178,7 @@ def compute_systems_weight(vehicle):
     DESRNG  = vehicle.flight_envelope.design_range / Units.nmi
     WAVONC  = 15.8 * DESRNG ** 0.1 * NFLCR ** 0.7 * FPAREA ** 0.43  # avionics weight
     XLP     = 0.8 * XL
-    WFURN   = 127 * NFLCR + 112 * vehicle.NPF + 78 * vehicle.NPB + 44 * vehicle.NPT \
+    WFURN   = 127 * NFLCR + 112 *  NPF + 78 *  NPB + 44 * NPT \
                 + 2.6 * XLP * (WF + DF) * NFUSE  # furnishing weight
     WAC     = (3.2 * (FPAREA * DF) ** 0.6 + 9 * NPASS ** 0.83) * VMAX + 0.075 * WAVONC  # ac weight
     WAI     = ref_wing.spans.projected / Units.ft * 1. / np.cos(ref_wing.sweeps.quarter_chord) + 3.8 * FNAC * NENG + 1.5 * WF  # anti-ice weight

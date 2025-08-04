@@ -167,13 +167,10 @@ def export_vsp_vehicle(vehicle, vehicle_tag, fuel_tank_set_ind=3, verbose=True, 
                                            fuel_tank_set_ind, OML_set_ind)
         except AttributeError:
             area_tags = write_vsp_fuselage(fuselage, area_tags, None, fuel_tank_set_ind,
-                                           OML_set_ind) 
-    
-    vsp.Update()
-    
-
+                                           OML_set_ind)
+            
     # ------------------------------------------------------------------------- 
-    # Fuselage
+    # Boom
     # ------------------------------------------------------------------------- 
     for boom in vehicle.booms: 
         if verbose:
@@ -183,7 +180,8 @@ def export_vsp_vehicle(vehicle, vehicle_tag, fuel_tank_set_ind=3, verbose=True, 
                                            fuel_tank_set_ind, OML_set_ind)
         except AttributeError:
             area_tags = write_vsp_fuselage(boom, area_tags, None, fuel_tank_set_ind,
-                                               OML_set_ind) 
+                                               OML_set_ind)
+            
     # -------------------------------------------------------------------------     
     # Write the vehicle to the file    
     # ------------------------------------------------------------------------- 

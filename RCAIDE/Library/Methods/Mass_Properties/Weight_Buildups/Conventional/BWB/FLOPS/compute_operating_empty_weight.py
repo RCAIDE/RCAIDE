@@ -353,9 +353,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
     return output
 
 
-def generate_represenative_main_wing(wing, vehicle):
-     
-        
+def generate_represenative_main_wing(wing, vehicle): 
     # Compute Wing Weight 
     bwb_vehicle = deepcopy(vehicle) 
     

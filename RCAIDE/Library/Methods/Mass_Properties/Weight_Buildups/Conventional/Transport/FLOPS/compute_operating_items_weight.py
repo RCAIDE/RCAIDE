@@ -58,9 +58,9 @@ def compute_operating_items_weight(vehicle):
         Properties Used:
             N/A
     """ 
-    NPF = vehicle.number_of_first_class_passengers      
-    NPB = vehicle.number_of_business_class_passengers   
-    NPT = vehicle.number_of_economy_class_passengers   
+    NPF = vehicle.first_class_passengers      
+    NPB = vehicle.business_class_passengers   
+    NPT = vehicle.economy_class_passengers   
     NENG =  0 
     for network in  vehicle.networks:
         for propulsor in network.propulsors:

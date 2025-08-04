@@ -39,8 +39,7 @@ def evaluate_surrogate(state,settings,vehicle):
         None  
     """          
     conditions    = state.conditions
-    aerodynamics  = state.analyses.aerodynamics 
-    trim          = aerodynamics.settings.trim_aircraft
+    aerodynamics  = state.analyses.aerodynamics  
     sub_sur       = aerodynamics.surrogates.subsonic
     sup_sur       = aerodynamics.surrogates.supersonic
     trans_sur     = aerodynamics.surrogates.transonic 
@@ -51,19 +50,19 @@ def evaluate_surrogate(state,settings,vehicle):
     ones_row      = np.ones_like(AoA)
      
     # loop through wings to determine what control surfaces are present  
-    for wing in vehicle.wings: 
-        for control_surface in wing.control_surfaces:  
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
-                if trim !=  True:  
-                    conditions.control_surfaces.aileron.deflection[:, 0] = control_surface.deflection
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                if trim !=  True:   
-                    conditions.control_surfaces.elevator.deflection[:, 0] = control_surface.deflection
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
-                if trim !=  True:  
-                    conditions.control_surfaces.rudder.deflection[:, 0] = control_surface.deflection
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:   
-                conditions.control_surfaces.flap.deflection[:, 0] = control_surface.deflection
+    #for wing in vehicle.wings: 
+        #for control_surface in wing.control_surfaces:  
+            #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
+                ##if trim !=  True:  
+                    #conditions.control_surfaces.aileron.deflection[:, 0] = control_surface.deflection
+            #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                #if trim !=  True:   
+                    #conditions.control_surfaces.elevator.deflection[:, 0] = control_surface.deflection
+            #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
+                #if trim !=  True:  
+                    #conditions.control_surfaces.rudder.deflection[:, 0] = control_surface.deflection
+            #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:   
+                #conditions.control_surfaces.flap.deflection[:, 0] = control_surface.deflection
   
     hsub_min         = aerodynamics.hsub_min
     hsub_max         = aerodynamics.hsub_max

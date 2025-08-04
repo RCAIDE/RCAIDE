@@ -71,10 +71,7 @@ def trim_drag(state,settings,geometry):
                 else:
                     A = 0.0011
                     B = 1                     
-                control_surface_drag += cs.chord_fraction * A * (state.conditions.control_surfaces.flap.deflection **B )
+                control_surface_drag += cs.chord_fraction * A * (state.conditions.control_surfaces.flap.deflection /Units.degree **B )
                      
-            if type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
-                control_surface_drag += cs.chord_fraction * CD_0  
-     
     state.conditions.aerodynamics.coefficients.drag.trim.total =  control_surface_drag 
     return  

@@ -1,20 +1,20 @@
-# RCAIDE/Library/Components/Fuselage/Circle_Segment.py
+# RCAIDE/Library/Components/Boom/Ellipse_Segment.py
 # 
 # Created:  Mar 2024, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
-# RCAIDE imports    
+# RCAIDE imports   
 from .Segment import  Segment
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Segment
 # ----------------------------------------------------------------------------------------------------------------------   
-class Circle_Segment(Segment):
+class Ellipse_Segment(Segment):
     """
-    A component representing a circular cross-sectional segment of a fuselage. Segments are used 
-    to define the shape and dimensions of the fuselage through a series of connected cross-sections.
+    A component representing a ellipse cross-sectional segment of a boom. Segments are used 
+    to define the shape and dimensions of the boom through a series of connected cross-sections.
 
     Attributes
     ----------
@@ -22,19 +22,19 @@ class Circle_Segment(Segment):
         Identifier for the segment, defaults to 'segment'
         
     prev : Component
-        Link to the previous segment in the fuselage chain, defaults to None
+        Link to the previous segment in the boom chain, defaults to None
         
     next : Component
-        Link to the next segment in the fuselage chain, defaults to None
+        Link to the next segment in the boom chain, defaults to None
         
     percent_x_location : float
-        Longitudinal position as percentage of fuselage length, defaults to 0
+        Longitudinal position as percentage of boom length, defaults to 0
         
     percent_y_location : float
-        Lateral position as percentage of fuselage width, defaults to 0
+        Lateral position as percentage of boom width, defaults to 0
         
     percent_z_location : float
-        Vertical position as percentage of fuselage height, defaults to 0
+        Vertical position as percentage of boom height, defaults to 0
         
     height : float
         Vertical dimension of the segment cross-section, defaults to 0
@@ -42,14 +42,14 @@ class Circle_Segment(Segment):
     width : float
         Lateral dimension of the segment cross-section, defaults to 0
         
-    radius : float
+    curvature : float
         Shape parameter controlling cross-section corner rounding, defaults to 2
 
     Notes
     -----
-    Segments are used to build up the complete fuselage geometry through a series of 
+    Segments are used to build up the complete boom geometry through a series of 
     cross-sections. Each segment's position is defined as a percentage of the overall 
-    fuselage dimensions, allowing for flexible scaling and positioning.
+    boom dimensions, allowing for flexible scaling and positioning.
 
     **Major Assumptions**
     
@@ -60,7 +60,7 @@ class Circle_Segment(Segment):
     **Definitions**
 
     'Cross-section'
-        The 2D shape formed by intersecting the fuselage with a plane perpendicular 
+        The 2D shape formed by intersecting the boom with a plane perpendicular 
         to its longitudinal axis
         
     'Curvature'
@@ -69,13 +69,13 @@ class Circle_Segment(Segment):
 
     See Also
     --------
-    RCAIDE.Library.Components.Fuselages.Fuselage
-        Parent container for fuselage segments
+    RCAIDE.Library.Components.Fuselages.Boom
+        Parent container for boom segments
     """
 
     def __defaults__(self): 
         """
-        Sets default values for the fuselage segment attributes.
+        Sets default values for the boom segment attributes.
         """
-        self.tag                     = 'circle_segment' 
+        self.tag                     = 'ellipse_segment' 
           
