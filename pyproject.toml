@@ -45,7 +45,7 @@ dependencies = [
     "pillow",
     "python-dateutil",
     "pytz",
-    "shapely"
+    "shapely",
     "six",
     "tenacity",
     "threadpoolctl",
