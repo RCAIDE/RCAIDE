@@ -340,7 +340,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # Operating Items Weight
     ##------------------------------------------------------------------------------- 
     vehicle.mass_properties.max_zero_fuel = output.empty.total + vehicle.mass_properties.max_payload
-    W_oper = RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.Common.compute_operating_items_weight(vehicle)
+    W_oper = RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.FLOPS.compute_operating_items_weight(vehicle)
     for fuselage in vehicle.fuselages:
         if len(fuselage.cabins) == 0: 
             cabin =  RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
