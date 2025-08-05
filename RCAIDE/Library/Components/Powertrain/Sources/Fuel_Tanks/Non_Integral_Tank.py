@@ -11,6 +11,7 @@
 import RCAIDE
 from .Fuel_Tank  import Fuel_Tank 
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.append_fuel_tank_conditions import append_fuel_tank_conditions 
+from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume import *
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Tank
@@ -94,4 +95,17 @@ class Non_Integral_Tank(Fuel_Tank):
             Connected fuel line component
         """
         append_fuel_tank_conditions(self,segment, fuel_line)  
-        return                                          
+        return                      
+    
+    def compute_volume(self,wings,fuselages):
+        if self.wing_tag != None:
+            wing = wings[self.wing_tag]  
+            volume = compute_wing_non_integral_tank_volume(self,wing)
+        elif self.fuselage_tag != None: 
+            fuselage = fuselages[self.fuselage_tag]  
+            volume = compute_fuselage_non_integral_tank_fuel_volume(self,fuselage)
+        else:
+            if self.bwb_aft_tank == True:
+                wing = wings[self.wing_root_tag]  
+                volume = compute_bwb_aft_tank_volume(self,wing)
+        return  volume

@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------    
 from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice 
-from RCAIDE.Library.Methods.Geometry.Planform.compute_fuel_volume import compute_non_dimensional_rib_coordinates
+from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank import compute_non_dimensional_rib_coordinates
 from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_surface_slice
 
 # python imports
@@ -657,9 +657,14 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     fuel_tank_points = fuel_tank_points @ R_total.T 
     
     # translate to location on aircraft 
-    fuel_tank_points[:, :, 0] += fuel_tank.origin[0][0]
-    fuel_tank_points[:, :, 1] += fuel_tank.origin[0][1]
-    fuel_tank_points[:, :, 2] += fuel_tank.origin[0][2]
+    if fuel_tank.orientation_euler_angles   == [0.,0.,np.pi/2]:
+         fuel_tank_points[:, :, 0] +=  fuel_tank.origin[0][0] - fuel_tank.outer_diameter/2
+         fuel_tank_points[:, :, 1] +=  fuel_tank.origin[0][1] - (R+L/2)
+         fuel_tank_points[:, :, 2] +=  fuel_tank.origin[0][2]
+    else:
+        fuel_tank_points[:, :, 0] += fuel_tank.origin[0][0]
+        fuel_tank_points[:, :, 1] += fuel_tank.origin[0][1]
+        fuel_tank_points[:, :, 2] += fuel_tank.origin[0][2]
     
 
   

@@ -10,6 +10,7 @@
 import RCAIDE
 from .Fuel_Tank  import Fuel_Tank 
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.append_fuel_tank_conditions import append_fuel_tank_conditions 
+from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Integral_Tank.compute_integral_tank_volume import *
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Tank
@@ -90,10 +91,8 @@ class Integral_Tank(Fuel_Tank):
     def compute_volume(self,wings,fuselages):
         if self.wing_tag != None:
             wing = wings[self.wing_tag]  
-            compute
+            volume = compute_wing_integral_tank_volume(self,wing)
         elif self.fuselage_tag != None: 
             fuselage = fuselages[self.fuselage_tag]  
-
-
-
-        return                                   
+            volume = compute_fuselage_integral_tank_fuel_volume(self,fuselage)
+        return  volume                        
