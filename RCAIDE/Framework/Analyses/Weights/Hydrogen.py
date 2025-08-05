@@ -58,7 +58,7 @@ class Hydrogen(Weights):
         self.settings.cargo_doors_clamshell                = False # True if clamshell cargo doors, False if not
 
         self.settings.FLOPS                                = Data() 
-        self.settings.FLOPS.complexity                     = 'Simple' 
+        self.settings.FLOPS.fidelity                       = 'Simple' 
         self.settings.FLOPS.aeroelastic_tailoring_factor   = 0.   # Aeroelastic tailoring factor [0 no aeroelastic tailoring, 1 maximum aeroelastic tailoring] 
         self.settings.FLOPS.strut_braced_wing_factor       = 0.   # Wing strut bracing factor [0 for no struts, 1 for struts]
         

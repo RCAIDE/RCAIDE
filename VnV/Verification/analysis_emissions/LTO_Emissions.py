@@ -132,7 +132,7 @@ def base_analysis(vehicle):
     #  Weights
     weights = RCAIDE.Framework.Analyses.Weights.Conventional()
     weights.vehicle = vehicle 
-    weights.settings.FLOPS.complexity                                        = 'Complex'      
+    weights.settings.FLOPS.fidelity                                          = 'Complex'      
     weights.settings.weight_correction_additions.empty.structural.paint      = 450 
     weights.settings.weight_correction_additions.operational_items.ETOPS     = 7.7 * vehicle.passengers
     weights.settings.weight_correction_factors.empty.structural.landing_gear = 1.1  

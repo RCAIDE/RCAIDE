@@ -94,8 +94,10 @@ def compute_propulsion_system_weight(vehicle,network):
     WSTART = 0.0
     WNAC = 0.0
     for network in  vehicle.networks:
-        for propulsor in network.propulsors:
-            if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet):
+        for propulsor in network.propulsors: 
+            if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) \
+               or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet)\
+               or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):            
                 if 'nacelle' in propulsor: 
                     if propulsor.nacelle !=  None:                    
                         ref_nacelle =  propulsor.nacelle   

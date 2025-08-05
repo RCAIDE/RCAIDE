@@ -87,7 +87,7 @@ def base_analysis(vehicle, configs):
     weights.vehicle = vehicle
     weights.method  = "FLOPS"
     weights.aircraft_type = "General_Aviation"
-    weights.settings.FLOPS.complexity = "Simple"
+    weights.settings.FLOPS.fidelity   = "Simple"
     analyses.append(weights)
 
     # ------------------------------------------------------------------

@@ -29,12 +29,12 @@ def vehicle_setup(vehicle_name = 'Boeing_787-800', passengers = 296) :
     
     # ################################################# Vehicle-level Properties #################################################   
     vehicle.tag = vehicle_name 
-    vehicle.mass_properties.max_takeoff               = 227930. * Units.kilogram 
+    vehicle.mass_properties.max_takeoff               = 227930.  * Units.kilogram 
     vehicle.mass_properties.max_zero_fuel             = 161025.0 * Units.kilogram  
-    vehicle.mass_properties.max_fuel                  = 101323 * Units.kilogram   
-    vehicle.mass_properties.fuel                      = 57500 *Units.kilogram
-    vehicle.mass_properties.max_payload               = 44000 * Units.kilogram
-    vehicle.mass_properties.payload                   = 35000 *Units.kilogram  
+    vehicle.mass_properties.max_fuel                  = 101323   * Units.kilogram   
+    vehicle.mass_properties.fuel                      = 57500    * Units.kilogram
+    vehicle.mass_properties.max_payload               = 44000    * Units.kilogram
+    vehicle.mass_properties.payload                   = 35000    * Units.kilogram  
     vehicle.mass_properties.center_of_gravity         = [[27.0, 0, 0]]
     vehicle.flight_envelope.ultimate_load             = 3.75 
     vehicle.flight_envelope.positive_limit_load       = 2.5  
@@ -863,7 +863,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()
     weights.vehicle = vehicle   
-    weights.settings.FLOPS.complexity                                        = 'Complex' 
+    weights.settings.FLOPS.fidelity                                          = 'Complex' 
     weights.settings.weight_correction_additions.empty.propulsion.battery    = 56 
     weights.settings.weight_correction_additions.empty.structural.paint      = 450 
     weights.settings.weight_correction_additions.operational_items.ETOPS     = 7.7 * vehicle.passengers
@@ -875,11 +875,7 @@ def base_analysis(vehicle):
     #  Aerodynamics Analysis
     # ------------------------------------------------------------------
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle = vehicle 
-    aerodynamics.settings.number_of_spanwise_vortices   = 40
-    aerodynamics.settings.number_of_chordwise_vortices  = 2
-    aerodynamics.settings.drag_reduction_factors.parasite_drag  = 0.01
-    aerodynamics.training.Mach                          = np.array([0.1  ,0.3,  0.5,  0.65 , 0.85 , 0.9])
+    aerodynamics.vehicle = vehicle  
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------

@@ -96,7 +96,7 @@ def Transport_Aircraft_Test(update_regression_values, show_figure):
 
             if method_type == 'FLOPS':
                 save_filename = f'FLOPS_{"Simple" if FLOPS_number == 0 else "Complex"}'
-                weight_analysis.settings.FLOPS.complexity = 'Simple' if FLOPS_number == 0 else 'Complex'
+                weight_analysis.settings.FLOPS.fidelity   = 'Simple' if FLOPS_number == 0 else 'Complex'
                 FLOPS_number += 1
             else:
                 save_filename = 'Raymer'
@@ -149,7 +149,7 @@ def General_Aviation_Test(update_regression_values, show_figure):
 
             if method_type == 'FLOPS':
                 save_filename = f'FLOPS_{"Simple" if FLOPS_number == 0 else "Complex"}'
-                weight_analysis.settings.FLOPS.complexity = 'Simple' if FLOPS_number == 0 else 'Complex'
+                weight_analysis.settings.FLOPS.fidelity   = 'Simple' if FLOPS_number == 0 else 'Complex'
                 FLOPS_number += 1
             else:
                 save_filename = 'Raymer'
@@ -196,11 +196,11 @@ def General_Aviation_Test(update_regression_values, show_figure):
 
         if method_type == 'FLOPS' and FLOPS_number == 0:
             save_filename = f'FLOPS_{"Simple"}_Jet'
-            weight_analysis.settings.FLOPS.complexity = 'Simple'
+            weight_analysis.settings.FLOPS.fidelity   = 'Simple'
             FLOPS_number += 1
         elif method_type == 'FLOPS' :
             save_filename = f'FLOPS_{"Complex"}_Jet'
-            weight_analysis.settings.FLOPS.complexity = 'Complex'
+            weight_analysis.settings.FLOPS.fidelity   = 'Complex'
             FLOPS_number += 1
         else:
             save_filename = 'Raymer_Jet'
@@ -242,7 +242,7 @@ def BWB_Aircraft_Test(update_regression_values,show_figure):
                     compute_layout_of_passenger_accommodations(wing)
                     bwb_wing_planform(wing,overwrite_reference = True)
                     weight_analysis.vehicle.reference_area = wing.areas.reference 
-            weight_analysis.settings.FLOPS.complexity = 'Simple' if FLOPS_number == 0 else 'Complex'
+            weight_analysis.settings.FLOPS.fidelity   = 'Simple' if FLOPS_number == 0 else 'Complex'
             weight                   = weight_analysis.evaluate()
             plot_weight_breakdown(weight_analysis.vehicle, show_figure = show_figure) 
 

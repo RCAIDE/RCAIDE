@@ -65,10 +65,6 @@ def mass_properties(mission):
                 # Run weights analysis to compute OEW ! 
                 # --------------------------------------------------------------------------------------------  
                 _ = weights_analysis.evaluate()
-                 
-                weights_analysis.vehicle.mass_properties.operating_empty = weights_analysis.vehicle.mass_properties.weight_breakdown.empty.total  
-                weights_analysis.vehicle.mass_properties.max_zero_fuel   = weights_analysis.vehicle.mass_properties.weight_breakdown.zero_fuel_weight
-        
                 # --------------------------------------------------------------------------------------------
                 # Apply correction factors  
                 # --------------------------------------------------------------------------------------------            
@@ -106,7 +102,9 @@ def mass_properties(mission):
                             weights_analysis.vehicle.mass_properties.operating_empty += subitem
         
                
-                # Compute takeoff weight 
+                # Compute takeoff weight  
+                weights_analysis.vehicle.mass_properties.operating_empty = weights_analysis.vehicle.mass_properties.weight_breakdown.empty.total  
+                weights_analysis.vehicle.mass_properties.max_zero_fuel   = weights_analysis.vehicle.mass_properties.weight_breakdown.zero_fuel_weight 
                 weights_analysis.vehicle.mass_properties.takeoff       = weights_analysis.vehicle.mass_properties.operating_empty \
                                                                         + weights_analysis.vehicle.mass_properties.payload \
                                                                         + weights_analysis.vehicle.mass_properties.fuel     
