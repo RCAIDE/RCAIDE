@@ -162,6 +162,8 @@ def VLM(conditions,settings,geometry):
     VD     = generate_vortex_distribution(conditions,settings,geometry) 
     settings.vortex_distribution.chord_lengths            = VD.chord_lengths[VD.leading_edge_indices].reshape(len(VD.n_sw),np.sum(VD.n_sw[0]))
     settings.vortex_distribution.n_sw                     = VD.n_sw 
+    settings.vortex_distribution.n_cw                     = VD.n_cw 
+    settings.vortex_distribution.n_w                      = VD.n_w 
     settings.vortex_distribution.chord_widths             = VD.chord_widths 
     settings.vortex_distribution.leading_edge_sweeps      = VD.leading_edge_sweeps 
     settings.vortex_distribution.XA1                      = VD.XA1
