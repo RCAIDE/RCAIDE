@@ -1,8 +1,8 @@
-# RCAIDE/Methods/Powertrain/Sources/Fuel_Tanks/__init__.py
+# RCAIDE/Methods/Powertrain/Sources/Fuel_Tanks/Integral_Tank/__init__.py
 # 
 
-""" REDOOOO
-This module provides functionality for modeling fuel tank systems in powertrains. It includes methods for 
+""" 
+This module provides functionality for modeling integral fuel tank systems in powertrains. It includes methods for 
 initializing fuel tank conditions for use during mission analysis.
 
 See Also

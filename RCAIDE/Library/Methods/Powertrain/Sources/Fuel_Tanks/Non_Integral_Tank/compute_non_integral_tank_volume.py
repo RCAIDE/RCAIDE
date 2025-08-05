@@ -1,7 +1,7 @@
 # RCAIDE/Methods/Powertrain/Sources/Fuel_Tanks/compute_integral_tank_volume.py
 # 
 # 
-# Created:  
+# Created: Aug 2025, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -150,15 +150,6 @@ def compute_bwb_aft_tank_volume(fuel_tank,wing):
     fuel_tank.mass_properties.fuel  = volume * fuel_tank.fuel.density  
 
     return volume[max_volume_index] 
-    
-def compute_fuselage_non_integral_tank_fuel_volume(fuel_tank,fuselage):
-    volume  = compute_fuselage_non_integral_tank_fuel_volume(fuel_tank,fuselage)
-
-    fuel_tank.internal_volume                    = volume 
-    fuel_tank.mass_properties.fuel               = volume * fuel_tank.fuel.density  
-    fuel_tank.mass_properties.center_of_gravity  = [[fuel_tank.length /2, 0, fuel_tank.outer_diameter / 2]]
-    
-    return volume
 
 def compute_wing_non_integral_tank_volume(fuel_tank,wing):
     if len(wing.segments) > 1: 
@@ -345,46 +336,5 @@ def compute_largest_circle(x_points,z_upper,z_lower):
                 best_r = r
                 best_pt = (x, z)
     max_diameter = 2 * best_r
-    ########Delete Later########################################################################################################
-    # circle_center = (best_pt[0], best_pt[1])
-    # circle_radius = max_diameter / 2
-    ########Delete Later
-    # print(f"Largest inscribed circle diameter ≈ {max_diameter:.4f}")
-    # print(f" Center at x={best_pt[0]:.3f}, z={best_pt[1]:.3f}")
-    # ##Plotting
-    # ax.plot(x_points, z_upper)#, label='Upper Surface')
-    # ax.plot(x_points, z_lower)#, label='Lower Surface')
     
-    # fill_color = f"C{i}"
-    # # Draw the inscribed circle
-    # circle = plt.Circle(circle_center, circle_radius, facecolor=fill_color,      # fill color
-    #     alpha=0.3,                 # transparency
-    #     edgecolor="black",         # border color
-    #     linewidth=1.0,
-    #     label=f"Section {i}"
-    # )
-    # ax.add_patch(circle)
-
-    # ax.set_aspect('equal', 'box')
-    # ax.set_xlabel("x")
-    # ax.set_ylabel("z")
-
-    # af = segment.airfoil
-    # coord_file = af.get('coordinate_file', None)
-    # if coord_file and os.path.isfile(coord_file):
-    #     coords = np.loadtxt(coord_file, skiprows=1)
-    # else:
-    #     coords = np.array(af.get('geometry'))
-
-
-    # coords *= 36 * segment.root_chord_percent
-    # x, z = coords[:,0], coords[:,1]
-    # x += segment.origin[0][0]
-    # z += segment.origin[0][2]
-    # y = segment.origin[0][1] *np.ones_like(z)
-    # ax.plot(x, z, '-k',color=fill_color)
-
-    # ax.set_aspect('equal', 'box')
-    # # ax.legend()
-
     return max_diameter , best_pt[0],best_pt[1]
