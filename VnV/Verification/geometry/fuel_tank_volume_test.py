@@ -59,7 +59,7 @@ def integral_fuel_tank_volume_test():
     
     error = (fuel_volume_true[0]- vehicle.total_fuel_volume)/fuel_volume_true[0]
     print(error)
-    assert(abs(error)<1e-3)
+    assert(abs(error)<1e-6)
     
     
     ############################################################################################################################
@@ -98,7 +98,7 @@ def integral_fuel_tank_volume_test():
 
     error = (fuel_volume_true[1]- vehicle.total_fuel_volume)/fuel_volume_true[1]
     print(error)
-    assert(abs(error)<1e-3)
+    assert(abs(error)<1e-6)
 
     return
 
@@ -168,7 +168,7 @@ def non_integral_fuel_tank_volume_test():
     
     error = (fuel_volume_true- vehicle.total_fuel_volume)/fuel_volume_true
     print(error)
-    assert(abs(error)<1e-3)
+    assert(abs(error)<1e-6)
     return
  
 if __name__ == '__main__': 
