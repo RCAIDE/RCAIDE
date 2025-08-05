@@ -25,7 +25,70 @@ import os
 #  METHOD
 # ----------------------------------------------------------------------------------------------------------------------  
 
-def compute_bwb_aft_tank_volume(fuel_tank,wing):
+def compute_bwb_aft_tank_volume(fuel_tank, wing):
+    """
+    Computes the volume of an aft fuel tank for a Blended Wing Body (BWB) aircraft configuration.
+
+    This function calculates the maximum possible fuel tank volume that can fit within the aft
+    section of a BWB wing, considering airfoil geometry, structural constraints, and tank dimensions.
+    The tank is designed as a cylindrical tank with rounded ends positioned within the aft portion
+    of the wing segments.
+
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        Fuel tank object containing tank specifications and parameters
+            - aft_tank_start_root_chord : float
+                Starting position of aft tank as fraction of root chord
+            - aft_tank_end_rood_chord : float
+                Ending position of aft tank as fraction of root chord
+            - aft_tank_end_segment_tag : str
+                Tag of the wing segment where aft tank ends
+            - wing_root_tag : str
+                Tag of the root wing segment
+            - radial_offset : float
+                Radial clearance from wing structure
+            - wall_thickness : float
+                Thickness of tank walls
+            - fuel : Fuel
+                Fuel properties including density
+            - orientation_euler_angles : list
+                Euler angles defining tank orientation
+    wing : Wing
+        Wing object containing segment geometry and airfoil data
+            - segments : dict
+                Dictionary of wing segments with their properties
+            - chords.root : float
+                Root chord length
+            - spans.projected : float
+                Projected wing span
+
+    Returns
+    -------
+    volume : float
+        Maximum possible internal volume of the aft fuel tank
+
+    Notes
+    -----
+    The function processes multiple wing segments to determine the optimal tank dimensions.
+    It uses airfoil coordinate data to find the largest possible circular cross-section
+    that fits within the wing geometry at each spanwise location.
+
+    **Major Assumptions**
+        * Tank is cylindrical with rounded ends
+        * Tank is symmetric about the aircraft centerline
+        * Airfoil coordinate files are available and properly formatted
+        * Wing segments are properly defined with airfoil data
+
+    **Theory**
+
+    The tank volume is calculated as the sum of a cylindrical section and hemispherical end caps:
+    
+    .. math::
+        V = \\pi r^2 l + \\frac{4}{3}\\pi r^3
+
+    where r is the tank radius and l is the cylindrical length.
+    """
 
     # Check if there are enough properties to accurately compute the maximum possible tank volume 
     if any(val is None for val in [
@@ -151,7 +214,49 @@ def compute_bwb_aft_tank_volume(fuel_tank,wing):
 
     return volume[max_volume_index] 
 
-def compute_wing_non_integral_tank_volume(fuel_tank,wing):
+def compute_wing_non_integral_tank_volume(fuel_tank, wing):
+    """
+    Computes the volume of non-integral fuel tanks within wing segments.
+
+    This function iterates through wing segments to find suitable locations for non-integral
+    fuel tanks and calculates their volumes. It handles cases where tanks cannot be placed
+    in specified segments and attempts placement in subsequent segments.
+
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        Fuel tank object containing tank specifications
+            - fuel : Fuel
+                Fuel properties including density
+            - symmetric : bool
+                Whether the tank is symmetric about aircraft centerline
+            - length : float
+                Length of the tank (computed)
+            - outer_diameter : float
+                Outer diameter of the tank (computed)
+    wing : Wing
+        Wing object containing segment geometry
+            - segments : dict
+                Dictionary of wing segments with their properties
+            - spans.projected : float
+                Projected wing span
+
+    Returns
+    -------
+    volume : float
+        Internal volume of the non-integral fuel tank
+
+    Notes
+    -----
+    The function attempts to place tanks in wing segments that have fuel tank capability.
+    If placement fails in one segment, it tries the next available segment.
+
+    **Major Assumptions**
+        * Wing segments are properly ordered from root to tip
+        * At least one wing segment has fuel tank capability
+        * Tank placement constraints are reasonable
+    """
+
     if len(wing.segments) > 1: 
         seg_tags = list(wing.segments.keys())
         for i in range(len(seg_tags)-1):
@@ -177,7 +282,83 @@ def compute_wing_non_integral_tank_volume(fuel_tank,wing):
     
     return volume
 
-def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,outer_segment,tank_percent_span_location):
+def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0, outer_segment, tank_percent_span_location):
+    """
+    Computes the fuel volume for a non-integral tank between two wing segments.
+
+    This function calculates the optimal tank dimensions and volume that can fit between
+    two wing segments, considering wing geometry, structural constraints, and tank specifications.
+    The tank is designed as a cylindrical tank with hemispherical end caps.
+
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        Fuel tank object containing tank specifications
+            - wall_thickness : float
+                Thickness of tank walls
+            - symmetric : bool
+                Whether the tank is symmetric about aircraft centerline
+            - fuel : Fuel
+                Fuel properties including density
+    wing : Wing
+        Wing object containing geometry and span information
+            - chords.root : float
+                Root chord length
+            - spans.projected : float
+                Projected wing span
+    inner_segment_0 : Wing_Segment
+        Initial inner wing segment for tank placement
+            - percent_span_location : float
+                Spanwise location as fraction of total span
+            - root_chord_percent : float
+                Root chord as fraction of wing root chord
+            - origin : list
+                Origin coordinates of the segment
+            - sweeps.leading_edge : float
+                Leading edge sweep angle
+            - dihedral_outboard : float
+                Outboard dihedral angle
+            - fuel_tank : Fuel_Tank_Segment
+                Fuel tank segment properties
+    outer_segment : Wing_Segment
+        Outer wing segment defining tank boundary
+    tank_percent_span_location : float
+        Current spanwise location of tank as fraction of total span
+
+    Returns
+    -------
+    volume : float
+        Internal volume of the fuel tank
+    tank_percent_span_location : float
+        Updated spanwise location for next tank placement
+
+    Notes
+    -----
+    The function uses an iterative approach to find the optimal tank diameter that fits
+    within the wing geometry constraints. It considers wing sweep, dihedral, and structural
+    clearances in the calculation.
+
+    **Major Assumptions**
+        * Tank is cylindrical with hemispherical end caps
+        * Wing segments have linear variation in geometry
+        * Structural clearances are maintained
+        * Tank placement follows wing sweep and dihedral
+
+    **Theory**
+
+    The tank volume is calculated as:
+    
+    .. math::
+        V = \\pi r^2 (l - D) + \\frac{4}{3}\\pi r^3
+
+    where r is the internal radius, l is the tank length, and D is the tank diameter.
+
+    **Definitions**
+
+    'Non-Integral Tank'
+        Fuel tank that is not structurally integrated with the wing, typically mounted
+        between wing ribs or spars
+    """
 
     semi_span      = wing.spans.projected / 2
     inner_segment  = deepcopy(inner_segment_0) 
@@ -288,6 +469,57 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment_0,ou
     return volume ,  tank_percent_span_location
 
 def compute_non_dimensional_rib_coordinates(compoment): 
+    """
+    Computes non-dimensional rib coordinates for wing segments based on airfoil geometry.
+
+    This function extracts the upper and lower surface coordinates at the front and rear
+    rib locations of a wing segment, accounting for structural clearances and airfoil
+    geometry variations.
+
+    Parameters
+    ----------
+    compoment : Wing_Segment
+        Wing segment object containing airfoil and fuel tank information
+            - airfoil : Airfoil
+                Airfoil object containing geometry data
+            - fuel_tank : Fuel_Tank_Segment
+                Fuel tank segment properties
+                    - percent_chord_start_location : float
+                        Front rib location as fraction of chord
+                    - percent_chord_end_location : float
+                        Rear rib location as fraction of chord
+
+    Returns
+    -------
+    front_rib_nondim_y_upper : float
+        Non-dimensional upper surface coordinate at front rib
+    rear_rib_nondim_y_upper : float
+        Non-dimensional upper surface coordinate at rear rib
+    front_rib_nondim_y_lower : float
+        Non-dimensional lower surface coordinate at front rib
+    rear_rib_nondim_y_lower : float
+        Non-dimensional lower surface coordinate at rear rib
+
+    Notes
+    -----
+    The function handles both NACA 4-series airfoils and custom airfoil coordinate files.
+    A structural clearance is applied to ensure the tank fits within the wing structure.
+
+    **Major Assumptions**
+        * Airfoil geometry is properly defined
+        * Fuel tank chord locations are within valid range
+        * Structural clearance is appropriate for the application
+
+    **Definitions**
+
+    'Non-dimensional Coordinates'
+        Airfoil coordinates normalized by chord length, typically ranging from 0 to 1
+
+    'Rib Coordinates'
+        Airfoil surface coordinates at specific chordwise locations where wing ribs
+        or structural elements are positioned
+    """
+
     if compoment.airfoil != None: 
         if type(compoment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil:
             geometry = compute_naca_4series(compoment.airfoil.NACA_4_Series_code)
@@ -311,12 +543,62 @@ def compute_non_dimensional_rib_coordinates(compoment):
     return front_rib_nondim_y_upper,rear_rib_nondim_y_upper, front_rib_nondim_y_lower, rear_rib_nondim_y_lower 
 
 
-def compute_largest_circle(x_points,z_upper,z_lower):
+def compute_largest_circle(x_points, z_upper, z_lower):
+    """
+    Computes the largest circle that can fit within a polygon defined by airfoil coordinates.
+
+    This function finds the optimal center point and radius for the largest possible circle
+    that fits within the polygon formed by the upper and lower airfoil surfaces. It uses
+    a grid search approach to find the best center location.
+
+    Parameters
+    ----------
+    x_points : array_like
+        X-coordinates of the airfoil points
+    z_upper : array_like
+        Z-coordinates of the upper airfoil surface
+    z_lower : array_like
+        Z-coordinates of the lower airfoil surface
+
+    Returns
+    -------
+    max_diameter : float
+        Diameter of the largest possible circle
+    x_center : float
+        X-coordinate of the circle center
+    z_center : float
+        Z-coordinate of the circle center
+
+    Notes
+    -----
+    The function creates a polygon from the airfoil coordinates and performs a grid search
+    within the polygon's bounding box to find the optimal circle center. The radius is
+    limited by the distance to the closest polygon edge.
+
+    **Major Assumptions**
+        * Airfoil coordinates form a valid polygon
+        * Grid resolution is sufficient for accurate results
+        * Polygon is simply connected
+
+    **Theory**
+
+    The largest circle is found by maximizing the radius r such that:
+    
+    .. math::
+        r = \\min_{i} d(p, e_i)
+
+    where p is the circle center and e_i are the polygon edges.
+
+    **Definitions**
+
+    'Inscribed Circle'
+        The largest circle that can fit completely within a given polygon
+    """
 
     coords = list(zip(x_points, z_upper)) + list(zip(x_points[::-1], z_lower[::-1]))
     poly   = Polygon(coords)
 
-    #scan a fine grid inside the polygon’s bounding box to find the best center
+    #scan a fine grid inside the polygon's bounding box to find the best center
     minx, minz, maxx, maxz = poly.bounds
     nx, nz = 200, 200  
     xs = np.linspace(minx, maxx, nx)

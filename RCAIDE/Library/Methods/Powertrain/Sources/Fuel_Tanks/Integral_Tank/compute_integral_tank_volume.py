@@ -22,6 +22,55 @@ from scipy.interpolate import interp1d
 
 
 def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
+    """
+    Computes the fuel volume for an integral fuel tank within a fuselage structure.
+
+    This function calculates the volume of fuel that can be stored in an integral tank
+    located between two fuselage segments. The calculation assumes a truncated cone
+    geometry between the inner and outer segments.
+
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        The fuel tank object containing fuel properties and mass characteristics
+    fuselage : Fuselage
+        The fuselage object containing segment geometry and positioning data
+
+    Returns
+    -------
+    volume : float
+        The calculated fuel volume in cubic meters
+
+    Notes
+    -----
+    The function iterates through fuselage segments to find adjacent segments where
+    the inner segment has a fuel tank. The volume calculation uses the truncated
+    cone formula for the space between two elliptical cross-sections.
+
+    **Major Assumptions**
+        * Fuel tank spans exactly between two adjacent fuselage segments
+        * Fuselage cross-sections are elliptical
+        * Fuel density is uniform throughout the tank
+
+    **Theory**
+
+    The volume of a truncated cone is calculated using:
+
+    :math:`V = \\frac{1}{3} \\left( A_1 + A_2 + \\sqrt{A_1 A_2} \\right) h`
+
+    where:
+        - :math:`A_1` is the area of the inner segment cross-section
+        - :math:`A_2` is the area of the outer segment cross-section  
+        - :math:`h` is the height (length) between segments
+
+    **Definitions**
+
+    'Integral Tank'
+        A fuel tank that is built into the structure of the aircraft rather than being a separate container
+
+    'Truncated Cone'
+        A cone with the top cut off by a plane parallel to the base
+    """
     if len(fuselage.segments) > 1:
         seg_tags = list(fuselage.segments.keys())
         for i in range(len(seg_tags)-1):
@@ -40,7 +89,56 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
     return volume
 
 def compute_wing_integral_tank_volume(fuel_tank,wing):
+    """
+    Computes the fuel volume for an integral fuel tank within a wing structure.
 
+    This function calculates the volume of fuel that can be stored in an integral tank
+    within the wing. It handles both single-segment and multi-segment wing configurations,
+    updating the fuel tank's mass properties and center of gravity accordingly.
+
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        The fuel tank object containing fuel properties and mass characteristics
+    wing : Wing
+        The wing object containing segment geometry, airfoil data, and fuel tank specifications
+
+    Returns
+    -------
+    volume : float
+        The calculated fuel volume in cubic units
+
+    Notes
+    -----
+    The function determines the fuel tank origin from the wing origin and calculates
+    volume based on whether the wing has multiple segments or is a single segment.
+    For multi-segment wings, it iterates through adjacent segments to find fuel tank
+    locations and accumulates moments of inertia.
+
+    **Major Assumptions**
+        * Fuel tank geometry follows the wing's airfoil profile
+        * Fuel density is uniform throughout the tank
+        * Wing segments are properly connected and oriented
+
+    **Theory**
+
+    For multi-segment wings, the volume is calculated segment by segment using
+    truncated prism geometry. The center of gravity is computed as a weighted
+    average of segment centers.
+
+    **Definitions**
+
+    'Integral Wing Tank'
+        A fuel tank built into the wing structure, typically within the wing box
+
+    'Wing Box'
+        The structural box formed by the front and rear spars of the wing
+
+    See Also
+    --------
+    compute_wing_integral_tank_fuel_volume : Calculates volume for single-segment wings
+    compute_segmented_wing_integral_tank_fuel_volume : Calculates volume for wing segments
+    """
     if len(wing.segments) > 1:
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
         seg_tags = list(wing.segments.keys())
@@ -75,6 +173,56 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
 
 
 def compute_wing_integral_tank_fuel_volume(fuel_tank,wing):     
+    """
+    Computes the fuel volume for an integral fuel tank in a single-segment wing.
+
+    This function calculates the volume of fuel that can be stored in an integral tank
+    spanning the entire wing span. It uses the wing's root and tip chord dimensions
+    along with the fuel tank's chord-wise location specifications.
+
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        The fuel tank object containing fuel properties and chord location specifications
+    wing : Wing
+        The wing object containing chord dimensions, span, and fuel tank specifications
+
+    Returns
+    -------
+    volume : float
+        The calculated fuel volume in cubic meters
+
+    Notes
+    -----
+    The function calculates the wing box dimensions at both root and tip locations
+    and uses the truncated prism formula to determine the total volume. The wing box
+    is defined by the fuel tank's chord-wise start and end locations. Assumes a NACA 0012
+    airfoil if no airfoil is provided.
+
+    **Major Assumptions**
+        * Fuel tank spans the entire wing from root to tip
+        * Wing box geometry follows the airfoil profile
+        * Linear variation of chord dimensions from root to tip
+
+    **Theory**
+
+    The volume is calculated using a truncated prism formula:
+
+    :math:`V = \\frac{1}{3} \\left( A_1 + A_2 + \\sqrt{A_1 A_2} \\right) h`
+
+    where:
+        - :math:`A_1` is the wing box area at the root
+        - :math:`A_2` is the wing box area at the tip
+        - :math:`h` is the wing span
+
+    **Definitions**
+
+    'Wing Box'
+        The structural box formed by the front and rear spars, containing the fuel tank
+
+    'Chord Location'
+        The position along the wing chord where the fuel tank begins and ends
+    """
 
     inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing) 
     inner_front_rib_length  = wing.chords.root * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl))
@@ -96,6 +244,59 @@ def compute_wing_integral_tank_fuel_volume(fuel_tank,wing):
 
 
 def compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment):   
+    """
+    Computes the fuel volume for an integral fuel tank between two wing segments in a multi-segment wing.
+
+    This function calculates the volume of fuel that can be stored in an integral tank
+    located between two adjacent wing segments. It accounts for the varying chord
+    dimensions and fuel tank specifications of each segment.
+
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        The fuel tank object containing fuel properties and chord location specifications
+    wing : Wing
+        The wing object containing overall geometry and symmetry properties
+    inner_segment : Wing_Segment
+        The inner wing segment containing chord percentage and fuel tank specifications
+    outer_segment : Wing_Segment
+        The outer wing segment containing chord percentage and fuel tank specifications
+
+    Returns
+    -------
+    volume : float
+        The calculated fuel volume in cubic units
+
+    Notes
+    -----
+    The function calculates wing box dimensions for both segments and uses the
+    truncated prism formula. For symmetric wings, the volume is doubled to account
+    for both left and right sides. Assumes a NACA 0012 airfoil if no airfoil is provided.
+
+    **Major Assumptions**
+        * Fuel tank spans exactly between the two specified segments
+        * Linear variation of chord dimensions between segments
+        * Wing box geometry follows the airfoil profile
+
+    **Theory**
+
+    The volume is calculated using a truncated prism formula:
+
+    :math:`V = \\frac{1}{3} \\left( A_1 + A_2 + \\sqrt{A_1 A_2} \\right) h`
+
+    where:
+        - :math:`A_1` is the wing box area at the inner segment
+        - :math:`A_2` is the wing box area at the outer segment
+        - :math:`h` is the span distance between segments
+
+    **Definitions**
+
+    'Wing Segment'
+        A portion of the wing with defined chord percentage and fuel tank specifications
+
+    'Span Location'
+        The position along the wing span where the segment is located
+    """
 
     inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment)
     inner_segment_chord     = wing.chords.root * inner_segment.root_chord_percent
@@ -121,6 +322,57 @@ def compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segmen
     return volume
 
 def compute_non_dimensional_rib_coordinates(compoment): 
+    """
+    Computes the non-dimensional rib coordinates for fuel tank volume calculations.
+
+    This function determines the upper and lower surface coordinates at the front
+    and rear rib locations of a fuel tank, accounting for airfoil geometry and
+    clearance requirements.
+
+    Parameters
+    ----------
+    compoment : {Wing, Wing_Segment}
+        The wing or wing segment component containing airfoil data and fuel tank specifications
+
+    Returns
+    -------
+    front_rib_nondim_y_upper : float
+        Non-dimensional y-coordinate of upper surface at front rib location
+    rear_rib_nondim_y_upper : float
+        Non-dimensional y-coordinate of upper surface at rear rib location
+    front_rib_nondim_y_lower : float
+        Non-dimensional y-coordinate of lower surface at front rib location
+    rear_rib_nondim_y_lower : float
+        Non-dimensional y-coordinate of lower surface at rear rib location
+
+    Notes
+    -----
+    The function interpolates airfoil geometry to find the surface coordinates at
+    the fuel tank's chord-wise start and end locations. A clearance is applied to
+    ensure the fuel tank doesn't interfere with the airfoil surface. Defaults to using a
+    NACA 0012 airfoil if no airfoil is provided.
+
+    **Major Assumptions**
+        * Airfoil geometry is available and properly defined
+        * Fuel tank chord locations are within the airfoil bounds
+        * Linear interpolation is sufficient for coordinate determination
+
+    **Definitions**
+
+    'Non-dimensional Coordinates'
+        Coordinates normalized by the chord length (x/c, y/c)
+
+    'Rib Location'
+        The position along the chord where the fuel tank front and rear boundaries are located
+
+    'Clearance'
+        The minimum distance between the fuel tank boundary and the airfoil surface
+
+    See Also
+    --------
+    RCAIDE.Library.Methods.Geometry.Airfoil.import_airfoil_geometry : For importing airfoil coordinate files
+    RCAIDE.Library.Methods.Geometry.Airfoil.compute_naca_4series : For generating NACA 4-series airfoil geometry
+    """
     if compoment.airfoil != None: 
         if type(compoment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil:
             geometry = compute_naca_4series(compoment.airfoil.NACA_4_Series_code)

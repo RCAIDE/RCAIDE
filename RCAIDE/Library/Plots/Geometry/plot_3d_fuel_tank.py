@@ -48,14 +48,13 @@ def plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation = 24, colo
     creating surface panels between adjacent cross-sections.
     
     **Major Assumptions**
-    
-    * fuel_tank cross-sections are super-elliptical
-    * Surface is continuous between segments
-    * Tessellation is uniform around circumference
+        * fuel_tank cross-sections are super-elliptical
+        * Surface is continuous between segments
+        * Tessellation is uniform around circumference
     
     See Also
     --------
-    generate_3d_fuel_tank_points : Function to generate fuel_tank surface points
+    RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.generate_non_integral_fuel_tank_points : Function to generate fuel_tank surface points
     """
  
     G  = generate_non_integral_fuel_tank_points(fuel_tank,tessellation = 24 ) 
@@ -122,14 +121,9 @@ def plot_3d_integral_fuselage_tank(plot_data, fuselage, fuel_tank, tessellation 
     creating surface panels between adjacent cross-sections.
     
     **Major Assumptions**
-    
-    * fuel_tank cross-sections are super-elliptical
-    * Surface is continuous between segments
-    * Tessellation is uniform around circumference
-    
-    See Also
-    --------
-    generate_3d_fuel_tank_points : Function to generate fuel_tank surface points
+        * fuel_tank cross-sections are super-elliptical
+        * Surface is continuous between segments
+        * Tessellation is uniform around circumference
     """
 
     segment_list = [] 
@@ -197,10 +191,9 @@ def plot_3d_integral_wing_tank(plot_data,wing, fuel_tank, number_of_airfoil_poin
         - Adding symmetric wing if specified
     
     **Major Assumptions**
-    
-    * Wing segments are ordered from root to tip
-    * Airfoil sections lie in x-z plane
-    * Symmetric wing is mirror image about y-axis
+        * Wing segments are ordered from root to tip
+        * Airfoil sections lie in x-z plane
+        * Symmetric wing is mirror image about y-axis
     """ 
     af_pts     = 4  
     segment_list = [] 
@@ -493,10 +486,9 @@ def generate_integral_fuel_tank_points(fuselage,fuel_tank, segment_list, tessell
     -------
     G : Data
         Data structure containing generated points
-        
-        - PTS : ndarray
-            Array of shape (num_segments, tessellation, 3) containing 
-            x,y,z coordinates of surface points
+            - PTS : ndarray
+                Array of shape (num_segments, tessellation, 3) containing 
+                x,y,z coordinates of surface points
 
     Notes
     -----
@@ -504,14 +496,9 @@ def generate_integral_fuel_tank_points(fuselage,fuel_tank, segment_list, tessell
     and positioning them according to segment locations.
     
     **Major Assumptions**
-    
-    * Cross-sections lie in y-z plane
-    * Segments are ordered from nose to tail
-    * Origin is at the nose of the fuel_tank
-    
-    See Also
-    --------
-    plot_3d_fuel_tank : Function to visualize the generated surface
+        * Cross-sections lie in y-z plane
+        * Segments are ordered from nose to tail
+        * Origin is at the nose of the fuel_tank
     """ 
     tank_segs         = fuselage.segments
     num_tank_segs     = len(segment_list) 
@@ -577,10 +564,9 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     -------
     G : Data
         Data structure containing generated points
-        
-        - PTS : ndarray
-            Array of shape (num_segments, tessellation, 3) containing 
-            x,y,z coordinates of surface points
+            - PTS : ndarray
+                Array of shape (num_segments, tessellation, 3) containing 
+                x,y,z coordinates of surface points
 
     Notes
     -----
@@ -588,14 +574,9 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     and positioning them according to segment locations.
     
     **Major Assumptions**
-    
-    * Cross-sections lie in y-z plane
-    * Segments are ordered from nose to tail
-    * Origin is at the nose of the fuel_tank
-    
-    See Also
-    --------
-    plot_3d_fuel_tank : Function to visualize the generated surface
+        * Cross-sections lie in y-z plane
+        * Segments are ordered from nose to tail
+        * Origin is at the nose of the fuel_tank
     """  
 
     N = 3

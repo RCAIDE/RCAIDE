@@ -19,21 +19,43 @@ from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.comp
 # ---------------------------------------------------------------------------------------------------------------------    
 class Non_Integral_Tank(Fuel_Tank):
     """
-    Class for modeling a non integral tank characteristics and behavior
+    Class for modeling non-integral fuel tank characteristics and behavior.
+    
+    Non-integral tanks are separate fuel storage containers that are not structurally
+    integrated into the wing or fuselage. They can be attached to wings, fuselages,
+    or configured as specialized tanks for blended wing body (BWB) aircraft.
     
     Attributes
     ----------
     tag : str
-        Identifier for the fuel tank (default: 'Central_fuel_tank')
+        Identifier for the fuel tank (default: 'non_integral_tank')
         
-    fuel_selector_ratio : float
-        Ratio of fuel flow allocation (default: 1.0)
+    orientation_euler_angles : list
+        Euler angles defining tank orientation [rad] (default: [0., 0., 0.])
         
-    mass_properties.empty_mass : float
-        Mass of empty tank structure [kg] (default: 0.0)
+    bwb_aft_tank : bool
+        Flag indicating if tank is configured as BWB aft tank (default: False)
         
-    secondary_fuel_flow : float
-        Secondary fuel flow rate [kg/s] (default: 0.0)
+    aft_tank_start_root_chord : float, optional
+        Starting position of aft tank along root chord [m] (default: None)
+        
+    aft_tank_end_rood_chord : float, optional
+        Ending position of aft tank along root chord [m] (default: None)
+        
+    aft_tank_end_segment_tag : str, optional
+        Tag of wing segment where aft tank ends (default: None)
+        
+    wing_root_tag : str, optional
+        Tag of the root wing for BWB configurations (default: None)
+        
+    radial_offset : float
+        Radial offset from attachment surface [m] (default: 0.0)
+        
+    wing_tag : str, optional
+        Tag of the wing this tank is attached to (default: None)
+        
+    fuselage_tag : str, optional
+        Tag of the fuselage this tank is attached to (default: None)
         
     length : float
         Tank length [m] (default: 0.0)
@@ -49,8 +71,20 @@ class Non_Integral_Tank(Fuel_Tank):
 
     Notes
     -----
-    The central fuel tank is located in the aircraft's center section,
-    often integrated with the wing box or fuselage structure. 
+    Non-integral tanks provide flexibility in fuel storage placement and can be
+    positioned to optimize aircraft balance and structural efficiency. They are
+    commonly used in aircraft where integral wing tanks are not feasible or
+    additional fuel capacity is required.
+
+    **Definitions**
+
+    'Non-integral Tank'
+        A fuel storage container that is separate from the primary aircraft structure
+        and attached externally to wings, fuselages, or other components.
+
+    'BWB Aft Tank'
+        A specialized non-integral tank configuration for blended wing body aircraft
+        positioned in the aft section of the wing root.
 
     See Also
     --------
@@ -98,7 +132,38 @@ class Non_Integral_Tank(Fuel_Tank):
         append_fuel_tank_conditions(self,segment, fuel_line)  
         return                      
     
-    def compute_volume(self,wings,fuselages):
+    def compute_volume(self, wings, fuselages):
+        """
+        Compute the volume of the non-integral fuel tank based on its attachment location.
+
+        Parameters
+        ----------
+        wings : dict
+            Dictionary containing wing components indexed by their tags
+        fuselages : dict
+            Dictionary containing fuselage components indexed by their tags
+
+        Returns
+        -------
+        volume : float
+            Computed volume of the fuel tank [m³]
+
+        Notes
+        -----
+        The volume computation method depends on where the tank is attached:
+            - If attached to a wing, uses wing geometry and tank dimensions
+            - If attached to a fuselage, uses fuselage geometry and tank dimensions  
+            - If configured as a BWB aft tank, uses special BWB-specific computation
+
+        **Major Assumptions**
+            * Tank dimensions (length, width, height) are properly defined
+            * Wing or fuselage components exist in the provided dictionaries
+            * For BWB aft tanks, the wing_root_tag is properly set
+
+        See Also
+        --------
+        RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume
+        """
         if self.wing_tag != None:
             wing = wings[self.wing_tag]  
             volume = compute_wing_non_integral_tank_volume(self,wing)
