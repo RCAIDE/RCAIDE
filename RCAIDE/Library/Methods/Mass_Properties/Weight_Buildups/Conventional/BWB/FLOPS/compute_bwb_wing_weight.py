@@ -99,14 +99,7 @@ def compute_wing_weight(vehicle, wing, WPOD, fidelity  , settings, num_main_wing
                         
     DG              = vehicle.mass_properties.max_takeoff / Units.lbs  # Design gross weight in lb
 
-
-   
-    NFUSE = 0
-    if fidelity   == 'Simple': 
-        for wing in  vehicle.wings:
-            if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-                NFUSE   += 1
-                
+    if complexity == 'Simple':
         EMS  = 1 - 0.25 * FSTRT  # Wing strut bracing factor
         TLAM = np.tan(wing.sweeps.quarter_chord) \
                - 2 * (1 - TR) / (AR * (1 + TR))  # Tangent of the 3/4 chord sweep angle
@@ -122,6 +115,8 @@ def compute_wing_weight(vehicle, wing, WPOD, fidelity  , settings, num_main_wing
     else:
         NSD             = 500
         N2              = int(NEW / 2) 
+       
+        NFUSE = 0
         for wing in  vehicle.wings:
             if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                 NFUSE   += 1
