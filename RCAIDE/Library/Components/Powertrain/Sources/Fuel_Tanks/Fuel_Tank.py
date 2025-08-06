@@ -2,6 +2,7 @@
 # 
 # 
 # Created:  Mar 2024, M. Clarke 
+# Modified: Aug 2025, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -56,6 +57,7 @@ class Fuel_Tank(Component):
         self.tag                         = 'fuel_tank'
         self.internal_volume             = 0.0
         self.mass_properties.empty_mass  = 0.0   
+        self.mass_properties.fuel        = 0.0
         self.secondary_fuel_flow_rate    = 0.0
         self.fuel_selector_ratio         = 1.0  
         self.outer_diameter              = 0.0  
@@ -95,4 +97,8 @@ class Fuel_Tank(Component):
             Connected fuel line component
         """
         compute_fuel_tank_properties(self,state, fuel_line)  
-        return                                              
+        return                           
+    
+    def compute_volume(self,wings,fuselages):
+        volume =  self.internal_volume
+        return volume 
