@@ -155,7 +155,7 @@ def vehicle_setup():
     #segment.thickness_to_chord            = 0.11
     segment.sweeps.quarter_chord          = 10.037 *  Units.degrees 
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               = rel_path + 'main_wing_airfoil_XSec_0.txt' 
+    airfoil.coordinate_file               = rel_path + 's1016.txt' 
     segment.append_airfoil(airfoil )
     wing.append_segment(segment)
 
@@ -170,7 +170,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = 0.16
     segment.sweeps.quarter_chord           = 46.9023 *  Units.degrees  
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               = rel_path +  'main_wing_airfoil_XSec_0.txt'
+    airfoil.coordinate_file               = rel_path +  's1016.txt'
     segment.append_airfoil(airfoil )
     wing.append_segment(segment)
     
@@ -185,7 +185,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = 0.16
     segment.sweeps.quarter_chord          = 51.027  *  Units.degrees  
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               = rel_path +  'main_wing_airfoil_XSec_1.txt'
+    airfoil.coordinate_file               = rel_path +  's1016.txt'
     segment.append_airfoil(airfoil )
     wing.append_segment(segment)
 
@@ -199,7 +199,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = 0.11
     segment.sweeps.quarter_chord          = 45  *  Units.degrees   
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               = rel_path +  'main_wing_airfoil_XSec_2.txt'
+    airfoil.coordinate_file               = rel_path +  's1016.txt'
     segment.append_airfoil(airfoil )
     wing.append_segment(segment) 
 
@@ -216,7 +216,7 @@ def vehicle_setup():
     segment.fuel_tank.percent_chord_start_location = 0.2  
     segment.fuel_tank.percent_chord_end_location   = 0.6   
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               = rel_path +  'main_wing_airfoil_XSec_3.txt'
+    airfoil.coordinate_file               = rel_path +  's1016.txt'
     segment.append_airfoil(airfoil )
     wing.append_segment(segment)     
 
@@ -233,7 +233,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = 0.15
     segment.sweeps.quarter_chord          = 30.*  Units.degrees  
     airfoil                               =  RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               =  rel_path + 'main_wing_airfoil_XSec_4.txt'
+    airfoil.coordinate_file               =  rel_path + 's1016.txt'
     segment.append_airfoil(airfoil )
     wing.append_segment(segment)
 
@@ -249,7 +249,7 @@ def vehicle_setup():
     segment.sweeps.quarter_chord          = 30.*  Units.degrees 
     segment.chords.reference_area_root    = True
     airfoil                               =  RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               =  rel_path + 'main_wing_airfoil_XSec_5.txt'
+    airfoil.coordinate_file               =  rel_path + 's1016.txt'
     segment.append_airfoil(airfoil )
     wing.append_segment(segment)  
 
@@ -263,7 +263,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = 0.0972 
     segment.sweeps.quarter_chord          = 55 *  Units.degrees 
     airfoil                               =  RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               =  rel_path + 'main_wing_airfoil_XSec_6.txt'
+    airfoil.coordinate_file               =  rel_path + 's1016.txt'
     segment.append_airfoil(airfoil )
     wing.append_segment(segment)  
 
@@ -277,7 +277,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = 0.098 
     segment.sweeps.quarter_chord          = 0.0 
     airfoil                               =  RCAIDE.Library.Components.Airfoils.Airfoil()
-    airfoil.coordinate_file               =  rel_path + 'main_wing_airfoil_XSec_7.txt'
+    airfoil.coordinate_file               =  rel_path + 's1016.txt'
     segment.append_airfoil(airfoil )
     wing.append_segment(segment)
 

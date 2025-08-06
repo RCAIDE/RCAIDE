@@ -105,7 +105,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 142.82946397806845
+    fuel_volume_true = 215.64896627800425
     
     vehicle = BWB_vehicle_setup()
 
