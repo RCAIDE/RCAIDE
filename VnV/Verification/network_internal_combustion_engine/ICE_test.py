@@ -43,9 +43,7 @@ def main():
      
     # mission analysis 
     results = missions.base_mission.evaluate()  
-    
-    # evaluate
-    results     = mission.evaluate()  
+
     P_truth     = 36065.627005869945
     mdot_truth  = 0.0031688080100527646
     
