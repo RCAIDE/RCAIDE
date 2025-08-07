@@ -1,7 +1,8 @@
 # RCAIDE/Methods/Aerodynamics/Common/Drag/__init__.py
 # 
 
-""" RCAIDE Package Setup
+""" This package contains the methods for calculating the drag of an aircraft. These
+methods are used across a variety of analyses (VLM, AVL, etc.).
 """
 
 # ----------------------------------------------------------------------------------------------------------------------

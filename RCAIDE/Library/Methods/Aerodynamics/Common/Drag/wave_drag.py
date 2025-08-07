@@ -16,32 +16,116 @@ import numpy as np
 #  Compressibility Drag Total
 # ----------------------------------------------------------------------------------------------------------------------  
 def wave_drag(state,settings,geometry):
-    """Computes compressibility drag for full aircraft including volume drag
+    """
+    Computes wave drag coefficient for full aircraft including volume and lift components.
 
-    Assumptions:
+    Parameters
+    ----------
+    state : Data
+        Flight conditions and aerodynamic state containing:
+            - conditions.freestream.mach_number : float
+                Freestream Mach number [unitless]
+            - conditions.aerodynamics.coefficients.lift.total : float
+                Total lift coefficient [unitless]
+            - conditions.aerodynamics.coefficients.lift.inviscid.spanwise : float, optional
+                Spanwise lift distribution [unitless]
+    settings : dict
+        Aerodynamic analysis settings containing:
+            - supersonic.end_drag_rise_mach_number : float
+                Mach number at which supersonic drag rise ends [unitless]
+            - supersonic.peak_mach_number : float
+                Peak Mach number for drag rise [unitless]
+            - use_surrogate : bool
+                Flag to use surrogate model for transonic wave drag
+            - vortex_distribution : Data, optional
+                Vortex distribution data containing:
+                    - chord_lengths : array
+                        Chord lengths at spanwise stations [m]
+                    - leading_edge_sweeps : array
+                        Leading edge sweep angles [radians]
+                    - chord_widths : array
+                        Chord widths at spanwise stations [m]
+    geometry : Data
+        Aircraft geometry containing:
+            - reference_area : float
+                Reference area for drag coefficient calculation [m²]
+            - length : float
+                Total aircraft length [m]
+            - maximum_cross_sectional_area : float
+                Maximum cross-sectional area [m²]
+            - fuselages : list
+                List of fuselage objects containing:
+                    - width : float
+                        Width of the fuselage [m]
+            - wings : list
+                List of wing objects containing:
+                    - chords.root : float
+                        Root chord length [m]
+                    - spans.projected : float
+                        Projected span [m]
+                    - aspect_ratio : float
+                        Aspect ratio [unitless]
+
+    Returns
+    -------
     None
+        Results are stored in state.conditions.aerodynamics.coefficients.drag.wave
 
-    Source:
-    None
+    Notes
+    -----
+    This function calculates the wave drag coefficient including both volume and lift
+    components. The calculation uses different methods for transonic and supersonic
+    regimes, with cubic spline blending for smooth transitions.
+    
+    **Major Assumptions**
+        * Wave drag is composed of volume and lift components
+        * Cubic spline blending provides smooth transitions between regimes
+        * Transonic wave drag is limited to Mach 0.7-0.95 range
+        * Supersonic wave drag begins at Mach 1.0
+        * Volume wave drag is independent of Mach number
+    
+    **Theory**
 
-    Args:   
-    settings.
-      begin_drag_rise_mach_number                                    [Unitless]
-      end_drag_rise_mach_number                                      [Unitless]
-      peak_mach_number                                               [Unitless] 
-    state.conditions.freestream.mach_number                          [Unitless]
-    geometry.maximum_cross_sectional_area                            [m^2] (used in subfunctions)
-    geometry.total_length                                            [m]   (used in subfunctions)
-    geometry.reference_area                                          [m^2]
-    geometry.wings                             
+    The total wave drag coefficient is the sum of volume and lift components:
 
-    Returns:
-    total_compressibility_drag                                       [Unitless]
+    :math:`C_{D,wave} = C_{D,wave,volume} + C_{D,wave,lift}`
 
-    Properties Used:
-    None
-    """     
+    The volume wave drag is:
 
+    :math:`C_{D,wave,volume} = C_{D,wave,volume,frontal} \\cdot (1 - h_{00}(M))`
+
+    The lift wave drag combines transonic and supersonic contributions:
+
+    :math:`C_{D,wave,lift} = C_{D,wave,transonic} \\cdot h_{00}(M) + C_{D,wave,supersonic} \\cdot (1 - h_{002}(M))`
+
+    where :math:`h_{00}(M)` and :math:`h_{002}(M)` are cubic spline blending functions.
+    
+    **Definitions**
+
+    'Wave Drag'
+        Drag component caused by shock waves in compressible flow.
+    
+    'Volume Wave Drag'
+        Wave drag due to aircraft volume and cross-sectional area.
+    
+    'Lift Wave Drag'
+        Wave drag due to lift generation in compressible flow.
+
+    References
+    ----------
+    [1] Lock, R. C. (1986). "The Prediction of the Drag of Aerofoils and Wings at High Subsonic Speeds." Aeronautical Journal.
+    [2] Harris, C. D. (1990). "NASA Supercritical Airfoils." NASA TP 2969.
+    [3] Yoshida, K. "Supersonic drag reduction technology in the scaled supersonic experimental airplane project by JAXA."
+    [4] Sieron, T. R., et al. (1993). "Procedures and design data for the formulation of aircraft configurations." WRIGHT LAB WRIGHT-PATTERSON AFB OH.
+
+    See Also
+    --------
+    transonic_lift_wave_drag
+    supersonic_lift_wave_drag
+    supersonic_volume_wave_drag
+    RCAIDE.Library.Methods.Utilities.Cubic_Spline_Blender
+    """
+     
     # Unpack
     conditions       = state.conditions
     Mach             = conditions.freestream.mach_number  
@@ -81,9 +165,82 @@ def wave_drag(state,settings,geometry):
 # ----------------------------------------------------------------------------------------------------------------------
 def transonic_lift_wave_drag(conditions, settings, geometry): 
     """
-    Theory comes from: "The Prediciton of the Drag of Aerofoils and Wings at High Subsonic Speeds" by R.C. Lock, 1986, Aeronautical journal 
+    Computes transonic lift wave drag coefficient using empirical correlations.
+
+    Parameters
+    ----------
+    conditions : Data
+        Flight conditions containing:
+            - freestream.mach_number : float
+                Freestream Mach number [unitless]
+            - aerodynamics.coefficients.lift.total : float
+                Total lift coefficient [unitless]
+            - aerodynamics.coefficients.lift.inviscid.spanwise : float, optional
+                Spanwise lift distribution [unitless]
+    settings : dict
+        Analysis settings containing:
+            - use_surrogate : bool
+                Flag to use surrogate model
+            - vortex_distribution : Data, optional
+                Vortex distribution data containing:
+                - chord_lengths : array
+                    Chord lengths at spanwise stations [m]
+                - leading_edge_sweeps : array
+                    Leading edge sweep angles [radians]
+                - chord_widths : array
+                    Chord widths at spanwise stations [m]
+    geometry : Data
+        Aircraft geometry containing:
+            - reference_area : float
+                Reference area [m²]
+
+    Returns
+    -------
+    CD_wave_transonic : float
+        Transonic lift wave drag coefficient [unitless]
+
+    Notes
+    -----
+    This function calculates the transonic lift wave drag using either a surrogate
+    model or detailed spanwise analysis based on shock wave formation from Lock (1986). A generic
+    airfoil (RAE 5225) is assumed for the Cp data.
     
-    CL vs the CP value before the shock wave comes from the same source as well as NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
+    **Major Assumptions**
+        * Surrogate model is valid for Mach 0.7-0.95 range
+        * Shock wave formation depends on local pressure coefficient
+        * Normalized curvature factor is constant (0.23)
+        * Spanwise analysis accounts for sweep effects
+    
+    **Theory**
+
+    For surrogate model:
+    :math:`C_{D,wave} = f(C_L) \\cdot (12.5M - 8.75)`
+
+    For detailed analysis:
+    :math:`C_{D,wave} = \\sum_{i=1}^{n} C_{D,wave,i} \\cdot \\frac{S_i}{S_{ref}}`
+
+    where each segment's wave drag is:
+    :math:`C_{D,wave,i} = \\frac{\\cos^4(\\Lambda)}{\\kappa} \\cdot 0.243 \\cdot \\left(\\frac{1+0.2M\\cos(\\Lambda)}{M\\cos(\\Lambda)}\\right)^3 \\cdot (M_1^* - 1)^4 \\cdot \\frac{2-M_1^*}{M_1^*(1+0.2M_1^{*2})} \\cdot 0.5`
+
+    The local Mach number before shock is:
+    :math:`M_1^* = \\sqrt{\\frac{5+M^2\\cos^2(\\Lambda)}{(1+0.7M^2C_p)^{2/7}} - 5}`
+    
+    **Definitions**
+
+    'Transonic Wave Drag'
+        Wave drag occurring in the transonic regime (M ≈ 0.7-0.95).
+    
+    'Shock Wave'
+        Discontinuity in flow properties caused by compressibility effects.
+    
+    'Pressure Coefficient'
+        Dimensionless pressure difference normalized by dynamic pressure.
+
+    References
+    ----------
+    [1] Lock, R. C. (1986). "The Prediction of the Drag of Aerofoils and Wings at High Subsonic Speeds." Aeronautical Journal.
+    [2] Harris, C. D. (1990). "NASA Supercritical Airfoils." NASA TP 2969.
+
     """
     Mach              = conditions.freestream.mach_number  
     S_ref             = geometry.reference_area 
@@ -107,7 +264,6 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
         # ------------------------------------------------------------------
         # Cp Data (as function of CL) from "The Prediciton of the Drag of Aerofoils and Wings at High Subsonic Speeds" by R.C. Lock, 1986, Aeronautical journal and NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
         # ------------------------------------------------------------------
-        # Data was for M = 0.78, but appears to be valid for similar Mach numbers. Composite data ebtween RAE 5225 and NASA supercritical airfoil. ADD FULL REFERENCE HERE
                    
         Cp_shock =  0.9825 *(CL_y**2)  - 2.5132 *(CL_y) + 0.0279 # Cp vlaue right before the shock wave 
         # ------------------------------------------------------------------
@@ -135,25 +291,73 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
 # supersonic_lift_wave_drag
 # ---------------------------------------------------------------------------------------------------------------------- 
 def supersonic_lift_wave_drag(conditions,configuration,geometry):
-    """Determine lift wave drag for supersonic speeds
-
-    Assumptions:
-    Basic fit
-
-    Source:
-    Yoshida, Kenji. "Supersonic drag reduction technology in the scaled supersonic 
-    experimental airplane project by JAXA."
-
-    Args:
-    conditions.freestream.mach_number [-]
-    configuration                     (passed to another function)
-    wing.areas.reference              [m^2]
-    Sref_main                         [m^2] Main reference area
-
-    Returns:
-    cd_wave_supersonic_lift                            [-] Wave drag CD due to lift 
     """
+    Computes supersonic lift wave drag coefficient using JAXA methodology.
 
+    Parameters
+    ----------
+    conditions : Data
+        Flight conditions containing:
+            - freestream.mach_number : float
+                Freestream Mach number [unitless]
+            - aerodynamics.coefficients.lift.total : float
+                Total lift coefficient [unitless]
+    configuration : dict
+        Aircraft configuration settings
+    geometry : Data
+        Aircraft geometry containing:
+            - wings : list
+                List of wing objects containing:
+                    - chords.root : float
+                        Root chord length [m]
+                    - spans.projected : float
+                        Projected span [m]
+                    - aspect_ratio : float
+                        Aspect ratio [unitless]
+
+    Returns
+    -------
+    cd_lift_wave : float
+        Supersonic lift wave drag coefficient [unitless]
+
+    Notes
+    -----
+    This function calculates the supersonic lift wave drag using the JAXA methodology
+    based on wing geometry and lift coefficient.
+    
+    **Major Assumptions**
+        * JAXA methodology is valid for supersonic speeds
+        * Only main wing contributes to lift wave drag
+        * Wing geometry parameters are sufficient for calculation
+        * Empirical correlation is valid for typical supersonic aircraft
+    
+    **Theory**
+
+    The supersonic lift wave drag coefficient is:
+
+    :math:`C_{D,wave,lift} = C_L^2 \\cdot \\frac{\\beta^2}{\\pi} \\cdot p \\cdot \\frac{s}{l} \\cdot K_w`
+
+    where:
+        - :math:`\\beta = \\sqrt{M^2-1}` is the Prandtl-Glauert factor
+        - :math:`p = \\frac{2}{AR} \\cdot \\frac{s}{l}` is the wing parameter
+        - :math:`x = \\beta \\cdot \\frac{s}{l}` is the normalized span parameter
+        - :math:`K_w` is the wave drag factor calculated from empirical correlation
+    
+    **Definitions**
+
+    'Supersonic Wave Drag'
+        Wave drag occurring at supersonic speeds (M > 1.0).
+    
+    'JAXA Methodology'
+        Empirical method for calculating supersonic wave drag developed by JAXA.
+    
+    'Prandtl-Glauert Factor'
+        Compressibility correction factor for supersonic flow.
+
+    References
+    ----------
+    [1] Yoshida, K. "Supersonic drag reduction technology in the scaled supersonic experimental airplane project by JAXA."
+    """
     # Initalize cd arrays 
     Mach         = conditions.freestream.mach_number
     cd_lift_wave = np.zeros_like(Mach)
@@ -180,23 +384,76 @@ def supersonic_lift_wave_drag(conditions,configuration,geometry):
     return cd_lift_wave
 
 def supersonic_volume_wave_drag(conditions, settings, vehicle):
-    """Computes the volume drag
+    """
+    Computes supersonic volume wave drag coefficient based on aircraft geometry.
+
+    Parameters
+    ----------
+    conditions : Data
+        Flight conditions (not used in calculation)
+    settings : dict
+        Analysis settings (not used in calculation)
+    vehicle : Data
+        Aircraft geometry containing:
+            - reference_area : float
+                Reference area for drag coefficient [m²]
+            - length : float
+                Total aircraft length [m]
+            - maximum_cross_sectional_area : float
+                Maximum cross-sectional area [m²]
+            - fuselages : list
+                List of fuselage objects containing:
+                    - width : float
+                        Width of the fuselage [m]
+
+    Returns
+    -------
+    CD_wave_vol : float
+        Supersonic volume wave drag coefficient [unitless]
+
+    Notes
+    -----
+    This function calculates the supersonic volume wave drag based on aircraft
+    geometry using empirical correlations from Wright Laboratory procedures.
     
-    Assumptions:
-    Basic fit
+    **Major Assumptions**
+        * Volume wave drag is independent of Mach number
+        * Aircraft volume can be approximated by cylindrical geometry
+        * Maximum fuselage width represents the characteristic dimension
+        * Empirical correlation is valid for typical supersonic aircraft
     
-    Source:
-    Sieron, Thomas R., et al. Procedures and design data for the formulation of aircraft 
-    configurations. WRIGHT LAB WRIGHT-PATTERSON AFB OH, 1993. Page B-3
+    **Theory**
+
+    The volume wave drag coefficient is:
+
+    :math:`C_{D,wave,volume} = C_{D,wave,volume,frontal} \\cdot \\frac{A_{max}}{S_{ref}}`
+
+    where the frontal area wave drag is:
+    :math:`C_{D,wave,volume,frontal} = 24 \\cdot \\frac{V}{L^3}`
+
+    The aircraft volume is approximated as:
+    :math:`V = \\frac{3}{16} \\pi^2 R_{max}^2 L`
+
+    where:
+        - :math:`R_{max}` is the maximum fuselage radius
+        - :math:`L` is the total aircraft length
+        - :math:`A_{max}` is the maximum cross-sectional area
+        - :math:`S_{ref}` is the reference area
     
-    Args:
-    vehicle.
-      total_length                        [m]
-      maximum_cross_sectional_area        [m^2]
-      reference_area                      [m^2]
-      
-    Returns:
-    vehicle_wave_drag                     [Unitless] 
+    **Definitions**
+
+    'Volume Wave Drag'
+        Wave drag caused by aircraft volume in supersonic flow.
+    
+    'Frontal Area Wave Drag'
+        Volume wave drag normalized by frontal area.
+    
+    'Characteristic Length'
+        Representative length scale for volume wave drag calculation.
+
+    References
+    ----------
+    [1] Sieron, T. R., et al. (1993). "Procedures and design data for the formulation of aircraft configurations." WRIGHT LAB WRIGHT-PATTERSON AFB OH.
     """
    
     S_ref = vehicle.reference_area
