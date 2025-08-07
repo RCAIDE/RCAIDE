@@ -101,7 +101,7 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     # remove takeoff weight from aircraft if defined
     for segment in  mission.segments:
         if segment.analyses.weights == None:
-            AssertionError('Weights analysis not defined!')
+            vehicle.mass_properties.operating_empty = vehicle.mass_properties.max_zero_fuel - vehicle.mass_properties.max_payload
         segment.analyses.weights.vehicle.mass_properties.takeoff = None
     
     # perform inital weights analysis

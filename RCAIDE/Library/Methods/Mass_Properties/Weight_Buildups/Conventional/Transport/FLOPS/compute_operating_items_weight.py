@@ -58,10 +58,10 @@ def compute_operating_items_weight(vehicle):
         Properties Used:
             N/A
     """ 
-    NPF = vehicle.first_class_passengers      
-    NPB = vehicle.business_class_passengers   
-    NPT = vehicle.economy_class_passengers   
     NENG =  0 
+    NPF  = vehicle.first_class_passengers      
+    NPB  = vehicle.business_class_passengers   
+    NPT  = vehicle.economy_class_passengers   
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan)\
@@ -84,8 +84,9 @@ def compute_operating_items_weight(vehicle):
     if number_of_tanks == 0:
         number_of_tanks = 5    
     
-    WUF         = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
-    WOIL        = 0.082 * NENG * THRUST ** 0.65  # engine oil weight  
+    WUF             = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
+    WOIL            = 0.082 * NENG * THRUST ** 0.65  # engine oil weight
+            
     WSRV        = (5.164 * NPF + 3.846 * NPB + 2.529 * NPT) * (DESRNG / VMAX) ** 0.255  # passenger service weight
 
     W_cargo = 0
@@ -111,10 +112,10 @@ def compute_operating_items_weight(vehicle):
     WSRV = (5.164*NPF + 3.846*NPB + 2.529*NPT)*(DESRNG/VMAX)**0.225 
 
     output                           = Data()
-    output.misc                      = WUF * Units.lbs + WOIL * Units.lbs + WSRV * Units.lbs + WCON * Units.lbs
+    output.misc                      = WUF * Units.lbs + WOIL * Units.lbs + WCON * Units.lbs
     output.flight_crew               = WFLCRB * Units.lbs
     output.flight_attendants         = WFLAAB * Units.lbs
     output.passenger_service         = WSRV   * Units.lbs
-    output.total                     = output.misc + output.flight_crew + \
+    output.W_systems                     = output.misc + output.flight_crew + \
                                        output.flight_attendants + output.passenger_service 
     return output

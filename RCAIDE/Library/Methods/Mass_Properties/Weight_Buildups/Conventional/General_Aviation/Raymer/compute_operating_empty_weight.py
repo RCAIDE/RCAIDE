@@ -30,7 +30,8 @@ def compute_operating_empty_weight(vehicle, settings=None):
                     limit_load    - limit load factor at zero fuel weight of the aircraft [dimensionless]
                 
                 mass_properties - a data dictionary with the fields:
-                    max_takeoff   - max takeoff weight of the vehicle           [kilograms] 
+                    max_takeoff   - max takeoff weight of the vehicle           [kilograms]
+                    max_zero_fuel - maximum zero fuel weight of the aircraft    [kilograms]
                     cargo         - cargo weight                                [kilograms]
                 
                 passengers - number of passengers on the aircraft               [dimensionless]
@@ -153,7 +154,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
        Assumptions:
             calculated aircraft weight from correlations created per component of historical aircraft
         
-    """      
+    """     
     # Unpack inputs
     Nult        = vehicle.flight_envelope.ultimate_load 
     TOW         = vehicle.mass_properties.max_takeoff 
@@ -169,15 +170,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     for network in vehicle.networks:
         W_energy_network_total   = 0
 
-        for fuel_line in  network.fuel_lines: 
-            for fuel_tank in fuel_line.fuel_tanks: 
-                m_fuel_tank     = fuel_tank.fuel.mass_properties.mass
-                m_fuel          += m_fuel_tank   
-                landing_weight  -= m_fuel_tank   
-                number_of_tanks += 1
-                V_fuel_int      += m_fuel_tank/fuel_tank.fuel.density  #assume all fuel is in integral tanks 
-                V_fuel          += m_fuel_tank/fuel_tank.fuel.density #total fuel  
-         
         # Electric-Powered Propulsors  
         for bus in network.busses: 
             # electrical payload 
@@ -300,31 +292,18 @@ def compute_operating_empty_weight(vehicle, settings=None):
                                                   + output.empty.systems.electrical + output.empty.systems.avionics \
                                                   + output.empty.systems.hydraulics + output.empty.systems.furnishings \
                                                   + output.empty.systems.air_conditioner + output.empty.systems.instruments \
-                                                  + output.empty.systems.anti_ice 
+                                                  + output.empty.systems.anti_ice
   
-    output.payload              = W_payload  
-    output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total  
+    output.payload                                = Data()
+    output.payload                                = W_payload
+    output.operational_items                      = Data() # What is the point of these items?
+    output.operational_items.oper_items           = 0
+    output.operational_items.flight_crew          = 0
+    output.operational_items.flight_attendants    = 0
+    output.operational_items.total                = 0
 
-    ##-------------------------------------------------------------------------------             
-    # Operating Items Weight
-    ##------------------------------------------------------------------------------- 
-    vehicle.mass_properties.max_zero_fuel = output.empty.total + vehicle.mass_properties.max_payload
-    W_oper                      = Data()  
-    W_oper.oper_items           = 0
-    W_oper.flight_crew          = 0
-    W_oper.flight_attendants    = 0
-    W_oper.total                = 0
-    for fuselage in vehicle.fuselages:
-        if len(fuselage.cabins) == 0: 
-            cabin =  RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
-            cabin.mass_properties.mass = (W_oper.total + W_payload.passengers + W_systems.total)
-            fuselage.append_cabin(cabin)
-        else: 
-            for cabin in fuselage.cabins:
-                cabin.mass_properties.mass = (W_oper.total + W_payload.passengers + W_systems.total) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
-    
-    output.operational_items    = W_oper  
-    output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
-    output.max_takeoff          = vehicle.mass_properties.max_takeoff      
+    output.empty.total      = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total
+    output.operating_empty  = output.empty.total + output.operational_items.total
+    output.zero_fuel_weight =  output.operating_empty + output.payload.total 
     
     return output
