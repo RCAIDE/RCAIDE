@@ -71,10 +71,10 @@ def extract_wing_collocation_points(VD,conditions,settings,geometry, wing_instan
     VD_wing.ZA2  = VD.ZA2[:,pt_ids]
     VD_wing.ZB1  = VD.ZB1[:,pt_ids]
     VD_wing.ZB2  = VD.ZB2[:,pt_ids]  
-    VD_wing.n_cp = len(VD_wing.XC[0])
+    VD_wing.n_cp = np.tile(np.atleast_2d(np.array(len(VD_wing.XC[0]) )), (len(VD_wing.XC), 1))
     VD_wing.n_cw = VD.n_cw[:,ids]
     VD_wing.n_sw = VD.n_sw[:,ids]
-
+      
     return VD_wing, pt_ids
 
 

@@ -25,10 +25,8 @@ from NASA_X57    import vehicle_setup, configs_setup
 
 def main():
     # fidelity zero wakes
-    print('Wake Fidelity Zero, Identical Props')    
-    t0=time.time()
-    Propeller_Slipstream(wake_fidelity=0,identical_props=True)
-    print((time.time()-t0)/60) 
+    print('Wake Fidelity Zero, Identical Props')     
+    Propeller_Slipstream(wake_fidelity=0,identical_props=False) 
     
     return
 
@@ -37,14 +35,10 @@ def Propeller_Slipstream(wake_fidelity,identical_props):
 
     rotor_type = 'Blade_Element_Momentum_Theory_Helmholtz_Wake'
     vehicle  = vehicle_setup(rotor_type)      
-
-    for network in vehicle.networks: 
-        network.identical_propulsors  = identical_props
-        for propulsor in network.propulsors:
-            propeller = propulsor.rotor 
-            propeller.rotation = -1 
-                
-    
+ 
+    vehicle.networks.electric.propulsors.starboard_propulsor.rotor.clockwise_rotation = True
+    vehicle.networks.electric.propulsors.port_propulsor.rotor.clockwise_rotation = False
+     
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs)  
     mission  = mission_setup(analyses)
@@ -56,44 +50,40 @@ def Propeller_Slipstream(wake_fidelity,identical_props):
     sectional_lift_coeff        = results.segments.cruise.conditions.aerodynamics.coefficients.lift.inviscid.spanwise[0]
     
     # lift coefficient and sectional lift coefficient check
-    lift_coefficient_true       = 0.8138843131816682
-    sectional_lift_coeff_true   = np.array([ 7.65787870e-01,  7.76916729e-01,  7.99378634e-01,  9.18119053e-01,
-                                             7.29035970e-01,  6.40946887e-01,  6.54955932e-01,  6.41833800e-01,
-                                             6.20656243e-01,  5.91983396e-01,  5.54772222e-01,  5.06943288e-01,
-                                             4.38351745e-01,  9.30606888e-02,  1.05055686e-01,  7.48560347e-01,
-                                             7.18180603e-01,  6.68139261e-01,  5.35673848e-01,  6.32004194e-01,
-                                             6.80363288e-01,  6.36324156e-01,  6.22830306e-01,  6.04129042e-01,
-                                             5.77920516e-01,  5.42820617e-01,  4.96779897e-01,  4.29888014e-01,
-                                             9.11033066e-02,  1.02715098e-01,  2.35242716e-02,  2.10849937e-02,
-                                             1.86284088e-02,  1.58879451e-02,  1.27526047e-02,  9.26612707e-03,
-                                             5.58415010e-03,  1.96046827e-03, -1.28762850e-03, -3.84314515e-03,
-                                            -5.45801916e-03, -6.01193111e-03, -5.54570839e-03, -4.26055313e-03,
-                                            -2.56599057e-03,  2.60275374e-02,  2.83211639e-02,  3.04542822e-02,
-                                             3.25999080e-02,  3.47284147e-02,  3.66760893e-02,  3.82181209e-02,
-                                             3.90620296e-02,  3.88792800e-02,  3.73844559e-02,  3.44005642e-02,
-                                             2.98995060e-02,  2.40265924e-02,  1.71236162e-02,  1.00422100e-02,
-                                             8.97363824e-07,  1.97643216e-06,  2.20482584e-06,  2.99888546e-06,
-                                             4.02069727e-06,  4.95471519e-06,  5.66530010e-06,  6.10526146e-06,
-                                             6.26108514e-06,  6.12214969e-06,  5.66078069e-06,  4.81946345e-06,
-                                             3.54208736e-06,  1.97742880e-06,  7.08249333e-07])
+    lift_coefficient_true       = 0.7471442722450158
+    sectional_lift_coeff_true   = np.array([7.11702984e-01, 6.91720619e-01, 6.48390130e-01, 5.20527453e-01,
+                                            6.20553156e-01, 6.70745402e-01, 6.27849971e-01, 6.15422147e-01,
+                                            5.97612552e-01, 5.72167349e-01, 5.37742801e-01, 4.92328554e-01,
+                                            4.26108478e-01, 9.02284446e-02, 1.01668869e-01, 7.11702982e-01,
+                                            6.91720737e-01, 6.48390436e-01, 5.20527957e-01, 6.20553804e-01,
+                                            6.70746628e-01, 6.27851015e-01, 6.15423252e-01, 5.97612484e-01,
+                                            5.72165425e-01, 5.37740845e-01, 4.92327347e-01, 4.26107493e-01,
+                                            9.02282009e-02, 1.01668538e-01, 2.55344378e-02, 2.60801812e-02,
+                                            2.71392250e-02, 2.86075232e-02, 3.03048140e-02, 3.20152237e-02,
+                                            3.34897142e-02, 3.44198192e-02, 3.44663431e-02, 3.33326640e-02,
+                                            3.08266897e-02, 2.69016374e-02, 2.16812251e-02, 1.54802117e-02,
+                                            9.08448588e-03, 2.55344523e-02, 2.60802148e-02, 2.71392800e-02,
+                                            2.86075780e-02, 3.03048365e-02, 3.20152223e-02, 3.34897236e-02,
+                                            3.44198658e-02, 3.44664456e-02, 3.33328233e-02, 3.08268350e-02,
+                                            2.69017405e-02, 2.16813354e-02, 1.54803762e-02, 9.08480152e-03,
+                                            6.62571210e-17, 5.84147883e-16, 1.05090799e-15, 1.09055515e-15,
+                                            1.68211654e-15, 2.64490362e-15, 3.27207240e-15, 3.74732084e-15,
+                                            4.22264533e-15, 4.05347485e-15, 3.79628797e-15, 3.29544394e-15,
+                                            2.62388100e-15, 1.85539643e-15, 1.08013074e-15])
 
     diff_CL = np.abs(lift_coefficient  - lift_coefficient_true)
     print('CL difference')
     print(diff_CL)
 
-    diff_Cl   = np.abs(sectional_lift_coeff - sectional_lift_coeff_true)
+    diff_Cl_y   = max(np.abs(sectional_lift_coeff - sectional_lift_coeff_true))
     print('Cl difference')
-    print(diff_Cl)
+    print(diff_Cl_y)
     
-    assert np.abs(lift_coefficient  - lift_coefficient_true) < 1e-2
-    assert  np.max(np.abs(sectional_lift_coeff - sectional_lift_coeff_true)) < 1e-2
+    assert diff_CL/lift_coefficient < 1e-6
+    assert diff_Cl_y < 1e-6
 
     # plot results, vehicle, and vortex distribution
-    plot_mission(results)
-    plot_3d_vehicle_vlm_panelization(vehicle,
-                                     show_figure= False,
-                                     save_figure=False,
-                                     show_wing_control_points=True)
+    plot_mission(results) 
               
     return
  

@@ -178,9 +178,11 @@ def VLM(conditions,settings,geometry):
     settings.vortex_distribution.ZA2                      = VD.ZA2
     settings.vortex_distribution.ZB1                      = VD.ZB1
     settings.vortex_distribution.ZB2                      = VD.ZB2 
+    settings.vortex_distribution.X                        = VD.X
     settings.vortex_distribution.XC                       = VD.XC
     settings.vortex_distribution.YC                       = VD.YC
-    settings.vortex_distribution.ZC                       = VD.ZC   
+    settings.vortex_distribution.ZC                       = VD.ZC
+    settings.vortex_distribution.Y_SW                     = VD.Y_SW
      
     # unpack conditions--------------------------------------------------------------
     pwm      = settings.propeller_wake_model

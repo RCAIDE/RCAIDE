@@ -64,12 +64,11 @@ def compute_RHS_matrix(VD,delta,phi,conditions,settings,geometry,propeller_wake_
     """
 
     # unpack 
-    aoa              = conditions.aerodynamics.angles.alpha
-    aoa_distribution = aoa 
+    aoa              = conditions.aerodynamics.angles.alpha 
     PSI              = conditions.aerodynamics.angles.beta
     num_eval_pts     = len(VD.XC[0])
     PSI_distribution = np.repeat(PSI,num_eval_pts, axis = 1) 
-    V_distribution   =  np.ones_like(aoa_distribution) * conditions.freestream.velocity
+    V_distribution   =  np.ones_like(aoa) * conditions.freestream.velocity
     num_ctrl_pts     = len(aoa)  
 
     rot_V_wake_ind   = np.zeros((num_ctrl_pts,num_eval_pts,3))
@@ -93,12 +92,12 @@ def compute_RHS_matrix(VD,delta,phi,conditions,settings,geometry,propeller_wake_
             Vy_ind_total = Vy_ind_total  + rot_V_wake_ind[:,:,1]
             Vz_ind_total = Vz_ind_total  + rot_V_wake_ind[:,:,2]
 
-            rhs = build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distribution,
+            rhs = build_RHS(VD, conditions, settings, aoa, delta, phi, PSI_distribution,
                             Vx_ind_total, Vy_ind_total, Vz_ind_total, V_distribution, dt)           
             
             return  rhs
 
-    rhs = build_RHS(VD, conditions, settings, aoa_distribution, delta, phi, PSI_distribution,
+    rhs = build_RHS(VD, conditions, settings, aoa, delta, phi, PSI_distribution,
                     Vx_ind_total, Vy_ind_total, Vz_ind_total, V_distribution, dt)
     
     return rhs 

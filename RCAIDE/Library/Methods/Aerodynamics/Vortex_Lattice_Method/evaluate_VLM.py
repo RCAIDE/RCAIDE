@@ -427,7 +427,8 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
         conditions.static_stability.coefficients.M     = CM  
         conditions.static_stability.coefficients.N     = CN      
         
-
+    n_cpts =  len(state.conditions.aerodynamics.coefficients.drag.total)
+    
     # --------------------------------------------------------------------------------------------      
     # Unpack Pertubations 
     # --------------------------------------------------------------------------------------------   
@@ -442,23 +443,21 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     atmosphere                                                         = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data                                                          = atmosphere.compute_values(altitude = conditions.freestream.altitude)  
     equilibrium_conditions                                             = RCAIDE.Framework.Mission.Common.Results()
+    equilibrium_conditions.expand_rows(n_cpts,override=False)
     equilibrium_conditions.energy                                      = deepcopy(conditions.energy)
-    equilibrium_conditions.freestream.density[:,0]                     = atmo_data.density[0,0]
-    equilibrium_conditions.freestream.gravity[:,0]                     = conditions.freestream.gravity[0,0]
-    equilibrium_conditions.freestream.speed_of_sound[:,0]              = atmo_data.speed_of_sound[0,0] 
-    equilibrium_conditions.freestream.dynamic_viscosity[:,0]           = atmo_data.dynamic_viscosity[0,0]
+    equilibrium_conditions.freestream.density[:,0]                     = atmo_data.density[:,0]
+    equilibrium_conditions.freestream.gravity[:,0]                     = conditions.freestream.gravity[:,0]
+    equilibrium_conditions.freestream.speed_of_sound[:,0]              = atmo_data.speed_of_sound[:,0]
+    equilibrium_conditions.freestream.dynamic_viscosity[:,0]           = atmo_data.dynamic_viscosity[:,0]
     equilibrium_conditions.aerodynamics.angles.alpha[:,0]              = 1E-12
-    equilibrium_conditions.freestream.temperature[:,0]                 = atmo_data.temperature[0,0] 
-    equilibrium_conditions.freestream.velocity[:,0]                    = conditions.freestream.velocity[0,0]             
-    equilibrium_conditions.frames.inertial.velocity_vector[:,0]        = conditions.frames.inertial.velocity_vector[0,0] 
+    equilibrium_conditions.freestream.temperature[:,0]                 = atmo_data.temperature[:,0]
+    equilibrium_conditions.freestream.velocity[:,0]                    = conditions.freestream.velocity[:,0]          
+    equilibrium_conditions.frames.inertial.velocity_vector[:,0]        = conditions.frames.inertial.velocity_vector[:,0]
     equilibrium_conditions.freestream.mach_number                      = equilibrium_conditions.freestream.velocity/equilibrium_conditions.freestream.speed_of_sound
     equilibrium_conditions.freestream.dynamic_pressure                 = 0.5 * equilibrium_conditions.freestream.density *  (equilibrium_conditions.freestream.velocity ** 2)
     equilibrium_conditions.freestream.reynolds_number                  = equilibrium_conditions.freestream.density * equilibrium_conditions.freestream.velocity * wing.chords.mean_aerodynamic/ equilibrium_conditions.freestream.dynamic_viscosity  
     
-    VLM_results = VLM(equilibrium_conditions,settings,vehicle)
-    Clift_i0 = VLM_results.CLift
-    Cdrag_i0 = VLM_results.CDrag_induced
-    CX_0     = VLM_results.CX
+    VLM_results = VLM(equilibrium_conditions,settings,vehicle) 
     CY_0     = VLM_results.CY
     CZ_0     = VLM_results.CZ
     CL_0     = VLM_results.CL

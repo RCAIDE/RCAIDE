@@ -138,10 +138,14 @@ def compute_wake_induced_velocity(rotor, rotor_conditions, evaluation_points, ct
     # extract radial and azimuthal velocities at blade
     va = rotor_conditions.blade_axial_induced_velocity[0]
     vt = rotor_conditions.blade_tangential_induced_velocity[0]
-
+    
+    if rotor.clockwise_rotation:
+        rotation = 1
+    else:
+        rotation =  -1
 
     va_y_range  = np.append(np.flipud(va), va)
-    vt_y_range  = np.append(np.flipud(vt), vt)*rotor.rotation
+    vt_y_range  = np.append(np.flipud(vt), vt)*rotation
     va_interp   = interp1d(rotor_y_range, va_y_range)
     vt_interp   = interp1d(rotor_y_range, vt_y_range)
     
