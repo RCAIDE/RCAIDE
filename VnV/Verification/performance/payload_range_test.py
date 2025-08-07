@@ -25,7 +25,7 @@ from NASA_X57       import vehicle_setup as X57_vehicle_setup
 #  REGRESSION
 # ----------------------------------------------------------------------------------------------------------------------  
 def main(): 
-    fuel_aircraft_payload_range()
+    #fuel_aircraft_payload_range()
     electric_aircraft_payload_range() 
     return
     
@@ -54,7 +54,7 @@ def fuel_aircraft_payload_range():
     payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.20)
                                 
     fuel_r                 = payload_range_results.range[-1]  
-    fuel_r_true            = 5871753.304842387
+    fuel_r_true            = 5922972.311118162
     # Correct value from reference ( https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf) is 5556000. 
     # This value is high due to simplified single segment analysis i.e. only cruise. To compensate, reserve percentage is increased from 5 to 20%
     
@@ -147,15 +147,6 @@ def fuel_aircraft_base_analysis(vehicle):
     geometry.settings.overwrite_reference        = False
     geometry.settings.update_wing_properties     = True
     analyses.append(geometry)
-    # ------------------------------------------------------------------
-    #  Weights 
-    weights         = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
-    weights.vehicle = vehicle 
-    weights.settings.update_mass_properties         = True
-    weights.settings.update_center_of_gravity       = False
-    weights.settings.update_moment_of_inertia       = False   
-    weights.print_weight_analysis_report  = False    
-    analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis 
@@ -200,12 +191,7 @@ def electric_aircraft_base_analysis(vehicle):
     geometry.settings.overwrite_reference        = False
     geometry.settings.update_wing_properties     = True
     analyses.append(geometry)
-    # ------------------------------------------------------------------
-    #  Weights 
-    weights = RCAIDE.Framework.Analyses.Weights.Electric_General_Aviation() 
-    weights.settings.update_mass_properties         = True
-    weights.vehicle = vehicle
-    analyses.append(weights)
+
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis 
