@@ -111,12 +111,9 @@ def compute_systems_weight(vehicle):
     NPF  = vehicle.first_class_passengers      
     NPB  = vehicle.business_class_passengers   
     NPT  = vehicle.economy_class_passengers  
-    
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
-            if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or\
-               isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet) or \
-               isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop): 
+            if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet):
                 NENG += 1
             if propulsor.wing_mounted:
                 FNEW += 1
@@ -144,11 +141,11 @@ def compute_systems_weight(vehicle):
                 ref_wing = wing
                 
     DG    = vehicle.mass_properties.max_takeoff / Units.lbs
-    WSC   = 1.1 * VMAX ** 0.52 * SFLAP ** 0.6 * DG ** 0.32  # surface controls weight 
-    XL    = 0
-    WF    = 0 
-    NFUSE = 0
+    WSC   = 1.1 * VMAX ** 0.52 * SFLAP ** 0.6 * DG ** 0.32  # surface controls weight
     
+    XL = 0
+    WF = 0
+    NFUSE = 0
     for wing in  vehicle.wings:
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
             XL    = wing.chords.root / Units.ft
@@ -194,5 +191,5 @@ def compute_systems_weight(vehicle):
     output.W_ac                = WAC * Units.lbs
     output.W_furnish           = WFURN * Units.lbs
     output.W_anti_ice          = WAI * Units.lbs
-    output.W_systems           = WSC + WAPU + WIN + WHYD + WELEC + WAVONC + WFURN + WAC + WAI
+    output.W_systems           = (WSC + WAPU + WIN + WHYD + WELEC + WAVONC + WFURN + WAC + WAI)* Units.lbs
     return output
