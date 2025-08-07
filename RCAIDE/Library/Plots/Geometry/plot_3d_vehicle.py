@@ -343,12 +343,12 @@ def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,na
         - Rotors (using plot_3d_rotor)
         - Propellers (using plot_3d_rotor)
     """ 
-    show_axis     = False 
-    save_figure   = False 
-    show_figure   = False
-    save_filename = 'propulsor'
+    show_axis                = False 
+    save_figure              = False 
+    show_figure              = False
+    save_filename            = 'propulsor'
 
-    for propulsor in network.propulsors:   
+    for propulsor in network.propulsors:  
         number_of_airfoil_points = 21
         tessellation             = 24
         if 'nacelle' in propulsor: 
@@ -382,5 +382,9 @@ def plot_fuel_tanks(vehicle, distributor,plot_data,tessellation):
                 plot_3d_integral_fuselage_tank(plot_data, fuselage, fuel_tank, tessellation, color_map = 'oranges') 
             elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
                 plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
+        else:
+            if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
+                 plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
+
     return 
         
