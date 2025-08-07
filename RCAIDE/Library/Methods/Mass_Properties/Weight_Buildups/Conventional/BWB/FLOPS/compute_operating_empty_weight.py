@@ -95,14 +95,6 @@ def compute_operating_empty_weight(vehicle,settings=None):
     RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLOPS.compute_aft_center_body_weight
     RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common
     """
-    
-    
-
-    if settings == None:
-        W_factors = Data()
-        use_max_fuel_weight = True
-    else:
-        use_max_fuel_weight = settings.use_max_fuel_weight
 
     # Set the factors
     if not hasattr(settings, 'weight_reduction_factors'):
@@ -337,16 +329,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
     output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total 
     output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
     output.max_takeoff          = vehicle.mass_properties.max_takeoff
-    total_fuel_weight           = vehicle.mass_properties.max_takeoff - output.zero_fuel_weight
-
-    # assume fuel is equally distributed in fuel tanks
-    if use_max_fuel_weight:
-        for network in vehicle.networks: 
-            for fuel_line in network.fuel_lines:  
-                for fuel_tank in fuel_line.fuel_tanks:
-                    fuel_weight =  total_fuel_weight/number_of_tanks  
-                    fuel_tank.fuel.mass_properties.mass = fuel_weight
-                    
+    
     nose_landing_gear = False
     main_landing_gear = False
     for LG in vehicle.landing_gears:

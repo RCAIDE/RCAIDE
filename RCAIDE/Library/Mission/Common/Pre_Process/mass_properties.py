@@ -177,6 +177,8 @@ def mass_properties(mission):
  
             if segment.analyses.aerodynamics != None:   
                 segment.analyses.aerodynamics.vehicle =  deepcopy(weights_analysis.vehicle) 
+        else:
+            segment.analyses.weights    = segment.analyses.geometry
     return 
 
 def apply_correction_factors(weights_analysis):
