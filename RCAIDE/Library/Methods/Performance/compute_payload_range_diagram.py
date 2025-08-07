@@ -114,6 +114,36 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
             payload_range  =  conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_reserve_percentage,plot_diagram,fuel_name) 
         else:
             payload_range  =  electric_payload_range_diagram(vehicle,mission,cruise_segment_tag,plot_diagram)
+
+    # Extract values
+    reserve_pct = payload_range.pop('fuel_reserve_percentage')
+    keys = list(payload_range.keys())
+    values = [payload_range[key] for key in keys]
+
+    # Header
+    print(f"{'Parameter':<20} {'Point 1':>12} {'Point 2':>12} {'Point 3':>12} {'Point 4':>12}")
+    print("-" * 70)
+
+    # Rows
+    for key, val in zip(keys, values):
+        if key == 'range':
+            row = f"{'Range [nmi]':<20}"
+            val = [v / Units.nmi for v in val] 
+        elif key == 'payload':
+            row = f"{'Payload [kg]':<20}"
+        elif key == 'oew_plus_payload':
+            row = f"{'OEW + Payload [kg]':<20}"
+        elif key == 'fuel':
+            row = f"{'Fuel [kg]':<20}"
+        elif key == 'takeoff_weight':
+            row = f"{'TO Weight [kg]':<20}"
+        else:
+            row = f"{key:<20}"
+        row += "".join([f"{v:12.2f}" for v in val])
+        print(row)
+
+    # Footer
+    print("\nFuel Reserve Percentage:", f"{reserve_pct * 100:.0f}%")
     return payload_range 
              
 def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_reserve_percentage,plot_diagram, fuel_name): 

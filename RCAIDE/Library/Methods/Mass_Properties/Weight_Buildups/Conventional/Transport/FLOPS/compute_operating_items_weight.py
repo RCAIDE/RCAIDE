@@ -116,6 +116,5 @@ def compute_operating_items_weight(vehicle):
     output.flight_crew               = WFLCRB * Units.lbs
     output.flight_attendants         = WFLAAB * Units.lbs
     output.passenger_service         = WSRV   * Units.lbs
-    output.W_systems                     = output.misc + output.flight_crew + \
-                                       output.flight_attendants + output.passenger_service 
+    output.total                     = output.misc + output.flight_crew + output.flight_attendants + output.passenger_service 
     return output
