@@ -15,23 +15,118 @@ import numpy as np
 #  Miscellaneous Drag Total
 # ----------------------------------------------------------------------------------------------------------------------   
 def miscellaneous_drag(state,settings,geometry):
-    """Computes the miscellaneous drag associated with an aircraft
+    """
+    Computes the miscellaneous drag coefficient associated with aircraft components and configurations.
 
-    Assumptions:
-    Basic fit
+    Parameters
+    ----------
+    state : Data
+        Flight conditions containing:
+            - conditions.freestream.mach_number : float
+                Freestream Mach number [unitless]
+    settings : dict
+        Aerodynamic analysis settings and parameters
+    geometry : Data
+        Aircraft geometry containing:
+            - reference_area : float
+                Reference area for drag coefficient calculation [m²]
+            - landing_gears : list
+                List of landing gear objects containing:
+                    - gear_extended : bool
+                        Flag indicating if landing gear is deployed
+                    - fairing : bool
+                        Flag indicating if landing gear has fairings
+                    - wheels : int
+                        Number of wheels on the landing gear
+                    - tire_diameter : float
+                        Diameter of landing gear tires [m]
+                    - tire_width : float
+                        Width of landing gear tires [m]
+            - wings : list
+                List of wing objects containing:
+                    - areas.wetted : float
+                        Wetted area of the wing [m²]
+            - fuselages : list
+                List of fuselage objects containing:
+                    - areas.wetted : float
+                        Wetted area of the fuselage [m²]
+            - booms : list
+                List of boom objects containing:
+                    - areas.wetted : float
+                        Wetted area of the boom [m²]
+            - networks : list
+                List of propulsion networks containing propulsors
+                    - propulsors : list
+                        List of propulsor objects with nacelle attributes
+                            - nacelle : Nacelle, optional
+                                Nacelle object containing:
+                                    - areas.wetted : float
+                                        Wetted area of the nacelle [m²]
+                                    - diameter : float
+                                        Diameter of the nacelle [m]
 
-    Source:
-    http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html (Stanford AA241 A/B Course Notes)
+    Returns
+    -------
+    None
+        Results are stored in state.conditions.aerodynamics.coefficients.drag.miscellaneous.total
 
-    Args:
-    configuration.trim_drag_correction_factor  [Unitless]
-    geometry.nacelle.diameter                  [m]
-    geometry.reference_area                    [m^2]
-    geometry.wings['main_wing'].aspect_ratio   [Unitless]
-    state.conditions.freestream.mach_number    [Unitless] (actual values are not used)
+    Notes
+    -----
+    This function calculates the miscellaneous drag coefficient including landing gear drag,
+    subsonic miscellaneous drag based on wetted area, and supersonic nacelle base drag and
+    fuselage upsweep drag. The calculation method varies between subsonic and supersonic
+    flight regimes.
+    
+    **Major Assumptions**
+        * Landing gear drag is proportional to tire frontal area
+        * Subsonic miscellaneous drag correlates with total wetted area
+        * Supersonic drag includes nacelle base drag and fuselage upsweep effects
+        * Landing gear fairings reduce drag by approximately 50%
+        * Basic empirical correlations are valid for typical transport aircraft
+    
+    **Theory**
 
-    Returns:
-    total_miscellaneous_drag                   [Unitless] 
+    Landing Gear Drag:
+    The landing gear drag coefficient is calculated as:
+
+    :math:`C_{D,LG} = \\sum_{i=1}^{n} N_{wheels,i} \\cdot C_{D,i} \\cdot \\frac{D_i \\cdot W_i}{S_{ref}}`
+
+    where:
+        - :math:`N_{wheels,i}` is the number of wheels on landing gear :math:`i`
+        - :math:`C_{D,i}` is 0.15 for faired landing gear or 0.30 for unfaired
+        - :math:`D_i` and :math:`W_i` are the tire diameter and width [m]
+        - :math:`S_{ref}` is the reference area [m²]
+
+    Subsonic Miscellaneous Drag:
+    For Mach ≤ 1.0, the miscellaneous drag is:
+
+    :math:`C_{D,misc} = \\frac{0.40(0.0184 + 0.000469 S_{wet} - 1.13 \\times 10^{-7} S_{wet}^2)}{S_{ref}}`
+
+    where :math:`S_{wet}` is the total wetted area [m²].
+
+    Supersonic Miscellaneous Drag:
+    For Mach > 1.0, the drag includes nacelle base drag and fuselage upsweep:
+
+    :math:`C_{D,nacelle} = \\sum_{i=1}^{n} \\frac{0.5}{12} \\pi D_i \\cdot 0.2 / S_{ref}`
+
+    :math:`C_{D,upsweep} = \\frac{0.006}{S_{ref}}`
+
+    :math:`C_{D,misc} = C_{D,nacelle} + C_{D,upsweep}`
+    
+    **Definitions**
+
+    'Miscellaneous Drag'
+        Drag component not accounted for by other drag categories, including landing gear, nacelle base, and fuselage upsweep effects.
+    
+    'Landing Gear Drag'
+        Additional drag caused by deployed landing gear, proportional to tire frontal area.
+    
+    'Nacelle Base Drag'
+        Drag caused by the base area of nacelles in supersonic flow.
+
+    References
+    ----------
+    [1] Stanford AA241 Course Notes. http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html
     """ 
 
     conditions     = state.conditions  
