@@ -16,9 +16,79 @@ import numpy as np
 #  mass_properties
 # ----------------------------------------------------------------------------------------------------------------------  
 def mass_properties(mission):
-    """ This is  a  work in progress Documentation will be added before it is pushed to Master
-    To get simulation either you define a mtow, or degine nothing and i iwll assume MTOW, If I compute OEW I need payload and fuel on board to 
-    get the take off weight. 
+    """Calculate and update mass properties for all mission segments.
+    
+    Performs weight analysis, center of gravity computation, and moment of inertia 
+    calculations for each mission segment. Handles multiple analysis scenarios including
+    user-defined weights, MTOW-based calculations, and iterative weight convergence.
+    
+    Parameters
+    ----------
+    mission : RCAIDE.Framework.Mission
+        Mission object containing segments with weight analysis requirements.
+        
+    Raises
+    ------
+    AttributeError
+        If max_takeoff weight is not defined.
+    AssertionError
+        If payload exceeds max_payload or fuel exceeds max_fuel.
+        
+    Notes
+    -----
+    The function operates in three main modes:
+    
+    1. **Pre-defined weights**: Uses existing takeoff weight if provided
+    2. **Simple MTOW**: Falls back to MTOW if aircraft_type undefined
+    3. **Full analysis**: Performs complete weight buildup with iterations
+    
+    Algorithm Flow
+    ~~~~~~~~~~~~~~
+    
+    .. code-block:: text
+    
+        For each segment:
+        ├── Check if weights analysis exists
+        ├── Validate MTOW defined (required)
+        ├── If takeoff weight defined → Skip analysis
+        ├── Else if aircraft_type undefined → Use MTOW
+        ├── Else if no payload/fuel → Use MTOW  
+        ├── Else → Perform weight analysis:
+        │   ├── Check payload/fuel limits
+        │   ├── If max_fuel/max_zero_fuel undefined:
+        │   │   └── Iterate to convergence (max 100 iterations)
+        │   │       ├── Initial guess from regression
+        │   │       ├── Evaluate weights
+        │   │       ├── Apply corrections
+        │   │       └── Check convergence (<10 kg residual)
+        │   └── Else: Single evaluation
+        ├── Update CG if requested
+        ├── Update MOI if requested
+        └── Copy vehicle to aerodynamics
+    
+    Weight Equations
+    ~~~~~~~~~~~~~~~~
+    
+    .. math::
+    
+        W_{takeoff} = W_{OEW} + W_{payload} + W_{fuel}
+        
+        W_{OEW} = W_{empty} + W_{operational}
+        
+        W_{max\\_zero\\_fuel} = W_{OEW} + W_{max\\_payload}
+        
+        W_{max\\_fuel} = W_{MTOW} - W_{OEW} - W_{min\\_payload}
+    
+    Initial Regression Estimates
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    When max_fuel or max_zero_fuel undefined:
+    
+    .. math::
+    
+        W_{max\\_fuel}^{(0)} = 0.477 \\cdot W_{MTOW} - 13455
+        
+        W_{max\\_zero\\_fuel}^{(0)} = 0.6269 \\cdot W_{MTOW} + 20505
     """
  
     for i ,  segment in enumerate(mission.segments):
