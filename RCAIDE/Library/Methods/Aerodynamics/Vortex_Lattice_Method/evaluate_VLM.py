@@ -20,7 +20,7 @@ from copy      import  deepcopy
 #  Vortex_Lattice
 # ---------------------------------------------------------------------------------------------------------------------- 
 def evaluate_surrogate(state,settings,vehicle):
-    """Evaluates surrogates forces and moments using built surrogates 
+    """Evaluates forces and moments using built surrogates 
     
     Assumptions:
         - Drag due to angle of attack is the dominant drag component and the only one calculated
@@ -30,7 +30,7 @@ def evaluate_surrogate(state,settings,vehicle):
         None
 
     Args:
-        aerodynamics : VLM analysis  [unitless]
+        aerodynamics : VLM analysis          [unitless]
         state        : flight conditions     [unitless]
         settings     : VLM analysis settings [unitless]
         vehicle      : vehicle configuration [unitless] 
@@ -38,16 +38,15 @@ def evaluate_surrogate(state,settings,vehicle):
     Returns: 
         None  
     """          
-    conditions    = state.conditions
-    aerodynamics  = state.analyses.aerodynamics  
-    sub_sur       = aerodynamics.surrogates.subsonic
-    sup_sur       = aerodynamics.surrogates.supersonic
-    trans_sur     = aerodynamics.surrogates.transonic  
-    AoA           = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
-    Beta          = np.atleast_2d(conditions.aerodynamics.angles.beta)    
-    Mach          = np.atleast_2d(conditions.freestream.mach_number)  
-    ones_row      = np.ones_like(AoA) 
-  
+    conditions       = state.conditions
+    aerodynamics     = state.analyses.aerodynamics  
+    sub_sur          = aerodynamics.surrogates.subsonic
+    sup_sur          = aerodynamics.surrogates.supersonic
+    trans_sur        = aerodynamics.surrogates.transonic  
+    AoA              = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
+    Beta             = np.atleast_2d(conditions.aerodynamics.angles.beta)    
+    Mach             = np.atleast_2d(conditions.freestream.mach_number)  
+    ones_row         = np.ones_like(AoA)  
     hsub_min         = aerodynamics.hsub_min
     hsub_max         = aerodynamics.hsub_max
     hsup_min         = aerodynamics.hsup_min
@@ -57,7 +56,7 @@ def evaluate_surrogate(state,settings,vehicle):
     sub_trans_spline = Cubic_Spline_Blender(hsub_min,hsub_max)
     h_sub            = lambda M:sub_trans_spline.compute(M)          
     sup_trans_spline = Cubic_Spline_Blender(hsup_max, hsup_min) 
-    h_sup            = lambda M:sup_trans_spline.compute(M)
+    h_sup            = lambda M:sup_trans_spline.compute(M)            
     
     #Alpha 
     pts_alpha   = np.hstack((AoA,Mach))
@@ -94,9 +93,9 @@ def evaluate_surrogate(state,settings,vehicle):
         conditions.static_stability.derivatives.CM_alpha    = aerodynamics.stability_derivatives.CM_alpha * ones_row
     
     if aerodynamics.stability_derivatives.M_0 == None:
-        conditions.static_stability.derivatives.CM_0        = compute_stability_derivative(sub_sur.CM_0    ,trans_sur.CM_0    ,sup_sur.CM_0    ,h_sub,h_sup,Mach)
+        conditions.static_stability.coefficients.M_0        = compute_stability_derivative(sub_sur.CM_0    ,trans_sur.CM_0    ,sup_sur.CM_0    ,h_sub,h_sup,Mach)
     else:
-        conditions.static_stability.derivatives.CM_0        = aerodynamics.stability_derivatives.CM_0 * ones_row
+        conditions.static_stability.coefficients.M_0        = aerodynamics.stability_derivatives.CM_0 * ones_row
             
     if aerodynamics.stability_derivatives.CY_beta == None:
         conditions.static_stability.derivatives.CY_beta     = compute_stability_derivative(sub_sur.dCY_dbeta     ,trans_sur.dCY_dbeta     ,sup_sur.dCY_dbeta     ,h_sub,h_sup,Mach)
@@ -170,7 +169,7 @@ def evaluate_surrogate(state,settings,vehicle):
      
     conditions.static_stability.coefficients.Y      = conditions.static_stability.derivatives.CY_beta * Beta
     conditions.static_stability.coefficients.L      = conditions.static_stability.derivatives.CL_beta * Beta 
-    conditions.static_stability.coefficients.M      = conditions.static_stability.derivatives.CM_0 + conditions.static_stability.derivatives.CM_alpha * AoA 
+    conditions.static_stability.coefficients.M      = conditions.static_stability.coefficients.M_0 + conditions.static_stability.derivatives.CM_alpha * AoA 
     conditions.static_stability.coefficients.N      = conditions.static_stability.derivatives.CN_beta * Beta
  
     # -----------------------------------------------------------------------------------------------------------------------
@@ -255,14 +254,8 @@ def evaluate_surrogate(state,settings,vehicle):
         conditions.static_stability.coefficients.M                                   += conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection  
         conditions.control_surfaces.flap.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection      
     
-    # -----------------------------------------------------------------------------------------------------------------------      
-    # Static margin and neutral point 
-    # -----------------------------------------------------------------------------------------------------------------------  
-    conditions.static_stability.neutral_point[:,0]   = aerodynamics.surrogates.subsonic.neutral_point 
-    conditions.static_stability.static_margin[:,0]   = aerodynamics.surrogates.subsonic.static_margin
-        
     # -----------------------------------------------------------------------------------------------------------------------
-    # Pack Aero and Stability Results 
+    # Pack Aero Results 
     # -----------------------------------------------------------------------------------------------------------------------   
     conditions.aerodynamics.coefficients.lift.inviscid.total    = Clift_alpha
     conditions.aerodynamics.coefficients.drag.induced.inviscid  = Cdrag_induced_alpha
@@ -290,118 +283,68 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     # unpack 
     conditions    = state.conditions 
     aerodynamics  = state.analyses.aerodynamics
-    vehicle       = aerodynamics.vehicle  
-
-    # unpack geometry----------------------------------------------------------------
-    S_ref      = vehicle.reference_area              
+    vehicle       = aerodynamics.vehicle   
+    n_cpts        = len(conditions.aerodynamics.angles.alpha)
+     
+    
+    VLM_results = VLM(conditions,settings,vehicle)
+    Clift = VLM_results.CLift
+    Cdrag = VLM_results.CDrag_induced
+    CX    = VLM_results.CX
+    CY    = VLM_results.CY
+    CZ    = VLM_results.CZ
+    CL    = VLM_results.CL
+    CM    = VLM_results.CM
+    CN    = VLM_results.CN
  
-    if 'main_wing' in vehicle.wings:
-        c_bar  = vehicle.wings['main_wing'].chords.mean_aerodynamic
-        x_mac  = vehicle.wings['main_wing'].aerodynamic_center[0] + vehicle.wings['main_wing'].origin[0][0]
-        z_mac  = vehicle.wings['main_wing'].aerodynamic_center[2] + vehicle.wings['main_wing'].origin[0][2]
-        b_ref  = vehicle.wings['main_wing'].spans.projected
-    else:
-        c_bar  = 0.
-        x_mac  = 0.
-        b_ref  = 0.
-        for wing in vehicle.wings:
-            if wing.vertical == False:
-                if c_bar <= wing.chords.mean_aerodynamic:
-                    c_bar  = wing.chords.mean_aerodynamic
-                    x_mac  = wing.aerodynamic_center[0] + wing.origin[0][0]
-                    z_mac  = wing.aerodynamic_center[2] + wing.origin[0][2]
-                    b_ref  = wing.spans.projected
+    conditions.aerodynamics.coefficients.lift.inviscid.wings          = VLM_results.CLift_wings 
+    conditions.aerodynamics.coefficients.lift.inviscid.total          = Clift
+    conditions.aerodynamics.coefficients.lift.inviscid.spanwise       = VLM_results.sectional_CLift
+    conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
+    conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
+    conditions.aerodynamics.coefficients.drag.induced.inviscid        = Cdrag
+    conditions.aerodynamics.coefficients.surface_pressure             = VLM_results.CP
+    conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced    
+    conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations
 
-    x_cg       = vehicle.mass_properties.center_of_gravity[0][0]
-    z_cg       = vehicle.mass_properties.center_of_gravity[0][2]
-    if x_cg == 0.0:
-        x_m = x_mac 
-        z_m = z_mac
-    else:
-        x_m = x_cg
-        z_m = z_cg 
-
-    vehicle.reference_values.S_ref = S_ref
-    vehicle.reference_values.c_ref = c_bar  
-    vehicle.reference_values.b_ref = b_ref
-    vehicle.reference_values.X_ref = x_m
-    vehicle.reference_values.Y_ref = 0
-    vehicle.reference_values.Z_ref = z_m 
+    # corrections 
+    RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(state,settings,vehicle)     
+    for wing in  vehicle.wings: 
+        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_wing(state,settings,wing)
+    for fuslage in vehicle.fuselages: 
+        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_fuselage(state,settings,fuslage)
+    for boom in vehicle.booms: 
+        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_fuselage(state,settings,boom)      
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_nacelle(state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_pylon(state,settings,vehicle) 
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_total(state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.induced_drag(state,settings,vehicle) 
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(state,settings,vehicle)     
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(state,settings,vehicle)  
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.wave_drag(state,settings,vehicle) 
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(state,settings,vehicle)
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(state,settings,vehicle)
     
-    for wing in vehicle.wings: 
-        for control_surface in wing.control_surfaces:  
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                settings.aileron_flag  = True                  
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:   
-                settings.elevator_flag = True  
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:   
-                settings.rudder_flag   = True  
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                settings.slat_flag     = True   
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap: 
-                settings.flap_flag     = True     
-    
-        VLM_results = VLM(conditions,settings,vehicle)
-        Clift = VLM_results.CLift
-        Cdrag = VLM_results.CDrag_induced
-        CX    = VLM_results.CX
-        CY    = VLM_results.CY
-        CZ    = VLM_results.CZ
-        CL    = VLM_results.CL
-        CM    = VLM_results.CM
-        CN    = VLM_results.CN
 
-        # Dimensionalize the lift and drag for each wing  
-        conditions.aerodynamics.coefficients.lift.inviscid.wings          = VLM_results.CLift_wings 
-        conditions.aerodynamics.coefficients.lift.inviscid.total          = Clift
-        conditions.aerodynamics.coefficients.lift.inviscid.spanwise       = VLM_results.sectional_CLift
-        conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
-        conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
-        conditions.aerodynamics.coefficients.drag.induced.inviscid        = Cdrag
-        conditions.aerodynamics.coefficients.surface_pressure             = VLM_results.CP
-        conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced    
-        conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations
+    T_wind2inertial = conditions.frames.wind.transform_to_inertial 
+    Cdrag_visc      = state.conditions.aerodynamics.coefficients.drag.total
+    CX_visc         = orientation_product(T_wind2inertial,Cdrag_visc)[:,0][:,None]   
 
-        # corrections 
-        RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(state,settings,vehicle)     
-        for wing in  vehicle.wings: 
-            RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_wing(state,settings,wing)
-        for fuslage in vehicle.fuselages: 
-            RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_fuselage(state,settings,fuslage)
-        for boom in vehicle.booms: 
-            RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_fuselage(state,settings,boom)      
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_nacelle(state,settings,vehicle)
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_pylon(state,settings,vehicle) 
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_total(state,settings,vehicle)
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.induced_drag(state,settings,vehicle) 
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(state,settings,vehicle)     
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(state,settings,vehicle)
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(state,settings,vehicle)
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(state,settings,vehicle)  
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.wave_drag(state,settings,vehicle) 
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(state,settings,vehicle)
-        RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(state,settings,vehicle)
-        
+    no_beta   = np.all(conditions.aerodynamics.angles.beta == 0)
+    no_ail    = np.all(conditions.control_surfaces.aileron.deflection == 0) 
+    no_rud    = np.all(conditions.control_surfaces.rudder.deflection == 0) 
+    no_bank   = np.all(conditions.aerodynamics.angles.phi == 0)  
 
-        T_wind2inertial = conditions.frames.wind.transform_to_inertial 
-        Cdrag_visc      = state.conditions.aerodynamics.coefficients.drag.total
-        CX_visc         = orientation_product(T_wind2inertial,Cdrag_visc)[:,0][:,None]   
-
-        no_beta   = np.all(conditions.aerodynamics.angles.beta == 0)
-        no_ail    = np.all(conditions.control_surfaces.aileron.deflection == 0) 
-        no_rud    = np.all(conditions.control_surfaces.rudder.deflection == 0) 
-        no_bank   = np.all(conditions.aerodynamics.angles.phi == 0)  
-
-        if no_beta and no_ail and no_rud and no_bank:
-            CY = CY * 0 
-        conditions.static_stability.coefficients.X     = CX 
-        conditions.static_stability.coefficients.Y     = CY 
-        conditions.static_stability.coefficients.Z     = CZ 
-        conditions.static_stability.coefficients.L     = CL 
-        conditions.static_stability.coefficients.M     = CM  
-        conditions.static_stability.coefficients.N     = CN      
-        
-    n_cpts =  len(state.conditions.aerodynamics.coefficients.drag.total)
+    if no_beta and no_ail and no_rud and no_bank:
+        CY = CY * 0 
+    conditions.static_stability.coefficients.X     = CX 
+    conditions.static_stability.coefficients.Y     = CY 
+    conditions.static_stability.coefficients.Z     = CZ 
+    conditions.static_stability.coefficients.L     = CL 
+    conditions.static_stability.coefficients.M     = CM  
+    conditions.static_stability.coefficients.N     = CN      
     
     # --------------------------------------------------------------------------------------------      
     # Unpack Pertubations 
@@ -438,6 +381,9 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
     CM_0     = VLM_results.CM
     CN_0     = VLM_results.CN
      
+    # store CM at 0 AoA
+    conditions.static_stability.coefficients.M_0 =  CM_0
+    
     # Dimensionalize the lift and drag for each wing   
     equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.wings          = VLM_results.CLift_wings 
     equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.total          = VLM_results.CLift

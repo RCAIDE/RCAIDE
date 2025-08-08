@@ -19,7 +19,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 #  Compute field length required for takeoff
 # ----------------------------------------------------------------------
-def estimate_take_off_field_length(vehicle,analyses,altitude = 0, delta_isa = 0, compute_2nd_seg_climb = False,overwrite_reference=True):
+def estimate_take_off_field_length(vehicle,analyses,altitude = 0, delta_isa = 0, compute_2nd_seg_climb = False):
     """
     Computes the takeoff field length and optionally the second segment climb gradient for a given vehicle configuration.
 
@@ -96,7 +96,7 @@ def estimate_take_off_field_length(vehicle,analyses,altitude = 0, delta_isa = 0,
         # Unpack
     # ============================================== 
     for wing in vehicle.wings: 
-        wing_planform(wing,overwrite_reference =  True) 
+        wing_planform(wing) 
         if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
             vehicle.reference_area = wing.areas.reference
 

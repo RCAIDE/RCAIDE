@@ -145,7 +145,6 @@ def fuel_aircraft_base_analysis(vehicle):
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.vehicle = vehicle
     geometry.settings.overwrite_reference        = False
-    geometry.settings.update_wing_properties     = True
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
@@ -189,7 +188,6 @@ def electric_aircraft_base_analysis(vehicle):
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.vehicle = vehicle
     geometry.settings.overwrite_reference        = False
-    geometry.settings.update_wing_properties     = True
     analyses.append(geometry)
 
 

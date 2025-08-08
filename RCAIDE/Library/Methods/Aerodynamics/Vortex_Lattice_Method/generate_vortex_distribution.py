@@ -21,9 +21,7 @@ import numpy as np
 # ----------------------------------------------------------------------
 #  Generate Vortex Distribution
 # ----------------------------------------------------------------------
-def generate_vortex_distribution(conditions,settings,geometry):
-
-
+def generate_vortex_distribution(conditions,settings,geometry): 
     precision      = settings.floating_point_precision    
     # ---------------------------------------------------------------------------------------
     # STEP 1: Define empty vectors for coordinates of panes, control points and bound vortices

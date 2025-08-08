@@ -114,13 +114,7 @@ def translate_results_to_conditions(cases,res,results):
         tag = 'case_' + mach_case + '_' + aoa_case
         case_res = results[tag]       
         
-        # stability file 
-        res.S_ref[i][0]                                                     = case_res.S_ref 
-        res.c_ref[i][0]                                                     = case_res.c_ref 
-        res.b_ref[i][0]                                                     = case_res.b_ref
-        res.X_ref[i][0]                                                     = case_res.X_ref 
-        res.Y_ref[i][0]                                                     = case_res.Y_ref 
-        res.Z_ref[i][0]                                                     = case_res.Z_ref       
+        # stability file       
         res.aerodynamics.angles.alpha[i][0]                                 = case_res.aerodynamics.AoA * Units.degree
         res.aerodynamics.angles.beta[i][0]                                  = case_res.aerodynamics.beta * Units.degree
         res.static_stability.coefficients.X[i][0]                           = case_res.aerodynamics.CX 

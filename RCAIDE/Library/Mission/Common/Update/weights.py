@@ -48,9 +48,11 @@ def weights(segment):
                     (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_AVL_Trimmed) or \
                     (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_No_Propulsion) or \
                     (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Throttle): 
-        # weight
-        W = m0*g
         
+        # --------------------------------------------------------------------------       
+        # update mass 
+        # --------------------------------------------------------------------------   
+        W = m0*g 
         conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]
         
     else: 
@@ -59,9 +61,12 @@ def weights(segment):
                 for fuel_line in network.fuel_lines:  
                     fuel_line_results   = conditions.energy.fuel_lines[fuel_line.tag]
                     for fuel_tank in fuel_line.fuel_tanks: 
-                        fuel_line_results.fuel_tanks[fuel_tank.tag].mass[:,0]  =  fuel_line_results.fuel_tanks[fuel_tank.tag].mass[0,0]  + np.dot(I, -fuel_line_results.fuel_tanks[fuel_tank.tag].mass_flow_rate[:,0])
-                
-        # calculate
+                        fuel_line_results.fuel_tanks[fuel_tank.tag].mass[:,0]  =  fuel_line_results.fuel_tanks[fuel_tank.tag].mass[0,0]  +\
+                            np.dot(I, -fuel_line_results.fuel_tanks[fuel_tank.tag].mass_flow_rate[:,0])
+        
+        # --------------------------------------------------------------------------       
+        # update mass 
+        # --------------------------------------------------------------------------   
         m = m0 + np.dot(I, -mdot)
     
         # weight
@@ -70,6 +75,12 @@ def weights(segment):
         # pack
         conditions.weights.total_mass[1:,0]                  = m[1:,0]  
         conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]
+        
+
+        # --------------------------------------------------------------------------       
+        # update mass 
+        # --------------------------------------------------------------------------   
+        # TO DO: conditions.weights.center_of_gravity     
 
     return
  

@@ -8,13 +8,15 @@
 # ----------------------------------------------------------------------
 
 # package imports 
-import numpy as np 
+import RCAIDE
 from RCAIDE.Framework.Core import Data 
 from .compute_wing_induced_velocity      import compute_wing_induced_velocity
 from .generate_vortex_distribution       import generate_vortex_distribution 
-from .compute_RHS_matrix                 import compute_RHS_matrix  
+from .compute_RHS_matrix                 import compute_RHS_matrix
+
 from scipy.integrate import trapezoid
 from copy import  deepcopy
+import numpy as np
 # ----------------------------------------------------------------------
 #  Vortex Lattice
 # ----------------------------------------------------------------------
@@ -121,43 +123,17 @@ def VLM(conditions,settings,geometry):
     Properties Used:
     N/A
     """
-    
-
-
-    # unpack geometry----------------------------------------------------------------
-    S_ref      = geometry.reference_area              
- 
-    if 'main_wing' in geometry.wings:
-        c_bar      = geometry.wings['main_wing'].chords.mean_aerodynamic
-        x_mac      = geometry.wings['main_wing'].aerodynamic_center[0] + geometry.wings['main_wing'].origin[0][0]
-        z_mac      = geometry.wings['main_wing'].aerodynamic_center[2] + geometry.wings['main_wing'].origin[0][2]
-        b_ref      = geometry.wings['main_wing'].spans.projected
-    else:
-        c_bar  = 0.
-        x_mac  = 0.
-        b_ref = 0.
-        for wing in geometry.wings:
-            if wing.vertical == False:
-                if c_bar <= wing.chords.mean_aerodynamic:
-                    c_bar  = wing.chords.mean_aerodynamic
-                    x_mac  = wing.aerodynamic_center[0] + wing.origin[0][0]
-                    z_mac  = wing.aerodynamic_center[2] + wing.origin[0][2]
-                    b_ref  = wing.spans.projected
-
-    x_cg       = geometry.mass_properties.center_of_gravity[0][0]
-    z_cg       = geometry.mass_properties.center_of_gravity[0][2]
-    if x_cg == 0.0:
-        x_m = x_mac 
-        z_m = z_mac
-    else:
-        x_m = x_cg
-        z_m = z_cg    
-    
+     
+    S_ref = geometry.reference_area
+    c_ref = geometry.reference_chord
+    b_ref = geometry.reference_span  
+    x_m   = geometry.mass_properties.center_of_gravity[0][0]
+    z_m   = geometry.mass_properties.center_of_gravity[0][2] 
 
     # ---------------------------------------------------------------------------------------
     # Generate Panelization and Vortex Distribution
     # ------------------ -------------------------------------------------------------------- 
-    VD     = generate_vortex_distribution(conditions,settings,geometry) 
+    VD                                                    = generate_vortex_distribution(conditions,settings,geometry) 
     settings.vortex_distribution.chord_lengths            = VD.chord_lengths[VD.leading_edge_indices].reshape(len(VD.n_sw),np.sum(VD.n_sw[0]))
     settings.vortex_distribution.n_sw                     = VD.n_sw 
     settings.vortex_distribution.n_cw                     = VD.n_cw 
@@ -474,19 +450,13 @@ def VLM(conditions,settings,geometry):
     CY_for   = np.atleast_2d(np.sum(FY,axis=1)/S_ref).T  
 
     # moment coefficients 
-    CM_mom   = np.atleast_2d(np.sum(MOMENT,axis=1)/S_ref).T/c_bar  
+    CM_mom   = np.atleast_2d(np.sum(MOMENT,axis=1)/S_ref).T/c_ref  
     CL_mom   = np.atleast_2d(np.sum(RM,axis=1)/S_ref).T    /b_ref*(-1)                             
     CN_mom   = np.atleast_2d(np.sum(YM,axis=1)/S_ref).T    /b_ref*(-1)                            
    
     # ---------------------------------------------------------------------------------------
     # STEP 13: Pack outputs
-    # ------------------ --------------------------------------------------------------------      
-    results.S_ref             = S_ref
-    results.b_ref             = b_ref
-    results.c_ref             = c_bar  
-    results.X_ref             = x_m
-    results.Y_ref             = 0
-    results.Z_ref             = z_m 
+    # ------------------ --------------------------------------------------------------------     
     results.CLift             = CLift  
     results.CX                = CX_for 
     results.CY                = CY_for  

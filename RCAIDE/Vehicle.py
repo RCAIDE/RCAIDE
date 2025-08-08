@@ -63,8 +63,9 @@ class Vehicle(Data):
         self.cargo_bays                                                    = Components.Cargo_Bays.Cargo_Bay.Container() 
         self.mass_properties                                               = Vehicle_Mass_Container()
         self.costs                                                         = Data()      
-        self.reference_area                                                = 0.0 
-        self.reference_values                                              = Data()
+        self.reference_area                                                = 0.0      
+        self.reference_span                                                = 0.0      
+        self.reference_chord                                               = 0.0  
         self.passengers                                                    = 0.0
         self.first_class_passengers                                        = 0.0
         self.business_class_passengers                                     = 0.0

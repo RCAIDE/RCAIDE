@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Wing Segmented Planform
 # ----------------------------------------------------------------------------------------------------------------------    
-def wing_planform(wing,overwrite_reference = True):
+def wing_planform(wing):
     """Computes standard wing planform values.
     
     Assumptions:
@@ -26,9 +26,7 @@ def wing_planform(wing,overwrite_reference = True):
     Source:
     None
     
-    Inputs:
-    overwrite_reference        <boolean> Determines if reference area, wetted area, and aspect
-                                         ratio are overwritten based on the segment values.
+    Inputs: 
     wing.
       chords.root              [m]
       spans.projected          [m]
@@ -214,14 +212,11 @@ def wing_planform(wing,overwrite_reference = True):
         wing.thickness_to_chord             = t_c
         wing.aerodynamic_center             = aerodynamic_center
         wing.single_side_aerodynamic_center = single_side_aerodynamic_center
-        wing.total_length                   = total_length 
-     
-        # Pack stuff
-        if overwrite_reference:
-            wing.aspect_ratio    = AR
+        wing.total_length                   = total_length  
+        wing.aspect_ratio                   = AR
             
         # update remainder segment properties
-        segment_properties(wing,update_wet_areas=overwrite_reference,update_ref_areas=overwrite_reference)
+        segment_properties(wing)
     else:
         
         # unpack
@@ -310,9 +305,9 @@ def wing_planform(wing,overwrite_reference = True):
                  
     return wing
 
-def bwb_wing_planform(wing,overwrite_reference = True):
+def bwb_wing_planform(wing):
 
-    wing_planform(wing,overwrite_reference) 
+    wing_planform(wing) 
 
     seg_keys = list(wing.segments.keys())  
     for tag, segment in enumerate(wing.segments): 
@@ -331,7 +326,7 @@ def bwb_wing_planform(wing,overwrite_reference = True):
 
     return 
  
-def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
+def segment_properties(wing):
     """Computes detailed segment properties. These are currently used for parasite drag calculations.
 
     Assumptions:
@@ -442,16 +437,14 @@ def segment_properties(wing,update_wet_areas=False,update_ref_areas=False):
                 center_body_area += center_body_Sref_seg
                 aft_center_body_area +=  aft_center_body_Sref_seg 
             else:
-                total_reference_area += Sref_seg  
-        
-    if wing.areas.reference==0. or update_ref_areas:
-        wing.areas.reference      = total_reference_area
-        if isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            wing.center_body.area     = center_body_area
-            wing.aft_center_body.area = aft_center_body_area
-        
-    if wing.areas.wetted==0. or update_wet_areas:
-        wing.areas.wetted    = total_wetted_area
+                total_reference_area += Sref_seg   
+  
+    wing.areas.reference   = total_reference_area
+    if isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body):
+        wing.center_body.area     = center_body_area
+        wing.aft_center_body.area = aft_center_body_area 
+
+    wing.areas.wetted    = total_wetted_area
         
     return wing
 

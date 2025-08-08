@@ -92,9 +92,7 @@ def base_analysis(vehicle):
 
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
-    geometry.settings.overwrite_reference        = True
-    geometry.settings.update_wing_properties     = True
+    geometry.vehicle = vehicle 
     analyses.append(geometry)
 
 
@@ -104,10 +102,10 @@ def base_analysis(vehicle):
     aerodynamics.vehicle                                = vehicle
     aerodynamics.settings.number_of_spanwise_vortices   = 30 
     analyses.append(aerodynamics) 
-      
-    stability                                           = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
-    stability.settings.model_fuselage                   = True
-    stability.settings.model_nacelle                    = True 
+
+    # ------------------------------------------------------------------
+    #  Stability Analysis      
+    stability                                           = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()   
     stability.vehicle                                   = vehicle
     analyses.append(stability)
 

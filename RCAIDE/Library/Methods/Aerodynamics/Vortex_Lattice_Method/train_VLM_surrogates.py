@@ -48,44 +48,6 @@ def train_VLM_surrogates(aerodynamics):
     else:
         training.supersonic  = None
         training.transonic   = None
-
-    # --------------------------------------------------------------------------------------------      
-    # compute neutral point
-    # --------------------------------------------------------------------------------------------      
-    # Equilibrium Condition      
-    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
-    conditions.freestream.mach_number               = np.array([[0.5]])
-    conditions.aerodynamics.angles.alpha            = np.array([[0.0]])
-
-    np_vehicle    = deepcopy(aerodynamics.vehicle)
-    CG            = np_vehicle.mass_properties.center_of_gravity[0][0]
-    np_settings   = deepcopy(aerodynamics.settings) 
-    VLM_results_0 = VLM(conditions,np_settings,np_vehicle) 
-    CM_0          = VLM_results_0.CM  
-
-    # Angle of Attack Perturbation      
-    delta_angle       = aerodynamics.training.angle_purtubation  
-    conditions.aerodynamics.angles.alpha   += delta_angle 
-    VLM_results_1     = VLM(conditions,np_settings,np_vehicle) 
-    CM_alpha_prime    = VLM_results_1.CM 
-    
-    # Center of Gravity Perturbation      
-    vehicle_shifted_CG = deepcopy(aerodynamics.vehicle)
-    delta_cg           = 0.1
-    vehicle_shifted_CG.mass_properties.center_of_gravity[0][0] +=delta_cg
-    VLM_results_2      = VLM(conditions,np_settings,vehicle_shifted_CG)  
-    CM_alpha_cg_prime  = VLM_results_2.CM  
-  
-    dCM_dalpha_cg = (CM_alpha_cg_prime   - CM_0) / (delta_angle)    
-    dCM_dalpha    = (CM_alpha_prime   - CM_0) / (delta_angle)    
-     
-    m  =  (dCM_dalpha_cg[0] - dCM_dalpha[0]) /delta_cg 
-    b  =  dCM_dalpha_cg[0]  - (m * vehicle_shifted_CG.mass_properties.center_of_gravity[0][0])
-    NP =  -b / m  
-      
-    aerodynamics.training.subsonic.neutral_point = NP  # Stored on subsonic surrogate
-    aerodynamics.training.subsonic.static_margin = (NP - CG) / aerodynamics.vehicle.reference_values.c_ref  # Stored on subsonic surrogate
-    
     return 
     
 def train_model(aerodynamics, Mach): 
@@ -108,6 +70,7 @@ def train_model(aerodynamics, Mach):
     settings       = aerodynamics.settings
     AoA            = aerodynamics.training.angle_of_attack                  
     Beta           = aerodynamics.training.sideslip_angle
+    delta_CG       = aerodynamics.training.center_of_gravity_purtubation   
     training       = Data()
     training.Mach  = Mach 
     
@@ -177,13 +140,7 @@ def train_model(aerodynamics, Mach):
     CZ_res           = VLM_results.CZ
     CL_res           = VLM_results.CL
     CM_res           = VLM_results.CM
-    CN_res           = VLM_results.CN
-    S_ref            = VLM_results.S_ref
-    b_ref            = VLM_results.b_ref
-    c_ref            = VLM_results.c_ref
-    X_ref            = VLM_results.X_ref
-    Y_ref            = VLM_results.Y_ref
-    Z_ref            = VLM_results.Z_ref        
+    CN_res           = VLM_results.CN        
     
     Clift_alpha           = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
     Cdrag_induced_alpha   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
@@ -202,21 +159,23 @@ def train_model(aerodynamics, Mach):
     CZ_alpha_0      =  np.tile(CZ_alpha[2][None,:],(2, 1)) 
     CL_alpha_0      =  0 * np.tile(CL_alpha[2][None,:],(2, 1)) 
     CM_alpha_0      =  np.tile(CM_alpha[2][None,:],(2, 1)) 
-    CN_alpha_0      =  0 * np.tile(CN_alpha[2][None,:],(2, 1))  
-
-    aerodynamics.vehicle.reference_values.S_ref = S_ref
-    aerodynamics.vehicle.reference_values.b_ref = b_ref
-    aerodynamics.vehicle.reference_values.c_ref = c_ref
-    aerodynamics.vehicle.reference_values.X_ref = X_ref
-    aerodynamics.vehicle.reference_values.Y_ref = Y_ref
-    aerodynamics.vehicle.reference_values.Z_ref = Z_ref 
-    
+    CN_alpha_0      =  0 * np.tile(CN_alpha[2][None,:],(2, 1))
     Clift_wing_alpha = Data()
     Cdrag_induced_wing_alpha = Data() 
     for wing in vehicle.wings: 
         Clift_wing_alpha[wing.tag] = np.reshape(VLM_results.CLift_wings[wing.tag],(len_Mach,len_AoA)).T    
-        Cdrag_induced_wing_alpha[wing.tag] = np.reshape(VLM_results.CDrag_induced_wings[wing.tag],(len_Mach,len_AoA)).T  
-  
+        Cdrag_induced_wing_alpha[wing.tag] = np.reshape(VLM_results.CDrag_induced_wings[wing.tag],(len_Mach,len_AoA)).T   
+   
+    # --------------------------------------------------------------------------------------------------------------
+    # Shifted C.G vehicle  
+    # --------------------------------------------------------------------------------------------------------------   
+    vehicle_shifted_CG = deepcopy(vehicle)
+    vehicle_shifted_CG.mass_properties.center_of_gravity[0][0] += delta_CG
+    VLM_results = VLM(conditions,settings,vehicle_shifted_CG)  
+    CM_res_shifted_CG       = VLM_results.CM 
+    CM_alpha_shifted_CG     = np.reshape(CM_res_shifted_CG,(len_Mach,len_AoA)).T  
+    CM_alpha_0_shifted_CG   = np.tile(CM_alpha_shifted_CG[2][None,:],(2, 1))  
+            
     # --------------------------------------------------------------------------------------------------------------
     # Beta 
     # --------------------------------------------------------------------------------------------------------------
@@ -333,6 +292,7 @@ def train_model(aerodynamics, Mach):
     training.CM_alpha                  = CM_alpha 
     training.CN_alpha                  = CN_alpha    
     training.CM_0                      = CM_alpha_0[0]
+    training.CM_0_shifted_CG           = CM_alpha_0_shifted_CG[0]
             
             
     training.Clift_beta                = Clift_beta 
@@ -521,17 +481,17 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     
     # --------------------------------------------------------------------------------------------------------------
     # Alpha
-    # -------------------------------------------------------------------------------------------------------------- 
-    
-    Clift_alpha   =  np.concatenate((training_subsonic.Clift_alpha[:,-1][:,None] , training_supersonic.Clift_alpha[:,0][:,None] ), axis = 1)
+    # --------------------------------------------------------------------------------------------------------------  
+    Clift_alpha           =  np.concatenate((training_subsonic.Clift_alpha[:,-1][:,None] , training_supersonic.Clift_alpha[:,0][:,None] ), axis = 1)
     Cdrag_induced_alpha   =  np.concatenate((training_subsonic.Cdrag_induced_alpha[:,-1][:,None]  , training_supersonic.Cdrag_induced_alpha[:,0][:,None] ), axis = 1) 
-    CX_alpha      =  np.concatenate((training_subsonic.CX_alpha[:,-1][:,None]    , training_supersonic.CX_alpha[:,0][:,None] ), axis = 1)   
-    CY_alpha      =  np.concatenate((training_subsonic.CY_alpha[:,-1][:,None]    , training_supersonic.CY_alpha[:,0][:,None] ), axis = 1)   
-    CZ_alpha      =  np.concatenate((training_subsonic.CZ_alpha[:,-1][:,None]    , training_supersonic.CZ_alpha[:,0][:,None] ), axis = 1)   
-    CL_alpha      =  np.concatenate((training_subsonic.CL_alpha[:,-1][:,None]    , training_supersonic.CL_alpha[:,0][:,None] ), axis = 1)   
-    CM_alpha      =  np.concatenate((training_subsonic.CM_alpha[:,-1][:,None]    , training_supersonic.CM_alpha[:,0][:,None] ), axis = 1)   
-    CN_alpha      =  np.concatenate((training_subsonic.CN_alpha[:,-1][:,None]    , training_supersonic.CN_alpha[:,0][:,None] ), axis = 1) 
-    CM_0          =  np.concatenate((training_subsonic.CM_0[:][-1,None]    , training_supersonic.CM_0[:][0,None] ))     
+    CX_alpha              =  np.concatenate((training_subsonic.CX_alpha[:,-1][:,None]    , training_supersonic.CX_alpha[:,0][:,None] ), axis = 1)   
+    CY_alpha              =  np.concatenate((training_subsonic.CY_alpha[:,-1][:,None]    , training_supersonic.CY_alpha[:,0][:,None] ), axis = 1)   
+    CZ_alpha              =  np.concatenate((training_subsonic.CZ_alpha[:,-1][:,None]    , training_supersonic.CZ_alpha[:,0][:,None] ), axis = 1)   
+    CL_alpha              =  np.concatenate((training_subsonic.CL_alpha[:,-1][:,None]    , training_supersonic.CL_alpha[:,0][:,None] ), axis = 1)   
+    CM_alpha              =  np.concatenate((training_subsonic.CM_alpha[:,-1][:,None]    , training_supersonic.CM_alpha[:,0][:,None] ), axis = 1)   
+    CN_alpha              =  np.concatenate((training_subsonic.CN_alpha[:,-1][:,None]    , training_supersonic.CN_alpha[:,0][:,None] ), axis = 1) 
+    CM_0                  =  np.concatenate((training_subsonic.CM_0[:][-1,None]    , training_supersonic.CM_0[:][0,None] ))     
+    CM_0_shifted_CG       =  np.concatenate((training_subsonic.CM_0_shifted_CG[:][-1,None]    , training_supersonic.CM_0_shifted_CG[:][0,None] ))     
 
     Clift_wing_alpha = Data()
     Cdrag_induced_wing_alpha = Data() 
@@ -592,6 +552,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     training.CM_alpha                  = CM_alpha  
     training.CN_alpha                  = CN_alpha
     training.CM_0                      = CM_0 
+    training.CM_0_shifted_CG           = CM_0_shifted_CG 
     
     
     training.Clift_beta                = Clift_beta

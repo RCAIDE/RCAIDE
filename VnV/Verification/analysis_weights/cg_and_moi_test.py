@@ -34,7 +34,7 @@ def main():
 def Transport_Aircraft_Test():
     vehicle = transport_setup()
     for wing in vehicle.wings: 
-        wing_planform(wing,overwrite_reference =  False) 
+        wing_planform(wing) 
 
     # update fuel weight to 60%
     vehicle.networks.fuel.fuel_lines.fuel_line.fuel_tanks.integral_tank.fuel.mass_properties.mass = 0.6 * vehicle.networks.fuel.fuel_lines.fuel_line.fuel_tanks.integral_tank.fuel.mass_properties.mass
@@ -92,7 +92,7 @@ def General_Aviation_Test():
     weight_analysis               = RCAIDE.Framework.Analyses.Weights.Conventional_General_Aviation() 
     weight_analysis.vehicle       = general_aviation_setup() 
     for wing in weight_analysis.vehicle.wings: 
-        wing_planform(wing,overwrite_reference =  True) 
+        wing_planform(wing) 
         if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
             weight_analysis.vehicle.reference_area = wing.areas.reference 
     results                       = weight_analysis.evaluate() 
@@ -135,7 +135,7 @@ def General_Aviation_Test():
 def EVTOL_Aircraft_Test(update_regression_values):
     vehicle = EVTOL_setup(update_regression_values)
     for wing in vehicle.wings: 
-        wing_planform(wing,overwrite_reference =  True) 
+        wing_planform(wing) 
         if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
             vehicle.reference_area = wing.areas.reference
     # ------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# RCAIDE/Library/Components/Nacelles/__init__.py
+# RCAIDE/Library/Components/Nacelles/Segments/__init__.py
 
 """
 Module containing nacelle segments for aircraft propulsion system integration.

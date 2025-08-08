@@ -97,7 +97,8 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.training.angle_purtubation                             = 10 * Units.deg          
         self.training.speed_purtubation                             = 5  
         self.training.rate_purtubation                              = 10 * Units.deg / Units.sec   
-        self.training.control_surface_purtubation                   = 10 * Units.deg   
+        self.training.control_surface_purtubation                   = 10 * Units.deg         
+        self.training.center_of_gravity_purtubation                 = 0.1   
         self.training.sideslip_angle                                = np.array([10  , 5.0 ]) * Units.deg
         self.training.aileron_deflection                            = np.array([10  , 5.0 ]) * Units.deg
         self.training.elevator_deflection                           = np.array([10  , 5.0 ]) * Units.deg   

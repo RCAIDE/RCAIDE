@@ -85,8 +85,6 @@ def base_analysis(vehicle):
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.vehicle = vehicle
     geometry.settings.update_fuselage_properties = True
-    geometry.settings.overwrite_reference        = True
-    geometry.settings.update_wing_properties     = True
     geometry.settings.update_fuel_volume         = True
     analyses.append(geometry)
     

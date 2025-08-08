@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Stability/Dynamic_Stability/compute_dynamic_flight_modes.py
+# RCAIDE/Library/Methods/Stability/compute_dynamic_flight_modes.py
 # 
 # 
 # Created:  Apr 2024, M. Clarke
@@ -42,12 +42,18 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
      """
 
     conditions = state.conditions 
-    AoA        = conditions.aerodynamics.angles.alpha
-    S_ref      = vehicle.reference_values.S_ref
-    c_ref      = vehicle.reference_values.c_ref
-    b_ref      = vehicle.reference_values.b_ref  
-    
-    if (np.count_nonzero(vehicle.mass_properties.moments_of_inertia.tensor) > 0)and (np.all(np.isnan(AoA)) !=  True):
+    AoA        = conditions.aerodynamics.angles.alpha  
+    S_ref      = vehicle.reference_area  
+    c_ref      = vehicle.reference_chord
+    b_ref      = vehicle.reference_span
+
+    vertical_fligth_flag = False
+    if isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb) or \
+       isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover) or \
+       isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent):
+        vertical_fligth_flag = True
+
+    if (np.count_nonzero(vehicle.mass_properties.moments_of_inertia.tensor) > 0) and  (vertical_fligth_flag !=  True) and (np.all(np.isnan(AoA)) !=  True):
         g                  = conditions.freestream.gravity  
         rho                = conditions.freestream.density
         u0                 = conditions.freestream.velocity
@@ -299,8 +305,7 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         DS.LongModes.shortPeriodDamping           = shortPeriodDamping
         DS.LongModes.shortPeriodTimeDoubleHalf    = shortPeriodTimeDoubleHalf
                                                                         
-        DS.LatModes.LatModes                      = LatModes  
-        #DS.LatModes.Latsys                        = LatSys   
+        DS.LatModes.LatModes                      = LatModes   
         DS.LatModes.dutchRollFreqHz               = dutchRollFreqHz
         DS.LatModes.dutchRollDamping              = dutchRollDamping
         DS.LatModes.dutchRollTimeDoubleHalf       = dutchRollTimeDoubleHalf

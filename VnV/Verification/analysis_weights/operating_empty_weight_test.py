@@ -48,7 +48,7 @@ def Transport_Hydrogen_Test(update_regression_values, show_figure):
         weight_analysis = RCAIDE.Framework.Analyses.Weights.Hydrogen_Transport()
         weight_analysis.vehicle = vehicle
         for wing in weight_analysis.vehicle.wings: 
-            wing_planform(wing,overwrite_reference =  True) 
+            wing_planform(wing) 
             if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
                 weight_analysis.vehicle.reference_area = wing.areas.reference
         weight_analysis.method = method_type 
@@ -88,7 +88,7 @@ def Transport_Aircraft_Test(update_regression_values, show_figure):
             weight_analysis = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()
             weight_analysis.vehicle = transport_setup()
             for wing in weight_analysis.vehicle.wings: 
-                wing_planform(wing,overwrite_reference =  True) 
+                wing_planform(wing) 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
                     weight_analysis.vehicle.reference_area = wing.areas.reference
             weight_analysis.method = method_type
@@ -141,7 +141,7 @@ def General_Aviation_Test(update_regression_values, show_figure):
             weight_analysis = RCAIDE.Framework.Analyses.Weights.Conventional_General_Aviation()
             weight_analysis.vehicle = general_aviation_setup()
             for wing in weight_analysis.vehicle.wings: 
-                wing_planform(wing,overwrite_reference =  True) 
+                wing_planform(wing) 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
                     weight_analysis.vehicle.reference_area = wing.areas.reference
             weight_analysis.method = method_type 
@@ -240,7 +240,7 @@ def BWB_Aircraft_Test(update_regression_values,show_figure):
             for wing in weight_analysis.vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                     compute_layout_of_passenger_accommodations(wing)
-                    bwb_wing_planform(wing,overwrite_reference = True)
+                    bwb_wing_planform(wing)
                     weight_analysis.vehicle.reference_area = wing.areas.reference 
             weight_analysis.settings.FLOPS.fidelity   = 'Simple' if FLOPS_number == 0 else 'Complex'
             weight                   = weight_analysis.evaluate()
@@ -276,7 +276,7 @@ def EVTOL_Aircraft_Test(update_regression_values,show_figure):
     weight_analysis          = RCAIDE.Framework.Analyses.Weights.Electric_VTOL()
     weight_analysis.vehicle  = evtol_setup(update_regression_values) 
     for wing in weight_analysis.vehicle.wings: 
-        wing_planform(wing,overwrite_reference =  True) 
+        wing_planform(wing) 
         if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
             weight_analysis.vehicle.reference_area = wing.areas.reference 
     weight_analysis.method   = 'Physics_Based'

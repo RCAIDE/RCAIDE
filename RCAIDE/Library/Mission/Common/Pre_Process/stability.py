@@ -76,25 +76,17 @@ def stability(mission):
             if segment.analyses.stability !=  None: 
                 if last_tag!=  None:
                     if segment.analyses.stability.settings.unique_segment_surrogate:
-                        stab   = segment.analyses.stability
+                        stab             = segment.analyses.stability
+                        stab.surrogates  = segment.analyses.aerodynamics.surrogates  
                         stab.initialize()   
                         last_tag = tag
                     else:
                         if 'compute' in mission.segments[last_tag].analyses.stability.process.keys(): 
-                            segment.analyses.stability.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.stability.process.compute.lift.inviscid_wings
-                            segment.analyses.stability.surrogates                          = mission.segments[last_tag].analyses.stability.surrogates 
-                            segment.analyses.stability.vehicle.reference_values            = mission.segments[last_tag].analyses.stability.vehicle.reference_values  
-                            segment.analyses.stability.settings.vortex_distribution        = mission.segments[last_tag].analyses.stability.settings.vortex_distribution 
+                            segment.analyses.aerodynamics.process.compute.static_stability = mission.segments[last_tag].analyses.aerodynamics.process.compute.static_stability
+                            segment.analyses.stability.surrogates                          = mission.segments[last_tag].analyses.stability.surrogates   
                 else:
-                    if (type(segment.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method) or\
-                    (type(segment.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Athena_Vortex_Lattice) :
-                        segment.analyses.stability.process.compute.lift.inviscid_wings = segment.analyses.aerodynamics.process.compute.lift.inviscid_wings 
-                        segment.analyses.stability.surrogates                          = segment.analyses.aerodynamics.surrogates 
-                        segment.analyses.stability.vehicle.reference_values            = segment.analyses.aerodynamics.vehicle.reference_values 
-                        segment.analyses.stability.settings.vortex_distribution        = segment.analyses.aerodynamics.settings.vortex_distribution 
-                        last_tag = tag                 
-                    else: # run new simulation 
-                        stab = segment.analyses.stability
-                        stab.initialize() 
-                        last_tag = tag 
+                    stab                = segment.analyses.stability
+                    stab.surrogates     = segment.analyses.aerodynamics.surrogates  
+                    stab.initialize() 
+                    last_tag = tag 
     return 

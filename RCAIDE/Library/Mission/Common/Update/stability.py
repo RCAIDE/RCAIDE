@@ -1,10 +1,8 @@
 # RCAIDE/Library/Missions/Common/Update/stability.py
 # 
 # 
-# Created:  Jul 2023, M. Clarke 
- 
-import RCAIDE
-from RCAIDE.Library.Methods.Stability.compute_dynamic_flight_modes import compute_dynamic_flight_modes
+# Created:  Jul 2023, M. Clarke
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  Stability
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -26,14 +24,8 @@ def stability(segment):
     """   
     # unpack
     stability_model    = segment.analyses.stability 
-
-    vertical_fligth_flag = False
-    if isinstance(segment,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb) or \
-       isinstance(segment,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover) or \
-       isinstance(segment,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent):
-        vertical_fligth_flag = True
         
-    if stability_model != None and vertical_fligth_flag != True: 
-        compute_dynamic_flight_modes(segment.state,stability_model.settings,stability_model.vehicle) 
+    if stability_model != None: 
+        _ = stability_model(segment)
 
     return

@@ -35,7 +35,7 @@ def main():
     vehicle.flight_envelope.minimum_lift_coefficient  = -1.5 
 
     for wing in vehicle.wings: 
-        wing_planform(wing,overwrite_reference =  True) 
+        wing_planform(wing) 
         if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
             vehicle.reference_area = wing.areas.reference
 

@@ -69,24 +69,13 @@ class Results(Conditions):
         self.tag                                              = 'results' 
  
         # start default row vectors
-        ones_1col                                             = self.ones_row(1)  
-        ones_3col                                             = self.ones_row(3)
-        
-        # ----------------------------------------------------------------------------------------------------------------------         
-        # Reference Values 
-        # ---------------------------------------------------------------------------------------------------------------------- 
-    
-        self.S_ref                                            = ones_1col * 0
-        self.c_ref                                            = ones_1col * 0
-        self.b_ref                                            = ones_1col * 0
-        self.X_ref                                            = ones_1col * 0
-        self.Y_ref                                            = ones_1col * 0
-        self.Z_ref                                            = ones_1col * 0     
+        ones_1col                                                              = self.ones_row(1)  
+        ones_3col                                                              = self.ones_row(3)    
         
         # ----------------------------------------------------------------------------------------------------------------------         
         # Frames 
         # ---------------------------------------------------------------------------------------------------------------------- 
-        self.frames                                           = Conditions()
+        self.frames                                                            = Conditions()
         
         # inertial conditions
         self.frames.inertial                                                   = Conditions()        
@@ -214,6 +203,7 @@ class Results(Conditions):
         self.control_surfaces.aileron.static_stability.coefficients.Z          = ones_1col * 0         
         self.control_surfaces.aileron.static_stability.coefficients.L          = ones_1col * 0         
         self.control_surfaces.aileron.static_stability.coefficients.M          = ones_1col * 0         
+        self.control_surfaces.aileron.static_stability.coefficients.M_0        = ones_1col * 0        
         self.control_surfaces.aileron.static_stability.coefficients.N          = ones_1col * 0           
         self.control_surfaces.aileron.static_stability.coefficients.e          = ones_1col * 0
         
@@ -458,7 +448,6 @@ class Results(Conditions):
         # Weights 
         # ----------------------------------------------------------------------------------------------------------------------     
         self.weights                                          = Conditions() 
-        self.weights.total_mass                               = ones_1col * 0
-        self.weights.total_moment_of_inertia                  = ones_3col * 0  
-        self.weights.weight_breakdown                         = Conditions()
+        self.weights.total_mass                               = ones_1col * 0 
+        self.weights.center_of_gravity                        = ones_3col * 0   
         self.weights.vehicle_mass_rate                        = ones_1col * 0

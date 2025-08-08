@@ -45,19 +45,19 @@ def main():
     results = missions.base_mission.evaluate() 
 
     elevator_deflection        = results.segments.cruise.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg
-    elevator_deflection_true   = -2.1221748515686647
+    elevator_deflection_true   = -2.018772944377962
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
     print('Error1: ',elevator_deflection_diff)
     assert np.abs(elevator_deflection_diff/elevator_deflection_true) < 5e-3
 
     aileron_deflection        = results.segments.cruise.conditions.control_surfaces.aileron.deflection[0,0] / Units.deg
-    aileron_deflection_true   = 9.630626313732183
+    aileron_deflection_true   = 9.630686598302654
     aileron_deflection_diff   = np.abs(aileron_deflection - aileron_deflection_true)
     print('Error2: ',aileron_deflection_diff)
     assert np.abs(aileron_deflection_diff/aileron_deflection_true) < 5e-3
 
     rudder_deflection        = results.segments.cruise.conditions.control_surfaces.rudder.deflection[0,0] / Units.deg
-    rudder_deflection_true   = -12.221263625306626
+    rudder_deflection_true   = -12.221227727988088
     rudder_deflection_diff   = np.abs(rudder_deflection - rudder_deflection_true)
     print('Error3: ',rudder_deflection_diff)
     assert np.abs(rudder_deflection_diff/rudder_deflection_true) < 5e-3    
@@ -76,8 +76,6 @@ def base_analysis(vehicle, configs):
 
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.vehicle                             = vehicle
-    geometry.settings.overwrite_reference        = True
-    geometry.settings.update_wing_properties     = True
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
@@ -123,9 +121,7 @@ def base_analysis(vehicle, configs):
     aerodynamics.stability_derivatives.CM_delta_f   =  0.0001  
     analyses.append(aerodynamics) 
      
-    stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
-    stability.settings.model_fuselage               = True                
-    #stability.settings.model_nacelle                = True      
+    stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()   
     stability.vehicle                               = vehicle
     analyses.append(stability)
 

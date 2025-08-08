@@ -111,7 +111,8 @@ def build_surrogate(aerodynamics, training):
 
 
     # Use interpolat.interp1d below
-    surrogates.CM_0             =  interpolate.interp1d(mach_data, training.CM_0, kind='linear', bounds_error=False, fill_value='extrapolate')      
+    surrogates.CM_0             = interpolate.interp1d(mach_data, training.CM_0, kind='linear', bounds_error=False, fill_value='extrapolate')     
+    surrogates.CM_0_shifted_CG  = interpolate.interp1d(mach_data, training.CM_0_shifted_CG, kind='linear', bounds_error=False, fill_value='extrapolate')       
     surrogates.dClift_dalpha    = interpolate.interp1d(mach_data, training.dClift_dalpha, kind='linear', bounds_error=False, fill_value='extrapolate')      
     surrogates.dCX_dalpha       = interpolate.interp1d(mach_data, training.dCX_dalpha, kind='linear', bounds_error=False, fill_value='extrapolate')      
     surrogates.dCX_du           = interpolate.interp1d(mach_data, training.dCX_du, kind='linear', bounds_error=False, fill_value='extrapolate')      
@@ -162,10 +163,7 @@ def build_surrogate(aerodynamics, training):
     
     if aerodynamics.flap_flag:
         surrogates.dCM_ddelta_f     = interpolate.interp1d(mach_data,training.dCM_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value='extrapolate') 
-    
-    surrogates.neutral_point = aerodynamics.training.subsonic.neutral_point
-    surrogates.static_margin = aerodynamics.training.subsonic.static_margin
-    
+     
     return surrogates
  
  
@@ -198,7 +196,8 @@ def no_surrogate(aerodynamics, training):
     surrogates.CM_beta                = None 
     surrogates.CN_alpha               = None    
     surrogates.CN_beta                = None    
-    surrogates.CM_0                   = None
+    surrogates.CM_0                   = None  
+    surrogates.CM_0_shifted_CG        = None
     
     surrogates.dClift_dalpha          = None      
     surrogates.dCX_dalpha             = None      
@@ -216,9 +215,7 @@ def no_surrogate(aerodynamics, training):
     surrogates.dCM_dq                 = None      
     surrogates.dCN_dbeta              = None  
     surrogates.dCN_dp                 = None      
-    surrogates.dCN_dr                 = None
-    surrogates.neutral_point          = None
-    surrogates.static_margin          = None 
+    surrogates.dCN_dr                 = None 
 
     if aerodynamics.aileron_flag:  
         surrogates.dCY_ddelta_a     = None 

@@ -248,17 +248,16 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     
     if settings.use_surrogate or (settings.vortex_distribution == None): 
         Cl                   = conditions.aerodynamics.coefficients.lift.total
-        CD_wave_transonic    = np.array([1.1480189359872706, 0.0, 1.1480189359872706, 5.775673779192156, 12.836939011494024, 20.414496506330114, 34.447683899469276, 49.59172983603965, 65.49874978998449, 160, 240]) *10**-4
-        CLs                  = np.array([-0.417184699337467, 0.0, 0.417184699337467, 0.45862155954167055, 0.5013290492186359, 0.5384919739235497, 0.5871622608441653, 0.6285553062389633, 0.6587038782744932, 0.8, 1.0])
-        CD_wave_transonic    = np.interp(Cl, CLs, CD_wave_transonic) *( 12.5 * Mach - 8.75 ) 
+        CD_wave_transonic    = np.array([-1.34E-03,2.35E-05,1.42E-03,1.95E-03,2.23E-03,2.56E-03,3.11E-03,4.97E-03,8.73E-03,1.35E-02,1.85E-02,2.31E-02,2.83E-02,3.42E-02,3.96E-02,3.76E-02,2.71E-02]) 
+        CLs                  = np.array([-0.25836715,-0.05233014,0.08334449,0.21608904,0.35012533,0.42120447,0.48458659,0.55214519,0.62108179,0.69313687,0.75284432,0.81921256,0.95662739,1.07911642,1.19681914,1.33118394,1.47947542      ])    
+        CD_wave_transonic    = np.interp(Cl, CLs, CD_wave_transonic) # * ( 12.5 * Mach - 8.75 ) 
     else: 
         chords   = settings.vortex_distribution.chord_lengths
         delta    = settings.vortex_distribution.leading_edge_sweeps 
         dy       = settings.vortex_distribution.chord_widths
         
         CD_wave_total = np.zeros_like(Mach)
-        CL_y          = conditions.aerodynamics.coefficients.lift.inviscid.spanwise
-             
+        CL_y          = conditions.aerodynamics.coefficients.lift.inviscid.spanwise 
         c_kappa       = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
     
         # ------------------------------------------------------------------

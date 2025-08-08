@@ -152,20 +152,11 @@ def base_analysis(vehicle,use_surrogate,trim_aircraft,keep_regression_files,new_
     aerodynamics.settings.print_output               = False 
     aerodynamics.settings.keep_files                 = keep_regression_files          
     aerodynamics.settings.new_regression_results     = new_regression_results
-    analyses.append(aerodynamics)
-    
+    analyses.append(aerodynamics) 
 
     # Stability Analysis
     stability                                        = RCAIDE.Framework.Analyses.Stability.Athena_Vortex_Lattice()
-    stability.vehicle                                = vehicle 
-    stability.settings.filenames.avl_bin_name        = '/Users/matthewclarke/Documents/LEADS/CODES/AVL/avl3.35'
-    stability.settings.filenames.run_folder          = 'avl_files' +  folder_name
-    stability.settings.use_surrogate                 = use_surrogate
-    stability.settings.trim_aircraft                 = trim_aircraft 
-    stability.settings.model_fuselage                = False 
-    stability.settings.print_output                  = False 
-    stability.settings.keep_files                    = keep_regression_files        
-    stability.settings.new_regression_results        = new_regression_results
+    stability.vehicle                                = vehicle  
     analyses.append(stability)    
   
     #  Energy

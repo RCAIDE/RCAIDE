@@ -274,11 +274,11 @@ def generate_3d_vehicle_geometry_data(plot_data,
     for wing in vehicle.wings:  
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
             if overwrite_geometry: 
-                bwb_wing_planform(wing,overwrite_reference = True)
+                bwb_wing_planform(wing)
                 vehicle.reference_area = wing.areas.reference 
         else:
             if overwrite_geometry:
-                wing_planform(wing,overwrite_reference =  overwrite_geometry) 
+                wing_planform(wing) 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_geometry:
                     vehicle.reference_area = wing.areas.reference
          
