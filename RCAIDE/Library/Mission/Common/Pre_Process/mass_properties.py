@@ -171,9 +171,10 @@ def mass_properties(mission):
                 segment.analyses.aerodynamics.vehicle =  deepcopy(weights_analysis.vehicle) 
         else:
             # If there is no analysis defined, it copies over the vehicle from the geometry analysis
-            segment.analyses.geometry = RCAIDE.Framework.Analyses.Weights.Weights()
-            segment.analyses.weights.vehicle = segment.analyses.geometry.vehicle    
-
+            segment.analyses.weights = RCAIDE.Framework.Analyses.Weights.Weights()
+            segment.analyses.weights.vehicle = segment.analyses.geometry.vehicle
+            if segment.analyses.weights.vehicle.mass_properties.takeoff == None:
+                segment.analyses.weights.vehicle.mass_properties.takeoff = segment.analyses.weights.vehicle.mass_properties.max_takeoff
     return 
 
 def apply_correction_factors(weights_analysis):
