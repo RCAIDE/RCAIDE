@@ -100,14 +100,12 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     
     # remove takeoff weight from aircraft if defined
     for segment in  mission.segments:
-        if segment.analyses.weights == None:
-            segment.analyses.weights = RCAIDE.Framework.Analyses.Weights.Weights()
-            segment.analyses.weights.vehicle =  segment.analyses.geometry.vehicle
-        segment.analyses.weights.vehicle.mass_properties.takeoff = None
-
-    # perform inital weights analysis
-    geometry(mission)
-    mass_properties(mission)
+        # perform inital weights analysis
+        geometry(mission)
+        segment.analyses.geometry.vehicle.mass_properties.takeoff = None
+        mass_properties(mission)
+        
+  
     vehicle = mission.segments[initial_segment].analyses.weights.vehicle
     
     for network in vehicle.networks:
