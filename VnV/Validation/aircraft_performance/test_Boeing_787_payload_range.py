@@ -21,6 +21,11 @@ def main():
     payload_range_results = payload_range_test()     
 
     # Reference (trusted) values
+    # DO not change these values without consulting the airport planning manual first:
+    #  "Airport Planning Manual": {
+    #     "range": [0, 5500, 9500, 10000]  nmi,
+    #     "payload": (([44000, 44000, 9071.8474, 0]) lbs
+    #     "payload + oew": (([161025, 161025, 127005.864, 117934.016]) lbs
     truth_values = {
         "range": np.array([  0.,9769439.52039939, 18145103.54267254, 18953040.09185842]),
         "payload": np.array([44000., 44000., 8784.46157263, 0.]),
