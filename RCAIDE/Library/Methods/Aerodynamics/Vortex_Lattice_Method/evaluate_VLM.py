@@ -42,8 +42,7 @@ def evaluate_surrogate(state,settings,vehicle):
     aerodynamics  = state.analyses.aerodynamics  
     sub_sur       = aerodynamics.surrogates.subsonic
     sup_sur       = aerodynamics.surrogates.supersonic
-    trans_sur     = aerodynamics.surrogates.transonic 
-    ref_vals      = aerodynamics.reference_values
+    trans_sur     = aerodynamics.surrogates.transonic  
     AoA           = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
     Beta          = np.atleast_2d(conditions.aerodynamics.angles.beta)    
     Mach          = np.atleast_2d(conditions.freestream.mach_number)  
@@ -59,16 +58,6 @@ def evaluate_surrogate(state,settings,vehicle):
     h_sub            = lambda M:sub_trans_spline.compute(M)          
     sup_trans_spline = Cubic_Spline_Blender(hsup_max, hsup_min) 
     h_sup            = lambda M:sup_trans_spline.compute(M)
-    
-    # -----------------------------------------------------------------------------------------------------------------------
-    # Stability Results Without Control Surfaces 
-    # -----------------------------------------------------------------------------------------------------------------------
-    conditions.S_ref  = ref_vals.S_ref              
-    conditions.c_ref  = ref_vals.c_ref              
-    conditions.b_ref  = ref_vals.b_ref
-    conditions.X_ref  = ref_vals.X_ref
-    conditions.Y_ref  = ref_vals.Y_ref
-    conditions.Z_ref  = ref_vals.Z_ref
     
     #Alpha 
     pts_alpha   = np.hstack((AoA,Mach))

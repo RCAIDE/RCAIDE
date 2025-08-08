@@ -84,7 +84,7 @@ def train_VLM_surrogates(aerodynamics):
     NP =  -b / m  
       
     aerodynamics.training.subsonic.neutral_point = NP  # Stored on subsonic surrogate
-    aerodynamics.training.subsonic.static_margin = (NP - CG) / aerodynamics.reference_values.c_ref  # Stored on subsonic surrogate
+    aerodynamics.training.subsonic.static_margin = (NP - CG) / aerodynamics.vehicle.reference_values.c_ref  # Stored on subsonic surrogate
     
     return 
     
