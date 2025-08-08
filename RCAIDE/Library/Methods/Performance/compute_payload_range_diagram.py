@@ -99,11 +99,11 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     initial_segment =  list(mission.segments.keys())[0]
     
     # remove takeoff weight from aircraft if defined
+    geometry(mission)
     for segment in  mission.segments:
         # perform inital weights analysis
-        geometry(mission)
         segment.analyses.geometry.vehicle.mass_properties.takeoff = None
-        mass_properties(mission)
+    mass_properties(mission)
         
   
     vehicle = mission.segments[initial_segment].analyses.weights.vehicle
