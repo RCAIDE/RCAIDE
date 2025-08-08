@@ -57,7 +57,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', passengers = 248) :
     wing.aspect_ratio                     = 8.61650
     wing.sweeps.quarter_chord             = 35 * Units.deg
     wing.thickness_to_chord               = 0.115
-    wing.spans.projected                  = 58.138 * Units.meter
+    wing.spans.projected                  = 60 * Units.meter
     wing.chords.root                      = 14.0 * Units.meter
     wing.chords.tip                       = 2.1 * Units.meter
     wing.taper                            = wing.chords.tip / wing.chords.root

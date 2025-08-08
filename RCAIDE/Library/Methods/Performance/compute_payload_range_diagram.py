@@ -100,13 +100,11 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     
     # remove takeoff weight from aircraft if defined
     for segment in  mission.segments:
-        if segment.analyses.weights != None:
-            segment.analyses.weights.vehicle.mass_properties.takeoff = None
-        else:
+        if segment.analyses.weights == None:
             segment.analyses.weights = RCAIDE.Framework.Analyses.Weights.Weights()
             segment.analyses.weights.vehicle =  segment.analyses.geometry.vehicle
+        segment.analyses.weights.vehicle.mass_properties.takeoff = None
 
-    
     # perform inital weights analysis
     geometry(mission)
     mass_properties(mission)
@@ -117,7 +115,8 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
             payload_range  =  conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_reserve_percentage,plot_diagram,fuel_name) 
         else:
             payload_range  =  electric_payload_range_diagram(vehicle,mission,cruise_segment_tag,plot_diagram)
-            
+
+    print("\n============== Payload Range Report ==============n")            
     try:
         reserve_pct = payload_range.pop('fuel_reserve_percentage')
         print("\nFuel Reserve Percentage:", f"{reserve_pct * 100:.0f}%")
@@ -128,7 +127,6 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     # Header
     print(f"{'Parameter':<20} {'Point 1':>12} {'Point 2':>12} {'Point 3':>12} {'Point 4':>12}")
     print("-" * 70)
-
     # Rows
     for key, val in zip(keys, values):
         if key == 'range':
@@ -146,10 +144,7 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
             row = f"{key:<20}"
         row += "".join([f"{v:12.2f}" for v in val])
         print(row)
-
-    # Footer
-   
-   
+    print("\n===============================\n")
     return payload_range 
              
 def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_reserve_percentage,plot_diagram, fuel_name): 
@@ -173,15 +168,20 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
     """ 
     # unpack
     mass = vehicle.mass_properties
+    if not mass.max_payload:
+        raise AttributeError("Error calculating Payload Range Diagram: vehicle Maximum Payload Weight is undefined.") 
+    else:
+        MaxPLD = mass.max_payload
+
     if not mass.operating_empty:
-        raise AttributeError("Error calculating Payload Range Diagram: Vehicle Operating Empty not defined") 
+        if not mass.max_zero_fuel:
+            raise AttributeError("Error calculating Payload Range Diagram: vehicle Operating Empty Weight and Max Zero Fuel Weight is undefined.") 
+        else:
+            OEW = mass.max_zero_fuel - MaxPLD
     else:
         OEW = mass.operating_empty
-
-    if not mass.max_zero_fuel:
-        raise AttributeError("Error calculating Payload Range Diagram: Vehicle MZFW not defined")
-    else:
-        MZFW = vehicle.mass_properties.max_zero_fuel
+    
+    MZFW = mass.max_zero_fuel
 
     if not mass.max_takeoff:
         raise AttributeError("Error calculating Payload Range Diagram: Vehicle MTOW not defined")
@@ -346,7 +346,6 @@ def electric_payload_range_diagram(vehicle,mission,cruise_segment_tag,plot_diagr
             OEW = mass.max_zero_fuel - MaxPLD
     else:
         OEW = mass.operating_empty
-
 
     if not mass.max_takeoff:
         raise AttributeError("Error calculating Payload Range Diagram: vehicle Maximum Payload Weight is undefined.") 

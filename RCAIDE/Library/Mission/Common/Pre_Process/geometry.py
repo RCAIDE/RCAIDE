@@ -6,6 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
+from ast import Raise
 import RCAIDE
 from RCAIDE.Library.Methods.Geometry.LOPA      import  compute_layout_of_passenger_accommodations 
 from RCAIDE.Library.Methods.Geometry.Planform  import  fuselage_planform, wing_planform, bwb_wing_planform , compute_fuel_volume 
@@ -25,8 +26,7 @@ def geometry(mission):
         # check if geometry analysis is defined 
         # --------------------------------------------------------------------------------------------------------------------
         if segment.analyses.geometry is None: 
-            segment.analyses.geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-            segment.analyses.geometry.vehicle = segment.analyses.energy.vehicle    
+            raise AssertionError('Geometry Analyses not defined')
                 
         vehicle  = segment.analyses.geometry.vehicle
         settings = segment.analyses.geometry.settings 

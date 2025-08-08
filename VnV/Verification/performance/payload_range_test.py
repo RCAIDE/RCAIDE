@@ -25,10 +25,45 @@ from NASA_X57       import vehicle_setup as X57_vehicle_setup
 #  REGRESSION
 # ----------------------------------------------------------------------------------------------------------------------  
 def main(): 
-    #fuel_aircraft_payload_range()
+    fuel_aircraft_payload_range()
+    fuel_aircraft_payload_range_mzfw()
     electric_aircraft_payload_range() 
     return
     
+def fuel_aircraft_payload_range_mzfw():
+    vehicle               = E190_vehicle_setup()
+    vehicle.max_zero_fuel = None
+    vehicle.max_fuel      = None
+
+    # take out control surfaces to make regression run faster
+    for wing in vehicle.wings:
+        wing.control_surfaces  = Container() 
+  
+    # Set up vehicle configs
+    configs  = configs_setup(vehicle)
+
+    # create analyses
+    analyses = fuel_aircraft_weights_analyses_setup(configs)
+
+    # mission analyses 
+    mission = fuel_aircraft_mission_setup(analyses)
+    
+    # create mission instances (for multiple types of missions)
+    missions = missions_setup(mission)  
+        
+    # run payload range analysis 
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.20)
+                                
+    fuel_r                 = payload_range_results.range[-1]  
+    fuel_r_true            = 5847041.238435317
+    # Correct value from reference ( https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf) is 5556000. 
+    # This value is high due to simplified single segment analysis i.e. only cruise. To compensate, reserve percentage is increased from 5 to 20%
+    
+    print('Fuel Range: ' + str(fuel_r))
+    fuel_error =  abs(fuel_r - fuel_r_true) /fuel_r_true
+    assert(abs(fuel_error)<1e-6)
+
+
 def fuel_aircraft_payload_range():
     
     # vehicle data
@@ -122,6 +157,17 @@ def fuel_aircraft_analyses_setup(configs):
 
     return analyses
 
+def fuel_aircraft_weights_analyses_setup(configs):
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
+
+    # build a base analysis for each config
+    for tag,config in configs.items():
+        analysis = fuel_aircraft_base_analysis_weights(config)
+        analyses[tag] = analysis
+
+    return analyses
+
+
 def electric_aircraft_analyses_setup(configs):
 
     analyses = RCAIDE.Framework.Analyses.Analysis.Container()
@@ -133,7 +179,56 @@ def electric_aircraft_analyses_setup(configs):
 
     return analyses
 
+def fuel_aircraft_base_analysis_weights(vehicle):
+    # ------------------------------------------------------------------
+    #   Initialize the Analyses
+    # ------------------------------------------------------------------     
+    analyses = RCAIDE.Framework.Analyses.Vehicle() 
+    
+    #  Geometry
+    geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
+    geometry.vehicle = vehicle
+    geometry.settings.overwrite_reference        = False
+    geometry.settings.update_wing_properties     = True
+    analyses.append(geometry)
 
+     # ------------------------------------------------------------------
+    #  Weights
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional()
+    weights.vehicle                 = vehicle 
+    weights.settings.FLOPS.fidelity = 'Complex'      
+    analyses.append(weights)
+
+    # ------------------------------------------------------------------
+    #  Aerodynamics Analysis 
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
+    aerodynamics.vehicle  = vehicle
+    aerodynamics.settings.number_of_spanwise_vortices   = 5
+    aerodynamics.settings.number_of_chordwise_vortices  = 2       
+    analyses.append(aerodynamics)   
+
+    # ------------------------------------------------------------------
+    #  Energy
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
+    energy.vehicle  = vehicle 
+    analyses.append(energy)
+
+    # ------------------------------------------------------------------
+    #  Planet Analysis
+    planet = RCAIDE.Framework.Analyses.Planets.Earth()
+    analyses.append(planet)
+
+    # ------------------------------------------------------------------
+    #  Atmosphere Analysis
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
+    atmosphere.features.planet = planet.features
+    analyses.append(atmosphere)   
+
+    # done!
+    return analyses    
+
+   
+    
 def fuel_aircraft_base_analysis(vehicle):
 
     # ------------------------------------------------------------------

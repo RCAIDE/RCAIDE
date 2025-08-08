@@ -1,5 +1,6 @@
 # weights.py
 import  RCAIDE
+from RCAIDE.Framework.Analyses.Weights import Electric_General_Aviation
 from RCAIDE.Framework.Core import Data, Units 
 from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan   import design_turbofan  
 from RCAIDE.Library.Plots import * 
@@ -19,6 +20,7 @@ from Cessna_172             import vehicle_setup as general_aviation_setup
 from BWB                    import vehicle_setup as bwb_setup
 from Stopped_Rotor_EVTOL    import vehicle_setup as evtol_setup
 from Boeing_787             import vehicle_setup as hydrogen_transport_setup
+from Electric_Twin_Otter    import vehicle_setup as electric_general_aviation_setup
 
 def main():
     update_regression_values = True  # should be false unless code functionally changes
@@ -29,7 +31,39 @@ def main():
     General_Aviation_Test(update_regression_values,show_figure)
     EVTOL_Aircraft_Test(update_regression_values,show_figure)
     Transport_Hydrogen_Test(update_regression_values,show_figure)
+    Electric_General_Aviation_Test(update_regression_values,show_figure)
     return
+
+def Electric_General_Aviation_Test(update_regression_values, show_figure):
+    method_types = ['Physics_Based']
+
+    vehicle = electric_general_aviation_setup(cell_chemistry='lithium_ion_nmc', btms_type=None)
+    vehicle.mass_properties.takeoff = None
+    for method_type in method_types:
+        print(f'Testing Transport Aircraft Method: {method_type} | Method: {"Complex"}')        
+        weight_analysis = RCAIDE.Framework.Analyses.Weights.Electric_General_Aviation()
+        weight_analysis.vehicle = vehicle
+        weight = weight_analysis.evaluate()
+        save_path = os.path.join(os.path.dirname(__file__), f'electric_general_aviation_{method_type}.res')
+
+        if update_regression_values:
+            save_results(weight, save_path)
+        old_weight = load_results(save_path)
+
+        check_list = [
+            'payload.total', 'payload.passengers', 'payload.baggage',
+            'empty.structural.wings', 'empty.structural.fuselage',
+            'empty.propulsion.total', 'empty.structural.landing_gear',
+            'empty.systems.total', 'empty.total'
+        ]
+
+        for k in check_list:
+            old_val = old_weight.deep_get(k)
+            new_val = weight.deep_get(k)
+            err = (new_val - old_val) / old_val
+            print(f'{k} Error: {err:.6e}')
+            assert np.abs(err) < 1e-6, f'Check Failed: {k}'
+        print('')
 
 
 def Transport_Hydrogen_Test(update_regression_values, show_figure):
