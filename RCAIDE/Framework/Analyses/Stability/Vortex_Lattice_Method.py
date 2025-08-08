@@ -66,8 +66,7 @@ class Vortex_Lattice_Method(Stability):
                    
         # correction factors  
         self.settings.use_surrogate                                      = True
-        self.settings.propeller_wake_model                               = False 
-        self.settings.discretize_control_surfaces                        = True 
+        self.settings.propeller_wake_model                               = False  
         self.settings.model_fuselage                                     = False 
         self.settings.aileron_flag                                       = False
         self.settings.rudder_flag                                        = False
@@ -153,9 +152,7 @@ class Vortex_Lattice_Method(Stability):
         compute.drag.form                                           = Common.Drag.form_drag  
         compute.drag.wave                                           = Common.Drag.wave_drag
         compute.drag.trim                                           = Common.Drag.trim_drag 
-        compute.drag.total                                          = Common.Drag.total_drag 
-        compute.stability                                           = Process()
-        compute.stability.dynamic_modes                             = RCAIDE.Library.Methods.Stability.compute_dynamic_flight_modes  
+        compute.drag.total                                          = Common.Drag.total_drag   
         self.process.compute                                        = compute 
 
     def initialize(self):  

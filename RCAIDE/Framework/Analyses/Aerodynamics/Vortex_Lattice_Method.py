@@ -64,8 +64,7 @@ class Vortex_Lattice_Method(Aerodynamics):
                     
         # correction factors               
         self.settings.use_surrogate                                 = True  
-        self.settings.propeller_wake_model                          = False 
-        self.settings.discretize_control_surfaces                   = True
+        self.settings.propeller_wake_model                          = False  
         self.settings.model_fuselage                                = False 
         self.settings.aileron_flag                                  = False
         self.settings.rudder_flag                                   = False

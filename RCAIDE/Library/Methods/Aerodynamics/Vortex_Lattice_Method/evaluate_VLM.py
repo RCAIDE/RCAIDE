@@ -47,22 +47,7 @@ def evaluate_surrogate(state,settings,vehicle):
     AoA           = np.atleast_2d(conditions.aerodynamics.angles.alpha)  
     Beta          = np.atleast_2d(conditions.aerodynamics.angles.beta)    
     Mach          = np.atleast_2d(conditions.freestream.mach_number)  
-    ones_row      = np.ones_like(AoA)
-     
-    # loop through wings to determine what control surfaces are present  
-    #for wing in vehicle.wings: 
-        #for control_surface in wing.control_surfaces:  
-            #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
-                ##if trim !=  True:  
-                    #conditions.control_surfaces.aileron.deflection[:, 0] = control_surface.deflection
-            #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
-                #if trim !=  True:   
-                    #conditions.control_surfaces.elevator.deflection[:, 0] = control_surface.deflection
-            #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
-                #if trim !=  True:  
-                    #conditions.control_surfaces.rudder.deflection[:, 0] = control_surface.deflection
-            #if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:   
-                #conditions.control_surfaces.flap.deflection[:, 0] = control_surface.deflection
+    ones_row      = np.ones_like(AoA) 
   
     hsub_min         = aerodynamics.hsub_min
     hsub_max         = aerodynamics.hsub_max
@@ -347,12 +332,12 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
         x_m = x_cg
         z_m = z_cg 
 
-    aerodynamics.reference_values.S_ref = S_ref
-    aerodynamics.reference_values.c_ref = c_bar  
-    aerodynamics.reference_values.b_ref = b_ref
-    aerodynamics.reference_values.X_ref = x_m
-    aerodynamics.reference_values.Y_ref = 0
-    aerodynamics.reference_values.Z_ref = z_m 
+    vehicle.reference_values.S_ref = S_ref
+    vehicle.reference_values.c_ref = c_bar  
+    vehicle.reference_values.b_ref = b_ref
+    vehicle.reference_values.X_ref = x_m
+    vehicle.reference_values.Y_ref = 0
+    vehicle.reference_values.Z_ref = z_m 
     
     for wing in vehicle.wings: 
         for control_surface in wing.control_surfaces:  

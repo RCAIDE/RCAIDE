@@ -77,13 +77,13 @@ def analyses_setup(configs):
 
     # build a base analysis for each config
     for tag,config in configs.items():
-        analysis = base_analysis(config, configs)
+        analysis = base_analysis(config)
         analyses[tag] = analysis
 
     return analyses
 
 
-def base_analysis(vehicle, configs):
+def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #   Initialize the Analyses
@@ -105,11 +105,9 @@ def base_analysis(vehicle, configs):
     aerodynamics.settings.number_of_spanwise_vortices   = 30 
     analyses.append(aerodynamics) 
       
-    stability                                           = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method() 
-    stability.settings.discretize_control_surfaces      = True
+    stability                                           = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
     stability.settings.model_fuselage                   = True
-    stability.settings.model_nacelle                    = True
-    stability.configuration                             = configs
+    stability.settings.model_nacelle                    = True 
     stability.vehicle                                   = vehicle
     analyses.append(stability)
 

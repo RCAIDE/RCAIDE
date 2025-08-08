@@ -78,9 +78,7 @@ def compute_operating_items_weight(vehicle):
     for network in  vehicle.networks:
         for fuel_line in network.fuel_lines:
             for _ in fuel_line.fuel_tanks:
-                number_of_tanks += 1 
-    if number_of_tanks == 0:
-        number_of_tanks = 5    
+                number_of_tanks += 1  
     
     WUF   = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
     WOIL  = 0.082 * NENG * THRUST ** 0.65  # engine oil weight 

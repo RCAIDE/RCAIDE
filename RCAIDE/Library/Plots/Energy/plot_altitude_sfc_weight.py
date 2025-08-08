@@ -21,8 +21,7 @@ def plot_altitude_sfc_weight(results,
                              save_figure = False,
                              show_legend = True,
                              save_filename = "Weight_Fuel_Consumption" ,
-                             file_type = ".png",
-                             SI_units  = False, 
+                             file_type = ".png", 
                              width = 11, height = 7):
     """
     Creates a four-panel plot showing throttle settings, vehicle weight, specific fuel consumption (SFC), 
@@ -93,28 +92,16 @@ def plot_altitude_sfc_weight(results,
     axis_4 = plt.subplot(2,2,4)
     
     for i in range(len(results.segments)): 
-        time      = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min
+        time      = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min 
+        Weight    = (results.segments[i].conditions.weights.total_mass[:, 0] * 9.81)  / Units.lbf
+        mdot      = results.segments[i].conditions.weights.vehicle_mass_rate[:, 0]/ Units.lb
+        thrust    = abs(results.segments[i].conditions.frames.body.thrust_force_vector[:, 0])/ Units.lbf
+        fuel_mass = results.segments[i].conditions.energy.cumulative_fuel_consumption[:, 0]/ Units.lb
         
-        if SI_units:
-            Weight    = results.segments[i].conditions.weights.total_mass[:, 0] * 9.81 /1000  
-            mdot      = results.segments[i].conditions.weights.vehicle_mass_rate[:, 0]
-            thrust    = abs(results.segments[i].conditions.frames.body.thrust_force_vector[:, 0])
-            fuel_mass = results.segments[i].conditions.energy.cumulative_fuel_consumption[:, 0] 
-            axis_1.set_ylabel(r'Weight (kN)')  
-            axis_2.set_ylabel(r'Fuel Consumption (kg)')
-            axis_3.set_ylabel(r'SFC (kg/N-hr)')
-            axis_4.set_ylabel(r'Fuel Rate (kg/s)')            
-        else:
-
-            Weight    = (results.segments[i].conditions.weights.total_mass[:, 0] * 9.81)  / Units.lbf
-            mdot      = results.segments[i].conditions.weights.vehicle_mass_rate[:, 0]/ Units.lb
-            thrust    = abs(results.segments[i].conditions.frames.body.thrust_force_vector[:, 0])/ Units.lbf
-            fuel_mass = results.segments[i].conditions.energy.cumulative_fuel_consumption[:, 0]/ Units.lb
-            
-            axis_1.set_ylabel(r'Weight (lbf)')  
-            axis_2.set_ylabel(r'Fuel Consumption (lb)')
-            axis_3.set_ylabel(r'SFC (lb/lbf-hr)')
-            axis_4.set_ylabel(r'Fuel Rate (lb/s)')  
+        axis_1.set_ylabel(r'Weight (lbf)')  
+        axis_2.set_ylabel(r'Fuel Consumption (lb)')
+        axis_3.set_ylabel(r'SFC (lb/lbf-hr)')
+        axis_4.set_ylabel(r'Fuel Rate (lb/s)')  
         
         sfc       = (mdot ) / (thrust ) * Units.hr 
 

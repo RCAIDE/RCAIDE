@@ -53,15 +53,12 @@ def make_VLM_wings(geometry, settings):
                 span_fraction_start
                 span_fraction_end
                 deflection
-                chord_fraction
-                
-    settings.discretize_control_surfaces  --> set to True to generate control surface panels
+                chord_fraction 
     
     Properties Used:
     N/A
     """ 
-    # unpack inputs
-    discretize_cs = settings.discretize_control_surfaces
+    # unpack inputs 
     wings         = copy_wings(geometry.wings)
     
     # ------------------------------------------------------------------
@@ -87,7 +84,7 @@ def make_VLM_wings(geometry, settings):
                                      'This function will move the control surfaces to wing segments itself.')  
         
         #move wing control surfaces to from wing to its segments
-        wing = populate_control_sections(wing) if discretize_cs else wing
+        wing = populate_control_sections(wing)  
         
         #ensure wing has attributes that will be needed later
         wing_halfspan = wing.spans.projected * 0.5 if wing.symmetric else wing.spans.projected

@@ -39,13 +39,12 @@ def write_geometry(avl_object,run_script_path):
     number_of_spanwise_vortices       = avl_object.settings.number_of_spanwise_vortices
     number_of_chordwise_vortices      = avl_object.settings.number_of_chordwise_vortices 
     
-    avl_object.reference_values.S_ref        = avl_object.vehicle.wings['main_wing'].areas.reference
-    avl_object.reference_values.c_ref        = avl_object.vehicle.wings['main_wing'].chords.mean_aerodynamic
-    avl_object.reference_values.b_ref        = avl_object.vehicle.wings['main_wing'].spans.projected
-    avl_object.reference_values.X_ref        = avl_object.vehicle.mass_properties.center_of_gravity[0][0]
-    avl_object.reference_values.Y_ref        = avl_object.vehicle.mass_properties.center_of_gravity[0][1]
-    avl_object.reference_values.Z_ref        = avl_object.vehicle.mass_properties.center_of_gravity[0][2]
-    avl_object.reference_values.aspect_ratio = (avl_object.reference_values.b_ref ** 2) / avl_object.reference_values.S_ref 
+    aircraft.reference_values.S_ref        = avl_object.vehicle.wings['main_wing'].areas.reference
+    aircraft.reference_values.c_ref        = avl_object.vehicle.wings['main_wing'].chords.mean_aerodynamic
+    aircraft.reference_values.b_ref        = avl_object.vehicle.wings['main_wing'].spans.projected
+    aircraft.reference_values.X_ref        = avl_object.vehicle.mass_properties.center_of_gravity[0][0]
+    aircraft.reference_values.Y_ref        = avl_object.vehicle.mass_properties.center_of_gravity[0][1]
+    aircraft.reference_values.Z_ref        = avl_object.vehicle.mass_properties.center_of_gravity[0][2]
     
     # Open the geometry file after purging if it already exists
     purge_files([geometry_file]) 

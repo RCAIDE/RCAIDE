@@ -220,7 +220,8 @@ class Results(Conditions):
         self.control_surfaces.elevator                                         = Conditions()
         self.control_surfaces.elevator.deflection                              = ones_1col * 0 
         self.control_surfaces.elevator.static_stability                        = Conditions()
-        self.control_surfaces.elevator.static_stability.coefficients           = Conditions()         
+        self.control_surfaces.elevator.static_stability.coefficients           = Conditions()          
+        self.control_surfaces.elevator.static_stability.coefficients.lift      = ones_1col * 0       
         self.control_surfaces.elevator.static_stability.coefficients.X         = ones_1col * 0           
         self.control_surfaces.elevator.static_stability.coefficients.Y         = ones_1col * 0           
         self.control_surfaces.elevator.static_stability.coefficients.Z         = ones_1col * 0         

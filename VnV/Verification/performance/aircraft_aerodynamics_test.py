@@ -23,12 +23,19 @@ from Boeing_737    import vehicle_setup as vehicle_setup
 #   Main
 # ---------------------------------------------------------------------- 
 def main(): 
-
+ 
     vehicle                               = vehicle_setup()   
     angle_of_attack_range                 = np.atleast_2d(np.linspace(-5, 25, 18)).T*Units.degrees   
     Mach_number_range                     = np.ones_like(angle_of_attack_range) * 0.78
     aerodynamics_analysis_routine         = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics_analysis_routine.vehicle = vehicle
+    temperatures                          = np.ones_like(angle_of_attack_range) * 340
+    non_dimensional_reynolds_numbers      = np.ones_like(angle_of_attack_range) * 1E7
+    results                           = aircraft_aerodynamic_analysis(aerodynamics_analysis = aerodynamics_analysis_routine,
+                                                                      angle_of_attacks = angle_of_attack_range,
+                                                                      non_dimensional_reynolds_numbers = non_dimensional_reynolds_numbers,
+                                                                      temperatures                     = temperatures,
+                                                                      mach_numbers = Mach_number_range)
     
     results                           = aircraft_aerodynamic_analysis(aerodynamics_analysis = aerodynamics_analysis_routine,
                                                                       angle_of_attacks = angle_of_attack_range,

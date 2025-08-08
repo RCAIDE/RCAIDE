@@ -49,16 +49,7 @@ class Stability(Analysis):
         """   
         self.tag      = 'stability'
         self.vehicle  = Data()
-        self.settings = Data()
-        
-    
-        self.reference_values                                            = Data()
-        self.reference_values.S_ref                                      = 0
-        self.reference_values.c_ref                                      = 0
-        self.reference_values.b_ref                                      = 0
-        self.reference_values.X_ref                                      = 0
-        self.reference_values.Y_ref                                      = 0
-        self.reference_values.Z_ref                                      = 0
+        self.settings = Data() 
         
         self.settings                                                    = Data()
         self.settings.unique_segment_surrogate                           = False

@@ -43,17 +43,11 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
 
     conditions = state.conditions 
     AoA        = conditions.aerodynamics.angles.alpha
-    S_ref      = state.analyses.stability.reference_values
-    c_ref      = state.analyses.stability.reference_values
-    b_ref      = state.analyses.stability.reference_values 
+    S_ref      = vehicle.reference_values.S_ref
+    c_ref      = vehicle.reference_values.c_ref
+    b_ref      = vehicle.reference_values.b_ref  
     
-    vertical_fligth_flag = False
-    if isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb) or \
-       isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover) or \
-       isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent):
-        vertical_fligth_flag = True
-    
-    if (np.count_nonzero(vehicle.mass_properties.moments_of_inertia.tensor) > 0) and  (vertical_fligth_flag !=  True) and (np.all(np.isnan(AoA)) !=  True):
+    if (np.count_nonzero(vehicle.mass_properties.moments_of_inertia.tensor) > 0)and (np.all(np.isnan(AoA)) !=  True):
         g                  = conditions.freestream.gravity  
         rho                = conditions.freestream.density
         u0                 = conditions.freestream.velocity
@@ -96,8 +90,7 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
             main_wing       = vehicle.wings[main_wing_tag]     
             horizontal_tail = vehicle.wings[ht_tag] 
             
-            # unpack unit conversions 
-            V_t_prime       =  u0
+            # unpack unit conversions  
             a_t             = 2 * np.pi # dCL_t_dalphat 
             l_t             = (horizontal_tail.origin[0][0] +horizontal_tail.aerodynamic_center[0]) - vehicle.mass_properties.center_of_gravity[0][0] # disstance from CG to tail AC
             S_t             = horizontal_tail.areas.reference # tail area

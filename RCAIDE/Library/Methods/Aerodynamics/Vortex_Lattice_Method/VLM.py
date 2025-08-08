@@ -21,8 +21,7 @@ from copy import  deepcopy
 
 def VLM(conditions,settings,geometry):
     """Uses the vortex lattice method to compute the lift, induced drag and moment coefficients.
-    
-    The user has the option to discretize control surfaces using the boolean settings.discretize_control_surfaces.
+     
     The user should be forwarned that this will cause very slight differences in results for 0 deflection due to
     the slightly different discretization.
     
@@ -87,8 +86,7 @@ def VLM(conditions,settings,geometry):
     settings.fuselage_chordwise_vortices       [Unitless]  <---|  
        
     settings.use_surrogate                     [Unitless]
-    settings.propeller_wake_model              [Unitless]
-    settings.discretize_control_surfaces       [Boolean], set to True to generate control surface panels
+    settings.propeller_wake_model              [Unitless] 
     settings.use_VORLAX_matrix_calculation     [boolean]
     settings.floating_point_precision          [float16/32/64]
        

@@ -83,14 +83,14 @@ def stability(mission):
                         if 'compute' in mission.segments[last_tag].analyses.stability.process.keys(): 
                             segment.analyses.stability.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.stability.process.compute.lift.inviscid_wings
                             segment.analyses.stability.surrogates                          = mission.segments[last_tag].analyses.stability.surrogates 
-                            segment.analyses.stability.reference_values                    = mission.segments[last_tag].analyses.stability.reference_values  
+                            segment.analyses.stability.vehicle.reference_values            = mission.segments[last_tag].analyses.stability.vehicle.reference_values  
                             segment.analyses.stability.settings.vortex_distribution        = mission.segments[last_tag].analyses.stability.settings.vortex_distribution 
                 else:
                     if (type(segment.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method) or\
                     (type(segment.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Athena_Vortex_Lattice) :
                         segment.analyses.stability.process.compute.lift.inviscid_wings = segment.analyses.aerodynamics.process.compute.lift.inviscid_wings 
                         segment.analyses.stability.surrogates                          = segment.analyses.aerodynamics.surrogates 
-                        segment.analyses.stability.reference_values                    = segment.analyses.aerodynamics.reference_values 
+                        segment.analyses.stability.vehicle.reference_values            = segment.analyses.aerodynamics.vehicle.reference_values 
                         segment.analyses.stability.settings.vortex_distribution        = segment.analyses.aerodynamics.settings.vortex_distribution 
                         last_tag = tag                 
                     else: # run new simulation 
