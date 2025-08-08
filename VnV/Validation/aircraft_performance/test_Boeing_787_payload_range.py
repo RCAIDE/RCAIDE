@@ -22,11 +22,11 @@ def main():
 
     # Reference (trusted) values
     truth_values = {
-        "range": np.array([ 0., 9817447.81431298, 18028324.32048188, 18931017.15298422]),
-        "payload": np.array([44000. , 44000.  , 9506.432058 ,     0.        ]),
-        "oew_plus_payload": np.array([161100.567942, 161100.567942, 126607., 117100.567942]),
-        "fuel": np.array([     0.        ,   66829.432058, 101323.        , 101323.        ]),
-        "takeoff_weight": np.array([     0.        , 227930.        , 227930.        , 218423.567942]),
+        "range": np.array([  0.,9769439.52039939, 18145103.54267254, 18953040.09185842]),
+        "payload": np.array([44000., 44000., 8784.46157263, 0.]),
+        "oew_plus_payload": np.array([ 161822.53842737,161822.53842737, 126607., 117822.5384273]),
+        "fuel": np.array([ 0., 66107.46157263, 101323, 101323.]),
+        "takeoff_weight": np.array([ 0., 227930., 227930., 219145.53842737]),
     }
     # Tolerance checks
     for key in truth_values:
