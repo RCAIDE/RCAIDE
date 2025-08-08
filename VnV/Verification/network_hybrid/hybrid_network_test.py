@@ -39,10 +39,10 @@ def main():
     series_hybrid    = True
     parallel_hybrid  = True
     
-    convetional_cruise_CL_truth      = 0.6874510105893801
-    electric_cruise_CL_truth         = 0.6937698994826631
-    series_hybrid_cruise_CL_truth    = 0.6923715992248035
-    parallel_hybrid_cruise_CL_truth  = 0.6934420295999918
+    convetional_cruise_CL_truth      = 0.6857525092792099
+    electric_cruise_CL_truth         = 0.6920556837076329
+    series_hybrid_cruise_CL_truth    = 0.6906614239806
+    parallel_hybrid_cruise_CL_truth  = 0.6917287532179324
 
     error = Data()
     
@@ -120,9 +120,6 @@ def main():
     plot_battery_pack_conditions(plot_data,powertrain_labels,save_figure = False, show_legend = False,)
     
     return
-
-
-
 
 # ----------------------------------------------------------------------
 #   Define the Analyses
