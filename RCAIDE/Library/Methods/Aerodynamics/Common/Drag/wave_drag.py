@@ -248,9 +248,11 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     
     if settings.use_surrogate or (settings.vortex_distribution == None): 
         Cl                   = conditions.aerodynamics.coefficients.lift.total
-        CD_wave_transonic    = np.array([-1.34E-03,2.35E-05,1.42E-03,1.95E-03,2.23E-03,2.56E-03,3.11E-03,4.97E-03,8.73E-03,1.35E-02,1.85E-02,2.31E-02,2.83E-02,3.42E-02,3.96E-02,3.76E-02,2.71E-02]) 
+        CD_wave_transonic    = np.array([-1.34E-03,2.35E-05,1.42E-03,1.95E-03,2.23E-03,2.56E-03,
+                                         2.80E-03,3.93E-03,6.11E-03, 9.48E-03,1.48E-02,
+                                         2.31E-02,2.83E-02,3.42E-02,3.96E-02,3.76E-02,2.71E-02]) 
         CLs                  = np.array([-0.25836715,-0.05233014,0.08334449,0.21608904,0.35012533,0.42120447,0.48458659,0.55214519,0.62108179,0.69313687,0.75284432,0.81921256,0.95662739,1.07911642,1.19681914,1.33118394,1.47947542      ])    
-        CD_wave_transonic    = np.interp(Cl, CLs, CD_wave_transonic) # * ( 12.5 * Mach - 8.75 ) 
+        CD_wave_transonic    = np.interp(Cl, CLs, CD_wave_transonic) 
     else: 
         chords   = settings.vortex_distribution.chord_lengths
         delta    = settings.vortex_distribution.leading_edge_sweeps 
