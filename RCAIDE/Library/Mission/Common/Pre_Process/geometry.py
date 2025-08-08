@@ -115,7 +115,7 @@ def geometry(mission):
                     compute_layout_of_passenger_accommodations(wing)
                 
                 # compute planform properties 
-                bwb_wing_planform(wing,settings.overwrite_reference)
+                bwb_wing_planform(wing)
                 
                 # update reference properties 
                 if settings.overwrite_reference:

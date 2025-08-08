@@ -38,12 +38,12 @@ def vehicle_setup(new_regression=True) :
     vehicle.configuration = 'eVTOL'
     
     # mass properties 
-    vehicle.mass_properties.max_takeoff       = 2700 
-    vehicle.mass_properties.takeoff           = vehicle.mass_properties.max_takeoff
-    vehicle.mass_properties.operating_empty   = vehicle.mass_properties.max_takeoff
-    vehicle.flight_envelope.ultimate_load     = 5.7   
-    vehicle.flight_envelope.positive_limit_load        = 3.  
-    vehicle.passengers                        = 5 
+    vehicle.mass_properties.max_takeoff         = 2700 
+    vehicle.mass_properties.takeoff             = vehicle.mass_properties.max_takeoff
+    vehicle.mass_properties.operating_empty     = vehicle.mass_properties.max_takeoff
+    vehicle.flight_envelope.ultimate_load       = 5.7   
+    vehicle.flight_envelope.positive_limit_load = 3.  
+    vehicle.passengers                          = 5 
         
     #------------------------------------------------------------------------------------------------------------------------------------
     # ######################################################## Wings ####################################################################  
@@ -151,8 +151,7 @@ def vehicle_setup(new_regression=True) :
     aileron.span_fraction_end     = 0.9 
     aileron.deflection            = 0.0 * Units.degrees
     aileron.chord_fraction        = 0.2
-    wing.append_control_surface(aileron)      
-
+    wing.append_control_surface(aileron)  
         
     # add to vehicle 
     vehicle.append_component(wing)   

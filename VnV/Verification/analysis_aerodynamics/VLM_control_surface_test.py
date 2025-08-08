@@ -12,6 +12,7 @@ import RCAIDE
 from RCAIDE.Framework.Core                                              import Data, Units
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method          import VLM
 from RCAIDE.Library.Plots                                               import * 
+from RCAIDE.Library.Methods.Geometry.Planform                           import  wing_planform 
 from RCAIDE.load import load 
 from RCAIDE.save import save  
 
@@ -35,7 +36,7 @@ def main():
 
     # get settings and conditions
     conditions = get_conditions()      
-    settings = get_settings()
+    settings   = get_settings()
     
     # create results object
     results     = Data()
@@ -46,6 +47,12 @@ def main():
     # run VLM
     for deflection in deflections:
         geometry    = get_deflected_b737(deflection)
+         
+        for wing in geometry.wings:   
+            wing_planform(wing)                    
+            geometry.reference_chord  = np.maximum(geometry.reference_chord , wing.chords.mean_aerodynamic)  
+            geometry.reference_span   = np.maximum(geometry.reference_span  , wing.spans.projected)
+            
         data        = VLM(conditions, settings, geometry) 
         results.CL  = np.append(results.CL , data.CLift.flatten() )
         results.CDi = np.append(results.CDi, data.CDrag_induced.flatten())

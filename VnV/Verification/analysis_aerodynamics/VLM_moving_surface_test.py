@@ -11,6 +11,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core                                       import Data, Units
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method   import VLM
+from RCAIDE.Library.Methods.Geometry.Planform                    import  wing_planform 
 from RCAIDE.Library.Plots  import *
 from RCAIDE.load import load  
 from RCAIDE.save import save  
@@ -44,13 +45,17 @@ def main():
     results.CL     = np.empty(shape=[0,n_cases])
     results.CDi    = np.empty(shape=[0,n_cases])
     results.CM     = np.empty(shape=[0,n_cases])
-    results.CY  = np.empty(shape=[0,n_cases])
+    results.CY     = np.empty(shape=[0,n_cases])
     results.CL_mom = np.empty(shape=[0,n_cases])
-    results.CM = np.empty(shape=[0,n_cases])
+    results.CM     = np.empty(shape=[0,n_cases])
     
     # run VLM
     for i,deflection_config in enumerate(deflection_configs):
         geometry    = vehicle_setup(deflection_config=deflection_config)
+        for wing in geometry.wings:   
+            wing_planform(wing)                    
+            geometry.reference_chord  = np.maximum(geometry.reference_chord , wing.chords.mean_aerodynamic) 
+            geometry.reference_span   = np.maximum(geometry.reference_span  , wing.spans.projected) 
         data        = VLM(conditions, settings, geometry)
          
         results.CL         = np.vstack((results.CL     , data.CLift.flatten()    ))

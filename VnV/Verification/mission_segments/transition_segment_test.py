@@ -222,6 +222,7 @@ def SR_base_analysis(vehicle):
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.vehicle = vehicle 
     analyses.append(geometry)
+    
     # ------------------------------------------------------------------
     #  Weights
     weights         = RCAIDE.Framework.Analyses.Weights.Electric_VTOL() 
