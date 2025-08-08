@@ -374,6 +374,6 @@ def generate_represenative_main_wing(wing, vehicle):
         segment.root_chord_percent    = (vehicle.wings[wing.tag].segments[segment.tag].root_chord_percent * vehicle.wings[wing.tag].chords.root ) / bwb_vehicle.wings[wing.tag].chords.root
         
         
-    bwb_wing = segment_properties(bwb_vehicle.wings[wing.tag],update_ref_areas=True) 
+    bwb_wing = segment_properties(bwb_vehicle.wings[wing.tag]) 
         
     return bwb_wing
