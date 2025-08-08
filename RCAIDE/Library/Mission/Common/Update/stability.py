@@ -2,6 +2,7 @@
 # 
 # 
 # Created:  Jul 2023, M. Clarke
+import RCAIDE
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Stability
@@ -24,8 +25,13 @@ def stability(segment):
     """   
     # unpack
     stability_model    = segment.analyses.stability 
-        
-    if stability_model != None: 
-        _ = stability_model(segment)
+
+    if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb or  \
+       type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover or \
+       type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:
+        pass
+    else: 
+        if stability_model != None: 
+            _ = stability_model(segment)
 
     return
