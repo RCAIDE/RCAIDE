@@ -176,13 +176,13 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
             raise AttributeError("Error calculating Payload Range Diagram: vehicle Operating Empty Weight and Max Zero Fuel Weight is undefined.") 
         else:
             OEW = mass.max_zero_fuel - MaxPLD
+            MZFW = mass.max_zero_fuel
     else:
         OEW = mass.operating_empty
-    
-    if not mass.max_zero_fuel:
-        MZFW = OEW + MaxPLD
-    else:
-        MZFW = mass.max_zero_fuel
+        if not mass.max_zero_fuel:
+            MZFW = OEW + MaxPLD
+        else:
+            MZFW = mass.max_zero_fuel
 
     if not mass.max_takeoff:
         raise AttributeError("Error calculating Payload Range Diagram: Vehicle MTOW not defined")
