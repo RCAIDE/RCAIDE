@@ -27,7 +27,7 @@ def main():
     #     "payload": (([44000, 44000, 9071.8474, 0]) lbs
     #     "payload + oew": (([161025, 161025, 127005.864, 117934.016]) lbs
     truth_values = {
-        "range": np.array([0., 8933223.96342483, 16355014.35634108, 16968074.92367147]),
+        "range": np.array([0. ,10339225.5975519,  17950800.01610145, 18605253.60233619]),
         "payload": np.array([44000.        , 44000.        ,  8587.76052736,     0.        ]),
         "oew_plus_payload": np.array([162019.23947264, 162019.23947264, 126607.        , 118019.23947264]),
         "fuel": np.array([     0.        ,  65910.76052736, 101323.        , 101323.        ]),
@@ -57,7 +57,7 @@ def payload_range_test():
     missions = Boeing_787.missions_setup(mission)
      
     # run payload range analysis 
-    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage = 0.12)
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage = 0.05)
   
     
     return  payload_range_results
