@@ -32,8 +32,9 @@ def main():
     
 def fuel_aircraft_payload_range_mzfw():
     vehicle               = E190_vehicle_setup()
-    vehicle.max_zero_fuel = None
-    vehicle.max_fuel      = None
+    vehicle.mass_properties.max_zero_fuel = None
+    vehicle.mass_properties.max_fuel      = None
+    vehicle.mass_properties.min_payload   = 10800
 
     # take out control surfaces to make regression run faster
     for wing in vehicle.wings:
@@ -55,7 +56,7 @@ def fuel_aircraft_payload_range_mzfw():
     payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.20)
                                 
     fuel_r                 = payload_range_results.range[-1]  
-    fuel_r_true            = 5319190.3570256205
+    fuel_r_true            = 4912054.179150544
     # Correct value from reference ( https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf) is 5556000. 
     # This value is high due to simplified single segment analysis i.e. only cruise. To compensate, reserve percentage is increased from 5 to 20%
     
@@ -407,5 +408,4 @@ def missions_setup(mission):
 
 
 if __name__ == '__main__': 
-    main()    
-    plt.show() 
+    main()  
