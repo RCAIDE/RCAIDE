@@ -54,8 +54,10 @@ def vehicle_setup():
     main_gear.strut_length                   = 12  * Units.ft 
     main_gear.wheels                         = 4   
     main_gear.number_of_gear_types_in_tandem = 1
-    main_gear.number_of_wheels_in_gear_type  = 2  
+    main_gear.number_of_wheels_in_gear_type  = 2
+    main_gear.fairing                        = True
     main_gear.symmetric                      = True
+    main_gear.gear_extended                  = True
     vehicle.append_component(main_gear)  
 
     nose_gear                                = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()   
@@ -63,7 +65,9 @@ def vehicle_setup():
     nose_gear.rim_diameter                   =  3 *  Units.inches 
     nose_gear.tire_width                     =  5 *  Units.inches 
     nose_gear.strut_length                   =  6.* Units.ft 
-    nose_gear.wheels                         = 2   
+    nose_gear.wheels                         = 2  
+    nose_gear.fairing                        = True 
+    nose_gear.gear_extended                  = True
     nose_gear.number_of_gear_types_in_tandem = 1
     nose_gear.number_of_wheels_in_gear_type  = 2    
     vehicle.append_component(nose_gear)
@@ -139,7 +143,9 @@ def vehicle_setup():
     wing.vertical                               = False
     wing.symmetric                              = True
     wing.high_lift                              = False 
-    wing.dynamic_pressure_ratio                 = 0.9
+    wing.dynamic_pressure_ratio                 = 0.9 
+    wing_airfoil                                = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil() 
+    wing.append_airfoil(wing_airfoil)    
      
     
     elevator                              = RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator()

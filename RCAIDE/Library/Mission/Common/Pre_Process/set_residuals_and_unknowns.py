@@ -158,28 +158,13 @@ def set_residuals_and_unknowns(mission):
             if ctrls.rudder_deflection.initial_guess_values !=  None: 
                 segment.state.unknowns["rudder" ] = ones_row(1) * ctrls.rudder_deflection.initial_guess_values[0][0]
             else:
-                segment.state.unknowns["rudder" ] = ones_row(1) * 0.0 * Units.degrees   
-                    
-        # Flap  
-        if ctrls.flap_deflection.active:   
-            if ctrls.flap_deflection.initial_guess_values !=  None:
-                segment.state.unknowns["flap" ] = ones_row(1) * ctrls.flap_deflection.initial_guess_values[0][0]
-            else:
-                segment.state.unknowns["flap" ] = ones_row(1) * 0.0 * Units.degrees  
-            
-        # Slat  
-        if ctrls.slat_deflection.active:   
-            if ctrls.slat_deflection.initial_guess_values != None:      
-                segment.state.unknowns["slat" ] = ones_row(1) * ctrls.slat_deflection.initial_guess_values[0][0]
-            else:
-                segment.state.unknowns["slat" ] = ones_row(1) * 0.0 * Units.degrees  
+                segment.state.unknowns["rudder" ] = ones_row(1) * 0.0 * Units.degrees    
                 
         # Aileron  
-        if ctrls.aileron_deflection.active:  
-            for i in range(len(ctrls.aileron_deflection.assigned_surfaces)):   
-                if ctrls.aileron_deflection.initial_guess_values !=  None:
-                    segment.state.unknowns["aileron" ] = ones_row(1) * ctrls.aileron_deflection.initial_guess_values[0][0]
-                else: 
-                    segment.state.unknowns["aileron" ] = ones_row(1) * 0.0 * Units.degrees  
+        if ctrls.aileron_deflection.active:   
+            if ctrls.aileron_deflection.initial_guess_values !=  None:
+                segment.state.unknowns["aileron" ] = ones_row(1) * ctrls.aileron_deflection.initial_guess_values[0][0]
+            else: 
+                segment.state.unknowns["aileron" ] = ones_row(1) * 0.0 * Units.degrees  
     return 
                                                                                                                                                                 

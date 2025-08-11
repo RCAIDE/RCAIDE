@@ -46,14 +46,8 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
     S_ref      = vehicle.reference_area  
     c_ref      = vehicle.reference_chord
     b_ref      = vehicle.reference_span
-
-    vertical_fligth_flag = False
-    if isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb) or \
-       isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover) or \
-       isinstance(state,RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent):
-        vertical_fligth_flag = True
-
-    if (np.count_nonzero(vehicle.mass_properties.moments_of_inertia.tensor) > 0) and  (vertical_fligth_flag !=  True) and (np.all(np.isnan(AoA)) !=  True):
+ 
+    if (np.count_nonzero(vehicle.mass_properties.moments_of_inertia.tensor) > 0) and (np.all(np.isnan(AoA)) !=  True):
         g                  = conditions.freestream.gravity  
         rho                = conditions.freestream.density
         u0                 = conditions.freestream.velocity
@@ -66,13 +60,8 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         moments_of_inertia = vehicle.mass_properties.moments_of_inertia.tensor
         Ixx    = moments_of_inertia[0][0]
         Iyy    = moments_of_inertia[1][1]
-        Izz    = moments_of_inertia[2][2]    
-        if vehicle.mass_properties.mass == 0:
-            m  = vehicle.mass_properties.max_takeoff
-        elif vehicle.mass_properties.max_takeoff == 0:
-            m = vehicle.mass_properties.mass
-        else:
-            raise AttributeError("Specify Vehicle Mass") 
+        Izz    = moments_of_inertia[2][2]     
+        m      = conditions.weights.total_mass
         
         if np.all(conditions.static_stability.spiral_criteria) == 0: 
             conditions.static_stability.spiral_criteria = SSD.CL_beta*SSD.CN_r / (SSD.CL_r*SSD.CN_beta) 
@@ -83,30 +72,26 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         CLon = np.zeros((num_cases,4,4))
         
 
-        # Elevator effectiveness
-        ht_tag         =  None
-        main_wing_tag  = None
+        # Elevator effectiveness 
         for wing in vehicle.wings:
-            if isinstance(wing,RCAIDE.Library.Components.Wings.Horizontal_Tail):
-                ht_tag  = wing.tag
-            if isinstance(wing,RCAIDE.Library.Components.Wings.Main_Wing) or isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-                main_wing_tag = wing.tag
-                
-        if main_wing_tag != None and  ht_tag !=None: 
-            main_wing       = vehicle.wings[main_wing_tag]     
-            horizontal_tail = vehicle.wings[ht_tag] 
-            
-            # unpack unit conversions  
-            a_t             = 2 * np.pi # dCL_t_dalphat 
-            l_t             = (horizontal_tail.origin[0][0] +horizontal_tail.aerodynamic_center[0]) - vehicle.mass_properties.center_of_gravity[0][0] # disstance from CG to tail AC
-            S_t             = horizontal_tail.areas.reference # tail area
-            S               = main_wing.areas.reference # wing area
-            l_bar_t         = (horizontal_tail.origin[0][0] +  horizontal_tail.aerodynamic_center[0]) -(main_wing.origin[0][0] +  main_wing.aerodynamic_center[0])  # distance from AC of main wing to tail AC
-            V_H             = ( l_bar_t *S_t ) /(c_ref *S)  # tail volume
-            dEpsilon_dalpha =  0.3
-            
-            SSD.CZ_alpha_dot =  a_t * dEpsilon_dalpha *  (l_t /u0) *  (S_t / S) 
-            SSD.CM_alpha_dot =  -a_t * V_H * dEpsilon_dalpha*  (l_t /u0)        
+            if isinstance(wing,RCAIDE.Library.Components.Wings.Horizontal_Tail): 
+                horizontal_tail = wing  
+            if isinstance(wing,RCAIDE.Library.Components.Wings.Main_Wing):  
+                main_wing       = wing  
+            if isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
+                main_wing       = wing
+                horizontal_tail = wing 
+        
+        # unpack unit conversions  
+        a_t              = 2 * np.pi # dCL_t_dalphat 
+        l_t              = (horizontal_tail.origin[0][0] +horizontal_tail.aerodynamic_center[0]) - vehicle.mass_properties.center_of_gravity[0][0] # disstance from CG to tail AC
+        S_t              = horizontal_tail.areas.reference # tail area
+        S                = main_wing.areas.reference # wing area
+        l_bar_t          = (horizontal_tail.origin[0][0] +  horizontal_tail.aerodynamic_center[0]) -(main_wing.origin[0][0] +  main_wing.aerodynamic_center[0])  # distance from AC of main wing to tail AC
+        V_H              = ( l_bar_t *S_t ) /(c_ref *S)  # tail volume
+        dEpsilon_dalpha  =  0.3
+        SSD.CZ_alpha_dot =  a_t * dEpsilon_dalpha *  (l_t /u0) *  (S_t / S) 
+        SSD.CM_alpha_dot =  -a_t * V_H * dEpsilon_dalpha*  (l_t /u0)        
                         
         for i in range(num_cases): 
             CLon[i,:,:] = np.eye(4)        
@@ -147,7 +132,7 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
                         Ze  = 0.5 * rho * u0 * u0 * S_ref * ele.lift
                         Me  = 0.5 * rho * u0 * u0 * S_ref * c_ref * ele.M
                         
-                        BLon[:,0,0] = Xe / m
+                        BLon[:,0,0] = Xe / m[:, 0]
                         BLon[:,1,0] = (Ze / (m - ZwDot)).T[0]
                         BLon[:,2,0] = (Me / Iyy + MwDot / Iyy * Ze / (m - ZwDot)).T[0]
                         BLon[:,3,0] = 0        

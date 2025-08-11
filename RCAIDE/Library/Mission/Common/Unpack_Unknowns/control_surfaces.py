@@ -81,28 +81,14 @@ def control_surfaces(segment):
                 if assigned_control_variables.elevator_deflection.active:                                
                     control_surfaces.elevator.deflection  = segment.state.unknowns["elevator"]
                 else:
-                    control_surfaces.elevator.deflection[:,0]  = control_surface.deflection
-                
-            # Slat Control 
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
-                if assigned_control_variables.slat_deflection.active:                                
-                    control_surfaces.slat.deflection  = segment.state.unknowns["slat"]
-                else:
-                    control_surfaces.slat.deflection[:,0]  = control_surface.deflection
+                    control_surfaces.elevator.deflection[:,0]  = control_surface.deflection 
 
             # Rudder Control 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
                 if assigned_control_variables.rudder_deflection.active:                                
                     control_surfaces.rudder.deflection  = segment.state.unknowns["rudder"]
                 else:
-                    control_surfaces.rudder.deflection[:,0]  = control_surface.deflection
-
-            # flap Control 
-            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap: 
-                if assigned_control_variables.flap_deflection.active:                                
-                    control_surfaces.flap.deflection  = segment.state.unknowns["flap"]
-                else:
-                    control_surfaces.flap.deflection[:,0]  = control_surface.deflection
+                    control_surfaces.rudder.deflection[:,0]  = control_surface.deflection 
 
             # Aileron Control 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 

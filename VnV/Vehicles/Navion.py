@@ -136,7 +136,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------        
     #  Horizontal Stabilizer
     # ------------------------------------------------------------------       
-    wing                                  = RCAIDE.Library.Components.Wings.Wing()
+    wing                                  = RCAIDE.Library.Components.Wings.Horizontal_Tail()
     wing.tag                              = 'horizontal_stabilizer'  
     wing.sweeps.leading_edge              = 6 * Units.degrees 
     wing.thickness_to_chord               = 0.12
@@ -172,7 +172,7 @@ def vehicle_setup():
     # ------------------------------------------------------------------
     #   Vertical Stabilizer
     # ------------------------------------------------------------------ 
-    wing                                  = RCAIDE.Library.Components.Wings.Wing()
+    wing                                  = RCAIDE.Library.Components.Wings.Vertical_Tail()
     wing.tag                              = 'vertical_stabilizer'   
     wing.sweeps.leading_edge              = 20 * Units.degrees 
     wing.thickness_to_chord               = 0.125

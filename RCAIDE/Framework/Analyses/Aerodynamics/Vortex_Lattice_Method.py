@@ -65,12 +65,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         # correction factors               
         self.settings.use_surrogate                                 = True  
         self.settings.propeller_wake_model                          = False  
-        self.settings.model_fuselage                                = False 
-        self.settings.aileron_flag                                  = False
-        self.settings.rudder_flag                                   = False
-        self.settings.flap_flag                                     = False
-        self.settings.elevator_flag                                 = False
-        self.settings.slat_flag                                     = False   
+        self.settings.model_fuselage                                = False   
         self.settings.number_of_spanwise_vortices                   = 15
         self.settings.number_of_chordwise_vortices                  = 5
         self.settings.wing_spanwise_vortices                        = None
