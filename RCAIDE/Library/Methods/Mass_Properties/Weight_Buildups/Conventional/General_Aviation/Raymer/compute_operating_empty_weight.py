@@ -155,12 +155,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
             calculated aircraft weight from correlations created per component of historical aircraft
         
     """     
-
-    if settings == None:
-        use_max_fuel_weight = True
-    else:
-        use_max_fuel_weight = settings.use_max_fuel_weight
-
     # Unpack inputs
     Nult        = vehicle.flight_envelope.ultimate_load 
     TOW         = vehicle.mass_properties.max_takeoff 
@@ -176,14 +170,14 @@ def compute_operating_empty_weight(vehicle, settings=None):
     for network in vehicle.networks:
         W_energy_network_total   = 0
 
-        for fuel_line in  network.fuel_lines: 
-            for fuel_tank in fuel_line.fuel_tanks: 
-                m_fuel_tank     = fuel_tank.fuel.mass_properties.mass
-                m_fuel          += m_fuel_tank   
-                landing_weight  -= m_fuel_tank   
-                number_of_tanks += 1
-                V_fuel_int      += m_fuel_tank/fuel_tank.fuel.density  #assume all fuel is in integral tanks 
-                V_fuel          += m_fuel_tank/fuel_tank.fuel.density #total fuel  
+    for fuel_line in  network.fuel_lines: 
+        for fuel_tank in fuel_line.fuel_tanks: 
+            m_fuel_tank     = fuel_tank.fuel.mass_properties.mass
+            m_fuel          += m_fuel_tank   
+            landing_weight  -= m_fuel_tank   
+            number_of_tanks += 1
+            V_fuel_int      += m_fuel_tank/fuel_tank.fuel.density  #assume all fuel is in integral tanks 
+            V_fuel          += m_fuel_tank/fuel_tank.fuel.density #total fuel  
          
         # Electric-Powered Propulsors  
         for bus in network.busses: 
@@ -320,25 +314,5 @@ def compute_operating_empty_weight(vehicle, settings=None):
     output.empty.total      = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total
     output.operating_empty  = output.empty.total + output.operational_items.total
     output.zero_fuel_weight =  output.operating_empty + output.payload.total 
-
-    if use_max_fuel_weight:  # assume fuel is equally distributed in fuel tanks
-        total_fuel_weight  = vehicle.mass_properties.max_takeoff -  output.zero_fuel_weight
-        for network in vehicle.networks: 
-            for fuel_line in network.fuel_lines:  
-                for fuel_tank in fuel_line.fuel_tanks:
-                    fuel_weight =  total_fuel_weight/number_of_tanks  
-                    fuel_tank.fuel.mass_properties.mass = fuel_weight
-        output.fuel = total_fuel_weight 
-        output.total = output.zero_fuel_weight + output.fuel
-    else:
-        total_fuel_weight =  0
-        for network in vehicle.networks: 
-            for fuel_line in network.fuel_lines:  
-                for fuel_tank in fuel_line.fuel_tanks:
-                    fuel_mass =  fuel_tank.fuel.density * fuel_tank.volume
-                    fuel_tank.fuel.mass_properties.mass = fuel_mass * 9.81
-                    total_fuel_weight = fuel_mass * 9.81 
-        output.fuel = total_fuel_weight
-        output.total = output.zero_fuel_weight + output.fuel  
     
     return output

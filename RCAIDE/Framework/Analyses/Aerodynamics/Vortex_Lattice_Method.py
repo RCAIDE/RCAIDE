@@ -62,17 +62,10 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.process                                                = Process()
         self.process.initialize                                     = Process()  
                     
-        # correction factors              
+        # correction factors               
         self.settings.use_surrogate                                 = True  
-        self.settings.propeller_wake_model                          = False 
-        self.settings.discretize_control_surfaces                   = True
-        self.settings.model_fuselage                                = False
-        self.settings.trim_aircraft                                 = True
-        self.settings.aileron_flag                                  = False
-        self.settings.rudder_flag                                   = False
-        self.settings.flap_flag                                     = False
-        self.settings.elevator_flag                                 = False
-        self.settings.slat_flag                                     = False   
+        self.settings.propeller_wake_model                          = False  
+        self.settings.model_fuselage                                = False   
         self.settings.number_of_spanwise_vortices                   = 15
         self.settings.number_of_chordwise_vortices                  = 5
         self.settings.wing_spanwise_vortices                        = None
@@ -80,7 +73,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.settings.fuselage_spanwise_vortices                    = None
         self.settings.fuselage_chordwise_vortices                   = None  
         self.settings.spanwise_cosine_spacing                       = True
-        self.settings.vortex_distribution                           = Data()  
+        self.settings.vortex_distribution                           = Data()
         self.settings.leading_edge_suction_multiplier               = 1.0  
         self.settings.use_VORLAX_matrix_calculation                 = False
         self.settings.floating_point_precision                      = np.float32     
@@ -99,7 +92,8 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.training.angle_purtubation                             = 10 * Units.deg          
         self.training.speed_purtubation                             = 5  
         self.training.rate_purtubation                              = 10 * Units.deg / Units.sec   
-        self.training.control_surface_purtubation                   = 10 * Units.deg   
+        self.training.control_surface_purtubation                   = 10 * Units.deg         
+        self.training.center_of_gravity_purtubation                 = 0.1   
         self.training.sideslip_angle                                = np.array([10  , 5.0 ]) * Units.deg
         self.training.aileron_deflection                            = np.array([10  , 5.0 ]) * Units.deg
         self.training.elevator_deflection                           = np.array([10  , 5.0 ]) * Units.deg   
@@ -133,7 +127,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute                                                     = Process() 
         compute.lift                                                = Process() 
         compute.lift.inviscid_wings                                 = None 
-        compute.lift.fuselage                                       = Common.Lift.fuselage_correction  
+        compute.lift.fuselage                                       = Common.Lift.fuselage_correction
         compute.drag                                                = Process()
         compute.drag.parasite                                       = Process()
         compute.drag.parasite.wings                                 = Process_Geometry('wings')
@@ -145,29 +139,27 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.parasite.nacelles                              = Common.Drag.parasite_drag_nacelle
         compute.drag.parasite.pylons                                = Common.Drag.parasite_drag_pylon
         compute.drag.parasite.total                                 = Common.Drag.parasite_total
-        compute.drag.induced                                        = Common.Drag.induced_drag
-        compute.drag.cooling                                        = Process()
-        compute.drag.cooling.total                                  = Common.Drag.cooling_drag        
-        compute.drag.compressibility                                = Process() 
-        compute.drag.compressibility.total                          = Common.Drag.compressibility_drag
+        compute.drag.induced                                        = Common.Drag.induced_drag 
+        compute.drag.cooling                                        = Common.Drag.cooling_drag        
+        compute.drag.compressibility                                = Common.Drag.compressibility_drag 
         compute.drag.miscellaneous                                  = Common.Drag.miscellaneous_drag 
-        compute.drag.spoiler                                        = Common.Drag.spoiler_drag
+        compute.drag.form                                           = Common.Drag.form_drag  
+        compute.drag.wave                                           = Common.Drag.wave_drag
+        compute.drag.trim                                           = Common.Drag.trim_drag 
         compute.drag.total                                          = Common.Drag.total_drag
-        compute.stability                                           = Process()
-        compute.stability.dynamic_modes                             = RCAIDE.Library.Methods.Stability.compute_dynamic_flight_modes  
         self.process.compute                                        = compute
         
 
-    def initialize(self):  
-        use_surrogate   = self.settings.use_surrogate  
-
+    def initialize(self): 
+        
+        use_surrogate   = self.settings.use_surrogate   
         # If we are using the surrogate
         if use_surrogate == True: 
-            # sample training data
+            # train training data
             train_VLM_surrogates(self)
 
             # build surrogate
-            build_VLM_surrogates(self)  
+            build_VLM_surrogates(self)
     
         # build the evaluation process
         compute   =  self.process.compute                  

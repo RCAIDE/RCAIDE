@@ -93,7 +93,7 @@ def LTO_emisions_mission_setup(analyses):
     segment.velocity                                    = 157.0 * Units['knots']  
     segment.altitude                                    = 5.0   
     segment.throttle                                    = 1
-    segment.time                                        = 0.7 *  Units.minutes
+    segment.time                                        = 0.7 *  Units.minutes 
     mission.append_segment(segment)
  
     return mission   
@@ -132,7 +132,7 @@ def base_analysis(vehicle):
     #  Weights
     weights = RCAIDE.Framework.Analyses.Weights.Conventional()
     weights.vehicle = vehicle 
-    weights.settings.FLOPS.complexity                                        = 'Complex'      
+    weights.settings.FLOPS.fidelity                                          = 'Complex'      
     weights.settings.weight_correction_additions.empty.structural.paint      = 450 
     weights.settings.weight_correction_additions.operational_items.ETOPS     = 7.7 * vehicle.passengers
     weights.settings.weight_correction_factors.empty.structural.landing_gear = 1.1  
@@ -143,11 +143,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle = vehicle 
-    aerodynamics.settings.number_of_spanwise_vortices   = 40
-    aerodynamics.settings.number_of_chordwise_vortices  = 2 
-    aerodynamics.settings.drag_reduction_factors.parasite_drag  = 0.1
-    aerodynamics.training.Mach                          = np.array([0.1  ,0.3,  0.5,  0.65 , 0.85 , 0.9])
+    aerodynamics.vehicle = vehicle    
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------

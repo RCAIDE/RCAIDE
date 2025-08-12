@@ -28,6 +28,7 @@ def vehicle_setup():
     vehicle.mass_properties.takeoff             = 2550. * Units.pounds 
     vehicle.mass_properties.max_zero_fuel       = 1680  * Units.pounds 
     vehicle.mass_properties.max_fuel            = 152.407
+    vehicle.mass_properties.max_payload         = 910  * Units.pounds 
     vehicle.mass_properties.cargo               = 0. 
                                                
     # envelope properties                       
@@ -46,13 +47,31 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------
     # ##################################################### Landing Gear ################################################################    
     #------------------------------------------------------------------------------------------------------------------------------------ 
-    main_gear                                   = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear()
-    main_gear.strut_length                      = 12. * Units.inches
-    vehicle.append_component(main_gear) 
-    nose_gear                                   = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()    
-    nose_gear.strut_length                      = 6. * Units.inches 
-    vehicle.append_component(nose_gear)
+    main_gear                                = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear() 
+    main_gear.tire_diameter                  = 6  *  Units.inches 
+    main_gear.rim_diameter                   = 3  *  Units.inches 
+    main_gear.tire_width                     = 6  *  Units.inches 
+    main_gear.strut_length                   = 12  * Units.ft 
+    main_gear.wheels                         = 4   
+    main_gear.number_of_gear_types_in_tandem = 1
+    main_gear.number_of_wheels_in_gear_type  = 2
+    main_gear.fairing                        = True
+    main_gear.symmetric                      = True
+    main_gear.gear_extended                  = True
+    vehicle.append_component(main_gear)  
 
+    nose_gear                                = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()   
+    nose_gear.tire_diameter                  =  5 *  Units.inches   
+    nose_gear.rim_diameter                   =  3 *  Units.inches 
+    nose_gear.tire_width                     =  5 *  Units.inches 
+    nose_gear.strut_length                   =  6.* Units.ft 
+    nose_gear.wheels                         = 2  
+    nose_gear.fairing                        = True 
+    nose_gear.gear_extended                  = True
+    nose_gear.number_of_gear_types_in_tandem = 1
+    nose_gear.number_of_wheels_in_gear_type  = 2    
+    vehicle.append_component(nose_gear)
+    
 
     #------------------------------------------------------------------------------------------------------------------------------------
     # ######################################################## Wings ####################################################################  
@@ -124,7 +143,9 @@ def vehicle_setup():
     wing.vertical                               = False
     wing.symmetric                              = True
     wing.high_lift                              = False 
-    wing.dynamic_pressure_ratio                 = 0.9
+    wing.dynamic_pressure_ratio                 = 0.9 
+    wing_airfoil                                = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil() 
+    wing.append_airfoil(wing_airfoil)    
      
     
     elevator                              = RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator()
@@ -410,7 +431,6 @@ def configs_setup(vehicle):
     config                                                     = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag                                                 = 'takeoff' 
     config.wings['main_wing'].control_surfaces.flap.deflection = 20. * Units.deg
-    config.V2_VS_ratio                                         = 1.21
     config.maximum_lift_coefficient                            = 2.
     
     configs.append(config)

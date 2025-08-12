@@ -123,9 +123,7 @@ def generate_V_n_diagram(vehicle,analyses,altitude,delta_ISA):
     # Computing atmospheric conditions
     # ----------------------------------------------
     atmo_values       = atmo.compute_values(altitude,delta_ISA)
-    SL_atmo_values    = atmo.compute_values(0,delta_ISA)
-    conditions        = Results()
-
+    SL_atmo_values    = atmo.compute_values(0,delta_ISA) 
     rho               = atmo_values.density
     sea_level_rho     = SL_atmo_values.density
     sea_level_gravity = atmo.planet.sea_level_gravity
@@ -469,7 +467,6 @@ def base_analysis(vehicle):
     aerodynamics                                      = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics.vehicle                              = vehicle
     aerodynamics.settings.use_surrogate               = False
-    aerodynamics.settings.trim_aircraft               = False
     analyses.append(aerodynamics)
 
 

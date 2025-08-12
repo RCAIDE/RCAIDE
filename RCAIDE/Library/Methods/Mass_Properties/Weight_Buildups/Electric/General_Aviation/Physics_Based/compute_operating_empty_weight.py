@@ -8,7 +8,6 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Data ,  Units 
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common import compute_payload_weight
-from RCAIDE.Library.Attributes.Materials.Aluminum import Aluminum
 import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.General_Aviation.FLOPS as FLOPS
 # python imports 
 import numpy as np
@@ -25,9 +24,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
 
         Also creates system components and assigns weights to them. These are appended to the vehicle.
     """
-
-    if settings == None:
-        W_factors = Data() 
 
     # Set the factors
     if not hasattr(settings, 'weight_reduction_factors'):
@@ -79,19 +75,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     for item in W_systems.keys():
         W_systems[item] *= (1. - W_factors.systems)
         
-    ##-------------------------------------------------------------------------------   
-    # Cabin
-    ##------------------------------------------------------------------------------- 
-    for fuselage in vehicle.fuselages:
-        if len(fuselage.cabins) == 0:
-            print("No cabin defined for weights method. Defining default cabin.")
-            cabin =  RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
-            cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total)
-            fuselage.append_cabin(cabin)
-        else: 
-            for cabin in fuselage.cabins:
-                cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
-    
+      
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
     ##-------------------------------------------------------------------------------
@@ -115,7 +99,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     W_energy_network.W_nacelle         = 0 
     W_energy_network.W_battery         = 0
     W_energy_network.W_motor           = 0
-    number_of_engines                  = 0 
+    number_of_engines                  = 0
     W_energy_network_cumulative        = 0 
 
     for network in vehicle.networks: 
@@ -126,6 +110,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
             # electrical payload 
             try: W_systems.W_electrical  += bus.payload.mass_properties.mass * Units.kg
             except: pass
+     
             # Avionics Weight 
             W_systems.W_avionics  += bus.avionics.mass_properties.mass      
     
@@ -159,10 +144,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     output.empty.propulsion.thrust_reversers    = W_energy_network.W_thrust_reverser
     output.empty.propulsion.miscellaneous       = W_energy_network.W_engine_controls + W_energy_network.W_starter
     output.empty.propulsion.fuel_system         = W_energy_network.W_fuel_system
-
-    ##-------------------------------------------------------------------------------                 
-    # Wing Weights 
-    ##-------------------------------------------------------------------------------  
+   
     num_main_wings      = 0
     W_main_wing        = 0.0
     W_tail_horizontal  = 0.0
@@ -173,8 +155,8 @@ def compute_operating_empty_weight(vehicle, settings=None):
     
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body):  # Main wing
-            complexity = settings.FLOPS.complexity
-            W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, complexity, settings, num_main_wings)
+            fidelity = settings.FLOPS.fidelity
+            W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
 
             # Apply weight factor
             W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)

@@ -59,6 +59,9 @@ def compute_operating_items_weight(vehicle):
             N/A
     """ 
     NENG =  0 
+    NPF  = vehicle.first_class_passengers      
+    NPB  = vehicle.business_class_passengers   
+    NPT  = vehicle.economy_class_passengers  
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet):
@@ -75,23 +78,11 @@ def compute_operating_items_weight(vehicle):
     for network in  vehicle.networks:
         for fuel_line in network.fuel_lines:
             for _ in fuel_line.fuel_tanks:
-                number_of_tanks += 1 
-    if number_of_tanks == 0:
-        number_of_tanks = 5    
+                number_of_tanks += 1  
     
-    WUF             = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
-    WOIL            = 0.082 * NENG * THRUST ** 0.65  # engine oil weight
-        
-    for wing in  vehicle.wings: 
-        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            NPF = vehicle.passengers / 20.
-            NPB = vehicle.passengers / 10.
-            NPT = vehicle.passengers - NPF - NPB
-            
-    vehicle.NPF = NPF
-    vehicle.NPB = NPB
-    vehicle.NPT = NPT
-    WSRV        = (5.164 * NPF + 3.846 * NPB + 2.529 * NPT) * (DESRNG / VMAX) ** 0.255  # passenger service weight
+    WUF   = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
+    WOIL  = 0.082 * NENG * THRUST ** 0.65  # engine oil weight 
+    WSRV  = (5.164 * NPF + 3.846 * NPB + 2.529 * NPT) * (DESRNG / VMAX) ** 0.255  # passenger service weight
     
     W_cargo = 0
     for cargo_bay in vehicle.cargo_bays:

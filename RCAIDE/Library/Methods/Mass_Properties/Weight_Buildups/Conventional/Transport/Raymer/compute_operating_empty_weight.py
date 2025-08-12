@@ -21,13 +21,6 @@ import numpy as np
 def compute_operating_empty_weight(vehicle, settings=None):
     """
     """
-
-    if settings == None:
-        W_factors = Data()
-        use_max_fuel_weight = True
-    else:
-        use_max_fuel_weight = settings.use_max_fuel_weight
-
     # Set the factors
     if not hasattr(settings, 'weight_reduction_factors'):
         W_factors              = Data()
@@ -68,19 +61,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     for item in W_systems.keys():
         W_systems[item] *= (1. - W_factors.systems) 
 
-    ##-------------------------------------------------------------------------------   
-    # Cabin
-    ##------------------------------------------------------------------------------- 
-    for fuselage in vehicle.fuselages:
-        if len(fuselage.cabins) == 0:
-            print("No cabin defined for weights method. Defining default cabin.")
-            cabin =  RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
-            cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total)
-            fuselage.append_cabin(cabin)
-        else: 
-            for cabin in fuselage.cabins:
-                cabin.mass_properties.mass = (W_oper.total + payload.passengers +  W_systems.total) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
-    
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
     ##-------------------------------------------------------------------------------
@@ -244,16 +224,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total 
     output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
     output.max_takeoff          = vehicle.mass_properties.max_takeoff
-    total_fuel_weight           = vehicle.mass_properties.max_takeoff - output.zero_fuel_weight
-    
-    # assume fuel is equally distributed in fuel tanks
-    if use_max_fuel_weight:
-        for network in vehicle.networks: 
-            for fuel_line in network.fuel_lines:  
-                for fuel_tank in fuel_line.fuel_tanks:
-                    fuel_weight =  total_fuel_weight/number_of_tanks  
-                    fuel_tank.fuel.mass_properties.mass = fuel_weight
-                    
+  
     nose_landing_gear = False
     main_landing_gear =  False
     for LG in vehicle.landing_gears:
