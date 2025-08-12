@@ -70,6 +70,7 @@ class Athena_Vortex_Lattice(Aerodynamics):
         settings.flow_symmetry.xz_plane              = 0    # Symmetry across the xz-plane, y=0
         settings.flow_symmetry.xy_parallel           = 0    # Symmetry across the z=z_symmetry_plane plane
         settings.flow_symmetry.z_symmetry_plane      = 0.0
+        settings.vortex_distribution                 = None
          
         settings.number_of_control_surfaces          = 0 
         settings.filenames                           = Data()
@@ -131,7 +132,7 @@ class Athena_Vortex_Lattice(Aerodynamics):
         compute                                    = Process() 
         compute.lift                               = Process() 
         compute.lift.inviscid_wings                = None 
-        compute.lift.fuselage                      = Common.Lift.fuselage_correction 
+        compute.lift.fuselage                      = Common.Lift.fuselage_correction
         compute.drag                               = Process()
         compute.drag.parasite                      = Process()
         compute.drag.parasite.wings                = Process_Geometry('wings')
@@ -142,15 +143,15 @@ class Athena_Vortex_Lattice(Aerodynamics):
         compute.drag.parasite.booms.boom           = Common.Drag.parasite_drag_fuselage 
         compute.drag.parasite.nacelles             = Common.Drag.parasite_drag_nacelle
         compute.drag.parasite.pylons               = Common.Drag.parasite_drag_pylon
-        compute.drag.parasite.total                = Common.Drag.parasite_total
-        compute.drag.induced                       = Common.Drag.induced_drag
-        compute.drag.cooling                       = Process()
-        compute.drag.cooling.total                 = Common.Drag.cooling_drag        
-        compute.drag.compressibility               = Process() 
-        compute.drag.compressibility.total         = Common.Drag.compressibility_drag
+        compute.drag.parasite.total                = Common.Drag.parasite_total 
+        compute.drag.induced                       = Common.Drag.induced_drag 
+        compute.drag.cooling                       = Common.Drag.cooling_drag        
+        compute.drag.compressibility               = Common.Drag.compressibility_drag 
         compute.drag.miscellaneous                 = Common.Drag.miscellaneous_drag 
-        compute.drag.spoiler                       = Common.Drag.spoiler_drag
-        compute.drag.total                         = Common.Drag.total_drag
+        compute.drag.form                          = Common.Drag.form_drag  
+        compute.drag.wave                          = Common.Drag.wave_drag
+        compute.drag.trim                          = Common.Drag.trim_drag 
+        compute.drag.total                         = Common.Drag.total_drag        
         self.process.compute                       = compute
         
 

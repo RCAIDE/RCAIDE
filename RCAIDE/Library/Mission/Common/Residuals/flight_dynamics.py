@@ -135,8 +135,7 @@ def flight_dynamics(segment):
         ang_acc_i = np.dot(D,omega)
         segment.state.conditions.frames.inertial.angular_acceleration_vector = ang_acc_i 
         segment.state.conditions.frames.wind.angular_acceleration_vector     = orientation_product(T_inertia2wind,ang_acc_i )
-
-    MT_i      = segment.state.conditions.frames.inertial.total_moment_vector    
+ 
     ang_acc_i = segment.state.conditions.frames.inertial.angular_acceleration_vector 
     MT_w      = segment.state.conditions.frames.wind.total_moment_vector
 
@@ -147,7 +146,7 @@ def flight_dynamics(segment):
     if ground_seg_flag:
         vf = segment.velocity_end
         if vf == 0.0: vf = 0.01 
-        segment.state.residuals.force_x[:,0] = FT_w[1:,0]/m[1:,0] - a_w[1:,0] 
+        segment.state.residuals.force_x[:,0] = FT_i[1:,0]/m[1:,0] - a_i[1:,0] 
         segment.state.residuals.final_velocity_error = (v[-1,0] - vf)
     else: 
         if segment.flight_dynamics.force_x: 

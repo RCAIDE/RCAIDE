@@ -45,19 +45,19 @@ def main():
     results = missions.base_mission.evaluate() 
 
     elevator_deflection        = results.segments.cruise.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg
-    elevator_deflection_true   = -2.553335618203646
+    elevator_deflection_true   = -2.018772944377962
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
     print('Error1: ',elevator_deflection_diff)
     assert np.abs(elevator_deflection_diff/elevator_deflection_true) < 5e-3
 
     aileron_deflection        = results.segments.cruise.conditions.control_surfaces.aileron.deflection[0,0] / Units.deg
-    aileron_deflection_true   = 9.63371446189707
+    aileron_deflection_true   = 9.630686598302654
     aileron_deflection_diff   = np.abs(aileron_deflection - aileron_deflection_true)
     print('Error2: ',aileron_deflection_diff)
     assert np.abs(aileron_deflection_diff/aileron_deflection_true) < 5e-3
 
     rudder_deflection        = results.segments.cruise.conditions.control_surfaces.rudder.deflection[0,0] / Units.deg
-    rudder_deflection_true   = -12.220252060588646
+    rudder_deflection_true   = -12.221227727988088
     rudder_deflection_diff   = np.abs(rudder_deflection - rudder_deflection_true)
     print('Error3: ',rudder_deflection_diff)
     assert np.abs(rudder_deflection_diff/rudder_deflection_true) < 5e-3    
@@ -76,8 +76,6 @@ def base_analysis(vehicle, configs):
 
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.vehicle                             = vehicle
-    geometry.settings.overwrite_reference        = True
-    geometry.settings.update_wing_properties     = True
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
@@ -87,18 +85,15 @@ def base_analysis(vehicle, configs):
     weights.vehicle = vehicle
     weights.method  = "FLOPS"
     weights.aircraft_type = "General_Aviation"
-    weights.settings.FLOPS.complexity = "Simple"
+    weights.settings.FLOPS.fidelity   = "Simple"
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     # ------------------------------------------------------------------ 
     
-    aerodynamics                                      = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
-    aerodynamics.vehicle                              = vehicle      
-    aerodynamics.settings.model_fuselage               = False                
-    #aerodynamics.settings.model_nacelle                = True    
-    # aerodynamics.stability_derivatives.CM_0         = 0.09 # guess 
+    aerodynamics                                    = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
+    aerodynamics.vehicle                            = vehicle          
     aerodynamics.stability_derivatives.CX_alpha     = 0.0001
     aerodynamics.stability_derivatives.CX_u         =  0.0001
     aerodynamics.stability_derivatives.CY_beta      = -0.195398
@@ -126,9 +121,7 @@ def base_analysis(vehicle, configs):
     aerodynamics.stability_derivatives.CM_delta_f   =  0.0001  
     analyses.append(aerodynamics) 
      
-    stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
-    stability.settings.model_fuselage               = True                
-    #stability.settings.model_nacelle                = True      
+    stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()   
     stability.vehicle                               = vehicle
     analyses.append(stability)
 
@@ -246,23 +239,28 @@ def sideslip_cruise_mission_setup(analyses):
     segment.analyses.extend( analyses.base )   
     segment.altitude                                                            = 1000. * Units.feet
     segment.air_speed                                                           = 50.00
-    segment.sideslip_angle                                                      = -10.0 * Units.deg   
+    segment.sideslip_angle                                                      = 10.0 * Units.deg   
     segment.analyses.stability.settings.unique_segment_surrogate                = True
 
     # equations of motion
+    segment.flight_dynamics.force_x                                             = True    
+    segment.flight_dynamics.force_z                                             = True
     segment.flight_dynamics.force_y                                             = True        
     segment.flight_dynamics.moment_x                                            = True
     segment.flight_dynamics.moment_z                                            = True
+    segment.flight_dynamics.moment_y                                            = True  
     
     # flight controls              
+    segment.assigned_control_variables.throttle.active                          = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]   
+    segment.assigned_control_variables.body_angle.active                        = True       
+    segment.assigned_control_variables.elevator_deflection.active               = True    
+    segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']] 
     segment.assigned_control_variables.aileron_deflection.active                = True    
-    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
-    segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[-10. * Units.degrees]]
+    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']] 
     segment.assigned_control_variables.rudder_deflection.active                 = True    
-    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
-    segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[14 * Units.degrees]] 
-    segment.assigned_control_variables.bank_angle.active                        = True        
-    segment.assigned_control_variables.bank_angle.initial_guess_values          = [[12 * Units.degrees]] 
+    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']] 
+    segment.assigned_control_variables.bank_angle.active                        = True                 
     mission.append_segment(segment)  
 
  

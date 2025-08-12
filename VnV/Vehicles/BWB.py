@@ -31,15 +31,14 @@ def vehicle_setup():
     #   Initialize the Vehicle
     # ------------------------------------------------------------------      
     vehicle                                           = RCAIDE.Vehicle()    
-    vehicle.tag                                       = 'BWB_2050' 
-    vehicle.mass_properties.max_takeoff               = 115000  
-    vehicle.mass_properties.takeoff                   = 115000  
-    vehicle.mass_properties.payload                   = 55800* Units.lbs 
-    vehicle.mass_properties.fuel                      = 25000
-    vehicle.mass_properties.max_payload               = 66960.  * Units.lb    
-    vehicle.mass_properties.min_payload               = 43200.  * Units.lb     
-    vehicle.mass_properties.max_zero_fuel             = 207589.15 * Units.lb 
-    vehicle.mass_properties.max_fuel                  = 38137.  
+    vehicle.tag                                       = 'BWB' 
+    vehicle.mass_properties.max_takeoff               = 280000. * Units.lbs 
+    vehicle.mass_properties.payload                   = 35000
+    vehicle.mass_properties.fuel                      = 55000  
+    vehicle.mass_properties.max_fuel                  = 100000  
+    vehicle.mass_properties.takeoff                   = 280000 * Units.lbs
+    vehicle.mass_properties.max_zero_fuel             = 206000 * Units.lbs 
+    vehicle.mass_properties.max_payload               = 69600.  * Units.lb   
     vehicle.mass_properties.center_of_gravity         = [[27.0, 0, 0]]
     vehicle.flight_envelope.ultimate_load             = 3.75 
     vehicle.flight_envelope.positive_limit_load       = 2.5  
@@ -375,25 +374,30 @@ def vehicle_setup():
     vehicle.append_component(wing)     
      
      
-     
+
+
     # ################################################# Landing Gear #############################################################   
-    # ------------------------------------------------------------------        
-    #  Landing Gear 
-    # ------------------------------------------------------------------  
-    main_gear               = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear()
-    main_gear.tire_diameter = 50.0 * Units.inches
-    main_gear.strut_length  = 5.5 * Units.ft 
-    main_gear.units         = 2    # Number of main landing gear
-    main_gear.wheels        = 4    # Number of wheels on the main landing gear
+
+    main_gear                                = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear() 
+    main_gear.tire_diameter                  = 50.0 *  Units.inches 
+    main_gear.rim_diameter                   = 22   *  Units.inches 
+    main_gear.tire_width                     = 20.0 *  Units.inches 
+    main_gear.strut_length                   = 5.5  * Units.ft 
+    main_gear.wheels                         = 8   
+    main_gear.number_of_gear_types_in_tandem = 2
+    main_gear.number_of_wheels_in_gear_type  = 2  
+    main_gear.symmetric                            = True
     vehicle.append_component(main_gear)  
 
-    nose_gear               = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()       
-    nose_gear.tire_diameter = 40. * Units.inches
-    nose_gear.units         = 1    # Number of nose landing gear
-    nose_gear.wheels        = 2    # Number of wheels on the nose landing gear
-    nose_gear.strut_length  = 9.0 * Units.ft 
+    nose_gear                                = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()   
+    nose_gear.tire_diameter                  = 40. *  Units.inches   
+    nose_gear.rim_diameter                   = 16  *  Units.inches 
+    nose_gear.tire_width                     = 16  *  Units.inches 
+    nose_gear.strut_length                   = 9.0 * Units.ft 
+    nose_gear.wheels                         = 2   
+    nose_gear.number_of_gear_types_in_tandem = 1
+    nose_gear.number_of_wheels_in_gear_type  = 2    
     vehicle.append_component(nose_gear)
-    
     
     
     # ################################################# Energy Network #######################################################          
@@ -510,7 +514,7 @@ def vehicle_setup():
     nacelle.origin                              = [[30, 3, 3]] 
     nacelle.areas.wetted                        = np.pi*nacelle.diameter*nacelle.length
     nacelle_airfoil                             = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    nacelle_airfoil.NACA_4_Series_code          = '0010'
+    nacelle_airfoil.NACA_4_Series_code          = '3409'
     nacelle.append_airfoil(nacelle_airfoil) 
     turbofan1.nacelle                            = nacelle
     
@@ -581,8 +585,8 @@ def configs_setup(vehicle):
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'reverse_thrust' 
     config.networks.fuel.reverse_thrust             = True    
-    config.landing_gears.main_gear.gear_extended    = True
-    config.landing_gears.nose_gear.gear_extended    = True  
+    for landing_gear in  config.landing_gears:
+        landing_gear.gear_extended = True 
     configs.append(config)    
   
     return configs

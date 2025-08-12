@@ -60,8 +60,7 @@ def translate_avl_body(rcaide_body):
         None
 
     Inputs:
-        body.tag                                                       [-]
-        rcaide_wing.lengths.total                                       [meters]    
+        body.tag                                                       [-]  
         rcaide_body.lengths.nose                                        [meters]
         rcaide_body.lengths.tail                                        [meters]
         rcaide_wing.verical                                             [meters]

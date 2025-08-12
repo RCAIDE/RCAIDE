@@ -154,24 +154,21 @@ class Fuselage(Component):
         self.origin                                 = [[0.0,0.0,0.0]]
         self.aerodynamic_center                     = [0.0,0.0,0.0] 
         self.differential_pressure                  = 0.0
-        self.number_of_passengers                   = 1.0  
-        self.layout_of_passenger_accommodations     = None
-
+        self.number_of_passengers                   = 1.0
+        self.supersonic                             = False
+        self.layout_of_passenger_accommodations     = None 
         self.areas                                  = Data()
         self.areas.front_projected                  = 0.0
         self.areas.side_projected                   = 0.0
-        self.areas.wetted                           = 0.0
-        
+        self.areas.wetted                           = 0.0 
         self.effective_diameter                     = 0.0
-        self.width                                  = 0.0  
-        
+        self.width                                  = 0.0   
         self.heights                                = Data() 
         self.heights.maximum                        = 0.0
         self.heights.at_quarter_length              = 0.0
         self.heights.at_three_quarters_length       = 0.0
         self.heights.at_wing_root_quarter_chord     = 0.0
-        self.heights.at_vertical_root_quarter_chord = 0.0 
-        
+        self.heights.at_vertical_root_quarter_chord = 0.0  
         self.lengths                                = Data()     
         self.lengths.nose                           = 0.0
         self.lengths.tail                           = 0.0
@@ -191,8 +188,7 @@ class Fuselage(Component):
         self.vsp_data.xsec_num                      = None  # Number if XSecs in fuselage geom. 
         self.segments                               = Container()
         self.cabins                                 = Container()
-        self.cabin_offset                           = 0.0
-
+        self.cabin_offset                           = 0.0 
         self.vsp_data                               = Data()
         self.vsp_data.xsec_id                       = ''       
         self.vsp_data.shape                         = ''                

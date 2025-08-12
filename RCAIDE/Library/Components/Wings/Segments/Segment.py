@@ -98,7 +98,7 @@ class Segment(Component):
         self.taper                                     = 0.0
         self.root_chord_percent                        = 0.0
         self.dihedral_outboard                         = 0.0
-        self.thickness_to_chord                        = 0.0 
+        self.thickness_to_chord                        = 0.0
         self.sweeps                                    = Data()
         self.sweeps.quarter_chord                      = None
         self.sweeps.leading_edge                       = None 

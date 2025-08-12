@@ -100,8 +100,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
         Properties Used:
             N/A
     """
-     
-    use_max_fuel_weight = settings.use_max_fuel_weight  
     W_factors           = settings.weight_reduction_factors         
     
     Wings = RCAIDE.Library.Components.Wings  
@@ -137,20 +135,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     W_systems = FLOPS.compute_systems_weight(vehicle)
    
     for item in W_systems.keys():
-        W_systems[item] *= (1. - W_factors.systems) 
-
-    ##-------------------------------------------------------------------------------   
-    # Cabin
-    ##------------------------------------------------------------------------------- 
-    for fuselage in vehicle.fuselages:
-        if len(fuselage.cabins) == 0:
-            print("No cabin defined for weights method. Defining default cabin.")
-            cabin =  RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
-            cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total)
-            fuselage.append_cabin(cabin)
-        else: 
-            for cabin in fuselage.cabins:
-                cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
+        W_systems[item] *= (1. - W_factors.systems)   
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
     ##-------------------------------------------------------------------------------
@@ -218,7 +203,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # Pod Weight Weight 
     ##-------------------------------------------------------------------------------         
     WPOD  = 0.0             
-    if settings.FLOPS.complexity == 'Complex': 
+    if settings.FLOPS.fidelity == 'Complex': 
         NENG   = number_of_engines
         WTNFA  = W_energy_network.W_engine + W_energy_network.W_thrust_reverser + W_energy_network.W_starter \
                 + 0.25 * W_energy_network.W_engine_controls + 0.11 * W_systems.W_instruments + 0.13 * W_systems.W_electrical \
@@ -247,8 +232,8 @@ def compute_operating_empty_weight(vehicle, settings=None):
     
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body): 
-            complexity = settings.FLOPS.complexity
-            W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, complexity, settings, num_main_wings)
+            fidelity = settings.FLOPS.fidelity
+            W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
 
             # Apply weight factor
             W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
@@ -297,8 +282,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     output.empty.structural.landing_gear          = landing_gear.main +  landing_gear.nose  
     output.empty.structural.nacelle               = W_energy_network.W_nacelle* (1. - W_factors.nacelle)   
     
-  
-    #print('Paint weight is currently ignored in FLOPS calculations.')
     output.empty.structural.paint = 0  # TODO reconcile FLOPS paint calculations with Raymer and RCAIDE baseline
     output.empty.structural.total = output.empty.structural.wings   + output.empty.structural.fuselage + output.empty.structural.landing_gear\
                                     + output.empty.structural.paint + output.empty.structural.nacelle 
@@ -326,23 +309,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total 
     output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
     output.max_takeoff          = vehicle.mass_properties.max_takeoff
-   
-    
-    # assume fuel is equally distributed in fuel tanks and check 
-    if use_max_fuel_weight:
-        total_fuel_weight = vehicle.mass_properties.max_takeoff - output.zero_fuel_weight
-        for network in vehicle.networks: 
-            for fuel_line in network.fuel_lines:  
-                for fuel_tank in fuel_line.fuel_tanks:
-                    fuel_weight =  total_fuel_weight/number_of_tanks  
-                    fuel_tank.fuel.mass_properties.mass = fuel_weight
-    else:
-        total_fuel_weight = vehicle.mass_properties.fuel
-        for network in vehicle.networks: 
-            for fuel_line in network.fuel_lines:  
-                for fuel_tank in fuel_line.fuel_tanks:
-                    fuel_weight =  total_fuel_weight/number_of_tanks  
-                    fuel_tank.fuel.mass_properties.mass = fuel_weight
                     
     nose_landing_gear = False
     main_landing_gear =  False
