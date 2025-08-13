@@ -61,9 +61,7 @@ def compute_max_lift_coeff(state,settings,geometry):
     #unpack
     max_lift_coefficient_factor = settings.maximum_lift_coefficient_factor
     for wing in vehicle.wings:
-    
-        if not wing.high_lift: continue
-        #geometrical data
+        
         Sref       = vehicle.reference_area
         Swing      = wing.areas.reference
         tc         = wing.thickness_to_chord * 100
