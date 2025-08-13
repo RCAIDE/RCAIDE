@@ -67,8 +67,7 @@ class Aerodynamics(Analysis):
         self.settings.oswald_efficiency_factor                           = None
         self.settings.span_efficiency                                    = None
 
-        self.settings.supersonic                                         = Data()
-        self.settings.supersonic.peak_mach_number                        = 1.04  
+        self.settings.supersonic                                         = Data() 
         self.settings.supersonic.begin_drag_rise_mach_number             = 0.95
         self.settings.supersonic.end_drag_rise_mach_number               = 1.2    
         self.settings.supersonic.fuselage_parasite_drag_begin_blend_mach = 0.91
