@@ -116,13 +116,12 @@ def form_drag(state,settings,geometry):
     conditions       = state.conditions   
     Mach             = conditions.freestream.mach_number 
     alpha            = conditions.aerodynamics.angles.alpha 
+    high_mach_cutoff = settings.supersonic.end_drag_rise_mach_number 
+    low_mach_cutoff  = settings.supersonic.begin_drag_rise_mach_number 
     CD_form          = 0
-
-    high_mach_cutoff = settings.supersonic.end_drag_rise_mach_number
-    peak_mach        = settings.supersonic.peak_mach_number
-
+    
     # supersonic smoothing 
-    sup_spline = Cubic_Spline_Blender(0.95,1.1) 
+    sup_spline = Cubic_Spline_Blender(low_mach_cutoff,high_mach_cutoff) 
     sup_h00    = lambda M:sup_spline.compute(M)
     
     for wing in geometry.wings:
