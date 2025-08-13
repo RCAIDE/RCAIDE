@@ -276,6 +276,7 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing):
                     volume ,   inner_segment.tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
 
 
+                fuel_tank.aspect_ratio = fuel_tank.length/fuel_tank.outer_diameter
                 fuel_tank.internal_volume = volume 
                 fuel_tank.mass_properties.fuel                  = volume * fuel_tank.fuel.density  
                 fuel_tank.mass_properties.center_of_gravity     = [[fuel_tank.length /2, 0, fuel_tank.outer_diameter / 2]]             

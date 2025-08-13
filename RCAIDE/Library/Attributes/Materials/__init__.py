@@ -26,6 +26,7 @@ from .Solid                       import Solid
 from .Acrylic                     import Acrylic
 from .Aluminum                    import Aluminum
 from .Aluminum_Alloy              import Aluminum_Alloy
+from .Aluminum_2219               import Aluminum_2219
 from .Bidirectional_Carbon_Fiber  import Bidirectional_Carbon_Fiber
 from .CrossLinked_Polyethylene    import CrossLinked_Polyethylene
 from .Copper                      import Copper
@@ -41,3 +42,8 @@ from .Polyimide                   import Polyimide
 from .Steel                       import Steel
 from .Titanium                    import Titanium
 from .Unidirectional_Carbon_Fiber import Unidirectional_Carbon_Fiber
+from .AGL                         import AGL
+from .VCMLI                       import VCMLI
+from .VGMLI                       import VGMLI
+from .Polyurethane_Foam           import Polyurethane_Foam
+from .Stainless_Steel_304         import Stainless_Steel_304

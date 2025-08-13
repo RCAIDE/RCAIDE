@@ -7,7 +7,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+import RCAIDE
+from pylab import fill
 from .Propellant import Propellant 
+
+import os
+import numpy as np
+from scipy.interpolate  import interp1d 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Liquid Hydrogen
@@ -86,3 +92,33 @@ class Liquid_Hydrogen(Propellant):
         self.fuel_surrogate_S1             = {} # [-] Mole fractions of fuel surrogate species
         self.kinetic_mechanism             = '' # [-] Kinetic mechanism for fuel surrogate species
         self.oxidizer                      = ''       
+
+        self.materials_properties = self.liquid_hydrogen_properties()
+
+    def liquid_hydrogen_properties(self, T, prop_name):
+        """Return property value for a given temperature (K)."""
+        data = load_hydrogen_properties()
+        temps = np.array(data["Temperature (K)"], dtype=float)
+        props = np.array(data[prop_name], dtype=float)
+        interp = interp1d(temps, props, kind="linear", fill_value=None)
+        
+        return interp(T)
+
+def load_hydrogen_properties(): 
+    '''Load        
+    Assumptions:
+        Ideal gas
+        
+    Source:
+        
+    Args: 
+        None
+        
+    Returns:
+        battery_data: raw data from battery   [unitless]
+    '''    
+    ospath    = os.path.abspath(__file__)
+    separator = os.path.sep
+    rel_path  = os.path.dirname(ospath) + separator     
+
+    return RCAIDE.load(rel_path+ 'H2_properties.res')
