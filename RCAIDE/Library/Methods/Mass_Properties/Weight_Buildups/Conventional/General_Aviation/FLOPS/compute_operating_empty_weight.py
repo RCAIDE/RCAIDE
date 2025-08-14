@@ -20,12 +20,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     """"Computes the operating empty weight of a vehicle 
     """
 
-    if settings == None:
-        W_factors = Data()
-        use_max_fuel_weight = True
-    else:
-        use_max_fuel_weight = settings.use_max_fuel_weight
-
     # Set the factors
     if not hasattr(settings, 'weight_reduction_factors'):
         W_factors              = Data()
@@ -80,15 +74,13 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # Cabin
     ##------------------------------------------------------------------------------- 
     for fuselage in vehicle.fuselages:
-        if len(fuselage.cabins) == 0:
-            print("No cabin defined for weights method. Defining default cabin.")  
+        if len(fuselage.cabins) == None:
             cabin =  RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
-            cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total)
-            fuselage.append_cabin(cabin)
+            cabin.mass_properties.mass = (W_oper.total + payload.passengers + output.W_systems)
+            vehicle.fuselage.append_cabin = RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
         else: 
             for cabin in fuselage.cabins:
-                cabin.mass_properties.mass = (W_oper.total + payload.passengers + W_systems.total) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
-    
+                cabin.mass_properties.mass = (W_oper.total + payload.passengers + output.W_systems) * (cabin.number_of_passengers / fuselage.number_of_passengers )      
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
     ##-------------------------------------------------------------------------------
@@ -131,7 +123,9 @@ def compute_operating_empty_weight(vehicle, settings=None):
         number_of_engines                   += W_propulsion.number_of_engines
         number_of_tanks                     += W_propulsion.number_of_fuel_tanks  
         for propulsor in network.propulsors:
-            propulsor.mass_properties.mass = W_energy_network_total / number_of_engines 
+            propulsor.mass_properties.mass = W_energy_network_total / number_of_engines
+        
+        ## CHECK IF THIS IS NEEDED
 
         # Electric-Powered Propulsors  
         for bus in network.busses: 
@@ -156,7 +150,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # Pod Weight Weight 
     ##-------------------------------------------------------------------------------         
     WPOD  = 0.0             
-    if settings.FLOPS.complexity == 'Complex': 
+    if settings.FLOPS.fidelity == 'Complex': 
         NENG   = number_of_engines
         WTNFA  = W_energy_network.W_engine + W_energy_network.W_thrust_reverser + W_energy_network.W_starter \
                 + 0.25 * W_energy_network.W_engine_controls + 0.11 * W_systems.W_instruments + 0.13 * W_systems.W_electrical \
@@ -188,8 +182,8 @@ def compute_operating_empty_weight(vehicle, settings=None):
     
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body): # Main wing
-            complexity = settings.FLOPS.complexity
-            W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, complexity, settings, num_main_wings)
+            fidelity = settings.FLOPS.fidelity
+            W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
 
             # Apply weight factor
             W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
@@ -271,15 +265,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     ##-------------------------------------------------------------------------------                 
     # Create and assign miscellaneous components and weights to aircraft
     ##-------------------------------------------------------------------------------
-
-    # assume fuel is equally distributed in fuel tanks. Distribute mass among fuel tanks
-    if use_max_fuel_weight:
-        for network in vehicle.networks: 
-            for fuel_line in network.fuel_lines:  
-                for fuel_tank in fuel_line.fuel_tanks:
-                    fuel_weight =  total_fuel_weight/number_of_tanks  
-                    fuel_tank.fuel.mass_properties.mass = fuel_weight
-
     # Assign landing gear weights to landing gear components
     nose_landing_gear = False
     main_landing_gear =  False

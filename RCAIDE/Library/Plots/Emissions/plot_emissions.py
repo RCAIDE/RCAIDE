@@ -17,11 +17,11 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------   
 ## @ingroup Library-Plots-Performance-Emissions 
 def plot_emissions(results,
-                             save_figure = False,
-                             show_legend = True,
-                             save_filename = "Emissions" ,
-                             file_type = ".png",
-                             width = 11, height = 5):
+                    save_figure = False,
+                    show_legend = True,
+                    save_filename = "Emissions" ,
+                    file_type = ".png",
+                    width = 11, height = 5):
     """
     Generate plots showing CO2-equivalent emissions and emission indexes for various fuel species over mission segments.
 

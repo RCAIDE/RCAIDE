@@ -34,12 +34,12 @@ def plot_3d_vehicle(vehicle,
                     top_view                    = False, 
                     side_view                   = False, 
                     front_view                  = False, 
-                    camera_eye_x                = -1.5,
-                    camera_eye_y                = -1.5,
-                    camera_eye_z                = 1.0,
+                    camera_eye_x                = - 0.75, # -1.5,
+                    camera_eye_y                = - 0.75,#-1.5,
+                    camera_eye_z                =  0.75 ,# 1.0,
                     camera_center_x             = 0.,
                     camera_center_y             = 0.,
-                    camera_center_z             = 0,
+                    camera_center_z             = -0.5,
                     wing_color                  = 'greys', 
                     fuselage_color              = 'teal', 
                     nacelle_color               = 'darkmint', 
@@ -134,24 +134,24 @@ def plot_3d_vehicle(vehicle,
         camera_center_z  = camera_center_z 
 
     else: 
-        camera_eye_x  = -1.5 
-        camera_eye_y  = -1.5 
-        camera_eye_z  = .8
+        camera_eye_x  = - 0.5 
+        camera_eye_y  = - 0.5 
+        camera_eye_z  =   0.5 
         camera_center_x  = camera_center_x 
         camera_center_y  = camera_center_y 
         camera_center_z  = camera_center_z
-        
-        
+
+
     print("\nPlotting vehicle") 
     camera = dict(
         eye=dict(x=camera_eye_x, y=camera_eye_y, z=camera_eye_z), 
         center=dict(x=camera_center_x, y=camera_center_y, z=camera_center_z)
     )   
-    
+
     plot_data     = []
-    
+
     plot_data = generate_3d_vehicle_geometry_data(plot_data,
-                                                    vehicle,
+                                                  vehicle,
                                                     alpha,   
                                                     wing_color,
                                                     fuselage_color,
@@ -165,14 +165,14 @@ def plot_3d_vehicle(vehicle,
                                                     rotor_alpha,
                                                     overwrite_geometry, 
                                                     )
-    
+
 
     fig = go.Figure(data=plot_data)
-    
+
     # Use update_layout instead of update_scenes
     fig.update_layout(
-        width=1500,
-        height=1500,
+        width=1400,
+        height=1400,
         scene=dict( 
             xaxis=dict(backgroundcolor="grey", gridcolor="white", showbackground=show_axis,
                        zerolinecolor="white", range=[0, 2 * axis_limit], visible=show_axis),
@@ -180,10 +180,11 @@ def plot_3d_vehicle(vehicle,
                        zerolinecolor="white", range=[-axis_limit, axis_limit], visible=show_axis),
             zaxis=dict(backgroundcolor="grey", gridcolor="white", showbackground=show_axis,
                        zerolinecolor="white", range=[-axis_limit , axis_limit ], visible=show_axis)
-        ),
+            ),
         scene_camera=camera
     )
     
+    fig.update_layout(scene_aspectmode='cube')
     fig.update_coloraxes(showscale=False)   
     fig.update_traces(opacity=alpha)
 
@@ -191,11 +192,11 @@ def plot_3d_vehicle(vehicle,
     save_filename = os.path.join(sys.path[0], save_filename)
     if save_figure:
         fig.write_image(save_filename + ".png")
-        
+
     if show_figure:
         fig.write_html( save_filename + '.html', auto_open=True) 
-    
-    return     
+
+    return      
 
 def generate_3d_vehicle_geometry_data(plot_data,
                                       vehicle, 
@@ -219,13 +220,13 @@ def generate_3d_vehicle_geometry_data(plot_data,
     ----------
     plot_data : list
         Collection of plot vertices to be rendered
-        
+
     vehicle : Vehicle
         RCAIDE vehicle data structure containing all component geometries
-        
+
     alpha : float, optional
         Transparency value between 0 and 1 (default: 1.0)
-        
+
     axis_limit : float, optional
         Minimum x-axis plot limit (default: 20) 
 
@@ -233,22 +234,22 @@ def generate_3d_vehicle_geometry_data(plot_data,
     -------
     plot_data : list
         Updated collection of plot vertices
-        
+
     min_x_axis_limit : float
         Updated minimum x-axis limit
-        
+
     max_x_axis_limit : float
         Updated maximum x-axis limit
-        
+
     min_y_axis_limit : float
         Updated minimum y-axis limit
-        
+
     max_y_axis_limit : float
         Updated maximum y-axis limit
-        
+
     min_z_axis_limit : float
         Updated minimum z-axis limit
-        
+
     max_z_axis_limit : float
         Updated maximum z-axis limit
 
@@ -261,7 +262,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
         - Booms (using plot_3d_fuselage)
         - Energy networks (using plot_3d_energy_network)
     """ 
-    
+
 
     # -------------------------------------------------------------------------
     # Run Geoemtry Analysis
@@ -274,43 +275,43 @@ def generate_3d_vehicle_geometry_data(plot_data,
     for wing in vehicle.wings:  
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
             if overwrite_geometry: 
-                bwb_wing_planform(wing,overwrite_reference = True)
+                bwb_wing_planform(wing)
                 vehicle.reference_area = wing.areas.reference 
         else:
             if overwrite_geometry:
-                wing_planform(wing,overwrite_reference =  overwrite_geometry) 
+                wing_planform(wing) 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_geometry:
                     vehicle.reference_area = wing.areas.reference
-         
+
     compute_fuel_volume(vehicle, update_max_fuel=False)
-                    
+
     # -------------------------------------------------------------------------
     # PLOT WING
     # ------------------------------------------------------------------------- 
     number_of_airfoil_points = 21
     for wing in vehicle.wings:
         plot_data       = plot_3d_wing(plot_data,wing,number_of_airfoil_points , color_map=wing_color,alpha=wing_alpha) 
-        
+
     # -------------------------------------------------------------------------
     # PLOT FUSELAGE
     # ------------------------------------------------------------------------- 
     for fus in vehicle.fuselages:
         plot_data = plot_3d_fuselage(plot_data,fus,color_map =fuselage_color,alpha=fuselage_alpha)
 
-    
+
     # -------------------------------------------------------------------------
     # PLOT FUSELAGES AND BOOMS
     # ------------------------------------------------------------------------- 
     for boom in vehicle.booms:
         plot_data = plot_3d_fuselage(plot_data,boom,color_map =fuselage_color,alpha=fuselage_alpha) 
-        
+
     # -------------------------------------------------------------------------
     # PLOT ENERGY NETWORK
     # ------------------------------------------------------------------------- 
     number_of_airfoil_points = 11
     for network in vehicle.networks:
         plot_data = plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,nacelle_color, nacelle_alpha, rotor_color, rotor_alpha) 
- 
+
     return plot_data
 
 def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,nacelle_color, nacelle_alpha, rotor_color, rotor_alpha):
@@ -321,13 +322,13 @@ def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,na
     ----------
     plot_data : list
         Collection of plot vertices to be rendered
-        
+
     network : Network
         RCAIDE network data structure containing propulsion components
-        
+
     number_of_airfoil_points : int
         Number of points used to discretize airfoil sections
-        
+
     color_map : str
         Color specification for network components
 
@@ -343,12 +344,12 @@ def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,na
         - Rotors (using plot_3d_rotor)
         - Propellers (using plot_3d_rotor)
     """ 
-    show_axis     = False 
-    save_figure   = False 
-    show_figure   = False
-    save_filename = 'propulsor'
+    show_axis                = False 
+    save_figure              = False 
+    show_figure              = False
+    save_filename            = 'propulsor'
 
-    for propulsor in network.propulsors:   
+    for propulsor in network.propulsors:  
         number_of_airfoil_points = 21
         tessellation             = 24
         if 'nacelle' in propulsor: 
@@ -358,12 +359,12 @@ def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,na
             plot_data = plot_3d_rotor(propulsor.rotor,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,rotor_color,rotor_alpha) 
         if 'propeller' in propulsor:
             plot_data = plot_3d_rotor(propulsor.propeller,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,rotor_color,rotor_alpha) 
-       
+
     for fuel_line in network.fuel_lines:
         plot_fuel_tanks(vehicle, fuel_line,plot_data,tessellation) 
     for bus in network.busses:
         plot_fuel_tanks(vehicle, bus,plot_data,tessellation)
-        
+
     return plot_data
 
 def plot_fuel_tanks(vehicle, distributor,plot_data,tessellation):  
@@ -382,5 +383,8 @@ def plot_fuel_tanks(vehicle, distributor,plot_data,tessellation):
                 plot_3d_integral_fuselage_tank(plot_data, fuselage, fuel_tank, tessellation, color_map = 'oranges') 
             elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
                 plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
+        else:
+            if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
+                plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
+
     return 
-        

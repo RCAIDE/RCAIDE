@@ -76,13 +76,14 @@ def compute_payload_weight(vehicle, W_passenger=195 * Units.lbs, W_baggage=30 * 
         vehicle.mass_properties.cargo = 0.
     if vehicle.mass_properties.payload == 0:
         vehicle.mass_properties.payload  = W_pax + W_bag + vehicle.mass_properties.cargo
-        W_cargo = vehicle.mass_properties.cargo
+        W_cargo = 0
+        for cargo_bay in vehicle.cargo_bays:
+            W_cargo += cargo_bay.cargo.mass_properties.mass    
     else:
         W_cargo = vehicle.mass_properties.payload - W_pax - W_bag
      
     # check if cargo bays defined in aircraft, if none, define one 
-    if len(vehicle.cargo_bays) == 0:
-        print("No cargo bay defined for weights method. Defining default cargo bay")
+    if len(vehicle.cargo_bays) == 0: 
         cargo_bay =  RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
         vehicle.cargo_bays.append(cargo_bay)  
       

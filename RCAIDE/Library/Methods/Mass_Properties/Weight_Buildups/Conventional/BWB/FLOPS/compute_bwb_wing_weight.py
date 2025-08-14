@@ -18,7 +18,7 @@ import  copy
 # ----------------------------------------------------------------------------------------------------------------------
 # Main Wing Weight 
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_wing_weight(vehicle, wing, WPOD, complexity, settings, num_main_wings):
+def compute_wing_weight(vehicle, wing, WPOD, fidelity  , settings, num_main_wings):
     """ Calculate the wing weight based on the flops method. The wing weight consists of:
         - Total Wing Shear Material and Control Surface Weight
         - Total Wing Miscellaneous Items Weight
@@ -56,7 +56,7 @@ def compute_wing_weight(vehicle, wing, WPOD, complexity, settings, num_main_wing
                     -.number_of_engines: number of engines
                     -.sealevel_static_thrust: thrust at sea level               [N]
             WPOD - weight of engine pod including the nacelle                   [kilograms]
-            complexity - "simple" or "complex" depending on the wing weight method chosen
+            fidelity   - "simple" or "complex" depending on the wing weight method chosen
 
        Outputs:
             WWING - wing weight                                          [kilograms]
@@ -102,7 +102,7 @@ def compute_wing_weight(vehicle, wing, WPOD, complexity, settings, num_main_wing
 
    
     NFUSE = 0
-    if complexity == 'Simple': 
+    if fidelity   == 'Simple': 
         for wing in  vehicle.wings:
             if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                 NFUSE   += 1
