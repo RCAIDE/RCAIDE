@@ -91,6 +91,6 @@ def compute_fuel_volume(vehicle, update_max_fuel=True):
             for fuel_tank in fuel_line.fuel_tanks: 
                 fuel_tank.internal_volume = 0
                 volume = fuel_tank.compute_volume(wings,fuselages)
-                total_fuel_volume     += volume
+                #total_fuel_volume     += volume
                 total_fuel_mass       +=fuel_tank.mass_properties.fuel
     vehicle.total_fuel_volume = total_fuel_volume

@@ -1,12 +1,14 @@
 
+from re import I
 import numpy as np
 from scipy.optimize import minimize
 
+from RCAIDE.Framework.Core import Units
 import RCAIDE
 
 
 def thermal_solver_basic(fuel_tank):#mat_prop,H2_prop,atmos_prop,mt,mi,li,ri,ro,Ti,Ta,Qo,multipliers):
-    
+
     #Reads properties, tank material (mt), insulation material (mi), tank geometry - 
     #inner length (li), inner radius (ri), outer radius (ro), H2 temperature (Ti), 
     #ambient temperature (Ta), allowable heat flux (Qo), and multipliers
@@ -44,17 +46,19 @@ def thermal_solver_basic(fuel_tank):#mat_prop,H2_prop,atmos_prop,mt,mi,li,ri,ro,
     
     t_ins = t_ins[0]
     mass_ins = mass_ins[0]
+    print("Insulation thickness (in)=",t_ins/Units.inches)
+    print("Insulation mass (lbs)=",mass_ins/Units.lbs)
     
     return t_ins, mass_ins
 
 
-def insulation_width(t_ins,Ta,Ti,PI_Q,fuel_tank,atmo_data):   
+def insulation_width(t_ins,Ta,PI_Q,fuel_tank,atmo_data):   
     ri = fuel_tank.inner_diameter/2
     li = fuel_tank.inner_length 
     Ti = fuel_tank.design_inlet_temperature
     Qo = fuel_tank.acceptable_heat_leak
 
-    Te = minimize(heat_transfer_wrap,(Ta+Ti)/2,method='L-BFGS-B',bounds=[(Ti,Ta)],tol=1e-10,args=(t_ins,fuel_tank,atmo_data)).x
+    Te = minimize(heat_transfer_wrap,(Ta[0]+Ti)/2,method='L-BFGS-B',bounds=[(Ti,Ta)],tol=1e-10,args=(t_ins,fuel_tank,atmo_data)).x
 
     #Qv_amb, Qr_amb, Qc_mat = heat_transfer(Te) 
     Qc_mat = fuel_tank.insulation_wall_conductive_heat_transfer

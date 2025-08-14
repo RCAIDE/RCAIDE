@@ -10,6 +10,8 @@
 
 # RCAIDE imports
 import RCAIDE
+from RCAIDE.Framework.Core import Units
+from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_thermal_performance import thermal_solver_basic
 from .Non_Integral_Tank  import Non_Integral_Tank 
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume import *
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_structural_performance import structural_solver
@@ -28,8 +30,10 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         self.design_inlet_temperature= 15
         self.design_altitiude = 0
         self.acceptable_heat_leak = 20
+        self.design_altitude = 30000*Units.ft
+        self.design_isa_deviation = 0
         self.ullage_volume_fraction = 0.07 # Volume fraction
-        self.aspect_ratio = self.length/self.outer_diameter
+        #self.aspect_ratio = self.length/self.outer_diameter
 
 
     def compute_volume(self,wings,fuselages):
@@ -37,6 +41,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                 wing = wings[self.wing_tag]  
                 _ = compute_wing_non_integral_tank_volume(self,wing)
                 structural_solver(self)
+                volume = thermal_solver_basic(self)
 
         elif self.fuselage_tag != None: 
             fuselage = fuselages[self.fuselage_tag]  

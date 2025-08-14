@@ -3,6 +3,7 @@
 
 
 from copy import deepcopy
+from RCAIDE.Framework.Core import Units
 import numpy as np
 from scipy.optimize import minimize
 
@@ -19,32 +20,37 @@ def structural_solver(fuel_tank):#(mat_prop,H2_prop,mt,Vl,ul,AR,Ti,multipliers):
     PI_P = 5 #internal pressure multiplier for structural sizing
     Ti =  fuel_tank.design_inlet_temperature
 
-    P_sat   = fuel_tank.fuel.liquid_hydrogen_properties(Ti, "Pressure (MPa)") #H2 saturation pressure
+    P_sat   = fuel_tank.fuel.liquid_hydrogen_properties(Ti, "Pressure (MPa)")*Units.MPa #H2 saturation pressure
     Pi = PI_P*P_sat #design internal pressure
     Po = 0 #design external pressure
-    tol = 1e-3
+    tol = 1e-5
 
-    V_guess  = deepcopy(fuel_tank.internal_volume/2)
+    if fuel_tank.symmetric:
+        V_guess  = deepcopy(fuel_tank.external_volume*0.45) # Inital Estimate of the volume of liquid hydrogen in the tank
+    else:
+        V_guess = deepcopy(fuel_tank.external_volume*0.75) # Inital Estimate of the volume of liquid hydrogen in the tank)
     error = 100
-    alpha = 0.1
+    alpha = 0.5
     iteration = 0
-    while abs(error)>tol and iteration <500:
+    while abs(error)>tol and iteration <1000:
         
         V = V_guess/(1-fuel_tank.ullage_volume_fraction) #tank volume (including ullage)
 
-        ri = ( V/(2*np.pi*(fuel_tank.aspect_ratio-1/3)) )**(1/3) #inner radius in m
+        ri = ( V/(np.pi*(2*fuel_tank.aspect_ratio-2/3)) )**(1/3) #inner radius in m 
         li = 2*ri*fuel_tank.aspect_ratio #inner length in m
         
         ro_ri = minimize(tank_width,(1+1e-3),method='L-BFGS-B',tol=1e-5,args=(Pi,Po,fuel_tank)).x
         ro = ro_ri[0]*ri #outer radius in m
         fuel_tank.mass = (np.pi*(ro_ri*ri)**2*( (4/3)*(ro_ri*ri)+li-2*ri ) - V)*fuel_tank.material.density #tank mass in kg
 
-        error = ro - fuel_tank.outer_diameter/2
-        V_guess += alpha * error 
+        error = fuel_tank.outer_diameter/2 - ro
+        rel_error = error / (fuel_tank.outer_diameter / 2)
+        V_guess += alpha * rel_error 
         iteration +=1
         
     fuel_tank.inner_diameter = ri*2
     fuel_tank.inner_length  = li
+    print(V/Units.gallons)
     
     return 
 

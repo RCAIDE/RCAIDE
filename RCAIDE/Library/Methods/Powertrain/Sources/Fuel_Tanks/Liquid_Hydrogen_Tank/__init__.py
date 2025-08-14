@@ -16,3 +16,4 @@ See Also
 
 
 from .compute_structural_performance import structural_solver
+from .compute_thermal_performance import thermal_solver_basic
