@@ -164,9 +164,7 @@ def add_mission_variables(segment):
     single_pt_seg = (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude) or\
                     (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_AVL_Trimmed) or \
                     (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_No_Propulsion) or \
-                    (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Throttle) 
-
-
+                    (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Throttle)  
     
     # Step 2: Optimizer Inputs 
     # Step 2.1: Extract inputs
@@ -183,11 +181,13 @@ def add_mission_variables(segment):
         n_points     = segment.state.numerics.number_of_control_points  
         len_inputs = n_points*len(unknown_keys)
         
-    unknown_value  = Data()
-    full_unkn_vals = Data()
+    unknown_value   = Data()
+    full_unkn_vals  = Data()
+    full_bound_vals = Data()
     for unkn in unknown_keys:
         unknown_value[unkn]  = segment.state.unknowns[unkn]
-        full_unkn_vals[unkn] = unknown_value[unkn] 
+        full_unkn_vals[unkn] = unknown_value[unkn]
+        #full_bound_vals[unkn] =  
 
     # Step 2.2: Construct nexus format  : [Variable_###, initial, -np.inf, np.inf , scaling, Units.less]
     initial_values    = full_unkn_vals.pack_array()

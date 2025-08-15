@@ -81,13 +81,12 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     vehicle =  aerodynamics_analysis.vehicle
     
 
-    # update fuselage properties
-    total_length = 0
+    # update fuselage properties 
     A_fuselage   = 0  
     for fuselage in vehicle.fuselages: 
         fuselage_planform(fuselage) 
-        total_length = np.maximum(total_length, fuselage.lengths.total)
-        A_fuselage   = np.maximum(A_fuselage,fuselage.areas.front_projected)
+        vehicle.length  = np.maximum(vehicle.length , fuselage.lengths.total)
+        A_fuselage      = np.maximum(A_fuselage,fuselage.areas.front_projected)
              
     # update landing gear properties 
     for landing_gear in  vehicle.landing_gears:
@@ -95,6 +94,8 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
             landing_gear.wheels = landing_gear.number_of_gear_types_in_tandem * landing_gear.number_of_wheels_in_gear_type
             if landing_gear.symmetric:
                 landing_gear.wheels *= 2
+        
+    vehicle.maximum_cross_sectional_area  =  A_fuselage
     
     # update wing properties
     Amax_wing =  0
@@ -108,19 +109,21 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
         else: 
             wing_planform(wing) 
             if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_reference:
-                vehicle.reference_area = wing.areas.reference 
+                vehicle.reference_area = wing.areas.reference
+                
+        # reference chord 
+        vehicle.reference_chord  = np.maximum(vehicle.reference_chord , wing.chords.mean_aerodynamic)
+        
+        # reference span 
+        vehicle.reference_span   = np.maximum(vehicle.reference_span  , wing.spans.projected)
         
         # total length 
-        total_length = np.maximum(total_length, wing.chords.root)                         
+        vehicle.length = np.maximum(vehicle.length, wing.chords.root)                         
         
         # max cross sectional area 
-        A_wing    = wing.spans.projected * wing.thickness_to_chord * wing.chords.mean_geometric
-        Amax_wing = np.maximum(Amax_wing,A_wing)
-         
-
-    vehicle.maximum_cross_sectional_area  = Amax_wing + A_fuselage
-    vehicle.length                        = total_length
-    
+        A_wing_plus_fuselage   = wing.spans.projected * wing.thickness_to_chord *  wing.chords.root +  A_fuselage
+        vehicle.maximum_cross_sectional_area = np.maximum(vehicle.maximum_cross_sectional_area,A_wing_plus_fuselage) 
+  
     #------------------------------------------------------------------------  
     # Check size of arrays 
     #------------------------------------------------------------------------
