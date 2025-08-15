@@ -117,14 +117,30 @@ def set_residuals_and_unknowns(mission):
             else:
                 segment.state.unknowns.wind_angle = ones_row(1) * 1.0 * Units.degrees  
             
-        # Throttle 
+        # Throttle
         if ctrls.throttle.active: 
             for i in range(len(ctrls.throttle.assigned_propulsors)): 
                 if ctrls.throttle.initial_guess_values !=  None:
                     segment.state.unknowns["throttle_" + str(i)] = ones_row(1) * ctrls.throttle.initial_guess_values[i][0] 
                 else:
                     segment.state.unknowns["throttle_" + str(i)] = ones_row(1) *  0.5 
-        
+                        
+        # Thrust Vector  
+        if ctrls.thrust_vector_angle.active: 
+            for i in range(len(ctrls.thrust_vector_angle.assigned_propulsors)): 
+                if ctrls.thrust_vector_angle.initial_guess_values !=  None:
+                    segment.state.unknowns["thrust_vector_angle_" + str(i)] = ones_row(1) * ctrls.thrust_vector_angle.initial_guess_values[i][0] 
+                else:
+                    segment.state.unknowns["thrust_vector_angle_" + str(i)] = ones_row(1) *  0.5                                 
+
+        # Blade Pitch Command 
+        if ctrls.rotor_blade_pitch_command.active: 
+            for i in range(len(ctrls.rotor_blade_pitch_command.assigned_propulsors)): 
+                if ctrls.rotor_blade_pitch_command.initial_guess_values !=  None:
+                    segment.state.unknowns["rotor_blade_pitch_command_" + str(i)] = ones_row(1) * ctrls.rotor_blade_pitch_command.initial_guess_values[i][0] 
+                else:
+                    segment.state.unknowns["rotor_blade_pitch_command_" + str(i)] = ones_row(1) *  0.5 
+                    
         # Velocity 
         if ctrls.velocity.active:  
             if  ctrls.velocity.initial_guess_values !=  None:
