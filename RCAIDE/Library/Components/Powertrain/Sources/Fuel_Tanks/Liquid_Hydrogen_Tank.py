@@ -33,24 +33,22 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         self.design_altitude = 30000*Units.ft
         self.design_isa_deviation = 0
         self.ullage_volume_fraction = 0.07 # Volume fraction
-        #self.aspect_ratio = self.length/self.outer_diameter
+        self.design_external_pressure = 0 
 
 
     def compute_volume(self,wings,fuselages):
         if self.wing_tag != None:
                 wing = wings[self.wing_tag]  
-                _ = compute_wing_non_integral_tank_volume(self,wing)
+                compute_wing_non_integral_tank_volume(self,wing)
                 structural_solver(self)
-                volume = thermal_solver_basic(self)
-
-        elif self.fuselage_tag != None: 
-            fuselage = fuselages[self.fuselage_tag]  
-            volume = compute_fuselage_non_integral_tank_fuel_volume(self,fuselage)
+                thermal_solver_basic(self)
         else:
             if self.bwb_aft_tank == True:
                 wing = wings[self.wing_root_tag]  
-                volume = compute_bwb_aft_tank_volume(self,wing)
-        return  volume
+                compute_bwb_aft_tank_volume(self,wing)
+                structural_solver(self)
+                thermal_solver_basic(self)
+        return
 
         
 

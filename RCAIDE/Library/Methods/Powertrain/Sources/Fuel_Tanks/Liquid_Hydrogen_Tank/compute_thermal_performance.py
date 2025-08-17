@@ -1,41 +1,33 @@
+# RCAIDE/Library/Components/Powertrain/Energy/Sources/Fuel_Tanks/Liquid_Hydrogen_Tank/compute_thermal_performance.py
+# 
+# 
+# Created:  Aug 2025, S. Shekar
 
-from re import I
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------
+# RCAIDE imports
+import RCAIDE
+from RCAIDE.Framework.Core import Units
+# Python Imports
 import numpy as np
 from scipy.optimize import minimize
 
-from RCAIDE.Framework.Core import Units
-import RCAIDE
+# ----------------------------------------------------------------------------------------------------------------------
+#  Thermal Solver
+# ---------------------------------------------------------------------------------------------------------------------    
+def thermal_solver_basic(fuel_tank):
 
-
-def thermal_solver_basic(fuel_tank):#mat_prop,H2_prop,atmos_prop,mt,mi,li,ri,ro,Ti,Ta,Qo,multipliers):
-
-    #Reads properties, tank material (mt), insulation material (mi), tank geometry - 
-    #inner length (li), inner radius (ri), outer radius (ro), H2 temperature (Ti), 
-    #ambient temperature (Ta), allowable heat flux (Qo), and multipliers
-
-    #Returns insulation thickness (t_ins) and insulation mass (mass_ins)
     PI_Q = 1.5 #heat flow multiplier for thermal sizing
-    PI_M = 1.25 #total mass multiplier
 
-    
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data  = atmosphere.compute_values(fuel_tank.design_altitude,fuel_tank.design_isa_deviation)
   
-    
-    p   = atmo_data.pressure          
-    rho_air = atmo_data.density             
-    mu_air  = atmo_data.dynamic_viscosity
-    k_air = atmo_data.thermal_conductivity   
     Ta = atmo_data.temperature
-    Cp_air = atmosphere.fluid_properties.compute_cp(Ta) 
-    g = 9.81  
 
     ro = fuel_tank.outer_diameter/2
     ri = fuel_tank.inner_diameter/2
     li = fuel_tank.inner_length 
-
-
-   
 
     t_ins = minimize(insulation_width,0.01,bounds=[(1e-8,1e8)],method='L-BFGS-B',tol=1e-10,args=(Ta,PI_Q,fuel_tank,atmo_data)).x
 
@@ -44,12 +36,13 @@ def thermal_solver_basic(fuel_tank):#mat_prop,H2_prop,atmos_prop,mt,mi,li,ri,ro,
 
     mass_ins = v_ins*fuel_tank.insulation_material.density + a_ins*fuel_tank.insulation_material.specific_density
     
-    t_ins = t_ins[0]
-    mass_ins = mass_ins[0]
+    fuel_tank.wall_thickness = t_ins[0]
+    mass_ins                 = mass_ins[0]
     print("Insulation thickness (in)=",t_ins/Units.inches)
     print("Insulation mass (lbs)=",mass_ins/Units.lbs)
+
     
-    return t_ins, mass_ins
+    return 
 
 
 def insulation_width(t_ins,Ta,PI_Q,fuel_tank,atmo_data):   
