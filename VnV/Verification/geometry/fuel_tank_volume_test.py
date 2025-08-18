@@ -102,7 +102,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 158.79327120694592
+    fuel_volume_true = 183.80583939793073
     
     vehicle = BWB_vehicle_setup()
 
@@ -149,6 +149,21 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4.radial_offset                 = 0.4
 
     fuel_line.fuel_tanks.append(fuel_tank_4)
+
+    fuel_tank_5                               = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank(())
+    fuel_tank_5.tag                           = 'H2_Fuel_Tank_5' 
+    fuel_tank_5.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
+    fuel_tank_5.fuel.gravimetric_efficiency   = 0.5
+    fuel_tank_5.symmetric                     = False
+    fuel_tank_5.orientation_euler_angles      = [0,0,np.pi/2]
+    fuel_tank_5.bwb_aft_tank                  = True
+    fuel_tank_5.aft_tank_start_root_chord     = 0.8
+    fuel_tank_5.aft_tank_end_rood_chord       = 0.9
+    fuel_tank_5.aft_tank_end_segment_tag      = 'cabin_wall' 
+    fuel_tank_5.wing_root_tag                 = 'main_wing' 
+    fuel_tank_5.radial_offset                 = 0.4
+
+    fuel_line.fuel_tanks.append(fuel_tank_5)
         
  
     plot_3d_vehicle(vehicle,
