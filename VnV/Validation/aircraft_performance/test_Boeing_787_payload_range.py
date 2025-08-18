@@ -8,6 +8,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 import sys, os
 import numpy as np
+import time
 
 import RCAIDE
 from RCAIDE.Framework.Core import Units
@@ -18,6 +19,7 @@ import Boeing_787 as Boeing_787
 
 
 def main():
+    ti                   = time.time()
     payload_range_results = payload_range_test()     
 
     # Reference (trusted) values
@@ -44,7 +46,9 @@ def main():
             error = np.max(rel_error)
 
         assert error < 1e-4, f"{key} error too large: {error}"
-
+    tf                   = time.time()
+    elapsed_time         = round((tf-ti),2)
+    print('Payload Range simulation Time: ' + str(elapsed_time) + ' seconds') 
             
     return
 

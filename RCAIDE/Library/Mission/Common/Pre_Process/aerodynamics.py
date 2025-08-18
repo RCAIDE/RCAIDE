@@ -2,12 +2,15 @@
 # 
 # 
 # Created:  Jul 2023, M. Clarke
+# Modified: Aug 2025, S. Shekar
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 import  RCAIDE  
-
+import os
+import pickle
+import sys
 # ----------------------------------------------------------------------------------------------------------------------
 #  aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -64,25 +67,33 @@ def aerodynamics(mission):
     
         
     last_tag = None
+    filename = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag+ "_aerodynamic_surrogate.pkl")
     for tag,segment in mission.segments.items(): 
-        if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb or  \
-           type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover or \
-           type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:
-            pass
-        else:        
-            if segment.analyses.aerodynamics != None:
-                if last_tag!=  None:
-                    if segment.analyses.aerodynamics.settings.unique_segment_surrogate:
+        filename = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag + "_" + segment.tag + "_aerodynamic_surrogate.pkl")
+        if not os.path.exists(filename):
+            if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb or  \
+            type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover or \
+            type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:
+                pass
+            else:        
+                if segment.analyses.aerodynamics != None:
+                    if last_tag!=  None:
+                        if segment.analyses.aerodynamics.settings.unique_segment_surrogate:
+                            aero   = segment.analyses.aerodynamics
+                            aero.initialize()   
+                            last_tag = tag
+                        else:
+                            if 'compute' in mission.segments[last_tag].analyses.aerodynamics.process.keys(): 
+                                segment.analyses.aerodynamics.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.aerodynamics.process.compute.lift.inviscid_wings
+                                segment.analyses.aerodynamics.surrogates                          = mission.segments[last_tag].analyses.aerodynamics.surrogates  
+                                segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
+                    else: 
                         aero   = segment.analyses.aerodynamics
                         aero.initialize()   
-                        last_tag = tag
-                    else:
-                        if 'compute' in mission.segments[last_tag].analyses.aerodynamics.process.keys(): 
-                            segment.analyses.aerodynamics.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.aerodynamics.process.compute.lift.inviscid_wings
-                            segment.analyses.aerodynamics.surrogates                          = mission.segments[last_tag].analyses.aerodynamics.surrogates  
-                            segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
-                else: 
-                    aero   = segment.analyses.aerodynamics
-                    aero.initialize()   
-                    last_tag = tag  
+                        last_tag = tag  
+            with open(filename, 'wb') as file:
+                pickle.dump(segment.analyses.aerodynamics, file) 
+        else:
+            with open(filename, 'rb') as file:
+                segment.analyses.aerodynamics = pickle.load(file)
     return 
