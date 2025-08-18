@@ -94,58 +94,58 @@ class Liquid_Hydrogen(Propellant):
         self.oxidizer                      = ''       
 
         self.materials_properties = self.liquid_hydrogen_properties()
-def liquid_hydrogen_properties(self, T, prop_name):
-    """
-    Return interpolated liquid hydrogen property value at a given temperature.
 
-    Parameters
-    ----------
-    T : float or ndarray
-        Temperature(s) in Kelvin at which the property is requested.  
-    prop_name : str
-        Name of the property to retrieve from the hydrogen data file.  
-        Valid keys include:
-            - "Temperature (K)"
-            - "Pressure (MPa)"
-            - "Density (kg/m3)"
-            - "Volume (m3/kg)"
-            - "Internal Energy (kJ/kg)"
-            - "Enthalpy (kJ/kg)"
-            - "Entropy (J/g*K)"
-            - "Cv (J/g*K)"
-            - "Cp (J/g*K)"
-            - "Sound Spd. (m/s)"
-            - "Joule-Thomson (K/MPa)"
-            - "Viscosity (Pa*s)"
-            - "Therm. Cond. (W/m*K)"
-            - "Phase"
+    def liquid_hydrogen_properties(self, T, prop_name):
+        """
+            Return interpolated liquid hydrogen property value at a given temperature.
 
-    Returns
-    -------
-    prop_value : float or ndarray
-        Interpolated property value(s) corresponding to the input temperature(s).  
+            Parameters
+            ----------
+            T : float or ndarray
+                Temperature(s) in Kelvin at which the property is requested.  
+            prop_name : str
+                Name of the property to retrieve from the hydrogen data file.  
+                Valid keys include:
+                    - "Temperature (K)"
+                    - "Pressure (MPa)"
+                    - "Density (kg/m3)"
+                    - "Volume (m3/kg)"
+                    - "Internal Energy (kJ/kg)"
+                    - "Enthalpy (kJ/kg)"
+                    - "Entropy (J/g*K)"
+                    - "Cv (J/g*K)"
+                    - "Cp (J/g*K)"
+                    - "Sound Spd. (m/s)"
+                    - "Joule-Thomson (K/MPa)"
+                    - "Viscosity (Pa*s)"
+                    - "Therm. Cond. (W/m*K)"
+                    - "Phase"
 
-    Notes
-    -----
-    * Property data is loaded from ``H2_properties.res`` using 
-      :func:`load_hydrogen_properties`.  
-    * Linear interpolation is applied between tabulated values.  
-    * Extrapolation outside the data range is not supported (``fill_value=None``).  
-    * Phase information is categorical and may not be suitable for interpolation.  
+            Returns
+            -------
+            prop_value : float or ndarray
+                Interpolated property value(s) corresponding to the input temperature(s).  
 
-    See Also
-    --------
-    RCAIDE.Library.Attributes.Solids.Liquid_Hydrogen.load_hydrogen_properties
-    """
-    data = load_hydrogen_properties()
-    temps = np.array(data["Temperature (K)"], dtype=float)
-    props = np.array(data[prop_name], dtype=float)
-    interp = interp1d(temps, props, kind="linear", fill_value=None)
+            Notes
+            -----
+            * Property data is loaded from ``H2_properties.res`` using 
+            :func:`load_hydrogen_properties`.  
+            * Linear interpolation is applied between tabulated values.  
+            * Extrapolation outside the data range is not supported (``fill_value=None``).  
+            * Phase information is categorical and may not be suitable for interpolation.  
 
-    return interp(T)
+            See Also
+            --------
+            RCAIDE.Library.Attributes.Solids.Liquid_Hydrogen.load_hydrogen_properties
+         """
+        data = load_hydrogen_properties()
+        temps = np.array(data["Temperature (K)"], dtype=float)
+        props = np.array(data[prop_name], dtype=float)
+        interp = interp1d(temps, props, kind="linear", fill_value=None)
+        
+        return interp(T)
 
-
-def load_hydrogen_properties():
+def load_hydrogen_properties(): 
     """
     Load hydrogen property data from the RES file.
 
@@ -174,4 +174,4 @@ def load_hydrogen_properties():
     separator = os.path.sep
     rel_path  = os.path.dirname(ospath) + separator     
 
-    return RCAIDE.load(rel_path + 'H2_properties.res')
+    return RCAIDE.load(rel_path+ 'H2_properties.res')

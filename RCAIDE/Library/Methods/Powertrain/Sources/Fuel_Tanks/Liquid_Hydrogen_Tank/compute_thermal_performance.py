@@ -86,10 +86,7 @@ def compute_thermal_performance(fuel_tank):
     # Store results
     fuel_tank.wall_thickness = t_ins[0]
     mass_ins = mass_ins[0]
-
-    print("Insulation thickness (in) =", t_ins / Units.inches)
-    print("Insulation mass (lbs)     =", mass_ins / Units.lbs)
-
+    
     return 
 
 

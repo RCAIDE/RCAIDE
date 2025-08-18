@@ -102,7 +102,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 296.4728351308703
+    fuel_volume_true = 158.79327120694592
     
     vehicle = BWB_vehicle_setup()
 
@@ -160,7 +160,7 @@ def non_integral_fuel_tank_volume_test():
     
     error = (fuel_volume_true- vehicle.total_fuel_volume)/fuel_volume_true
     print(error)
-    assert(abs(error)<5e-2)
+    assert(abs(error)<1e-3)
     return
  
 if __name__ == '__main__': 
