@@ -161,7 +161,7 @@ def EVTOL_Aircraft_Test(update_regression_values):
     # ------------------------------------------------------------------    
     MOI, total_mass = compute_aircraft_moment_of_inertia(weight_analysis.vehicle, CG_location)
 
-    print(weight_analysis.vehicle.tag + ' Moment of Intertia')
+    print(weight_analysis.vehicle.tag + ' Moment of Inertia')
     print(MOI) 
     accepted  = np.array([[ 6416.79187465 , -520.42973001 ,  -433.31834741],
                           [ -520.42973001, 10150.4508291 ,  -119.43004224],
