@@ -102,7 +102,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 183.80583939793073
+    fuel_volume_true = 133.31064339721496
     
     vehicle = BWB_vehicle_setup()
 
@@ -143,7 +143,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4.bwb_aft_tank                  = True
     fuel_tank_4.aft_tank_start_root_chord     = 0.6
-    fuel_tank_4.aft_tank_end_rood_chord       = 0.65
+    fuel_tank_4.aft_tank_end_rood_chord       = 0.7
     fuel_tank_4.aft_tank_end_segment_tag      = 'cabin_wall' 
     fuel_tank_4.wing_root_tag                 = 'main_wing' 
     fuel_tank_4.radial_offset                 = 0.4
