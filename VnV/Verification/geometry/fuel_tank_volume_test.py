@@ -27,7 +27,7 @@ from Boeing_737  import vehicle_setup as B737_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------
 
 def main():
-    integral_fuel_tank_volume_test()
+    #integral_fuel_tank_volume_test()
     non_integral_fuel_tank_volume_test()
     return 
 def integral_fuel_tank_volume_test():
@@ -144,7 +144,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4.tag                           = 'H2_Fuel_Tank_4' 
     fuel_tank_4.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
     fuel_tank_4.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_4.insulation_material           = RCAIDE.Library.Attributes.Materials.VGMLI()
+    fuel_tank_4.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
     fuel_tank_4.fuel.gravimetric_efficiency   = 0.5
     fuel_tank_4.symmetric                     = False
     fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]

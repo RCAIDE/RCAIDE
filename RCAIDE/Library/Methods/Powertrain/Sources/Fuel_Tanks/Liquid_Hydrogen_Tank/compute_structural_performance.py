@@ -1,75 +1,163 @@
-# RCAIDE/Library/Components/Powertrain/Energy/Sources/Fuel_Tanks/Non_Integral_Tank.py
+# RCAIDE/Library/Components/Powertrain/Energy/Sources/Fuel_Tanks/compute_structural_performance.py
 # 
-# 
-# Created:  Aug 2025, S. Shekar
-
+# Created: Aug 2025, S. Shekar
+#
 # ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
+#  IMPORTS
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports
 from RCAIDE.Framework.Core import Units
 
-# Python Imports
+# Python imports
 from copy import deepcopy
 import numpy as np
 from scipy.optimize import minimize
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Structural Solver
-# ---------------------------------------------------------------------------------------------------------------------    
-def structural_solver(fuel_tank):
-    
-    n = 1.6 #structural factor of safety
-    PI_P = 5 #internal pressure multiplier for structural sizing
-    Ti =  fuel_tank.design_inlet_temperature
+# ----------------------------------------------------------------------------------------------------------------------    
+def compute_structural_performance(fuel_tank):
+    """
+    Compute the structural sizing and mass of a cryogenic fuel tank using 
+    thick-walled cylinder theory and von Mises failure criteria.  
 
-    P_sat   = fuel_tank.fuel.liquid_hydrogen_properties(Ti, "Pressure (MPa)")*Units.MPa #H2 saturation pressure
-    Pi = PI_P*P_sat #design internal pressure
-    Po = fuel_tank.design_external_pressure
-  
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        Fuel tank object containing geometric, thermal, and material properties.  
+
+    Returns
+    -------
+    None
+        Updates the following attributes of the fuel_tank object in place:
+            - mass : float
+                Tank mass [kg].  
+            - fuel_volume : float
+                Usable liquid hydrogen volume (excludes ullage) [m³].  
+            - internal_volume : float
+                Total internal volume including ullage [m³].  
+            - inner_diameter : float
+                Internal diameter [m].  
+            - inner_length : float
+                Internal cylindrical length [m].  
+
+    Notes
+    -----
+    * Uses Lame’s equations for stress distribution in thick-walled cylinders.  
+    * Hoop, radial, and axial stresses are reduced to an equivalent von Mises stress.  
+    * Iteratively adjusts tank radius until structural equilibrium is satisfied.  
+
+    **Major Assumptions**
+        * Tank approximated as a cylindrical shell with hemispherical end caps.  
+        * Fuel saturation pressure determines design internal pressure.  
+        * No allowance for creep or fatigue (static strength only).  
+        * Symmetry doubles the usable fuel volume if specified.  
+    """
+    
+    # Constants
+    safety_factor   = 1.6          # structural factor of safety
+    pressure_factor = 5.0          # internal pressure multiplier for sizing
+    T_inlet         = fuel_tank.design_inlet_temperature
+
+    # Saturation and design pressures
+    P_sat = fuel_tank.fuel.liquid_hydrogen_properties(T_inlet, "Pressure (MPa)") * Units.MPa
+    P_internal = pressure_factor * P_sat
+    P_external = fuel_tank.design_external_pressure
+
+    # Initial fuel volume guess
     if fuel_tank.symmetric:
-        V_guess  = deepcopy(fuel_tank.outer_volume*0.45) # Inital Estimate of the volume of liquid hydrogen in the tank
+        V_guess = deepcopy(fuel_tank.outer_volume * 0.45)
     else:
-        V_guess = deepcopy(fuel_tank.outer_volume*0.75) # Inital Estimate of the volume of liquid hydrogen in the tank)
-    
-    tol = 1e-5
-    error = 100
-    alpha = 0.5
+        V_guess = deepcopy(fuel_tank.outer_volume * 0.75)
+
+    # Iterative solver loop
+    tol       = 1e-5
+    error     = 1e2
+    alpha     = 0.5
     iteration = 0
-    while abs(error)>tol and iteration <1000:
-        
-        V = V_guess/(1-fuel_tank.ullage_volume_fraction) #tank volume (including ullage)
+    max_iter  = 1000
 
-        ri = ( V/(np.pi*(2*fuel_tank.aspect_ratio-2/3)) )**(1/3) #inner radius in m 
-        li = 2*ri*fuel_tank.aspect_ratio #inner length in m
-        
-        ro_ri = minimize(tank_width,(1+1e-3),method='L-BFGS-B',tol=1e-5,args=(Pi,Po,n,fuel_tank)).x
-        ro = ro_ri[0]*ri #outer radius in m
-        fuel_tank.mass = (np.pi*(ro_ri*ri)**2*( (4/3)*(ro_ri*ri)+li-2*ri) - V)*fuel_tank.material.density #tank mass in kg
+    while abs(error) > tol and iteration < max_iter:
+        # Compute internal tank geometry
+        V_total = V_guess / (1 - fuel_tank.ullage_volume_fraction)  
+        r_inner = (V_total / (np.pi * (2 * fuel_tank.aspect_ratio - 2/3)))**(1/3)
+        L_inner = 2 * r_inner * fuel_tank.aspect_ratio  
 
-        error = fuel_tank.outer_diameter/2 - ro
+        # Optimize wall thickness ratio (ro/ri) using von Mises criterion
+        ro_ri = minimize(
+            tank_width,
+            x0=(1 + 1e-3),
+            method='L-BFGS-B',
+            tol=1e-5,
+            args=(P_internal, P_external, safety_factor, fuel_tank)
+        ).x[0]
+
+        r_outer = ro_ri * r_inner
+
+        # Tank mass from external volume - internal volume
+        V_material = np.pi * (ro_ri * r_inner)**2 * ((4/3) * (ro_ri * r_inner) + L_inner - 2 * r_inner) - V_total
+        fuel_tank.mass = V_material * fuel_tank.material.density  
+
+        # Convergence check
+        error     = fuel_tank.outer_diameter / 2 - r_outer
         rel_error = error / (fuel_tank.outer_diameter / 2)
         fuel_tank.fuel_volume = V_guess
-        V_guess += alpha * rel_error 
-        iteration +=1
-        
-    fuel_tank.inner_diameter = ri*2
-    fuel_tank.internal_volume = V
-    fuel_tank.inner_length  = li
+        V_guess += alpha * rel_error
+        iteration += 1
+
+    # Store results
+    fuel_tank.inner_diameter   = 2 * r_inner
+    fuel_tank.internal_volume  = V_total
+    fuel_tank.inner_length     = L_inner
 
     if fuel_tank.symmetric:
-        fuel_tank.fuel_volume *= 2 
-        fuel_tank.internal_volume = V*2
-    
-    return 
+        fuel_tank.fuel_volume    *= 2
+        fuel_tank.internal_volume = V_total * 2
+
+    return
 
 
-def tank_width(ro_ri,Pi,Po,n,fuel_tank):
-        A = (Pi - Po*ro_ri**2)/(ro_ri**2 - 1) #Lame's constant 1
-        B = (Pi - Po)*ro_ri**2/(ro_ri**2 - 1) #Lame's constant 2
-        s1 = A + B #hoop stress
-        s2 = A - B #radial stress
-        s3 = A #axial stress
-        sv = (np.sqrt( ( (s1-s2)**2 + (s2-s3)**2 + (s3-s1)**2 )/2 )) #von Mises stress
-        return np.abs(sv - fuel_tank.material.yield_tensile_strength/n) #von Mises criteria
+def tank_width(ro_ri, P_internal, P_external, safety_factor, fuel_tank):
+    """
+    Compute the von Mises stress difference for a candidate tank wall thickness.  
+
+    Parameters
+    ----------
+    ro_ri : float
+        Outer-to-inner radius ratio of the tank.  
+    P_internal : float
+        Design internal pressure [Pa].  
+    P_external : float
+        Design external pressure [Pa].  
+    safety_factor : float
+        Structural factor of safety.  
+    fuel_tank : Fuel_Tank
+        Fuel tank object with material properties.  
+
+    Returns
+    -------
+    stress_diff : float
+        Absolute difference between actual von Mises stress and 
+        allowable yield stress (scaled by safety factor).  
+
+    Notes
+    -----
+    * Uses Lame’s constants to compute radial, hoop, and axial stresses.  
+    * Von Mises criterion reduces these stresses to an equivalent stress.  
+    """
+    # Lame’s constants
+    A = (P_internal - P_external * ro_ri**2) / (ro_ri**2 - 1)
+    B = (P_internal - P_external) * ro_ri**2 / (ro_ri**2 - 1)
+
+    # Principal stresses
+    sigma_theta = A + B    # hoop stress
+    sigma_r     = A - B    # radial stress
+    sigma_z     = A        # axial stress
+
+    # Von Mises equivalent stress
+    sigma_vm = np.sqrt(((sigma_theta - sigma_r)**2 + 
+                        (sigma_r - sigma_z)**2 + 
+                        (sigma_z - sigma_theta)**2) / 2)
+
+    return np.abs(sigma_vm - fuel_tank.material.yield_tensile_strength / safety_factor)

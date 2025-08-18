@@ -1,13 +1,25 @@
-# RCAIDE/Methods/Powertrain/Sources/Fuel_Tanks/__init__.py
+# RCAIDE/Methods/Powertrain/Sources/Fuel_Tanks/Liquid_Hydrogen_Tank/__init__.py
 # 
 
-""" 
-This module provides functionality for modeling fuel tank systems in powertrains. It includes methods for 
-initializing fuel tank conditions for use during mission analysis.
+
+"""
+Methods for analyzing liquid hydrogen fuel tank systems in powertrain architectures.  
+
+This module provides thermal and structural performance solvers used in 
+the evaluation of integral and non-integral fuel tanks. These methods 
+are typically called within component-level classes to compute performance during 
+sizing analysis.  
 
 See Also
 --------
+RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank  
+    Class implementation for integral fuel tanks.  
 
+RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank  
+    Class implementation for non-integral fuel tanks.  
+
+RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank  
+    Class implementation for cryogenic liquid hydrogen tanks.  
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -15,5 +27,5 @@ See Also
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 
-from .compute_structural_performance import structural_solver
-from .compute_thermal_performance import thermal_solver_basic
+from .compute_structural_performance import compute_structural_performance
+from .compute_thermal_performance    import compute_thermal_performance

@@ -153,7 +153,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
 
                 # compute volume of fuel in wing
                 compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment)
-                fuel_tank.fuel_volume = fuel_tank.outer_volume
+                fuel_tank.fuel_volume          = fuel_tank.outer_volume
                 fuel_tank.mass_properties.fuel =  fuel_tank.fuel_volume * fuel_tank.fuel.density  
 
                 fuel_tank.mass_properties.moments_of_inertia.tensor  += np.array(inner_segment.mass_properties.center_of_gravity)[0] * fuel_tank.mass_properties.fuel
