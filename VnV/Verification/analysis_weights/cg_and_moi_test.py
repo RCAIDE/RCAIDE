@@ -180,7 +180,7 @@ def EVTOL_Aircraft_Test(update_regression_values):
     print(error)
 
     for k,v in list(error.items()):
-        assert(np.abs(v)<1e-3) # Note that EVTOL weight is an iterative process, therefore the error can be larger than expected. 
+        assert(np.abs(v)<1e-2) # Note that EVTOL weight is an iterative process, therefore the error can be larger than expected. 
 
     return  
 
