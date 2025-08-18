@@ -91,9 +91,9 @@ def aerodynamics(mission):
                         aero   = segment.analyses.aerodynamics
                         aero.initialize()   
                         last_tag = tag  
-            if segment.analyses.aerodynamics.settings.store_surrogate_data:
-                with open(filename, 'wb') as file:
-                    pickle.dump(segment.analyses.aerodynamics, file) 
+                    if segment.analyses.aerodynamics.settings.store_surrogate_data:
+                        with open(filename, 'wb') as file:
+                            pickle.dump(segment.analyses.aerodynamics, file) 
         else:
             with open(filename, 'rb') as file:
                 segment.analyses.aerodynamics = pickle.load(file)
