@@ -42,7 +42,7 @@ from .Polyimide                   import Polyimide
 from .Steel                       import Steel
 from .Titanium                    import Titanium
 from .Unidirectional_Carbon_Fiber import Unidirectional_Carbon_Fiber
-from .AGL                         import AGL
+from .Aerogel                         import Aerogel
 from .VCMLI                       import VCMLI
 from .VGMLI                       import VGMLI
 from .Polyurethane_Foam           import Polyurethane_Foam
