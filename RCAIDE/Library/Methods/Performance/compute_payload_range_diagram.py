@@ -16,6 +16,7 @@ from RCAIDE.Library.Mission.Common.Pre_Process import mass_properties,geometry
 # Pacakge imports 
 import numpy as np
 from matplotlib import pyplot as plt
+import os,sys
  
 # ----------------------------------------------------------------------
 #  Calculate vehicle Payload Range Diagram
@@ -107,12 +108,16 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
         
   
     vehicle = mission.segments[initial_segment].analyses.weights.vehicle
-    
+    [setattr(seg.analyses.aerodynamics.settings, "store_surrogate_data", True) for seg in mission.segments]
     for network in vehicle.networks:
         if type(network) == RCAIDE.Framework.Networks.Fuel:  
             payload_range  =  conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_reserve_percentage,plot_diagram,fuel_name) 
         else:
             payload_range  =  electric_payload_range_diagram(vehicle,mission,cruise_segment_tag,plot_diagram)
+    
+    for fname in os.listdir(os.path.dirname(os.path.abspath(sys.argv[0]))):
+        if fname.endswith(".pkl"):
+            os.remove(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), fname))
 
     print("\n============== Payload Range Report ==============n")            
     try:
