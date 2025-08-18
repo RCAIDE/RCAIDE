@@ -72,6 +72,8 @@ class Vehicle(Data):
         self.economy_class_passengers                                      = 0.0
         self.maximum_cross_sectional_area                                  = 0.0
         self.length                                                        = 0.0
+        self.total_fuel_volume                                             = 0.0
+        self.total_fuel_mass                                               = 0.0
         
         self.flight_envelope                                               = Data()
         self.flight_envelope.design_dynamic_pressure                       = None 

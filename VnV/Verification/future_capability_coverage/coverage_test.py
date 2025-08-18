@@ -37,6 +37,12 @@ def main():
     material            = RCAIDE.Library.Attributes.Materials.Polyimide()  
     material            = RCAIDE.Library.Attributes.Materials.Polytetrafluoroethylene()
     material            = RCAIDE.Library.Attributes.Materials.CrossLinked_Polyethylene()
+    material            = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304()
+    material            = RCAIDE.Library.Attributes.Materials.Aerogel()
+    material            = RCAIDE.Library.Attributes.Materials.Polyurethane_Foam()
+    material            = RCAIDE.Library.Attributes.Materials.Vacuum_Multilayer_Insulation()
+    
+
       
     # gases 
     working_fluid                       = RCAIDE.Library.Attributes.Gases.CO2()        

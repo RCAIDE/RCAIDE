@@ -582,7 +582,7 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     N = 3
     fuel_tank_points = np.zeros((2*N,tessellation ,3))
     R = fuel_tank.outer_diameter / 2
-    L = fuel_tank.length - fuel_tank.outer_diameter
+    L = fuel_tank.outer_length - fuel_tank.outer_diameter
     
          
     # front segments
