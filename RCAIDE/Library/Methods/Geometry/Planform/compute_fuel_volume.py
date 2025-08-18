@@ -88,6 +88,8 @@ def compute_fuel_volume(vehicle, update_max_fuel=True):
         for fuel_line in network.fuel_lines:
             for fuel_tank in fuel_line.fuel_tanks: 
                 fuel_tank.internal_volume = 0
-                fuel_tank.compute_volume(wings,fuselages)
+                try:
+                    fuel_tank.compute_volume(wings,fuselages)
+                except: pass
                 vehicle.total_fuel_volume += fuel_tank.fuel_volume
                 vehicle.total_fuel_mass   += fuel_tank.mass_properties.fuel

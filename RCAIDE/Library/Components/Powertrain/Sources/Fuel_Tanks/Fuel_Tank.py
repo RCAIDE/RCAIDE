@@ -65,14 +65,13 @@ class Fuel_Tank(Component):
         self.symmetric                   = True
         self.wing_tag                    = None
         self.fuselage_tag                = None
-
-        self.inner_length = 0.0
-        self.outer_length = 0.0
-        self.inner_diameter = 0.0
-        self.outer_diameter = 0.0
-        self.inner_volume = 0.0
-        self.outer_volume = 0.0
-        self.fuel_volume = 0,0
+        self.inner_length                = 0.0
+        self.outer_length                = 0.0
+        self.inner_diameter              = 0.0
+        self.outer_diameter              = 0.0
+        self.inner_volume                = 0.0
+        self.outer_volume                = 0.0
+        self.fuel_volume                 = 0.0
 
     def append_operating_conditions(self,segment,fuel_line):  
         """
@@ -101,7 +100,4 @@ class Fuel_Tank(Component):
             Connected fuel line component
         """
         compute_fuel_tank_properties(self,state, fuel_line)  
-        return                           
-    
-    # def compute_volume(self,wings,fuselages): 
-    #     return
+        return

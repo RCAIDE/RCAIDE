@@ -24,15 +24,15 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
     A class representing a liquid hydrogen tank.
     """
     def __defaults__(self):
-        self.tag = 'Liquid_Hydrogen_Tank'
-        self.material   = None
-        self.insulation_material = None
-        self.design_inlet_temperature= 15
-        self.design_altitiude = 0
-        self.acceptable_heat_leak = 20
-        self.design_altitude = 30000*Units.ft
-        self.design_isa_deviation = 0
-        self.ullage_volume_fraction = 0.07 # Volume fraction
+        self.tag                      = 'Liquid_Hydrogen_Tank'
+        self.material                 = None
+        self.insulation_material      = None
+        self.design_inlet_temperature = 15
+        self.design_altitiude         = 0
+        self.acceptable_heat_leak     = 20
+        self.design_altitude          = 30000*Units.ft
+        self.design_isa_deviation     = 0
+        self.ullage_volume_fraction   = 0.07 # Volume fraction
         self.design_external_pressure = 0 
 
 
@@ -49,7 +49,3 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                 structural_solver(self)
                 thermal_solver_basic(self)
         return
-
-        
-
-

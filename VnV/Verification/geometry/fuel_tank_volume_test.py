@@ -59,10 +59,10 @@ def integral_fuel_tank_volume_test():
     
     error = (fuel_volume_true[0]- vehicle.total_fuel_volume)/fuel_volume_true[0]
     print(error)
-    assert(abs(error)<1e-6)
-    
-    
+    assert(abs(error)<1e-6)    
+    vehicle.total_fuel_volume = 0 # Reset the fuel volume for regression and the next test
     ############################################################################################################################
+
     #(only for regression) delete wing segments and add tank flag to wing    
     vehicle.wings.main_wing.segments.clear()
     

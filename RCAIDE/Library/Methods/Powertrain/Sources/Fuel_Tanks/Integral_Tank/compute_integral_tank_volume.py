@@ -87,7 +87,7 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
                 fuel_tank.mass_properties.fuel                  = volume * fuel_tank.fuel.density  
                 fuel_tank.mass_properties.center_of_gravity     = [[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0,  (inner_segment.height  + outer_segment.height)/2]]
        
-    return volume
+    return 
 
 def compute_wing_integral_tank_volume(fuel_tank,wing):
     """
@@ -238,9 +238,9 @@ def compute_wing_integral_tank_fuel_volume(fuel_tank,wing):
     A_1 = inner_wingbox_length * (inner_front_rib_length + inner_rear_rib_length) / 2 
     A_2 = outer_wingbox_length * (outer_front_rib_length + outer_rear_rib_length) / 2
     h =  wing.spans.projected
-    volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *h   
+    fuel_tank.outer_volume  = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *h   
 
-    return volume
+    return 
 
 
 def compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment):   
