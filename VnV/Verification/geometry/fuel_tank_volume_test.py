@@ -143,7 +143,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4.bwb_aft_tank                  = True
     fuel_tank_4.aft_tank_start_root_chord     = 0.6
-    fuel_tank_4.aft_tank_end_rood_chord       = 0.8
+    fuel_tank_4.aft_tank_end_rood_chord       = 0.65
     fuel_tank_4.aft_tank_end_segment_tag      = 'cabin_wall' 
     fuel_tank_4.wing_root_tag                 = 'main_wing' 
     fuel_tank_4.radial_offset                 = 0.4
@@ -157,8 +157,8 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_5.symmetric                     = False
     fuel_tank_5.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_5.bwb_aft_tank                  = True
-    fuel_tank_5.aft_tank_start_root_chord     = 0.8
-    fuel_tank_5.aft_tank_end_rood_chord       = 0.9
+    fuel_tank_5.aft_tank_start_root_chord     = 0.7
+    fuel_tank_5.aft_tank_end_rood_chord       = 0.8
     fuel_tank_5.aft_tank_end_segment_tag      = 'cabin_wall' 
     fuel_tank_5.wing_root_tag                 = 'main_wing' 
     fuel_tank_5.radial_offset                 = 0.4
