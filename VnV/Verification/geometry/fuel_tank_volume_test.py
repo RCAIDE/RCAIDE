@@ -173,7 +173,7 @@ def non_integral_fuel_tank_volume_test():
                     front_view                  = True, 
                     show_figure=False)    
     
-    error = (fuel_volume_true- vehicle.total_fuel_volume)/fuel_volume_true
+    error = (fuel_volume_true- vehicle.total_fuel_volume)
     print(error)
     assert(abs(error)<5e-2)
     return
