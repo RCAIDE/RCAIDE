@@ -156,7 +156,15 @@ class Vortex_Lattice_Method(Aerodynamics):
         # If we are using the surrogate
         if use_surrogate == True: 
             # train training data
-            train_VLM_surrogates(self)
+            if xyz:
+                train_VLM_surrogates(self)
+    
+                if self.settings.store_surrogate_data:
+                    with open(filename, 'wb') as file:
+                        pickle.dump(self.training, file)
+            else:
+                with open(filename, 'rb') as file:
+                    self.training = pickle.load(file)
 
             # build surrogate
             build_VLM_surrogates(self)
@@ -194,7 +202,3 @@ class Vortex_Lattice_Method(Aerodynamics):
         results  = self.process.compute(state,settings,vehicle)
         
         return results
-    
-    def build_aerodynamic_surrogate(self):
-        build_VLM_surrogates(self)
-        return
