@@ -7,6 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 import  RCAIDE  
+import os, sys
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  aerodynamics
@@ -60,40 +61,7 @@ def aerodynamics(mission):
     See Also
     --------
     RCAIDE.Library.Methods.Geometry.Planform
-    """
-    
-    #last_tag = None
-    #filename = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag+ "_aerodynamic_surrogate.pkl")
-    #for tag,segment in mission.segments.items(): 
-        #filename = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag + "_" + segment.tag + "_aerodynamic_surrogate.pkl")
-        #if not os.path.exists(filename):
-            #if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb or  \
-            #type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Hover or \
-            #type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:
-                #pass
-            #else:        
-                #if segment.analyses.aerodynamics != None:
-                    #if last_tag!=  None:
-                        #if segment.analyses.aerodynamics.settings.unique_segment_surrogate:
-                            #aero   = segment.analyses.aerodynamics
-                            #aero.initialize()   
-                            #last_tag = tag
-                        #else:
-                            #if 'compute' in mission.segments[last_tag].analyses.aerodynamics.process.keys(): 
-                                #segment.analyses.aerodynamics                                     = deepcopy(mission.segments[last_tag].analyses.aerodynamics)
-                    #else: 
-                        #aero   = segment.analyses.aerodynamics
-                        #aero.initialize()   
-                        #last_tag = tag  
-                    #if segment.analyses.aerodynamics.settings.store_surrogate_data:
-                        #with open(filename, 'wb') as file:
-                            #pickle.dump(segment.analyses.aerodynamics.training, file) 
-        #else:
-            #with open(filename, 'rb') as file:
-                #segment.analyses.aerodynamics.training = pickle.load(file)
-                #segment.analyses.aerodynamics.build_aerodynamic_surrogate()
-                    
-                    
+    """                    
     last_tag = None
     for tag,segment in mission.segments.items(): 
         if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb or  \
@@ -105,6 +73,7 @@ def aerodynamics(mission):
                 if last_tag!=  None:
                     if segment.analyses.aerodynamics.settings.unique_segment_surrogate:
                         aero   = segment.analyses.aerodynamics
+                        aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag + "_" + segment.tag +"_aerodynamic_training_data.pkl")
                         aero.initialize()   
                         last_tag = tag
                     else:
@@ -114,7 +83,7 @@ def aerodynamics(mission):
                             segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
                 else: 
                     aero   = segment.analyses.aerodynamics
-                    #aero.filename = segment.tag + '_aerodynamics'
+                    aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag + "_" + segment.tag +"_aerodynamic_training_data.pkl")
                     aero.initialize()   
                     last_tag = tag  
     return 
