@@ -771,7 +771,6 @@ def mission_setup(analyses):
     segment = Segments.Descent.Constant_EAS_Constant_Rate(base_segment)
     segment.tag = "descent_3" 
     segment.analyses.extend( analyses.landing ) 
-    segment.analyses.aerodynamics.settings.unique_segment_surrogate = True
     segment.altitude_start                                           = 2500  * Units.feet
     segment.altitude_end                                             = 0  * Units.feet 
     segment.descent_rate                                             = 3.  * Units.m / Units.s
