@@ -186,8 +186,7 @@ def plot_results(results):
     plot_battery_degradation(results) 
     
     # Plot Propeller Conditions 
-    plot_rotor_conditions(results) 
-    plot_disc_and_power_loading(results)
+    plot_rotor_conditions(results)  
     
     # Plot Electric Motor and Propeller Efficiencies 
     plot_electric_propulsor_efficiencies(results)

@@ -249,11 +249,11 @@ class Segment(Analysis):
         self.assigned_control_variables.thrust_vector_angle.initial_guess_values       = None 
         self.assigned_control_variables.thrust_vector_angle.bounds                     = None 
 
-        self.assigned_control_variables.rotor_blade_pitch_command                      = Data() 
-        self.assigned_control_variables.rotor_blade_pitch_command.active               = False        
-        self.assigned_control_variables.rotor_blade_pitch_command.assigned_propulsors  = None 
-        self.assigned_control_variables.rotor_blade_pitch_command.initial_guess_values = None   
-        self.assigned_control_variables.rotor_blade_pitch_command.bounds               = None       
+        self.assigned_control_variables.blade_pitch_command                            = Data() 
+        self.assigned_control_variables.blade_pitch_command.active                     = False        
+        self.assigned_control_variables.blade_pitch_command.assigned_rotors            = None 
+        self.assigned_control_variables.blade_pitch_command.initial_guess_values       = None   
+        self.assigned_control_variables.blade_pitch_command.bounds                     = None       
         
         return     
            

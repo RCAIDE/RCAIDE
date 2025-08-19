@@ -69,13 +69,16 @@ def converge(segment):
     elif segment.state.numerics.solver.type  == "root_finder": 
         unknowns = segment.state.unknowns.pack_array() 
          
-        unknowns,infodict,ier,error_message = scipy.optimize.fsolve(iterate_root_finder,
-                                             unknowns,
-                                             args   = segment,
-                                             xtol   = segment.state.numerics.solver.tolerance_solution,
-                                             maxfev = segment.state.numerics.solver.max_evaluations,
-                                             epsfcn = segment.state.numerics.solver.step_size,
-                                             full_output = 1)
+        if len(segment.state.unknowns.pack_array() ) != len( segment.state.residuals.pack_array() ):
+            raise AttributeError('Systems of equations is not square. Either enforce number of unknowns but be equal to \n the number of residuals (equations) to use fsolve of switch solver type to "optimize".') 
+        else:
+            unknowns,infodict,ier,error_message = scipy.optimize.fsolve(iterate_root_finder,
+                                                 unknowns,
+                                                 args   = segment,
+                                                 xtol   = segment.state.numerics.solver.tolerance_solution,
+                                                 maxfev = segment.state.numerics.solver.max_evaluations,
+                                                 epsfcn = segment.state.numerics.solver.step_size,
+                                                 full_output = 1)
         
         if ier !=1:
             mission_converge = False
@@ -168,33 +171,42 @@ def add_mission_variables(segment):
     
     # Step 2: Optimizer Inputs 
     # Step 2.1: Extract inputs
-    input_count  = 0
-    unknown_keys = list(segment.state.unknowns.keys())
-    unknown_keys.remove('tag') 
+    input_count   = 0
+    unknown_keys  = list(segment.state.unknowns.keys())
+    residual_keys = list(segment.state.residuals.keys())
+    unknown_keys.remove('tag')
+    residual_keys.remove('tag')
     if ground_seg_flag: 
-        n_points     = segment.state.numerics.number_of_control_points
-        len_inputs = n_points  
+        n_points      = segment.state.numerics.number_of_control_points
+        len_inputs    = n_points
+        len_residuals = n_points
     elif single_pt_seg:
-        n_points   = 1
-        len_inputs = len(unknown_keys)
+        n_points      = 1
+        len_inputs    = len(unknown_keys)
+        len_residuals = n_points*len(residual_keys)
     else:
-        n_points     = segment.state.numerics.number_of_control_points  
-        len_inputs = n_points*len(unknown_keys)
-        
-    unknown_value   = Data()
-    full_unkn_vals  = Data()
-    full_bound_vals = Data()
-    for unkn in unknown_keys:
-        unknown_value[unkn]  = segment.state.unknowns[unkn]
-        full_unkn_vals[unkn] = unknown_value[unkn]
-        #full_bound_vals[unkn] =  
+        n_points      = segment.state.numerics.number_of_control_points  
+        len_inputs    = n_points*len(unknown_keys)
+        len_residuals = n_points*len(residual_keys)
+          
+            
+    full_unkn_vals        = Data()
+    full_upper_bound_vals = Data()
+    full_lower_bound_vals = Data()
+    for unkn in unknown_keys: 
+        full_unkn_vals[unkn]  = segment.state.unknowns[unkn]
+        full_lower_bound_vals[unkn] = segment.state.numerics.solver.lower_bounds[unkn]
+        full_upper_bound_vals[unkn] = segment.state.numerics.solver.upper_bounds[unkn]
 
     # Step 2.2: Construct nexus format  : [Variable_###, initial, -np.inf, np.inf , scaling, Units.less]
     initial_values    = full_unkn_vals.pack_array()
     input_len_strings = np.tile('Variable_', len_inputs)
     input_numbers     = np.linspace(1,len_inputs,len_inputs,dtype=np.int16)
     input_names       = np.core.defchararray.add(input_len_strings,np.array(input_numbers+input_count).astype(str))
+    lower_bounds      = full_lower_bound_vals.pack_array()
+    upper_bounds      = full_upper_bound_vals.pack_array()
     bounds            = np.broadcast_to((-np.inf,np.inf),(len_inputs,2))
+    
     units             = np.broadcast_to(Units.less,(len_inputs,))
     new_inputs        = np.reshape(np.tile(np.atleast_2d(np.array([None,None,None,None,None,None])),len_inputs), (-1, 6))
     
@@ -206,20 +218,23 @@ def add_mission_variables(segment):
     # Step 2.4 Add in the inputs 
     new_inputs[:,0]     = input_names   
     new_inputs[:,1]     = initial_values 
-    new_inputs[:,2:4]   = bounds   
+    new_inputs[:,2]     = lower_bounds   
+    new_inputs[:,3]     = upper_bounds
+    #new_inputs[:,2:4]   = bounds   
     new_inputs[:,4]     = scale
     new_inputs[:,5]     = units 
     optimization_problem.inputs = np.array(new_inputs,dtype=object)
     
     # Step 3: Constraints 
     # Step 3.1 : Create the equality constraints to the beginning of the constraints all equality constraints are 0, scale 1, and unitless
-    new_con = np.reshape(np.tile(np.atleast_2d(np.array([None,None,None,None,None])),len_inputs), (-1, 5))
-
-    con_len_strings = np.tile('Residual_', len_inputs)
-    con_names       = np.core.defchararray.add(con_len_strings,np.array(input_numbers+input_count).astype(str))
-    equals          = np.broadcast_to('=',(len_inputs,))
-    zeros           = np.zeros(len_inputs)
-    ones            = np.ones(len_inputs)
+    new_con = np.reshape(np.tile(np.atleast_2d(np.array([None,None,None,None,None])),len_residuals), (-1, 5))  
+    con_count       = 0
+    con_len_strings = np.tile('Residual_', len_residuals)
+    con_numbers     = np.linspace(1,len_residuals,len_residuals,dtype=np.int16)
+    con_names       = np.core.defchararray.add(con_len_strings,np.array(con_numbers+con_count).astype(str))
+    equals          = np.broadcast_to('=',(len_residuals,))
+    zeros           = np.zeros(len_residuals)
+    ones            = np.ones(len_residuals)
     
     # Step 3.2 Add in the new constraints
     new_con[:,0]    = con_names
@@ -266,18 +281,19 @@ def add_mission_variables(segment):
         input_aliases[:,1] = input_string
     
     # Step 4.2: Setup the aliases for the residuals
-    basic_string_res      = np.tile('segment.state.residuals.pack_array()[', len_inputs)
-    residual_string       = np.core.defchararray.add(basic_string_res,np.array(input_numbers-1).astype(str))
-    residual_string       = np.core.defchararray.add(residual_string, np.tile(']',len_inputs))
-    residual_aliases      = np.reshape(np.tile(np.atleast_2d(np.array((None,None))),len_inputs), (-1, 2)) 
+    basic_string_res      = np.tile('segment.state.residuals.pack_array()[', len_residuals)
+    residual_string       = np.core.defchararray.add(basic_string_res,np.array(con_numbers-1).astype(str))
+    residual_string       = np.core.defchararray.add(residual_string, np.tile(']',len_residuals))
+    residual_aliases      = np.reshape(np.tile(np.atleast_2d(np.array((None,None))),len_residuals), (-1, 2)) 
     residual_aliases[:,0] = con_names
     residual_aliases[:,1] = residual_string
         
     # Step 4.3: Append Aliases
     aliases = []
     for ii in range(len_inputs):
-        aliases.append(input_aliases[ii].tolist()) 
-        aliases.append(residual_aliases[ii].tolist())
+        aliases.append(input_aliases[ii].tolist())
+    for jj in range(len_residuals):   
+        aliases.append(residual_aliases[jj].tolist())
     
     # Step 5: Objective function
     if segment.state.numerics.solver.objective == None:     

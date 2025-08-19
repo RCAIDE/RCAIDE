@@ -86,7 +86,8 @@ class State(Conditions):
             except:
                 rank = 0            
             # don't expand initials or numerics
-            if k in ('initials','numerics'):
+            #if k in ('initials','numerics'):
+            if k in ('initials'):  
                 continue
             
             # recursion
@@ -94,9 +95,7 @@ class State(Conditions):
                 v.expand_rows(rows,override=override)
             # need arrays here
             elif rank == 2:
-                self[k] = np.resize(v,[rows,v.shape[1]])
-            #: if type
-        #: for each key,value        
+                self[k] = np.resize(v,[rows,v.shape[1]])    
         
 # ----------------------------------------------------------------------------------------------------------------------
 # Container
