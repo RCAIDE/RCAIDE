@@ -199,3 +199,7 @@ class Athena_Vortex_Lattice(Aerodynamics):
         results  = self.process.compute(state,settings,vehicle)
         
         return results
+    
+    def build_aerodynamic_surrogate(self):
+        build_AVL_surrogates(self)
+        return

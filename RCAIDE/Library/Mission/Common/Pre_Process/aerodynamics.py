@@ -11,6 +11,9 @@ import  RCAIDE
 import os
 import pickle
 import sys
+from copy import deepcopy
+
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.build_VLM_surrogates import build_surrogate
 # ----------------------------------------------------------------------------------------------------------------------
 #  aerodynamics
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -84,17 +87,16 @@ def aerodynamics(mission):
                             last_tag = tag
                         else:
                             if 'compute' in mission.segments[last_tag].analyses.aerodynamics.process.keys(): 
-                                segment.analyses.aerodynamics.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.aerodynamics.process.compute.lift.inviscid_wings
-                                segment.analyses.aerodynamics.surrogates                          = mission.segments[last_tag].analyses.aerodynamics.surrogates  
-                                segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
+                                segment.analyses.aerodynamics                                     = deepcopy(mission.segments[last_tag].analyses.aerodynamics)
                     else: 
                         aero   = segment.analyses.aerodynamics
                         aero.initialize()   
                         last_tag = tag  
                     if segment.analyses.aerodynamics.settings.store_surrogate_data:
                         with open(filename, 'wb') as file:
-                            pickle.dump(segment.analyses.aerodynamics, file) 
+                            pickle.dump(segment.analyses.aerodynamics.training, file) 
         else:
             with open(filename, 'rb') as file:
-                segment.analyses.aerodynamics = pickle.load(file)
+                segment.analyses.aerodynamics.training = pickle.load(file)
+                segment.analyses.aerodynamics.build_aerodynamic_surrogate()
     return 
