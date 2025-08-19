@@ -12,9 +12,11 @@ import RCAIDE
 from RCAIDE.Framework.Core import  Data  
 from RCAIDE.Library.Methods.Geometry.Planform  import  fuselage_planform, wing_planform, bwb_wing_planform  
 
+
  
 # Pacakge imports 
 import numpy as np  
+import os, sys
 
 #------------------------------------------------------------------------------
 # aircraft_aerodynamic_analysis
@@ -195,6 +197,7 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     state.conditions.expand_rows(ctrl_pts)
   
     state.analyses  =  Data()
+    aerodynamics_analysis.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "aerodynamic_training_data.pkl" )
     aerodynamics_analysis.initialize()            
     state.analyses.aerodynamics = aerodynamics_analysis 
      
