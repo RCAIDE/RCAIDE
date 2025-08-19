@@ -85,8 +85,7 @@ class State(Conditions):
                 rank = v.ndim
             except:
                 rank = 0            
-            # don't expand initials or numerics
-            #if k in ('initials','numerics'):
+            # don't expand initials or numerics 
             if k in ('initials'):  
                 continue
             
