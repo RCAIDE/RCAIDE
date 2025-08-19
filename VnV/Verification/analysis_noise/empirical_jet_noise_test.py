@@ -157,7 +157,8 @@ def baseline_mission_setup(analyses):
     # ------------------------------------------------------------------  
     segment                                                   = Segments.Climb.Constant_Throttle_Constant_Speed(base_segment)
     segment.tag                                               = "takeoff"    
-    segment.analyses.extend(analyses.takeoff )     
+    segment.analyses.extend(analyses.takeoff )    
+    segment.analyses.aerodynamics.settings.unique_segment_surrogate = True 
     segment.altitude_start                                    = 0 *  Units.meter
     segment.altitude_end                                      = 304.8 * Units.meter
     segment.air_speed                                         = 100* Units['m/s']
@@ -181,6 +182,7 @@ def baseline_mission_setup(analyses):
     segment                                              = Segments.Climb.Constant_Speed_Constant_Angle(base_segment)
     segment.tag                                          = "cutback"
     segment.analyses.extend(analyses.cutback )
+    segment.analyses.aerodynamics.settings.unique_segment_surrogate = True
     segment.air_speed                                    = 100 * Units['m/s']
     segment.altitude_end                                 = 1. * Units.km
     segment.climb_angle                                  = 5  * Units.degrees
