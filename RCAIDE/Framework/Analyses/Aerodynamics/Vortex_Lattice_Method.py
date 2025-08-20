@@ -16,6 +16,7 @@ from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method import *
 
 # package imports 
 import numpy as np 
+import os,pickle
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice_Method
@@ -155,9 +156,16 @@ class Vortex_Lattice_Method(Aerodynamics):
         use_surrogate   = self.settings.use_surrogate   
         # If we are using the surrogate
         if use_surrogate == True: 
-            # train training data
-            train_VLM_surrogates(self)
-
+            #  training data
+            if not os.path.exists(self.filename):
+                train_VLM_surrogates(self)
+    
+                if self.settings.store_training_data:
+                    with open(self.filename, 'wb') as file:
+                        pickle.dump(self.training, file)
+            else:
+                with open(self.filename, 'rb') as file:
+                    self.training = pickle.load(file)
             # build surrogate
             build_VLM_surrogates(self)
     
