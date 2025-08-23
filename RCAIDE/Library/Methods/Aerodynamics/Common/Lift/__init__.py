@@ -1,7 +1,15 @@
 # RCAIDE/Methods/Aerodynamics/Common/Lift/__init__.py
 # 
 
-""" RCAIDE Package Setup
+"""
+Common RCAIDE Lift Module Aerodynamic Methods
+
+This module provides lift calculation functions and methods used across multiple analyses.
+
+See Also
+--------
+RCAIDE.Library.Methods.Aerodynamics.Common.Drag
+RCAIDE.Framework.Analyses.Aerodynamics
 """
 
 # ----------------------------------------------------------------------------------------------------------------------
