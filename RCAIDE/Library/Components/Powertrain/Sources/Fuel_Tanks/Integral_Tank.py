@@ -145,8 +145,8 @@ class Integral_Tank(Fuel_Tank):
         """
         if self.wing_tag is not None:
             wing = wings[self.wing_tag]  
-            volume = compute_wing_integral_tank_volume(self, wing)
+            compute_wing_integral_tank_volume(self, wing)
         elif self.fuselage_tag is not None: 
             fuselage = fuselages[self.fuselage_tag]  
-            volume = compute_fuselage_integral_tank_fuel_volume(self, fuselage)
-        return volume                        
+            compute_fuselage_integral_tank_fuel_volume(self, fuselage)
+        return
