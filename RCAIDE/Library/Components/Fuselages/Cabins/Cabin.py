@@ -10,6 +10,7 @@ import RCAIDE
 from RCAIDE.Framework.Core                import Data ,  Units
 from RCAIDE.Library.Components.Component  import Container
 from RCAIDE.Library.Components            import Component 
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia import compute_cuboid_moment_of_inertia
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fuselage
@@ -48,3 +49,20 @@ class Cabin(Component):
 
         return
      
+
+    def compute_moment_of_inertia(self, center_of_gravity=[[0, 0, 0]], fuel_flag=False): 
+        """
+        Computes the moment of inertia tensor for the cabin.
+
+        Parameters
+        ---------- 
+        center_of_gravity : list, optional
+            Reference point coordinates, defaults to [[0, 0, 0]]
+        
+        Returns
+        -------
+        ndarray
+            3x3 moment of inertia tensor
+        """ 
+        I = compute_cuboid_moment_of_inertia(self.origin, self.mass_properties.mass,self.length,self.width,self.height, inner_length = 0, width_inner = 0, height_inner = 0, center_of_gravity = np.array([[0,0,0]]))  
+        return I           

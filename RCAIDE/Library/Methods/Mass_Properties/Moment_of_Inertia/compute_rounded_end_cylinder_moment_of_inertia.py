@@ -1,6 +1,6 @@
-# RCAIDE/Library/Methods/Stability/Moment_of_Inertia/compute_cylinder_moment_of_inertia.py 
+# RCAIDE/Library/Methods/Stability/Moment_of_Inertia/compute_rounded_end_cylinder_moment_of_inertia.py 
 # 
-# Created:  Sept. 2024, A. Molloy  
+# Created:  Aug. 2025, M. Clarke  
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -10,20 +10,18 @@
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Compute Cylinder Moment of Intertia
+#  Compute Rounded-End Cylinder Moment of Intertia
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
-    ''' computes the moment of inertia tensor for a hollow cylinder
+def compute_rounded_end_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
+    ''' computes the moment of inertia tensor for a hollow rounded end cylinder
 
     Assumptions:
     - Cylinder has a constant density
+    - Cylinder has a rounded end 
     - Origin is at the center of the cylinder
     - Cylinder axis of rotation is along the x-axis
 
-    Source:
-    [1] Moulton, B. C., and Hunsaker, D. F., “Simplified Mass and Inertial Estimates for Aircraft with Components
-    of Constant Density,” AIAA SCITECH 2023 Forum, January 2023, AIAA-2023-2432 DOI: 10.2514/
-    6.2023-2432
+    Source: 
  
     Inputs:
     - Component properties (origin, mass, outer_length, outer_radius)
@@ -42,19 +40,21 @@ def compute_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inn
     I =  np.zeros((3, 3))
     
     # ----------------------------------------------------------------------------------------------------------------------    
-    # Moment of inertia in local system. From Moulton and Hunsaker [1]
+    # Moment of inertia in local system 
     # ----------------------------------------------------------------------------------------------------------------------
     
     # Avoid divide by zero error for a point mass
     if  (outer_radius == 0 or outer_length == 0):
         volume = 1
     else:
-        volume = (np.pi * outer_radius ** 2 * outer_length) - (np.pi * inner_radius ** 2 * inner_length) 
-    
+        outer_volume = (np.pi * outer_radius ** 2 * outer_length ) + ( 4 / 3 * np.pi * outer_radius ** 3)
+        inner_volume = (np.pi * inner_radius ** 2 * inner_length ) + ( 4 / 3 * np.pi * inner_radius ** 3) 
+        volume = outer_volume - inner_volume
+        
     rho     = mass / volume
-    I[0][0] = rho * (1 / 2 * np.pi * (outer_radius ** 4 * outer_length) - 1 / 2 * np.pi * (inner_radius ** 4 * inner_length)) # Ixx
-    I[1][1] = rho * (1 / 12 * (3 *np.pi*(outer_radius ** 4)*outer_length + np.pi * outer_radius ** 2 * outer_length ** 2) - 1 / 12 * (3 * (inner_radius ** 4) *np.pi *inner_length + np.pi * inner_radius ** 2 * inner_length ** 2)) # Iyy
-    I[2][2] = rho * (1 / 12 * (3 *np.pi*(outer_radius ** 4)*outer_length + np.pi * outer_radius ** 2 * outer_length ** 2) - 1 / 12 * (3 * (inner_radius ** 4) *np.pi *inner_length + np.pi * inner_radius ** 2 * inner_length ** 2)) # Izz
+    #I[0][0] = # WRONG rho * (1 / 2 * np.pi * (outer_radius ** 4 * outer_length) - 1 / 2 * np.pi * (inner_radius ** 4 * inner_length)) # Ixx
+    #I[1][1] = # WRONG rho * (1 / 12 * (3 *np.pi*(outer_radius ** 4)*outer_length + np.pi * outer_radius ** 2 * outer_length ** 2) - 1 / 12 * (3 * (inner_radius ** 4) *np.pi *inner_length + np.pi * inner_radius ** 2 * inner_length ** 2)) # Iyy
+    #I[2][2] = # WRONG rho * (1 / 12 * (3 *np.pi*(outer_radius ** 4)*outer_length + np.pi * outer_radius ** 2 * outer_length ** 2) - 1 / 12 * (3 * (inner_radius ** 4) *np.pi *inner_length + np.pi * inner_radius ** 2 * inner_length ** 2)) # Izz
     
     # ----------------------------------------------------------------------------------------------------------------------    
     # transform moment of inertia to the global system

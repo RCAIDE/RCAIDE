@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia import compute_cuboid_moment_of_inertia, compute_cylinder_moment_of_inertia, compute_wing_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia import compute_cuboid_moment_of_inertia, compute_cylinder_moment_of_inertia,compute_rounded_end_cylinder_moment_of_inertia, compute_wing_moment_of_inertia
 
 import RCAIDE
 import numpy as  np
@@ -32,6 +32,8 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_MOI=True):
     Properties Used:
     N/A
     '''    
+
+    C =  RCAIDE.Library.Components
     
     # ------------------------------------------------------------------        
     # Setup
@@ -46,37 +48,63 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_MOI=True):
     for fuselage in vehicle.fuselages:
         I, mass = fuselage.compute_moment_of_inertia(center_of_gravity = CG_location)
         MOI_tensor += I
-        MOI_mass += mass
-    
+        MOI_mass   += mass
+        
+        for cabin in fuselage.cabins: 
+            I, mass = cabin.compute_moment_of_inertia(center_of_gravity = CG_location)
+            MOI_tensor += I
+            MOI_mass   += mass
+             
     # ------------------------------------------------------------------        
     #  Wing(s)
     # ------------------------------------------------------------------      
     for wing in vehicle.wings:
-        I, mass = wing.compute_moment_of_inertia(mass=wing.mass_properties.mass, center_of_gravity =CG_location)
+        I, mass = wing.compute_moment_of_inertia(center_of_gravity =CG_location)
         MOI_tensor += I
         MOI_mass   += mass
+
+        if isinstance(wing, C.Wings.Blended_Wing_Body): 
+            I, mass = cabin.compute_moment_of_inertia(center_of_gravity = CG_location)
+            MOI_tensor += I
+            MOI_mass   += mass 
     
+    # ------------------------------------------------------------------        
+    # Cargo Bay
+    # ------------------------------------------------------------------      
+    for cargo_bay in vehicle.cargo_bays:
+        I, mass = cargo_bay.compute_moment_of_inertia(center_of_gravity = CG_location)
+        MOI_tensor += I
+        MOI_mass   += mass 
+    
+    # ------------------------------------------------------------------        
+    # Landing Gear
+    # ------------------------------------------------------------------      
+    for landing_gear in vehicle.landing_gears:
+        I, mass = compute_cuboid_moment_of_inertia(landing_gear.origin, landing_gear.mass_properties.mass, landing_gear.length, landing_gear.width, landing_gear.height, 0, 0, 0, CG_location)
+        MOI_tensor += I
+        MOI_mass   += mass
+            
     # ------------------------------------------------------------------        
     #  Energy network
     # ------------------------------------------------------------------      
     I_network = np.zeros([3, 3]) 
     for network in vehicle.networks:
         for propulsor in network.propulsors:
-            if isinstance(propulsor,RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
+            if isinstance(propulsor,C.Powertrain.Propulsors.Electric_Rotor):
                 motor   = propulsor.motor 
                 I, mass = compute_cylinder_moment_of_inertia(motor.origin,motor.mass_properties.mass, 0, 0, 0,0, CG_location)
                 I_network += I
                 MOI_mass  += mass
                     
-            if isinstance(propulsor,RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
+            if isinstance(propulsor,C.Powertrain.Propulsors.Turbofan):
                 I, mass= compute_cylinder_moment_of_inertia(propulsor.origin, propulsor.mass_properties.mass, propulsor.length, propulsor.nacelle.diameter/2, 0, 0, CG_location)                    
                 I_network += I
                 MOI_mass += mass
-            if isinstance(propulsor,RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):
+            if isinstance(propulsor,C.Powertrain.Propulsors.Turboprop):
                 I, mass= compute_cylinder_moment_of_inertia(propulsor.origin, propulsor.mass_properties.mass, propulsor.length, propulsor.diameter/2, 0, 0, CG_location)                    
                 I_network += I
                 MOI_mass += mass
-            if isinstance(propulsor,RCAIDE.Library.Components.Powertrain.Propulsors.Internal_Combustion_Engine) or  isinstance(propulsor,RCAIDE.Library.Components.Powertrain.Propulsors.Constant_Speed_Internal_Combustion_Engine):
+            if isinstance(propulsor,C.Powertrain.Propulsors.Internal_Combustion_Engine) or  isinstance(propulsor,C.Powertrain.Propulsors.Constant_Speed_Internal_Combustion_Engine):
                 I, mass= compute_cylinder_moment_of_inertia(propulsor.origin, propulsor.mass_properties.mass, propulsor.length, propulsor.diameter/2, 0, 0, CG_location)                    
                 I_network += I
                 MOI_mass += mass
@@ -89,17 +117,16 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_MOI=True):
                                  
         for fuel_line in network.fuel_lines:
             for fuel_tank in fuel_line.fuel_tanks:
-                if isinstance(fuel_tank,RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank): 
-                    I, mass = compute_cylinder_moment_of_inertia(fuel_tank.origin, fuel_tank.fuel.mass_properties.mass, fuel_tank.length, fuel_tank.outer_diameter/2, 0, 0, CG_location)
+                if isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank) or  isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank):
+                    I, mass = compute_rounded_end_cylinder_moment_of_inertia(fuel_tank.origin, fuel_tank.fuel.mass_properties.mass, fuel_tank.length,
+                                                                             fuel_tank.outer_diameter/2, fuel_tank.length - fuel_tank.wall_thickness, fuel_tank.inner_diameter/2, CG_location)
                     I_network += I
                     MOI_mass += mass
                     
-                if isinstance(fuel_tank,RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank):
+                if isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Integral_Tank):
                     I, mass =  compute_wing_moment_of_inertia(vehicle.wings["main_wing"], mass=fuel_tank.fuel.mass_properties.mass, center_of_gravity = CG_location, fuel_flag=True)
                     I_network += I
-                    MOI_mass += mass                    
-                else:
-                    pass # TO DO
+                    MOI_mass += mass   
                         
     MOI_tensor += I_network    
     

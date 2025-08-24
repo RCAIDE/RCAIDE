@@ -10,8 +10,7 @@
 # RCAIDE Imports
 import RCAIDE
 from RCAIDE.Framework.Core import Data
-from RCAIDE.Framework.Core import Units 
-from RCAIDE.Framework.Mission.Common  import Results  
+from RCAIDE.Framework.Core import Units  
 
 # package imports
 import numpy as np
