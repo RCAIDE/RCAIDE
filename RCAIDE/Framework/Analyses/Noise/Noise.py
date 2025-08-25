@@ -76,9 +76,9 @@ class Noise(Analysis):
         
         self.settings.noise_hemisphere                       = False 
         self.settings.noise_hemisphere_radius                = 20  
-        epsilon                                              = 1E-5
-        self.settings.noise_hemisphere_phi_angles            = np.linspace(epsilon + (np.pi/2),   np.pi-epsilon,6)   
-        self.settings.noise_hemisphere_theta_angles          = np.linspace(epsilon + 0        ,   2*np.pi-epsilon,12)  
+        epsilon                                              = 1E-10
+        self.settings.noise_hemisphere_phi_angles            = np.linspace(epsilon,   np.pi-epsilon,6)   
+        self.settings.noise_hemisphere_theta_angles          = np.linspace(epsilon - np.pi        ,   np.pi-epsilon,12)
                 
         # settings for acoustic frequency resolution
         self.settings.center_frequencies                     = np.array([16,20,25,31.5,40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, \
