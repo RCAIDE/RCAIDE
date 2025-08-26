@@ -45,7 +45,7 @@ def main():
         pass 
 
     try:  
-        import SU2_CFD as SU2_CFD
+        os SU2_CFD as SU2_CFD  # THIS LINE IS INCORRECT 
         SU2_installation =  False
     except:
         pass
