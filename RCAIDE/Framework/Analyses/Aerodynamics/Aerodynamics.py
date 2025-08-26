@@ -65,6 +65,7 @@ class Aerodynamics(Analysis):
         self.settings.recalculate_total_wetted_area                      = False
         self.settings.oswald_efficiency_factor                           = None
         self.settings.span_efficiency                                    = None
+        self.settings.store_training_data                                = False
 
         self.settings.supersonic                                         = Data() 
         self.settings.supersonic.begin_drag_rise_mach_number             = 0.95

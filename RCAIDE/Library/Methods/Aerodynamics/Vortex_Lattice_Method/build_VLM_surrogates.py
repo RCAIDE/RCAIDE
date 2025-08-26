@@ -59,7 +59,6 @@ def build_VLM_surrogates(aerodynamics):
     surrogates = aerodynamics.surrogates
     training   = aerodynamics.training 
     Mach       = aerodynamics.training.Mach 
-    training   = aerodynamics.training  
     sub_len    = int(sum(Mach<1.))  
     sup_Mach   = Mach[sub_len:]
     

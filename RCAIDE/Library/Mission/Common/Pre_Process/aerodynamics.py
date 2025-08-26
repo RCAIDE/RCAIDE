@@ -7,6 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 import  RCAIDE  
+import os, sys
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  aerodynamics
@@ -60,9 +61,7 @@ def aerodynamics(mission):
     See Also
     --------
     RCAIDE.Library.Methods.Geometry.Planform
-    """
-    
-        
+    """                    
     last_tag = None
     for tag,segment in mission.segments.items(): 
         if type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Climb or  \
@@ -74,6 +73,7 @@ def aerodynamics(mission):
                 if last_tag!=  None:
                     if segment.analyses.aerodynamics.settings.unique_segment_surrogate:
                         aero   = segment.analyses.aerodynamics
+                        aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag + "_" + segment.tag +"_aerodynamic_training_data.pkl")
                         aero.initialize()   
                         last_tag = tag
                     else:
@@ -83,6 +83,7 @@ def aerodynamics(mission):
                             segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
                 else: 
                     aero   = segment.analyses.aerodynamics
+                    aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag + "_" + segment.tag +"_aerodynamic_training_data.pkl")
                     aero.initialize()   
                     last_tag = tag  
     return 

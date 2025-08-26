@@ -136,7 +136,7 @@ class Liquid_Hydrogen(Propellant):
 
             See Also
             --------
-            RCAIDE.Library.Attributes.Solids.Liquid_Hydrogen.load_hydrogen_properties
+            RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen.load_hydrogen_properties
          """
         data = load_hydrogen_properties()
         temps = np.array(data["Temperature (K)"], dtype=float)
