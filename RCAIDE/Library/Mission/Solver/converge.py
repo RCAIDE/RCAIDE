@@ -195,8 +195,8 @@ def add_mission_variables(segment):
     full_lower_bound_vals = Data()
     for unkn in unknown_keys: 
         full_unkn_vals[unkn]  = segment.state.unknowns[unkn]
-        full_lower_bound_vals[unkn] = segment.state.numerics.solver.lower_bounds[unkn]
-        full_upper_bound_vals[unkn] = segment.state.numerics.solver.upper_bounds[unkn]
+        full_lower_bound_vals[unkn] = np.atleast_2d(segment.state.numerics.solver.lower_bounds[unkn])
+        full_upper_bound_vals[unkn] = np.atleast_2d(segment.state.numerics.solver.upper_bounds[unkn])
 
     # Step 2.2: Construct nexus format  : [Variable_###, initial, -np.inf, np.inf , scaling, Units.less]
     initial_values    = full_unkn_vals.pack_array()

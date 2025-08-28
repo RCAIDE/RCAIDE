@@ -75,6 +75,8 @@ class Takeoff(Evaluate):
         self.state.residuals.force_x              = ones_row_m1(1) * 0.0    
         self.state.unknowns.elapsed_time          = 30.                        
         self.state.unknowns.ground_velocity       = ones_row_m1(1) * 0  
+        self.assigned_control_variables.elapsed_time.active     = True   
+        self.assigned_control_variables.ground_velocity.active  = True   
 
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission Conditions 

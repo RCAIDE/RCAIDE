@@ -79,7 +79,8 @@ def set_residuals_and_unknowns(mission):
     RCAIDE.Framework.Mission.Segments
     """     
     for segment in mission.segments:  
-        ones_row    = segment.state.ones_row 
+        ones_row    = segment.state.ones_row
+        ones_row_m1 = segment.state.ones_row_m1
         ctrls       = segment.assigned_control_variables
         dynamics    = segment.flight_dynamics
         
@@ -196,8 +197,22 @@ def set_residuals_and_unknowns(mission):
                 segment.state.numerics.solver.upper_bounds.velocity = ctrls.velocity.bounds[0][1] * ones_row(1)
             else:
                 segment.state.numerics.solver.lower_bounds.velocity =  -np.inf * ones_row(1) 
-                segment.state.numerics.solver.upper_bounds.velocity =   np.inf * ones_row(1) 
+                segment.state.numerics.solver.upper_bounds.velocity =   np.inf * ones_row(1)
                 
+        # Ground Velocity 
+        if ctrls.ground_velocity.active:  
+            if  ctrls.ground_velocity.initial_guess_values !=  None:
+                segment.state.unknowns.ground_velocity = ones_row(1) * ctrls.ground_velocity.initial_guess_values[0][0] 
+            else:
+                segment.state.unknowns.ground_velocity = ones_row(1) *  100 
+    
+            if ctrls.velocity.bounds !=  None:
+                segment.state.numerics.solver.lower_bounds.ground_velocity = ctrls.ground_velocity.bounds[0][0] * ones_row_m1(1)
+                segment.state.numerics.solver.upper_bounds.ground_velocity = ctrls.ground_velocity.bounds[0][1] * ones_row_m1(1)
+            else:
+                segment.state.numerics.solver.lower_bounds.ground_velocity =  -np.inf * ones_row_m1(1) 
+                segment.state.numerics.solver.upper_bounds.ground_velocity =   np.inf * ones_row_m1(1)
+                        
         # Acceleration 
         if ctrls.acceleration.active:  
             if ctrls.acceleration.initial_guess_values !=  None:
@@ -220,11 +235,11 @@ def set_residuals_and_unknowns(mission):
                 segment.state.unknowns.elapsed_time = 10 
         
             if ctrls.elapsed_time.bounds !=  None:
-                segment.state.numerics.solver.lower_bounds.elapsed_time = ctrls.elapsed_time.bounds[0][0] * ones_row(1)
-                segment.state.numerics.solver.upper_bounds.elapsed_time = ctrls.elapsed_time.bounds[0][1] * ones_row(1)
+                segment.state.numerics.solver.lower_bounds.elapsed_time = ctrls.elapsed_time.bounds[0][0] 
+                segment.state.numerics.solver.upper_bounds.elapsed_time = ctrls.elapsed_time.bounds[0][1]  
             else:
-                segment.state.numerics.solver.lower_bounds.elapsed_time =  -np.inf * ones_row(1) 
-                segment.state.numerics.solver.upper_bounds.elapsed_time =   np.inf * ones_row(1)                  
+                segment.state.numerics.solver.lower_bounds.elapsed_time = -np.inf    
+                segment.state.numerics.solver.upper_bounds.elapsed_time =  np.inf    
                                 
         # Elevator 
         if ctrls.elevator_deflection.active:      

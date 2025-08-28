@@ -48,6 +48,27 @@ class Conditions(Data):
         """     
         return np.ones([self._size,cols])
     
+    def ones_row_1(self,cols):
+        """ returns an N-1 row vector of ones with given number of columns
+        
+            Assumptions:
+            None
+    
+            Source:
+            N/A
+    
+            Inputs:
+            cols   [in]
+    
+            Outputs:
+            Vector
+    
+            Properties Used:
+            None
+        """
+        rows =  self._size 
+        return expanded_array(cols, rows-1)
+
     def ones_row_m1(self,cols):
         """ returns an N-1 row vector of ones with given number of columns
         
@@ -66,7 +87,7 @@ class Conditions(Data):
             Properties Used:
             None
         """ 
-        return expanded_array(cols, 1)
+        return expanded_array(cols, 1)    
     
     def ones_row_m2(self,cols):
         """ returns an N-2 row vector of ones with given number of columns

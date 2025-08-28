@@ -196,6 +196,11 @@ class Segment(Analysis):
         self.assigned_control_variables.velocity.active                                = False                  
         self.assigned_control_variables.velocity.initial_guess_values                  = None                
         self.assigned_control_variables.velocity.bounds                                = None
+
+        self.assigned_control_variables.ground_velocity                                = Data()
+        self.assigned_control_variables.ground_velocity.active                         = False                  
+        self.assigned_control_variables.ground_velocity.initial_guess_values           = None                
+        self.assigned_control_variables.ground_velocity.bounds                         = None        
           
         self.assigned_control_variables.acceleration                                   = Data()
         self.assigned_control_variables.acceleration.active                            = False                 
