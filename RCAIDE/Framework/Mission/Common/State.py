@@ -50,12 +50,14 @@ class State(Conditions):
             None
         """           
         
-        self.tag        = 'state'
-        self.initials   = Conditions()
-        self.numerics   = Numerics()
-        self.unknowns   = Unknowns()
-        self.conditions = Conditions()
-        self.residuals  = Residuals()
+        self.tag                 = 'state'
+        self.initials            = Conditions()
+        self.numerics            = Numerics()
+        self.unknowns            = Unknowns()
+        self.conditions          = Conditions()
+        self.residuals           = Residuals()
+        self.number_of_residuals = 0
+        self.number_of_unknowns  = 0
         
     def expand_rows(self,rows,override=False):
         """ Makes a 1-D array the right size. Often used after a mission is initialized to size out the vectors to the

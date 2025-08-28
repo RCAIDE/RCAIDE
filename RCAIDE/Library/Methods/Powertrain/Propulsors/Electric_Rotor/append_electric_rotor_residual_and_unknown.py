@@ -60,8 +60,9 @@ def append_electric_rotor_residual_and_unknown(propulsor, segment):
     """
     ones_row    = segment.state.ones_row  
     motor       = propulsor.motor  
-    segment.state.unknowns[propulsor.tag + '_motor_current']              = motor.design_current * ones_row(1) 
-    segment.state.residuals.network[propulsor.tag +'_rotor_motor_torque'] = 0. * ones_row(1) 
+    segment.state.unknowns[propulsor.tag + '_motor_current']                     = motor.design_current * ones_row(1) 
+    segment.state.residuals.network[propulsor.tag +'_rotor_motor_torque']        = 0. * ones_row(1) 
     segment.state.numerics.solver.upper_bounds[propulsor.tag + '_motor_current'] =   np.inf* ones_row(1) 
     segment.state.numerics.solver.lower_bounds[propulsor.tag + '_motor_current'] = - np.inf* ones_row(1) 
+    segment.state.number_of_unknowns  += 1 
     return 

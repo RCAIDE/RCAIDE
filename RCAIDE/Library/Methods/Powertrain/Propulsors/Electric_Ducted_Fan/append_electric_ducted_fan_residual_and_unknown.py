@@ -15,4 +15,5 @@ def append_electric_ducted_fan_residual_and_unknown(propulsor,segment):
     segment.state.unknowns[propulsor.tag + '_motor_current']                     = motor.design_current * ones_row(1) 
     segment.state.numerics.solver.upper_bounds[propulsor.tag + '_motor_current'] =    np.inf* ones_row(1) 
     segment.state.numerics.solver.lower_bounds[propulsor.tag + '_motor_current'] =  - np.inf* ones_row(1) 
+    segment.state.number_of_unknowns  += 1 
     return 

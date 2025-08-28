@@ -69,7 +69,7 @@ def converge(segment):
     elif segment.state.numerics.solver.type  == "root_finder": 
         unknowns = segment.state.unknowns.pack_array() 
          
-        if len(segment.state.unknowns.pack_array() ) != len( segment.state.residuals.pack_array() ):
+        if segment.state.number_of_unknowns!= segment.state.number_of_residuals:
             raise AttributeError('Systems of equations is not square. Either enforce number of unknowns but be equal to \n the number of residuals (equations) to use fsolve of switch solver type to "optimize".') 
         else:
             unknowns,infodict,ier,error_message = scipy.optimize.fsolve(iterate_root_finder,
@@ -172,22 +172,20 @@ def add_mission_variables(segment):
     # Step 2: Optimizer Inputs 
     # Step 2.1: Extract inputs
     input_count   = 0
-    unknown_keys  = list(segment.state.unknowns.keys())
-    residual_keys = list(segment.state.residuals.keys())
-    unknown_keys.remove('tag')
-    residual_keys.remove('tag')
+    unknown_keys  = list(segment.state.unknowns.keys())  
+    unknown_keys.remove('tag') 
     if ground_seg_flag: 
         n_points      = segment.state.numerics.number_of_control_points
         len_inputs    = n_points
         len_residuals = n_points
     elif single_pt_seg:
         n_points      = 1
-        len_inputs    = len(unknown_keys)
-        len_residuals = n_points*len(residual_keys)
+        len_inputs    = segment.state.number_of_unknowns
+        len_residuals = segment.state.number_of_residuals
     else:
         n_points      = segment.state.numerics.number_of_control_points  
-        len_inputs    = n_points*len(unknown_keys)
-        len_residuals = n_points*len(residual_keys)
+        len_inputs    = n_points*segment.state.number_of_unknowns
+        len_residuals = n_points*segment.state.number_of_residuals
           
             
     full_unkn_vals        = Data()
@@ -204,9 +202,7 @@ def add_mission_variables(segment):
     input_numbers     = np.linspace(1,len_inputs,len_inputs,dtype=np.int16)
     input_names       = np.core.defchararray.add(input_len_strings,np.array(input_numbers+input_count).astype(str))
     lower_bounds      = full_lower_bound_vals.pack_array()
-    upper_bounds      = full_upper_bound_vals.pack_array()
-    bounds            = np.broadcast_to((-np.inf,np.inf),(len_inputs,2))
-    
+    upper_bounds      = full_upper_bound_vals.pack_array()     
     units             = np.broadcast_to(Units.less,(len_inputs,))
     new_inputs        = np.reshape(np.tile(np.atleast_2d(np.array([None,None,None,None,None,None])),len_inputs), (-1, 6))
     
@@ -219,8 +215,7 @@ def add_mission_variables(segment):
     new_inputs[:,0]     = input_names   
     new_inputs[:,1]     = initial_values 
     new_inputs[:,2]     = lower_bounds   
-    new_inputs[:,3]     = upper_bounds
-    #new_inputs[:,2:4]   = bounds   
+    new_inputs[:,3]     = upper_bounds  
     new_inputs[:,4]     = scale
     new_inputs[:,5]     = units 
     optimization_problem.inputs = np.array(new_inputs,dtype=object)
