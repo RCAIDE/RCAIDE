@@ -73,9 +73,14 @@ def SU2(conditions,settings,geometry):
         sym=False,
         restart=False
     )  
+    
     SU2_results = Data()
     for wing in geometry.wings:
         SU2_results[wing.tag] = []
+    SU2_results['CL_Total'] = []
+    SU2_results['CD_Total'] = []
+    SU2_results['CM_Total'] = []
+
     for i in range(len_mach):
             if aoa[i][0] ==aoa[0][0]:
                 restart=False
@@ -99,8 +104,13 @@ def SU2(conditions,settings,geometry):
         
             # Extract aerodynamic coefficients
             for wing in geometry.wings:
-                cl, cd, cmz, clw, cdw  = extract_SU2_forces("forces_breakdown.dat",wing.tag)
-                SU2_results[wing.tag].append([mach[i][0],aoa[i][0], cl, cd, cmz,clw,cdw])
+                _, _, _, clw, cdw  = extract_SU2_forces("forces_breakdown.dat",wing.tag)
+                SU2_results[wing.tag].append([mach[i][0],aoa[i][0], clw,cdw])
+
+            cl, cd, cmz, clw, cdw  = extract_SU2_forces("forces_breakdown.dat",wing.tag)
+            SU2_results['CL_Total'].append(cl)
+            SU2_results['CD_Total'].append(cd)
+            SU2_results['CM_Total'].append(cmz)
     # ---------------------------------------------------------------------------------------
     # Pack outputs
     # ------------------ --------------------------------------------------------------------
@@ -112,19 +122,19 @@ def SU2(conditions,settings,geometry):
     results.X_ref             = x_m
     results.Y_ref             = 0
     results.Z_ref             = z_m 
-    results.CLift             = [x[2] for x in SU2_results['main_wing']]
-    results.CDift             = [x[3] for x in SU2_results['main_wing']]
+    results.CLift             = SU2_results['CL_Total']
+    results.CDift             = SU2_results['CD_Total']
     results.CLift_wings       = Data()
     for wing in geometry.wings:
-        results.CLift_wings[wing.tag] = [x[5] for x in SU2_results[wing.tag]] # make it wing tag independed later 
+        results.CLift_wings[wing.tag] = [x[2] for x in SU2_results[wing.tag]] # make it wing tag independed later 
     results.CDrag_induced_wings = Data()
     for wing in geometry.wings:
-        results.CDrag_induced_wings[wing.tag] = [x[6] for x in SU2_results[wing.tag]]
+        results.CDrag_induced_wings[wing.tag] = [x[3] for x in SU2_results[wing.tag]]
     results.CX                = 0
     results.CY                = 0
     results.CZ                = 0
     results.CL                = 0
-    results.CM                = [x[4] for x in SU2_results['main_wing']]
+    results.CM                = SU2_results['CM_Total']
     results.CN                = 0
     results.chord_sections    = 0
     results.spanwise_stations = 0
