@@ -73,7 +73,9 @@ def SU2(conditions,settings,geometry):
         sym=False,
         restart=False
     )  
-    SU2_results = []
+    SU2_results = Data()
+    for wing in geometry.wings:
+        SU2_results[wing.tag] = []
     for i in range(len_mach):
             if aoa[i][0] ==aoa[0][0]:
                 restart=False
@@ -82,8 +84,12 @@ def SU2(conditions,settings,geometry):
             #restart = i > 0  # Restart from the second case onwards
             modify_SU2_cfg(cfg_file, aoa[i][0]/Units.degrees, mach[i][0], restart)
             # Run SU2 with MPI
-            command = ["mpiexec", "-n", str(num_procs), "SU2_CFD", cfg_file]
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            try: 
+                command = ["mpiexec", "-n", str(num_procs), "SU2_CFD", cfg_file] # Parallel
+                process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            except:
+                command = ["SU2_CFD", cfg_file] # Serial
+                process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
             # Stream the output to terminal in real-time
             for line in iter(process.stdout.readline, ""):
                 print(line, end="")  # Print line by line without extra newlines
@@ -92,9 +98,9 @@ def SU2(conditions,settings,geometry):
             process.wait()  # Ensure SU2_CFD finishes before proceeding
         
             # Extract aerodynamic coefficients
-            cl, cd, cmz, clw, cdw  = extract_SU2_forces("forces_breakdown.dat","main_wing")
-        
-            SU2_results.append([mach[i][0],aoa[i][0], cl, cd, cmz,clw,cdw])
+            for wing in geometry.wings:
+                cl, cd, cmz, clw, cdw  = extract_SU2_forces("forces_breakdown.dat",wing.tag)
+                SU2_results[wing.tag].append([mach[i][0],aoa[i][0], cl, cd, cmz,clw,cdw])
     # ---------------------------------------------------------------------------------------
     # Pack outputs
     # ------------------ --------------------------------------------------------------------
@@ -106,15 +112,19 @@ def SU2(conditions,settings,geometry):
     results.X_ref             = x_m
     results.Y_ref             = 0
     results.Z_ref             = z_m 
-    results.CLift             = [x[2] for x in SU2_results]
-    results.CDift             = [x[3] for x in SU2_results]
-    results.CLift_wings       = [x[5] for x in SU2_results]
-    results.CDrag_induced_wings = [x[6] for x in SU2_results]
+    results.CLift             = [x[2] for x in SU2_results['main_wing']]
+    results.CDift             = [x[3] for x in SU2_results['main_wing']]
+    results.CLift_wings       = Data()
+    for wing in geometry.wings:
+        results.CLift_wings[wing.tag] = [x[5] for x in SU2_results[wing.tag]] # make it wing tag independed later 
+    results.CDrag_induced_wings = Data()
+    for wing in geometry.wings:
+        results.CDrag_induced_wings[wing.tag] = [x[6] for x in SU2_results[wing.tag]]
     results.CX                = 0
     results.CY                = 0
     results.CZ                = 0
     results.CL                = 0
-    results.CM                = [x[4] for x in SU2_results]
+    results.CM                = [x[4] for x in SU2_results['main_wing']]
     results.CN                = 0
     results.chord_sections    = 0
     results.spanwise_stations = 0

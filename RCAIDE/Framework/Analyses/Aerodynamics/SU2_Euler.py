@@ -69,7 +69,7 @@ class SU2_Euler(Aerodynamics):
         self.settings.stl_filename                                  = None
         self.settings.SU2_filename                                  = None
         self.settings.SU2_config_filename                           = None
-        self.settings.half_mesh_flag                                = False
+        self.settings.half_mesh_flag                                = False # Avoid using this flag. Keep as False.
         self.settings.number_of_processors                          = 8
         self.settings.vsp_mesh_growth_ratio                         = 1.2
         self.settings.vsp_mesh_growth_limiting_flag                 = False
