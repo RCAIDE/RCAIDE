@@ -162,13 +162,13 @@ class Segment(Analysis):
         return self
     
     def flight_dynamics_and_controls(self): 
-        self.flight_dynamics                                             = Data()
-        self.flight_dynamics.force_x                                     = False 
-        self.flight_dynamics.force_y                                     = False 
-        self.flight_dynamics.force_z                                     = False 
-        self.flight_dynamics.moment_x                                    = False 
-        self.flight_dynamics.moment_y                                    = False 
-        self.flight_dynamics.moment_z                                    = False    
+        self.flight_dynamics                                                           = Data()
+        self.flight_dynamics.force_x                                                   = False 
+        self.flight_dynamics.force_y                                                   = False 
+        self.flight_dynamics.force_z                                                   = False 
+        self.flight_dynamics.moment_x                                                  = False 
+        self.flight_dynamics.moment_y                                                  = False 
+        self.flight_dynamics.moment_z                                                  = False    
         
         self.assigned_control_variables                                                = Data() 
           

@@ -94,7 +94,7 @@ def set_residuals_and_unknowns(mission):
         if dynamics.force_x == True: 
             if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Takeoff or \
                type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Landing:   
-                segment.state.residuals.force_x              = ones_row_m1(1) * 0.0
+                segment.state.residuals.force_x              = ones_row_m1(1) * 0
                 segment.state.residuals.final_velocity_error = 0.0
                 segment.state.number_of_residuals += 2
             else:
