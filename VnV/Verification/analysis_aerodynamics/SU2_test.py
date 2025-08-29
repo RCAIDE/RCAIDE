@@ -15,6 +15,7 @@ import numpy as np
 import pylab as plt 
 import sys
 import os
+import subprocess 
 
 # local imports 
 sys.path.append(os.path.join( os.path.split(os.path.split(sys.path[0])[0])[0], 'Vehicles'))
@@ -39,7 +40,10 @@ def main():
         pass
 
     try:  
-        import vsp as vsp
+        try:
+            import vsp as vsp
+        except:
+            import openvsp as vsp
         vsp_installation  = True 
     except:
         pass 
