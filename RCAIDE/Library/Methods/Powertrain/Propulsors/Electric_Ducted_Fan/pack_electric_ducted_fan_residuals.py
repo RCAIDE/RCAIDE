@@ -18,5 +18,4 @@ def pack_electric_ducted_fan_residuals(propulsor,segment):
     
     # compute torque matching residual
     segment.state.residuals.network[propulsor.tag  + '_ducted_fan_motor_torque'] = q_motor - q_ducted_fan
-    segment.state.number_of_residuals += 1 
     return 
