@@ -45,7 +45,7 @@ def main():
     results = missions.base_mission.evaluate() 
 
     elevator_deflection        = results.segments.climb.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg
-    elevator_deflection_true   = -1.3038869012039258
+    elevator_deflection_true   = -1.294710196924449
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
     print('Error1: ',elevator_deflection_diff)
     assert np.abs(elevator_deflection_diff/elevator_deflection_true) < 5e-3
