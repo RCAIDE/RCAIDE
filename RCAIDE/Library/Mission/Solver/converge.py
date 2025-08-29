@@ -69,8 +69,11 @@ def converge(segment):
     elif segment.state.numerics.solver.type  == "root_finder": 
         unknowns = segment.state.unknowns.pack_array() 
          
-        if segment.state.number_of_unknowns!= segment.state.number_of_residuals:
-            raise AttributeError('Systems of equations is not square. Either enforce number of unknowns but be equal to \n the number of residuals (equations) to use fsolve of switch solver type to "optimize".') 
+        if segment.state.number_of_unknowns != segment.state.number_of_residuals:
+            raise AttributeError('\n The system of equations representing the mission is not square. The number of unknowns (' + str(segment.state.number_of_unknowns) + \
+                                 ') is not equal to the number of residuals (equations) (' + str(segment.state.number_of_residuals) + '). Either enforce of unknowns '+\
+                                 ' to be equal to the number of residuals (equations) to use fsolve or switch RCAIDE solver type to "optimize" when defining the segment.'+ \
+                                 '\n i.e. segment.state.numerics.solver.type  = "optimize" ') 
         else:
             unknowns,infodict,ier,error_message = scipy.optimize.fsolve(iterate_root_finder,
                                                  unknowns,
