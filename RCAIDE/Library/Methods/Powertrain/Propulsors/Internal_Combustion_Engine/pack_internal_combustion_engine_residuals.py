@@ -18,5 +18,4 @@ def pack_internal_combustion_engine_residuals(propulsor,segment):
 
     # compute torque matching residual        
     segment.state.residuals.network[propulsor.tag + '_rotor_engine_torque'] = q_engine - q_prop 
-    segment.state.number_of_residuals += 1 
     return 

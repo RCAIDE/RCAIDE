@@ -53,7 +53,7 @@ def fuel_aircraft_payload_range_mzfw():
     missions = missions_setup(mission)  
         
     # run payload range analysis 
-    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.20)
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.10)
                                 
     fuel_r                 = payload_range_results.range[-1]  
     fuel_r_true            = 4912054.179150544
