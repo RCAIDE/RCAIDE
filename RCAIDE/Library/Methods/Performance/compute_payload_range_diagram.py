@@ -226,6 +226,10 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
         # Evaluate mission with current TOW
         results = mission.evaluate()
         segment = results.segments[cruise_segment_tag]
+        
+        # reset numner of residuals and unknowns 
+        mission.segments.takeoff_ground_run.state.number_of_residuals = 0
+        mission.segments.takeoff_ground_run.state.number_of_unknowns  = 0
 
         # Distance convergency in order to have total fuel equal to target fuel
         #

@@ -90,16 +90,18 @@ def set_residuals_and_unknowns(mission):
             segment.state.residuals.altitude      = ones_row(1) * 0.0   
             segment.state.number_of_residuals     += 1
         
-        # assign force and moment residuals i.e. degrees of freedom  
+        # assign force and moment residuals i.e. degrees of freedom
+        if dynamics.final_velocity_error == True:
+            segment.state.residuals.final_velocity_error = 0.0   
+            segment.state.number_of_residuals += 1
+            
         if dynamics.force_x == True: 
             if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Takeoff or \
-               type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Landing:   
-                segment.state.residuals.force_x              = ones_row_m1(1) * 0
-                segment.state.residuals.final_velocity_error = 0.0
-                segment.state.number_of_residuals += 2
+               type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Landing:
+                pass
             else:
                 segment.state.residuals.force_x = ones_row(1) *0
-                segment.state.number_of_residuals += 1
+            segment.state.number_of_residuals += 1 
         if dynamics.force_y == True:
             segment.state.residuals.force_y = ones_row(1) *0 
             segment.state.number_of_residuals += 1

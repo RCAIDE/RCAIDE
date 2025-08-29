@@ -168,7 +168,8 @@ class Segment(Analysis):
         self.flight_dynamics.force_z                                                   = False 
         self.flight_dynamics.moment_x                                                  = False 
         self.flight_dynamics.moment_y                                                  = False 
-        self.flight_dynamics.moment_z                                                  = False    
+        self.flight_dynamics.moment_z                                                  = False   
+        self.flight_dynamics.final_velocity_error                                      = False     
         
         self.assigned_control_variables                                                = Data() 
           
