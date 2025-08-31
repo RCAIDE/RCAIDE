@@ -68,7 +68,6 @@ def evaluate_surrogate(state,settings,vehicle):
     Cdrag_induced_alpha     = results_alpha.Cdrag
     
     conditions.static_stability.coefficients.M_0 = compute_stability_derivative(sub_sur.CM_0    ,trans_sur.CM_0    ,sup_sur.CM_0    ,h_sub,h_sup,Mach) 
-         
     
     for wing in vehicle.wings:   
         inviscid_wing_lifts = compute_coefficient(sub_sur.Clift_wing_alpha[wing.tag],trans_sur.Clift_wing_alpha[wing.tag],sup_sur.Cdrag_induced_wing_alpha[wing.tag] ,h_sub,h_sup,Mach,pts_alpha)

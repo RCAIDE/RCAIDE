@@ -35,7 +35,7 @@ def vehicle_setup():
     vehicle.mass_properties.max_zero_fuel             = 40900. # kg
     vehicle.mass_properties.max_fuel                  = 13100. # kg
     vehicle.mass_properties.max_payload               = 12900. # kg
-    vehicle.mass_properties.operating_empty           = 27900  #  
+    vehicle.mass_properties.operating_empty           = 27900  #    
 
 
     vehicle.mass_properties.center_of_gravity         = [[16.8, 0, 1.6]]
@@ -54,6 +54,27 @@ def vehicle_setup():
     vehicle.number_of_passengers                      = 106
     vehicle.systems.control                           = "fully powered"
     vehicle.systems.accessories                       = "medium range"
+
+
+
+    # ------------------------------------------------------------------
+    # Carbo Bays 
+    # ------------------------------------------------------------------ 
+    forward_cargo_bay = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
+    forward_cargo_bay.cargo.mass_properties.mass  = 1850
+    forward_cargo_bay.origin  = [[6.82, 0, -0.5]]
+    forward_cargo_bay.length  =  7.82
+    forward_cargo_bay.width   = 1.57  
+    forward_cargo_bay.height  =  0.88 
+    vehicle.cargo_bays.append(forward_cargo_bay) 
+ 
+    aft_cargo_bay  = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
+    aft_cargo_bay.cargo.mass_properties.mass  = 1440
+    aft_cargo_bay.origin  = [[23.43, 0, -0.5]]
+    aft_cargo_bay.length  =  5.5
+    aft_cargo_bay.width   =  1.57 
+    aft_cargo_bay.height  =  0.88 
+    vehicle.cargo_bays.append(aft_cargo_bay)
 
 
     # ################################################# Landing Gear #############################################################   
@@ -262,6 +283,7 @@ def vehicle_setup():
     economy_class                                     = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
     economy_class.number_of_seats_abrest              = 4
     economy_class.number_of_rows                      = 28
+    economy_class.number_of_passengers                = 106
     economy_class.galley_lavatory_percent_x_locations = [0, 1]      
     economy_class.emergency_exit_percent_x_locations  = [0.5, 0.5]      
     economy_class.type_A_exit_percent_x_locations     = [0, 1]     
@@ -448,6 +470,7 @@ def vehicle_setup():
     fuel_tank.length                            = 2
     fuel_tank.width                             = 2 
     fuel_tank.height                            = 0.5
+    fuel_tank.origin                            = [[15,0, 0]]
     fuel_tank.fuel                              = fuel
     fuel_line.fuel_tanks.append(fuel_tank)     
     

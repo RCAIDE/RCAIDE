@@ -148,6 +148,8 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     tank_c_g    =  [[0, 0, 0]]
     tank_mass   = 0
 
+    # get orgin of fuel tank     
+    fuel_tank.origin = wing.origin
     
     if len(wing.segments) > 1:
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
@@ -157,9 +159,6 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
             outer_segment = wing.segments[seg_tags[i+1]]
             if inner_segment.has_fuel_tank == True:
 
-                # get orgin of fuel tank     
-                fuel_tank.origin = wing.origin 
-
                 # compute volume of fuel in wing
                 volume = compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment)
                 
@@ -167,15 +166,12 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
                 fuel_tank.volume_properties.external  += volume
                 fuel_tank.volume_properties.volume    = fuel_tank.volume_properties.internal  * fuel_tank.percent_filled  
                 tank_mass                             = fuel_tank.volume_properties.volume  * fuel_tank.fuel.density
-                segment_tank_moment                   += np.array(inner_segment.mass_properties.center_of_gravity)[0] * tank_mass
+                segment_tank_moment                   += np.array(inner_segment.mass_properties.center_of_gravity)[0] * tank_mass 
             
         tank_c_g = list(segment_tank_moment / tank_mass) 
         fuel_tank.mass_properties.mass                = tank_mass
         fuel_tank.mass_properties.center_of_gravity   = list(tank_c_g)
-    else: 
-        # get orgin of fuel tank     
-        fuel_tank.origin = wing.origin 
-
+    else:  
         # assume whole wing has fuel 
         volume  = compute_wing_integral_tank_fuel_volume(fuel_tank,wing)
         fuel_tank.volume_properties.internal            = volume

@@ -83,10 +83,7 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
         raise AttributeError('Weights analysis not set')
     
     if stability_analysis  == None:
-        raise AttributeError('Stability analysis not set')
-     
-    aerodynamic_analysis.settings.store_training_data = True
-    weights_analysis.print_weight_analysis_report = False
+        raise AttributeError('Stability analysis not set') 
 
     # check that cabins are defined with at least one class
     cabin_class_check = False
@@ -158,6 +155,7 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
             vehicle.mass_properties.takeoff  = None # this ensures that the takeoff weight is computed 
             vehicle.mass_properties.payload  = percent_payload[i] *PLD 
             vehicle.mass_properties.cargo    = percent_payload[i] * CARGO
+            vehicle.number_of_passengers     = 1 if i == 0 else int(vehicle_0.number_of_passengers * percent_payload[i])
 
             # -------------------------------------------------------------------------
             # Update Passengers 
@@ -165,13 +163,15 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
             # update number of passegers on each cabin class  
             for fuselage in  vehicle.fuselages: 
                 for cabin in fuselage.cabins:
+                    cabin.filled_seats_arrangement  = 'descending'  
                     for cabin_class in cabin.classes:
-                        cabin_class.number_of_passengers = int(percent_payload[i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
+                        cabin_class.number_of_passengers =  1 if i == 0 else int(percent_payload[i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
             for wing in vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                     for cabin in wing.cabins:    
+                        cabin.filled_seats_arrangement  = 'descending'  
                         for cabin_class in cabin.classes:
-                            cabin_class.number_of_passengers = int(percent_payload[i] * vehicle_0.wings[wing.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers)    
+                            cabin_class.number_of_passengers =  1 if i == 0 else int(percent_payload[i] * vehicle_0.wings[wing.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers)    
             
             # -------------------------------------------------------------------------
             # Update Fuel 
@@ -179,7 +179,7 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
             for network in  vehicle.networks:
                 for fuel_line in  network.fuel_lines: 
                     for fuel_tank in fuel_line.fuel_tanks:
-                        fuel_tank.percent_filled = percent_fuel[i]  
+                        fuel_tank.percent_filled = percent_fuel[j]  
         
             #  run mission
             configs  = configs_setup(vehicle) 
@@ -195,7 +195,7 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
             lift_coefficient[i,j]    = segment.state.conditions.aerodynamics.coefficients.lift.total[0][0]  
             drag_coefficient[i,j]    = segment.state.conditions.aerodynamics.coefficients.drag.total[0][0]  
             moment_coefficient[i,j]  = segment.state.conditions.static_stability.coefficients.M[0][0]         
-            aerodynamic_moment[i,j]  = segment.state.conditions.frames.wind.moment_vector[0][1]
+            aerodynamic_moment[i,j]  = segment.state.conditions.frames.inertial.total_moment_vector[0][1]
             neutral_point[i,j]       = segment.state.conditions.static_stability.neutral_point[0][0]  
             static_margin[i,j]       = segment.state.conditions.static_stability.static_margin[0][0]
             weight[i,j]              = mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff 
@@ -221,7 +221,7 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
                 segment = results.segments['cruise'] 
             
                 aero_weight.append(mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff)
-                aero_moment.append( segment.state.conditions.frames.wind.moment_vector[0][1])
+                aero_moment.append(segment.state.conditions.frames.inertial.total_moment_vector[0][1])
                 aero_static_margin.append(segment.state.conditions.static_stability.static_margin[0][0])
                 
                 counter += 1
@@ -234,7 +234,8 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
                drag_coefficient    = drag_coefficient,
                moment_coefficient  = moment_coefficient, 
                neutral_point       = neutral_point,         
-               static_margin       = static_margin,        
+               static_margin       = static_margin,
+               resolution          = resolution, 
                aerodynamic_moment  = aerodynamic_moment,   
                weight              = weight,               
                aero_weight         = aero_weight,          
