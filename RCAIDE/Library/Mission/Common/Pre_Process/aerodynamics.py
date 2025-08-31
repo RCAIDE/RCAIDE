@@ -80,7 +80,8 @@ def aerodynamics(mission):
                         if 'compute' in mission.segments[last_tag].analyses.aerodynamics.process.keys(): 
                             segment.analyses.aerodynamics.process.compute.lift.inviscid_wings = mission.segments[last_tag].analyses.aerodynamics.process.compute.lift.inviscid_wings
                             segment.analyses.aerodynamics.surrogates                          = mission.segments[last_tag].analyses.aerodynamics.surrogates  
-                            segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
+                            if not isinstance(mission.segments[last_tag].analyses.aerodynamics, RCAIDE.Framework.Analyses.Aerodynamics.SU2_Euler):
+                                segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
                 else: 
                     aero   = segment.analyses.aerodynamics
                     aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), mission.tag + "_" + segment.tag +"_aerodynamic_training_data.pkl")

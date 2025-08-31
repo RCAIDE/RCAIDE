@@ -19,8 +19,8 @@ import shutil
 
 # local imports 
 sys.path.append(os.path.join( os.path.split(os.path.split(sys.path[0])[0])[0], 'Vehicles'))
-from Boeing_737    import vehicle_setup as vehicle_setup
-from Boeing_737    import configs_setup as configs_setup 
+from Navion    import vehicle_setup as vehicle_setup
+from Navion    import configs_setup as configs_setup 
 
 # ----------------------------------------------------------------------
 #   Main
@@ -145,6 +145,9 @@ def base_analysis(vehicle, generate_new_training_data):
     #  Aerodynamics Analysis
     aerodynamics                                        = RCAIDE.Framework.Analyses.Aerodynamics.SU2_Euler()
     aerodynamics.vehicle                                = vehicle
+    aerodynamics.settings.run_new_SU2_sim               = True
+    aerodynamics.training.angle_of_attack               = np.array([0, 6]) * Units.deg 
+    aerodynamics.training.Mach                          = np.array([0.1, 0.3]) 
     # NEED TO ADD CODE TO USE OLD TRAINING DATA
     # aerodynamics.settings.generate_new_training_data (maybe a name change)
     analyses.append(aerodynamics)
@@ -200,7 +203,7 @@ def mission_setup(analyses):
     
     # define flight controls 
     segment.assigned_control_variables.throttle.active               = True           
-    segment.assigned_control_variables.throttle.assigned_propulsors  = [['propulsor_1','propulsor_2']] 
+    segment.assigned_control_variables.throttle.assigned_propulsors  = [['ice_propeller']] 
     segment.assigned_control_variables.body_angle.active             = True                
     mission.append_segment(segment)
     
@@ -220,7 +223,7 @@ def mission_setup(analyses):
     
     # define flight controls 
     segment.assigned_control_variables.throttle.active               = True           
-    segment.assigned_control_variables.throttle.assigned_propulsors  = [['propulsor_1','propulsor_2']] 
+    segment.assigned_control_variables.throttle.assigned_propulsors  = [['ice_propeller']] 
     segment.assigned_control_variables.body_angle.active             = True                
     
     mission.append_segment(segment)     
