@@ -1,8 +1,7 @@
 ''' 
-# transition_segment_test.py
+# active_transition_test.py
 # 
-# Created: May 2019, M Clarke
-#          Sep 2020, M. Clarke 
+# Created: Aug 25, A. Molloy
 
 '''
 #----------------------------------------------------------------------
