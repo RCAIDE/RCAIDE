@@ -15,7 +15,7 @@ import numpy as np
 import pylab as plt 
 import sys
 import os
-import subprocess 
+import shutil 
 
 # local imports 
 sys.path.append(os.path.join( os.path.split(os.path.split(sys.path[0])[0])[0], 'Vehicles'))
@@ -30,7 +30,6 @@ def main():
     new_regression             = True # should be false
     gmsh_installation          = False 
     vsp_installation           = False 
-    SU2_installation           = False
     generate_new_training_data = False
 
     try: 
@@ -48,17 +47,17 @@ def main():
     except:
         pass 
 
-    try:  
-        os SU2_CFD as SU2_CFD  # THIS LINE IS INCORRECT 
-        SU2_installation =  False
-    except:
-        pass
-    
-    
+
+    su2_path = shutil.which("SU2_CFD")
+    if su2_path == None:
+        SU2_installation = False
+    else:
+        SU2_installation = True
+        
     # if new regression and all flags are true, run SU2
     if new_regression:
         if (gmsh_installation == False) or (vsp_installation  == False) or (SU2_installation  == False):
-            raise AssertionError('Required packages are not installed to run regression')
+            return
         generate_new_training_data = True 
     else:
         generate_new_training_data = False
