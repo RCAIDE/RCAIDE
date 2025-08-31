@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
-def vehicle_setup(vehicle_name = 'Boeing_787-8', passengers = 248) :
+def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
                 
     # ------------------------------------------------------------------
     #   Initialize the Vehicle
@@ -43,7 +43,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', passengers = 248) :
     vehicle.flight_envelope.design_cruise_altitude    = 35000.0*Units.feet 
     vehicle.flight_envelope.design_range              = 7305.0 * Units.nmi
     vehicle.reference_area                            = 395.0 * Units['meters**2']    
-    vehicle.passengers                                = passengers 
+    vehicle.number_of_passengers                                = number_of_passengers 
     vehicle.systems.control                           = "fully powered" 
     vehicle.systems.accessories                       = "long range"
 
@@ -321,8 +321,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', passengers = 248) :
     
     # ################################################# Fuselage ################################################################ 
         
-    fuselage                                    = RCAIDE.Library.Components.Fuselages.Fuselage() 
-    fuselage.number_coach_seats                 = vehicle.passengers 
+    fuselage                                    = RCAIDE.Library.Components.Fuselages.Fuselage()  
     fuselage.seats_abreast                      = 9
     fuselage.seat_pitch                         = 0.9     * Units.meter 
     fuselage.fineness.nose                      = 2.
@@ -678,8 +677,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', passengers = 248) :
     fuel_tank_1.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel_tank_1.fuel.mass_properties.mass              = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
     fuel_tank_1.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_1.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center
-    fuel_tank_1.volume                                 = fuel_tank_1.fuel.mass_properties.mass/fuel_tank_1.fuel.density   
+    fuel_tank_1.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center  
     fuel_line.fuel_tanks.append(fuel_tank_1)
 
     # fuel tank
@@ -688,8 +686,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', passengers = 248) :
     fuel_tank_2.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel_tank_2.fuel.mass_properties.mass              = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
     fuel_tank_2.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_2.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center
-    fuel_tank_2.volume                                 = fuel_tank_2.fuel.mass_properties.mass/fuel_tank_2.fuel.density   
+    fuel_tank_2.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center   
     fuel_line.fuel_tanks.append(fuel_tank_2)
 
     # fuel tank
@@ -698,8 +695,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', passengers = 248) :
     fuel_tank_3.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel_tank_3.fuel.mass_properties.mass              = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
     fuel_tank_3.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_3.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center
-    fuel_tank_3.volume                                 = fuel_tank_3.fuel.mass_properties.mass/fuel_tank_3.fuel.density   
+    fuel_tank_3.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center  
     fuel_line.fuel_tanks.append(fuel_tank_3)
 
     #------------------------------------------------------------------------------------------------------------------------------------   
@@ -906,7 +902,7 @@ def base_analysis(vehicle):
     weights.settings.FLOPS.fidelity                                           = 'Complex'      
     weights.settings.advanced_composites                                      = True
     weights.settings.weight_correction_additions.empty.structural.paint      = 450 
-    weights.settings.weight_correction_additions.operational_items.ETOPS     = 7.7 * vehicle.passengers
+    weights.settings.weight_correction_additions.operational_items.ETOPS     = 7.7 * vehicle.number_of_passengers
     weights.settings.weight_correction_additions.empty.propulsion.battery    = 56 
     weights.settings.weight_correction_factors.empty.structural.landing_gear = 1.05    
     weights.settings.weight_correction_factors.empty.systems.electrical      = 2.67 

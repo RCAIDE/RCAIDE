@@ -92,7 +92,7 @@ def mass_properties(mission):
  
     for i ,  segment in enumerate(mission.segments):
         if segment.analyses.weights != None: 
-            mass_properties_preprocess_routine(segment.analyses.weights)
+            mass_properties_preprocess_routine(i, segment.analyses.weights)
              
             if segment.analyses.aerodynamics != None:   
                 segment.analyses.aerodynamics.vehicle =  deepcopy(segment.analyses.weights.vehicle) 
@@ -104,7 +104,7 @@ def mass_properties(mission):
                 segment.analyses.weights.vehicle.mass_properties.takeoff = segment.analyses.weights.vehicle.mass_properties.max_takeoff
     return 
 
-def mass_properties_preprocess_routine(weights_analysis): 
+def mass_properties_preprocess_routine(i, weights_analysis): 
     if weights_analysis.vehicle.mass_properties.max_takeoff == None:
         # For all weights analysis a maximum take off weight needs to be defined by the user
         raise AttributeError("Max Takeoff Weight for aircraft not defined")
@@ -156,10 +156,10 @@ def mass_properties_preprocess_routine(weights_analysis):
                     apply_correction_factors(weights_analysis)
 
                     weights_analysis.vehicle.mass_properties.takeoff       = weights_analysis.vehicle.mass_properties.operating_empty + weights_analysis.vehicle.mass_properties.payload + weights_analysis.vehicle.mass_properties.fuel                    
-                    mew_max_zero_fuel = weights_analysis.vehicle.mass_properties.operating_empty + weights_analysis.vehicle.mass_properties.max_payload
-                    new_max_fuel = weights_analysis.vehicle.mass_properties.max_takeoff - weights_analysis.vehicle.mass_properties.operating_empty - weights_analysis.vehicle.mass_properties.min_payload
-                    residual_max_fuel =  abs(new_max_fuel - weights_analysis.vehicle.mass_properties.max_fuel)
-                    residual_max_zero_fuel = abs(mew_max_zero_fuel - weights_analysis.vehicle.mass_properties.max_zero_fuel)
+                    mew_max_zero_fuel                                      = weights_analysis.vehicle.mass_properties.operating_empty + weights_analysis.vehicle.mass_properties.max_payload
+                    new_max_fuel                                           = weights_analysis.vehicle.mass_properties.max_takeoff - weights_analysis.vehicle.mass_properties.operating_empty - weights_analysis.vehicle.mass_properties.min_payload
+                    residual_max_fuel                                      =  abs(new_max_fuel - weights_analysis.vehicle.mass_properties.max_fuel)
+                    residual_max_zero_fuel                                 = abs(mew_max_zero_fuel - weights_analysis.vehicle.mass_properties.max_zero_fuel)
                     weights_analysis.vehicle.mass_properties.max_zero_fuel = mew_max_zero_fuel
                     weights_analysis.vehicle.mass_properties.max_fuel = new_max_fuel
                     
@@ -239,13 +239,13 @@ def mass_properties_preprocess_routine(weights_analysis):
     
     # Compute Center of Gravity  
     if weights_analysis.settings.update_center_of_gravity:
-        CG_location, _ = compute_vehicle_center_of_gravity(weights_analysis.vehicle, update_CG= weights_analysis.settings.update_center_of_gravity)  
+        CG_location, _ = compute_vehicle_center_of_gravity(weights_analysis.vehicle, update_center_of_gravity= weights_analysis.settings.update_center_of_gravity)  
     else:
         CG_location = weights_analysis.vehicle.mass_properties.center_of_gravity 
     
     # Compute Moment of Intertia
     if weights_analysis.settings.update_moment_of_inertia:
-        _, _ = compute_aircraft_moment_of_inertia(weights_analysis.vehicle, CG_location, update_MOI= weights_analysis.settings.update_moment_of_inertia)          
+        _, _ = compute_aircraft_moment_of_inertia(weights_analysis.vehicle, CG_location, update_moment_of_inertia= weights_analysis.settings.update_moment_of_inertia)          
 
     
 def apply_correction_factors(weights_analysis):

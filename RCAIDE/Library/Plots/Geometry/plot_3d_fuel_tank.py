@@ -640,9 +640,9 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     
     # translate to location on aircraft 
     if fuel_tank.orientation_euler_angles   == [0.,0.,np.pi/2]:
-         fuel_tank_points[:, :, 0] +=  fuel_tank.origin[0][0] - fuel_tank.outer_diameter/2
-         fuel_tank_points[:, :, 1] +=  fuel_tank.origin[0][1] - (R+L/2)
-         fuel_tank_points[:, :, 2] +=  fuel_tank.origin[0][2]
+        fuel_tank_points[:, :, 0] +=  fuel_tank.origin[0][0] - fuel_tank.outer_diameter/2
+        fuel_tank_points[:, :, 1] +=  fuel_tank.origin[0][1] - (R+L/2)
+        fuel_tank_points[:, :, 2] +=  fuel_tank.origin[0][2]
     else:
         fuel_tank_points[:, :, 0] += fuel_tank.origin[0][0]
         fuel_tank_points[:, :, 1] += fuel_tank.origin[0][1]

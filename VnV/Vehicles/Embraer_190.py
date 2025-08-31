@@ -51,7 +51,7 @@ def vehicle_setup():
     
     # basic parameters
     vehicle.reference_area                            = 92.
-    vehicle.passengers                                = 106
+    vehicle.number_of_passengers                      = 106
     vehicle.systems.control                           = "fully powered"
     vehicle.systems.accessories                       = "medium range"
 
@@ -107,8 +107,7 @@ def vehicle_setup():
     wing.twists.root             = 2.0 * Units.degrees
     wing.twists.tip              = 0.0 * Units.degrees    
     wing.dynamic_pressure_ratio  = 1.0
-    
- 
+     
     ospath                                = os.path.abspath(__file__)
     separator                             = os.path.sep
     rel_path                              = os.path.dirname(ospath) + separator  
@@ -120,6 +119,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = .11
     segment.dihedral_outboard             = 5. * Units.degrees
     segment.sweeps.quarter_chord          = 20.6 * Units.degrees  
+    segment.has_fuel_tank                 = True  
     root_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
     root_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'transonic_wing_root_section_airfoil.txt'
     segment.append_airfoil(root_airfoil)
@@ -130,9 +130,10 @@ def vehicle_setup():
     segment.percent_span_location         = 0.348
     segment.root_chord_percent            = 0.60 
     segment.dihedral_outboard             = 4 * Units.degrees
-    segment.sweeps.quarter_chord          = 24.1 * Units.degrees 
+    segment.sweeps.quarter_chord          = 24.1 * Units.degrees  
+    segment.has_fuel_tank                 = True
     yehudi_airfoil                        = RCAIDE.Library.Components.Airfoils.Airfoil()
-    yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'transonic_wing_inboard_section_airfoil.txt'
+    yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'transonic_wing_inboard_section_airfoil.txt' 
     segment.append_airfoil(yehudi_airfoil)
     wing.segments.append(segment)
     
@@ -142,6 +143,7 @@ def vehicle_setup():
     segment.root_chord_percent           = 0.25 
     segment.dihedral_outboard            = 70. * Units.degrees
     segment.sweeps.quarter_chord         = 40. * Units.degrees 
+    segment.has_fuel_tank                = True
     mid_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
     mid_airfoil.coordinate_file          = rel_path + 'Airfoils' + separator + 'transonic_wing_outboard_section_airfoil.txt'
     segment.append_airfoil(mid_airfoil)
@@ -259,7 +261,7 @@ def vehicle_setup():
     cabin                                             = RCAIDE.Library.Components.Fuselages.Cabins.Cabin() 
     economy_class                                     = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
     economy_class.number_of_seats_abrest              = 4
-    economy_class.number_of_rows                      = 23
+    economy_class.number_of_rows                      = 28
     economy_class.galley_lavatory_percent_x_locations = [0, 1]      
     economy_class.emergency_exit_percent_x_locations  = [0.5, 0.5]      
     economy_class.type_A_exit_percent_x_locations     = [0, 1]     
@@ -436,16 +438,18 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Fuel Tank & Fuel
     #------------------------------------------------------------------------------------------------------------------------------------   
-    fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank()
-    fuel_tank.origin                            = [[13.0,0,-1.]] 
-    # append correct fuel
-    fuel                                        = RCAIDE.Library.Attributes.Propellants.Jet_A()  
-    fuel.mass_properties.mass                   = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
-    fuel.origin                                 = [[13.0,0,-1.]]      
-    fuel.mass_properties.center_of_gravity      = [[13.0,0,-1.]]
-    fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
+    wing_fuel_tank                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
+    fuel                                        = RCAIDE.Library.Attributes.Propellants.Jet_A()    
+    wing_fuel_tank.fuel                         = fuel
+    fuel_line.fuel_tanks.append(wing_fuel_tank)
+
+    fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank() 
+    fuel                                        = RCAIDE.Library.Attributes.Propellants.Jet_A()
+    fuel_tank.length                            = 2
+    fuel_tank.width                             = 2 
+    fuel_tank.height                            = 0.5
     fuel_tank.fuel                              = fuel
-    fuel_line.fuel_tanks.append(fuel_tank) 
+    fuel_line.fuel_tanks.append(fuel_tank)     
     
 
     #------------------------------------------------------------------------------------------------------------------------------------  

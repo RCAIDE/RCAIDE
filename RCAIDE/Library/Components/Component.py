@@ -8,7 +8,8 @@
 
 from RCAIDE.Framework.Core import Container as ContainerBase
 from RCAIDE.Framework.Core import Data
-from .Mass_Properties import Mass_Properties
+from .Mass_Properties      import Mass_Properties
+from .Volume_Properties    import Volume_Properties
 
 # package imports 
 import numpy as np
@@ -28,6 +29,9 @@ class Component(Data):
     mass_properties : Mass_Properties
         Mass and inertia properties, initialized empty
         
+    volume_properties : Volume_Properties
+        Volume properties, initialized empty
+        
     origin : ndarray
         3D coordinates [x, y, z] defining component's reference point, 
         defaults to [0.0, 0.0, 0.0]
@@ -45,6 +49,8 @@ class Component(Data):
     --------
     RCAIDE.Library.Components.Mass_Properties
         Class containing mass and inertia data
+    RCAIDE.Library.Components.Volume_Properties
+        Class containing mass and inertia data
     RCAIDE.Framework.Core.Data
         Parent class providing data structure functionality
     """
@@ -52,9 +58,10 @@ class Component(Data):
         """
         Sets default values for the component attributes.
         """         
-        self.tag             = 'Component' 
-        self.mass_properties = Mass_Properties()
-        self.origin          = np.array([[0.0,0.0,0.0]])
+        self.tag               = 'Component' 
+        self.mass_properties   = Mass_Properties()
+        self.volume_properties = Volume_Properties()
+        self.origin            = np.array([[0.0,0.0,0.0]])
     
         
 # ----------------------------------------------------------------------------------------------------------------------

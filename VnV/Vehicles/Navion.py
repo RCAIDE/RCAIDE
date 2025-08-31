@@ -39,7 +39,7 @@ def vehicle_setup():
     vehicle.mass_properties.center_of_gravity         = [[2.239696797,0,-0.131189711 ]]
      
     vehicle.reference_area                            = 17.112 
-    vehicle.passengers                                = 2 
+    vehicle.number_of_passengers                                = 2 
     vehicle.systems.control                           = "fully powered"
     vehicle.systems.accessories                       = "commuter"       
     
@@ -321,7 +321,7 @@ def vehicle_setup():
     fuel_tank.fuel                                        = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline() 
     fuel_tank.fuel.mass_properties.mass                   = 319 *Units.lbs 
     fuel_tank.fuel.mass_properties.center_of_gravity      = wing.mass_properties.center_of_gravity
-    fuel_tank.internal_volume                             = fuel_tank.fuel.mass_properties.mass/fuel_tank.fuel.density   
+    fuel_tank.volume_properties.internal                  = fuel_tank.fuel.mass_properties.mass/fuel_tank.fuel.density   
     fuel_line.fuel_tanks.append(fuel_tank)  
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Propulsor

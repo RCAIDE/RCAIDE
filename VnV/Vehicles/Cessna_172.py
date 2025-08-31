@@ -40,7 +40,7 @@ def vehicle_setup():
                                                 
     # basic parameters                          
     vehicle.reference_area                      = 174. * Units.feet**2       
-    vehicle.passengers                          = 4
+    vehicle.number_of_passengers                          = 4
 
 
     
@@ -208,8 +208,8 @@ def vehicle_setup():
     fuselage.lengths.total                      = 326.         * Units.inches            # Length of the fuselage
     fuselage.lengths.tail                       = 161. * Units.inches  
     fuselage.lengths.cabin                      = 105. * Units.inches 
-    fuselage.mass_properties.volume             = .4*fuselage.lengths.total*(np.pi/4.)*(fuselage.heights.maximum**2.) #try this as approximation
-    fuselage.mass_properties.internal_volume    = .3*fuselage.lengths.total*(np.pi/4.)*(fuselage.heights.maximum**2.)
+    fuselage.volume_properties.volume           = .4*fuselage.lengths.total*(np.pi/4.)*(fuselage.heights.maximum**2.) #try this as approximation
+    fuselage.volume_properties.internal         = .3*fuselage.lengths.total*(np.pi/4.)*(fuselage.heights.maximum**2.)
     fuselage.areas.wetted                       = 30000. * Units.inches**2. 
     fuselage.fineness.nose                      = 1.6
     fuselage.fineness.tail                      = 2.
@@ -337,8 +337,7 @@ def vehicle_setup():
     fuel_tank.origin                            = vehicle.wings.main_wing.origin  
     fuel_tank.fuel                              = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline() 
     fuel_tank.fuel.mass_properties.mass         = 319 *Units.lbs 
-    fuel_tank.mass_properties.center_of_gravity = wing.mass_properties.center_of_gravity
-    fuel_tank.internal_volume                   = fuel_tank.fuel.mass_properties.mass/fuel_tank.fuel.density   
+    fuel_tank.mass_properties.center_of_gravity = wing.mass_properties.center_of_gravity 
     fuel_line.fuel_tanks.append(fuel_tank)   
 
     #------------------------------------------------------------------------------------------------------------------------------------  

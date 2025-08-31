@@ -18,7 +18,7 @@ from copy import  deepcopy
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_layout_of_passenger_accommodations
 # ---------------------------------------------------------------------------------------------------------------------- 
-def compute_layout_of_passenger_accommodations(fuselage, update_fuselage_properties=True):
+def compute_layout_of_passenger_accommodations(fuselage):
     '''
     Creates the layout of passenger accommodations for a vehicle
     '''  
@@ -29,7 +29,7 @@ def compute_layout_of_passenger_accommodations(fuselage, update_fuselage_propert
         cabin_class_origin  = [0, 0, 0]
         for cabin_class in cabin.classes: 
             seat_data ,cabin_class_origin  = create_class_seating_map_layout(cabin, cabin_class,cabin_class_origin, side_cabin_offset)
-            side_cabin_offset =  cabin.width / 2
+            side_cabin_offset = cabin.width / 2
             LOPA = np.vstack((LOPA,seat_data))  
             
     for cabin in fuselage.cabins: 
@@ -38,12 +38,9 @@ def compute_layout_of_passenger_accommodations(fuselage, update_fuselage_propert
     
     # add cabin offset to account (useful for BWBs and aircraft with H2 tanks)
     LOPA[:, 2] += fuselage.cabin_offset 
-    fuselage.layout_of_passenger_accommodations                      = Data()
-    fuselage.layout_of_passenger_accommodations.object_coordinates   = LOPA
-    fuselage.layout_of_passenger_accommodations.number_of_passengers = np.sum(LOPA[:,10])
-    
-    if len(LOPA) > 0: 
-        compute_fuselage_dimensions(fuselage,update_fuselage_properties)
+    fuselage.layout_of_passenger_accommodations                     = Data()
+    fuselage.layout_of_passenger_accommodations.object_coordinates  = LOPA 
+    fuselage.layout_of_passenger_accommodations.number_of_seats     = int(np.sum(LOPA[:,10]))
 
     return  
  
@@ -104,11 +101,11 @@ def compute_fuselage_dimensions(fuselage,update_fuselage_properties):
     LOPA.cabin_wdith = 2*max(starboard_y_points) 
     
     if update_fuselage_properties:
-        fuselage.lengths.nose          = fuselage.fineness.nose*LOPA.cabin_wdith
-        fuselage.lengths.tail          = fuselage.fineness.tail*LOPA.cabin_wdith   
-        fuselage.lengths.total         = fuselage.lengths.nose + fuselage.lengths.tail + LOPA.cabin_length
-        fuselage.width                 = LOPA.cabin_wdith
-        fuselage.number_of_passengers  = np.sum(LOPA_coords[:,10])
+        fuselage.lengths.nose     = fuselage.fineness.nose*LOPA.cabin_wdith
+        fuselage.lengths.tail     = fuselage.fineness.tail*LOPA.cabin_wdith   
+        fuselage.lengths.total    = fuselage.lengths.nose + fuselage.lengths.tail + LOPA.cabin_length
+        fuselage.width            = LOPA.cabin_wdith
+        fuselage.number_of_seats  = np.sum(LOPA_coords[:,10])
     
     return  
 
@@ -142,7 +139,7 @@ def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_c
     elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy: 
         E_c  =  np.ones_like(Z_coords)  
     
-    # [n_rows , n_seats_y, x, y, z , length, width, first-cl flag, business-cl flag, economy-cl flag, seat, emergency-row flag, galley/lav flag, type-A exit flag]    
+    # [n_rows , n_seats_y, x, y, z , length, width, first-cl flag, business-cl flag, economy-cl flag, [seat, emergency-row flag, galley/lav flag, type-A exit flag]]    
     seat_data = np.hstack((n_rows , n_seats_y, X_coords,Y_coords, Z_coords, length ,width,F_c,B_c,E_c,object_vec))
      
     if type(cabin) == RCAIDE.Library.Components.Fuselages.Cabins.Side_Cabin:
@@ -155,9 +152,9 @@ def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_c
         seat_data_        = deepcopy(seat_data)
         seat_data_[:, 3] *= -1 
         seat_data         = np.vstack((seat_data,seat_data_))
-        
-    cabin.layout_of_passenger_accommodations.object_coordinates = seat_data
-    cabin.number_of_passengers =  np.sum(seat_data[:,10])
+          
+    cabin_class.number_of_seats = int(np.sum(seat_data[:,10]))
+    cabin.number_of_seats       += int(cabin_class.number_of_seats)
     return seat_data ,cabin_class_origin 
 
 

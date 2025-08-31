@@ -51,7 +51,7 @@ def Electric_General_Aviation_Test(update_regression_values, show_figure):
         old_weight = load_results(save_path)
 
         check_list = [
-            'payload.total', 'payload.passengers', 'payload.baggage',
+            'payload.total', 'payload.number_of_passengers', 'payload.baggage',
             'empty.structural.wings', 'empty.structural.fuselage',
             'empty.propulsion.total', 'empty.structural.landing_gear',
             'empty.systems.total', 'empty.total'
@@ -98,7 +98,7 @@ def Transport_Hydrogen_Test(update_regression_values, show_figure):
         old_weight = load_results(save_path)
 
         check_list = [
-            'payload.total', 'payload.passengers', 'payload.baggage',
+            'payload.total', 'payload.number_of_passengers', 'payload.baggage',
             'empty.structural.wings', 'empty.structural.fuselage',
             'empty.propulsion.total', 'empty.structural.landing_gear',
             'empty.systems.total', 'empty.total'
@@ -148,7 +148,7 @@ def Transport_Aircraft_Test(update_regression_values, show_figure):
             old_weight = load_results(save_path)
 
             check_list = [
-                'payload.total', 'payload.passengers', 'payload.baggage',
+                'payload.total', 'payload.number_of_passengers', 'payload.baggage',
                 'empty.structural.wings', 'empty.structural.fuselage',
                 'empty.propulsion.total', 'empty.structural.landing_gear',
                 'empty.systems.total', 'empty.total'

@@ -43,7 +43,7 @@ def vehicle_setup(fuel_cell_model):
     vehicle.flight_envelope.design_range             = 3500 * Units.nmi
     
     vehicle.reference_area                           = 39 
-    vehicle.passengers                               = 19
+    vehicle.number_of_passengers                               = 19
     vehicle.systems.control                          = "fully powered"
     vehicle.systems.accessories                      = "commuter"  
 

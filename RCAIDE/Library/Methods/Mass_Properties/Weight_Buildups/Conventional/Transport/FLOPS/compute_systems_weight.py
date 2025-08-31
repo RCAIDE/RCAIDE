@@ -60,7 +60,7 @@ def compute_systems_weight(vehicle):
             Number of first class passengers
         - NPB : int
             Number of business class passengers
-        - NPT : int
+        - NPE : int
             Number of tourist/economy class passengers
         - reference_area : float
             Aircraft reference area [m²]
@@ -108,9 +108,9 @@ def compute_systems_weight(vehicle):
     NENG = 0
     FNEW = 0
     FNEF = 0
-    NPF  = vehicle.first_class_passengers      
-    NPB  = vehicle.business_class_passengers   
-    NPT  = vehicle.economy_class_passengers  
+    NPF  = vehicle.number_of_first_class_passengers      
+    NPB  = vehicle.number_of_business_class_passengers   
+    NPE  = vehicle.number_of_economy_class_passengers  
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
             NENG += 1
@@ -147,9 +147,9 @@ def compute_systems_weight(vehicle):
             XL  = fuselage.lengths.total / Units.ft
             WF  = fuselage.width / Units.ft
     FPAREA      = XL * WF
-    NPASS       = vehicle.passengers
+    NPASS       = vehicle.number_of_passengers
     WAPU        = 54 * FPAREA ** 0.3 + 5.4 * NPASS ** 0.9  # apu weight
-    if vehicle.passengers >= 150:
+    if vehicle.number_of_passengers >= 150:
         NFLCR = 3  # number of flight crew
     else:
         NFLCR = 2
@@ -166,7 +166,7 @@ def compute_systems_weight(vehicle):
     WAVONC  = 15.8 * DESRNG ** 0.1 * NFLCR ** 0.7 * FPAREA ** 0.43  # avionics weight
     XLP     = 0.8 * XL
     DF      = ref_fuselage.heights.maximum / Units.ft # D stands for depth
-    WFURN   = 127 * NFLCR + 112 * NPF + 78 * NPB + 44 * NPT \
+    WFURN   = 127 * NFLCR + 112 * NPF + 78 * NPB + 44 * NPE \
                 + 2.6 * XLP * (WF + DF) * NFUSE  # furnishing weight
     WAC     = (3.2 * (FPAREA * DF) ** 0.6 + 9 * NPASS ** 0.83) * VMAX + 0.075 * WAVONC  # ac weight
     WAI     = ref_wing.spans.projected / Units.ft * 1. / np.cos(ref_wing.sweeps.quarter_chord) + 3.8 * FNAC * NENG + 1.5 * WF  # anti-ice weight

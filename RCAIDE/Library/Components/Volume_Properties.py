@@ -1,4 +1,4 @@
-# RCAIDE/Library/Components/Mass_Properties.py
+# RCAIDE/Library/Components/Volume_Properties.py
 # 
 # Created:  Mar 2024, M. Clarke 
 
@@ -8,21 +8,15 @@
 # RCAIDE Imports 
 from RCAIDE.Framework.Core import Data
 
-# package imports 
-import numpy as np
-
 # ----------------------------------------------------------------------------------------------------------------------
-#  Mass_Properties
+#  Volume_Properties
 # ----------------------------------------------------------------------------------------------------------------------        
-class Mass_Properties(Data):
+class Volume_Properties(Data):
     """
-    A class containing mass and inertial properties for physical components.
+    A class containing volumeproperties for physical components.
 
     Attributes
-    ----------
-    mass : float
-        Total mass of the component, defaults to 0.0
-        
+    ----------         
     volume : float
         Volume of the component, defaults to 0.0
         
@@ -42,7 +36,7 @@ class Mass_Properties(Data):
 
     Notes
     -----
-    The Mass_Properties class provides a standardized structure for tracking mass-related 
+    The Volume_Properties class provides a standardized structure for tracking mass-related 
     properties of components. It includes:
     
     * Basic mass and volume
@@ -53,19 +47,14 @@ class Mass_Properties(Data):
     See Also
     --------
     RCAIDE.Library.Components.Component
-        Parent class that uses Mass_Properties
+        Parent class that uses Volume_Properties
     RCAIDE.Framework.Core.Data
         Base class providing data structure functionality
     """
     def __defaults__(self):
         """
         Sets default values for mass property attributes.
-        """         
-        self.mass                      = 0.0 
-        self.center_of_gravity         = np.array([[0.0,0.0,0.0]])
-               
-        self.moments_of_inertia        = Data()
-        self.moments_of_inertia.center = np.array([0.0,0.0,0.0])
-        self.moments_of_inertia.tensor = np.array([[0.0,0.0,0.0],
-                                                  [0.0,0.0,0.0],
-                                                  [0.0,0.0,0.0]])
+        """          
+        self.volume    = 0.0
+        self.internal  = 0.0 
+        self.external  = 0.0 

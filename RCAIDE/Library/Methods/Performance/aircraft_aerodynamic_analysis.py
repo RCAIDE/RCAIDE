@@ -15,6 +15,7 @@ from RCAIDE.Library.Mission.Common.Pre_Process  import geometry_preprocess_routi
 # Pacakge imports 
 import numpy as np  
 import os, sys
+from copy import deepcopy
 
 #------------------------------------------------------------------------------
 # aircraft_aerodynamic_analysis
@@ -78,7 +79,11 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     #------------------------------------------------------------------------  
     # Preprocess Geometry 
     #------------------------------------------------------------------------
-    geometry_preprocess_routine(aerodynamics_analysis)
+    geometry_analysis          = RCAIDE.Framework.Analyses.Geometry.Geometry()
+    geometry_analysis.vehicle  = deepcopy(aerodynamics_analysis.vehicle)
+    geometry_analysis.settings.update_fuselage_properties = update_fuselage_properties
+    geometry_preprocess_routine(geometry_analysis)
+    aerodynamics_analysis.vehicle = geometry_analysis.vehicle
     
     #------------------------------------------------------------------------  
     # Check size of arrays 

@@ -19,7 +19,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_vehicle_center_of_gravity(vehicle, nose_load = 0.06, update_CG=True): 
+def compute_vehicle_center_of_gravity(vehicle, nose_load = 0.06, update_center_of_gravity=True): 
     ''' Computes the moment of intertia of aircraft 
     
     Source:
@@ -66,8 +66,11 @@ def compute_vehicle_center_of_gravity(vehicle, nose_load = 0.06, update_CG=True)
     #---------------------------------------------------------------------------------        
     # Fuselages (the frame only)
     #-------------------------------------------------------------------------------- 
-    for fuse in vehicle.fuselages:
-        fuse.mass_properties.center_of_gravity[0][0] = .45*fuse.lengths.total
+    for fuselage in vehicle.fuselages:
+        fuselage.mass_properties.center_of_gravity[0][0] = .45*fuselage.lengths.total
+      
+        for cabin in fuselage.cabins: 
+            compute_cabin_center_of_gravity(cabin,fuselage,length_scale)   
     
     #---------------------------------------------------------------------------------        
     # Wings
@@ -91,6 +94,10 @@ def compute_vehicle_center_of_gravity(vehicle, nose_load = 0.06, update_CG=True)
             span_location_mac = compute_span_location_from_chord_length(wing, wing.chords.mean_aerodynamic)
             mac_le_offset     = np.tan(wing.sweeps.leading_edge)*span_location_mac 
             wing.mass_properties.center_of_gravity[0][0] = .3*wing.chords.mean_aerodynamic + mac_le_offset
+    
+        if isinstance(wing, C.Wings.Blended_Wing_Body):
+            for cabin in wing.cabins:
+                compute_cabin_center_of_gravity(cabin, wing,length_scale)        
 
     #---------------------------------------------------------------------------------
     # Landing Gear 
@@ -105,40 +112,6 @@ def compute_vehicle_center_of_gravity(vehicle, nose_load = 0.06, update_CG=True)
                 landing_gear.origin[0][0]   = 0.25*nose_length 
                 landing_gear.mass_properties.center_of_gravity[0][0]  = 0.0  
             
-    #---------------------------------------------------------------------------------
-    # Cabin (Includes Systems,Operating Items)
-    #---------------------------------------------------------------------------------
-    for fuselage in vehicle.fuselages:
-        for cabin in fuselage.cabins:
-            cabin.origin[0][0] = fuselage.lengths.nose 
-            num_seats  = cabin.number_of_passengers
-            cabin_mass = cabin.mass_properties.mass
-            if len(cabin.layout_of_passenger_accommodations) == 0:
-                cabin.mass_properties.center_of_gravity[0][0] = 0.51 * length_scale
-            else: 
-                LOPA       = cabin.layout_of_passenger_accommodations.object_coordinates
-                point_mass = cabin_mass/num_seats
-                cg_x       = (LOPA[:,2]*point_mass)/cabin_mass
-                cg_y       = (LOPA[:,3]*point_mass)/cabin_mass
-                cg_z       = (LOPA[:,4]*point_mass)/cabin_mass  
-                cabin.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]] 
-            
-    for wing in vehicle.wings:
-        if isinstance(wing, C.Wings.Blended_Wing_Body):
-            for cabin in wing.cabins:
-                cabin.origin[0][0] = wing.lengths.nose 
-                num_seats  = cabin.number_of_passengers
-                cabin_mass = cabin.mass_properties.mass
-                if len(cabin.layout_of_passenger_accommodations) == 0:
-                    cabin.mass_properties.center_of_gravity[0][0] = 0.51 * length_scale
-                else:
-                    LOPA       = cabin.layout_of_passenger_accommodations.object_coordinates
-                    point_mass = cabin_mass/num_seats
-                    cg_x       = (LOPA[:,2]*point_mass)/cabin_mass
-                    cg_y       = (LOPA[:,3]*point_mass)/cabin_mass
-                    cg_z       = (LOPA[:,4]*point_mass)/cabin_mass  
-                    cabin.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]] 
-
     #---------------------------------------------------------------------------------
     # Cargo Bays 
     #---------------------------------------------------------------------------------
@@ -162,7 +135,40 @@ def compute_vehicle_center_of_gravity(vehicle, nose_load = 0.06, update_CG=True)
                 total_moment += Moment
                 total_mass   += Mass         
     
-    if update_CG and total_mass != 0.0:
+    if update_center_of_gravity and total_mass != 0.0:
         vehicle.mass_properties.center_of_gravity = total_moment/total_mass 
      
     return vehicle.mass_properties.center_of_gravity, total_mass 
+
+def compute_cabin_center_of_gravity(cabin, comp,length_scale): 
+    cabin.origin[0][0] = comp.lengths.nose 
+    num_seats          = cabin.number_of_seats
+    num_pax            = cabin.number_of_passengers
+    cabin_mass         = cabin.mass_properties.mass
+    arr                = cabin.filled_seats_arrangement
+    if len(comp.layout_of_passenger_accommodations) == 0:
+        cabin.mass_properties.center_of_gravity[0][0] = 0.51 * length_scale
+    else: 
+        LOPA       = comp.layout_of_passenger_accommodations.object_coordinates
+        point_mass = cabin_mass/num_pax 
+        if arr == 'random':
+            idxs =  np.random.choice(range(0, num_seats), size=num_pax, replace=False)
+        elif arr == 'ascending':
+            idxs = np.arange(0,num_pax) 
+        elif  arr == 'descending':
+            idxs = np.arange(num_seats,num_seats-num_pax)  
+        
+        # Apply the mask to filter seats 
+        seat_mask = LOPA[:, 10] == 1
+        LOPA_seats = LOPA[seat_mask]
+
+        # make sure lopa is storted by x-value of seats
+        sorted_indices = LOPA_seats[:, 2].argsort()
+        LOPA_sorted_seats    = LOPA_seats[sorted_indices] 
+        
+        # find center of gravity 
+        cg_x       = np.sum(LOPA_sorted_seats[idxs,2]*point_mass)/cabin_mass
+        cg_y       = np.sum(LOPA_sorted_seats[idxs,3]*point_mass)/cabin_mass
+        cg_z       = np.sum(LOPA_sorted_seats[idxs,4]*point_mass)/cabin_mass                    
+        cabin.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]]
+    return 

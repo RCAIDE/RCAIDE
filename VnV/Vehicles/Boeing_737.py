@@ -42,7 +42,7 @@ def vehicle_setup():
     vehicle.flight_envelope.design_cruise_altitude    = 35000*Units.feet
     vehicle.flight_envelope.design_range              = 3500 * Units.nmi
     vehicle.reference_area                            = 124.862 * Units['meters**2']   
-    vehicle.passengers                                = 170
+    vehicle.number_of_passengers                                = 170
     vehicle.systems.control                           = "fully powered" 
     vehicle.systems.accessories                       = "medium range"
 
@@ -318,7 +318,7 @@ def vehicle_setup():
     # ################################################# Fuselage ################################################################ 
     
     fuselage                                    = RCAIDE.Library.Components.Fuselages.Fuselage() 
-    fuselage.number_coach_seats                 = vehicle.passengers 
+    fuselage.number_coach_seats                 = vehicle.number_of_passengers 
     fuselage.seats_abreast                      = 6
     fuselage.seat_pitch                         = 1     * Units.meter 
     fuselage.fineness.nose                      = 1.6
@@ -644,8 +644,7 @@ def vehicle_setup():
     fuel_tank.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()    
     fuel_tank.fuel.mass_properties.mass              = vehicle.mass_properties.max_takeoff-vehicle.mass_properties.max_fuel
     fuel_tank.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center
-    fuel_tank.volume                                 = fuel_tank.fuel.mass_properties.mass/fuel_tank.fuel.density   
+    fuel_tank.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center 
     fuel_line.fuel_tanks.append(fuel_tank)
     
     #------------------------------------------------------------------------------------------------------------------------------------   

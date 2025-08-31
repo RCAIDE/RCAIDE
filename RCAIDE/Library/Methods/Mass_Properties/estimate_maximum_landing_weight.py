@@ -1,14 +1,11 @@
-# RCAIDE/Library/Methods/Weights/__init__.py
+# RCAIDE/Methods/Mass_Properties/estimate_maximum_landing_weight.py
 # 
-
-""" Documentation to come!
-"""
+# 
+# Created:  Sep 2025, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-
-from . import Center_of_Gravity 
-from . import Moment_of_Inertia
-from . import Weight_Buildups
-from .estimate_maximum_landing_weight  import estimate_maximum_landing_weight
+def estimate_maximum_landing_weight(MTOW):
+    MLW = 7E-13 *( MTOW **3) - 7E-07 *( MTOW **2)  + 0.8783 *( MTOW)  + 1601.9 
+    return MLW

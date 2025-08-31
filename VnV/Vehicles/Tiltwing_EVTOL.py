@@ -32,7 +32,7 @@ def vehicle_setup(new_regression=True):
     vehicle.mass_properties.operating_empty     = 735.
     vehicle.mass_properties.max_takeoff         = 735.
     vehicle.mass_properties.center_of_gravity   = [[ 2.0144,   0.  ,  0.]] 
-    vehicle.passengers                          = 0
+    vehicle.number_of_passengers                          = 0
     vehicle.flight_envelope.ultimate_load       = 5.7
     vehicle.flight_envelope.positive_limit_load = 3.     
 

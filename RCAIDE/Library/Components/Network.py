@@ -7,7 +7,6 @@
 # ----------------------------------------------------------------------------------------------------------------------  
 from RCAIDE.Framework.Core import Container as ContainerBase
 from RCAIDE.Framework.Core import Data
-from .Mass_Properties import Mass_Properties
 
 # package imports 
 import numpy as np
@@ -24,9 +23,6 @@ class Network(Data):
     ----------
     tag : str
         Unique identifier for the network, defaults to 'Network'
-        
-    mass_properties : Mass_Properties
-        Mass and inertia properties, initialized empty
         
     origin : ndarray
         3D coordinates [x, y, z] defining network's reference point, 
@@ -50,8 +46,6 @@ class Network(Data):
 
     See Also
     --------
-    RCAIDE.Library.Components.Mass_Properties
-        Class containing mass and inertia data
     RCAIDE.Framework.Core.Data
         Parent class providing data structure functionality
     """
@@ -60,7 +54,6 @@ class Network(Data):
         Sets default values for the network attributes.
         """         
         self.tag             = 'Network' 
-        self.mass_properties = Mass_Properties()
         self.origin          = np.array([[0.0,0.0,0.0]]) 
         self.inputs          = Data()
         self.outputs         = Data()

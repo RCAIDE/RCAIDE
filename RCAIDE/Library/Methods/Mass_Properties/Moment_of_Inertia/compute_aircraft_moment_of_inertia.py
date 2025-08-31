@@ -13,7 +13,7 @@ import numpy as  np
 # ------------------------------------------------------------------        
 #  Component moments of inertia (MOI) tensors
 # ------------------------------------------------------------------  
-def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_MOI=True): 
+def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_moment_of_inertia=True): 
     ''' sums the moments of inertia of each component in the aircraft. Components summed: fuselages,
     wings (main, horizontal, tail + others), turbofan engines, batteries, motors, batteries, fuel tanks
 
@@ -80,6 +80,16 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_MOI=True):
     # Landing Gear
     # ------------------------------------------------------------------      
     for landing_gear in vehicle.landing_gears:
+     
+        if isinstance(landing_gear,RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear):
+            landing_gear.length = landing_gear.strut_length * 1.1
+            landing_gear.width  = landing_gear.tire_diameter* 1.1
+            landing_gear.height = landing_gear.tire_diameter* 1.1
+        else:
+            landing_gear.length = landing_gear.tire_diameter* 1.1
+            landing_gear.width  = landing_gear.strut_length* 1.1
+            landing_gear.height = landing_gear.tire_diameter* 1.1
+            
         I, mass = compute_cuboid_moment_of_inertia(landing_gear.origin, landing_gear.mass_properties.mass, landing_gear.length, landing_gear.width, landing_gear.height, 0, 0, 0, CG_location)
         MOI_tensor += I
         MOI_mass   += mass
@@ -130,6 +140,6 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_MOI=True):
                         
     MOI_tensor += I_network    
     
-    if update_MOI:
+    if update_moment_of_inertia:
         vehicle.mass_properties.moments_of_inertia.tensor = MOI_tensor  
     return MOI_tensor,MOI_mass     

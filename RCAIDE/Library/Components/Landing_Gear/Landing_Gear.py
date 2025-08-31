@@ -86,6 +86,9 @@ class Landing_Gear(Component):
         self.tire_width                      = 0 
         self.strut_length                    = 0  
         self.wheels                          = 0
+        self.length                          = 0 
+        self.width                           = 0 
+        self.height                          = 0
         self.symmetric                       = False
         self.number_of_gear_types_in_tandem  = None
         self.number_of_wheels_in_gear_type   = None  
