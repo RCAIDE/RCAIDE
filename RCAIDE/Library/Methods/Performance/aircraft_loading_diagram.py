@@ -14,13 +14,11 @@ from RCAIDE.Library.Methods.Mass_Properties.estimate_maximum_landing_weight impo
 
 # Pacakge imports 
 import numpy as np   
-import matplotlib.pyplot as plt
-import matplotlib.tri as tri
 
 #------------------------------------------------------------------------------
 # aircraft_loading_diagram
 #------------------------------------------------------------------------------  
-def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analysis = None, altitude = None, airspeed = None, plot_diagram=True):
+def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = None, stability_analysis = None,  weights_analysis = None, altitude = None, airspeed = None):
     """
     Computes the loading dragram of an aircraft 
  
@@ -84,8 +82,8 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
     if weights_analysis  == None:
         raise AttributeError('Weights analysis not set')
     
-    if weights_analysis  == None:
-        raise AttributeError('Weights analysis not set')
+    if stability_analysis  == None:
+        raise AttributeError('Stability analysis not set')
      
     aerodynamic_analysis.settings.store_training_data = True
     weights_analysis.print_weight_analysis_report = False
@@ -110,7 +108,7 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
     configs  = configs_setup(vehicle)
 
     # create analyses
-    analyses = analyses_setup(configs, aerodynamic_analysis, weights_analysis)
+    analyses = analyses_setup(configs, aerodynamic_analysis,  stability_analysis, weights_analysis)
 
     # mission analyses 
     mission = mission_setup(analyses, altitude, airspeed)
@@ -123,9 +121,9 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
     #------------------------------------------------------------------------  
     # Compute Loading Points 
     #------------------------------------------------------------------------
-    percent_payload      =  np.linspace(0, 1, 5)
-    percent_fuel         =  np.linspace(0, 1, 5)
-    static_margins       =  np.linspace(-0.5,0.5, 5)
+    percent_payload      =  np.linspace(0, 1, resolution)
+    percent_fuel         =  np.linspace(0, 1, resolution)
+    static_margins       =  np.linspace(-0.5,0.5, resolution)
     
     # create empty data structures 
     lift_coefficient     = np.zeros((len(percent_payload),len(percent_fuel)))
@@ -137,7 +135,9 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
     weight               = np.zeros((len(percent_payload),len(percent_fuel))) 
     aero_weight          = []
     aero_moment          = []
-    aero_static_margin   = [] 
+    aero_static_margin   = []
+    
+    total_sims           = len(percent_payload)*len(percent_fuel) * len(static_margins)
     
     # compute mass properties of aircraft to get weight distribution
     vehicle_0         = results.segments[0].analyses.weights.vehicle
@@ -147,6 +147,8 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
     CARGO =  payload_breakdown.cargo 
     MTOW  =  vehicle_0.mass_properties.max_takeoff
     MLW   =  estimate_maximum_landing_weight(MTOW)
+    
+    counter = 0
     for i in range(len(percent_payload)):
         for j in range(len(percent_fuel)):
 
@@ -181,7 +183,7 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
         
             #  run mission
             configs  = configs_setup(vehicle) 
-            analyses = analyses_setup(configs, aerodynamic_analysis, weights_analysis) 
+            analyses = analyses_setup(configs, aerodynamic_analysis, stability_analysis,  weights_analysis) 
             mission  = mission_setup(analyses, altitude, airspeed) 
             missions = missions_setup(mission)    
             results = missions.base_mission.evaluate()
@@ -210,7 +212,7 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
                     
                 #  run mission
                 configs  = configs_setup(vehicle) 
-                analyses = analyses_setup(configs, aerodynamic_analysis, weights_analysis, update_center_of_gravity = False) 
+                analyses = analyses_setup(configs, aerodynamic_analysis, stability_analysis, weights_analysis, update_center_of_gravity = False) 
                 mission  = mission_setup(analyses, altitude, airspeed) 
                 missions = missions_setup(mission)    
                 results = missions.base_mission.evaluate()
@@ -221,6 +223,12 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
                 aero_weight.append(mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff[0][0])
                 aero_moment.append( segment.state.conditions.frames.wind.moment_vector[0][1])
                 aero_static_margin.append(segment.state.conditions.static_stability.static_margin[0][0])
+                
+                counter += 1
+                print('***************************************')
+                print('Loading Diagram Run:' + str(counter) + ' of ' +  str(total_sims))
+                print('***************************************')
+
  
     RES = Data(lift_coefficient    = lift_coefficient,
                drag_coefficient    = drag_coefficient,
@@ -235,75 +243,8 @@ def aircraft_loading_diagram(vehicle, aerodynamic_analysis = None, weights_analy
                percent_payload     =  percent_payload, 
                percent_fuel        =  percent_fuel,    
                static_margins      =  static_margins, 
-               )   
-        
-    if plot_diagram: 
-        # get plotting style 
-        ps      = plot_style()  
+               )
     
-        parameters = {'axes.labelsize': ps.axis_font_size,
-                      'xtick.labelsize': ps.axis_font_size,
-                      'ytick.labelsize': ps.axis_font_size,
-                      'axes.titlesize': ps.title_font_size}
-        plt.rcParams.update(parameters)
-
-        fig  = plt.figure('Aircraft Loading Dragram')
-        axis = fig.add_subplot(1,1,1)
-        
-        # fuel loading line
-        y_pts_1  = weight[0, :]  
-        y_pts_2  = weight[0, -1]  -  weight[0, :]  
-        axis.plot( aerodynamic_moment[:,0], y_pts_1, 'go-')
-        axis.plot( aerodynamic_moment[:,0], y_pts_2, 'go-')
-        
-        # payload loading line
-        y_pts_3  = weight[:, 0]  
-        y_pts_4  = weight[-1, 0]   -  weight[:, 0]  
-        axis.plot( aerodynamic_moment[0, :], y_pts_3, 'bo-')
-        axis.plot( aerodynamic_moment[0, :], y_pts_4, 'bo-')
-        
-        
-        # Maximum Takeoff Weight line
-        x_pts_MTOW = np.linspace(0, 1E8)
-        y_pts_MTOW = np.ones_like(x_pts_MTOW)  *MTOW
-        axis.plot(x_pts_MTOW, y_pts_MTOW, 'bo-') 
-        
-        
-        # Maximum Landing Weight line
-        x_pts_MLW = np.linspace(0, 1E8)
-        y_pts_MLW = np.ones_like(x_pts_MLW)  *MLW
-        axis.plot(x_pts_MLW, y_pts_MLW, 'bo-') 
-        
-        
-        # Aerodynamics Lines 
-          
-        #ngridx = 100
-        #ngridy = 200
-        #x = np.array(aero_weight) 
-        #y = np.array(aero_moment)
-        #z = np.array(aero_static_margin) 
-        
-        ## Create grid values first.
-        #xi = np.linspace(-2.1, 2.1, ngridx)
-        #yi = np.linspace(-2.1, 2.1, ngridy)
-        
-        ## Linearly interpolate the data (x, y) on a grid defined by (xi, yi).
-        #triang       = tri.Triangulation(x, y)
-        #interpolator = tri.LinearTriInterpolator(triang, z)
-        #Xi, Yi       = np.meshgrid(xi, yi)
-        #zi           = interpolator(Xi, Yi)
-         
-        #axis.contour(xi, yi, zi, levels=14, linewidths=0.5, colors='k')
-        #cntr1  = axis.contourf(xi, yi, zi, levels=14, cmap="RdBu_r") 
-        #fig.colorbar(cntr1, ax=axis) 
-        #axis.set(xlim=(-2, 2), ylim=(-2, 2)) 
-         
-    
-        axis.set_xlabel('Moment')
-        axis.set_ylabel('Weight') 
-        set_axes(axis) 
-        fig.tight_layout()              
-  
     return RES  
  
  
@@ -314,18 +255,18 @@ def configs_setup(vehicle):
     configs.append(base_config) 
     return configs
   
-def analyses_setup(configs, aerodynamics, weights, update_center_of_gravity=True):
+def analyses_setup(configs, aerodynamics,stability, weights, update_center_of_gravity=True):
 
     analyses = RCAIDE.Framework.Analyses.Analysis.Container()
 
     # build a base analysis for each config
     for tag,config in configs.items():
-        analysis = base_analysis(config, aerodynamics, weights, update_center_of_gravity)
+        analysis = base_analysis(config, aerodynamics,stability, weights, update_center_of_gravity)
         analyses[tag] = analysis
 
     return analyses
  
-def base_analysis(vehicle, aerodynamics, weights,update_center_of_gravity):
+def base_analysis(vehicle, aerodynamics,stability, weights,update_center_of_gravity):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
@@ -347,10 +288,14 @@ def base_analysis(vehicle, aerodynamics, weights,update_center_of_gravity):
     analyses.append(weights)
 
     # ------------------------------------------------------------------
-    #  Aerodynamics Analysis 
-    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
+    #  Aerodynamics Analysis  
     aerodynamics.vehicle  = vehicle      
-    analyses.append(aerodynamics)   
+    analyses.append(aerodynamics)
+
+    # ------------------------------------------------------------------
+    #  Aerodynamics Analysis  
+    stability.vehicle  = vehicle      
+    analyses.append(stability)       
 
     # ------------------------------------------------------------------
     #  Energy
