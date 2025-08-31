@@ -172,7 +172,7 @@ def mission_setup(analyses):
     segment.air_speed                                                           = 120 * Units['mph']
     segment.climb_rate                                                          = 1000* Units['ft/min']
     segment.sideslip_angle                                                      = 1 * Units.degrees
-                          
+                     
     # define flight dynamics to model                       
     segment.flight_dynamics.force_x                                             = True    
     segment.flight_dynamics.force_z                                             = True    
@@ -187,6 +187,7 @@ def mission_setup(analyses):
     segment.assigned_control_variables.elevator_deflection.active               = True    
     segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']]
     segment.assigned_control_variables.elevator_deflection.initial_guess_values = [[0.02]]
+    segment.assigned_control_variables.elevator_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
    
     # Lateral Flight Mechanics 
     segment.flight_dynamics.force_y                                             = True     
@@ -195,11 +196,21 @@ def mission_setup(analyses):
     segment.assigned_control_variables.aileron_deflection.active                = True
     segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
     segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[0]]
+    segment.assigned_control_variables.aileron_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
     segment.assigned_control_variables.rudder_deflection.active                 = True
     segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
     segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[0]]
+    segment.assigned_control_variables.rudder_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
     segment.assigned_control_variables.bank_angle.active                        = True    
     segment.assigned_control_variables.bank_angle.initial_guess_values          = [[0]]
+    segment.assigned_control_variables.bank_angle.bounds                        = [[-90 *Units.degree, 90 *Units.degree]]
+
+    segment.assigned_control_variables.velocity.bounds                          = [[-2, 343]]
+    segment.assigned_control_variables.altitude.bounds                          = [[-10, 10000]]
+    segment.assigned_control_variables.acceleration.bounds                      = [[-20, 60]]
+    segment.assigned_control_variables.elapsed_time.bounds                              = [[-10, 100000000]]
+
+
     mission.append_segment(segment) 
 
     return mission 

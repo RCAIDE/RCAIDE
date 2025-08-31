@@ -81,23 +81,20 @@ def main():
     results = missions.base_mission.evaluate()   
  
     # Extract sample values from computation   
-    climb_CL        = results.segments.climb.conditions.aerodynamics.coefficients.lift.total[2][0]
     cruise_CL       = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
     
     #print values for resetting regression
     show_vals = True
     if show_vals:
-        data = [climb_CL, cruise_CL]
+        data = [cruise_CL]
         for val in data:
             print(val)
     
     # Truth values 
-    climb_CL_truth        = 0.5 # UPDATE 
-    cruise_CL_truth       = 0.5 # UPDATE 
+    cruise_CL_truth       = 0.2753922048272238
     
     # Store errors 
     error = Data() 
-    error.climb_CL        = np.max((np.abs(climb_CL          - climb_CL_truth ))/climb_CL_truth)
     error.cruise_1        = np.max((np.abs(cruise_CL          - cruise_CL_truth ))/cruise_CL_truth)       
      
     print('Errors:')
@@ -147,19 +144,10 @@ def base_analysis(vehicle, generate_new_training_data):
     aerodynamics.vehicle                                = vehicle
     aerodynamics.settings.run_new_SU2_sim               = True
     aerodynamics.settings.store_training_data           = True
-    aerodynamics.training.angle_of_attack               = np.array([-6, 0, 6, 8]) * Units.deg 
-    aerodynamics.training.Mach                          = np.array([0.1, 0.3, 0.6]) 
-    # NEED TO ADD CODE TO USE OLD TRAINING DATA
-    # aerodynamics.settings.generate_new_training_data (maybe a name change)
+    aerodynamics.training.angle_of_attack               = np.array([-1, 3, 8]) * Units.deg 
+    aerodynamics.training.Mach                          = np.array([0.1, 0.4]) 
     analyses.append(aerodynamics)
 
-    # aerodynamics                                        = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    # aerodynamics.vehicle                                = vehicle
-    # aerodynamics.training.angle_of_attack               = np.array([-6, 0, 6, 8]) * Units.deg 
-    # aerodynamics.training.Mach                          = np.array([0.1, 0.3, 0.6]) 
-    # aerodynamics.settings.store_training_data           = True
-    # analyses.append(aerodynamics)
-  
     #  Energy
     energy                                           = RCAIDE.Framework.Analyses.Energy.Energy()
     energy.vehicle                                   = vehicle 
@@ -196,66 +184,28 @@ def mission_setup(analyses):
     base_segment.state.numerics.number_of_control_points = 8  
     base_segment.state.numerics.solver.type              = 'root_finder' 
   
-    # # ------------------------------------------------------------------------------------------------------------------------------------ 
-    # #   Climb : Constant Speed Linear Altitude 
-    # # ------------------------------------------------------------------------------------------------------------------------------------ 
-    # segment = Segments.Climb.Constant_Speed_Linear_Altitude(base_segment)
-    # segment.tag = "climb"
-    # segment.analyses.extend( analyses.base )  
-    # segment.altitude_start                                           = 0.    * Units.feet   
-    # segment.altitude_end                                             = 1000.    * Units.feet   
-    # segment.air_speed                                                = 100 * Units.knots 
-                 
-    # # define flight dynamics to model              
-    # segment.flight_dynamics.force_x                                  = True  
-    # segment.flight_dynamics.force_z                                  = True     
-    
-    # # define flight controls 
-    # segment.assigned_control_variables.throttle.active               = True           
-    # segment.assigned_control_variables.throttle.assigned_propulsors  = [['ice_propeller']] 
-    # segment.assigned_control_variables.body_angle.active             = True                
-    # mission.append_segment(segment)
-    
-    # # ------------------------------------------------------------------------------------------------------------------------------------ 
-    # #   Cruise Segment: constant Speed, constant altitude
-    # # ------------------------------------------------------------------------------------------------------------------------------------ 
-    # segment = Segments.Cruise.Constant_Mach_Constant_Altitude(base_segment)
-    # segment.tag = "cruise" 
-    # segment.analyses.extend(analyses.base) 
-    # segment.altitude                                                 = 1000 * Units.feet 
-    # segment.mach_number                                              = 0.2 
-    # segment.distance                                                 = 50 * Units.km  
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    #   Cruise Segment: constant Speed, constant altitude
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    segment = Segments.Cruise.Constant_Mach_Constant_Altitude(base_segment)
+    segment.tag = "cruise" 
+    segment.analyses.extend(analyses.base) 
+    segment.altitude                                                 = 1000 * Units.feet 
+    segment.mach_number                                              = 0.2 
+    segment.distance                                                 = 50 * Units.km  
                
-    # # define flight dynamics to model            
-    # segment.flight_dynamics.force_x                                  = True  
-    # segment.flight_dynamics.force_z                                  = True     
+    # define flight dynamics to model            
+    segment.flight_dynamics.force_x                                  = True  
+    segment.flight_dynamics.force_z                                  = True     
     
-    # # define flight controls 
-    # segment.assigned_control_variables.throttle.active               = True           
-    # segment.assigned_control_variables.throttle.assigned_propulsors  = [['ice_propeller']] 
-    # segment.assigned_control_variables.body_angle.active             = True                
+    # define flight controls 
+    segment.assigned_control_variables.throttle.active               = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors  = [['ice_propeller']] 
+    segment.assigned_control_variables.throttle.bounds             = [[-90.0*Units.deg, 90.0*Units.deg]]    
+    segment.assigned_control_variables.body_angle.active             = True     
+    segment.assigned_control_variables.body_angle.bounds             = [[-0.2, 5.0]]         
     
-    # mission.append_segment(segment)   
-    # 
-    #   Cruise Segment: Constant Speed Constant Altitude
-    # ------------------------------------------------------------------
-    segment     = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
-    segment.tag = "cruise"
-    segment.analyses.extend( analyses.base )
-    segment.altitude                                   = 12000. * Units.feet
-    segment.air_speed                                  = 119.   * Units.knots
-    segment.distance                                   = 10 * Units.nautical_mile
-    segment.state.numerics.number_of_control_points    = 4
-    # define flight dynamics to model
-    segment.flight_dynamics.force_x                       = True
-    segment.flight_dynamics.force_z                       = True
-    # define flight controls
-    segment.assigned_control_variables.throttle.active               = True
-    segment.assigned_control_variables.throttle.assigned_propulsors  = [['ice_propeller']]
-    segment.assigned_control_variables.body_angle.active             = True
-    mission.append_segment(segment)  
-    
- 
+    mission.append_segment(segment)   
     return mission
 
 

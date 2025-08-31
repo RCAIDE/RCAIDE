@@ -311,9 +311,9 @@ def set_residuals_and_unknowns(mission):
                 segment.state.unknowns["rudder"] = ones_row(1) * 0.0 * Units.degrees
                 
     
-            if ctrls.elevator_deflection.bounds !=  None:
-                segment.state.numerics.solver.lower_bounds["rudder"] = ctrls.elevator_deflection.bounds[i][0] * ones_row(1)
-                segment.state.numerics.solver.upper_bounds["rudder"] = ctrls.elevator_deflection.bounds[i][1] * ones_row(1)
+            if ctrls.rudder_deflection.bounds !=  None:
+                segment.state.numerics.solver.lower_bounds["rudder"] = ctrls.rudder_deflection.bounds[i][0] * ones_row(1)
+                segment.state.numerics.solver.upper_bounds["rudder"] = ctrls.rudder_deflection.bounds[i][1] * ones_row(1)
             else:
                 segment.state.numerics.solver.lower_bounds["rudder"] =  -np.inf * ones_row(1) 
                 segment.state.numerics.solver.upper_bounds["rudder"] =   np.inf * ones_row(1)                   
@@ -326,9 +326,9 @@ def set_residuals_and_unknowns(mission):
             else: 
                 segment.state.unknowns["aileron" ] = ones_row(1) * 0.0 * Units.degrees 
         
-            if ctrls.elevator_deflection.bounds !=  None:
-                segment.state.numerics.solver.lower_bounds["aileron"] = ctrls.elevator_deflection.bounds[i][0] * ones_row(1)
-                segment.state.numerics.solver.upper_bounds["aileron"] = ctrls.elevator_deflection.bounds[i][1] * ones_row(1)
+            if ctrls.aileron_deflection.bounds !=  None:
+                segment.state.numerics.solver.lower_bounds["aileron"] = ctrls.aileron_deflection.bounds[i][0] * ones_row(1)
+                segment.state.numerics.solver.upper_bounds["aileron"] = ctrls.aileron_deflection.bounds[i][1] * ones_row(1)
             else:
                 segment.state.numerics.solver.lower_bounds["aileron"] =  -np.inf * ones_row(1) 
                 segment.state.numerics.solver.upper_bounds["aileron"] =   np.inf * ones_row(1)                 

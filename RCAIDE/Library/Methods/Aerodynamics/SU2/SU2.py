@@ -73,7 +73,7 @@ def SU2(conditions,settings,geometry):
         sym=False,
         restart=False
     )  
-    
+
     SU2_results = Data()
     for wing in geometry.wings:
         SU2_results[wing.tag] = []
@@ -109,7 +109,7 @@ def SU2(conditions,settings,geometry):
 
             cl, cd, cmz, clw, cdw  = extract_SU2_forces("forces_breakdown.dat",wing.tag)
             SU2_results['CL_Total'].append(cl)
-            SU2_results['CD_Total'].append(cd)
+            SU2_results['CD_Total'].append(-cd)
             SU2_results['CM_Total'].append(cmz)
     # ---------------------------------------------------------------------------------------
     # Pack outputs
