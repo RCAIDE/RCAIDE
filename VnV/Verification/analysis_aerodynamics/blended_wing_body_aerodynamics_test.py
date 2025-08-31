@@ -179,6 +179,7 @@ def mission_setup(analyses):
     
     segment.assigned_control_variables.elapsed_time.active                = True  
     segment.assigned_control_variables.elapsed_time.initial_guess_values  = [[30.]]  
+    segment.assigned_control_variables.elapsed_time.bounds                  = [[-10, 100000000]]
     mission.append_segment(segment)     
 
     return mission

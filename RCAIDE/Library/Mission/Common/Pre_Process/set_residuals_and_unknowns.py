@@ -234,7 +234,7 @@ def set_residuals_and_unknowns(mission):
             else:
                 segment.state.unknowns.ground_velocity = ones_row(1) *  100 
     
-            if ctrls.velocity.bounds !=  None:
+            if ctrls.ground_velocity.bounds !=  None:
                 segment.state.numerics.solver.lower_bounds.ground_velocity = ctrls.ground_velocity.bounds[0][0] * ones_row_m1(1)
                 segment.state.numerics.solver.upper_bounds.ground_velocity = ctrls.ground_velocity.bounds[0][1] * ones_row_m1(1)
             else:

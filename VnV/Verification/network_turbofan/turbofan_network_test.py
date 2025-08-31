@@ -356,6 +356,8 @@ def mission_setup(analyses):
     segment.altitude_end                                             = 4.   * Units.km
     segment.mach_number                                              = 0.5
     segment.climb_angle                                              = 3.5 * Units.degrees  
+    segment.assigned_control_variables.altitude.active               = True
+    segment.assigned_control_variables.altitude.bounds               = [[-10, 20000]]
 
     segment.state.numerics.solver.type       = "optimize"
     segment.state.numerics.solver.objective  = None
@@ -497,6 +499,32 @@ def mission_setup(analyses):
     segment.assigned_control_variables.body_angle.initial_guess_values   = [[ 5.0 * Units.deg]]
 
     mission.append_segment(segment)
+
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    #   Climb 11 : Constant Mach Constant Angle 
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    segment = Segments.Climb.Constant_Mach_Constant_Angle(base_segment)
+    segment.tag = "climb_11"
+    segment.analyses.extend( analyses.base )  
+    segment.altitude_start                                           = 3.   * Units.km
+    segment.altitude_end                                             = 4.1   * Units.km
+    segment.mach_number                                              = 0.5
+    segment.climb_angle                                              = 3.5 * Units.degrees  
+    
+    segment.state.numerics.solver.type       = "optimize"
+    segment.state.numerics.solver.objective  = None
+    
+    # define flight dynamics to model           
+    segment.flight_dynamics.force_x                                  = True  
+    segment.flight_dynamics.force_z                                  = True     
+    
+    # define flight controls 
+    segment.assigned_control_variables.throttle.active               = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors  = [['propulsor_1','propulsor_2']] 
+    segment.assigned_control_variables.body_angle.active             = True    
+    segment.assigned_control_variables.altitude.active               = True            
+      
+    mission.append_segment(segment)
     
     # ------------------------------------------------------------------------------------------------------------------------------------ 
     #   Cruise Segment 1: constant Speed, constant altitude
@@ -542,6 +570,33 @@ def mission_setup(analyses):
     segment.assigned_control_variables.velocity.active              = True           
     segment.assigned_control_variables.velocity.initial_guess       = True     
     segment.assigned_control_variables.velocity.initial_guess_values= [[ 200]] 
+        
+    mission.append_segment(segment)   
+
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    #   Cruise Segment 3 : Constant Pitch Rate Constant Altltude
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    segment = Segments.Cruise.Constant_Pitch_Rate_Constant_Altitude(base_segment)
+    segment.tag = "cruise_3" 
+    segment.analyses.extend(analyses.base) 
+    segment.altitude                                                = 11. * Units.km    
+    segment.pitch_rate                                              = 0.00015  * Units['rad/s/s']
+    segment.pitch_final                                             = 4.  * Units.degrees 
+    segment.distance                                                = 500 * Units.km   
+                
+    # define flight dynamics to model             
+    segment.flight_dynamics.force_x                                 = True  
+    segment.flight_dynamics.force_z                                 = True     
+    
+    # define flight controls 
+    segment.assigned_control_variables.throttle.active              = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors = [['propulsor_1','propulsor_2']]
+    segment.assigned_control_variables.throttle.initial_guess       = True 
+    segment.assigned_control_variables.throttle.initial_guess_values= [[0.9]] 
+    segment.assigned_control_variables.velocity.active              = True           
+    segment.assigned_control_variables.velocity.initial_guess       = True     
+    segment.assigned_control_variables.velocity.initial_guess_values= [[ 200]] 
+    segment.assigned_control_variables.velocity.bounds              = [[-2, 343]]
         
     mission.append_segment(segment)   
     
@@ -632,7 +687,7 @@ def mission_setup(analyses):
     mission.append_segment(segment)    
     
     # ------------------------------------------------------------------------------------------------------------------------------------ 
-    #  Single Point Segment 1: constant Speed, constant altitude
+    #  Single Point Segment 2: constant Speed, constant altitude
     # ------------------------------------------------------------------------------------------------------------------------------------ 
     segment = Segments.Single_Point.Set_Speed_Set_Throttle(base_segment)
     segment.tag = "single_point_2" 
@@ -647,6 +702,27 @@ def mission_setup(analyses):
     
     # define flight controls   
     segment.assigned_control_variables.acceleration.active           = True             
+    segment.assigned_control_variables.body_angle.active             = True                
+    
+    mission.append_segment(segment)    
+
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    #  Single Point Segment 3: constant Speed, constant altitude
+    # ------------------------------------------------------------------------------------------------------------------------------------ 
+    segment = Segments.Single_Point.Set_Speed_Set_Throttle(base_segment)
+    segment.tag = "single_point_3" 
+    segment.analyses.extend(analyses.base) 
+    segment.altitude                                                 =  2500. * Units.feet
+    segment.air_speed                                                =  210. * Units['m/s']   
+    segment.throttle                                                 =  0.5 
+               
+    # define flight dynamics to model            
+    segment.flight_dynamics.force_x                                  = True  
+    segment.flight_dynamics.force_z                                  = True     
+    
+    # define flight controls   
+    segment.assigned_control_variables.acceleration.active           = True   
+    segment.assigned_control_variables.acceleration.bounds           = [[-2, 60]]
     segment.assigned_control_variables.body_angle.active             = True                
     
     mission.append_segment(segment)    

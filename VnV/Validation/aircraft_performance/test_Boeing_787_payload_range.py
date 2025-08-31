@@ -96,6 +96,10 @@ def payload_range_mission_setup(analyses):
     segment.friction_coefficient     = 0.03
     segment.altitude                 = 0.0   
     segment.throttle                 = 1.0
+
+    segment.assigned_control_variables.ground_velocity.active  = True  
+    segment.assigned_control_variables.ground_velocity.bounds  = [[-2, 120]]
+
     mission.append_segment(segment)
       
     #------------------------------------------------------------------

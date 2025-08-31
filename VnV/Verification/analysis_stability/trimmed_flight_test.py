@@ -205,11 +205,9 @@ def mission_setup(analyses):
     segment.assigned_control_variables.bank_angle.initial_guess_values          = [[0]]
     segment.assigned_control_variables.bank_angle.bounds                        = [[-90 *Units.degree, 90 *Units.degree]]
 
-    segment.assigned_control_variables.velocity.bounds                          = [[-2, 343]]
-    segment.assigned_control_variables.altitude.bounds                          = [[-10, 10000]]
+    segment.assigned_control_variables.acceleration.active                      = True
     segment.assigned_control_variables.acceleration.bounds                      = [[-20, 60]]
-    segment.assigned_control_variables.elapsed_time.bounds                              = [[-10, 100000000]]
-
+    
 
     mission.append_segment(segment) 
 
