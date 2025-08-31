@@ -36,7 +36,7 @@ def main():
     return 
 
 def active_transition_test(update_regression_values):    
-    TW_vehicle  = vehicle_setup(redesign_rotors=False) 
+    TW_vehicle  = vehicle_setup(redesign_rotors=True) 
 
     # plot vehicle 
     plot_3d_vehicle(TW_vehicle,  
